@@ -1,7 +1,7 @@
 import { Doi } from '../../../types/doi';
 
 export type ListResource = {
-  articleIds: ReadonlyArray<Doi>,
+  articleIds: Array<Doi>,
   name: string,
   description: string,
 };

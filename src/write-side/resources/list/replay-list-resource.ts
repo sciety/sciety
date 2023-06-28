@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import {
   EventOfType, isEventOfType,
@@ -40,12 +41,12 @@ export const replayListResource: ReplayListResource = (listId) => (events) => pi
       return E.right({ articleIds: [], name: event.name, description: event.description });
     }
     if (isEventOfType('ArticleAddedToList')(event)) {
-      return pipe(
+      pipe(
         resource,
-        E.map((listResource) => ({
-          ...listResource,
-          articleIds: [...listResource.articleIds, event.articleId],
-        })),
+        E.map((listResource) => {
+          listResource.articleIds.push(event.articleId);
+          return undefined;
+        }),
       );
     }
     if (isEventOfType('ArticleRemovedFromList')(event)) {
@@ -53,7 +54,7 @@ export const replayListResource: ReplayListResource = (listId) => (events) => pi
         resource,
         E.map((listResource) => pipe(
           listResource.articleIds,
-          RA.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
+          A.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
           (ids) => ({ ...listResource, articleIds: ids }),
         )),
       );
