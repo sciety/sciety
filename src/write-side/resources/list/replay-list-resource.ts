@@ -32,45 +32,47 @@ const isARelevantEventForTheWriteModel = (event: DomainEvent): event is Relevant
 
 const isAnEventOfThisResource = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
+const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: DomainEvent) => {
+  if (isEventOfType('ListCreated')(event)) {
+    return E.right({ articleIds: [], name: event.name, description: event.description });
+  }
+  if (isEventOfType('ArticleAddedToList')(event)) {
+    pipe(
+      resource,
+      E.map((listResource) => {
+        listResource.articleIds.push(event.articleId);
+        return undefined;
+      }),
+    );
+  }
+  if (isEventOfType('ArticleRemovedFromList')(event)) {
+    return pipe(
+      resource,
+      E.map((listResource) => pipe(
+        listResource.articleIds,
+        A.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
+        (ids) => ({ ...listResource, articleIds: ids }),
+      )),
+    );
+  }
+  if (isEventOfType('ListNameEdited')(event)) {
+    return pipe(
+      resource,
+      E.map((listResource) => ({ ...listResource, name: event.name })),
+    );
+  }
+  if (isEventOfType('ListDescriptionEdited')(event)) {
+    return pipe(
+      resource,
+      E.map((listResource) => ({ ...listResource, description: event.description })),
+    );
+  }
+  return resource;
+};
+
 export const replayListResource: ReplayListResource = (listId) => (events) => pipe(
   events,
   RA.filter(isARelevantEventForTheWriteModel),
   RA.filter(isAnEventOfThisResource(listId)),
-  RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), (resource, event) => {
-    if (isEventOfType('ListCreated')(event)) {
-      return E.right({ articleIds: [], name: event.name, description: event.description });
-    }
-    if (isEventOfType('ArticleAddedToList')(event)) {
-      pipe(
-        resource,
-        E.map((listResource) => {
-          listResource.articleIds.push(event.articleId);
-          return undefined;
-        }),
-      );
-    }
-    if (isEventOfType('ArticleRemovedFromList')(event)) {
-      return pipe(
-        resource,
-        E.map((listResource) => pipe(
-          listResource.articleIds,
-          A.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
-          (ids) => ({ ...listResource, articleIds: ids }),
-        )),
-      );
-    }
-    if (isEventOfType('ListNameEdited')(event)) {
-      return pipe(
-        resource,
-        E.map((listResource) => ({ ...listResource, name: event.name })),
-      );
-    }
-    if (isEventOfType('ListDescriptionEdited')(event)) {
-      return pipe(
-        resource,
-        E.map((listResource) => ({ ...listResource, description: event.description })),
-      );
-    }
-    return resource;
-  }),
+  RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), updateResource),
 );
