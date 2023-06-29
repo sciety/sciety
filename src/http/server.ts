@@ -22,6 +22,7 @@ export const createApplicationServer = (
   app.use(rTracer.koaMiddleware());
 
   app.use(async ({ request, res }, next) => {
+    const startTime = new Date();
     const logLevel = request.url.startsWith('/static') ? 'debug' : 'info';
     logger(logLevel, 'Received HTTP request', {
       method: request.method,
@@ -30,9 +31,8 @@ export const createApplicationServer = (
     });
 
     res.once('finish', () => {
-      logger(logLevel, 'Sent HTTP response', {
-        status: res.statusCode,
-      });
+      const durationInMs = new Date().getTime() - startTime.getTime();
+      logger(logLevel, 'Sent HTTP response', { status: res.statusCode, durationInMs });
     });
 
     res.once('close', () => {
