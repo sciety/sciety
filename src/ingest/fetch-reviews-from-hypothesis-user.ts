@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { FetchData } from './fetch-data';
 import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
-import * as Hyp from '../third-parties/hypothesis';
+import * as Hyp from './third-parties/hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from './convert-hypothesis-annotation-to-evaluation';
 
 type Ports = {

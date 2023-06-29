@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as CR from '../../../src/third-parties/crossref';
+import * as CR from '../../../src/ingest/third-parties/crossref';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
 import { arbitraryDoi } from '../../types/doi.helper';
 

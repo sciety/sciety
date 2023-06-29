@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
-import * as CR from '../third-parties/crossref';
+import * as CR from './third-parties/crossref';
 import { daysAgo } from './time';
 
 type BiorxivItem = {

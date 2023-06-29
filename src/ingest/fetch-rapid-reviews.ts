@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { FetchData } from './fetch-data';
 import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
-import * as CR from '../third-parties/crossref';
+import * as CR from './third-parties/crossref';
 
 type Ports = {
   fetchData: FetchData,

@@ -6,7 +6,7 @@ import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossre
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
 import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user';
 import { GroupIngestionConfiguration } from './update-all';
-import { fetchPrelightsEvaluations } from '../third-parties/prelights/fetch-prelights-evaluations';
+import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations';
 
 // addArticleToEvaluatedArticlesList policy needs to be updated BEFORE adding a new group to this configuration
 export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = [
