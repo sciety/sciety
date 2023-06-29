@@ -10,6 +10,7 @@ import { testingPassportStrategy } from './authentication/testing-passport-strat
 import { routeNotFound } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
 import { EnvironmentVariables } from './environment-variables-codec';
+import { logRequestAndResponse } from './log-request-and-response';
 
 export const createApplicationServer = (
   router: Router,
@@ -20,33 +21,7 @@ export const createApplicationServer = (
   const { logger } = ports;
 
   app.use(rTracer.koaMiddleware());
-
-  app.use(async ({ request, res }, next) => {
-    const startTime = new Date();
-    const logLevel = request.url.startsWith('/static') ? 'debug' : 'info';
-    logger(logLevel, 'Received HTTP request', {
-      method: request.method,
-      url: request.url,
-      referer: request.headers.referer,
-    });
-
-    res.once('finish', () => {
-      const durationInMs = new Date().getTime() - startTime.getTime();
-      logger(logLevel, 'Sent HTTP response', { status: res.statusCode, durationInMs });
-    });
-
-    res.once('close', () => {
-      if (res.writableFinished) {
-        return;
-      }
-
-      logger('warn', 'HTTP response may not have been completely sent', {
-        status: res.statusCode,
-      });
-    });
-
-    await next();
-  });
+  app.use(logRequestAndResponse(logger));
 
   const requiredEnvironmentVariables = [
     'APP_ORIGIN',
