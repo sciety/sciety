@@ -1,1 +1,1 @@
-export { addArticleToListCommandHandler, Ports } from './add-article-to-list-command-handler';
+export { addArticleToListCommandHandler, Ports } from '../command-handlers/add-article-to-list-command-handler';
