@@ -36,7 +36,7 @@ export const fetchZenodoRecord: FetchZenodoRecord = (queryExternalService, logge
   E.fromPredicate(
     isDoiFromZenodo,
     (errors) => {
-      logger('error', 'Attempt to fetch Zenodo record with invalid DOI', { key, errors });
+      logger('warn', 'Attempt to fetch Zenodo record with invalid DOI', { key, errors });
       return DE.unavailable;
     },
   ),
