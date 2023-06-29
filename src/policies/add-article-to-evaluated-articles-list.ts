@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../write-side/add-article-to-list';
+import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../write-side/command-handlers/add-article-to-list-command-handler';
 import { DomainEvent, EventOfType, isEventOfType } from '../domain-events';
 import { Logger } from '../shared-ports';
 

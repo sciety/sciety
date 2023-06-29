@@ -1,7 +1,7 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { executeCommand } from '../add-article-to-list/execute-command';
+import { addArticle } from '../resources/list/add-article';
 import { AddArticleToListCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';
@@ -21,6 +21,6 @@ export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
   command,
 ) => pipe(
   adapters.getAllEvents,
-  T.map(executeCommand(command)),
+  T.map(addArticle(command)),
   TE.chainTaskK(adapters.commitEvents),
 );

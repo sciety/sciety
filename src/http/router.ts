@@ -21,7 +21,7 @@ import { redirectBack } from './redirect-back';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
-import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
+import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';

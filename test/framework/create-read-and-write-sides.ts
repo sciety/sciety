@@ -15,12 +15,12 @@ import {
   createListCommandHandler,
   removeArticleFromListCommandHandler,
 } from '../../src/write-side/command-handlers';
-import { addArticleToListCommandHandler } from '../../src/write-side/add-article-to-list';
 import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
 import { CommandHandler } from '../../src/types/command-handler';
 import { AddGroupCommand } from '../../src/write-side/commands';
 import * as curationStatementResource from '../../src/write-side/resources/curation-statement';
 import { RecordCurationStatementCommand } from '../../src/write-side/commands/record-curation-statement';
+import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
 
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,

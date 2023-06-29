@@ -12,7 +12,7 @@ import {
   createLogger, Logger, Config as LoggerConfig,
 } from './logger';
 import { stubAdapters } from './stub-adapters';
-import { addArticleToListCommandHandler } from '../write-side/add-article-to-list';
+import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 import {
   DomainEvent, sort as sortEvents,
 } from '../domain-events';

@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
-import { constructEvent } from '../../../src/domain-events';
-import { executeCommand } from '../../../src/write-side/add-article-to-list/execute-command';
-import { arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
+import { constructEvent } from '../../../../src/domain-events';
+import { addArticle } from '../../../../src/write-side/resources/list/add-article';
+import { arbitraryString } from '../../../helpers';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
 
 describe('execute-command', () => {
   const listId = arbitraryListId();
@@ -20,7 +20,7 @@ describe('execute-command', () => {
           }),
           constructEvent('ArticleAddedToList')({ articleId, listId }),
         ],
-        executeCommand({
+        addArticle({
           listId,
           articleId,
         }),
@@ -38,7 +38,7 @@ describe('execute-command', () => {
             listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
           }),
         ],
-        executeCommand({
+        addArticle({
           listId,
           articleId,
         }),
