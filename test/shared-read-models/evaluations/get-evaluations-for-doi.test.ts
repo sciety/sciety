@@ -1,12 +1,13 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { getEvaluationsForDoi } from '../../../src/shared-read-models/evaluations/get-evaluations-for-doi';
 import { constructEvent } from '../../../src/domain-events';
 import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
-import { getEvaluationsForDoi } from '../../../src/shared-read-models/evaluations/get-evaluations-for-doi';
 
 describe('get-evaluations-for-doi', () => {
   const article1 = arbitraryDoi();
@@ -55,5 +56,27 @@ describe('get-evaluations-for-doi', () => {
     );
 
     expect(actualEvaluations).toStrictEqual([reviewId3]);
+  });
+
+  describe('when the evaluation is a curation statement', () => {
+    const readmodel = pipe(
+      [
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        constructEvent('CurationStatementRecorded')({
+          articleId: article1,
+          groupId: group1,
+          evaluationLocator: reviewId1,
+        }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = pipe(
+      article1,
+      getEvaluationsForDoi(readmodel),
+    );
+
+    it('sets the type correctly', () => {
+      expect(result[0].type).toStrictEqual(O.some('curation-statement'));
+    });
   });
 });
