@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import * as O from 'fp-ts/Option';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
@@ -21,6 +22,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       recordedAt: event.date,
       publishedAt: event.publishedAt,
       authors: event.authors,
+      type: O.none,
     };
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
     const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? [];

@@ -37,9 +37,9 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       adapters.getEvaluationsForDoi(doi),
       T.of,
       T.map(RA.map((evaluation) => ({
-        type: 'evaluation' as const,
         evaluationLocator: evaluation.reviewId,
         ...evaluation,
+        type: 'evaluation' as const,
       }))),
     ),
     versions: pipe(
