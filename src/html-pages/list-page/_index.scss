@@ -13,7 +13,7 @@ $_edit-details-icon-size: 24px;
 $_edit-details-icon-offset: 8px;
 
 .page-header.page-header--list {
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 }
 
 .page-header--list .page-header__subheading {
@@ -53,6 +53,7 @@ $_edit-details-icon-offset: 8px;
 
 .page-header__related_articles {
   @include button.secondary-button-link();
+  margin-bottom: 2rem;
 }
 
 .articles-page-count {
