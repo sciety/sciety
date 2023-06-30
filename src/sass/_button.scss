@@ -83,25 +83,6 @@
   }
 }
 
-@mixin button-link-teal() {
-  @include button-link();
-  border-color: settings.$colour-teal;
-
-  &:link,
-  &:visited {
-    background-color: settings.$colour-teal;
-    color: settings.$colour-white;
-
-    &:active,
-    &:hover {
-      border-color: settings.$colour-teal;
-      background-color: settings.$colour-ui-default;
-      color: settings.$colour-white;
-      text-decoration: none;
-    }
-  }
-}
-
 @mixin secondary-button-link() {
   @include button-link();
 

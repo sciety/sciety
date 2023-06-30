@@ -28,7 +28,7 @@
 }
 
 .see-related-articles-button {
-  @include button.button-link-teal();
+  @include button.secondary-button-link();
 
   margin-bottom: 2rem;
 
@@ -38,7 +38,7 @@
 }
 
 .logged-out-call-to-action {
-  @include button.button-link-teal();
+  @include button.secondary-button-link();
 
   margin-bottom: 1.5rem;
 }
