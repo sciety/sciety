@@ -27,7 +27,7 @@ describe('edit-list-details', () => {
     beforeAll(async () => {
       const listPage = `localhost:8080/lists/${listId}`;
       await goto(listPage);
-      const editDetailsLinkSelector = '.page-header__edit_details_link';
+      const editDetailsLinkSelector = '.list-page-actions__edit_details_link';
       const editDetailsLink = $(editDetailsLinkSelector);
       await click(editDetailsLink);
       await write(listName, into(textBox('List name')));
