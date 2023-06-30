@@ -17,7 +17,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   if (isEventOfType('EvaluationRecorded')(event)) {
     const recordedEvaluation: RecordedEvaluation = {
       articleId: event.articleId,
-      reviewId: event.evaluationLocator,
+      evaluationLocator: event.evaluationLocator,
       groupId: event.groupId,
       recordedAt: event.date,
       publishedAt: event.publishedAt,
@@ -33,13 +33,13 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     readmodel.byArticleId.forEach((state) => {
-      const i = state.findIndex((recordedEvaluation) => recordedEvaluation.reviewId === event.evaluationLocator);
+      const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
       if (i > -1) {
         state.splice(i, 1);
       }
     });
     readmodel.byGroupId.forEach((state) => {
-      const i = state.findIndex((recordedEvaluation) => recordedEvaluation.reviewId === event.evaluationLocator);
+      const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
       if (i > -1) {
         state.splice(i, 1);
       }
@@ -47,7 +47,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   }
   if (isEventOfType('CurationStatementRecorded')(event)) {
     readmodel.byGroupId.forEach((state) => {
-      const i = state.findIndex((recordedEvaluation) => recordedEvaluation.reviewId === event.evaluationLocator);
+      const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
       if (i > -1) {
         state[i].type = O.some('curation-statement');
       }

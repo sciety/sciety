@@ -38,7 +38,7 @@ describe('get-activity-for-group', () => {
             evaluationRecordedHelper(
               recordedEvaluation.groupId,
               recordedEvaluation.articleId,
-              recordedEvaluation.reviewId,
+              recordedEvaluation.evaluationLocator,
               recordedEvaluation.authors,
               recordedEvaluation.publishedAt,
             ),
@@ -66,11 +66,11 @@ describe('get-activity-for-group', () => {
             evaluationRecordedHelper(
               recordedEvaluation.groupId,
               recordedEvaluation.articleId,
-              recordedEvaluation.reviewId,
+              recordedEvaluation.evaluationLocator,
               recordedEvaluation.authors,
               recordedEvaluation.publishedAt,
             ),
-            constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.reviewId }),
+            constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.evaluationLocator }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -131,7 +131,7 @@ describe('get-activity-for-group', () => {
           evaluationRecordedHelper(
             recordedEvaluation.groupId,
             recordedEvaluation.articleId,
-            recordedEvaluation.reviewId,
+            recordedEvaluation.evaluationLocator,
             recordedEvaluation.authors,
             recordedEvaluation.publishedAt,
           ),
@@ -176,14 +176,14 @@ describe('get-activity-for-group', () => {
             evaluationRecordedHelper(
               recordedEvaluation1.groupId,
               recordedEvaluation1.articleId,
-              recordedEvaluation1.reviewId,
+              recordedEvaluation1.evaluationLocator,
               recordedEvaluation1.authors,
               recordedEvaluation1.publishedAt,
             ),
             evaluationRecordedHelper(
               recordedEvaluation2.groupId,
               recordedEvaluation2.articleId,
-              recordedEvaluation2.reviewId,
+              recordedEvaluation2.evaluationLocator,
               recordedEvaluation2.authors,
               recordedEvaluation2.publishedAt,
             ),
@@ -227,14 +227,14 @@ describe('get-activity-for-group', () => {
             evaluationRecordedHelper(
               recordedEvaluation1.groupId,
               recordedEvaluation1.articleId,
-              recordedEvaluation1.reviewId,
+              recordedEvaluation1.evaluationLocator,
               recordedEvaluation1.authors,
               recordedEvaluation1.publishedAt,
             ),
             evaluationRecordedHelper(
               recordedEvaluation2.groupId,
               recordedEvaluation2.articleId,
-              recordedEvaluation2.reviewId,
+              recordedEvaluation2.evaluationLocator,
               recordedEvaluation2.authors,
               recordedEvaluation2.publishedAt,
             ),
@@ -272,11 +272,11 @@ describe('get-activity-for-group', () => {
           evaluationRecordedHelper(
             recordedEvaluation.groupId,
             recordedEvaluation.articleId,
-            recordedEvaluation.reviewId,
+            recordedEvaluation.evaluationLocator,
             recordedEvaluation.authors,
             recordedEvaluation.publishedAt,
           ),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.reviewId }),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.evaluationLocator }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -316,18 +316,18 @@ describe('get-activity-for-group', () => {
           evaluationRecordedHelper(
             goodEvaluation.groupId,
             goodEvaluation.articleId,
-            goodEvaluation.reviewId,
+            goodEvaluation.evaluationLocator,
             goodEvaluation.authors,
             goodEvaluation.publishedAt,
           ),
           evaluationRecordedHelper(
             badEvaluation.groupId,
             badEvaluation.articleId,
-            badEvaluation.reviewId,
+            badEvaluation.evaluationLocator,
             badEvaluation.authors,
             badEvaluation.publishedAt,
           ),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: badEvaluation.reviewId }),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: badEvaluation.evaluationLocator }),
         ],
         RA.reduce(initialState(), handleEvent),
       );

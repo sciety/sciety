@@ -3,7 +3,7 @@ import * as RI from '../../types/evaluation-locator';
 
 export type Evaluation = {
   sourceUrl: URL,
-  reviewId: RI.EvaluationLocator,
+  evaluationLocator: RI.EvaluationLocator,
   recordedAt: Date,
   publishedAt: Date,
   authors: ReadonlyArray<string>,

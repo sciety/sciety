@@ -37,7 +37,6 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       adapters.getEvaluationsForDoi(doi),
       T.of,
       T.map(RA.map((evaluation) => ({
-        evaluationLocator: evaluation.reviewId,
         ...evaluation,
         type: 'evaluation' as const,
       }))),

@@ -9,7 +9,7 @@ type EvaluationType = typeof evaluationTypes[number];
 
 export type RecordedEvaluation = {
   articleId: Doi,
-  reviewId: EvaluationLocator,
+  evaluationLocator: EvaluationLocator,
   groupId: GroupId,
   recordedAt: Date,
   publishedAt: Date,

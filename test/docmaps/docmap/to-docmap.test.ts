@@ -24,14 +24,14 @@ describe('to-docmap', () => {
       evaluations: [
         {
           sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryEvaluationLocator(),
+          evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: earlierEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
         },
         {
           sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryEvaluationLocator(),
+          evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: laterEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
@@ -47,7 +47,7 @@ describe('to-docmap', () => {
         evaluations: [
           {
             sourceUrl: new URL(arbitraryUri()),
-            reviewId: arbitraryEvaluationLocator(),
+            evaluationLocator: arbitraryEvaluationLocator(),
             recordedAt: arbitraryDate(),
             publishedAt: arbitraryDate(),
             authors: [],
@@ -103,7 +103,7 @@ describe('to-docmap', () => {
       evaluations: [
         {
           sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryEvaluationLocator(),
+          evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: arbitraryDate(),
           publishedAt: arbitraryDate(),
           authors: [],
@@ -126,7 +126,7 @@ describe('to-docmap', () => {
       evaluations: [
         {
           sourceUrl: new URL(arbitraryUri()),
-          reviewId: arbitraryEvaluationLocator(),
+          evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: arbitraryDate(),
           publishedAt: arbitraryDate(),
           authors: [],
@@ -151,14 +151,14 @@ describe('to-docmap', () => {
     const evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation> = [
       {
         sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
-        reviewId: earlierReviewId,
+        evaluationLocator: earlierReviewId,
         recordedAt: arbitraryDate(),
         publishedAt: earlierEvaluationPublishedDate,
         authors: [],
       },
       {
         sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
-        reviewId: laterReviewId,
+        evaluationLocator: laterReviewId,
         recordedAt: arbitraryDate(),
         publishedAt: laterEvaluationPublishedDate,
         authors: [authorName],

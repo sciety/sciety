@@ -37,7 +37,7 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there is an evaluation by the selected group', () => {
     const group = arbitraryGroup();
-    const evaluation = {
+    const evaluation: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
       articleId,
       groupId: group.id,
@@ -91,10 +91,10 @@ describe('generate-docmap-view-model', () => {
     it('returns all evaluations', () => {
       expect(result.evaluations).toStrictEqual([
         expect.objectContaining({
-          reviewId: firstEvaluation.reviewId,
+          evaluationLocator: firstEvaluation.evaluationLocator,
         }),
         expect.objectContaining({
-          reviewId: secondEvaluation.reviewId,
+          evaluationLocator: secondEvaluation.evaluationLocator,
         }),
       ]);
     });
@@ -110,10 +110,10 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       const group = arbitraryGroup();
-      const evaluation = {
+      const evaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
-        reviewId: reviewIdWithInferrableSourceUrl,
+        evaluationLocator: reviewIdWithInferrableSourceUrl,
         articleId,
       };
       const ports: Ports = {
@@ -144,10 +144,10 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       const group = arbitraryGroup();
-      const evaluation = {
+      const evaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
-        reviewId: reviewIdWithUninferrableSourceUrl,
+        evaluationLocator: reviewIdWithUninferrableSourceUrl,
         articleId,
       };
       const ports: Ports = {
@@ -186,7 +186,7 @@ describe('generate-docmap-view-model', () => {
         id: indexedGroupId,
       };
       const otherGroup = arbitraryGroup();
-      const evaluationByThisGroup = {
+      const evaluationByThisGroup: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         articleId,
         groupId: indexedGroupId,
@@ -211,7 +211,7 @@ describe('generate-docmap-view-model', () => {
 
       expect(result.evaluations).toStrictEqual([
         expect.objectContaining({
-          reviewId: evaluationByThisGroup.reviewId,
+          evaluationLocator: evaluationByThisGroup.evaluationLocator,
         }),
       ]);
     });

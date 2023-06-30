@@ -8,7 +8,7 @@ import { arbitraryEvaluationLocator } from './evaluation-locator.helper';
 export const arbitraryRecordedEvaluation = (): RecordedEvaluation => ({
   articleId: arbitraryArticleId(),
   groupId: arbitraryGroupId(),
-  reviewId: arbitraryEvaluationLocator(),
+  evaluationLocator: arbitraryEvaluationLocator(),
   publishedAt: arbitraryDate(),
   authors: [arbitraryString()],
   recordedAt: arbitraryDate(),

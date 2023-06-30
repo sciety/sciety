@@ -29,11 +29,11 @@ const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
         },
         {
           type: 'web-page',
-          url: `https://sciety.org/articles/activity/${articleId.value}#${RI.serialize(evaluation.reviewId)}`,
+          url: `https://sciety.org/articles/activity/${articleId.value}#${RI.serialize(evaluation.evaluationLocator)}`,
         },
         {
           type: 'web-content',
-          url: `https://sciety.org/evaluations/${RI.serialize(evaluation.reviewId)}/content`,
+          url: `https://sciety.org/evaluations/${RI.serialize(evaluation.evaluationLocator)}/content`,
         },
       ],
     },

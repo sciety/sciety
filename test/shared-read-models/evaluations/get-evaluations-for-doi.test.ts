@@ -34,7 +34,7 @@ describe('get-evaluations-for-doi', () => {
     const actualEvaluations = pipe(
       articleDoi,
       getEvaluationsForDoi(readmodel),
-      RA.map((evaluation) => evaluation.reviewId),
+      RA.map((evaluation) => evaluation.evaluationLocator),
     );
 
     expect(actualEvaluations).toStrictEqual(expectedEvaluations);
@@ -52,7 +52,7 @@ describe('get-evaluations-for-doi', () => {
     const actualEvaluations = pipe(
       article1,
       getEvaluationsForDoi(readmodel),
-      RA.map((evaluation) => evaluation.reviewId),
+      RA.map((evaluation) => evaluation.evaluationLocator),
     );
 
     expect(actualEvaluations).toStrictEqual([reviewId3]);

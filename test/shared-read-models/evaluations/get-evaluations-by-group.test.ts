@@ -34,7 +34,7 @@ describe('get-evaluations-by-group', () => {
     const actualEvaluations = pipe(
       groupId,
       getEvaluationsByGroup(readmodel),
-      RA.map((evaluation) => evaluation.reviewId),
+      RA.map((evaluation) => evaluation.evaluationLocator),
     );
 
     it('finds the correct evaluations', () => {
@@ -54,7 +54,7 @@ describe('get-evaluations-by-group', () => {
     const actualEvaluations = pipe(
       group1,
       getEvaluationsByGroup(readmodel),
-      RA.map((evaluation) => evaluation.reviewId),
+      RA.map((evaluation) => evaluation.evaluationLocator),
     );
 
     expect(actualEvaluations).toStrictEqual([reviewId2]);

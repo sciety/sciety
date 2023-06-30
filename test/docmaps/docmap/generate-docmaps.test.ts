@@ -15,6 +15,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryNcrcId } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
+import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
@@ -229,16 +230,16 @@ describe('generate-docmaps', () => {
         id: ncrcGroupId,
       };
       const failingReviewId = arbitraryNcrcId();
-      const goodEvaluation = {
+      const goodEvaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
         articleId,
       };
-      const badEvaluation = {
+      const badEvaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
         articleId,
-        reviewId: failingReviewId,
+        evaluationLocator: failingReviewId,
       };
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordEvaluation(goodEvaluation);

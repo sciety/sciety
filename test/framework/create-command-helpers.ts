@@ -87,7 +87,6 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   recordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
     {
       ...evaluation,
-      evaluationLocator: evaluation.reviewId,
       issuedAt: evaluation.recordedAt,
     },
     invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),

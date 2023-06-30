@@ -54,11 +54,11 @@ describe('get-activity-for-doi', () => {
           evaluationRecordedHelper(
             evaluation.groupId,
             evaluation.articleId,
-            evaluation.reviewId,
+            evaluation.evaluationLocator,
             evaluation.authors,
             evaluation.publishedAt,
           ),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluation.reviewId }),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluation.evaluationLocator }),
         ],
         RA.reduce(initialState(), handleEvent),
       );

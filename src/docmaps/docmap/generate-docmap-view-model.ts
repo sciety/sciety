@@ -34,7 +34,7 @@ type GenerateDocmapViewModel = (
 ) => TE.TaskEither<DE.DataError, DocmapModel>;
 
 type ReviewForArticle = {
-  reviewId: EvaluationLocator,
+  evaluationLocator: EvaluationLocator,
   groupId: GroupId,
   recordedAt: Date,
   publishedAt: Date,
@@ -45,20 +45,20 @@ export type Ports = Queries & GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: EvaluationLocator) => TE.TaskEither<DE.DataError, { url: URL }>,
 };
 
-const extendWithSourceUrl = (adapters: Ports) => (review: ReviewForArticle) => pipe(
-  review.reviewId,
+const extendWithSourceUrl = (adapters: Ports) => (evaluation: ReviewForArticle) => pipe(
+  evaluation.evaluationLocator,
   inferredSourceUrl,
   O.fold(
     () => pipe(
-      review.reviewId,
+      evaluation.evaluationLocator,
       adapters.fetchReview,
       TE.map((fetchedReview) => ({
-        ...review,
+        ...evaluation,
         sourceUrl: fetchedReview.url,
       })),
     ),
     (sourceUrl) => TE.right({
-      ...review,
+      ...evaluation,
       sourceUrl,
     }),
   ),
