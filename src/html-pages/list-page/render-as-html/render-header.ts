@@ -30,7 +30,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
     <p class="page-header__description">${viewModel.description}</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.updatedAt)}</p>
     ${renderEditDetailsLink(viewModel.editCapability, viewModel.listId)}
-    <br><a href="https://labs.sciety.org/lists/by-id/${viewModel.listId}/article-recommendations">See articles related to this list on Sciety Labs</a>
+    <br><a class="page-header__related_articles"href="https://labs.sciety.org/lists/by-id/${viewModel.listId}/article-recommendations">See articles related to this list on Sciety Labs</a>
   </header>`,
   toHtmlFragment,
 );

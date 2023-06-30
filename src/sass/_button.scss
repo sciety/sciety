@@ -126,3 +126,37 @@
     }
   }
 }
+
+@mixin secondary-button-link() {
+  @include button-link();
+
+  color: settings.$colour-text-primary;
+  background-color: settings.$colour-highlighted-background;
+  border-color: settings.$colour-highlighted-background;
+
+  &:link,
+  &:visited {
+    color: settings.$colour-text-primary;
+    background-color: settings.$colour-highlighted-background;
+
+    &:active,
+    &:hover {
+      color: settings.$colour-text-primary;
+      background-color: settings.$colour-highlighted-background-darkened;
+      border-color: settings.$colour-highlighted-background-darkened;
+      text-decoration: none;
+    }
+
+    &:active {
+      background-color: settings.$colour-highlighted-background;
+    }
+
+    &:hover {
+      background-color: settings.$colour-highlighted-background-darkened;
+    }
+
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}

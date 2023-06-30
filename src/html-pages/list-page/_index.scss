@@ -49,6 +49,10 @@ $_edit-details-icon-offset: 8px;
   padding-left: functions.px-to-rem($_edit-details-icon-size + $_edit-details-icon-offset);
 }
 
+.page-header__related_articles {
+  @include button.secondary-button-link()
+}
+
 .articles-page-count {
   @include typography.details();
   @include layout.page-content-horizontal-margins();
