@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
@@ -55,5 +56,27 @@ describe('get-evaluations-by-group', () => {
     );
 
     expect(actualEvaluations).toStrictEqual([reviewId2]);
+  });
+
+  describe('when the evaluation is a curation statement', () => {
+    const readmodel = pipe(
+      [
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        constructEvent('CurationStatementRecorded')({
+          articleId: article1,
+          groupId: group1,
+          evaluationLocator: reviewId1,
+        }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = pipe(
+      group1,
+      getEvaluationsByGroup(readmodel),
+    );
+
+    it.failing('sets the type correctly', () => {
+      expect(result[0].type).toStrictEqual(O.some('curation-statement'));
+    });
   });
 });
