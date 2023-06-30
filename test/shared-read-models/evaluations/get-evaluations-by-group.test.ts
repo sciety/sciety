@@ -75,7 +75,7 @@ describe('get-evaluations-by-group', () => {
       getEvaluationsByGroup(readmodel),
     );
 
-    it.failing('sets the type correctly', () => {
+    it('sets the type correctly', () => {
       expect(result[0].type).toStrictEqual(O.some('curation-statement'));
     });
   });

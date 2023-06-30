@@ -45,5 +45,13 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       }
     });
   }
+  if (isEventOfType('CurationStatementRecorded')(event)) {
+    readmodel.byGroupId.forEach((state) => {
+      const i = state.findIndex((recordedEvaluation) => recordedEvaluation.reviewId === event.evaluationLocator);
+      if (i > -1) {
+        state[i].type = O.some('curation-statement');
+      }
+    });
+  }
   return readmodel;
 };
