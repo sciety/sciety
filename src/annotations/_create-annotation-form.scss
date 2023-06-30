@@ -20,6 +20,6 @@
 }
 
 .annotation-form-reset {
-  @include button.button-secondary();
+  @include button.secondary-button();
   margin-left: auto;
 }

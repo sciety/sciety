@@ -63,11 +63,17 @@
   }
 }
 
-@mixin button-secondary() {
-  @include button();
+@mixin secondary-button() {
+  @include basics();
 
-  background-color: settings.$colour-white;
-  color: settings.$colour-accent;
+  background-color: settings.$colour-highlighted-background;
+  color: settings.$colour-text-primary;
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+
+  &:hover,
+  &:active {
+    background-color: settings.$colour-highlighted-background-darkened;
+  }
 }
 
 @mixin button-teal() {
