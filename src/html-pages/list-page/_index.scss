@@ -40,7 +40,13 @@ $_edit-details-icon-offset: 8px;
   margin-bottom: 1rem;
 }
 
-.page-header__edit_details_link {
+.list-page-actions {
+  a {
+    margin-bottom: functions.px-to-rem(32px);
+  }
+}
+
+.list-page-actions__edit_details_link {
   @include button.button-link();
   background-image: url('/static/images/edit-note-icon.svg');
   background-repeat: no-repeat;
@@ -48,12 +54,10 @@ $_edit-details-icon-offset: 8px;
   background-position: functions.px-to-rem($_edit-details-icon-offset) 0.25rem;
   padding-left: functions.px-to-rem($_edit-details-icon-size + $_edit-details-icon-offset);
   margin-right: settings.$site-header-click-target-separation;
-  margin-bottom: 2rem;
 }
 
-.page-header__related_articles {
+.list-page-actions__related_articles {
   @include button.secondary-button-link();
-  margin-bottom: 2rem;
 }
 
 .articles-page-count {
