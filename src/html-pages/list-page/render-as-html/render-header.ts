@@ -20,8 +20,8 @@ const renderEditDetailsLink = (editCapability: boolean, listId: ListId) => pipe(
   ),
 );
 
-const renderRelatedArticlesLink = (listId: ListId) => `
-  <a class="list-page-actions__related_articles"href="https://labs.sciety.org/lists/by-id/${listId}/article-recommendations?from-sciety=true">Related articles (Labs 🧪)</a>
+const renderRelatedArticlesLink = (url: string) => `
+  <a class="list-page-actions__related_articles" href="${url}">Related articles (Labs 🧪)</a>
 `;
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
@@ -35,7 +35,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.updatedAt)}</p>
     <section class="list-page-actions">
       ${renderEditDetailsLink(viewModel.editCapability, viewModel.listId)}
-      ${renderRelatedArticlesLink(viewModel.listId)}
+      ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
     </section>
   </header>`,
   toHtmlFragment,

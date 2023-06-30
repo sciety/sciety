@@ -29,4 +29,5 @@ export type ViewModel = {
   listId: ListId,
   basePath: string,
   contentViewModel: ContentViewModel,
+  relatedArticlesLink: string,
 };
