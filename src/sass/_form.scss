@@ -56,5 +56,5 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 @mixin cancel-button {
-  @include button.button-link-secondary();
+  @include button.secondary-button-link();
 }
