@@ -1,4 +1,5 @@
 import * as B from 'fp-ts/boolean';
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -20,9 +21,13 @@ const renderEditDetailsLink = (editCapability: boolean, listId: ListId) => pipe(
   ),
 );
 
-const renderRelatedArticlesLink = (url: string) => `
-  <a class="list-page-actions__related_articles" href="${url}">Related articles (Labs 🧪)</a>
-`;
+const renderRelatedArticlesLink = (url: O.Option<string>) => pipe(
+  url,
+  O.match(
+    () => '',
+    (u) => `<a class="list-page-actions__related_articles" href="${u}">Related articles (Labs 🧪)</a>`,
+  ),
+);
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">

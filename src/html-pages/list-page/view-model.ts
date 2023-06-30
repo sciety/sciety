@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { PageOfItems } from '../../shared-components/paginate';
 import { ListId } from '../../types/list-id';
 import { ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel } from '../../shared-components/article-card';
@@ -29,5 +30,5 @@ export type ViewModel = {
   listId: ListId,
   basePath: string,
   contentViewModel: ContentViewModel,
-  relatedArticlesLink: string,
+  relatedArticlesLink: O.Option<string>,
 };

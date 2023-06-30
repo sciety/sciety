@@ -72,7 +72,9 @@ export const constructViewModel = (ports: Ports) => (params: Params): TE.TaskEit
       articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,
       editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
-      relatedArticlesLink: `https://labs.sciety.org/lists/by-id/${list.id}/article-recommendations?from-sciety=true`,
+      relatedArticlesLink: list.articleIds.length > 0
+        ? O.some(`https://labs.sciety.org/lists/by-id/${list.id}/article-recommendations?from-sciety=true`)
+        : O.none,
     })),
   )),
   TE.fromOption(() => DE.notFound),

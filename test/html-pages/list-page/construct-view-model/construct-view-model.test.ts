@@ -59,8 +59,8 @@ describe('construct-view-model', () => {
       }));
     });
 
-    it.failing('displays a link to related articles', () => {
-      expect(viewModel.relatedArticlesLink).toStrictEqual(O.some(expect.anything));
+    it('displays a link to related articles', () => {
+      expect(viewModel.relatedArticlesLink).toStrictEqual(O.some(expect.anything()));
     });
   });
 });
