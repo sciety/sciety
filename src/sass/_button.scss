@@ -9,6 +9,23 @@
   cursor: pointer;
 }
 
+@mixin button {
+  @include typography.button();
+  @include states.focus();
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-accent;
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+
+  background-color: settings.$colour-accent;
+  color: settings.$colour-white;
+
+  &:hover {
+    border-color: settings.$colour-accent-hover;
+    background-color: settings.$colour-accent-hover;
+    color: settings.$colour-white;
+  }
+}
+
 @mixin button-link {
   @include typography.button();
   border-radius: settings.$border-radius;
@@ -46,23 +63,6 @@
   }
 }
 
-@mixin button {
-  @include typography.button();
-  @include states.focus();
-  border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-accent;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
-
-  background-color: settings.$colour-accent;
-  color: settings.$colour-white;
-
-  &:hover {
-    border-color: settings.$colour-accent-hover;
-    background-color: settings.$colour-accent-hover;
-    color: settings.$colour-white;
-  }
-}
-
 @mixin secondary-button() {
   @include basics();
 
@@ -73,19 +73,6 @@
   &:hover,
   &:active {
     background-color: settings.$colour-highlighted-background-darkened;
-  }
-}
-
-@mixin button-teal() {
-  @include basics();
-  background-color: settings.$colour-teal;
-  color: settings.$colour-white;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
-
-  &:hover,
-  &:active {
-    background-color: settings.$colour-ui-default;
-    color: settings.$colour-white;
   }
 }
 
