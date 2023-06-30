@@ -18,11 +18,11 @@ describe('get-evaluations-by-group', () => {
   const reviewId2 = arbitraryEvaluationLocator();
   const reviewId3 = arbitraryEvaluationLocator();
 
-  it.each([
+  describe.each([
     ['two evaluations', group1, [reviewId1, reviewId2]],
     ['one evaluation', group2, [reviewId3]],
     ['no evaluations', arbitraryGroupId(), []],
-  ])('finds the correct evaluations when the group has %s', async (_, groupId, expectedEvaluations) => {
+  ])('when the group has %s', (_, groupId, expectedEvaluations) => {
     const readmodel = pipe(
       [
         evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
@@ -37,7 +37,9 @@ describe('get-evaluations-by-group', () => {
       RA.map((evaluation) => evaluation.reviewId),
     );
 
-    expect(actualEvaluations).toStrictEqual(expectedEvaluations);
+    it('finds the correct evaluations', () => {
+      expect(actualEvaluations).toStrictEqual(expectedEvaluations);
+    });
   });
 
   it('does not return erased evaluations', () => {
