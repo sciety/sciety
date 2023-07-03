@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { RecordSubjectAreaCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';
-import { executeCommand } from '../record-subject-area/execute-command';
+import { recordSubjectArea } from '../resources/article';
 
 type Ports = {
   getAllEvents: GetAllEvents,
@@ -21,6 +21,6 @@ export const recordSubjectAreaCommandHandler: RecordSubjectAreaCommandHandler = 
   command,
 ) => pipe(
   ports.getAllEvents,
-  T.map(executeCommand(command)),
+  T.map(recordSubjectArea(command)),
   TE.chainTaskK(ports.commitEvents),
 );

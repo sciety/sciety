@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
-import { executeCommand } from '../../../src/write-side/record-subject-area/execute-command';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitrarySubjectArea } from '../../types/subject-area.helper';
-import { arbitraryDate } from '../../helpers';
-import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
+import { constructEvent } from '../../../../src/domain-events';
+import { recordSubjectArea } from '../../../../src/write-side/resources/article';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
+import { arbitraryDate } from '../../../helpers';
+import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 
 describe('execute-command', () => {
   const articleId = arbitraryArticleId();
@@ -21,7 +21,7 @@ describe('execute-command', () => {
   describe('given no events for the given article id', () => {
     const result = pipe(
       [constructEvent('SubjectAreaRecorded')({ articleId: arbitraryArticleId(), subjectArea: arbitrarySubjectArea() })],
-      executeCommand(command),
+      recordSubjectArea(command),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -49,7 +49,7 @@ describe('execute-command', () => {
       [
         evaluationRecordedHelper(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
       ],
-      executeCommand(command),
+      recordSubjectArea(command),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -65,7 +65,7 @@ describe('execute-command', () => {
       [
         constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
       ],
-      executeCommand(command),
+      recordSubjectArea(command),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -79,7 +79,7 @@ describe('execute-command', () => {
       [
         constructEvent('SubjectAreaRecorded')({ articleId, subjectArea: arbitrarySubjectArea() }),
       ],
-      executeCommand(command),
+      recordSubjectArea(command),
     );
 
     it('returns an error message', () => {
