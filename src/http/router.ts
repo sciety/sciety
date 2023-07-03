@@ -79,6 +79,7 @@ import * as listResource from '../write-side/resources/list';
 import * as userResource from '../write-side/resources/user';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import { recordCurationStatementCommandCodec } from '../write-side/commands/record-curation-statement';
+import { applicationStatus } from '../views/status';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
@@ -363,6 +364,14 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   // AUTHENTICATION
 
   authentication.configureRoutes(router, adapters, config);
+
+  // STATUS
+  router.get('/status', async (context, next) => {
+    const response = applicationStatus(adapters);
+    context.response.status = StatusCodes.OK;
+    context.response.body = response;
+    await next();
+  });
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
