@@ -22,7 +22,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       recordedAt: event.date,
       publishedAt: event.publishedAt,
       authors: event.authors,
-      type: O.none,
+      type: O.fromNullable(event.evaluationType),
     };
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
     const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? [];

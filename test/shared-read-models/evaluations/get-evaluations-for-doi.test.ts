@@ -96,7 +96,7 @@ describe('get-evaluations-for-doi', () => {
       getEvaluationsForDoi(readmodel),
     );
 
-    it.failing('contains the right type', () => {
+    it('contains the right type', () => {
       expect(result[0].type).toStrictEqual(O.some('curation-statement'));
     });
   });
