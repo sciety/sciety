@@ -1,10 +1,10 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { executeCommand } from './execute-command';
 import { RecordSubjectAreaCommand } from '../commands';
 import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';
+import { executeCommand } from '../record-subject-area/execute-command';
 
 type Ports = {
   getAllEvents: GetAllEvents,

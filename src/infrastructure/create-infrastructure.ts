@@ -16,9 +16,13 @@ import { addArticleToListCommandHandler } from '../write-side/command-handlers/a
 import {
   DomainEvent, sort as sortEvents,
 } from '../domain-events';
-import { editListDetailsCommandHandler, createListCommandHandler, removeArticleFromListCommandHandler } from '../write-side/command-handlers';
+import {
+  editListDetailsCommandHandler,
+  createListCommandHandler,
+  recordSubjectAreaCommandHandler,
+  removeArticleFromListCommandHandler,
+} from '../write-side/command-handlers';
 import { executePolicies } from '../policies/execute-policies';
-import { recordSubjectAreaCommandHandler } from '../write-side/record-subject-area';
 import { instantiate } from '../third-parties/instantiate';
 
 type Dependencies = LoggerConfig & {
