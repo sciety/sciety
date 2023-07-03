@@ -11,8 +11,8 @@ import {
 } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
-import { ArticlesViewModel } from '../view-model';
 import { ListId } from '../../../types/list-id';
+import { ContentWithPaginationViewModel } from '../view-model';
 
 export type Ports = ConstructArticleCardWithControlsAndAnnotationViewModelPorts;
 
@@ -22,7 +22,7 @@ export const toPageOfCards = (
   listId: ListId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
-): TE.TaskEither<'no-articles-can-be-fetched', ArticlesViewModel> => pipe(
+): TE.TaskEither<'no-articles-can-be-fetched', ContentWithPaginationViewModel['articles']> => pipe(
   pageOfArticles.items,
   RA.map((item) => item.articleId),
   T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(ports, editCapability, listId)),

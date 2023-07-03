@@ -11,7 +11,7 @@ import { ListId, listIdCodec } from '../../../types/list-id';
 import { userIdCodec, UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
-import { ContentViewModel, ViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { Queries } from '../../../shared-read-models';
 
 export const paramsCodec = t.type({
@@ -37,7 +37,7 @@ type ConstructContentViewModel = (
   params: Params,
   editCapability: boolean,
   listId: ListId,
-) => TE.TaskEither<DE.DataError, ContentViewModel>;
+) => TE.TaskEither<DE.DataError, ViewModel['content']>;
 
 const constructContentViewModel: ConstructContentViewModel = (
   articleIds, ports, params, editCapability, listId,
@@ -46,7 +46,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   RA.map((articleId) => new Doi(articleId)),
   TE.right,
   TE.chainW(
-    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
+    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, Doi>(
       () => TE.right('no-articles' as const),
       constructContentWithPaginationViewModel(ports, params.page, editCapability, listId),
     ),
@@ -86,8 +86,8 @@ export const constructViewModel = (ports: Ports) => (params: Params): TE.TaskEit
       partialPageViewModel.editCapability,
       partialPageViewModel.listId,
     ),
-    TE.map((contentViewModel) => ({
-      contentViewModel,
+    TE.map((content) => ({
+      content,
       ...partialPageViewModel,
     })),
   )),

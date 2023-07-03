@@ -48,7 +48,7 @@ describe('construct-view-model', () => {
     });
 
     it('the article details are included in the page content', () => {
-      expect(viewModel.contentViewModel).toStrictEqual(expect.objectContaining({
+      expect(viewModel.content).toStrictEqual(expect.objectContaining({
         articles: [
           E.right(expect.objectContaining({
             articleCard: expect.objectContaining({
