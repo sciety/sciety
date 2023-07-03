@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import * as S from 'fp-ts/string';
 import * as GID from '../types/group-id';
 import { Doi } from '../types/doi';
 import { LanguageCode, detectLanguage } from './lang-attribute';
@@ -70,7 +71,8 @@ type ConstructCurationStatements = (
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,
-  dependencies.getCurationStatements,
+  dependencies.getEvaluationsForDoi,
+  RA.filter((evaluation) => O.getEq(S.Eq).equals(evaluation.type, O.some('curation-statement'))),
   RA.map(addGroupInformation(dependencies)),
   RA.rights,
   T.traverseArray(addEvaluationText(dependencies)),

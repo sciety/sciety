@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
+import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
 import { createTestFramework, TestFramework } from '../framework';
 import { arbitraryGroup } from '../types/group.helper';
 import {
@@ -8,7 +9,6 @@ import {
 import * as DE from '../../src/types/data-error';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
 import { EvaluationLocator } from '../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
 
@@ -24,14 +24,29 @@ describe('construct-curation-statements', () => {
 
   describe('when there are multiple curation statements but only one of the groups exists', () => {
     let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
+    const evaluation1 = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: group.id,
+      articleId,
+    };
+    const evaluation2 = {
+      ...arbitraryRecordedEvaluation(),
+      articleId,
+    };
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordCurationStatement(articleId, group.id, arbitraryEvaluationLocator());
+      await framework.commandHelpers.recordEvaluation(evaluation1);
+      await framework.commandHelpers.recordEvaluation(evaluation2);
       await framework.commandHelpers.recordCurationStatement(
-        articleId,
-        arbitraryGroupId(),
-        arbitraryEvaluationLocator(),
+        evaluation1.articleId,
+        evaluation1.groupId,
+        evaluation1.evaluationLocator,
+      );
+      await framework.commandHelpers.recordCurationStatement(
+        evaluation2.articleId,
+        evaluation2.groupId,
+        evaluation2.evaluationLocator,
       );
       result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
     });
@@ -47,10 +62,16 @@ describe('construct-curation-statements', () => {
 
   describe('when a curation statement cannot be retrieved', () => {
     let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
+    const evaluation = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: group.id,
+      articleId,
+    };
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordCurationStatement(articleId, group.id, arbitraryEvaluationLocator());
+      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluation.evaluationLocator);
       result = await constructCurationStatements({
         ...framework.dependenciesForViews,
         fetchReview: () => TE.left(DE.unavailable),
@@ -67,9 +88,23 @@ describe('construct-curation-statements', () => {
 
     const evaluationLocator1 = arbitraryEvaluationLocator();
     const evaluationLocator2 = arbitraryEvaluationLocator();
+    const evaluation1 = {
+      ...arbitraryRecordedEvaluation(),
+      evaluationLocator: evaluationLocator1,
+      groupId: group.id,
+      articleId,
+    };
+    const evaluation2 = {
+      ...arbitraryRecordedEvaluation(),
+      evaluationLocator: evaluationLocator2,
+      groupId: group.id,
+      articleId,
+    };
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.recordEvaluation(evaluation1);
+      await framework.commandHelpers.recordEvaluation(evaluation2);
       await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluationLocator1);
       await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluationLocator2);
       result = await constructCurationStatements({
