@@ -12,22 +12,22 @@
   border-radius: settings.$border-radius;
 }
 
-@mixin _button() {
+@mixin _button($text, $background, $background-hover) {
   border-width: 0;
   border-radius: settings.$border-radius;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
+
+  color: $text;
+  background-color: $background;
+
+  &:hover {
+    background-color: $background-hover;
+  }
+
 }
 
 @mixin primary {
-  @include _button();
-
-  background-color: settings.$colour-accent;
-  color: settings.$colour-white;
-
-  &:hover {
-    background-color: settings.$colour-accent-hover;
-    color: settings.$colour-white;
-  }
+  @include _button(settings.$colour-white, settings.$colour-accent, settings.$colour-accent-hover);
 }
 
 @mixin primary-link {
@@ -63,15 +63,11 @@
 }
 
 @mixin secondary() {
-  @include _button();
-
-  background-color: settings.$colour-highlighted-background;
-  color: settings.$colour-text-primary;
-
-  &:hover,
-  &:active {
-    background-color: color.adjust(settings.$colour-highlighted-background, $lightness: -12%);
-  }
+  @include _button(
+          settings.$colour-text-primary,
+          settings.$colour-highlighted-background,
+          color.adjust(settings.$colour-highlighted-background, $lightness: -12%)
+  );
 }
 
 @mixin secondary-link() {
