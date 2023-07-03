@@ -85,6 +85,19 @@ describe('get-evaluations-for-doi', () => {
   });
 
   describe('when the evaluation is recorded as a curation statement', () => {
-    it.todo('contains the right type');
+    const readmodel = pipe(
+      [
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'curation-statement'),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = pipe(
+      article1,
+      getEvaluationsForDoi(readmodel),
+    );
+
+    it.failing('contains the right type', () => {
+      expect(result[0].type).toStrictEqual(O.some('curation-statement'));
+    });
   });
 });
