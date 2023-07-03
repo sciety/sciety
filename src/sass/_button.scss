@@ -12,8 +12,9 @@
 @mixin button {
   @include typography.button();
   @include states.focus();
+  border-width: 0;
   border-radius: settings.$border-radius;
-  padding: 0.5rem functions.px-to-rem(12px);
+  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
 
   background-color: settings.$colour-accent;
   color: settings.$colour-white;
@@ -28,7 +29,7 @@
   @include typography.button();
 
   display: inline-block;
-  padding: 0.5rem functions.px-to-rem(12px);
+  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
   border-radius: settings.$border-radius;
 }
 
@@ -69,7 +70,7 @@
 
   background-color: settings.$colour-highlighted-background;
   color: settings.$colour-text-primary;
-  padding: 0.5rem functions.px-to-rem(12px);
+  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
 
   &:hover,
   &:active {
