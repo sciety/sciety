@@ -24,7 +24,7 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => cons
   authors: command.authors,
   publishedAt: command.publishedAt,
   date: command.issuedAt ? command.issuedAt : new Date(),
-  evaluationType: undefined,
+  evaluationType: command.evaluationType ? command.evaluationType : undefined,
 });
 
 export const record: ResourceAction<RecordEvaluationCommand> = (command) => (events) => pipe(

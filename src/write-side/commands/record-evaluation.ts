@@ -14,6 +14,7 @@ const requiredFields = t.type({
 
 const optionalFields = t.partial({
   issuedAt: tt.DateFromISOString,
+  evaluationType: t.union([t.literal('review'), t.literal('author-response'), t.literal('curation-statement')]),
 });
 
 export const recordEvaluationCommandCodec = t.intersection([requiredFields, optionalFields]);
