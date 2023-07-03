@@ -5,4 +5,5 @@ export const constructViewModel = (queries: Queries): Json => ({
   groups: {
     total: queries.getAllGroups().length,
   },
+  users: queries.usersStatus(),
 });
