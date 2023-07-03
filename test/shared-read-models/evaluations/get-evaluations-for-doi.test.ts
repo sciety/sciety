@@ -100,4 +100,21 @@ describe('get-evaluations-for-doi', () => {
       expect(result[0].type).toStrictEqual(O.some('curation-statement'));
     });
   });
+
+  describe('when the evaluation is recorded without any type', () => {
+    const readmodel = pipe(
+      [
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), undefined),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = pipe(
+      article1,
+      getEvaluationsForDoi(readmodel),
+    );
+
+    it('does not contain a type', () => {
+      expect(result[0].type).toStrictEqual(O.none);
+    });
+  });
 });
