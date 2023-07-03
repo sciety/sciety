@@ -26,12 +26,19 @@
   }
 }
 
-@mixin button-link {
+@mixin link-basics() {
   @include typography.button();
-  border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-accent;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
   display: inline-block;
+  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+  border-width: settings.$border-width;
+  border-style: solid;
+  border-radius: settings.$border-radius;
+}
+
+@mixin button-link {
+  @include link-basics();
+
+  border-color: settings.$colour-accent;
 
   &:link,
   &:visited {
@@ -77,7 +84,7 @@
 }
 
 @mixin secondary-button-link() {
-  @include button-link();
+  @include link-basics();
 
   color: settings.$colour-text-primary;
   background-color: settings.$colour-highlighted-background;
