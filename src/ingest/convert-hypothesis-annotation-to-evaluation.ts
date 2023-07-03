@@ -23,6 +23,7 @@ export const convertHypothesisAnnotationToEvaluation = (
       articleDoi,
       evaluationLocator: `hypothesis:${annotation.id}`,
       authors: [],
+      evaluationType: undefined,
     }),
   ),
 );
