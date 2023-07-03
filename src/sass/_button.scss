@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'functions';
 @use 'settings';
 @use 'states';
@@ -11,10 +12,14 @@
   border-radius: settings.$border-radius;
 }
 
-@mixin primary {
+@mixin _button() {
   border-width: 0;
   border-radius: settings.$border-radius;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
+}
+
+@mixin primary {
+  @include _button();
 
   background-color: settings.$colour-accent;
   color: settings.$colour-white;
@@ -58,16 +63,14 @@
 }
 
 @mixin secondary() {
-  border-width: 0;
-  border-radius: settings.$border-radius;
-  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
+  @include _button();
 
   background-color: settings.$colour-highlighted-background;
   color: settings.$colour-text-primary;
 
   &:hover,
   &:active {
-    background-color: settings.$colour-highlighted-background-darkened;
+    background-color: color.adjust(settings.$colour-highlighted-background, $lightness: -12%);
   }
 }
 
@@ -85,7 +88,7 @@
     &:active,
     &:hover {
       color: settings.$colour-text-primary;
-      background-color: settings.$colour-highlighted-background-darkened;
+      background-color: color.adjust(settings.$colour-highlighted-background, $lightness: -12%);
       text-decoration: none;
     }
 
@@ -94,7 +97,7 @@
     }
 
     &:hover {
-      background-color: settings.$colour-highlighted-background-darkened;
+      background-color: color.adjust(settings.$colour-highlighted-background, $lightness: -12%);
     }
 
     &:focus {
