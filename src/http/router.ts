@@ -21,7 +21,6 @@ import { redirectBack } from './redirect-back';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { readModelStatus } from '../add-article-to-elife-subject-area-list';
-import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../annotations/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
 import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
@@ -77,9 +76,10 @@ import { Config as AuthenticationRoutesConfig } from './authentication/configure
 import { listsPage } from '../html-pages/lists-page';
 import { createApiRouteForCommand } from './create-api-route-for-command';
 import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
-import * as groupResource from '../write-side/resources/group';
-import * as evaluationResource from '../write-side/resources/evaluation';
 import * as curationStatementResource from '../write-side/resources/curation-statement';
+import * as evaluationResource from '../write-side/resources/evaluation';
+import * as groupResource from '../write-side/resources/group';
+import * as listResource from '../write-side/resources/list';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import { recordCurationStatementCommandCodec } from '../write-side/commands/record-curation-statement';
 import { applicationStatus } from '../views/status';
@@ -344,7 +344,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
-  router.post('/api/add-article-to-list', createApiRouteForCommand(adapters, addArticleToListCommandCodec, addArticleToListCommandHandler(adapters)));
+  router.post('/api/add-article-to-list', createApiRouteForResourceAction(adapters, addArticleToListCommandCodec, listResource.addArticle));
 
   router.post('/api/add-group', createApiRouteForResourceAction(adapters, addGroupCommandCodec, groupResource.create));
 
