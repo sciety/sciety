@@ -75,7 +75,7 @@ svg.saved-articles-control__icon {
 }
 
 .saved-articles-control {
-  @include button.basics();
+  border-width: 0;
   padding: 0;
   display: block;
   height: $_remove-article-icon-size;

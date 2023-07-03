@@ -116,6 +116,7 @@ textarea {
 
 button {
   @include typography.button();
+  cursor: pointer;
 }
 
 input[type='checkbox'] {

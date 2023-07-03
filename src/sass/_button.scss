@@ -3,15 +3,7 @@
 @use 'states';
 @use 'typography';
 
-@mixin basics () {
-  border-width: 0;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 @mixin button {
-  @include typography.button();
-  @include states.focus();
   border-width: 0;
   border-radius: settings.$border-radius;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
@@ -66,11 +58,12 @@
 }
 
 @mixin secondary-button() {
-  @include basics();
+  border-width: 0;
+  border-radius: settings.$border-radius;
+  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
 
   background-color: settings.$colour-highlighted-background;
   color: settings.$colour-text-primary;
-  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
 
   &:hover,
   &:active {
