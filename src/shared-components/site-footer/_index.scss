@@ -9,7 +9,7 @@
 @use '../../sass/list';
 @use '../../sass/states';
 
-$_outer-vertical-spacing: 2rem;
+$_outer-vertical-spacing: functions.px-to-rem(32px);
 
 .pre-footer {
   @include layout.page-content-horizontal-margins();
@@ -30,7 +30,7 @@ $_outer-vertical-spacing: 2rem;
 
 .pre-footer__slogan {
   @include typography.heading-2();
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 .pre-footer__call_to_action {
@@ -47,7 +47,7 @@ $_outer-vertical-spacing: 2rem;
 .main-footer__navigation {
   @include list.basics();
 
-  margin-bottom: 3rem;
+  margin-bottom: functions.px-to-rem(48px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,7 +58,7 @@ $_outer-vertical-spacing: 2rem;
   $_item-spacing: 32px;
   margin-left: functions.px-to-rem(math.div($_item-spacing, 2));
   margin-right: functions.px-to-rem(math.div($_item-spacing, 2));
-  padding-bottom: 1rem;
+  padding-bottom: functions.px-to-rem(16px);
 }
 
 .main-footer__link {

@@ -1,3 +1,4 @@
+@use '../sass/functions';
 @use '../sass/button';
 
 .pagination-controls {
@@ -6,5 +7,5 @@
 
 .pagination-controls__next_link {
   @include button.secondary-link();
-  margin-bottom: 1.5rem;
+  margin-bottom: functions.px-to-rem(16px);
 }

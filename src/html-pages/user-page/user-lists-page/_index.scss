@@ -12,14 +12,14 @@
   display: flex;
   align-items: center;
   margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: functions.px-to-rem(24px);
 
   .page-header__avatar {
     @include avatar.border();
     width: avatar.$size--large;
     height: avatar.$size--large;
     flex: 0 0 avatar.$size--large;
-    margin-right: 1rem;
+    margin-right: functions.px-to-rem(16px);
   }
 
   h1 {
@@ -36,9 +36,9 @@
 }
 
 .static-message {
-  padding-top: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  padding-top: functions.px-to-rem(16px);
+  margin-left: functions.px-to-rem(16px);
+  margin-right: functions.px-to-rem(16px);
 
   @include breakpoints.not-narrow() {
     margin-left: 0;
@@ -50,6 +50,6 @@
   @include button.primary();
   @include layout.page-content-horizontal-margins();
 
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: functions.px-to-rem(16px);
+  margin-bottom: functions.px-to-rem(16px);
 }

@@ -1,4 +1,5 @@
 @use 'settings';
+@use 'functions';
 @use 'states';
 @use 'typography';
 
@@ -18,7 +19,7 @@ body {
 p {
   @include typography.body();
   margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: functions.px-to-rem(24px);
 
 
   a:link {
@@ -30,49 +31,49 @@ p {
 
 p + ul,
 p + ol {
-  margin-top: -1rem;
+  margin-top: functions.px-to-rem(-16px);
 }
 
 h1 {
   @include typography.heading-1();
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 h2 {
   @include typography.heading-2();
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 h3 {
   @include typography.heading-3();
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 h4 {
   @include typography.heading-4();
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 h5 {
   @include typography.heading-5();
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 h6 {
   @include typography.heading-6();
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 blockquote {
-  border-left: 8px solid settings.$colour-furniture;
-  margin-left: 1.5rem;
-  padding-left: 1rem;
+  border-left: functions.px-to-rem(8px) solid settings.$colour-furniture;
+  margin-left: functions.px-to-rem(24px);
+  padding-left: functions.px-to-rem(16px);
 }
 
 pre {
@@ -153,18 +154,18 @@ Use real subscript and superscript characters where possible
 }
 
 p:last-child {
-  margin-bottom: 1em;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 table {
   border-top: settings.$border-width solid settings.$colour-furniture;
   border-bottom: settings.$border-width solid settings.$colour-furniture;
-  margin-bottom: 1.5rem;
+  margin-bottom: functions.px-to-rem(24px);
 }
 
 td,
 th {
-  padding: 0.25rem;
+  padding: functions.px-to-rem(4px);
   vertical-align: top;
 
   &:first-child {
@@ -187,7 +188,7 @@ th {
 address {
   @include typography.body();
   font-style: normal;
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 *,

@@ -20,24 +20,24 @@ $_edit-details-icon-offset: 8px;
   @include typography.subheading();
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: functions.px-to-rem(8px);
 }
 
 .page-header--list .page-header__avatar {
   @include avatar.border();
   width: avatar.$size--medium;
   height: avatar.$size--medium;
-  margin-right: 0.5rem;
+  margin-right: functions.px-to-rem(8px);
 }
 
 .page-header--list .page-header__description {
-  margin-bottom: 0.5rem;
+  margin-bottom: functions.px-to-rem(8px);
 }
 
 .page-header--list .page-header__meta {
   @include typography.details();
   @include typography.list-separator();
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 .list-page-actions {
@@ -63,7 +63,7 @@ $_edit-details-icon-offset: 8px;
 .articles-page-count {
   @include typography.details();
   @include layout.page-content-horizontal-margins();
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 .articles-static-message {

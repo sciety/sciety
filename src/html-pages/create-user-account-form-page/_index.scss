@@ -8,7 +8,7 @@
 .error-summary {
   border: settings.$border-width solid settings.$colour-alert;
   padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
-  margin-bottom: 3rem;
+  margin-bottom: functions.px-to-rem(48px);
 
   p {
     color: settings.$colour-alert;
@@ -26,13 +26,13 @@
 }
 
 .create-user-account-form-page__main {
-  margin-bottom: 3rem;
+  margin-bottom: functions.px-to-rem(48px);
 }
 
 .create-user-account-form-wrapper {
   @include breakpoints.not-narrow {
     margin: 0 auto;
-    max-width: 19rem;
+    max-width: functions.px-to-rem(304px);
   }
 }
 

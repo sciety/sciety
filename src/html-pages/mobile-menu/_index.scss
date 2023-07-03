@@ -38,7 +38,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   display: inline-block;
   align-items: center;
   border-radius: settings.$border-radius;
-  margin-bottom: 2rem;
+  margin-bottom: functions.px-to-rem(32px);
   font-weight: bold;
 
   &:link,
@@ -73,7 +73,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+  padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
 
   &:link,
   &:visited {
