@@ -72,15 +72,15 @@
 @mixin secondary() {
   @include _button(
     $text: settings.$colour-text-primary,
-    $background: settings.$colour-highlighted-background,
-    $background-hover: color.adjust(settings.$colour-highlighted-background, $lightness: -12%),
+    $background: settings.$colour-background-grey,
+    $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
   );
 }
 
 @mixin secondary-link() {
   @include _link(
     $text: settings.$colour-text-primary,
-    $background: settings.$colour-highlighted-background,
-    $background-hover: color.adjust(settings.$colour-highlighted-background, $lightness: -12%),
+    $background: settings.$colour-background-grey,
+    $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
     );
 }

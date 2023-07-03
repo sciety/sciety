@@ -22,7 +22,7 @@
 
 .create-user-account-form-page__container {
   @include layout.page-container();
-  background-color: settings.$colour-page-background;
+  background-color: settings.$colour-background-grey;
 }
 
 .create-user-account-form-page__main {
