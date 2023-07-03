@@ -1,4 +1,3 @@
-import { curationStatements } from './curation-statements';
 import { articleActivity } from './article-activity';
 import { evaluations } from './evaluations';
 import { annotations } from './annotations';
@@ -14,7 +13,6 @@ const queries = {
   ...addArticleToElifeSubjectAreaList.queries,
   ...annotations.queries,
   ...articleActivity.queries,
-  ...curationStatements.queries,
   ...evaluations.queries,
   ...followings.queries,
   ...groupActivity.queries,
