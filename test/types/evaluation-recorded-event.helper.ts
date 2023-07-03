@@ -17,4 +17,5 @@ export const evaluationRecordedHelper = (
   evaluationLocator,
   publishedAt,
   authors,
+  evaluationType: undefined,
 });
