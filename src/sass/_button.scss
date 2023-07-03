@@ -3,7 +3,15 @@
 @use 'states';
 @use 'typography';
 
-@mixin button {
+@mixin _link-basics() {
+  @include typography.button();
+
+  display: inline-block;
+  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
+  border-radius: settings.$border-radius;
+}
+
+@mixin primary {
   border-width: 0;
   border-radius: settings.$border-radius;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
@@ -17,16 +25,8 @@
   }
 }
 
-@mixin link-basics() {
-  @include typography.button();
-
-  display: inline-block;
-  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
-  border-radius: settings.$border-radius;
-}
-
-@mixin button-link {
-  @include link-basics();
+@mixin primary-link {
+  @include _link-basics();
 
   &:link,
   &:visited {
@@ -57,7 +57,7 @@
   }
 }
 
-@mixin secondary-button() {
+@mixin secondary() {
   border-width: 0;
   border-radius: settings.$border-radius;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
@@ -71,8 +71,8 @@
   }
 }
 
-@mixin secondary-button-link() {
-  @include link-basics();
+@mixin secondary-link() {
+  @include _link-basics();
 
   color: settings.$colour-text-primary;
   background-color: settings.$colour-highlighted-background;

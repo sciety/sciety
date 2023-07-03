@@ -5,6 +5,6 @@
 }
 
 .pagination-controls__next_link {
-  @include button.secondary-button-link();
+  @include button.secondary-link();
   margin-bottom: 1.5rem;
 }

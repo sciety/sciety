@@ -47,7 +47,7 @@ $_edit-details-icon-offset: 8px;
 }
 
 .list-page-actions__edit_details_link {
-  @include button.button-link();
+  @include button.primary-link();
   background-image: url('/static/images/edit-note-icon.svg');
   background-repeat: no-repeat;
   background-size: functions.px-to-rem($_edit-details-icon-size);
@@ -57,7 +57,7 @@ $_edit-details-icon-offset: 8px;
 }
 
 .list-page-actions__related_articles {
-  @include button.secondary-button-link();
+  @include button.secondary-link();
 }
 
 .articles-page-count {

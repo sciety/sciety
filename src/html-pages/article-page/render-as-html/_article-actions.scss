@@ -23,12 +23,12 @@
 }
 
 .full-article-button {
-  @include button.button-link();
+  @include button.primary-link();
   margin-bottom: 2rem;
 }
 
 .see-related-articles-button {
-  @include button.secondary-button-link();
+  @include button.secondary-link();
 
   margin-bottom: 2rem;
 
@@ -38,7 +38,7 @@
 }
 
 .logged-out-call-to-action {
-  @include button.secondary-button-link();
+  @include button.secondary-link();
 
   margin-bottom: 1.5rem;
 }
@@ -53,7 +53,7 @@
 }
 
 .save-article-button {
-  @include button.secondary-button();
+  @include button.secondary();
   margin-right: 2em;
 }
 

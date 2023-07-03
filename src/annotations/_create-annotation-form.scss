@@ -16,10 +16,10 @@
 }
 
 .annotation-form-submit {
-  @include button.button();
+  @include button.primary();
 }
 
 .annotation-form-reset {
-  @include button.secondary-button();
+  @include button.secondary();
   margin-left: auto;
 }

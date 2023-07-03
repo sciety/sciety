@@ -81,7 +81,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 }
 
 .utility-bar__list_link_button {
-  @include button.button-link();
+  @include button.primary-link();
 }
 
 .utility-bar__list_link_sign_up_button {

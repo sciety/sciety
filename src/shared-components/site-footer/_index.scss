@@ -34,7 +34,7 @@ $_outer-vertical-spacing: 2rem;
 }
 
 .pre-footer__call_to_action {
-  @include button.button-link();
+  @include button.primary-link();
 }
 
 .main-footer {

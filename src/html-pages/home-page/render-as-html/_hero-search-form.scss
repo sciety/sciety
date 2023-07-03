@@ -70,7 +70,7 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
 }
 
 .home-page-hero-search-form__button {
-  @include button.button();
+  @include button.primary();
   cursor: pointer;
   max-width: functions.px-to-rem($_search-button-width);
 

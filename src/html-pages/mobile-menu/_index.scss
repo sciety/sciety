@@ -66,7 +66,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 }
 
 .mobile-menu__link_primary_button {
-  @include button.button-link();
+  @include button.primary-link();
 }
 
 .mobile-menu__link_sign_up_button {

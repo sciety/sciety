@@ -51,10 +51,10 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 @mixin submit-button {
-  @include button.button();
+  @include button.primary();
   margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
 
 @mixin cancel-button {
-  @include button.secondary-button-link();
+  @include button.secondary-link();
 }
