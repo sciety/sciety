@@ -55,13 +55,16 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
     });
   });
 
-  describe('when the annotation has a Summary tag', () => {
+  describe.each([
+    ['Summary '],
+    // ['Summary'],
+  ])('when the annotation has a `%s` tag', (tag) => {
     const result = convertHypothesisAnnotationToEvaluation({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
       text: arbitraryWord(),
-      tags: ['Summary '],
+      tags: [tag],
     });
 
     it('provides a curation-statement evaluation type', () => {
