@@ -117,7 +117,7 @@ const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (fe
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.date,
     authors: evaluation.authors,
-    evaluationType: undefined,
+    evaluationType: evaluation.evaluationType,
   })),
   T.traverseSeqArray(send),
   T.map((array) => {
