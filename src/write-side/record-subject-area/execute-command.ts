@@ -3,9 +3,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { RecordSubjectAreaCommand } from '../commands';
-import { DomainEvent, constructEvent, isEventOfType } from '../../domain-events';
+import { constructEvent, isEventOfType } from '../../domain-events';
 import { Doi, eqDoi } from '../../types/doi';
-import { ErrorMessage, toErrorMessage } from '../../types/error-message';
+import { toErrorMessage } from '../../types/error-message';
+import { ResourceAction } from '../resources/resource-action';
 
 const buildUpArticleSubjectAreaResourceFor = (articleId: Doi) => flow(
   RA.filter(isEventOfType('SubjectAreaRecorded')),
@@ -14,10 +15,7 @@ const buildUpArticleSubjectAreaResourceFor = (articleId: Doi) => flow(
   O.map((event) => event.subjectArea),
 );
 
-type ExecuteCommand = (command: RecordSubjectAreaCommand)
-=> (events: ReadonlyArray<DomainEvent>) => E.Either<ErrorMessage, ReadonlyArray<DomainEvent>> ;
-
-export const executeCommand: ExecuteCommand = (command) => (events) => pipe(
+export const executeCommand: ResourceAction<RecordSubjectAreaCommand> = (command) => (events) => pipe(
   events,
   buildUpArticleSubjectAreaResourceFor(command.articleId),
   O.match(
