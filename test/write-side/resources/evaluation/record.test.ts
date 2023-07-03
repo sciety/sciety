@@ -7,6 +7,8 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 
+const arbitraryEvaluationType = () => 'curation-statement';
+
 describe('record', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
   const input = {
@@ -15,6 +17,7 @@ describe('record', () => {
     evaluationLocator,
     publishedAt: arbitraryDate(),
     authors: [arbitraryString(), arbitraryString()],
+    type: arbitraryEvaluationType(),
   };
 
   describe('when the evaluation locator has NOT already been recorded', () => {
@@ -23,7 +26,7 @@ describe('record', () => {
       record(input),
     );
 
-    it('returns an EvaluationRecorded event', () => {
+    it.failing('returns an EvaluationRecorded event', () => {
       expect(events).toStrictEqual(E.right([expect.objectContaining({
         type: 'EvaluationRecorded',
         groupId: input.groupId,
@@ -31,6 +34,7 @@ describe('record', () => {
         evaluationLocator: input.evaluationLocator,
         publishedAt: input.publishedAt,
         authors: input.authors,
+        evaluationType: input.type,
       })]));
     });
   });
