@@ -11,8 +11,8 @@ const getArticleIds = (readModel: ReadModel,
 );
 
 export const elifeArticleStatus = (readModel: ReadModel) => (): Json => ({
-  evaluated: getArticleIds(readModel, 'evaluated').length,
+  evaluated: getArticleIds(readModel, 'evaluated'),
+  'subject-area-known': getArticleIds(readModel, 'subject-area-known'),
+  'evaluated-and-subject-area-known': getArticleIds(readModel, 'evaluated-and-subject-area-known'),
   listed: getArticleIds(readModel, 'listed').length,
-  'subject-area-known': getArticleIds(readModel, 'subject-area-known').length,
-  'evaluated-and-subject-area-known': getArticleIds(readModel, 'evaluated-and-subject-area-known').length,
 });
