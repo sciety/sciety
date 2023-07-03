@@ -13,14 +13,12 @@
   @include typography.button();
   @include states.focus();
   border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-accent;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+  padding: 0.5rem functions.px-to-rem(12px);
 
   background-color: settings.$colour-accent;
   color: settings.$colour-white;
 
   &:hover {
-    border-color: settings.$colour-accent-hover;
     background-color: settings.$colour-accent-hover;
     color: settings.$colour-white;
   }
@@ -28,17 +26,14 @@
 
 @mixin link-basics() {
   @include typography.button();
+
   display: inline-block;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
-  border-width: settings.$border-width;
-  border-style: solid;
+  padding: 0.5rem functions.px-to-rem(12px);
   border-radius: settings.$border-radius;
 }
 
 @mixin button-link {
   @include link-basics();
-
-  border-color: settings.$colour-accent;
 
   &:link,
   &:visited {
@@ -47,7 +42,6 @@
 
     &:active,
     &:hover {
-      border-color: settings.$colour-accent-hover;
       color: settings.$colour-white;
       text-decoration: none;
     }
@@ -75,7 +69,7 @@
 
   background-color: settings.$colour-highlighted-background;
   color: settings.$colour-text-primary;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+  padding: 0.5rem functions.px-to-rem(12px);
 
   &:hover,
   &:active {
@@ -88,7 +82,6 @@
 
   color: settings.$colour-text-primary;
   background-color: settings.$colour-highlighted-background;
-  border-color: settings.$colour-highlighted-background;
 
   &:link,
   &:visited {
@@ -99,7 +92,6 @@
     &:hover {
       color: settings.$colour-text-primary;
       background-color: settings.$colour-highlighted-background-darkened;
-      border-color: settings.$colour-highlighted-background-darkened;
       text-decoration: none;
     }
 
