@@ -5,19 +5,17 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
-  ConstructArticleCardWithControlsAndAnnotationViewModelPorts,
   constructArticleCardWithControlsAndAnnotationViewModel,
   ArticleErrorCardViewModel,
 } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ListId } from '../../../types/list-id';
+import { Dependencies } from './dependencies';
 import { ContentWithPaginationViewModel } from '../view-model';
 
-export type Ports = ConstructArticleCardWithControlsAndAnnotationViewModelPorts;
-
 export const toPageOfCards = (
-  ports: Ports,
+  dependencies: Dependencies,
   editCapability: boolean,
   listId: ListId,
 ) => (
@@ -25,7 +23,7 @@ export const toPageOfCards = (
 ): TE.TaskEither<'no-articles-can-be-fetched', ContentWithPaginationViewModel['articles']> => pipe(
   pageOfArticles.items,
   RA.map((item) => item.articleId),
-  T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(ports, editCapability, listId)),
+  T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, editCapability, listId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
     E.foldW(

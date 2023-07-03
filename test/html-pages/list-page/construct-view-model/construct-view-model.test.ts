@@ -2,27 +2,20 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { dummyLogger } from '../../../dummy-logger';
 import { UserDetails } from '../../../../src/types/user-details';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { ViewModel } from '../../../../src/html-pages/list-page/view-model';
-import { constructViewModel, Ports } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
+import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import * as LOID from '../../../../src/types/list-owner-id';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let adapters: Ports;
 
   beforeEach(() => {
     framework = createTestFramework();
-    adapters = {
-      ...framework.queries,
-      ...framework.happyPathThirdParties,
-      logger: dummyLogger,
-    };
   });
 
   describe('when a user saves an article that is not in any list', () => {
@@ -42,7 +35,7 @@ describe('construct-view-model', () => {
           id: listId,
           user: O.some({ id: userDetails.id }),
         },
-        constructViewModel(adapters),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
