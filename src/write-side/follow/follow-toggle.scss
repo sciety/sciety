@@ -1,9 +1,0 @@
-@use '../../sass/button';
-
-.follow-button {
-  @include button.primary();
-}
-
-.unfollow-button {
-  @include button.secondary();
-}

@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import { Group } from '../../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { renderFollowToggle } from '../../../write-side/follow/render-follow-toggle';
+import { renderFollowToggle } from './render-follow-toggle';
 
 export type PageHeaderViewModel = {
   group: Group,
