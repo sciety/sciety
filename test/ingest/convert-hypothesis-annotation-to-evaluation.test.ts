@@ -6,16 +6,20 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
 
   describe('when the url can be parsed to a doi and the annotation contains text', () => {
+    const id = arbitraryWord();
     const result = convertHypothesisAnnotationToEvaluation({
-      id: arbitraryWord(),
+      id,
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
       text: arbitraryWord(),
       tags: [],
     });
 
-    it('returns on the right', () => {
-      expect(E.isRight(result)).toBe(true);
+    it('provides an evaluation locator and no evaluation type', () => {
+      expect(result).toStrictEqual(E.right(expect.objectContaining({
+        evaluationLocator: `hypothesis:${id}`,
+        evaluationType: undefined,
+      })));
     });
   });
 
@@ -60,10 +64,10 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       tags: ['Summary '],
     });
 
-    it.failing('provides an curation-statement evaluation type', () => {
-      expect(result).toStrictEqual(expect.objectContaining({
+    it('provides a curation-statement evaluation type', () => {
+      expect(result).toStrictEqual(E.right(expect.objectContaining({
         evaluationType: 'curation-statement',
-      }));
+      })));
     });
   });
 });
