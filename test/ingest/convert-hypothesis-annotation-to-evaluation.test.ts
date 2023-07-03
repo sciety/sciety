@@ -60,8 +60,10 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       tags: ['Summary '],
     });
 
-    it('returns on the right', () => {
-      expect(E.isRight(result)).toBe(true);
+    it.failing('provides an curation-statement evaluation type', () => {
+      expect(result).toStrictEqual(expect.objectContaining({
+        evaluationType: 'curation-statement',
+      }));
     });
   });
 });
