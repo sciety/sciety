@@ -11,6 +11,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
       text: arbitraryWord(),
+      tags: [],
     });
 
     it('returns on the right', () => {
@@ -24,6 +25,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       created: arbitraryDate().toISOString(),
       uri: 'http://example.com',
       text: arbitraryWord(),
+      tags: [],
     });
 
     it('returns on the left', () => {
@@ -39,12 +41,27 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
       text: '',
+      tags: [],
     });
 
     it('returns on the left', () => {
       expect(result).toStrictEqual(E.left(expect.objectContaining({
         reason: 'annotation text field is empty',
       })));
+    });
+  });
+
+  describe('when the annotation has a Summary tag', () => {
+    const result = convertHypothesisAnnotationToEvaluation({
+      id: arbitraryWord(),
+      created: arbitraryDate().toISOString(),
+      uri: supportedPreprintUri,
+      text: arbitraryWord(),
+      tags: ['Summary '],
+    });
+
+    it('returns on the right', () => {
+      expect(E.isRight(result)).toBe(true);
     });
   });
 });
