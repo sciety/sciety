@@ -365,14 +365,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   authentication.configureRoutes(router, adapters, config);
 
-  // STATUS
-  router.get('/status', async (context, next) => {
-    const response = applicationStatus(adapters);
-    context.response.status = StatusCodes.OK;
-    context.response.body = response;
-    await next();
-  });
-
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
     const response = await docmapIndex(adapters)(context.query)();
@@ -435,7 +427,12 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/elife-subject-area-read-model-status', async (context, next) => {
     context.response.body = readModelStatus(adapters);
+    await next();
+  });
 
+  router.get('/status', async (context, next) => {
+    context.response.body = applicationStatus(adapters);
+    context.response.status = StatusCodes.OK;
     await next();
   });
 
