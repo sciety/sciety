@@ -18,47 +18,51 @@ describe('get-evaluations-for-doi', () => {
   const reviewId2 = arbitraryEvaluationLocator();
   const reviewId3 = arbitraryEvaluationLocator();
 
-  it.each([
-    ['two evaluations', article1, [reviewId1, reviewId3]],
-    ['one evaluation', article2, [reviewId2]],
-    ['no evaluations', arbitraryDoi(), []],
-  ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
-    const readmodel = pipe(
-      [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
-        evaluationRecordedHelper(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
-        evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
-      ],
-      RA.reduce(initialState(), handleEvent),
-    );
-    const actualEvaluations = pipe(
-      articleDoi,
-      getEvaluationsForDoi(readmodel),
-      RA.map((evaluation) => evaluation.evaluationLocator),
-    );
+  describe('when there is an arbitrary number of evaluations', () => {
+    it.each([
+      ['two evaluations', article1, [reviewId1, reviewId3]],
+      ['one evaluation', article2, [reviewId2]],
+      ['no evaluations', arbitraryDoi(), []],
+    ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
+      const readmodel = pipe(
+        [
+          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+          evaluationRecordedHelper(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
+          evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const actualEvaluations = pipe(
+        articleDoi,
+        getEvaluationsForDoi(readmodel),
+        RA.map((evaluation) => evaluation.evaluationLocator),
+      );
 
-    expect(actualEvaluations).toStrictEqual(expectedEvaluations);
+      expect(actualEvaluations).toStrictEqual(expectedEvaluations);
+    });
   });
 
-  it('does not return erased evaluations', () => {
-    const readmodel = pipe(
-      [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
-        evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
-        constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: reviewId1 }),
-      ],
-      RA.reduce(initialState(), handleEvent),
-    );
-    const actualEvaluations = pipe(
-      article1,
-      getEvaluationsForDoi(readmodel),
-      RA.map((evaluation) => evaluation.evaluationLocator),
-    );
+  describe('when an evaluation has been recorded and then erased', () => {
+    it('does not return erased evaluations', () => {
+      const readmodel = pipe(
+        [
+          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+          evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: reviewId1 }),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const actualEvaluations = pipe(
+        article1,
+        getEvaluationsForDoi(readmodel),
+        RA.map((evaluation) => evaluation.evaluationLocator),
+      );
 
-    expect(actualEvaluations).toStrictEqual([reviewId3]);
+      expect(actualEvaluations).toStrictEqual([reviewId3]);
+    });
   });
 
-  describe('when the evaluation is a curation statement', () => {
+  describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
     const readmodel = pipe(
       [
         evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
@@ -75,8 +79,12 @@ describe('get-evaluations-for-doi', () => {
       getEvaluationsForDoi(readmodel),
     );
 
-    it('sets the type correctly', () => {
+    it('contains the right type', () => {
       expect(result[0].type).toStrictEqual(O.some('curation-statement'));
     });
+  });
+
+  describe('when the evaluation is recorded as a curation statement', () => {
+    it.todo('contains the right type');
   });
 });
