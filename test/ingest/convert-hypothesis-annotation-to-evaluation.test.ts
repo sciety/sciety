@@ -57,7 +57,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
 
   describe.each([
     ['Summary '],
-    // ['Summary'],
+    ['Summary'],
   ])('when the annotation has a `%s` tag', (tag) => {
     const result = convertHypothesisAnnotationToEvaluation({
       id: arbitraryWord(),
