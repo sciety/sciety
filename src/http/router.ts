@@ -53,11 +53,7 @@ import { page as listPage, paramsCodec as listPageParams } from '../html-pages/l
 import { CollectedPorts } from '../infrastructure';
 import { legalPage } from '../html-pages/legal-page';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
-import {
-  removeArticleFromListCommandHandler,
-  recordEvaluationCommandHandler,
-  updateUserDetailsCommandHandler,
-} from '../write-side/command-handlers';
+
 import { saveArticleHandler } from '../write-side/save-article/save-article-handler';
 import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page';
 import { searchPage } from '../html-pages/search-page';
@@ -80,6 +76,7 @@ import * as curationStatementResource from '../write-side/resources/curation-sta
 import * as evaluationResource from '../write-side/resources/evaluation';
 import * as groupResource from '../write-side/resources/group';
 import * as listResource from '../write-side/resources/list';
+import * as userResource from '../write-side/resources/user';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import { recordCurationStatementCommandCodec } from '../write-side/commands/record-curation-statement';
 import { applicationStatus } from '../views/status';
@@ -350,19 +347,19 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
 
-  router.post('/api/edit-list-details', createApiRouteForCommand(adapters, editListDetailsCommandCodec, adapters.editListDetails));
+  router.post('/api/edit-list-details', createApiRouteForResourceAction(adapters, editListDetailsCommandCodec, listResource.update));
 
   router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
 
   router.post('/api/record-curation-statement', createApiRouteForResourceAction(adapters, recordCurationStatementCommandCodec, curationStatementResource.record));
 
-  router.post('/api/record-evaluation', createApiRouteForCommand(adapters, recordEvaluationCommandCodec, recordEvaluationCommandHandler(adapters)));
+  router.post('/api/record-evaluation', createApiRouteForResourceAction(adapters, recordEvaluationCommandCodec, evaluationResource.record));
 
-  router.post('/api/remove-article-from-list', createApiRouteForCommand(adapters, removeArticleFromListCommandCodec, removeArticleFromListCommandHandler(adapters)));
+  router.post('/api/remove-article-from-list', createApiRouteForResourceAction(adapters, removeArticleFromListCommandCodec, listResource.removeArticle));
 
   router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
 
-  router.post('/api/update-user-details', createApiRouteForCommand(adapters, updateUserDetailsCommandCodec, updateUserDetailsCommandHandler(adapters)));
+  router.post('/api/update-user-details', createApiRouteForResourceAction(adapters, updateUserDetailsCommandCodec, userResource.update));
 
   // AUTHENTICATION
 
