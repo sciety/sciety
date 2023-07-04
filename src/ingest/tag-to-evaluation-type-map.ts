@@ -9,5 +9,10 @@ export const tagToEvaluationTypeMap: Record<EvaluationType, ReadonlyArray<string
     'scietyType:ReviewSummary',
   ],
   review: [],
-  'author-response': [],
+  'author-response': [
+    'Author Response',
+    'AuthorResponse',
+    'scietyType:AuthorResponse',
+    'scietyType:AuthorRespose',
+  ],
 };
