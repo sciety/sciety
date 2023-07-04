@@ -6,9 +6,11 @@ import { convertHypothesisAnnotationToEvaluation } from '../../src/ingest/conver
 
 describe('convert-hypothesis-annotation-to-evaluation', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
-  const evaluationType = arbitraryString();
+  const evaluationType1 = arbitraryString();
+  const evaluationType2 = arbitraryString();
   const tagToEvaluationTypeMap = {
-    [evaluationType]: [arbitraryString(), arbitraryString(), arbitraryString()],
+    [evaluationType1]: [arbitraryString(), arbitraryString(), arbitraryString()],
+    [evaluationType2]: [arbitraryString(), arbitraryString(), arbitraryString()],
   };
 
   describe('when the url can be parsed to a doi and the annotation contains text', () => {
@@ -67,12 +69,31 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
       text: arbitraryWord(),
-      tags: [tagToEvaluationTypeMap[evaluationType][arbitraryNumber(0, 2)]],
+      tags: [tagToEvaluationTypeMap[evaluationType1][arbitraryNumber(0, 2)]],
     });
 
     it('returns an evaluation of the said type', () => {
       expect(result).toStrictEqual(E.right(expect.objectContaining({
-        evaluationType,
+        evaluationType: evaluationType1,
+      })));
+    });
+  });
+
+  describe('when the annotation has tags that associate it with multiple evaluation types', () => {
+    const result = convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap)({
+      id: arbitraryWord(),
+      created: arbitraryDate().toISOString(),
+      uri: supportedPreprintUri,
+      text: arbitraryWord(),
+      tags: [
+        tagToEvaluationTypeMap[evaluationType1][arbitraryNumber(0, 2)],
+        tagToEvaluationTypeMap[evaluationType2][arbitraryNumber(0, 2)],
+      ],
+    });
+
+    it.failing('leaves the evaluation type as undefined', () => {
+      expect(result).toStrictEqual(E.right(expect.objectContaining({
+        evaluationType: undefined,
       })));
     });
   });
