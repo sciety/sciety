@@ -52,6 +52,7 @@ describe('getGroup', () => {
           avatarPath: undefined,
           shortDescription: undefined,
           descriptionPath: undefined,
+          largeLogoPath: undefined,
           homepage: undefined,
           slug: undefined,
         }),
@@ -85,6 +86,7 @@ describe('getGroup', () => {
           avatarPath: undefined,
           shortDescription: newShortDescription,
           descriptionPath: undefined,
+          largeLogoPath: undefined,
           homepage: undefined,
           slug: undefined,
         }),
@@ -100,6 +102,35 @@ describe('getGroup', () => {
         shortDescription: newShortDescription,
         homepage: group.homepage,
         slug: group.slug,
+      })));
+    });
+  });
+
+  describe('when the group has provided a large logo', () => {
+    const largeLogoPath = arbitraryString();
+    const readModel = pipe(
+      [
+        constructEvent('GroupJoined')({
+          groupId: group.id,
+          ...group,
+        }),
+        constructEvent('GroupDetailsUpdated')({
+          groupId: group.id,
+          name: undefined,
+          avatarPath: undefined,
+          shortDescription: undefined,
+          descriptionPath: undefined,
+          homepage: undefined,
+          slug: undefined,
+          largeLogoPath,
+        }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('the large logo path is returned', () => {
+      expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
+        largeLogoPath,
       })));
     });
   });

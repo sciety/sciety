@@ -104,6 +104,7 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     homepage: undefined,
     avatarPath: undefined,
     descriptionPath: undefined,
+    largeLogoPath: undefined,
     slug: undefined,
     ...attributesToUpdate,
   })] : [])),

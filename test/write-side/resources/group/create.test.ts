@@ -101,6 +101,7 @@ describe('create', () => {
               name,
               avatarPath: undefined,
               descriptionPath: undefined,
+              largeLogoPath: undefined,
               shortDescription: undefined,
               homepage: undefined,
               slug: undefined,
