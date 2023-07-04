@@ -9,11 +9,11 @@ import * as Hyp from '../third-parties/hypothesis';
 
 const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.length > 0;
 
-const provideEvaluationTypeValueFromSupportedAnnotationTag = (
+const mapTagToType = (
   tags: ReadonlyArray<string>,
-  tagsToBeInterpretedAsCurationStatements: Record<string, ReadonlyArray<string>>,
+  tagToEvaluationTypeMap: Record<string, ReadonlyArray<string>>,
 ) => pipe(
-  tagsToBeInterpretedAsCurationStatements,
+  tagToEvaluationTypeMap,
   R.filter((t) => pipe(
     tags,
     RA.some((tag) => t.includes(tag)),
@@ -23,7 +23,7 @@ const provideEvaluationTypeValueFromSupportedAnnotationTag = (
 );
 
 export const convertHypothesisAnnotationToEvaluation = (
-  tagsToBeInterpretedAsCurationStatements: Record<string, ReadonlyArray<string>>,
+  tagToEvaluationTypeMap: Record<string, ReadonlyArray<string>>,
 ) => (
   annotation: Hyp.Annotation,
 ): E.Either<SkippedItem, Evaluation> => pipe(
@@ -40,9 +40,9 @@ export const convertHypothesisAnnotationToEvaluation = (
       articleDoi,
       evaluationLocator: `hypothesis:${annotation.id}`,
       authors: [],
-      evaluationType: provideEvaluationTypeValueFromSupportedAnnotationTag(
+      evaluationType: mapTagToType(
         annotation.tags,
-        tagsToBeInterpretedAsCurationStatements,
+        tagToEvaluationTypeMap,
       ),
     }),
   ),

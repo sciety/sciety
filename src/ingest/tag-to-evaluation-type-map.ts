@@ -1,4 +1,4 @@
-export const tagsToBeInterpretedAsCurationStatements = {
+export const tagToEvaluationTypeMap = {
   'curation-statement': [
     'Summary ',
     'Summary',

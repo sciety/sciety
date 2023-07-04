@@ -6,7 +6,7 @@ import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
 import * as Hyp from './third-parties/hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from './convert-hypothesis-annotation-to-evaluation';
-import { tagsToBeInterpretedAsCurationStatements } from './tag-to-be-interpreted-as-curation-statements';
+import { tagToEvaluationTypeMap } from './tag-to-evaluation-type-map';
 
 type Ports = {
   fetchData: FetchData,
@@ -21,7 +21,7 @@ export const fetchReviewsFromHypothesisGroup = (
     daysToLookBack instanceof Date ? daysToLookBack : daysAgo(daysToLookBack),
     ports.fetchData,
   ),
-  TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagsToBeInterpretedAsCurationStatements))),
+  TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),
   TE.map((parts) => ({
     evaluations: RA.rights(parts),
     skippedItems: RA.lefts(parts),
