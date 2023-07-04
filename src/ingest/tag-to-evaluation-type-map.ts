@@ -1,4 +1,6 @@
-export const tagToEvaluationTypeMap = {
+import { EvaluationType } from '../write-side/commands/record-evaluation';
+
+export const tagToEvaluationTypeMap: Record<EvaluationType, ReadonlyArray<string>> = {
   'curation-statement': [
     'Summary ',
     'Summary',
@@ -6,4 +8,6 @@ export const tagToEvaluationTypeMap = {
     'evalutationSummary',
     'scietyType:ReviewSummary',
   ],
+  review: [],
+  'author-response': [],
 };

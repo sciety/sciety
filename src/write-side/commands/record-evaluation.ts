@@ -12,9 +12,13 @@ const requiredFields = t.type({
   authors: t.readonlyArray(t.string),
 });
 
+const evaluationTypeCodec = t.union([t.literal('review'), t.literal('author-response'), t.literal('curation-statement')]);
+
+export type EvaluationType = t.TypeOf<typeof evaluationTypeCodec>;
+
 const optionalFields = t.partial({
   issuedAt: tt.DateFromISOString,
-  evaluationType: t.union([t.literal('review'), t.literal('author-response'), t.literal('curation-statement')]),
+  evaluationType: evaluationTypeCodec,
 });
 
 export const recordEvaluationCommandCodec = t.intersection([requiredFields, optionalFields]);
