@@ -6,16 +6,11 @@ import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
 import * as Hyp from './third-parties/hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from './convert-hypothesis-annotation-to-evaluation';
+import { tagsToBeInterpretedAsCurationStatements } from './tag-to-be-interpreted-as-curation-statements';
 
 type Ports = {
   fetchData: FetchData,
 };
-
-const tagsToBeInterpretedAsCurationStatements = [
-  'Summary ',
-  'Summary',
-  'evaluationSummary',
-];
 
 export const fetchReviewsFromHypothesisGroup = (
   publisherGroupId: string,
