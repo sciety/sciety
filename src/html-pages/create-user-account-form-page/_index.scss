@@ -8,7 +8,7 @@
 .error-summary {
   border: settings.$border-width solid settings.$colour-alert;
   padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
-  margin-bottom: 3rem;
+  margin-bottom: functions.px-to-rem(48px);
 
   p {
     color: settings.$colour-alert;
@@ -22,17 +22,17 @@
 
 .create-user-account-form-page__container {
   @include layout.page-container();
-  background-color: settings.$colour-page-background;
+  background-color: settings.$colour-background-grey;
 }
 
 .create-user-account-form-page__main {
-  margin-bottom: 3rem;
+  margin-bottom: functions.px-to-rem(48px);
 }
 
 .create-user-account-form-wrapper {
   @include breakpoints.not-narrow {
     margin: 0 auto;
-    max-width: 19rem;
+    max-width: functions.px-to-rem(304px);
   }
 }
 
@@ -56,7 +56,7 @@
 }
 
 .create-user-account-form__submit {
-  @include button.button();
+  @include button.primary();
   margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
 

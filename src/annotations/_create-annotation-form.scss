@@ -1,14 +1,15 @@
 @use '../sass/settings';
+@use '../sass/functions';
 @use '../sass/button';
 
 .annotation-form-content {
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: functions.px-to-rem(8px);
 }
 
 .annotation-form-article-id {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: functions.px-to-rem(8px);
 }
 
 .annotation-form-controls {
@@ -16,10 +17,10 @@
 }
 
 .annotation-form-submit {
-  @include button.button();
+  @include button.primary();
 }
 
 .annotation-form-reset {
-  @include button.secondary-button();
+  @include button.secondary();
   margin-left: auto;
 }

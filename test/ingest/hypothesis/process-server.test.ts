@@ -9,6 +9,7 @@ const arbitraryAnnotation = () => ({
   created: arbitraryWord(),
   uri: arbitraryWord(),
   text: arbitraryWord(),
+  tags: [arbitraryWord()],
 });
 
 const populatedPage = TE.right({

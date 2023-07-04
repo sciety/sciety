@@ -11,7 +11,7 @@
 
 $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;
-$_navigation-text-top-spacing: settings.$navigation-link-border-distance + settings.$navigation-link-border-width;
+$_navigation-text-top-spacing: functions.px-to-rem(settings.$navigation-link-border-distance + settings.$navigation-link-border-width);
 $_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-border-distance);
 $_avatar-height-coupled-to-buttons: 34px;
 
@@ -40,7 +40,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 }
 
 .utility-bar__list_item {
-  padding-right: 1.5rem;
+  padding-right: functions.px-to-rem(24px);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -81,14 +81,14 @@ $_avatar-height-coupled-to-buttons: 34px;
 }
 
 .utility-bar__list_link_button {
-  @include button.button-link();
+  @include button.primary-link();
 }
 
 .utility-bar__list_link_sign_up_button {
   @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+  padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
 
   &:link,
   &:visited {
@@ -127,7 +127,7 @@ $_avatar-height-coupled-to-buttons: 34px;
   background-color: settings.$colour-white;
   width: functions.px-to-rem($_avatar-height-coupled-to-buttons);
   height: auto;
-  margin-right: 20px;
+  margin-right: functions.px-to-rem(20px);
   display: inline-block;
 
   @include breakpoints.site-header() {

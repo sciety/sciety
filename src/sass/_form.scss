@@ -8,7 +8,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 
 @mixin form {
   background-color: settings.$colour-white;
-  padding: 1rem functions.px-to-rem(settings.$sciety-default-gutter);
+  padding: functions.px-to-rem(16px) functions.px-to-rem(settings.$sciety-default-gutter);
 
   border: settings.$border-width solid settings.$colour-furniture;
   border-left-width: 0;
@@ -22,7 +22,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 @mixin section {
-  margin-bottom: 3rem;
+  margin-bottom: functions.px-to-rem(48px);
 }
 
 @mixin label {
@@ -51,10 +51,10 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 @mixin submit-button {
-  @include button.button();
+  @include button.primary();
   margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
 }
 
 @mixin cancel-button {
-  @include button.secondary-button-link();
+  @include button.secondary-link();
 }

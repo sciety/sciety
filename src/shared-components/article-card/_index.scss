@@ -48,7 +48,7 @@ $_card-padding: 16px;
   padding: functions.px-to-rem($_card-padding);
   margin-left: functions.px-to-rem($_card-padding);
   margin-right: settings.$border-radius;
-  background-color: settings.$colour-highlighted-background;
+  background-color: settings.$colour-background-grey;
   border: settings.$border-width solid settings.$colour-furniture;
   border-top: 0;
   border-bottom-left-radius: settings.$border-radius;
@@ -62,7 +62,7 @@ $_card-padding: 16px;
 .article-card-teasers {
   @include list.basics();
   margin-bottom: functions.px-to-rem(16px);
-  background-color: settings.$colour-highlighted-background;
+  background-color: settings.$colour-background-grey;
   padding: functions.px-to-rem($_card-padding);
 }
 

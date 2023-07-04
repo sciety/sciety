@@ -6,7 +6,7 @@ import { ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewMode
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
-export type ArticlesViewModel = ReadonlyArray<E.Either<
+type ArticlesViewModel = ReadonlyArray<E.Either<
 ArticleErrorCardViewModel,
 ArticleCardWithControlsAndAnnotationViewModel
 >>;
@@ -16,7 +16,7 @@ export type ContentWithPaginationViewModel = {
   pagination: PageOfItems<unknown>,
 };
 
-export type ContentViewModel = Message | ContentWithPaginationViewModel;
+type Content = Message | ContentWithPaginationViewModel;
 
 export type ViewModel = {
   name: string,
@@ -29,6 +29,6 @@ export type ViewModel = {
   editCapability: boolean,
   listId: ListId,
   basePath: string,
-  contentViewModel: ContentViewModel,
+  content: Content,
   relatedArticlesLink: O.Option<string>,
 };

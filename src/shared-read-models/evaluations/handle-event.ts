@@ -5,7 +5,7 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 export type ReadModel = {
   byArticleId: Map<string, Array<RecordedEvaluation>>,
-  byGroupId: Map<string, Array<RecordedEvaluation>>,
+  byGroupId: Map<string, Map<string, RecordedEvaluation>>,
 };
 
 export const initialState = (): ReadModel => ({
@@ -22,12 +22,12 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       recordedAt: event.date,
       publishedAt: event.publishedAt,
       authors: event.authors,
-      type: O.none,
+      type: O.fromNullable(event.evaluationType),
     };
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
-    const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? [];
+    const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? new Map();
     evaluationsForThisArticle.push(recordedEvaluation);
-    evaluationsByThisGroup.push(recordedEvaluation);
+    evaluationsByThisGroup.set(event.evaluationLocator, recordedEvaluation);
     readmodel.byArticleId.set(event.articleId.value, evaluationsForThisArticle);
     readmodel.byGroupId.set(event.groupId, evaluationsByThisGroup);
   }
@@ -39,17 +39,14 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       }
     });
     readmodel.byGroupId.forEach((state) => {
-      const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
-      if (i > -1) {
-        state.splice(i, 1);
-      }
+      state.delete(event.evaluationLocator);
     });
   }
   if (isEventOfType('CurationStatementRecorded')(event)) {
     readmodel.byGroupId.forEach((state) => {
-      const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
-      if (i > -1) {
-        state[i].type = O.some('curation-statement');
+      const evaluation = state.get(event.evaluationLocator);
+      if (evaluation) {
+        evaluation.type = O.some('curation-statement');
       }
     });
   }

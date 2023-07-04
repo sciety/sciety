@@ -5,13 +5,13 @@ import { ViewModel } from '../view-model';
 import { renderContentWithPagination } from './render-content-with-pagination';
 
 const renderListOrMessage = (viewModel: ViewModel) => {
-  switch (viewModel.contentViewModel) {
+  switch (viewModel.content) {
     case 'no-articles':
       return viewModel.editCapability ? noArticlesMessageForOwner : noArticlesMessageForReader;
     case 'no-articles-can-be-fetched':
       return noArticlesCanBeFetchedMessage;
     default:
-      return renderContentWithPagination(viewModel.basePath, viewModel.contentViewModel);
+      return renderContentWithPagination(viewModel.basePath, viewModel.content);
   }
 };
 

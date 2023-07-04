@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
-import { recordSubjectArea } from '../../../../src/write-side/resources/article/record-subject-area';
+import { recordSubjectArea } from '../../../../src/write-side/resources/article';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';

@@ -4,15 +4,15 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { Ports as ArticlesListPorts, constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
+import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerInformation } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
 import { ListId, listIdCodec } from '../../../types/list-id';
 import { userIdCodec, UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
-import { ContentViewModel, ViewModel } from '../view-model';
-import { Queries } from '../../../shared-read-models';
+import { Dependencies } from './dependencies';
+import { ViewModel } from '../view-model';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -21,8 +21,6 @@ export const paramsCodec = t.type({
     id: userIdCodec,
   })),
 });
-
-export type Ports = ArticlesListPorts & Queries;
 
 export type Params = t.TypeOf<typeof paramsCodec>;
 
@@ -33,11 +31,11 @@ const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
 
 type ConstructContentViewModel = (
   articleIds: ReadonlyArray<string>,
-  ports: Ports,
+  dependencies: Dependencies,
   params: Params,
   editCapability: boolean,
   listId: ListId,
-) => TE.TaskEither<DE.DataError, ContentViewModel>;
+) => TE.TaskEither<DE.DataError, ViewModel['content']>;
 
 const constructContentViewModel: ConstructContentViewModel = (
   articleIds, ports, params, editCapability, listId,
@@ -46,7 +44,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   RA.map((articleId) => new Doi(articleId)),
   TE.right,
   TE.chainW(
-    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentViewModel>, Doi>(
+    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, Doi>(
       () => TE.right('no-articles' as const),
       constructContentWithPaginationViewModel(ports, params.page, editCapability, listId),
     ),
@@ -59,7 +57,9 @@ const constructContentViewModel: ConstructContentViewModel = (
   }),
 );
 
-export const constructViewModel = (ports: Ports) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
+export const constructViewModel = (
+  ports: Dependencies,
+) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   params.id,
   ports.lookupList,
   O.chain((list) => pipe(
@@ -86,8 +86,8 @@ export const constructViewModel = (ports: Ports) => (params: Params): TE.TaskEit
       partialPageViewModel.editCapability,
       partialPageViewModel.listId,
     ),
-    TE.map((contentViewModel) => ({
-      contentViewModel,
+    TE.map((content) => ({
+      content,
       ...partialPageViewModel,
     })),
   )),

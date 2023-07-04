@@ -49,6 +49,6 @@
 }
 
 .home-page-groups__button {
-  @include button.secondary-button-link();
+  @include button.secondary-link();
   margin: 0 auto;
 }

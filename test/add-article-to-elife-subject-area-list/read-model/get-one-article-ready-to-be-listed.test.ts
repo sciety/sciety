@@ -29,6 +29,7 @@ describe('get-one-article-ready-to-be-listed', () => {
           evaluationLocator: arbitraryEvaluationLocator(),
           authors: [],
           publishedAt: arbitraryDate(),
+          evaluationType: undefined,
         }),
         constructEvent('SubjectAreaRecorded')({ articleId: articleIdA, subjectArea }),
       ],

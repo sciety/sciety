@@ -20,24 +20,24 @@ $_edit-details-icon-offset: 8px;
   @include typography.subheading();
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: functions.px-to-rem(8px);
 }
 
 .page-header--list .page-header__avatar {
   @include avatar.border();
   width: avatar.$size--medium;
   height: avatar.$size--medium;
-  margin-right: 0.5rem;
+  margin-right: functions.px-to-rem(8px);
 }
 
 .page-header--list .page-header__description {
-  margin-bottom: 0.5rem;
+  margin-bottom: functions.px-to-rem(8px);
 }
 
 .page-header--list .page-header__meta {
   @include typography.details();
   @include typography.list-separator();
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 .list-page-actions {
@@ -47,7 +47,7 @@ $_edit-details-icon-offset: 8px;
 }
 
 .list-page-actions__edit_details_link {
-  @include button.button-link();
+  @include button.primary-link();
   background-image: url('/static/images/edit-note-icon.svg');
   background-repeat: no-repeat;
   background-size: functions.px-to-rem($_edit-details-icon-size);
@@ -57,13 +57,13 @@ $_edit-details-icon-offset: 8px;
 }
 
 .list-page-actions__related_articles {
-  @include button.secondary-button-link();
+  @include button.secondary-link();
 }
 
 .articles-page-count {
   @include typography.details();
   @include layout.page-content-horizontal-margins();
-  margin-bottom: 1rem;
+  margin-bottom: functions.px-to-rem(16px);
 }
 
 .articles-static-message {
@@ -75,7 +75,7 @@ svg.saved-articles-control__icon {
 }
 
 .saved-articles-control {
-  @include button.basics();
+  border-width: 0;
   padding: 0;
   display: block;
   height: $_remove-article-icon-size;

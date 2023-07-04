@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { identity, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
@@ -11,6 +11,6 @@ export const getEvaluationsByGroup = (readmodel: ReadModel): GetEvaluationsByGro
   O.fromNullable,
   O.match(
     () => [],
-    identity,
+    (state) => Array.from(state.values()),
   ),
 );

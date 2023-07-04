@@ -67,6 +67,7 @@ type EvaluationCommand = {
   evaluationLocator: string,
   publishedAt: Date,
   authors: ReadonlyArray<string>,
+  evaluationType?: string,
 };
 
 axiosRetry(axios, {
@@ -116,6 +117,7 @@ const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (fe
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.date,
     authors: evaluation.authors,
+    evaluationType: evaluation.evaluationType,
   })),
   T.traverseSeqArray(send),
   T.map((array) => {

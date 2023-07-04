@@ -1,4 +1,5 @@
 @use '../../../sass/settings';
+@use '../../../sass/button';
 @use '../../../sass/card';
 @use '../../../sass/functions';
 @use '../../../sass/typography';
@@ -24,4 +25,12 @@
     flex: 0 0 avatar.$size--large;
     margin-right: 1rem;
   }
+}
+
+.follow-button {
+  @include button.primary();
+}
+
+.unfollow-button {
+  @include button.secondary();
 }

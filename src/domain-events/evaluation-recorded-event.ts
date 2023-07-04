@@ -14,4 +14,8 @@ export const evaluationRecordedEventCodec = t.type({
   articleId: DoiFromString,
   publishedAt: tt.DateFromISOString,
   authors: t.readonlyArray(t.string),
+  evaluationType: t.union([
+    t.union([t.literal('review'), t.literal('author-response'), t.literal('curation-statement')]),
+    t.undefined,
+  ]),
 });

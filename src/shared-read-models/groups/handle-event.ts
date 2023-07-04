@@ -14,6 +14,8 @@ const toGroup = (event: EventOfType<'GroupJoined'>) => {
     largeLogoPath = O.some('/static/images/article-page/elife-logo-sm.svg');
   } else if (event.groupId === GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2')) {
     largeLogoPath = O.some('/static/images/home-page/biophysics-colab.png');
+  } else if (event.groupId === GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58')) {
+    largeLogoPath = O.some('/static/images/home-page/gigabyte.png');
   }
   return {
     id: event.groupId,
@@ -37,6 +39,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     }
     if (event.shortDescription !== undefined) {
       readmodel[event.groupId].shortDescription = event.shortDescription;
+    }
+    if (event.largeLogoPath !== undefined) {
+      readmodel[event.groupId].largeLogoPath = O.some(event.largeLogoPath);
     }
   }
   return readmodel;

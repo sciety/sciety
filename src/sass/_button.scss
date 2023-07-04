@@ -1,111 +1,86 @@
+@use 'sass:color';
 @use 'functions';
 @use 'settings';
 @use 'states';
 @use 'typography';
 
-@mixin basics () {
-  border-width: 0;
-  border-radius: 5px;
-  cursor: pointer;
+@mixin _link($text, $background, $background-hover) {
+  @include typography.button();
+
+  display: inline-block;
+  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
+  border-radius: settings.$border-radius;
+
+  color: $text;
+  background-color: $background;
+
+  &:link,
+  &:visited {
+    color: $text;
+    background-color: $background;
+
+    &:active,
+    &:hover {
+      color: $text;
+      background-color: $background-hover;
+      text-decoration: none;
+    }
+
+    &:active {
+      background-color: $background;
+    }
+
+    &:hover {
+      background-color: $background-hover;
+    }
+
+    &:focus {
+      text-decoration: none;
+    }
+  }
 }
 
-@mixin button {
-  @include typography.button();
-  @include states.focus();
+@mixin _button($text, $background, $background-hover) {
+  border-width: 0;
   border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-accent;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
+  padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
 
-  background-color: settings.$colour-accent;
-  color: settings.$colour-white;
+  color: $text;
+  background-color: $background;
 
   &:hover {
-    border-color: settings.$colour-accent-hover;
-    background-color: settings.$colour-accent-hover;
-    color: settings.$colour-white;
+    background-color: $background-hover;
   }
 }
 
-@mixin button-link {
-  @include typography.button();
-  border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-accent;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
-  display: inline-block;
-
-  &:link,
-  &:visited {
-    background-color: settings.$colour-accent;
-    color: settings.$colour-white;
-
-    &:active,
-    &:hover {
-      border-color: settings.$colour-accent-hover;
-      color: settings.$colour-white;
-      text-decoration: none;
-    }
-
-    &:active {
-      background-color: settings.$colour-accent;
-    }
-
-    &:hover {
-      background-color: settings.$colour-accent-hover;
-    }
-
-    &:focus {
-      text-decoration: none;
-    }
-  }
-
-  &:link {
-    @include states.focus();
-  }
+@mixin primary {
+  @include _button(
+    $text: settings.$colour-white,
+    $background: settings.$colour-accent,
+    $background-hover: settings.$colour-accent-hover,
+  );
 }
 
-@mixin secondary-button() {
-  @include basics();
-
-  background-color: settings.$colour-highlighted-background;
-  color: settings.$colour-text-primary;
-  padding: 0.5rem functions.px-to-rem(12px - settings.$border-width);
-
-  &:hover,
-  &:active {
-    background-color: settings.$colour-highlighted-background-darkened;
-  }
+@mixin primary-link {
+  @include _link(
+    $text: settings.$colour-white,
+    $background: settings.$colour-accent,
+    $background-hover: settings.$colour-accent-hover,
+  );
 }
 
-@mixin secondary-button-link() {
-  @include button-link();
+@mixin secondary() {
+  @include _button(
+    $text: settings.$colour-text-primary,
+    $background: settings.$colour-background-grey,
+    $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
+  );
+}
 
-  color: settings.$colour-text-primary;
-  background-color: settings.$colour-highlighted-background;
-  border-color: settings.$colour-highlighted-background;
-
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
-    background-color: settings.$colour-highlighted-background;
-
-    &:active,
-    &:hover {
-      color: settings.$colour-text-primary;
-      background-color: settings.$colour-highlighted-background-darkened;
-      border-color: settings.$colour-highlighted-background-darkened;
-      text-decoration: none;
-    }
-
-    &:active {
-      background-color: settings.$colour-highlighted-background;
-    }
-
-    &:hover {
-      background-color: settings.$colour-highlighted-background-darkened;
-    }
-
-    &:focus {
-      text-decoration: none;
-    }
-  }
+@mixin secondary-link() {
+  @include _link(
+    $text: settings.$colour-text-primary,
+    $background: settings.$colour-background-grey,
+    $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
+    );
 }

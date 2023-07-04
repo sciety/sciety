@@ -1,7 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
-import { curationStatements } from './curation-statements';
 import { articleActivity } from './article-activity';
 import { Queries } from './queries';
 import { evaluations } from './evaluations';
@@ -27,7 +26,6 @@ export const dispatcher = (): Dispatcher => {
     new InitialisedReadModel(addArticleToElifeSubjectAreaList),
     new InitialisedReadModel(annotations),
     new InitialisedReadModel(articleActivity),
-    new InitialisedReadModel(curationStatements),
     new InitialisedReadModel(evaluations),
     new InitialisedReadModel(followings),
     new InitialisedReadModel(groupActivity),

@@ -5,7 +5,7 @@ import { EvaluationLocator } from './evaluation-locator';
 
 export const evaluationTypes = <const> ['review', 'author-response', 'curation-statement'];
 
-type EvaluationType = typeof evaluationTypes[number];
+export type EvaluationType = typeof evaluationTypes[number];
 
 export type RecordedEvaluation = {
   articleId: Doi,

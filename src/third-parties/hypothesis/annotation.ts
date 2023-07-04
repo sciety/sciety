@@ -5,6 +5,7 @@ export const annotationFromJson = t.type({
   created: t.string, // TODO: should be tt.DateFromISOString
   uri: t.string,
   text: t.string,
+  tags: t.array(t.string),
 });
 
 export type Annotation = t.TypeOf<typeof annotationFromJson>;

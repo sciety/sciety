@@ -6,15 +6,20 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
+import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
+import { EvaluationType } from '../../../../src/types/recorded-evaluation';
+
+const arbitraryEvaluationType = (): EvaluationType => 'curation-statement';
 
 describe('record', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
-  const input = {
+  const input: RecordEvaluationCommand = {
     groupId: arbitraryGroupId(),
     articleId: arbitraryArticleId(),
     evaluationLocator,
     publishedAt: arbitraryDate(),
     authors: [arbitraryString(), arbitraryString()],
+    evaluationType: arbitraryEvaluationType(),
   };
 
   describe('when the evaluation locator has NOT already been recorded', () => {
@@ -31,6 +36,7 @@ describe('record', () => {
         evaluationLocator: input.evaluationLocator,
         publishedAt: input.publishedAt,
         authors: input.authors,
+        evaluationType: input.evaluationType,
       })]));
     });
   });
