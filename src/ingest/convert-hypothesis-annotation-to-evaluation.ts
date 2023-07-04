@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import { Evaluation } from './evaluations';
 import { supportedArticleIdFromLink } from './supported-article-id-from-link';
 import { SkippedItem } from './update-all';
@@ -12,9 +13,13 @@ const provideEvaluationTypeValueFromSupportedAnnotationTag = (
   tags: ReadonlyArray<string>,
   tagsToBeInterpretedAsCurationStatements: Record<string, ReadonlyArray<string>>,
 ) => pipe(
-  tags,
-  RA.some((tag) => tagsToBeInterpretedAsCurationStatements['curation-statement'].includes(tag)),
-  (isCurationStatement) => (isCurationStatement ? 'curation-statement' : undefined),
+  tagsToBeInterpretedAsCurationStatements,
+  R.filter((t) => pipe(
+    tags,
+    RA.some((tag) => t.includes(tag)),
+  )),
+  R.keys,
+  (keys) => keys[0],
 );
 
 export const convertHypothesisAnnotationToEvaluation = (

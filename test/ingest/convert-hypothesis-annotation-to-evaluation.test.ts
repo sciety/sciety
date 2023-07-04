@@ -5,8 +5,11 @@ import {
 import { convertHypothesisAnnotationToEvaluation } from '../../src/ingest/convert-hypothesis-annotation-to-evaluation';
 
 describe('convert-hypothesis-annotation-to-evaluation', () => {
+  const evaluationType = arbitraryString();
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
-  const tagsToBeInterpretedAsCurationStatements = { 'curation-statement': [arbitraryString(), arbitraryString(), arbitraryString()] };
+  const tagsToBeInterpretedAsCurationStatements = {
+    [evaluationType]: [arbitraryString(), arbitraryString(), arbitraryString()],
+  };
 
   describe('when the url can be parsed to a doi and the annotation contains text', () => {
     const id = arbitraryWord();
@@ -64,12 +67,12 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
       text: arbitraryWord(),
-      tags: [tagsToBeInterpretedAsCurationStatements['curation-statement'][arbitraryNumber(0, 2)]],
+      tags: [tagsToBeInterpretedAsCurationStatements[evaluationType][arbitraryNumber(0, 2)]],
     });
 
     it('provides a curation-statement evaluation type', () => {
       expect(result).toStrictEqual(E.right(expect.objectContaining({
-        evaluationType: 'curation-statement',
+        evaluationType,
       })));
     });
   });
