@@ -40,6 +40,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (event.shortDescription !== undefined) {
       readmodel[event.groupId].shortDescription = event.shortDescription;
     }
+    if (event.largeLogoPath !== undefined) {
+      readmodel[event.groupId].largeLogoPath = O.some(event.largeLogoPath);
+    }
   }
   return readmodel;
 };

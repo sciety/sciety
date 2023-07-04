@@ -68,6 +68,7 @@ describe('getGroup', () => {
         shortDescription: group.shortDescription,
         homepage: group.homepage,
         slug: group.slug,
+        largeLogoPath: group.largeLogoPath,
       })));
     });
   });
@@ -102,6 +103,7 @@ describe('getGroup', () => {
         shortDescription: newShortDescription,
         homepage: group.homepage,
         slug: group.slug,
+        largeLogoPath: group.largeLogoPath,
       })));
     });
   });
@@ -128,9 +130,9 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('the large logo path is returned', () => {
+    it('the large logo path is returned', () => {
       expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
-        largeLogoPath,
+        largeLogoPath: O.some(largeLogoPath),
       })));
     });
   });
