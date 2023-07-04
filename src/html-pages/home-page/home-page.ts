@@ -35,8 +35,8 @@ const groupsToHighlight: GroupsToHighlight = [
     logoPath: '/static/images/home-page/arcadia-science.svg',
   },
   {
-    groupId: GID.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7'),
-    logoPath: '/static/images/home-page/prereview.svg',
+    groupId: GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'),
+    logoPath: '/static/images/home-page/gigabyte.png',
   },
 ];
 
