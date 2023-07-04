@@ -15,10 +15,13 @@ const curationTeaser1: CurationStatement = {
 };
 
 const curationTeaser2: CurationStatement = {
-  articleId: new Doi('10.21203/rs.3.rs-2407778/v1'),
-  groupId: GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0'),
-  quote: toHtmlFragment('This valuable study revisits the effects of substitution model selection on phylogenetics by comparing reversible and non-reversible DNA substitution models. The authors provide evidence that 1) non time-reversible models sometimes perform better than general time-reversible models when inferring phylogenetic trees out of simulated viral genome sequence data sets, and that 2) non time-reversible models can fit the real data better than the reversible substitution models commonly used in phylogenetics, a finding consistent with previous work. However, the methods are incomplete in supporting the main conclusion of the manuscript, that is that non time-reversible models should be incorporated in the model selection process for these data sets.'),
-  articleTitle: toHtmlFragment('Viral genome sequence datasets display pervasive evidence of strand-specific substitution biases that are best described using non-reversible nucleotide substitution models'),
+  articleId: new Doi('10.1101/2023.01.18.524616'),
+  groupId: GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'),
+  quote: toHtmlFragment(`<p>Hybrid genomes are tricky to assemble, and few genomic resources are available for hybrid grapevines such as ‘Chambourcin’, a French-American interspecific hybrid grape grown in the eastern and midwestern United States. Here is an attempt to assemble Chambourcin’ using a combination of PacBio HiFi long-reads, Bionano optical maps, and Illumina short-read sequencing technologies. Producing an assembly with 26 scaffolds, an N50 length 23.3 Mb and an estimated BUSCO completeness of 97.9% that can be used for genome comparisons, functional genomic analyses, and genome-assisted breeding research. Error correction and pilon polishing was a challenge with this hybrid assembly, but after trying a few different approaches in the review process have improved it, and as they have documented what they did and are clear about the final metrics, users can assess the quality themselves.</p>
+  <p><em>This assessment refers to version 2 of this preprint.</em></p>`),
+  articleTitle: toHtmlFragment(`Genome assembly of the hybrid grapevine
+            <i>Vitis</i>
+            ‘Chambourcin’`),
 };
 
 const curationTeaser3: CurationStatement = {
