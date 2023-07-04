@@ -19,7 +19,7 @@ const mapTagToType = (
     RA.some((tag) => t.includes(tag)),
   )),
   R.keys,
-  (keys) => keys[0],
+  (keys) => (keys.length === 1 ? keys[0] : undefined),
 );
 
 export const convertHypothesisAnnotationToEvaluation = (

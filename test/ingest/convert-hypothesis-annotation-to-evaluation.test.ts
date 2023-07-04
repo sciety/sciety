@@ -91,7 +91,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       ],
     });
 
-    it.failing('leaves the evaluation type as undefined', () => {
+    it('leaves the evaluation type as undefined', () => {
       expect(result).toStrictEqual(E.right(expect.objectContaining({
         evaluationType: undefined,
       })));
