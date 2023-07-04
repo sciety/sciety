@@ -6,7 +6,7 @@ import { convertHypothesisAnnotationToEvaluation } from '../../src/ingest/conver
 
 describe('convert-hypothesis-annotation-to-evaluation', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
-  const tagsToBeInterpretedAsCurationStatements = [arbitraryString(), arbitraryString(), arbitraryString()];
+  const tagsToBeInterpretedAsCurationStatements = { 'curation-statement': [arbitraryString(), arbitraryString(), arbitraryString()] };
 
   describe('when the url can be parsed to a doi and the annotation contains text', () => {
     const id = arbitraryWord();
@@ -64,7 +64,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
       text: arbitraryWord(),
-      tags: [tagsToBeInterpretedAsCurationStatements[arbitraryNumber(0, 2)]],
+      tags: [tagsToBeInterpretedAsCurationStatements['curation-statement'][arbitraryNumber(0, 2)]],
     });
 
     it('provides a curation-statement evaluation type', () => {

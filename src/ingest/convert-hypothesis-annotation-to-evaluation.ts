@@ -10,15 +10,15 @@ const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.l
 
 const provideEvaluationTypeValueFromSupportedAnnotationTag = (
   tags: ReadonlyArray<string>,
-  tagsToBeInterpretedAsCurationStatements: ReadonlyArray<string>,
+  tagsToBeInterpretedAsCurationStatements: Record<string, ReadonlyArray<string>>,
 ) => pipe(
   tags,
-  RA.some((tag) => tagsToBeInterpretedAsCurationStatements.includes(tag)),
+  RA.some((tag) => tagsToBeInterpretedAsCurationStatements['curation-statement'].includes(tag)),
   (isCurationStatement) => (isCurationStatement ? 'curation-statement' : undefined),
 );
 
 export const convertHypothesisAnnotationToEvaluation = (
-  tagsToBeInterpretedAsCurationStatements: ReadonlyArray<string>,
+  tagsToBeInterpretedAsCurationStatements: Record<string, ReadonlyArray<string>>,
 ) => (
   annotation: Hyp.Annotation,
 ): E.Either<SkippedItem, Evaluation> => pipe(
