@@ -8,13 +8,18 @@ import * as Hyp from '../third-parties/hypothesis';
 
 const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.length > 0;
 
-const provideEvaluationTypeValueFromSupportedAnnotationTag = (tags: ReadonlyArray<string>) => pipe(
+const provideEvaluationTypeValueFromSupportedAnnotationTag = (
+  tags: ReadonlyArray<string>,
+  tagsToBeInterpretedAsCurationStatements: ReadonlyArray<string>,
+) => pipe(
   tags,
-  RA.some((tag) => tag === 'Summary ' || tag === 'Summary' || tag === 'evalutationSummary'),
+  RA.some((tag) => tagsToBeInterpretedAsCurationStatements.includes(tag)),
   (isCurationStatement) => (isCurationStatement ? 'curation-statement' : undefined),
 );
 
 export const convertHypothesisAnnotationToEvaluation = (
+  tagsToBeInterpretedAsCurationStatements: ReadonlyArray<string>,
+) => (
   annotation: Hyp.Annotation,
 ): E.Either<SkippedItem, Evaluation> => pipe(
   annotation.uri,
@@ -30,7 +35,10 @@ export const convertHypothesisAnnotationToEvaluation = (
       articleDoi,
       evaluationLocator: `hypothesis:${annotation.id}`,
       authors: [],
-      evaluationType: provideEvaluationTypeValueFromSupportedAnnotationTag(annotation.tags),
+      evaluationType: provideEvaluationTypeValueFromSupportedAnnotationTag(
+        annotation.tags,
+        tagsToBeInterpretedAsCurationStatements,
+      ),
     }),
   ),
 );

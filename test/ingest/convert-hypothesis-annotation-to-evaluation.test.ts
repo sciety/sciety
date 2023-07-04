@@ -1,13 +1,16 @@
 import * as E from 'fp-ts/Either';
+import {
+  arbitraryNumber, arbitraryDate, arbitraryString, arbitraryWord,
+} from '../helpers';
 import { convertHypothesisAnnotationToEvaluation } from '../../src/ingest/convert-hypothesis-annotation-to-evaluation';
-import { arbitraryDate, arbitraryWord } from '../helpers';
 
 describe('convert-hypothesis-annotation-to-evaluation', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
+  const tagsToBeInterpretedAsCurationStatements = [arbitraryString(), arbitraryString(), arbitraryString()];
 
   describe('when the url can be parsed to a doi and the annotation contains text', () => {
     const id = arbitraryWord();
-    const result = convertHypothesisAnnotationToEvaluation({
+    const result = convertHypothesisAnnotationToEvaluation(tagsToBeInterpretedAsCurationStatements)({
       id,
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
@@ -24,7 +27,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
   });
 
   describe('when the url can not be parsed to a doi', () => {
-    const result = convertHypothesisAnnotationToEvaluation({
+    const result = convertHypothesisAnnotationToEvaluation(tagsToBeInterpretedAsCurationStatements)({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: 'http://example.com',
@@ -40,7 +43,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
   });
 
   describe('when the evaluation relates to an highlight-only annotation', () => {
-    const result = convertHypothesisAnnotationToEvaluation({
+    const result = convertHypothesisAnnotationToEvaluation(tagsToBeInterpretedAsCurationStatements)({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
@@ -55,17 +58,13 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
     });
   });
 
-  describe.each([
-    ['Summary '],
-    ['Summary'],
-    ['evalutationSummary'],
-  ])('when the annotation has a `%s` tag', (tag) => {
-    const result = convertHypothesisAnnotationToEvaluation({
+  describe('when the annotation has a tag to be interpreted as a curation statement', () => {
+    const result = convertHypothesisAnnotationToEvaluation(tagsToBeInterpretedAsCurationStatements)({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
       text: arbitraryWord(),
-      tags: [tag],
+      tags: [tagsToBeInterpretedAsCurationStatements[arbitraryNumber(0, 2)]],
     });
 
     it('provides a curation-statement evaluation type', () => {

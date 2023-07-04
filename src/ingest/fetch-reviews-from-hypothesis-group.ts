@@ -11,6 +11,12 @@ type Ports = {
   fetchData: FetchData,
 };
 
+const tagsToBeInterpretedAsCurationStatements = [
+  'Summary ',
+  'Summary',
+  'evaluationSummary',
+];
+
 export const fetchReviewsFromHypothesisGroup = (
   publisherGroupId: string,
   daysToLookBack: number | Date = 5,
@@ -20,7 +26,7 @@ export const fetchReviewsFromHypothesisGroup = (
     daysToLookBack instanceof Date ? daysToLookBack : daysAgo(daysToLookBack),
     ports.fetchData,
   ),
-  TE.map(RA.map(convertHypothesisAnnotationToEvaluation)),
+  TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagsToBeInterpretedAsCurationStatements))),
   TE.map((parts) => ({
     evaluations: RA.rights(parts),
     skippedItems: RA.lefts(parts),
