@@ -10,7 +10,7 @@ const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.l
 
 const provideEvaluationTypeValueFromSupportedAnnotationTag = (tags: ReadonlyArray<string>) => pipe(
   tags,
-  RA.some((tag) => tag === 'Summary ' || tag === 'Summary'),
+  RA.some((tag) => tag === 'Summary ' || tag === 'Summary' || tag === 'evalutationSummary'),
   (isCurationStatement) => (isCurationStatement ? 'curation-statement' : undefined),
 );
 
