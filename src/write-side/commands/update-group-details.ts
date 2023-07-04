@@ -11,6 +11,7 @@ export const updateGroupDetailsCommandCodec = t.intersection([
     shortDescription: t.string,
     homepage: t.string,
     avatarPath: t.string,
+    largeLogoPath: t.string,
     descriptionPath: descriptionPathCodec,
     slug: t.string,
   }),
