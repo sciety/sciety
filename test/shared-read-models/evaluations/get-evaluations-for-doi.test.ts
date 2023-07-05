@@ -152,8 +152,25 @@ describe('get-evaluations-for-doi', () => {
     });
   });
 
-  describe('when a previously recorded evaluation has its evaluation type updated', () => {
-    it.todo('contains the new evaluation type');
+  describe('when an evaluation has previously been recorded without an evaluation type, and has its evaluation type updated', () => {
+    it.failing('contains the new evaluation type', () => {
+      const readmodel = pipe(
+        [
+          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), undefined),
+          constructEvent('EvaluationUpdated')({
+            evaluationLocator: reviewId1,
+            evaluationType: 'curation-statement',
+          }),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = pipe(
+        article1,
+        getEvaluationsForDoi(readmodel),
+      );
+
+      expect(result[0].type).toStrictEqual(O.some('curation-statement'));
+    });
   });
 
   describe('when an unknown evaluation is attempted to be updated', () => {
