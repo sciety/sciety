@@ -193,8 +193,4 @@ describe('get-evaluations-for-doi', () => {
       expect(result[0].type).toStrictEqual(O.some('author-response'));
     });
   });
-
-  describe('when an unknown evaluation is attempted to be updated', () => {
-    it.todo('returns None');
-  });
 });
