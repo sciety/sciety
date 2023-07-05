@@ -50,5 +50,15 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       }
     });
   }
+  if (isEventOfType('EvaluationUpdated')(event)) {
+    readmodel.byGroupId.forEach((state) => {
+      const evaluation = state.get(event.evaluationLocator);
+      if (evaluation) {
+        if (event.evaluationType) {
+          evaluation.type = O.some(event.evaluationType);
+        }
+      }
+    });
+  }
   return readmodel;
 };

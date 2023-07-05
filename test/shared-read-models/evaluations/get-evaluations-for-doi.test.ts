@@ -153,7 +153,7 @@ describe('get-evaluations-for-doi', () => {
   });
 
   describe('when an evaluation has previously been recorded without an evaluation type, and has its evaluation type updated', () => {
-    it.failing('contains the new evaluation type', () => {
+    it('contains the new evaluation type', () => {
       const readmodel = pipe(
         [
           evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), undefined),
@@ -174,7 +174,7 @@ describe('get-evaluations-for-doi', () => {
   });
 
   describe('when an evaluation has previously been recorded with an evaluation type, and has its evaluation type updated to a different value', () => {
-    it.failing('contains the new evaluation type', () => {
+    it('contains the new evaluation type', () => {
       const readmodel = pipe(
         [
           evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'review'),
