@@ -173,6 +173,27 @@ describe('get-evaluations-for-doi', () => {
     });
   });
 
+  describe('when an evaluation has previously been recorded with an evaluation type, and has its evaluation type updated to a different value', () => {
+    it.failing('contains the new evaluation type', () => {
+      const readmodel = pipe(
+        [
+          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'review'),
+          constructEvent('EvaluationUpdated')({
+            evaluationLocator: reviewId1,
+            evaluationType: 'author-response',
+          }),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = pipe(
+        article1,
+        getEvaluationsForDoi(readmodel),
+      );
+
+      expect(result[0].type).toStrictEqual(O.some('author-response'));
+    });
+  });
+
   describe('when an unknown evaluation is attempted to be updated', () => {
     it.todo('returns None');
   });
