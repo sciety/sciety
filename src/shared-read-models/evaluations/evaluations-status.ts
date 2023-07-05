@@ -13,8 +13,11 @@ const byDate: Ord.Ord<RecordedEvaluation> = pipe(
   Ord.contramap((evaluation) => evaluation.publishedAt),
 );
 
-const findEvaluationsOfType = (soughtType: string, evaluationTypes: O.Option<ReadonlyArray<'review' | 'author-response' | 'curation-statement'>>) => pipe(
+type FindEvaluationsOfType = (soughtType: string, evaluationTypes: ReadonlyArray<RecordedEvaluation['type']>) => number;
+
+const findEvaluationsOfType: FindEvaluationsOfType = (soughtType, evaluationTypes) => pipe(
   evaluationTypes,
+  O.sequenceArray,
   O.match(
     () => 0,
     (evaluationType) => pipe(
@@ -30,11 +33,11 @@ export const evaluationsStatus = (readmodel: ReadModel) => (): Json => pipe(
   RM.values(RA.getOrd(byDate)),
   RA.flatten,
   RA.map((evaluation) => evaluation.type),
-  RA.filter((t) => O.isSome(t)),
-  O.sequenceArray,
-  (evaluationTypes) => ({
-    curationStatements: findEvaluationsOfType('curation-statement', evaluationTypes),
-    reviews: findEvaluationsOfType('review', evaluationTypes),
-    authorResponse: findEvaluationsOfType('author-response', evaluationTypes),
+  RA.partition((t) => O.isSome(t)),
+  (partitioned) => ({
+    curationStatements: findEvaluationsOfType('curation-statement', partitioned.right),
+    reviews: findEvaluationsOfType('review', partitioned.right),
+    authorResponse: findEvaluationsOfType('author-response', partitioned.right),
+    unknown: partitioned.left.length,
   }),
 );
