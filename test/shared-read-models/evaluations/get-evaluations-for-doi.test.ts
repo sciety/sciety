@@ -151,4 +151,12 @@ describe('get-evaluations-for-doi', () => {
       expect(result[0].type).toStrictEqual(O.none);
     });
   });
+
+  describe('when a previously recorded evaluation has its evaluation type updated', () => {
+    it.todo('contains the new evaluation type');
+  });
+
+  describe('when an unknown evaluation is attempted to be updated', () => {
+    it.todo('returns None');
+  });
 });
