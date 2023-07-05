@@ -18,9 +18,41 @@ export const evaluationsStatus = (readmodel: ReadModel) => (): Json => pipe(
   RM.values(RA.getOrd(byDate)),
   RA.flatten,
   RA.map((evaluation) => evaluation.type),
-  RA.partition((t) => O.isSome(t)),
-  (partitioned) => ({
-    curationStatements: partitioned.right.length,
-    unknown: partitioned.left.length,
+  RA.filter((t) => O.isSome(t)),
+  O.sequenceArray,
+  (evaluationTypes) => ({
+    curationStatements: pipe(
+      evaluationTypes,
+      O.match(
+        () => 0,
+        (evaluationType) => pipe(
+          evaluationType,
+          RA.filter((t) => t === 'curation-statement'),
+          (found) => found.length,
+        ),
+      ),
+    ),
+    reviews: pipe(
+      evaluationTypes,
+      O.match(
+        () => 0,
+        (evaluationType) => pipe(
+          evaluationType,
+          RA.filter((t) => t === 'review'),
+          (found) => found.length,
+        ),
+      ),
+    ),
+    authorResponse: pipe(
+      evaluationTypes,
+      O.match(
+        () => 0,
+        (evaluationType) => pipe(
+          evaluationType,
+          RA.filter((t) => t === 'author-response'),
+          (found) => found.length,
+        ),
+      ),
+    ),
   }),
 );
