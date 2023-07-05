@@ -101,6 +101,40 @@ describe('get-evaluations-for-doi', () => {
     });
   });
 
+  describe('when the evaluation is recorded as a review', () => {
+    const readmodel = pipe(
+      [
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'review'),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = pipe(
+      article1,
+      getEvaluationsForDoi(readmodel),
+    );
+
+    it('contains the right type', () => {
+      expect(result[0].type).toStrictEqual(O.some('review'));
+    });
+  });
+
+  describe('when the evaluation is recorded as an author response', () => {
+    const readmodel = pipe(
+      [
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'author-response'),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = pipe(
+      article1,
+      getEvaluationsForDoi(readmodel),
+    );
+
+    it('contains the right type', () => {
+      expect(result[0].type).toStrictEqual(O.some('author-response'));
+    });
+  });
+
   describe('when the evaluation is recorded without any type', () => {
     const readmodel = pipe(
       [
