@@ -14,7 +14,6 @@ import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
-import { discoverHypothesisEvaluationType } from './sagas/discover-hypothesis-evaluation-type';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -52,7 +51,7 @@ const startSagas = (ports: CollectedPorts) => async () => {
   ports.logger('info', 'Starting sagas');
   setInterval(async () => discoverElifeArticleSubjectArea(ports), 661 * 1000);
   setInterval(async () => addArticleToElifeSubjectAreaList(ports), 13 * 60 * 1000);
-  setInterval(async () => discoverHypothesisEvaluationType(ports), 61 * 1000);
+  // setInterval(async () => discoverHypothesisEvaluationType(ports), 61 * 1000);
   ports.logger('info', 'Sagas started');
 };
 
