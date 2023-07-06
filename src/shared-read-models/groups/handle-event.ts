@@ -8,24 +8,16 @@ export type ReadModel = Record<GID.GroupId, Group>;
 
 export const initialState = (): ReadModel => ({});
 
-const toGroup = (event: EventOfType<'GroupJoined'>) => {
-  let largeLogoPath: O.Option<string> = O.none;
-  if (event.groupId === GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0')) {
-    largeLogoPath = O.some('/static/images/article-page/elife-logo-sm.svg');
-  } else if (event.groupId === GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58')) {
-    largeLogoPath = O.some('/static/images/home-page/gigabyte.png');
-  }
-  return {
-    id: event.groupId,
-    name: event.name,
-    avatarPath: event.avatarPath,
-    descriptionPath: event.descriptionPath,
-    shortDescription: event.shortDescription,
-    homepage: event.homepage,
-    slug: event.slug,
-    largeLogoPath,
-  };
-};
+const toGroup = (event: EventOfType<'GroupJoined'>) => ({
+  id: event.groupId,
+  name: event.name,
+  avatarPath: event.avatarPath,
+  descriptionPath: event.descriptionPath,
+  shortDescription: event.shortDescription,
+  homepage: event.homepage,
+  slug: event.slug,
+  largeLogoPath: O.none,
+});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('GroupJoined')(event)) {
