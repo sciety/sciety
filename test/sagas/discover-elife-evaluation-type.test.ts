@@ -19,7 +19,10 @@ describe('discover-elife-evaluation-type', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluation(evaluation);
-      await discoverElifeEvaluationType({ logger: dummyLogger });
+      await discoverElifeEvaluationType({
+        ...framework.queries,
+        logger: dummyLogger,
+      });
       result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
     });
 
