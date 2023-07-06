@@ -7,9 +7,7 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
-import { EvaluationType } from '../../../../src/types/recorded-evaluation';
-
-const arbitraryEvaluationType = (): EvaluationType => 'curation-statement';
+import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 
 describe('record', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
