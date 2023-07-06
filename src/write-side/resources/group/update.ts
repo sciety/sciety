@@ -12,6 +12,7 @@ import { GroupId } from '../../../types/group-id';
 type GroupState = {
   name: string,
   shortDescription: string,
+  largeLogoPath: string | undefined,
 };
 
 type ReplayedGroupState = E.Either<'no-such-group' | 'bad-data', GroupState>;
@@ -24,6 +25,7 @@ const buildGroup = (state: ReplayedGroupState, event: DomainEvent): ReplayedGrou
     return E.right({
       name: event.name,
       shortDescription: event.shortDescription,
+      largeLogoPath: undefined,
     });
   }
   if (isEventOfType('GroupDetailsUpdated')(event)) {
@@ -34,6 +36,7 @@ const buildGroup = (state: ReplayedGroupState, event: DomainEvent): ReplayedGrou
         (groupState) => E.right({
           name: event.name ?? groupState.name,
           shortDescription: event.shortDescription ?? groupState.shortDescription,
+          largeLogoPath: event.largeLogoPath ?? groupState.largeLogoPath,
         }),
       ),
     );
@@ -80,6 +83,10 @@ const calculateAttributesToUpdate = (
   groupState: GroupState,
 ) => ({
   name: (command.name !== undefined && command.name !== groupState.name) ? command.name : undefined,
+  largeLogoPath: (command.largeLogoPath !== undefined
+    && command.largeLogoPath !== groupState.largeLogoPath)
+    ? command.largeLogoPath
+    : undefined,
   shortDescription: (command.shortDescription !== undefined
     && command.shortDescription !== groupState.shortDescription)
     ? command.shortDescription
@@ -89,6 +96,7 @@ const calculateAttributesToUpdate = (
 const hasAnyValues = (attributes: Record<string, string | undefined>): boolean => (
   (attributes.name !== undefined)
   || (attributes.shortDescription !== undefined)
+  || (attributes.largeLogoPath !== undefined)
 );
 
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
@@ -104,7 +112,6 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     homepage: undefined,
     avatarPath: undefined,
     descriptionPath: undefined,
-    largeLogoPath: undefined,
     slug: undefined,
     ...attributesToUpdate,
   })] : [])),

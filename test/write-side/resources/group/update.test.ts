@@ -60,7 +60,7 @@ describe('update', () => {
       describe.each([
         ['shortDescription'],
         ['name'],
-        // ['largeLogoPath'],
+        ['largeLogoPath'],
       ])('%s', (attributeToBeChanged) => {
         const newValue = arbitraryString();
 
