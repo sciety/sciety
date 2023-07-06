@@ -14,8 +14,6 @@ const requiredFields = t.type({
 
 const evaluationTypeCodec = t.union([t.literal('review'), t.literal('author-response'), t.literal('curation-statement')]);
 
-export type EvaluationType = t.TypeOf<typeof evaluationTypeCodec>;
-
 const optionalFields = t.partial({
   issuedAt: tt.DateFromISOString,
   evaluationType: evaluationTypeCodec,

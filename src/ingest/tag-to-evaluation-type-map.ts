@@ -1,4 +1,4 @@
-import { EvaluationType } from '../write-side/commands/record-evaluation';
+type EvaluationType = 'curation-statement' | 'author-response' | 'review';
 
 export const tagToEvaluationTypeMap: Record<EvaluationType, ReadonlyArray<string>> = {
   'curation-statement': [
