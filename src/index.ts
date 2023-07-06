@@ -14,7 +14,7 @@ import {
   CollectedPorts, createInfrastructure, Logger, replaceError,
 } from './infrastructure';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
-import {discoverElifeEvaluationType} from './sagas/discover-elife-evaluation-type';
+import { discoverElifeEvaluationType } from './sagas/discover-elife-evaluation-type';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {

@@ -3,7 +3,7 @@ import { discoverElifeEvaluationType } from '../../src/sagas/discover-elife-eval
 import { EvaluationType } from '../../src/types/recorded-evaluation';
 import { TestFramework, createTestFramework } from '../framework';
 import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
-import {dummyLogger} from '../dummy-logger';
+import { dummyLogger } from '../dummy-logger';
 
 describe('discover-elife-evaluation-type', () => {
   let framework: TestFramework;
@@ -19,7 +19,7 @@ describe('discover-elife-evaluation-type', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluation(evaluation);
-      await discoverElifeEvaluationType({ logger: dummyLogger});
+      await discoverElifeEvaluationType({ logger: dummyLogger });
       result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
     });
 
