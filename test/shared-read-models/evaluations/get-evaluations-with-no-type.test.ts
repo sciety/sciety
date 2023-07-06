@@ -4,9 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getEvaluationsWithNoType = (readModel: unknown) => () => [];
+import { getEvaluationsWithNoType } from '../../../src/shared-read-models/evaluations/get-evaluations-with-no-type';
 
 describe('get-evaluations-with-no-type', () => {
   describe('when some evaluations have no type', () => {
@@ -40,7 +38,7 @@ describe('get-evaluations-with-no-type', () => {
     );
     const result = getEvaluationsWithNoType(readModel)();
 
-    it.failing('returns only the evaluations with no type', () => {
+    it('returns only the evaluations with no type', () => {
       expect(result).toStrictEqual([evaluation2]);
     });
   });
