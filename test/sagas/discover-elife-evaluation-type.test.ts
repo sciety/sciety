@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { discoverElifeEvaluationType } from '../../src/sagas/discover-elife-evaluation-type';
 import { EvaluationType } from '../../src/types/recorded-evaluation';
 import { TestFramework, createTestFramework } from '../framework';
 import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
@@ -17,6 +18,7 @@ describe('discover-elife-evaluation-type', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluation(evaluation);
+      await discoverElifeEvaluationType();
       result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
     });
 
