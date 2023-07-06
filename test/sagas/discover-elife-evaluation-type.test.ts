@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { EvaluationType } from '../../src/types/recorded-evaluation';
 import { TestFramework, createTestFramework } from '../framework';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
 
 describe('discover-elife-evaluation-type', () => {
   let framework: TestFramework;
@@ -12,11 +12,12 @@ describe('discover-elife-evaluation-type', () => {
 
   describe('when there is an eLife evaluation missing its evaluation type', () => {
     const knownType: EvaluationType = 'review';
-    const articleId = arbitraryDoi();
+    const evaluation = arbitraryRecordedEvaluation();
     let result: ReturnType<typeof framework.queries.getEvaluationsForDoi>;
 
-    beforeEach(() => {
-      result = framework.queries.getEvaluationsForDoi(articleId);
+    beforeEach(async () => {
+      await framework.commandHelpers.recordEvaluation(evaluation);
+      result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
     });
 
     it.failing('the evaluation now has a known type', () => {
