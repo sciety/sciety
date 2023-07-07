@@ -6,19 +6,14 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { paginationControls } from '../../../../shared-components/pagination-controls';
 import { paginate } from './paginate';
-import { augmentWithUserDetails, Ports as AugmentWithUserDetailsPorts } from './augment-with-user-details';
+import { augmentWithUserDetails } from './augment-with-user-details';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
-import { constructTabsViewModel, Dependencies as TabsViewModelPorts } from '../../common-components/tabs-view-model';
+import { findFollowers } from './find-followers';
+import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { GroupId } from '../../../../types/group-id';
-import { Queries } from '../../../../shared-read-models';
-
-export type Ports = Pick<Queries, 'getGroupBySlug' | 'isFollowing'>
-& FindFollowersPorts
-& AugmentWithUserDetailsPorts
-& TabsViewModelPorts;
+import { Dependencies } from './dependencies';
 
 export const paramsCodec = t.type({
   slug: t.string,
@@ -32,7 +27,7 @@ export type Params = t.TypeOf<typeof paramsCodec>;
 
 const pageSize = 10;
 
-const isFollowing = (dependencies: Ports) => (groupId: GroupId, user: Params['user']) => pipe(
+const isFollowing = (dependencies: Dependencies) => (groupId: GroupId, user: Params['user']) => pipe(
   user,
   O.fold(
     () => false,
@@ -40,7 +35,7 @@ const isFollowing = (dependencies: Ports) => (groupId: GroupId, user: Params['us
   ),
 );
 
-type ConstructViewModel = (dependencies: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),
