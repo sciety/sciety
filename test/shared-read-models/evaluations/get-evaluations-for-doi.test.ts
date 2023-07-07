@@ -47,20 +47,20 @@ describe('get-evaluations-for-doi', () => {
   describe('when there is an arbitrary number of evaluations', () => {
     const article1 = arbitraryDoi();
     const article2 = arbitraryDoi();
-    const reviewId1 = arbitraryEvaluationLocator();
-    const reviewId2 = arbitraryEvaluationLocator();
-    const reviewId3 = arbitraryEvaluationLocator();
+    const evaluationLocator1 = arbitraryEvaluationLocator();
+    const evaluationLocator2 = arbitraryEvaluationLocator();
+    const evaluationLocator3 = arbitraryEvaluationLocator();
 
     it.each([
-      ['two evaluations', article1, [reviewId1, reviewId3]],
-      ['one evaluation', article2, [reviewId2]],
+      ['two evaluations', article1, [evaluationLocator1, evaluationLocator3]],
+      ['one evaluation', article2, [evaluationLocator2]],
       ['no evaluations', arbitraryDoi(), []],
     ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
       const actualEvaluations = pipe(
         [
-          evaluationRecorded(article1, reviewId1),
-          evaluationRecorded(article2, reviewId2),
-          evaluationRecorded(article1, reviewId3),
+          evaluationRecorded(article1, evaluationLocator1),
+          evaluationRecorded(article2, evaluationLocator2),
+          evaluationRecorded(article1, evaluationLocator3),
         ],
         runQuery(articleDoi),
         RA.map((evaluation) => evaluation.evaluationLocator),
