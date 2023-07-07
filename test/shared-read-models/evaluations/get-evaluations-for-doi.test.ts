@@ -44,13 +44,13 @@ const evaluationRecordedWithType = (
 );
 
 describe('get-evaluations-for-doi', () => {
-  const article1 = arbitraryDoi();
-  const article2 = arbitraryDoi();
-  const reviewId1 = arbitraryEvaluationLocator();
-  const reviewId2 = arbitraryEvaluationLocator();
-  const reviewId3 = arbitraryEvaluationLocator();
-
   describe('when there is an arbitrary number of evaluations', () => {
+    const article1 = arbitraryDoi();
+    const article2 = arbitraryDoi();
+    const reviewId1 = arbitraryEvaluationLocator();
+    const reviewId2 = arbitraryEvaluationLocator();
+    const reviewId3 = arbitraryEvaluationLocator();
+
     it.each([
       ['two evaluations', article1, [reviewId1, reviewId3]],
       ['one evaluation', article2, [reviewId2]],
@@ -71,33 +71,32 @@ describe('get-evaluations-for-doi', () => {
   });
 
   describe('when an evaluation has been recorded and then erased', () => {
-    it('does not return erased evaluations', () => {
-      const actualEvaluations = pipe(
-        [
-          evaluationRecorded(article1, reviewId1),
-          evaluationRecorded(article1, reviewId3),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: reviewId1 }),
-        ],
-        runQuery(article1),
-        RA.map((evaluation) => evaluation.evaluationLocator),
-      );
+    const articleId = arbitraryDoi();
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const actualEvaluations = pipe(
+      [
+        evaluationRecorded(articleId, evaluationLocator),
+        constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
+      ],
+      runQuery(articleId),
+      RA.map((evaluation) => evaluation.evaluationLocator),
+    );
 
-      expect(actualEvaluations).toStrictEqual([reviewId3]);
+    it('does not return erased evaluations', () => {
+      expect(actualEvaluations).toStrictEqual([]);
     });
   });
 
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
+    const articleId = arbitraryDoi();
+    const evaluationLocator = arbitraryEvaluationLocator();
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        evaluationRecordedHelper(groupId, article1, reviewId1, [], new Date()),
-        constructEvent('CurationStatementRecorded')({
-          articleId: article1,
-          groupId,
-          evaluationLocator: reviewId1,
-        }),
+        evaluationRecordedHelper(groupId, articleId, evaluationLocator, [], new Date()),
+        constructEvent('CurationStatementRecorded')({ articleId, groupId, evaluationLocator }),
       ],
-      runQuery(article1),
+      runQuery(articleId),
     );
 
     it('contains the right type', () => {
