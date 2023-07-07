@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructArticleCardViewModel, Ports as ConstructArticleCardViewModelPorts } from './construct-article-card-view-model';
+import { constructArticleCardViewModel, Dependencies as ConstructArticleCardViewModelDependencies } from './construct-article-card-view-model';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
@@ -8,7 +8,7 @@ import { ArticleCardWithControlsAndAnnotationViewModel } from './render-article-
 import { ArticleCardViewModel } from './render-article-card';
 import { Queries } from '../../shared-read-models';
 
-type Ports = ConstructArticleCardViewModelPorts & Queries;
+type Ports = ConstructArticleCardViewModelDependencies & Queries;
 
 const toArticleCardWithControlsAndAnnotationViewModel = (
   ports: Ports,

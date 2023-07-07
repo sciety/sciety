@@ -2,10 +2,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { ArticleCardViewModel, constructArticleCardViewModel, ConstructArticleCardViewModelPorts } from '../../../shared-components/article-card';
+import { ArticleCardViewModel, constructArticleCardViewModel, ConstructArticleCardViewModelDependencies } from '../../../shared-components/article-card';
 import { ArticleActivity } from '../../../types/article-activity';
 
-export type Ports = ConstructArticleCardViewModelPorts;
+export type Ports = ConstructArticleCardViewModelDependencies;
 
 type PopulateArticleViewModelsSkippingFailures = (
   ports: Ports,

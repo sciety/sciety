@@ -18,7 +18,7 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { CurationStatementTeaserViewModel, ArticleCardViewModel } from './render-article-card';
 
-export type Ports = Queries
+export type Dependencies = Queries
 & GetLatestArticleVersionDatePorts
 & {
   fetchArticle: FetchArticle,
@@ -28,7 +28,7 @@ export type Ports = Queries
   logger: Logger,
 };
 
-const getArticleDetails = (ports: Ports) => fetchArticleDetails(
+const getArticleDetails = (ports: Dependencies) => fetchArticleDetails(
   getLatestArticleVersionDate(ports),
   ports.fetchArticle,
 );
@@ -41,7 +41,7 @@ const transformIntoCurationStatementViewModel = (
 });
 
 export const constructArticleCardViewModel = (
-  ports: Ports,
+  ports: Dependencies,
 ) => (articleId: Doi): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardViewModel> => pipe(
   articleId,
   getArticleDetails(ports),
