@@ -27,6 +27,22 @@ const evaluationRecorded = (articleId: Doi, evaluationLocator: EvaluationLocator
   evaluationRecordedHelper(arbitraryGroupId(), articleId, evaluationLocator, [], new Date())
 );
 
+const evaluationRecordedWithType = (
+  articleId: Doi,
+  evaluationLocator: EvaluationLocator,
+  evaluationType: EvaluationType,
+) => (
+  evaluationRecordedHelper(
+    arbitraryGroupId(),
+    articleId,
+    evaluationLocator,
+    [],
+    new Date(),
+    new Date(),
+    evaluationType,
+  )
+);
+
 describe('get-evaluations-for-doi', () => {
   const article1 = arbitraryDoi();
   const article2 = arbitraryDoi();
@@ -90,6 +106,8 @@ describe('get-evaluations-for-doi', () => {
   });
 
   describe('when an evaluation is recorded', () => {
+    const articleId = arbitraryDoi();
+
     it.each([
       ['curation-statement', O.some('curation-statement')],
       ['review', O.some('review')],
@@ -98,17 +116,13 @@ describe('get-evaluations-for-doi', () => {
     ])('as %s, the type is returned correctly', (inputType, expectedType) => {
       const result = pipe(
         [
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            article1,
-            reviewId1,
-            [],
-            new Date(),
-            new Date(),
+          evaluationRecordedWithType(
+            articleId,
+            arbitraryEvaluationLocator(),
             inputType as unknown as EvaluationType,
           ),
         ],
-        runQuery(article1),
+        runQuery(articleId),
       );
 
       expect(result[0].type).toStrictEqual(expectedType);
@@ -116,27 +130,26 @@ describe('get-evaluations-for-doi', () => {
   });
 
   describe('when the type of an evaluation is updated later', () => {
+    const articleId = arbitraryDoi();
+    const evaluationLocator = arbitraryEvaluationLocator();
+
     it.each([
       [undefined, 'curation-statement'],
       ['review', 'author-response'],
     ])('updates the evaluation type from %s to %s', (initialType, updatedType) => {
       const result = pipe(
         [
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            article1,
-            reviewId1,
-            [],
-            new Date(),
-            new Date(),
+          evaluationRecordedWithType(
+            articleId,
+            evaluationLocator,
             initialType as unknown as EvaluationType,
           ),
           constructEvent('EvaluationUpdated')({
-            evaluationLocator: reviewId1,
+            evaluationLocator,
             evaluationType: updatedType as unknown as EvaluationType,
           }),
         ],
-        runQuery(article1),
+        runQuery(articleId),
       );
 
       expect(result[0].type).toStrictEqual(O.some(updatedType));
