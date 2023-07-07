@@ -36,22 +36,22 @@ const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment
   </section>
 `);
 
-const getFollowedGroups = (ports: Ports) => (uid: UserId) => pipe(
-  ports.getGroupsFollowedBy(uid),
+const getFollowedGroups = (dependencies: Ports) => (uid: UserId) => pipe(
+  dependencies.getGroupsFollowedBy(uid),
   RNEA.fromReadonlyArray,
   E.fromOption(constant('no-groups-followed')),
 );
 
-const getEvaluatedArticles = (ports: Ports) => (groups: ReadonlyArray<GroupId>) => pipe(
-  ports.getAllEvents,
+const getEvaluatedArticles = (dependencies: Ports) => (groups: ReadonlyArray<GroupId>) => pipe(
+  dependencies.getAllEvents,
   T.map((events) => followedGroupsActivities(events)(groups)),
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('no-groups-evaluated'))),
 );
 
-const constructArticleViewModels = (ports: Ports) => flow(
+const constructArticleViewModels = (dependencies: Ports) => flow(
   populateArticleViewModelsSkippingFailures(
-    ports,
+    dependencies,
   ),
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('all-articles-failed'))),
@@ -68,21 +68,21 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
     ${paginationControls('/my-feed?', pageofItems.nextPage)}`,
 );
 
-type YourFeed = (ports: Ports) => (
+type YourFeed = (dependencies: Ports) => (
   userId: UserId,
   pageSize: number,
   pageNumber: number,
 ) => T.Task<HtmlFragment>;
 
-export const myFeed: YourFeed = (ports) => (userId, pageSize, pageNumber) => pipe(
+export const myFeed: YourFeed = (dependencies) => (userId, pageSize, pageNumber) => pipe(
   userId,
   TE.right,
   TE.chainEitherK(flow(
-    getFollowedGroups(ports),
+    getFollowedGroups(dependencies),
     E.mapLeft(constant(followSomething)),
   )),
   TE.chain(flow(
-    getEvaluatedArticles(ports),
+    getEvaluatedArticles(dependencies),
     TE.mapLeft(constant(noEvaluationsYet)),
   )),
   TE.chainEitherK(flow(
@@ -91,7 +91,7 @@ export const myFeed: YourFeed = (ports) => (userId, pageSize, pageNumber) => pip
   )),
   TE.chain((pageOfItems) => pipe(
     pageOfItems.items,
-    constructArticleViewModels(ports),
+    constructArticleViewModels(dependencies),
     TE.bimap(
       constant(troubleFetchingTryAgain),
       renderArticleCardList(pageOfItems),

@@ -25,14 +25,14 @@ type HomePage = (params: Params) => TE.TaskEither<never, Page>;
 
 const callToAction = toHtmlFragment('<p class="my-feed-page-cta"><a href="/log-in">Log in</a> to follow your favourite Sciety groups and see what they have evaluated.</p>');
 
-export const myFeedPage = (ports: Ports): HomePage => (params: Params) => pipe(
+export const myFeedPage = (dependencies: Ports): HomePage => (params: Params) => pipe(
   {
     header: T.of(renderPageHeader()),
     content: pipe(
       params.user,
       O.fold(
         () => T.of(callToAction),
-        ({ id }) => myFeed(ports)(id, 20, params.page),
+        ({ id }) => myFeed(dependencies)(id, 20, params.page),
       ),
     ),
   },

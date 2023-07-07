@@ -8,18 +8,18 @@ import { ArticleActivity } from '../../../types/article-activity';
 export type Ports = ConstructArticleCardViewModelDependencies;
 
 type PopulateArticleViewModelsSkippingFailures = (
-  ports: Ports,
+  dependencies: Ports,
 ) => (
   activities: ReadonlyArray<ArticleActivity>
 ) => T.Task<ReadonlyArray<ArticleCardViewModel>>;
 
 export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = (
-  ports,
+  dependencies,
 ) => (activities) => pipe(
   activities,
   RA.map((activity) => pipe(
     activity.articleId,
-    constructArticleCardViewModel(ports),
+    constructArticleCardViewModel(dependencies),
     TO.fromTaskEither,
   )),
   T.sequenceArray,
