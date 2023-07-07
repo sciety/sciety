@@ -7,7 +7,6 @@ import { constructCurationTeasers } from './construct-curation-teasers';
 
 export type GroupsToHighlight = ReadonlyArray<{
   groupId: GID.GroupId,
-  logoPath: string,
 }>;
 
 export const constructViewModel = (dependencies: Dependencies, groupsToHighlight: GroupsToHighlight): ViewModel => pipe(
@@ -16,7 +15,7 @@ export const constructViewModel = (dependencies: Dependencies, groupsToHighlight
     groupToHighlight.groupId,
     dependencies.getGroup,
     O.map((group) => ({
-      logoPath: O.isSome(group.largeLogoPath) ? group.largeLogoPath.value : groupToHighlight.logoPath,
+      logoPath: O.isSome(group.largeLogoPath) ? group.largeLogoPath.value : '',
       link: `/groups/${group.slug}`,
       name: group.name,
     })),

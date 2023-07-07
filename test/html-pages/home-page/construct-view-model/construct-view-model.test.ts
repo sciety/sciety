@@ -28,8 +28,8 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.createGroup(group2);
         await framework.commandHelpers.updateGroupDetails(group2.id, group2LogoPath);
         viewModel = constructViewModel(framework.dependenciesForViews, [
-          { groupId: group1.id, logoPath: group1LogoPath },
-          { groupId: group2.id, logoPath: group2LogoPath },
+          { groupId: group1.id },
+          { groupId: group2.id },
         ]);
       });
 
@@ -64,18 +64,17 @@ describe('construct-view-model', () => {
 
     describe('when any of the groups can not be found', () => {
       const existingGroup = arbitraryGroup();
-      const existingGroupLogoPath = arbitraryString();
       const notSelectedGroup = arbitraryGroup();
       const notExistingGroupId = arbitraryGroupId();
 
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(existingGroup);
-        await framework.commandHelpers.updateGroupDetails(existingGroup.id, existingGroupLogoPath);
+        await framework.commandHelpers.updateGroupDetails(existingGroup.id, arbitraryString());
         await framework.commandHelpers.createGroup(notSelectedGroup);
         await framework.commandHelpers.updateGroupDetails(notSelectedGroup.id, arbitraryString());
         viewModel = constructViewModel(framework.dependenciesForViews, [
-          { groupId: existingGroup.id, logoPath: existingGroupLogoPath },
-          { groupId: notExistingGroupId, logoPath: arbitraryString() },
+          { groupId: existingGroup.id },
+          { groupId: notExistingGroupId },
         ]);
       });
 

@@ -112,7 +112,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       largeLogoPath,
     },
     invoke(commandHandlers.updateGroupDetails, 'updateGroupDetails'),
-  ),
+  )(),
   updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
     {
       userId,
