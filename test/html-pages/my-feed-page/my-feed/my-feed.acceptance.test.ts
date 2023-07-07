@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { JSDOM } from 'jsdom';
-import { dummyLogger } from '../../../dummy-logger';
 import { myFeed, Dependencies } from '../../../../src/html-pages/my-feed-page/my-feed';
 import {
   feedTitle,
@@ -23,20 +22,18 @@ import { arbitraryDoi } from '../../../types/doi.helper';
 
 describe('my-feed acceptance', () => {
   let framework: TestFramework;
-  let defaultAdapters: Dependencies;
+  let defaultDependencies: Dependencies;
 
   beforeEach(() => {
     framework = createTestFramework();
-    defaultAdapters = {
-      ...framework.queries,
+    defaultDependencies = {
+      ...framework.dependenciesForViews,
       getAllEvents: framework.getAllEvents,
-      ...framework.happyPathThirdParties,
-      logger: dummyLogger,
     };
   });
 
   it('displays the feed title', async () => {
-    const html = await myFeed(defaultAdapters)(arbitraryUserId(), 20, 1)();
+    const html = await myFeed(defaultDependencies)(arbitraryUserId(), 20, 1)();
 
     expect(html).toContain(feedTitle);
   });
@@ -57,7 +54,7 @@ describe('my-feed acceptance', () => {
       });
 
       it('displays the calls to action to follow other groups or return later', async () => {
-        const html = await myFeed(defaultAdapters)(userDetails.id, 20, 1)();
+        const html = await myFeed(defaultDependencies)(userDetails.id, 20, 1)();
 
         expect(html).toContain(noEvaluationsYet);
       });
@@ -66,7 +63,7 @@ describe('my-feed acceptance', () => {
     // Your feed is empty! Start following some groups to see their most recent evaluations right here.
     describe('not following any groups', () => {
       it('displays call to action to follow groups', async () => {
-        const html = await myFeed(defaultAdapters)(userDetails.id, 20, 1)();
+        const html = await myFeed(defaultDependencies)(userDetails.id, 20, 1)();
 
         expect(html).toContain(followSomething);
       });
@@ -83,7 +80,7 @@ describe('my-feed acceptance', () => {
         const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
         await framework.commandHelpers.followGroup(userDetails.id, group.id);
         await framework.commandHelpers.recordEvaluation(evaluation);
-        const html = await myFeed(defaultAdapters)(userDetails.id, 20, 1)();
+        const html = await myFeed(defaultDependencies)(userDetails.id, 20, 1)();
 
         expect(html).toContain('class="article-card"');
       });
@@ -97,7 +94,7 @@ describe('my-feed acceptance', () => {
         await framework.commandHelpers.recordEvaluation(evaluation2);
         await framework.commandHelpers.recordEvaluation(evaluation3);
         const pageSize = 2;
-        const renderedComponent = await myFeed(defaultAdapters)(userDetails.id, pageSize, 1)();
+        const renderedComponent = await myFeed(defaultDependencies)(userDetails.id, pageSize, 1)();
         const html = JSDOM.fragment(renderedComponent);
         const itemCount = Array.from(html.querySelectorAll('.article-card')).length;
 
@@ -114,8 +111,8 @@ describe('my-feed acceptance', () => {
         const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
         await framework.commandHelpers.followGroup(userDetails.id, group.id);
         await framework.commandHelpers.recordEvaluation(evaluation);
-        const adapters = {
-          ...defaultAdapters,
+        const dependencies = {
+          ...defaultDependencies,
           fetchArticle: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
             authors: O.none,
@@ -124,7 +121,7 @@ describe('my-feed acceptance', () => {
             doi: arbitraryDoi(),
           }),
         };
-        const html = await myFeed(adapters)(userDetails.id, 20, 1)();
+        const html = await myFeed(dependencies)(userDetails.id, 20, 1)();
 
         expect(html).toContain('My article title');
       });
@@ -134,11 +131,11 @@ describe('my-feed acceptance', () => {
           const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
           await framework.commandHelpers.followGroup(userDetails.id, group.id);
           await framework.commandHelpers.recordEvaluation(evaluation);
-          const adapters = {
-            ...defaultAdapters,
+          const dependencies = {
+            ...defaultDependencies,
             fetchArticle: () => TE.left(DE.unavailable),
           };
-          const html = await myFeed(adapters)(userDetails.id, 20, 1)();
+          const html = await myFeed(dependencies)(userDetails.id, 20, 1)();
 
           expect(html).toContain(troubleFetchingTryAgain);
         });
