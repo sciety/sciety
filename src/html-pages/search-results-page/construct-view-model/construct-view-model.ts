@@ -9,12 +9,12 @@ import { Params, performAllSearches, Ports as PerformAllSearchesPorts } from './
 import { selectSubsetToDisplay } from './select-subset-to-display';
 import { ViewModel } from '../view-model';
 
-export type Ports = PerformAllSearchesPorts
+export type Dependencies = PerformAllSearchesPorts
 // The next two lines are necessary as getLatestVersionDate is not in CollectedPorts and is constructed locally
 & Omit<FetchExtraDetailsPorts, 'getLatestArticleVersionDate'>;
 
 export const constructViewModel = (
-  dependencies: Ports,
+  dependencies: Dependencies,
   pageSize: number,
 ) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   params,
