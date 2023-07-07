@@ -1,12 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import * as DE from '../../../types/data-error';
 import { Group } from '../../../types/group';
 import { GroupId } from '../../../types/group-id';
-import { Queries } from '../../../shared-read-models';
+import { Dependencies } from './dependencies';
 
 type SearchableGroupFields = Group & { description: string };
 
@@ -28,13 +26,7 @@ const includesQuery = (query: string) => (group: SearchableGroupFields) => pipe(
   ),
 );
 
-type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
-
-export type Ports = Queries & {
-  fetchStaticFile: FetchStaticFile,
-};
-
-type FindGroups = (dependencies: Ports, query: string)
+type FindGroups = (dependencies: Dependencies, query: string)
 => T.Task<ReadonlyArray<GroupId>>;
 
 export const findGroups: FindGroups = (dependencies, query) => pipe(

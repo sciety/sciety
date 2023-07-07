@@ -2,18 +2,18 @@ import * as TE from 'fp-ts/TaskEither';
 import { GroupId } from '../../../../src/types/group-id';
 import { arbitraryString } from '../../../helpers';
 import { arbitraryGroup } from '../../../types/group.helper';
-import { Ports, findGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/find-groups';
+import { findGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/find-groups';
 import { TestFramework, createTestFramework } from '../../../framework';
 
 describe('find-groups', () => {
   let framework: TestFramework;
-  let adapters: Ports;
+  let dependencies: TestFramework['dependenciesForViews'];
 
   beforeEach(async () => {
     framework = createTestFramework();
-    adapters = {
+    dependencies = {
+      ...framework.dependenciesForViews,
       fetchStaticFile: () => TE.right(''),
-      ...framework.queries,
     };
   });
 
@@ -26,7 +26,7 @@ describe('find-groups', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group1);
       await framework.commandHelpers.createGroup(group2);
-      result = await findGroups(adapters, group1.name)();
+      result = await findGroups(dependencies, group1.name)();
     });
 
     it('returns an array containing the groupId', async () => {
@@ -38,7 +38,7 @@ describe('find-groups', () => {
     let result: ReadonlyArray<GroupId>;
 
     beforeEach(async () => {
-      result = await findGroups(adapters, arbitraryString())();
+      result = await findGroups(dependencies, arbitraryString())();
     });
 
     it('returns an empty array', async () => {
