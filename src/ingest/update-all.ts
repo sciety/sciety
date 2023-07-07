@@ -8,19 +8,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import axiosRetry, { exponentialDelay } from 'axios-retry';
-import * as Es from './types/evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
-import { SkippedItem } from './types/skipped-item';
+import { FeedData } from './types/feed-data';
 
 type Adapters = {
   fetchData: FetchData,
   fetchGoogleSheet: FetchGoogleSheet,
-};
-
-export type FeedData = {
-  evaluations: Es.Evaluations,
-  skippedItems: ReadonlyArray<SkippedItem>,
 };
 
 export type FetchEvaluations = (adapters: Adapters) => TE.TaskEither<string, FeedData>;
