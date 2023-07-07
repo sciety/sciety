@@ -24,7 +24,9 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(group1);
+        await framework.commandHelpers.updateGroupDetails(group1.id, group1LogoPath);
         await framework.commandHelpers.createGroup(group2);
+        await framework.commandHelpers.updateGroupDetails(group2.id, group2LogoPath);
         viewModel = constructViewModel(framework.dependenciesForViews, [
           { groupId: group1.id, logoPath: group1LogoPath },
           { groupId: group2.id, logoPath: group2LogoPath },
@@ -68,7 +70,9 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(existingGroup);
+        await framework.commandHelpers.updateGroupDetails(existingGroup.id, existingGroupLogoPath);
         await framework.commandHelpers.createGroup(notSelectedGroup);
+        await framework.commandHelpers.updateGroupDetails(notSelectedGroup.id, arbitraryString());
         viewModel = constructViewModel(framework.dependenciesForViews, [
           { groupId: existingGroup.id, logoPath: existingGroupLogoPath },
           { groupId: notExistingGroupId, logoPath: arbitraryString() },

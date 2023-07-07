@@ -23,6 +23,7 @@ export type CommandHelpers = {
   recordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
+  updateGroupDetails: (groupId: GroupId, largeLogoPath: string) => Promise<unknown>,
   updateUserDetails: (userId: UserId, avatarUrl?: string, displayName?: string) => Promise<unknown>,
 };
 
@@ -105,6 +106,13 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.unfollowGroup, 'unfollowGroup'),
   )(),
+  updateGroupDetails: async (groupId, largeLogoPath) => pipe(
+    {
+      groupId,
+      largeLogoPath,
+    },
+    invoke(commandHandlers.updateGroupDetails, 'updateGroupDetails'),
+  ),
   updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
     {
       userId,

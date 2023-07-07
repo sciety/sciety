@@ -17,7 +17,7 @@ import {
 } from '../../src/write-side/command-handlers';
 import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
 import { CommandHandler } from '../../src/types/command-handler';
-import { AddGroupCommand } from '../../src/write-side/commands';
+import { AddGroupCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
 import * as curationStatementResource from '../../src/write-side/resources/curation-statement';
 import { RecordCurationStatementCommand } from '../../src/write-side/commands/record-curation-statement';
 import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
@@ -54,6 +54,14 @@ const createGroup: CreateGroup = (adapters) => (command) => pipe(
   TE.chainTaskK(adapters.commitEvents),
 );
 
+type UpdateGroupDetails = (adapters: EventStore) => CommandHandler<UpdateGroupDetailsCommand>;
+
+const updateGroupDetails: UpdateGroupDetails = (adapters) => (command) => pipe(
+  adapters.getAllEvents,
+  T.map(groupResource.update(command)),
+  TE.chainTaskK(adapters.commitEvents),
+);
+
 type RecordCurationStatement = (adapters: EventStore) => CommandHandler<RecordCurationStatementCommand>;
 
 const recordCurationStatement: RecordCurationStatement = (adapters) => (command) => pipe(
@@ -72,6 +80,7 @@ const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) =>
   recordEvaluation: recordEvaluationCommandHandler({ ...eventStore, ...queries }),
   removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
   unfollowGroup: unfollowCommandHandler(eventStore),
+  updateGroupDetails: updateGroupDetails(eventStore),
   updateUserDetails: updateUserDetailsCommandHandler(eventStore),
 });
 
