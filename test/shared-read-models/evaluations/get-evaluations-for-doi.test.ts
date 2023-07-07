@@ -91,28 +91,28 @@ describe('get-evaluations-for-doi', () => {
     });
   });
 
-  describe.each([
-    ['curation-statement', O.some('curation-statement')],
-    ['review', O.some('review')],
-    ['author-response', O.some('author-response')],
-    [undefined, O.none],
-  ])('when the evaluation is recorded as a %s', (inputType, expectedType) => {
-    const result = pipe(
-      [
-        evaluationRecordedHelper(
-          group1,
-          article1,
-          reviewId1,
-          [],
-          new Date(),
-          new Date(),
-          inputType as unknown as EvaluationType,
-        ),
-      ],
-      runQuery(article1),
-    );
+  describe('when an evaluation is recorded', () => {
+    it.each([
+      ['curation-statement', O.some('curation-statement')],
+      ['review', O.some('review')],
+      ['author-response', O.some('author-response')],
+      [undefined, O.none],
+    ])('as %s, the type is returned correctly', (inputType, expectedType) => {
+      const result = pipe(
+        [
+          evaluationRecordedHelper(
+            group1,
+            article1,
+            reviewId1,
+            [],
+            new Date(),
+            new Date(),
+            inputType as unknown as EvaluationType,
+          ),
+        ],
+        runQuery(article1),
+      );
 
-    it('contains the right type', () => {
       expect(result[0].type).toStrictEqual(expectedType);
     });
   });
