@@ -32,31 +32,31 @@ export type Params = t.TypeOf<typeof paramsCodec>;
 
 const pageSize = 10;
 
-const isFollowing = (ports: Ports) => (groupId: GroupId, user: Params['user']) => pipe(
+const isFollowing = (dependencies: Ports) => (groupId: GroupId, user: Params['user']) => pipe(
   user,
   O.fold(
     () => false,
-    (u) => ports.isFollowing(groupId)(u.id),
+    (u) => dependencies.isFollowing(groupId)(u.id),
   ),
 );
 
-type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (dependencies: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
-  ports.getGroupBySlug(params.slug),
+export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
+  dependencies.getGroupBySlug(params.slug),
   E.fromOption(() => DE.notFound),
   E.chain((group) => pipe(
     group.id,
-    findFollowers(ports),
+    findFollowers(dependencies),
     paginate(params.page, pageSize),
     E.map((pageOfFollowers) => ({
       group,
       pageNumber: params.page,
-      isFollowing: isFollowing(ports)(group.id, params.user),
+      isFollowing: isFollowing(dependencies)(group.id, params.user),
       followerCount: pageOfFollowers.numberOfOriginalItems,
-      followers: augmentWithUserDetails(ports)(pageOfFollowers.items),
+      followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
       nextLink: paginationControls(`/groups/${group.slug}/followers?`, pageOfFollowers.nextPage),
-      tabs: constructTabsViewModel(ports, group),
+      tabs: constructTabsViewModel(dependencies, group),
     })),
   )),
   TE.fromEither,

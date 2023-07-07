@@ -7,18 +7,18 @@ import { Queries } from '../../../../shared-read-models';
 
 export type Ports = Pick<Queries, 'getFollowers' | 'getGroupsFollowedBy' | 'selectAllListsOwnedBy'>;
 
-type FindFollowers = (ports: Ports) => (groupId: GroupId) => ReadonlyArray<Follower>;
+type FindFollowers = (dependencies: Ports) => (groupId: GroupId) => ReadonlyArray<Follower>;
 
-export const findFollowers: FindFollowers = (ports) => (groupId) => pipe(
-  ports.getFollowers(groupId),
+export const findFollowers: FindFollowers = (dependencies) => (groupId) => pipe(
+  dependencies.getFollowers(groupId),
   RA.map((userId) => ({
     userId,
     followedGroupCount: pipe(
-      ports.getGroupsFollowedBy(userId),
+      dependencies.getGroupsFollowedBy(userId),
       RA.size,
     ),
     listCount: pipe(
-      ports.selectAllListsOwnedBy(LOID.fromUserId(userId)),
+      dependencies.selectAllListsOwnedBy(LOID.fromUserId(userId)),
       RA.size,
     ),
   })),

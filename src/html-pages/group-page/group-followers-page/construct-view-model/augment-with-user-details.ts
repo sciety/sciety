@@ -9,13 +9,13 @@ export type Ports = {
 };
 
 export const augmentWithUserDetails = (
-  ports: Ports,
+  dependencies: Ports,
 ) => (
   followers: ReadonlyArray<Follower>,
 ): ReadonlyArray<UserCardViewModel> => pipe(
   followers,
   RA.map((follower) => follower.userId),
-  RA.map(ports.lookupUser),
+  RA.map(dependencies.lookupUser),
   RA.compact,
   (userDetailsArray) => pipe(
     followers,
