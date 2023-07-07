@@ -23,10 +23,10 @@ export const paramsCodec = t.type({
 
 export type Params = t.TypeOf<typeof paramsCodec>;
 
-type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (dependencies: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
-  ports.getGroupBySlug(params.slug),
+export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
+  dependencies.getGroupBySlug(params.slug),
   O.map((group) => pipe(
     {
       group,
@@ -34,11 +34,11 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         params.user,
         O.fold(
           () => false,
-          (u) => ports.isFollowing(group.id)(u.id),
+          (u) => dependencies.isFollowing(group.id)(u.id),
         ),
       ),
-      listCards: constructListCards(ports, group),
-      tabs: constructTabsViewModel(ports, group),
+      listCards: constructListCards(dependencies, group),
+      tabs: constructTabsViewModel(dependencies, group),
     },
   )),
   TE.fromOption(() => DE.notFound),

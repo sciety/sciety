@@ -9,10 +9,10 @@ import { Queries } from '../../../../shared-read-models';
 
 export type Ports = Pick<Queries, 'selectAllListsOwnedBy'>;
 
-export const constructListCards = (ports: Ports, group: Group): ReadonlyArray<ListCardViewModel> => pipe(
+export const constructListCards = (dependencies: Ports, group: Group): ReadonlyArray<ListCardViewModel> => pipe(
   group.id,
   LOID.fromGroupId,
-  ports.selectAllListsOwnedBy,
+  dependencies.selectAllListsOwnedBy,
   sortByDefaultListOrdering,
   RA.map(constructListCardViewModelWithoutAvatar),
 );
