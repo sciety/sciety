@@ -5,29 +5,20 @@ import * as TE from 'fp-ts/TaskEither';
 import { UserDetails } from '../../../../src/types/user-details';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { constructViewModel, Ports } from '../../../../src/html-pages/article-page/construct-view-model';
+import { constructViewModel } from '../../../../src/html-pages/article-page/construct-view-model';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { List } from '../../../../src/types/list';
 import { arbitraryList } from '../../../types/list-helper';
 import { createTestFramework, TestFramework } from '../../../framework';
-import {
-  LoggedInUserListManagement,
-} from '../../../../src/html-pages/article-page/view-model';
-import { dummyLogger } from '../../../dummy-logger';
+import { LoggedInUserListManagement } from '../../../../src/html-pages/article-page/view-model';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let adapters: Ports;
   const articleId = arbitraryArticleId();
 
   beforeEach(() => {
     framework = createTestFramework();
-    adapters = {
-      ...framework.queries,
-      ...framework.happyPathThirdParties,
-      logger: dummyLogger,
-    };
   });
 
   describe('when the user is logged in', () => {
@@ -49,7 +40,7 @@ describe('construct-view-model', () => {
             doi: articleId,
             user: O.some({ id: userDetails.id }),
           },
-          constructViewModel(adapters),
+          constructViewModel(framework.dependenciesForViews),
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),
@@ -83,7 +74,7 @@ describe('construct-view-model', () => {
             doi: articleId,
             user: O.some({ id: userDetails.id }),
           },
-          constructViewModel(adapters),
+          constructViewModel(framework.dependenciesForViews),
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),
@@ -121,7 +112,7 @@ describe('construct-view-model', () => {
             doi: articleId,
             user: O.some({ id: userDetails.id }),
           },
-          constructViewModel(adapters),
+          constructViewModel(framework.dependenciesForViews),
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),
@@ -154,7 +145,7 @@ describe('construct-view-model', () => {
             doi: articleId,
             user: O.some({ id: userDetails.id }),
           },
-          constructViewModel(adapters),
+          constructViewModel(framework.dependenciesForViews),
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),

@@ -5,9 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { feedSummary } from './feed-summary';
-import {
-  getArticleFeedEventsByDateDescending,
-} from './get-article-feed-events';
+import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ViewModel } from '../view-model';
@@ -24,9 +22,7 @@ export type Params = {
   user: O.Option<{ id: UserId }>,
 };
 
-export type Ports = Dependencies;
-
-type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (ports: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
   ports.fetchArticle(params.doi),
