@@ -5,10 +5,10 @@ import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 import { Queries } from '../../../shared-read-models';
 import { ViewModel } from '../view-model';
 
-export type Ports = Queries & ConstructListCardViewModelWithAvatarPorts;
+export type Dependencies = Queries & ConstructListCardViewModelWithAvatarPorts;
 
-export const constructViewModel = (ports: Ports): ViewModel => pipe(
-  ports.getNonEmptyUserLists(),
+export const constructViewModel = (dependencies: Dependencies): ViewModel => pipe(
+  dependencies.getNonEmptyUserLists(),
   sortByDefaultListOrdering,
-  RA.map(constructListCardViewModelWithAvatar(ports)),
+  RA.map(constructListCardViewModelWithAvatar(dependencies)),
 );
