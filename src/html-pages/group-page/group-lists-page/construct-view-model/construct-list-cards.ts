@@ -5,11 +5,9 @@ import { ListCardViewModel } from '../../../../shared-components/list-card/rende
 import { Group } from '../../../../types/group';
 import * as LOID from '../../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
-import { Queries } from '../../../../shared-read-models';
+import { Dependencies } from './dependencies';
 
-export type Ports = Pick<Queries, 'selectAllListsOwnedBy'>;
-
-export const constructListCards = (dependencies: Ports, group: Group): ReadonlyArray<ListCardViewModel> => pipe(
+export const constructListCards = (dependencies: Dependencies, group: Group): ReadonlyArray<ListCardViewModel> => pipe(
   group.id,
   LOID.fromGroupId,
   dependencies.selectAllListsOwnedBy,

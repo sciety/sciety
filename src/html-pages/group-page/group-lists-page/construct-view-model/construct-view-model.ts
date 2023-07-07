@@ -6,13 +6,9 @@ import * as tt from 'io-ts-types';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { constructListCards, Ports as ConstructListCardsPorts } from './construct-list-cards';
-import { constructTabsViewModel, Dependencies as TabsViewModelPorts } from '../../common-components/tabs-view-model';
-import { Queries } from '../../../../shared-read-models';
-
-export type Ports = Pick<Queries, 'getGroupBySlug' | 'isFollowing'>
-& ConstructListCardsPorts
-& TabsViewModelPorts;
+import { constructListCards } from './construct-list-cards';
+import { constructTabsViewModel } from '../../common-components/tabs-view-model';
+import { Dependencies } from './dependencies';
 
 export const paramsCodec = t.type({
   slug: t.string,
@@ -23,7 +19,7 @@ export const paramsCodec = t.type({
 
 export type Params = t.TypeOf<typeof paramsCodec>;
 
-type ConstructViewModel = (dependencies: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),
