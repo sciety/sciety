@@ -4,28 +4,20 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { followedGroupsActivities } from './followed-groups-activities';
-import { populateArticleViewModelsSkippingFailures, Ports as PopulateArticleViewModelsSkippingFailuresPorts } from './populate-article-view-models-skipping-failures';
+import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models-skipping-failures';
 import {
   feedTitle,
   followSomething,
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from './static-content';
-import {
-  renderArticleCard,
-} from '../../../shared-components/article-card';
+import { renderArticleCard } from '../../../shared-components/article-card';
 import { PageOfItems, paginate } from '../../../shared-components/paginate';
 import { paginationControls } from '../../../shared-components/pagination-controls';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
-import { GetAllEvents } from '../../../shared-ports';
-import { Queries } from '../../../shared-read-models';
-
-export type Dependencies = PopulateArticleViewModelsSkippingFailuresPorts & {
-  getAllEvents: GetAllEvents,
-  getGroupsFollowedBy: Queries['getGroupsFollowedBy'],
-};
+import { Dependencies } from './dependencies';
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>

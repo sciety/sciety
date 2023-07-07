@@ -1,1 +1,2 @@
-export { myFeed, Dependencies } from './my-feed';
+export { Dependencies } from './dependencies';
+export { myFeed } from './my-feed';
