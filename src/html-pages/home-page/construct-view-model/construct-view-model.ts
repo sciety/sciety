@@ -16,7 +16,7 @@ export const constructViewModel = (dependencies: Dependencies, groupsToHighlight
     groupToHighlight.groupId,
     dependencies.getGroup,
     O.map((group) => ({
-      logoPath: groupToHighlight.logoPath,
+      logoPath: O.isSome(group.largeLogoPath) ? group.largeLogoPath.value : groupToHighlight.logoPath,
       link: `/groups/${group.slug}`,
       name: group.name,
     })),
