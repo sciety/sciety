@@ -5,13 +5,13 @@ import { listDescriptionMaxLength, listNameMaxLength } from '../../write-side/co
 import { ListId } from '../../types/list-id';
 import { Queries } from '../../shared-read-models';
 
-export type Ports = {
+export type Dependencies = {
   lookupList: Queries['lookupList'],
 };
 
-export const constructViewModel = (adapters: Ports) => (id: ListId): E.Either<'no-such-list', ViewModel> => pipe(
+export const constructViewModel = (dependencies: Dependencies) => (id: ListId): E.Either<'no-such-list', ViewModel> => pipe(
   id,
-  adapters.lookupList,
+  dependencies.lookupList,
   E.fromOption(() => 'no-such-list' as const),
   E.map((list) => ({
     listName: list.name,

@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { constructViewModel, Ports } from './construct-view-model';
+import { constructViewModel, Dependencies } from './construct-view-model';
 import { renderEditListDetailsFormPage } from './render-edit-list-details-form-page';
 import { listIdCodec, ListId } from '../../types/list-id';
 import * as DE from '../../types/data-error';
@@ -21,11 +21,11 @@ const renderNoSuchListError = (): RenderPageError => (
   }
 );
 
-export const editListDetailsFormPage = (adapters: Ports) => (
+export const editListDetailsFormPage = (dependencies: Dependencies) => (
   params: { id: ListId },
 ): TE.TaskEither<RenderPageError, Page> => pipe(
   params.id,
-  constructViewModel(adapters),
+  constructViewModel(dependencies),
   E.bimap(
     renderNoSuchListError,
     renderEditListDetailsFormPage,
