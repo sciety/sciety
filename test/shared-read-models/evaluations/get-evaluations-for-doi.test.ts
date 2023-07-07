@@ -26,9 +26,9 @@ describe('get-evaluations-for-doi', () => {
     ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
-          evaluationRecordedHelper(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
-          evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
+          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date()),
+          evaluationRecordedHelper(group1, article2, reviewId2, [], new Date()),
+          evaluationRecordedHelper(group2, article1, reviewId3, [], new Date()),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -46,8 +46,8 @@ describe('get-evaluations-for-doi', () => {
     it('does not return erased evaluations', () => {
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
-          evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
+          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date()),
+          evaluationRecordedHelper(group2, article1, reviewId3, [], new Date()),
           constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: reviewId1 }),
         ],
         RA.reduce(initialState(), handleEvent),
@@ -65,7 +65,7 @@ describe('get-evaluations-for-doi', () => {
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
     const readmodel = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date()),
         constructEvent('CurationStatementRecorded')({
           articleId: article1,
           groupId: group1,
@@ -87,7 +87,7 @@ describe('get-evaluations-for-doi', () => {
   describe('when the evaluation is recorded as a curation statement', () => {
     const readmodel = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'curation-statement'),
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), 'curation-statement'),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -104,7 +104,7 @@ describe('get-evaluations-for-doi', () => {
   describe('when the evaluation is recorded as a review', () => {
     const readmodel = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'review'),
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), 'review'),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -121,7 +121,7 @@ describe('get-evaluations-for-doi', () => {
   describe('when the evaluation is recorded as an author response', () => {
     const readmodel = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'author-response'),
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), 'author-response'),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -138,7 +138,7 @@ describe('get-evaluations-for-doi', () => {
   describe('when the evaluation is recorded without any type', () => {
     const readmodel = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), undefined),
+        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), undefined),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -156,7 +156,7 @@ describe('get-evaluations-for-doi', () => {
     it('contains the new evaluation type', () => {
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), undefined),
+          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), undefined),
           constructEvent('EvaluationUpdated')({
             evaluationLocator: reviewId1,
             evaluationType: 'curation-statement',
@@ -177,7 +177,7 @@ describe('get-evaluations-for-doi', () => {
     it('contains the new evaluation type', () => {
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z'), 'review'),
+          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), 'review'),
           constructEvent('EvaluationUpdated')({
             evaluationLocator: reviewId1,
             evaluationType: 'author-response',
