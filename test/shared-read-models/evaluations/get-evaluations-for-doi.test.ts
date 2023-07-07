@@ -9,7 +9,6 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
 import { Doi } from '../../../src/types/doi';
-import { GroupId } from '../../../src/types/group-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 
@@ -24,15 +23,13 @@ const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
   );
 };
 
-const evaluationRecorded = (groupId: GroupId, articleId: Doi, evaluationLocator: EvaluationLocator) => (
-  evaluationRecordedHelper(groupId, articleId, evaluationLocator, [], new Date())
+const evaluationRecorded = (articleId: Doi, evaluationLocator: EvaluationLocator) => (
+  evaluationRecordedHelper(arbitraryGroupId(), articleId, evaluationLocator, [], new Date())
 );
 
 describe('get-evaluations-for-doi', () => {
   const article1 = arbitraryDoi();
   const article2 = arbitraryDoi();
-  const group1 = arbitraryGroupId();
-  const group2 = arbitraryGroupId();
   const reviewId1 = arbitraryEvaluationLocator();
   const reviewId2 = arbitraryEvaluationLocator();
   const reviewId3 = arbitraryEvaluationLocator();
@@ -45,9 +42,9 @@ describe('get-evaluations-for-doi', () => {
     ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
       const actualEvaluations = pipe(
         [
-          evaluationRecorded(group1, article1, reviewId1),
-          evaluationRecorded(group1, article2, reviewId2),
-          evaluationRecorded(group2, article1, reviewId3),
+          evaluationRecorded(article1, reviewId1),
+          evaluationRecorded(article2, reviewId2),
+          evaluationRecorded(article1, reviewId3),
         ],
         runQuery(articleDoi),
         RA.map((evaluation) => evaluation.evaluationLocator),
@@ -61,8 +58,8 @@ describe('get-evaluations-for-doi', () => {
     it('does not return erased evaluations', () => {
       const actualEvaluations = pipe(
         [
-          evaluationRecorded(group1, article1, reviewId1),
-          evaluationRecorded(group2, article1, reviewId3),
+          evaluationRecorded(article1, reviewId1),
+          evaluationRecorded(article1, reviewId3),
           constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: reviewId1 }),
         ],
         runQuery(article1),
@@ -74,12 +71,13 @@ describe('get-evaluations-for-doi', () => {
   });
 
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
+    const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        evaluationRecorded(group1, article1, reviewId1),
+        evaluationRecordedHelper(groupId, article1, reviewId1, [], new Date()),
         constructEvent('CurationStatementRecorded')({
           articleId: article1,
-          groupId: group1,
+          groupId,
           evaluationLocator: reviewId1,
         }),
       ],
@@ -101,7 +99,7 @@ describe('get-evaluations-for-doi', () => {
       const result = pipe(
         [
           evaluationRecordedHelper(
-            group1,
+            arbitraryGroupId(),
             article1,
             reviewId1,
             [],
@@ -125,7 +123,7 @@ describe('get-evaluations-for-doi', () => {
       const result = pipe(
         [
           evaluationRecordedHelper(
-            group1,
+            arbitraryGroupId(),
             article1,
             reviewId1,
             [],
