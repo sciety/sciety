@@ -22,7 +22,7 @@ describe('get-user-owner-information', () => {
     it('returns the corresponding owner info', () => {
       const ownerInfo = pipe(
         user.id,
-        getUserOwnerInformation(framework.queries),
+        getUserOwnerInformation(framework.dependenciesForViews),
       );
 
       expect(ownerInfo).toStrictEqual(O.some({
@@ -37,7 +37,7 @@ describe('get-user-owner-information', () => {
     it('returns a not-found error', () => {
       const ownerInfo = pipe(
         arbitraryUserId(),
-        getUserOwnerInformation(framework.queries),
+        getUserOwnerInformation(framework.dependenciesForViews),
       );
 
       expect(ownerInfo).toStrictEqual(O.none);

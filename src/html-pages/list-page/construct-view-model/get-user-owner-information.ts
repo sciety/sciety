@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { UserId } from '../../../types/user-id';
-import { Queries } from '../../../shared-read-models';
+import { Dependencies } from './dependencies';
 
 type OwnerInfo = {
   ownerName: string,
@@ -9,15 +9,11 @@ type OwnerInfo = {
   ownerAvatarPath: string,
 };
 
-type Ports = {
-  lookupUser: Queries['lookupUser'],
-};
+type GetUserOwnerInformation = (dependencies: Dependencies) => (userId: UserId) => O.Option<OwnerInfo>;
 
-type GetUserOwnerInformation = (ports: Ports) => (userId: UserId) => O.Option<OwnerInfo>;
-
-export const getUserOwnerInformation: GetUserOwnerInformation = (ports) => (userId) => pipe(
+export const getUserOwnerInformation: GetUserOwnerInformation = (dependencies) => (userId) => pipe(
   userId,
-  ports.lookupUser,
+  dependencies.lookupUser,
   O.map((userDetails) => ({
     ownerName: userDetails.displayName,
     ownerHref: `/users/${userDetails.handle}`,

@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation } from './get-user-owner-information';
 import { ListOwnerId } from '../../../types/list-owner-id';
-import { Queries } from '../../../shared-read-models';
+import { Dependencies } from './dependencies';
 
 type OwnerInformation = {
   ownerName: string,
@@ -10,14 +10,14 @@ type OwnerInformation = {
   ownerAvatarPath: string,
 };
 
-type GetOwnerInformation = (queries: Queries) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
+type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
 
-export const getOwnerInformation: GetOwnerInformation = (ports) => (ownerId) => {
+export const getOwnerInformation: GetOwnerInformation = (dependencies) => (ownerId) => {
   switch (ownerId.tag) {
     case 'group-id':
       return pipe(
         ownerId.value,
-        ports.getGroup,
+        dependencies.getGroup,
         O.map((group) => ({
           ownerName: group.name,
           ownerHref: `/groups/${group.slug}`,
@@ -27,7 +27,7 @@ export const getOwnerInformation: GetOwnerInformation = (ports) => (ownerId) => 
     case 'user-id':
       return pipe(
         ownerId.value,
-        getUserOwnerInformation(ports),
+        getUserOwnerInformation(dependencies),
       );
   }
 };
