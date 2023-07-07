@@ -5,7 +5,7 @@ import { renderAsHtml } from './render-as-html/render-as-html';
 import { RenderPageError } from '../../types/render-page-error';
 import { Page } from '../../types/page';
 import { renderErrorPage } from './render-as-html/render-error-page';
-import { Dependencies, constructViewModel } from './construct-view-model/construct-view-model';
+import { Dependencies, constructViewModel } from './construct-view-model';
 
 type SearchResultsPage = (
   dependencies: Dependencies,
