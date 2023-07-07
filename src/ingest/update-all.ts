@@ -11,15 +11,11 @@ import axiosRetry, { exponentialDelay } from 'axios-retry';
 import * as Es from './evaluations';
 import { fetchData, FetchData } from './fetch-data';
 import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
+import { SkippedItem } from './types/skipped-item';
 
 type Adapters = {
   fetchData: FetchData,
   fetchGoogleSheet: FetchGoogleSheet,
-};
-
-export type SkippedItem = {
-  item: string,
-  reason: string,
 };
 
 export type FeedData = {

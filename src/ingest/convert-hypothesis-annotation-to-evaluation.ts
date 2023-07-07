@@ -4,8 +4,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { Evaluation } from './evaluations';
 import { supportedArticleIdFromLink } from './supported-article-id-from-link';
-import { SkippedItem } from './update-all';
 import * as Hyp from '../third-parties/hypothesis';
+import { SkippedItem } from './types/skipped-item';
 
 const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.length > 0;
 
