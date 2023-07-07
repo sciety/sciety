@@ -14,13 +14,11 @@ export type Ports = PerformAllSearchesPorts
 & Omit<FetchExtraDetailsPorts, 'getLatestArticleVersionDate'>;
 
 export const constructViewModel = (
-  ports: Ports,
+  dependencies: Ports,
   pageSize: number,
 ) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   params,
-  performAllSearches(ports)(pageSize),
+  performAllSearches(dependencies)(pageSize),
   TE.map(selectSubsetToDisplay),
-  TE.chainTaskK(fetchExtraDetails({
-    ...ports,
-  })),
+  TE.chainTaskK(fetchExtraDetails(dependencies)),
 );

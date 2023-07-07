@@ -17,11 +17,11 @@ import {
 export type Ports = Queries & ConstructArticleCardViewModelPorts;
 
 const fetchItemDetails = (
-  ports: Ports,
+  dependencies: Ports,
 ) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError | ArticleErrorCardViewModel, ItemViewModel> => (
   isArticleItem(item)
-    ? pipe(item.articleId, constructArticleCardViewModel(ports))
-    : pipe(item.id, constructGroupCardViewModel(ports), T.of));
+    ? pipe(item.articleId, constructArticleCardViewModel(dependencies))
+    : pipe(item.id, constructGroupCardViewModel(dependencies), T.of));
 
 export type LimitedSet = {
   query: string,
@@ -35,9 +35,9 @@ export type LimitedSet = {
   numberOfPages: number,
 };
 
-export const fetchExtraDetails = (ports: Ports) => (state: LimitedSet): T.Task<ViewModel> => pipe(
+export const fetchExtraDetails = (dependencies: Ports) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
-  T.traverseArray(fetchItemDetails(ports)),
+  T.traverseArray(fetchItemDetails(dependencies)),
   T.map(flow(
     RA.rights,
     (itemsToDisplay) => ({

@@ -8,11 +8,11 @@ import { renderErrorPage } from './render-as-html/render-error-page';
 import { Ports, constructViewModel } from './construct-view-model/construct-view-model';
 
 type SearchResultsPage = (
-  ports: Ports,
+  dependencies: Ports,
 ) => (pageSize: number) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const searchResultsPage: SearchResultsPage = (ports) => (pageSize) => (params) => pipe(
+export const searchResultsPage: SearchResultsPage = (dependencies) => (pageSize) => (params) => pipe(
   params,
-  constructViewModel(ports, pageSize),
+  constructViewModel(dependencies, pageSize),
   TE.bimap(renderErrorPage, renderAsHtml),
 );

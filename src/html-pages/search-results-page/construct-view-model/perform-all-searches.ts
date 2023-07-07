@@ -31,10 +31,10 @@ export const paramsCodec = t.type({
 export type Params = t.TypeOf<typeof paramsCodec>;
 
 type PerformAllSearches = (
-  ports: Ports,
+  dependencies: Ports,
 ) => (pageSize: number) => (params: Params) => TE.TaskEither<DE.DataError, Matches>;
 
-export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (params) => pipe(
+export const performAllSearches: PerformAllSearches = (dependencies) => (pageSize) => (params) => pipe(
   {
     query: TE.right(params.query),
     evaluatedOnly: TE.right(
@@ -55,10 +55,10 @@ export const performAllSearches: PerformAllSearches = (ports) => (pageSize) => (
           O.isSome,
         ),
       ],
-      tupled(ports.searchForArticles(pageSize)),
+      tupled(dependencies.searchForArticles(pageSize)),
     ),
     groups: pipe(
-      findGroups(ports, params.query),
+      findGroups(dependencies, params.query),
       T.map(RA.map((groupId) => ({ id: groupId }))),
       TE.rightTask,
     ),

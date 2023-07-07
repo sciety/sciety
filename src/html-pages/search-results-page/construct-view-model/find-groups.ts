@@ -34,14 +34,14 @@ export type Ports = Queries & {
   fetchStaticFile: FetchStaticFile,
 };
 
-type FindGroups = (ports: Ports, query: string)
+type FindGroups = (dependencies: Ports, query: string)
 => T.Task<ReadonlyArray<GroupId>>;
 
-export const findGroups: FindGroups = (ports, query) => pipe(
-  ports.getAllGroups(),
+export const findGroups: FindGroups = (dependencies, query) => pipe(
+  dependencies.getAllGroups(),
   T.traverseArray((group) => pipe(
     `groups/${group.descriptionPath}`,
-    ports.fetchStaticFile,
+    dependencies.fetchStaticFile,
     T.map(flow(
       E.getOrElse(constant('')),
       (description) => ({
