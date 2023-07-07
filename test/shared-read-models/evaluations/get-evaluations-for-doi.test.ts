@@ -11,6 +11,7 @@ import { handleEvent, initialState } from '../../../src/shared-read-models/evalu
 import { Doi } from '../../../src/types/doi';
 import { GroupId } from '../../../src/types/group-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
+import { EvaluationType } from '../../../src/types/recorded-evaluation';
 
 const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -90,55 +91,29 @@ describe('get-evaluations-for-doi', () => {
     });
   });
 
-  describe('when the evaluation is recorded as a curation statement', () => {
+  describe.each([
+    ['curation-statement', O.some('curation-statement')],
+    ['review', O.some('review')],
+    ['author-response', O.some('author-response')],
+    [undefined, O.none],
+  ])('when the evaluation is recorded as a %s', (inputType, expectedType) => {
     const result = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), 'curation-statement'),
+        evaluationRecordedHelper(
+          group1,
+          article1,
+          reviewId1,
+          [],
+          new Date(),
+          new Date(),
+          inputType as unknown as EvaluationType,
+        ),
       ],
       runQuery(article1),
     );
 
     it('contains the right type', () => {
-      expect(result[0].type).toStrictEqual(O.some('curation-statement'));
-    });
-  });
-
-  describe('when the evaluation is recorded as a review', () => {
-    const result = pipe(
-      [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), 'review'),
-      ],
-      runQuery(article1),
-    );
-
-    it('contains the right type', () => {
-      expect(result[0].type).toStrictEqual(O.some('review'));
-    });
-  });
-
-  describe('when the evaluation is recorded as an author response', () => {
-    const result = pipe(
-      [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), 'author-response'),
-      ],
-      runQuery(article1),
-    );
-
-    it('contains the right type', () => {
-      expect(result[0].type).toStrictEqual(O.some('author-response'));
-    });
-  });
-
-  describe('when the evaluation is recorded without any type', () => {
-    const result = pipe(
-      [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), undefined),
-      ],
-      runQuery(article1),
-    );
-
-    it('does not contain a type', () => {
-      expect(result[0].type).toStrictEqual(O.none);
+      expect(result[0].type).toStrictEqual(expectedType);
     });
   });
 
