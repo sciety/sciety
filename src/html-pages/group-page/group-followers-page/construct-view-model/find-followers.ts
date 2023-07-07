@@ -3,11 +3,9 @@ import { pipe } from 'fp-ts/function';
 import { GroupId } from '../../../../types/group-id';
 import { Follower } from '../view-model';
 import * as LOID from '../../../../types/list-owner-id';
-import { Queries } from '../../../../shared-read-models';
+import { Dependencies } from './dependencies';
 
-export type Ports = Pick<Queries, 'getFollowers' | 'getGroupsFollowedBy' | 'selectAllListsOwnedBy'>;
-
-type FindFollowers = (dependencies: Ports) => (groupId: GroupId) => ReadonlyArray<Follower>;
+type FindFollowers = (dependencies: Dependencies) => (groupId: GroupId) => ReadonlyArray<Follower>;
 
 export const findFollowers: FindFollowers = (dependencies) => (groupId) => pipe(
   dependencies.getFollowers(groupId),

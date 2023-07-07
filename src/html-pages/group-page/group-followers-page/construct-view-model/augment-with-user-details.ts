@@ -2,14 +2,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Follower, UserCardViewModel } from '../view-model';
-import { Queries } from '../../../../shared-read-models';
-
-export type Ports = {
-  lookupUser: Queries['lookupUser'],
-};
+import { Dependencies } from './dependencies';
 
 export const augmentWithUserDetails = (
-  dependencies: Ports,
+  dependencies: Dependencies,
 ) => (
   followers: ReadonlyArray<Follower>,
 ): ReadonlyArray<UserCardViewModel> => pipe(
