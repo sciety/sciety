@@ -10,18 +10,18 @@ export type TabsViewModel = {
   followerCount: number,
 };
 
-export type Ports = Pick<Queries, 'getFollowers' | 'selectAllListsOwnedBy'>;
+export type Dependencies = Pick<Queries, 'getFollowers' | 'selectAllListsOwnedBy'>;
 
-export const constructTabsViewModel = (ports: Ports, group: Group): TabsViewModel => ({
+export const constructTabsViewModel = (dependencies: Dependencies, group: Group): TabsViewModel => ({
   groupSlug: group.slug,
   listCount: pipe(
     group.id,
     LOID.fromGroupId,
-    ports.selectAllListsOwnedBy,
+    dependencies.selectAllListsOwnedBy,
     RA.size,
   ),
   followerCount: pipe(
-    ports.getFollowers(group.id),
+    dependencies.getFollowers(group.id),
     RA.size,
   ),
 });

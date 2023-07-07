@@ -11,7 +11,7 @@ import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { findFollowers, Ports as FindFollowersPorts } from './find-followers';
-import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
+import { constructTabsViewModel, Dependencies as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 import { GroupId } from '../../../../types/group-id';
 import { Queries } from '../../../../shared-read-models';
 

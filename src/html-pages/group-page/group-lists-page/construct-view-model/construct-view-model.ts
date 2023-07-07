@@ -7,7 +7,7 @@ import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { constructListCards, Ports as ConstructListCardsPorts } from './construct-list-cards';
-import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../common-components/tabs-view-model';
+import { constructTabsViewModel, Dependencies as TabsViewModelPorts } from '../../common-components/tabs-view-model';
 import { Queries } from '../../../../shared-read-models';
 
 export type Ports = Pick<Queries, 'getGroupBySlug' | 'isFollowing'>
