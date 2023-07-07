@@ -9,6 +9,8 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
 import { Doi } from '../../../src/types/doi';
+import { GroupId } from '../../../src/types/group-id';
+import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 
 const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -20,6 +22,10 @@ const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
     getEvaluationsForDoi(readmodel),
   );
 };
+
+const evaluationRecorded = (groupId: GroupId, articleId: Doi, evaluationLocator: EvaluationLocator) => (
+  evaluationRecordedHelper(groupId, articleId, evaluationLocator, [], new Date())
+);
 
 describe('get-evaluations-for-doi', () => {
   const article1 = arbitraryDoi();
@@ -38,9 +44,9 @@ describe('get-evaluations-for-doi', () => {
     ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
       const actualEvaluations = pipe(
         [
-          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date()),
-          evaluationRecordedHelper(group1, article2, reviewId2, [], new Date()),
-          evaluationRecordedHelper(group2, article1, reviewId3, [], new Date()),
+          evaluationRecorded(group1, article1, reviewId1),
+          evaluationRecorded(group1, article2, reviewId2),
+          evaluationRecorded(group2, article1, reviewId3),
         ],
         runQuery(articleDoi),
         RA.map((evaluation) => evaluation.evaluationLocator),
@@ -54,8 +60,8 @@ describe('get-evaluations-for-doi', () => {
     it('does not return erased evaluations', () => {
       const actualEvaluations = pipe(
         [
-          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date()),
-          evaluationRecordedHelper(group2, article1, reviewId3, [], new Date()),
+          evaluationRecorded(group1, article1, reviewId1),
+          evaluationRecorded(group2, article1, reviewId3),
           constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: reviewId1 }),
         ],
         runQuery(article1),
@@ -69,7 +75,7 @@ describe('get-evaluations-for-doi', () => {
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
     const result = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date()),
+        evaluationRecorded(group1, article1, reviewId1),
         constructEvent('CurationStatementRecorded')({
           articleId: article1,
           groupId: group1,
