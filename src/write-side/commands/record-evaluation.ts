@@ -4,7 +4,7 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
 
-const requiredFields = t.type({
+const requiredFields = t.strict({
   groupId: GroupIdFromString,
   publishedAt: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,

@@ -5,7 +5,7 @@ import { userGeneratedInputCodec } from '../../types/user-generated-input';
 export const listNameMaxLength = 100;
 export const listDescriptionMaxLength = 250;
 
-export const editListDetailsCommandCodec = t.type({
+export const editListDetailsCommandCodec = t.strict({
   name: userGeneratedInputCodec({ maxInputLength: listNameMaxLength }),
   description: userGeneratedInputCodec({ maxInputLength: listDescriptionMaxLength, allowEmptyInput: true }),
   listId: listIdCodec,

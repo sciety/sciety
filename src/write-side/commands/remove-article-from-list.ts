@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { listIdCodec } from '../../types/list-id';
 
-export const removeArticleFromListCommandCodec = t.type({
+export const removeArticleFromListCommandCodec = t.strict({
   articleId: DoiFromString,
   listId: listIdCodec,
 });
