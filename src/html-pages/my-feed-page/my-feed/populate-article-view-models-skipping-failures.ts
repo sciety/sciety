@@ -2,13 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { ArticleCardViewModel, constructArticleCardViewModel, ConstructArticleCardViewModelDependencies } from '../../../shared-components/article-card';
+import { ArticleCardViewModel, constructArticleCardViewModel } from '../../../shared-components/article-card';
 import { ArticleActivity } from '../../../types/article-activity';
-
-export type Ports = ConstructArticleCardViewModelDependencies;
+import { Dependencies } from './dependencies';
 
 type PopulateArticleViewModelsSkippingFailures = (
-  dependencies: Ports,
+  dependencies: Dependencies,
 ) => (
   activities: ReadonlyArray<ArticleActivity>
 ) => T.Task<ReadonlyArray<ArticleCardViewModel>>;
