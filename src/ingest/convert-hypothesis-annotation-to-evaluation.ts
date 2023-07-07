@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
-import { Evaluation } from './evaluations';
+import { Evaluation } from './types/evaluations';
 import { supportedArticleIdFromLink } from './supported-article-id-from-link';
 import * as Hyp from '../third-parties/hypothesis';
 import { SkippedItem } from './types/skipped-item';
