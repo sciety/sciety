@@ -7,17 +7,14 @@ import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { constructGroupCardViewModel } from '../../../shared-components/group-card';
 import * as DE from '../../../types/data-error';
 import { ItemViewModel, ViewModel } from '../view-model';
-import { Queries } from '../../../shared-read-models';
 import {
   ArticleErrorCardViewModel,
   constructArticleCardViewModel,
-  ConstructArticleCardViewModelPorts,
 } from '../../../shared-components/article-card';
-
-export type Ports = Queries & ConstructArticleCardViewModelPorts;
+import { Dependencies } from './dependencies';
 
 const fetchItemDetails = (
-  dependencies: Ports,
+  dependencies: Dependencies,
 ) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError | ArticleErrorCardViewModel, ItemViewModel> => (
   isArticleItem(item)
     ? pipe(item.articleId, constructArticleCardViewModel(dependencies))
@@ -35,7 +32,7 @@ export type LimitedSet = {
   numberOfPages: number,
 };
 
-export const fetchExtraDetails = (dependencies: Ports) => (state: LimitedSet): T.Task<ViewModel> => pipe(
+export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
   T.traverseArray(fetchItemDetails(dependencies)),
   T.map(flow(
