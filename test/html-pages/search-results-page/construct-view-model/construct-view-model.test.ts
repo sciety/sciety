@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { dummyLogger } from '../../../dummy-logger';
 import { constructViewModel, Dependencies } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -13,16 +12,12 @@ import { arbitraryGroup } from '../../../types/group.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let defaultAdapters: Dependencies;
+  let defaultDependencies: Dependencies;
   let result: ViewModel;
 
   beforeEach(() => {
     framework = createTestFramework();
-    defaultAdapters = {
-      ...framework.queries,
-      ...framework.happyPathThirdParties,
-      logger: dummyLogger,
-    };
+    defaultDependencies = framework.dependenciesForViews;
   });
 
   describe('when the category is "articles"', () => {
@@ -42,7 +37,7 @@ describe('construct-view-model', () => {
           },
           constructViewModel(
             {
-              ...defaultAdapters,
+              ...defaultDependencies,
               searchForArticles: () => () => TE.right({
                 items: [
                   {
@@ -105,7 +100,7 @@ describe('construct-view-model', () => {
           },
           constructViewModel(
             {
-              ...defaultAdapters,
+              ...defaultDependencies,
               searchForArticles: () => () => TE.right({
                 items: [
                   {
@@ -176,7 +171,7 @@ describe('construct-view-model', () => {
           },
           constructViewModel(
             {
-              ...defaultAdapters,
+              ...defaultDependencies,
               searchForArticles: () => () => TE.right({
                 items: [],
                 total: 0,
@@ -223,7 +218,7 @@ describe('construct-view-model', () => {
           {
             query, category, cursor, page, evaluatedOnly,
           },
-          constructViewModel(defaultAdapters, 1),
+          constructViewModel(defaultDependencies, 1),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -263,7 +258,7 @@ describe('construct-view-model', () => {
           {
             query, category, cursor, page, evaluatedOnly,
           },
-          constructViewModel(defaultAdapters, 1),
+          constructViewModel(defaultDependencies, 1),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
