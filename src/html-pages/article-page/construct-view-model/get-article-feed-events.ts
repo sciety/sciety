@@ -28,13 +28,13 @@ type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
-  adapters,
+  dependencies,
 ) => (
   doi, server,
 ) => pipe(
   {
     evaluations: pipe(
-      adapters.getEvaluationsForDoi(doi),
+      dependencies.getEvaluationsForDoi(doi),
       T.of,
       T.map(RA.map((evaluation) => ({
         ...evaluation,
@@ -42,7 +42,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      adapters.findVersionsForArticleDoi(doi, server),
+      dependencies.findVersionsForArticleDoi(doi, server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({
@@ -55,6 +55,6 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   sequenceS(T.ApplyPar),
   T.map((feeds) => [...feeds.evaluations, ...feeds.versions]),
   T.map(RA.sort(byDateDescending)),
-  T.chain(getFeedEventsContent(adapters, server)),
+  T.chain(getFeedEventsContent(dependencies, server)),
   T.map(handleArticleVersionErrors(server)),
 );

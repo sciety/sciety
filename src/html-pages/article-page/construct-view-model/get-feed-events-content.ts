@@ -26,13 +26,13 @@ type GetFeedEventsContent = (dependencies: Dependencies, server: ArticleServer)
 => (feedEvents: ReadonlyArray<FeedEvent>)
 => T.Task<ReadonlyArray<FeedItem>>;
 
-export const getFeedEventsContent: GetFeedEventsContent = (adapters, server) => (feedEvents) => {
+export const getFeedEventsContent: GetFeedEventsContent = (dependencies, server) => (feedEvents) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
       case 'article-version':
         return articleVersionToFeedItem(server, feedEvent);
       case 'evaluation':
-        return evaluationToFeedItem(adapters, feedEvent);
+        return evaluationToFeedItem(dependencies, feedEvent);
     }
   };
   return pipe(
