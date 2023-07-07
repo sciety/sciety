@@ -1,1 +1,1 @@
-export { myFeed, Ports } from './my-feed';
+export { myFeed, Dependencies } from './my-feed';

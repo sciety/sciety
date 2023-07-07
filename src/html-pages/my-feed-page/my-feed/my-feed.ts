@@ -22,7 +22,7 @@ import { UserId } from '../../../types/user-id';
 import { GetAllEvents } from '../../../shared-ports';
 import { Queries } from '../../../shared-read-models';
 
-export type Ports = PopulateArticleViewModelsSkippingFailuresPorts & {
+export type Dependencies = PopulateArticleViewModelsSkippingFailuresPorts & {
   getAllEvents: GetAllEvents,
   getGroupsFollowedBy: Queries['getGroupsFollowedBy'],
 };
@@ -36,20 +36,20 @@ const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment
   </section>
 `);
 
-const getFollowedGroups = (dependencies: Ports) => (uid: UserId) => pipe(
+const getFollowedGroups = (dependencies: Dependencies) => (uid: UserId) => pipe(
   dependencies.getGroupsFollowedBy(uid),
   RNEA.fromReadonlyArray,
   E.fromOption(constant('no-groups-followed')),
 );
 
-const getEvaluatedArticles = (dependencies: Ports) => (groups: ReadonlyArray<GroupId>) => pipe(
+const getEvaluatedArticles = (dependencies: Dependencies) => (groups: ReadonlyArray<GroupId>) => pipe(
   dependencies.getAllEvents,
   T.map((events) => followedGroupsActivities(events)(groups)),
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('no-groups-evaluated'))),
 );
 
-const constructArticleViewModels = (dependencies: Ports) => flow(
+const constructArticleViewModels = (dependencies: Dependencies) => flow(
   populateArticleViewModelsSkippingFailures(
     dependencies,
   ),
@@ -68,7 +68,7 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
     ${paginationControls('/my-feed?', pageofItems.nextPage)}`,
 );
 
-type YourFeed = (dependencies: Ports) => (
+type YourFeed = (dependencies: Dependencies) => (
   userId: UserId,
   pageSize: number,
   pageNumber: number,

@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { JSDOM } from 'jsdom';
 import { dummyLogger } from '../../../dummy-logger';
-import { myFeed, Ports } from '../../../../src/html-pages/my-feed-page/my-feed';
+import { myFeed, Dependencies } from '../../../../src/html-pages/my-feed-page/my-feed';
 import {
   feedTitle,
   followSomething,
@@ -23,7 +23,7 @@ import { arbitraryDoi } from '../../../types/doi.helper';
 
 describe('my-feed acceptance', () => {
   let framework: TestFramework;
-  let defaultAdapters: Ports;
+  let defaultAdapters: Dependencies;
 
   beforeEach(() => {
     framework = createTestFramework();
