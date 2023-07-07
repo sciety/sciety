@@ -15,7 +15,7 @@ import { constructTabsViewModel, Ports as TabsViewModelPorts } from '../../commo
 import { toOurListsViewModel } from './to-our-lists-view-model';
 import { Queries } from '../../../../shared-read-models';
 
-export type Ports = Pick<Queries, 'getGroupBySlug' | 'isFollowing' | 'selectAllListsOwnedBy'>
+export type Dependencies = Pick<Queries, 'getGroupBySlug' | 'isFollowing' | 'selectAllListsOwnedBy'>
 & TabsViewModelPorts
 & {
   fetchStaticFile: FetchStaticFile,
@@ -30,10 +30,10 @@ export const paramsCodec = t.type({
 
 export type Params = t.TypeOf<typeof paramsCodec>;
 
-type ConstructViewModel = (ports: Ports) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
-  ports.getGroupBySlug(params.slug),
+export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
+  dependencies.getGroupBySlug(params.slug),
   TE.fromOption(() => DE.notFound),
   TE.chain((group) => pipe(
     {
@@ -42,19 +42,19 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
         params.user,
         O.fold(
           () => false,
-          (u) => ports.isFollowing(group.id)(u.id),
+          (u) => dependencies.isFollowing(group.id)(u.id),
         ),
         TE.right,
       ),
-      tabs: TE.right(constructTabsViewModel(ports, group)),
+      tabs: TE.right(constructTabsViewModel(dependencies, group)),
       ourLists: pipe(
         group.id,
         LOID.fromGroupId,
-        ports.selectAllListsOwnedBy,
+        dependencies.selectAllListsOwnedBy,
         toOurListsViewModel(group.slug),
         TE.right,
       ),
-      markdown: ports.fetchStaticFile(`groups/${group.descriptionPath}`),
+      markdown: dependencies.fetchStaticFile(`groups/${group.descriptionPath}`),
     },
     sequenceS(TE.ApplyPar),
   )),

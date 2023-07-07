@@ -6,7 +6,7 @@ import { arbitraryGroup } from '../../../../types/group.helper';
 import { arbitraryList } from '../../../../types/list-helper';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { ViewModel } from '../../../../../src/html-pages/group-page/group-about-page/view-model';
-import { constructViewModel, Ports } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/construct-view-model';
+import { constructViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/construct-view-model';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { List } from '../../../../../src/types/list';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
@@ -33,16 +33,12 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createList(mostRecentlyUpdatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), mostRecentlyUpdatedList.id);
 
-      const adapters: Ports = {
-        ...framework.queries,
-        ...framework.happyPathThirdParties,
-      };
       viewmodel = await pipe(
         {
           slug: group.slug,
           user: O.none,
         },
-        constructViewModel(adapters),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });

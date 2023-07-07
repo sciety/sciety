@@ -4,12 +4,12 @@ import { Page } from '../../../types/page';
 import { RenderPageError } from '../../../types/render-page-error';
 import { renderAsHtml } from './render-as-html/render-as-html';
 import { renderErrorPage } from './render-as-html/render-error-page';
-import { constructViewModel, Ports, Params } from './construct-view-model/construct-view-model';
+import { constructViewModel, Dependencies, Params } from './construct-view-model/construct-view-model';
 
-type GroupPage = (ports: Ports) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
+type GroupPage = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<RenderPageError, Page>;
 
-export const constructAndRenderPage: GroupPage = (ports) => (params) => pipe(
+export const constructAndRenderPage: GroupPage = (dependencies) => (params) => pipe(
   params,
-  constructViewModel(ports),
+  constructViewModel(dependencies),
   TE.bimap(renderErrorPage, renderAsHtml),
 );
