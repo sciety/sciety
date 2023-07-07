@@ -5,24 +5,24 @@ import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
 import { Queries } from '../../shared-read-models';
 
-export type Ports = Queries & {
+export type Dependencies = Queries & {
   logger: Logger,
 };
 
 export const degradedAvatarUrl = '/static/images/sciety-logo.jpg';
 
 const getOwnerAvatarUrl = (
-  ports: Ports,
+  dependencies: Dependencies,
 ) => (
   list: List,
 ): string => {
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(
-        ports.getGroup(list.ownerId.value),
+        dependencies.getGroup(list.ownerId.value),
         O.match(
           () => {
-            ports.logger('error', 'Could not find group that owns list', {
+            dependencies.logger('error', 'Could not find group that owns list', {
               listId: list.id,
               ownerId: list.ownerId,
             });
@@ -34,10 +34,10 @@ const getOwnerAvatarUrl = (
     case 'user-id':
       return pipe(
         list.ownerId.value,
-        ports.lookupUser,
+        dependencies.lookupUser,
         O.match(
           () => {
-            ports.logger('error', 'Could not find user who owns list', {
+            dependencies.logger('error', 'Could not find user who owns list', {
               listId: list.id,
               ownerId: list.ownerId,
             });
@@ -49,9 +49,11 @@ const getOwnerAvatarUrl = (
   }
 };
 
-export const constructListCardViewModelWithAvatar = (ports: Ports) => (list: List): ListCardViewModel => pipe(
+export const constructListCardViewModelWithAvatar = (
+  dependencies: Dependencies,
+) => (list: List): ListCardViewModel => pipe(
   list,
-  getOwnerAvatarUrl(ports),
+  getOwnerAvatarUrl(dependencies),
   (ownerAvatarUrl) => ({
     listId: list.id,
     articleCount: list.articleIds.length,
