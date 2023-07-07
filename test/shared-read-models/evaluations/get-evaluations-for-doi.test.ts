@@ -117,37 +117,31 @@ describe('get-evaluations-for-doi', () => {
     });
   });
 
-  describe('when an evaluation has previously been recorded without an evaluation type, and has its evaluation type updated', () => {
-    it('contains the new evaluation type', () => {
+  describe('when the type of an evaluation is updated later', () => {
+    it.each([
+      [undefined, 'curation-statement'],
+      ['review', 'author-response'],
+    ])('updates the evaluation type from %s to %s', (initialType, updatedType) => {
       const result = pipe(
         [
-          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), undefined),
+          evaluationRecordedHelper(
+            group1,
+            article1,
+            reviewId1,
+            [],
+            new Date(),
+            new Date(),
+            initialType as unknown as EvaluationType,
+          ),
           constructEvent('EvaluationUpdated')({
             evaluationLocator: reviewId1,
-            evaluationType: 'curation-statement',
+            evaluationType: updatedType as unknown as EvaluationType,
           }),
         ],
         runQuery(article1),
       );
 
-      expect(result[0].type).toStrictEqual(O.some('curation-statement'));
-    });
-  });
-
-  describe('when an evaluation has previously been recorded with an evaluation type, and has its evaluation type updated to a different value', () => {
-    it('contains the new evaluation type', () => {
-      const result = pipe(
-        [
-          evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date(), 'review'),
-          constructEvent('EvaluationUpdated')({
-            evaluationLocator: reviewId1,
-            evaluationType: 'author-response',
-          }),
-        ],
-        runQuery(article1),
-      );
-
-      expect(result[0].type).toStrictEqual(O.some('author-response'));
+      expect(result[0].type).toStrictEqual(O.some(updatedType));
     });
   });
 });
