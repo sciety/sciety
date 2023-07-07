@@ -19,10 +19,7 @@ export const recordSubjectArea: ResourceAction<RecordSubjectAreaCommand> = (comm
   events,
   buildUpArticleSubjectAreaResourceFor(command.articleId),
   O.match(
-    () => E.right([constructEvent('SubjectAreaRecorded')({
-      articleId: command.articleId,
-      subjectArea: command.subjectArea,
-    })]),
+    () => E.right([constructEvent('SubjectAreaRecorded')(command)]),
     (subjectArea) => (subjectArea === command.subjectArea
       ? E.right([])
       : E.left(toErrorMessage('changing of subject area not possible according to domain model'))),

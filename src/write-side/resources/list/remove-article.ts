@@ -20,7 +20,7 @@ const createAppropriateEvents = (command: Command) => (listResource: ListResourc
   RA.some((articleId) => articleId.value === command.articleId.value),
   B.fold(
     () => [],
-    () => [constructEvent('ArticleRemovedFromList')({ articleId: command.articleId, listId: command.listId })],
+    () => [constructEvent('ArticleRemovedFromList')(command)],
   ),
 );
 
