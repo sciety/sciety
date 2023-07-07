@@ -22,15 +22,15 @@ export type Params = {
   user: O.Option<{ id: UserId }>,
 };
 
-type ConstructViewModel = (ports: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const constructViewModel: ConstructViewModel = (ports) => (params) => pipe(
-  ports.fetchArticle(params.doi),
+export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
+  dependencies.fetchArticle(params.doi),
   TE.chainW((articleDetails) => pipe(
     {
-      feedItemsByDateDescending: getArticleFeedEventsByDateDescending(ports)(params.doi, articleDetails.server),
-      relatedArticles: constructRelatedArticles(params.doi, ports),
-      curationStatements: constructCurationStatements(ports, params.doi),
+      feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(params.doi, articleDetails.server),
+      relatedArticles: constructRelatedArticles(params.doi, dependencies),
+      curationStatements: constructCurationStatements(dependencies, params.doi),
     },
     sequenceS(T.ApplyPar),
     TE.rightTask,
@@ -38,11 +38,11 @@ export const constructViewModel: ConstructViewModel = (ports) => (params) => pip
       ...articleDetails,
       titleLanguageCode: detectLanguage(articleDetails.title),
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
-      userListManagement: constructUserListManagement(params.user, ports, params.doi),
+      userListManagement: constructUserListManagement(params.user, dependencies, params.doi),
       fullArticleUrl: `https://doi.org/${params.doi.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
-      listedIn: constructListedIn(ports)(params.doi),
+      listedIn: constructListedIn(dependencies)(params.doi),
       relatedArticles,
       curationStatements: pipe(
         curationStatements,
