@@ -104,7 +104,11 @@ describe('construct-curation-statements', () => {
         ...framework.dependenciesForViews,
         fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === evaluationLocator1
           ? TE.left(DE.unavailable)
-          : TE.right({ url: new URL(arbitraryUri()), fullText: arbitrarySanitisedHtmlFragment() })),
+          : TE.right({
+            url: new URL(arbitraryUri()),
+            fullText: arbitrarySanitisedHtmlFragment(),
+            tags: [],
+          })),
       }, articleId)();
     });
 

@@ -18,6 +18,7 @@ describe('fetch-review', () => {
       const evaluation: Evaluation = {
         fullText: arbitrarySanitisedHtmlFragment(),
         url: new URL(arbitraryUri()),
+        tags: [],
       };
       const fetchers = {
         [RI.service(reviewId)]: () => TE.right(evaluation),

@@ -56,4 +56,5 @@ export const constructNcrcReview = (review: NcrcReview): Evaluation => ({
     constructFullText,
     sanitise,
   ),
+  tags: [],
 });

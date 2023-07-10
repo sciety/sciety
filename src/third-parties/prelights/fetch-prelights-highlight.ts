@@ -40,5 +40,6 @@ export const fetchPrelightsHighlight = (
   TE.map((text) => ({
     url: new URL(url),
     fullText: text,
+    tags: [],
   })),
 );
