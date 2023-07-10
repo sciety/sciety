@@ -72,13 +72,11 @@ import { Config as AuthenticationRoutesConfig } from './authentication/configure
 import { listsPage } from '../html-pages/lists-page';
 import { createApiRouteForCommand } from './create-api-route-for-command';
 import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
-import * as curationStatementResource from '../write-side/resources/curation-statement';
 import * as evaluationResource from '../write-side/resources/evaluation';
 import * as groupResource from '../write-side/resources/group';
 import * as listResource from '../write-side/resources/list';
 import * as userResource from '../write-side/resources/user';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
-import { recordCurationStatementCommandCodec } from '../write-side/commands/record-curation-statement';
 import { applicationStatus } from '../views/status';
 
 const articlePageParams = t.type({
@@ -350,8 +348,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.post('/api/edit-list-details', createApiRouteForResourceAction(adapters, editListDetailsCommandCodec, listResource.update));
 
   router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
-
-  router.post('/api/record-curation-statement', createApiRouteForResourceAction(adapters, recordCurationStatementCommandCodec, curationStatementResource.record));
 
   router.post('/api/record-evaluation', createApiRouteForResourceAction(adapters, recordEvaluationCommandCodec, evaluationResource.record));
 
