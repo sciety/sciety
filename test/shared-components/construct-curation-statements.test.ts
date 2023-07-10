@@ -59,12 +59,12 @@ describe('construct-curation-statements', () => {
       ...arbitraryRecordedEvaluation(),
       groupId: group.id,
       articleId,
+      type: O.some('curation-statement' as const),
     };
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordEvaluation(evaluation);
-      await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluation.evaluationLocator);
       result = await constructCurationStatements({
         ...framework.dependenciesForViews,
         fetchReview: () => TE.left(DE.unavailable),
@@ -86,20 +86,20 @@ describe('construct-curation-statements', () => {
       evaluationLocator: evaluationLocator1,
       groupId: group.id,
       articleId,
+      type: O.some('curation-statement' as const),
     };
     const evaluation2 = {
       ...arbitraryRecordedEvaluation(),
       evaluationLocator: evaluationLocator2,
       groupId: group.id,
       articleId,
+      type: O.some('curation-statement' as const),
     };
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordEvaluation(evaluation1);
       await framework.commandHelpers.recordEvaluation(evaluation2);
-      await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluationLocator1);
-      await framework.commandHelpers.recordCurationStatement(articleId, group.id, evaluationLocator2);
       result = await constructCurationStatements({
         ...framework.dependenciesForViews,
         fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === evaluationLocator1
