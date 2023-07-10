@@ -12,7 +12,6 @@ import { Doi } from '../../src/types/doi';
 import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
-import { EvaluationLocator } from '../../src/types/evaluation-locator';
 import { CommandResult } from '../../src/types/command-result';
 
 export type CommandHelpers = {
@@ -21,7 +20,6 @@ export type CommandHelpers = {
   createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
-  recordCurationStatement: (articleId: Doi, groupId: GroupId, evaluationLocator: EvaluationLocator) => Promise<unknown>,
   recordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
@@ -85,10 +83,6 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   followGroup: async (userId, groupId) => pipe(
     { userId, groupId },
     invoke(flow(commandHandlers.followGroup, TE.rightTask), 'followGroup'),
-  ),
-  recordCurationStatement: async (articleId, groupId, evaluationLocator) => pipe(
-    { articleId, groupId, evaluationLocator },
-    invoke(commandHandlers.recordCurationStatement, 'recordCurationStatement'),
   ),
   recordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
     {
