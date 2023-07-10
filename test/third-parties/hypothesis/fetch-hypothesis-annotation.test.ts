@@ -16,6 +16,7 @@ describe('fetch-hypothesis-annotation', () => {
     const queryExternalService = () => () => TE.right({
       created: date,
       text: '<p>Very good</p>',
+      tags: [],
       target: [],
       links: {
         incontext: 'https://www.example.com',
@@ -40,6 +41,7 @@ describe('fetch-hypothesis-annotation', () => {
     const queryExternalService = () => () => TE.right({
       created: date,
       text: input,
+      tags: [],
       target: [],
       links: {
         incontext: 'https://www.example.com',
@@ -62,6 +64,7 @@ describe('insertSelectedText', () => {
     it('returns the text quote in markdown format in addition to the response text', () => {
       const input: HypothesisAnnotation = {
         text: 'some text',
+        tags: [],
         links: {
           incontext: '',
         },
@@ -90,6 +93,7 @@ some text`;
     it('returns the response text', () => {
       const input: HypothesisAnnotation = {
         text: 'some text',
+        tags: [],
         links: {
           incontext: '',
         },
