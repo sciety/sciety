@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
 import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
@@ -28,26 +29,18 @@ describe('construct-curation-statements', () => {
       ...arbitraryRecordedEvaluation(),
       groupId: group.id,
       articleId,
+      type: O.some('curation-statement' as const),
     };
     const evaluation2 = {
       ...arbitraryRecordedEvaluation(),
       articleId,
+      type: O.some('curation-statement' as const),
     };
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.recordEvaluation(evaluation1);
       await framework.commandHelpers.recordEvaluation(evaluation2);
-      await framework.commandHelpers.recordCurationStatement(
-        evaluation1.articleId,
-        evaluation1.groupId,
-        evaluation1.evaluationLocator,
-      );
-      await framework.commandHelpers.recordCurationStatement(
-        evaluation2.articleId,
-        evaluation2.groupId,
-        evaluation2.evaluationLocator,
-      );
       result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
     });
 
