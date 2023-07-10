@@ -12,6 +12,7 @@ import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { EvaluationLocator } from '../../src/types/evaluation-locator';
+import { CommandResult } from '../../src/types/command-result';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
@@ -27,17 +28,20 @@ export type CommandHelpers = {
   updateUserDetails: (userId: UserId, avatarUrl?: string, displayName?: string) => Promise<unknown>,
 };
 
-const invoke = <C extends GenericCommand>(handler: CommandHandler<C>, name: string) => (cmd: C) => {
-  if (process.env.TEST_DEBUG === 'true') {
-    // eslint-disable-next-line no-console
-    console.log(`${name}:`, cmd);
-  }
-  return pipe(
-    cmd,
-    handler,
-    TE.getOrElse(abortTest(`${name} helper`)),
-  );
-};
+const invoke = <C extends GenericCommand>(
+  handler: CommandHandler<C>,
+  name: string,
+) => async (cmd: C): Promise<CommandResult> => {
+    if (process.env.TEST_DEBUG === 'true') {
+      // eslint-disable-next-line no-console
+      console.log(`${name}:`, cmd);
+    }
+    return pipe(
+      cmd,
+      handler,
+      TE.getOrElse(abortTest(`${name} helper`)),
+    )();
+  };
 
 export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
   addArticleToList: async (articleId, listId) => pipe(
@@ -46,7 +50,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       listId,
     },
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
-  )(),
+  ),
   createGroup: async (group) => pipe(
     {
       groupId: group.id,
@@ -58,7 +62,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       slug: group.slug,
     },
     invoke(commandHandlers.createGroup, 'createGroup'),
-  )(),
+  ),
   createList: async (list) => pipe(
     {
       listId: list.id,
@@ -67,7 +71,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       description: list.description,
     },
     invoke(commandHandlers.createList, 'createList'),
-  )(),
+  ),
   createUserAccount: async (user) => pipe(
     {
       userId: user.id,
@@ -76,43 +80,43 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       displayName: user.displayName,
     },
     invoke(commandHandlers.createUserAccount, 'createUserAccount'),
-  )(),
+  ),
   followGroup: async (userId, groupId) => pipe(
     { userId, groupId },
     invoke(flow(commandHandlers.followGroup, TE.rightTask), 'followGroup'),
-  )(),
+  ),
   recordCurationStatement: async (articleId, groupId, evaluationLocator) => pipe(
     { articleId, groupId, evaluationLocator },
     invoke(commandHandlers.recordCurationStatement, 'recordCurationStatement'),
-  )(),
+  ),
   recordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
     {
       ...evaluation,
       issuedAt: evaluation.recordedAt,
     },
     invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
-  )(),
+  ),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
       articleId,
       listId,
     },
     invoke(commandHandlers.removeArticleFromList, 'removeArticleFromList'),
-  )(),
+  ),
   unfollowGroup: async (userId, groupId) => pipe(
     {
       userId,
       groupId,
     },
     invoke(commandHandlers.unfollowGroup, 'unfollowGroup'),
-  )(),
+  ),
   updateGroupDetails: async (groupId, largeLogoPath) => pipe(
     {
       groupId,
       largeLogoPath,
     },
     invoke(commandHandlers.updateGroupDetails, 'updateGroupDetails'),
-  )(),
+  ),
   updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
     {
       userId,
@@ -120,5 +124,5 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       displayName,
     },
     invoke(commandHandlers.updateUserDetails, 'updateUserDetails'),
-  )(),
+  ),
 });
