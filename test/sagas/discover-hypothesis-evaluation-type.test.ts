@@ -28,7 +28,7 @@ describe('discover-hypothesis-evaluation-type', () => {
 
     it.failing('the evaluation now has a known type', () => {
       expect(result[0]).toStrictEqual(expect.objectContaining({
-        evaluationType: O.some(knownType),
+        type: O.some(knownType),
       }));
     });
   });
