@@ -1,4 +1,5 @@
 import { flow, pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { UserDetails } from '../../src/types/user-details';
@@ -91,8 +92,16 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   ),
   recordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
     {
-      ...evaluation,
+      groupId: evaluation.groupId,
+      publishedAt: evaluation.publishedAt,
+      evaluationLocator: evaluation.evaluationLocator,
+      articleId: evaluation.articleId,
+      authors: evaluation.authors,
       issuedAt: evaluation.recordedAt,
+      evaluationType: pipe(
+        evaluation.type,
+        O.getOrElseW(() => undefined),
+      ),
     },
     invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
   ),
