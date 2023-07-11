@@ -11,6 +11,28 @@ import { validateInputShape } from '../write-side/commands/validate-input-shape'
 import { logRequestBody } from './api/log-request-body';
 import { requireBearerToken } from './api/require-bearer-token';
 import { ResourceAction } from '../write-side/resources/resource-action';
+import { GetAllEvents, CommitEvents } from '../shared-ports';
+
+type Dependencies = {
+  getAllEvents: GetAllEvents,
+  commitEvents: CommitEvents,
+};
+
+const executeCommand = <C extends GenericCommand>(
+  dependencies: Dependencies,
+  codec: t.Decoder<unknown, C>,
+  resourceAction: ResourceAction<C>,
+) => (input: unknown) => pipe(
+    input,
+    validateInputShape(codec),
+    TE.fromEither,
+    TE.chain((command) => pipe(
+      dependencies.getAllEvents,
+      TE.rightTask,
+      TE.chainEitherKW(resourceAction(command)),
+      TE.chainTaskK(dependencies.commitEvents),
+    )),
+  );
 
 const executeAndRespond = <C extends GenericCommand>(
   ports: CollectedPorts,
@@ -19,14 +41,7 @@ const executeAndRespond = <C extends GenericCommand>(
 ): Middleware => async (context) => {
     await pipe(
       context.request.body,
-      validateInputShape(codec),
-      TE.fromEither,
-      TE.chain((command) => pipe(
-        ports.getAllEvents,
-        TE.rightTask,
-        TE.chainEitherKW(resourceAction(command)),
-        TE.chainTaskK(ports.commitEvents),
-      )),
+      executeCommand(ports, codec, resourceAction),
       TE.match(
         (error) => {
           context.response.status = StatusCodes.BAD_REQUEST;
