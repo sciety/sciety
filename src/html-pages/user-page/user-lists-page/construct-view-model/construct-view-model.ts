@@ -1,16 +1,25 @@
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as DE from '../../../../types/data-error';
 import * as LOID from '../../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
-import { constructListsTab } from './construct-lists-tab';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
-import { userIdCodec } from '../../../../types/user-id';
+import { userIdCodec, UserId } from '../../../../types/user-id';
 import { Queries } from '../../../../shared-read-models';
+
+import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
+import { constructListCardViewModelWithoutAvatar } from '../../../../shared-components/list-card';
+
+const showCreateNewList = (pageOwner: UserId, loggedInUser: O.Option<UserId>) => pipe(
+  loggedInUser,
+  O.filter((loggedInUserId) => loggedInUserId === pageOwner),
+  O.isSome,
+);
 
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,
@@ -38,14 +47,15 @@ export const constructViewModel: ConstructViewModel = (queries) => (params) => p
     groupIds,
     userDetails,
     listCount: lists.length,
-    ...constructListsTab(
+    ownedLists: pipe(
       lists,
-      userDetails.id,
-      pipe(
-        params.user,
-        O.map((user) => user.id),
-      ),
+      sortByDefaultListOrdering,
+      RA.map(constructListCardViewModelWithoutAvatar),
     ),
+    showCreateNewList: showCreateNewList(userDetails.id, pipe(
+      params.user,
+      O.map((user) => user.id),
+    )),
   })),
   TE.fromEither,
 );
