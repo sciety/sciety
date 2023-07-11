@@ -1,9 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { List } from '../../shared-read-models/lists/list';
 import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
-import { Queries } from '../../shared-read-models';
+import { Queries, List } from '../../shared-read-models';
 
 export type Dependencies = Queries & {
   logger: Logger,

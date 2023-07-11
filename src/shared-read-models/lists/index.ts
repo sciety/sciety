@@ -18,3 +18,5 @@ export const lists = {
   initialState,
   handleEvent,
 };
+
+export { List } from './list';

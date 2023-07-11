@@ -23,3 +23,5 @@ const queries = {
 };
 
 export type Queries = { [K in keyof typeof queries]: ReturnType<typeof queries[K]> };
+
+export type { List } from './lists';
