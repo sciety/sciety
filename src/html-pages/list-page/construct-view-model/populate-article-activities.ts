@@ -3,11 +3,10 @@ import { pipe } from 'fp-ts/function';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { Doi } from '../../../types/doi';
 import { Queries } from '../../../shared-read-models';
-import { ArticleActivity } from '../../../shared-read-models/article-activity/get-activity-for-doi';
 
 type PopulateArticleActivities = (queries: Queries)
 => (pageOfItems: PageOfItems<Doi>)
-=> PageOfItems<ArticleActivity>;
+=> PageOfItems<ReturnType<Queries['getActivityForDoi']>>;
 
 export const populateArticleActivities: PopulateArticleActivities = (queries) => (pageOfItems) => ({
   ...pageOfItems,
