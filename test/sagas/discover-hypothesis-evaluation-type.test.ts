@@ -14,7 +14,10 @@ describe('discover-hypothesis-evaluation-type', () => {
 
   describe('when there is an hypothesis evaluation missing its evaluation type', () => {
     const knownType: EvaluationType = 'review';
-    const evaluation = arbitraryRecordedEvaluation();
+    const evaluation = {
+      ...arbitraryRecordedEvaluation(),
+      type: O.none,
+    };
     let result: ReturnType<typeof framework.queries.getEvaluationsForDoi>;
 
     beforeEach(async () => {
