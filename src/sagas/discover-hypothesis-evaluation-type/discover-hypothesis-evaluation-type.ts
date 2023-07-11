@@ -1,5 +1,4 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as EL from '../../types/evaluation-locator';
@@ -12,9 +11,9 @@ import { tagToEvaluationTypeMap } from '../../ingest/tag-to-evaluation-type-map'
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { executeCommand } from '../../write-side/commands/execute-command';
-import { ResourceAction } from '../../write-side/resources/resource-action';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
-import { UpdateEvaluationCommand, updateEvaluationCommandCodec } from '../../write-side/commands';
+import { updateEvaluationCommandCodec } from '../../write-side/commands';
+import { update } from '../../write-side/resources/evaluation';
 
 type Dependencies = Queries & {
   fetchReview: FetchReview,
@@ -26,8 +25,6 @@ type Dependencies = Queries & {
 const mustBeFromHypothesis = (recordedEvaluation: RecordedEvaluation) => (
   EL.service(recordedEvaluation.evaluationLocator) === 'hypothesis'
 );
-
-const update: ResourceAction<UpdateEvaluationCommand> = () => () => E.right([]);
 
 const updateEvaluationIfPossible = (
   dependencies: Dependencies,
