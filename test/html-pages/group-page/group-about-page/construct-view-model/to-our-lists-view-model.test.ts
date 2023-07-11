@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as LOID from '../../../../../src/types/list-owner-id';
 import { toOurListsViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/to-our-lists-view-model';
 import { arbitraryString } from '../../../../helpers';
 import { arbitraryGroup } from '../../../../types/group.helper';
@@ -21,9 +22,12 @@ describe('to-our-lists-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group); // 1 list by default
-      await framework.commandHelpers.createList(arbitraryList());
-      await framework.commandHelpers.createList(arbitraryList());
-      await framework.commandHelpers.createList({ ...arbitraryList(), name: nameOfMostRecentlyUpdatedList });
+      await framework.commandHelpers.createList(arbitraryList(LOID.fromGroupId(group.id)));
+      await framework.commandHelpers.createList(arbitraryList(LOID.fromGroupId(group.id)));
+      await framework.commandHelpers.createList({
+        ...arbitraryList(LOID.fromGroupId(group.id)),
+        name: nameOfMostRecentlyUpdatedList,
+      });
 
       model = toOurListsViewModel(framework.queries, group.id, groupSlug);
     });
@@ -46,8 +50,11 @@ describe('to-our-lists-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group); // 1 list by default
-      await framework.commandHelpers.createList(arbitraryList());
-      await framework.commandHelpers.createList({ ...arbitraryList(), name: nameOfMostRecentlyUpdatedList });
+      await framework.commandHelpers.createList(arbitraryList(LOID.fromGroupId(group.id)));
+      await framework.commandHelpers.createList({
+        ...arbitraryList(LOID.fromGroupId(group.id)),
+        name: nameOfMostRecentlyUpdatedList,
+      });
 
       model = toOurListsViewModel(framework.queries, group.id, groupSlug);
     });
