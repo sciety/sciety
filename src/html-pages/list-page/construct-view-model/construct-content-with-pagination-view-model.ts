@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { populateArticleActivities } from './populate-article-activities';
@@ -22,6 +23,7 @@ export const constructContentWithPaginationViewModel = (
   TE.fromEither,
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles.items,
+    RA.map((item) => item.articleId),
     toPageOfCards(dependencies, editCapability, listId),
     TE.map((articles) => ({ articles, pagination: pageOfArticles })),
   )),

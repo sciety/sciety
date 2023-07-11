@@ -11,17 +11,16 @@ import {
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
 import { ContentWithPaginationViewModel } from '../view-model';
-import { ArticleActivity } from '../../../shared-read-models/article-activity/get-activity-for-doi';
+import { Doi } from '../../../types/doi';
 
 export const toPageOfCards = (
   dependencies: Dependencies,
   editCapability: boolean,
   listId: ListId,
 ) => (
-  articles: ReadonlyArray<ArticleActivity>,
+  articles: ReadonlyArray<Doi>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ContentWithPaginationViewModel['articles']> => pipe(
   articles,
-  RA.map((item) => item.articleId),
   T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, editCapability, listId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
