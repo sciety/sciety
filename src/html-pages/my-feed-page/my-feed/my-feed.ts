@@ -76,7 +76,10 @@ export const myFeed: YourFeed = (dependencies) => (userId, pageSize, pageNumber)
   )),
   TE.chain(flow(
     getEvaluatedArticles(dependencies),
-    TE.mapLeft(constant(noEvaluationsYet)),
+    TE.bimap(
+      constant(noEvaluationsYet),
+      RA.map((activity) => pipe(activity.articleId)),
+    ),
   )),
   TE.chainEitherK(flow(
     paginate(pageSize, pageNumber),
@@ -84,7 +87,6 @@ export const myFeed: YourFeed = (dependencies) => (userId, pageSize, pageNumber)
   )),
   TE.chain((pageOfItems) => pipe(
     pageOfItems.items,
-    RA.map((activity) => pipe(activity.articleId)),
     constructArticleViewModels(dependencies),
     TE.bimap(
       constant(troubleFetchingTryAgain),
