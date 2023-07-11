@@ -21,7 +21,7 @@ export const constructContentWithPaginationViewModel = (
   E.map(populateArticleActivities(dependencies)),
   TE.fromEither,
   TE.chainW((pageOfArticles) => pipe(
-    pageOfArticles,
+    pageOfArticles.items,
     toPageOfCards(dependencies, editCapability, listId),
     TE.map((articles) => ({ articles, pagination: pageOfArticles })),
   )),
