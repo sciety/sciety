@@ -66,11 +66,10 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   });
 };
 
-export const fetchCrossrefArticle = (
+const fetchFromCrossRef = (doi: Doi,
   queryExternalService: QueryExternalService,
   logger: Logger,
-  crossrefApiBearerToken: O.Option<string>,
-): FetchArticle => (doi) => {
+  crossrefApiBearerToken: O.Option<string>) => {
   const url = `https://api.crossref.org/works/${doi.value}/transform`;
   const headers: Record<string, string> = {
     Accept: 'application/vnd.crossref.unixref+xml',
@@ -91,4 +90,18 @@ export const fetchCrossrefArticle = (
     )),
     TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(response, logger, doi)),
   );
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const fetchFromDataCite = (doi: Doi) => TE.left(DE.unavailable);
+
+export const fetchCrossrefArticle = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+  crossrefApiBearerToken: O.Option<string>,
+): FetchArticle => (doi) => {
+  if (doi.value.startsWith('10.48550')) {
+    return fetchFromDataCite(doi);
+  }
+  return fetchFromCrossRef(doi, queryExternalService, logger, crossrefApiBearerToken);
 };
