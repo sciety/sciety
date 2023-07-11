@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { Eq as stringEq } from 'fp-ts/string';
 
-export const supportedServersDoiFromLinkConfiguration: DoiFromLinkData = {
+export const doiFromLinkConfig: DoiFromLinkConfig = {
   researchsquare: {
     startOfDoi: '10.21203/rs.3.rs-',
     regexToCaptureEndOfDoi: /rs-(.*)$/,
@@ -46,7 +46,7 @@ export type ServerData = {
   prefix: string,
 };
 
-export const isSupported = (server: string, allServerData: DoiFromLinkData): server is SupportedServerName => pipe(
+export const isSupported = (server: string, allServerData: DoiFromLinkConfig): server is SupportedServerName => pipe(
   allServerData,
   Object.keys,
   RA.elem(stringEq)(server),
@@ -54,4 +54,4 @@ export const isSupported = (server: string, allServerData: DoiFromLinkData): ser
 
 type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv' | 'osf' | 'psyarxiv' | 'arxiv';
 
-export type DoiFromLinkData = Record<SupportedServerName, ServerData>;
+export type DoiFromLinkConfig = Record<SupportedServerName, ServerData>;

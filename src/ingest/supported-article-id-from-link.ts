@@ -3,10 +3,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
 import {
-  DoiFromLinkData, ServerData, isSupported, supportedServersDoiFromLinkConfiguration,
-} from './supported-servers-doi-from-link-configuration';
+  DoiFromLinkConfig, ServerData, isSupported, doiFromLinkConfig,
+} from './doi-from-link-config';
 
-const isPrefixOfASupportedServer = (allServerData: DoiFromLinkData, prefix: string) => pipe(
+const isPrefixOfASupportedServer = (allServerData: DoiFromLinkConfig, prefix: string) => pipe(
   allServerData,
   Object.values,
   RA.map((data: ServerData) => data.prefix),
@@ -21,7 +21,7 @@ const derivePrefixAndSuffixFromLink = (link: string) => {
   };
 };
 
-const deriveDoiFromDoiDotOrgLink = (allServerData: DoiFromLinkData, link: string) => pipe(
+const deriveDoiFromDoiDotOrgLink = (allServerData: DoiFromLinkConfig, link: string) => pipe(
   link,
   derivePrefixAndSuffixFromLink,
   E.right,
@@ -64,11 +64,11 @@ export const supportedArticleIdFromLink = (link: string): E.Either<string, strin
   if (!server) {
     return E.left(`server not found in "${link}"`);
   }
-  if (isSupported(server, supportedServersDoiFromLinkConfiguration)) {
-    return deriveDoiForSpecificServer(supportedServersDoiFromLinkConfiguration[server], link);
+  if (isSupported(server, doiFromLinkConfig)) {
+    return deriveDoiForSpecificServer(doiFromLinkConfig[server], link);
   }
   switch (server) {
-    case 'doi': return deriveDoiFromDoiDotOrgLink(supportedServersDoiFromLinkConfiguration, link);
+    case 'doi': return deriveDoiFromDoiDotOrgLink(doiFromLinkConfig, link);
     default:
       return E.left(`server "${server}" not supported in "${link}"`);
   }
