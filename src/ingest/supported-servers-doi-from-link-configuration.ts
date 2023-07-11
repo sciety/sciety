@@ -31,7 +31,7 @@ export const supportedServersDoiFromLinkConfiguration: DoiFromLinkData = {
   },
   arxiv: {
     startOfDoi: '10.48550/arXiv.',
-    regexToCaptureEndOfDoi: /https:\/\/arxiv.com\/abs\/(.+)/,
+    regexToCaptureEndOfDoi: /https:\/\/arxiv.org\/abs\/(.+)/,
     prefix: '10.48550',
   },
 };
