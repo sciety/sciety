@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
 import {
-  DoiFromLinkData, ServerData, SupportedServerName, supportedServersDoiFromLinkConfiguration,
+  DoiFromLinkData, ServerData, isSupported, supportedServersDoiFromLinkConfiguration,
 } from './supported-servers-doi-from-link-configuration';
 
 const isPrefixOfASupportedServer = (allServerData: DoiFromLinkData, prefix: string) => pipe(
@@ -57,12 +57,6 @@ const deriveDoiForSpecificServer = (serverData: ServerData, link: string) => pip
     (error) => `link not parseable due to "${error}": "${link}"`,
     (endOfDoi) => `${serverData.startOfDoi}${endOfDoi}`,
   ),
-);
-
-const isSupported = (server: string, allServerData: DoiFromLinkData): server is SupportedServerName => pipe(
-  allServerData,
-  Object.keys,
-  RA.elem(stringEq)(server),
 );
 
 export const supportedArticleIdFromLink = (link: string): E.Either<string, string> => {
