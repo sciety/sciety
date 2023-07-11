@@ -9,12 +9,17 @@ import { tagToEvaluationTypeMap } from '../../ingest/tag-to-evaluation-type-map'
 import { UpdateEvaluation } from '../../shared-ports/update-evaluation';
 import { DataError } from '../../types/data-error';
 import { EvaluationLocator } from '../../types/evaluation-locator';
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 type Dependencies = Queries & {
   fetchReview: FetchReview,
   updateEvaluation: UpdateEvaluation,
   logger: Logger,
 };
+
+const mustBeFromHypothesis = (recordedEvaluation: RecordedEvaluation) => (
+  EL.service(recordedEvaluation.evaluationLocator) === 'hypothesis'
+);
 
 const updateEvaluationIfPossible = (
   dependencies: Dependencies,
@@ -28,7 +33,7 @@ export const discoverHypothesisEvaluationType = async (dependencies: Dependencie
   dependencies.logger('info', 'discoverHypothesisEvaluationType starting');
   const first = await pipe(
     dependencies.getEvaluationsWithNoType(),
-    RA.filter((recordedEvaluation) => EL.service(recordedEvaluation.evaluationLocator) === 'hypothesis'),
+    RA.filter(mustBeFromHypothesis),
     RA.head,
     TE.fromOption(() => 'Nothing to do'),
     TE.map((evaluation) => evaluation.evaluationLocator),
