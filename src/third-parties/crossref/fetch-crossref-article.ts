@@ -2,6 +2,7 @@ import { DOMParser } from '@xmldom/xmldom';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
@@ -12,9 +13,10 @@ import { FetchArticle, Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { Doi } from '../../types/doi';
 import { QueryExternalService } from '../query-external-service';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: Doi) => {
   const parser = new DOMParser({
@@ -92,8 +94,58 @@ const fetchFromCrossRef = (doi: Doi,
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const fetchFromDataCite = (doi: Doi) => TE.left(DE.unavailable);
+const dataCiteResponseCodec = t.strict({
+  data: t.strict({
+    attributes: t.strict({
+      titles: t.array(t.strict({
+        title: t.string,
+      })),
+      creators: t.readonlyArray(t.strict({
+        name: t.string,
+      })),
+      publisher: t.string,
+      descriptions: t.array(t.strict({
+        description: t.string,
+        descriptionType: t.literal('Abstract'),
+      })),
+    }),
+  }),
+});
+
+const fetchFromDataCite = (
+  queryExternalService: QueryExternalService,
+): FetchArticle => (
+  doi: Doi,
+) => {
+  const url = `https://api.datacite.org/dois/${doi.value}`;
+  return pipe(
+    url,
+    queryExternalService(),
+    TE.chainEitherKW(dataCiteResponseCodec.decode),
+    TE.bimap(
+      () => DE.unavailable,
+      (validatedResponse) => ({
+        abstract: pipe(
+          validatedResponse.data.attributes.descriptions[0].description,
+          toHtmlFragment,
+          sanitise,
+        ),
+        authors: pipe(
+          validatedResponse.data.attributes.creators,
+          RA.map((creator) => creator.name),
+          O.some,
+        ),
+        doi,
+        title: pipe(
+          validatedResponse.data.attributes.titles[0].title,
+          toHtmlFragment,
+          sanitise,
+        ),
+        server: 'osf',
+      }),
+    ),
+  );
+};
 
 export const fetchCrossrefArticle = (
   queryExternalService: QueryExternalService,
@@ -101,7 +153,7 @@ export const fetchCrossrefArticle = (
   crossrefApiBearerToken: O.Option<string>,
 ): FetchArticle => (doi) => {
   if (doi.value.startsWith('10.48550')) {
-    return fetchFromDataCite(doi);
+    return fetchFromDataCite(queryExternalService)(doi);
   }
   return fetchFromCrossRef(doi, queryExternalService, logger, crossrefApiBearerToken);
 };
