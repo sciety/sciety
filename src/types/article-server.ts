@@ -38,23 +38,22 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
     versionsSupported: false,
     domain: 'osf.io',
   },
+  arxiv: {
+    name: 'arXiv',
+    avatarUrl: '/static/images/osf.png',
+    versionsSupported: false,
+    domain: 'arxiv.org',
+  },
 };
 
-export const articleServerCodec = t.union(
-  [
-    t.literal('biorxiv'),
-    t.literal('medrxiv'),
-    t.literal('researchsquare'),
-    t.literal('scielopreprints'),
-    t.literal('osf'),
-  ],
-);
+export const articleServerCodec = t.keyof(articleServers);
 
 export type ArticleServer = 'biorxiv'
 | 'medrxiv'
 | 'researchsquare'
 | 'scielopreprints'
-| 'osf';
+| 'osf'
+| 'arxiv';
 
 export const isSupportedArticle = (articleId: string): boolean => (
   !!articleId.match(/^10\.1101\/[0-9]{1,}/)
