@@ -8,7 +8,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel } from '../../../../src/html-pages/article-page/construct-view-model';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { List } from '../../../../src/types/list';
+import { List } from '../../../../src/shared-read-models/lists/list';
 import { arbitraryList } from '../../../types/list-helper';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { LoggedInUserListManagement } from '../../../../src/html-pages/article-page/view-model';

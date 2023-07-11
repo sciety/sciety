@@ -8,7 +8,7 @@ import * as tt from 'io-ts-types';
 import * as GID from '../../src/types/group-id';
 import * as UID from '../../src/types/user-id';
 import * as LOID from '../../src/types/list-owner-id';
-import { listCodec } from '../../src/types/list';
+import { listCodec } from '../../src/shared-read-models/lists/list';
 import { ListId } from '../../src/types/list-id';
 
 const responseCodec = t.type({

@@ -8,7 +8,7 @@ import * as LOID from '../../../../../src/types/list-owner-id';
 import { ViewModel } from '../../../../../src/html-pages/group-page/group-about-page/view-model';
 import { constructViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/construct-view-model';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { List } from '../../../../../src/types/list';
+import { List } from '../../../../../src/shared-read-models/lists/list';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 
 describe('construct-view-model', () => {

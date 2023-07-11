@@ -6,7 +6,7 @@ import { UserDetails } from '../../src/types/user-details';
 import { Group } from '../../src/types/group';
 import { UserId } from '../../src/types/user-id';
 import { GroupId } from '../../src/types/group-id';
-import { List } from '../../src/types/list';
+import { List } from '../../src/shared-read-models/lists/list';
 import { ListId } from '../../src/types/list-id';
 import { Doi } from '../../src/types/doi';
 import { RecordedEvaluation } from '../../src/types/recorded-evaluation';

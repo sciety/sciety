@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { List } from '../../types/list';
+import { List } from '../../shared-read-models/lists/list';
 import { ListCardViewModel } from './render-list-card';
 
 export const constructListCardViewModelWithoutAvatar = (list: List): ListCardViewModel => ({

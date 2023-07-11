@@ -6,7 +6,7 @@ import { ReadModel } from './handle-event';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 import { Doi } from '../../types/doi';
-import { List } from '../../types/list';
+import { List } from './list';
 
 type SelectListContainingArticle = (userId: UserId) => (articleId: Doi) => O.Option<List>;
 

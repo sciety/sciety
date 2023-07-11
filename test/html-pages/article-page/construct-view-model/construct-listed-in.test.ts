@@ -7,7 +7,7 @@ import { constructListedIn } from '../../../../src/html-pages/article-page/const
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-import { List } from '../../../../src/types/list';
+import { List } from '../../../../src/shared-read-models/lists/list';
 import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
 
 describe('construct-listed-in', () => {

@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { listIdCodec } from './list-id';
-import * as LOID from './list-owner-id';
+import { listIdCodec } from '../../types/list-id';
+import * as LOID from '../../types/list-owner-id';
 
 export const listCodec = t.type({
   id: listIdCodec,
