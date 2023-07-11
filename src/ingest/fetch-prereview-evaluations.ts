@@ -9,14 +9,14 @@ import * as PR from 'io-ts/PathReporter';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';
-import { Doi, isDoi } from '../types/doi';
+import { Doi } from '../types/doi';
 
 type Ports = {
   fetchData: FetchData,
 };
 
 const preReviewPreprint = t.type({
-  handle: t.union([DoiFromString, t.string]),
+  handle: t.string,
   fullReviews: t.readonlyArray(t.type({
     createdAt: tt.DateFromISOString,
     doi: tt.optionFromNullable(DoiFromString),
@@ -32,7 +32,7 @@ type PreReviewPreprint = t.TypeOf<typeof preReviewPreprint>;
 
 type Review = {
   date: Date,
-  handle: string | Doi,
+  handle: string,
   reviewDoi: O.Option<Doi>,
   isPublished: boolean,
 };
@@ -45,19 +45,28 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
     () => ({ item: preprint.handle.toString(), reason: 'is not published' }),
   ),
   E.filterOrElse(
-    (p): p is Review & { handle: Doi } => isDoi(p.handle),
-    () => ({ item: preprint.handle.toString(), reason: 'not a DOI' }),
-  ),
-  E.filterOrElse(
     (p): p is Review & { handle: Doi, reviewDoi: O.Some<Doi> } => O.isSome(p.reviewDoi),
     () => ({ item: `${preprint.handle.toString()} / ${preprint.date.toISOString()}`, reason: 'review has no DOI' }),
   ),
-  E.map((p) => ({
-    date: p.date,
-    articleDoi: p.handle.value,
-    evaluationLocator: `doi:${p.reviewDoi.value.value}`,
-    authors: [],
-  })),
+  E.chain((preprintWithReviewDoi) => pipe(
+    preprintWithReviewDoi,
+    (p) => {
+      if (p.handle.includes('arxiv')) {
+        return E.right(new Doi(`10.48550/${p.handle.split(':')[1]}`));
+      }
+      return pipe(
+        p.handle,
+        DoiFromString.decode,
+        E.mapLeft(() => ({ item: `${preprint.handle} / ${preprint.date.toISOString()}`, reason: 'cannot determine DOI of evaluated article' })),
+      );
+    },
+    E.map((articleDoi) => ({
+      date: preprintWithReviewDoi.date,
+      articleDoi: articleDoi.value,
+      evaluationLocator: `doi:${preprintWithReviewDoi.reviewDoi.value.value}`,
+      authors: [],
+    })),
+  )),
 );
 
 const toIndividualReviews = (preprint: PreReviewPreprint) => pipe(
