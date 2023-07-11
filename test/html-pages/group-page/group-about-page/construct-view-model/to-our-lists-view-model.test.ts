@@ -1,24 +1,32 @@
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import { toOurListsViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/to-our-lists-view-model';
 import { arbitraryString } from '../../../../helpers';
 import { arbitraryGroup } from '../../../../types/group.helper';
 import { arbitraryList } from '../../../../types/list-helper';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { ViewModel } from '../../../../../src/html-pages/group-page/group-about-page/view-model';
 
 describe('to-our-lists-view-model', () => {
-  const groupSlug = arbitraryGroup().slug;
+  let framework: TestFramework;
+  let model: ViewModel['ourLists'];
+  const group = arbitraryGroup();
+  const groupSlug = group.slug;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
 
   describe('when the group has more than three lists', () => {
     const nameOfMostRecentlyUpdatedList = arbitraryString();
-    const model = pipe(
-      [
-        arbitraryList(),
-        arbitraryList(),
-        arbitraryList(),
-        { ...arbitraryList(), name: nameOfMostRecentlyUpdatedList },
-      ],
-      toOurListsViewModel(groupSlug),
-    );
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group); // 1 list by default
+      await framework.commandHelpers.createList(arbitraryList());
+      await framework.commandHelpers.createList(arbitraryList());
+      await framework.commandHelpers.createList({ ...arbitraryList(), name: nameOfMostRecentlyUpdatedList });
+
+      model = toOurListsViewModel(framework.queries, group.id, groupSlug);
+    });
 
     it('returns list view models for only three lists', () => {
       expect(model.lists).toHaveLength(3);
@@ -35,14 +43,14 @@ describe('to-our-lists-view-model', () => {
 
   describe('when the group has two or three lists', () => {
     const nameOfMostRecentlyUpdatedList = arbitraryString();
-    const model = pipe(
-      [
-        arbitraryList(),
-        arbitraryList(),
-        { ...arbitraryList(), name: nameOfMostRecentlyUpdatedList },
-      ],
-      toOurListsViewModel(groupSlug),
-    );
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group); // 1 list by default
+      await framework.commandHelpers.createList(arbitraryList());
+      await framework.commandHelpers.createList({ ...arbitraryList(), name: nameOfMostRecentlyUpdatedList });
+
+      model = toOurListsViewModel(framework.queries, group.id, groupSlug);
+    });
 
     it('returns list view models for each list', () => {
       expect(model.lists).toHaveLength(3);
@@ -54,12 +62,11 @@ describe('to-our-lists-view-model', () => {
   });
 
   describe('when the group has one list', () => {
-    const model = pipe(
-      [
-        arbitraryList(),
-      ],
-      toOurListsViewModel(groupSlug),
-    );
+    beforeEach(async () => {
+      await framework.commandHelpers.createGroup(group); // 1 list by default
+
+      model = toOurListsViewModel(framework.queries, group.id, groupSlug);
+    });
 
     it('returns list view models for each list', () => {
       expect(model.lists).toHaveLength(1);

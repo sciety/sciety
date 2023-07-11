@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { sequenceS } from 'fp-ts/Apply';
-import * as LOID from '../../../../types/list-owner-id';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
@@ -39,10 +38,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       ),
       tabs: TE.right(constructTabsViewModel(dependencies, group)),
       ourLists: pipe(
-        group.id,
-        LOID.fromGroupId,
-        dependencies.selectAllListsOwnedBy,
-        toOurListsViewModel(group.slug),
+        toOurListsViewModel(dependencies, group.id, group.slug),
         TE.right,
       ),
       markdown: dependencies.fetchStaticFile(`groups/${group.descriptionPath}`),
