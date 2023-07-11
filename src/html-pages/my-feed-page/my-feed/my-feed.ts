@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -83,6 +84,7 @@ export const myFeed: YourFeed = (dependencies) => (userId, pageSize, pageNumber)
   )),
   TE.chain((pageOfItems) => pipe(
     pageOfItems.items,
+    RA.map((activity) => pipe(activity.articleId)),
     constructArticleViewModels(dependencies),
     TE.bimap(
       constant(troubleFetchingTryAgain),
