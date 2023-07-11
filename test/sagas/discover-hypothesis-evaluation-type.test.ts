@@ -1,9 +1,12 @@
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
+import { URL } from 'url';
 import { discoverHypothesisEvaluationType } from '../../src/sagas/discover-hypothesis-evaluation-type';
 import { EvaluationType } from '../../src/types/recorded-evaluation';
 import { TestFramework, createTestFramework } from '../framework';
 import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
 import { dummyLogger } from '../dummy-logger';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
 
 describe('discover-hypothesis-evaluation-type', () => {
   let framework: TestFramework;
@@ -24,6 +27,11 @@ describe('discover-hypothesis-evaluation-type', () => {
       await framework.commandHelpers.recordEvaluation(evaluation);
       await discoverHypothesisEvaluationType({
         ...framework.queries,
+        fetchReview: () => TE.right({
+          fullText: arbitrarySanitisedHtmlFragment(),
+          url: new URL(arbitraryUri()),
+          tags: [],
+        }),
         logger: dummyLogger,
       });
       result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
