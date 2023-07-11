@@ -112,7 +112,7 @@ const dataCiteResponseCodec = t.strict({
   }),
 });
 
-const fetchFromDataCite = (
+const fetchArxivArticle = (
   queryExternalService: QueryExternalService,
 ): FetchArticle => (
   doi: Doi,
@@ -141,7 +141,7 @@ const fetchFromDataCite = (
           toHtmlFragment,
           sanitise,
         ),
-        server: 'osf',
+        server: 'arxiv',
       }),
     ),
   );
@@ -153,7 +153,7 @@ export const fetchCrossrefArticle = (
   crossrefApiBearerToken: O.Option<string>,
 ): FetchArticle => (doi) => {
   if (doi.value.startsWith('10.48550')) {
-    return fetchFromDataCite(queryExternalService)(doi);
+    return fetchArxivArticle(queryExternalService)(doi);
   }
   return fetchFromCrossRef(doi, queryExternalService, logger, crossrefApiBearerToken);
 };
