@@ -75,6 +75,7 @@ const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) =>
 
 export type ReadAndWriteSides = {
   commandHandlers: ReturnType<typeof instantiateCommandHandlers>,
+  commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
   queries: Queries,
 };
@@ -89,7 +90,7 @@ export const createReadAndWriteSides = (): ReadAndWriteSides => {
   const commandHandlers = instantiateCommandHandlers(eventStore, queries);
   return {
     commandHandlers,
-    getAllEvents: eventStore.getAllEvents,
+    ...eventStore,
     queries,
   };
 };

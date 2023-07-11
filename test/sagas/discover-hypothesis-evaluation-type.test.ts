@@ -28,6 +28,8 @@ describe('discover-hypothesis-evaluation-type', () => {
       await framework.commandHelpers.recordEvaluation(evaluation);
       await discoverHypothesisEvaluationType({
         ...framework.queries,
+        commitEvents: framework.commitEvents,
+        getAllEvents: framework.getAllEvents,
         fetchReview: () => TE.right({
           fullText: arbitrarySanitisedHtmlFragment(),
           url: new URL(arbitraryUri()),
