@@ -1,5 +1,4 @@
 import { performance } from 'perf_hooks';
-import * as O from 'fp-ts/Option';
 import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities';
 import { arbitraryDate } from '../../../helpers';
@@ -27,29 +26,7 @@ describe('followed-groups-activities', () => {
       const activities = followedGroupsActivities(events)([groupIdFromString(groupId)]);
 
       expect(activities).toStrictEqual([
-        expect.objectContaining({
-          articleId,
-        }),
-      ]);
-    });
-
-    it('has an evaluation count of 1', () => {
-      const activities = followedGroupsActivities(events)([groupIdFromString(groupId)]);
-
-      expect(activities).toStrictEqual([
-        expect.objectContaining({
-          evaluationCount: 1,
-        }),
-      ]);
-    });
-
-    it('latest activity date matches the evaluation published date', () => {
-      const activities = followedGroupsActivities(events)([groupIdFromString(groupId)]);
-
-      expect(activities).toStrictEqual([
-        expect.objectContaining({
-          latestActivityAt: O.some(latestEvaluationPublishedDate),
-        }),
+        articleId,
       ]);
     });
   });
@@ -88,62 +65,7 @@ describe('followed-groups-activities', () => {
       const activities = followedGroupsActivities(events)([groupId]);
 
       expect(activities).toStrictEqual([
-        expect.objectContaining({
-          articleId,
-        }),
-      ]);
-    });
-
-    it('has an evaluation count of the number of evaluations', () => {
-      const activities = followedGroupsActivities(events)([groupId]);
-
-      expect(activities).toStrictEqual([
-        expect.objectContaining({
-          evaluationCount: 2,
-        }),
-      ]);
-    });
-
-    it('has a latest activity date of the latest evaluation', () => {
-      const activities = followedGroupsActivities(events)([groupId]);
-
-      expect(activities).toStrictEqual([
-        expect.objectContaining({
-          latestActivityAt: O.some(latestEvaluationPublishedDate),
-        }),
-      ]);
-    });
-  });
-
-  describe('when multiple groups have evaluated an article', () => {
-    const groupId = arbitraryGroupId();
-    const otherGroupId = arbitraryGroupId();
-    const articleId = arbitraryArticleId();
-    const events = [
-      evaluationRecordedHelper(groupId, articleId, arbitraryEvaluationLocator(), [], new Date('2020-10-14T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecordedHelper(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecordedHelper(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecordedHelper(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
-    ];
-
-    it('has an evaluation count of the number of evaluations by all groups', () => {
-      const activities = followedGroupsActivities(events)([groupId]);
-
-      expect(activities).toStrictEqual([
-        expect.objectContaining({
-          articleId,
-          evaluationCount: 4,
-        }),
-      ]);
-    });
-
-    it('has a latest activity date of the latest evaluation by any group', () => {
-      const activities = followedGroupsActivities(events)([groupId]);
-
-      expect(activities).toStrictEqual([
-        expect.objectContaining({
-          latestActivityAt: O.some(new Date('2021-03-10T00:00:00.000Z')),
-        }),
+        articleId,
       ]);
     });
   });
@@ -163,12 +85,8 @@ describe('followed-groups-activities', () => {
       const activities = followedGroupsActivities(events)([groupId]);
 
       expect(activities).toStrictEqual([
-        expect.objectContaining({
-          articleId: laterArticle,
-        }),
-        expect.objectContaining({
-          articleId: earlierArticle,
-        }),
+        laterArticle,
+        earlierArticle,
       ]);
     });
   });
@@ -188,12 +106,8 @@ describe('followed-groups-activities', () => {
       const activities = followedGroupsActivities(events)([followedGroupId]);
 
       expect(activities).toStrictEqual([
-        expect.objectContaining({
-          articleId: articleA,
-        }),
-        expect.objectContaining({
-          articleId: articleB,
-        }),
+        articleA,
+        articleB,
       ]);
     });
   });

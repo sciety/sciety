@@ -7,7 +7,6 @@ import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
 import { Doi } from '../../../types/doi';
 import { GroupId } from '../../../types/group-id';
-import { ArticleActivity } from '../../../shared-read-models/article-activity/get-activity-for-doi';
 
 type ArticleActivityDetails = {
   mostRecentRecordedEvaluationByFollowedGroups: Date,
@@ -77,7 +76,7 @@ const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{
 
 type FollowedGroupsActivities = (
   events: ReadonlyArray<DomainEvent>
-) => (groupIds: ReadonlyArray<GroupId>) => ReadonlyArray<ArticleActivity>;
+) => (groupIds: ReadonlyArray<GroupId>) => ReadonlyArray<Doi>;
 
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
@@ -93,4 +92,5 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
     latestActivityAt: O.some(activity.latestArticleActivityDate),
     listMembershipCount: 0,
   })),
+  RA.map((activity) => pipe(activity.articleId)),
 );

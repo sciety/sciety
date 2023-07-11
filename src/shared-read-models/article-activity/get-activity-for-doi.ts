@@ -7,7 +7,7 @@ import * as D from 'fp-ts/Date';
 import { Doi } from '../../types/doi';
 import { ReadModel } from './handle-event';
 
-export type ArticleActivity = {
+type ArticleActivity = {
   articleId: Doi,
   latestActivityAt: O.Option<Date>,
   evaluationCount: number,
