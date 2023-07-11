@@ -7,6 +7,7 @@ import { TestFramework, createTestFramework } from '../framework';
 import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
 import { dummyLogger } from '../dummy-logger';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
+import { toErrorMessage } from '../../src/types/error-message';
 
 describe('discover-hypothesis-evaluation-type', () => {
   let framework: TestFramework;
@@ -32,6 +33,7 @@ describe('discover-hypothesis-evaluation-type', () => {
           url: new URL(arbitraryUri()),
           tags: [],
         }),
+        updateEvaluation: () => TE.left(toErrorMessage('')),
         logger: dummyLogger,
       });
       result = framework.queries.getEvaluationsForDoi(evaluation.articleId);

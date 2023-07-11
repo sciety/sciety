@@ -6,9 +6,11 @@ import { FetchReview, Logger } from '../../shared-ports';
 import { Queries } from '../../shared-read-models';
 import { mapTagToType } from '../../ingest/convert-hypothesis-annotation-to-evaluation';
 import { tagToEvaluationTypeMap } from '../../ingest/tag-to-evaluation-type-map';
+import { UpdateEvaluation } from '../../shared-ports/update-evaluation';
 
 type Dependencies = Queries & {
   fetchReview: FetchReview,
+  updateEvaluation: UpdateEvaluation,
   logger: Logger,
 };
 
