@@ -7,12 +7,22 @@ import { Queries } from '../../shared-read-models';
 import { mapTagToType } from '../../ingest/convert-hypothesis-annotation-to-evaluation';
 import { tagToEvaluationTypeMap } from '../../ingest/tag-to-evaluation-type-map';
 import { UpdateEvaluation } from '../../shared-ports/update-evaluation';
+import { DataError } from '../../types/data-error';
+import { EvaluationLocator } from '../../types/evaluation-locator';
 
 type Dependencies = Queries & {
   fetchReview: FetchReview,
   updateEvaluation: UpdateEvaluation,
   logger: Logger,
 };
+
+const updateEvaluationIfPossible = (
+  dependencies: Dependencies,
+) => (evaluationLocator: EvaluationLocator): TE.TaskEither<DataError, unknown> => pipe(
+  evaluationLocator,
+  dependencies.fetchReview,
+  TE.map((fetchedEvaluation) => mapTagToType(fetchedEvaluation.tags, tagToEvaluationTypeMap)),
+);
 
 export const discoverHypothesisEvaluationType = async (dependencies: Dependencies): Promise<void> => {
   dependencies.logger('info', 'discoverHypothesisEvaluationType starting');
@@ -21,8 +31,8 @@ export const discoverHypothesisEvaluationType = async (dependencies: Dependencie
     RA.filter((recordedEvaluation) => EL.service(recordedEvaluation.evaluationLocator) === 'hypothesis'),
     RA.head,
     TE.fromOption(() => 'Nothing to do'),
-    TE.chainW((evaluation) => dependencies.fetchReview(evaluation.evaluationLocator)),
-    TE.map((fetchedEvaluation) => mapTagToType(fetchedEvaluation.tags, tagToEvaluationTypeMap)),
+    TE.map((evaluation) => evaluation.evaluationLocator),
+    TE.chainW(updateEvaluationIfPossible(dependencies)),
   )();
   dependencies.logger('info', 'discoverHypothesisEvaluationType finished', { first });
 };
