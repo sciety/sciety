@@ -26,7 +26,10 @@ const updateEvaluationIfPossible = (
 ) => (evaluationLocator: EvaluationLocator): TE.TaskEither<DataError, unknown> => pipe(
   evaluationLocator,
   dependencies.fetchReview,
-  TE.map((fetchedEvaluation) => mapTagToType(fetchedEvaluation.tags, tagToEvaluationTypeMap)),
+  TE.map((fetchedEvaluation) => ({
+    evaluationLocator,
+    evaluationType: mapTagToType(fetchedEvaluation.tags, tagToEvaluationTypeMap),
+  })),
 );
 
 export const discoverHypothesisEvaluationType = async (dependencies: Dependencies): Promise<void> => {
