@@ -9,10 +9,10 @@ import { SkippedItem } from './types/skipped-item';
 
 const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.length > 0;
 
-const mapTagToType = (
+export const mapTagToType = (
   tags: ReadonlyArray<string>,
   tagToEvaluationTypeMap: Record<string, ReadonlyArray<string>>,
-) => pipe(
+): string | undefined => pipe(
   tagToEvaluationTypeMap,
   R.filter((t) => pipe(
     tags,

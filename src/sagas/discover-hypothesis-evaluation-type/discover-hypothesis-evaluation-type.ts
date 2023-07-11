@@ -4,6 +4,8 @@ import { pipe } from 'fp-ts/function';
 import * as EL from '../../types/evaluation-locator';
 import { FetchReview, Logger } from '../../shared-ports';
 import { Queries } from '../../shared-read-models';
+import { mapTagToType } from '../../ingest/convert-hypothesis-annotation-to-evaluation';
+import { tagToEvaluationTypeMap } from '../../ingest/tag-to-evaluation-type-map';
 
 type Dependencies = Queries & {
   fetchReview: FetchReview,
@@ -18,6 +20,7 @@ export const discoverHypothesisEvaluationType = async (dependencies: Dependencie
     RA.head,
     TE.fromOption(() => 'Nothing to do'),
     TE.chainW((evaluation) => dependencies.fetchReview(evaluation.evaluationLocator)),
+    TE.map((fetchedEvaluation) => mapTagToType(fetchedEvaluation.tags, tagToEvaluationTypeMap)),
   )();
   dependencies.logger('info', 'discoverHypothesisEvaluationType finished', { first });
 };
