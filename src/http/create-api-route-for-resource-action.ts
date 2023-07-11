@@ -7,32 +7,10 @@ import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
 import { GenericCommand } from '../types/command-handler';
 import { CollectedPorts } from '../infrastructure';
-import { validateInputShape } from '../write-side/commands/validate-input-shape';
 import { logRequestBody } from './api/log-request-body';
 import { requireBearerToken } from './api/require-bearer-token';
 import { ResourceAction } from '../write-side/resources/resource-action';
-import { GetAllEvents, CommitEvents } from '../shared-ports';
-
-type Dependencies = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
-};
-
-const executeCommand = <C extends GenericCommand>(
-  dependencies: Dependencies,
-  codec: t.Decoder<unknown, C>,
-  resourceAction: ResourceAction<C>,
-) => (input: unknown) => pipe(
-    input,
-    validateInputShape(codec),
-    TE.fromEither,
-    TE.chain((command) => pipe(
-      dependencies.getAllEvents,
-      TE.rightTask,
-      TE.chainEitherKW(resourceAction(command)),
-      TE.chainTaskK(dependencies.commitEvents),
-    )),
-  );
+import { executeCommand } from '../write-side/commands/execute-command';
 
 const executeAndRespond = <C extends GenericCommand>(
   ports: CollectedPorts,
