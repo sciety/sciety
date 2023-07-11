@@ -9,10 +9,10 @@ import {
   ArticleErrorCardViewModel,
 } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
-import { ArticleActivity } from '../../../types/article-activity';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
 import { ContentWithPaginationViewModel } from '../view-model';
+import { ArticleActivity } from '../../../shared-read-models/article-activity/get-activity-for-doi';
 
 export const toPageOfCards = (
   dependencies: Dependencies,

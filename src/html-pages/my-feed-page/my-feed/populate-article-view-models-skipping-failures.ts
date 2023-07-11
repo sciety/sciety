@@ -3,8 +3,8 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleCardViewModel, constructArticleCardViewModel } from '../../../shared-components/article-card';
-import { ArticleActivity } from '../../../types/article-activity';
 import { Dependencies } from './dependencies';
+import { ArticleActivity } from '../../../shared-read-models/article-activity/get-activity-for-doi';
 
 type PopulateArticleViewModelsSkippingFailures = (
   dependencies: Dependencies,

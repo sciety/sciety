@@ -4,9 +4,15 @@ import * as S from 'fp-ts/string';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as D from 'fp-ts/Date';
-import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { ReadModel } from './handle-event';
+
+export type ArticleActivity = {
+  articleId: Doi,
+  latestActivityAt: O.Option<Date>,
+  evaluationCount: number,
+  listMembershipCount: number,
+};
 
 type GetActivityForDoi = (articleId: Doi) => ArticleActivity;
 

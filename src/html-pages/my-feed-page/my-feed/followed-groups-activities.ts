@@ -5,9 +5,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
-import { ArticleActivity } from '../../../types/article-activity';
 import { Doi } from '../../../types/doi';
 import { GroupId } from '../../../types/group-id';
+import { ArticleActivity } from '../../../shared-read-models/article-activity/get-activity-for-doi';
 
 type ArticleActivityDetails = {
   mostRecentRecordedEvaluationByFollowedGroups: Date,

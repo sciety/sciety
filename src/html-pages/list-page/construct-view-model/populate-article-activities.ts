@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { PageOfItems } from '../../../shared-components/paginate';
-import { ArticleActivity } from '../../../types/article-activity';
 import { Doi } from '../../../types/doi';
 import { Queries } from '../../../shared-read-models';
+import { ArticleActivity } from '../../../shared-read-models/article-activity/get-activity-for-doi';
 
 type PopulateArticleActivities = (queries: Queries)
 => (pageOfItems: PageOfItems<Doi>)
