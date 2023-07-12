@@ -3,34 +3,45 @@ import * as E from 'fp-ts/Either';
 import { update } from '../../../../src/write-side/resources/evaluation';
 import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
+import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
+import { EvaluationType } from '../../../../src/types/recorded-evaluation';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+
+const evaluationRecordedWithType = (
+  evaluationLocator: EvaluationLocator,
+  evaluationType: EvaluationType | undefined,
+) => {
+  const evaluation = arbitraryRecordedEvaluation();
+  return evaluationRecordedHelper(
+    evaluation.groupId,
+    evaluation.articleId,
+    evaluationLocator,
+    evaluation.authors,
+    evaluation.publishedAt,
+    new Date(),
+    evaluationType,
+  );
+};
 
 describe('update', () => {
   describe('when the evaluation locator has been recorded', () => {
     describe('when the evaluation type has not been recorded', () => {
-      const evaluation = arbitraryRecordedEvaluation();
+      const evaluationLocator = arbitraryEvaluationLocator();
       const command = {
-        evaluationLocator: evaluation.evaluationLocator,
+        evaluationLocator,
         evaluationType: 'author-response' as const,
       };
-      const input = [
-        evaluationRecordedHelper(
-          evaluation.groupId,
-          evaluation.articleId,
-          evaluation.evaluationLocator,
-          evaluation.authors,
-          evaluation.publishedAt,
-          new Date(),
-          undefined,
-        ),
+      const existingEvents = [
+        evaluationRecordedWithType(evaluationLocator, undefined),
       ];
 
-      const events = pipe(
-        input,
+      const generatedEvents = pipe(
+        existingEvents,
         update(command),
       );
 
       it('returns an EvaluationUpdated event', () => {
-        expect(events).toStrictEqual(E.right([expect.objectContaining({
+        expect(generatedEvents).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationUpdated',
           evaluationLocator: command.evaluationLocator,
           evaluationType: command.evaluationType,
