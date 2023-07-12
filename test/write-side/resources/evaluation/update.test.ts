@@ -12,19 +12,20 @@ describe('update', () => {
         evaluationLocator: evaluation.evaluationLocator,
         evaluationType: 'author-response' as const,
       };
+      const input = [
+        evaluationRecordedHelper(
+          evaluation.groupId,
+          evaluation.articleId,
+          evaluation.evaluationLocator,
+          evaluation.authors,
+          evaluation.publishedAt,
+          new Date(),
+          undefined,
+        ),
+      ];
 
       const events = pipe(
-        [
-          evaluationRecordedHelper(
-            evaluation.groupId,
-            evaluation.articleId,
-            evaluation.evaluationLocator,
-            evaluation.authors,
-            evaluation.publishedAt,
-            new Date(),
-            undefined,
-          ),
-        ],
+        input,
         update(command),
       );
 
