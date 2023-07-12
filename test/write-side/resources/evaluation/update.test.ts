@@ -123,7 +123,7 @@ describe('update', () => {
           update(command),
         );
 
-        it.failing('returns no events', () => {
+        it('returns no events', () => {
           expect(generatedEvents).toStrictEqual(E.right([]));
         });
       });

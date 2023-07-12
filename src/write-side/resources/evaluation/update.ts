@@ -2,15 +2,19 @@ import * as B from 'fp-ts/boolean';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import {
+  EventOfType, constructEvent, DomainEvent, isEventOfType,
+} from '../../../domain-events/index';
 import { ResourceAction } from '../resource-action';
 import { UpdateEvaluationCommand } from '../../commands';
-import { constructEvent, DomainEvent, isEventOfType } from '../../../domain-events';
 import { toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 
 const findInterestingEvents = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter(isEventOfType('EvaluationRecorded')),
+  RA.filter((event): event is EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> => isEventOfType('EvaluationRecorded')(event)
+    || isEventOfType('EvaluationUpdated')(event)),
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
   RA.match(
     () => E.left(toErrorMessage('no recorded evaluation found')),
@@ -23,8 +27,8 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (all
   findInterestingEvents(command.evaluationLocator),
   E.map((events) => pipe(
     events,
-    RA.filter((e) => e.evaluationType !== command.evaluationType),
-    RA.isNonEmpty,
+    RNEA.last,
+    (e) => (e.evaluationType !== command.evaluationType),
     B.fold(
       () => [],
       () => [
