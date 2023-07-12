@@ -66,7 +66,21 @@ describe('update', () => {
       });
 
       describe('and it is not the same value as the one being passed in', () => {
-        it.todo('returns an EvaluationUpdated event');
+        const existingEvents = [
+          evaluationRecordedWithType(evaluationLocator, 'review'),
+        ];
+        const generatedEvents = pipe(
+          existingEvents,
+          update(command),
+        );
+
+        it('returns an EvaluationUpdated event', () => {
+          expect(generatedEvents).toStrictEqual(E.right([expect.objectContaining({
+            type: 'EvaluationUpdated',
+            evaluationLocator: command.evaluationLocator,
+            evaluationType: command.evaluationType,
+          })]));
+        });
       });
     });
   });
