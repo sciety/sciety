@@ -10,6 +10,7 @@ import { ResourceAction } from '../resource-action';
 import { UpdateEvaluationCommand } from '../../commands';
 import { toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
+import { EvaluationType } from '../../../types/recorded-evaluation';
 
 const findInterestingEvents = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -22,13 +23,18 @@ const findInterestingEvents = (evaluationLocator: EvaluationLocator) => (events:
   ),
 );
 
+const shouldUpdateEvaluationType = (evaluationType: EvaluationType) => (events: RNEA.ReadonlyNonEmptyArray<EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'>>) => pipe(
+  events,
+  RNEA.last,
+  (e) => (e.evaluationType !== evaluationType),
+);
+
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
   findInterestingEvents(command.evaluationLocator),
   E.map((events) => pipe(
     events,
-    RNEA.last,
-    (e) => (e.evaluationType !== command.evaluationType),
+    shouldUpdateEvaluationType(command.evaluationType),
     B.fold(
       () => [],
       () => [
