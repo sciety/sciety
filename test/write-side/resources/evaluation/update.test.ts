@@ -72,6 +72,18 @@ describe('update', () => {
   });
 
   describe('when the evaluation locator has not been recorded', () => {
-    it.todo('fails');
+    const command = {
+      evaluationLocator: arbitraryEvaluationLocator(),
+      evaluationType: 'author-response' as const,
+    };
+
+    const result = pipe(
+      [],
+      update(command),
+    );
+
+    it.failing('fails', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });
