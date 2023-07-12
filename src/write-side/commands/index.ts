@@ -11,3 +11,4 @@ export { updateUserDetailsCommandCodec, UpdateUserDetailsCommand } from './updat
 export { eraseEvaluationCommandCodec, EraseEvaluationCommand } from './erase-evaluation';
 export { updateGroupDetailsCommandCodec, UpdateGroupDetailsCommand } from './update-group-details';
 export { updateEvaluationCommandCodec, UpdateEvaluationCommand } from './update-evaluation';
+export { executeCommand } from './execute-command';

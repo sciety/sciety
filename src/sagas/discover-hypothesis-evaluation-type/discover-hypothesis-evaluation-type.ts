@@ -10,9 +10,8 @@ import { mapTagToType } from '../../ingest/convert-hypothesis-annotation-to-eval
 import { tagToEvaluationTypeMap } from '../../ingest/tag-to-evaluation-type-map';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { executeCommand } from '../../write-side/commands/execute-command';
+import { executeCommand, updateEvaluationCommandCodec } from '../../write-side/commands';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
-import { updateEvaluationCommandCodec } from '../../write-side/commands';
 import { update } from '../../write-side/resources/evaluation';
 
 type Dependencies = Queries & {

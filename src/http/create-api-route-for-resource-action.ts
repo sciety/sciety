@@ -10,7 +10,7 @@ import { CollectedPorts } from '../infrastructure';
 import { logRequestBody } from './api/log-request-body';
 import { requireBearerToken } from './api/require-bearer-token';
 import { ResourceAction } from '../write-side/resources/resource-action';
-import { executeCommand } from '../write-side/commands/execute-command';
+import { executeCommand } from '../write-side/commands';
 
 const executeAndRespond = <C extends GenericCommand>(
   ports: CollectedPorts,
