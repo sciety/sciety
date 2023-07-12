@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { constructEvent } from '../../../../src/domain-events/index';
+import { constructEvent } from '../../../../src/domain-events';
 import { update } from '../../../../src/write-side/resources/evaluation';
 import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
@@ -59,8 +59,8 @@ describe('update', () => {
       });
     });
 
-    describe('when the evaluation type has been recorded', () => {
-      describe('and it is the same value as the one being passed in', () => {
+    describe('when the evaluation type has been recorded in the EvaluationRecorded event', () => {
+      describe('and the command matches the existing evaluation type', () => {
         const existingEvents = [
           evaluationRecordedWithType(evaluationLocator, 'author-response'),
         ];
@@ -74,7 +74,7 @@ describe('update', () => {
         });
       });
 
-      describe('and it is not the same value as the one being passed in', () => {
+      describe('and the command does not match the existing evaluation type', () => {
         const existingEvents = [
           evaluationRecordedWithType(evaluationLocator, 'review'),
         ];
@@ -93,8 +93,8 @@ describe('update', () => {
       });
     });
 
-    describe('when the evaluation type has already been updated', () => {
-      describe('and it is not the same value as the one being passed in', () => {
+    describe('when the evaluation type has already been updated in the EvaluationUpdated event', () => {
+      describe('and the command does not match the existing evaluation type', () => {
         const existingEvents = [
           evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
           evaluationUpdatedWithType(evaluationLocator, 'review'),
@@ -113,7 +113,7 @@ describe('update', () => {
         });
       });
 
-      describe('and it is the same value as the one being passed in', () => {
+      describe('and the command matches the existing evaluation type', () => {
         const existingEvents = [
           evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
           evaluationUpdatedWithType(evaluationLocator, command.evaluationType),
