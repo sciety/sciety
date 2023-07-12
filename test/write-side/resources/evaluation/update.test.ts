@@ -112,6 +112,21 @@ describe('update', () => {
           })]));
         });
       });
+
+      describe('and it is the same value as the one being passed in', () => {
+        const existingEvents = [
+          evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
+          evaluationUpdatedWithType(evaluationLocator, command.evaluationType),
+        ];
+        const generatedEvents = pipe(
+          existingEvents,
+          update(command),
+        );
+
+        it.failing('returns no events', () => {
+          expect(generatedEvents).toStrictEqual(E.right([]));
+        });
+      });
     });
   });
 
