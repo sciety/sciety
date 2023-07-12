@@ -25,12 +25,13 @@ const evaluationRecordedWithType = (
 
 describe('update', () => {
   describe('when the evaluation locator has been recorded', () => {
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const command = {
+      evaluationLocator,
+      evaluationType: 'author-response' as const,
+    };
+
     describe('when the evaluation type has not been recorded', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
-      const command = {
-        evaluationLocator,
-        evaluationType: 'author-response' as const,
-      };
       const existingEvents = [
         evaluationRecordedWithType(evaluationLocator, undefined),
       ];
@@ -51,7 +52,17 @@ describe('update', () => {
 
     describe('when the evaluation type has been recorded', () => {
       describe('and it is the same value as the one being passed in', () => {
-        it.todo('returns no events');
+        const existingEvents = [
+          evaluationRecordedWithType(evaluationLocator, 'author-response'),
+        ];
+        const generatedEvents = pipe(
+          existingEvents,
+          update(command),
+        );
+
+        it.failing('returns no events', () => {
+          expect(generatedEvents).toStrictEqual(E.right([]));
+        });
       });
 
       describe('and it is not the same value as the one being passed in', () => {
