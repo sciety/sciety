@@ -43,7 +43,7 @@ const updateEvaluationIfPossible = (
 
 export const discoverHypothesisEvaluationType = async (dependencies: Dependencies): Promise<void> => {
   dependencies.logger('info', 'discoverHypothesisEvaluationType starting');
-  const first = await pipe(
+  const outcome = await pipe(
     dependencies.getEvaluationsWithNoType(),
     RA.filter(mustBeFromHypothesis),
     RA.head,
@@ -51,5 +51,5 @@ export const discoverHypothesisEvaluationType = async (dependencies: Dependencie
     TE.map((evaluation) => evaluation.evaluationLocator),
     TE.chainW(updateEvaluationIfPossible(dependencies)),
   )();
-  dependencies.logger('info', 'discoverHypothesisEvaluationType finished', { first });
+  dependencies.logger('info', 'discoverHypothesisEvaluationType finished', { outcome });
 };
