@@ -1,4 +1,3 @@
-import * as B from 'fp-ts/boolean';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
@@ -11,14 +10,14 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (eve
   events,
   RA.filter(isEventOfType('EvaluationRecorded')),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
-  RA.isNonEmpty,
-  B.fold(
+  RA.match(
     () => E.left(toErrorMessage('no recorded evaluation found')),
-    () => E.right([
-      constructEvent('EvaluationUpdated')({
-        evaluationLocator: command.evaluationLocator,
-        evaluationType: command.evaluationType,
-      }),
-    ]),
+    (es) => E.right(es),
   ),
+  E.map(() => [
+    constructEvent('EvaluationUpdated')({
+      evaluationLocator: command.evaluationLocator,
+      evaluationType: command.evaluationType,
+    }),
+  ]),
 );
