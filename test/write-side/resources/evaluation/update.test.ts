@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { constructEvent } from '../../../../src/domain-events/index';
 import { update } from '../../../../src/write-side/resources/evaluation';
 import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
@@ -22,6 +23,14 @@ const evaluationRecordedWithType = (
     evaluationType,
   );
 };
+
+const evaluationUpdatedWithType = (
+  evaluationLocator: EvaluationLocator,
+  evaluationType: EvaluationType | undefined,
+) => constructEvent('EvaluationUpdated')({
+  evaluationLocator,
+  evaluationType,
+});
 
 describe('update', () => {
   describe('when the evaluation locator has been recorded', () => {
@@ -68,6 +77,27 @@ describe('update', () => {
       describe('and it is not the same value as the one being passed in', () => {
         const existingEvents = [
           evaluationRecordedWithType(evaluationLocator, 'review'),
+        ];
+        const generatedEvents = pipe(
+          existingEvents,
+          update(command),
+        );
+
+        it('returns an EvaluationUpdated event', () => {
+          expect(generatedEvents).toStrictEqual(E.right([expect.objectContaining({
+            type: 'EvaluationUpdated',
+            evaluationLocator: command.evaluationLocator,
+            evaluationType: command.evaluationType,
+          })]));
+        });
+      });
+    });
+
+    describe('when the evaluation type has already been updated', () => {
+      describe('and it is not the same value as the one being passed in', () => {
+        const existingEvents = [
+          evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
+          evaluationUpdatedWithType(evaluationLocator, 'review'),
         ];
         const generatedEvents = pipe(
           existingEvents,
