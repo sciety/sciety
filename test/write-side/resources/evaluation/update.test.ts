@@ -29,7 +29,7 @@ describe('update', () => {
         update(command),
       );
 
-      it.failing('returns an EvaluationUpdated event', () => {
+      it('returns an EvaluationUpdated event', () => {
         expect(events).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationUpdated',
           evaluationLocator: command.evaluationLocator,
