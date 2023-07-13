@@ -1,20 +1,15 @@
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { GenericCommand } from '../../types/command-handler';
 import { ResourceAction } from '../resources/resource-action';
 import { validateInputShape } from './validate-input-shape';
 import { ErrorMessage } from '../../types/error-message';
 import { CommandResult } from '../../types/command-result';
-
-type Dependencies = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
-};
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
 export const executeCommand = <C extends GenericCommand>(
-  dependencies: Dependencies,
+  dependencies: DependenciesForCommands,
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
 ) => (input: unknown): TE.TaskEither<ErrorMessage, CommandResult> => pipe(

@@ -2,9 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as EL from '../../types/evaluation-locator';
-import {
-  CommitEvents, FetchReview, GetAllEvents, Logger,
-} from '../../shared-ports';
+import { FetchReview, Logger } from '../../shared-ports';
 import { Queries } from '../../shared-read-models';
 import { mapTagToType } from '../../ingest/convert-hypothesis-annotation-to-evaluation';
 import { tagToEvaluationTypeMap } from '../../ingest/tag-to-evaluation-type-map';
@@ -13,11 +11,10 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { executeCommand, updateEvaluationCommandCodec } from '../../write-side/commands';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
 import { update } from '../../write-side/resources/evaluation';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
-type Dependencies = Queries & {
+type Dependencies = Queries & DependenciesForCommands & {
   fetchReview: FetchReview,
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
   logger: Logger,
 };
 
