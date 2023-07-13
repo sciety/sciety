@@ -7,6 +7,7 @@ import { TestFramework, createTestFramework } from '../framework';
 import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
 import { dummyLogger } from '../dummy-logger';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
+import { EvaluationLocator } from '../../src/types/evaluation-locator';
 
 describe('discover-hypothesis-evaluation-type', () => {
   let framework: TestFramework;
@@ -19,6 +20,7 @@ describe('discover-hypothesis-evaluation-type', () => {
     const knownType: EvaluationType = 'review';
     const evaluation = {
       ...arbitraryRecordedEvaluation(),
+      evaluationLocator: 'hypothesis:abc' as EvaluationLocator,
       type: O.none,
     };
     let result: ReturnType<typeof framework.queries.getEvaluationsForDoi>;
