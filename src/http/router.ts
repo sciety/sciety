@@ -1,8 +1,6 @@
 import path from 'path';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
-import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
@@ -35,7 +33,6 @@ import {
 } from '../write-side/commands';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
-import { hardcodedDocmaps } from '../docmaps/hardcoded-elife-docmaps';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import {
@@ -389,26 +386,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
     context.response.status = response.status;
     context.response.body = response.body;
-    await next();
-  });
-
-  router.get('/docmaps/v1/evaluations-by/elife/:doi(.+).docmap.json', async (context, next) => {
-    pipe(
-      hardcodedDocmaps,
-      R.lookup(context.params.doi),
-      O.fold(
-        () => {
-          context.status = StatusCodes.NOT_FOUND;
-          context.body = { message: 'No such hardcoded docmap.' };
-          adapters.logger('error', 'No such hardcoded docmap.', { doi: context.params.doi });
-        },
-        (json) => {
-          context.response.status = 200;
-          context.response.body = json;
-        },
-      ),
-    );
-
     await next();
   });
 
