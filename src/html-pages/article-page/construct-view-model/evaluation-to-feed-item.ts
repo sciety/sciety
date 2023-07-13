@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
-import * as RI from '../../../types/evaluation-locator';
+import * as EL from '../../../types/evaluation-locator';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
@@ -44,7 +44,7 @@ export const evaluationToFeedItem = (
       dependencies.fetchReview,
       TE.match(
         () => ({
-          url: RI.inferredSourceUrl(feedEvent.evaluationLocator),
+          url: EL.inferredSourceUrl(feedEvent.evaluationLocator),
           fullText: O.none,
           fullTextLanguageCode: O.none,
           tags: [],

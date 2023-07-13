@@ -1,9 +1,9 @@
 import { URL } from 'url';
-import * as RI from '../../types/evaluation-locator';
+import * as EL from '../../types/evaluation-locator';
 
 export type Evaluation = {
   sourceUrl: URL,
-  evaluationLocator: RI.EvaluationLocator,
+  evaluationLocator: EL.EvaluationLocator,
   recordedAt: Date,
   publishedAt: Date,
   authors: ReadonlyArray<string>,

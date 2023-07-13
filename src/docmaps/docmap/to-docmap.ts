@@ -8,7 +8,7 @@ import { DocmapModel } from './generate-docmap-view-model';
 import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
 import { Doi } from '../../types/doi';
-import * as RI from '../../types/evaluation-locator';
+import * as EL from '../../types/evaluation-locator';
 
 const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
   participants: pipe(
@@ -29,11 +29,11 @@ const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
         },
         {
           type: 'web-page',
-          url: `https://sciety.org/articles/activity/${articleId.value}#${RI.serialize(evaluation.evaluationLocator)}`,
+          url: `https://sciety.org/articles/activity/${articleId.value}#${EL.serialize(evaluation.evaluationLocator)}`,
         },
         {
           type: 'web-content',
-          url: `https://sciety.org/evaluations/${RI.serialize(evaluation.evaluationLocator)}/content`,
+          url: `https://sciety.org/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`,
         },
       ],
     },

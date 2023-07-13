@@ -6,7 +6,7 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import { Doi } from '../../types/doi';
 import { HtmlFragment } from '../../types/html-fragment';
-import * as RI from '../../types/evaluation-locator';
+import * as EL from '../../types/evaluation-locator';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
@@ -15,7 +15,7 @@ import * as GID from '../../types/group-id';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',
-  id: RI.EvaluationLocator,
+  id: EL.EvaluationLocator,
   source: O.Option<URL>,
   publishedAt: Date,
   groupName: string,

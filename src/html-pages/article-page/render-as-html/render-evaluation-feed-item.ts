@@ -5,7 +5,7 @@ import clip from 'text-clipper';
 import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import * as RI from '../../../types/evaluation-locator';
+import * as EL from '../../../types/evaluation-locator';
 import { EvaluationFeedItem } from '../view-model';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
@@ -65,7 +65,7 @@ const renderWithText = (teaserChars: number, review: EvaluationFeedItem, fullTex
     `;
   }
   return `
-    <article class="activity-feed__item__contents" id="${RI.evaluationLocatorCodec.encode(review.id)}">
+    <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(review.id)}">
       <header class="activity-feed__item__header">
         ${avatar(review)}
         ${eventMetadata(review)}
@@ -85,7 +85,7 @@ export const renderEvaluationFeedItem = (feedItem: EvaluationFeedItem, teaserCha
   feedItem.fullText,
   O.fold(
     () => `
-      <article class="activity-feed__item__contents" id="${RI.evaluationLocatorCodec.encode(feedItem.id)}">
+      <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
         <header class="activity-feed__item__header">
           ${avatar(feedItem)}
           ${eventMetadata(feedItem)}

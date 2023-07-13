@@ -4,13 +4,13 @@ import * as t from 'io-ts';
 import { toHtmlFragment } from '../types/html-fragment';
 import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
-import * as RID from '../types/evaluation-locator';
+import * as EL from '../types/evaluation-locator';
 import { FetchReview } from '../shared-ports';
 
 type EvaluationContent = TE.TaskEither<RenderPageError, Page>;
 
 export const paramsCodec = t.type({
-  reviewid: RID.evaluationLocatorCodec,
+  reviewid: EL.evaluationLocatorCodec,
 });
 
 type Ports = {
