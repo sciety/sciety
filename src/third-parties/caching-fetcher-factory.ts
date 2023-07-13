@@ -2,6 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
 import { setupCache, type HeaderInterpreter, AxiosCacheInstance } from 'axios-cache-interceptor';
+import { URL } from 'url';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
@@ -46,6 +47,6 @@ export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeS
     headers = {},
   ) => (url: string) => pipe(
     TE.tryCatch(async () => get<unknown>(url, headers), identity),
-    TE.mapLeft(logAndTransformToDataError(logger, url, notFoundLogLevel)),
+    TE.mapLeft(logAndTransformToDataError(logger, new URL(url), notFoundLogLevel)),
   );
 };
