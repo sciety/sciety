@@ -32,14 +32,14 @@ describe('discover-hypothesis-evaluation-type', () => {
         fetchReview: () => TE.right({
           fullText: arbitrarySanitisedHtmlFragment(),
           url: new URL(arbitraryUri()),
-          tags: [],
+          tags: ['peerReview'],
         }),
         logger: dummyLogger,
       });
       result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
     });
 
-    it.failing('the evaluation now has a known type', () => {
+    it('the evaluation now has a known type', () => {
       expect(result[0]).toStrictEqual(expect.objectContaining({
         type: O.some(knownType),
       }));
