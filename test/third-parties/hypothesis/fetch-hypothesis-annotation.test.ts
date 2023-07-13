@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { fetchHypothesisAnnotation, insertSelectedText } from '../../../src/third-parties/hypothesis/fetch-hypothesis-annotation';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { dummyLogger } from '../../dummy-logger';
-import { arbitraryWord } from '../../helpers';
+import { arbitraryString, arbitraryWord } from '../../helpers';
 import { HypothesisAnnotation } from '../../../src/third-parties/hypothesis/HypothesisAnnotation';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
@@ -13,10 +13,11 @@ const key = arbitraryWord();
 
 describe('fetch-hypothesis-annotation', () => {
   it('returns the evaluation', async () => {
+    const tag = arbitraryString();
     const queryExternalService = () => () => TE.right({
       created: date,
       text: '<p>Very good</p>',
-      tags: [],
+      tags: [tag],
       target: [],
       links: {
         incontext: 'https://www.example.com',
@@ -27,7 +28,7 @@ describe('fetch-hypothesis-annotation', () => {
     const expected = {
       fullText: pipe('<p>Very good</p>', toHtmlFragment),
       url: new URL('https://www.example.com'),
-      tags: [],
+      tags: [tag],
     };
 
     expect(evaluation).toStrictEqual(E.right(expected));
