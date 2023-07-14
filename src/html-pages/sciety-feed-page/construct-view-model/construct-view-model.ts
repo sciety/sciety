@@ -4,33 +4,29 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { constructEventCard, Ports as EventCardPorts } from './construct-event-card';
+import { constructEventCard } from './construct-event-card';
 import { identifyFeedItems } from './identify-feed-items';
 import * as DE from '../../../types/data-error';
-import { GetAllEvents } from '../../../shared-ports';
 import { ViewModel } from '../view-model';
+import { Dependencies } from './dependencies';
 
 export const scietyFeedCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
 });
 
-export type Ports = EventCardPorts & {
-  getAllEvents: GetAllEvents,
-};
-
 export type Params = t.TypeOf<typeof scietyFeedCodec>;
 
 type ConstructViewModel = (
-  ports: Ports,
+  dependencies: Dependencies,
   pageSize: number,
 ) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-export const constructViewModel: ConstructViewModel = (ports, pageSize) => (params) => pipe(
-  ports.getAllEvents,
+export const constructViewModel: ConstructViewModel = (dependencies, pageSize) => (params) => pipe(
+  dependencies.getAllEvents,
   T.map(identifyFeedItems(pageSize, params.page)),
   TE.chainW(({ items, ...rest }) => pipe(
     items,
-    O.traverseArray(constructEventCard(ports)),
+    O.traverseArray(constructEventCard(dependencies)),
     O.map((cards) => ({ cards, ...rest })),
     TE.fromOption(() => DE.notFound),
   )),

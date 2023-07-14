@@ -3,7 +3,6 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { scietyFeedPage } from '../../../src/html-pages/sciety-feed-page/sciety-feed-page';
-import { Ports } from '../../../src/html-pages/sciety-feed-page/construct-view-model/construct-view-model';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -15,21 +14,22 @@ import { TestFramework, createTestFramework } from '../../framework';
 describe('sciety-feed-page', () => {
   const group = arbitraryGroup();
   let framework: TestFramework;
-  let defaultAdapters: Ports;
 
-  const renderPage = async (pageSize: number) => pipe(
-    scietyFeedPage(defaultAdapters)(pageSize)({ page: 1 }),
-    T.map(E.getOrElseW(shouldNotBeCalled)),
-    T.map((page) => page.content),
-  )();
-
-  beforeEach(() => {
-    framework = createTestFramework();
-    defaultAdapters = {
+  const renderPage = async (pageSize: number) => {
+    const dependencies = {
       ...framework.queries,
       logger: dummyLogger,
       getAllEvents: framework.getAllEvents,
     };
+    return pipe(
+      scietyFeedPage(dependencies)(pageSize)({ page: 1 }),
+      T.map(E.getOrElseW(shouldNotBeCalled)),
+      T.map((page) => page.content),
+    )();
+  };
+
+  beforeEach(() => {
+    framework = createTestFramework();
   });
 
   it('renders a single article added to a list as a card', async () => {
