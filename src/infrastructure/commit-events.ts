@@ -1,5 +1,3 @@
-import * as IO from 'fp-ts/IO';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
@@ -34,23 +32,22 @@ export const commitEvents = ({
   dispatchToAllReadModels,
   pool,
   logger,
-}: Dependencies): CommitEvents => (events) => pipe(
-  events,
-  RA.match(
-    () => T.of('no-events-created' as CommandResult),
-    (es) => pipe(
-      es,
-      T.traverseArray(flow(
-        T.of,
-        T.chainFirst(writeEventToDatabase(pool)),
-        T.chainFirst((event) => {
-          logger('info', 'Event committed', { event });
-          return T.of(undefined);
-        }),
-        T.chainFirstIOK(flow((event) => inMemoryEvents.push(event), IO.of)),
-      )),
-      T.map(dispatchToAllReadModels),
-      T.map(() => 'events-created' as CommandResult),
-    ),
-  ),
-);
+}: Dependencies): CommitEvents => (events) => async () => {
+  if (events.length === 0) {
+    return 'no-events-created' as CommandResult;
+  }
+  await pipe(
+    events,
+    T.traverseArray(flow(
+      T.of,
+      T.chainFirst(writeEventToDatabase(pool)),
+      T.chainFirst((event) => {
+        logger('info', 'Event committed', { event });
+        return T.of(undefined);
+      }),
+    )),
+  )();
+  inMemoryEvents.push(...events);
+  dispatchToAllReadModels(events);
+  return 'events-created' as CommandResult;
+};
