@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { collapsedArticlesAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
 import { dummyLogger } from '../../../dummy-logger';
-import { arbitraryNumber } from '../../../helpers';
+import { arbitraryDate, arbitraryNumber } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryList } from '../../../types/list-helper';
@@ -25,22 +25,22 @@ describe('collapsed-articles-added-to-list-card', () => {
   });
 
   describe('when a user owns the list', () => {
-    const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
-    const date = new Date('2021-09-15');
+    const date = arbitraryDate();
     const articleCount = arbitraryNumber(2, 10);
-    const event = {
-      type: 'CollapsedArticlesAddedToList' as const,
-      listId: list.id,
-      date,
-      articleCount,
-    };
-
-    const lookupList: Queries['lookupList'] = () => O.some({
-      ...arbitraryList(LOID.fromUserId(arbitraryUserId())),
-      id: list.id,
-    });
 
     describe('when user details are available', () => {
+      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+      const event = {
+        type: 'CollapsedArticlesAddedToList' as const,
+        listId: list.id,
+        date,
+        articleCount,
+      };
+
+      const lookupList: Queries['lookupList'] = () => O.some({
+        ...arbitraryList(LOID.fromUserId(arbitraryUserId())),
+        id: list.id,
+      });
       const user = arbitraryUserDetails();
       const dependencies: Ports = {
         lookupList,
@@ -86,6 +86,13 @@ describe('collapsed-articles-added-to-list-card', () => {
     });
 
     describe('when user details are not found', () => {
+      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+      const event = {
+        type: 'CollapsedArticlesAddedToList' as const,
+        listId: list.id,
+        date,
+        articleCount,
+      };
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
