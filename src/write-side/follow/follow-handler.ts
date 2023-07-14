@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { followCommandHandler, Ports as FollowCommandPorts } from './follow-command-handler';
+import { followCommandHandler } from './follow-command-handler';
 import { renderErrorPage } from '../../http/render-error-page';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { Logger } from '../../shared-ports';
@@ -16,10 +16,11 @@ import * as GroupId from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { Queries } from '../../shared-read-models';
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
 export const groupProperty = 'groupid';
 
-type Ports = GetLoggedInScietyUserPorts & FollowCommandPorts & {
+type Ports = GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
   getGroup: Queries['getGroup'],
 };

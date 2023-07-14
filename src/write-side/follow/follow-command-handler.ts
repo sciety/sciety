@@ -3,16 +3,13 @@ import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { isFollowing } from './is-following';
 import { constructEvent } from '../../domain-events';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandResult } from '../../types/command-result';
 import { FollowCommand } from '../commands';
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
-export type Ports = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
-};
-
-export const followCommandHandler = (dependencies: Ports) => (command: FollowCommand): T.Task<CommandResult> => pipe(
+export const followCommandHandler = (
+  dependencies: DependenciesForCommands,
+) => (command: FollowCommand): T.Task<CommandResult> => pipe(
   dependencies.getAllEvents,
   T.map(isFollowing(command.userId, command.groupId)),
   T.map(B.fold(
