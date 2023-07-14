@@ -12,7 +12,12 @@ const requiredFields = t.strict({
   authors: t.readonlyArray(t.string),
 });
 
-const evaluationTypeCodec = t.union([t.literal('review'), t.literal('author-response'), t.literal('curation-statement')]);
+const evaluationTypeCodec = t.union([
+  t.literal('review'),
+  t.literal('author-response'),
+  t.literal('curation-statement'),
+  t.literal('not-provided'),
+]);
 
 const optionalFields = t.partial({
   issuedAt: tt.DateFromISOString,

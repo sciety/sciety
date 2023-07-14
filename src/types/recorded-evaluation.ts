@@ -3,7 +3,12 @@ import { Doi } from './doi';
 import { GroupId } from './group-id';
 import { EvaluationLocator } from './evaluation-locator';
 
-export const evaluationTypes = <const> ['review', 'author-response', 'curation-statement'];
+export const evaluationTypes = <const> [
+  'review',
+  'author-response',
+  'curation-statement',
+  'not-provided',
+];
 
 export type EvaluationType = typeof evaluationTypes[number];
 
