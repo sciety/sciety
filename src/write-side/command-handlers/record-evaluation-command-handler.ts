@@ -4,23 +4,18 @@ import { pipe } from 'fp-ts/function';
 import { CommandHandler } from '../../types/command-handler';
 import { record } from '../resources/evaluation';
 import { RecordEvaluationCommand } from '../commands';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
-
-type Ports = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
-};
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type RecordEvaluationCommandHandler = (
-  adapters: Ports
+  dependencies: DependenciesForCommands
 ) => CommandHandler<RecordEvaluationCommand>;
 
 export const recordEvaluationCommandHandler: RecordEvaluationCommandHandler = (
-  adapters,
+  dependencies,
 ) => (
   command,
 ) => pipe(
-  adapters.getAllEvents,
+  dependencies.getAllEvents,
   T.map(record(command)),
-  TE.chainTaskK(adapters.commitEvents),
+  TE.chainTaskK(dependencies.commitEvents),
 );

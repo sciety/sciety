@@ -3,24 +3,19 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { addArticle } from '../resources/list';
 import { AddArticleToListCommand } from '../commands';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';
-
-export type Ports = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
-};
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type AddArticleToListCommandHandler = (
-  adapters: Ports
+  dependencies: DependenciesForCommands
 ) => CommandHandler<AddArticleToListCommand>;
 
 export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
-  adapters,
+  dependencies,
 ) => (
   command,
 ) => pipe(
-  adapters.getAllEvents,
+  dependencies.getAllEvents,
   T.map(addArticle(command)),
-  TE.chainTaskK(adapters.commitEvents),
+  TE.chainTaskK(dependencies.commitEvents),
 );

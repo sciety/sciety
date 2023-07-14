@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { addArticleToListCommandHandler, Ports as AddArticleToListPorts } from '../write-side/command-handlers/add-article-to-list-command-handler';
+import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 import { DomainEvent, EventOfType, isEventOfType } from '../domain-events';
 import { Logger } from '../shared-ports';
 
@@ -11,10 +11,11 @@ import { GroupId } from '../types/group-id';
 import { ListId } from '../types/list-id';
 import { ErrorMessage, toErrorMessage } from '../types/error-message';
 import { AddArticleToListCommand } from '../write-side/commands';
+import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
 
 type GetEvaluatedArticlesListIdForGroup = (groupId: GroupId) => O.Option<ListId>;
 
-export type Ports = AddArticleToListPorts & {
+export type Ports = DependenciesForCommands & {
   logger: Logger,
   getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup,
 };

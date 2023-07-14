@@ -3,24 +3,19 @@ import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import { removeArticle } from '../resources/list/remove-article';
 import { RemoveArticleFromListCommand } from '../commands';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';
-
-type Ports = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
-};
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type RemoveArticleFromListCommandHandler = (
-  adapters: Ports
+  dependencies: DependenciesForCommands
 ) => CommandHandler<RemoveArticleFromListCommand>;
 
 export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHandler = (
-  adapters,
+  dependencies,
 ) => (
   command,
 ) => pipe(
-  adapters.getAllEvents,
+  dependencies.getAllEvents,
   T.map(removeArticle(command)),
-  TE.chainTaskK(adapters.commitEvents),
+  TE.chainTaskK(dependencies.commitEvents),
 );

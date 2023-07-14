@@ -2,17 +2,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as listResource from '../resources/list';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { CommandHandler } from '../../types/command-handler';
 import { CreateListCommand } from '../commands';
-
-type Ports = {
-  commitEvents: CommitEvents,
-  getAllEvents: GetAllEvents,
-};
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type CreateListCommandHandler = (
-  adapters: Ports
+  dependencies: DependenciesForCommands
 ) => CommandHandler<CreateListCommand>;
 
 export const createListCommandHandler: CreateListCommandHandler = (
