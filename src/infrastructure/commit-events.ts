@@ -1,5 +1,5 @@
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
 import { DomainEvent, domainEventCodec } from '../domain-events';
@@ -38,16 +38,10 @@ export const commitEvents = ({
   }
   await pipe(
     events,
-    T.traverseArray(flow(
-      T.of,
-      T.chainFirst(writeEventToDatabase(pool)),
-      T.chainFirst((event) => {
-        logger('info', 'Event committed', { event });
-        return T.of(undefined);
-      }),
-    )),
+    T.traverseArray(writeEventToDatabase(pool)),
   )();
   inMemoryEvents.push(...events);
   dispatchToAllReadModels(events);
+  logger('info', 'Events committed', { events });
   return 'events-created' as CommandResult;
 };
