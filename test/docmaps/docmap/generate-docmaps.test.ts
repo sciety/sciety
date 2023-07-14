@@ -32,7 +32,7 @@ describe('generate-docmaps', () => {
     };
   });
 
-  describe('when the article hasn\'t been reviewed', () => {
+  describe('when the article hasn\'t been evaluated', () => {
     let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
@@ -51,7 +51,7 @@ describe('generate-docmaps', () => {
     });
   });
 
-  describe('when the article has been reviewed only by unsupported groups', () => {
+  describe('when the article has been evaluated only by unsupported groups', () => {
     const group1 = arbitraryGroup();
     const group2 = arbitraryGroup();
     const evaluation1 = {
@@ -85,7 +85,7 @@ describe('generate-docmaps', () => {
     });
   });
 
-  describe('when the article has been reviewed by one supported group', () => {
+  describe('when the article has been evaluated by one supported group', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
@@ -112,7 +112,7 @@ describe('generate-docmaps', () => {
     });
   });
 
-  describe('when the article has been reviewed by one supported group and one unsupported group', () => {
+  describe('when the article has been evaluated by one supported group and one unsupported group', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
@@ -147,7 +147,7 @@ describe('generate-docmaps', () => {
     });
   });
 
-  describe('when the article has been reviewed by two supported groups', () => {
+  describe('when the article has been evaluated by two supported groups', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
@@ -188,7 +188,7 @@ describe('generate-docmaps', () => {
     });
   });
 
-  describe('when the article has been reviewed multiple times by the same group', () => {
+  describe('when the article has been evaluated multiple times by the same group', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
