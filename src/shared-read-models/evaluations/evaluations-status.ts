@@ -35,9 +35,10 @@ export const evaluationsStatus = (readmodel: ReadModel) => (): Json => pipe(
   RA.map((evaluation) => evaluation.type),
   RA.partition((t) => O.isSome(t)),
   (partitioned) => ({
-    curationStatements: findEvaluationsOfType('curation-statement', partitioned.right),
-    reviews: findEvaluationsOfType('review', partitioned.right),
-    authorResponse: findEvaluationsOfType('author-response', partitioned.right),
+    'curation-statement': findEvaluationsOfType('curation-statement', partitioned.right),
+    review: findEvaluationsOfType('review', partitioned.right),
+    'author-response': findEvaluationsOfType('author-response', partitioned.right),
+    'not-provided': findEvaluationsOfType('not-provided', partitioned.right),
     unknown: partitioned.left.length,
   }),
 );
