@@ -7,16 +7,19 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { createUserAccountCommandHandler, Ports as CreateUserAccountCommandHandlerPorts } from '../../write-side/create-user-account/create-user-account-command-handler';
+import { createUserAccountCommandHandler } from '../../write-side/create-user-account/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
 import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { CommandResult } from '../../types/command-result';
 import { Logger } from '../../shared-ports';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
-export type Ports = CreateUserAccountCommandHandlerPorts & { logger: Logger };
+export type Dependencies = DependenciesForCommands & {
+  logger: Logger,
+};
 
 const createUserAccountFormCodec = t.type({
   fullName: userGeneratedInputCodec({ maxInputLength: 30 }),
@@ -30,16 +33,16 @@ const unvalidatedFormDetailsCodec = t.type({
 
 type UnvalidatedFormDetails = t.TypeOf<typeof unvalidatedFormDetailsCodec>;
 
-type ValidateAndExecuteCommand = (context: ParameterizedContext, adapters: Ports)
+type ValidateAndExecuteCommand = (context: ParameterizedContext, dependencies: Dependencies)
 => TE.TaskEither<UnvalidatedFormDetails, CommandResult>;
 
-export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, adapters) => pipe(
+export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, dependencies) => pipe(
   {
     formUserDetails: pipe(
       context.request.body,
       createUserAccountFormCodec.decode,
       E.mapLeft((errors) => {
-        adapters.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
+        dependencies.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
         return 'validation-error';
       }),
     ),
@@ -59,9 +62,9 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, ad
   T.of,
   TE.chainW((command) => pipe(
     command,
-    createUserAccountCommandHandler(adapters),
+    createUserAccountCommandHandler(dependencies),
     TE.mapLeft((error) => {
-      adapters.logger('error', 'createUserAccountCommandHandler failed', { error, command });
+      dependencies.logger('error', 'createUserAccountCommandHandler failed', { error, command });
       return 'command-failed';
     }),
   )),

@@ -9,14 +9,14 @@ import {
 import { renderFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { toWebPage } from '../page-handler';
-import { validateAndExecuteCommand, Ports as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
+import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
 
-type Ports = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
+type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
-export const createUserAccount = (adapters: Ports): Middleware => async (context, next) => {
+export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
   await pipe(
-    validateAndExecuteCommand(context, adapters),
+    validateAndExecuteCommand(context, dependencies),
     TE.bimap(
       (formDetails) => {
         const page = pipe(
@@ -25,7 +25,7 @@ export const createUserAccount = (adapters: Ports): Middleware => async (context
           },
           renderFormPage(formDetails.fullName, formDetails.handle),
           E.right,
-          toWebPage(getLoggedInScietyUser(adapters, context), createUserAccountFormPageLayout),
+          toWebPage(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
         );
         context.response.status = page.status;
         context.response.type = 'html';

@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { ParameterizedContext } from 'koa';
-import { validateAndExecuteCommand, Ports } from '../../../src/http/forms/validate-and-execute-command';
+import { validateAndExecuteCommand, Dependencies } from '../../../src/http/forms/validate-and-execute-command';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
@@ -11,7 +11,7 @@ import { constructEvent } from '../../../src/domain-events';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { dummyLogger } from '../../dummy-logger';
 
-const defaultAdapters: Ports = {
+const defaultDependencies: Dependencies = {
   commitEvents: shouldNotBeCalled,
   getAllEvents: T.of([]),
   logger: dummyLogger,
@@ -31,13 +31,13 @@ describe('validate-and-execute-command', () => {
       handle: arbitraryUserHandle(),
     };
     const koaContext = buildKoaContext(formBody);
-    const adapters: Ports = {
-      ...defaultAdapters,
+    const dependencies: Dependencies = {
+      ...defaultDependencies,
       commitEvents: () => T.of('events-created'),
     };
 
     it('succeeds', async () => {
-      const result = await validateAndExecuteCommand(koaContext, adapters)();
+      const result = await validateAndExecuteCommand(koaContext, dependencies)();
 
       expect(E.isRight(result)).toBe(true);
     });
@@ -53,7 +53,7 @@ describe('validate-and-execute-command', () => {
       [{ }, { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
     ])('returns the form with any valid fields populated', async (body, expectedFormOutput) => {
       const koaContext = buildKoaContext(body);
-      const result = await validateAndExecuteCommand(koaContext, defaultAdapters)();
+      const result = await validateAndExecuteCommand(koaContext, defaultDependencies)();
 
       expect(result).toStrictEqual(E.left(expectedFormOutput));
     });
@@ -74,7 +74,7 @@ describe('validate-and-execute-command', () => {
     ])('given %s and %s', async (fullNameInput, handleInput, expectedFormOutput) => {
       const formBody = { fullName: fullNameInput, handle: handleInput };
       const koaContext = buildKoaContext(formBody);
-      const result = await validateAndExecuteCommand(koaContext, defaultAdapters)();
+      const result = await validateAndExecuteCommand(koaContext, defaultDependencies)();
 
       expect(result).toStrictEqual(E.left(expectedFormOutput));
     });
@@ -87,8 +87,8 @@ describe('validate-and-execute-command', () => {
   describe('when the user handle already exists', () => {
     const existingUser = arbitraryUserDetails();
     const formBody = { fullName: arbitraryUserGeneratedInput(), handle: existingUser.handle };
-    const adapters: Ports = {
-      ...defaultAdapters,
+    const dependencies: Dependencies = {
+      ...defaultDependencies,
       getAllEvents: T.of([
         constructEvent('UserCreatedAccount')({
           ...existingUser,
@@ -99,7 +99,7 @@ describe('validate-and-execute-command', () => {
     const koaContext = buildKoaContext(formBody, existingUser.id);
 
     it('return a form populated with user input', async () => {
-      const result = await validateAndExecuteCommand(koaContext, adapters)();
+      const result = await validateAndExecuteCommand(koaContext, dependencies)();
 
       expect(result).toStrictEqual(E.left({
         fullName: formBody.fullName,
