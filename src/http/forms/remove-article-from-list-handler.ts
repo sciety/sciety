@@ -8,16 +8,13 @@ import { Middleware } from 'koa';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { removeArticleFromListCommandCodec } from '../../write-side/commands/remove-article-from-list';
 import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
-import {
-  CommitEvents, GetAllEvents, Logger,
-} from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { UserDetails } from '../../types/user-details';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
-type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
+type Ports = DependenciesForCommands & CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
 };
 
 type FormBody = {
@@ -25,7 +22,7 @@ type FormBody = {
   listid: unknown,
 };
 
-const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => pipe(
+const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => pipe(
   {
     articleId: formBody.articleid,
     listId: formBody.listid,
@@ -35,10 +32,10 @@ const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails
     (errors) => pipe(
       errors,
       PR.failure,
-      (fails) => adapters.logger('error', 'invalid remove article from list form command', { fails }),
+      (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
     ),
     (command) => {
-      adapters.logger('info', 'received remove article from list form command', { command });
+      dependencies.logger('info', 'received remove article from list form command', { command });
       return command;
     },
   ),
@@ -46,7 +43,7 @@ const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails
     userDetails,
     O.match(
       () => {
-        adapters.logger('error', 'Logged in user not found', { command });
+        dependencies.logger('error', 'Logged in user not found', { command });
         return E.left(undefined);
       },
       (user) => E.right({
@@ -57,14 +54,14 @@ const handleFormSubmission = (adapters: Ports, userDetails: O.Option<UserDetails
   )),
   TE.fromEither,
   TE.chainFirstW(flow(
-    ({ command, userId }) => checkUserOwnsList(adapters, command.listId, userId),
+    ({ command, userId }) => checkUserOwnsList(dependencies, command.listId, userId),
     TE.mapLeft((logEntry) => {
-      adapters.logger('error', logEntry.message, logEntry.payload);
+      dependencies.logger('error', logEntry.message, logEntry.payload);
       return logEntry;
     }),
   )),
   TE.map(({ command }) => command),
-  TE.chainW(removeArticleFromListCommandHandler(adapters)),
+  TE.chainW(removeArticleFromListCommandHandler(dependencies)),
 );
 
 const requestCodec = t.type({
@@ -74,14 +71,14 @@ const requestCodec = t.type({
   }),
 });
 
-export const removeArticleFromListHandler = (adapters: Ports): Middleware => async (context, next) => {
-  const user = getLoggedInScietyUser(adapters, context);
+export const removeArticleFromListHandler = (dependencies: Ports): Middleware => async (context, next) => {
+  const user = getLoggedInScietyUser(dependencies, context);
   await pipe(
     context.request,
     requestCodec.decode,
     TE.fromEither,
     TE.map((request) => request.body),
-    TE.chainW(handleFormSubmission(adapters, user)),
+    TE.chainW(handleFormSubmission(dependencies, user)),
     TE.mapLeft(() => {
       context.redirect('/action-failed');
     }),
