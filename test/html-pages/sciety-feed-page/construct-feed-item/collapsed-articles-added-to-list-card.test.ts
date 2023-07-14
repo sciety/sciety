@@ -10,12 +10,18 @@ import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { List } from '../../../../src/types/list';
+import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
 
 describe('collapsed-articles-added-to-list-card', () => {
   let framework: TestFramework;
+  let dependencies: Dependencies;
 
   beforeEach(() => {
     framework = createTestFramework();
+    dependencies = {
+      ...framework.dependenciesForViews,
+      getAllEvents: framework.getAllEvents,
+    };
   });
 
   describe('when a group owns the list', () => {
@@ -41,7 +47,7 @@ describe('collapsed-articles-added-to-list-card', () => {
             date,
             articleCount,
           },
-          collapsedArticlesAddedToListCard(framework.dependenciesForViews),
+          collapsedArticlesAddedToListCard(dependencies),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
@@ -81,7 +87,7 @@ describe('collapsed-articles-added-to-list-card', () => {
         await framework.commandHelpers.createList(list);
         viewModel = pipe(
           event,
-          collapsedArticlesAddedToListCard(framework.dependenciesForViews),
+          collapsedArticlesAddedToListCard(dependencies),
           O.getOrElseW(shouldNotBeCalled),
         );
       });

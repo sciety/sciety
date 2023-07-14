@@ -1,13 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
-import { Logger } from '../../../shared-ports';
 import { List } from '../../../types/list';
-import { Queries } from '../../../shared-read-models';
-
-export type Ports = Pick<Queries, 'getGroup' | 'lookupUser'> & {
-  logger: Logger,
-};
+import { Dependencies } from './dependencies';
 
 type ListWithAddedOwnershipInformation = {
   name: string,
@@ -18,7 +13,7 @@ type ListWithAddedOwnershipInformation = {
 };
 
 export const addListOwnershipInformation = (
-  dependencies: Ports,
+  dependencies: Dependencies,
 ) => (
   list: List,
 ): ListWithAddedOwnershipInformation => {

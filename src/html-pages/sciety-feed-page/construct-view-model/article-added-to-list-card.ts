@@ -1,17 +1,13 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
+import { addListOwnershipInformation } from './add-list-ownership-information';
 import { ScietyFeedCard } from '../view-model';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { Queries } from '../../../shared-read-models';
 import { EventOfType } from '../../../domain-events';
-
-export type Ports = AddListOwnershipInformationPorts & {
-  lookupList: Queries['lookupList'],
-};
+import { Dependencies } from './dependencies';
 
 type ArticleAddedToListCard = (
-  dependencies: Ports,
+  dependencies: Dependencies,
 ) => (event: EventOfType<'ArticleAddedToList'>) => O.Option<ScietyFeedCard>;
 
 export const articleAddedToListCard: ArticleAddedToListCard = (dependencies) => (event) => pipe(

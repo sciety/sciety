@@ -1,17 +1,13 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { addListOwnershipInformation, Ports as AddListOwnershipInformationPorts } from './add-list-ownership-information';
+import { addListOwnershipInformation } from './add-list-ownership-information';
 import { ScietyFeedCard } from '../view-model';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { CollapsedArticlesAddedToList } from './feed-item';
-import { Queries } from '../../../shared-read-models';
-
-export type Ports = AddListOwnershipInformationPorts & {
-  lookupList: Queries['lookupList'],
-};
+import { Dependencies } from './dependencies';
 
 export const collapsedArticlesAddedToListCard = (
-  dependencies: Ports,
+  dependencies: Dependencies,
 ) => (collapsedEvents: CollapsedArticlesAddedToList): O.Option<ScietyFeedCard> => pipe(
   collapsedEvents.listId,
   dependencies.lookupList,

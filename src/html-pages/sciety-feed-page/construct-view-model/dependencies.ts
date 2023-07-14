@@ -1,12 +1,8 @@
-import { GetAllEvents } from '../../../shared-ports';
+import { GetAllEvents, Logger } from '../../../shared-ports';
 import { Ports as UserFollowedAGroupCardPorts } from './user-followed-a-group-card';
-import { Ports as ArticleAddedToListCardPorts } from './article-added-to-list-card';
-import { Ports as CollapsedArticlesAddedToListCardPorts } from './collapsed-articles-added-to-list-card';
+import { Queries } from '../../../shared-read-models';
 
-export type Dependencies =
-  UserFollowedAGroupCardPorts
-  & ArticleAddedToListCardPorts
-  & CollapsedArticlesAddedToListCardPorts
-  & {
-    getAllEvents: GetAllEvents,
-  };
+export type Dependencies = Queries & UserFollowedAGroupCardPorts & {
+  getAllEvents: GetAllEvents,
+  logger: Logger,
+};
