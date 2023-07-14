@@ -37,7 +37,7 @@ describe('collapsed-articles-added-to-list-card', () => {
     describe('when user details are available', () => {
       const avatarUrl = arbitraryUri();
       const handle = arbitraryUserHandle();
-      const ports: Ports = {
+      const dependencies: Ports = {
         lookupList,
         lookupUser: () => O.some({
           handle,
@@ -51,7 +51,7 @@ describe('collapsed-articles-added-to-list-card', () => {
 
       const viewModel: ScietyFeedCard = pipe(
         event,
-        collapsedArticlesAddedToListCard(ports),
+        collapsedArticlesAddedToListCard(dependencies),
         O.getOrElseW(shouldNotBeCalled),
       );
 
@@ -77,7 +77,7 @@ describe('collapsed-articles-added-to-list-card', () => {
     });
 
     describe('when user details are not found', () => {
-      const ports: Ports = {
+      const dependencies: Ports = {
         lookupList,
         lookupUser: () => O.none,
         getGroup: () => O.some(arbitraryGroup()),
@@ -86,7 +86,7 @@ describe('collapsed-articles-added-to-list-card', () => {
 
       const viewModel: ScietyFeedCard = pipe(
         event,
-        collapsedArticlesAddedToListCard(ports),
+        collapsedArticlesAddedToListCard(dependencies),
         O.getOrElseW(shouldNotBeCalled),
       );
 
