@@ -25,7 +25,7 @@ describe('collapsed-articles-added-to-list-card', () => {
   });
 
   describe('when a user owns the list', () => {
-    const list = arbitraryList();
+    const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
     const date = new Date('2021-09-15');
     const articleCount = arbitraryNumber(2, 10);
     const event = {
