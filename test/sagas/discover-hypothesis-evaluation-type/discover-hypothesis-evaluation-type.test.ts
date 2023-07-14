@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
-import { discoverHypothesisEvaluationType } from '../../src/sagas/discover-hypothesis-evaluation-type';
-import { EvaluationType } from '../../src/types/recorded-evaluation';
-import { TestFramework, createTestFramework } from '../framework';
-import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
-import { dummyLogger } from '../dummy-logger';
-import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
-import { EvaluationLocator } from '../../src/types/evaluation-locator';
+import { discoverHypothesisEvaluationType } from '../../../src/sagas/discover-hypothesis-evaluation-type';
+import { EvaluationType } from '../../../src/types/recorded-evaluation';
+import { TestFramework, createTestFramework } from '../../framework';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
+import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 
 describe('discover-hypothesis-evaluation-type', () => {
   let framework: TestFramework;
