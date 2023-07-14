@@ -14,20 +14,20 @@ describe('get-evaluations-by-group', () => {
   const article2 = arbitraryDoi();
   const group1 = arbitraryGroupId();
   const group2 = arbitraryGroupId();
-  const reviewId1 = arbitraryEvaluationLocator();
-  const reviewId2 = arbitraryEvaluationLocator();
-  const reviewId3 = arbitraryEvaluationLocator();
+  const evaluationLocator1 = arbitraryEvaluationLocator();
+  const evaluationLocator2 = arbitraryEvaluationLocator();
+  const evaluationLocator3 = arbitraryEvaluationLocator();
 
   describe.each([
-    ['two evaluations', group1, [reviewId1, reviewId2]],
-    ['one evaluation', group2, [reviewId3]],
+    ['two evaluations', group1, [evaluationLocator1, evaluationLocator2]],
+    ['one evaluation', group2, [evaluationLocator3]],
     ['no evaluations', arbitraryGroupId(), []],
   ])('when the group has %s', (_, groupId, expectedEvaluations) => {
     const readmodel = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
-        evaluationRecordedHelper(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
-        evaluationRecordedHelper(group2, article1, reviewId3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
+        evaluationRecordedHelper(group1, article1, evaluationLocator1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        evaluationRecordedHelper(group1, article2, evaluationLocator2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
+        evaluationRecordedHelper(group2, article1, evaluationLocator3, [], new Date(), new Date('2020-05-20T00:00:00Z')),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -45,9 +45,9 @@ describe('get-evaluations-by-group', () => {
   it('does not return erased evaluations', () => {
     const readmodel = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
-        evaluationRecordedHelper(group1, article2, reviewId2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
-        constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: reviewId1 }),
+        evaluationRecordedHelper(group1, article1, evaluationLocator1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        evaluationRecordedHelper(group1, article2, evaluationLocator2, [], new Date(), new Date('2020-05-21T00:00:00Z')),
+        constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationLocator1 }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -57,17 +57,17 @@ describe('get-evaluations-by-group', () => {
       RA.map((evaluation) => evaluation.evaluationLocator),
     );
 
-    expect(actualEvaluations).toStrictEqual([reviewId2]);
+    expect(actualEvaluations).toStrictEqual([evaluationLocator2]);
   });
 
   describe('when the evaluation is a curation statement', () => {
     const readmodel = pipe(
       [
-        evaluationRecordedHelper(group1, article1, reviewId1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
+        evaluationRecordedHelper(group1, article1, evaluationLocator1, [], new Date(), new Date('2020-05-19T00:00:00Z')),
         constructEvent('CurationStatementRecorded')({
           articleId: article1,
           groupId: group1,
-          evaluationLocator: reviewId1,
+          evaluationLocator: evaluationLocator1,
         }),
       ],
       RA.reduce(initialState(), handleEvent),
