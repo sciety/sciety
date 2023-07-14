@@ -12,18 +12,24 @@ type Dependencies = {
   logger: L.Logger,
 };
 
-const writeEventToDatabase = (pool: Pool) => (event: DomainEvent): T.Task<void> => pipe(
+const encodeEvent = (event: DomainEvent) => pipe(
   event,
   domainEventCodec.encode,
   ({
     id, type, date, ...payload
   }) => [id, type, date, payload],
-  (values) => async () => pool.query(
-    'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-    values,
-  ),
-  T.map(() => undefined),
 );
+
+const writeEventToDatabase = (pool: Pool) => (event: DomainEvent) => async () => pool.query(
+  'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
+  encodeEvent(event),
+);
+
+const writeEventsToDatabase = async (pool: Pool, events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  T.traverseArray(writeEventToDatabase(pool)),
+  T.map(() => undefined),
+)();
 
 type CommitEvents = (event: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
 
@@ -36,10 +42,7 @@ export const commitEvents = ({
   if (events.length === 0) {
     return 'no-events-created' as CommandResult;
   }
-  await pipe(
-    events,
-    T.traverseArray(writeEventToDatabase(pool)),
-  )();
+  await writeEventsToDatabase(pool, events);
   inMemoryEvents.push(...events);
   dispatchToAllReadModels(events);
   logger('info', 'Events committed', { events });
