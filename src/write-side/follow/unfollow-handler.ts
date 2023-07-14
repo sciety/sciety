@@ -4,11 +4,12 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { Ports as UnfollowCommandPorts, unfollowCommandHandler } from './unfollow-command-handler';
+import { unfollowCommandHandler } from './unfollow-command-handler';
 import { Logger } from '../../shared-ports';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
-type Ports = GetLoggedInScietyUserPorts & UnfollowCommandPorts & {
+type Ports = GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
 };
 

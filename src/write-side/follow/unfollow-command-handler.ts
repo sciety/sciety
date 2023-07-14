@@ -4,15 +4,10 @@ import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { isFollowing } from './is-following';
 import { constructEvent } from '../../domain-events';
-import { CommitEvents, GetAllEvents } from '../../shared-ports';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 import { CommandHandler } from '../../types/command-handler';
-
-export type Ports = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
-};
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type UnfollowCommand = {
   userId: UserId,
@@ -21,7 +16,9 @@ type UnfollowCommand = {
 
 type UnfollowCommandHandler = CommandHandler<UnfollowCommand>;
 
-export const unfollowCommandHandler = (dependencies: Ports): UnfollowCommandHandler => (command) => pipe(
+export const unfollowCommandHandler = (
+  dependencies: DependenciesForCommands,
+): UnfollowCommandHandler => (command) => pipe(
   dependencies.getAllEvents,
   T.map(isFollowing(command.userId, command.groupId)),
   T.map(B.fold(
