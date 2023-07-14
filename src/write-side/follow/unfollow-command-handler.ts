@@ -21,8 +21,8 @@ type UnfollowCommand = {
 
 type UnfollowCommandHandler = CommandHandler<UnfollowCommand>;
 
-export const unfollowCommandHandler = (ports: Ports): UnfollowCommandHandler => (command) => pipe(
-  ports.getAllEvents,
+export const unfollowCommandHandler = (dependencies: Ports): UnfollowCommandHandler => (command) => pipe(
+  dependencies.getAllEvents,
   T.map(isFollowing(command.userId, command.groupId)),
   T.map(B.fold(
     () => [],
@@ -31,6 +31,6 @@ export const unfollowCommandHandler = (ports: Ports): UnfollowCommandHandler => 
       editorialCommunityId: command.groupId,
     })],
   )),
-  T.chain(ports.commitEvents),
+  T.chain(dependencies.commitEvents),
   TE.rightTask,
 );

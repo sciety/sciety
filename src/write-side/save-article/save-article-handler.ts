@@ -30,7 +30,7 @@ const contextCodec = t.type({
   }),
 });
 
-export const saveArticleHandler = (ports: Ports): Middleware => async (context, next) => {
+export const saveArticleHandler = (dependencies: Ports): Middleware => async (context, next) => {
   await pipe(
     {
       articleId: pipe(
@@ -46,29 +46,29 @@ export const saveArticleHandler = (ports: Ports): Middleware => async (context, 
         O.fromEither,
       ),
       userId: pipe(
-        getLoggedInScietyUser(ports, context),
+        getLoggedInScietyUser(dependencies, context),
         O.map((userDetails) => userDetails.id),
       ),
     },
     sequenceS(O.Apply),
     O.fold(
       () => pipe(
-        ports.logger('error', 'saveArticleHandler codec failed or missing user', { requestBody: context.request.body }),
+        dependencies.logger('error', 'saveArticleHandler codec failed or missing user', { requestBody: context.request.body }),
         () => T.of(undefined),
       ),
       ({ articleId, listId, userId }) => pipe(
         { articleId, listId },
         TE.of,
         TE.chainFirst(flow(
-          (command) => checkUserOwnsList(ports, command.listId, userId),
+          (command) => checkUserOwnsList(dependencies, command.listId, userId),
           TE.mapLeft((logEntry) => {
-            ports.logger('error', logEntry.message, logEntry.payload);
+            dependencies.logger('error', logEntry.message, logEntry.payload);
             return logEntry;
           }),
         )),
-        TE.chainW(ports.addArticleToList),
+        TE.chainW(dependencies.addArticleToList),
         TE.getOrElseW((error) => {
-          ports.logger('error', 'saveArticleHandler failed', { error });
+          dependencies.logger('error', 'saveArticleHandler failed', { error });
           return T.of(error);
         }),
         T.map(() => undefined),

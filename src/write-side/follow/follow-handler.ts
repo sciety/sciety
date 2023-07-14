@@ -24,8 +24,8 @@ type Ports = GetLoggedInScietyUserPorts & FollowCommandPorts & {
   getGroup: Queries['getGroup'],
 };
 
-const validate = (ports: Ports) => (groupId: GroupId.GroupId) => pipe(
-  ports.getGroup(groupId),
+const validate = (dependencies: Ports) => (groupId: GroupId.GroupId) => pipe(
+  dependencies.getGroup(groupId),
   E.fromOption(() => DE.notFound),
   E.map((group) => ({
     groupId: group.id,
@@ -38,16 +38,16 @@ const requestCodec = t.type({
   }),
 });
 
-export const followHandler = (ports: Ports): Middleware => async (context, next) => {
+export const followHandler = (dependencies: Ports): Middleware => async (context, next) => {
   await pipe(
     context.request,
     requestCodec.decode,
     E.map((request) => request.body[groupProperty]),
     TE.fromEither,
-    TE.chainEitherKW(validate(ports)),
+    TE.chainEitherKW(validate(dependencies)),
     TE.fold(
       () => {
-        ports.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
+        dependencies.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
 
         context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
         context.response.body = standardPageLayout(O.none)({
@@ -57,7 +57,7 @@ export const followHandler = (ports: Ports): Middleware => async (context, next)
         return T.of(undefined);
       },
       (params) => pipe(
-        getLoggedInScietyUser(ports, context),
+        getLoggedInScietyUser(dependencies, context),
         O.match(
           () => {
             context.redirect('/log-in');
@@ -66,7 +66,7 @@ export const followHandler = (ports: Ports): Middleware => async (context, next)
           (userDetails) => {
             context.redirect('back');
             return pipe(
-              followCommandHandler(ports)({ userId: userDetails.id, groupId: params.groupId }),
+              followCommandHandler(dependencies)({ userId: userDetails.id, groupId: params.groupId }),
               T.chain(() => next),
             );
           },

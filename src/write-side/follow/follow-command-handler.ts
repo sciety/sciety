@@ -12,8 +12,8 @@ export type Ports = {
   commitEvents: CommitEvents,
 };
 
-export const followCommandHandler = (ports: Ports) => (command: FollowCommand): T.Task<CommandResult> => pipe(
-  ports.getAllEvents,
+export const followCommandHandler = (dependencies: Ports) => (command: FollowCommand): T.Task<CommandResult> => pipe(
+  dependencies.getAllEvents,
   T.map(isFollowing(command.userId, command.groupId)),
   T.map(B.fold(
     () => [constructEvent('UserFollowedEditorialCommunity')({
@@ -22,5 +22,5 @@ export const followCommandHandler = (ports: Ports) => (command: FollowCommand): 
     })],
     () => [],
   )),
-  T.chain(ports.commitEvents),
+  T.chain(dependencies.commitEvents),
 );

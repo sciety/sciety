@@ -14,10 +14,10 @@ export type Ports = {
   commitEvents: CommitEvents,
 };
 
-type CreateUserAccountCommandHandler = (ports: Ports) => CommandHandler<CreateUserAccountCommand>;
+type CreateUserAccountCommandHandler = (dependencies: Ports) => CommandHandler<CreateUserAccountCommand>;
 
-export const createUserAccountCommandHandler: CreateUserAccountCommandHandler = (ports) => (command) => pipe(
-  ports.getAllEvents,
+export const createUserAccountCommandHandler: CreateUserAccountCommandHandler = (dependencies) => (command) => pipe(
+  dependencies.getAllEvents,
   T.map(create(command)),
-  TE.chainTaskK(ports.commitEvents),
+  TE.chainTaskK(dependencies.commitEvents),
 );

@@ -12,15 +12,15 @@ type Ports = {
 };
 
 type RecordSubjectAreaCommandHandler = (
-  ports: Ports
+  dependencies: Ports
 ) => CommandHandler<RecordSubjectAreaCommand>;
 
 export const recordSubjectAreaCommandHandler: RecordSubjectAreaCommandHandler = (
-  ports,
+  dependencies,
 ) => (
   command,
 ) => pipe(
-  ports.getAllEvents,
+  dependencies.getAllEvents,
   T.map(recordSubjectArea(command)),
-  TE.chainTaskK(ports.commitEvents),
+  TE.chainTaskK(dependencies.commitEvents),
 );

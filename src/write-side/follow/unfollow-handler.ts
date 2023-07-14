@@ -18,7 +18,7 @@ const requestCodec = t.type({
   }),
 });
 
-export const unfollowHandler = (ports: Ports): Middleware => async (context, next) => {
+export const unfollowHandler = (dependencies: Ports): Middleware => async (context, next) => {
   await pipe(
     context.request,
     requestCodec.decode,
@@ -27,10 +27,10 @@ export const unfollowHandler = (ports: Ports): Middleware => async (context, nex
     O.fold(
       () => context.throw(StatusCodes.BAD_REQUEST),
       async (groupId) => pipe(
-        getLoggedInScietyUser(ports, context),
+        getLoggedInScietyUser(dependencies, context),
         O.match(
           () => {
-            ports.logger('error', 'Logged in user not found', { context });
+            dependencies.logger('error', 'Logged in user not found', { context });
             context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
           },
           async (userDetails) => {
@@ -40,7 +40,7 @@ export const unfollowHandler = (ports: Ports): Middleware => async (context, nex
                 userId: userDetails.id,
                 groupId,
               },
-              unfollowCommandHandler(ports),
+              unfollowCommandHandler(dependencies),
             )();
           },
         ),

@@ -16,11 +16,11 @@ type CreateListCommandHandler = (
 ) => CommandHandler<CreateListCommand>;
 
 export const createListCommandHandler: CreateListCommandHandler = (
-  ports,
+  dependencies,
 ) => (
   command,
 ) => pipe(
-  ports.getAllEvents,
+  dependencies.getAllEvents,
   T.map(listResource.create(command)),
-  TE.chainTaskK(ports.commitEvents),
+  TE.chainTaskK(dependencies.commitEvents),
 );
