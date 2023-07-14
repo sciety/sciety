@@ -1,17 +1,15 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { collapsedArticlesAddedToListCard, Ports } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
-import { dummyLogger } from '../../../dummy-logger';
+import { collapsedArticlesAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
 import { arbitraryDate, arbitraryNumber } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
-import { Queries } from '../../../../src/shared-read-models';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
+import { List } from '../../../../src/types/list';
 
 describe('collapsed-articles-added-to-list-card', () => {
   let framework: TestFramework;
@@ -29,37 +27,21 @@ describe('collapsed-articles-added-to-list-card', () => {
     const articleCount = arbitraryNumber(2, 10);
 
     describe('when user details are available', () => {
-      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
-      const event = {
-        type: 'CollapsedArticlesAddedToList' as const,
-        listId: list.id,
-        date,
-        articleCount,
-      };
-
-      const lookupList: Queries['lookupList'] = () => O.some({
-        ...arbitraryList(LOID.fromUserId(arbitraryUserId())),
-        id: list.id,
-      });
       const user = arbitraryUserDetails();
-      const dependencies: Ports = {
-        lookupList,
-        lookupUser: () => O.some({
-          handle: user.handle,
-          avatarUrl: user.avatarUrl,
-          id: user.id,
-          displayName: user.displayName,
-        }),
-        getGroup: () => O.some(arbitraryGroup()),
-        logger: dummyLogger,
-      };
-
+      let list: List;
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
+        await framework.commandHelpers.createUserAccount(user);
+        list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
         viewModel = pipe(
-          event,
-          collapsedArticlesAddedToListCard(dependencies),
+          {
+            type: 'CollapsedArticlesAddedToList' as const,
+            listId: list.id,
+            date,
+            articleCount,
+          },
+          collapsedArticlesAddedToListCard(framework.dependenciesForViews),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
