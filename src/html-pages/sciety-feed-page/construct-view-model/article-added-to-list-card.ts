@@ -11,13 +11,13 @@ export type Ports = AddListOwnershipInformationPorts & {
 };
 
 type ArticleAddedToListCard = (
-  ports: Ports,
+  dependencies: Ports,
 ) => (event: EventOfType<'ArticleAddedToList'>) => O.Option<ScietyFeedCard>;
 
-export const articleAddedToListCard: ArticleAddedToListCard = (ports) => (event) => pipe(
+export const articleAddedToListCard: ArticleAddedToListCard = (dependencies) => (event) => pipe(
   event.listId,
-  ports.lookupList,
-  O.map(addListOwnershipInformation(ports)),
+  dependencies.lookupList,
+  O.map(addListOwnershipInformation(dependencies)),
   O.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
     ownerAvatarUrl: extendedListMetadata.ownerAvatarUrl,

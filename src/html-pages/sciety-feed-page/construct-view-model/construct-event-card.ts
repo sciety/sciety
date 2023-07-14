@@ -15,18 +15,18 @@ export type Ports =
   & CollapsedArticlesAddedToListCardPorts;
 
 export const constructEventCard = (
-  ports: Ports,
+  dependencies: Ports,
 ) => (
   event: DomainEvent | CollapsedArticlesAddedToList,
 ): O.Option<ScietyFeedCard> => {
   if (isCollapsedArticlesAddedToList(event)) {
-    return collapsedArticlesAddedToListCard(ports)(event);
+    return collapsedArticlesAddedToListCard(dependencies)(event);
   }
   if (isEventOfType('UserFollowedEditorialCommunity')(event)) {
-    return userFollowedAGroupCard(ports)(event);
+    return userFollowedAGroupCard(dependencies)(event);
   }
   if (isArticleAddedToListEvent(event)) {
-    return articleAddedToListCard(ports)(event);
+    return articleAddedToListCard(dependencies)(event);
   }
   return O.none;
 };

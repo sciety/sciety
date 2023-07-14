@@ -18,17 +18,17 @@ type ListWithAddedOwnershipInformation = {
 };
 
 export const addListOwnershipInformation = (
-  ports: Ports,
+  dependencies: Ports,
 ) => (
   list: List,
 ): ListWithAddedOwnershipInformation => {
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(
-        ports.getGroup(list.ownerId.value),
+        dependencies.getGroup(list.ownerId.value),
         O.match(
           () => {
-            ports.logger('error', 'Could not find group that owns list', {
+            dependencies.logger('error', 'Could not find group that owns list', {
               listId: list.id,
               ownerId: list.ownerId,
             });
@@ -50,10 +50,10 @@ export const addListOwnershipInformation = (
     case 'user-id':
       return pipe(
         list.ownerId.value,
-        ports.lookupUser,
+        dependencies.lookupUser,
         O.match(
           () => {
-            ports.logger('error', 'Could not find user who owns list', {
+            dependencies.logger('error', 'Could not find user who owns list', {
               listId: list.id,
               ownerId: list.ownerId,
             });

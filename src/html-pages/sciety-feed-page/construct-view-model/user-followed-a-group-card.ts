@@ -9,17 +9,17 @@ import { Queries } from '../../../shared-read-models';
 export type Ports = Pick<Queries, 'getGroup' | 'lookupUser'>;
 
 type UserFollowedAGroupCard = (
-  ports: Ports
+  dependencies: Ports
 ) => (event: EventOfType<'UserFollowedEditorialCommunity'>) => O.Option<ScietyFeedCard>;
 
-export const userFollowedAGroupCard: UserFollowedAGroupCard = (ports) => (event) => pipe(
+export const userFollowedAGroupCard: UserFollowedAGroupCard = (dependencies) => (event) => pipe(
   {
     group: pipe(
-      ports.getGroup(event.editorialCommunityId),
+      dependencies.getGroup(event.editorialCommunityId),
     ),
     userDetails: pipe(
       event.userId,
-      ports.lookupUser,
+      dependencies.lookupUser,
       O.getOrElseW(
         () => ({
           handle: 'A user',

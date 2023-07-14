@@ -10,14 +10,12 @@ export type Ports = AddListOwnershipInformationPorts & {
   lookupList: Queries['lookupList'],
 };
 
-type CollapsedArticlesAddedToListCard = (
-  ports: Ports,
-) => (event: CollapsedArticlesAddedToList) => O.Option<ScietyFeedCard>;
-
-export const collapsedArticlesAddedToListCard: CollapsedArticlesAddedToListCard = (ports) => (collapsedEvents) => pipe(
+export const collapsedArticlesAddedToListCard = (
+  dependencies: Ports,
+) => (collapsedEvents: CollapsedArticlesAddedToList): O.Option<ScietyFeedCard> => pipe(
   collapsedEvents.listId,
-  ports.lookupList,
-  O.map(addListOwnershipInformation(ports)),
+  dependencies.lookupList,
+  O.map(addListOwnershipInformation(dependencies)),
   O.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
     ownerAvatarUrl: extendedListMetadata.ownerAvatarUrl,
