@@ -41,10 +41,20 @@ describe('discover-hypothesis-evaluation-type', () => {
       result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
     });
 
-    it('the evaluation now has a known type', () => {
-      expect(result[0]).toStrictEqual(expect.objectContaining({
-        type: O.some(knownType),
-      }));
+    describe('and the evaluation can be fetched from hypothes.is', () => {
+      it('the evaluation now has a known type', () => {
+        expect(result[0]).toStrictEqual(expect.objectContaining({
+          type: O.some(knownType),
+        }));
+      });
+    });
+
+    describe('but hypothes.is is unavalable', () => {
+      it.todo('does nothing');
+    });
+
+    describe('but the evaluation is no longer on hypothes.is', () => {
+      it.todo('marks the evaluation type as not-provided');
     });
   });
 });
