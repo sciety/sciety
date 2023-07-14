@@ -144,21 +144,21 @@ describe('to-docmap', () => {
   describe('when there are multiple evaluations by the selected group', () => {
     const earlierEvaluationPublishedDate = new Date('1900');
     const laterEvaluationPublishedDate = new Date('2000');
-    const earlierReviewId = arbitraryEvaluationLocator();
-    const laterReviewId = arbitraryEvaluationLocator();
+    const earlierEvaluationLocator = arbitraryEvaluationLocator();
+    const laterEvaluationLocator = arbitraryEvaluationLocator();
     const firstStep = '_:b0';
     const authorName = arbitraryString();
     const evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation> = [
       {
-        sourceUrl: new URL(`https://reviews.example.com/${earlierReviewId}`),
-        evaluationLocator: earlierReviewId,
+        sourceUrl: new URL(`https://evaluations.example.com/${earlierEvaluationLocator}`),
+        evaluationLocator: earlierEvaluationLocator,
         recordedAt: arbitraryDate(),
         publishedAt: earlierEvaluationPublishedDate,
         authors: [],
       },
       {
-        sourceUrl: new URL(`https://reviews.example.com/${laterReviewId}`),
-        evaluationLocator: laterReviewId,
+        sourceUrl: new URL(`https://evaluations.example.com/${laterEvaluationLocator}`),
+        evaluationLocator: laterEvaluationLocator,
         recordedAt: arbitraryDate(),
         publishedAt: laterEvaluationPublishedDate,
         authors: [authorName],
@@ -220,13 +220,13 @@ describe('to-docmap', () => {
             expect(outputOfAction0.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
-                url: `https://sciety.org/articles/activity/${articleId.value}#${earlierReviewId}`,
+                url: `https://sciety.org/articles/activity/${articleId.value}#${earlierEvaluationLocator}`,
               }]),
             );
             expect(outputOfAction1.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
-                url: `https://sciety.org/articles/activity/${articleId.value}#${laterReviewId}`,
+                url: `https://sciety.org/articles/activity/${articleId.value}#${laterEvaluationLocator}`,
               }]),
             );
           });
@@ -235,13 +235,13 @@ describe('to-docmap', () => {
             expect(outputOfAction0.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
-                url: `https://reviews.example.com/${earlierReviewId}`,
+                url: `https://evaluations.example.com/${earlierEvaluationLocator}`,
               }]),
             );
             expect(outputOfAction1.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
-                url: `https://reviews.example.com/${laterReviewId}`,
+                url: `https://evaluations.example.com/${laterEvaluationLocator}`,
               }]),
             );
           });

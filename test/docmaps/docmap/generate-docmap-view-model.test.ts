@@ -100,10 +100,10 @@ describe('generate-docmap-view-model', () => {
     });
   });
 
-  describe('when we can infer a source URL for the reviews', () => {
-    const reviewIdWithInferrableSourceUrl = arbitraryReviewDoi();
+  describe('when we can infer a source URL for the evaluations', () => {
+    const evaluationLocatorWithInferrableSourceUrl = arbitraryReviewDoi();
     const sourceUrl = pipe(
-      inferredSourceUrl(reviewIdWithInferrableSourceUrl),
+      inferredSourceUrl(evaluationLocatorWithInferrableSourceUrl),
       O.getOrElseW(shouldNotBeCalled),
     );
     let result: DocmapModel;
@@ -113,7 +113,7 @@ describe('generate-docmap-view-model', () => {
       const evaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
-        evaluationLocator: reviewIdWithInferrableSourceUrl,
+        evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
         articleId,
       };
       const ports: Ports = {
@@ -137,8 +137,8 @@ describe('generate-docmap-view-model', () => {
     });
   });
 
-  describe('when we cannot infer a source URL for the reviews', () => {
-    const reviewIdWithUninferrableSourceUrl = arbitraryNcrcId();
+  describe('when we cannot infer a source URL for the evaluations', () => {
+    const evaluationLocatorWithUninferrableSourceUrl = arbitraryNcrcId();
     const sourceUrl = new URL(arbitraryUri());
     let result: DocmapModel;
 
@@ -147,7 +147,7 @@ describe('generate-docmap-view-model', () => {
       const evaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
-        evaluationLocator: reviewIdWithUninferrableSourceUrl,
+        evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
         articleId,
       };
       const ports: Ports = {
