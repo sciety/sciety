@@ -63,7 +63,13 @@ describe('discover-hypothesis-evaluation-type', () => {
         });
       });
 
-      it.todo('does nothing');
+      it('does nothing', () => {
+        const result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
+
+        expect(result[0]).toStrictEqual(expect.objectContaining({
+          type: O.none,
+        }));
+      });
     });
 
     describe('but the evaluation is no longer on hypothes.is', () => {
@@ -74,7 +80,13 @@ describe('discover-hypothesis-evaluation-type', () => {
         });
       });
 
-      it.todo('marks the evaluation type as not-provided');
+      it.failing('marks the evaluation type as not-provided', () => {
+        const result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
+
+        expect(result[0]).toStrictEqual(expect.objectContaining({
+          type: O.some('not-provided'),
+        }));
+      });
     });
   });
 });
