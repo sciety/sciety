@@ -4,12 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execute-create-annotation-command';
-import { CommitEvents, GetAllEvents, Logger } from '../shared-ports';
+import { Logger } from '../shared-ports';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
 import { HtmlFragment, htmlFragmentCodec } from '../types/html-fragment';
 import { fromValidatedString } from '../types/list-id';
+import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
 
 type Body = {
   annotationContent: HtmlFragment,
@@ -29,28 +30,28 @@ const transformToCommand = ({ annotationContent, articleId }: Body): CreateAnnot
   },
 });
 
-type Ports = {
+type Dependencies = DependenciesForCommands & {
   logger: Logger,
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
 };
 
-type HandleCreateAnnotationCommand = (adapters: Ports) => (input: unknown) => TE.TaskEither<unknown, CommandResult>;
+type HandleCreateAnnotationCommand = (
+  dependencies: Dependencies,
+) => (input: unknown) => TE.TaskEither<unknown, CommandResult>;
 
-export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (adapters) => (input) => pipe(
+export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dependencies) => (input) => pipe(
   input,
   bodyCodec.decode,
   E.map(transformToCommand),
   TE.fromEither,
   TE.chainFirstTaskK(
     (command) => T.of(
-      adapters.logger('debug', 'Received CreateAnnotation command', { command }),
+      dependencies.logger('debug', 'Received CreateAnnotation command', { command }),
     ),
   ),
   TE.chainTaskK((command) => pipe(
-    adapters.getAllEvents,
+    dependencies.getAllEvents,
     T.map(executeCreateAnnotationCommand(command)),
   )),
-  TE.chainTaskK(adapters.commitEvents),
+  TE.chainTaskK(dependencies.commitEvents),
   TE.map(() => 'no-events-created'),
 );
