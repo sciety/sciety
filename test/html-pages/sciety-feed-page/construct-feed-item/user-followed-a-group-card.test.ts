@@ -8,6 +8,7 @@ import { TestFramework, createTestFramework } from '../../../framework';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructEvent } from '../../../../src/domain-events';
+import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
 
 describe('user-followed-a-group-card', () => {
   const userDetails = arbitraryUserDetails();
@@ -19,9 +20,14 @@ describe('user-followed-a-group-card', () => {
     date,
   });
   let framework: TestFramework;
+  let dependencies: Dependencies;
 
   beforeEach(async () => {
     framework = createTestFramework();
+    dependencies = {
+      ...framework.dependenciesForViews,
+      getAllEvents: framework.getAllEvents,
+    };
   });
 
   describe('happy path', () => {
@@ -32,7 +38,7 @@ describe('user-followed-a-group-card', () => {
       await framework.commandHelpers.createUserAccount(userDetails);
       viewModel = pipe(
         event,
-        userFollowedAGroupCard(framework.queries),
+        userFollowedAGroupCard(dependencies),
         O.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -69,7 +75,7 @@ describe('user-followed-a-group-card', () => {
       await framework.commandHelpers.createGroup(group);
       viewModel = pipe(
         event,
-        userFollowedAGroupCard(framework.queries),
+        userFollowedAGroupCard(dependencies),
         O.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -101,7 +107,7 @@ describe('user-followed-a-group-card', () => {
     beforeEach(() => {
       viewModel = pipe(
         event,
-        userFollowedAGroupCard(framework.queries),
+        userFollowedAGroupCard(dependencies),
       );
     });
 

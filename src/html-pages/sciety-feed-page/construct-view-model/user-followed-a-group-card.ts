@@ -4,12 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { EventOfType } from '../../../domain-events';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
-import { Queries } from '../../../shared-read-models';
-
-export type Ports = Pick<Queries, 'getGroup' | 'lookupUser'>;
+import { Dependencies } from './dependencies';
 
 type UserFollowedAGroupCard = (
-  dependencies: Ports
+  dependencies: Dependencies
 ) => (event: EventOfType<'UserFollowedEditorialCommunity'>) => O.Option<ScietyFeedCard>;
 
 export const userFollowedAGroupCard: UserFollowedAGroupCard = (dependencies) => (event) => pipe(
