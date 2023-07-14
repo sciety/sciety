@@ -12,14 +12,14 @@ const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.l
 export const mapTagToType = (
   tags: ReadonlyArray<string>,
   tagToEvaluationTypeMap: Record<string, ReadonlyArray<string>>,
-): string | undefined => pipe(
+): string => pipe(
   tagToEvaluationTypeMap,
   R.filter((t) => pipe(
     tags,
     RA.some((tag) => t.includes(tag)),
   )),
   R.keys,
-  (keys) => (keys.length === 1 ? keys[0] : undefined),
+  (keys) => (keys.length === 1 ? keys[0] : 'not-provided'),
 );
 
 export const convertHypothesisAnnotationToEvaluation = (

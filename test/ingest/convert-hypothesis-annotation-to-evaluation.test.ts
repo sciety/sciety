@@ -13,7 +13,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
     [evaluationType2]: [arbitraryString(), arbitraryString(), arbitraryString()],
   };
 
-  describe('when the url can be parsed to a doi and the annotation contains text', () => {
+  describe('when the url can be parsed to a doi and the annotation contains text but no tags', () => {
     const id = arbitraryWord();
     const result = convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap)({
       id,
@@ -23,10 +23,10 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       tags: [],
     });
 
-    it('provides an evaluation locator and no evaluation type', () => {
+    it('provides an evaluation locator and an evaluation type of not-provided', () => {
       expect(result).toStrictEqual(E.right(expect.objectContaining({
         evaluationLocator: `hypothesis:${id}`,
-        evaluationType: undefined,
+        evaluationType: 'not-provided',
       })));
     });
   });
@@ -91,9 +91,9 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
       ],
     });
 
-    it('leaves the evaluation type as undefined', () => {
+    it('leaves the evaluation type as not-provided', () => {
       expect(result).toStrictEqual(E.right(expect.objectContaining({
-        evaluationType: undefined,
+        evaluationType: 'not-provided',
       })));
     });
   });
