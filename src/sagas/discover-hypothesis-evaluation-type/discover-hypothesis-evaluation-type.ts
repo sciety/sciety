@@ -10,6 +10,7 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { executeCommand, updateEvaluationCommandCodec } from '../../write-side/commands';
 import { ErrorMessage, toErrorMessage } from '../../types/error-message';
+import * as DE from '../../types/data-error';
 import { update } from '../../write-side/resources/evaluation';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
@@ -27,13 +28,12 @@ const updateEvaluationIfPossible = (
 ) => (evaluationLocator: EvaluationLocator): TE.TaskEither<ErrorMessage, unknown> => pipe(
   evaluationLocator,
   dependencies.fetchReview,
-  TE.bimap(
-    (de) => toErrorMessage(de),
-    (fetchedEvaluation) => ({
-      evaluationLocator,
-      evaluationType: mapTagToType(fetchedEvaluation.tags, tagToEvaluationTypeMap),
-    }),
-  ),
+  TE.map((evaluation) => (mapTagToType(evaluation.tags, tagToEvaluationTypeMap))),
+  TE.orElse((de) => (DE.isNotFound(de) ? TE.right('not-provided') : TE.left(toErrorMessage(de)))),
+  TE.map((evaluationType) => ({
+    evaluationLocator,
+    evaluationType,
+  })),
   TE.chain(executeCommand(dependencies, updateEvaluationCommandCodec, update)),
 );
 

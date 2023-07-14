@@ -80,7 +80,7 @@ describe('discover-hypothesis-evaluation-type', () => {
         });
       });
 
-      it.failing('marks the evaluation type as not-provided', () => {
+      it('marks the evaluation type as not-provided', () => {
         const result = framework.queries.getEvaluationsForDoi(evaluation.articleId);
 
         expect(result[0]).toStrictEqual(expect.objectContaining({
