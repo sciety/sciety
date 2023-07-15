@@ -30,17 +30,11 @@ export type CommandHelpers = {
 const invoke = <C extends GenericCommand>(
   handler: CommandHandler<C>,
   name: string,
-) => async (cmd: C): Promise<CommandResult> => {
-    if (process.env.TEST_DEBUG === 'true') {
-      // eslint-disable-next-line no-console
-      console.log(`${name}:`, cmd);
-    }
-    return pipe(
-      cmd,
-      handler,
-      TE.getOrElse(abortTest(`${name} helper`)),
-    )();
-  };
+) => async (cmd: C): Promise<CommandResult> => pipe(
+    cmd,
+    handler,
+    TE.getOrElse(abortTest(`${name} helper`)),
+  )();
 
 export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
   addArticleToList: async (articleId, listId) => pipe(
