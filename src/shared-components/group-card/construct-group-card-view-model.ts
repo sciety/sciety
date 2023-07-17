@@ -13,7 +13,10 @@ import { Queries } from '../../shared-read-models';
 const calculateCuratedArticlesCount = (groupId: GroupId, queries: Queries) => pipe(
   groupId,
   queries.getEvaluationsByGroup,
-  () => 0,
+  RA.map((recordedEvaluation) => recordedEvaluation.type),
+  RA.map(O.getOrElse(() => 'not-provided')),
+  RA.filter((evaluationType) => evaluationType === 'curation-statement'),
+  RA.size,
 );
 
 const calculateListCount = (groupId: GroupId, queries: Queries) => pipe(
