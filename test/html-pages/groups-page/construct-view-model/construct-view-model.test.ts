@@ -1,11 +1,11 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/html-pages/groups-page/construct-view-model/construct-view-model';
-import { GroupCardViewModel } from '../../../../src/shared-components/group-card';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
+import { GroupCardViewModel } from '../../../../src/shared-components/group-card/view-model';
 
 type ViewModel = ReadonlyArray<GroupCardViewModel>;
 

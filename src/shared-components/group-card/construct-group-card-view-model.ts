@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { GroupCardViewModel } from './render-group-card';
 import * as DE from '../../types/data-error';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
+import { GroupCardViewModel } from './view-model';
 
 const calculateCuratedArticlesCount = (groupId: GroupId, queries: Queries) => pipe(
   groupId,
