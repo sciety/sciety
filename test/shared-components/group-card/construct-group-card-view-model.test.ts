@@ -16,57 +16,63 @@ describe('construct-group-card-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when a group has joined and performed an evaluation', () => {
+  describe('when a group has joined', () => {
     const group = arbitraryGroup();
-    let viewModel: GroupCardViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation({
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
+    });
+
+    describe('and performed an evaluation', () => {
+      let viewModel: GroupCardViewModel;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluation({
+          ...arbitraryRecordedEvaluation(),
+          groupId: group.id,
+        });
+        viewModel = pipe(
+          group.id,
+          constructGroupCardViewModel(framework.queries),
+          E.getOrElseW(shouldNotBeCalled),
+        );
       });
-      viewModel = pipe(
-        group.id,
-        constructGroupCardViewModel(framework.queries),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-    });
 
-    it('contains the group id', () => {
-      expect(viewModel.id).toStrictEqual(group.id);
-    });
+      it('contains the group id', () => {
+        expect(viewModel.id).toStrictEqual(group.id);
+      });
 
-    it('contains the group name', () => {
-      expect(viewModel.name).toStrictEqual(group.name);
-    });
+      it('contains the group name', () => {
+        expect(viewModel.name).toStrictEqual(group.name);
+      });
 
-    it('contains the group description', () => {
-      expect(viewModel.description).toStrictEqual(group.shortDescription);
-    });
+      it('contains the group description', () => {
+        expect(viewModel.description).toStrictEqual(group.shortDescription);
+      });
 
-    it('contains the group avatar path', () => {
-      expect(viewModel.avatarPath).toStrictEqual(group.avatarPath);
-    });
+      it('contains the group avatar path', () => {
+        expect(viewModel.avatarPath).toStrictEqual(group.avatarPath);
+      });
 
-    it('contains the group slug', () => {
-      expect(viewModel.slug).toStrictEqual(group.slug);
-    });
+      it('contains the group slug', () => {
+        expect(viewModel.slug).toStrictEqual(group.slug);
+      });
 
-    it('contains the list count', () => {
-      expect(viewModel.listCount).toBe(1);
-    });
+      it('contains the list count', () => {
+        expect(viewModel.listCount).toBe(1);
+      });
 
-    it('contains the follower count', () => {
-      expect(viewModel.followerCount).toBe(0);
-    });
+      it('contains the follower count', () => {
+        expect(viewModel.followerCount).toBe(0);
+      });
 
-    it('contains the evaluation count', () => {
-      expect(viewModel.evaluationCount).toBeGreaterThan(0);
-    });
+      it('contains the evaluation count', () => {
+        expect(viewModel.evaluationCount).toBeGreaterThan(0);
+      });
 
-    it('contains the date of the latest activity', () => {
-      expect(O.isSome(viewModel.latestActivityAt)).toBe(true);
+      it('contains the date of the latest activity', () => {
+        expect(O.isSome(viewModel.latestActivityAt)).toBe(true);
+      });
     });
   });
 
