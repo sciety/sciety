@@ -12,7 +12,7 @@ const requiredFields = t.strict({
   authors: t.readonlyArray(t.string),
 });
 
-const evaluationTypeCodec = t.union([
+export const evaluationTypeCodec = t.union([
   t.literal('review'),
   t.literal('author-response'),
   t.literal('curation-statement'),

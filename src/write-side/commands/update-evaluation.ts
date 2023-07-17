@@ -1,12 +1,6 @@
 import * as t from 'io-ts';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
-
-const evaluationTypeCodec = t.union([
-  t.literal('review'),
-  t.literal('author-response'),
-  t.literal('curation-statement'),
-  t.literal('not-provided'),
-]);
+import { evaluationTypeCodec } from './record-evaluation';
 
 export const updateEvaluationCommandCodec = t.strict({
   evaluationLocator: evaluationLocatorCodec,
