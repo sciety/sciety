@@ -10,6 +10,12 @@ import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
 
+const calculateCuratedArticlesCount = (groupId: GroupId, queries: Queries) => pipe(
+  groupId,
+  queries.getEvaluationsByGroup,
+  () => 0,
+);
+
 const calculateListCount = (groupId: GroupId, queries: Queries) => pipe(
   groupId,
   LOID.fromGroupId,
@@ -32,7 +38,7 @@ export const constructGroupCardViewModel = (
       ...meta,
       followerCount: queries.getFollowers(groupId).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
-      curatedArticlesCount: 0,
+      curatedArticlesCount: calculateCuratedArticlesCount(groupId, queries),
       listCount: calculateListCount(groupId, queries),
     })),
   )),
