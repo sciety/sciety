@@ -2,8 +2,9 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as DE from '../../../src/types/data-error';
+import { Group } from '../../../src/types/group';
 import { arbitraryGroup } from '../../types/group.helper';
-import { constructGroupCardViewModel, GroupCardViewModel } from '../../../src/shared-components/group-card';
+import { constructGroupCardViewModel } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
@@ -16,6 +17,12 @@ describe('construct-group-card-view-model', () => {
     framework = createTestFramework();
   });
 
+  const constructedViewModel = (group: Group) => pipe(
+    group.id,
+    constructGroupCardViewModel(framework.queries),
+    E.getOrElseW(shouldNotBeCalled),
+  );
+
   describe('when a group has joined', () => {
     const group = arbitraryGroup();
 
@@ -23,55 +30,48 @@ describe('construct-group-card-view-model', () => {
       await framework.commandHelpers.createGroup(group);
     });
 
-    describe('and performed an evaluation', () => {
-      let viewModel: GroupCardViewModel;
+    it('contains the group id', () => {
+      expect(constructedViewModel(group).id).toStrictEqual(group.id);
+    });
 
+    it('contains the group name', () => {
+      expect(constructedViewModel(group).name).toStrictEqual(group.name);
+    });
+
+    it('contains the group description', () => {
+      expect(constructedViewModel(group).description).toStrictEqual(group.shortDescription);
+    });
+
+    it('contains the group avatar path', () => {
+      expect(constructedViewModel(group).avatarPath).toStrictEqual(group.avatarPath);
+    });
+
+    it('contains the group slug', () => {
+      expect(constructedViewModel(group).slug).toStrictEqual(group.slug);
+    });
+
+    it('contains the list count', () => {
+      expect(constructedViewModel(group).listCount).toBe(1);
+    });
+
+    it('contains the follower count', () => {
+      expect(constructedViewModel(group).followerCount).toBe(0);
+    });
+
+    describe('and has performed an evaluation', () => {
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluation({
           ...arbitraryRecordedEvaluation(),
           groupId: group.id,
         });
-        viewModel = pipe(
-          group.id,
-          constructGroupCardViewModel(framework.queries),
-          E.getOrElseW(shouldNotBeCalled),
-        );
-      });
-
-      it('contains the group id', () => {
-        expect(viewModel.id).toStrictEqual(group.id);
-      });
-
-      it('contains the group name', () => {
-        expect(viewModel.name).toStrictEqual(group.name);
-      });
-
-      it('contains the group description', () => {
-        expect(viewModel.description).toStrictEqual(group.shortDescription);
-      });
-
-      it('contains the group avatar path', () => {
-        expect(viewModel.avatarPath).toStrictEqual(group.avatarPath);
-      });
-
-      it('contains the group slug', () => {
-        expect(viewModel.slug).toStrictEqual(group.slug);
-      });
-
-      it('contains the list count', () => {
-        expect(viewModel.listCount).toBe(1);
-      });
-
-      it('contains the follower count', () => {
-        expect(viewModel.followerCount).toBe(0);
       });
 
       it('contains the evaluation count', () => {
-        expect(viewModel.evaluationCount).toBeGreaterThan(0);
+        expect(constructedViewModel(group).evaluationCount).toBeGreaterThan(0);
       });
 
       it('contains the date of the latest activity', () => {
-        expect(O.isSome(viewModel.latestActivityAt)).toBe(true);
+        expect(O.isSome(constructedViewModel(group).latestActivityAt)).toBe(true);
       });
     });
   });
