@@ -10,6 +10,13 @@ import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../shared-read-models';
 
+const calculateListCount = (groupId: GroupId, queries: Queries) => pipe(
+  groupId,
+  LOID.fromGroupId,
+  queries.selectAllListsOwnedBy,
+  RA.size,
+);
+
 export const constructGroupCardViewModel = (
   queries: Queries,
 ) => (
@@ -23,19 +30,10 @@ export const constructGroupCardViewModel = (
     O.map((meta) => ({
       ...group,
       ...meta,
-      followerCount: queries.getFollowers(group.id).length,
+      followerCount: queries.getFollowers(groupId).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
-    })),
-  )),
-  E.map((partial) => pipe(
-    groupId,
-    LOID.fromGroupId,
-    queries.selectAllListsOwnedBy,
-    RA.size,
-    ((listCount) => ({
-      ...partial,
-      listCount,
       curatedArticlesCount: 0,
+      listCount: calculateListCount(groupId, queries),
     })),
   )),
 );
