@@ -16,6 +16,7 @@ export type GroupCardViewModel = {
   listCount: number,
   followerCount: number,
   evaluationCount: number,
+  curatedArticlesCount: number,
   latestActivityAt: O.Option<Date>,
 };
 
@@ -68,7 +69,7 @@ export const renderGroupCard = flow(
             ${viewModel.description}
           </div>
           <span class="group-card__meta">
-            <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderCuratedArticlesCount(0)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivityAt)}
+            <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderCuratedArticlesCount(viewModel.curatedArticlesCount)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivityAt)}
           </span>
         </div>
         <img class="group-card__avatar" src="${viewModel.avatarPath}" alt="" />

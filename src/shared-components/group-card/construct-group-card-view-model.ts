@@ -35,6 +35,7 @@ export const constructGroupCardViewModel = (
     ((listCount) => ({
       ...partial,
       listCount,
+      curatedArticlesCount: 0,
     })),
   )),
 );
