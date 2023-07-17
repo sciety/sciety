@@ -26,6 +26,15 @@ const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
   wrapInSpan,
 );
 
+const renderCuratedArticlesCount = (articleCount: number) => (
+  (articleCount === 0)
+    ? ''
+    : pipe(
+      renderCountWithDescriptor(articleCount, 'curated article', 'curated articles'),
+      wrapInSpan,
+    )
+);
+
 const renderListCount = (listCount: number) => pipe(
   renderCountWithDescriptor(listCount, 'list', 'lists'),
   wrapInSpan,
@@ -59,7 +68,7 @@ export const renderGroupCard = flow(
             ${viewModel.description}
           </div>
           <span class="group-card__meta">
-            <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivityAt)}
+            <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderCuratedArticlesCount(0)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivityAt)}
           </span>
         </div>
         <img class="group-card__avatar" src="${viewModel.avatarPath}" alt="" />
