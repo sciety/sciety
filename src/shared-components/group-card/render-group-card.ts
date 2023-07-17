@@ -44,8 +44,15 @@ const renderLatestActivity = (latestActivity: O.Option<Date>): HtmlFragment => p
   ),
 );
 
-export const renderGroupCard = flow(
-  (viewModel: GroupCardViewModel) => `
+export const renderGroupCard = (viewModel: GroupCardViewModel): HtmlFragment => pipe(
+  [
+    renderEvaluationCount(viewModel.evaluationCount),
+    renderCuratedArticlesCount(viewModel.curatedArticlesCount),
+    renderListCount(viewModel.listCount),
+    renderFollowerCount(viewModel.followerCount),
+    renderLatestActivity(viewModel.latestActivityAt),
+  ].join(''),
+  (meta) => `
     <article class="group-card">
         <div class="group-card__body">
           <h3 class="group-card__title">
@@ -55,7 +62,7 @@ export const renderGroupCard = flow(
             ${viewModel.description}
           </div>
           <span class="group-card__meta">
-            <span class="visually-hidden">This group has </span>${renderEvaluationCount(viewModel.evaluationCount)}${renderCuratedArticlesCount(viewModel.curatedArticlesCount)}${renderListCount(viewModel.listCount)}${renderFollowerCount(viewModel.followerCount)}${renderLatestActivity(viewModel.latestActivityAt)}
+            <span class="visually-hidden">This group has </span>${meta}
           </span>
         </div>
         <img class="group-card__avatar" src="${viewModel.avatarPath}" alt="" />
