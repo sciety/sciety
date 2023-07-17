@@ -63,6 +63,7 @@ describe('construct-group-card-view-model', () => {
         await framework.commandHelpers.recordEvaluation({
           ...arbitraryRecordedEvaluation(),
           groupId: group.id,
+          type: O.none,
         });
       });
 
@@ -72,6 +73,32 @@ describe('construct-group-card-view-model', () => {
 
       it('contains the date of the latest activity', () => {
         expect(O.isSome(constructedViewModel(group).latestActivityAt)).toBe(true);
+      });
+
+      it('contains the curated articles count', () => {
+        expect(constructedViewModel(group).curatedArticlesCount).toBe(0);
+      });
+    });
+
+    describe('and has curated an article', () => {
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluation({
+          ...arbitraryRecordedEvaluation(),
+          groupId: group.id,
+          type: O.some('curation-statement'),
+        });
+      });
+
+      it('contains the evaluation count', () => {
+        expect(constructedViewModel(group).evaluationCount).toBeGreaterThan(0);
+      });
+
+      it('contains the date of the latest activity', () => {
+        expect(O.isSome(constructedViewModel(group).latestActivityAt)).toBe(true);
+      });
+
+      it.failing('contains the curated articles count', () => {
+        expect(constructedViewModel(group).curatedArticlesCount).toBe(1);
       });
     });
   });
