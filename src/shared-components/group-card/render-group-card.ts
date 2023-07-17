@@ -8,12 +8,12 @@ import { GroupCardViewModel } from './view-model';
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
-const renderEvaluationCount = (evaluationCount: number): HtmlFragment => pipe(
+const renderEvaluationCount = (evaluationCount: GroupCardViewModel['evaluationCount']): HtmlFragment => pipe(
   renderCountWithDescriptor(evaluationCount, 'evaluation', 'evaluations'),
   wrapInSpan,
 );
 
-const renderCuratedArticlesCount = (articleCount: number) => (
+const renderCuratedArticlesCount = (articleCount: GroupCardViewModel['curatedArticlesCount']) => (
   (articleCount === 0)
     ? ''
     : pipe(
@@ -22,17 +22,17 @@ const renderCuratedArticlesCount = (articleCount: number) => (
     )
 );
 
-const renderListCount = (listCount: number) => pipe(
+const renderListCount = (listCount: GroupCardViewModel['listCount']) => pipe(
   renderCountWithDescriptor(listCount, 'list', 'lists'),
   wrapInSpan,
 );
 
-const renderFollowerCount = (followerCount: number): HtmlFragment => pipe(
+const renderFollowerCount = (followerCount: GroupCardViewModel['followerCount']): HtmlFragment => pipe(
   renderCountWithDescriptor(followerCount, 'follower', 'followers'),
   wrapInSpan,
 );
 
-const renderLatestActivity = (latestActivity: O.Option<Date>): HtmlFragment => pipe(
+const renderLatestActivity = (latestActivity: GroupCardViewModel['latestActivityAt']): HtmlFragment => pipe(
   latestActivity,
   O.fold(
     () => toHtmlFragment(''),
