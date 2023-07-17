@@ -9,6 +9,7 @@ import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryDoi } from '../../types/doi.helper';
 
 describe('construct-group-card-view-model', () => {
   let framework: TestFramework;
@@ -80,7 +81,7 @@ describe('construct-group-card-view-model', () => {
       });
     });
 
-    describe('and has curated an article', () => {
+    describe('and has published one curation statements for an article', () => {
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluation({
           ...arbitraryRecordedEvaluation(),
@@ -98,6 +99,37 @@ describe('construct-group-card-view-model', () => {
       });
 
       it('contains the curated articles count', () => {
+        expect(constructedViewModel(group).curatedArticlesCount).toBe(1);
+      });
+    });
+
+    describe('and has published two curation statements for the same article', () => {
+      const articleId = arbitraryDoi();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluation({
+          ...arbitraryRecordedEvaluation(),
+          articleId,
+          groupId: group.id,
+          type: O.some('curation-statement'),
+        });
+        await framework.commandHelpers.recordEvaluation({
+          ...arbitraryRecordedEvaluation(),
+          articleId,
+          groupId: group.id,
+          type: O.some('curation-statement'),
+        });
+      });
+
+      it('contains the evaluation count', () => {
+        expect(constructedViewModel(group).evaluationCount).toBeGreaterThan(0);
+      });
+
+      it('contains the date of the latest activity', () => {
+        expect(O.isSome(constructedViewModel(group).latestActivityAt)).toBe(true);
+      });
+
+      it.skip('contains the curated articles count', () => {
         expect(constructedViewModel(group).curatedArticlesCount).toBe(1);
       });
     });
