@@ -32,17 +32,17 @@ export const constructGroupCardViewModel = (
   groupId: GroupId,
 ): E.Either<DE.DataError, GroupCardViewModel> => pipe(
   queries.getGroup(groupId),
-  E.fromOption(() => DE.notFound),
-  E.chainOptionK(() => DE.notFound)((group) => pipe(
+  O.chain((group) => pipe(
     group.id,
     queries.getActivityForGroup,
-    O.map((meta) => ({
+    O.map((activity) => ({
       ...group,
-      ...meta,
+      ...activity,
       followerCount: queries.getFollowers(groupId).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
       curatedArticlesCount: calculateCuratedArticlesCount(groupId, queries),
       listCount: calculateListCount(groupId, queries),
     })),
   )),
+  E.fromOption(() => DE.notFound),
 );
