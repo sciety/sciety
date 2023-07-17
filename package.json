@@ -65,7 +65,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "backstopjs": "^6.2.2",
     "browserslist": "^4.21.9",
-    "dependency-cruiser": "13.1.0",
+    "dependency-cruiser": "13.1.1",
     "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
