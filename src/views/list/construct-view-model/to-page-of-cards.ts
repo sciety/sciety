@@ -16,14 +16,13 @@ import { ContentWithPaginationViewModel } from '../view-model';
 
 export const toPageOfCards = (
   dependencies: Dependencies,
-  editCapability: boolean,
   listId: ListId,
 ) => (
   pageOfArticles: PageOfItems<ArticleActivity>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ContentWithPaginationViewModel['articles']> => pipe(
   pageOfArticles.items,
   RA.map((item) => item.articleId),
-  T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, editCapability, listId)),
+  T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, false, listId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
     E.foldW(

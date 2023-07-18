@@ -27,7 +27,6 @@ export type ViewModel = {
   ownerAvatarPath: string,
   articleCount: number,
   updatedAt: Date,
-  editCapability: boolean,
   listId: ListId,
   basePath: string,
   content: Content,

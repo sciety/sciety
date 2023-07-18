@@ -13,7 +13,6 @@ import { Dependencies } from './dependencies';
 export const constructContentWithPaginationViewModel = (
   dependencies: Dependencies,
   pageNumber: number,
-  editCapability: boolean,
   listId: ListId,
 ) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
   articleIds,
@@ -22,7 +21,7 @@ export const constructContentWithPaginationViewModel = (
   TE.fromEither,
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
-    toPageOfCards(dependencies, editCapability, listId),
+    toPageOfCards(dependencies, listId),
     TE.map((articles) => ({ articles, pagination: pageOfArticles })),
   )),
 );
