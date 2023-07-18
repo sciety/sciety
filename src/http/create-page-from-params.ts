@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { flow } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import { RenderPageError } from '../types/render-page-error';
@@ -15,10 +15,13 @@ export const toNotFound = () => ({
 
 type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, Page>;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createPageFromParams = <P>(codec: t.Decoder<unknown, P>, generatePage: GeneratePage<P>) => flow(
-  codec.decode,
-  E.mapLeft(toNotFound),
-  TE.fromEither,
-  TE.chain(generatePage),
-);
+export const createPageFromParams = <P>(
+  codec: t.Decoder<unknown, P>,
+  generatePage: GeneratePage<P>,
+) => (input: unknown): ReturnType<GeneratePage<P>> => pipe(
+    input,
+    codec.decode,
+    E.mapLeft(toNotFound),
+    TE.fromEither,
+    TE.chain(generatePage),
+  );
