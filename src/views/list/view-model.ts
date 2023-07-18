@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import { PageOfItems } from '../../shared-components/paginate';
 import { ListId } from '../../types/list-id';
 import { ArticleCardWithControlsAndAnnotationViewModel } from '../../shared-components/article-card';
@@ -20,6 +19,5 @@ export type ViewModel = {
   listId: ListId,
   basePath: string,
   content: ContentWithPaginationViewModel,
-  relatedArticlesLink: O.Option<string>,
   listPageAbsoluteUrl: URL,
 };

@@ -55,9 +55,6 @@ export const constructViewModel = (
       listPageAbsoluteUrl: new URL(`${process.env.APP_ORIGIN ?? 'https://sciety.org'}/lists/${list.id}`),
       articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,
-      relatedArticlesLink: list.articleIds.length > 0
-        ? O.some(`https://labs.sciety.org/lists/by-id/${list.id}/article-recommendations?from-sciety=true`)
-        : O.none,
     })),
   )),
   TE.fromOption(() => DE.notFound),
