@@ -47,8 +47,8 @@ export const constructViewModel = (
   dependencies.lookupList,
   O.chain((list) => pipe(
     getOwnerInformation(dependencies)(list.ownerId),
-    O.map((ownerInformation) => ({
-      ...ownerInformation,
+    O.map((ownerName) => ({
+      ownerName,
       ...list,
       listId: list.id,
       listPageAbsoluteUrl: new URL(`${process.env.APP_ORIGIN ?? 'https://sciety.org'}/lists/${list.id}`),

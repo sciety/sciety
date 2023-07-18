@@ -1,13 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation } from './get-user-owner-information';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 
-type OwnerInformation = Pick<ViewModel, 'ownerName'>;
-
-type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
+type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<ViewModel['ownerName']>;
 
 export const getOwnerInformation: GetOwnerInformation = (dependencies) => (ownerId) => {
   switch (ownerId.tag) {
@@ -15,14 +12,13 @@ export const getOwnerInformation: GetOwnerInformation = (dependencies) => (owner
       return pipe(
         ownerId.value,
         dependencies.getGroup,
-        O.map((group) => ({
-          ownerName: group.name,
-        })),
+        O.map((group) => group.name),
       );
     case 'user-id':
       return pipe(
         ownerId.value,
-        getUserOwnerInformation(dependencies),
+        dependencies.lookupUser,
+        O.map((userDetails) => userDetails.displayName),
       );
   }
 };
