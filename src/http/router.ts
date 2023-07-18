@@ -75,7 +75,7 @@ import * as listResource from '../write-side/resources/list';
 import * as userResource from '../write-side/resources/user';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import { applicationStatus } from '../views/status';
-import { listFeed } from '../html-pages/list-page/list-feed';
+import { listFeed } from '../views/list/list-feed';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
