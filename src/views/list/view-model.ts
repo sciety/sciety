@@ -17,7 +17,6 @@ export type ViewModel = {
   articleCount: number,
   updatedAt: Date,
   listId: ListId,
-  basePath: string,
   content: ContentWithPaginationViewModel,
   listPageAbsoluteUrl: URL,
 };

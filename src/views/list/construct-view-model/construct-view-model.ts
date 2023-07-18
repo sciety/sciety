@@ -51,7 +51,6 @@ export const constructViewModel = (
       ...ownerInformation,
       ...list,
       listId: list.id,
-      basePath: `/lists/${list.id}`,
       listPageAbsoluteUrl: new URL(`${process.env.APP_ORIGIN ?? 'https://sciety.org'}/lists/${list.id}`),
       articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,
