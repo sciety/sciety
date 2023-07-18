@@ -1,12 +1,10 @@
 import { Middleware } from '@koa/router';
 import { HttpStatusCode } from 'axios';
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { renderAsAtom } from './render-as-atom';
-import { ListId } from '../../types/list-id';
-import { Dependencies, constructViewModel } from './construct-view-model';
+import { Dependencies, constructViewModel, paramsCodec } from './construct-view-model';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const listFeed = (dependencies: Dependencies): Middleware => async (context, next) => {
@@ -14,11 +12,13 @@ export const listFeed = (dependencies: Dependencies): Middleware => async (conte
   context.response.type = 'application/atom+xml';
   context.response.body = await pipe(
     {
-      page: 1,
-      id: '' as ListId,
-      user: O.none,
+      ...context.params,
+      ...context.query,
+      ...context.state,
     },
-    constructViewModel(dependencies),
+    paramsCodec.decode,
+    TE.fromEither,
+    TE.chainW(constructViewModel(dependencies)),
     TE.map(renderAsAtom),
     TE.getOrElse(() => T.of('')),
   )();
