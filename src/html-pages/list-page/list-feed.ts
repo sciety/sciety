@@ -6,8 +6,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { renderAsAtom } from './render-as-atom';
 import { ListId } from '../../types/list-id';
-import { Dependencies } from './construct-view-model/dependencies';
-import { constructViewModel } from './construct-view-model/construct-view-model';
+import { Dependencies, constructViewModel } from './construct-view-model';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const listFeed = (dependencies: Dependencies): Middleware => async (context, next) => {
