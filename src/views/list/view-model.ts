@@ -12,7 +12,6 @@ export type ViewModel = {
   name: string,
   description: string,
   ownerName: string,
-  articleCount: number,
   updatedAt: Date,
   listId: ListId,
   content: ContentWithPaginationViewModel,
