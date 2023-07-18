@@ -261,7 +261,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/lists/:id/feed.atom',
-    listFeed,
+    listFeed(adapters),
   );
 
   router.get(

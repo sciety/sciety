@@ -4,8 +4,10 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { renderAsAtom } from './render-as-atom';
 import { ListId } from '../../types/list-id';
+import { Dependencies } from './construct-view-model/dependencies';
 
-export const listFeed: Middleware = async (context, next) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const listFeed = (dependencies: Dependencies): Middleware => async (context, next) => {
   context.response.status = HttpStatusCode.Ok;
   context.response.type = 'application/atom+xml';
   context.response.body = pipe(
