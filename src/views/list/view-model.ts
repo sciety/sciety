@@ -13,6 +13,7 @@ export type ViewModel = {
   ownerName: string,
   updatedAt: Date,
   listId: ListId,
-  content: ContentWithPaginationViewModel,
   listPageAbsoluteUrl: URL,
+  articles: ReadonlyArray<ArticleCardWithControlsAndAnnotationViewModel>,
+  pagination: PageOfItems<unknown>,
 };

@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { ViewModel } from './view-model';
 
-const renderEntries = (entries: ViewModel['content']['articles']) => pipe(
+const renderEntries = (entries: ViewModel['articles']) => pipe(
   entries,
   RA.map((entry) => `
   <entry>
@@ -26,7 +26,7 @@ export const renderAsAtom = (viewModel: ViewModel): string => `<?xml version="1.
   </author>
   <id>urn:uuid:${viewModel.listId}</id>
 
-  ${renderEntries(viewModel.content.articles)}
+  ${renderEntries(viewModel.articles)}
 
 </feed>
 `;

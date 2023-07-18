@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerName } from './get-owner-name';
-import { ListId, listIdCodec } from '../../../types/list-id';
+import { listIdCodec } from '../../../types/list-id';
 import { userIdCodec } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
@@ -23,22 +23,6 @@ export const paramsCodec = t.type({
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;
-
-type ConstructContentViewModel = (
-  articleIds: ReadonlyArray<string>,
-  dependencies: Dependencies,
-  params: Params,
-  listId: ListId,
-) => TE.TaskEither<DE.DataError, ViewModel['content']>;
-
-const constructContentViewModel: ConstructContentViewModel = (
-  articleIds, dependencies, params, listId,
-) => pipe(
-  articleIds,
-  RA.map((articleId) => new Doi(articleId)),
-  constructContentWithPaginationViewModel(dependencies, params.page, listId),
-  TE.mapLeft(() => DE.unavailable),
-);
 
 export const constructViewModel = (
   dependencies: Dependencies,
@@ -58,16 +42,16 @@ export const constructViewModel = (
     })),
   )),
   TE.fromOption(() => DE.notFound),
-  TE.chain((partialPageViewModel) => pipe(
-    constructContentViewModel(
-      partialPageViewModel.articleIds,
-      dependencies,
-      params,
-      partialPageViewModel.listId,
+  TE.chainW((partialPageViewModel) => pipe(
+    partialPageViewModel.articleIds,
+    RA.map((articleId) => new Doi(articleId)),
+    constructContentWithPaginationViewModel(dependencies, params.page, partialPageViewModel.listId),
+    TE.bimap(
+      () => DE.unavailable,
+      (content) => ({
+        ...content,
+        ...partialPageViewModel,
+      }),
     ),
-    TE.map((content) => ({
-      content,
-      ...partialPageViewModel,
-    })),
   )),
 );
