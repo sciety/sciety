@@ -5,8 +5,6 @@ import { PageOfItems } from '../../shared-components/paginate';
 import { ListId } from '../../types/list-id';
 import { ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel } from '../../shared-components/article-card';
 
-type Message = 'no-articles' | 'no-articles-can-be-fetched';
-
 type ArticlesViewModel = ReadonlyArray<E.Either<
 ArticleErrorCardViewModel,
 ArticleCardWithControlsAndAnnotationViewModel
@@ -16,8 +14,6 @@ export type ContentWithPaginationViewModel = {
   articles: ArticlesViewModel,
   pagination: PageOfItems<unknown>,
 };
-
-type Content = Message | ContentWithPaginationViewModel;
 
 export type ViewModel = {
   name: string,
@@ -29,7 +25,7 @@ export type ViewModel = {
   updatedAt: Date,
   listId: ListId,
   basePath: string,
-  content: Content,
+  content: ContentWithPaginationViewModel,
   relatedArticlesLink: O.Option<string>,
   listPageAbsoluteUrl: URL,
 };

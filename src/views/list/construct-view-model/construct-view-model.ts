@@ -38,17 +38,9 @@ const constructContentViewModel: ConstructContentViewModel = (
   RA.map((articleId) => new Doi(articleId)),
   TE.right,
   TE.chainW(
-    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, Doi>(
-      () => TE.right('no-articles' as const),
-      constructContentWithPaginationViewModel(dependencies, params.page, listId),
-    ),
+    constructContentWithPaginationViewModel(dependencies, params.page, listId),
   ),
-  TE.orElse((left) => {
-    if (left === 'no-articles-can-be-fetched') {
-      return TE.right('no-articles-can-be-fetched' as const);
-    }
-    return TE.left(left);
-  }),
+  TE.mapLeft(() => DE.unavailable),
 );
 
 export const constructViewModel = (

@@ -20,10 +20,6 @@ export const listFeed = (dependencies: Dependencies): Middleware => async (conte
       constructViewModel(dependencies),
       TE.mapLeft(() => HttpStatusCode.ServiceUnavailable),
     )),
-    TE.filterOrElse(
-      (viewModel) => viewModel.content !== 'no-articles-can-be-fetched',
-      () => HttpStatusCode.ServiceUnavailable,
-    ),
     TE.map(renderAsAtom),
     TE.match(
       (status) => ({
