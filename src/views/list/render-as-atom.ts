@@ -8,7 +8,7 @@ const renderEntries = (entries: ViewModel['content']['articles']) => pipe(
   <entry>
     <title>${entry.articleCard.title}</title>
     <link rel="alternate" type="text/html" href="https://sciety.org${entry.articleCard.articleLink}"/>
-    <id>{{ENTRY.PERMALINK}}</id>
+    <id>https://sciety.org${entry.articleCard.articleLink}</id>
     <published>{{ENTRY.FIRST_POST_TIME in RFC3339 format}}</published>
     <updated>{{ENTRY.LAST_UPDATE_TIME in RFC3339 format}}</updated>
     <content type="html">{{ENTRY.HTML}}</content>
