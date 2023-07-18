@@ -6,7 +6,7 @@ import { ViewModel } from '../view-model';
 
 type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<ViewModel['ownerName']>;
 
-export const getOwnerInformation: GetOwnerInformation = (dependencies) => (ownerId) => {
+export const getOwnerName: GetOwnerInformation = (dependencies) => (ownerId) => {
   switch (ownerId.tag) {
     case 'group-id':
       return pipe(

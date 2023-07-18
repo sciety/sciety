@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
-import { getOwnerInformation } from './get-owner-information';
+import { getOwnerName } from './get-owner-name';
 import { ListId, listIdCodec } from '../../../types/list-id';
 import { userIdCodec } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
@@ -46,7 +46,8 @@ export const constructViewModel = (
   params.id,
   dependencies.lookupList,
   O.chain((list) => pipe(
-    getOwnerInformation(dependencies)(list.ownerId),
+    list.ownerId,
+    getOwnerName(dependencies),
     O.map((ownerName) => ({
       ownerName,
       ...list,
