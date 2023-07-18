@@ -3,12 +3,9 @@ import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation } from './get-user-owner-information';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { Dependencies } from './dependencies';
+import { ViewModel } from '../view-model';
 
-type OwnerInformation = {
-  ownerName: string,
-  ownerHref: string,
-  ownerAvatarPath: string,
-};
+type OwnerInformation = Pick<ViewModel, 'ownerName'>;
 
 type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
 
@@ -20,8 +17,6 @@ export const getOwnerInformation: GetOwnerInformation = (dependencies) => (owner
         dependencies.getGroup,
         O.map((group) => ({
           ownerName: group.name,
-          ownerHref: `/groups/${group.slug}`,
-          ownerAvatarPath: group.avatarPath,
         })),
       );
     case 'user-id':

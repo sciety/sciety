@@ -12,8 +12,6 @@ export type ViewModel = {
   name: string,
   description: string,
   ownerName: string,
-  ownerHref: string,
-  ownerAvatarPath: string,
   articleCount: number,
   updatedAt: Date,
   listId: ListId,
