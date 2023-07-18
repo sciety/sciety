@@ -36,10 +36,7 @@ const constructContentViewModel: ConstructContentViewModel = (
 ) => pipe(
   articleIds,
   RA.map((articleId) => new Doi(articleId)),
-  TE.right,
-  TE.chainW(
-    constructContentWithPaginationViewModel(dependencies, params.page, listId),
-  ),
+  constructContentWithPaginationViewModel(dependencies, params.page, listId),
   TE.mapLeft(() => DE.unavailable),
 );
 
