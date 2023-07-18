@@ -14,7 +14,6 @@ export const listFeed = (dependencies: Dependencies): Middleware => async (conte
     {
       ...context.params,
       ...context.query,
-      ...context.state,
     },
     paramsCodec.decode,
     TE.fromEither,

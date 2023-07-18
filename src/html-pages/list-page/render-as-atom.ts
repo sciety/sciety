@@ -5,7 +5,7 @@ export const renderAsAtom = (viewModel: ViewModel): string => `
     <feed xmlns="http://www.w3.org/2005/Atom">
       <title>${viewModel.name}</title>
       <link href="http://example.org/"/>
-      <updated>2003-12-13T18:30:02Z</updated>
+      <updated>${viewModel.updatedAt.toISOString()}</updated>
       <author>
         <name>John Doe</name>
       </author>
