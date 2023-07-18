@@ -4,9 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  ArticleCardWithControlsAndAnnotationViewModel,
   constructArticleCardWithControlsAndAnnotationViewModel,
-  ArticleErrorCardViewModel,
 } from '../../../shared-components/article-card';
 import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
@@ -24,10 +22,5 @@ export const toPageOfCards = (
   RA.map((item) => item.articleId),
   T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, false, listId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
-  TE.chainTaskK(T.traverseArray(
-    E.foldW(
-      TE.left,
-      TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel>,
-    ),
-  )),
+  TE.map(RA.rights),
 );
