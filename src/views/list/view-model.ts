@@ -10,7 +10,6 @@ export type ContentWithPaginationViewModel = {
 
 export type ViewModel = {
   name: string,
-  description: string,
   ownerName: string,
   updatedAt: Date,
   listId: ListId,

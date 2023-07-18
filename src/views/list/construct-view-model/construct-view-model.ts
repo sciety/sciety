@@ -50,7 +50,9 @@ export const constructViewModel = (
     getOwnerName(dependencies),
     O.map((ownerName) => ({
       ownerName,
-      ...list,
+      name: list.name,
+      updatedAt: list.updatedAt,
+      articleIds: list.articleIds,
       listId: list.id,
       listPageAbsoluteUrl: new URL(`${process.env.APP_ORIGIN ?? 'https://sciety.org'}/lists/${list.id}`),
     })),
