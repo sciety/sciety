@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { PageOfItems } from '../../shared-components/paginate';
@@ -31,4 +32,5 @@ export type ViewModel = {
   basePath: string,
   content: Content,
   relatedArticlesLink: O.Option<string>,
+  listPageAbsoluteUrl: URL,
 };

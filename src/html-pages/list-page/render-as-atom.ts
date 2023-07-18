@@ -4,8 +4,8 @@ export const renderAsAtom = (viewModel: ViewModel): string => `
   <?xml version="1.0" encoding="utf-8"?>
   <feed xmlns="http://www.w3.org/2005/Atom">
     <title>${viewModel.name}</title>
-    <link rel="alternate" href="https://sciety.org${viewModel.basePath}"/>
-    <link rel="self" href="https://sciety.org${viewModel.basePath}/feed.atom"/>
+    <link rel="alternate" href="${viewModel.listPageAbsoluteUrl.toString()}"/>
+    <link rel="self" href="${viewModel.listPageAbsoluteUrl.toString()}/feed.atom"/>
     <updated>${viewModel.updatedAt.toISOString()}</updated>
     <author>
       <name>${viewModel.ownerName}</name>

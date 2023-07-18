@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -69,6 +70,7 @@ export const constructViewModel = (
       ...list,
       listId: list.id,
       basePath: `/lists/${list.id}`,
+      listPageAbsoluteUrl: new URL(`https://sciety.org/lists/${list.id}`),
       articleCount: list.articleIds.length,
       listOwnerId: list.ownerId,
       editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
