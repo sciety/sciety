@@ -1,7 +1,8 @@
 import { Middleware } from '@koa/router';
 import { HttpStatusCode } from 'axios';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import { renderAsAtom } from './render-as-atom';
 import { Dependencies, constructViewModel, paramsCodec } from './construct-view-model';
 
@@ -13,12 +14,16 @@ export const listFeed = (dependencies: Dependencies): Middleware => async (conte
       ...context.query,
     },
     paramsCodec.decode,
+    E.mapLeft(() => HttpStatusCode.BadRequest),
     TE.fromEither,
-    TE.chainW(constructViewModel(dependencies)),
+    TE.chain(flow(
+      constructViewModel(dependencies),
+      TE.mapLeft(() => HttpStatusCode.ServiceUnavailable),
+    )),
     TE.map(renderAsAtom),
     TE.match(
-      () => ({
-        status: HttpStatusCode.BadRequest,
+      (status) => ({
+        status,
         body: '',
       }),
       (body) => ({
