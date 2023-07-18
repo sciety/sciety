@@ -9,9 +9,7 @@ const renderEntries = (entries: ViewModel['content']['articles']) => pipe(
     <title>${entry.articleCard.title}</title>
     <link rel="alternate" type="text/html" href="https://sciety.org${entry.articleCard.articleLink}"/>
     <id>https://sciety.org${entry.articleCard.articleLink}</id>
-    <published>{{ENTRY.FIRST_POST_TIME in RFC3339 format}}</published>
-    <updated>{{ENTRY.LAST_UPDATE_TIME in RFC3339 format}}</updated>
-    <content type="html">{{ENTRY.HTML}}</content>
+    <updated>${new Date().toISOString()}</updated>
   </entry>
   `),
   (items) => items.join('\n'),
