@@ -4,9 +4,9 @@ import { ViewModel } from './view-model';
 
 const renderEntries = (entries: ViewModel['content']['articles']) => pipe(
   entries,
-  RA.map(() => `
+  RA.map((entry) => `
   <entry>
-    <title>{{ENTRY.TITLE}}</title>
+    <title>${entry.articleCard.title}</title>
     <link rel="alternate" type="text/html" href="{{ENTRY.HTML_URL}}"/>
     <id>{{ENTRY.PERMALINK}}</id>
     <published>{{ENTRY.FIRST_POST_TIME in RFC3339 format}}</published>
