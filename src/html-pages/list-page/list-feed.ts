@@ -1,21 +1,11 @@
 import { Middleware } from '@koa/router';
 import { HttpStatusCode } from 'axios';
+import { renderAsAtom } from './render-as-atom';
 
 export const listFeed: Middleware = async (context, next) => {
   context.response.status = HttpStatusCode.Ok;
   context.response.type = 'application/atom+xml';
-  context.response.body = `
-    <?xml version="1.0" encoding="utf-8"?>
-    <feed xmlns="http://www.w3.org/2005/Atom">
-      <title>Example Feed</title>
-      <link href="http://example.org/"/>
-      <updated>2003-12-13T18:30:02Z</updated>
-      <author>
-        <name>John Doe</name>
-      </author>
-      <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
-    </feed>
-  `;
+  context.response.body = renderAsAtom();
 
   await next();
 };
