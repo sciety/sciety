@@ -10,6 +10,6 @@ export const renderAsAtom = (viewModel: ViewModel): string => `
     <author>
       <name>${viewModel.ownerName}</name>
     </author>
-    <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+    <id>urn:uuid:${viewModel.listId}</id>
   </feed>
 `;
