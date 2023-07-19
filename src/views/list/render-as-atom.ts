@@ -15,7 +15,11 @@ const renderEntries = (entries: ViewModel['articles']) => pipe(
   entries,
   RA.map((entry) => `
   <entry>
-    <title>${entry.articleCard.title}</title>
+    <title type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        ${entry.articleCard.title}
+      </div>
+    </title>
     <link rel="alternate" type="text/html" href="https://sciety.org${entry.articleCard.articleLink}"/>
     <id>https://sciety.org${entry.articleCard.articleLink}</id>
     <updated>${renderUpdatedTagOfEntry(entry.articleCard.latestActivityAt)}</updated>
