@@ -7,14 +7,14 @@ import {
 import { ArticleActivity } from '../../../types/article-activity';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
-import { ContentWithPaginationViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 
 export const toPageOfCards = (
   dependencies: Dependencies,
   listId: ListId,
 ) => (
   items: ReadonlyArray<ArticleActivity>,
-): T.Task<ContentWithPaginationViewModel['articles']> => pipe(
+): T.Task<ViewModel['articles']> => pipe(
   items,
   RA.map((item) => item.articleId),
   T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, false, listId)),

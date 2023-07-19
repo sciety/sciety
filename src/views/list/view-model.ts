@@ -2,10 +2,6 @@ import { URL } from 'url';
 import { ListId } from '../../types/list-id';
 import { ArticleCardWithControlsAndAnnotationViewModel } from '../../shared-components/article-card';
 
-export type ContentWithPaginationViewModel = {
-  articles: ReadonlyArray<ArticleCardWithControlsAndAnnotationViewModel>,
-};
-
 export type ViewModel = {
   name: string,
   ownerName: string,

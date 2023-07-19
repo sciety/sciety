@@ -42,8 +42,8 @@ export const constructViewModel = (
     RA.map((articleId) => new Doi(articleId)),
     constructContentWithPaginationViewModel(dependencies, partialPageViewModel.listId),
     T.map(
-      (content) => ({
-        ...content,
+      (articles) => ({
+        articles,
         ...partialPageViewModel,
       }),
     ),

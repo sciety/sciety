@@ -3,17 +3,16 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { toPageOfCards } from './to-page-of-cards';
 import { Doi } from '../../../types/doi';
-import { ContentWithPaginationViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
 
 export const constructContentWithPaginationViewModel = (
   dependencies: Dependencies,
   listId: ListId,
-) => (articleIds: ReadonlyArray<Doi>): T.Task<ContentWithPaginationViewModel> => pipe(
+) => (articleIds: ReadonlyArray<Doi>): T.Task<ViewModel['articles']> => pipe(
   articleIds,
   RA.takeLeft(20),
   RA.map(dependencies.getActivityForDoi),
   toPageOfCards(dependencies, listId),
-  T.map((articles) => ({ articles })),
 );
