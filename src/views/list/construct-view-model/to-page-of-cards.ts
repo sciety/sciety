@@ -1,7 +1,5 @@
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   constructArticleCardWithControlsAndAnnotationViewModel,
@@ -16,10 +14,9 @@ export const toPageOfCards = (
   listId: ListId,
 ) => (
   items: ReadonlyArray<ArticleActivity>,
-): TE.TaskEither<'no-articles-can-be-fetched', ContentWithPaginationViewModel['articles']> => pipe(
+): T.Task<ContentWithPaginationViewModel['articles']> => pipe(
   items,
   RA.map((item) => item.articleId),
   T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, false, listId)),
-  T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
-  TE.map(RA.rights),
+  T.map(RA.rights),
 );
