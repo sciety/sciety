@@ -1,9 +1,7 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { populateArticleActivities } from './populate-article-activities';
 import { toPageOfCards } from './to-page-of-cards';
-import { paginate } from '../../../shared-components/paginate';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ContentWithPaginationViewModel } from '../view-model';
@@ -16,12 +14,12 @@ export const constructContentWithPaginationViewModel = (
   listId: ListId,
 ) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
   articleIds,
-  paginate(20, pageNumber),
-  E.map(populateArticleActivities(dependencies)),
-  TE.fromEither,
-  TE.chainW((pageOfArticles) => pipe(
-    pageOfArticles,
+  RA.takeLeft(20),
+  RA.map(dependencies.getActivityForDoi),
+  TE.right,
+  TE.chainW((activities) => pipe(
+    activities,
     toPageOfCards(dependencies, listId),
-    TE.map((articles) => ({ articles, pagination: pageOfArticles })),
+    TE.map((articles) => ({ articles, pagination: activities })),
   )),
 );

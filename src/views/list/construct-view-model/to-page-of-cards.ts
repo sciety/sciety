@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/function';
 import {
   constructArticleCardWithControlsAndAnnotationViewModel,
 } from '../../../shared-components/article-card';
-import { PageOfItems } from '../../../shared-components/paginate';
 import { ArticleActivity } from '../../../types/article-activity';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
@@ -16,9 +15,9 @@ export const toPageOfCards = (
   dependencies: Dependencies,
   listId: ListId,
 ) => (
-  pageOfArticles: PageOfItems<ArticleActivity>,
+  items: ReadonlyArray<ArticleActivity>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ContentWithPaginationViewModel['articles']> => pipe(
-  pageOfArticles.items,
+  items,
   RA.map((item) => item.articleId),
   T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, false, listId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
