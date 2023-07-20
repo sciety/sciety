@@ -351,7 +351,40 @@ describe('get-activity-for-group', () => {
     });
 
     describe('when an evaluation has been recorded twice', () => {
-      it.todo('returns an evaluationCount of 1');
+      const evaluation = {
+        ...arbitraryRecordedEvaluation(),
+        groupId: group.id,
+        publishedAt: new Date('1999'),
+      };
+      const readModel = pipe(
+        [
+          groupJoinedEvent,
+          evaluationRecordedHelper(
+            evaluation.groupId,
+            evaluation.articleId,
+            evaluation.evaluationLocator,
+            evaluation.authors,
+            evaluation.publishedAt,
+          ),
+          evaluationRecordedHelper(
+            evaluation.groupId,
+            evaluation.articleId,
+            evaluation.evaluationLocator,
+            evaluation.authors,
+            evaluation.publishedAt,
+          ),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getActivityForGroup(readModel)(group.id);
+
+      it.failing('returns an evaluationCount of 1', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            evaluationCount: 1,
+          }),
+        ));
+      });
 
       it.todo('returns the latestActivityAt of the first recorded');
     });
