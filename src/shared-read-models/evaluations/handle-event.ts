@@ -3,16 +3,19 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
+import { EvaluationLocator } from '../../types/evaluation-locator';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 type RecordedEvaluationsForArticle = Array<RecordedEvaluation>;
 
 export type ReadModel = {
+  byEvaluationLocator: Map<EvaluationLocator, RecordedEvaluation>,
   byArticleId: Map<string, RecordedEvaluationsForArticle>,
   byGroupId: Map<string, Map<string, RecordedEvaluation>>,
 };
 
 export const initialState = (): ReadModel => ({
+  byEvaluationLocator: new Map(),
   byArticleId: new Map(),
   byGroupId: new Map(),
 });
@@ -49,11 +52,13 @@ const removeFromIndexByGroup = (event: EventOfType<'IncorrectlyRecordedEvaluatio
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const addToIndexByEvaluationLocator = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {};
+const addToIndexByEvaluationLocator = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {
+  readmodel.byEvaluationLocator.set(recordedEvaluation.evaluationLocator, recordedEvaluation);
+};
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const removeFromIndexByEvaluationLocator = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'>, readmodel: ReadModel) => {};
+const removeFromIndexByEvaluationLocator = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'>, readmodel: ReadModel) => {
+  readmodel.byEvaluationLocator.delete(event.evaluationLocator);
+};
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationRecorded')(event)) {
