@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
-import { DomainEvent, isEventOfType } from '../../domain-events';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 
@@ -9,7 +9,15 @@ type EvaluationState = {
   publishedAt: Date,
 };
 
-export type ReadModel = Map<GroupId, { evaluationStates: Array<EvaluationState>, latestActivityAt: O.Option<Date> }>;
+type Activity = {
+  evaluationStates: Array<EvaluationState>,
+  latestActivityAt: O.Option<Date>,
+};
+
+export type ReadModel = Map<GroupId, Activity>;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const evaluationAlreadyRecorded = (event: EventOfType<'EvaluationRecorded'>, states: Activity['evaluationStates']) => false;
 
 export const initialState = (): ReadModel => (new Map());
 
@@ -26,7 +34,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (state === undefined) {
       return readmodel;
     }
-    state.evaluationStates.push({ evaluationLocator: event.evaluationLocator, publishedAt: event.publishedAt });
+    if (!evaluationAlreadyRecorded(event, state.evaluationStates)) {
+      state.evaluationStates.push({ evaluationLocator: event.evaluationLocator, publishedAt: event.publishedAt });
+    }
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     readmodel.forEach((state) => {
