@@ -171,7 +171,33 @@ describe('get-activity-for-doi', () => {
   });
 
   describe('when an article has one evaluation that was recorded twice', () => {
-    it.todo('the evaluation count is 1');
+    const groupId = arbitraryGroupId();
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const readmodel = pipe(
+      [
+        evaluationRecordedHelper(
+          groupId,
+          articleId,
+          evaluationLocator,
+          [],
+          arbitraryDate(),
+          arbitraryDate(),
+        ),
+        evaluationRecordedHelper(
+          groupId,
+          articleId,
+          evaluationLocator,
+          [],
+          arbitraryDate(),
+          arbitraryDate(),
+        ),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('the evaluation count is 1', () => {
+      expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
+    });
 
     it.todo('the latest activity is that of the first recording');
   });
