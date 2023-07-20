@@ -7,15 +7,17 @@ import { dummyLogger } from '../dummy-logger';
 const commitEvents = (
   inMemoryEvents: Array<DomainEvent>,
   dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void,
+  persistEvents: (events: ReadonlyArray<DomainEvent>) => Promise<void>,
   logger: Logger,
-): CommitEvents => (events) => {
+): CommitEvents => (events) => async () => {
   if (events.length === 0) {
-    return T.of('no-events-created' as CommandResult);
+    return 'no-events-created' as CommandResult;
   }
+  await persistEvents(events);
   inMemoryEvents.push(...events);
   dispatchToAllReadModels(events);
   logger('info', 'Events committed', { events });
-  return T.of('events-created' as CommandResult);
+  return 'events-created' as CommandResult;
 };
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
@@ -29,6 +31,6 @@ export const createInMemoryEventStore = (dispatchToAllReadModels: DispatchToAllR
   const allEvents: Array<DomainEvent> = [];
   return {
     getAllEvents: T.of(allEvents),
-    commitEvents: commitEvents(allEvents, dispatchToAllReadModels, dummyLogger),
+    commitEvents: commitEvents(allEvents, dispatchToAllReadModels, async () => undefined, dummyLogger),
   };
 };
