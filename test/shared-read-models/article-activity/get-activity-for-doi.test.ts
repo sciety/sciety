@@ -170,6 +170,12 @@ describe('get-activity-for-doi', () => {
     });
   });
 
+  describe('when an article has one evaluation that was recorded twice', () => {
+    it.todo('the evaluation count is 1');
+
+    it.todo('the latest activity is that of the first recording');
+  });
+
   describe('when an article appears in one list', () => {
     describe('and the article has been added to a single list and not removed', () => {
       const readmodel = pipe(
