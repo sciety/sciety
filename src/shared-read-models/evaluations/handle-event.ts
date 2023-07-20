@@ -84,22 +84,18 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     removeFromIndexByGroup(event, readmodel);
   }
   if (isEventOfType('CurationStatementRecorded')(event)) {
-    readmodel.byGroupId.forEach((state) => {
-      const evaluation = state.get(event.evaluationLocator);
-      if (evaluation) {
-        evaluation.type = O.some('curation-statement');
-      }
-    });
+    const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
+    if (evaluation !== undefined) {
+      evaluation.type = O.some('curation-statement');
+    }
   }
   if (isEventOfType('EvaluationUpdated')(event)) {
-    readmodel.byGroupId.forEach((state) => {
-      const evaluation = state.get(event.evaluationLocator);
-      if (evaluation) {
-        if (event.evaluationType) {
-          evaluation.type = O.some(event.evaluationType);
-        }
+    if (event.evaluationType !== undefined) {
+      const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
+      if (evaluation !== undefined) {
+        evaluation.type = O.some(event.evaluationType);
       }
-    });
+    }
   }
   return readmodel;
 };
