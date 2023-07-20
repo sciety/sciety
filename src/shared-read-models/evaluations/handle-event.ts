@@ -49,6 +49,12 @@ const removeFromIndexByGroup = (event: EventOfType<'IncorrectlyRecordedEvaluatio
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const addToIndexByEvaluationLocator = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const removeFromIndexByEvaluationLocator = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'>, readmodel: ReadModel) => {};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationRecorded')(event)) {
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
@@ -62,11 +68,13 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         authors: event.authors,
         type: O.fromNullable(event.evaluationType),
       };
+      addToIndexByEvaluationLocator(recordedEvaluation, readmodel);
       addToIndexByArticle(recordedEvaluation, readmodel);
       addToIndexByGroup(recordedEvaluation, readmodel);
     }
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
+    removeFromIndexByEvaluationLocator(event, readmodel);
     removeFromIndexByArticle(event, readmodel);
     removeFromIndexByGroup(event, readmodel);
   }
