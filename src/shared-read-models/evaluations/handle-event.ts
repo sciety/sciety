@@ -22,6 +22,12 @@ const hasAlreadyBeenRecorded = (event: EventOfType<'EvaluationRecorded'>, existi
   RA.some((existingEvaluation) => existingEvaluation.evaluationLocator === event.evaluationLocator),
 );
 
+const addToIndexByArticle = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {
+  const evaluationsForThisArticle = readmodel.byArticleId.get(recordedEvaluation.articleId.value) ?? [];
+  evaluationsForThisArticle.push(recordedEvaluation);
+  readmodel.byArticleId.set(recordedEvaluation.articleId.value, evaluationsForThisArticle);
+};
+
 const addToIndexByGroup = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {
   const evaluationsByThisGroup = readmodel.byGroupId.get(recordedEvaluation.groupId) ?? new Map();
   evaluationsByThisGroup.set(recordedEvaluation.evaluationLocator, recordedEvaluation);
@@ -41,10 +47,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         authors: event.authors,
         type: O.fromNullable(event.evaluationType),
       };
-
-      evaluationsForThisArticle.push(recordedEvaluation);
-      readmodel.byArticleId.set(event.articleId.value, evaluationsForThisArticle);
-
+      addToIndexByArticle(recordedEvaluation, readmodel);
       addToIndexByGroup(recordedEvaluation, readmodel);
     }
   }
