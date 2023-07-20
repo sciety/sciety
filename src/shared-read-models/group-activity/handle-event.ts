@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { EvaluationLocator } from '../../types/evaluation-locator';
@@ -17,7 +19,10 @@ type Activity = {
 export type ReadModel = Map<GroupId, Activity>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const evaluationAlreadyRecorded = (event: EventOfType<'EvaluationRecorded'>, states: Activity['evaluationStates']) => false;
+const evaluationAlreadyRecorded = (event: EventOfType<'EvaluationRecorded'>, states: Activity['evaluationStates']) => pipe(
+  states,
+  RA.some((state) => state.evaluationLocator === event.evaluationLocator),
+);
 
 export const initialState = (): ReadModel => (new Map());
 
