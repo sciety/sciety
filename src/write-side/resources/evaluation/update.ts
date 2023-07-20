@@ -12,28 +12,32 @@ import { toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { EvaluationType } from '../../../types/recorded-evaluation';
 
-const findInterestingEvents = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
+type EvaluationEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'>;
+
+const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event): event is EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> => isEventOfType('EvaluationRecorded')(event)
+  RA.filter((event): event is EvaluationEvent => isEventOfType('EvaluationRecorded')(event)
     || isEventOfType('EvaluationUpdated')(event)),
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
   RA.match(
     () => E.left(toErrorMessage('Evaluation to be updated does not exist')),
-    (es) => E.right(es),
+    (history) => E.right(history),
   ),
 );
 
-const shouldUpdateEvaluationType = (evaluationType: EvaluationType) => (events: RNEA.ReadonlyNonEmptyArray<EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'>>) => pipe(
-  events,
+const shouldUpdateEvaluationType = (
+  evaluationType: EvaluationType,
+) => (evaluationHistory: RNEA.ReadonlyNonEmptyArray<EvaluationEvent>) => pipe(
+  evaluationHistory,
   RNEA.last,
-  (e) => (e.evaluationType !== evaluationType),
+  (event) => (event.evaluationType !== evaluationType),
 );
 
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
-  findInterestingEvents(command.evaluationLocator),
-  E.map((events) => pipe(
-    events,
+  filterToHistoryOf(command.evaluationLocator),
+  E.map((evaluationHistory) => pipe(
+    evaluationHistory,
     shouldUpdateEvaluationType(command.evaluationType),
     B.fold(
       () => [],
