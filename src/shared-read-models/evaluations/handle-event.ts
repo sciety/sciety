@@ -28,10 +28,25 @@ const addToIndexByArticle = (recordedEvaluation: RecordedEvaluation, readmodel: 
   readmodel.byArticleId.set(recordedEvaluation.articleId.value, evaluationsForThisArticle);
 };
 
+const removeFromIndexByArticle = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'>, readmodel: ReadModel) => {
+  readmodel.byArticleId.forEach((state) => {
+    const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
+    if (i > -1) {
+      state.splice(i, 1);
+    }
+  });
+};
+
 const addToIndexByGroup = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {
   const evaluationsByThisGroup = readmodel.byGroupId.get(recordedEvaluation.groupId) ?? new Map();
   evaluationsByThisGroup.set(recordedEvaluation.evaluationLocator, recordedEvaluation);
   readmodel.byGroupId.set(recordedEvaluation.groupId, evaluationsByThisGroup);
+};
+
+const removeFromIndexByGroup = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'>, readmodel: ReadModel) => {
+  readmodel.byGroupId.forEach((state) => {
+    state.delete(event.evaluationLocator);
+  });
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
@@ -52,15 +67,8 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     }
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
-    readmodel.byArticleId.forEach((state) => {
-      const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
-      if (i > -1) {
-        state.splice(i, 1);
-      }
-    });
-    readmodel.byGroupId.forEach((state) => {
-      state.delete(event.evaluationLocator);
-    });
+    removeFromIndexByArticle(event, readmodel);
+    removeFromIndexByGroup(event, readmodel);
   }
   if (isEventOfType('CurationStatementRecorded')(event)) {
     readmodel.byGroupId.forEach((state) => {
