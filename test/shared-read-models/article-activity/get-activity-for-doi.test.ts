@@ -195,7 +195,7 @@ describe('get-activity-for-doi', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('the evaluation count is 1', () => {
+    it('the evaluation count is 1', () => {
       expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
     });
 

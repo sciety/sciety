@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
+import * as B from 'fp-ts/boolean';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ListId } from '../../types/list-id';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
@@ -17,13 +19,20 @@ type ArticleState = {
   lists: Set<ListId>,
 };
 
-const addToEvaluationStates = (state: ArticleState['evaluationStates'], event: EventOfType<'EvaluationRecorded'>) => [
-  ...state,
-  {
-    evaluationLocator: event.evaluationLocator,
-    publishedAt: event.publishedAt,
-  },
-];
+const addToEvaluationStates = (state: ArticleState['evaluationStates'], event: EventOfType<'EvaluationRecorded'>) => pipe(
+  state,
+  RA.some((evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator),
+  B.fold(
+    () => [
+      ...state,
+      {
+        evaluationLocator: event.evaluationLocator,
+        publishedAt: event.publishedAt,
+      },
+    ],
+    () => state,
+  ),
+);
 
 const deleteFromSet = (set: Set<ListId>, element: ListId) => {
   set.delete(element);
