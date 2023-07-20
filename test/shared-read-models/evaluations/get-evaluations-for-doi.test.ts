@@ -167,7 +167,7 @@ describe('get-evaluations-for-doi', () => {
       RA.map((evaluation) => evaluation.evaluationLocator),
     );
 
-    it.failing('returns only one evaluation', () => {
+    it('returns only one evaluation', () => {
       expect(actualEvaluations).toHaveLength(1);
     });
   });

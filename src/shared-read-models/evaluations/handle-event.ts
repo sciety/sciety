@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
+import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
@@ -15,8 +17,10 @@ export const initialState = (): ReadModel => ({
   byGroupId: new Map(),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const hasAlreadyBeenRecorded = (event: EventOfType<'EvaluationRecorded'>, existingEvaluations: RecordedEvaluationsForArticle) => false;
+const hasAlreadyBeenRecorded = (event: EventOfType<'EvaluationRecorded'>, existingEvaluations: RecordedEvaluationsForArticle) => pipe(
+  existingEvaluations,
+  RA.some((existingEvaluation) => existingEvaluation.evaluationLocator === event.evaluationLocator),
+);
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationRecorded')(event)) {
