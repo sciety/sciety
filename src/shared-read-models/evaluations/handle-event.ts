@@ -35,10 +35,12 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         authors: event.authors,
         type: O.fromNullable(event.evaluationType),
       };
-      const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? new Map();
+
       evaluationsForThisArticle.push(recordedEvaluation);
-      evaluationsByThisGroup.set(event.evaluationLocator, recordedEvaluation);
       readmodel.byArticleId.set(event.articleId.value, evaluationsForThisArticle);
+
+      const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? new Map();
+      evaluationsByThisGroup.set(event.evaluationLocator, recordedEvaluation);
       readmodel.byGroupId.set(event.groupId, evaluationsByThisGroup);
     }
   }
