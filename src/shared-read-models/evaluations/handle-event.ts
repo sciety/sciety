@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
-import { DomainEvent, isEventOfType } from '../../domain-events';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 type RecordedEvaluationsForArticle = Array<RecordedEvaluation>;
@@ -15,23 +15,28 @@ export const initialState = (): ReadModel => ({
   byGroupId: new Map(),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const hasAlreadyBeenRecorded = (event: EventOfType<'EvaluationRecorded'>, existingEvaluations: RecordedEvaluationsForArticle) => false;
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationRecorded')(event)) {
-    const recordedEvaluation: RecordedEvaluation = {
-      articleId: event.articleId,
-      evaluationLocator: event.evaluationLocator,
-      groupId: event.groupId,
-      recordedAt: event.date,
-      publishedAt: event.publishedAt,
-      authors: event.authors,
-      type: O.fromNullable(event.evaluationType),
-    };
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
-    const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? new Map();
-    evaluationsForThisArticle.push(recordedEvaluation);
-    evaluationsByThisGroup.set(event.evaluationLocator, recordedEvaluation);
-    readmodel.byArticleId.set(event.articleId.value, evaluationsForThisArticle);
-    readmodel.byGroupId.set(event.groupId, evaluationsByThisGroup);
+    if (!hasAlreadyBeenRecorded(event, evaluationsForThisArticle)) {
+      const recordedEvaluation: RecordedEvaluation = {
+        articleId: event.articleId,
+        evaluationLocator: event.evaluationLocator,
+        groupId: event.groupId,
+        recordedAt: event.date,
+        publishedAt: event.publishedAt,
+        authors: event.authors,
+        type: O.fromNullable(event.evaluationType),
+      };
+      const evaluationsByThisGroup = readmodel.byGroupId.get(event.groupId) ?? new Map();
+      evaluationsForThisArticle.push(recordedEvaluation);
+      evaluationsByThisGroup.set(event.evaluationLocator, recordedEvaluation);
+      readmodel.byArticleId.set(event.articleId.value, evaluationsForThisArticle);
+      readmodel.byGroupId.set(event.groupId, evaluationsByThisGroup);
+    }
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     readmodel.byArticleId.forEach((state) => {
