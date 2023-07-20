@@ -154,4 +154,21 @@ describe('get-evaluations-for-doi', () => {
       expect(result[0].type).toStrictEqual(O.some(updatedType));
     });
   });
+
+  describe('when the evaluation has been recorded multiple times', () => {
+    const articleId = arbitraryDoi();
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const actualEvaluations = pipe(
+      [
+        evaluationRecorded(articleId, evaluationLocator),
+        evaluationRecorded(articleId, evaluationLocator),
+      ],
+      runQuery(articleId),
+      RA.map((evaluation) => evaluation.evaluationLocator),
+    );
+
+    it.failing('returns only one evaluation', () => {
+      expect(actualEvaluations).toHaveLength(1);
+    });
+  });
 });
