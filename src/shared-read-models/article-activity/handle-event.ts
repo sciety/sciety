@@ -2,7 +2,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ListId } from '../../types/list-id';
-import { DomainEvent, isEventOfType } from '../../domain-events';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { Doi } from '../../types/doi';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 
@@ -16,6 +16,14 @@ type ArticleState = {
   evaluationStates: Array<EvaluationState>,
   lists: Set<ListId>,
 };
+
+const addToEvaluationStates = (state: ArticleState['evaluationStates'], event: EventOfType<'EvaluationRecorded'>) => [
+  ...state,
+  {
+    evaluationLocator: event.evaluationLocator,
+    publishedAt: event.publishedAt,
+  },
+];
 
 const deleteFromSet = (set: Set<ListId>, element: ListId) => {
   set.delete(element);
@@ -60,10 +68,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         }),
         (entry) => readmodel.set(event.articleId.value, {
           ...entry,
-          evaluationStates: [...entry.evaluationStates, {
-            evaluationLocator: event.evaluationLocator,
-            publishedAt: event.publishedAt,
-          }],
+          evaluationStates: addToEvaluationStates(entry.evaluationStates, event),
         }),
       ),
     );
