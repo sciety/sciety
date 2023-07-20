@@ -1,9 +1,9 @@
 import * as T from 'fp-ts/Task';
-import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as L from './logger';
-import { DomainEvent, domainEventCodec } from '../domain-events';
+import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
+import { persistEvents } from './persist-events';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
@@ -11,25 +11,6 @@ type Dependencies = {
   pool: Pool,
   logger: L.Logger,
 };
-
-const encodeEvent = (event: DomainEvent) => pipe(
-  event,
-  domainEventCodec.encode,
-  ({
-    id, type, date, ...payload
-  }) => [id, type, date, payload],
-);
-
-const writeEventToDatabase = (pool: Pool) => (event: DomainEvent) => async () => pool.query(
-  'INSERT INTO events (id, type, date, payload) VALUES ($1, $2, $3, $4);',
-  encodeEvent(event),
-);
-
-const persistEvents = (pool: Pool) => async (events: ReadonlyArray<DomainEvent>): Promise<void> => pipe(
-  events,
-  T.traverseArray(writeEventToDatabase(pool)),
-  T.map(() => undefined),
-)();
 
 type CommitEvents = (event: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
 
