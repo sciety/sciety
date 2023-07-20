@@ -25,7 +25,7 @@ const writeEventToDatabase = (pool: Pool) => (event: DomainEvent) => async () =>
   encodeEvent(event),
 );
 
-const writeEventsToDatabase = async (pool: Pool, events: ReadonlyArray<DomainEvent>) => pipe(
+const persistEvents = (pool: Pool) => async (events: ReadonlyArray<DomainEvent>): Promise<void> => pipe(
   events,
   T.traverseArray(writeEventToDatabase(pool)),
   T.map(() => undefined),
@@ -42,7 +42,7 @@ export const commitEvents = ({
   if (events.length === 0) {
     return 'no-events-created' as CommandResult;
   }
-  await writeEventsToDatabase(pool, events);
+  await persistEvents(pool)(events);
   inMemoryEvents.push(...events);
   dispatchToAllReadModels(events);
   logger('info', 'Events committed', { events });
