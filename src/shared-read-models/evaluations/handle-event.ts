@@ -3,8 +3,10 @@ import * as O from 'fp-ts/Option';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
+type RecordedEvaluationsForArticle = Array<RecordedEvaluation>;
+
 export type ReadModel = {
-  byArticleId: Map<string, Array<RecordedEvaluation>>,
+  byArticleId: Map<string, RecordedEvaluationsForArticle>,
   byGroupId: Map<string, Map<string, RecordedEvaluation>>,
 };
 
