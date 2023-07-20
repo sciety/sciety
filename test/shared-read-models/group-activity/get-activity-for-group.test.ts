@@ -349,5 +349,11 @@ describe('get-activity-for-group', () => {
         ));
       });
     });
+
+    describe('when an evaluation has been recorded twice', () => {
+      it.todo('returns an evaluationCount of 1');
+
+      it.todo('returns the latestActivityAt of the first recorded');
+    });
   });
 });
