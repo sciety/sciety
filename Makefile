@@ -207,10 +207,11 @@ download-exploratory-test-from-staging:
 	aws s3 cp "s3://sciety-data-extractions/staging-events.csv" "./data/exploratory-test-from-staging.csv"
 
 exploratory-test-from-prod: node_modules clean-db build
-	${DOCKER_COMPOSE} up -d
-	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} up -d db
+	scripts/wait-for-database.sh
+	${DOCKER_COMPOSE} exec -T db psql -c "CREATE TABLE IF NOT EXISTS events ( id uuid, type varchar, date timestamp, payload jsonb, PRIMARY KEY (id));" sciety user
 	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-prod.csv' WITH CSV" sciety user
-	${DOCKER_COMPOSE} restart app
+	${DOCKER_COMPOSE} up -d app
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
 
