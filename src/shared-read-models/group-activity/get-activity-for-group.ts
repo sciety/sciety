@@ -1,14 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as D from 'fp-ts/Date';
-import { ReadModel } from './handle-event';
+import * as RM from 'fp-ts/ReadonlyMap';
+import { Activity, ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 
 type GroupActivity = {
   evaluationCount: number,
   latestActivityAt: O.Option<Date>,
+};
+
+const calculateLatestActivityDate = (activity: Activity) => {
+  let latest = null;
+  // eslint-disable-next-line no-loops/no-loops
+  for (const ev of activity.evaluationStates.values()) {
+    if (latest === null || ev.publishedAt > latest) {
+      latest = ev.publishedAt;
+    }
+  }
+  return O.fromNullable(latest);
 };
 
 type GetActivityForGroup = (groupId: GroupId) => O.Option<GroupActivity>;
@@ -17,12 +27,10 @@ export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup =
   readModel.get(groupId),
   O.fromNullable,
   O.map((state) => ({
-    evaluationCount: state.evaluationStates.length,
-    latestActivityAt: pipe(
+    evaluationCount: pipe(
       state.evaluationStates,
-      RA.map((evaluationState) => evaluationState.publishedAt),
-      RA.sort(D.Ord),
-      RA.last,
+      RM.size,
     ),
+    latestActivityAt: calculateLatestActivityDate(state),
   })),
 );
