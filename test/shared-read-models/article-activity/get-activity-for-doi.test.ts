@@ -63,35 +63,25 @@ describe('get-activity-for-doi', () => {
   });
 
   describe('when an article has one or more evaluations', () => {
-    const earlierPublishedDate = new Date('1900');
-    const laterPublishedDate = new Date('2000');
+    const event1 = arbitraryEvaluationRecordedEvent();
+    const event2 = {
+      ...arbitraryEvaluationRecordedEvent(),
+      articleId: event1.articleId,
+      publishedAt: new Date(event1.publishedAt.getTime() + 1000),
+    };
 
     describe('and the evaluations are recorded in order of publication', () => {
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            articleId,
-            arbitraryEvaluationLocator(),
-            [],
-            earlierPublishedDate,
-            arbitraryDate(),
-          ),
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            articleId,
-            arbitraryEvaluationLocator(),
-            [],
-            laterPublishedDate,
-            arbitraryDate(),
-          ),
+          event1,
+          event2,
         ],
         RA.reduce(initialState(), handleEvent),
       );
 
       it('returns the activity for that article', () => {
-        expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual(expect.objectContaining({
-          latestActivityAt: O.some(laterPublishedDate),
+        expect(getActivityForDoi(readmodel)(event1.articleId)).toStrictEqual(expect.objectContaining({
+          latestActivityAt: O.some(event2.publishedAt),
           evaluationCount: 2,
         }));
       });
@@ -100,65 +90,38 @@ describe('get-activity-for-doi', () => {
     describe('and the evaluations are NOT recorded in order of publication', () => {
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            articleId,
-            arbitraryEvaluationLocator(),
-            [],
-            laterPublishedDate,
-            arbitraryDate(),
-          ),
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            articleId,
-            arbitraryEvaluationLocator(),
-            [],
-            earlierPublishedDate,
-            arbitraryDate(),
-          ),
+          event2,
+          event1,
         ],
         RA.reduce(initialState(), handleEvent),
       );
 
       it('returns the activity for that article', () => {
-        expect(getActivityForDoi(readmodel)(articleId)).toStrictEqual(expect.objectContaining({
-          latestActivityAt: O.some(laterPublishedDate),
+        expect(getActivityForDoi(readmodel)(event1.articleId)).toStrictEqual(expect.objectContaining({
+          latestActivityAt: O.some(event2.publishedAt),
           evaluationCount: 2,
         }));
       });
     });
 
     describe('and one of the evaluations has been erased', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            articleId,
-            evaluationLocator,
-            [],
-            laterPublishedDate,
-            arbitraryDate(),
-          ),
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            articleId,
-            arbitraryEvaluationLocator(),
-            [],
-            earlierPublishedDate,
-            arbitraryDate(),
-          ),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
+          event2,
+          event1,
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: event2.evaluationLocator }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
 
       it('the evaluation count reflects the erasure', () => {
-        expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
+        expect(getActivityForDoi(readmodel)(event1.articleId).evaluationCount).toBe(1);
       });
 
       it('the latest activity reflects the erasure', () => {
-        expect(getActivityForDoi(readmodel)(articleId).latestActivityAt).toStrictEqual(O.some(earlierPublishedDate));
+        expect(
+          getActivityForDoi(readmodel)(event1.articleId).latestActivityAt,
+        ).toStrictEqual(O.some(event1.publishedAt));
       });
     });
   });
