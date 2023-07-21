@@ -26,8 +26,12 @@ const shouldUpdateEvaluationType = (
 ) => (evaluationHistory: RNEA.ReadonlyNonEmptyArray<EvaluationEvent>) => pipe(
   evaluationHistory,
   RNEA.last,
-  (event) => (event.evaluationType !== evaluationType),
   E.right,
+  E.filterOrElse(
+    (event) => !isEventOfType('IncorrectlyRecordedEvaluationErased')(event),
+    () => toErrorMessage('Evaluation to be updated does not exist'),
+  ),
+  E.map((event) => (event.evaluationType !== evaluationType)),
 );
 
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
