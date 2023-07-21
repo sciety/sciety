@@ -13,7 +13,7 @@ type GroupActivity = {
 const calculateLatestActivityDate = (activity: Activity) => {
   let latest = null;
   // eslint-disable-next-line no-loops/no-loops
-  for (const ev of activity.evaluationStates.values()) {
+  for (const ev of activity.values()) {
     if (latest === null || ev.publishedAt > latest) {
       latest = ev.publishedAt;
     }
@@ -27,10 +27,7 @@ export const getActivityForGroup = (readModel: ReadModel): GetActivityForGroup =
   readModel.get(groupId),
   O.fromNullable,
   O.map((state) => ({
-    evaluationCount: pipe(
-      state.evaluationStates,
-      RM.size,
-    ),
+    evaluationCount: RM.size(state),
     latestActivityAt: calculateLatestActivityDate(state),
   })),
 );
