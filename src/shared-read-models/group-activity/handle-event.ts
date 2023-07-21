@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import * as O from 'fp-ts/Option';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { EvaluationLocator } from '../../types/evaluation-locator';
@@ -11,7 +10,6 @@ type EvaluationState = {
 
 export type Activity = {
   evaluationStates: Map<EvaluationLocator, EvaluationState>,
-  latestActivityAt: O.Option<Date>,
 };
 
 export type ReadModel = Map<GroupId, Activity>;
@@ -20,7 +18,6 @@ export const initialState = (): ReadModel => (new Map());
 
 const groupJoined = (readmodel: ReadModel, event: EventOfType<'GroupJoined'>) => {
   readmodel.set(event.groupId, {
-    latestActivityAt: O.none,
     evaluationStates: new Map(),
   });
 };
