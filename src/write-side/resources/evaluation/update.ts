@@ -21,9 +21,9 @@ const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: Rea
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
 );
 
-export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
-  allEvents,
-  filterToHistoryOf(command.evaluationLocator),
+const constructWriteModel = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  filterToHistoryOf(evaluationLocator),
   RA.match(
     () => E.left(toErrorMessage('Evaluation to be updated does not exist')),
     (history) => E.right(history),
@@ -40,6 +40,11 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (all
   E.map((event) => ({
     evaluationType: event.evaluationType,
   })),
+);
+
+export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
+  allEvents,
+  constructWriteModel(command.evaluationLocator),
   E.map((writeModel) => (writeModel.evaluationType !== command.evaluationType)),
   E.map(B.fold(
     () => [],
