@@ -37,7 +37,10 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (all
       () => toErrorMessage('Evaluation to be updated does not exist'),
     ),
   )),
-  E.map((event) => (event.evaluationType !== command.evaluationType)),
+  E.map((event) => ({
+    evaluationType: event.evaluationType,
+  })),
+  E.map((writeModel) => (writeModel.evaluationType !== command.evaluationType)),
   E.map(B.fold(
     () => [],
     () => [
