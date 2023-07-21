@@ -172,6 +172,7 @@ describe('get-activity-for-doi', () => {
 
   describe('when an article has one evaluation that was recorded twice', () => {
     const groupId = arbitraryGroupId();
+    const firstPublishedAt = arbitraryDate();
     const evaluationLocator = arbitraryEvaluationLocator();
     const readmodel = pipe(
       [
@@ -180,7 +181,7 @@ describe('get-activity-for-doi', () => {
           articleId,
           evaluationLocator,
           [],
-          arbitraryDate(),
+          firstPublishedAt,
           arbitraryDate(),
         ),
         evaluationRecordedHelper(
@@ -199,7 +200,9 @@ describe('get-activity-for-doi', () => {
       expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
     });
 
-    it.todo('the latest activity is that of the first recording');
+    it('the latest activity is that of the first recording', () => {
+      expect(getActivityForDoi(readmodel)(articleId).latestActivityAt).toStrictEqual(O.some(firstPublishedAt));
+    });
   });
 
   describe('when an article appears in one list', () => {
