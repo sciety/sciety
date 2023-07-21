@@ -26,32 +26,44 @@ const evaluationAlreadyRecorded = (event: EventOfType<'EvaluationRecorded'>, sta
 
 export const initialState = (): ReadModel => (new Map());
 
+const groupJoined = (readmodel: ReadModel, event: EventOfType<'GroupJoined'>) => {
+  readmodel.set(event.groupId, {
+    latestActivityAt: O.none,
+    evaluationStates: [],
+  });
+};
+
+const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'EvaluationRecorded'>) => {
+  const state = readmodel.get(event.groupId);
+
+  if (state === undefined) {
+    return readmodel;
+  }
+  if (!evaluationAlreadyRecorded(event, state.evaluationStates)) {
+    state.evaluationStates.push({ evaluationLocator: event.evaluationLocator, publishedAt: event.publishedAt });
+  }
+};
+
+const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyRecordedEvaluationErased'>) => {
+  readmodel.forEach((state) => {
+    const i = state.evaluationStates.findIndex(
+      (evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator,
+    );
+    if (i > -1) {
+      state.evaluationStates.splice(i, 1);
+    }
+  });
+};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('GroupJoined')(event)) {
-    readmodel.set(event.groupId, {
-      latestActivityAt: O.none,
-      evaluationStates: [],
-    });
+    groupJoined(readmodel, event);
   }
   if (isEventOfType('EvaluationRecorded')(event)) {
-    const state = readmodel.get(event.groupId);
-
-    if (state === undefined) {
-      return readmodel;
-    }
-    if (!evaluationAlreadyRecorded(event, state.evaluationStates)) {
-      state.evaluationStates.push({ evaluationLocator: event.evaluationLocator, publishedAt: event.publishedAt });
-    }
+    evaluationRecorded(readmodel, event);
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
-    readmodel.forEach((state) => {
-      const i = state.evaluationStates.findIndex(
-        (evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator,
-      );
-      if (i > -1) {
-        state.evaluationStates.splice(i, 1);
-      }
-    });
+    evaluationErased(readmodel, event);
   }
   return readmodel;
 };
