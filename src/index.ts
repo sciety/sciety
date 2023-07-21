@@ -53,6 +53,10 @@ void pipe(
     logLevel: process.env.LOG_LEVEL ?? 'debug',
     prettyLog: !!process.env.PRETTY_LOG,
   }),
+  TE.map((adapters) => {
+    adapters.logger('info', 'Created infrastructure');
+    return adapters;
+  }),
   TE.chainEitherKW((adapters) => pipe(
     process.env,
     environmentVariablesCodec.decode,
