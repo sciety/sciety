@@ -6,6 +6,14 @@ import { arbitraryDate } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { DomainEvent } from '../../../../src/domain-events';
+import { ResourceAction } from '../../../../src/write-side/resources/resource-action';
+
+const enact = <A>(a: ReturnType<ResourceAction<A>>) => (events: ReadonlyArray<DomainEvent>) => pipe(
+  events,
+  a,
+  E.map((outputEvents) => [...events, ...outputEvents]),
+);
 
 describe('lifecycle', () => {
   describe('record -> erase -> update', () => {
@@ -20,21 +28,12 @@ describe('lifecycle', () => {
     const result = pipe(
       [],
       E.right,
-      E.chain((events) => pipe(
-        events,
-        record(recordCommand),
-        E.map((outputEvents) => [...events, ...outputEvents]),
-      )),
-      E.chain((events) => pipe(
-        events,
-        erase({ evaluationLocator: recordCommand.evaluationLocator }),
-        E.map((outputEvents) => [...events, ...outputEvents]),
-      )),
-      E.chain((events) => pipe(
-        events,
-        update({ evaluationLocator: recordCommand.evaluationLocator, evaluationType: arbitraryEvaluationType() }),
-        E.map((outputEvents) => [...events, ...outputEvents]),
-      )),
+      E.chain(enact(record(recordCommand))),
+      E.chain(enact(erase({ evaluationLocator: recordCommand.evaluationLocator }))),
+      E.chain(enact(update({
+        evaluationLocator: recordCommand.evaluationLocator,
+        evaluationType: arbitraryEvaluationType(),
+      }))),
     );
 
     it('errors with not found', () => {
