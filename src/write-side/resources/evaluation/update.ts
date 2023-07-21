@@ -19,10 +19,6 @@ const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: Rea
   RA.filter((event): event is EvaluationEvent => isEventOfType('EvaluationRecorded')(event)
     || isEventOfType('EvaluationUpdated')(event)),
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
-  RA.match(
-    () => E.left(toErrorMessage('Evaluation to be updated does not exist')),
-    (history) => E.right(history),
-  ),
 );
 
 const shouldUpdateEvaluationType = (
@@ -36,6 +32,10 @@ const shouldUpdateEvaluationType = (
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
   filterToHistoryOf(command.evaluationLocator),
+  RA.match(
+    () => E.left(toErrorMessage('Evaluation to be updated does not exist')),
+    (history) => E.right(history),
+  ),
   E.map((evaluationHistory) => pipe(
     evaluationHistory,
     shouldUpdateEvaluationType(command.evaluationType),
