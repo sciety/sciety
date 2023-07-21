@@ -39,7 +39,6 @@ COPY --from=npm-dev /app/ .
 COPY test/ test/
 COPY src/ src/
 COPY static/ static/
-COPY scripts/ scripts/
 COPY data/ data/
 
 CMD ["npm", "run", "start:dev"]
