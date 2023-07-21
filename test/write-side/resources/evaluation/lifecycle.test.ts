@@ -40,7 +40,7 @@ describe('lifecycle', () => {
       })(events);
     });
 
-    it.skip('errors with not found', () => {
+    it('errors with not found', () => {
       expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
     });
   });

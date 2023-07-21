@@ -12,12 +12,13 @@ import { toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { EvaluationType } from '../../../types/recorded-evaluation';
 
-type EvaluationEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'>;
+type EvaluationEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
 const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter((event): event is EvaluationEvent => isEventOfType('EvaluationRecorded')(event)
-    || isEventOfType('EvaluationUpdated')(event)),
+    || isEventOfType('EvaluationUpdated')(event)
+    || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)),
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
 );
 
@@ -28,7 +29,7 @@ const shouldUpdateEvaluationType = (
   RNEA.last,
   E.right,
   E.filterOrElse(
-    (event) => !isEventOfType('IncorrectlyRecordedEvaluationErased')(event),
+    (event): event is EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> => !isEventOfType('IncorrectlyRecordedEvaluationErased')(event),
     () => toErrorMessage('Evaluation to be updated does not exist'),
   ),
   E.map((event) => (event.evaluationType !== evaluationType)),
