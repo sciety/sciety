@@ -8,18 +8,14 @@ type EvaluationState = {
   publishedAt: Date,
 };
 
-export type Activity = {
-  evaluationStates: Map<EvaluationLocator, EvaluationState>,
-};
+export type Activity = Map<EvaluationLocator, EvaluationState>;
 
 export type ReadModel = Map<GroupId, Activity>;
 
 export const initialState = (): ReadModel => (new Map());
 
 const groupJoined = (readmodel: ReadModel, event: EventOfType<'GroupJoined'>) => {
-  readmodel.set(event.groupId, {
-    evaluationStates: new Map(),
-  });
+  readmodel.set(event.groupId, new Map());
 };
 
 const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'EvaluationRecorded'>) => {
@@ -27,8 +23,8 @@ const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'Evaluation
   if (groupActivity === undefined) {
     return;
   }
-  if (!groupActivity.evaluationStates.has(event.evaluationLocator)) {
-    groupActivity.evaluationStates.set(event.evaluationLocator, {
+  if (!groupActivity.has(event.evaluationLocator)) {
+    groupActivity.set(event.evaluationLocator, {
       evaluationLocator: event.evaluationLocator,
       publishedAt: event.publishedAt,
     });
@@ -37,8 +33,8 @@ const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'Evaluation
 
 const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyRecordedEvaluationErased'>) => {
   readmodel.forEach((state) => {
-    if (state.evaluationStates.has(event.evaluationLocator)) {
-      state.evaluationStates.delete(event.evaluationLocator);
+    if (state.has(event.evaluationLocator)) {
+      state.delete(event.evaluationLocator);
     }
   });
 };
