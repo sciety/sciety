@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
+import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -10,7 +10,6 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity/get-activity-for-doi';
-import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 
 describe('get-activity-for-doi', () => {
   const articleId = arbitraryArticleId();
@@ -48,23 +47,17 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('because it has had an evaluation recorded and erased', () => {
-      const evaluation = arbitraryRecordedEvaluation();
+      const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(
-            evaluation.groupId,
-            evaluation.articleId,
-            evaluation.evaluationLocator,
-            evaluation.authors,
-            evaluation.publishedAt,
-          ),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluation.evaluationLocator }),
+          evaluationRecordedEvent,
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationRecordedEvent.evaluationLocator }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
 
       it('the article has no evaluations', () => {
-        expect(getActivityForDoi(readmodel)(evaluation.articleId).evaluationCount).toBe(0);
+        expect(getActivityForDoi(readmodel)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
       });
     });
   });
