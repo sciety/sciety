@@ -5,11 +5,6 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import { Activity, ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 
-type GroupActivity = {
-  evaluationCount: number,
-  latestActivityAt: O.Option<Date>,
-};
-
 const calculateLatestActivityDate = (activity: Activity) => {
   let latest = null;
   // eslint-disable-next-line no-loops/no-loops
@@ -19,6 +14,11 @@ const calculateLatestActivityDate = (activity: Activity) => {
     }
   }
   return O.fromNullable(latest);
+};
+
+type GroupActivity = {
+  evaluationCount: number,
+  latestActivityAt: O.Option<Date>,
 };
 
 type GetActivityForGroup = (groupId: GroupId) => O.Option<GroupActivity>;

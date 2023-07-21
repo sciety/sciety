@@ -3,12 +3,12 @@ import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 
-type EvaluationState = {
+type EvaluationThumbnail = {
   evaluationLocator: EvaluationLocator,
   publishedAt: Date,
 };
 
-export type Activity = Map<EvaluationLocator, EvaluationState>;
+export type Activity = Map<EvaluationLocator, EvaluationThumbnail>;
 
 export type ReadModel = Map<GroupId, Activity>;
 
@@ -32,9 +32,9 @@ const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'Evaluation
 };
 
 const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyRecordedEvaluationErased'>) => {
-  readmodel.forEach((state) => {
-    if (state.has(event.evaluationLocator)) {
-      state.delete(event.evaluationLocator);
+  readmodel.forEach((groupActivity) => {
+    if (groupActivity.has(event.evaluationLocator)) {
+      groupActivity.delete(event.evaluationLocator);
     }
   });
 };
