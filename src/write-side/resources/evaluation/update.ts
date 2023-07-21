@@ -31,15 +31,16 @@ const constructWriteModel = (evaluationLocator: EvaluationLocator) => (events: R
   E.chainW((evaluationHistory) => pipe(
     evaluationHistory,
     RNEA.last,
-    E.right,
-    E.filterOrElse(
-      (event): event is EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> => !isEventOfType('IncorrectlyRecordedEvaluationErased')(event),
-      () => toErrorMessage('Evaluation to be updated does not exist'),
-    ),
+    (event) => {
+      switch (event.type) {
+        case 'EvaluationRecorded':
+        case 'EvaluationUpdated':
+          return E.right({ evaluationType: event.evaluationType });
+        case 'IncorrectlyRecordedEvaluationErased':
+          return E.left(toErrorMessage('Evaluation to be updated does not exist'));
+      }
+    },
   )),
-  E.map((event) => ({
-    evaluationType: event.evaluationType,
-  })),
 );
 
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
