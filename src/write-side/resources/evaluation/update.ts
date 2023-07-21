@@ -36,15 +36,15 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (all
       (event): event is EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> => !isEventOfType('IncorrectlyRecordedEvaluationErased')(event),
       () => toErrorMessage('Evaluation to be updated does not exist'),
     ),
-    E.map((event) => (event.evaluationType !== command.evaluationType)),
-    E.map(B.fold(
-      () => [],
-      () => [
-        constructEvent('EvaluationUpdated')({
-          evaluationLocator: command.evaluationLocator,
-          evaluationType: command.evaluationType,
-        }),
-      ],
-    )),
+  )),
+  E.map((event) => (event.evaluationType !== command.evaluationType)),
+  E.map(B.fold(
+    () => [],
+    () => [
+      constructEvent('EvaluationUpdated')({
+        evaluationLocator: command.evaluationLocator,
+        evaluationType: command.evaluationType,
+      }),
+    ],
   )),
 );
