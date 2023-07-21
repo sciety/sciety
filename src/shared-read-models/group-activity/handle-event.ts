@@ -34,13 +34,15 @@ const groupJoined = (readmodel: ReadModel, event: EventOfType<'GroupJoined'>) =>
 };
 
 const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'EvaluationRecorded'>) => {
-  const state = readmodel.get(event.groupId);
-
-  if (state === undefined) {
-    return readmodel;
+  const groupActivity = readmodel.get(event.groupId);
+  if (groupActivity === undefined) {
+    return;
   }
-  if (!evaluationAlreadyRecorded(event, state.evaluationStates)) {
-    state.evaluationStates.push({ evaluationLocator: event.evaluationLocator, publishedAt: event.publishedAt });
+  if (!evaluationAlreadyRecorded(event, groupActivity.evaluationStates)) {
+    groupActivity.evaluationStates.push({
+      evaluationLocator: event.evaluationLocator,
+      publishedAt: event.publishedAt,
+    });
   }
 };
 
