@@ -2,12 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryEvaluationRecordedEvent } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
 import { getActivityForDoi } from '../../../src/shared-read-models/article-activity/get-activity-for-doi';
 
@@ -177,20 +174,21 @@ describe('get-activity-for-doi', () => {
     });
 
     describe('added to a list, after being evaluated', () => {
+      const evaluationRecorded = arbitraryEvaluationRecordedEvent();
       const readmodel = pipe(
         [
-          evaluationRecordedHelper(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
-          constructEvent('ArticleAddedToList')({ articleId, listId: arbitraryListId() }),
+          evaluationRecorded,
+          constructEvent('ArticleAddedToList')({ articleId: evaluationRecorded.articleId, listId: arbitraryListId() }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
 
       it('has a listMemberShipCount of 1', () => {
-        expect(getActivityForDoi(readmodel)(articleId).listMembershipCount).toBe(1);
+        expect(getActivityForDoi(readmodel)(evaluationRecorded.articleId).listMembershipCount).toBe(1);
       });
 
       it('has an evaluationCount of 1', () => {
-        expect(getActivityForDoi(readmodel)(articleId).evaluationCount).toBe(1);
+        expect(getActivityForDoi(readmodel)(evaluationRecorded.articleId).evaluationCount).toBe(1);
       });
     });
   });
