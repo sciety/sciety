@@ -4,38 +4,40 @@ import { erase, update, record } from '../../../../src/write-side/resources/eval
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 import { DomainEvent } from '../../../../src/domain-events';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
+import { arbitraryDate } from '../../../helpers';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
 
 describe('lifecycle', () => {
   describe('record -> erase -> update', () => {
     let result: unknown;
-    const evaluation = arbitraryRecordedEvaluation();
-    const evaluationLocator = evaluation.evaluationLocator;
+    const recordCommand = {
+      groupId: arbitraryGroupId(),
+      publishedAt: arbitraryDate(),
+      evaluationLocator: arbitraryEvaluationLocator(),
+      articleId: arbitraryArticleId(),
+      authors: [],
+    };
 
     beforeEach(() => {
       const events: Array<DomainEvent> = [];
       const eventsFromRecord = pipe(
         events,
-        record({
-          groupId: evaluation.groupId,
-          publishedAt: evaluation.publishedAt,
-          evaluationLocator: evaluation.evaluationLocator,
-          articleId: evaluation.articleId,
-          authors: evaluation.authors,
-        }),
+        record(recordCommand),
         E.getOrElseW(shouldNotBeCalled),
       );
       events.push(...eventsFromRecord);
       const eventsFromErase = pipe(
         events,
         erase({
-          evaluationLocator,
+          evaluationLocator: recordCommand.evaluationLocator,
         }),
         E.getOrElseW(shouldNotBeCalled),
       );
       events.push(...eventsFromErase);
       result = update({
-        evaluationLocator,
+        evaluationLocator: recordCommand.evaluationLocator,
         evaluationType: arbitraryEvaluationType(),
       })(events);
     });
