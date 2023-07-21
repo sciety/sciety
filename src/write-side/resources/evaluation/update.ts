@@ -27,6 +27,7 @@ const shouldUpdateEvaluationType = (
   evaluationHistory,
   RNEA.last,
   (event) => (event.evaluationType !== evaluationType),
+  E.right,
 );
 
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
@@ -36,10 +37,10 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (all
     () => E.left(toErrorMessage('Evaluation to be updated does not exist')),
     (history) => E.right(history),
   ),
-  E.map((evaluationHistory) => pipe(
+  E.chainW((evaluationHistory) => pipe(
     evaluationHistory,
     shouldUpdateEvaluationType(command.evaluationType),
-    B.fold(
+    E.map(B.fold(
       () => [],
       () => [
         constructEvent('EvaluationUpdated')({
@@ -47,6 +48,6 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (all
           evaluationType: command.evaluationType,
         }),
       ],
-    ),
+    )),
   )),
 );
