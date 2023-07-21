@@ -8,6 +8,7 @@ import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
+import { arbitraryDate } from '../../helpers';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -371,7 +372,7 @@ describe('get-activity-for-group', () => {
             evaluation.articleId,
             evaluation.evaluationLocator,
             evaluation.authors,
-            evaluation.publishedAt,
+            arbitraryDate(),
           ),
         ],
         RA.reduce(initialState(), handleEvent),
@@ -386,7 +387,13 @@ describe('get-activity-for-group', () => {
         ));
       });
 
-      it.todo('returns the latestActivityAt of the first recorded');
+      it('returns the latestActivityAt of the first recorded', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            latestActivityAt: O.some(evaluation.publishedAt),
+          }),
+        ));
+      });
     });
   });
 });
