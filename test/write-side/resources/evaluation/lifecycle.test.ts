@@ -26,24 +26,24 @@ describe('lifecycle', () => {
     );
 
     describe('record', () => {
-      const finalState = pipe(
+      const result = pipe(
         erasedResource,
         A.concat(record(recordCommand)),
       );
 
       it('succeeds without changing state', () => {
-        expect(finalState).toStrictEqual(erasedResource);
+        expect(result).toStrictEqual(erasedResource);
       });
     });
 
     describe('erase', () => {
-      const finalState = pipe(
+      const result = pipe(
         erasedResource,
         A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
       it('succeeds without changing state', () => {
-        expect(finalState).toStrictEqual(erasedResource);
+        expect(result).toStrictEqual(erasedResource);
       });
     });
 
