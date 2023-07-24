@@ -59,4 +59,32 @@ describe('lifecycle', () => {
       expect(finalState).toStrictEqual(initialState);
     });
   });
+
+  describe('record -> update', () => {
+    const recordCommand = {
+      groupId: arbitraryGroupId(),
+      publishedAt: arbitraryDate(),
+      evaluationLocator: arbitraryEvaluationLocator(),
+      articleId: arbitraryArticleId(),
+      authors: [],
+    };
+
+    const initialState = pipe(
+      [],
+      A.of,
+      A.chain(record(recordCommand)),
+    );
+
+    const finalState = pipe(
+      initialState,
+      A.chain(update({ ...recordCommand, evaluationType: 'review' })),
+    );
+
+    it('succeeds with a new event', () => {
+      expect(finalState).toStrictEqual(E.right([
+        expect.anything(),
+        expect.objectContaining({ evaluationType: 'review' }),
+      ]));
+    });
+  });
 });
