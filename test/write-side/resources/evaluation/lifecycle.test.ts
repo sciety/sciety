@@ -9,7 +9,7 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
 
 describe('lifecycle', () => {
-  describe('record -> erase -> update', () => {
+  describe('given an erased resource', () => {
     const recordCommand = {
       groupId: arbitraryGroupId(),
       publishedAt: arbitraryDate(),
@@ -18,19 +18,25 @@ describe('lifecycle', () => {
       authors: [],
     };
 
-    const result = pipe(
+    const erasedResource = pipe(
       [],
       A.of,
       A.concat(record(recordCommand)),
       A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
-      A.concat(update({
-        evaluationLocator: recordCommand.evaluationLocator,
-        evaluationType: arbitraryEvaluationType(),
-      })),
     );
 
-    it('errors with not found', () => {
-      expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
+    describe('update', () => {
+      const result = pipe(
+        erasedResource,
+        A.concat(update({
+          evaluationLocator: recordCommand.evaluationLocator,
+          evaluationType: arbitraryEvaluationType(),
+        })),
+      );
+
+      it('errors with not found', () => {
+        expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
+      });
     });
   });
 
