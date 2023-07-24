@@ -20,25 +20,6 @@ describe('record', () => {
     evaluationType: arbitraryEvaluationType(),
   };
 
-  describe('when the evaluation locator has NOT already been recorded', () => {
-    const events = pipe(
-      [],
-      record(input),
-    );
-
-    it('returns an EvaluationRecorded event', () => {
-      expect(events).toStrictEqual(E.right([expect.objectContaining({
-        type: 'EvaluationRecorded',
-        groupId: input.groupId,
-        articleId: input.articleId,
-        evaluationLocator: input.evaluationLocator,
-        publishedAt: input.publishedAt,
-        authors: input.authors,
-        evaluationType: input.evaluationType,
-      })]));
-    });
-  });
-
   describe('when the evaluation locator has already been recorded', () => {
     const events = pipe(
       [

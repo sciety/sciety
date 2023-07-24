@@ -2,16 +2,43 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { erase, update, record } from '../../../../src/write-side/resources/evaluation';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
-import { arbitraryDate } from '../../../helpers';
+import { arbitraryDate, arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
+import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
+    const initialState = A.of([]);
+
     describe('record', () => {
-      it.todo('creates the evaluation resource');
+      const evaluationLocator = arbitraryEvaluationLocator();
+      const input: RecordEvaluationCommand = {
+        groupId: arbitraryGroupId(),
+        articleId: arbitraryArticleId(),
+        evaluationLocator,
+        publishedAt: arbitraryDate(),
+        authors: [arbitraryString(), arbitraryString()],
+        evaluationType: arbitraryEvaluationType(),
+      };
+      const result = pipe(
+        initialState,
+        A.last(record(input)),
+      );
+
+      it('creates the evaluation resource', () => {
+        expect(result).toStrictEqual(E.right([expect.objectContaining({
+          type: 'EvaluationRecorded',
+          groupId: input.groupId,
+          articleId: input.articleId,
+          evaluationLocator: input.evaluationLocator,
+          publishedAt: input.publishedAt,
+          authors: input.authors,
+          evaluationType: input.evaluationType,
+        })]));
+      });
     });
 
     describe('erase', () => {
