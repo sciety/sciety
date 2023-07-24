@@ -7,9 +7,7 @@ import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.he
 import {
   constructEvent,
 } from '../../../../src/domain-events';
-import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryDoi } from '../../../types/doi.helper';
+import { arbitraryEvaluationRecordedEvent } from '../../../types/evaluation-recorded-event.helper';
 
 const expectIncorrectlyRecordedEvaluationErasedEvent = (evaluationLocator: EvaluationLocator): unknown => (
   expect.objectContaining({
@@ -73,21 +71,15 @@ describe('erase', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
     const eventsRaised = pipe(
       [
-        evaluationRecordedHelper(
-          arbitraryGroupId(),
-          arbitraryDoi(),
+        {
+          ...arbitraryEvaluationRecordedEvent(),
           evaluationLocator,
-          [],
-          new Date(),
-        ),
+        },
         constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
-        evaluationRecordedHelper(
-          arbitraryGroupId(),
-          arbitraryDoi(),
+        {
+          ...arbitraryEvaluationRecordedEvent(),
           evaluationLocator,
-          [],
-          new Date(),
-        ),
+        },
       ],
       erase({ evaluationLocator }),
       E.getOrElseW(shouldNotBeCalled),
