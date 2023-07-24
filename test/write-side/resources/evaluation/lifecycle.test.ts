@@ -59,8 +59,29 @@ describe('lifecycle', () => {
   });
 
   describe('given a recorded evaluation', () => {
+    const recordCommand = {
+      groupId: arbitraryGroupId(),
+      publishedAt: arbitraryDate(),
+      evaluationLocator: arbitraryEvaluationLocator(),
+      articleId: arbitraryArticleId(),
+      authors: [],
+    };
+
+    const initialState = pipe(
+      [],
+      A.of,
+      A.concat(record(recordCommand)),
+    );
+
     describe('record', () => {
-      it.todo('succeeds without changing state');
+      const result = pipe(
+        initialState,
+        A.concat(record(recordCommand)),
+      );
+
+      it('succeeds without changing state', () => {
+        expect(result).toStrictEqual(initialState);
+      });
     });
 
     describe('erase', () => {
