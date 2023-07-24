@@ -9,8 +9,7 @@ import { PageOfItems, paginate } from '../../../shared-components/paginate';
 import * as DE from '../../../types/data-error';
 
 const isFeedRelevantEvent = (event: DomainEvent) => (
-  isEventOfType('UserFollowedEditorialCommunity')(event)
-    || isEventOfType('ArticleAddedToList')(event)
+  isEventOfType('ArticleAddedToList')(event)
 );
 
 type IdentifyFeedItems = (pageSize: number, page: number)
