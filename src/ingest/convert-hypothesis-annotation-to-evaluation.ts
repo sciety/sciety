@@ -4,10 +4,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { Evaluation } from './types/evaluations';
 import { supportedArticleIdFromLink } from './supported-article-id-from-link';
-import * as Hyp from '../third-parties/hypothesis';
+import { Annotation } from '../third-parties/hypothesis';
 import { SkippedItem } from './types/skipped-item';
 
-const annotationContainsText = (annotation: Hyp.Annotation) => annotation.text.length > 0;
+const annotationContainsText = (annotation: Annotation) => annotation.text.length > 0;
 
 const mapTagToType = (
   tags: ReadonlyArray<string>,
@@ -25,7 +25,7 @@ const mapTagToType = (
 export const convertHypothesisAnnotationToEvaluation = (
   tagToEvaluationTypeMap: Record<string, ReadonlyArray<string>>,
 ) => (
-  annotation: Hyp.Annotation,
+  annotation: Annotation,
 ): E.Either<SkippedItem, Evaluation> => pipe(
   annotation.uri,
   supportedArticleIdFromLink,
