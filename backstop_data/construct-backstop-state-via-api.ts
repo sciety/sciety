@@ -19,7 +19,7 @@ const groupsToHighlight = [
 const stubHighlightedGroup = (groupId: string) => async () => {
   const homePageGroup = {
     groupId,
-    name: "Homepage Group",
+    name: `Homepage Group ${groupId.substring(0,8)}`,
     shortDescription: `Homepage Group description ${groupId}`,
     homepage: `http://example.com/homepage-group-${groupId}`,
     avatarPath: "/static/images/profile-dark.svg",
@@ -112,7 +112,7 @@ const userList = {
 
 const constructBackstopStateViaApi = async () => {
   await callApi("api/add-group", groupA);
-  await pipe(groupsToHighlight, T.traverseArray(stubHighlightedGroup))();
+  await pipe(groupsToHighlight, T.traverseSeqArray(stubHighlightedGroup))();
   await callApi("api/record-evaluation", evaluationA);
   await callApi("api/record-evaluation", evaluationB);
   await callApi("api/record-evaluation", evaluationC);
