@@ -21,9 +21,9 @@ describe('lifecycle', () => {
     const result = pipe(
       [],
       A.of,
-      A.chain(record(recordCommand)),
-      A.chain(erase({ evaluationLocator: recordCommand.evaluationLocator })),
-      A.chain(update({
+      A.concat(record(recordCommand)),
+      A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+      A.concat(update({
         evaluationLocator: recordCommand.evaluationLocator,
         evaluationType: arbitraryEvaluationType(),
       })),
@@ -46,13 +46,13 @@ describe('lifecycle', () => {
     const initialState = pipe(
       [],
       A.of,
-      A.chain(record(recordCommand)),
-      A.chain(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+      A.concat(record(recordCommand)),
+      A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
     );
 
     const finalState = pipe(
       initialState,
-      A.chain(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+      A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
     );
 
     it('succeeds without changing state', () => {
@@ -69,20 +69,15 @@ describe('lifecycle', () => {
       authors: [],
     };
 
-    const initialState = pipe(
+    const newEvents = pipe(
       [],
       A.of,
-      A.chain(record(recordCommand)),
-    );
-
-    const finalState = pipe(
-      initialState,
-      A.chain(update({ ...recordCommand, evaluationType: 'review' })),
+      A.concat(record(recordCommand)),
+      A.last(update({ ...recordCommand, evaluationType: 'review' })),
     );
 
     it('succeeds with a new event', () => {
-      expect(finalState).toStrictEqual(E.right([
-        expect.anything(),
+      expect(newEvents).toStrictEqual(E.right([
         expect.objectContaining({ evaluationType: 'review' }),
       ]));
     });
