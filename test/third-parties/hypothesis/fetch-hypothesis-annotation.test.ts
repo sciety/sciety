@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { fetchHypothesisAnnotation, insertSelectedText } from '../../../src/third-parties/hypothesis/fetch-hypothesis-annotation';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { dummyLogger } from '../../dummy-logger';
-import { arbitraryString, arbitraryWord } from '../../helpers';
+import { arbitraryWord } from '../../helpers';
 import { HypothesisAnnotation } from '../../../src/third-parties/hypothesis/HypothesisAnnotation';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
@@ -13,11 +13,9 @@ const key = arbitraryWord();
 
 describe('fetch-hypothesis-annotation', () => {
   it('returns the evaluation', async () => {
-    const tag = arbitraryString();
     const queryExternalService = () => () => TE.right({
       created: date,
       text: '<p>Very good</p>',
-      tags: [tag],
       target: [],
       links: {
         incontext: 'https://www.example.com',
@@ -64,7 +62,6 @@ describe('insertSelectedText', () => {
     it('returns the text quote in markdown format in addition to the response text', () => {
       const input: HypothesisAnnotation = {
         text: 'some text',
-        tags: [],
         links: {
           incontext: '',
         },
@@ -93,7 +90,6 @@ some text`;
     it('returns the response text', () => {
       const input: HypothesisAnnotation = {
         text: 'some text',
-        tags: [],
         links: {
           incontext: '',
         },

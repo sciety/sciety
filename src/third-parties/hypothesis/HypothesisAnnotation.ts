@@ -1,7 +1,6 @@
 import * as t from 'io-ts';
 
 export const hypothesisAnnotation = t.type({
-  tags: t.array(t.string),
   text: t.string, // TODO HtmlFragment
   links: t.type({
     incontext: t.string, // TODO URL
