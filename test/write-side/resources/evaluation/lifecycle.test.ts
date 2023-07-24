@@ -25,6 +25,17 @@ describe('lifecycle', () => {
       A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
     );
 
+    describe('erase', () => {
+      const finalState = pipe(
+        erasedResource,
+        A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+      );
+
+      it('succeeds without changing state', () => {
+        expect(finalState).toStrictEqual(erasedResource);
+      });
+    });
+
     describe('update', () => {
       const result = pipe(
         erasedResource,
@@ -37,32 +48,6 @@ describe('lifecycle', () => {
       it('errors with not found', () => {
         expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
       });
-    });
-  });
-
-  describe('record -> erase -> erase', () => {
-    const recordCommand = {
-      groupId: arbitraryGroupId(),
-      publishedAt: arbitraryDate(),
-      evaluationLocator: arbitraryEvaluationLocator(),
-      articleId: arbitraryArticleId(),
-      authors: [],
-    };
-
-    const initialState = pipe(
-      [],
-      A.of,
-      A.concat(record(recordCommand)),
-      A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
-    );
-
-    const finalState = pipe(
-      initialState,
-      A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
-    );
-
-    it('succeeds without changing state', () => {
-      expect(finalState).toStrictEqual(initialState);
     });
   });
 
