@@ -29,10 +29,10 @@ describe('add-article-to-evaluated-articles-list', () => {
     );
 
     it('returns a command', () => {
-      expect(command).toStrictEqual(E.right({
+      expect(command).toStrictEqual(E.right(expect.objectContaining({
         articleId,
         listId,
-      }));
+      })));
     });
   });
 

@@ -19,7 +19,7 @@ const groupsToHighlight = [
 const stubHighlightedGroup = (groupId: string) => async () => {
   const homePageGroup = {
     groupId,
-    name: `Homepage Group ${groupId.substring(0,8)}`,
+    name: `Homepage Group ${groupId.substring(0, 8)}`,
     shortDescription: `Homepage Group description ${groupId}`,
     homepage: `http://example.com/homepage-group-${groupId}`,
     avatarPath: "/static/images/profile-dark.svg",
@@ -49,50 +49,57 @@ const groupA = {
   avatarPath: "/static/images/profile-dark.svg",
   descriptionPath: "asapbio-scielo-preprint-crowd-review.md",
   slug: groupSlug,
+  issuedAt: "1970",
 };
 const evaluationA = {
   groupId: groupA.groupId,
-  publishedAt: "1970",
+  publishedAt: "1980",
   evaluationLocator: "hypothesis:evalA",
   articleId: articleWithEvaluations,
   authors: ["Rosalind Franklin", "Hilda Hänchen"],
+  issuedAt: "2000",
 };
 const evaluationB = {
   groupId: groupA.groupId,
-  publishedAt: "1970",
+  publishedAt: "1980",
   evaluationLocator: "hypothesis:evalB",
   articleId: articleWithEvaluations,
   authors: ["Rosalind Franklin", "Hilda Hänchen"],
+  issuedAt: "2001",
 };
 const evaluationC = {
   groupId: groupA.groupId,
-  publishedAt: "1970",
+  publishedAt: "1980",
   evaluationLocator: "hypothesis:evalC",
   articleId: articleWithCurationStatement,
   authors: ["Rosalind Franklin", "Hilda Hänchen"],
+  issuedAt: "2002",
 };
 const evaluationD = {
   groupId: groupA.groupId,
-  publishedAt: "1970",
+  publishedAt: "1980",
   evaluationLocator: "hypothesis:evalD",
   articleId: articleWithCurationStatement,
   authors: ["Rosalind Franklin", "Hilda Hänchen"],
+  issuedAt: "2003",
 };
 const curationStatementA = {
   groupId: groupA.groupId,
-  publishedAt: "1970",
+  publishedAt: "1980",
   evaluationLocator: "hypothesis:curationA",
   articleId: articleWithCurationStatement,
   authors: ["Rosalind Franklin", "Hilda Hänchen"],
   evaluationType: "curation-statement",
+  issuedAt: "2004",
 };
 const curationStatementB = {
   groupId: groupA.groupId,
-  publishedAt: "1970",
+  publishedAt: "1980",
   evaluationLocator: "hypothesis:curationB",
   articleId: articleWithCurationStatement,
   authors: ["Rosalind Franklin", "Hilda Hänchen"],
   evaluationType: "curation-statement",
+  issuedAt: "2005",
 };
 const scietyHqUser = {
   userId: "12345",
@@ -104,11 +111,11 @@ const userList = {
   listId: userListId,
   ownerId: {
     tag: "user-id",
-    value: scietyHqUser.userId
+    value: scietyHqUser.userId,
   },
   name: "A second list",
   description: "Dolor sit amens",
-}
+};
 
 const constructBackstopStateViaApi = async () => {
   await callApi("api/add-group", groupA);
@@ -121,8 +128,16 @@ const constructBackstopStateViaApi = async () => {
   await callApi("api/record-evaluation", curationStatementB);
   await callApi("api/create-user", scietyHqUser);
   await callApi("api/create-list", userList);
-  await callApi("api/add-article-to-list", {articleId: articleWithEvaluations, listId: userListId, issuedAt: '2020'});
-  await callApi("api/add-article-to-list", {articleId: articleWithCurationStatement, listId: userListId, issuedAt: '2021'});
+  await callApi("api/add-article-to-list", {
+    articleId: articleWithEvaluations,
+    listId: userListId,
+    issuedAt: "2020",
+  });
+  await callApi("api/add-article-to-list", {
+    articleId: articleWithCurationStatement,
+    listId: userListId,
+    issuedAt: "2021",
+  });
 };
 
 // eslint-disable-next-line func-names

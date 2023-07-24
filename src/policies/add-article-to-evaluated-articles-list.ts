@@ -34,6 +34,7 @@ export const constructCommand = (
     (listId) => ({
       articleId: event.articleId,
       listId,
+      issuedAt: event.date,
     }),
   ),
 );
