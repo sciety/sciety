@@ -72,7 +72,7 @@
     },
     {
       "label": "Group search",
-      "url": "http://sciety_app/search?query=peer+community+in+archaeology&category=groups",
+      "url": "http://sciety_app/search?query=description&category=groups",
       "selectors": [
         "main"
       ]
