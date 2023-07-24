@@ -9,7 +9,35 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
 
 describe('lifecycle', () => {
-  describe('given an erased resource', () => {
+  describe('given no existing evaluation', () => {
+    describe('record', () => {
+      it.todo('creates the evaluation resource');
+    });
+
+    describe('erase', () => {
+      it.todo('fails with not found');
+    });
+
+    describe('update', () => {
+      it.todo('fails with not found');
+    });
+  });
+
+  describe('given a recorded evaluation', () => {
+    describe('record', () => {
+      it.todo('succeeds without changing state');
+    });
+
+    describe('erase', () => {
+      it.todo('erases the evaluation resource');
+    });
+
+    describe('update', () => {
+      it.todo('updates the evaluation resource');
+    });
+  });
+
+  describe('given an erased evaluation', () => {
     const recordCommand = {
       groupId: arbitraryGroupId(),
       publishedAt: arbitraryDate(),
