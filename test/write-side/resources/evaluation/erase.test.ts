@@ -66,13 +66,10 @@ describe('erase', () => {
     beforeEach(() => {
       eventsRaised = pipe(
         [
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            arbitraryDoi(),
+          {
+            ...arbitraryEvaluationRecordedEvent(),
             evaluationLocator,
-            [],
-            new Date(),
-          ),
+          },
           constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
         ],
         erase({ evaluationLocator }),
