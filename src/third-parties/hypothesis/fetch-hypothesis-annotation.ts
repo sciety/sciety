@@ -41,7 +41,6 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
       sanitise,
     ),
     url: new URL(response.links.incontext),
-    tags: response.tags,
   };
   logger('debug', 'Retrieved evaluation', { ...evaluation, fullText: '[text]' });
   return evaluation;

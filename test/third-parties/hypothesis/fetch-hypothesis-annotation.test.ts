@@ -28,7 +28,6 @@ describe('fetch-hypothesis-annotation', () => {
     const expected = {
       fullText: pipe('<p>Very good</p>', toHtmlFragment),
       url: new URL('https://www.example.com'),
-      tags: [tag],
     };
 
     expect(evaluation).toStrictEqual(E.right(expected));

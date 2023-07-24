@@ -58,6 +58,5 @@ export const fetchZenodoRecord: FetchZenodoRecord = (queryExternalService, logge
   TE.map((fullText) => ({
     fullText: sanitise(fullText),
     url: new URL(`https://doi.org/${key}`),
-    tags: [],
   })),
 );

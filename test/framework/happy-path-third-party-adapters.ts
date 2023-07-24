@@ -41,7 +41,6 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
   fetchReview: () => TE.right({
     fullText: arbitrarySanitisedHtmlFragment(),
     url: new URL(arbitraryUri()),
-    tags: [],
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),
   findVersionsForArticleDoi: () => TO.some([

@@ -76,6 +76,5 @@ export const fetchRapidReview = (
   TE.map((fullText) => ({
     fullText,
     url: new URL(url),
-    tags: [],
   })),
 );

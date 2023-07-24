@@ -107,7 +107,6 @@ describe('construct-curation-statements', () => {
           : TE.right({
             url: new URL(arbitraryUri()),
             fullText: arbitrarySanitisedHtmlFragment(),
-            tags: [],
           })),
       }, articleId)();
     });

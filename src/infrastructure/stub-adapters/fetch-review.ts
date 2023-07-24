@@ -98,5 +98,4 @@ export const fetchReview: FetchReview = () => TE.right({
     toHtmlFragment,
     sanitise,
   ),
-  tags: [],
 });
