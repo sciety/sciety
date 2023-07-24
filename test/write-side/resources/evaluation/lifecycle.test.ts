@@ -33,4 +33,30 @@ describe('lifecycle', () => {
       expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
     });
   });
+
+  describe('record -> erase -> erase', () => {
+    const recordCommand = {
+      groupId: arbitraryGroupId(),
+      publishedAt: arbitraryDate(),
+      evaluationLocator: arbitraryEvaluationLocator(),
+      articleId: arbitraryArticleId(),
+      authors: [],
+    };
+
+    const initialState = pipe(
+      [],
+      A.of,
+      A.chain(record(recordCommand)),
+      A.chain(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+    );
+
+    const finalState = pipe(
+      initialState,
+      A.chain(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+    );
+
+    it('succeeds without changing state', () => {
+      expect(finalState).toStrictEqual(initialState);
+    });
+  });
 });

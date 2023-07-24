@@ -48,25 +48,6 @@ describe('erase', () => {
     });
   });
 
-  describe('when the evaluation has been recorded and erased', () => {
-    const evaluationLocator = arbitraryEvaluationLocator();
-    const eventsRaised = pipe(
-      [
-        {
-          ...arbitraryEvaluationRecordedEvent(),
-          evaluationLocator,
-        },
-        constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
-      ],
-      erase({ evaluationLocator }),
-      E.getOrElseW(shouldNotBeCalled),
-    );
-
-    it('raises no event', () => {
-      expect(eventsRaised).toStrictEqual([]);
-    });
-  });
-
   describe('when the evaluation has been recorded, erased and recorded again', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
     const eventsRaised = pipe(
