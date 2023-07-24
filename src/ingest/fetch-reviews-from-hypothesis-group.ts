@@ -5,7 +5,7 @@ import { FetchData } from './fetch-data';
 import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
 import * as Hyp from './third-parties/hypothesis';
-import { convertHypothesisAnnotationToEvaluation } from './convert-hypothesis-annotation-to-evaluation';
+import { convertHypothesisAnnotationToEvaluation } from './third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
 import { tagToEvaluationTypeMap } from './tag-to-evaluation-type-map';
 
 type Ports = {
