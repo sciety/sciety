@@ -8,7 +8,7 @@ import {
   DomainEvent,
   constructEvent,
 } from '../../../../src/domain-events';
-import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
+import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDoi } from '../../../types/doi.helper';
 
@@ -26,13 +26,10 @@ describe('erase', () => {
     beforeEach(() => {
       eventsRaised = pipe(
         [
-          evaluationRecordedHelper(
-            arbitraryGroupId(),
-            arbitraryDoi(),
+          {
+            ...arbitraryEvaluationRecordedEvent(),
             evaluationLocator,
-            [],
-            new Date(),
-          ),
+          },
         ],
         erase({ evaluationLocator }),
         E.getOrElseW(shouldNotBeCalled),
