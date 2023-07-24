@@ -6,15 +6,15 @@ import { arbitraryEvaluationRecordedEvent } from '../../types/evaluation-recorde
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
-import { getActivityForDoi } from '../../../src/shared-read-models/article-activity/get-activity-for-doi';
+import { getActivityForArticle } from '../../../src/shared-read-models/article-activity/get-activity-for-article';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.reduce(initialState(), handleEvent),
-  getActivityForDoi,
+  getActivityForArticle,
 );
 
-describe('get-activity-for-doi', () => {
+describe('get-activity-for-article', () => {
   const articleId = arbitraryArticleId();
 
   describe('when an article has no evaluations and is in no list', () => {

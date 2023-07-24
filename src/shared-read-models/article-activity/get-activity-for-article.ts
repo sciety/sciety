@@ -8,9 +8,9 @@ import { ArticleActivity } from '../../types/article-activity';
 import { Doi } from '../../types/doi';
 import { ReadModel } from './handle-event';
 
-type GetActivityForDoi = (articleId: Doi) => ArticleActivity;
+type GetActivityForArticle = (articleId: Doi) => ArticleActivity;
 
-export const getActivityForDoi = (readmodel: ReadModel): GetActivityForDoi => (articleId) => pipe(
+export const getActivityForArticle = (readmodel: ReadModel): GetActivityForArticle => (articleId) => pipe(
   readmodel,
   RM.lookup(S.Eq)(articleId.value),
   O.match(
