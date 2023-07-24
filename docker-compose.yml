@@ -34,6 +34,9 @@ services:
     ports:
       - '8080:80'
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     container_name: sciety_db

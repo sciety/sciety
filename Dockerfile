@@ -42,6 +42,9 @@ COPY static/ static/
 COPY scripts/ scripts/
 COPY data/ data/
 
+HEALTHCHECK --interval=5s --timeout=1s --start-period=30s \
+  CMD wget --quiet --tries=1 --spider http://localhost:80/ping || exit 1
+
 CMD ["npm", "run", "start:dev"]
 
 
