@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { listIdCodec } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 
-const createListCommandCodec = t.strict({
+export const createListCommandCodec = t.strict({
   listId: listIdCodec,
   ownerId: LOID.fromObjectOfStrings,
   name: t.string,
