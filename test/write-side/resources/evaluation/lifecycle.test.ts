@@ -42,7 +42,15 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      it.todo('fails with not found');
+      const evaluationLocator = arbitraryEvaluationLocator();
+      const result = pipe(
+        initialState,
+        A.concat(erase({ evaluationLocator })),
+      );
+
+      it('succeeds without changing state', () => {
+        expect(result).toStrictEqual(initialState);
+      });
     });
 
     describe('update', () => {

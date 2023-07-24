@@ -33,16 +33,4 @@ describe('erase', () => {
       ]);
     });
   });
-
-  describe('when the evaluation has not been recorded', () => {
-    const eventsRaised = pipe(
-      [],
-      erase({ evaluationLocator: arbitraryEvaluationLocator() }),
-      E.getOrElseW(shouldNotBeCalled),
-    );
-
-    it('raises no event', () => {
-      expect(eventsRaised).toStrictEqual([]);
-    });
-  });
 });
