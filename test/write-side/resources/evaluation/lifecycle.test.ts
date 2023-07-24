@@ -82,7 +82,11 @@ describe('lifecycle', () => {
 
     it('succeeds with a new event', () => {
       expect(newEvents).toStrictEqual(E.right([
-        expect.objectContaining({ evaluationType: newEvaluationType }),
+        expect.objectContaining({
+          type: 'EvaluationUpdated',
+          evaluationLocator,
+          evaluationType: newEvaluationType,
+        }),
       ]));
     });
   });

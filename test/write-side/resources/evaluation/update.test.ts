@@ -39,25 +39,6 @@ describe('update', () => {
       evaluationType: 'author-response' as const,
     };
 
-    describe('when the evaluation type has not been recorded', () => {
-      const existingEvents = [
-        evaluationRecordedWithType(evaluationLocator, undefined),
-      ];
-
-      const generatedEvents = pipe(
-        existingEvents,
-        update(command),
-      );
-
-      it('returns an EvaluationUpdated event', () => {
-        expect(generatedEvents).toStrictEqual(E.right([expect.objectContaining({
-          type: 'EvaluationUpdated',
-          evaluationLocator: command.evaluationLocator,
-          evaluationType: command.evaluationType,
-        })]));
-      });
-    });
-
     describe('when the evaluation type has been recorded in the EvaluationRecorded event', () => {
       describe('and the command matches the existing evaluation type', () => {
         const existingEvents = [
