@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Annotation } from '../../../third-parties/hypothesis/annotation';
+import { Annotation } from './annotation';
 import { processServer } from './process-server';
 import { FetchData } from '../../fetch-data';
 

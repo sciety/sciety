@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { Evaluation } from '../../types/evaluations';
 import { supportedArticleIdFromLink } from '../../supported-article-id-from-link';
-import { Annotation } from '../../../third-parties/hypothesis';
+import { Annotation } from './annotation';
 import { SkippedItem } from '../../types/skipped-item';
 
 const annotationContainsText = (annotation: Annotation) => annotation.text.length > 0;

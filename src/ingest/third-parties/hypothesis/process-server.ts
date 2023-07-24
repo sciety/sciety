@@ -4,8 +4,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
-import { Annotation } from '../../../third-parties/hypothesis/annotation';
-import { responseFromJson } from '../../../third-parties/hypothesis/response';
+import { Annotation } from './annotation';
+import { responseFromJson } from './response';
 import { FetchData } from '../../fetch-data';
 
 const latestDateOf = (items: ReadonlyArray<Annotation>) => (
