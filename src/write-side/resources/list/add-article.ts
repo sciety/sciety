@@ -12,7 +12,11 @@ const createAppropriateEvents = (command: AddArticleToListCommand) => (listResou
   listResource.articleIds,
   RA.some((articleId) => articleId.value === command.articleId.value),
   B.fold(
-    () => [constructEvent('ArticleAddedToList')(command)],
+    () => [constructEvent('ArticleAddedToList')({
+      articleId: command.articleId,
+      listId: command.listId,
+      date: command.issuedAt ?? new Date(),
+    })],
     () => [],
   ),
 );

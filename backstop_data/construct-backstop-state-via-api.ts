@@ -121,8 +121,8 @@ const constructBackstopStateViaApi = async () => {
   await callApi("api/record-evaluation", curationStatementB);
   await callApi("api/create-user", scietyHqUser);
   await callApi("api/create-list", userList);
-  await callApi("api/add-article-to-list", {articleId: articleWithEvaluations, listId: userListId});
-  await callApi("api/add-article-to-list", {articleId: articleWithCurationStatement, listId: userListId});
+  await callApi("api/add-article-to-list", {articleId: articleWithEvaluations, listId: userListId, issuedAt: '2020'});
+  await callApi("api/add-article-to-list", {articleId: articleWithCurationStatement, listId: userListId, issuedAt: '2021'});
 };
 
 // eslint-disable-next-line func-names
