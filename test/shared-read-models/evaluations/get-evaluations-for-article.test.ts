@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { getEvaluationsForDoi } from '../../../src/shared-read-models/evaluations/get-evaluations-for-doi';
+import { getEvaluationsForArticle } from '../../../src/shared-read-models/evaluations/get-evaluations-for-article';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
@@ -19,7 +19,7 @@ const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
   );
   return pipe(
     articleId,
-    getEvaluationsForDoi(readmodel),
+    getEvaluationsForArticle(readmodel),
   );
 };
 
@@ -43,7 +43,7 @@ const evaluationRecordedWithType = (
   )
 );
 
-describe('get-evaluations-for-doi', () => {
+describe('get-evaluations-for-article', () => {
   describe('when there is an arbitrary number of evaluations', () => {
     const article1 = arbitraryDoi();
     const article2 = arbitraryDoi();
