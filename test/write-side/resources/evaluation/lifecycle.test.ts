@@ -61,24 +61,28 @@ describe('lifecycle', () => {
   });
 
   describe('record -> update', () => {
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const initialEvaluationType = undefined;
+    const newEvaluationType = arbitraryEvaluationType();
     const recordCommand = {
       groupId: arbitraryGroupId(),
       publishedAt: arbitraryDate(),
-      evaluationLocator: arbitraryEvaluationLocator(),
+      evaluationLocator,
       articleId: arbitraryArticleId(),
       authors: [],
+      evaluationType: initialEvaluationType,
     };
 
     const newEvents = pipe(
       [],
       A.of,
       A.concat(record(recordCommand)),
-      A.last(update({ ...recordCommand, evaluationType: 'review' })),
+      A.last(update({ evaluationLocator, evaluationType: newEvaluationType })),
     );
 
     it('succeeds with a new event', () => {
       expect(newEvents).toStrictEqual(E.right([
-        expect.objectContaining({ evaluationType: 'review' }),
+        expect.objectContaining({ evaluationType: newEvaluationType }),
       ]));
     });
   });
