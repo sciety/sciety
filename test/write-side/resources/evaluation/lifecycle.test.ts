@@ -25,6 +25,17 @@ describe('lifecycle', () => {
       A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
     );
 
+    describe('record', () => {
+      const finalState = pipe(
+        erasedResource,
+        A.concat(record(recordCommand)),
+      );
+
+      it('succeeds without changing state', () => {
+        expect(finalState).toStrictEqual(erasedResource);
+      });
+    });
+
     describe('erase', () => {
       const finalState = pipe(
         erasedResource,
