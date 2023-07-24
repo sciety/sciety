@@ -43,43 +43,46 @@ const transformIntoCurationStatementViewModel = (
 export const constructArticleCardViewModel = (
   ports: Dependencies,
 ) => (articleId: Doi): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardViewModel> => pipe(
-  articleId,
-  getArticleDetails(ports),
-  TE.mapLeft((error) => ({
-    ...pipe(
-      ports.getActivityForDoi(articleId),
+  ports.getActivityForDoi(articleId),
+  (articleActivity) => pipe(
+    articleActivity.articleId,
+    getArticleDetails(ports),
+    TE.bimap(
+      (error) => ({
+        ...articleActivity,
+        href: `/articles/${articleId.value}`,
+        error,
+      }),
+      (articleDetails) => ({
+        ...articleDetails,
+        articleActivity,
+      }),
     ),
-    href: `/articles/${articleId.value}`,
-    error,
-  })),
-  TE.chainW((articleDetails) => pipe(
+  ),
+  TE.chainW((partial) => pipe(
     {
-      latestVersionDate: getLatestArticleVersionDate(ports)(articleId, articleDetails.server),
-      articleActivity: pipe(
-        ports.getActivityForDoi(articleId),
-        T.of,
-      ),
+      latestVersionDate: getLatestArticleVersionDate(ports)(articleId, partial.server),
       curationStatements: constructCurationStatements(ports, articleId),
     },
     sequenceS(T.ApplyPar),
-    T.map(({ latestVersionDate, articleActivity, curationStatements }) => ({
-      articleId: articleDetails.articleId,
-      articleLink: `/articles/activity/${articleDetails.articleId.value}`,
-      title: articleDetails.title,
-      authors: articleDetails.authors,
+    T.map(({ latestVersionDate, curationStatements }) => ({
+      articleId: partial.articleId,
+      articleLink: `/articles/activity/${partial.articleId.value}`,
+      title: partial.title,
+      authors: partial.authors,
       latestVersionDate,
-      latestActivityAt: articleActivity.latestActivityAt,
+      latestActivityAt: partial.articleActivity.latestActivityAt,
       evaluationCount: pipe(
-        articleActivity.evaluationCount === 0,
+        partial.articleActivity.evaluationCount === 0,
         B.fold(
-          () => O.some(articleActivity.evaluationCount),
+          () => O.some(partial.articleActivity.evaluationCount),
           () => O.none,
         ),
       ),
       listMembershipCount: pipe(
-        articleActivity.listMembershipCount === 0,
+        partial.articleActivity.listMembershipCount === 0,
         B.fold(
-          () => O.some(articleActivity.listMembershipCount),
+          () => O.some(partial.articleActivity.listMembershipCount),
           () => O.none,
         ),
       ),
