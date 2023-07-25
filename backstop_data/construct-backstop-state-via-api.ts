@@ -106,6 +106,7 @@ const scietyHqUser = {
   handle: userHandle,
   avatarUrl: "/static/images/profile-dark.svg",
   displayName: "Sciety User",
+  issuedAt: '2019'
 };
 const userList = {
   listId: userListId,

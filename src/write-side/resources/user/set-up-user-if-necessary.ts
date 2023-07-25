@@ -57,6 +57,7 @@ export const setUpUserIfNecessary: SetUpUserIfNecessary = (command) => (events) 
           name: `@${command.handle}'s saved articles`,
           description: `Articles that have been saved by @${command.handle}`,
           ownerId: LOID.fromUserId(command.userId),
+          date: command.issuedAt ?? new Date(),
         }),
       ],
     ),
