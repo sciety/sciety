@@ -7,21 +7,22 @@ import { FeedItem } from './feed-item';
 import { DomainEvent, isEventOfType } from '../../../domain-events';
 import { PageOfItems, paginate } from '../../../shared-components/paginate';
 import * as DE from '../../../types/data-error';
+import { Dependencies } from './dependencies';
 
 const isFeedRelevantEvent = (event: DomainEvent) => (
   isEventOfType('ArticleAddedToList')(event)
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const isActivityOnUserList = (event: DomainEvent) => true;
+const isActivityOnUserList = (dependencies: Dependencies) => (event: DomainEvent) => true;
 
-type IdentifyFeedItems = (pageSize: number, page: number)
+type IdentifyFeedItems = (dependencies: Dependencies, pageSize: number, page: number)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<DE.DataError, PageOfItems<FeedItem>>;
 
-export const identifyFeedItems: IdentifyFeedItems = (pageSize, page) => flow(
+export const identifyFeedItems: IdentifyFeedItems = (dependencies, pageSize, page) => flow(
   RA.filter(isFeedRelevantEvent),
-  RA.filter(isActivityOnUserList),
+  RA.filter(isActivityOnUserList(dependencies)),
   RA.match(
     () => E.right({
       items: [],

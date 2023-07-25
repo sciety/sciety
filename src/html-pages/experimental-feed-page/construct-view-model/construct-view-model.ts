@@ -23,7 +23,7 @@ type ConstructViewModel = (
 
 export const constructViewModel: ConstructViewModel = (dependencies, pageSize) => (params) => pipe(
   dependencies.getAllEvents,
-  T.map(identifyFeedItems(pageSize, params.page)),
+  T.map(identifyFeedItems(dependencies, pageSize, params.page)),
   TE.chainW(({ items, ...rest }) => pipe(
     items,
     O.traverseArray(constructEventCard(dependencies)),
