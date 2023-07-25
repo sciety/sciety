@@ -12,12 +12,16 @@ const isFeedRelevantEvent = (event: DomainEvent) => (
   isEventOfType('ArticleAddedToList')(event)
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const isActivityOnUserList = (event: DomainEvent) => true;
+
 type IdentifyFeedItems = (pageSize: number, page: number)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<DE.DataError, PageOfItems<FeedItem>>;
 
 export const identifyFeedItems: IdentifyFeedItems = (pageSize, page) => flow(
   RA.filter(isFeedRelevantEvent),
+  RA.filter(isActivityOnUserList),
   RA.match(
     () => E.right({
       items: [],
