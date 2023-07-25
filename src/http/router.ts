@@ -75,7 +75,6 @@ import * as listResource from '../write-side/resources/list';
 import * as userResource from '../write-side/resources/user';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import { applicationStatus } from '../views/status';
-import { experimentalFeedCodec, experimentalFeedPage } from '../html-pages/experimental-feed-page';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
@@ -107,14 +106,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     pageHandler(adapters, createPageFromParams(
       scietyFeedCodec,
       scietyFeedPage(adapters)(20),
-    )),
-  );
-
-  router.get(
-    '/experimental-feed',
-    pageHandler(adapters, createPageFromParams(
-      experimentalFeedCodec,
-      experimentalFeedPage(adapters)(20),
     )),
   );
 
