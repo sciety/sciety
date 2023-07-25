@@ -50,6 +50,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
     logger: createLogger(dependencies),
   },
   TE.right,
+  TE.map((adapters) => {
+    adapters.logger('info', 'Database connection pool and logger available');
+    return adapters;
+  }),
   TE.chainFirst(createEventsTable),
   TE.chainW(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, logger),
@@ -73,6 +77,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       } = dispatcher();
 
       dispatchToAllReadModels(partialAdapters.events);
+      partialAdapters.logger('info', 'All read models initialized');
 
       const commitEventsWithoutListeners = commitEvents({
         inMemoryEvents: partialAdapters.events,
