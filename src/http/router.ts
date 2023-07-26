@@ -76,6 +76,7 @@ import * as userResource from '../write-side/resources/user';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import { applicationStatus } from '../views/status';
 import { listFeed } from '../views/list/list-feed';
+import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 
 const articlePageParams = t.type({
   doi: DoiFromString,
@@ -113,6 +114,11 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     '/about',
     pageHandler(adapters, () => aboutPage(adapters.fetchStaticFile)),
+  );
+
+  router.get(
+    '/lists/:listId/subscribe',
+    pageHandler(adapters, () => pipe(subscribeToListPage, TE.right)),
   );
 
   router.get(
