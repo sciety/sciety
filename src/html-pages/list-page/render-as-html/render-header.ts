@@ -29,9 +29,9 @@ const renderRelatedArticlesLink = (url: O.Option<string>) => pipe(
   ),
 );
 
-const renderSubscribeLink = () => {
+const renderSubscribeLink = (listId: ListId) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return '<a href="/nowhere">Subscribe</a>';
+    return `<a href="/lists/${listId}/subscribe">Subscribe</a>`;
   }
   return '';
 };
@@ -48,7 +48,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
     <section class="list-page-actions">
       ${renderEditDetailsLink(viewModel.editCapability, viewModel.listId)}
       ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
-      ${renderSubscribeLink()}
+      ${renderSubscribeLink(viewModel.listId)}
     </section>
   </header>`,
   toHtmlFragment,
