@@ -29,12 +29,7 @@ const renderRelatedArticlesLink = (url: O.Option<string>) => pipe(
   ),
 );
 
-const renderSubscribeLink = (listId: ListId) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return `<a class="list-page-actions__subscribe" href="/lists/${listId}/subscribe">Subscribe</a>`;
-  }
-  return '';
-};
+const renderSubscribeLink = (listId: ListId) => `<a class="list-page-actions__subscribe" href="/lists/${listId}/subscribe">Subscribe</a>`;
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
