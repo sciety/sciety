@@ -60,6 +60,10 @@ $_edit-details-icon-offset: 8px;
   @include button.secondary-link();
 }
 
+.list-page-actions__subscribe {
+  @include button.primary-link();
+}
+
 .articles-page-count {
   @include typography.details();
   @include layout.page-content-horizontal-margins();

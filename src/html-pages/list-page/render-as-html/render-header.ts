@@ -31,7 +31,7 @@ const renderRelatedArticlesLink = (url: O.Option<string>) => pipe(
 
 const renderSubscribeLink = (listId: ListId) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return `<a href="/lists/${listId}/subscribe">Subscribe</a>`;
+    return `<a class="list-page-actions__subscribe" href="/lists/${listId}/subscribe">Subscribe</a>`;
   }
   return '';
 };
