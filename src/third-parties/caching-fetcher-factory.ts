@@ -13,11 +13,7 @@ import { QueryExternalService } from './query-external-service';
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
-const client = createClient({
-  url: 'redis://sciety_redis_1',
-});
-
-const redisStorage = buildStorage({
+const redisStorage = (client: ReturnType<typeof createClient>) => buildStorage({
   async find(key) {
     return client
       .get(`axios-cache-${key}`)
@@ -45,13 +41,19 @@ const redisStorage = buildStorage({
   },
 });
 
-const createCacheAdapter = (maxAge: number) => setupCache(
-  Axios.create(),
-  {
-    headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge),
-    storage: redisStorage,
-  },
-);
+const createCacheAdapter = (maxAge: number) => {
+  const client = createClient({
+    url: 'redis://sciety_redis_1',
+  });
+
+  return setupCache(
+    Axios.create(),
+    {
+      headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge),
+      storage: redisStorage(client),
+    },
+  );
+};
 
 const cachedGetter = (
   cachedAxios: AxiosCacheInstance,
