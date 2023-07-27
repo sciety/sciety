@@ -41,19 +41,13 @@ const redisStorage = (client: ReturnType<typeof createClient>) => buildStorage({
   },
 });
 
-const createCacheAdapter = (maxAge: number) => {
-  const client = createClient({
-    url: 'redis://sciety_redis_1',
-  });
-
-  return setupCache(
-    Axios.create(),
-    {
-      headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge),
-      storage: redisStorage(client),
-    },
-  );
-};
+const createCacheAdapter = (maxAge: number, client: ReturnType<typeof createClient>) => setupCache(
+  Axios.create(),
+  {
+    headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge),
+    storage: redisStorage(client),
+  },
+);
 
 const cachedGetter = (
   cachedAxios: AxiosCacheInstance,
@@ -80,7 +74,10 @@ const cachedGetter = (
 type CachingFetcherFactory = (logger: Logger, cacheMaxAgeSeconds: number) => QueryExternalService;
 
 export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds) => {
-  const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000);
+  const redisClient = createClient({
+    url: 'redis://sciety_redis_1',
+  });
+  const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000, redisClient);
   const get = cachedGetter(cachedAxios, logger);
   return (
     notFoundLogLevel: LevelName = 'warn',
