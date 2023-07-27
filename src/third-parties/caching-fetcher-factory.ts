@@ -1,8 +1,11 @@
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
-import { setupCache, type HeaderInterpreter, AxiosCacheInstance } from 'axios-cache-interceptor';
+import {
+  setupCache, type HeaderInterpreter, AxiosCacheInstance, buildStorage, StorageValue, canStale,
+} from 'axios-cache-interceptor';
 import { URL } from 'url';
+import { createClient } from 'redis';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
@@ -10,9 +13,42 @@ import { QueryExternalService } from './query-external-service';
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
+const client = createClient(/* connection config */);
+
+const redisStorage = buildStorage({
+  async find(key) {
+    return client
+      .get(`axios-cache-${key}`)
+      .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
+  },
+
+  async set(key, value, req) {
+    await client.set(`axios-cache-${key}`, JSON.stringify(value), {
+      PXAT:
+        // eslint-disable-next-line no-nested-ternary
+        value.state === 'loading'
+          ? Date.now()
+            + (req?.cache && typeof req.cache.ttl === 'number'
+              ? req.cache.ttl
+              : 60000)
+          : (value.state === 'stale' && value.ttl)
+            || (value.state === 'cached' && !canStale(value))
+            ? value.createdAt + value.ttl!
+            : undefined,
+    });
+  },
+
+  async remove(key) {
+    await client.del(`axios-cache-${key}`);
+  },
+});
+
 const createCacheAdapter = (maxAge: number) => setupCache(
   Axios.create(),
-  { headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge) },
+  {
+    headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge),
+    storage: redisStorage,
+  },
 );
 
 const cachedGetter = (
