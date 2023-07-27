@@ -3,17 +3,16 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ListId } from '../../../types/list-id';
 import { ViewModel } from '../view-model';
 
-const renderArticleCount = (articleCount: number) => pipe(
+const renderArticleCount = (articleCount: ViewModel['articleCount']) => pipe(
   articleCount === 1,
   (singular) => `<span>${articleCount} ${singular ? 'article' : 'articles'}</span>`,
 );
 
-const renderLastUpdated = (date: Date) => `<span>Last updated ${templateDate(date)}</span>`;
+const renderLastUpdated = (date: ViewModel['updatedAt']) => `<span>Last updated ${templateDate(date)}</span>`;
 
-const renderEditDetailsLink = (editCapability: boolean, listId: ListId) => pipe(
+const renderEditDetailsLink = (editCapability: ViewModel['editCapability'], listId: ViewModel['listId']) => pipe(
   editCapability,
   B.fold(
     () => '',
@@ -21,7 +20,7 @@ const renderEditDetailsLink = (editCapability: boolean, listId: ListId) => pipe(
   ),
 );
 
-const renderRelatedArticlesLink = (url: O.Option<string>) => pipe(
+const renderRelatedArticlesLink = (url: ViewModel['relatedArticlesLink']) => pipe(
   url,
   O.match(
     () => '',
@@ -29,7 +28,7 @@ const renderRelatedArticlesLink = (url: O.Option<string>) => pipe(
   ),
 );
 
-const renderSubscribeLink = (listId: ListId) => `<a class="list-page-actions__subscribe" href="/lists/${listId}/subscribe">Subscribe</a>`;
+const renderSubscribeLink = (listId: ViewModel['listId']) => `<a class="list-page-actions__subscribe" href="/lists/${listId}/subscribe">Subscribe</a>`;
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
