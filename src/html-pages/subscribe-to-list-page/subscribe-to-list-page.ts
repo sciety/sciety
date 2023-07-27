@@ -1,8 +1,14 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
+import * as t from 'io-ts';
 import { HandlePage } from '../../http/page-handler';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
+import { ListId, listIdCodec } from '../../types/list-id';
+import * as DE from '../../types/data-error';
+
+const codec = t.strict({
+  listId: listIdCodec,
+});
 
 type ViewModel = {
   listId: ListId,
@@ -24,11 +30,17 @@ const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
 
 export const subscribeToListPage: HandlePage = (params: unknown) => pipe(
   params,
-  () => ({ listId: '' as ListId }),
-  renderAsHtml,
-  (content) => ({
+  codec.decode,
+  TE.fromEither,
+  TE.bimap(
+    () => ({
+      type: DE.notFound,
+      message: pipe('Something went wrong', toHtmlFragment),
+    }),
+    renderAsHtml,
+  ),
+  TE.map((content) => ({
     title: 'Subscribe to a list',
     content,
-  }),
-  TE.right,
+  })),
 );
