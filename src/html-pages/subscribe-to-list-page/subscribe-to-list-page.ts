@@ -7,10 +7,12 @@ export const subscribeToListPage: Page = {
     <header class="page-header">
       <h1>Subscribe to a list</h1>
     </header>
-    <p>Hello! Sorry, you've caught us before we're ready. 
-    
-    Once this feature is available, subscribing to a list will let you receive a regular update when this list is updated.
 
-    If you want us to tell you when it's possible to follow this list, <a href="/contact-us">let us know</a>.</p>
+    <p>
+      Please note that this is an experimental feature and may be a bit rough around the edges
+      while we get things ship-shape.
+    </p>
+
+    <script type="text/javascript" src="https://form.jotform.com/jsform/232072517707050"></script>
   `),
 };
