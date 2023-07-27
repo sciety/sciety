@@ -118,7 +118,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/lists/:listId/subscribe',
-    pageHandler(adapters, () => pipe(subscribeToListPage, TE.right)),
+    pageHandler(adapters, () => TE.right(subscribeToListPage)),
   );
 
   router.get(
