@@ -71,12 +71,10 @@ const cachedGetter = (
   return response.data;
 };
 
-type CachingFetcherFactory = (logger: Logger, cacheMaxAgeSeconds: number) => QueryExternalService;
+type CachingFetcherFactory = (logger: Logger, cacheMaxAgeSeconds: number, redisClient: ReturnType<typeof createClient>)
+=> QueryExternalService;
 
-export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds) => {
-  const redisClient = createClient({
-    url: 'redis://sciety_redis_1',
-  });
+export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds, redisClient) => {
   const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000, redisClient);
   const get = cachedGetter(cachedAxios, logger);
   return (

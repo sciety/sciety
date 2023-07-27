@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
+import { createClient } from 'redis';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -30,7 +31,10 @@ const findVersionsForArticleDoiFromSupportedServers = (
 };
 
 export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
-  const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60);
+  const redisClient = createClient({
+    url: 'redis://sciety_redis_1',
+  });
+  const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60, redisClient);
   return {
     fetchArticle: fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
