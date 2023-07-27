@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { createClient } from 'redis';
 import { persistEvents } from './persist-events';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
@@ -92,7 +93,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
       };
 
-      const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken);
+      const redisClient = createClient({
+        url: 'redis://sciety_redis_1',
+      });
+      await redisClient.connect();
+      const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken, redisClient);
 
       const collectedAdapters = {
         ...queries,

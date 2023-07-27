@@ -30,10 +30,11 @@ const findVersionsForArticleDoiFromSupportedServers = (
   return TO.none;
 };
 
-export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
-  const redisClient = createClient({
-    url: 'redis://sciety_redis_1',
-  });
+export const instantiate = (
+  logger: Logger,
+  crossrefApiBearerToken: O.Option<string>,
+  redisClient: ReturnType<typeof createClient>,
+): ExternalQueries => {
   const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60, redisClient);
   return {
     fetchArticle: fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
