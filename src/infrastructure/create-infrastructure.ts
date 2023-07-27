@@ -94,7 +94,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
 
       const redisClient = createClient({
-        url: 'redis://sciety_redis_1',
+        url: 'redis://sciety_cache',
       });
       await redisClient.connect();
       const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken, redisClient);
