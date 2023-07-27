@@ -13,7 +13,9 @@ import { QueryExternalService } from './query-external-service';
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
-const client = createClient(/* connection config */);
+const client = createClient({
+  url: 'redis://sciety_redis_1',
+});
 
 const redisStorage = buildStorage({
   async find(key) {

@@ -51,3 +51,6 @@ services:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s
     restart: unless-stopped
+
+  redis:
+    image: redis
