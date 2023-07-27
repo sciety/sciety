@@ -11,28 +11,16 @@ import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
 import { QueryExternalService } from './query-external-service';
 
-const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
-
-const redisStorage = (client: ReturnType<typeof createClient>) => buildStorage({
+const redisStorage = (client: ReturnType<typeof createClient>, maxAge: number) => buildStorage({
   async find(key) {
     return client
       .get(`axios-cache-${key}`)
       .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
   },
 
-  async set(key, value, req) {
+  async set(key, value) {
     await client.set(`axios-cache-${key}`, JSON.stringify(value), {
-      PXAT:
-        // eslint-disable-next-line no-nested-ternary
-        value.state === 'loading'
-          ? Date.now()
-            + (req?.cache && typeof req.cache.ttl === 'number'
-              ? req.cache.ttl
-              : 60000)
-          : (value.state === 'stale' && value.ttl)
-            || (value.state === 'cached' && !canStale(value))
-            ? value.createdAt + value.ttl!
-            : undefined,
+      PX: maxAge,
     });
   },
 
@@ -44,8 +32,7 @@ const redisStorage = (client: ReturnType<typeof createClient>) => buildStorage({
 const createCacheAdapter = (maxAge: number, client: ReturnType<typeof createClient>) => setupCache(
   Axios.create(),
   {
-    headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge),
-    storage: redisStorage(client),
+    storage: redisStorage(client, maxAge),
   },
 );
 
