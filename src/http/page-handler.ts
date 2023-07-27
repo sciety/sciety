@@ -58,7 +58,7 @@ export const toWebPage = (user: O.Option<UserDetails>, pageLayout: PageLayout) =
   pageToSuccessResponse(user, pageLayout),
 );
 
-type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
+export type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
 
 export const pageHandler = (
   adapters: GetLoggedInScietyUserPorts,
