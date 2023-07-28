@@ -5,6 +5,7 @@ import { HandlePage } from '../../http/page-handler';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId, listIdCodec } from '../../types/list-id';
 import * as DE from '../../types/data-error';
+import { Queries } from '../../shared-read-models';
 
 const codec = t.strict({
   listId: listIdCodec,
@@ -29,13 +30,18 @@ const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
   <script type="text/javascript" src="https://form.jotform.com/jsform/232072517707050?listId=${viewModel.listId}"></script>
 `);
 
-export const subscribeToListPage: HandlePage = (params: unknown) => pipe(
+export const subscribeToListPage = (dependencies: Queries): HandlePage => (params: unknown) => pipe(
   params,
   codec.decode,
   TE.fromEither,
-  TE.map(({ listId }) => ({
+  TE.chainW(({ listId }) => pipe(
     listId,
-    listName: 'a list',
+    dependencies.lookupList,
+    TE.fromOption(() => DE.notFound),
+  )),
+  TE.map((list) => ({
+    listId: list.id,
+    listName: list.name,
   })),
   TE.bimap(
     () => ({
