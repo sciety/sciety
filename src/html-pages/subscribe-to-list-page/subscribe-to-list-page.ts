@@ -20,7 +20,7 @@ const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
     <h1>Subscribe to a list</h1>
   </header>
 
-  <p>
+  <p class="subscribe-content">
     Please note that this is an experimental feature and may be a bit rough around the edges
     while we get things ship-shape.
   </p>
