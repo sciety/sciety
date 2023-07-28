@@ -27,11 +27,6 @@ const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
     <p>
       Here you can subscribe to <a href="${viewModel.listLink}">${viewModel.listName}</a>.
     </p>
-
-    <p>
-      Please note that this is an experimental feature and may be a bit rough around the edges
-      while we get things ship-shape.
-    </p>
   </section>
 
   <script type="text/javascript" src="https://form.jotform.com/jsform/232072517707050?listId=${viewModel.listId}"></script>
