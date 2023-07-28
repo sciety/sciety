@@ -12,12 +12,13 @@ const codec = t.strict({
 
 type ViewModel = {
   listId: ListId,
+  listName: string,
 };
 
 const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
   <header class="page-header">
 
-    <h1>Subscribe to a list</h1>
+    <h1>Subscribe to ${viewModel.listName}</h1>
   </header>
 
   <p class="subscribe-content">
@@ -32,6 +33,10 @@ export const subscribeToListPage: HandlePage = (params: unknown) => pipe(
   params,
   codec.decode,
   TE.fromEither,
+  TE.map(({ listId }) => ({
+    listId,
+    listName: 'a list',
+  })),
   TE.bimap(
     () => ({
       type: DE.notFound,
