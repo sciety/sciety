@@ -3,19 +3,14 @@ import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
 import { HandlePage } from '../../http/page-handler';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { ListId, listIdCodec } from '../../types/list-id';
+import { listIdCodec } from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import { Queries } from '../../shared-read-models';
+import { ViewModel } from './view-model';
 
 const codec = t.strict({
   listId: listIdCodec,
 });
-
-type ViewModel = {
-  listId: ListId,
-  listName: string,
-  listLink: string,
-};
 
 const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
   <header class="page-header">
