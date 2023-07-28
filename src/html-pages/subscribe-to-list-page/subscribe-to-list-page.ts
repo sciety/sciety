@@ -14,6 +14,7 @@ const codec = t.strict({
 type ViewModel = {
   listId: ListId,
   listName: string,
+  listLink: string,
 };
 
 const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
@@ -22,10 +23,16 @@ const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
     <h1>Subscribe to ${viewModel.listName}</h1>
   </header>
 
-  <p class="subscribe-content">
-    Please note that this is an experimental feature and may be a bit rough around the edges
-    while we get things ship-shape.
-  </p>
+  <section class="subscribe-content">
+    <p>
+      Here you can subscribe to <a href="${viewModel.listLink}">${viewModel.listName}</a>.
+    </p>
+
+    <p>
+      Please note that this is an experimental feature and may be a bit rough around the edges
+      while we get things ship-shape.
+    </p>
+  </section>
 
   <script type="text/javascript" src="https://form.jotform.com/jsform/232072517707050?listId=${viewModel.listId}"></script>
 `);
@@ -42,6 +49,7 @@ export const subscribeToListPage = (dependencies: Queries): HandlePage => (param
   TE.map((list) => ({
     listId: list.id,
     listName: list.name,
+    listLink: `/lists/${list.id}`,
   })),
   TE.bimap(
     () => ({
