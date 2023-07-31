@@ -9,7 +9,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
 
   <section class="subscribe-content">
     <p>
-      Here you can subscribe to <a href="${viewModel.listLink}">${viewModel.listName}</a>.
+      Here you can subscribe to <a href="${viewModel.listHref}">${viewModel.listName}</a>.
     </p>
   </section>
 

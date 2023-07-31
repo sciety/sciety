@@ -26,7 +26,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.map((list) => ({
     listId: list.id,
     listName: list.name,
-    listLink: `/lists/${list.id}`,
+    listHref: `/lists/${list.id}`,
     pageHeading: `Subscribe to ${list.name}`,
   })),
 );
