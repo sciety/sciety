@@ -1,16 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import * as t from 'io-ts';
 import { HandlePage } from '../../http/page-handler';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { listIdCodec } from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import { Queries } from '../../shared-read-models';
 import { ViewModel } from './view-model';
-
-const codec = t.strict({
-  listId: listIdCodec,
-});
+import { constructViewModel } from './construct-view-model/construct-view-model';
 
 const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
   <header class="page-header">
@@ -29,18 +24,7 @@ const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
 
 export const subscribeToListPage = (dependencies: Queries): HandlePage => (params: unknown) => pipe(
   params,
-  codec.decode,
-  TE.fromEither,
-  TE.chainW(({ listId }) => pipe(
-    listId,
-    dependencies.lookupList,
-    TE.fromOption(() => DE.notFound),
-  )),
-  TE.map((list) => ({
-    listId: list.id,
-    listName: list.name,
-    listLink: `/lists/${list.id}`,
-  })),
+  constructViewModel(dependencies),
   TE.bimap(
     () => ({
       type: DE.notFound,
