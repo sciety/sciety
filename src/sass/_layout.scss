@@ -66,9 +66,9 @@
   width: 100%;
   max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
-
   @include breakpoints.not-narrow {
     margin: 0 auto;
+    padding: 0 functions.px-to-rem(settings.$sciety-default-gutter);
   }
 }
 
@@ -83,7 +83,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
+  
   main {
     flex-grow: 1;
   }
