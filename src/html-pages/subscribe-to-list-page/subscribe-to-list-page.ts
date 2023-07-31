@@ -2,10 +2,10 @@ import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { HandlePage } from '../../http/page-handler';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { toErrorPage } from './render-as-html/to-error-page';
+import { toErrorPage } from './render-as-html';
 import { Queries } from '../../shared-read-models';
 import { ViewModel } from './view-model';
-import { constructViewModel } from './construct-view-model/construct-view-model';
+import { constructViewModel } from './construct-view-model';
 
 const renderAsHtml = (viewModel: ViewModel) => toHtmlFragment(`
   <header class="page-header">
