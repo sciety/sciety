@@ -3,7 +3,6 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header">
-
     <h1>${viewModel.pageHeading}</h1>
   </header>
 
