@@ -10,6 +10,7 @@ import { articleAddedToListEventCodec } from './article-added-to-list-event';
 import { articleRemovedFromListEventCodec } from './article-removed-from-list-event';
 import { evaluatedArticlesListSpecifiedEventCodec } from './evaluated-articles-list-specified-event';
 import { evaluationRecordedEventCodec } from './evaluation-recorded-event';
+import { evaluationRemovedByGroupEventCodec } from './evaluation-removed-by-group-event';
 import { evaluationUpdatedEventCodec } from './evaluation-updated-event';
 import { groupJoinedEventCodec } from './group-joined-event';
 import { listCreatedEventCodec } from './list-created-event';
@@ -49,6 +50,7 @@ export const domainEventCodec = t.union([
   curationStatementRecordedEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
   evaluationRecordedEventCodec,
+  evaluationRemovedByGroupEventCodec,
   evaluationUpdatedEventCodec,
   groupDetailsUpdatedEventCodec,
   groupJoinedEventCodec,

@@ -88,7 +88,20 @@ describe('get-evaluations-for-article', () => {
   });
 
   describe('when an evaluation has been recorded and then removed by a group', () => {
-    it.todo('does not return evaluations removed by groups');
+    const articleId = arbitraryDoi();
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const actualEvaluations = pipe(
+      [
+        evaluationRecorded(articleId, evaluationLocator),
+        constructEvent('EvaluationRemovedByGroup')({ evaluationLocator }),
+      ],
+      runQuery(articleId),
+      RA.map((evaluation) => evaluation.evaluationLocator),
+    );
+
+    it.failing('does not return evaluations removed by groups', () => {
+      expect(actualEvaluations).toStrictEqual([]);
+    });
   });
 
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
