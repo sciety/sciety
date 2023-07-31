@@ -90,10 +90,11 @@ describe('get-evaluations-for-article', () => {
   describe('when an evaluation has been recorded and then removed by a group', () => {
     const articleId = arbitraryDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
+    const reason = 'published-on-incorrect-article';
     const actualEvaluations = pipe(
       [
         evaluationRecorded(articleId, evaluationLocator),
-        constructEvent('EvaluationRemovedByGroup')({ evaluationLocator }),
+        constructEvent('EvaluationRemovedByGroup')({ evaluationLocator, reason }),
       ],
       runQuery(articleId),
       RA.map((evaluation) => evaluation.evaluationLocator),

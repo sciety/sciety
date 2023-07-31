@@ -8,4 +8,5 @@ export const evaluationRemovedByGroupEventCodec = t.type({
   type: t.literal('EvaluationRemovedByGroup'),
   date: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
+  reason: t.literal('published-on-incorrect-article'),
 });
