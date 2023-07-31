@@ -7,8 +7,7 @@ import { Page } from '../types/page';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const toNotFound = () => ({
+const toNotFound = () => ({
   type: DE.notFound,
   message: toHtmlFragment('Page not found'),
 });
