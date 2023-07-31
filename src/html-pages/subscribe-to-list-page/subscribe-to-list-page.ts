@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { HandlePage } from '../../http/page-handler';
 import { toHtmlFragment } from '../../types/html-fragment';
-import * as DE from '../../types/data-error';
+import { toErrorPage } from './render-as-html/to-error-page';
 import { Queries } from '../../shared-read-models';
 import { ViewModel } from './view-model';
 import { constructViewModel } from './construct-view-model/construct-view-model';
@@ -26,10 +26,7 @@ export const subscribeToListPage = (dependencies: Queries): HandlePage => (param
   params,
   constructViewModel(dependencies),
   TE.bimap(
-    () => ({
-      type: DE.notFound,
-      message: pipe('Something went wrong', toHtmlFragment),
-    }),
+    toErrorPage,
     renderAsHtml,
   ),
   TE.map((content) => ({
