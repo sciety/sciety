@@ -27,5 +27,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     listId: list.id,
     listName: list.name,
     listLink: `/lists/${list.id}`,
+    pageHeading: `Subscribe to ${list.name}`,
   })),
 );

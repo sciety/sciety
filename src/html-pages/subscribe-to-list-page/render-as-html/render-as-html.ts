@@ -3,6 +3,6 @@ import { renderPage } from './render-page';
 import { Page } from '../../../types/page';
 
 export const renderAsHtml = (viewModel: ViewModel): Page => ({
-  title: `Subscribe to ${viewModel.listName}`,
+  title: viewModel.pageHeading,
   content: renderPage(viewModel),
 });

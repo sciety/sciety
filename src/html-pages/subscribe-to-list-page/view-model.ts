@@ -4,4 +4,5 @@ export type ViewModel = {
   listId: ListId,
   listName: string,
   listLink: string,
+  pageHeading: string,
 };
