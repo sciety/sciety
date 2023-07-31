@@ -87,6 +87,10 @@ describe('get-evaluations-for-article', () => {
     });
   });
 
+  describe('when an evaluation has been recorded and then removed by a group', () => {
+    it.todo('does not return evaluations removed by groups');
+  });
+
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
     const articleId = arbitraryDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
