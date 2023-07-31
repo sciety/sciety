@@ -1,2 +1,2 @@
-export { renderPage } from './render-page';
+export { renderAsHtml } from './render-as-html';
 export { toErrorPage } from './to-error-page';
