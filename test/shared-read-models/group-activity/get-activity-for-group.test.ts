@@ -7,8 +7,9 @@ import { getActivityForGroup } from '../../../src/shared-read-models/group-activ
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
-import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
+import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDate } from '../../helpers';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -55,23 +56,18 @@ describe('get-activity-for-group', () => {
     });
 
     describe('and an evaluation has been recorded for it and erased', () => {
-      const recordedEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-      };
       let result: O.Option<unknown>;
 
       beforeEach(() => {
+        const evaluationLocator = arbitraryEvaluationLocator();
         const readModel = pipe(
           [
-            evaluationRecordedHelper(
-              recordedEvaluation.groupId,
-              recordedEvaluation.articleId,
-              recordedEvaluation.evaluationLocator,
-              recordedEvaluation.authors,
-              recordedEvaluation.publishedAt,
-            ),
-            constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.evaluationLocator }),
+            {
+              ...arbitraryEvaluationRecordedEvent(),
+              groupId: group.id,
+              evaluationLocator,
+            },
+            constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
