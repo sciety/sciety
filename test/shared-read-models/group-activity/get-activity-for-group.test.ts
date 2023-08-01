@@ -286,7 +286,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when one evaluation has been recorded and erased', () => {
+    describe('when one evaluation has been recorded, and erased by Sciety', () => {
       const recordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
@@ -324,7 +324,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when two evaluations have been recorded and one erased by Sciety', () => {
+    describe('when two evaluations have been recorded, and one erased by Sciety', () => {
       const remainingEvaluationPublishedAt = new Date('1999');
       const evaluationToErase = arbitraryEvaluationLocator();
       const readModel = pipe(
@@ -363,9 +363,9 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when two evaluations have been recorded and one removed by the group', () => {
+    describe('when two evaluations have been recorded, and one evaluation removal has been recorded', () => {
       const remainingEvaluationPublishedAt = new Date('1999');
-      const evaluationRemoved = arbitraryEvaluationLocator();
+      const evaluationLocator = arbitraryEvaluationLocator();
       const readModel = pipe(
         [
           groupJoinedEvent,
@@ -377,11 +377,11 @@ describe('get-activity-for-group', () => {
           {
             ...arbitraryEvaluationRecordedEvent(),
             groupId: group.id,
-            evaluationLocator: evaluationRemoved,
+            evaluationLocator,
           },
           {
             ...arbitraryEvaluationRemovalRecordedEvent(),
-            evaluationLocator: evaluationRemoved,
+            evaluationLocator,
           },
         ],
         RA.reduce(initialState(), handleEvent),
@@ -405,7 +405,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when an evaluation has been recorded twice', () => {
+    describe('when an evaluation\'s publication has been recorded twice', () => {
       const evaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
