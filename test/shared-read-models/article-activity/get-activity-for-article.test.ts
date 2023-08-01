@@ -54,7 +54,7 @@ describe('get-activity-for-article', () => {
       });
     });
 
-    describe('because it has had an evaluation recorded and removed', () => {
+    describe('because an evaluation publication and its removal have been recorded', () => {
       const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
       const events = [
         evaluationRecordedEvent,
