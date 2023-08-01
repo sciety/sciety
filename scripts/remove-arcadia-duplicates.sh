@@ -1,0 +1,1 @@
+curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST http://localhost:8080/api/erase-evaluation -H "Content-type: application/json" -d '{"evaluationLocator": "hypothesis:1KDzwtsdEe26cx9XyDdnSA"}'
