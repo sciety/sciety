@@ -64,7 +64,7 @@ describe('get-activity-for-article', () => {
         },
       ];
 
-      it.failing('the article has no evaluations', () => {
+      it('the article has no evaluations', () => {
         expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
       });
     });

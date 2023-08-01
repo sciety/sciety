@@ -93,6 +93,17 @@ const handleIncorrectlyRecordedEvaluationErasedEvent = (readmodel: ReadModel, ev
   });
 };
 
+const handleEvaluationRemovalRecordedEvent = (readmodel: ReadModel, event: EventOfType<'EvaluationRemovalRecorded'>) => {
+  readmodel.forEach((articleState) => {
+    const i = articleState.evaluationStates.findIndex(
+      (evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator,
+    );
+    if (i > -1) {
+      articleState.evaluationStates.splice(i, 1);
+    }
+  });
+};
+
 const handleArticleRemovedFromListEvent = (readmodel: ReadModel, event: EventOfType<'ArticleRemovedFromList'>) => {
   pipe(
     readmodel.get(event.articleId.value),
@@ -118,6 +129,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
 
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     handleIncorrectlyRecordedEvaluationErasedEvent(readmodel, event);
+  }
+
+  if (isEventOfType('EvaluationRemovalRecorded')(event)) {
+    handleEvaluationRemovalRecordedEvent(readmodel, event);
   }
 
   if (isEventOfType('ArticleRemovedFromList')(event)) {
