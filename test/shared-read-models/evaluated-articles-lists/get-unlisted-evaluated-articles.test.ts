@@ -92,7 +92,7 @@ describe('get-unlisted-evaluated-articles', () => {
     };
     const articleAdded = constructEvent('ArticleAddedToList')({ articleId, listId });
 
-    const summ = (es: ReadonlyArray<DomainEvent>) => pipe(
+    const summarise = (es: ReadonlyArray<DomainEvent>) => pipe(
       es,
       RA.map((e) => e.type),
       (ts) => `[${ts.join(' -> ')}]`,
@@ -104,8 +104,19 @@ describe('get-unlisted-evaluated-articles', () => {
       [[articleEvaluated], false],
       [[articleAdded], false],
       [[articleAdded, listIdentified], false],
+      [[articleAdded, articleEvaluated], false],
+      // [[articleEvaluated, listIdentified], true],
+      [[articleEvaluated, articleAdded], false],
+      // [[listIdentified, articleEvaluated], true],
+      [[listIdentified, articleAdded], false],
+      [[listIdentified, articleAdded, articleEvaluated], false],
+      [[listIdentified, articleEvaluated, articleAdded], false],
+      [[articleEvaluated, listIdentified, articleAdded], false],
+      [[articleEvaluated, articleAdded, listIdentified], false],
+      [[articleAdded, articleEvaluated, listIdentified], false],
+      [[articleAdded, listIdentified, articleEvaluated], false],
     ])('an article with lifecycle', (eventHistory, expectedOutcome) => {
-      it(`${summ(eventHistory)} is${expectedOutcome ? '' : ' not'} listed as work for the saga`, () => {
+      it(`${summarise(eventHistory)} is${expectedOutcome ? '' : ' not'} listed as work for the saga`, () => {
         const queryOutcome = pipe(
           eventHistory,
           RA.reduce(initialState(), handleEvent),
