@@ -11,6 +11,7 @@ import { handleEvent, initialState } from '../../../src/shared-read-models/evalu
 import { Doi } from '../../../src/types/doi';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
+import { arbitraryEvaluationRemovalRecordedEvent } from '../../types/evaluation-removal-recorded-event-helper';
 
 const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -87,20 +88,22 @@ describe('get-evaluations-for-article', () => {
     });
   });
 
-  describe('when an evaluation has been recorded and then removed by a group', () => {
+  describe('when an evaluation publication and its removal have been recorded', () => {
     const articleId = arbitraryDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
-    const reason = 'published-on-incorrect-article';
     const actualEvaluations = pipe(
       [
         evaluationRecorded(articleId, evaluationLocator),
-        constructEvent('EvaluationRemovalRecorded')({ evaluationLocator, reason }),
+        {
+          ...arbitraryEvaluationRemovalRecordedEvent(),
+          evaluationLocator,
+        },
       ],
       runQuery(articleId),
       RA.map((evaluation) => evaluation.evaluationLocator),
     );
 
-    it('does not return evaluations removed by groups', () => {
+    it('does not return evaluations whose removal has been recorded', () => {
       expect(actualEvaluations).toStrictEqual([]);
     });
   });
