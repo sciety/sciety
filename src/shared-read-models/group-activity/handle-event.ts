@@ -31,20 +31,20 @@ const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'Evaluation
   }
 };
 
-const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyRecordedEvaluationErased'>) => {
+const excludeEvaluation = (readmodel: ReadModel, evaluationLocator: EvaluationLocator) => {
   readmodel.forEach((groupActivity) => {
-    if (groupActivity.has(event.evaluationLocator)) {
-      groupActivity.delete(event.evaluationLocator);
+    if (groupActivity.has(evaluationLocator)) {
+      groupActivity.delete(evaluationLocator);
     }
   });
 };
 
+const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyRecordedEvaluationErased'>) => {
+  excludeEvaluation(readmodel, event.evaluationLocator);
+};
+
 const evaluationRemoved = (readmodel: ReadModel, event: EventOfType<'EvaluationRemovedByGroup'>) => {
-  readmodel.forEach((groupActivity) => {
-    if (groupActivity.has(event.evaluationLocator)) {
-      groupActivity.delete(event.evaluationLocator);
-    }
-  });
+  excludeEvaluation(readmodel, event.evaluationLocator);
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
