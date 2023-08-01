@@ -1,6 +1,6 @@
 /* eslint-disable padded-blocks */
-import Router from '@koa/router';
 import { URL } from 'url';
+import Router from '@koa/router';
 import { ParameterizedContext } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import * as t from 'io-ts';

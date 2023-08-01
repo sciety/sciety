@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
 import { URL } from 'url';
+import axios, { AxiosResponse } from 'axios';
 import { Logger } from '../shared-ports';
 import * as DE from '../types/data-error';
 import { LevelName } from '../infrastructure/logger';

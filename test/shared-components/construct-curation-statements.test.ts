@@ -1,6 +1,6 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { URL } from 'url';
 import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
 import { createTestFramework, TestFramework } from '../framework';
 import { arbitraryGroup } from '../types/group.helper';
