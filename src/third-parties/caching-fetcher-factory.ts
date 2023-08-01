@@ -1,8 +1,8 @@
+import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
 import { setupCache, type HeaderInterpreter, AxiosCacheInstance } from 'axios-cache-interceptor';
-import { URL } from 'url';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';

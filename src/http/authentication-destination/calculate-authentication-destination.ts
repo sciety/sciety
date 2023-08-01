@@ -1,5 +1,5 @@
-import { pipe } from 'fp-ts/function';
 import { URL } from 'url';
+import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 
 export const defaultDestination = '/';

@@ -1,5 +1,5 @@
-import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchReview } from '../../shared-ports';
 import { toHtmlFragment } from '../../types/html-fragment';
