@@ -73,6 +73,7 @@ import { fullWidthPageLayout } from '../shared-components/full-width-page-layout
 import { applicationStatus } from '../views/status';
 import { listFeed } from '../views/list/list-feed';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
+import { statusGroups } from '../views/status-groups';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -403,6 +404,12 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/status', async (context, next) => {
     context.response.body = applicationStatus(adapters);
+    context.response.status = StatusCodes.OK;
+    await next();
+  });
+
+  router.get('/status/groups', async (context, next) => {
+    context.response.body = statusGroups(adapters);
     context.response.status = StatusCodes.OK;
     await next();
   });
