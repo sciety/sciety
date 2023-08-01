@@ -1,1 +1,7 @@
 curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST http://localhost:8080/api/erase-evaluation -H "Content-type: application/json" -d '{"evaluationLocator": "hypothesis:1KDzwtsdEe26cx9XyDdnSA"}'
+curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST http://localhost:8080/api/erase-evaluation -H "Content-type: application/json" -d '{"evaluationLocator": "hypothesis:0zlvGNsZEe2k9EcENz-Frw"}'
+curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST http://localhost:8080/api/erase-evaluation -H "Content-type: application/json" -d '{"evaluationLocator": "hypothesis:roFDTtseEe27DPM4aVla_A"}'
+curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST http://localhost:8080/api/erase-evaluation -H "Content-type: application/json" -d '{"evaluationLocator": "hypothesis:jFiFRtqtEe2hqL9YOTNe3w"}'
+curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST http://localhost:8080/api/erase-evaluation -H "Content-type: application/json" -d '{"evaluationLocator": "hypothesis:FQE7qtgAEe2TJ_dcACAw-w"}'
+curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST http://localhost:8080/api/erase-evaluation -H "Content-type: application/json" -d '{"evaluationLocator": "hypothesis:dciSTNf9Ee2YKN8wsR-Fig"}'
+curl -v -H "Authorization: Bearer $INGESTION_AUTH_BEARER_TOKEN" -X POST http://localhost:8080/api/erase-evaluation -H "Content-type: application/json" -d '{"evaluationLocator": "hypothesis:pIyFstf3Ee2VEk_ds_zQqg"}'
