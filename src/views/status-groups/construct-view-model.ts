@@ -1,18 +1,18 @@
 import { Json } from 'fp-ts/Json';
+import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as O from 'fp-ts/Option';
 import { Queries } from '../../shared-read-models';
 
 export const constructViewModel = (queries: Queries): Json => ({
-  data: {
-    annotations: queries.annotationsStatus(),
-    evaluations: queries.evaluationsStatus(),
-    followings: queries.followingsStatus(),
-    groups: {
-      total: queries.getAllGroups().length,
-    },
-    lists: queries.listsStatus(),
-    users: queries.usersStatus(),
-  },
-  sagaWorkQueues: {
-    elifeArticleStates: queries.elifeArticleStatus(),
-  },
+  groups: pipe(
+    queries.getAllGroups(),
+    RA.map((group) => ({
+      ...group,
+      largeLogoPath: pipe(
+        group.largeLogoPath,
+        O.getOrElse(() => ''),
+      ),
+    })),
+  ),
 });
