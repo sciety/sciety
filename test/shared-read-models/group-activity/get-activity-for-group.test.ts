@@ -325,34 +325,22 @@ describe('get-activity-for-group', () => {
     });
 
     describe('when two evaluations have been recorded and one erased', () => {
-      const goodEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-        publishedAt: new Date('1999'),
-      };
-      const badEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-        publishedAt: new Date('2023'),
-      };
+      const remainingEvaluationPublishedAt = new Date('1999');
+      const evaluationToErase = arbitraryEvaluationLocator();
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecordedHelper(
-            goodEvaluation.groupId,
-            goodEvaluation.articleId,
-            goodEvaluation.evaluationLocator,
-            goodEvaluation.authors,
-            goodEvaluation.publishedAt,
-          ),
-          evaluationRecordedHelper(
-            badEvaluation.groupId,
-            badEvaluation.articleId,
-            badEvaluation.evaluationLocator,
-            badEvaluation.authors,
-            badEvaluation.publishedAt,
-          ),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: badEvaluation.evaluationLocator }),
+          {
+            ...arbitraryEvaluationRecordedEvent(),
+            groupId: group.id,
+            publishedAt: remainingEvaluationPublishedAt,
+          },
+          {
+            ...arbitraryEvaluationRecordedEvent(),
+            groupId: group.id,
+            evaluationLocator: evaluationToErase,
+          },
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationToErase }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -369,7 +357,7 @@ describe('get-activity-for-group', () => {
       it('returns the latestActivityAt for the remaining evaluation', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
-            latestActivityAt: O.some(goodEvaluation.publishedAt),
+            latestActivityAt: O.some(remainingEvaluationPublishedAt),
           }),
         ));
       });
