@@ -10,6 +10,7 @@ import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.hel
 import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { arbitraryEvaluationRemovedByGroupEvent } from '../../types/evaluation-removed-by-group-event-helper';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -55,7 +56,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('and an evaluation has been recorded for it and erased', () => {
+    describe('and an evaluation has been recorded for the group and erased by Sciety', () => {
       let result: O.Option<unknown>;
 
       beforeEach(() => {
@@ -68,6 +69,33 @@ describe('get-activity-for-group', () => {
               evaluationLocator,
             },
             constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+        result = getActivityForGroup(readModel)(group.id);
+      });
+
+      it('returns O.none', () => {
+        expect(result).toStrictEqual(O.none);
+      });
+    });
+
+    describe('and an evaluation has been recorded for the group and removed by the group', () => {
+      let result: O.Option<unknown>;
+
+      beforeEach(() => {
+        const evaluationLocator = arbitraryEvaluationLocator();
+        const readModel = pipe(
+          [
+            {
+              ...arbitraryEvaluationRecordedEvent(),
+              groupId: group.id,
+              evaluationLocator,
+            },
+            {
+              ...arbitraryEvaluationRemovedByGroupEvent(),
+              evaluationLocator,
+            },
           ],
           RA.reduce(initialState(), handleEvent),
         );
