@@ -60,6 +60,12 @@ const removeFromIndexByEvaluationLocator = (event: EventOfType<'IncorrectlyRecor
   readmodel.byEvaluationLocator.delete(event.evaluationLocator);
 };
 
+const removeFromAllIndexes = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovedByGroup'>, readmodel: ReadModel) => {
+  removeFromIndexByEvaluationLocator(event, readmodel);
+  removeFromIndexByArticle(event, readmodel);
+  removeFromIndexByGroup(event, readmodel);
+};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationRecorded')(event)) {
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
@@ -79,14 +85,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     }
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
-    removeFromIndexByEvaluationLocator(event, readmodel);
-    removeFromIndexByArticle(event, readmodel);
-    removeFromIndexByGroup(event, readmodel);
+    removeFromAllIndexes(event, readmodel);
   }
   if (isEventOfType('EvaluationRemovedByGroup')(event)) {
-    removeFromIndexByEvaluationLocator(event, readmodel);
-    removeFromIndexByArticle(event, readmodel);
-    removeFromIndexByGroup(event, readmodel);
+    removeFromAllIndexes(event, readmodel);
   }
   if (isEventOfType('CurationStatementRecorded')(event)) {
     const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
