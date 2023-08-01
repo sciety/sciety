@@ -43,23 +43,27 @@ export type ReadModel = Map<string, ArticleState>;
 
 export const initialState = (): ReadModel => new Map();
 
+const handleArticleAddedToListEvent = (readmodel: ReadModel, event: EventOfType<'ArticleAddedToList'>) => {
+  pipe(
+    readmodel.get(event.articleId.value),
+    O.fromNullable,
+    O.fold(
+      () => readmodel.set(event.articleId.value, {
+        articleId: event.articleId,
+        evaluationStates: [],
+        lists: new Set([event.listId]),
+      }),
+      (entry) => readmodel.set(event.articleId.value, {
+        ...entry,
+        lists: entry.lists.add(event.listId),
+      }),
+    ),
+  );
+};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ArticleAddedToList')(event)) {
-    pipe(
-      readmodel.get(event.articleId.value),
-      O.fromNullable,
-      O.fold(
-        () => readmodel.set(event.articleId.value, {
-          articleId: event.articleId,
-          evaluationStates: [],
-          lists: new Set([event.listId]),
-        }),
-        (entry) => readmodel.set(event.articleId.value, {
-          ...entry,
-          lists: entry.lists.add(event.listId),
-        }),
-      ),
-    );
+    handleArticleAddedToListEvent(readmodel, event);
   }
 
   if (isEventOfType('EvaluationRecorded')(event)) {
