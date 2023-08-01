@@ -10,7 +10,7 @@ import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.hel
 import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryEvaluationRemovedByGroupEvent } from '../../types/evaluation-removed-by-group-event-helper';
+import { arbitraryEvaluationRemovalRecordedEvent } from '../../types/evaluation-removal-recorded-event-helper';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -93,7 +93,7 @@ describe('get-activity-for-group', () => {
               evaluationLocator,
             },
             {
-              ...arbitraryEvaluationRemovedByGroupEvent(),
+              ...arbitraryEvaluationRemovalRecordedEvent(),
               evaluationLocator,
             },
           ],
@@ -380,7 +380,7 @@ describe('get-activity-for-group', () => {
             evaluationLocator: evaluationRemoved,
           },
           {
-            ...arbitraryEvaluationRemovedByGroupEvent(),
+            ...arbitraryEvaluationRemovalRecordedEvent(),
             evaluationLocator: evaluationRemoved,
           },
         ],

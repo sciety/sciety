@@ -94,7 +94,7 @@ describe('get-evaluations-for-article', () => {
     const actualEvaluations = pipe(
       [
         evaluationRecorded(articleId, evaluationLocator),
-        constructEvent('EvaluationRemovedByGroup')({ evaluationLocator, reason }),
+        constructEvent('EvaluationRemovalRecorded')({ evaluationLocator, reason }),
       ],
       runQuery(articleId),
       RA.map((evaluation) => evaluation.evaluationLocator),

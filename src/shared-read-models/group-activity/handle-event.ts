@@ -43,7 +43,7 @@ const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyR
   excludeEvaluation(readmodel, event.evaluationLocator);
 };
 
-const evaluationRemoved = (readmodel: ReadModel, event: EventOfType<'EvaluationRemovedByGroup'>) => {
+const evaluationRemoved = (readmodel: ReadModel, event: EventOfType<'EvaluationRemovalRecorded'>) => {
   excludeEvaluation(readmodel, event.evaluationLocator);
 };
 
@@ -57,7 +57,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     evaluationErased(readmodel, event);
   }
-  if (isEventOfType('EvaluationRemovedByGroup')(event)) {
+  if (isEventOfType('EvaluationRemovalRecorded')(event)) {
     evaluationRemoved(readmodel, event);
   }
   return readmodel;

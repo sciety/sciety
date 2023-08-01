@@ -7,7 +7,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
 import { getActivityForArticle } from '../../../src/shared-read-models/article-activity/get-activity-for-article';
-import { arbitraryEvaluationRemovedByGroupEvent } from '../../types/evaluation-removed-by-group-event-helper';
+import { arbitraryEvaluationRemovalRecordedEvent } from '../../types/evaluation-removal-recorded-event-helper';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -59,7 +59,7 @@ describe('get-activity-for-article', () => {
       const events = [
         evaluationRecordedEvent,
         {
-          ...arbitraryEvaluationRemovedByGroupEvent(),
+          ...arbitraryEvaluationRemovalRecordedEvent(),
           evaluationLocator: evaluationRecordedEvent.evaluationLocator,
         },
       ];
