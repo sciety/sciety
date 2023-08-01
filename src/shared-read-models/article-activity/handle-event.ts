@@ -82,6 +82,31 @@ const handleEvaluationRecordedEvent = (readmodel: ReadModel, event: EventOfType<
   );
 };
 
+const handleIncorrectlyRecordedEvaluationErasedEvent = (readmodel: ReadModel, event: EventOfType<'IncorrectlyRecordedEvaluationErased'>) => {
+  readmodel.forEach((articleState) => {
+    const i = articleState.evaluationStates.findIndex(
+      (evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator,
+    );
+    if (i > -1) {
+      articleState.evaluationStates.splice(i, 1);
+    }
+  });
+};
+
+const handleArticleRemovedFromListEvent = (readmodel: ReadModel, event: EventOfType<'ArticleRemovedFromList'>) => {
+  pipe(
+    readmodel.get(event.articleId.value),
+    O.fromNullable,
+    O.fold(
+      () => readmodel,
+      (entry) => readmodel.set(event.articleId.value, {
+        ...entry,
+        lists: deleteFromSet(entry.lists, event.listId),
+      }),
+    ),
+  );
+};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ArticleAddedToList')(event)) {
     handleArticleAddedToListEvent(readmodel, event);
@@ -92,28 +117,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   }
 
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
-    readmodel.forEach((articleState) => {
-      const i = articleState.evaluationStates.findIndex(
-        (evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator,
-      );
-      if (i > -1) {
-        articleState.evaluationStates.splice(i, 1);
-      }
-    });
+    handleIncorrectlyRecordedEvaluationErasedEvent(readmodel, event);
   }
 
   if (isEventOfType('ArticleRemovedFromList')(event)) {
-    pipe(
-      readmodel.get(event.articleId.value),
-      O.fromNullable,
-      O.fold(
-        () => readmodel,
-        (entry) => readmodel.set(event.articleId.value, {
-          ...entry,
-          lists: deleteFromSet(entry.lists, event.listId),
-        }),
-      ),
-    );
+    handleArticleRemovedFromListEvent(readmodel, event);
   }
   return readmodel;
 };
