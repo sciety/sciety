@@ -61,30 +61,34 @@ const handleArticleAddedToListEvent = (readmodel: ReadModel, event: EventOfType<
   );
 };
 
+const handleEvaluationRecordedEvent = (readmodel: ReadModel, event: EventOfType<'EvaluationRecorded'>) => {
+  pipe(
+    readmodel.get(event.articleId.value),
+    O.fromNullable,
+    O.fold(
+      () => readmodel.set(event.articleId.value, {
+        articleId: event.articleId,
+        evaluationStates: [{
+          evaluationLocator: event.evaluationLocator,
+          publishedAt: event.publishedAt,
+        }],
+        lists: new Set(),
+      }),
+      (entry) => readmodel.set(event.articleId.value, {
+        ...entry,
+        evaluationStates: addToEvaluationStates(entry.evaluationStates, event),
+      }),
+    ),
+  );
+};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ArticleAddedToList')(event)) {
     handleArticleAddedToListEvent(readmodel, event);
   }
 
   if (isEventOfType('EvaluationRecorded')(event)) {
-    pipe(
-      readmodel.get(event.articleId.value),
-      O.fromNullable,
-      O.fold(
-        () => readmodel.set(event.articleId.value, {
-          articleId: event.articleId,
-          evaluationStates: [{
-            evaluationLocator: event.evaluationLocator,
-            publishedAt: event.publishedAt,
-          }],
-          lists: new Set(),
-        }),
-        (entry) => readmodel.set(event.articleId.value, {
-          ...entry,
-          evaluationStates: addToEvaluationStates(entry.evaluationStates, event),
-        }),
-      ),
-    );
+    handleEvaluationRecordedEvent(readmodel, event);
   }
 
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
