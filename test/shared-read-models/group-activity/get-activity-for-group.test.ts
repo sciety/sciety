@@ -16,7 +16,7 @@ describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
 
   describe('when the group has not joined', () => {
-    describe('and no evaluation has been recorded for it', () => {
+    describe('and no group activity has been recorded', () => {
       const readModel = pipe(
         [],
         RA.reduce(initialState(), handleEvent),
@@ -28,7 +28,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('and an evaluation has been recorded for it', () => {
+    describe('and an evaluation\'s publication has been recorded', () => {
       const recordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         groupId: group.id,
@@ -56,7 +56,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('and an evaluation has been recorded for the group and erased by Sciety', () => {
+    describe('and an evaluation\'s publication has been recorded, and then erased by Sciety', () => {
       let result: O.Option<unknown>;
 
       beforeEach(() => {
@@ -80,7 +80,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('and an evaluation has been recorded for the group and removed by the group', () => {
+    describe('and an evaluation\'s publication and removal have been recorded', () => {
       let result: O.Option<unknown>;
 
       beforeEach(() => {
