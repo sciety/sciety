@@ -31,7 +31,7 @@ const addToIndexByArticle = (recordedEvaluation: RecordedEvaluation, readmodel: 
   readmodel.byArticleId.set(recordedEvaluation.articleId.value, evaluationsForThisArticle);
 };
 
-const removeFromIndexByArticle = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'>, readmodel: ReadModel) => {
+const removeFromIndexByArticle = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovedByGroup'>, readmodel: ReadModel) => {
   readmodel.byArticleId.forEach((state) => {
     const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
     if (i > -1) {
@@ -46,7 +46,7 @@ const addToIndexByGroup = (recordedEvaluation: RecordedEvaluation, readmodel: Re
   readmodel.byGroupId.set(recordedEvaluation.groupId, evaluationsByThisGroup);
 };
 
-const removeFromIndexByGroup = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'>, readmodel: ReadModel) => {
+const removeFromIndexByGroup = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovedByGroup'>, readmodel: ReadModel) => {
   readmodel.byGroupId.forEach((state) => {
     state.delete(event.evaluationLocator);
   });
@@ -56,7 +56,7 @@ const addToIndexByEvaluationLocator = (recordedEvaluation: RecordedEvaluation, r
   readmodel.byEvaluationLocator.set(recordedEvaluation.evaluationLocator, recordedEvaluation);
 };
 
-const removeFromIndexByEvaluationLocator = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'>, readmodel: ReadModel) => {
+const removeFromIndexByEvaluationLocator = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovedByGroup'>, readmodel: ReadModel) => {
   readmodel.byEvaluationLocator.delete(event.evaluationLocator);
 };
 
@@ -79,6 +79,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     }
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
+    removeFromIndexByEvaluationLocator(event, readmodel);
+    removeFromIndexByArticle(event, readmodel);
+    removeFromIndexByGroup(event, readmodel);
+  }
+  if (isEventOfType('EvaluationRemovedByGroup')(event)) {
     removeFromIndexByEvaluationLocator(event, readmodel);
     removeFromIndexByArticle(event, readmodel);
     removeFromIndexByGroup(event, readmodel);

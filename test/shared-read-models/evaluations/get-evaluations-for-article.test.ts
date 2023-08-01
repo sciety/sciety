@@ -100,7 +100,7 @@ describe('get-evaluations-for-article', () => {
       RA.map((evaluation) => evaluation.evaluationLocator),
     );
 
-    it.failing('does not return evaluations removed by groups', () => {
+    it('does not return evaluations removed by groups', () => {
       expect(actualEvaluations).toStrictEqual([]);
     });
   });
