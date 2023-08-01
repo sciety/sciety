@@ -7,6 +7,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
 import { getActivityForArticle } from '../../../src/shared-read-models/article-activity/get-activity-for-article';
+import { arbitraryEvaluationRemovedByGroupEvent } from '../../types/evaluation-removed-by-group-event-helper';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -49,6 +50,21 @@ describe('get-activity-for-article', () => {
       ];
 
       it('the article has no evaluations', () => {
+        expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
+      });
+    });
+
+    describe('because it has had an evaluation recorded and removed', () => {
+      const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
+      const events = [
+        evaluationRecordedEvent,
+        {
+          ...arbitraryEvaluationRemovedByGroupEvent(),
+          evaluationLocator: evaluationRecordedEvent.evaluationLocator,
+        },
+      ];
+
+      it.failing('the article has no evaluations', () => {
         expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
       });
     });
