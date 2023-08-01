@@ -388,7 +388,7 @@ describe('get-activity-for-group', () => {
       );
       const result = getActivityForGroup(readModel)(group.id);
 
-      it.failing('returns an evaluationCount of 1', () => {
+      it('returns an evaluationCount of 1', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
             evaluationCount: 1,
@@ -396,7 +396,7 @@ describe('get-activity-for-group', () => {
         ));
       });
 
-      it.failing('returns the latestActivityAt for the remaining evaluation', () => {
+      it('returns the latestActivityAt for the remaining evaluation', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
             latestActivityAt: O.some(remainingEvaluationPublishedAt),

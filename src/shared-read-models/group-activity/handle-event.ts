@@ -39,6 +39,14 @@ const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyR
   });
 };
 
+const evaluationRemoved = (readmodel: ReadModel, event: EventOfType<'EvaluationRemovedByGroup'>) => {
+  readmodel.forEach((groupActivity) => {
+    if (groupActivity.has(event.evaluationLocator)) {
+      groupActivity.delete(event.evaluationLocator);
+    }
+  });
+};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('GroupJoined')(event)) {
     groupJoined(readmodel, event);
@@ -48,6 +56,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     evaluationErased(readmodel, event);
+  }
+  if (isEventOfType('EvaluationRemovedByGroup')(event)) {
+    evaluationRemoved(readmodel, event);
   }
   return readmodel;
 };
