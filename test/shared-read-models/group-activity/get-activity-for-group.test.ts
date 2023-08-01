@@ -324,7 +324,7 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when two evaluations have been recorded and one erased', () => {
+    describe('when two evaluations have been recorded and one erased by Sciety', () => {
       const remainingEvaluationPublishedAt = new Date('1999');
       const evaluationToErase = arbitraryEvaluationLocator();
       const readModel = pipe(
@@ -355,6 +355,48 @@ describe('get-activity-for-group', () => {
       });
 
       it('returns the latestActivityAt for the remaining evaluation', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            latestActivityAt: O.some(remainingEvaluationPublishedAt),
+          }),
+        ));
+      });
+    });
+
+    describe('when two evaluations have been recorded and one removed by the group', () => {
+      const remainingEvaluationPublishedAt = new Date('1999');
+      const evaluationRemoved = arbitraryEvaluationLocator();
+      const readModel = pipe(
+        [
+          groupJoinedEvent,
+          {
+            ...arbitraryEvaluationRecordedEvent(),
+            groupId: group.id,
+            publishedAt: remainingEvaluationPublishedAt,
+          },
+          {
+            ...arbitraryEvaluationRecordedEvent(),
+            groupId: group.id,
+            evaluationLocator: evaluationRemoved,
+          },
+          {
+            ...arbitraryEvaluationRemovedByGroupEvent(),
+            evaluationLocator: evaluationRemoved,
+          },
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getActivityForGroup(readModel)(group.id);
+
+      it.failing('returns an evaluationCount of 1', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            evaluationCount: 1,
+          }),
+        ));
+      });
+
+      it.failing('returns the latestActivityAt for the remaining evaluation', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
             latestActivityAt: O.some(remainingEvaluationPublishedAt),
