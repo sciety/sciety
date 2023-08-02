@@ -2,8 +2,8 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { EvaluationLocator } from '../../types/evaluation-locator';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 type RecordedEvaluationsForArticle = Array<RecordedEvaluation>;
@@ -20,9 +20,12 @@ export const initialState = (): ReadModel => ({
   byGroupId: new Map(),
 });
 
-const hasAlreadyBeenRecorded = (event: EventOfType<'EvaluationRecorded'>, existingEvaluations: RecordedEvaluationsForArticle) => pipe(
+const hasAlreadyBeenRecorded = (
+  evaluationLocator: EvaluationLocator,
+  existingEvaluations: RecordedEvaluationsForArticle,
+) => pipe(
   existingEvaluations,
-  RA.some((existingEvaluation) => existingEvaluation.evaluationLocator === event.evaluationLocator),
+  RA.some((existingEvaluation) => existingEvaluation.evaluationLocator === evaluationLocator),
 );
 
 const addToIndexByArticle = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {
@@ -31,9 +34,9 @@ const addToIndexByArticle = (recordedEvaluation: RecordedEvaluation, readmodel: 
   readmodel.byArticleId.set(recordedEvaluation.articleId.value, evaluationsForThisArticle);
 };
 
-const removeFromIndexByArticle = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>, readmodel: ReadModel) => {
+const removeFromIndexByArticle = (evaluationLocator: EvaluationLocator, readmodel: ReadModel) => {
   readmodel.byArticleId.forEach((state) => {
-    const i = state.findIndex((evaluation) => evaluation.evaluationLocator === event.evaluationLocator);
+    const i = state.findIndex((evaluation) => evaluation.evaluationLocator === evaluationLocator);
     if (i > -1) {
       state.splice(i, 1);
     }
@@ -46,9 +49,9 @@ const addToIndexByGroup = (recordedEvaluation: RecordedEvaluation, readmodel: Re
   readmodel.byGroupId.set(recordedEvaluation.groupId, evaluationsByThisGroup);
 };
 
-const removeFromIndexByGroup = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>, readmodel: ReadModel) => {
+const removeFromIndexByGroup = (evaluationLocator: EvaluationLocator, readmodel: ReadModel) => {
   readmodel.byGroupId.forEach((state) => {
-    state.delete(event.evaluationLocator);
+    state.delete(evaluationLocator);
   });
 };
 
@@ -56,20 +59,20 @@ const addToIndexByEvaluationLocator = (recordedEvaluation: RecordedEvaluation, r
   readmodel.byEvaluationLocator.set(recordedEvaluation.evaluationLocator, recordedEvaluation);
 };
 
-const removeFromIndexByEvaluationLocator = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>, readmodel: ReadModel) => {
-  readmodel.byEvaluationLocator.delete(event.evaluationLocator);
+const removeFromIndexByEvaluationLocator = (evaluationLocator: EvaluationLocator, readmodel: ReadModel) => {
+  readmodel.byEvaluationLocator.delete(evaluationLocator);
 };
 
-const removeFromAllIndexes = (event: EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>, readmodel: ReadModel) => {
-  removeFromIndexByEvaluationLocator(event, readmodel);
-  removeFromIndexByArticle(event, readmodel);
-  removeFromIndexByGroup(event, readmodel);
+const removeFromAllIndexes = (evaluationLocator: EvaluationLocator, readmodel: ReadModel) => {
+  removeFromIndexByEvaluationLocator(evaluationLocator, readmodel);
+  removeFromIndexByArticle(evaluationLocator, readmodel);
+  removeFromIndexByGroup(evaluationLocator, readmodel);
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationRecorded')(event)) {
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
-    if (!hasAlreadyBeenRecorded(event, evaluationsForThisArticle)) {
+    if (!hasAlreadyBeenRecorded(event.evaluationLocator, evaluationsForThisArticle)) {
       const recordedEvaluation: RecordedEvaluation = {
         articleId: event.articleId,
         evaluationLocator: event.evaluationLocator,
@@ -85,10 +88,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     }
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
-    removeFromAllIndexes(event, readmodel);
+    removeFromAllIndexes(event.evaluationLocator, readmodel);
   }
   if (isEventOfType('EvaluationRemovalRecorded')(event)) {
-    removeFromAllIndexes(event, readmodel);
+    removeFromAllIndexes(event.evaluationLocator, readmodel);
   }
   if (isEventOfType('CurationStatementRecorded')(event)) {
     const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
