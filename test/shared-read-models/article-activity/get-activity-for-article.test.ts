@@ -8,6 +8,7 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
 import { getActivityForArticle } from '../../../src/shared-read-models/article-activity/get-activity-for-article';
 import { arbitraryEvaluationRemovalRecordedEvent } from '../../types/evaluation-removal-recorded-event-helper';
+import { arbitraryDate } from '../../helpers';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -68,56 +69,64 @@ describe('get-activity-for-article', () => {
     });
   });
 
-  describe('when an article has one or more evaluations', () => {
-    const event1 = arbitraryEvaluationRecordedEvent();
-    const event2 = {
-      ...arbitraryEvaluationRecordedEvent(),
-      articleId: event1.articleId,
-      publishedAt: new Date(event1.publishedAt.getTime() + 1000),
-    };
+  const event1 = arbitraryEvaluationRecordedEvent();
+  const event2 = {
+    ...arbitraryEvaluationRecordedEvent(),
+    articleId: event1.articleId,
+    publishedAt: new Date(event1.publishedAt.getTime() + 1000),
+  };
 
-    describe('and the evaluations are recorded in order of publication', () => {
-      const events = [
-        event1,
-        event2,
-      ];
+  describe('when an article has two evaluations, recorded in order of publication', () => {
+    const earlierPublishedAt = arbitraryDate();
+    const laterPublishedAt = new Date(earlierPublishedAt.getTime() + 1000);
+    const events = [
+      {
+        ...arbitraryEvaluationRecordedEvent(),
+        articleId,
+        publishedAt: earlierPublishedAt,
+      },
+      {
+        ...arbitraryEvaluationRecordedEvent(),
+        articleId,
+        publishedAt: laterPublishedAt,
+      },
+    ];
 
-      it('returns the activity for that article', () => {
-        expect(runQuery(events)(event1.articleId)).toStrictEqual(expect.objectContaining({
-          latestActivityAt: O.some(event2.publishedAt),
-          evaluationCount: 2,
-        }));
-      });
+    it('returns the activity for that article', () => {
+      expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
+        latestActivityAt: O.some(laterPublishedAt),
+        evaluationCount: 2,
+      }));
+    });
+  });
+
+  describe('when an article has two evaluations, not recorded in order of publication', () => {
+    const events = [
+      event2,
+      event1,
+    ];
+
+    it('returns the activity for that article', () => {
+      expect(runQuery(events)(event1.articleId)).toStrictEqual(expect.objectContaining({
+        latestActivityAt: O.some(event2.publishedAt),
+        evaluationCount: 2,
+      }));
+    });
+  });
+
+  describe('when an article has two evaluation publications recorded, and one of the evaluations erased', () => {
+    const events = [
+      event2,
+      event1,
+      constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: event2.evaluationLocator }),
+    ];
+
+    it('the evaluation count reflects the erasure', () => {
+      expect(runQuery(events)(event1.articleId).evaluationCount).toBe(1);
     });
 
-    describe('and the evaluations are NOT recorded in order of publication', () => {
-      const events = [
-        event2,
-        event1,
-      ];
-
-      it('returns the activity for that article', () => {
-        expect(runQuery(events)(event1.articleId)).toStrictEqual(expect.objectContaining({
-          latestActivityAt: O.some(event2.publishedAt),
-          evaluationCount: 2,
-        }));
-      });
-    });
-
-    describe('and one of the evaluations has been erased', () => {
-      const events = [
-        event2,
-        event1,
-        constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: event2.evaluationLocator }),
-      ];
-
-      it('the evaluation count reflects the erasure', () => {
-        expect(runQuery(events)(event1.articleId).evaluationCount).toBe(1);
-      });
-
-      it('the latest activity reflects the erasure', () => {
-        expect(runQuery(events)(event1.articleId).latestActivityAt).toStrictEqual(O.some(event1.publishedAt));
-      });
+    it('the latest activity reflects the erasure', () => {
+      expect(runQuery(events)(event1.articleId).latestActivityAt).toStrictEqual(O.some(event1.publishedAt));
     });
   });
 
