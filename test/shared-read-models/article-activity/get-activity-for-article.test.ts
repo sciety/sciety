@@ -50,7 +50,7 @@ describe('get-activity-for-article', () => {
       constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationRecordedEvent.evaluationLocator }),
     ];
 
-    it('the article has no evaluations', () => {
+    it('has an evaluationCount of 0', () => {
       expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
     });
   });
@@ -65,7 +65,7 @@ describe('get-activity-for-article', () => {
       },
     ];
 
-    it('the article has no evaluations', () => {
+    it('has an evaluationCount of 0', () => {
       expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
     });
   });
@@ -86,10 +86,15 @@ describe('get-activity-for-article', () => {
       },
     ];
 
-    it('returns the activity for that article', () => {
+    it('has an evaluationCount of 2', () => {
+      expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
+        evaluationCount: 2,
+      }));
+    });
+
+    it('has latestActivityAt set to the most recent publication date', () => {
       expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
         latestActivityAt: O.some(laterPublishedAt),
-        evaluationCount: 2,
       }));
     });
   });
@@ -110,10 +115,15 @@ describe('get-activity-for-article', () => {
       },
     ];
 
-    it('returns the activity for that article', () => {
+    it('has an evaluationCount of 2', () => {
+      expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
+        evaluationCount: 2,
+      }));
+    });
+
+    it('has latestActivityAt set to the most recent publication date', () => {
       expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
         latestActivityAt: O.some(laterPublishedAt),
-        evaluationCount: 2,
       }));
     });
   });
@@ -137,11 +147,11 @@ describe('get-activity-for-article', () => {
       constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
     ];
 
-    it('the evaluation count is 1', () => {
+    it('has an evaluationCount of 1', () => {
       expect(runQuery(events)(articleId).evaluationCount).toBe(1);
     });
 
-    it('the latest activity reflects the erasure', () => {
+    it('has latestActivity set to the previous publication date', () => {
       expect(runQuery(events)(articleId).latestActivityAt).toStrictEqual(O.some(earlierPublishedAt));
     });
   });
@@ -153,11 +163,11 @@ describe('get-activity-for-article', () => {
       event,
     ];
 
-    it('the evaluation count is 1', () => {
+    it('has an evaluationCount of 1', () => {
       expect(runQuery(events)(event.articleId).evaluationCount).toBe(1);
     });
 
-    it('the latest activity is that of the first recording', () => {
+    it('has latestActivity set to the first recorded publication date', () => {
       expect(runQuery(events)(event.articleId).latestActivityAt).toStrictEqual(O.some(event.publishedAt));
     });
   });
