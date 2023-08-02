@@ -54,7 +54,17 @@ describe('lifecycle', () => {
     });
 
     describe('update', () => {
-      it.todo('fails with not found');
+      const result = pipe(
+        initialState,
+        A.concat(update({
+          evaluationLocator: arbitraryEvaluationLocator(),
+          evaluationType: 'review',
+        })),
+      );
+
+      it('errors with not found', () => {
+        expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
+      });
     });
   });
 

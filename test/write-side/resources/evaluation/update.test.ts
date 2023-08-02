@@ -109,20 +109,4 @@ describe('update', () => {
       });
     });
   });
-
-  describe('when the evaluation locator has not been recorded', () => {
-    const command = {
-      evaluationLocator: arbitraryEvaluationLocator(),
-      evaluationType: 'author-response' as const,
-    };
-
-    const result = pipe(
-      [],
-      update(command),
-    );
-
-    it('fails', () => {
-      expect(E.isLeft(result)).toBe(true);
-    });
-  });
 });
