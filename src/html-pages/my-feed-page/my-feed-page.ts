@@ -23,7 +23,7 @@ type Params = t.TypeOf<typeof myFeedParams>;
 
 type HomePage = (params: Params) => TE.TaskEither<never, Page>;
 
-const callToAction = toHtmlFragment('<p class="my-feed-page-cta"><a href="/log-in">Log in</a> to follow your favourite Sciety groups and see what they have evaluated.</p>');
+const callToAction = toHtmlFragment('<p><a href="/log-in">Log in</a> to follow your favourite Sciety groups and see what they have evaluated.</p>');
 
 export const myFeedPage = (dependencies: Dependencies): HomePage => (params: Params) => pipe(
   {

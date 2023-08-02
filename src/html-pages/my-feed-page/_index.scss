@@ -8,10 +8,6 @@
   @include feed-page-numbers.feed-page-numbers();
 }
 
-.my-feed-page-cta {
-  @include layout.page-content-horizontal-margins();
-}
-
 .my-feed-page-feed-container h2 {
   margin-left: 1rem;
   margin-right: 1rem;
