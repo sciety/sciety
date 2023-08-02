@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { getEvaluationsForArticle } from '../../../src/shared-read-models/evaluations/get-evaluations-for-article';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
+import { arbitraryEvaluationRecordedEvent } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
@@ -25,24 +25,23 @@ const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
 };
 
 const evaluationRecorded = (articleId: Doi, evaluationLocator: EvaluationLocator) => (
-  evaluationRecordedHelper(arbitraryGroupId(), articleId, evaluationLocator, [], new Date())
+  {
+    ...arbitraryEvaluationRecordedEvent(),
+    articleId,
+    evaluationLocator,
+  }
 );
 
 const evaluationRecordedWithType = (
   articleId: Doi,
   evaluationLocator: EvaluationLocator,
   evaluationType: EvaluationType,
-) => (
-  evaluationRecordedHelper(
-    arbitraryGroupId(),
-    articleId,
-    evaluationLocator,
-    [],
-    new Date(),
-    new Date(),
-    evaluationType,
-  )
-);
+) => ({
+  ...arbitraryEvaluationRecordedEvent(),
+  articleId,
+  evaluationLocator,
+  evaluationType,
+});
 
 describe('get-evaluations-for-article', () => {
   describe('when there is an arbitrary number of evaluations', () => {
@@ -114,7 +113,12 @@ describe('get-evaluations-for-article', () => {
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        evaluationRecordedHelper(groupId, articleId, evaluationLocator, [], new Date()),
+        {
+          ...arbitraryEvaluationRecordedEvent(),
+          groupId,
+          articleId,
+          evaluationLocator,
+        },
         constructEvent('CurationStatementRecorded')({ articleId, groupId, evaluationLocator }),
       ],
       runQuery(articleId),
