@@ -1,0 +1,5 @@
+@use 'layout';
+
+.page-content {
+  @include layout.page-content-horizontal-margins();
+}
