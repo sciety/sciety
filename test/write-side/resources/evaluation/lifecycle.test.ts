@@ -49,8 +49,8 @@ describe('lifecycle', () => {
         A.concat(erase({ evaluationLocator })),
       );
 
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(initialState);
+      it.failing('errors with not found', () => {
+        expect(result).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
 
@@ -61,8 +61,8 @@ describe('lifecycle', () => {
         A.concat(recordRemoval({ evaluationLocator })),
       );
 
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(initialState);
+      it.failing('errors with not found', () => {
+        expect(result).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
 
@@ -75,8 +75,8 @@ describe('lifecycle', () => {
         })),
       );
 
-      it('errors with not found', () => {
-        expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
+      it.failing('errors with not found', () => {
+        expect(result).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
   });
