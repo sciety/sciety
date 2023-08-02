@@ -6,11 +6,11 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
-import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryEvaluationRecordedEvent } from '../../types/evaluation-recorded-event.helper';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryEvaluationRemovalRecordedEvent } from '../../types/evaluation-removal-recorded-event-helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -363,28 +363,24 @@ describe('get-activity-for-group', () => {
     });
 
     describe('when an evaluation\'s publication has been recorded twice', () => {
-      const evaluation = {
-        ...arbitraryRecordedEvaluation(),
+      const eventProperties = {
         groupId: group.id,
-        publishedAt: new Date('1999'),
+        articleId: arbitraryArticleId(),
+        evaluationLocator: arbitraryEvaluationLocator(),
+        authors: [arbitraryString()],
+        publishedAt: arbitraryDate(),
       };
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecordedHelper(
-            evaluation.groupId,
-            evaluation.articleId,
-            evaluation.evaluationLocator,
-            evaluation.authors,
-            evaluation.publishedAt,
-          ),
-          evaluationRecordedHelper(
-            evaluation.groupId,
-            evaluation.articleId,
-            evaluation.evaluationLocator,
-            evaluation.authors,
-            arbitraryDate(),
-          ),
+          {
+            ...arbitraryEvaluationRecordedEvent(),
+            ...eventProperties,
+          },
+          {
+            ...arbitraryEvaluationRecordedEvent(),
+            ...eventProperties,
+          },
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -401,7 +397,7 @@ describe('get-activity-for-group', () => {
       it('returns the latestActivityAt of the first recorded', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
-            latestActivityAt: O.some(evaluation.publishedAt),
+            latestActivityAt: O.some(eventProperties.publishedAt),
           }),
         ));
       });
