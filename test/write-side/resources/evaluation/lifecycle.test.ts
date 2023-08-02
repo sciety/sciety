@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { recordRemoval } from '../../../../src/write-side/resources/evaluation/record-removal';
 import { erase, update, record } from '../../../../src/write-side/resources/evaluation';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 import { arbitraryDate, arbitraryString } from '../../../helpers';
@@ -49,6 +50,18 @@ describe('lifecycle', () => {
       );
 
       it('succeeds without changing state', () => {
+        expect(result).toStrictEqual(initialState);
+      });
+    });
+
+    describe('record removal', () => {
+      const evaluationLocator = arbitraryEvaluationLocator();
+      const result = pipe(
+        initialState,
+        A.concat(recordRemoval({ evaluationLocator })),
+      );
+
+      it.failing('succeeds without changing state', () => {
         expect(result).toStrictEqual(initialState);
       });
     });
