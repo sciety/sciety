@@ -8,7 +8,7 @@ export const legalPage: Page = {
       <h1>Legal information</h1>
     </header>
 
-    <div class="legal-page-content">
+    <div>
       <h2>Terms and conditions</h2>
       <p>
         This website is operated by eLife Sciences Publications, Ltd under their terms and conditions as

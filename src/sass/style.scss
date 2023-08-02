@@ -6,19 +6,16 @@
 
 @use 'page-header';
 @use 'button';
-@use '../html-pages/about-page';
 @use '../html-pages/article-page/render-as-html';
 @use '../html-pages/create-user-account-form-page';
 @use '../html-pages/edit-list-details-form-page';
 @use '../html-pages/group-page';
 @use '../html-pages/home-page';
-@use '../html-pages/legal-page';
 @use '../html-pages/list-page';
 @use '../html-pages/mobile-menu';
 @use '../html-pages/my-feed-page';
 @use '../html-pages/sciety-feed-page';
 @use '../html-pages/search-results-page';
-@use '../html-pages/subscribe-to-list-page';
 @use '../html-pages/user-page';
 @use '../http/error-page';
 @use 'list';
