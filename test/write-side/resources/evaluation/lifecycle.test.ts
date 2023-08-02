@@ -95,13 +95,18 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      const result = pipe(
+      const newEvents = pipe(
         initialState,
-        A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+        A.last(erase({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
-      it.skip('erases the evaluation resource', () => {
-        expect(result).toStrictEqual([]);
+      it('succeeds with a new event', () => {
+        expect(newEvents).toStrictEqual(E.right([
+          expect.objectContaining({
+            type: 'IncorrectlyRecordedEvaluationErased',
+            evaluationLocator: recordCommand.evaluationLocator,
+          }),
+        ]));
       });
     });
 
