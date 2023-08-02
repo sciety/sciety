@@ -123,6 +123,22 @@ describe('lifecycle', () => {
       });
     });
 
+    describe('record removal', () => {
+      const newEvents = pipe(
+        initialState,
+        A.last(recordRemoval({ evaluationLocator: recordCommand.evaluationLocator })),
+      );
+
+      it.skip('succeeds with a new event', () => {
+        expect(newEvents).toStrictEqual(E.right([
+          expect.objectContaining({
+            type: 'EvaluationRemovalRecorded',
+            evaluationLocator: recordCommand.evaluationLocator,
+          }),
+        ]));
+      });
+    });
+
     describe('update', () => {
       const newEvents = pipe(
         initialState,
