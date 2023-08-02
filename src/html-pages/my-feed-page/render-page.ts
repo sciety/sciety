@@ -10,7 +10,7 @@ type Components = {
 
 const render = (components: Components) => `
   ${components.header}
-  <div class="my-feed-page-feed-container">
+  <div>
     ${components.content}
   </div>
 `;
