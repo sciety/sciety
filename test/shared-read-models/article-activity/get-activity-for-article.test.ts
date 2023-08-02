@@ -18,55 +18,53 @@ const runQuery = (events: ReadonlyArray<DomainEvent>) => pipe(
 describe('get-activity-for-article', () => {
   const articleId = arbitraryArticleId();
 
-  describe('when an article has no evaluations and is in no list', () => {
-    describe('because it has never been added to a list', () => {
-      it('article has no activity', () => {
-        expect(runQuery([])(articleId)).toStrictEqual({
-          articleId,
-          latestActivityAt: O.none,
-          evaluationCount: 0,
-          listMembershipCount: 0,
-        });
+  describe('when an article has never been added to a list', () => {
+    it('article has no activity', () => {
+      expect(runQuery([])(articleId)).toStrictEqual({
+        articleId,
+        latestActivityAt: O.none,
+        evaluationCount: 0,
+        listMembershipCount: 0,
       });
     });
+  });
 
-    describe('because it has been added and removed from a list', () => {
-      const listId = arbitraryListId();
-      const events = [
-        constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('ArticleRemovedFromList')({ articleId, listId }),
-      ];
+  describe('when an article has been added and removed from a list', () => {
+    const listId = arbitraryListId();
+    const events = [
+      constructEvent('ArticleAddedToList')({ articleId, listId }),
+      constructEvent('ArticleRemovedFromList')({ articleId, listId }),
+    ];
 
-      it('has a listMemberShipCount of 0', () => {
-        expect(runQuery(events)(articleId).listMembershipCount).toBe(0);
-      });
+    it('has a listMemberShipCount of 0', () => {
+      expect(runQuery(events)(articleId).listMembershipCount).toBe(0);
     });
+  });
 
-    describe('because it has had an evaluation recorded and erased', () => {
-      const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
-      const events = [
-        evaluationRecordedEvent,
-        constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationRecordedEvent.evaluationLocator }),
-      ];
+  describe('when an article has had an evaluation recorded and erased', () => {
+    const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
+    const events = [
+      evaluationRecordedEvent,
+      constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationRecordedEvent.evaluationLocator }),
+    ];
 
-      it('the article has no evaluations', () => {
-        expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
-      });
+    it('the article has no evaluations', () => {
+      expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
     });
+  });
 
-    describe('because an evaluation publication and its removal have been recorded', () => {
-      const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
-      const events = [
-        evaluationRecordedEvent,
-        {
-          ...arbitraryEvaluationRemovalRecordedEvent(),
-          evaluationLocator: evaluationRecordedEvent.evaluationLocator,
-        },
-      ];
+  describe('when an article has had an evaluation publication and its removal recorded', () => {
+    const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
+    const events = [
+      evaluationRecordedEvent,
+      {
+        ...arbitraryEvaluationRemovalRecordedEvent(),
+        evaluationLocator: evaluationRecordedEvent.evaluationLocator,
+      },
+    ];
 
-      it('the article has no evaluations', () => {
-        expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
-      });
+    it('the article has no evaluations', () => {
+      expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
     });
   });
 
