@@ -5,7 +5,7 @@ import { erase } from '../../../../src/write-side/resources/evaluation';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 
-import { arbitraryEvaluationRecordedEvent } from '../../../types/evaluation-recorded-event.helper';
+import { arbitraryEvaluationRecordedEvent } from '../../../domain-events/evaluation-recorded-event.helper';
 
 const expectIncorrectlyRecordedEvaluationErasedEvent = (evaluationLocator: EvaluationLocator): unknown => (
   expect.objectContaining({

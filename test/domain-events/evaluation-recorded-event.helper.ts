@@ -4,10 +4,10 @@ import { EvaluationLocator } from '../../src/types/evaluation-locator';
 import { GroupId } from '../../src/types/group-id';
 import { EvaluationType } from '../../src/types/recorded-evaluation';
 import { arbitraryDate } from '../helpers';
-import { arbitraryDoi } from './doi.helper';
-import { arbitraryEvaluationLocator } from './evaluation-locator.helper';
-import { arbitraryEvaluationType } from './evaluation-type.helper';
-import { arbitraryGroupId } from './group-id.helper';
+import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
+import { arbitraryEvaluationType } from '../types/evaluation-type.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 export const arbitraryEvaluationRecordedEvent = (): EventOfType<'EvaluationRecorded'> => constructEvent('EvaluationRecorded')({
   groupId: arbitraryGroupId(),

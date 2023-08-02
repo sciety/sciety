@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecordedHelper } from '../types/evaluation-recorded-event.helper';
+import { evaluationRecordedHelper } from '../domain-events/evaluation-recorded-event.helper';
 import { constructCommand } from '../../src/policies/add-article-to-evaluated-articles-list';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryArticleId } from '../types/article-id.helper';

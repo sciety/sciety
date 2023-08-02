@@ -1,6 +1,6 @@
 import { performance } from 'perf_hooks';
 import * as O from 'fp-ts/Option';
-import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
+import { evaluationRecordedHelper } from '../../../domain-events/evaluation-recorded-event.helper';
 import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities';
 import { arbitraryDate } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';

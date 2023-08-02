@@ -8,7 +8,7 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
 import { arbitraryDate } from '../../../helpers';
-import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
+import { evaluationRecordedHelper } from '../../../domain-events/evaluation-recorded-event.helper';
 
 describe('execute-command', () => {
   const articleId = arbitraryArticleId();

@@ -5,7 +5,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
+import { evaluationRecordedHelper } from '../../domain-events/evaluation-recorded-event.helper';
 
 const group = arbitraryGroup();
 

@@ -5,7 +5,7 @@ import { arbitraryDate, arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
+import { evaluationRecordedHelper } from '../../../domain-events/evaluation-recorded-event.helper';
 import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 
