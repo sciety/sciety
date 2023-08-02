@@ -9,7 +9,7 @@ import { arbitraryEvaluationLocator } from './evaluation-locator.helper';
 import { arbitraryEvaluationType } from './evaluation-type.helper';
 import { arbitraryGroupId } from './group-id.helper';
 
-export const arbitraryEvaluationRecordedEvent = (): EventOfType<'EvaluationRecorded'> => constructEvent('EvaluationRecorded')({
+export const arbitraryEvaluationPublicationRecordedEvent = (): EventOfType<'EvaluationPublicationRecorded'> => constructEvent('EvaluationPublicationRecorded')({
   groupId: arbitraryGroupId(),
   articleId: arbitraryDoi(),
   evaluationLocator: arbitraryEvaluationLocator(),
@@ -27,7 +27,7 @@ export const evaluationRecordedHelper = (
   publishedAt: Date,
   date: Date = new Date(),
   evaluationType?: EvaluationType,
-): EventOfType<'EvaluationRecorded'> => constructEvent('EvaluationRecorded')({
+): EventOfType<'EvaluationPublicationRecorded'> => constructEvent('EvaluationPublicationRecorded')({
   date,
   groupId,
   articleId: doi,

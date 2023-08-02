@@ -30,7 +30,7 @@ describe('lifecycle', () => {
 
       it('creates the evaluation resource', () => {
         expect(result).toStrictEqual(E.right([expect.objectContaining({
-          type: 'EvaluationRecorded',
+          type: 'EvaluationPublicationRecorded',
           groupId: input.groupId,
           articleId: input.articleId,
           evaluationLocator: input.evaluationLocator,

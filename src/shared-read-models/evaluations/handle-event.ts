@@ -20,7 +20,7 @@ export const initialState = (): ReadModel => ({
   byGroupId: new Map(),
 });
 
-const hasAlreadyBeenRecorded = (event: EventOfType<'EvaluationRecorded'>, existingEvaluations: RecordedEvaluationsForArticle) => pipe(
+const hasAlreadyBeenRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, existingEvaluations: RecordedEvaluationsForArticle) => pipe(
   existingEvaluations,
   RA.some((existingEvaluation) => existingEvaluation.evaluationLocator === event.evaluationLocator),
 );
@@ -67,7 +67,7 @@ const removeFromAllIndexes = (event: EventOfType<'IncorrectlyRecordedEvaluationE
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isEventOfType('EvaluationRecorded')(event)) {
+  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
     if (!hasAlreadyBeenRecorded(event, evaluationsForThisArticle)) {
       const recordedEvaluation: RecordedEvaluation = {

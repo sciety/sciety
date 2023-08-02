@@ -11,11 +11,11 @@ import { UpdateEvaluationCommand } from '../../commands';
 import { toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 
-type EvaluationEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
+type EvaluationEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
 const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event): event is EvaluationEvent => isEventOfType('EvaluationRecorded')(event)
+  RA.filter((event): event is EvaluationEvent => isEventOfType('EvaluationPublicationRecorded')(event)
     || isEventOfType('EvaluationUpdated')(event)
     || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)),
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
@@ -33,7 +33,7 @@ const constructWriteModel = (evaluationLocator: EvaluationLocator) => (events: R
     RNEA.last,
     (event) => {
       switch (event.type) {
-        case 'EvaluationRecorded':
+        case 'EvaluationPublicationRecorded':
         case 'EvaluationUpdated':
           return E.right({ evaluationType: event.evaluationType });
         case 'IncorrectlyRecordedEvaluationErased':

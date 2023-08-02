@@ -14,8 +14,8 @@ const articleId = arbitraryArticleId();
 
 describe('to-docmap', () => {
   describe('docmap meta data', () => {
-    const earlierEvaluationRecordedDate = new Date('1900');
-    const laterEvaluationRecordedDate = new Date('2000');
+    const earlierEvaluationPublicationRecordedDate = new Date('1900');
+    const laterEvaluationPublicationRecordedDate = new Date('2000');
     const group = arbitraryGroup();
     const result = toDocmap({
       articleId,
@@ -25,14 +25,14 @@ describe('to-docmap', () => {
         {
           sourceUrl: new URL(arbitraryUri()),
           evaluationLocator: arbitraryEvaluationLocator(),
-          recordedAt: earlierEvaluationRecordedDate,
+          recordedAt: earlierEvaluationPublicationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
         },
         {
           sourceUrl: new URL(arbitraryUri()),
           evaluationLocator: arbitraryEvaluationLocator(),
-          recordedAt: laterEvaluationRecordedDate,
+          recordedAt: laterEvaluationPublicationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
         },
@@ -86,11 +86,11 @@ describe('to-docmap', () => {
     });
 
     it('sets created to the date the first evaluation was recorded', async () => {
-      expect(result.created).toStrictEqual(earlierEvaluationRecordedDate.toISOString());
+      expect(result.created).toStrictEqual(earlierEvaluationPublicationRecordedDate.toISOString());
     });
 
     it('sets updated to the date the last evaluation was recorded', async () => {
-      expect(result.updated).toStrictEqual(laterEvaluationRecordedDate.toISOString());
+      expect(result.updated).toStrictEqual(laterEvaluationPublicationRecordedDate.toISOString());
     });
   });
 

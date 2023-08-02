@@ -11,12 +11,12 @@ const hasEvaluationAlreadyBeenRecorded = (
   evaluationLocator: EvaluationLocator,
 ) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter(isEventOfType('EvaluationRecorded')),
+  RA.filter(isEventOfType('EvaluationPublicationRecorded')),
   RA.some((event) => event.evaluationLocator === evaluationLocator),
 );
 
-const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => constructEvent(
-  'EvaluationRecorded',
+const createEvaluationPublicationRecordedEvent = (command: RecordEvaluationCommand) => constructEvent(
+  'EvaluationPublicationRecorded',
 )({
   groupId: command.groupId,
   articleId: command.articleId,
@@ -31,7 +31,7 @@ export const record: ResourceAction<RecordEvaluationCommand> = (command) => (eve
   events,
   hasEvaluationAlreadyBeenRecorded(command.evaluationLocator),
   B.fold(
-    () => [createEvaluationRecordedEvent(command)],
+    () => [createEvaluationPublicationRecordedEvent(command)],
     () => [],
   ),
   E.right,

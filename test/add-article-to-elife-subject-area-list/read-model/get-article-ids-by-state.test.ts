@@ -20,7 +20,7 @@ describe('get-article-ids-by-state', () => {
 
     const readModel = pipe(
       [
-        constructEvent('EvaluationRecorded')({
+        constructEvent('EvaluationPublicationRecorded')({
           groupId: elifeGroupId,
           articleId: articleIdA,
           evaluationLocator: arbitraryEvaluationLocator(),
@@ -30,7 +30,7 @@ describe('get-article-ids-by-state', () => {
         }),
         constructEvent('ArticleAddedToList')({ articleId: articleIdB, listId: elifeSubjectAreaLists[0] }),
         constructEvent('SubjectAreaRecorded')({ articleId: articleIdC, subjectArea: arbitrarySubjectArea() }),
-        constructEvent('EvaluationRecorded')({
+        constructEvent('EvaluationPublicationRecorded')({
           groupId: elifeGroupId,
           articleId: articleIdD,
           evaluationLocator: arbitraryEvaluationLocator(),

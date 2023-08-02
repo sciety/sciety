@@ -17,7 +17,7 @@ type ArticleActivityDetails = {
 };
 
 const eventToActivityDetails = (
-  event: EventOfType<'EvaluationRecorded'>,
+  event: EventOfType<'EvaluationPublicationRecorded'>,
   groupIds: ReadonlyArray<GroupId>,
 ): ArticleActivityDetails => ({
   mostRecentRecordedEvaluationByFollowedGroups: event.date,
@@ -51,7 +51,7 @@ const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
 ) => (
   activities: Map<string, ArticleActivityDetails>,
-  event: EventOfType<'EvaluationRecorded'>,
+  event: EventOfType<'EvaluationPublicationRecorded'>,
 ) => pipe(
   activities.get(event.articleId.value),
   O.fromNullable,
@@ -81,7 +81,7 @@ type FollowedGroupsActivities = (
 
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
-  RA.filter(isEventOfType('EvaluationRecorded')),
+  RA.filter(isEventOfType('EvaluationPublicationRecorded')),
   RA.reduce(new Map(), addEventToActivities(groupIds)),
   RM.filterMapWithIndex(flow(
     (key, activityDetails) => O.some({ articleId: new Doi(key), ...activityDetails }),

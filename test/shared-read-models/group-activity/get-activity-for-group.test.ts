@@ -7,7 +7,7 @@ import { getActivityForGroup } from '../../../src/shared-read-models/group-activ
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
-import { arbitraryEvaluationRecordedEvent, evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent, evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryDate } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryEvaluationRemovalRecordedEvent } from '../../types/evaluation-removal-recorded-event-helper';
@@ -64,7 +64,7 @@ describe('get-activity-for-group', () => {
         const readModel = pipe(
           [
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
               evaluationLocator,
             },
@@ -88,7 +88,7 @@ describe('get-activity-for-group', () => {
         const readModel = pipe(
           [
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
               evaluationLocator,
             },
@@ -331,12 +331,12 @@ describe('get-activity-for-group', () => {
         [
           groupJoinedEvent,
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             publishedAt: remainingEvaluationPublishedAt,
           },
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             evaluationLocator: evaluationToErase,
           },
@@ -370,12 +370,12 @@ describe('get-activity-for-group', () => {
         [
           groupJoinedEvent,
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             publishedAt: remainingEvaluationPublishedAt,
           },
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             evaluationLocator,
           },

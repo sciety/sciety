@@ -17,7 +17,7 @@ describe('get-one-article-id-in-evaluated-state', () => {
 
     const readModel = pipe(
       [
-        constructEvent('EvaluationRecorded')({
+        constructEvent('EvaluationPublicationRecorded')({
           groupId: elifeGroupId,
           articleId,
           evaluationLocator: arbitraryEvaluationLocator(),
@@ -39,7 +39,7 @@ describe('get-one-article-id-in-evaluated-state', () => {
 
     const readModel = pipe(
       [
-        constructEvent('EvaluationRecorded')({
+        constructEvent('EvaluationPublicationRecorded')({
           groupId: elifeGroupId,
           articleId,
           evaluationLocator: arbitraryEvaluationLocator(),

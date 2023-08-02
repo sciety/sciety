@@ -39,7 +39,7 @@ describe('update', () => {
       evaluationType: 'author-response' as const,
     };
 
-    describe('when the evaluation type has been recorded in the EvaluationRecorded event', () => {
+    describe('when the evaluation type has been recorded in the EvaluationPublicationRecorded event', () => {
       describe('and the command matches the existing evaluation type', () => {
         const existingEvents = [
           evaluationRecordedWithType(evaluationLocator, 'author-response'),

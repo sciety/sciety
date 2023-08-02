@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationRecordedEvent } from '../../types/evaluation-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
@@ -43,7 +43,7 @@ describe('get-activity-for-article', () => {
     });
 
     describe('because it has had an evaluation recorded and erased', () => {
-      const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
+      const evaluationRecordedEvent = arbitraryEvaluationPublicationRecordedEvent();
       const events = [
         evaluationRecordedEvent,
         constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationRecordedEvent.evaluationLocator }),
@@ -55,7 +55,7 @@ describe('get-activity-for-article', () => {
     });
 
     describe('because an evaluation publication and its removal have been recorded', () => {
-      const evaluationRecordedEvent = arbitraryEvaluationRecordedEvent();
+      const evaluationRecordedEvent = arbitraryEvaluationPublicationRecordedEvent();
       const events = [
         evaluationRecordedEvent,
         {
@@ -71,9 +71,9 @@ describe('get-activity-for-article', () => {
   });
 
   describe('when an article has one or more evaluations', () => {
-    const event1 = arbitraryEvaluationRecordedEvent();
+    const event1 = arbitraryEvaluationPublicationRecordedEvent();
     const event2 = {
-      ...arbitraryEvaluationRecordedEvent(),
+      ...arbitraryEvaluationPublicationRecordedEvent(),
       articleId: event1.articleId,
       publishedAt: new Date(event1.publishedAt.getTime() + 1000),
     };
@@ -124,7 +124,7 @@ describe('get-activity-for-article', () => {
   });
 
   describe('when an article has one evaluation that was recorded twice', () => {
-    const event = arbitraryEvaluationRecordedEvent();
+    const event = arbitraryEvaluationPublicationRecordedEvent();
     const events = [
       event,
       event,
@@ -165,7 +165,7 @@ describe('get-activity-for-article', () => {
     });
 
     describe('added to a list, after being evaluated', () => {
-      const evaluationRecorded = arbitraryEvaluationRecordedEvent();
+      const evaluationRecorded = arbitraryEvaluationPublicationRecordedEvent();
       const events = [
         evaluationRecorded,
         constructEvent('ArticleAddedToList')({ articleId: evaluationRecorded.articleId, listId: arbitraryListId() }),

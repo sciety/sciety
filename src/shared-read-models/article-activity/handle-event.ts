@@ -19,7 +19,7 @@ type ArticleState = {
   lists: Set<ListId>,
 };
 
-const addToEvaluationStates = (state: ArticleState['evaluationStates'], event: EventOfType<'EvaluationRecorded'>) => pipe(
+const addToEvaluationStates = (state: ArticleState['evaluationStates'], event: EventOfType<'EvaluationPublicationRecorded'>) => pipe(
   state,
   RA.some((evaluationState) => evaluationState.evaluationLocator === event.evaluationLocator),
   B.fold(
@@ -61,7 +61,7 @@ const handleArticleAddedToListEvent = (readmodel: ReadModel, event: EventOfType<
   );
 };
 
-const handleEvaluationRecordedEvent = (readmodel: ReadModel, event: EventOfType<'EvaluationRecorded'>) => {
+const handleEvaluationPublicationRecordedEvent = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
   pipe(
     readmodel.get(event.articleId.value),
     O.fromNullable,
@@ -123,8 +123,8 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     handleArticleAddedToListEvent(readmodel, event);
   }
 
-  if (isEventOfType('EvaluationRecorded')(event)) {
-    handleEvaluationRecordedEvent(readmodel, event);
+  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
+    handleEvaluationPublicationRecordedEvent(readmodel, event);
   }
 
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
