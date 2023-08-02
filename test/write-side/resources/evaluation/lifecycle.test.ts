@@ -208,34 +208,21 @@ describe('lifecycle', () => {
     });
   });
 
-  describe('record -> update', () => {
-    const evaluationLocator = arbitraryEvaluationLocator();
-    const initialEvaluationType = undefined;
-    const newEvaluationType = arbitraryEvaluationType();
-    const recordCommand = {
-      groupId: arbitraryGroupId(),
-      publishedAt: arbitraryDate(),
-      evaluationLocator,
-      articleId: arbitraryArticleId(),
-      authors: [],
-      evaluationType: initialEvaluationType,
-    };
+  describe('given an evaluation that has been recorded as removed', () => {
+    describe('record', () => {
+      it.todo('errors with not found');
+    });
 
-    const newEvents = pipe(
-      [],
-      A.of,
-      A.concat(record(recordCommand)),
-      A.last(update({ evaluationLocator, evaluationType: newEvaluationType })),
-    );
+    describe('erase', () => {
+      it.todo('succeeds with a new event');
+    });
 
-    it('succeeds with a new event', () => {
-      expect(newEvents).toStrictEqual(E.right([
-        expect.objectContaining({
-          type: 'EvaluationUpdated',
-          evaluationLocator,
-          evaluationType: newEvaluationType,
-        }),
-      ]));
+    describe('record removal', () => {
+      it.todo('succeeds without changing state');
+    });
+
+    describe('update', () => {
+      it.todo('errors with not found');
     });
   });
 });
