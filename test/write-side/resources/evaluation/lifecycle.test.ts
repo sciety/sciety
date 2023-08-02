@@ -1,7 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { recordRemoval } from '../../../../src/write-side/resources/evaluation/record-removal';
-import { erase, update, record } from '../../../../src/write-side/resources/evaluation';
+import {
+  erase, update, record, recordRemoval,
+} from '../../../../src/write-side/resources/evaluation';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 import { arbitraryDate, arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
@@ -174,14 +175,7 @@ describe('lifecycle', () => {
     );
 
     describe('record', () => {
-      const result = pipe(
-        erasedResource,
-        A.concat(record(recordCommand)),
-      );
-
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(erasedResource);
-      });
+      it.todo('succeeds with a new event');
     });
 
     describe('erase', () => {
@@ -193,6 +187,10 @@ describe('lifecycle', () => {
       it('succeeds without changing state', () => {
         expect(result).toStrictEqual(erasedResource);
       });
+    });
+
+    describe('record removal', () => {
+      it.todo('errors with not found');
     });
 
     describe('update', () => {
