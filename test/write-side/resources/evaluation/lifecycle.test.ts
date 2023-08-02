@@ -129,7 +129,7 @@ describe('lifecycle', () => {
         A.last(recordRemoval({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
-      it.skip('succeeds with a new event', () => {
+      it('succeeds with a new event', () => {
         expect(newEvents).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'EvaluationRemovalRecorded',
