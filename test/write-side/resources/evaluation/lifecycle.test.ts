@@ -61,7 +61,7 @@ describe('lifecycle', () => {
         A.concat(recordRemoval({ evaluationLocator })),
       );
 
-      it.failing('succeeds without changing state', () => {
+      it('succeeds without changing state', () => {
         expect(result).toStrictEqual(initialState);
       });
     });
