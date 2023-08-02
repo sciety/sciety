@@ -111,7 +111,20 @@ describe('lifecycle', () => {
     });
 
     describe('update', () => {
-      it.todo('updates the evaluation resource');
+      const newEvents = pipe(
+        initialState,
+        A.last(update({ evaluationLocator: recordCommand.evaluationLocator, evaluationType: 'review' })),
+      );
+
+      it('succeeds with a new event', () => {
+        expect(newEvents).toStrictEqual(E.right([
+          expect.objectContaining({
+            type: 'EvaluationUpdated',
+            evaluationLocator: recordCommand.evaluationLocator,
+            evaluationType: 'review',
+          }),
+        ]));
+      });
     });
   });
 
