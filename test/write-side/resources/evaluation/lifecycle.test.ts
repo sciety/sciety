@@ -95,7 +95,14 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      it.todo('erases the evaluation resource');
+      const result = pipe(
+        initialState,
+        A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+      );
+
+      it.skip('erases the evaluation resource', () => {
+        expect(result).toStrictEqual([]);
+      });
     });
 
     describe('update', () => {
