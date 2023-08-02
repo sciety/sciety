@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationRecordedEvent } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -69,13 +70,6 @@ describe('get-activity-for-article', () => {
     });
   });
 
-  const event1 = arbitraryEvaluationRecordedEvent();
-  const event2 = {
-    ...arbitraryEvaluationRecordedEvent(),
-    articleId: event1.articleId,
-    publishedAt: new Date(event1.publishedAt.getTime() + 1000),
-  };
-
   describe('when an article has two evaluations, recorded in order of publication', () => {
     const earlierPublishedAt = arbitraryDate();
     const laterPublishedAt = new Date(earlierPublishedAt.getTime() + 1000);
@@ -101,32 +95,54 @@ describe('get-activity-for-article', () => {
   });
 
   describe('when an article has two evaluations, not recorded in order of publication', () => {
+    const earlierPublishedAt = arbitraryDate();
+    const laterPublishedAt = new Date(earlierPublishedAt.getTime() + 1000);
     const events = [
-      event2,
-      event1,
+      {
+        ...arbitraryEvaluationRecordedEvent(),
+        articleId,
+        publishedAt: laterPublishedAt,
+      },
+      {
+        ...arbitraryEvaluationRecordedEvent(),
+        articleId,
+        publishedAt: earlierPublishedAt,
+      },
     ];
 
     it('returns the activity for that article', () => {
-      expect(runQuery(events)(event1.articleId)).toStrictEqual(expect.objectContaining({
-        latestActivityAt: O.some(event2.publishedAt),
+      expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
+        latestActivityAt: O.some(laterPublishedAt),
         evaluationCount: 2,
       }));
     });
   });
 
   describe('when an article has two evaluation publications recorded, and one of the evaluations erased', () => {
+    const earlierPublishedAt = arbitraryDate();
+    const laterPublishedAt = new Date(earlierPublishedAt.getTime() + 1000);
+    const evaluationLocator = arbitraryEvaluationLocator();
     const events = [
-      event2,
-      event1,
-      constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: event2.evaluationLocator }),
+      {
+        ...arbitraryEvaluationRecordedEvent(),
+        articleId,
+        publishedAt: laterPublishedAt,
+        evaluationLocator,
+      },
+      {
+        ...arbitraryEvaluationRecordedEvent(),
+        articleId,
+        publishedAt: earlierPublishedAt,
+      },
+      constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
     ];
 
-    it('the evaluation count reflects the erasure', () => {
-      expect(runQuery(events)(event1.articleId).evaluationCount).toBe(1);
+    it('the evaluation count is 1', () => {
+      expect(runQuery(events)(articleId).evaluationCount).toBe(1);
     });
 
     it('the latest activity reflects the erasure', () => {
-      expect(runQuery(events)(event1.articleId).latestActivityAt).toStrictEqual(O.some(event1.publishedAt));
+      expect(runQuery(events)(articleId).latestActivityAt).toStrictEqual(O.some(earlierPublishedAt));
     });
   });
 
