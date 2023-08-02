@@ -27,7 +27,7 @@ import {
   removeArticleFromListCommandCodec,
   recordEvaluationCommandCodec,
   addGroupCommandCodec,
-  eraseEvaluationCommandCodec, updateGroupDetailsCommandCodec,
+  eraseEvaluationCommandCodec, updateGroupDetailsCommandCodec, recordEvaluationRemovalCommandCodec,
 } from '../write-side/commands';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
@@ -346,6 +346,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
 
   router.post('/api/record-evaluation', createApiRouteForResourceAction(adapters, recordEvaluationCommandCodec, evaluationResource.record));
+
+  router.post('/api/record-evaluation-removal', createApiRouteForResourceAction(adapters, recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
 
   router.post('/api/remove-article-from-list', createApiRouteForResourceAction(adapters, removeArticleFromListCommandCodec, listResource.removeArticle));
 
