@@ -233,6 +233,20 @@ describe('lifecycle', () => {
   });
 
   describe('given an evaluation that has been recorded as removed', () => {
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const initialState = pipe(
+      [],
+      A.of,
+      A.concat(record({
+        groupId: arbitraryGroupId(),
+        publishedAt: arbitraryDate(),
+        evaluationLocator,
+        articleId: arbitraryArticleId(),
+        authors: [],
+      })),
+      A.concat(recordRemoval({ evaluationLocator })),
+    );
+
     describe('record', () => {
       it.todo('errors with not found');
     });
@@ -242,7 +256,14 @@ describe('lifecycle', () => {
     });
 
     describe('record removal', () => {
-      it.todo('succeeds with no new events');
+      const outcome = pipe(
+        initialState,
+        A.last(recordRemoval({ evaluationLocator })),
+      );
+
+      it('succeeds with no new events', () => {
+        expect(outcome).toStrictEqual(E.right([]));
+      });
     });
 
     describe('update', () => {
