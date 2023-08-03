@@ -63,7 +63,7 @@ describe('lifecycle', () => {
         A.concat(recordRemoval({ evaluationLocator })),
       );
 
-      it.skip('errors with not found', () => {
+      it('errors with not found', () => {
         expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
       });
     });

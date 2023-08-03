@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-
+import * as B from 'fp-ts/boolean';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as O from 'fp-ts/Option';
 import { ResourceAction } from '../resource-action';
 import { RecordEvaluationRemovalCommand } from '../../commands';
 import {
   constructEvent, DomainEvent, EventOfType, isEventOfType,
 } from '../../../domain-events';
+import { evaluationDoesNotExist } from './evaluation-does-not-exist';
 
 type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationRemovalRecorded'>;
 
@@ -20,10 +20,12 @@ export const recordRemoval: ResourceAction<RecordEvaluationRemovalCommand> = (co
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
   RA.last,
-  O.filter(isEventOfType('EvaluationRecorded')),
-  O.match(
-    () => [],
-    () => [constructEvent('EvaluationRemovalRecorded')({ ...command, reason: 'published-on-incorrect-article' })],
+  E.fromOption(() => evaluationDoesNotExist),
+  E.map(isEventOfType('EvaluationRecorded')),
+  E.map(
+    B.match(
+      () => [],
+      () => [constructEvent('EvaluationRemovalRecorded')({ ...command, reason: 'published-on-incorrect-article' })],
+    ),
   ),
-  E.right,
 );
