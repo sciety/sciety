@@ -17,7 +17,7 @@ describe('lifecycle', () => {
 
     describe('record', () => {
       const evaluationLocator = arbitraryEvaluationLocator();
-      const input: RecordEvaluationCommand = {
+      const mostRecentCommand: RecordEvaluationCommand = {
         groupId: arbitraryGroupId(),
         articleId: arbitraryArticleId(),
         evaluationLocator,
@@ -27,18 +27,18 @@ describe('lifecycle', () => {
       };
       const result = pipe(
         initialState,
-        A.last(record(input)),
+        A.last(record(mostRecentCommand)),
       );
 
       it('succeeds with a new event', () => {
         expect(result).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationRecorded',
-          groupId: input.groupId,
-          articleId: input.articleId,
-          evaluationLocator: input.evaluationLocator,
-          publishedAt: input.publishedAt,
-          authors: input.authors,
-          evaluationType: input.evaluationType,
+          groupId: mostRecentCommand.groupId,
+          articleId: mostRecentCommand.articleId,
+          evaluationLocator: mostRecentCommand.evaluationLocator,
+          publishedAt: mostRecentCommand.publishedAt,
+          authors: mostRecentCommand.authors,
+          evaluationType: mostRecentCommand.evaluationType,
         })]));
       });
     });
@@ -175,7 +175,7 @@ describe('lifecycle', () => {
     );
 
     describe('record', () => {
-      const input = {
+      const mostRecentCommand = {
         groupId: arbitraryGroupId(),
         publishedAt: arbitraryDate(),
         evaluationLocator: recordCommand.evaluationLocator,
@@ -185,18 +185,18 @@ describe('lifecycle', () => {
       };
       const outcomeEvents = pipe(
         erasedResource,
-        A.last(record(input)),
+        A.last(record(mostRecentCommand)),
       );
 
       it.skip('succeeds with a new event', () => {
         expect(outcomeEvents).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationRecorded',
-          groupId: input.groupId,
-          articleId: input.articleId,
-          evaluationLocator: input.evaluationLocator,
-          publishedAt: input.publishedAt,
-          authors: input.authors,
-          evaluationType: input.evaluationType,
+          groupId: mostRecentCommand.groupId,
+          articleId: mostRecentCommand.articleId,
+          evaluationLocator: mostRecentCommand.evaluationLocator,
+          publishedAt: mostRecentCommand.publishedAt,
+          authors: mostRecentCommand.authors,
+          evaluationType: mostRecentCommand.evaluationType,
         })]));
       });
     });
