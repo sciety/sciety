@@ -30,7 +30,7 @@ describe('lifecycle', () => {
         A.last(record(input)),
       );
 
-      it('creates the evaluation resource', () => {
+      it('succeeds with a new event', () => {
         expect(result).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationRecorded',
           groupId: input.groupId,
@@ -98,24 +98,24 @@ describe('lifecycle', () => {
     );
 
     describe('record', () => {
-      const result = pipe(
+      const outcomeEvents = pipe(
         initialState,
-        A.concat(record(recordCommand)),
+        A.last(record(recordCommand)),
       );
 
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(initialState);
+      it('succeeds with no new events', () => {
+        expect(outcomeEvents).toStrictEqual(E.right([]));
       });
     });
 
     describe('erase', () => {
-      const newEvents = pipe(
+      const outcomeEvents = pipe(
         initialState,
         A.last(erase({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
       it('succeeds with a new event', () => {
-        expect(newEvents).toStrictEqual(E.right([
+        expect(outcomeEvents).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'IncorrectlyRecordedEvaluationErased',
             evaluationLocator: recordCommand.evaluationLocator,
@@ -125,13 +125,13 @@ describe('lifecycle', () => {
     });
 
     describe('record removal', () => {
-      const newEvents = pipe(
+      const outcomeEvents = pipe(
         initialState,
         A.last(recordRemoval({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
       it('succeeds with a new event', () => {
-        expect(newEvents).toStrictEqual(E.right([
+        expect(outcomeEvents).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'EvaluationRemovalRecorded',
             evaluationLocator: recordCommand.evaluationLocator,
@@ -141,13 +141,13 @@ describe('lifecycle', () => {
     });
 
     describe('update', () => {
-      const newEvents = pipe(
+      const outcomeEvents = pipe(
         initialState,
         A.last(update({ evaluationLocator: recordCommand.evaluationLocator, evaluationType: 'review' })),
       );
 
       it('succeeds with a new event', () => {
-        expect(newEvents).toStrictEqual(E.right([
+        expect(outcomeEvents).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'EvaluationUpdated',
             evaluationLocator: recordCommand.evaluationLocator,
@@ -183,13 +183,13 @@ describe('lifecycle', () => {
         authors: [],
         evaluationType: arbitraryEvaluationType(),
       };
-      const result = pipe(
+      const outcomeEvents = pipe(
         erasedResource,
         A.last(record(input)),
       );
 
       it.skip('succeeds with a new event', () => {
-        expect(result).toStrictEqual(E.right([expect.objectContaining({
+        expect(outcomeEvents).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationRecorded',
           groupId: input.groupId,
           articleId: input.articleId,
@@ -202,13 +202,13 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      const result = pipe(
+      const outcomeEvents = pipe(
         erasedResource,
-        A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+        A.last(erase({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(erasedResource);
+      it('succeeds with no new events', () => {
+        expect(outcomeEvents).toStrictEqual(E.right([]));
       });
     });
 
@@ -241,7 +241,7 @@ describe('lifecycle', () => {
     });
 
     describe('record removal', () => {
-      it.todo('succeeds without changing state');
+      it.todo('succeeds with no new events');
     });
 
     describe('update', () => {
