@@ -25,13 +25,13 @@ describe('lifecycle', () => {
         authors: [arbitraryString(), arbitraryString()],
         evaluationType: arbitraryEvaluationType(),
       };
-      const result = pipe(
+      const outcome = pipe(
         initialState,
         A.last(record(mostRecentCommand)),
       );
 
       it('succeeds with a new event', () => {
-        expect(result).toStrictEqual(E.right([expect.objectContaining({
+        expect(outcome).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationRecorded',
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.articleId,
@@ -45,30 +45,30 @@ describe('lifecycle', () => {
 
     describe('erase', () => {
       const evaluationLocator = arbitraryEvaluationLocator();
-      const result = pipe(
+      const outcome = pipe(
         initialState,
         A.concat(erase({ evaluationLocator })),
       );
 
       it.skip('errors with not found', () => {
-        expect(result).toStrictEqual(E.left('Evaluation does not exist'));
+        expect(outcome).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
 
     describe('record removal', () => {
       const evaluationLocator = arbitraryEvaluationLocator();
-      const result = pipe(
+      const outcome = pipe(
         initialState,
         A.concat(recordRemoval({ evaluationLocator })),
       );
 
       it.skip('errors with not found', () => {
-        expect(result).toStrictEqual(E.left('Evaluation does not exist'));
+        expect(outcome).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
 
     describe('update', () => {
-      const result = pipe(
+      const outcome = pipe(
         initialState,
         A.concat(update({
           evaluationLocator: arbitraryEvaluationLocator(),
@@ -77,7 +77,7 @@ describe('lifecycle', () => {
       );
 
       it.skip('errors with not found', () => {
-        expect(result).toStrictEqual(E.left('Evaluation does not exist'));
+        expect(outcome).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
   });
@@ -98,24 +98,24 @@ describe('lifecycle', () => {
     );
 
     describe('record', () => {
-      const outcomeEvents = pipe(
+      const outcome = pipe(
         initialState,
         A.last(record(recordCommand)),
       );
 
       it('succeeds with no new events', () => {
-        expect(outcomeEvents).toStrictEqual(E.right([]));
+        expect(outcome).toStrictEqual(E.right([]));
       });
     });
 
     describe('erase', () => {
-      const outcomeEvents = pipe(
+      const outcome = pipe(
         initialState,
         A.last(erase({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
       it('succeeds with a new event', () => {
-        expect(outcomeEvents).toStrictEqual(E.right([
+        expect(outcome).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'IncorrectlyRecordedEvaluationErased',
             evaluationLocator: recordCommand.evaluationLocator,
@@ -125,13 +125,13 @@ describe('lifecycle', () => {
     });
 
     describe('record removal', () => {
-      const outcomeEvents = pipe(
+      const outcome = pipe(
         initialState,
         A.last(recordRemoval({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
       it('succeeds with a new event', () => {
-        expect(outcomeEvents).toStrictEqual(E.right([
+        expect(outcome).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'EvaluationRemovalRecorded',
             evaluationLocator: recordCommand.evaluationLocator,
@@ -141,13 +141,13 @@ describe('lifecycle', () => {
     });
 
     describe('update', () => {
-      const outcomeEvents = pipe(
+      const outcome = pipe(
         initialState,
         A.last(update({ evaluationLocator: recordCommand.evaluationLocator, evaluationType: 'review' })),
       );
 
       it('succeeds with a new event', () => {
-        expect(outcomeEvents).toStrictEqual(E.right([
+        expect(outcome).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'EvaluationUpdated',
             evaluationLocator: recordCommand.evaluationLocator,
@@ -167,7 +167,7 @@ describe('lifecycle', () => {
       authors: [],
     };
 
-    const erasedResource = pipe(
+    const initialState = pipe(
       [],
       A.of,
       A.concat(record(recordCommand)),
@@ -183,13 +183,13 @@ describe('lifecycle', () => {
         authors: [],
         evaluationType: arbitraryEvaluationType(),
       };
-      const outcomeEvents = pipe(
-        erasedResource,
+      const outcome = pipe(
+        initialState,
         A.last(record(mostRecentCommand)),
       );
 
       it.skip('succeeds with a new event', () => {
-        expect(outcomeEvents).toStrictEqual(E.right([expect.objectContaining({
+        expect(outcome).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationRecorded',
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.articleId,
@@ -202,13 +202,13 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      const outcomeEvents = pipe(
-        erasedResource,
+      const outcome = pipe(
+        initialState,
         A.last(erase({ evaluationLocator: recordCommand.evaluationLocator })),
       );
 
       it('succeeds with no new events', () => {
-        expect(outcomeEvents).toStrictEqual(E.right([]));
+        expect(outcome).toStrictEqual(E.right([]));
       });
     });
 
@@ -217,8 +217,8 @@ describe('lifecycle', () => {
     });
 
     describe('update', () => {
-      const result = pipe(
-        erasedResource,
+      const outcome = pipe(
+        initialState,
         A.concat(update({
           evaluationLocator: recordCommand.evaluationLocator,
           evaluationType: arbitraryEvaluationType(),
@@ -226,7 +226,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
+        expect(outcome).toStrictEqual(E.left('Evaluation to be updated does not exist'));
       });
     });
   });
