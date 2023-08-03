@@ -160,10 +160,11 @@ describe('lifecycle', () => {
   });
 
   describe('given an erased evaluation', () => {
+    const evaluationLocator = arbitraryEvaluationLocator();
     const recordCommand = {
       groupId: arbitraryGroupId(),
       publishedAt: arbitraryDate(),
-      evaluationLocator: arbitraryEvaluationLocator(),
+      evaluationLocator,
       articleId: arbitraryArticleId(),
       authors: [],
     };
@@ -172,14 +173,14 @@ describe('lifecycle', () => {
       [],
       A.of,
       A.concat(record(recordCommand)),
-      A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+      A.concat(erase({ evaluationLocator })),
     );
 
     describe('record', () => {
       const mostRecentCommand = {
         groupId: arbitraryGroupId(),
         publishedAt: arbitraryDate(),
-        evaluationLocator: recordCommand.evaluationLocator,
+        evaluationLocator,
         articleId: arbitraryArticleId(),
         authors: [],
         evaluationType: arbitraryEvaluationType(),
@@ -194,7 +195,7 @@ describe('lifecycle', () => {
           type: 'EvaluationRecorded',
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.articleId,
-          evaluationLocator: mostRecentCommand.evaluationLocator,
+          evaluationLocator,
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,
           evaluationType: mostRecentCommand.evaluationType,
@@ -205,7 +206,7 @@ describe('lifecycle', () => {
     describe('erase', () => {
       const outcome = pipe(
         initialState,
-        A.last(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+        A.last(erase({ evaluationLocator })),
       );
 
       it('succeeds with no new events', () => {
@@ -214,14 +215,21 @@ describe('lifecycle', () => {
     });
 
     describe('record removal', () => {
-      it.todo('errors with not found');
+      const outcome = pipe(
+        initialState,
+        A.last(recordRemoval({ evaluationLocator })),
+      );
+
+      it.skip('errors with not found', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+      });
     });
 
     describe('update', () => {
       const outcome = pipe(
         initialState,
         A.concat(update({
-          evaluationLocator: recordCommand.evaluationLocator,
+          evaluationLocator,
           evaluationType: arbitraryEvaluationType(),
         })),
       );
