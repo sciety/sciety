@@ -8,8 +8,8 @@ import {
 } from '../../../domain-events';
 import { ResourceAction } from '../resource-action';
 import { UpdateEvaluationCommand } from '../../commands';
-import { toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
+import { evaluationDoesNotExist } from './evaluation-does-not-exist';
 
 type EvaluationEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
@@ -25,7 +25,7 @@ const constructWriteModel = (evaluationLocator: EvaluationLocator) => (events: R
   events,
   filterToHistoryOf(evaluationLocator),
   RA.match(
-    () => E.left(toErrorMessage('Evaluation to be updated does not exist')),
+    () => E.left(evaluationDoesNotExist),
     (history) => E.right(history),
   ),
   E.chainW((evaluationHistory) => pipe(
@@ -37,7 +37,7 @@ const constructWriteModel = (evaluationLocator: EvaluationLocator) => (events: R
         case 'EvaluationUpdated':
           return E.right({ evaluationType: event.evaluationType });
         case 'IncorrectlyRecordedEvaluationErased':
-          return E.left(toErrorMessage('Evaluation to be updated does not exist'));
+          return E.left(evaluationDoesNotExist);
       }
     },
   )),

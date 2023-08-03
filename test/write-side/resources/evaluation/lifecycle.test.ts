@@ -10,6 +10,7 @@ import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.he
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
 import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
+import { evaluationDoesNotExist } from '../../../../src/write-side/resources/evaluation/evaluation-does-not-exist';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
@@ -51,7 +52,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left('Evaluation does not exist'));
+        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
       });
     });
 
@@ -63,7 +64,7 @@ describe('lifecycle', () => {
       );
 
       it.skip('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left('Evaluation does not exist'));
+        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
       });
     });
 
@@ -76,8 +77,8 @@ describe('lifecycle', () => {
         })),
       );
 
-      it.skip('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left('Evaluation does not exist'));
+      it('errors with not found', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
       });
     });
   });
@@ -226,7 +227,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left('Evaluation to be updated does not exist'));
+        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
       });
     });
   });
