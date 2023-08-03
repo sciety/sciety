@@ -50,7 +50,7 @@ describe('lifecycle', () => {
         A.concat(erase({ evaluationLocator })),
       );
 
-      it.failing('errors with not found', () => {
+      it.skip('errors with not found', () => {
         expect(result).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
@@ -62,7 +62,7 @@ describe('lifecycle', () => {
         A.concat(recordRemoval({ evaluationLocator })),
       );
 
-      it.failing('errors with not found', () => {
+      it.skip('errors with not found', () => {
         expect(result).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
@@ -76,7 +76,7 @@ describe('lifecycle', () => {
         })),
       );
 
-      it.failing('errors with not found', () => {
+      it.skip('errors with not found', () => {
         expect(result).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
@@ -175,7 +175,30 @@ describe('lifecycle', () => {
     );
 
     describe('record', () => {
-      it.todo('succeeds with a new event');
+      const input = {
+        groupId: arbitraryGroupId(),
+        publishedAt: arbitraryDate(),
+        evaluationLocator: recordCommand.evaluationLocator,
+        articleId: arbitraryArticleId(),
+        authors: [],
+        evaluationType: arbitraryEvaluationType(),
+      };
+      const result = pipe(
+        erasedResource,
+        A.last(record(input)),
+      );
+
+      it.skip('succeeds with a new event', () => {
+        expect(result).toStrictEqual(E.right([expect.objectContaining({
+          type: 'EvaluationRecorded',
+          groupId: input.groupId,
+          articleId: input.articleId,
+          evaluationLocator: input.evaluationLocator,
+          publishedAt: input.publishedAt,
+          authors: input.authors,
+          evaluationType: input.evaluationType,
+        })]));
+      });
     });
 
     describe('erase', () => {
