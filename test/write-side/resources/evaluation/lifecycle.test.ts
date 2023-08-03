@@ -50,7 +50,7 @@ describe('lifecycle', () => {
         A.concat(erase({ evaluationLocator })),
       );
 
-      it.skip('errors with not found', () => {
+      it('errors with not found', () => {
         expect(outcome).toStrictEqual(E.left('Evaluation does not exist'));
       });
     });
