@@ -26,6 +26,8 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => cons
   evaluationType: command.evaluationType ? command.evaluationType : undefined,
 });
 
+const decideResult = (command: RecordEvaluationCommand) => (event: RelevantEvent) => (isEventOfType('EvaluationRecorded')(event) ? [] : [createEvaluationRecordedEvent(command)]);
+
 export const record: ResourceAction<RecordEvaluationCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isRelevantEvent),
@@ -33,7 +35,7 @@ export const record: ResourceAction<RecordEvaluationCommand> = (command) => (eve
   RA.last,
   O.match(
     () => [createEvaluationRecordedEvent(command)],
-    (event) => (isEventOfType('EvaluationRecorded')(event) ? [] : [createEvaluationRecordedEvent(command)]),
+    decideResult(command),
   ),
   E.right,
 );
