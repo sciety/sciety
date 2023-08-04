@@ -263,7 +263,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemoved));
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemovedCannotRecord));
       });
     });
 
@@ -301,7 +301,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemovedCannotUpdate));
       });
     });
   });

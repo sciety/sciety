@@ -36,7 +36,7 @@ const decideResult = (command: RecordEvaluationCommand) => (event: RelevantEvent
       return E.right([createEvaluationRecordedEvent(command)]);
 
     case 'EvaluationRemovalRecorded':
-      return E.left(evaluationResourceError.previouslyRemoved);
+      return E.left(evaluationResourceError.previouslyRemovedCannotRecord);
   }
 };
 

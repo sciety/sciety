@@ -48,7 +48,7 @@ const constructWriteModel = (
         case 'IncorrectlyRecordedEvaluationErased':
           return E.left(evaluationResourceError.doesNotExist);
         case 'EvaluationRemovalRecorded':
-          return E.left(evaluationResourceError.doesNotExist);
+          return E.left(evaluationResourceError.previouslyRemovedCannotUpdate);
       }
     },
   )),
