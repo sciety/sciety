@@ -8,10 +8,10 @@ import {
 } from '../../../domain-events';
 import { evaluationDoesNotExist } from './evaluation-does-not-exist';
 
-type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationRemovalRecorded'>;
+type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationRemovalRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
-  isEventOfType('EvaluationRecorded')(event) || isEventOfType('EvaluationRemovalRecorded')(event)
+  isEventOfType('EvaluationRecorded')(event) || isEventOfType('EvaluationRemovalRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
 );
 
 const decideResult = (command: RecordEvaluationRemovalCommand) => (event: RelevantEvent) => {
@@ -20,6 +20,9 @@ const decideResult = (command: RecordEvaluationRemovalCommand) => (event: Releva
   }
   if (isEventOfType('EvaluationRemovalRecorded')(event)) {
     return E.right([]);
+  }
+  if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
+    return E.left(evaluationDoesNotExist);
   }
   // unreachable!
   return E.right([]);
