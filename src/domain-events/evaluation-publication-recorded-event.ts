@@ -8,8 +8,8 @@ import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../types/evaluation-locator';
 import { evaluationTypeCodec } from './types/evaluation-type';
 
-const upgradedEventType = (currentValue: string, deprecatedValues: ReadonlyArray<string>) => {
-  const currentEventTypeCodec = t.literal('EvaluationPublicationRecorded');
+const upgradedEventType = <T extends string>(currentValue: T, deprecatedValues: ReadonlyArray<string>) => {
+  const currentEventTypeCodec = t.literal(currentValue);
   return new t.Type(
     'UpgradedType',
     currentEventTypeCodec.is,
