@@ -295,7 +295,14 @@ describe('lifecycle', () => {
     });
 
     describe('update', () => {
-      it.todo('errors with not found');
+      const outcome = pipe(
+        initialState,
+        A.last(update({ evaluationLocator, evaluationType: 'review' })),
+      );
+
+      it.skip('errors with not found', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+      });
     });
   });
 });
