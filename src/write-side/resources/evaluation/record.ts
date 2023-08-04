@@ -2,12 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { toErrorMessage } from '../../../types/error-message';
 import { RecordEvaluationCommand } from '../../commands';
 import {
   DomainEvent, constructEvent, isEventOfType, EventOfType,
 } from '../../../domain-events';
 import { ResourceAction } from '../resource-action';
-import { evaluationDoesNotExist } from './evaluation-does-not-exist';
 
 type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 
@@ -36,7 +36,7 @@ const decideResult = (command: RecordEvaluationCommand) => (event: RelevantEvent
       return E.right([createEvaluationRecordedEvent(command)]);
 
     case 'EvaluationRemovalRecorded':
-      return E.left(evaluationDoesNotExist);
+      return E.left(toErrorMessage('This evaluation has been removed and cannot be recorded again'));
   }
 };
 

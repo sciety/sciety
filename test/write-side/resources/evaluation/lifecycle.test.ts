@@ -263,7 +263,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+        expect(outcome).toStrictEqual(E.left('This evaluation has been removed and cannot be recorded again'));
       });
     });
 
