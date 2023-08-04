@@ -11,13 +11,15 @@ import { UpdateEvaluationCommand } from '../../commands';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { evaluationDoesNotExist } from './evaluation-does-not-exist';
 
-type EvaluationEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
+type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
+
+const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => isEventOfType('EvaluationRecorded')(event)
+|| isEventOfType('EvaluationUpdated')(event)
+|| isEventOfType('IncorrectlyRecordedEvaluationErased')(event);
 
 const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event): event is EvaluationEvent => isEventOfType('EvaluationRecorded')(event)
-    || isEventOfType('EvaluationUpdated')(event)
-    || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)),
+  RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
 );
 
