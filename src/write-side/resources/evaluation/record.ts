@@ -27,10 +27,13 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => cons
 });
 
 const decideResult = (command: RecordEvaluationCommand) => (event: RelevantEvent) => {
-  if (isEventOfType('EvaluationRecorded')(event)) {
-    return E.right([]);
+  switch (event.type) {
+    case 'EvaluationRecorded':
+      return E.right([]);
+
+    case 'IncorrectlyRecordedEvaluationErased':
+      return E.right([createEvaluationRecordedEvent(command)]);
   }
-  return E.right([createEvaluationRecordedEvent(command)]);
 };
 
 export const record: ResourceAction<RecordEvaluationCommand> = (command) => (events) => pipe(
