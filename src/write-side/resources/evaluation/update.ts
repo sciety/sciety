@@ -9,7 +9,7 @@ import {
 import { ResourceAction } from '../resource-action';
 import { UpdateEvaluationCommand } from '../../commands';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
-import { evaluationDoesNotExist } from './evaluation-does-not-exist';
+import { evaluationResourceError } from './evaluation-resource-error';
 import { EvaluationType } from '../../../types/recorded-evaluation';
 import { ErrorMessage } from '../../../types/error-message';
 
@@ -34,7 +34,7 @@ const constructWriteModel = (
   events,
   filterToHistoryOf(evaluationLocator),
   RA.match(
-    () => E.left(evaluationDoesNotExist),
+    () => E.left(evaluationResourceError.doesNotExist),
     (history) => E.right(history),
   ),
   E.chainW((evaluationHistory) => pipe(
@@ -46,9 +46,9 @@ const constructWriteModel = (
         case 'EvaluationUpdated':
           return E.right({ evaluationType: event.evaluationType });
         case 'IncorrectlyRecordedEvaluationErased':
-          return E.left(evaluationDoesNotExist);
+          return E.left(evaluationResourceError.doesNotExist);
         case 'EvaluationRemovalRecorded':
-          return E.left(evaluationDoesNotExist);
+          return E.left(evaluationResourceError.doesNotExist);
       }
     },
   )),

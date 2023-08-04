@@ -6,7 +6,7 @@ import { RecordEvaluationRemovalCommand } from '../../commands';
 import {
   constructEvent, DomainEvent, EventOfType, isEventOfType,
 } from '../../../domain-events';
-import { evaluationDoesNotExist } from './evaluation-does-not-exist';
+import { evaluationResourceError } from './evaluation-resource-error';
 
 type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationRemovalRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
@@ -22,7 +22,7 @@ const decideResult = (command: RecordEvaluationRemovalCommand) => (event: Releva
     return E.right([]);
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
-    return E.left(evaluationDoesNotExist);
+    return E.left(evaluationResourceError.doesNotExist);
   }
   // unreachable!
   return E.right([]);
@@ -33,6 +33,6 @@ export const recordRemoval: ResourceAction<RecordEvaluationRemovalCommand> = (co
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
   RA.last,
-  E.fromOption(() => evaluationDoesNotExist),
+  E.fromOption(() => evaluationResourceError.doesNotExist),
   E.chainW(decideResult(command)),
 );

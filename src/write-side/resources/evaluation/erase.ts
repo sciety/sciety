@@ -7,7 +7,7 @@ import {
 } from '../../../domain-events';
 import { EraseEvaluationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
-import { evaluationDoesNotExist } from './evaluation-does-not-exist';
+import { evaluationResourceError } from './evaluation-resource-error';
 
 type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
@@ -20,7 +20,7 @@ export const erase: ResourceAction<EraseEvaluationCommand> = (command) => (event
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
   RA.last,
-  E.fromOption(() => evaluationDoesNotExist),
+  E.fromOption(() => evaluationResourceError.doesNotExist),
   E.map(isEventOfType('EvaluationRecorded')),
   E.map(
     B.match(

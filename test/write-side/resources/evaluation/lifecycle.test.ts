@@ -10,7 +10,7 @@ import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.he
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
 import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
-import { evaluationDoesNotExist } from '../../../../src/write-side/resources/evaluation/evaluation-does-not-exist';
+import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
@@ -52,7 +52,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
 
@@ -64,7 +64,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
 
@@ -78,7 +78,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
   });
@@ -221,7 +221,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
 
@@ -235,7 +235,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
   });
@@ -301,7 +301,7 @@ describe('lifecycle', () => {
       );
 
       it('errors with not found', () => {
-        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
   });
