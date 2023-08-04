@@ -14,20 +14,22 @@ const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
   isEventOfType('EvaluationRecorded')(event) || isEventOfType('EvaluationRemovalRecorded')(event)
 );
 
+const decideResult = (command: RecordEvaluationRemovalCommand) => (event: RelevantEvent) => {
+  if (isEventOfType('EvaluationRecorded')(event)) {
+    return [constructEvent('EvaluationRemovalRecorded')({ ...command, reason: 'published-on-incorrect-article' })];
+  }
+  if (isEventOfType('EvaluationRemovalRecorded')(event)) {
+    return [];
+  }
+  // unreachable!
+  return [];
+};
+
 export const recordRemoval: ResourceAction<RecordEvaluationRemovalCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
   RA.last,
   E.fromOption(() => evaluationDoesNotExist),
-  E.map((event: RelevantEvent): ReadonlyArray<DomainEvent> => {
-    if (isEventOfType('EvaluationRecorded')(event)) {
-      return [constructEvent('EvaluationRemovalRecorded')({ ...command, reason: 'published-on-incorrect-article' })];
-    }
-    if (isEventOfType('EvaluationRemovalRecorded')(event)) {
-      return [];
-    }
-    // unreachable!
-    return [];
-  }),
+  E.map(decideResult(command)),
 );
