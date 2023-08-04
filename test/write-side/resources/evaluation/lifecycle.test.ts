@@ -262,7 +262,7 @@ describe('lifecycle', () => {
         A.last(record(evaluation)),
       );
 
-      it.skip('errors with not found', () => {
+      it('errors with not found', () => {
         expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
       });
     });
