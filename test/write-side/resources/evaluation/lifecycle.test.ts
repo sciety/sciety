@@ -242,21 +242,29 @@ describe('lifecycle', () => {
 
   describe('given an evaluation that has been recorded as removed', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
+    const evaluation = {
+      groupId: arbitraryGroupId(),
+      publishedAt: arbitraryDate(),
+      evaluationLocator,
+      articleId: arbitraryArticleId(),
+      authors: [],
+    };
     const initialState = pipe(
       [],
       A.of,
-      A.concat(record({
-        groupId: arbitraryGroupId(),
-        publishedAt: arbitraryDate(),
-        evaluationLocator,
-        articleId: arbitraryArticleId(),
-        authors: [],
-      })),
+      A.concat(record(evaluation)),
       A.concat(recordRemoval({ evaluationLocator })),
     );
 
     describe('record', () => {
-      it.todo('errors with not found');
+      const outcome = pipe(
+        initialState,
+        A.last(record(evaluation)),
+      );
+
+      it.skip('errors with not found', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
+      });
     });
 
     describe('erase', () => {
