@@ -300,7 +300,7 @@ describe('lifecycle', () => {
         A.last(update({ evaluationLocator, evaluationType: 'review' })),
       );
 
-      it.skip('errors with not found', () => {
+      it('errors with not found', () => {
         expect(outcome).toStrictEqual(E.left(evaluationDoesNotExist));
       });
     });

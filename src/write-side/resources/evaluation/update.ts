@@ -13,11 +13,12 @@ import { evaluationDoesNotExist } from './evaluation-does-not-exist';
 import { EvaluationType } from '../../../types/recorded-evaluation';
 import { ErrorMessage } from '../../../types/error-message';
 
-type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
+type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => isEventOfType('EvaluationRecorded')(event)
 || isEventOfType('EvaluationUpdated')(event)
-|| isEventOfType('IncorrectlyRecordedEvaluationErased')(event);
+|| isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
+|| isEventOfType('EvaluationRemovalRecorded')(event);
 
 const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -45,6 +46,8 @@ const constructWriteModel = (
         case 'EvaluationUpdated':
           return E.right({ evaluationType: event.evaluationType });
         case 'IncorrectlyRecordedEvaluationErased':
+          return E.left(evaluationDoesNotExist);
+        case 'EvaluationRemovalRecorded':
           return E.left(evaluationDoesNotExist);
       }
     },
