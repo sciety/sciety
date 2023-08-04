@@ -51,7 +51,7 @@ describe('lifecycle', () => {
         A.concat(erase({ evaluationLocator })),
       );
 
-      it('errors with not found', () => {
+      it('errors with does not exist', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -63,7 +63,7 @@ describe('lifecycle', () => {
         A.concat(recordRemoval({ evaluationLocator })),
       );
 
-      it('errors with not found', () => {
+      it('errors with does not exist', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -77,7 +77,7 @@ describe('lifecycle', () => {
         })),
       );
 
-      it('errors with not found', () => {
+      it('errors with does not exist', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -220,7 +220,7 @@ describe('lifecycle', () => {
         A.last(recordRemoval({ evaluationLocator })),
       );
 
-      it('errors with not found', () => {
+      it('errors with does not exist', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -234,7 +234,7 @@ describe('lifecycle', () => {
         })),
       );
 
-      it('errors with not found', () => {
+      it('errors with does not exist', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -262,7 +262,7 @@ describe('lifecycle', () => {
         A.last(record(evaluation)),
       );
 
-      it('errors with not found', () => {
+      it('errors with previously removed, cannot record', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemovedCannotRecord));
       });
     });
@@ -300,7 +300,7 @@ describe('lifecycle', () => {
         A.last(update({ evaluationLocator, evaluationType: 'review' })),
       );
 
-      it('errors with not found', () => {
+      it('errors with previously removed, cannot update', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemovedCannotUpdate));
       });
     });
