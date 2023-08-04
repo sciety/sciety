@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { toErrorMessage } from '../../../types/error-message';
+import { evaluationResourceError } from './evaluation-resource-error';
 import { RecordEvaluationCommand } from '../../commands';
 import {
   DomainEvent, constructEvent, isEventOfType, EventOfType,
@@ -36,7 +36,7 @@ const decideResult = (command: RecordEvaluationCommand) => (event: RelevantEvent
       return E.right([createEvaluationRecordedEvent(command)]);
 
     case 'EvaluationRemovalRecorded':
-      return E.left(toErrorMessage('This evaluation has been removed and cannot be recorded again'));
+      return E.left(evaluationResourceError.previouslyRemoved);
   }
 };
 
