@@ -268,7 +268,19 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      it.todo('succeeds with a new event');
+      const outcome = pipe(
+        initialState,
+        A.last(erase({ evaluationLocator })),
+      );
+
+      it('succeeds with a new event', () => {
+        expect(outcome).toStrictEqual(E.right([
+          expect.objectContaining({
+            type: 'IncorrectlyRecordedEvaluationErased',
+            evaluationLocator,
+          }),
+        ]));
+      });
     });
 
     describe('record removal', () => {
