@@ -10,6 +10,8 @@ import { ResourceAction } from '../resource-action';
 import { UpdateEvaluationCommand } from '../../commands';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { evaluationDoesNotExist } from './evaluation-does-not-exist';
+import { EvaluationType } from '../../../types/recorded-evaluation';
+import { ErrorMessage } from '../../../types/error-message';
 
 type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
@@ -23,7 +25,11 @@ const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: Rea
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
 );
 
-const constructWriteModel = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
+type WriteModel = { evaluationType: EvaluationType | undefined };
+
+const constructWriteModel = (
+  evaluationLocator: EvaluationLocator,
+) => (events: ReadonlyArray<DomainEvent>): E.Either<ErrorMessage, WriteModel> => pipe(
   events,
   filterToHistoryOf(evaluationLocator),
   RA.match(
