@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { record } from '../../../../src/write-side/resources/evaluation/record';
+import { recordPublication } from '../../../../src/write-side/resources/evaluation/record-publication';
 import { arbitraryDate, arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
@@ -9,7 +9,7 @@ import { evaluationRecordedHelper } from '../../../domain-events/evaluation-reco
 import { RecordEvaluationPublicationCommand } from '../../../../src/write-side/commands';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 
-describe('record', () => {
+describe('record-publication', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
   const input: RecordEvaluationPublicationCommand = {
     groupId: arbitraryGroupId(),
@@ -25,7 +25,7 @@ describe('record', () => {
       [
         evaluationRecordedHelper(arbitraryGroupId(), arbitraryArticleId(), evaluationLocator, [], arbitraryDate()),
       ],
-      record(input),
+      recordPublication(input),
     );
 
     it('returns no events', () => {

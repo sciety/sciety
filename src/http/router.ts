@@ -345,7 +345,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
 
-  router.post('/api/record-evaluation', createApiRouteForResourceAction(adapters, recordEvaluationPublicationCommandCodec, evaluationResource.record));
+  router.post('/api/record-evaluation', createApiRouteForResourceAction(adapters, recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
 
   router.post('/api/record-evaluation-removal', createApiRouteForResourceAction(adapters, recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
 

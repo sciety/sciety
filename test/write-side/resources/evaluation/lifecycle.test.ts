@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import {
-  erase, update, record, recordRemoval,
+  erase, update, recordPublication, recordRemoval,
 } from '../../../../src/write-side/resources/evaluation';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 import { arbitraryDate, arbitraryString } from '../../../helpers';
@@ -16,7 +16,7 @@ describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
     const initialState = A.of([]);
 
-    describe('record', () => {
+    describe('record publication', () => {
       const evaluationLocator = arbitraryEvaluationLocator();
       const mostRecentCommand: RecordEvaluationPublicationCommand = {
         groupId: arbitraryGroupId(),
@@ -28,7 +28,7 @@ describe('lifecycle', () => {
       };
       const outcome = pipe(
         initialState,
-        A.last(record(mostRecentCommand)),
+        A.last(recordPublication(mostRecentCommand)),
       );
 
       it('succeeds with a new event', () => {
@@ -83,7 +83,7 @@ describe('lifecycle', () => {
     });
   });
 
-  describe('given a recorded evaluation', () => {
+  describe('given a recorded evaluation publication', () => {
     const recordCommand = {
       groupId: arbitraryGroupId(),
       publishedAt: arbitraryDate(),
@@ -95,13 +95,13 @@ describe('lifecycle', () => {
     const initialState = pipe(
       [],
       A.of,
-      A.concat(record(recordCommand)),
+      A.concat(recordPublication(recordCommand)),
     );
 
-    describe('record', () => {
+    describe('record publication', () => {
       const outcome = pipe(
         initialState,
-        A.last(record(recordCommand)),
+        A.last(recordPublication(recordCommand)),
       );
 
       it('succeeds with no new events', () => {
@@ -172,11 +172,11 @@ describe('lifecycle', () => {
     const initialState = pipe(
       [],
       A.of,
-      A.concat(record(recordCommand)),
+      A.concat(recordPublication(recordCommand)),
       A.concat(erase({ evaluationLocator })),
     );
 
-    describe('record', () => {
+    describe('record publication', () => {
       const mostRecentCommand = {
         groupId: arbitraryGroupId(),
         publishedAt: arbitraryDate(),
@@ -187,7 +187,7 @@ describe('lifecycle', () => {
       };
       const outcome = pipe(
         initialState,
-        A.last(record(mostRecentCommand)),
+        A.last(recordPublication(mostRecentCommand)),
       );
 
       it('succeeds with a new event', () => {
@@ -240,7 +240,7 @@ describe('lifecycle', () => {
     });
   });
 
-  describe('given an evaluation that has been recorded as removed', () => {
+  describe('given a recorded evaluation removal', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
     const evaluation = {
       groupId: arbitraryGroupId(),
@@ -252,14 +252,14 @@ describe('lifecycle', () => {
     const initialState = pipe(
       [],
       A.of,
-      A.concat(record(evaluation)),
+      A.concat(recordPublication(evaluation)),
       A.concat(recordRemoval({ evaluationLocator })),
     );
 
-    describe('record', () => {
+    describe('record publication', () => {
       const outcome = pipe(
         initialState,
-        A.last(record(evaluation)),
+        A.last(recordPublication(evaluation)),
       );
 
       it('errors with previously removed, cannot record', () => {

@@ -40,7 +40,7 @@ const decideResult = (command: RecordEvaluationPublicationCommand) => (event: Re
   }
 };
 
-export const record: ResourceAction<RecordEvaluationPublicationCommand> = (command) => (events) => pipe(
+export const recordPublication: ResourceAction<RecordEvaluationPublicationCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
