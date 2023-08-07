@@ -4,11 +4,8 @@ import { constructEvent } from '../../../../src/domain-events';
 import { recordSubjectArea } from '../../../../src/write-side/resources/article';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
-import { arbitraryDate } from '../../../helpers';
-import { evaluationRecordedHelper } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
 
 describe('execute-command', () => {
   const articleId = arbitraryArticleId();
@@ -47,7 +44,10 @@ describe('execute-command', () => {
   describe('when an evaluation was recorded', () => {
     const result = pipe(
       [
-        evaluationRecordedHelper(arbitraryGroupId(), articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+        {
+          ...arbitraryEvaluationRecordedEvent(),
+          articleId,
+        },
       ],
       recordSubjectArea(command),
       E.getOrElseW(shouldNotBeCalled),

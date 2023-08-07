@@ -1,11 +1,8 @@
 import { constructEvent } from '../../../src/domain-events';
-import { arbitraryDate } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { evaluationRecordedHelper } from '../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 
 const group = arbitraryGroup();
 
@@ -20,5 +17,8 @@ export const arbitraryUninterestingEvents = [
     slug: group.slug,
   }),
   constructEvent('UserFollowedEditorialCommunity')({ userId: arbitraryUserId(), editorialCommunityId: arbitraryGroupId() }),
-  evaluationRecordedHelper(group.id, arbitraryArticleId(), arbitraryEvaluationLocator(), [], arbitraryDate()),
+  {
+    ...arbitraryEvaluationRecordedEvent(),
+    groupId: group.id,
+  },
 ];

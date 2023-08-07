@@ -2,26 +2,19 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { constructEvent } from '../../../../src/domain-events';
 import { update } from '../../../../src/write-side/resources/evaluation';
-import { evaluationRecordedHelper } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
 import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../../src/types/recorded-evaluation';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryDoi } from '../../../types/doi.helper';
-import { arbitraryString } from '../../../helpers';
 
 const evaluationRecordedWithType = (
   evaluationLocator: EvaluationLocator,
   evaluationType: EvaluationType | undefined,
-) => evaluationRecordedHelper(
-  arbitraryGroupId(),
-  arbitraryDoi(),
+) => ({
+  ...arbitraryEvaluationRecordedEvent(),
   evaluationLocator,
-  [arbitraryString(), arbitraryString()],
-  new Date(),
-  new Date(),
   evaluationType,
-);
+});
 
 const evaluationUpdatedWithType = (
   evaluationLocator: EvaluationLocator,
