@@ -28,7 +28,7 @@ export const isStateWithSubjectArea = (state: ArticleState):
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isEventOfType('EvaluationRecorded')(event)) {
+  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     if (event.articleId.hasPrefix(biorxivAndMedrxivPublisherDoiPrefix)) {
       if (event.groupId === elifeGroupId) {
         const key = event.articleId.value;

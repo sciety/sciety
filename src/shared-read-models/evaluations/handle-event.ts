@@ -70,7 +70,7 @@ const removeFromAllIndexes = (evaluationLocator: EvaluationLocator, readmodel: R
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isEventOfType('EvaluationRecorded')(event)) {
+  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
     if (!hasAlreadyBeenRecorded(event.evaluationLocator, evaluationsForThisArticle)) {
       const recordedEvaluation: RecordedEvaluation = {

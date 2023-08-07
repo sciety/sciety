@@ -9,10 +9,10 @@ import { EraseEvaluationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 import { evaluationResourceError } from './evaluation-resource-error';
 
-type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
+type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
-  isEventOfType('EvaluationRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
+  isEventOfType('EvaluationPublicationRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
 );
 
 export const erase: ResourceAction<EraseEvaluationCommand> = (command) => (events) => pipe(
@@ -21,7 +21,7 @@ export const erase: ResourceAction<EraseEvaluationCommand> = (command) => (event
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
   RA.last,
   E.fromOption(() => evaluationResourceError.doesNotExist),
-  E.map(isEventOfType('EvaluationRecorded')),
+  E.map(isEventOfType('EvaluationPublicationRecorded')),
   E.map(
     B.match(
       () => [],

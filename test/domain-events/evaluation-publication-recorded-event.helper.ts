@@ -15,12 +15,4 @@ export const arbitraryEvaluationPublicationRecordedEvent = (): EventOfType<'Eval
   evaluationType: arbitraryEvaluationType(),
 });
 
-export const arbitraryEvaluationRecordedEvent = (): EventOfType<'EvaluationRecorded'> => constructEvent('EvaluationRecorded')({
-  groupId: arbitraryGroupId(),
-  articleId: arbitraryDoi(),
-  evaluationLocator: arbitraryEvaluationLocator(),
-  authors: [],
-  publishedAt: arbitraryDate(),
-  date: arbitraryDate(),
-  evaluationType: arbitraryEvaluationType(),
-});
+export const arbitraryEvaluationRecordedEvent = arbitraryEvaluationPublicationRecordedEvent;

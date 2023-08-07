@@ -8,14 +8,14 @@ import {
 } from '../../../domain-events';
 import { evaluationResourceError } from './evaluation-resource-error';
 
-type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationRemovalRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
+type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'EvaluationRemovalRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
-  isEventOfType('EvaluationRecorded')(event) || isEventOfType('EvaluationRemovalRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
+  isEventOfType('EvaluationPublicationRecorded')(event) || isEventOfType('EvaluationRemovalRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
 );
 
 const decideResult = (command: RecordEvaluationRemovalCommand) => (event: RelevantEvent) => {
-  if (isEventOfType('EvaluationRecorded')(event)) {
+  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     return E.right([constructEvent('EvaluationRemovalRecorded')({ ...command, reason: 'published-on-incorrect-article' })]);
   }
   if (isEventOfType('EvaluationRemovalRecorded')(event)) {

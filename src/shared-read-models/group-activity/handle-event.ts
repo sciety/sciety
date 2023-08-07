@@ -18,7 +18,7 @@ const groupJoined = (readmodel: ReadModel, event: EventOfType<'GroupJoined'>) =>
   readmodel.set(event.groupId, new Map());
 };
 
-const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'EvaluationRecorded'>) => {
+const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
   const groupActivity = readmodel.get(event.groupId);
   if (groupActivity === undefined) {
     return;
@@ -51,7 +51,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   if (isEventOfType('GroupJoined')(event)) {
     groupJoined(readmodel, event);
   }
-  if (isEventOfType('EvaluationRecorded')(event)) {
+  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     evaluationRecorded(readmodel, event);
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {

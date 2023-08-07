@@ -33,7 +33,7 @@ describe('lifecycle', () => {
 
       it('succeeds with a new event', () => {
         expect(outcome).toStrictEqual(E.right([expect.objectContaining({
-          type: 'EvaluationRecorded',
+          type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.articleId,
           evaluationLocator: mostRecentCommand.evaluationLocator,
@@ -192,7 +192,7 @@ describe('lifecycle', () => {
 
       it('succeeds with a new event', () => {
         expect(outcome).toStrictEqual(E.right([expect.objectContaining({
-          type: 'EvaluationRecorded',
+          type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.articleId,
           evaluationLocator,

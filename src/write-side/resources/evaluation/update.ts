@@ -13,9 +13,9 @@ import { evaluationResourceError } from './evaluation-resource-error';
 import { EvaluationType } from '../../../types/recorded-evaluation';
 import { ErrorMessage } from '../../../types/error-message';
 
-type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
+type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 
-const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => isEventOfType('EvaluationRecorded')(event)
+const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => isEventOfType('EvaluationPublicationRecorded')(event)
 || isEventOfType('EvaluationUpdated')(event)
 || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
 || isEventOfType('EvaluationRemovalRecorded')(event);
@@ -42,7 +42,7 @@ const constructWriteModel = (
     RNEA.last,
     (event) => {
       switch (event.type) {
-        case 'EvaluationRecorded':
+        case 'EvaluationPublicationRecorded':
         case 'EvaluationUpdated':
           return E.right({ evaluationType: event.evaluationType });
         case 'IncorrectlyRecordedEvaluationErased':

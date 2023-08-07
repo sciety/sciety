@@ -9,7 +9,6 @@ import { annotationCreatedEventCodec } from './annotation-created-event';
 import { articleAddedToListEventCodec } from './article-added-to-list-event';
 import { articleRemovedFromListEventCodec } from './article-removed-from-list-event';
 import { evaluatedArticlesListSpecifiedEventCodec } from './evaluated-articles-list-specified-event';
-import { evaluationRecordedEventCodec } from './evaluation-recorded-event';
 import { evaluationRemovalRecordedEventCodec } from './evaluation-removal-recorded-event';
 import { evaluationUpdatedEventCodec } from './evaluation-updated-event';
 import { groupJoinedEventCodec } from './group-joined-event';
@@ -50,7 +49,6 @@ export const domainEventCodec = t.union([
   articleRemovedFromListEventCodec,
   curationStatementRecordedEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
-  evaluationRecordedEventCodec,
   evaluationPublicationRecordedEventCodec,
   evaluationRemovalRecordedEventCodec,
   evaluationUpdatedEventCodec,

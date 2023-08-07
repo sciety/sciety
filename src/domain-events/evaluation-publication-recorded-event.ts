@@ -31,7 +31,7 @@ const upgradedEventType = <T extends string>(currentValue: T, deprecatedValues: 
 
 export const evaluationPublicationRecordedEventCodec = t.type({
   id: EventIdFromString,
-  type: upgradedEventType('EvaluationPublicationRecorded', []),
+  type: upgradedEventType('EvaluationPublicationRecorded', ['EvaluationRecorded']),
   date: tt.DateFromISOString,
   groupId: GroupIdFromString,
   evaluationLocator: evaluationLocatorCodec,

@@ -9,14 +9,14 @@ import {
 } from '../../../domain-events';
 import { ResourceAction } from '../resource-action';
 
-type RelevantEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
+type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 
 const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
-  isEventOfType('EvaluationRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event) || isEventOfType('EvaluationRemovalRecorded')(event)
+  isEventOfType('EvaluationPublicationRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event) || isEventOfType('EvaluationRemovalRecorded')(event)
 );
 
-const createEvaluationRecordedEvent = (command: RecordEvaluationPublicationCommand) => constructEvent(
-  'EvaluationRecorded',
+const createEvaluationPublicationRecordedEvent = (command: RecordEvaluationPublicationCommand) => constructEvent(
+  'EvaluationPublicationRecorded',
 )({
   groupId: command.groupId,
   articleId: command.articleId,
@@ -29,11 +29,11 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationPublicationComma
 
 const decideResult = (command: RecordEvaluationPublicationCommand) => (event: RelevantEvent) => {
   switch (event.type) {
-    case 'EvaluationRecorded':
+    case 'EvaluationPublicationRecorded':
       return E.right([]);
 
     case 'IncorrectlyRecordedEvaluationErased':
-      return E.right([createEvaluationRecordedEvent(command)]);
+      return E.right([createEvaluationPublicationRecordedEvent(command)]);
 
     case 'EvaluationRemovalRecorded':
       return E.left(evaluationResourceError.previouslyRemovedCannotRecord);
@@ -46,7 +46,7 @@ export const recordPublication: ResourceAction<RecordEvaluationPublicationComman
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
   RA.last,
   O.match(
-    () => E.right([createEvaluationRecordedEvent(command)]),
+    () => E.right([createEvaluationPublicationRecordedEvent(command)]),
     (event) => decideResult(command)(event),
   ),
 );
