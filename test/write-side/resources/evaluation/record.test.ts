@@ -6,12 +6,12 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { evaluationRecordedHelper } from '../../../domain-events/evaluation-recorded-event.helper';
-import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
+import { RecordEvaluationPublicationCommand } from '../../../../src/write-side/commands';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 
 describe('record', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
-  const input: RecordEvaluationCommand = {
+  const input: RecordEvaluationPublicationCommand = {
     groupId: arbitraryGroupId(),
     articleId: arbitraryArticleId(),
     evaluationLocator,

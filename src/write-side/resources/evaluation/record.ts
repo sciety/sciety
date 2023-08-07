@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { evaluationResourceError } from './evaluation-resource-error';
-import { RecordEvaluationCommand } from '../../commands';
+import { RecordEvaluationPublicationCommand } from '../../commands';
 import {
   DomainEvent, constructEvent, isEventOfType, EventOfType,
 } from '../../../domain-events';
@@ -15,7 +15,7 @@ const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
   isEventOfType('EvaluationRecorded')(event) || isEventOfType('IncorrectlyRecordedEvaluationErased')(event) || isEventOfType('EvaluationRemovalRecorded')(event)
 );
 
-const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => constructEvent(
+const createEvaluationRecordedEvent = (command: RecordEvaluationPublicationCommand) => constructEvent(
   'EvaluationRecorded',
 )({
   groupId: command.groupId,
@@ -27,7 +27,7 @@ const createEvaluationRecordedEvent = (command: RecordEvaluationCommand) => cons
   evaluationType: command.evaluationType ? command.evaluationType : undefined,
 });
 
-const decideResult = (command: RecordEvaluationCommand) => (event: RelevantEvent) => {
+const decideResult = (command: RecordEvaluationPublicationCommand) => (event: RelevantEvent) => {
   switch (event.type) {
     case 'EvaluationRecorded':
       return E.right([]);
@@ -40,7 +40,7 @@ const decideResult = (command: RecordEvaluationCommand) => (event: RelevantEvent
   }
 };
 
-export const record: ResourceAction<RecordEvaluationCommand> = (command) => (events) => pipe(
+export const record: ResourceAction<RecordEvaluationPublicationCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),

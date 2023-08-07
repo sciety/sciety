@@ -2,7 +2,7 @@ export { removeArticleFromListCommandCodec, RemoveArticleFromListCommand } from 
 export { addArticleToListCommandCodec, AddArticleToListCommand } from './add-article-to-list';
 export { CreateListCommand } from './create-list';
 export { addGroupCommandCodec, AddGroupCommand } from './add-group';
-export { RecordEvaluationCommand, recordEvaluationCommandCodec } from './record-evaluation';
+export { RecordEvaluationPublicationCommand, recordEvaluationPublicationCommandCodec } from './record-evaluation-publication';
 export { RecordSubjectAreaCommand } from './record-subject-area';
 export { editListDetailsCommandCodec, EditListDetailsCommand } from './edit-list-details';
 export { CreateUserAccountCommand } from './create-user-account';

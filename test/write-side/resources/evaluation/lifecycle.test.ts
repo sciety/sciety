@@ -9,7 +9,7 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
-import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
+import { RecordEvaluationPublicationCommand } from '../../../../src/write-side/commands';
 import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
 
 describe('lifecycle', () => {
@@ -18,7 +18,7 @@ describe('lifecycle', () => {
 
     describe('record', () => {
       const evaluationLocator = arbitraryEvaluationLocator();
-      const mostRecentCommand: RecordEvaluationCommand = {
+      const mostRecentCommand: RecordEvaluationPublicationCommand = {
         groupId: arbitraryGroupId(),
         articleId: arbitraryArticleId(),
         evaluationLocator,
