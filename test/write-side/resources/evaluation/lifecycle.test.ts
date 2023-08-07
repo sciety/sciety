@@ -15,9 +15,9 @@ import { evaluationResourceError } from '../../../../src/write-side/resources/ev
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
     const initialState = A.of([]);
+    const evaluationLocator = arbitraryEvaluationLocator();
 
     describe('record publication', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
       const mostRecentCommand: RecordEvaluationPublicationCommand = {
         groupId: arbitraryGroupId(),
         articleId: arbitraryArticleId(),
@@ -45,7 +45,6 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
       const outcome = pipe(
         initialState,
         A.concat(erase({ evaluationLocator })),
@@ -57,7 +56,6 @@ describe('lifecycle', () => {
     });
 
     describe('record removal', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
       const outcome = pipe(
         initialState,
         A.concat(recordRemoval({ evaluationLocator })),
@@ -72,7 +70,7 @@ describe('lifecycle', () => {
       const outcome = pipe(
         initialState,
         A.concat(update({
-          evaluationLocator: arbitraryEvaluationLocator(),
+          evaluationLocator,
           evaluationType: 'review',
         })),
       );
