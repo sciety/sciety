@@ -4,12 +4,8 @@ import {
   erase, update, recordPublication, recordRemoval,
 } from '../../../../src/write-side/resources/evaluation';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
-import { arbitraryDate, arbitraryString } from '../../../helpers';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
-import { RecordEvaluationPublicationCommand } from '../../../../src/write-side/commands';
 import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
 
@@ -19,14 +15,7 @@ describe('lifecycle', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
 
     describe('record publication', () => {
-      const mostRecentCommand: RecordEvaluationPublicationCommand = {
-        groupId: arbitraryGroupId(),
-        articleId: arbitraryArticleId(),
-        evaluationLocator,
-        publishedAt: arbitraryDate(),
-        authors: [arbitraryString(), arbitraryString()],
-        evaluationType: arbitraryEvaluationType(),
-      };
+      const mostRecentCommand = arbitraryRecordEvaluationPublicationCommand();
       const outcome = pipe(
         initialState,
         A.last(recordPublication(mostRecentCommand)),
@@ -154,11 +143,8 @@ describe('lifecycle', () => {
   describe('given an erased evaluation', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
     const recordCommand = {
-      groupId: arbitraryGroupId(),
-      publishedAt: arbitraryDate(),
+      ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator,
-      articleId: arbitraryArticleId(),
-      authors: [],
     };
 
     const initialState = pipe(
@@ -170,12 +156,8 @@ describe('lifecycle', () => {
 
     describe('record publication', () => {
       const mostRecentCommand = {
-        groupId: arbitraryGroupId(),
-        publishedAt: arbitraryDate(),
+        ...arbitraryRecordEvaluationPublicationCommand(),
         evaluationLocator,
-        articleId: arbitraryArticleId(),
-        authors: [],
-        evaluationType: arbitraryEvaluationType(),
       };
       const outcome = pipe(
         initialState,
@@ -234,24 +216,21 @@ describe('lifecycle', () => {
 
   describe('given a recorded evaluation removal', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
-    const evaluation = {
-      groupId: arbitraryGroupId(),
-      publishedAt: arbitraryDate(),
+    const initialRecordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator,
-      articleId: arbitraryArticleId(),
-      authors: [],
     };
     const initialState = pipe(
       [],
       A.of,
-      A.concat(recordPublication(evaluation)),
+      A.concat(recordPublication(initialRecordEvaluationPublicationCommand)),
       A.concat(recordRemoval({ evaluationLocator })),
     );
 
     describe('record publication', () => {
       const outcome = pipe(
         initialState,
-        A.last(recordPublication(evaluation)),
+        A.last(recordPublication(initialRecordEvaluationPublicationCommand)),
       );
 
       it('errors with previously removed, cannot record', () => {
