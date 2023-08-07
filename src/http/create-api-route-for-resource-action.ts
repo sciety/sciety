@@ -23,7 +23,7 @@ const executeAndRespond = <C extends GenericCommand>(
       TE.match(
         (error) => {
           context.response.status = StatusCodes.BAD_REQUEST;
-          context.response.body = error;
+          context.response.body = { error };
         },
         (eventsCreated) => {
           context.response.status = eventsCreated === 'events-created' ? StatusCodes.CREATED : StatusCodes.OK;
