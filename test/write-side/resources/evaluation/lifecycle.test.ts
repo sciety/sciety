@@ -11,6 +11,7 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
 import { RecordEvaluationPublicationCommand } from '../../../../src/write-side/commands';
 import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
@@ -82,24 +83,17 @@ describe('lifecycle', () => {
   });
 
   describe('given a recorded evaluation publication', () => {
-    const recordCommand = {
-      groupId: arbitraryGroupId(),
-      publishedAt: arbitraryDate(),
-      evaluationLocator: arbitraryEvaluationLocator(),
-      articleId: arbitraryArticleId(),
-      authors: [],
-    };
-
+    const initialCommand = arbitraryRecordEvaluationPublicationCommand();
     const initialState = pipe(
       [],
       A.of,
-      A.concat(recordPublication(recordCommand)),
+      A.concat(recordPublication(initialCommand)),
     );
 
     describe('record publication', () => {
       const outcome = pipe(
         initialState,
-        A.last(recordPublication(recordCommand)),
+        A.last(recordPublication(initialCommand)),
       );
 
       it('succeeds with no new events', () => {
@@ -110,14 +104,14 @@ describe('lifecycle', () => {
     describe('erase', () => {
       const outcome = pipe(
         initialState,
-        A.last(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+        A.last(erase({ evaluationLocator: initialCommand.evaluationLocator })),
       );
 
       it('succeeds with a new event', () => {
         expect(outcome).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'IncorrectlyRecordedEvaluationErased',
-            evaluationLocator: recordCommand.evaluationLocator,
+            evaluationLocator: initialCommand.evaluationLocator,
           }),
         ]));
       });
@@ -126,14 +120,14 @@ describe('lifecycle', () => {
     describe('record removal', () => {
       const outcome = pipe(
         initialState,
-        A.last(recordRemoval({ evaluationLocator: recordCommand.evaluationLocator })),
+        A.last(recordRemoval({ evaluationLocator: initialCommand.evaluationLocator })),
       );
 
       it('succeeds with a new event', () => {
         expect(outcome).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'EvaluationRemovalRecorded',
-            evaluationLocator: recordCommand.evaluationLocator,
+            evaluationLocator: initialCommand.evaluationLocator,
           }),
         ]));
       });
@@ -142,14 +136,14 @@ describe('lifecycle', () => {
     describe('update', () => {
       const outcome = pipe(
         initialState,
-        A.last(update({ evaluationLocator: recordCommand.evaluationLocator, evaluationType: 'review' })),
+        A.last(update({ evaluationLocator: initialCommand.evaluationLocator, evaluationType: 'review' })),
       );
 
       it('succeeds with a new event', () => {
         expect(outcome).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'EvaluationUpdated',
-            evaluationLocator: recordCommand.evaluationLocator,
+            evaluationLocator: initialCommand.evaluationLocator,
             evaluationType: 'review',
           }),
         ]));
