@@ -15,17 +15,14 @@ const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => (
 );
 
 const decideResult = (command: RecordEvaluationRemovalCommand) => (event: RelevantEvent) => {
-  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    return E.right([constructEvent('EvaluationRemovalRecorded')({ ...command, reason: 'published-on-incorrect-article' })]);
+  switch (event.type) {
+    case 'EvaluationPublicationRecorded':
+      return E.right([constructEvent('EvaluationRemovalRecorded')({ ...command, reason: 'published-on-incorrect-article' })]);
+    case 'EvaluationRemovalRecorded':
+      return E.right([]);
+    case 'IncorrectlyRecordedEvaluationErased':
+      return E.left(evaluationResourceError.doesNotExist);
   }
-  if (isEventOfType('EvaluationRemovalRecorded')(event)) {
-    return E.right([]);
-  }
-  if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
-    return E.left(evaluationResourceError.doesNotExist);
-  }
-  // unreachable!
-  return E.right([]);
 };
 
 export const recordRemoval: ResourceAction<RecordEvaluationRemovalCommand> = (command) => (events) => pipe(
