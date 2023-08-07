@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { getEvaluationsForArticle } from '../../../src/shared-read-models/evaluations/get-evaluations-for-article';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
@@ -26,7 +26,7 @@ const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
 
 const evaluationRecorded = (articleId: Doi, evaluationLocator: EvaluationLocator) => (
   {
-    ...arbitraryEvaluationRecordedEvent(),
+    ...arbitraryEvaluationPublicationRecordedEvent(),
     articleId,
     evaluationLocator,
   }
@@ -37,7 +37,7 @@ const evaluationRecordedWithType = (
   evaluationLocator: EvaluationLocator,
   evaluationType: EvaluationType,
 ) => ({
-  ...arbitraryEvaluationRecordedEvent(),
+  ...arbitraryEvaluationPublicationRecordedEvent(),
   articleId,
   evaluationLocator,
   evaluationType,
@@ -114,7 +114,7 @@ describe('get-evaluations-for-article', () => {
     const result = pipe(
       [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId,
           articleId,
           evaluationLocator,

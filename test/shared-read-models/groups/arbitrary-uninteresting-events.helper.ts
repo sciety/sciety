@@ -2,7 +2,7 @@ import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryEvaluationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 
 const group = arbitraryGroup();
 
@@ -18,7 +18,7 @@ export const arbitraryUninterestingEvents = [
   }),
   constructEvent('UserFollowedEditorialCommunity')({ userId: arbitraryUserId(), editorialCommunityId: arbitraryGroupId() }),
   {
-    ...arbitraryEvaluationRecordedEvent(),
+    ...arbitraryEvaluationPublicationRecordedEvent(),
     groupId: group.id,
   },
 ];

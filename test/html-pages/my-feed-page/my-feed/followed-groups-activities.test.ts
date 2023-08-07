@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../../types/group-id.helper';
-import { arbitraryEvaluationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
@@ -12,7 +12,7 @@ describe('followed-groups-activities', () => {
     const latestEvaluationPublishedDate = new Date('2020-12-15T00:00:00.000Z');
     const events = [
       {
-        ...arbitraryEvaluationRecordedEvent(),
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         articleId,
         publishedAt: latestEvaluationPublishedDate,
         groupId: groupIdFromString(groupId),
@@ -56,7 +56,7 @@ describe('followed-groups-activities', () => {
       const notFollowedGroupId = arbitraryGroupId();
       const events = [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: notFollowedGroupId,
           date: new Date('2021-03-10T00:00:00.000Z'),
         },
@@ -74,13 +74,13 @@ describe('followed-groups-activities', () => {
     const latestEvaluationPublishedDate = new Date('2020-01-01');
     const events = [
       {
-        ...arbitraryEvaluationRecordedEvent(),
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
         articleId,
         publishedAt: new Date('1980-01-01'),
       },
       {
-        ...arbitraryEvaluationRecordedEvent(),
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
         articleId,
         publishedAt: latestEvaluationPublishedDate,
@@ -124,25 +124,25 @@ describe('followed-groups-activities', () => {
     const articleId = arbitraryArticleId();
     const events = [
       {
-        ...arbitraryEvaluationRecordedEvent(),
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
         articleId,
         publishedAt: new Date('2020-10-14T00:00:00.000Z'),
       },
       {
-        ...arbitraryEvaluationRecordedEvent(),
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId: otherGroupId,
         articleId,
         publishedAt: new Date('2021-03-10T00:00:00.000Z'),
       },
       {
-        ...arbitraryEvaluationRecordedEvent(),
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId: otherGroupId,
         articleId,
         publishedAt: new Date('2021-03-10T00:00:00.000Z'),
       },
       {
-        ...arbitraryEvaluationRecordedEvent(),
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId: otherGroupId,
         articleId,
         publishedAt: new Date('2021-03-10T00:00:00.000Z'),
@@ -181,13 +181,13 @@ describe('followed-groups-activities', () => {
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId,
           articleId: earlierArticle,
           date: earlierDate,
         },
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId,
           articleId: laterArticle,
           date: laterDate,
@@ -214,19 +214,19 @@ describe('followed-groups-activities', () => {
       const articleB = arbitraryArticleId();
       const events = [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: followedGroupId,
           articleId: articleB,
           date: new Date('1980-01-01'),
         },
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: followedGroupId,
           articleId: articleA,
           date: new Date('2000-01-01'),
         },
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: notFollowedGroupId,
           articleId: articleB,
           date: new Date('2020-01-01'),
@@ -250,7 +250,7 @@ describe('followed-groups-activities', () => {
     const numberOfEvents = 15000;
 
     const events = (
-      [...Array(numberOfEvents)].map(() => (arbitraryEvaluationRecordedEvent())));
+      [...Array(numberOfEvents)].map(() => (arbitraryEvaluationPublicationRecordedEvent())));
 
     it('performs acceptably', () => {
       const startTime = performance.now();

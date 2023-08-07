@@ -7,7 +7,7 @@ import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { RecordEvaluationPublicationCommand } from '../../../../src/write-side/commands';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
-import { arbitraryEvaluationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
 
 describe('record-publication', () => {
   const evaluationLocator = arbitraryEvaluationLocator();
@@ -24,7 +24,7 @@ describe('record-publication', () => {
     const events = pipe(
       [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           evaluationLocator,
         },
       ],

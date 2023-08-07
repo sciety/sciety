@@ -7,7 +7,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
 import { getEvaluationsByGroup } from '../../../src/shared-read-models/evaluations/get-evaluations-by-group';
-import { arbitraryEvaluationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 
 describe('get-evaluations-by-group', () => {
   const article1 = arbitraryDoi();
@@ -26,21 +26,21 @@ describe('get-evaluations-by-group', () => {
     const readmodel = pipe(
       [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: group1,
           articleId: article1,
           evaluationLocator: evaluationLocator1,
           date: new Date('2020-05-19T00:00:00Z'),
         },
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: group1,
           articleId: article2,
           evaluationLocator: evaluationLocator2,
           date: new Date('2020-05-21T00:00:00Z'),
         },
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: group2,
           articleId: article1,
           evaluationLocator: evaluationLocator3,
@@ -64,14 +64,14 @@ describe('get-evaluations-by-group', () => {
     const readmodel = pipe(
       [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: group1,
           articleId: article1,
           evaluationLocator: evaluationLocator1,
           date: new Date('2020-05-19T00:00:00Z'),
         },
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: group1,
           articleId: article2,
           evaluationLocator: evaluationLocator2,
@@ -94,7 +94,7 @@ describe('get-evaluations-by-group', () => {
     const readmodel = pipe(
       [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: group1,
           articleId: article1,
           evaluationLocator: evaluationLocator1,

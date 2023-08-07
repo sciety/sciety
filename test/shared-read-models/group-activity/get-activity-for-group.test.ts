@@ -6,7 +6,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryEvaluationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-removal-recorded-event-helper';
@@ -35,7 +35,7 @@ describe('get-activity-for-group', () => {
         const readModel = pipe(
           [
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
             },
           ],
@@ -57,7 +57,7 @@ describe('get-activity-for-group', () => {
         const readModel = pipe(
           [
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
               evaluationLocator,
             },
@@ -81,7 +81,7 @@ describe('get-activity-for-group', () => {
         const readModel = pipe(
           [
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
               evaluationLocator,
             },
@@ -144,7 +144,7 @@ describe('get-activity-for-group', () => {
         [
           groupJoinedEvent,
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             publishedAt,
           },
@@ -177,12 +177,12 @@ describe('get-activity-for-group', () => {
           [
             groupJoinedEvent,
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
               publishedAt: new Date('1970'),
             },
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
               publishedAt: mostRecentPublishedAt,
             },
@@ -215,12 +215,12 @@ describe('get-activity-for-group', () => {
           [
             groupJoinedEvent,
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
               publishedAt: mostRecentPublishedAt,
             },
             {
-              ...arbitraryEvaluationRecordedEvent(),
+              ...arbitraryEvaluationPublicationRecordedEvent(),
               groupId: group.id,
               publishedAt: new Date('1970'),
             },
@@ -254,7 +254,7 @@ describe('get-activity-for-group', () => {
         [
           groupJoinedEvent,
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             evaluationLocator,
           },
@@ -288,12 +288,12 @@ describe('get-activity-for-group', () => {
         [
           groupJoinedEvent,
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             publishedAt: remainingEvaluationPublishedAt,
           },
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             evaluationLocator: evaluationToErase,
           },
@@ -327,12 +327,12 @@ describe('get-activity-for-group', () => {
         [
           groupJoinedEvent,
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             publishedAt: remainingEvaluationPublishedAt,
           },
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId: group.id,
             evaluationLocator,
           },
@@ -374,11 +374,11 @@ describe('get-activity-for-group', () => {
         [
           groupJoinedEvent,
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             ...eventProperties,
           },
           {
-            ...arbitraryEvaluationRecordedEvent(),
+            ...arbitraryEvaluationPublicationRecordedEvent(),
             ...eventProperties,
           },
         ],

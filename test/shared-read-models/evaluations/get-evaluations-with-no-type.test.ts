@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { arbitraryEvaluationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { getEvaluationsWithNoType } from '../../../src/shared-read-models/evaluations/get-evaluations-with-no-type';
@@ -16,7 +16,7 @@ describe('get-evaluations-with-no-type', () => {
     const readModel = pipe(
       [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: evaluation1.groupId,
           articleId: evaluation1.articleId,
           evaluationLocator: evaluation1.evaluationLocator,
@@ -26,7 +26,7 @@ describe('get-evaluations-with-no-type', () => {
           evaluationType: 'author-response',
         },
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: evaluation2.groupId,
           articleId: evaluation2.articleId,
           evaluationLocator: evaluation2.evaluationLocator,

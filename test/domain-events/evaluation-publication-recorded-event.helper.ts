@@ -14,5 +14,3 @@ export const arbitraryEvaluationPublicationRecordedEvent = (): EventOfType<'Eval
   date: arbitraryDate(),
   evaluationType: arbitraryEvaluationType(),
 });
-
-export const arbitraryEvaluationRecordedEvent = arbitraryEvaluationPublicationRecordedEvent;

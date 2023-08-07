@@ -5,7 +5,7 @@ import { recordSubjectArea } from '../../../../src/write-side/resources/article'
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
-import { arbitraryEvaluationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
 
 describe('execute-command', () => {
   const articleId = arbitraryArticleId();
@@ -45,7 +45,7 @@ describe('execute-command', () => {
     const result = pipe(
       [
         {
-          ...arbitraryEvaluationRecordedEvent(),
+          ...arbitraryEvaluationPublicationRecordedEvent(),
           articleId,
         },
       ],
