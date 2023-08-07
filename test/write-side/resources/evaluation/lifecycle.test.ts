@@ -8,6 +8,7 @@ import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.he
 import * as A from '../enact';
 import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
+import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
@@ -61,7 +62,7 @@ describe('lifecycle', () => {
         initialState,
         A.concat(update({
           evaluationLocator,
-          evaluationType: 'review',
+          evaluationType: arbitraryEvaluationType(),
         })),
       );
 
@@ -123,17 +124,21 @@ describe('lifecycle', () => {
     });
 
     describe('update', () => {
+      const mostRecentCommand = {
+        ...arbitraryUpdateEvaluationCommand(),
+        evaluationLocator: initialCommand.evaluationLocator,
+      };
       const outcome = pipe(
         initialState,
-        A.last(update({ evaluationLocator: initialCommand.evaluationLocator, evaluationType: 'review' })),
+        A.last(update(mostRecentCommand)),
       );
 
       it('succeeds with a new event', () => {
         expect(outcome).toStrictEqual(E.right([
           expect.objectContaining({
             type: 'EvaluationUpdated',
-            evaluationLocator: initialCommand.evaluationLocator,
-            evaluationType: 'review',
+            evaluationLocator: mostRecentCommand.evaluationLocator,
+            evaluationType: mostRecentCommand.evaluationType,
           }),
         ]));
       });
@@ -266,9 +271,13 @@ describe('lifecycle', () => {
     });
 
     describe('update', () => {
+      const mostRecentCommand = {
+        ...arbitraryUpdateEvaluationCommand(),
+        evaluationLocator,
+      };
       const outcome = pipe(
         initialState,
-        A.last(update({ evaluationLocator, evaluationType: 'review' })),
+        A.last(update(mostRecentCommand)),
       );
 
       it('errors with previously removed, cannot update', () => {
