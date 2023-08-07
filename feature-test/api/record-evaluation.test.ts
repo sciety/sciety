@@ -33,7 +33,7 @@ describe('record an evaluation', () => {
         descriptionPath: arbitraryDescriptionPath(),
         slug: arbitraryWord(),
       });
-      await callApi('api/record-evaluation', {
+      await callApi('api/record-evaluation-publication', {
         evaluationLocator,
         articleId,
         groupId,
