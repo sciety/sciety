@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { evaluationRecordedHelper } from '../../domain-events/evaluation-recorded-event.helper';
+import { evaluationRecordedHelper } from '../../domain-events/evaluation-publication-recorded-event.helper';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { getEvaluationsWithNoType } from '../../../src/shared-read-models/evaluations/get-evaluations-with-no-type';
