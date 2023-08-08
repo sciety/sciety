@@ -15,7 +15,7 @@ const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
   O.match(
     () => `<h1>${htmlEscape(group.name)}</h1>`,
     (largeLogoPath) => htmlEscape`
-    <h1>
+    <h1 class="page-header__visual_heading">
       <img src="${largeLogoPath}" alt="${group.name}" class="page-header__large_logo">
     </h1>
   `,

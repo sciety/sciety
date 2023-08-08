@@ -12,8 +12,16 @@
   margin-bottom: 1.5rem;
 }
 
+.page-header__visual_heading {
+  width: 100%;
+
+  @include breakpoints.not-narrow() {
+    width: auto;
+  }
+}
+
 .page-header__large_logo {
-  width: 320px;
+  width: 100%;
 
   @include breakpoints.not-narrow() {
     width: 400px;
