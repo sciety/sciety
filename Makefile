@@ -83,6 +83,7 @@ jest-test:
 backstop-test: export TARGET = fast
 backstop-test: export USE_STUB_ADAPTERS = true
 backstop-test: export DISABLE_COOKIEBOT = true
+backstop-test: export DISABLE_SAGAS = true
 backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
@@ -92,15 +93,6 @@ backstop-test: node_modules clean-db build
 	scripts/wait-for-healthy.sh
 	npx backstop --docker --filter="${SCENARIO}" test
 	${DOCKER_COMPOSE} down
-
-exploratory-test-backstop: export TARGET = prod
-exploratory-test-backstop: export DISABLE_COOKIEBOT = true
-exploratory-test-backstop: node_modules clean-db build
-	${DOCKER_COMPOSE} up -d
-	scripts/wait-for-healthy.sh
-	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
-	${DOCKER_COMPOSE} restart app
-	${DOCKER_COMPOSE} up
 
 backstop-approve: node_modules
 	npx backstop approve

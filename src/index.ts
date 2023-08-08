@@ -92,5 +92,10 @@ void pipe(
     ({ server, adapters }) => { server.listen(80); return adapters; },
   ),
   T.chainFirst(executeBackgroundPolicies),
-  T.chain(startSagas),
+  T.chain((adapters) => {
+    if (process.env.DISABLE_SAGAS === 'true') {
+      return T.of(undefined);
+    }
+    return startSagas(adapters);
+  }),
 )();
