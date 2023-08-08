@@ -10,7 +10,7 @@ export type PageHeaderViewModel = {
   isFollowing: boolean,
 };
 
-const renderPageHeaderIdentityAsLargeLogo = (group: PageHeaderViewModel['group']) => pipe(
+const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
   group.largeLogoPath,
   O.match(
     () => `<h1>${htmlEscape(group.name)}</h1>`,
@@ -21,18 +21,6 @@ const renderPageHeaderIdentityAsLargeLogo = (group: PageHeaderViewModel['group']
   `,
   ),
 );
-
-const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return renderPageHeaderIdentityAsLargeLogo(group);
-  }
-  return `
-    <img src="${group.avatarPath}" alt="" class="page-header__avatar">
-    <h1>
-      ${htmlEscape(group.name)}
-    </h1>
-  `;
-};
 
 export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--group">
