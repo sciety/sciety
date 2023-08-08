@@ -12,27 +12,17 @@
   margin-bottom: 1.5rem;
 }
 
-.group-page-follow-toggle {
-  @include layout.page-content-horizontal-margins();
-  margin-bottom: 3rem;
-}
-
-.page-header--group {
-  .page-header__avatar {
-    @include avatar.border();
-    width: avatar.$size--large;
-    height: avatar.$size--large;
-    flex: 0 0 avatar.$size--large;
-    margin-right: 1rem;
-  }
-}
-
 .page-header__large_logo {
   width: 320px;
 
   @include breakpoints.not-narrow() {
     width: 400px;
   }
+}
+
+.group-page-follow-toggle {
+  @include layout.page-content-horizontal-margins();
+  margin-bottom: 3rem;
 }
 
 .follow-button {
