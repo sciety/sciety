@@ -8,13 +8,29 @@ export type PageHeaderViewModel = {
   isFollowing: boolean,
 };
 
+const renderPageHeaderIdentityAsLargeLogo = (group: PageHeaderViewModel['group']) => `
+  <img src="${group.avatarPath}" alt="" class="page-header__avatar">
+  <h1>
+    ${htmlEscape(group.name)}
+  </h1>
+`;
+
+const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => {
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    return renderPageHeaderIdentityAsLargeLogo(group);
+  }
+  return `
+    <img src="${group.avatarPath}" alt="" class="page-header__avatar">
+    <h1>
+      ${htmlEscape(group.name)}
+    </h1>
+  `;
+};
+
 export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--group">
     <div class="page-header__identity">
-      <img src="${viewmodel.group.avatarPath}" alt="" class="page-header__avatar">
-      <h1>
-        ${htmlEscape(viewmodel.group.name)}
-      </h1>
+      ${renderPageHeaderIdentity(viewmodel.group)}
     </div>
     <p>
       ${htmlEscape(viewmodel.group.shortDescription)}
