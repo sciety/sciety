@@ -28,7 +28,11 @@
 }
 
 .page-header__large_logo {
-  width: 400px;
+  width: 320px;
+
+  @include breakpoints.not-narrow() {
+    width: 400px;
+  }
 }
 
 .follow-button {
