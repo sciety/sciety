@@ -27,6 +27,10 @@
   }
 }
 
+.page-header__large_logo {
+  width: 400px;
+}
+
 .follow-button {
   @include button.primary();
 }
