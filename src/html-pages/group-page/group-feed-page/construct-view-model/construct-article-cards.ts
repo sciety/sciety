@@ -1,8 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
+import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import {
   ArticleCardViewModel,
   ArticleErrorCardViewModel,
@@ -23,12 +24,12 @@ export const constructArticleCards = (
   O.chain((listId) => dependencies.lookupList(listId)),
   O.map((list) => list.articleIds),
   O.match(
-    () => [],
+    () => TE.left(DE.notFound),
     (articleIds) => pipe(
       articleIds,
-      RA.map((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
-      // map list ids using shared-components/article-card/construct-article-card-view-model
+      RA.takeRight(10),
+      T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
+      T.map(E.right),
     ),
   ),
-  () => TE.right([]),
 );
