@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card';
 import { templateListItems } from '../../../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { ArticleCardViewModel, renderArticleCard } from '../../../../shared-components/article-card';
 
 const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
   cards,
@@ -17,13 +17,13 @@ const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
   toHtmlFragment,
 );
 
-type RenderListOfListCardsWithFallback = (lists: ReadonlyArray<ListCardViewModel>)
+type RenderListOfArticleCardsWithFallback = (lists: ReadonlyArray<ArticleCardViewModel>)
 => HtmlFragment;
 
-export const renderListOfListCardsWithFallback: RenderListOfListCardsWithFallback = RA.match(
-  () => toHtmlFragment('<p class="static-message">This group doesn\'t have any lists yet.</p>'),
+export const renderListOfArticleCardsWithFallback: RenderListOfArticleCardsWithFallback = RA.match(
+  () => toHtmlFragment('<p class="static-message">This group has no activity yet.</p>'),
   flow(
-    RA.map(renderListCard),
+    RA.map(renderArticleCard),
     renderCards,
   ),
 );

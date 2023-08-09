@@ -6,7 +6,6 @@ import * as tt from 'io-ts-types';
 import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { constructListCards } from './construct-list-cards';
 import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { Dependencies } from './dependencies';
 
@@ -33,7 +32,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           (u) => dependencies.isFollowing(group.id)(u.id),
         ),
       ),
-      listCards: constructListCards(dependencies, group),
+      articleCards: [],
       tabs: constructTabsViewModel(dependencies, group),
     },
   )),
