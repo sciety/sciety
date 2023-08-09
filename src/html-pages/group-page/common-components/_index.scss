@@ -14,6 +14,7 @@
 
 .page-header__visual_heading {
   width: 100%;
+  height: 200px;
 
   @include breakpoints.not-narrow() {
     width: 400px;
@@ -23,6 +24,9 @@
 
 .page-header__large_logo {
   width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 50%;
 
   @include breakpoints.not-narrow() {
     width: 100%;
