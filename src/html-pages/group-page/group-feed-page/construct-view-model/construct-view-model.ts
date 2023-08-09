@@ -23,19 +23,23 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),
-  O.map((group) => pipe(
-    {
-      group,
-      isFollowing: pipe(
-        params.user,
-        O.fold(
-          () => false,
-          (u) => dependencies.isFollowing(group.id)(u.id),
-        ),
+  O.map((group) => ({
+    group,
+    isFollowing: pipe(
+      params.user,
+      O.fold(
+        () => false,
+        (u) => dependencies.isFollowing(group.id)(u.id),
       ),
-      articleCards: constructArticleCards(dependencies, group.id),
-      tabs: constructTabsViewModel(dependencies, group),
-    },
-  )),
+    ),
+    tabs: constructTabsViewModel(dependencies, group),
+  })),
   TE.fromOption(() => DE.notFound),
+  TE.chain((partial) => pipe(
+    constructArticleCards(dependencies, partial.group.id),
+    TE.map((articleCards) => ({
+      ...partial,
+      articleCards,
+    })),
+  )),
 );
