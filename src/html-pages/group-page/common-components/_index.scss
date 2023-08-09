@@ -16,7 +16,8 @@
   width: 100%;
 
   @include breakpoints.not-narrow() {
-    width: auto;
+    width: 400px;
+    height: 200px;
   }
 }
 
@@ -24,7 +25,10 @@
   width: 100%;
 
   @include breakpoints.not-narrow() {
-    width: 400px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left 50%;
   }
 }
 
