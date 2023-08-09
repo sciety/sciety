@@ -8,6 +8,7 @@ import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { Dependencies } from './dependencies';
+import { constructArticleCards } from './construct-article-cards';
 
 export const paramsCodec = t.type({
   slug: t.string,
@@ -32,7 +33,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           (u) => dependencies.isFollowing(group.id)(u.id),
         ),
       ),
-      articleCards: [],
+      articleCards: constructArticleCards(group.id),
       tabs: constructTabsViewModel(dependencies, group),
     },
   )),
