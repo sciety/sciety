@@ -33,7 +33,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           (u) => dependencies.isFollowing(group.id)(u.id),
         ),
       ),
-      articleCards: constructArticleCards(group.id),
+      articleCards: constructArticleCards(dependencies, group.id),
       tabs: constructTabsViewModel(dependencies, group),
     },
   )),
