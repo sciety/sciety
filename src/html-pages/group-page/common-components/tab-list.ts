@@ -3,11 +3,11 @@ import { Tab } from '../../../shared-components/tabs';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { TabsViewModel } from './tabs-view-model';
 
-const groupFeedTab = () => {
+const groupFeedTab = (viewmodel: TabsViewModel) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     return [{
       label: toHtmlFragment('Group feed'),
-      url: '',
+      url: `/groups/${viewmodel.groupSlug}/feed`,
     }];
   }
   return [];
@@ -26,5 +26,5 @@ export const tabList = (viewmodel: TabsViewModel): RNEA.ReadonlyNonEmptyArray<Ta
     label: toHtmlFragment(`<span class="visually-hidden">This group has ${viewmodel.followerCount} </span>Followers<span aria-hidden="true"> (${viewmodel.followerCount})</span>`),
     url: `/groups/${viewmodel.groupSlug}/followers`,
   },
-  ...groupFeedTab(),
+  ...groupFeedTab(viewmodel),
 ];
