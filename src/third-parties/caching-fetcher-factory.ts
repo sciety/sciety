@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
@@ -26,6 +27,18 @@ const cachedGetter = (
       'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
     },
     timeout: 10 * 1000,
+    cache: {
+      cachePredicate: {
+        // Only cache if the response comes with a "good" status code
+        statusCheck: (status) => [
+          200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
+        ].includes(status), // some calculation
+
+        // Check custom response body
+        responseMatch: ({ data }) => true,
+
+      },
+    },
   });
   if (response.cached) {
     logger('debug', 'Axios cache hit', { url });
