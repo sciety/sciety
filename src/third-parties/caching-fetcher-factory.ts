@@ -3,7 +3,9 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
-import { setupCache, type HeaderInterpreter, AxiosCacheInstance } from 'axios-cache-interceptor';
+import {
+  setupCache, type HeaderInterpreter, AxiosCacheInstance, CacheAxiosResponse,
+} from 'axios-cache-interceptor';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
@@ -24,13 +26,18 @@ const constructHeadersWithUserAgent = (headers: Record<string, string> = {}) => 
   'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
 });
 
+const logResponseTime = (logger: Logger, startTime: Date, response: CacheAxiosResponse | undefined, url: string) => {
+  const durationInMs = new Date().getTime() - startTime.getTime();
+  logger('debug', 'Response time', { url, durationInMs, responseStatus: response ? response.status : undefined });
+};
+
 const cachedGetter = (
   cachedAxios: AxiosCacheInstance,
   logger: Logger,
   shouldCacheResponseBody: ShouldCacheResponseBody,
 ) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
-  let response;
+  let response: CacheAxiosResponse<U> | undefined;
   try {
     response = await cachedAxios.get<U>(url, {
       headers: constructHeadersWithUserAgent(headers),
@@ -49,8 +56,7 @@ const cachedGetter = (
     }
     return response.data;
   } finally {
-    const durationInMs = new Date().getTime() - startTime.getTime();
-    logger('debug', 'Response time', { url, durationInMs, responseStatus: response ? response.status : undefined });
+    logResponseTime(logger, startTime, response, url);
   }
 };
 
