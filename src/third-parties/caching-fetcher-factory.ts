@@ -19,6 +19,7 @@ const createCacheAdapter = (maxAge: number) => setupCache(
 const cachedGetter = (
   cachedAxios: AxiosCacheInstance,
   logger: Logger,
+  shouldCacheResponseBody: ShouldCacheResponseBody,
 ) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
   const response = await cachedAxios.get<U>(url, {
@@ -35,7 +36,7 @@ const cachedGetter = (
         ].includes(status), // some calculation
 
         // Check custom response body
-        responseMatch: ({ data }) => true,
+        responseMatch: ({ data }) => shouldCacheResponseBody(data),
 
       },
     },
@@ -58,9 +59,9 @@ type CachingFetcherFactory = (
   shouldCacheResponseBody?: ShouldCacheResponseBody,
 ) => QueryExternalService;
 
-export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds) => {
+export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds, shouldCacheResponseBody) => {
   const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000);
-  const get = cachedGetter(cachedAxios, logger);
+  const get = cachedGetter(cachedAxios, logger, shouldCacheResponseBody ?? (() => true));
   return (
     notFoundLogLevel: LevelName = 'warn',
     headers = {},
