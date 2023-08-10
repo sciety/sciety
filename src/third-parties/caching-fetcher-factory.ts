@@ -67,6 +67,10 @@ export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeS
     headers = {},
   ) => (url: string) => pipe(
     TE.tryCatch(async () => get<unknown>(url, headers), identity),
+    TE.mapLeft((error) => {
+      logger('debug', 'Axios cache miss', { url });
+      return error;
+    }),
     TE.mapLeft(logAndTransformToDataError(logger, new URL(url), notFoundLogLevel)),
   );
 };
