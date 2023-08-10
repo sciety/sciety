@@ -17,7 +17,7 @@ import { Doi } from '../types/doi';
 import { QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
-import { createCachingFetcher } from './caching-fetcher-factory';
+import { createCachingFetcher, foo } from './caching-fetcher-factory';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
@@ -31,7 +31,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
 
 export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
   const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60);
-  const queryCrossrefService = createCachingFetcher(logger, 24 * 60 * 60);
+  const queryCrossrefService = createCachingFetcher(logger, 24 * 60 * 60, foo(logger));
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),

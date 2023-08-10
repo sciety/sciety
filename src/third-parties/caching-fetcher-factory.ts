@@ -59,6 +59,14 @@ type CachingFetcherFactory = (
   shouldCacheResponseBody?: ShouldCacheResponseBody,
 ) => QueryExternalService;
 
+export const foo = (logger: Logger): ShouldCacheResponseBody => (responseBody) => {
+  if (responseBody === '') {
+    logger('warn', 'Response from Crossref is an empty string, not caching');
+    return false;
+  }
+  return true;
+};
+
 export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds, shouldCacheResponseBody) => {
   const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000);
   const get = cachedGetter(cachedAxios, logger, shouldCacheResponseBody ?? (() => true));
