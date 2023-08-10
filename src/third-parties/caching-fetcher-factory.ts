@@ -36,7 +36,7 @@ const cachedGetter = (
         ].includes(status), // some calculation
 
         // Check custom response body
-        responseMatch: ({ data }) => shouldCacheResponseBody(data),
+        responseMatch: ({ data }) => shouldCacheResponseBody(data, url),
 
       },
     },
@@ -51,7 +51,7 @@ const cachedGetter = (
   return response.data;
 };
 
-type ShouldCacheResponseBody = (responseBody: unknown) => boolean;
+type ShouldCacheResponseBody = (responseBody: unknown, url: string) => boolean;
 
 type CachingFetcherFactory = (
   logger: Logger,
@@ -59,9 +59,9 @@ type CachingFetcherFactory = (
   shouldCacheResponseBody?: ShouldCacheResponseBody,
 ) => QueryExternalService;
 
-export const foo = (logger: Logger): ShouldCacheResponseBody => (responseBody) => {
+export const foo = (logger: Logger): ShouldCacheResponseBody => (responseBody, url) => {
   if (responseBody === '') {
-    logger('warn', 'Response from Crossref is an empty string, not caching');
+    logger('warn', 'Response from Crossref is an empty string, not caching', { responseBody, url });
     return false;
   }
   return true;
