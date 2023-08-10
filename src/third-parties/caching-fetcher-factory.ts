@@ -15,6 +15,14 @@ const createCacheAdapter = (maxAge: number) => setupCache(
   Axios.create(),
   { headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge) },
 );
+const shouldCacheAccordingToStatusCode = (status: number) => [
+  200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
+].includes(status);
+
+const constructHeadersWithUserAgent = (headers: Record<string, string> = {}) => ({
+  ...headers,
+  'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+});
 
 const cachedGetter = (
   cachedAxios: AxiosCacheInstance,
@@ -25,21 +33,12 @@ const cachedGetter = (
   let response;
   try {
     response = await cachedAxios.get<U>(url, {
-      headers: {
-        ...headers,
-        'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
-      },
+      headers: constructHeadersWithUserAgent(headers),
       timeout: 10 * 1000,
       cache: {
         cachePredicate: {
-          // Only cache if the response comes with a "good" status code
-          statusCheck: (status) => [
-            200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
-          ].includes(status), // some calculation
-
-          // Check custom response body
+          statusCheck: shouldCacheAccordingToStatusCode,
           responseMatch: ({ data }) => shouldCacheResponseBody(data, url),
-
         },
       },
     });
