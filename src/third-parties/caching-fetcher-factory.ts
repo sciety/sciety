@@ -22,33 +22,37 @@ const cachedGetter = (
   shouldCacheResponseBody: ShouldCacheResponseBody,
 ) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
-  const response = await cachedAxios.get<U>(url, {
-    headers: {
-      ...headers,
-      'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
-    },
-    timeout: 10 * 1000,
-    cache: {
-      cachePredicate: {
-        // Only cache if the response comes with a "good" status code
-        statusCheck: (status) => [
-          200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
-        ].includes(status), // some calculation
-
-        // Check custom response body
-        responseMatch: ({ data }) => shouldCacheResponseBody(data, url),
-
+  let response;
+  try {
+    response = await cachedAxios.get<U>(url, {
+      headers: {
+        ...headers,
+        'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
       },
-    },
-  });
-  if (response.cached) {
-    logger('debug', 'Axios cache hit', { url });
-  } else {
-    logger('debug', 'Axios cache miss', { url });
+      timeout: 10 * 1000,
+      cache: {
+        cachePredicate: {
+          // Only cache if the response comes with a "good" status code
+          statusCheck: (status) => [
+            200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
+          ].includes(status), // some calculation
+
+          // Check custom response body
+          responseMatch: ({ data }) => shouldCacheResponseBody(data, url),
+
+        },
+      },
+    });
+    if (response.cached) {
+      logger('debug', 'Axios cache hit', { url });
+    } else {
+      logger('debug', 'Axios cache miss', { url });
+    }
+    return response.data;
+  } finally {
     const durationInMs = new Date().getTime() - startTime.getTime();
-    logger('debug', 'Response time', { url, durationInMs, responseStatus: response.status });
+    logger('debug', 'Response time', { url, durationInMs, responseStatus: response ? response.status : undefined });
   }
-  return response.data;
 };
 
 export type ShouldCacheResponseBody = (responseBody: unknown, url: string) => boolean;
