@@ -51,28 +51,13 @@ const cachedGetter = (
   return response.data;
 };
 
-type ShouldCacheResponseBody = (responseBody: unknown, url: string) => boolean;
+export type ShouldCacheResponseBody = (responseBody: unknown, url: string) => boolean;
 
 type CachingFetcherFactory = (
   logger: Logger,
   cacheMaxAgeSeconds: number,
   shouldCacheResponseBody?: ShouldCacheResponseBody,
 ) => QueryExternalService;
-
-export const foo = (logger: Logger): ShouldCacheResponseBody => (responseBody, url) => {
-  if (typeof responseBody === 'string') {
-    if (responseBody === '') {
-      logger('warn', 'Response from Crossref is an empty string, not caching', { responseBody, url });
-      return false;
-    }
-    if (responseBody.includes('unexpected HTTP status: status=503')) {
-      logger('warn', 'Response from Crossref is a Crossref error, not caching', { responseBody, url });
-      return false;
-    }
-  }
-  logger('debug', 'Response from Crossref is valid, caching', { responseBody, url });
-  return true;
-};
 
 export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds, shouldCacheResponseBody) => {
   const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000);
