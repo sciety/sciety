@@ -1,8 +1,9 @@
 version: '3.8'
 
+name: sciety
+
 services:
   app:
-    container_name: sciety_app
     build:
       context: .
     environment:
@@ -36,7 +37,6 @@ services:
     restart: unless-stopped
 
   db:
-    container_name: sciety_db
     image: postgres:12.3-alpine
     environment:
       POSTGRES_USER: user
