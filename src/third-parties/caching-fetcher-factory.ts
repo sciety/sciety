@@ -70,6 +70,7 @@ export const foo = (logger: Logger): ShouldCacheResponseBody => (responseBody, u
       return false;
     }
   }
+  logger('debug', 'Response from Crossref is valid, caching', { responseBody, url });
   return true;
 };
 
