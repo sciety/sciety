@@ -37,6 +37,7 @@ const cachedGetter = (
   shouldCacheResponseBody: ShouldCacheResponseBody,
 ) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
+  const cacheLoggingPayload = { url };
   let response: CacheAxiosResponse<U> | undefined;
   try {
     response = await cachedAxios.get<U>(url, {
@@ -50,11 +51,14 @@ const cachedGetter = (
       },
     });
     if (response.cached) {
-      logger('debug', 'Axios cache hit', { url });
+      logger('debug', 'Axios cache hit', cacheLoggingPayload);
     } else {
-      logger('debug', 'Axios cache miss', { url });
+      logger('debug', 'Axios cache miss', cacheLoggingPayload);
     }
     return response.data;
+  } catch (error: unknown) {
+    logger('debug', 'Axios cache miss', cacheLoggingPayload);
+    throw error;
   } finally {
     logResponseTime(logger, startTime, response, url);
   }
@@ -76,10 +80,6 @@ export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeS
     headers = {},
   ) => (url: string) => pipe(
     TE.tryCatch(async () => get<unknown>(url, headers), identity),
-    TE.mapLeft((error) => {
-      logger('debug', 'Axios cache miss', { url });
-      return error;
-    }),
     TE.mapLeft(logAndTransformToDataError(logger, new URL(url), notFoundLogLevel)),
   );
 };
