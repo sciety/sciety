@@ -50,7 +50,13 @@ const cachedGetter = (
   return response.data;
 };
 
-type CachingFetcherFactory = (logger: Logger, cacheMaxAgeSeconds: number) => QueryExternalService;
+type ShouldCacheResponseBody = (responseBody: unknown) => boolean;
+
+type CachingFetcherFactory = (
+  logger: Logger,
+  cacheMaxAgeSeconds: number,
+  shouldCacheResponseBody?: ShouldCacheResponseBody,
+) => QueryExternalService;
 
 export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds) => {
   const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000);
