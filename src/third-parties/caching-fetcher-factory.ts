@@ -60,9 +60,15 @@ type CachingFetcherFactory = (
 ) => QueryExternalService;
 
 export const foo = (logger: Logger): ShouldCacheResponseBody => (responseBody, url) => {
-  if (responseBody === '') {
-    logger('warn', 'Response from Crossref is an empty string, not caching', { responseBody, url });
-    return false;
+  if (typeof responseBody === 'string') {
+    if (responseBody === '') {
+      logger('warn', 'Response from Crossref is an empty string, not caching', { responseBody, url });
+      return false;
+    }
+    if (responseBody.includes('unexpected HTTP status: status=503')) {
+      logger('warn', 'Response from Crossref is a Crossref error, not caching', { responseBody, url });
+      return false;
+    }
   }
   return true;
 };
