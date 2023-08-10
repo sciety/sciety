@@ -31,8 +31,9 @@ const findVersionsForArticleDoiFromSupportedServers = (
 
 export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
   const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60);
+  const queryCrossrefService = createCachingFetcher(logger, 24 * 60 * 60);
   return {
-    fetchArticle: fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
+    fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({
       doi: fetchZenodoRecord(queryExternalService, logger),
