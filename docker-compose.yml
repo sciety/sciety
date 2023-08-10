@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   app:
-    container_name: sciety_app
     build:
       context: .
     environment:
@@ -32,11 +31,10 @@ services:
       AUTH0_CLIENT_SECRET: '${AUTH0_CLIENT_SECRET:-auth0-client-secret}'
       AUTH0_CALLBACK_URL: 'http://localhost:8080/auth0/callback'
     ports:
-      - '8080:80'
+      - '${SPECIFY_APP_PORT:-8080}:80'
     restart: unless-stopped
 
   db:
-    container_name: sciety_db
     image: postgres:12.3-alpine
     environment:
       POSTGRES_USER: user
@@ -46,7 +44,7 @@ services:
       - './data/backstop.csv:/data/backstop.csv'
       - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
     ports:
-      - '5432:5432'
+      - '${SPECIFY_DB_PORT:-5432}:5432'
     healthcheck:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s

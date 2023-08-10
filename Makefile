@@ -83,15 +83,18 @@ jest-test:
 backstop-test: export TARGET = fast
 backstop-test: export USE_STUB_ADAPTERS = true
 backstop-test: export DISABLE_COOKIEBOT = true
-backstop-test: node_modules clean-db build
-	${DOCKER_COMPOSE} up -d
-	scripts/wait-for-healthy.sh
-	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
+backstop-test: export SPECIFY_APP_PORT = 8081
+backstop-test: export SPECIFY_DB_PORT = 5433
+backstop-test: node_modules build
+	${DOCKER_COMPOSE} -p backstop_test down
+	${DOCKER_COMPOSE} -p backstop_test up -d
+	scripts/wait-for-healthy-backstop-container.sh
+	${DOCKER_COMPOSE} -p backstop_test exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
 	npx ts-node backstop_data/construct-backstop-state-via-api
-	${DOCKER_COMPOSE} restart app
-	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} -p backstop_test restart app
+	scripts/wait-for-healthy-backstop-container.sh
 	npx backstop --docker --filter="${SCENARIO}" test
-	${DOCKER_COMPOSE} down
+	${DOCKER_COMPOSE} -p backstop_test down
 
 exploratory-test-backstop: export TARGET = prod
 exploratory-test-backstop: export DISABLE_COOKIEBOT = true
