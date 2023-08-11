@@ -6,6 +6,6 @@ import { TabsViewModel } from '../common-components/tabs-view-model';
 
 export type ViewModel = PageHeaderViewModel & {
   group: Group,
-  articleCards: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>,
+  content: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>,
   tabs: TabsViewModel,
 };
