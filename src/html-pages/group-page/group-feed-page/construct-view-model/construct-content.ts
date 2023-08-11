@@ -6,16 +6,15 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { ViewModel } from '../view-model';
 import {
-  ConstructArticleCardViewModelDependencies,
   constructArticleCardViewModel,
 } from '../../../../shared-components/article-card';
 import { GroupId } from '../../../../types/group-id';
-import { Queries } from '../../../../shared-read-models';
 import * as DE from '../../../../types/data-error';
 import { Doi } from '../../../../types/doi';
+import { Dependencies } from './dependencies';
 
 export const constructContent = (
-  dependencies: Queries & ConstructArticleCardViewModelDependencies,
+  dependencies: Dependencies,
   groupId: GroupId,
 ): TE.TaskEither<DE.DataError, ViewModel['content']> => pipe(
   groupId,
