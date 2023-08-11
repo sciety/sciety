@@ -8,7 +8,7 @@ import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { Dependencies } from './dependencies';
-import { constructArticleCards } from './construct-article-cards';
+import { constructContent } from './construct-content';
 
 export const paramsCodec = t.type({
   slug: t.string,
@@ -36,7 +36,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   })),
   TE.fromOption(() => DE.notFound),
   TE.chain((partial) => pipe(
-    constructArticleCards(dependencies, partial.group.id),
+    constructContent(dependencies, partial.group.id),
     TE.map((content) => ({
       ...partial,
       content,
