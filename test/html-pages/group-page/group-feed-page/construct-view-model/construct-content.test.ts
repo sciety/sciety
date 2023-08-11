@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { dummyLogger } from '../../../../dummy-logger';
 import { ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model';
@@ -7,7 +8,6 @@ import { createTestFramework, TestFramework } from '../../../../framework';
 import { arbitraryGroup } from '../../../../types/group.helper';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content';
-import * as LOID from '../../../../../src/types/list-owner-id';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
 
@@ -32,9 +32,12 @@ describe('construct-content', () => {
     const article2 = arbitraryArticleId();
 
     beforeEach(async () => {
-      const initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
-      await framework.commandHelpers.addArticleToList(article1, initialGroupList.id);
-      await framework.commandHelpers.addArticleToList(article2, initialGroupList.id);
+      const groupEvaluatedArticlesList = pipe(
+        framework.queries.getEvaluatedArticlesListIdForGroup(group.id),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+      await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
+      await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
       viewModel = await pipe(
         constructContent(
