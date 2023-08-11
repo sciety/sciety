@@ -4,8 +4,10 @@ import { Group } from '../../../types/group';
 import { PageHeaderViewModel } from '../common-components/page-header';
 import { TabsViewModel } from '../common-components/tabs-view-model';
 
+type Content = 'no-activity-yet' | ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>;
+
 export type ViewModel = PageHeaderViewModel & {
   group: Group,
-  content: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>,
+  content: Content,
   tabs: TabsViewModel,
 };
