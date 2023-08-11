@@ -7,37 +7,40 @@ import { createTestFramework, TestFramework } from '../../../../framework';
 import { arbitraryGroup } from '../../../../types/group.helper';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content';
-import { List } from '../../../../../src/types/list';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
 
 describe('construct-content', () => {
   let framework: TestFramework;
+  let dependencies: Dependencies;
   const group = arbitraryGroup();
+  let viewModel: ViewModel['content'];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     framework = createTestFramework();
+    dependencies = {
+      ...framework.queries,
+      ...framework.happyPathThirdParties,
+      logger: dummyLogger,
+    };
+    await framework.commandHelpers.createGroup(group);
   });
 
   describe('when the group has evaluated articles', () => {
-    let viewModel: ViewModel['content'];
-    let initialGroupList: List;
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
-      initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
+      const initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
       await framework.commandHelpers.addArticleToList(article1, initialGroupList.id);
       await framework.commandHelpers.addArticleToList(article2, initialGroupList.id);
 
       viewModel = await pipe(
-        constructContent({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
-          logger: dummyLogger,
-        },
-        group.id),
+        constructContent(
+          dependencies,
+          group.id,
+        ),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -55,18 +58,12 @@ describe('construct-content', () => {
   });
 
   describe('when the group has no evaluated articles', () => {
-    let viewModel: ViewModel['content'];
-
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
-
       viewModel = await pipe(
-        constructContent({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
-          logger: dummyLogger,
-        },
-        group.id),
+        constructContent(
+          dependencies,
+          group.id,
+        ),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
