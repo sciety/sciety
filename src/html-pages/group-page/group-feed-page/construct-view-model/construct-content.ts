@@ -28,7 +28,7 @@ export const constructContent = (
       RA.matchW(
         () => TE.right('no-activity-yet'),
         flow(
-          RA.takeRight(10),
+          RA.takeLeft(10),
           T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
           T.map(E.right),
         ),
