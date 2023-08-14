@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
@@ -7,7 +8,7 @@ import { createTestFramework, TestFramework } from '../../framework';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { constructViewModel } from '../../../src/views/list/construct-view-model';
-import { ViewModel } from '../../../src/views/list/view-model';
+import { Doi } from '../../../src/types/doi';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -19,7 +20,7 @@ describe('construct-view-model', () => {
   describe('when the list contains two articles', () => {
     const articleId1 = arbitraryArticleId();
     const articleId2 = arbitraryArticleId();
-    let orderedArticleIds: ViewModel['articles'];
+    let orderedArticleIds: ReadonlyArray<Doi>;
     const createList = async () => {
       const userDetails = arbitraryUserDetails();
       await framework.commandHelpers.createUserAccount(userDetails);
@@ -36,18 +37,12 @@ describe('construct-view-model', () => {
         constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
         T.map((viewModel) => viewModel.articles),
+        T.map(RA.map((article) => article.articleId)),
       )();
     });
 
     it('sorts the articles in reverse order of being added to the list', () => {
-      expect(orderedArticleIds).toStrictEqual([
-        expect.objectContaining({
-          articleId: articleId2,
-        }),
-        expect.objectContaining({
-          articleId: articleId1,
-        }),
-      ]);
+      expect(orderedArticleIds).toStrictEqual([articleId2, articleId1]);
     });
   });
 });
