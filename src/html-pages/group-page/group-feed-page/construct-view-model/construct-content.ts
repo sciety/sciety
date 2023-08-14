@@ -1,4 +1,4 @@
-import { pipe, flow } from 'fp-ts/function';
+import { pipe, identity } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
@@ -25,14 +25,13 @@ export const constructContent = (
     () => TE.left(DE.notFound),
     (articleIds) => pipe(
       articleIds,
-      RA.matchW(
-        () => TE.right('no-activity-yet'),
-        flow(
-          RA.takeLeft(10),
-          T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
-          T.map(E.right),
-        ),
-      ),
+      RA.takeLeft(10),
+      T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
+      T.map(E.right),
+      TE.map(RA.matchW(
+        () => 'no-activity-yet',
+        identity,
+      )),
     ),
   ),
 );
