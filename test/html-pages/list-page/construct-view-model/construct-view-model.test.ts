@@ -134,5 +134,42 @@ describe('construct-view-model', () => {
         }));
       });
     });
+
+    describe('when an article has been removed from the list', () => {
+      let viewModel: ViewModel;
+      const article1 = arbitraryArticleId();
+      const article2 = arbitraryArticleId();
+      const article3 = arbitraryArticleId();
+
+      beforeEach(async () => {
+        const listId = await createList();
+        await framework.commandHelpers.addArticleToList(article1, listId);
+        await framework.commandHelpers.addArticleToList(article2, listId);
+        await framework.commandHelpers.addArticleToList(article3, listId);
+        await framework.commandHelpers.removeArticleFromList(article3, listId);
+        viewModel = await pipe(
+          {
+            page: 1,
+            id: listId,
+            user: O.none,
+          },
+          constructViewModel(framework.dependenciesForViews),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('sorts the remaining articles in reverse order of being added to the list', () => {
+        expect(viewModel.content).toStrictEqual(expect.objectContaining({
+          articles: [
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article2 }),
+            })),
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article1 }),
+            })),
+          ],
+        }));
+      });
+    });
   });
 });
