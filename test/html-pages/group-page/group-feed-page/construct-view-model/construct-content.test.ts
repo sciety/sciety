@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { dummyLogger } from '../../../../dummy-logger';
@@ -14,7 +15,7 @@ describe('construct-content', () => {
   let framework: TestFramework;
   let dependencies: Dependencies;
   const group = arbitraryGroup();
-  let viewModel: ViewModel['content'];
+  let content: ViewModel['content'];
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -38,7 +39,7 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
-      viewModel = await pipe(
+      content = await pipe(
         constructContent(
           dependencies,
           group.id,
@@ -48,15 +49,19 @@ describe('construct-content', () => {
     });
 
     it('contains article cards', () => {
-      expect(viewModel).toHaveLength(2);
+      expect(content).toHaveLength(2);
     });
 
-    it.todo('has the most recently added article as the first article card');
+    it('has the most recently added article as the first article card', () => {
+      expect(content[0]).toStrictEqual(E.right(expect.objectContaining({
+        articleId: article2,
+      })));
+    });
   });
 
   describe('when the group\'s evaluated articles list is empty', () => {
     beforeEach(async () => {
-      viewModel = await pipe(
+      content = await pipe(
         constructContent(
           dependencies,
           group.id,
@@ -66,7 +71,7 @@ describe('construct-content', () => {
     });
 
     it('contains a no-activity-yet message', () => {
-      expect(viewModel).toBe('no-activity-yet');
+      expect(content).toBe('no-activity-yet');
     });
   });
 });
