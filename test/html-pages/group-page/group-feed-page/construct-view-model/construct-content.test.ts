@@ -27,7 +27,7 @@ describe('construct-content', () => {
     await framework.commandHelpers.createGroup(group);
   });
 
-  describe('when the group has evaluated articles', () => {
+  describe('when the group\'s evaluated articles list contains articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
 
@@ -58,9 +58,11 @@ describe('construct-content', () => {
         })),
       ]);
     });
+
+    it.todo('has the most recently added article as the first article card');
   });
 
-  describe('when the group has no evaluated articles', () => {
+  describe('when the group\'s evaluated articles list is empty', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         constructContent(
