@@ -56,4 +56,10 @@ describe('construct-view-model', () => {
       expect(viewModel.relatedArticlesLink).toStrictEqual(O.some(expect.anything()));
     });
   });
+
+  describe('ordering of list contents', () => {
+    describe('when the list contains two un-evaluated articles', () => {
+      it.todo('sorts the articles in reverse order of being added to the list');
+    });
+  });
 });
