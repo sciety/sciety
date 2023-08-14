@@ -8,6 +8,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 import { LanguageCode, renderLangAttribute } from '../lang-attribute';
+import { Doi } from '../../types/doi';
 
 export type CurationStatementTeaserViewModel = {
   groupName: string,
@@ -16,6 +17,7 @@ export type CurationStatementTeaserViewModel = {
 };
 
 export type ArticleCardViewModel = {
+  articleId: Doi,
   articleLink: string,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
