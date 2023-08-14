@@ -1,4 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
+import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -18,7 +19,7 @@ describe('construct-view-model', () => {
   describe('when the list contains two articles', () => {
     const articleId1 = arbitraryArticleId();
     const articleId2 = arbitraryArticleId();
-    let viewModel: ViewModel;
+    let orderedArticleIds: ViewModel['articles'];
     const createList = async () => {
       const userDetails = arbitraryUserDetails();
       await framework.commandHelpers.createUserAccount(userDetails);
@@ -30,15 +31,16 @@ describe('construct-view-model', () => {
       const listId = await createList();
       await framework.commandHelpers.addArticleToList(articleId1, listId);
       await framework.commandHelpers.addArticleToList(articleId2, listId);
-      viewModel = await pipe(
+      orderedArticleIds = await pipe(
         { id: listId },
         constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
+        T.map((viewModel) => viewModel.articles),
       )();
     });
 
     it('sorts the articles in reverse order of being added to the list', () => {
-      expect(viewModel.articles).toStrictEqual([
+      expect(orderedArticleIds).toStrictEqual([
         expect.objectContaining({
           articleId: articleId2,
         }),
