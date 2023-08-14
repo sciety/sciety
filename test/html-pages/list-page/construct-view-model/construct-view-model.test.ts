@@ -59,7 +59,41 @@ describe('construct-view-model', () => {
 
   describe('ordering of list contents', () => {
     describe('when the list contains two un-evaluated articles', () => {
-      it.todo('sorts the articles in reverse order of being added to the list');
+      let viewModel: ViewModel;
+      let userDetails: UserDetails;
+      const article1 = arbitraryArticleId();
+      const article2 = arbitraryArticleId();
+
+      beforeEach(async () => {
+        userDetails = arbitraryUserDetails();
+        await framework.commandHelpers.createUserAccount(userDetails);
+        const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+        const listId = list.id;
+        await framework.commandHelpers.addArticleToList(article1, listId);
+        await framework.commandHelpers.addArticleToList(article2, listId);
+        viewModel = await pipe(
+          {
+            page: 1,
+            id: listId,
+            user: O.some({ id: userDetails.id }),
+          },
+          constructViewModel(framework.dependenciesForViews),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('sorts the articles in reverse order of being added to the list', () => {
+        expect(viewModel.content).toStrictEqual(expect.objectContaining({
+          articles: [
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article2 }),
+            })),
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article1 }),
+            })),
+          ],
+        }));
+      });
     });
   });
 });
