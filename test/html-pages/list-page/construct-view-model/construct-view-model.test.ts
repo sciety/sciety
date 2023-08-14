@@ -58,24 +58,27 @@ describe('construct-view-model', () => {
   });
 
   describe('ordering of list contents', () => {
+    const createList = async () => {
+      const userDetails = arbitraryUserDetails();
+      await framework.commandHelpers.createUserAccount(userDetails);
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      return list.id;
+    };
+
     describe('when the list contains two un-evaluated articles', () => {
       let viewModel: ViewModel;
-      let userDetails: UserDetails;
       const article1 = arbitraryArticleId();
       const article2 = arbitraryArticleId();
 
       beforeEach(async () => {
-        userDetails = arbitraryUserDetails();
-        await framework.commandHelpers.createUserAccount(userDetails);
-        const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
-        const listId = list.id;
+        const listId = await createList();
         await framework.commandHelpers.addArticleToList(article1, listId);
         await framework.commandHelpers.addArticleToList(article2, listId);
         viewModel = await pipe(
           {
             page: 1,
             id: listId,
-            user: O.some({ id: userDetails.id }),
+            user: O.none,
           },
           constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(shouldNotBeCalled),
