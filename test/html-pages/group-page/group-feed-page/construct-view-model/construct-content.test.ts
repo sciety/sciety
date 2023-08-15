@@ -15,7 +15,6 @@ describe('construct-content', () => {
   let framework: TestFramework;
   let dependencies: Dependencies;
   const group = arbitraryGroup();
-  let content: ViewModel['content'];
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -65,6 +64,8 @@ describe('construct-content', () => {
   });
 
   describe('when the group\'s evaluated articles list is empty', () => {
+    let content: ViewModel['content'];
+
     beforeEach(async () => {
       content = await pipe(
         constructContent(
