@@ -15,6 +15,7 @@ export const paramsCodec = t.type({
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
   })),
+  page: tt.withFallback(tt.NumberFromString, 1),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
