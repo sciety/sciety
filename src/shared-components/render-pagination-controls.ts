@@ -10,14 +10,13 @@ type PaginationControls = {
 export const renderPaginationControls = (
   basePath: string,
   nextPage: O.Option<number>,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   paginationControls: PaginationControls,
 ): HtmlFragment => pipe(
-  nextPage,
+  paginationControls.nextPage,
   O.fold(
     () => '',
     (pageNumber) => `<div class="pagination-controls">
-      <a href="${basePath}page=${pageNumber}" class="pagination-controls__next_link">Next</a>
+      <a href="${paginationControls.basePath}page=${pageNumber}" class="pagination-controls__next_link">Next</a>
     </div>`,
   ),
   toHtmlFragment,
