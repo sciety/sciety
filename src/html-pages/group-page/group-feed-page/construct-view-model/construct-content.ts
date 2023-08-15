@@ -26,7 +26,10 @@ export const constructContent = (
       RA.takeLeft(10),
       T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
       T.map(RNEA.fromReadonlyArray),
-      T.map(O.getOrElseW(() => 'no-activity-yet' as const)),
+      T.map(O.matchW(
+        () => ({ tag: 'no-activity-yet' as const }),
+        (articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards }),
+      )),
       TE.rightTask,
     ),
   ),

@@ -48,14 +48,17 @@ describe('construct-content', () => {
       )();
     });
 
-    it('contains article cards', () => {
-      expect(content).toHaveLength(2);
-    });
-
     it('has the most recently added article as the first article card', () => {
-      expect(content[0]).toStrictEqual(E.right(expect.objectContaining({
-        articleId: article2,
-      })));
+      expect(content).toStrictEqual(expect.objectContaining({
+        articleCards: [
+          E.right(expect.objectContaining({
+            articleId: article2,
+          })),
+          E.right(expect.objectContaining({
+            articleId: article1,
+          })),
+        ],
+      }));
     });
   });
 
@@ -71,7 +74,7 @@ describe('construct-content', () => {
     });
 
     it('contains a no-activity-yet message', () => {
-      expect(content).toBe('no-activity-yet');
+      expect(content.tag).toBe('no-activity-yet');
     });
   });
 });

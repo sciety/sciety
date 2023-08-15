@@ -5,9 +5,9 @@ import { Group } from '../../../types/group';
 import { PageHeaderViewModel } from '../common-components/page-header';
 import { TabsViewModel } from '../common-components/tabs-view-model';
 
-type NoActivity = 'no-activity-yet';
+type NoActivity = { tag: 'no-activity-yet' };
 
-type OrderedArticleCards = RNEA.ReadonlyNonEmptyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>;
+type OrderedArticleCards = { tag: 'ordered-article-cards', articleCards: RNEA.ReadonlyNonEmptyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>> };
 
 type Content = NoActivity | OrderedArticleCards;
 

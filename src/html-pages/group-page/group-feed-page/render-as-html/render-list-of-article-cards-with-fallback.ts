@@ -26,11 +26,11 @@ type RenderListOfArticleCardsWithFallback = (
 => HtmlFragment;
 
 export const renderListOfArticleCardsWithFallback: RenderListOfArticleCardsWithFallback = (content) => {
-  if (content === 'no-activity-yet') {
+  if (content.tag === 'no-activity-yet') {
     return toHtmlFragment('<p class="static-message">This group has no activity yet.</p>');
   }
   return pipe(
-    content,
+    content.articleCards,
     RA.map(E.fold(
       renderArticleErrorCard,
       renderArticleCard,
