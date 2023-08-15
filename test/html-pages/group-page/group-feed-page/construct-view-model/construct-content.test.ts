@@ -31,6 +31,8 @@ describe('construct-content', () => {
     const article2 = arbitraryArticleId();
     let orderedArticleCards: ViewModel['content'] & { tag: 'ordered-article-cards' };
 
+    const isOrderedArticleCards = (c: ViewModel['content']): c is ViewModel['content'] & { tag: 'ordered-article-cards' } => c.tag === 'ordered-article-cards';
+
     beforeEach(async () => {
       const groupEvaluatedArticlesList = pipe(
         framework.queries.getEvaluatedArticlesListIdForGroup(group.id),
@@ -44,7 +46,7 @@ describe('construct-content', () => {
           dependencies,
           group.id,
         ),
-        TE.filterOrElseW((c): c is ViewModel['content'] & { tag: 'ordered-article-cards' } => c.tag === 'ordered-article-cards', shouldNotBeCalled),
+        TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
