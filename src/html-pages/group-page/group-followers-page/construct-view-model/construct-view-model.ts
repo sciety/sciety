@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { renderPaginationControls } from '../../../../shared-components/render-pagination-controls';
+import { renderPaginationControls } from '../../../../shared-components/pagination/render-pagination-controls';
 import { paginate } from './paginate';
 import { augmentWithUserDetails } from './augment-with-user-details';
 import { userIdCodec } from '../../../../types/user-id';

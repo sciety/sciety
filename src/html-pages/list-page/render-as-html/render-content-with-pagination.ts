@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { renderArticlesList } from './render-articles-list';
-import { renderPaginationControls } from '../../../shared-components/render-pagination-controls';
+import { renderPaginationControls } from '../../../shared-components/pagination/render-pagination-controls';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ContentWithPaginationViewModel } from '../view-model';
 

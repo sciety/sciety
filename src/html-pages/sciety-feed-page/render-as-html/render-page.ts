@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { templateListItems } from '../../../shared-components/list-items';
-import { renderPaginationControls } from '../../../shared-components/render-pagination-controls';
+import { renderPaginationControls } from '../../../shared-components/pagination/render-pagination-controls';
 import { supplementaryCard } from '../../../shared-components/supplementary-card';
 import { supplementaryInfo } from '../../../shared-components/supplementary-info';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';

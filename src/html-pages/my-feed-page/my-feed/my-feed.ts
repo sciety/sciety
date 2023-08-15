@@ -12,8 +12,8 @@ import {
   troubleFetchingTryAgain,
 } from './static-content';
 import { renderArticleCard } from '../../../shared-components/article-card';
-import { PageOfItems, paginate } from '../../../shared-components/paginate';
-import { renderPaginationControls } from '../../../shared-components/render-pagination-controls';
+import { PageOfItems, paginate } from '../../../shared-components/pagination/paginate';
+import { renderPaginationControls } from '../../../shared-components/pagination/render-pagination-controls';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
