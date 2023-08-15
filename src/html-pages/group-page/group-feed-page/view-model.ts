@@ -7,7 +7,7 @@ import { TabsViewModel } from '../common-components/tabs-view-model';
 
 type NoActivity = { tag: 'no-activity-yet' };
 
-type OrderedArticleCards = { tag: 'ordered-article-cards', articleCards: RNEA.ReadonlyNonEmptyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>> };
+export type OrderedArticleCards = { tag: 'ordered-article-cards', articleCards: RNEA.ReadonlyNonEmptyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>> };
 
 type Content = NoActivity | OrderedArticleCards;
 

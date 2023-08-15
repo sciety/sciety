@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { dummyLogger } from '../../../../dummy-logger';
-import { ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model';
+import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { arbitraryGroup } from '../../../../types/group.helper';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
@@ -29,9 +29,9 @@ describe('construct-content', () => {
   describe('when the group\'s evaluated articles list contains articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
-    let orderedArticleCards: ViewModel['content'] & { tag: 'ordered-article-cards' };
+    let orderedArticleCards: OrderedArticleCards;
 
-    const isOrderedArticleCards = (c: ViewModel['content']): c is ViewModel['content'] & { tag: 'ordered-article-cards' } => c.tag === 'ordered-article-cards';
+    const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
 
     beforeEach(async () => {
       const groupEvaluatedArticlesList = pipe(
