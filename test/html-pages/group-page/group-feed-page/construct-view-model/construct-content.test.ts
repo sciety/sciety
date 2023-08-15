@@ -31,7 +31,7 @@ describe('construct-content', () => {
   describe('when the group\'s evaluated articles list contains articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
-    let orderedArticleCards: ReadonlyArray<Doi>;
+    let articleIds: ReadonlyArray<Doi>;
 
     const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
 
@@ -43,21 +43,21 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
-      orderedArticleCards = await pipe(
+      articleIds = await pipe(
         constructContent(
           dependencies,
           group.id,
         ),
         TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
-        T.map((foo) => foo.articleCards),
+        T.map((orderedArticleCards) => orderedArticleCards.articleCards),
         T.map(RA.rights),
         T.map(RA.map((card) => card.articleId)),
       )();
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(orderedArticleCards).toStrictEqual([article2, article1]);
+      expect(articleIds).toStrictEqual([article2, article1]);
     });
   });
 
