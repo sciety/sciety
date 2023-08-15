@@ -5,7 +5,11 @@ import { Group } from '../../../types/group';
 import { PageHeaderViewModel } from '../common-components/page-header';
 import { TabsViewModel } from '../common-components/tabs-view-model';
 
-type Content = 'no-activity-yet' | RNEA.ReadonlyNonEmptyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>;
+type NoActivity = 'no-activity-yet';
+
+type OrderedArticleCards = RNEA.ReadonlyNonEmptyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>;
+
+type Content = NoActivity | OrderedArticleCards;
 
 export type ViewModel = PageHeaderViewModel & {
   group: Group,
