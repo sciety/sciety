@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import * as T from 'fp-ts/Task';
 import { dummyLogger } from '../../../../dummy-logger';
 import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
@@ -29,7 +30,7 @@ describe('construct-content', () => {
   describe('when the group\'s evaluated articles list contains articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
-    let orderedArticleCards: OrderedArticleCards;
+    let orderedArticleCards: OrderedArticleCards['articleCards'];
 
     const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
 
@@ -48,11 +49,12 @@ describe('construct-content', () => {
         ),
         TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
+        T.map((foo) => foo.articleCards),
       )();
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(orderedArticleCards.articleCards).toStrictEqual(
+      expect(orderedArticleCards).toStrictEqual(
         [
           E.right(expect.objectContaining({
             articleId: article2,
