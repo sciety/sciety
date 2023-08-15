@@ -11,7 +11,7 @@ import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
-import { ArticleCardViewModel } from '../../../../../src/shared-components/article-card';
+import { Doi } from '../../../../../src/types/doi';
 
 describe('construct-content', () => {
   let framework: TestFramework;
@@ -31,7 +31,7 @@ describe('construct-content', () => {
   describe('when the group\'s evaluated articles list contains articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
-    let orderedArticleCards: ReadonlyArray<ArticleCardViewModel>;
+    let orderedArticleCards: ReadonlyArray<Doi>;
 
     const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
 
@@ -52,20 +52,12 @@ describe('construct-content', () => {
         TE.getOrElse(shouldNotBeCalled),
         T.map((foo) => foo.articleCards),
         T.map(RA.rights),
+        T.map(RA.map((card) => card.articleId)),
       )();
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(orderedArticleCards).toStrictEqual(
-        [
-          expect.objectContaining({
-            articleId: article2,
-          }),
-          expect.objectContaining({
-            articleId: article1,
-          }),
-        ],
-      );
+      expect(orderedArticleCards).toStrictEqual([article2, article1]);
     });
   });
 
