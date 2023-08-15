@@ -57,7 +57,7 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
       Showing page <b>${pageofItems.pageNumber}</b> of <b>${pageofItems.numberOfPages}</b><span class="visually-hidden"> pages of articles that have been evaluated by groups that you follow.</span>
     </p>
     <ol class="card-list" role="list">${cards.join('')}</ol>
-    ${renderPaginationControls('/my-feed?', pageofItems.nextPage)}`,
+    ${renderPaginationControls('/my-feed?', pageofItems.nextPage, { basePath: '/my-feed?', nextPage: pageofItems.nextPage })}`,
 );
 
 type YourFeed = (dependencies: Dependencies) => (

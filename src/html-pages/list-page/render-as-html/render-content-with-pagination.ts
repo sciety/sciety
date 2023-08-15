@@ -9,7 +9,7 @@ const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: strin
   (pageOfContent: HtmlFragment) => `
     <div>
       ${pageOfContent}
-      ${renderPaginationControls(`${basePath}?`, nextPageNumber)}
+      ${renderPaginationControls(`${basePath}?`, nextPageNumber, { basePath: `${basePath}?`, nextPage: nextPageNumber })}
     </div>
   `,
   toHtmlFragment,
