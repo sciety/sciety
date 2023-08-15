@@ -33,7 +33,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <ol class="card-list">
         ${templateListItems(cards)}
       </ol>
-      ${renderPaginationControls('/sciety-feed?', viewModel.nextPage, { basePath: '/sciety-feed?', nextPage: viewModel.nextPage })}
+      ${renderPaginationControls({ basePath: '/sciety-feed?', nextPage: viewModel.nextPage })}
     </section>
     ${supplementaryInfo(supplementaryItems, 'supplementary-info--sciety-feed')}
   `,

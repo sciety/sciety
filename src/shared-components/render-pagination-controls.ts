@@ -7,11 +7,7 @@ type PaginationControls = {
   nextPage: O.Option<number>,
 };
 
-export const renderPaginationControls = (
-  basePath: string,
-  nextPage: O.Option<number>,
-  paginationControls: PaginationControls,
-): HtmlFragment => pipe(
+export const renderPaginationControls = (paginationControls: PaginationControls): HtmlFragment => pipe(
   paginationControls.nextPage,
   O.fold(
     () => '',

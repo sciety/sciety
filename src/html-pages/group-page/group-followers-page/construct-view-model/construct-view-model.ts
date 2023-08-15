@@ -50,7 +50,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       isFollowing: isFollowing(dependencies)(group.id, params.user),
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
-      nextLink: renderPaginationControls(`/groups/${group.slug}/followers?`, pageOfFollowers.nextPage, { basePath: `/groups/${group.slug}/followers?`, nextPage: pageOfFollowers.nextPage }),
+      nextLink: renderPaginationControls({ basePath: `/groups/${group.slug}/followers?`, nextPage: pageOfFollowers.nextPage }),
       tabs: constructTabsViewModel(dependencies, group),
     })),
   )),
