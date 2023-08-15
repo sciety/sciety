@@ -1,4 +1,4 @@
-import { identity, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
@@ -20,14 +20,13 @@ const toOrderedArticleCards = (dependencies: Dependencies) => (articleIds: Reado
 const toPageOfFeedContent = (page: number, dependencies: Dependencies) => (articleIds: ReadonlyArray<string>) => pipe(
   articleIds,
   paginate(10, page),
-  E.map((pageOfItems) => pageOfItems.items),
+  E.bimap(
+    () => ({ tag: 'no-activity-yet' as const }),
+    (pageOfItems) => pageOfItems.items,
+  ),
   TE.fromEither,
   TE.chainTaskK(toOrderedArticleCards(dependencies)),
-  TE.matchW(
-    () => ({ tag: 'no-activity-yet' as const }),
-    identity,
-  ),
-  TE.rightTask,
+  TE.toUnion,
 );
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
@@ -46,5 +45,5 @@ export const constructContent = (
   groupId,
   getEvaluatedArticleIds(dependencies),
   TE.fromEither,
-  TE.chainW(toPageOfFeedContent(page, dependencies)),
+  TE.chainTaskK(toPageOfFeedContent(page, dependencies)),
 );
