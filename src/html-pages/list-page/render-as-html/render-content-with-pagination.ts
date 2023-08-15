@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { renderArticlesList } from './render-articles-list';
-import { paginationControls } from '../../../shared-components/pagination-controls';
+import { renderPaginationControls } from '../../../shared-components/render-pagination-controls';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ContentWithPaginationViewModel } from '../view-model';
 
@@ -9,7 +9,7 @@ const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: strin
   (pageOfContent: HtmlFragment) => `
     <div>
       ${pageOfContent}
-      ${paginationControls(`${basePath}?`, nextPageNumber)}
+      ${renderPaginationControls(`${basePath}?`, nextPageNumber)}
     </div>
   `,
   toHtmlFragment,
