@@ -12,6 +12,26 @@ import { Doi } from '../../../../types/doi';
 import { Dependencies } from './dependencies';
 import { paginate } from '../../../../shared-components/paginate';
 
+const toPageOfFeedContent = (page: number, dependencies: Dependencies) => (articleIds: ReadonlyArray<string>) => pipe(
+  articleIds,
+  paginate(10, page),
+  E.map((pageOfItems) => pageOfItems.items),
+  TE.fromEither,
+  TE.chainTaskK(
+    T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
+  ),
+  TE.map(RNEA.fromReadonlyArray),
+  TE.map(O.matchW(
+    () => ({ tag: 'no-activity-yet' as const }),
+    (articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards }),
+  )),
+  TE.match(
+    () => ({ tag: 'no-activity-yet' as const }),
+    identity,
+  ),
+  TE.rightTask,
+);
+
 export const constructContent = (
   dependencies: Dependencies,
   groupId: GroupId,
@@ -23,24 +43,6 @@ export const constructContent = (
   O.map((list) => list.articleIds),
   O.match(
     () => TE.left(DE.notFound),
-    (articleIds) => pipe(
-      articleIds,
-      paginate(10, page),
-      E.map((foo) => foo.items),
-      TE.fromEither,
-      TE.chainTaskK(
-        T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
-      ),
-      TE.map(RNEA.fromReadonlyArray),
-      TE.map(O.matchW(
-        () => ({ tag: 'no-activity-yet' as const }),
-        (articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards }),
-      )),
-      TE.match(
-        () => ({ tag: 'no-activity-yet' as const }),
-        identity,
-      ),
-      TE.rightTask,
-    ),
+    toPageOfFeedContent(page, dependencies),
   ),
 );
