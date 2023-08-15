@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { dummyLogger } from '../../../../dummy-logger';
 import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model';
@@ -11,6 +11,7 @@ import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
+import { ArticleCardViewModel } from '../../../../../src/shared-components/article-card';
 
 describe('construct-content', () => {
   let framework: TestFramework;
@@ -30,7 +31,7 @@ describe('construct-content', () => {
   describe('when the group\'s evaluated articles list contains articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
-    let orderedArticleCards: OrderedArticleCards['articleCards'];
+    let orderedArticleCards: ReadonlyArray<ArticleCardViewModel>;
 
     const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
 
@@ -50,18 +51,19 @@ describe('construct-content', () => {
         TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
         T.map((foo) => foo.articleCards),
+        T.map(RA.rights),
       )();
     });
 
     it('has the most recently added article as the first article card', () => {
       expect(orderedArticleCards).toStrictEqual(
         [
-          E.right(expect.objectContaining({
+          expect.objectContaining({
             articleId: article2,
-          })),
-          E.right(expect.objectContaining({
+          }),
+          expect.objectContaining({
             articleId: article1,
-          })),
+          }),
         ],
       );
     });
