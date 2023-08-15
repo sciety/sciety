@@ -32,17 +32,21 @@ const toPageOfFeedContent = (page: number, dependencies: Dependencies) => (artic
   TE.rightTask,
 );
 
+const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
+  groupId,
+  dependencies.getEvaluatedArticlesListIdForGroup,
+  O.chain((listId) => dependencies.lookupList(listId)),
+  O.map((list) => list.articleIds),
+  E.fromOption(() => DE.notFound),
+);
+
 export const constructContent = (
   dependencies: Dependencies,
   groupId: GroupId,
   page: number,
 ): TE.TaskEither<DE.DataError, ViewModel['content']> => pipe(
   groupId,
-  dependencies.getEvaluatedArticlesListIdForGroup,
-  O.chain((listId) => dependencies.lookupList(listId)),
-  O.map((list) => list.articleIds),
-  O.match(
-    () => TE.left(DE.notFound),
-    toPageOfFeedContent(page, dependencies),
-  ),
+  getEvaluatedArticleIds(dependencies),
+  TE.fromEither,
+  TE.chainW(toPageOfFeedContent(page, dependencies)),
 );
