@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { toPageOfCards } from './to-page-of-cards';
-import { paginate } from '../../../shared-components/pagination/paginate';
+import { paginate } from '../../../shared-components/pagination';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ContentWithPaginationViewModel } from '../view-model';

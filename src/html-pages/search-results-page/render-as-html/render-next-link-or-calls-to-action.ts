@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderPaginationControls } from '../../../shared-components/pagination/render-pagination-controls';
+import { renderPaginationControls } from '../../../shared-components/pagination';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export type SearchParameters = {

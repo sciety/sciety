@@ -9,7 +9,7 @@ import { GroupId } from '../../../../types/group-id';
 import * as DE from '../../../../types/data-error';
 import { Doi } from '../../../../types/doi';
 import { Dependencies } from './dependencies';
-import { paginate } from '../../../../shared-components/pagination/paginate';
+import { paginate } from '../../../../shared-components/pagination';
 
 const toOrderedArticleCards = (dependencies: Dependencies) => (articleIds: ReadonlyArray<string>) => pipe(
   articleIds,
