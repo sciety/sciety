@@ -10,8 +10,6 @@ const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: strin
     <div>
       ${pageOfContent}
       ${renderPaginationControls({
-    basePath: `${basePath}?`,
-    nextPage: nextPageNumber,
     url: pipe(
       nextPageNumber,
       O.map(

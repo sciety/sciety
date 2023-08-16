@@ -58,8 +58,6 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
     </p>
     <ol class="card-list" role="list">${cards.join('')}</ol>
     ${renderPaginationControls({
-    basePath: '/my-feed?',
-    nextPage: pageofItems.nextPage,
     url: pipe(
       pageofItems.nextPage,
       O.map(

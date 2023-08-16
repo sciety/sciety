@@ -3,8 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type ViewModel = {
-  basePath: string,
-  nextPage: O.Option<number>,
   url: O.Option<string>,
 };
 

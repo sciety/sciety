@@ -51,8 +51,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
       nextLink: renderPaginationControls({
-        basePath: `/groups/${group.slug}/followers?`,
-        nextPage: pageOfFollowers.nextPage,
         url: pipe(
           pageOfFollowers.nextPage,
           O.map(
