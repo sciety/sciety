@@ -27,6 +27,12 @@ describe('construct-content', () => {
     TE.getOrElse(shouldNotBeCalled),
   )();
 
+  const getArticleIdsFromContent = (orderedArticleCards: OrderedArticleCards) => pipe(
+    orderedArticleCards.articleCards,
+    RA.rights,
+    RA.map((card) => card.articleId),
+  );
+
   beforeEach(async () => {
     framework = createTestFramework();
     dependencies = {
@@ -52,11 +58,7 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
-      articleIds = pipe(
-        orderedArticleCards.articleCards,
-        RA.rights,
-        RA.map((card) => card.articleId),
-      );
+      articleIds = getArticleIdsFromContent(orderedArticleCards);
       nextPageHref = orderedArticleCards.nextPageHref;
     });
 
