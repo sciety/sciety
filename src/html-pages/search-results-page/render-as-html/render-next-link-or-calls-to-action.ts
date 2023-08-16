@@ -19,7 +19,7 @@ export const renderNextLinkOrCallsToAction = ({
   O.fold(
     () => '<footer class="search-results__footer">Not what you were hoping for? Try our <a href="https://blog.sciety.org/sciety-search/">advanced search tips</a>, or <a href="/contact-us">leave us a suggestion</a>.</footer>',
     (basePath) => renderPaginationControls({
-      url: O.some(`${basePath}page=${pageNumber}`),
+      nextPageHref: O.some(`${basePath}page=${pageNumber}`),
     }),
   ),
   toHtmlFragment,

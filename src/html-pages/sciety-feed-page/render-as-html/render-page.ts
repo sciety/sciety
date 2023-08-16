@@ -35,7 +35,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
         ${templateListItems(cards)}
       </ol>
       ${renderPaginationControls({
-    url: pipe(
+    nextPageHref: pipe(
       viewModel.nextPage,
       O.map(
         (nextPage) => `/sciety-feed?page=${nextPage}`,

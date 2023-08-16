@@ -3,11 +3,11 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type ViewModel = {
-  url: O.Option<string>,
+  nextPageHref: O.Option<string>,
 };
 
 export const renderPaginationControls = (viewModel: ViewModel): HtmlFragment => pipe(
-  viewModel.url,
+  viewModel.nextPageHref,
   O.fold(
     () => '',
     (url) => `<div class="pagination-controls">
