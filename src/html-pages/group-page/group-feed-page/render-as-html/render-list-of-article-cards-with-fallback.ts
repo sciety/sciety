@@ -38,6 +38,6 @@ export const renderListOfArticleCardsWithFallback: RenderListOfArticleCardsWithF
       renderArticleErrorCard,
       renderArticleCard,
     )),
-    renderCards(O.none),
+    renderCards(content.nextPageHref),
   );
 };

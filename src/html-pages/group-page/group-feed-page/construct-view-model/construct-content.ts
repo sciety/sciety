@@ -14,7 +14,7 @@ import { paginate } from '../../../../shared-components/pagination';
 const toOrderedArticleCards = (dependencies: Dependencies) => (articleIds: ReadonlyArray<string>) => pipe(
   articleIds,
   T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
-  T.map((articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards })),
+  T.map((articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards, nextPageHref: O.none })),
 );
 
 const toPageOfFeedContent = (page: number, dependencies: Dependencies) => (articleIds: ReadonlyArray<string>) => pipe(
