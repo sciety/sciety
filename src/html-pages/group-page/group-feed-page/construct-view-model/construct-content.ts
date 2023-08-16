@@ -26,9 +26,13 @@ const toOrderedArticleCards = (
   T.map((articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards, nextPageHref: selectedPage.nextPageHref })),
 );
 
-const toPageOfFeedContent = (page: number, dependencies: Dependencies) => (articleIds: ReadonlyArray<string>) => pipe(
+const toPageOfFeedContent = (
+  pageSize: number,
+  page: number,
+  dependencies: Dependencies,
+) => (articleIds: ReadonlyArray<string>) => pipe(
   articleIds,
-  paginate(10, page),
+  paginate(pageSize, page),
   E.bimap(
     () => ({ tag: 'no-activity-yet' as const }),
     (pageOfItems) => ({
@@ -55,10 +59,11 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
 export const constructContent = (
   dependencies: Dependencies,
   groupId: GroupId,
+  pageSize: number,
   page: number,
 ): TE.TaskEither<DE.DataError, ViewModel['content']> => pipe(
   groupId,
   getEvaluatedArticleIds(dependencies),
   TE.fromEither,
-  TE.chainTaskK(toPageOfFeedContent(page, dependencies)),
+  TE.chainTaskK(toPageOfFeedContent(pageSize, page, dependencies)),
 );

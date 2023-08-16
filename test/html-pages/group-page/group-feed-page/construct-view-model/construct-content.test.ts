@@ -23,6 +23,7 @@ describe('construct-content', () => {
     constructContent(
       dependencies,
       group.id,
+      3,
       1,
     ),
     TE.getOrElse(shouldNotBeCalled),
@@ -31,6 +32,7 @@ describe('construct-content', () => {
     constructContent(
       dependencies,
       group.id,
+      3,
       1,
     ),
     TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
