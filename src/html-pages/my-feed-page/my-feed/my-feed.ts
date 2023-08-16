@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -56,7 +57,16 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
       Showing page <b>${pageofItems.pageNumber}</b> of <b>${pageofItems.numberOfPages}</b><span class="visually-hidden"> pages of articles that have been evaluated by groups that you follow.</span>
     </p>
     <ol class="card-list" role="list">${cards.join('')}</ol>
-    ${renderPaginationControls({ basePath: '/my-feed?', nextPage: pageofItems.nextPage })}`,
+    ${renderPaginationControls({
+    basePath: '/my-feed?',
+    nextPage: pageofItems.nextPage,
+    url: pipe(
+      pageofItems.nextPage,
+      O.map(
+        (nextPage) => `/my-feed?page=${nextPage}`,
+      ),
+    ),
+  })}`,
 );
 
 type YourFeed = (dependencies: Dependencies) => (

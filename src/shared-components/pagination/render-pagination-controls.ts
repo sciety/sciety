@@ -5,6 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 type PaginationControls = {
   basePath: string,
   nextPage: O.Option<number>,
+  url: O.Option<string>,
 };
 
 export const renderPaginationControls = (paginationControls: PaginationControls): HtmlFragment => pipe(

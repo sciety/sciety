@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { templateListItems } from '../../../shared-components/list-items';
@@ -33,7 +34,16 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <ol class="card-list">
         ${templateListItems(cards)}
       </ol>
-      ${renderPaginationControls({ basePath: '/sciety-feed?', nextPage: viewModel.nextPage })}
+      ${renderPaginationControls({
+    basePath: '/sciety-feed?',
+    nextPage: viewModel.nextPage,
+    url: pipe(
+      viewModel.nextPage,
+      O.map(
+        (nextPage) => `/sciety-feed?page=${nextPage}`,
+      ),
+    ),
+  })}
     </section>
     ${supplementaryInfo(supplementaryItems, 'supplementary-info--sciety-feed')}
   `,
