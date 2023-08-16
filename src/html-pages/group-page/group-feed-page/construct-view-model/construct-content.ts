@@ -12,6 +12,14 @@ import { Dependencies } from './dependencies';
 import { paginate } from '../../../../shared-components/pagination';
 import { Group } from '../../../../types/group';
 
+const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
+  groupId,
+  dependencies.getEvaluatedArticlesListIdForGroup,
+  O.chain((listId) => dependencies.lookupList(listId)),
+  O.map((list) => list.articleIds),
+  E.fromOption(() => DE.notFound),
+);
+
 type SelectedPage = {
   articleIds: ReadonlyArray<string>,
   nextPageHref: O.Option<string>,
@@ -48,14 +56,6 @@ const toPageOfFeedContent = (
   TE.fromEither,
   TE.chainTaskK(toOrderedArticleCards(dependencies)),
   TE.toUnion,
-);
-
-const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
-  groupId,
-  dependencies.getEvaluatedArticlesListIdForGroup,
-  O.chain((listId) => dependencies.lookupList(listId)),
-  O.map((list) => list.articleIds),
-  E.fromOption(() => DE.notFound),
 );
 
 export const constructContent = (
