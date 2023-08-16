@@ -106,7 +106,7 @@ describe('construct-content', () => {
       expect(articleIds).toStrictEqual([article4, article3, article2]);
     });
 
-    it.skip('does have a link to the next page', () => {
+    it('does have a link to the next page', () => {
       expect(nextPageHref).toStrictEqual(O.some(`/groups/${group.slug}/feed?page=2`));
     });
   });

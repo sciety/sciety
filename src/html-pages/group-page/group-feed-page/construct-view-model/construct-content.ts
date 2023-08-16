@@ -28,9 +28,10 @@ const toOrderedArticleCards = (
 );
 
 const toPageOfFeedContent = (
+  dependencies: Dependencies,
+  groupSlug: string,
   pageSize: number,
   page: number,
-  dependencies: Dependencies,
 ) => (articleIds: ReadonlyArray<string>) => pipe(
   articleIds,
   paginate(pageSize, page),
@@ -40,7 +41,7 @@ const toPageOfFeedContent = (
       articleIds: pageOfItems.items,
       nextPageHref: pipe(
         pageOfItems.nextPage,
-        O.map((nextPage) => `/groups/elife/feed?page=${nextPage}`),
+        O.map((nextPage) => `/groups/${groupSlug}/feed?page=${nextPage}`),
       ),
     }),
   ),
@@ -66,5 +67,5 @@ export const constructContent = (
   group.id,
   getEvaluatedArticleIds(dependencies),
   TE.fromEither,
-  TE.chainTaskK(toPageOfFeedContent(pageSize, page, dependencies)),
+  TE.chainTaskK(toPageOfFeedContent(dependencies, group.slug, pageSize, page)),
 );
