@@ -33,7 +33,10 @@ const toPageOfFeedContent = (page: number, dependencies: Dependencies) => (artic
     () => ({ tag: 'no-activity-yet' as const }),
     (pageOfItems) => ({
       articleIds: pageOfItems.items,
-      nextPageHref: O.none,
+      nextPageHref: pipe(
+        pageOfItems.nextPage,
+        O.map((nextPage) => `/groups/elife/feed?page=${nextPage}`),
+      ),
     }),
   ),
   TE.fromEither,
