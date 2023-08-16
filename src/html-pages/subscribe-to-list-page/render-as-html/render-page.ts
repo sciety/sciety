@@ -13,5 +13,5 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
       Here you can subscribe to <a href="${viewModel.listHref}">${viewModel.listName}</a>.
     </p>
   </section>
-  ${renderJotForm()}
+  ${renderJotForm(viewModel.listId)}
 `);

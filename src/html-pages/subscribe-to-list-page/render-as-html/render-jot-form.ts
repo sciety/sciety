@@ -1,13 +1,14 @@
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ListId } from '../../../types/list-id';
 
-export const renderJotForm = (): HtmlFragment => toHtmlFragment(`<iframe
+export const renderJotForm = (listId: ListId): HtmlFragment => toHtmlFragment(`<iframe
 id="JotFormIFrame-232072517707050"
 title="Subscribe to a list"
 onload="window.parent.scrollTo(0,0)"
 allowtransparency="true"
 allowfullscreen="true"
 allow="geolocation; microphone; camera"
-src="https://form.jotform.com/232072517707050"
+src="https://form.jotform.com/232072517707050?listId=${listId}"
 frameborder="0"
 style="min-width:100%;max-width:100%;height:539px;border:none;"
 scrolling="no"
