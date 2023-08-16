@@ -19,22 +19,18 @@ describe('construct-content', () => {
   const group = arbitraryGroup();
   let groupEvaluatedArticlesList: ListId;
   const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
-  const getContent = async () => pipe(
-    constructContent(
-      dependencies,
-      group,
-      3,
-      1,
-    ),
+  const getContent = () => constructContent(
+    dependencies,
+    group,
+    3,
+    1,
+  );
+  const getContentAsRight = async () => pipe(
+    getContent(),
     TE.getOrElse(shouldNotBeCalled),
   )();
   const getContentAsOrderedArticleCards = async () => pipe(
-    constructContent(
-      dependencies,
-      group,
-      3,
-      1,
-    ),
+    getContent(),
     TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
     TE.getOrElse(shouldNotBeCalled),
   )();
@@ -115,7 +111,7 @@ describe('construct-content', () => {
     let content: ViewModel['content'];
 
     beforeEach(async () => {
-      content = await getContent();
+      content = await getContentAsRight();
     });
 
     it('contains a no-activity-yet message', () => {
