@@ -9,7 +9,7 @@ import { GroupId } from '../../../../types/group-id';
 import * as DE from '../../../../types/data-error';
 import { Doi } from '../../../../types/doi';
 import { Dependencies } from './dependencies';
-import { paginate } from '../../../../shared-components/pagination';
+import { PageOfItems, paginate } from '../../../../shared-components/pagination';
 import { Group } from '../../../../types/group';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
@@ -24,6 +24,14 @@ type SelectedPage = {
   articleIds: ReadonlyArray<string>,
   nextPageHref: O.Option<string>,
 };
+
+const buildSelectedPage = (groupSlug: string) => (pageOfItems: PageOfItems<string>) => ({
+  articleIds: pageOfItems.items,
+  nextPageHref: pipe(
+    pageOfItems.nextPage,
+    O.map((nextPage) => `/groups/${groupSlug}/feed?page=${nextPage}`),
+  ),
+});
 
 const toOrderedArticleCards = (
   dependencies: Dependencies,
@@ -45,13 +53,7 @@ const toPageOfFeedContent = (
   paginate(pageSize, page),
   E.bimap(
     () => ({ tag: 'no-activity-yet' as const }),
-    (pageOfItems) => ({
-      articleIds: pageOfItems.items,
-      nextPageHref: pipe(
-        pageOfItems.nextPage,
-        O.map((nextPage) => `/groups/${groupSlug}/feed?page=${nextPage}`),
-      ),
-    }),
+    buildSelectedPage(groupSlug),
   ),
   TE.fromEither,
   TE.chainTaskK(toOrderedArticleCards(dependencies)),
