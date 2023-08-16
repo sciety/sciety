@@ -2,7 +2,6 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import { dummyLogger } from '../../../../dummy-logger';
 import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
@@ -28,10 +27,11 @@ describe('construct-content', () => {
     await framework.commandHelpers.createGroup(group);
   });
 
-  describe('when the group\'s evaluated articles list contains articles', () => {
+  describe('when the group\'s evaluated articles list contains two articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
     let articleIds: ReadonlyArray<Doi>;
+    let nextPageHref: O.Option<string>;
 
     const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
 
@@ -43,7 +43,7 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
-      articleIds = await pipe(
+      const pageContent = await pipe(
         constructContent(
           dependencies,
           group.id,
@@ -51,14 +51,22 @@ describe('construct-content', () => {
         ),
         TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
-        T.map((orderedArticleCards) => orderedArticleCards.articleCards),
-        T.map(RA.rights),
-        T.map(RA.map((card) => card.articleId)),
       )();
+      articleIds = pipe(
+        pageContent,
+        (orderedArticleCards) => orderedArticleCards.articleCards,
+        RA.rights,
+        RA.map((card) => card.articleId),
+      );
+      nextPageHref = pageContent.nextPageHref;
     });
 
     it('has the most recently added article as the first article card', () => {
       expect(articleIds).toStrictEqual([article2, article1]);
+    });
+
+    it('does not have a next page link', () => {
+      expect(nextPageHref).toStrictEqual(O.none);
     });
   });
 
