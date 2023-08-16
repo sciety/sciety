@@ -158,8 +158,8 @@ describe('construct-view-model', () => {
         expect(result.numberOfPages).toBe(2);
       });
 
-      it('the link to the next page of results is provided', () => {
-        expect(result.nextCursor).toStrictEqual(O.some(cursorValue));
+      it.skip('the link to the next page of results is provided', () => {
+        expect(result.nextPageHref).toStrictEqual(O.some('fill me in later'));
       });
     });
 

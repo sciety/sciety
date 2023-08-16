@@ -40,6 +40,7 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
     (itemsToDisplay) => ({
       ...state,
       itemsToDisplay,
+      nextPageHref: O.none,
     }),
   )),
 );
