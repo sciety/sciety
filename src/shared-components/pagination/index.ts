@@ -1,2 +1,2 @@
 export { PageOfItems, paginate } from './paginate';
-export { renderPaginationControls } from './render-pagination-controls';
+export { ViewModel as PaginationControlsViewModel, renderPaginationControls } from './render-pagination-controls';

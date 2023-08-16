@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
-import { ViewModel } from '../view-model';
+import { OrderedArticleCards, ViewModel } from '../view-model';
 import { constructArticleCardViewModel } from '../../../../shared-components/article-card';
 import { GroupId } from '../../../../types/group-id';
 import * as DE from '../../../../types/data-error';
@@ -22,7 +22,7 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
 
 type SelectedPage = {
   articleIds: ReadonlyArray<string>,
-  nextPageHref: O.Option<string>,
+  nextPageHref: OrderedArticleCards['nextPageHref'],
 };
 
 const buildSelectedPage = (groupSlug: string) => (pageOfItems: PageOfItems<string>) => ({
