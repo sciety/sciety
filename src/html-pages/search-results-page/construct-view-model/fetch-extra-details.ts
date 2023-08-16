@@ -40,7 +40,13 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
     (itemsToDisplay) => ({
       ...state,
       itemsToDisplay,
-      nextPageHref: O.none,
+      nextPageHref: pipe(
+        {
+          basePath: '',
+          pageNumber: state.pageNumber + 1,
+        },
+        ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
+      ),
     }),
   )),
 );
