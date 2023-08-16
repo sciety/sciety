@@ -11,11 +11,13 @@ export type SearchParameters = {
   pageNumber: number,
 };
 
+const buildBasePath = (query: SearchParameters['query'], category: SearchParameters['category'], evaluatedOnly: SearchParameters['evaluatedOnly']) => (cursor: string) => `/search?query=${encodeURIComponent(query)}&category=${category}&cursor=${encodeURIComponent(cursor)}${evaluatedOnly ? '&evaluatedOnly=true' : ''}&`;
+
 export const renderNextLinkOrCallsToAction = ({
   category, query, evaluatedOnly, nextCursor, pageNumber,
 }: SearchParameters): HtmlFragment => pipe(
   nextCursor,
-  O.map((cursor) => `/search?query=${encodeURIComponent(query)}&category=${category}&cursor=${encodeURIComponent(cursor)}${evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
+  O.map(buildBasePath(query, category, evaluatedOnly)),
   O.fold(
     () => '<footer class="search-results__footer">Not what you were hoping for? Try our <a href="https://blog.sciety.org/sciety-search/">advanced search tips</a>, or <a href="/contact-us">leave us a suggestion</a>.</footer>',
     (basePath) => renderPaginationControls({
