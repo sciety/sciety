@@ -22,7 +22,7 @@ describe('construct-content', () => {
   const getContent = async () => pipe(
     constructContent(
       dependencies,
-      group.id,
+      group,
       3,
       1,
     ),
@@ -31,7 +31,7 @@ describe('construct-content', () => {
   const getContentAsOrderedArticleCards = async () => pipe(
     constructContent(
       dependencies,
-      group.id,
+      group,
       3,
       1,
     ),

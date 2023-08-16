@@ -37,7 +37,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   })),
   TE.fromOption(() => DE.notFound),
   TE.chain((partial) => pipe(
-    constructContent(dependencies, partial.group.id, 10, params.page),
+    constructContent(dependencies, partial.group, 10, params.page),
     TE.map((content) => ({
       ...partial,
       content,

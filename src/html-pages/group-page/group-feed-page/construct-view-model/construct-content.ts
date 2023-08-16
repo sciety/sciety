@@ -10,6 +10,7 @@ import * as DE from '../../../../types/data-error';
 import { Doi } from '../../../../types/doi';
 import { Dependencies } from './dependencies';
 import { paginate } from '../../../../shared-components/pagination';
+import { Group } from '../../../../types/group';
 
 type SelectedPage = {
   articleIds: ReadonlyArray<string>,
@@ -58,11 +59,11 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
 
 export const constructContent = (
   dependencies: Dependencies,
-  groupId: GroupId,
+  group: Group,
   pageSize: number,
   page: number,
 ): TE.TaskEither<DE.DataError, ViewModel['content']> => pipe(
-  groupId,
+  group.id,
   getEvaluatedArticleIds(dependencies),
   TE.fromEither,
   TE.chainTaskK(toPageOfFeedContent(pageSize, page, dependencies)),
