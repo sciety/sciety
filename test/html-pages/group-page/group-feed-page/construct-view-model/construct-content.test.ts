@@ -16,6 +16,16 @@ describe('construct-content', () => {
   let framework: TestFramework;
   let dependencies: Dependencies;
   const group = arbitraryGroup();
+  const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
+  const getContentAsOrderedArticleCards = async () => pipe(
+    constructContent(
+      dependencies,
+      group.id,
+      1,
+    ),
+    TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
+    TE.getOrElse(shouldNotBeCalled),
+  )();
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -33,8 +43,6 @@ describe('construct-content', () => {
     let articleIds: ReadonlyArray<Doi>;
     let nextPageHref: O.Option<string>;
 
-    const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
-
     beforeEach(async () => {
       const groupEvaluatedArticlesList = pipe(
         framework.queries.getEvaluatedArticlesListIdForGroup(group.id),
@@ -43,22 +51,13 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
-      const pageContent = await pipe(
-        constructContent(
-          dependencies,
-          group.id,
-          1,
-        ),
-        TE.filterOrElseW(isOrderedArticleCards, shouldNotBeCalled),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      const orderedArticleCards = await getContentAsOrderedArticleCards();
       articleIds = pipe(
-        pageContent,
-        (orderedArticleCards) => orderedArticleCards.articleCards,
+        orderedArticleCards.articleCards,
         RA.rights,
         RA.map((card) => card.articleId),
       );
-      nextPageHref = pageContent.nextPageHref;
+      nextPageHref = orderedArticleCards.nextPageHref;
     });
 
     it('has the most recently added article as the first article card', () => {
