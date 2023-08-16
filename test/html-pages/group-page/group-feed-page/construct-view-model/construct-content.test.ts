@@ -83,6 +83,34 @@ describe('construct-content', () => {
     });
   });
 
+  describe('when the group\'s evaluated articles list contains more than one page of articles', () => {
+    const article1 = arbitraryArticleId();
+    const article2 = arbitraryArticleId();
+    const article3 = arbitraryArticleId();
+    const article4 = arbitraryArticleId();
+    let articleIds: ReadonlyArray<Doi>;
+    let nextPageHref: O.Option<string>;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
+      await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
+      await framework.commandHelpers.addArticleToList(article3, groupEvaluatedArticlesList);
+      await framework.commandHelpers.addArticleToList(article4, groupEvaluatedArticlesList);
+
+      const orderedArticleCards = await getContentAsOrderedArticleCards();
+      articleIds = getArticleIdsFromContent(orderedArticleCards);
+      nextPageHref = orderedArticleCards.nextPageHref;
+    });
+
+    it('has the most recently added article as the first article card', () => {
+      expect(articleIds).toStrictEqual([article4, article3, article2]);
+    });
+
+    it.skip('does have a link to the next page', () => {
+      expect(nextPageHref).toStrictEqual(O.some(`/groups/${group.slug}/feed?page=2`));
+    });
+  });
+
   describe('when the group\'s evaluated articles list is empty', () => {
     let content: ViewModel['content'];
 
