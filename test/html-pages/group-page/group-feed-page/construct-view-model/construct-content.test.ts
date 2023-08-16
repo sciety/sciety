@@ -11,11 +11,13 @@ import { constructContent } from '../../../../../src/html-pages/group-page/group
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
 import { Doi } from '../../../../../src/types/doi';
+import { ListId } from '../../../../../src/types/list-id';
 
 describe('construct-content', () => {
   let framework: TestFramework;
   let dependencies: Dependencies;
   const group = arbitraryGroup();
+  let groupEvaluatedArticlesList: ListId;
   const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
   const getContentAsOrderedArticleCards = async () => pipe(
     constructContent(
@@ -41,6 +43,10 @@ describe('construct-content', () => {
       logger: dummyLogger,
     };
     await framework.commandHelpers.createGroup(group);
+    groupEvaluatedArticlesList = pipe(
+      framework.queries.getEvaluatedArticlesListIdForGroup(group.id),
+      O.getOrElseW(shouldNotBeCalled),
+    );
   });
 
   describe('when the group\'s evaluated articles list contains two articles', () => {
@@ -50,10 +56,6 @@ describe('construct-content', () => {
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
-      const groupEvaluatedArticlesList = pipe(
-        framework.queries.getEvaluatedArticlesListIdForGroup(group.id),
-        O.getOrElseW(shouldNotBeCalled),
-      );
       await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
