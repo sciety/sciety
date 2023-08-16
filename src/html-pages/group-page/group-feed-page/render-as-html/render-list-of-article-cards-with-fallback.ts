@@ -1,13 +1,15 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { renderArticleErrorCard } from '../../../../shared-components/article-card/render-article-error-card';
 import { templateListItems } from '../../../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderArticleCard } from '../../../../shared-components/article-card';
 import { ViewModel } from '../view-model';
+import { renderPaginationControls } from '../../../../shared-components/pagination';
 
-const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
+const renderCards = (nextPageHref: O.Option<string>) => (cards: ReadonlyArray<HtmlFragment>) => pipe(
   cards,
   (items) => templateListItems(items),
   (listContent) => `
@@ -16,6 +18,7 @@ const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
         ${listContent}
       </ol>
     </section>
+    ${renderPaginationControls({ nextPageHref })}
   `,
   toHtmlFragment,
 );
@@ -35,6 +38,6 @@ export const renderListOfArticleCardsWithFallback: RenderListOfArticleCardsWithF
       renderArticleErrorCard,
       renderArticleCard,
     )),
-    renderCards,
+    renderCards(O.none),
   );
 };
