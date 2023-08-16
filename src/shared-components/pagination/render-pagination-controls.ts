@@ -2,18 +2,18 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
-type PaginationControls = {
+type ViewModel = {
   basePath: string,
   nextPage: O.Option<number>,
   url: O.Option<string>,
 };
 
-export const renderPaginationControls = (paginationControls: PaginationControls): HtmlFragment => pipe(
-  paginationControls.nextPage,
+export const renderPaginationControls = (viewModel: ViewModel): HtmlFragment => pipe(
+  viewModel.url,
   O.fold(
     () => '',
-    (pageNumber) => `<div class="pagination-controls">
-      <a href="${paginationControls.basePath}page=${pageNumber}" class="pagination-controls__next_link">Next</a>
+    (url) => `<div class="pagination-controls">
+      <a href="${url}" class="pagination-controls__next_link">Next</a>
     </div>`,
   ),
   toHtmlFragment,
