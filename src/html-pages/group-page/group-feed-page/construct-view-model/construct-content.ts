@@ -11,10 +11,19 @@ import { Doi } from '../../../../types/doi';
 import { Dependencies } from './dependencies';
 import { paginate } from '../../../../shared-components/pagination';
 
-const toOrderedArticleCards = (dependencies: Dependencies) => (articleIds: ReadonlyArray<string>) => pipe(
-  articleIds,
+type SelectedPage = {
+  articleIds: ReadonlyArray<string>,
+  nextPageHref: O.Option<string>,
+};
+
+const toOrderedArticleCards = (
+  dependencies: Dependencies,
+) => (
+  selectedPage: SelectedPage,
+) => pipe(
+  selectedPage.articleIds,
   T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
-  T.map((articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards, nextPageHref: O.none })),
+  T.map((articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards, nextPageHref: selectedPage.nextPageHref })),
 );
 
 const toPageOfFeedContent = (page: number, dependencies: Dependencies) => (articleIds: ReadonlyArray<string>) => pipe(
@@ -22,7 +31,10 @@ const toPageOfFeedContent = (page: number, dependencies: Dependencies) => (artic
   paginate(10, page),
   E.bimap(
     () => ({ tag: 'no-activity-yet' as const }),
-    (pageOfItems) => pageOfItems.items,
+    (pageOfItems) => ({
+      articleIds: pageOfItems.items,
+      nextPageHref: O.none,
+    }),
   ),
   TE.fromEither,
   TE.chainTaskK(toOrderedArticleCards(dependencies)),
