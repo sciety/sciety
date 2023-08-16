@@ -5,18 +5,20 @@ import { renderPaginationControls } from '../../../shared-components/pagination'
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ContentWithPaginationViewModel } from '../view-model';
 
+const constructPaginationControlsViewModel = (nextPageNumber: O.Option<number>, basePath: string) => ({
+  nextPageHref: pipe(
+    nextPageNumber,
+    O.map(
+      (nextPage) => `${basePath}?page=${nextPage}`,
+    ),
+  ),
+});
+
 const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: string) => flow(
   (pageOfContent: HtmlFragment) => `
     <div>
       ${pageOfContent}
-      ${renderPaginationControls({
-    nextPageHref: pipe(
-      nextPageNumber,
-      O.map(
-        (nextPage) => `${basePath}?page=${nextPage}`,
-      ),
-    ),
-  })}
+      ${renderPaginationControls(constructPaginationControlsViewModel(nextPageNumber, basePath))}
     </div>
   `,
   toHtmlFragment,
