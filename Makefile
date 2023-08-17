@@ -289,3 +289,6 @@ check-ci: compile-prod check
 
 compile-prod: export TARGET = prod
 compile-prod: .env build
+
+connect-to-cache:
+	kubectl run --namespace default redis-client --tty -i --rm --image redis -- bash
