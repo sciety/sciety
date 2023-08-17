@@ -7,7 +7,7 @@ import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import { domainEventsCodec, EventRow, selectAllEvents } from './events-table';
 import { Logger } from './logger';
-import { DomainEvent } from '../domain-events';
+import { DomainEvent, isEventOfType } from '../domain-events';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');
@@ -25,6 +25,16 @@ const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   }
 };
 
+const upgradeEventIfNecessary = (event: DomainEvent) => {
+  if (isEventOfType('EvaluationRecorded')(event)) {
+    return {
+      ...event,
+      type: 'EvaluationPublicationRecorded' as const,
+    };
+  }
+  return event;
+};
+
 const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
   rows,
   RA.map((row) => ({
@@ -34,6 +44,7 @@ const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
     ...row.payload,
   })),
   domainEventsCodec.decode,
+  E.map(RA.map(upgradeEventIfNecessary)),
   E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
 );
 

@@ -29,9 +29,21 @@ const upgradedEventType = <T extends string>(currentValue: T, deprecatedValues: 
   );
 };
 
+export const evaluationRecordedEventCodec = t.type({
+  id: EventIdFromString,
+  type: t.literal('EvaluationRecorded'),
+  date: tt.DateFromISOString,
+  groupId: GroupIdFromString,
+  evaluationLocator: evaluationLocatorCodec,
+  articleId: DoiFromString,
+  publishedAt: tt.DateFromISOString,
+  authors: t.readonlyArray(t.string),
+  evaluationType: evaluationTypeCodec,
+});
+
 export const evaluationPublicationRecordedEventCodec = t.type({
   id: EventIdFromString,
-  type: upgradedEventType('EvaluationPublicationRecorded', ['EvaluationRecorded']),
+  type: t.literal('EvaluationPublicationRecorded'),
   date: tt.DateFromISOString,
   groupId: GroupIdFromString,
   evaluationLocator: evaluationLocatorCodec,

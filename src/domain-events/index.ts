@@ -29,7 +29,7 @@ import { userDetailsUpdatedEventCodec } from './user-details-updated-event';
 import { incorrectlyRecordedEvaluationErasedEventCodec } from './incorrectly-recorded-evaluation-erased-event';
 import { EventId, generate } from '../types/event-id';
 import { groupDetailsUpdatedEventCodec } from './group-details-updated-event';
-import { evaluationPublicationRecordedEventCodec } from './evaluation-publication-recorded-event';
+import { evaluationPublicationRecordedEventCodec, evaluationRecordedEventCodec } from './evaluation-publication-recorded-event';
 
 const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,
@@ -49,6 +49,7 @@ export const domainEventCodec = t.union([
   articleRemovedFromListEventCodec,
   curationStatementRecordedEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
+  evaluationRecordedEventCodec,
   evaluationPublicationRecordedEventCodec,
   evaluationRemovalRecordedEventCodec,
   evaluationUpdatedEventCodec,
