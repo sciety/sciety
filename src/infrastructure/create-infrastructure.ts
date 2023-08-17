@@ -92,14 +92,15 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getAllEvents,
         commitEvents: commitEventsWithoutListeners,
       };
+      let redisClient: ReturnType<typeof createClient> | undefined;
       if (process.env.APP_CACHE === 'redis') {
-        const redisClient = createClient({
+        redisClient = createClient({
           url: `redis://${process.env.CACHE_HOST ?? ''}`,
         });
         await redisClient.connect();
       }
 
-      const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken);
+      const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken, redisClient);
 
       const collectedAdapters = {
         ...queries,

@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
+import { createClient } from 'redis';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -30,7 +31,12 @@ const findVersionsForArticleDoiFromSupportedServers = (
   return TO.none;
 };
 
-export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
+export const instantiate = (
+  logger: Logger,
+  crossrefApiBearerToken: O.Option<string>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  redisClient: ReturnType<typeof createClient> | undefined,
+): ExternalQueries => {
   const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60);
   const queryCrossrefService = createCachingFetcher(logger, 24 * 60 * 60, shouldCacheCrossrefResponseBody(logger));
   return {
