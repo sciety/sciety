@@ -35,7 +35,7 @@ const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
   })),
   domainEventsCodecIncludingDeprecated.decode,
   E.bimap(
-    (errors) => new Error(PR.failure(errors).join('\n')),
+    (errors) => PR.failure(errors),
     RA.map(upgradeEventIfNecessary),
   ),
 );
@@ -43,13 +43,13 @@ const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
 export const getEventsFromDatabase = (
   pool: Pool,
   logger: Logger,
-): TE.TaskEither<Error, ReadonlyArray<DomainEvent>> => pipe(
+): TE.TaskEither<unknown, ReadonlyArray<DomainEvent>> => pipe(
   TE.tryCatch(async () => {
     await waitForTableToExist(pool, logger);
     return pool.query<EventRow>(selectAllEvents);
   }, E.toError),
   TE.map((result) => result.rows),
   TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully retrieved rows from database', { count: rows.length }))),
-  TE.chainEitherK(decodeEvents),
+  TE.chainEitherKW(decodeEvents),
   TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully decoded events from database', { count: rows.length }))),
 );
