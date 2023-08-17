@@ -292,3 +292,6 @@ compile-prod: .env build
 
 connect-to-cache:
 	kubectl run --namespace default redis-client --tty -i --rm --image redis -- bash
+
+connect-to-cache-dev:
+	docker run --tty -i --rm --network sciety_default redis bash
