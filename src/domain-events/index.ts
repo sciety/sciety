@@ -43,37 +43,6 @@ const byUuid: Ord.Ord<DomainEvent> = pipe(
 
 export const sort = A.sortBy([byDate, byUuid]);
 
-export const domainEventCodecIncludingDeprecated = t.union([
-  annotationCreatedEventCodec,
-  articleAddedToListEventCodec,
-  articleRemovedFromListEventCodec,
-  curationStatementRecordedEventCodec,
-  evaluatedArticlesListSpecifiedEventCodec,
-  evaluationRecordedEventCodec,
-  evaluationPublicationRecordedEventCodec,
-  evaluationRemovalRecordedEventCodec,
-  evaluationUpdatedEventCodec,
-  groupDetailsUpdatedEventCodec,
-  groupJoinedEventCodec,
-  incorrectlyRecordedEvaluationErasedEventCodec,
-  listCreatedEventCodec,
-  listDescriptionEditedEventCodec,
-  listNameEditedEventCodec,
-  subjectAreaRecordedEventCodec,
-  userCreatedAccountEventCodec,
-  userDetailsUpdatedEventCodec,
-  userFollowedEditorialCommunityEventCodec,
-  userFoundReviewHelpfulEventCodec,
-  userFoundReviewNotHelpfulEventCodec,
-  userRevokedFindingReviewHelpfulEventCodec,
-  userRevokedFindingReviewNotHelpfulEventCodec,
-  userSavedArticleEventCodec,
-  userUnfollowedEditorialCommunityEventCodec,
-  userUnsavedArticleEventCodec,
-], 'type');
-
-type DomainEventIncludingDeprecated = t.TypeOf<typeof domainEventCodecIncludingDeprecated>;
-
 export const domainEventCodec = t.union([
   annotationCreatedEventCodec,
   articleAddedToListEventCodec,
@@ -103,6 +72,13 @@ export const domainEventCodec = t.union([
 ], 'type');
 
 export type DomainEvent = t.TypeOf<typeof domainEventCodec>;
+
+export const domainEventCodecIncludingDeprecated = t.union([
+  domainEventCodec,
+  evaluationRecordedEventCodec,
+], 'type');
+
+type DomainEventIncludingDeprecated = t.TypeOf<typeof domainEventCodecIncludingDeprecated>;
 
 export const upgradeEventIfNecessary = (event: DomainEventIncludingDeprecated): DomainEvent => {
   if (event.type === 'EvaluationRecorded') {
