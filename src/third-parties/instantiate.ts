@@ -60,6 +60,7 @@ const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseco
 });
 
 const redisCacheOptions = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number): CacheOptions => ({
+  headerInterpreter: headerInterpreterWithFixedMaxAge(maxAgeInMilliseconds),
   storage: redisStorage(client, maxAgeInMilliseconds),
 });
 
