@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
+import { buildMemoryStorage, CacheOptions, HeaderInterpreter } from 'axios-cache-interceptor';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -31,14 +32,21 @@ const findVersionsForArticleDoiFromSupportedServers = (
   return TO.none;
 };
 
+const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
+
+const cacheOptions: CacheOptions = {
+  headerInterpreter: headerInterpreterWithFixedMaxAge(24 * 60 * 60 * 1000),
+  storage: buildMemoryStorage(),
+};
+
 export const instantiate = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   redisClient: ReturnType<typeof createClient> | undefined,
 ): ExternalQueries => {
-  const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60);
-  const queryCrossrefService = createCachingFetcher(logger, 24 * 60 * 60, shouldCacheCrossrefResponseBody(logger));
+  const queryExternalService = createCachingFetcher(logger, cacheOptions);
+  const queryCrossrefService = createCachingFetcher(logger, cacheOptions, shouldCacheCrossrefResponseBody(logger));
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),

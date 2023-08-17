@@ -4,14 +4,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
 import {
-  setupCache, type HeaderInterpreter, AxiosCacheInstance, CacheAxiosResponse, buildMemoryStorage, CacheOptions,
+  setupCache, AxiosCacheInstance, CacheAxiosResponse, CacheOptions,
 } from 'axios-cache-interceptor';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
 import { QueryExternalService } from './query-external-service';
-
-const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
 const createCacheAdapter = (cacheOption: CacheOptions) => setupCache(
   Axios.create(),
@@ -69,15 +67,16 @@ export type ShouldCacheResponseBody = (responseBody: unknown, url: string) => bo
 
 type CachingFetcherFactory = (
   logger: Logger,
-  cacheMaxAgeSeconds: number,
+  cacheOptions: CacheOptions,
   shouldCacheResponseBody?: ShouldCacheResponseBody,
 ) => QueryExternalService;
 
-export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds, shouldCacheResponseBody) => {
-  const cachedAxios = createCacheAdapter({
-    headerInterpreter: headerInterpreterWithFixedMaxAge(cacheMaxAgeSeconds * 1000),
-    storage: buildMemoryStorage(),
-  });
+export const createCachingFetcher: CachingFetcherFactory = (
+  logger,
+  cacheOptions,
+  shouldCacheResponseBody,
+) => {
+  const cachedAxios = createCacheAdapter(cacheOptions);
   const get = cachedGetter(cachedAxios, logger, shouldCacheResponseBody ?? (() => true));
   return (
     notFoundLogLevel: LevelName = 'warn',
