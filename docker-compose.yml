@@ -34,6 +34,8 @@ services:
     ports:
       - '8080:80'
     restart: unless-stopped
+    depends_on:
+      - cache
 
   db:
     container_name: sciety_db
@@ -51,3 +53,7 @@ services:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s
     restart: unless-stopped
+
+  cache:
+    container_name: sciety_cache
+    image: redis
