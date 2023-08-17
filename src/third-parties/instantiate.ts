@@ -34,22 +34,25 @@ const findVersionsForArticleDoiFromSupportedServers = (
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
-const inMemoryCacheOptions: CacheOptions = {
-  headerInterpreter: headerInterpreterWithFixedMaxAge(24 * 60 * 60 * 1000),
+const inMemoryCacheOptions = (maxAgeInMilliseconds: number): CacheOptions => ({
+  headerInterpreter: headerInterpreterWithFixedMaxAge(maxAgeInMilliseconds),
   storage: buildMemoryStorage(),
-};
+});
 
-const redisCacheOptions: CacheOptions = {
-  headerInterpreter: headerInterpreterWithFixedMaxAge(24 * 60 * 60 * 1000),
+const redisCacheOptions = (maxAgeInMilliseconds: number): CacheOptions => ({
+  headerInterpreter: headerInterpreterWithFixedMaxAge(maxAgeInMilliseconds),
   storage: buildMemoryStorage(),
-};
+});
 
 export const instantiate = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
   redisClient: ReturnType<typeof createClient> | undefined,
 ): ExternalQueries => {
-  const cacheOptions = redisClient !== undefined ? redisCacheOptions : inMemoryCacheOptions;
+  const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
+  const cacheOptions = redisClient !== undefined
+    ? redisCacheOptions(maxAgeInMilliseconds)
+    : inMemoryCacheOptions(maxAgeInMilliseconds);
   const queryExternalService = createCachingFetcher(logger, cacheOptions);
   const queryCrossrefService = createCachingFetcher(logger, cacheOptions, shouldCacheCrossrefResponseBody(logger));
   return {
