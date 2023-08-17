@@ -1,14 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sciety--staging--cache
+  name: {{ .Release.Name }}--cache
+  labels:
+    {{- include "sciety.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cache
 spec:
   selector:
     matchLabels:
+      {{- include "sciety.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: cache
   template:
     metadata:
       labels:
+        {{- include "sciety.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: cache
     spec:
       containers:
