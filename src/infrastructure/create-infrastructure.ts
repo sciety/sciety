@@ -94,7 +94,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
       if (process.env.APP_CACHE === 'redis') {
         const redisClient = createClient({
-          url: 'redis://sciety_cache',
+          url: `redis://${process.env.CACHE_HOST ?? ''}`,
         });
         await redisClient.connect();
       }

@@ -7,8 +7,10 @@ services:
       context: .
     environment:
       ALLOW_SITE_CRAWLERS: "true"
+      APP_CACHE: "redis"
       APP_ORIGIN: "http://localhost:8080"
       APP_SECRET: "secret"
+      CACHE_HOST: "sciety_cache"
       USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
