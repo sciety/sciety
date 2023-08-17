@@ -34,7 +34,12 @@ const findVersionsForArticleDoiFromSupportedServers = (
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
-const cacheOptions: CacheOptions = {
+const inMemoryCacheOptions: CacheOptions = {
+  headerInterpreter: headerInterpreterWithFixedMaxAge(24 * 60 * 60 * 1000),
+  storage: buildMemoryStorage(),
+};
+
+const redisCacheOptions: CacheOptions = {
   headerInterpreter: headerInterpreterWithFixedMaxAge(24 * 60 * 60 * 1000),
   storage: buildMemoryStorage(),
 };
@@ -42,9 +47,9 @@ const cacheOptions: CacheOptions = {
 export const instantiate = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   redisClient: ReturnType<typeof createClient> | undefined,
 ): ExternalQueries => {
+  const cacheOptions = redisClient !== undefined ? redisCacheOptions : inMemoryCacheOptions;
   const queryExternalService = createCachingFetcher(logger, cacheOptions);
   const queryCrossrefService = createCachingFetcher(logger, cacheOptions, shouldCacheCrossrefResponseBody(logger));
   return {
