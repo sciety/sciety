@@ -44,8 +44,10 @@ const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
     ...row.payload,
   })),
   domainEventsCodec.decode,
-  E.map(RA.map(upgradeEventIfNecessary)),
-  E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+  E.bimap(
+    (errors) => new Error(PR.failure(errors).join('\n')),
+    RA.map(upgradeEventIfNecessary),
+  ),
 );
 
 export const getEventsFromDatabase = (
