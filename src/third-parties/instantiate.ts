@@ -1,7 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
-import { buildMemoryStorage, CacheOptions, HeaderInterpreter } from 'axios-cache-interceptor';
+import {
+  buildMemoryStorage, buildStorage, CacheOptions, HeaderInterpreter, StorageValue,
+} from 'axios-cache-interceptor';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -39,9 +41,26 @@ const inMemoryCacheOptions = (maxAgeInMilliseconds: number): CacheOptions => ({
   storage: buildMemoryStorage(),
 });
 
-const redisCacheOptions = (maxAgeInMilliseconds: number): CacheOptions => ({
-  headerInterpreter: headerInterpreterWithFixedMaxAge(maxAgeInMilliseconds),
-  storage: buildMemoryStorage(),
+const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
+  async find(key) {
+    return client
+      .get(`axios-cache-${key}`)
+      .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
+  },
+
+  async set(key, value) {
+    await client.set(`axios-cache-${key}`, JSON.stringify(value), {
+      PX: maxAgeInMilliseconds,
+    });
+  },
+
+  async remove(key) {
+    await client.del(`axios-cache-${key}`);
+  },
+});
+
+const redisCacheOptions = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number): CacheOptions => ({
+  storage: redisStorage(client, maxAgeInMilliseconds),
 });
 
 export const instantiate = (
@@ -51,7 +70,7 @@ export const instantiate = (
 ): ExternalQueries => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
   const cacheOptions = redisClient !== undefined
-    ? redisCacheOptions(maxAgeInMilliseconds)
+    ? redisCacheOptions(redisClient, maxAgeInMilliseconds)
     : inMemoryCacheOptions(maxAgeInMilliseconds);
   const queryExternalService = createCachingFetcher(logger, cacheOptions);
   const queryCrossrefService = createCachingFetcher(logger, cacheOptions, shouldCacheCrossrefResponseBody(logger));
