@@ -84,6 +84,7 @@ jobs:
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
             --set-string experimentEnabled="true" \
             --set appSecret=${APP_SECRET} \
+            --set appCache=redis \
             --set auth0ClientId=${AUTH0_CLIENT_ID_STAGING} \
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET_STAGING} \
             --set auth0Domain='sciety-staging.eu.auth0.com' \
@@ -120,6 +121,7 @@ jobs:
             --set googleTagManagerId='GTM-NX7CQB4' \
             --set crossrefApiBearerToken=${CROSSREF_API_BEARER_TOKEN} \
             --set appSecret=${APP_SECRET} \
+            --set appCache=local-memory \
             --set auth0ClientId=${AUTH0_CLIENT_ID} \
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET} \
             --set auth0Domain='sciety.eu.auth0.com' \

@@ -29,6 +29,10 @@ spec:
               value: https://{{ .Values.hostname }}
             - name: APP_SECRET
               value: "{{ .Values.appSecret }}"
+            - name: APP_CACHE
+              value: "{{ .Values.appCache }}"
+            - name: CACHE_HOST
+              value: "{{ .Release.Name }}--cache"
             - name: CROSSREF_API_BEARER_TOKEN
               value: {{ .Values.crossrefApiBearerToken }}
             - name: EXPERIMENT_ENABLED
