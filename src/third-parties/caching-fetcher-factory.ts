@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
 import {
-  setupCache, type HeaderInterpreter, AxiosCacheInstance, CacheAxiosResponse,
+  setupCache, type HeaderInterpreter, AxiosCacheInstance, CacheAxiosResponse, buildMemoryStorage,
 } from 'axios-cache-interceptor';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
@@ -15,7 +15,10 @@ const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => 
 
 const createCacheAdapter = (maxAge: number) => setupCache(
   Axios.create(),
-  { headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge) },
+  {
+    headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge),
+    storage: buildMemoryStorage(),
+  },
 );
 const shouldCacheAccordingToStatusCode = (status: number) => [
   200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
