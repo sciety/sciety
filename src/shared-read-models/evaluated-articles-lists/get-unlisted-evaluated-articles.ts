@@ -14,7 +14,7 @@ const articleIsNotListed = (groups: ReadModel['groups']) => (a: ArticleState): b
   RA.map(O.fromNullable),
   RA.compact,
   RA.filter((listId) => !a.listedIn.includes(listId)),
-  RA.isEmpty,
+  RA.isNonEmpty,
 );
 
 export const getUnlistedEvaluatedArticles = (readmodel: ReadModel) => (): ReadonlyArray<string> => pipe(

@@ -20,14 +20,27 @@ export const initialState = (): ReadModel => ({
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ArticleAddedToList')(event)) {
-    const articles = readmodel.articles;
-    const a = articles.get(event.articleId.value);
+    const a = readmodel.articles.get(event.articleId.value);
     if (a !== undefined) {
       a.listedIn.push(event.listId);
     } else {
       readmodel.articles.set(event.articleId.value, {
         listedIn: [event.listId],
         evaluatedBy: [],
+      });
+    }
+  }
+  if (isEventOfType('EvaluatedArticlesListSpecified')(event)) {
+    readmodel.groups.set(event.groupId, event.listId);
+  }
+  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
+    const a = readmodel.articles.get(event.articleId.value);
+    if (a !== undefined) {
+      a.evaluatedBy.push(event.groupId);
+    } else {
+      readmodel.articles.set(event.articleId.value, {
+        listedIn: [],
+        evaluatedBy: [event.groupId],
       });
     }
   }
