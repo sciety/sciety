@@ -3,14 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { renderPaginationControls } from '../../../shared-components/pagination';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
-export type SearchParameters = {
-  query: string,
-  evaluatedOnly: boolean,
-  category: 'articles' | 'groups',
-  nextCursor: O.Option<string>,
-  pageNumber: number,
-};
-
 export const renderNextLinkOrCallsToAction = (pageNumber: number, basePath: O.Option<string>): HtmlFragment => pipe(
   basePath,
   O.fold(
