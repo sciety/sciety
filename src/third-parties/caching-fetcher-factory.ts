@@ -118,9 +118,15 @@ export const createCachingFetcher = (
   logger: Logger,
   cachingFetcherOptions: CachingFetcherOptions,
 ): QueryExternalService => {
-  const cacheOptions = cachingFetcherOptions.tag === 'redis'
-    ? redisCacheOptions(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds)
-    : inMemoryCacheOptions(cachingFetcherOptions.maxAgeInMilliseconds);
+  let cacheOptions: CacheOptions;
+  switch (cachingFetcherOptions.tag) {
+    case 'redis':
+      cacheOptions = redisCacheOptions(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds);
+      break;
+    case 'local-memory':
+      cacheOptions = inMemoryCacheOptions(cachingFetcherOptions.maxAgeInMilliseconds);
+      break;
+  }
   const cachedAxios = createCacheAdapter(cacheOptions);
   const get = cachedGetter(cachedAxios, logger, cachingFetcherOptions.responseBodyCachePredicate ?? (() => true));
   return (
