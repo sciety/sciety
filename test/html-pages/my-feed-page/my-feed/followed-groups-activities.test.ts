@@ -1,11 +1,9 @@
 import { performance } from 'perf_hooks';
 import * as O from 'fp-ts/Option';
-import { evaluationRecordedHelper } from '../../../types/evaluation-recorded-event.helper';
 import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities';
-import { arbitraryDate } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
@@ -13,14 +11,12 @@ describe('followed-groups-activities', () => {
     const groupId = '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa';
     const latestEvaluationPublishedDate = new Date('2020-12-15T00:00:00.000Z');
     const events = [
-      evaluationRecordedHelper(
-        groupIdFromString(groupId),
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         articleId,
-        arbitraryEvaluationLocator(),
-        [],
-        latestEvaluationPublishedDate,
-        arbitraryDate(),
-      ),
+        publishedAt: latestEvaluationPublishedDate,
+        groupId: groupIdFromString(groupId),
+      },
     ];
 
     it('includes the article DOI', () => {
@@ -59,7 +55,11 @@ describe('followed-groups-activities', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
       const events = [
-        evaluationRecordedHelper(notFollowedGroupId, arbitraryArticleId(), arbitraryEvaluationLocator(), [], new Date(), new Date('2021-03-10T00:00:00.000Z')),
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId: notFollowedGroupId,
+          date: new Date('2021-03-10T00:00:00.000Z'),
+        },
       ];
 
       const activities = followedGroupsActivities(events)([followedGroupId]);
@@ -73,15 +73,18 @@ describe('followed-groups-activities', () => {
     const articleId = arbitraryArticleId();
     const latestEvaluationPublishedDate = new Date('2020-01-01');
     const events = [
-      evaluationRecordedHelper(groupId, articleId, arbitraryEvaluationLocator(), [], new Date('1980-01-01'), arbitraryDate()),
-      evaluationRecordedHelper(
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
         articleId,
-        arbitraryEvaluationLocator(),
-        [],
-        latestEvaluationPublishedDate,
-        arbitraryDate(),
-      ),
+        publishedAt: new Date('1980-01-01'),
+      },
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId,
+        publishedAt: latestEvaluationPublishedDate,
+      },
     ];
 
     it('has a single entry for the article', () => {
@@ -120,10 +123,30 @@ describe('followed-groups-activities', () => {
     const otherGroupId = arbitraryGroupId();
     const articleId = arbitraryArticleId();
     const events = [
-      evaluationRecordedHelper(groupId, articleId, arbitraryEvaluationLocator(), [], new Date('2020-10-14T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecordedHelper(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecordedHelper(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
-      evaluationRecordedHelper(otherGroupId, articleId, arbitraryEvaluationLocator(), [], new Date('2021-03-10T00:00:00.000Z'), arbitraryDate()),
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId,
+        publishedAt: new Date('2020-10-14T00:00:00.000Z'),
+      },
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: otherGroupId,
+        articleId,
+        publishedAt: new Date('2021-03-10T00:00:00.000Z'),
+      },
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: otherGroupId,
+        articleId,
+        publishedAt: new Date('2021-03-10T00:00:00.000Z'),
+      },
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: otherGroupId,
+        articleId,
+        publishedAt: new Date('2021-03-10T00:00:00.000Z'),
+      },
     ];
 
     it('has an evaluation count of the number of evaluations by all groups', () => {
@@ -157,8 +180,18 @@ describe('followed-groups-activities', () => {
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
       const events = [
-        evaluationRecordedHelper(groupId, earlierArticle, arbitraryEvaluationLocator(), [], new Date(), earlierDate),
-        evaluationRecordedHelper(groupId, laterArticle, arbitraryEvaluationLocator(), [], new Date(), laterDate),
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+          articleId: earlierArticle,
+          date: earlierDate,
+        },
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+          articleId: laterArticle,
+          date: laterDate,
+        },
       ];
       const activities = followedGroupsActivities(events)([groupId]);
 
@@ -180,9 +213,24 @@ describe('followed-groups-activities', () => {
       const articleA = arbitraryArticleId();
       const articleB = arbitraryArticleId();
       const events = [
-        evaluationRecordedHelper(followedGroupId, articleB, arbitraryEvaluationLocator(), [], new Date(), new Date('1980-01-01')),
-        evaluationRecordedHelper(followedGroupId, articleA, arbitraryEvaluationLocator(), [], new Date(), new Date('2000-01-01')),
-        evaluationRecordedHelper(notFollowedGroupId, articleB, arbitraryEvaluationLocator(), [], new Date(), new Date('2020-01-01')),
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId: followedGroupId,
+          articleId: articleB,
+          date: new Date('1980-01-01'),
+        },
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId: followedGroupId,
+          articleId: articleA,
+          date: new Date('2000-01-01'),
+        },
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId: notFollowedGroupId,
+          articleId: articleB,
+          date: new Date('2020-01-01'),
+        },
       ];
 
       const activities = followedGroupsActivities(events)([followedGroupId]);
@@ -202,15 +250,7 @@ describe('followed-groups-activities', () => {
     const numberOfEvents = 15000;
 
     const events = (
-      [...Array(numberOfEvents)].map(() => evaluationRecordedHelper(
-        arbitraryGroupId(),
-        arbitraryArticleId(),
-        arbitraryEvaluationLocator(),
-        [],
-        new Date(),
-        arbitraryDate(),
-      ))
-    );
+      [...Array(numberOfEvents)].map(() => (arbitraryEvaluationPublicationRecordedEvent())));
 
     it('performs acceptably', () => {
       const startTime = performance.now();

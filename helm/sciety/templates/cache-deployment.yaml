@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}--cache
+  labels:
+    {{- include "sciety.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cache
+spec:
+  selector:
+    matchLabels:
+      {{- include "sciety.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: cache
+  template:
+    metadata:
+      labels:
+        {{- include "sciety.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: cache
+    spec:
+      containers:
+        - name: redis
+          image: "redis:7.2.0-alpine@sha256:5ddcd6e1a1ee0d3a2e9fe1abb427be987ab082e4756bdc513cd4293dacf05d27"
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP

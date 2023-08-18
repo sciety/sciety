@@ -1,14 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { evaluationRecordedHelper } from '../types/evaluation-recorded-event.helper';
 import { constructCommand } from '../../src/policies/add-article-to-evaluated-articles-list';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
-import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
-import { arbitraryDate } from '../helpers';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../domain-events/evaluation-publication-recorded-event.helper';
 
 describe('add-article-to-evaluated-articles-list', () => {
   const ports = {
@@ -21,7 +19,11 @@ describe('add-article-to-evaluated-articles-list', () => {
     const groupId = arbitraryGroupId();
 
     const command = pipe(
-      evaluationRecordedHelper(groupId, articleId, arbitraryEvaluationLocator(), [], arbitraryDate()),
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId,
+      },
       constructCommand({
         ...ports,
         getEvaluatedArticlesListIdForGroup: () => O.some(listId),
@@ -38,13 +40,7 @@ describe('add-article-to-evaluated-articles-list', () => {
 
   describe('when the group does not have an evaluated articles list', () => {
     const command = pipe(
-      evaluationRecordedHelper(
-        arbitraryGroupId(),
-        arbitraryArticleId(),
-        arbitraryEvaluationLocator(),
-        [],
-        arbitraryDate(),
-      ),
+      arbitraryEvaluationPublicationRecordedEvent(),
       constructCommand({
         ...ports,
         getEvaluatedArticlesListIdForGroup: () => O.none,

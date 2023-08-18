@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
+import { createClient } from 'redis';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -17,7 +18,8 @@ import { Doi } from '../types/doi';
 import { QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
-import { createCachingFetcher } from './caching-fetcher-factory';
+import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
+import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
@@ -29,10 +31,39 @@ const findVersionsForArticleDoiFromSupportedServers = (
   return TO.none;
 };
 
-export const instantiate = (logger: Logger, crossrefApiBearerToken: O.Option<string>): ExternalQueries => {
-  const queryExternalService = createCachingFetcher(logger, 24 * 60 * 60);
+const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
+  const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
+  return redisClient !== undefined
+    ? {
+      tag: 'redis',
+      maxAgeInMilliseconds,
+      client: redisClient,
+    }
+    : {
+      tag: 'local-memory',
+      maxAgeInMilliseconds,
+    };
+};
+
+export const instantiate = (
+  logger: Logger,
+  crossrefApiBearerToken: O.Option<string>,
+  redisClient: ReturnType<typeof createClient> | undefined,
+): ExternalQueries => {
+  const queryExternalService = createCachingFetcher(
+    logger,
+    cachingFetcherOptions(redisClient),
+  );
+  const queryCrossrefService = createCachingFetcher(
+    logger,
+    {
+      ...cachingFetcherOptions(redisClient),
+      responseBodyCachePredicate: crossrefResponseBodyCachePredicate(logger),
+    },
+  );
+
   return {
-    fetchArticle: fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
+    fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({
       doi: fetchZenodoRecord(queryExternalService, logger),

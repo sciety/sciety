@@ -2,7 +2,6 @@ import { Middleware } from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
@@ -12,6 +11,7 @@ import { Page } from '../types/page';
 import { RenderPageError } from '../types/render-page-error';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 import { UserDetails } from '../types/user-details';
+import { ConstructPage } from '../html-pages/construct-page';
 
 type ErrorToWebPage = (
   user: O.Option<UserDetails>,
@@ -58,11 +58,9 @@ export const toWebPage = (user: O.Option<UserDetails>, pageLayout: PageLayout) =
   pageToSuccessResponse(user, pageLayout),
 );
 
-export type HandlePage = (params: unknown) => TE.TaskEither<RenderPageError, Page>;
-
 export const pageHandler = (
   adapters: GetLoggedInScietyUserPorts,
-  handler: HandlePage,
+  handler: ConstructPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => (
   async (context, next) => {

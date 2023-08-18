@@ -1,179 +1,288 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { erase, update, record } from '../../../../src/write-side/resources/evaluation';
+import {
+  erase, update, recordPublication, recordRemoval,
+} from '../../../../src/write-side/resources/evaluation';
 import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
-import { arbitraryDate, arbitraryString } from '../../../helpers';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as A from '../enact';
-import { RecordEvaluationCommand } from '../../../../src/write-side/commands';
+import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
+import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
     const initialState = A.of([]);
+    const evaluationLocator = arbitraryEvaluationLocator();
 
-    describe('record', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
-      const input: RecordEvaluationCommand = {
-        groupId: arbitraryGroupId(),
-        articleId: arbitraryArticleId(),
-        evaluationLocator,
-        publishedAt: arbitraryDate(),
-        authors: [arbitraryString(), arbitraryString()],
-        evaluationType: arbitraryEvaluationType(),
-      };
-      const result = pipe(
+    describe('record publication', () => {
+      const mostRecentCommand = arbitraryRecordEvaluationPublicationCommand();
+      const outcome = pipe(
         initialState,
-        A.last(record(input)),
+        A.last(recordPublication(mostRecentCommand)),
       );
 
-      it('creates the evaluation resource', () => {
-        expect(result).toStrictEqual(E.right([expect.objectContaining({
-          type: 'EvaluationRecorded',
-          groupId: input.groupId,
-          articleId: input.articleId,
-          evaluationLocator: input.evaluationLocator,
-          publishedAt: input.publishedAt,
-          authors: input.authors,
-          evaluationType: input.evaluationType,
+      it('succeeds with a new event', () => {
+        expect(outcome).toStrictEqual(E.right([expect.objectContaining({
+          type: 'EvaluationPublicationRecorded',
+          groupId: mostRecentCommand.groupId,
+          articleId: mostRecentCommand.articleId,
+          evaluationLocator: mostRecentCommand.evaluationLocator,
+          publishedAt: mostRecentCommand.publishedAt,
+          authors: mostRecentCommand.authors,
+          evaluationType: mostRecentCommand.evaluationType,
         })]));
       });
     });
 
     describe('erase', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
-      const result = pipe(
+      const outcome = pipe(
         initialState,
         A.concat(erase({ evaluationLocator })),
       );
 
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(initialState);
+      it('errors with does not exist', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
+      });
+    });
+
+    describe('record removal', () => {
+      const outcome = pipe(
+        initialState,
+        A.concat(recordRemoval({ evaluationLocator })),
+      );
+
+      it('errors with does not exist', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
 
     describe('update', () => {
-      it.todo('fails with not found');
+      const outcome = pipe(
+        initialState,
+        A.concat(update({
+          evaluationLocator,
+          evaluationType: arbitraryEvaluationType(),
+        })),
+      );
+
+      it('errors with does not exist', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
+      });
     });
   });
 
-  describe('given a recorded evaluation', () => {
+  describe('given a recorded evaluation publication', () => {
+    const initialCommand = arbitraryRecordEvaluationPublicationCommand();
+    const initialState = pipe(
+      [],
+      A.of,
+      A.concat(recordPublication(initialCommand)),
+    );
+
+    describe('record publication', () => {
+      const outcome = pipe(
+        initialState,
+        A.last(recordPublication(initialCommand)),
+      );
+
+      it('succeeds with no new events', () => {
+        expect(outcome).toStrictEqual(E.right([]));
+      });
+    });
+
+    describe('erase', () => {
+      const outcome = pipe(
+        initialState,
+        A.last(erase({ evaluationLocator: initialCommand.evaluationLocator })),
+      );
+
+      it('succeeds with a new event', () => {
+        expect(outcome).toStrictEqual(E.right([
+          expect.objectContaining({
+            type: 'IncorrectlyRecordedEvaluationErased',
+            evaluationLocator: initialCommand.evaluationLocator,
+          }),
+        ]));
+      });
+    });
+
+    describe('record removal', () => {
+      const outcome = pipe(
+        initialState,
+        A.last(recordRemoval({ evaluationLocator: initialCommand.evaluationLocator })),
+      );
+
+      it('succeeds with a new event', () => {
+        expect(outcome).toStrictEqual(E.right([
+          expect.objectContaining({
+            type: 'EvaluationRemovalRecorded',
+            evaluationLocator: initialCommand.evaluationLocator,
+          }),
+        ]));
+      });
+    });
+
+    describe('update', () => {
+      const mostRecentCommand = {
+        ...arbitraryUpdateEvaluationCommand(),
+        evaluationLocator: initialCommand.evaluationLocator,
+      };
+      const outcome = pipe(
+        initialState,
+        A.last(update(mostRecentCommand)),
+      );
+
+      it('succeeds with a new event', () => {
+        expect(outcome).toStrictEqual(E.right([
+          expect.objectContaining({
+            type: 'EvaluationUpdated',
+            evaluationLocator: mostRecentCommand.evaluationLocator,
+            evaluationType: mostRecentCommand.evaluationType,
+          }),
+        ]));
+      });
+    });
+  });
+
+  describe('given an erased evaluation', () => {
+    const evaluationLocator = arbitraryEvaluationLocator();
     const recordCommand = {
-      groupId: arbitraryGroupId(),
-      publishedAt: arbitraryDate(),
-      evaluationLocator: arbitraryEvaluationLocator(),
-      articleId: arbitraryArticleId(),
-      authors: [],
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      evaluationLocator,
     };
 
     const initialState = pipe(
       [],
       A.of,
-      A.concat(record(recordCommand)),
+      A.concat(recordPublication(recordCommand)),
+      A.concat(erase({ evaluationLocator })),
     );
 
-    describe('record', () => {
-      const result = pipe(
+    describe('record publication', () => {
+      const mostRecentCommand = {
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        evaluationLocator,
+      };
+      const outcome = pipe(
         initialState,
-        A.concat(record(recordCommand)),
+        A.last(recordPublication(mostRecentCommand)),
       );
 
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(initialState);
+      it('succeeds with a new event', () => {
+        expect(outcome).toStrictEqual(E.right([expect.objectContaining({
+          type: 'EvaluationPublicationRecorded',
+          groupId: mostRecentCommand.groupId,
+          articleId: mostRecentCommand.articleId,
+          evaluationLocator,
+          publishedAt: mostRecentCommand.publishedAt,
+          authors: mostRecentCommand.authors,
+          evaluationType: mostRecentCommand.evaluationType,
+        })]));
       });
     });
 
     describe('erase', () => {
-      it.todo('erases the evaluation resource');
-    });
-
-    describe('update', () => {
-      it.todo('updates the evaluation resource');
-    });
-  });
-
-  describe('given an erased evaluation', () => {
-    const recordCommand = {
-      groupId: arbitraryGroupId(),
-      publishedAt: arbitraryDate(),
-      evaluationLocator: arbitraryEvaluationLocator(),
-      articleId: arbitraryArticleId(),
-      authors: [],
-    };
-
-    const erasedResource = pipe(
-      [],
-      A.of,
-      A.concat(record(recordCommand)),
-      A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
-    );
-
-    describe('record', () => {
-      const result = pipe(
-        erasedResource,
-        A.concat(record(recordCommand)),
+      const outcome = pipe(
+        initialState,
+        A.last(erase({ evaluationLocator })),
       );
 
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(erasedResource);
+      it('succeeds with no new events', () => {
+        expect(outcome).toStrictEqual(E.right([]));
       });
     });
 
-    describe('erase', () => {
-      const result = pipe(
-        erasedResource,
-        A.concat(erase({ evaluationLocator: recordCommand.evaluationLocator })),
+    describe('record removal', () => {
+      const outcome = pipe(
+        initialState,
+        A.last(recordRemoval({ evaluationLocator })),
       );
 
-      it('succeeds without changing state', () => {
-        expect(result).toStrictEqual(erasedResource);
+      it('errors with does not exist', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
 
     describe('update', () => {
-      const result = pipe(
-        erasedResource,
+      const outcome = pipe(
+        initialState,
         A.concat(update({
-          evaluationLocator: recordCommand.evaluationLocator,
+          evaluationLocator,
           evaluationType: arbitraryEvaluationType(),
         })),
       );
 
-      it('errors with not found', () => {
-        expect(result).toStrictEqual(E.left('Evaluation to be updated does not exist'));
+      it('errors with does not exist', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
   });
 
-  describe('record -> update', () => {
+  describe('given a recorded evaluation removal', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
-    const initialEvaluationType = undefined;
-    const newEvaluationType = arbitraryEvaluationType();
-    const recordCommand = {
-      groupId: arbitraryGroupId(),
-      publishedAt: arbitraryDate(),
+    const initialRecordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator,
-      articleId: arbitraryArticleId(),
-      authors: [],
-      evaluationType: initialEvaluationType,
     };
-
-    const newEvents = pipe(
+    const initialState = pipe(
       [],
       A.of,
-      A.concat(record(recordCommand)),
-      A.last(update({ evaluationLocator, evaluationType: newEvaluationType })),
+      A.concat(recordPublication(initialRecordEvaluationPublicationCommand)),
+      A.concat(recordRemoval({ evaluationLocator })),
     );
 
-    it('succeeds with a new event', () => {
-      expect(newEvents).toStrictEqual(E.right([
-        expect.objectContaining({
-          type: 'EvaluationUpdated',
-          evaluationLocator,
-          evaluationType: newEvaluationType,
-        }),
-      ]));
+    describe('record publication', () => {
+      const outcome = pipe(
+        initialState,
+        A.last(recordPublication(initialRecordEvaluationPublicationCommand)),
+      );
+
+      it('errors with previously removed, cannot record', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemovedCannotRecord));
+      });
+    });
+
+    describe('erase', () => {
+      const outcome = pipe(
+        initialState,
+        A.last(erase({ evaluationLocator })),
+      );
+
+      it('succeeds with a new event', () => {
+        expect(outcome).toStrictEqual(E.right([
+          expect.objectContaining({
+            type: 'IncorrectlyRecordedEvaluationErased',
+            evaluationLocator,
+          }),
+        ]));
+      });
+    });
+
+    describe('record removal', () => {
+      const outcome = pipe(
+        initialState,
+        A.last(recordRemoval({ evaluationLocator })),
+      );
+
+      it('succeeds with no new events', () => {
+        expect(outcome).toStrictEqual(E.right([]));
+      });
+    });
+
+    describe('update', () => {
+      const mostRecentCommand = {
+        ...arbitraryUpdateEvaluationCommand(),
+        evaluationLocator,
+      };
+      const outcome = pipe(
+        initialState,
+        A.last(update(mostRecentCommand)),
+      );
+
+      it('errors with previously removed, cannot update', () => {
+        expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemovedCannotUpdate));
+      });
     });
   });
 });

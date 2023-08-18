@@ -72,7 +72,7 @@ axiosRetry(axios, {
 
 const send = (evaluationCommand: EvaluationCommand) => pipe(
   TE.tryCatch(
-    async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/api/record-evaluation`, JSON.stringify(evaluationCommand), {
+    async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
       headers: {
         Authorization: `Bearer ${process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret'}`,
         'Content-Type': 'application/json',

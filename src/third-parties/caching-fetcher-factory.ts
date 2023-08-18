@@ -1,47 +1,132 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
-import { setupCache, type HeaderInterpreter, AxiosCacheInstance } from 'axios-cache-interceptor';
-import { URL } from 'url';
+import {
+  setupCache,
+  AxiosCacheInstance,
+  CacheAxiosResponse,
+  CacheOptions,
+  HeaderInterpreter,
+  StorageValue,
+  buildMemoryStorage,
+  buildStorage,
+} from 'axios-cache-interceptor';
+import { createClient } from 'redis';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
 import { QueryExternalService } from './query-external-service';
 
-const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
+const shouldCacheAccordingToStatusCode = (status: number) => [
+  200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
+].includes(status);
 
-const createCacheAdapter = (maxAge: number) => setupCache(
-  Axios.create(),
-  { headerInterpreter: headerInterpreterWithFixedMaxAge(maxAge) },
-);
+const constructHeadersWithUserAgent = (headers: Record<string, string> = {}) => ({
+  ...headers,
+  'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
+});
+
+const logResponseTime = (logger: Logger, startTime: Date, response: CacheAxiosResponse | undefined, url: string) => {
+  const durationInMs = new Date().getTime() - startTime.getTime();
+  logger('debug', 'Response time', { url, durationInMs, responseStatus: response ? response.status : undefined });
+};
 
 const cachedGetter = (
   cachedAxios: AxiosCacheInstance,
   logger: Logger,
+  responseBodyCachePredicate: ResponseBodyCachePredicate,
 ) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
-  const response = await cachedAxios.get<U>(url, {
-    headers: {
-      ...headers,
-      'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
-    },
-    timeout: 10 * 1000,
-  });
-  if (response.cached) {
-    logger('debug', 'Axios cache hit', { url });
-  } else {
-    logger('debug', 'Axios cache miss', { url });
-    const durationInMs = new Date().getTime() - startTime.getTime();
-    logger('debug', 'Response time', { url, durationInMs, responseStatus: response.status });
+  const cacheLoggingPayload = { url };
+  let response: CacheAxiosResponse<U> | undefined;
+  try {
+    response = await cachedAxios.get<U>(url, {
+      headers: constructHeadersWithUserAgent(headers),
+      timeout: 10 * 1000,
+      cache: {
+        cachePredicate: {
+          statusCheck: shouldCacheAccordingToStatusCode,
+          responseMatch: ({ data }) => responseBodyCachePredicate(data, url),
+        },
+      },
+    });
+    if (response.cached) {
+      logger('debug', 'Axios cache hit', cacheLoggingPayload);
+    } else {
+      logger('debug', 'Axios cache miss', cacheLoggingPayload);
+    }
+    return response.data;
+  } catch (error: unknown) {
+    logger('debug', 'Axios cache miss', cacheLoggingPayload);
+    throw error;
+  } finally {
+    logResponseTime(logger, startTime, response, url);
   }
-  return response.data;
 };
 
-type CachingFetcherFactory = (logger: Logger, cacheMaxAgeSeconds: number) => QueryExternalService;
+export type ResponseBodyCachePredicate = (responseBody: unknown, url: string) => boolean;
 
-export const createCachingFetcher: CachingFetcherFactory = (logger, cacheMaxAgeSeconds) => {
-  const cachedAxios = createCacheAdapter(cacheMaxAgeSeconds * 1000);
-  const get = cachedGetter(cachedAxios, logger);
+const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
+
+const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
+  async find(key) {
+    return client
+      .get(`axios-cache-${key}`)
+      .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
+  },
+
+  async set(key, value) {
+    await client.set(`axios-cache-${key}`, JSON.stringify(value), {
+      PX: maxAgeInMilliseconds,
+    });
+  },
+
+  async remove(key) {
+    await client.del(`axios-cache-${key}`);
+  },
+});
+
+const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions) => {
+  let cacheOptions: CacheOptions;
+  switch (cachingFetcherOptions.tag) {
+    case 'redis':
+      cacheOptions = {
+        headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
+        storage: redisStorage(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds),
+      };
+      break;
+    case 'local-memory':
+      cacheOptions = {
+        headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
+        storage: buildMemoryStorage(),
+      };
+      break;
+  }
+  return setupCache(
+    Axios.create(),
+    cacheOptions,
+  );
+};
+
+export type CachingFetcherOptions = {
+  tag: 'local-memory',
+  maxAgeInMilliseconds: number,
+  responseBodyCachePredicate?: ResponseBodyCachePredicate,
+} | {
+  tag: 'redis',
+  maxAgeInMilliseconds: number,
+  client: ReturnType<typeof createClient>,
+  responseBodyCachePredicate?: ResponseBodyCachePredicate,
+};
+
+export const createCachingFetcher = (
+  logger: Logger,
+  cachingFetcherOptions: CachingFetcherOptions,
+): QueryExternalService => {
+  const cachedAxios = createCacheAdapter(cachingFetcherOptions);
+  const get = cachedGetter(cachedAxios, logger, cachingFetcherOptions.responseBodyCachePredicate ?? (() => true));
   return (
     notFoundLogLevel: LevelName = 'warn',
     headers = {},

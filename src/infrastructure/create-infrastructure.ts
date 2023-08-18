@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { createClient } from 'redis';
 import { persistEvents } from './persist-events';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
@@ -91,8 +92,25 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         getAllEvents,
         commitEvents: commitEventsWithoutListeners,
       };
+      let redisClient: ReturnType<typeof createClient> | undefined;
+      if (process.env.APP_CACHE === 'redis') {
+        partialAdapters.logger('info', 'Using redis as application cache', { cacheHost: process.env.CACHE_HOST });
+        redisClient = createClient({
+          url: `redis://${process.env.CACHE_HOST ?? ''}`,
+        });
+        redisClient.on('ready', () => {
+          partialAdapters.logger('info', 'Redis client is ready');
+        });
+        redisClient.on('error', (error) => {
+          partialAdapters.logger('error', 'Redis client has encountered an error', { error });
+          throw error;
+        });
+        await redisClient.connect();
+      } else {
+        partialAdapters.logger('info', 'Using local memory as application cache');
+      }
 
-      const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken);
+      const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken, redisClient);
 
       const collectedAdapters = {
         ...queries,

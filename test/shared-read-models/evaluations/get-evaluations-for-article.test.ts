@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { getEvaluationsForArticle } from '../../../src/shared-read-models/evaluations/get-evaluations-for-article';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
@@ -11,6 +11,7 @@ import { handleEvent, initialState } from '../../../src/shared-read-models/evalu
 import { Doi } from '../../../src/types/doi';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
+import { arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-removal-recorded-event-helper';
 
 const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -24,24 +25,23 @@ const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
 };
 
 const evaluationRecorded = (articleId: Doi, evaluationLocator: EvaluationLocator) => (
-  evaluationRecordedHelper(arbitraryGroupId(), articleId, evaluationLocator, [], new Date())
+  {
+    ...arbitraryEvaluationPublicationRecordedEvent(),
+    articleId,
+    evaluationLocator,
+  }
 );
 
 const evaluationRecordedWithType = (
   articleId: Doi,
   evaluationLocator: EvaluationLocator,
   evaluationType: EvaluationType,
-) => (
-  evaluationRecordedHelper(
-    arbitraryGroupId(),
-    articleId,
-    evaluationLocator,
-    [],
-    new Date(),
-    new Date(),
-    evaluationType,
-  )
-);
+) => ({
+  ...arbitraryEvaluationPublicationRecordedEvent(),
+  articleId,
+  evaluationLocator,
+  evaluationType,
+});
 
 describe('get-evaluations-for-article', () => {
   describe('when there is an arbitrary number of evaluations', () => {
@@ -87,13 +87,38 @@ describe('get-evaluations-for-article', () => {
     });
   });
 
+  describe('when an evaluation publication and its removal have been recorded', () => {
+    const articleId = arbitraryDoi();
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const actualEvaluations = pipe(
+      [
+        evaluationRecorded(articleId, evaluationLocator),
+        {
+          ...arbitraryEvaluationRemovalRecordedEvent(),
+          evaluationLocator,
+        },
+      ],
+      runQuery(articleId),
+      RA.map((evaluation) => evaluation.evaluationLocator),
+    );
+
+    it('does not return evaluations whose removal has been recorded', () => {
+      expect(actualEvaluations).toStrictEqual([]);
+    });
+  });
+
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
     const articleId = arbitraryDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        evaluationRecordedHelper(groupId, articleId, evaluationLocator, [], new Date()),
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+          articleId,
+          evaluationLocator,
+        },
         constructEvent('CurationStatementRecorded')({ articleId, groupId, evaluationLocator }),
       ],
       runQuery(articleId),

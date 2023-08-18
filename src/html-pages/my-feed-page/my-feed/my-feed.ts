@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -12,8 +13,7 @@ import {
   troubleFetchingTryAgain,
 } from './static-content';
 import { renderArticleCard } from '../../../shared-components/article-card';
-import { PageOfItems, paginate } from '../../../shared-components/paginate';
-import { paginationControls } from '../../../shared-components/pagination-controls';
+import { PageOfItems, paginate, renderPaginationControls } from '../../../shared-components/pagination';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
@@ -57,7 +57,14 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
       Showing page <b>${pageofItems.pageNumber}</b> of <b>${pageofItems.numberOfPages}</b><span class="visually-hidden"> pages of articles that have been evaluated by groups that you follow.</span>
     </p>
     <ol class="card-list" role="list">${cards.join('')}</ol>
-    ${paginationControls('/my-feed?', pageofItems.nextPage)}`,
+    ${renderPaginationControls({
+    nextPageHref: pipe(
+      pageofItems.nextPage,
+      O.map(
+        (nextPage) => `/my-feed?page=${nextPage}`,
+      ),
+    ),
+  })}`,
 );
 
 type YourFeed = (dependencies: Dependencies) => (

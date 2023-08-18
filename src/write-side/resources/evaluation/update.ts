@@ -8,24 +8,33 @@ import {
 } from '../../../domain-events';
 import { ResourceAction } from '../resource-action';
 import { UpdateEvaluationCommand } from '../../commands';
-import { toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
+import { evaluationResourceError } from './evaluation-resource-error';
+import { EvaluationType } from '../../../types/recorded-evaluation';
+import { ErrorMessage } from '../../../types/error-message';
 
-type EvaluationEvent = EventOfType<'EvaluationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
+type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
+
+const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => isEventOfType('EvaluationPublicationRecorded')(event)
+|| isEventOfType('EvaluationUpdated')(event)
+|| isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
+|| isEventOfType('EvaluationRemovalRecorded')(event);
 
 const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
-  RA.filter((event): event is EvaluationEvent => isEventOfType('EvaluationRecorded')(event)
-    || isEventOfType('EvaluationUpdated')(event)
-    || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)),
+  RA.filter(isRelevantEvent),
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
 );
 
-const constructWriteModel = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
+type WriteModel = { evaluationType: EvaluationType | undefined };
+
+const constructWriteModel = (
+  evaluationLocator: EvaluationLocator,
+) => (events: ReadonlyArray<DomainEvent>): E.Either<ErrorMessage, WriteModel> => pipe(
   events,
   filterToHistoryOf(evaluationLocator),
   RA.match(
-    () => E.left(toErrorMessage('Evaluation to be updated does not exist')),
+    () => E.left(evaluationResourceError.doesNotExist),
     (history) => E.right(history),
   ),
   E.chainW((evaluationHistory) => pipe(
@@ -33,11 +42,13 @@ const constructWriteModel = (evaluationLocator: EvaluationLocator) => (events: R
     RNEA.last,
     (event) => {
       switch (event.type) {
-        case 'EvaluationRecorded':
+        case 'EvaluationPublicationRecorded':
         case 'EvaluationUpdated':
           return E.right({ evaluationType: event.evaluationType });
         case 'IncorrectlyRecordedEvaluationErased':
-          return E.left(toErrorMessage('Evaluation to be updated does not exist'));
+          return E.left(evaluationResourceError.doesNotExist);
+        case 'EvaluationRemovalRecorded':
+          return E.left(evaluationResourceError.previouslyRemovedCannotUpdate);
       }
     },
   )),

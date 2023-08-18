@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { PageOfItems, paginate as sharedPaginate } from '../../../../shared-components/paginate';
+import { PageOfItems, paginate as sharedPaginate } from '../../../../shared-components/pagination';
 import * as DE from '../../../../types/data-error';
 import { Follower } from '../view-model';
 

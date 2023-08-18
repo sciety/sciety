@@ -8,7 +8,7 @@ import {
   constructArticleCardWithControlsAndAnnotationViewModel,
   ArticleErrorCardViewModel,
 } from '../../../shared-components/article-card';
-import { PageOfItems } from '../../../shared-components/paginate';
+import { PageOfItems } from '../../../shared-components/pagination';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
 import { ContentWithPaginationViewModel } from '../view-model';

@@ -138,7 +138,7 @@ ingest-evaluations: build
 	npx ts-node src/ingest/update-event-data
 
 trigger-ingestion:
-	INGEST_EXCEPT=arcadia scripts/trigger-ingestion.sh
+	scripts/trigger-ingestion.sh
 
 dev-sql: export TARGET = dev
 dev-sql:
@@ -289,3 +289,9 @@ check-ci: compile-prod check
 
 compile-prod: export TARGET = prod
 compile-prod: .env build
+
+connect-to-cache:
+	kubectl run --namespace default redis-client --tty -i --rm --image redis -- bash
+
+connect-to-cache-dev:
+	docker run --tty -i --rm --network sciety_default redis bash

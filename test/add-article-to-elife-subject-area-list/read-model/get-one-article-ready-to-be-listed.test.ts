@@ -23,7 +23,7 @@ describe('get-one-article-ready-to-be-listed', () => {
 
     const readModel = pipe(
       [
-        constructEvent('EvaluationRecorded')({
+        constructEvent('EvaluationPublicationRecorded')({
           groupId: elifeGroupId,
           articleId: articleIdA,
           evaluationLocator: arbitraryEvaluationLocator(),

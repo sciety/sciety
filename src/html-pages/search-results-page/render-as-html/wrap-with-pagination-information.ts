@@ -1,25 +1,27 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderNextLinkOrCallsToAction, SearchParameters } from './render-next-link-or-calls-to-action';
+import { renderNextLinkOrCallsToAction } from './render-next-link-or-calls-to-action';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { articleServers } from '../../../types/article-server';
 
 const articleServersSeparatedByComma = `<b>${articleServers.biorxiv.name}</b>, <b>${articleServers.medrxiv.name}</b>, <b>${articleServers.researchsquare.name}</b>, <b>${articleServers.scielopreprints.name}</b>`;
 
-type PaginationParameters = {
+export type PaginationViewModel = {
+  query: string,
+  evaluatedOnly: boolean,
+  category: 'articles' | 'groups',
+  nextCursor: O.Option<string>,
   pageNumber: number,
   numberOfPages: number,
 };
 
-export type PaginationViewModel = SearchParameters & PaginationParameters;
-
-const renderPageCount = (paginationParameters: PaginationParameters) => (
+const renderPageCount = (paginationParameters: PaginationViewModel) => (
   (paginationParameters.numberOfPages > 0)
     ? `Showing page <b>${paginationParameters.pageNumber}</b> of <b>${paginationParameters.numberOfPages}</b><span class="visually-hidden"> pages of search results</span>`
     : 'No results found'
 );
 
-const renderArticlesSearchResultsHeader = (paginationParameters: PaginationParameters) => `
+const renderArticlesSearchResultsHeader = (paginationParameters: PaginationViewModel) => `
   <header class="search-results__header">
     <h3 class="search-results__page_count">
       ${renderPageCount(paginationParameters)}
@@ -31,11 +33,16 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationParam
   </header>
 `;
 
+export const buildBasePath = (viewModel: PaginationViewModel): O.Option<string> => pipe(
+  viewModel.nextCursor,
+  O.map((cursor) => `/search?query=${encodeURIComponent(viewModel.query)}&category=${viewModel.category}&cursor=${encodeURIComponent(cursor)}${viewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
+);
+
 const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => (viewModel.category === 'articles'
   ? `
       ${renderArticlesSearchResultsHeader(viewModel)}
       ${c}
-      ${renderNextLinkOrCallsToAction({ ...viewModel, pageNumber: viewModel.pageNumber + 1 })}
+      ${renderNextLinkOrCallsToAction(viewModel.pageNumber + 1, buildBasePath(viewModel))}
     `
   : c);
 

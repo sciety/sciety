@@ -1,12 +1,22 @@
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { toPageOfCards } from './to-page-of-cards';
-import { paginate } from '../../../shared-components/paginate';
+import { paginate } from '../../../shared-components/pagination';
 import * as DE from '../../../types/data-error';
 import { Doi } from '../../../types/doi';
 import { ContentWithPaginationViewModel } from '../view-model';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
+
+const constructPaginationControlsViewModel = (nextPageNumber: O.Option<number>, basePath: string) => ({
+  nextPageHref: pipe(
+    nextPageNumber,
+    O.map(
+      (nextPage) => `${basePath}?page=${nextPage}`,
+    ),
+  ),
+});
 
 export const constructContentWithPaginationViewModel = (
   dependencies: Dependencies,
@@ -20,6 +30,10 @@ export const constructContentWithPaginationViewModel = (
   TE.chainW((pageOfArticles) => pipe(
     pageOfArticles,
     toPageOfCards(dependencies, editCapability, listId),
-    TE.map((articles) => ({ articles, pagination: pageOfArticles })),
+    TE.map((articles) => ({
+      articles,
+      pagination: pageOfArticles,
+      ...constructPaginationControlsViewModel(pageOfArticles.nextPage, `/lists/${listId}`),
+    })),
   )),
 );

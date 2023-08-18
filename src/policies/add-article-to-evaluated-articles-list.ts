@@ -22,7 +22,7 @@ export type Ports = DependenciesForCommands & {
 
 export const constructCommand = (
   ports: { logger: Logger, getEvaluatedArticlesListIdForGroup: GetEvaluatedArticlesListIdForGroup },
-) => (event: EventOfType<'EvaluationRecorded'>): E.Either<ErrorMessage, AddArticleToListCommand> => pipe(
+) => (event: EventOfType<'EvaluationPublicationRecorded'>): E.Either<ErrorMessage, AddArticleToListCommand> => pipe(
   event.groupId,
   ports.getEvaluatedArticlesListIdForGroup,
   E.fromOption(() => undefined),
@@ -40,7 +40,7 @@ export const constructCommand = (
 
 export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: DomainEvent): T.Task<void> => pipe(
   event,
-  E.fromPredicate(isEventOfType('EvaluationRecorded'), () => 'not-interesting-event' as const),
+  E.fromPredicate(isEventOfType('EvaluationPublicationRecorded'), () => 'not-interesting-event' as const),
   E.chainW(constructCommand(ports)),
   TE.fromEither,
   TE.chainW(flow(

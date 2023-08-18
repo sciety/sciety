@@ -5,8 +5,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
 import { editListDetailsHandler } from './forms/edit-list-details-handler';
@@ -27,9 +25,9 @@ import {
   editListDetailsCommandCodec,
   updateUserDetailsCommandCodec,
   removeArticleFromListCommandCodec,
-  recordEvaluationCommandCodec,
+  recordEvaluationPublicationCommandCodec,
   addGroupCommandCodec,
-  eraseEvaluationCommandCodec, updateGroupDetailsCommandCodec,
+  eraseEvaluationCommandCodec, updateGroupDetailsCommandCodec, recordEvaluationRemovalCommandCodec,
 } from '../write-side/commands';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
@@ -44,6 +42,7 @@ import { articlePage } from '../html-pages/article-page';
 import * as GLP from '../html-pages/group-page/group-lists-page';
 import * as GAP from '../html-pages/group-page/group-about-page';
 import * as GFP from '../html-pages/group-page/group-followers-page';
+import * as GFEP from '../html-pages/group-page/group-feed-page';
 import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout } from '../html-pages/home-page';
 import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page';
@@ -55,15 +54,13 @@ import { saveArticleHandler } from '../write-side/save-article/save-article-hand
 import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page';
 import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
-import { DoiFromString } from '../types/codecs/DoiFromString';
-import { userIdCodec } from '../types/user-id';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
 import * as authentication from './authentication';
 import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
 import { contentOnlyLayout } from '../shared-components/content-only-layout';
-import { createPageFromParams, toNotFound } from './create-page-from-params';
+import { createPageFromParams } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 import { listsPage } from '../html-pages/lists-page';
@@ -77,11 +74,7 @@ import { fullWidthPageLayout } from '../shared-components/full-width-page-layout
 import { applicationStatus } from '../views/status';
 import { listFeed } from '../views/list/list-feed';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
-
-const articlePageParams = t.type({
-  doi: DoiFromString,
-  user: tt.optionFromNullable(t.type({ id: userIdCodec })),
-});
+import { statusGroups } from '../views/status-groups';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -193,12 +186,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/articles/activity/:doi(.+)',
-    pageHandler(adapters, flow(
-      articlePageParams.decode,
-      E.mapLeft(toNotFound),
-      TE.fromEither,
-      TE.chain(articlePage(adapters)),
-    ), fullWidthPageLayout),
+    pageHandler(adapters, articlePage(adapters), fullWidthPageLayout),
   );
 
   router.get(
@@ -249,6 +237,14 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     pageHandler(adapters, createPageFromParams(
       GFP.paramsCodec,
       GFP.constructAndRenderPage(adapters),
+    )),
+  );
+
+  router.get(
+    '/groups/:slug/feed',
+    pageHandler(adapters, createPageFromParams(
+      GFEP.paramsCodec,
+      GFEP.constructAndRenderPage(adapters),
     )),
   );
 
@@ -358,7 +354,9 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
 
-  router.post('/api/record-evaluation', createApiRouteForResourceAction(adapters, recordEvaluationCommandCodec, evaluationResource.record));
+  router.post('/api/record-evaluation-publication', createApiRouteForResourceAction(adapters, recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
+
+  router.post('/api/record-evaluation-removal', createApiRouteForResourceAction(adapters, recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
 
   router.post('/api/remove-article-from-list', createApiRouteForResourceAction(adapters, removeArticleFromListCommandCodec, listResource.removeArticle));
 
@@ -417,6 +415,12 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/status', async (context, next) => {
     context.response.body = applicationStatus(adapters);
+    context.response.status = StatusCodes.OK;
+    await next();
+  });
+
+  router.get('/status/groups', async (context, next) => {
+    context.response.body = statusGroups(adapters);
     context.response.status = StatusCodes.OK;
     await next();
   });

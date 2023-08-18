@@ -56,4 +56,120 @@ describe('construct-view-model', () => {
       expect(viewModel.relatedArticlesLink).toStrictEqual(O.some(expect.anything()));
     });
   });
+
+  describe('ordering of list contents', () => {
+    const createList = async () => {
+      const userDetails = arbitraryUserDetails();
+      await framework.commandHelpers.createUserAccount(userDetails);
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      return list.id;
+    };
+
+    describe('when the list contains two articles', () => {
+      let viewModel: ViewModel;
+      const article1 = arbitraryArticleId();
+      const article2 = arbitraryArticleId();
+
+      beforeEach(async () => {
+        const listId = await createList();
+        await framework.commandHelpers.addArticleToList(article1, listId);
+        await framework.commandHelpers.addArticleToList(article2, listId);
+        viewModel = await pipe(
+          {
+            page: 1,
+            id: listId,
+            user: O.none,
+          },
+          constructViewModel(framework.dependenciesForViews),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('sorts the articles in reverse order of being added to the list', () => {
+        expect(viewModel.content).toStrictEqual(expect.objectContaining({
+          articles: [
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article2 }),
+            })),
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article1 }),
+            })),
+          ],
+        }));
+      });
+    });
+
+    describe('when the list contains an article that has been removed and re-added', () => {
+      let viewModel: ViewModel;
+      const article1 = arbitraryArticleId();
+      const article2 = arbitraryArticleId();
+
+      beforeEach(async () => {
+        const listId = await createList();
+        await framework.commandHelpers.addArticleToList(article1, listId);
+        await framework.commandHelpers.addArticleToList(article2, listId);
+        await framework.commandHelpers.removeArticleFromList(article1, listId);
+        await framework.commandHelpers.addArticleToList(article1, listId);
+        viewModel = await pipe(
+          {
+            page: 1,
+            id: listId,
+            user: O.none,
+          },
+          constructViewModel(framework.dependenciesForViews),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('sorts the articles in reverse order of being added to the list', () => {
+        expect(viewModel.content).toStrictEqual(expect.objectContaining({
+          articles: [
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article1 }),
+            })),
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article2 }),
+            })),
+          ],
+        }));
+      });
+    });
+
+    describe('when an article has been removed from the list', () => {
+      let viewModel: ViewModel;
+      const article1 = arbitraryArticleId();
+      const article2 = arbitraryArticleId();
+      const article3 = arbitraryArticleId();
+
+      beforeEach(async () => {
+        const listId = await createList();
+        await framework.commandHelpers.addArticleToList(article1, listId);
+        await framework.commandHelpers.addArticleToList(article2, listId);
+        await framework.commandHelpers.addArticleToList(article3, listId);
+        await framework.commandHelpers.removeArticleFromList(article3, listId);
+        viewModel = await pipe(
+          {
+            page: 1,
+            id: listId,
+            user: O.none,
+          },
+          constructViewModel(framework.dependenciesForViews),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('sorts the remaining articles in reverse order of being added to the list', () => {
+        expect(viewModel.content).toStrictEqual(expect.objectContaining({
+          articles: [
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article2 }),
+            })),
+            E.right(expect.objectContaining({
+              articleCard: expect.objectContaining({ articleId: article1 }),
+            })),
+          ],
+        }));
+      });
+    });
+  });
 });

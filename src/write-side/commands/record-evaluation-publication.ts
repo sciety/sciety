@@ -24,6 +24,6 @@ const optionalFields = t.partial({
   evaluationType: evaluationTypeCodec,
 });
 
-export const recordEvaluationCommandCodec = t.intersection([requiredFields, optionalFields]);
+export const recordEvaluationPublicationCommandCodec = t.intersection([requiredFields, optionalFields]);
 
-export type RecordEvaluationCommand = t.TypeOf<typeof recordEvaluationCommandCodec>;
+export type RecordEvaluationPublicationCommand = t.TypeOf<typeof recordEvaluationPublicationCommandCodec>;

@@ -6,15 +6,17 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
-import { evaluationRecordedHelper } from '../../types/evaluation-recorded-event.helper';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryDate, arbitraryString } from '../../helpers';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-removal-recorded-event-helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
 
   describe('when the group has not joined', () => {
-    describe('and no evaluation has been recorded for it', () => {
+    describe('and no group activity has been recorded', () => {
       const readModel = pipe(
         [],
         RA.reduce(initialState(), handleEvent),
@@ -26,23 +28,16 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('and an evaluation has been recorded for it', () => {
-      const recordedEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-      };
+    describe('and an evaluation\'s publication has been recorded', () => {
       let result: O.Option<unknown>;
 
       beforeEach(() => {
         const readModel = pipe(
           [
-            evaluationRecordedHelper(
-              recordedEvaluation.groupId,
-              recordedEvaluation.articleId,
-              recordedEvaluation.evaluationLocator,
-              recordedEvaluation.authors,
-              recordedEvaluation.publishedAt,
-            ),
+            {
+              ...arbitraryEvaluationPublicationRecordedEvent(),
+              groupId: group.id,
+            },
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -54,24 +49,46 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('and an evaluation has been recorded for it and erased', () => {
-      const recordedEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-      };
+    describe('and an evaluation\'s publication has been recorded, and then erased by Sciety', () => {
       let result: O.Option<unknown>;
 
       beforeEach(() => {
+        const evaluationLocator = arbitraryEvaluationLocator();
         const readModel = pipe(
           [
-            evaluationRecordedHelper(
-              recordedEvaluation.groupId,
-              recordedEvaluation.articleId,
-              recordedEvaluation.evaluationLocator,
-              recordedEvaluation.authors,
-              recordedEvaluation.publishedAt,
-            ),
-            constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.evaluationLocator }),
+            {
+              ...arbitraryEvaluationPublicationRecordedEvent(),
+              groupId: group.id,
+              evaluationLocator,
+            },
+            constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
+          ],
+          RA.reduce(initialState(), handleEvent),
+        );
+        result = getActivityForGroup(readModel)(group.id);
+      });
+
+      it('returns O.none', () => {
+        expect(result).toStrictEqual(O.none);
+      });
+    });
+
+    describe('and an evaluation\'s publication and removal have been recorded', () => {
+      let result: O.Option<unknown>;
+
+      beforeEach(() => {
+        const evaluationLocator = arbitraryEvaluationLocator();
+        const readModel = pipe(
+          [
+            {
+              ...arbitraryEvaluationPublicationRecordedEvent(),
+              groupId: group.id,
+              evaluationLocator,
+            },
+            {
+              ...arbitraryEvaluationRemovalRecordedEvent(),
+              evaluationLocator,
+            },
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -122,20 +139,15 @@ describe('get-activity-for-group', () => {
     });
 
     describe('when there is 1 recorded evaluation', () => {
-      const recordedEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-      };
+      const publishedAt = new Date();
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecordedHelper(
-            recordedEvaluation.groupId,
-            recordedEvaluation.articleId,
-            recordedEvaluation.evaluationLocator,
-            recordedEvaluation.authors,
-            recordedEvaluation.publishedAt,
-          ),
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            groupId: group.id,
+            publishedAt,
+          },
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -152,7 +164,7 @@ describe('get-activity-for-group', () => {
       it('returns the publishedAt date of the evaluation as the latestActivityAt', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
-            latestActivityAt: O.some(recordedEvaluation.publishedAt),
+            latestActivityAt: O.some(publishedAt),
           }),
         ));
       });
@@ -160,34 +172,21 @@ describe('get-activity-for-group', () => {
 
     describe('when there are 2 evaluations', () => {
       describe('and the most recently recorded is the most recently published evaluation', () => {
-        const recordedEvaluation1 = {
-          ...arbitraryRecordedEvaluation(),
-          groupId: group.id,
-          publishedAt: new Date('1970'),
-        };
         const mostRecentPublishedAt = new Date('2000');
-        const recordedEvaluation2 = {
-          ...arbitraryRecordedEvaluation(),
-          groupId: group.id,
-          publishedAt: mostRecentPublishedAt,
-        };
         const readModel = pipe(
           [
             groupJoinedEvent,
-            evaluationRecordedHelper(
-              recordedEvaluation1.groupId,
-              recordedEvaluation1.articleId,
-              recordedEvaluation1.evaluationLocator,
-              recordedEvaluation1.authors,
-              recordedEvaluation1.publishedAt,
-            ),
-            evaluationRecordedHelper(
-              recordedEvaluation2.groupId,
-              recordedEvaluation2.articleId,
-              recordedEvaluation2.evaluationLocator,
-              recordedEvaluation2.authors,
-              recordedEvaluation2.publishedAt,
-            ),
+            {
+              ...arbitraryEvaluationPublicationRecordedEvent(),
+              groupId: group.id,
+              publishedAt: new Date('1970'),
+            },
+            {
+              ...arbitraryEvaluationPublicationRecordedEvent(),
+              groupId: group.id,
+              publishedAt: mostRecentPublishedAt,
+            },
+
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -212,33 +211,20 @@ describe('get-activity-for-group', () => {
 
       describe('and the most recently recorded is not the most recently published evaluation', () => {
         const mostRecentPublishedAt = new Date('2000');
-        const recordedEvaluation1 = {
-          ...arbitraryRecordedEvaluation(),
-          groupId: group.id,
-          publishedAt: mostRecentPublishedAt,
-        };
-        const recordedEvaluation2 = {
-          ...arbitraryRecordedEvaluation(),
-          groupId: group.id,
-          publishedAt: new Date('1970'),
-        };
         const readModel = pipe(
           [
             groupJoinedEvent,
-            evaluationRecordedHelper(
-              recordedEvaluation1.groupId,
-              recordedEvaluation1.articleId,
-              recordedEvaluation1.evaluationLocator,
-              recordedEvaluation1.authors,
-              recordedEvaluation1.publishedAt,
-            ),
-            evaluationRecordedHelper(
-              recordedEvaluation2.groupId,
-              recordedEvaluation2.articleId,
-              recordedEvaluation2.evaluationLocator,
-              recordedEvaluation2.authors,
-              recordedEvaluation2.publishedAt,
-            ),
+            {
+              ...arbitraryEvaluationPublicationRecordedEvent(),
+              groupId: group.id,
+              publishedAt: mostRecentPublishedAt,
+            },
+            {
+              ...arbitraryEvaluationPublicationRecordedEvent(),
+              groupId: group.id,
+              publishedAt: new Date('1970'),
+            },
+
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -262,22 +248,17 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when one evaluation has been recorded and erased', () => {
-      const recordedEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-      };
+    describe('when one evaluation has been recorded, and erased by Sciety', () => {
+      const evaluationLocator = arbitraryEvaluationLocator();
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecordedHelper(
-            recordedEvaluation.groupId,
-            recordedEvaluation.articleId,
-            recordedEvaluation.evaluationLocator,
-            recordedEvaluation.authors,
-            recordedEvaluation.publishedAt,
-          ),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: recordedEvaluation.evaluationLocator }),
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            groupId: group.id,
+            evaluationLocator,
+          },
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -300,35 +281,23 @@ describe('get-activity-for-group', () => {
       });
     });
 
-    describe('when two evaluations have been recorded and one erased', () => {
-      const goodEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-        publishedAt: new Date('1999'),
-      };
-      const badEvaluation = {
-        ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
-        publishedAt: new Date('2023'),
-      };
+    describe('when two evaluations have been recorded, and one erased by Sciety', () => {
+      const remainingEvaluationPublishedAt = new Date('1999');
+      const evaluationToErase = arbitraryEvaluationLocator();
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecordedHelper(
-            goodEvaluation.groupId,
-            goodEvaluation.articleId,
-            goodEvaluation.evaluationLocator,
-            goodEvaluation.authors,
-            goodEvaluation.publishedAt,
-          ),
-          evaluationRecordedHelper(
-            badEvaluation.groupId,
-            badEvaluation.articleId,
-            badEvaluation.evaluationLocator,
-            badEvaluation.authors,
-            badEvaluation.publishedAt,
-          ),
-          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: badEvaluation.evaluationLocator }),
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            groupId: group.id,
+            publishedAt: remainingEvaluationPublishedAt,
+          },
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            groupId: group.id,
+            evaluationLocator: evaluationToErase,
+          },
+          constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationToErase }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -345,35 +314,73 @@ describe('get-activity-for-group', () => {
       it('returns the latestActivityAt for the remaining evaluation', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
-            latestActivityAt: O.some(goodEvaluation.publishedAt),
+            latestActivityAt: O.some(remainingEvaluationPublishedAt),
           }),
         ));
       });
     });
 
-    describe('when an evaluation has been recorded twice', () => {
-      const evaluation = {
-        ...arbitraryRecordedEvaluation(),
+    describe('when two evaluations have been recorded, and one evaluation removal has been recorded', () => {
+      const remainingEvaluationPublishedAt = new Date('1999');
+      const evaluationLocator = arbitraryEvaluationLocator();
+      const readModel = pipe(
+        [
+          groupJoinedEvent,
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            groupId: group.id,
+            publishedAt: remainingEvaluationPublishedAt,
+          },
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            groupId: group.id,
+            evaluationLocator,
+          },
+          {
+            ...arbitraryEvaluationRemovalRecordedEvent(),
+            evaluationLocator,
+          },
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = getActivityForGroup(readModel)(group.id);
+
+      it('returns an evaluationCount of 1', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            evaluationCount: 1,
+          }),
+        ));
+      });
+
+      it('returns the latestActivityAt for the remaining evaluation', () => {
+        expect(result).toStrictEqual(O.some(
+          expect.objectContaining({
+            latestActivityAt: O.some(remainingEvaluationPublishedAt),
+          }),
+        ));
+      });
+    });
+
+    describe('when an evaluation\'s publication has been recorded twice', () => {
+      const eventProperties = {
         groupId: group.id,
-        publishedAt: new Date('1999'),
+        articleId: arbitraryArticleId(),
+        evaluationLocator: arbitraryEvaluationLocator(),
+        authors: [arbitraryString()],
+        publishedAt: arbitraryDate(),
       };
       const readModel = pipe(
         [
           groupJoinedEvent,
-          evaluationRecordedHelper(
-            evaluation.groupId,
-            evaluation.articleId,
-            evaluation.evaluationLocator,
-            evaluation.authors,
-            evaluation.publishedAt,
-          ),
-          evaluationRecordedHelper(
-            evaluation.groupId,
-            evaluation.articleId,
-            evaluation.evaluationLocator,
-            evaluation.authors,
-            arbitraryDate(),
-          ),
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            ...eventProperties,
+          },
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            ...eventProperties,
+          },
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -390,7 +397,7 @@ describe('get-activity-for-group', () => {
       it('returns the latestActivityAt of the first recorded', () => {
         expect(result).toStrictEqual(O.some(
           expect.objectContaining({
-            latestActivityAt: O.some(evaluation.publishedAt),
+            latestActivityAt: O.some(eventProperties.publishedAt),
           }),
         ));
       });

@@ -17,7 +17,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/construct-curation-statements';
 import { Dependencies } from './dependencies';
 
-export type Params = {
+type Params = {
   doi: Doi,
   user: O.Option<{ id: UserId }>,
 };

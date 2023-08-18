@@ -7,8 +7,10 @@ services:
       context: .
     environment:
       ALLOW_SITE_CRAWLERS: "true"
+      APP_CACHE: "redis"
       APP_ORIGIN: "http://localhost:8080"
       APP_SECRET: "secret"
+      CACHE_HOST: "sciety_cache"
       USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
@@ -34,6 +36,8 @@ services:
     ports:
       - '8080:80'
     restart: unless-stopped
+    depends_on:
+      - cache
 
   db:
     container_name: sciety_db
@@ -51,3 +55,7 @@ services:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s
     restart: unless-stopped
+
+  cache:
+    container_name: sciety_cache
+    image: redis

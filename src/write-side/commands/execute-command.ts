@@ -7,9 +7,10 @@ import { validateInputShape } from './validate-input-shape';
 import { ErrorMessage } from '../../types/error-message';
 import { CommandResult } from '../../types/command-result';
 import { DependenciesForCommands } from '../dependencies-for-commands';
+import { Logger } from '../../shared-ports';
 
 export const executeCommand = <C extends GenericCommand>(
-  dependencies: DependenciesForCommands,
+  dependencies: DependenciesForCommands & { logger: Logger },
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
 ) => (input: unknown): TE.TaskEither<ErrorMessage, CommandResult> => pipe(
@@ -22,4 +23,15 @@ export const executeCommand = <C extends GenericCommand>(
       TE.chainEitherKW(resourceAction(command)),
       TE.chainTaskK(dependencies.commitEvents),
     )),
+    TE.mapLeft((errorMessage) => {
+      dependencies.logger(
+        'error',
+        'Command execution failed',
+        {
+          errorMessage,
+          commandInput: input,
+        },
+      );
+      return errorMessage;
+    }),
   );

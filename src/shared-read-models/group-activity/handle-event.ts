@@ -18,7 +18,7 @@ const groupJoined = (readmodel: ReadModel, event: EventOfType<'GroupJoined'>) =>
   readmodel.set(event.groupId, new Map());
 };
 
-const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'EvaluationRecorded'>) => {
+const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
   const groupActivity = readmodel.get(event.groupId);
   if (groupActivity === undefined) {
     return;
@@ -31,23 +31,34 @@ const evaluationRecorded = (readmodel: ReadModel, event: EventOfType<'Evaluation
   }
 };
 
-const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyRecordedEvaluationErased'>) => {
+const excludeEvaluation = (readmodel: ReadModel, evaluationLocator: EvaluationLocator) => {
   readmodel.forEach((groupActivity) => {
-    if (groupActivity.has(event.evaluationLocator)) {
-      groupActivity.delete(event.evaluationLocator);
+    if (groupActivity.has(evaluationLocator)) {
+      groupActivity.delete(evaluationLocator);
     }
   });
+};
+
+const evaluationErased = (readmodel: ReadModel, event: EventOfType<'IncorrectlyRecordedEvaluationErased'>) => {
+  excludeEvaluation(readmodel, event.evaluationLocator);
+};
+
+const evaluationRemoved = (readmodel: ReadModel, event: EventOfType<'EvaluationRemovalRecorded'>) => {
+  excludeEvaluation(readmodel, event.evaluationLocator);
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('GroupJoined')(event)) {
     groupJoined(readmodel, event);
   }
-  if (isEventOfType('EvaluationRecorded')(event)) {
+  if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     evaluationRecorded(readmodel, event);
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     evaluationErased(readmodel, event);
+  }
+  if (isEventOfType('EvaluationRemovalRecorded')(event)) {
+    evaluationRemoved(readmodel, event);
   }
   return readmodel;
 };

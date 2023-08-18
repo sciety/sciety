@@ -1,15 +1,14 @@
-import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { renderArticlesList } from './render-articles-list';
-import { paginationControls } from '../../../shared-components/pagination-controls';
+import { PaginationControlsViewModel, renderPaginationControls } from '../../../shared-components/pagination';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ContentWithPaginationViewModel } from '../view-model';
 
-const addPaginationControls = (nextPageNumber: O.Option<number>, basePath: string) => flow(
+const addPaginationControls = (paginationControlsViewModel: PaginationControlsViewModel) => flow(
   (pageOfContent: HtmlFragment) => `
     <div>
       ${pageOfContent}
-      ${paginationControls(`${basePath}?`, nextPageNumber)}
+      ${renderPaginationControls(paginationControlsViewModel)}
     </div>
   `,
   toHtmlFragment,
@@ -29,7 +28,7 @@ export const renderContentWithPagination = (
 ): HtmlFragment => pipe(
   viewModel.articles,
   renderArticlesList,
-  addPaginationControls(viewModel.pagination.nextPage, basePath),
+  addPaginationControls(viewModel),
   (content) => `
       ${renderPageNumbers(viewModel.pagination.pageNumber, viewModel.pagination.numberOfOriginalItems, viewModel.pagination.numberOfPages)}
       ${content}

@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { PageOfItems } from '../../shared-components/paginate';
+import { PageOfItems, PaginationControlsViewModel } from '../../shared-components/pagination';
 import { ListId } from '../../types/list-id';
 import { ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel } from '../../shared-components/article-card';
 
@@ -12,7 +12,7 @@ ArticleErrorCardViewModel,
 ArticleCardWithControlsAndAnnotationViewModel
 >>;
 
-export type ContentWithPaginationViewModel = {
+export type ContentWithPaginationViewModel = PaginationControlsViewModel & {
   articles: ArticlesViewModel,
   pagination: PageOfItems<unknown>,
 };
