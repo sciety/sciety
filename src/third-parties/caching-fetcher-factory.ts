@@ -106,30 +106,23 @@ const redisCacheOptions = (client: ReturnType<typeof createClient>, maxAgeInMill
 export type CachingFetcherOptions = {
   tag: 'local-memory',
   maxAgeInMilliseconds: number,
-  // responseBodyCachePredicate?: ShouldCacheResponseBody,
+  responseBodyCachePredicate?: ResponseBodyCachePredicate,
 } | {
   tag: 'redis',
   maxAgeInMilliseconds: number,
   client: ReturnType<typeof createClient>,
-  // responseBodyCachePredicate?: ShouldCacheResponseBody,
+  responseBodyCachePredicate?: ResponseBodyCachePredicate,
 };
 
-type CachingFetcherFactory = (
+export const createCachingFetcher = (
   logger: Logger,
   cachingFetcherOptions: CachingFetcherOptions,
-  responseBodyCachePredicate?: ResponseBodyCachePredicate,
-) => QueryExternalService;
-
-export const createCachingFetcher: CachingFetcherFactory = (
-  logger,
-  cachingFetcherOptions,
-  responseBodyCachePredicate,
-) => {
+): QueryExternalService => {
   const cacheOptions = cachingFetcherOptions.tag === 'redis'
     ? redisCacheOptions(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds)
     : inMemoryCacheOptions(cachingFetcherOptions.maxAgeInMilliseconds);
   const cachedAxios = createCacheAdapter(cacheOptions);
-  const get = cachedGetter(cachedAxios, logger, responseBodyCachePredicate ?? (() => true));
+  const get = cachedGetter(cachedAxios, logger, cachingFetcherOptions.responseBodyCachePredicate ?? (() => true));
   return (
     notFoundLogLevel: LevelName = 'warn',
     headers = {},

@@ -53,8 +53,10 @@ export const instantiate = (
   );
   const queryCrossrefService = createCachingFetcher(
     logger,
-    cachingFetcherOptions,
-    crossrefResponseBodyCachePredicate(logger),
+    {
+      ...cachingFetcherOptions,
+      responseBodyCachePredicate: crossrefResponseBodyCachePredicate(logger),
+    },
   );
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
