@@ -40,7 +40,7 @@ const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragmen
   ? `
       ${renderArticlesSearchResultsHeader(viewModel)}
       ${c}
-      ${renderNextLinkOrCallsToAction({ ...viewModel, pageNumber: viewModel.pageNumber + 1 }, buildBasePath(viewModel))}
+      ${renderNextLinkOrCallsToAction(viewModel.pageNumber + 1, buildBasePath(viewModel))}
     `
   : c);
 
