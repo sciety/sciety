@@ -121,10 +121,16 @@ export const createCachingFetcher = (
   let cacheOptions: CacheOptions;
   switch (cachingFetcherOptions.tag) {
     case 'redis':
-      cacheOptions = redisCacheOptions(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds);
+      cacheOptions = {
+        headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
+        storage: redisStorage(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds),
+      };
       break;
     case 'local-memory':
-      cacheOptions = inMemoryCacheOptions(cachingFetcherOptions.maxAgeInMilliseconds);
+      cacheOptions = {
+        headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
+        storage: buildMemoryStorage(),
+      };
       break;
   }
   const cachedAxios = createCacheAdapter(cacheOptions);
