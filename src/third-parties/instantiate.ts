@@ -19,7 +19,7 @@ import { QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
-import { shouldCacheCrossrefResponseBody } from './should-cache-crossref-response-body';
+import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
@@ -54,7 +54,7 @@ export const instantiate = (
   const queryCrossrefService = createCachingFetcher(
     logger,
     cachingFetcherOptions,
-    shouldCacheCrossrefResponseBody(logger),
+    crossrefResponseBodyCachePredicate(logger),
   );
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),

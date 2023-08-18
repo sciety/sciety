@@ -41,7 +41,7 @@ const logResponseTime = (logger: Logger, startTime: Date, response: CacheAxiosRe
 const cachedGetter = (
   cachedAxios: AxiosCacheInstance,
   logger: Logger,
-  shouldCacheResponseBody: ShouldCacheResponseBody,
+  responseBodyCachePredicate: ResponseBodyCachePredicate,
 ) => async <U>(url: string, headers: Record<string, string> = {}): Promise<U> => {
   const startTime = new Date();
   const cacheLoggingPayload = { url };
@@ -53,7 +53,7 @@ const cachedGetter = (
       cache: {
         cachePredicate: {
           statusCheck: shouldCacheAccordingToStatusCode,
-          responseMatch: ({ data }) => shouldCacheResponseBody(data, url),
+          responseMatch: ({ data }) => responseBodyCachePredicate(data, url),
         },
       },
     });
@@ -71,7 +71,7 @@ const cachedGetter = (
   }
 };
 
-export type ShouldCacheResponseBody = (responseBody: unknown, url: string) => boolean;
+export type ResponseBodyCachePredicate = (responseBody: unknown, url: string) => boolean;
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
@@ -117,19 +117,19 @@ export type CachingFetcherOptions = {
 type CachingFetcherFactory = (
   logger: Logger,
   cachingFetcherOptions: CachingFetcherOptions,
-  shouldCacheResponseBody?: ShouldCacheResponseBody,
+  responseBodyCachePredicate?: ResponseBodyCachePredicate,
 ) => QueryExternalService;
 
 export const createCachingFetcher: CachingFetcherFactory = (
   logger,
   cachingFetcherOptions,
-  shouldCacheResponseBody,
+  responseBodyCachePredicate,
 ) => {
   const cacheOptions = cachingFetcherOptions.tag === 'redis'
     ? redisCacheOptions(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds)
     : inMemoryCacheOptions(cachingFetcherOptions.maxAgeInMilliseconds);
   const cachedAxios = createCacheAdapter(cacheOptions);
-  const get = cachedGetter(cachedAxios, logger, shouldCacheResponseBody ?? (() => true));
+  const get = cachedGetter(cachedAxios, logger, responseBodyCachePredicate ?? (() => true));
   return (
     notFoundLogLevel: LevelName = 'warn',
     headers = {},
