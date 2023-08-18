@@ -31,13 +31,9 @@ const findVersionsForArticleDoiFromSupportedServers = (
   return TO.none;
 };
 
-export const instantiate = (
-  logger: Logger,
-  crossrefApiBearerToken: O.Option<string>,
-  redisClient: ReturnType<typeof createClient> | undefined,
-): ExternalQueries => {
+const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
-  const cachingFetcherOptions: CachingFetcherOptions = redisClient !== undefined
+  return redisClient !== undefined
     ? {
       tag: 'redis',
       maxAgeInMilliseconds,
@@ -47,17 +43,25 @@ export const instantiate = (
       tag: 'local-memory',
       maxAgeInMilliseconds,
     };
+};
+
+export const instantiate = (
+  logger: Logger,
+  crossrefApiBearerToken: O.Option<string>,
+  redisClient: ReturnType<typeof createClient> | undefined,
+): ExternalQueries => {
   const queryExternalService = createCachingFetcher(
     logger,
-    cachingFetcherOptions,
+    cachingFetcherOptions(redisClient),
   );
   const queryCrossrefService = createCachingFetcher(
     logger,
     {
-      ...cachingFetcherOptions,
+      ...cachingFetcherOptions(redisClient),
       responseBodyCachePredicate: crossrefResponseBodyCachePredicate(logger),
     },
   );
+
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
