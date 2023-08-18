@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { buildBasePath } from '../../../../src/html-pages/search-results-page/render-as-html/wrap-with-pagination-information';
 
-describe('render-next-link-or-calls-to-action', () => {
+describe('buildBasePath', () => {
   it('encodes the cursor for http', () => {
     const nextLinkAnchor = buildBasePath({
       pageNumber: 2,
