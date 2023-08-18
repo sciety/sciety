@@ -100,6 +100,10 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         redisClient.on('ready', () => {
           partialAdapters.logger('info', 'Redis client is ready');
         });
+        redisClient.on('error', (error) => {
+          partialAdapters.logger('error', 'Redis client has encountered an error', { error });
+          throw error;
+        });
         await redisClient.connect();
       }
 
