@@ -2,6 +2,7 @@
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
+import { evaluatedArticlesListIdsByGroupId } from '../ids-of-evaluated-articles-lists/handle-event';
 
 export type ArticleState = {
   listedIn: Array<ListId>,
@@ -10,12 +11,12 @@ export type ArticleState = {
 
 export type ReadModel = {
   articles: Map<string, ArticleState>,
-  groups: Map<GroupId, ListId>,
+  groups: Map<string, ListId>,
 };
 
 export const initialState = (): ReadModel => ({
   articles: new Map(),
-  groups: new Map(),
+  groups: new Map(Object.entries(evaluatedArticlesListIdsByGroupId)),
 });
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {

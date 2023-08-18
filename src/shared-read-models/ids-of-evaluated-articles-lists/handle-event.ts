@@ -5,7 +5,7 @@ import * as Lid from '../../types/list-id';
 
 export type ReadModel = Record<Gid.GroupId, Lid.ListId>;
 
-const evaluatedArticlesListIdsByGroupId = {
+export const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2')]: Lid.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
   [Gid.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8')]: Lid.fromValidatedString('dc83aa3b-1691-4356-b697-4257d31a27dc'),
   [Gid.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a')]: Lid.fromValidatedString('4654fd6e-cb00-458f-967b-348b41804927'),
