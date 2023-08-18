@@ -18,16 +18,8 @@ spec:
     spec:
       containers:
         - name: redis
-          image: "redis"
-          # resources:
-          #   requests:
-          #     cpu: 1.0
+          image: "redis:7.2.0-alpine@sha256:5ddcd6e1a1ee0d3a2e9fe1abb427be987ab082e4756bdc513cd4293dacf05d27"
           ports:
             - name: redis
               containerPort: 6379
               protocol: TCP
-          # readinessProbe:
-          #   httpGet:
-          #     path: /ping
-          #     port: http
-          #   timeoutSeconds: 5
