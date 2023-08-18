@@ -3,7 +3,7 @@ import { DomainEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 
-type ArticleState = {
+export type ArticleState = {
   listedIn: ReadonlyArray<ListId>,
   evaluatedBy: ReadonlyArray<GroupId>,
 };

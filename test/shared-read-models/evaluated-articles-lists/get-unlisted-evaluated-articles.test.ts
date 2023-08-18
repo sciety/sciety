@@ -52,7 +52,7 @@ describe('get-unlisted-evaluated-articles', () => {
           getUnlistedEvaluatedArticles,
         )();
 
-        expect(queryOutcome.includes(articleId)).toStrictEqual(expectedOutcome);
+        expect(queryOutcome.includes(articleId.value)).toStrictEqual(expectedOutcome);
       });
     });
   });
