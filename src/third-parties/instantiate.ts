@@ -1,9 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
-import {
-  buildMemoryStorage, buildStorage, CacheOptions, HeaderInterpreter, StorageValue,
-} from 'axios-cache-interceptor';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -34,45 +31,12 @@ const findVersionsForArticleDoiFromSupportedServers = (
   return TO.none;
 };
 
-const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
-
-const inMemoryCacheOptions = (maxAgeInMilliseconds: number): CacheOptions => ({
-  headerInterpreter: headerInterpreterWithFixedMaxAge(maxAgeInMilliseconds),
-  storage: buildMemoryStorage(),
-});
-
-const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
-  async find(key) {
-    return client
-      .get(`axios-cache-${key}`)
-      .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
-  },
-
-  async set(key, value) {
-    await client.set(`axios-cache-${key}`, JSON.stringify(value), {
-      PX: maxAgeInMilliseconds,
-    });
-  },
-
-  async remove(key) {
-    await client.del(`axios-cache-${key}`);
-  },
-});
-
-const redisCacheOptions = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number): CacheOptions => ({
-  headerInterpreter: headerInterpreterWithFixedMaxAge(maxAgeInMilliseconds),
-  storage: redisStorage(client, maxAgeInMilliseconds),
-});
-
 export const instantiate = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
   redisClient: ReturnType<typeof createClient> | undefined,
 ): ExternalQueries => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
-  const cacheOptions = redisClient !== undefined
-    ? redisCacheOptions(redisClient, maxAgeInMilliseconds)
-    : inMemoryCacheOptions(maxAgeInMilliseconds);
   const cachingFetcherOptions: CachingFetcherOptions = redisClient !== undefined
     ? {
       tag: 'redis',
@@ -86,12 +50,10 @@ export const instantiate = (
   const queryExternalService = createCachingFetcher(
     logger,
     cachingFetcherOptions,
-    cacheOptions,
   );
   const queryCrossrefService = createCachingFetcher(
     logger,
     cachingFetcherOptions,
-    cacheOptions,
     shouldCacheCrossrefResponseBody(logger),
   );
   return {

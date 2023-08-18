@@ -117,14 +117,12 @@ export type CachingFetcherOptions = {
 type CachingFetcherFactory = (
   logger: Logger,
   cachingFetcherOptions: CachingFetcherOptions,
-  cacheOptions: CacheOptions,
   shouldCacheResponseBody?: ShouldCacheResponseBody,
 ) => QueryExternalService;
 
 export const createCachingFetcher: CachingFetcherFactory = (
   logger,
   cachingFetcherOptions,
-  _cacheOptions,
   shouldCacheResponseBody,
 ) => {
   const cacheOptions = cachingFetcherOptions.tag === 'redis'
