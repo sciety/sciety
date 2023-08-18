@@ -65,7 +65,7 @@
     "backstopjs": "^6.2.2",
     "browserslist": "^4.21.10",
     "dependency-cruiser": "13.1.3",
-    "eslint": "^8.46.0",
+    "eslint": "^8.47.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-import-resolver-typescript": "^3.6.0",
