@@ -157,10 +157,6 @@ describe('construct-view-model', () => {
       it('the total number of pages is displayed', () => {
         expect(result.numberOfPages).toBe(2);
       });
-
-      it.skip('the link to the next page of results is provided', () => {
-        expect(result.nextPageHref).toStrictEqual(O.some('fill me in later'));
-      });
     });
 
     describe('but there are no results', () => {
