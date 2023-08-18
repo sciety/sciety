@@ -4,7 +4,14 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
 import {
-  setupCache, AxiosCacheInstance, CacheAxiosResponse, CacheOptions,
+  setupCache,
+  AxiosCacheInstance,
+  CacheAxiosResponse,
+  CacheOptions,
+  HeaderInterpreter,
+  StorageValue,
+  buildMemoryStorage,
+  buildStorage,
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
@@ -66,6 +73,36 @@ const cachedGetter = (
 
 export type ShouldCacheResponseBody = (responseBody: unknown, url: string) => boolean;
 
+const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
+
+const inMemoryCacheOptions = (maxAgeInMilliseconds: number): CacheOptions => ({
+  headerInterpreter: headerInterpreterWithFixedMaxAge(maxAgeInMilliseconds),
+  storage: buildMemoryStorage(),
+});
+
+const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
+  async find(key) {
+    return client
+      .get(`axios-cache-${key}`)
+      .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
+  },
+
+  async set(key, value) {
+    await client.set(`axios-cache-${key}`, JSON.stringify(value), {
+      PX: maxAgeInMilliseconds,
+    });
+  },
+
+  async remove(key) {
+    await client.del(`axios-cache-${key}`);
+  },
+});
+
+const redisCacheOptions = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number): CacheOptions => ({
+  headerInterpreter: headerInterpreterWithFixedMaxAge(maxAgeInMilliseconds),
+  storage: redisStorage(client, maxAgeInMilliseconds),
+});
+
 export type CachingFetcherOptions = {
   tag: 'local-memory',
   maxAgeInMilliseconds: number,
@@ -87,9 +124,12 @@ type CachingFetcherFactory = (
 export const createCachingFetcher: CachingFetcherFactory = (
   logger,
   cachingFetcherOptions,
-  cacheOptions,
+  _cacheOptions,
   shouldCacheResponseBody,
 ) => {
+  const cacheOptions = cachingFetcherOptions.tag === 'redis'
+    ? redisCacheOptions(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds)
+    : inMemoryCacheOptions(cachingFetcherOptions.maxAgeInMilliseconds);
   const cachedAxios = createCacheAdapter(cacheOptions);
   const get = cachedGetter(cachedAxios, logger, shouldCacheResponseBody ?? (() => true));
   return (
