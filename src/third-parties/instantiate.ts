@@ -21,7 +21,7 @@ import { Doi } from '../types/doi';
 import { QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
-import { createCachingFetcher } from './caching-fetcher-factory';
+import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
 import { shouldCacheCrossrefResponseBody } from './should-cache-crossref-response-body';
 
 const findVersionsForArticleDoiFromSupportedServers = (
@@ -73,8 +73,27 @@ export const instantiate = (
   const cacheOptions = redisClient !== undefined
     ? redisCacheOptions(redisClient, maxAgeInMilliseconds)
     : inMemoryCacheOptions(maxAgeInMilliseconds);
-  const queryExternalService = createCachingFetcher(logger, cacheOptions);
-  const queryCrossrefService = createCachingFetcher(logger, cacheOptions, shouldCacheCrossrefResponseBody(logger));
+  const cachingFetcherOptions: CachingFetcherOptions = redisClient !== undefined
+    ? {
+      tag: 'redis',
+      maxAgeInMilliseconds,
+      client: redisClient,
+    }
+    : {
+      tag: 'local-memory',
+      maxAgeInMilliseconds,
+    };
+  const queryExternalService = createCachingFetcher(
+    logger,
+    cachingFetcherOptions,
+    cacheOptions,
+  );
+  const queryCrossrefService = createCachingFetcher(
+    logger,
+    cachingFetcherOptions,
+    cacheOptions,
+    shouldCacheCrossrefResponseBody(logger),
+  );
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),

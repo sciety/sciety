@@ -6,6 +6,7 @@ import Axios from 'axios';
 import {
   setupCache, AxiosCacheInstance, CacheAxiosResponse, CacheOptions,
 } from 'axios-cache-interceptor';
+import { createClient } from 'redis';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
@@ -65,14 +66,27 @@ const cachedGetter = (
 
 export type ShouldCacheResponseBody = (responseBody: unknown, url: string) => boolean;
 
+export type CachingFetcherOptions = {
+  tag: 'local-memory',
+  maxAgeInMilliseconds: number,
+  // responseBodyCachePredicate?: ShouldCacheResponseBody,
+} | {
+  tag: 'redis',
+  maxAgeInMilliseconds: number,
+  client: ReturnType<typeof createClient>,
+  // responseBodyCachePredicate?: ShouldCacheResponseBody,
+};
+
 type CachingFetcherFactory = (
   logger: Logger,
+  cachingFetcherOptions: CachingFetcherOptions,
   cacheOptions: CacheOptions,
   shouldCacheResponseBody?: ShouldCacheResponseBody,
 ) => QueryExternalService;
 
 export const createCachingFetcher: CachingFetcherFactory = (
   logger,
+  cachingFetcherOptions,
   cacheOptions,
   shouldCacheResponseBody,
 ) => {
