@@ -94,6 +94,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       };
       let redisClient: ReturnType<typeof createClient> | undefined;
       if (process.env.APP_CACHE === 'redis') {
+        partialAdapters.logger('info', 'Using redis as application cache', { cacheHost: process.env.CACHE_HOST });
         redisClient = createClient({
           url: `redis://${process.env.CACHE_HOST ?? ''}`,
         });
@@ -105,6 +106,8 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           throw error;
         });
         await redisClient.connect();
+      } else {
+        partialAdapters.logger('info', 'Using local memory as application cache');
       }
 
       const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken, redisClient);
