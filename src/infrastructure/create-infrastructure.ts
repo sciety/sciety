@@ -97,6 +97,9 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         redisClient = createClient({
           url: `redis://${process.env.CACHE_HOST ?? ''}`,
         });
+        redisClient.on('ready', () => {
+          partialAdapters.logger('info', 'Redis client is ready');
+        });
         await redisClient.connect();
       }
 
