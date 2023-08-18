@@ -3,8 +3,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { getUnlistedEvaluatedArticles } from '../../../src/shared-read-models/evaluated-articles-lists/get-unlisted-evaluated-articles';
 import { handleEvent, initialState } from '../../../src/shared-read-models/evaluated-articles-lists/handle-event';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
-import { arbitraryEvaluationRecordedEvent } from '../../types/evaluation-recorded-event.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 
@@ -15,7 +15,7 @@ describe('get-unlisted-evaluated-articles', () => {
     const listId = arbitraryListId();
     const listIdentified = constructEvent('EvaluatedArticlesListSpecified')({ listId, groupId });
     const articleEvaluated = {
-      ...arbitraryEvaluationRecordedEvent(),
+      ...arbitraryEvaluationPublicationRecordedEvent(),
       articleId,
       groupId,
     };
