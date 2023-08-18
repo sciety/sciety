@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent } from '../../domain-events';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 
 export type ArticleState = {
-  listedIn: ReadonlyArray<ListId>,
-  evaluatedBy: ReadonlyArray<GroupId>,
+  listedIn: Array<ListId>,
+  evaluatedBy: Array<GroupId>,
 };
 
 export type ReadModel = {
@@ -18,5 +18,18 @@ export const initialState = (): ReadModel => ({
   groups: new Map(),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => readmodel;
+export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
+  if (isEventOfType('ArticleAddedToList')(event)) {
+    const articles = readmodel.articles;
+    const a = articles.get(event.articleId.value);
+    if (a !== undefined) {
+      a.listedIn.push(event.listId);
+    } else {
+      readmodel.articles.set(event.articleId.value, {
+        listedIn: [event.listId],
+        evaluatedBy: [],
+      });
+    }
+  }
+  return readmodel;
+};

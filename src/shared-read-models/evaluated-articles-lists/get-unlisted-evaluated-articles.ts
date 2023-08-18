@@ -5,7 +5,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { ArticleState, ReadModel } from './handle-event';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const hasBeenEvaluated = (a: ArticleState): boolean => a.evaluatedBy.length > 0;
+
 const articleIsNotListed = (groups: ReadModel['groups']) => (a: ArticleState): boolean => pipe(
   a.evaluatedBy,
   RA.filter((groupId) => groups.has(groupId)),
@@ -18,6 +19,7 @@ const articleIsNotListed = (groups: ReadModel['groups']) => (a: ArticleState): b
 
 export const getUnlistedEvaluatedArticles = (readmodel: ReadModel) => (): ReadonlyArray<string> => pipe(
   readmodel.articles,
+  RM.filter(hasBeenEvaluated),
   RM.filter(articleIsNotListed(readmodel.groups)),
   RM.keys(S.Ord),
 );
