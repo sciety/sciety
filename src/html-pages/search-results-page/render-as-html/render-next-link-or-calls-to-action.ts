@@ -15,13 +15,14 @@ const buildBasePath = (query: SearchParameters['query'], category: SearchParamet
 
 export const renderNextLinkOrCallsToAction = ({
   category, query, evaluatedOnly, nextCursor, pageNumber,
-}: SearchParameters): HtmlFragment => pipe(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+}: SearchParameters, basePath: O.Option<string>): HtmlFragment => pipe(
   nextCursor,
   O.map(buildBasePath(query, category, evaluatedOnly)),
   O.fold(
     () => '<footer class="search-results__footer">Not what you were hoping for? Try our <a href="https://blog.sciety.org/sciety-search/">advanced search tips</a>, or <a href="/contact-us">leave us a suggestion</a>.</footer>',
-    (basePath) => renderPaginationControls({
-      nextPageHref: O.some(`${basePath}page=${pageNumber}`),
+    (base) => renderPaginationControls({
+      nextPageHref: O.some(`${base}page=${pageNumber}`),
     }),
   ),
   toHtmlFragment,

@@ -31,11 +31,16 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationParam
   </header>
 `;
 
+export const buildBasePath = (viewModel: PaginationViewModel): O.Option<string> => pipe(
+  viewModel.nextCursor,
+  O.map((cursor) => `/search?query=${encodeURIComponent(viewModel.query)}&category=${viewModel.category}&cursor=${encodeURIComponent(cursor)}${viewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
+);
+
 const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => (viewModel.category === 'articles'
   ? `
       ${renderArticlesSearchResultsHeader(viewModel)}
       ${c}
-      ${renderNextLinkOrCallsToAction({ ...viewModel, pageNumber: viewModel.pageNumber + 1 })}
+      ${renderNextLinkOrCallsToAction({ ...viewModel, pageNumber: viewModel.pageNumber + 1 }, buildBasePath(viewModel))}
     `
   : c);
 
