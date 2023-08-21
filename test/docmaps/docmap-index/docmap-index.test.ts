@@ -55,7 +55,7 @@ describe('docmap-index', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(group);
-        await framework.commandHelpers.recordEvaluation(evaluation);
+        await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
         response = await docmapIndex(defaultAdapters)({})();
       });
 
@@ -77,7 +77,7 @@ describe('docmap-index', () => {
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       response = await docmapIndex(defaultAdapters)({})();
     });
 

@@ -46,7 +46,7 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await pipe(
         { articleId, groupId: group.id },
         generateDocmapViewModel(defaultAdapters),
@@ -80,8 +80,8 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(firstEvaluation);
-      await framework.commandHelpers.recordEvaluation(secondEvaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(firstEvaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(secondEvaluation);
       result = await pipe(
         generateDocmapViewModel(defaultAdapters)({ articleId, groupId: group.id }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
@@ -121,7 +121,7 @@ describe('generate-docmap-view-model', () => {
         fetchReview: shouldNotBeCalled,
       };
       await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
@@ -155,7 +155,7 @@ describe('generate-docmap-view-model', () => {
         fetchReview: () => TE.right({ url: sourceUrl }),
       };
       await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
@@ -193,12 +193,12 @@ describe('generate-docmap-view-model', () => {
       };
       await framework.commandHelpers.createGroup(group);
       await framework.commandHelpers.createGroup(otherGroup);
-      await framework.commandHelpers.recordEvaluation({
+      await framework.commandHelpers.deprecatedRecordEvaluation({
         ...arbitraryRecordedEvaluation(),
         groupId: otherGroup.id,
         articleId,
       });
-      await framework.commandHelpers.recordEvaluation(evaluationByThisGroup);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluationByThisGroup);
 
       const result = await pipe(
         {
@@ -228,7 +228,7 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup({ ...group, id: indexedGroupId });
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await pipe(
         {
           articleId,

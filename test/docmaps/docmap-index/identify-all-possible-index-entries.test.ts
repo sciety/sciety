@@ -48,8 +48,8 @@ describe('identify-all-possible-index-entries', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(supportedGroups[0]);
-      await framework.commandHelpers.recordEvaluation(evaluation1);
-      await framework.commandHelpers.recordEvaluation(evaluation2);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
@@ -101,9 +101,9 @@ describe('identify-all-possible-index-entries', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(supportedGroups[0]);
-      await framework.commandHelpers.recordEvaluation(evaluation1);
-      await framework.commandHelpers.recordEvaluation(evaluation2);
-      await framework.commandHelpers.recordEvaluation(evaluation3);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation3);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
@@ -129,7 +129,7 @@ describe('identify-all-possible-index-entries', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
@@ -149,7 +149,7 @@ describe('identify-all-possible-index-entries', () => {
     let result: ReturnType<typeof identifyAllPossibleIndexEntries>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
       );

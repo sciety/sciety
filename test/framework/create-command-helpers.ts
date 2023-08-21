@@ -20,7 +20,7 @@ export type CommandHelpers = {
   createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
-  recordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
+  deprecatedRecordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   updateGroupDetails: (groupId: GroupId, largeLogoPath: string) => Promise<unknown>,
@@ -78,7 +78,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     { userId, groupId },
     invoke(flow(commandHandlers.followGroup, TE.rightTask), 'followGroup'),
   ),
-  recordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
+  deprecatedRecordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
     {
       groupId: evaluation.groupId,
       publishedAt: evaluation.publishedAt,
