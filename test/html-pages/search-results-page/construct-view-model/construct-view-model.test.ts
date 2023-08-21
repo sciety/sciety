@@ -86,6 +86,10 @@ describe('construct-view-model', () => {
       it('the state of the filter for evaluated articles is displayed', () => {
         expect(result.evaluatedOnly).toBe(false);
       });
+
+      it('no related groups are displayed', () => {
+        expect(result.relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
+      });
     });
 
     describe('and there is more than one page of results, with no evaluated articles', () => {
