@@ -39,6 +39,7 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
     RA.rights,
     (itemsToDisplay) => ({
       ...state,
+      relatedGroups: false,
       itemsToDisplay,
       nextPageHref: pipe(
         {

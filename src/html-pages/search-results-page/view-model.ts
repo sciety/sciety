@@ -14,4 +14,5 @@ export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
   availableGroupMatches: number,
   category: string,
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
+  relatedGroups: boolean,
 };
