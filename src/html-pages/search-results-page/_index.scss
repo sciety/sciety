@@ -47,3 +47,8 @@ $_common-space-beneath: 0.5rem;
 .search-results__footer {
   @include layout.page-content-horizontal-margins();
 }
+
+.related-groups {
+  grid-column: 9/-1;
+  grid-row: 3;
+}

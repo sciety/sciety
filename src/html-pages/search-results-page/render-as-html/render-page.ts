@@ -13,6 +13,8 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     <section class="search-results">
       ${renderSearchResults(viewModel)}
     </section>
+    <section class="related-groups">
+    </section>
   `,
   toHtmlFragment,
 );
