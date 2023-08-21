@@ -28,7 +28,9 @@ describe('construct-view-model', () => {
     const evaluatedOnly = O.none;
 
     describe('and there is a page of results, containing evaluated articles', () => {
-      it.todo('displays the evaluating groups as being related');
+      it.skip('displays the evaluating groups as being related', () => {
+        expect(result.relatedGroups.tag).toBe('some-related-groups');
+      });
     });
 
     describe('and there is only one page of results, with no evaluated articles', () => {
