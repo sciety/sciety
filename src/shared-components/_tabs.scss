@@ -11,6 +11,8 @@
   border-bottom: 2px solid transparent;
 }
 
+$_breakpoint-not-narrow: 740px;
+
 @mixin tab() {
   @include typography.button();
   line-height: math.div(20px, 14px);
@@ -20,6 +22,14 @@
   text-transform: uppercase;
   font-weight: bold;
   padding: functions.px-to-rem(13px) 0.8rem functions.px-to-rem(15px);
+
+  @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
+    display: block;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: functions.px-to-rem(14px);
+    text-align: unset;
+  }
 }
 
 @mixin tab-link() {
@@ -32,10 +42,26 @@
       color: settings.$colour-accent;
     }
   }
+
+  @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
+    &:link,
+    &:visited {
+      color: settings.$colour-accent;
+
+      &:hover,
+      &:active {
+        color: settings.$colour-accent-hover;
+      }
+    }
+  }
 }
 
 @mixin tab-heading {
   border-bottom: 2px solid settings.$colour-accent;
+
+  @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
+    border-width: 0;
+  }
 }
 
 .tab-list {
