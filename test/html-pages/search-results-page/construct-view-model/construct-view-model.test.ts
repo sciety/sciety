@@ -9,6 +9,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
+import { Doi } from '../../../../src/types/doi';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -27,6 +28,31 @@ describe('construct-view-model', () => {
     const page = O.none;
     const evaluatedOnly = O.none;
 
+    const getArticleCategoryViewModelContaining = async (articleId: Doi) => pipe(
+      {
+        query, category, cursor, page, evaluatedOnly,
+      },
+      constructViewModel(
+        {
+          ...defaultDependencies,
+          searchForArticles: () => () => TE.right({
+            items: [
+              {
+                articleId,
+                server: arbitraryArticleServer(),
+                title: arbitrarySanitisedHtmlFragment(),
+                authors: O.none,
+              },
+            ],
+            total: 1,
+            nextCursor: O.none,
+          }),
+        },
+        1,
+      ),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
+
     describe('and there is a page of results, containing evaluated articles', () => {
       it.skip('displays the evaluating groups as being related', () => {
         expect(result.relatedGroups.tag).toBe('some-related-groups');
@@ -37,30 +63,7 @@ describe('construct-view-model', () => {
       const articleId = arbitraryDoi();
 
       beforeEach(async () => {
-        result = await pipe(
-          {
-            query, category, cursor, page, evaluatedOnly,
-          },
-          constructViewModel(
-            {
-              ...defaultDependencies,
-              searchForArticles: () => () => TE.right({
-                items: [
-                  {
-                    articleId,
-                    server: arbitraryArticleServer(),
-                    title: arbitrarySanitisedHtmlFragment(),
-                    authors: O.none,
-                  },
-                ],
-                total: 1,
-                nextCursor: O.none,
-              }),
-            },
-            1,
-          ),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await getArticleCategoryViewModelContaining(articleId);
       });
 
       it('all article cards are included in the view model', () => {
