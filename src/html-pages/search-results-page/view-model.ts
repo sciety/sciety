@@ -7,6 +7,18 @@ export type ItemViewModel = ArticleCardViewModel | GroupCardViewModel;
 
 export const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleCardViewModel => 'articleId' in viewModel;
 
+type NoGroupsEvaluatedTheFoundArticles = {
+  tag: 'no-groups-evaluated-the-found-articles',
+};
+
+type SomeRelatedGroups = {
+  tag: 'some-related-groups',
+  groups: ReadonlyArray<{
+    path: string,
+    name: string,
+  }>,
+};
+
 export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
@@ -14,8 +26,5 @@ export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
   availableGroupMatches: number,
   category: string,
   itemsToDisplay: ReadonlyArray<ItemViewModel>,
-  relatedGroups: ReadonlyArray<{
-    path: string,
-    name: string,
-  }>,
+  relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };

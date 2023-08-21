@@ -3,9 +3,9 @@ import { pipe } from 'fp-ts/function';
 import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
-export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): HtmlFragment => (relatedGroups.length !== 0
+export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): HtmlFragment => (relatedGroups.tag === 'some-related-groups'
   ? pipe(
-    relatedGroups,
+    relatedGroups.groups,
     RA.map((relatedGroup) => `
       <li role="listitem">
         <a href="${relatedGroup.path}">${relatedGroup.name}</a>

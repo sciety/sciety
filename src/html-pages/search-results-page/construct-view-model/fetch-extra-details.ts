@@ -39,7 +39,7 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
     RA.rights,
     (itemsToDisplay) => ({
       ...state,
-      relatedGroups: [],
+      relatedGroups: { tag: 'no-groups-evaluated-the-found-articles' as const },
       itemsToDisplay,
       nextPageHref: pipe(
         {
