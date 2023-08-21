@@ -13,9 +13,9 @@ type NoGroupsEvaluatedTheFoundArticles = {
 
 type SomeRelatedGroups = {
   tag: 'some-related-groups',
-  groups: ReadonlyArray<{
-    path: string,
-    name: string,
+  items: ReadonlyArray<{
+    groupPageHref: string,
+    groupName: string,
   }>,
 };
 

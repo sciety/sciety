@@ -5,10 +5,10 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): HtmlFragment => (relatedGroups.tag === 'some-related-groups'
   ? pipe(
-    relatedGroups.groups,
+    relatedGroups.items,
     RA.map((relatedGroup) => `
       <li role="listitem">
-        <a href="${relatedGroup.path}">${relatedGroup.name}</a>
+        <a href="${relatedGroup.groupPageHref}">${relatedGroup.groupName}</a>
       </li>
     `),
     (items) => items.join(''),
