@@ -14,7 +14,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     ? `
         <section class="related-groups">
           <h2>Related groups</h2>
-          <ul role="list">
+          <ul role="list" class="related-groups__list">
             <li role="listitem">
               <a href="/groups/elife">eLife</a>
             </li>
