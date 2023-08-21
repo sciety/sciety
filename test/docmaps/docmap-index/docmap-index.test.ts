@@ -4,8 +4,8 @@ import * as GID from '../../../src/types/group-id';
 import { arbitraryGroup } from '../../types/group.helper';
 import { Ports } from '../../../src/docmaps/docmap-index/docmap-index';
 import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { dummyLogger } from '../../dummy-logger';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
@@ -47,15 +47,15 @@ describe('docmap-index', () => {
         ...arbitraryGroup(),
         id: ncrcGroupId,
       };
-      const evaluation = {
-        ...arbitraryRecordedEvaluation(),
+      const recordEvaluationPublicationCommand = {
+        ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: group.id,
       };
       let response: { body: DocmapIndexBody, status: StatusCodes };
 
       beforeEach(async () => {
         await framework.commandHelpers.createGroup(group);
-        await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         response = await docmapIndex(defaultAdapters)({})();
       });
 
@@ -71,13 +71,13 @@ describe('docmap-index', () => {
 
   describe('when any docmap fails to generate', () => {
     let response: { body: DocmapIndexBody, status: StatusCodes };
-    const evaluation = {
-      ...arbitraryRecordedEvaluation(),
+    const recordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: ncrcGroupId,
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
       response = await docmapIndex(defaultAdapters)({})();
     });
 
