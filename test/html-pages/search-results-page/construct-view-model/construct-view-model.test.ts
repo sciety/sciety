@@ -25,9 +25,9 @@ describe('construct-view-model', () => {
     const category = O.some('articles' as const);
     const cursor = O.none;
     const page = O.none;
-    const evaluatedOnly = O.some(arbitraryString());
+    const evaluatedOnly = O.none;
 
-    describe('and there is only one page of results', () => {
+    describe('and there is only one page of results, with no evaluated articles', () => {
       const articleId = arbitraryDoi();
 
       beforeEach(async () => {
@@ -84,11 +84,11 @@ describe('construct-view-model', () => {
       });
 
       it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(true);
+        expect(result.evaluatedOnly).toBe(false);
       });
     });
 
-    describe('and there is more than one page of results', () => {
+    describe('and there is more than one page of results, with no evaluated articles', () => {
       const articleId = arbitraryDoi();
       const itemsPerPage = 1;
       const cursorValue = arbitraryWord();
@@ -147,7 +147,7 @@ describe('construct-view-model', () => {
       });
 
       it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(true);
+        expect(result.evaluatedOnly).toBe(false);
       });
 
       it('the current page number is displayed', () => {
@@ -193,7 +193,7 @@ describe('construct-view-model', () => {
       });
 
       it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(true);
+        expect(result.evaluatedOnly).toBe(false);
       });
     });
   });
