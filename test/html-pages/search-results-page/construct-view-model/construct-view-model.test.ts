@@ -10,6 +10,7 @@ import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { Doi } from '../../../../src/types/doi';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -54,6 +55,16 @@ describe('construct-view-model', () => {
     )();
 
     describe('and there is a page of results, containing evaluated articles', () => {
+      const articleId = arbitraryDoi();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId,
+        });
+        result = await getArticleCategoryViewModelContaining(articleId);
+      });
+
       it.skip('displays the evaluating groups as being related', () => {
         expect(result.relatedGroups.tag).toBe('some-related-groups');
       });
