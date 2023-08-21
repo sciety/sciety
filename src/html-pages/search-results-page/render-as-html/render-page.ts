@@ -13,6 +13,9 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     ${viewModel.relatedGroups
     ? `
         <section class="related-groups">
+          <h2>Related groups</h2>
+          <a href="/groups/elife">eLife</a>
+          <a href="/groups/biophysics-colab">Biophysics Colab</a>
         </section>
       `
     : ''}
