@@ -19,7 +19,7 @@ const activeTab = (tab: Tab) => `<li class="tab tab--active" role="presentation"
   </li>`;
 
 const inactiveTab = (tab: Tab) => `<li class="tab" role="presentation">
-    <a role="tab" href="${tab.url}">${tab.label}</a>
+    <a class="tab__link" role="tab" href="${tab.url}">${tab.label}</a>
   </li>`;
 
 const renderTabList = ({ tabList, activeTabIndex }: TabProps) => pipe(

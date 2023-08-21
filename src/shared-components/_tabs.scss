@@ -33,32 +33,29 @@
     text-align: center;
     padding: functions.px-to-rem(13px) 0.8rem functions.px-to-rem(15px);
   }
+}
 
-  > a {
+.tab__link {
+  &:link,
+  &:visited {
+    color: settings.$colour-accent;
+
+    &:hover,
+    &:active {
+      color: settings.$colour-accent-hover;
+    }
+  }
+
+  @include breakpoints.not-narrow() {
     &:link,
     &:visited {
-      color: settings.$colour-accent;
+      color: settings.$colour-text-primary;
 
       &:hover,
       &:active {
         color: settings.$colour-accent-hover;
       }
     }
-
-    @include breakpoints.not-narrow() {
-      &:link,
-      &:visited {
-        color: settings.$colour-text-primary;
-
-        /* stylelint-disable max-nesting-depth */
-        &:hover,
-        &:active {
-          color: settings.$colour-accent-hover;
-        }
-        /* stylelint-enable max-nesting-depth */
-      }
-    }
-
   }
 }
 
