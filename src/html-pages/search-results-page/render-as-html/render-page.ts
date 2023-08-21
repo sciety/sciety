@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { renderSearchResults } from './render-search-results';
 import { renderSearchForm } from '../../../shared-components/search-form';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -11,19 +12,23 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     </header>
     ${renderSearchForm(viewModel.query, viewModel.evaluatedOnly)}
     ${viewModel.relatedGroups.length !== 0
-    ? `
+    ? pipe(
+      viewModel.relatedGroups,
+      RA.map((relatedGroup) => `
+        <li role="listitem">
+          <a href="${relatedGroup.path}">${relatedGroup.name}</a>
+        </li>
+      `),
+      (items) => items.join(''),
+      (listContent) => `
         <section class="related-groups">
           <h2>Related groups</h2>
           <ul role="list" class="related-groups__list">
-            <li role="listitem">
-              <a href="${viewModel.relatedGroups[0].path}">${viewModel.relatedGroups[0].name}</a>
-            </li>
-            <li role="listitem">
-              <a href="${viewModel.relatedGroups[1].path}">${viewModel.relatedGroups[1].name}</a>
-            </li>
+          ${listContent}
           </ul>
         </section>
-      `
+      `,
+    )
     : ''}
     <section class="search-results">
       ${renderSearchResults(viewModel)}
