@@ -10,10 +10,10 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm(viewModel.query, viewModel.evaluatedOnly)}
+    <section class="related-groups">
+    </section>
     <section class="search-results">
       ${renderSearchResults(viewModel)}
-    </section>
-    <section class="related-groups">
     </section>
   `,
   toHtmlFragment,
