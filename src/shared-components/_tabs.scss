@@ -62,9 +62,7 @@ $_breakpoint-not-narrow: 740px;
 }
 
 .tab--active {
-  border-bottom: 2px solid settings.$colour-accent;
-
-  @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
-    border-width: 0;
+  @include breakpoints.not-narrow() {
+    border-bottom: 2px solid settings.$colour-accent;
   }
 }
