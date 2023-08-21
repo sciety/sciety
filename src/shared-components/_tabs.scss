@@ -13,24 +13,27 @@ $_breakpoint-not-narrow: 740px;
   @include list.basics();
   border-bottom: 2px solid transparent;
   margin-bottom: 0;
+  padding-left: 1.25rem;
+
+  @include breakpoints.not-narrow() {
+    padding-left: 0;
+  }
 }
 
 .tab {
   @include typography.button();
+
+  padding: 0;
+  margin-bottom: functions.px-to-rem(14px);
   line-height: math.div(20px, 14px);
-  display: inline-block;
-  margin-bottom: -2px;
-  text-align: center;
   text-transform: uppercase;
   font-weight: bold;
-  padding: functions.px-to-rem(13px) 0.8rem functions.px-to-rem(15px);
 
-  @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
-    display: block;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: functions.px-to-rem(14px);
-    text-align: unset;
+  @include breakpoints.not-narrow() {
+    display: inline-block;
+    margin-bottom: -2px;
+    text-align: center;
+    padding: functions.px-to-rem(13px) 0.8rem functions.px-to-rem(15px);
   }
 
   > a {
