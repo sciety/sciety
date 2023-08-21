@@ -3,15 +3,10 @@ import { Tab } from '../../../shared-components/tabs';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { TabsViewModel } from './tabs-view-model';
 
-const groupFeedTab = (viewmodel: TabsViewModel) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return [{
-      label: toHtmlFragment('Group feed'),
-      url: `/groups/${viewmodel.groupSlug}/feed`,
-    }];
-  }
-  return [];
-};
+const groupFeedTab = (viewmodel: TabsViewModel) => [{
+  label: toHtmlFragment('Group feed'),
+  url: `/groups/${viewmodel.groupSlug}/feed`,
+}];
 
 export const tabList = (viewmodel: TabsViewModel): RNEA.ReadonlyNonEmptyArray<Tab> => [
   {
