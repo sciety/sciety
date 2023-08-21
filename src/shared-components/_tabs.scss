@@ -7,13 +7,15 @@
 @use '../sass/list';
 @use '../sass/card';
 
-@mixin container() {
-  border-bottom: 2px solid transparent;
-}
-
 $_breakpoint-not-narrow: 740px;
 
-@mixin tab() {
+.tab-list {
+  @include list.basics();
+  border-bottom: 2px solid transparent;
+  margin-bottom: 0;
+}
+
+.tab {
   @include typography.button();
   line-height: math.div(20px, 14px);
   display: inline-block;
@@ -30,54 +32,39 @@ $_breakpoint-not-narrow: 740px;
     margin-bottom: functions.px-to-rem(14px);
     text-align: unset;
   }
-}
 
-@mixin tab-link() {
-  &:link,
-  &:visited {
-    color: settings.$colour-text-primary;
-
-    &:hover,
-    &:active {
-      color: settings.$colour-accent;
-    }
-  }
-
-  @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
+  > a {
     &:link,
     &:visited {
-      color: settings.$colour-accent;
+      color: settings.$colour-text-primary;
 
       &:hover,
       &:active {
-        color: settings.$colour-accent-hover;
+        color: settings.$colour-accent;
+      }
+    }
+
+    @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
+      &:link,
+      &:visited {
+        color: settings.$colour-accent;
+
+        /* stylelint-disable max-nesting-depth */
+        &:hover,
+        &:active {
+          color: settings.$colour-accent-hover;
+        }
+        /* stylelint-enable max-nesting-depth */
+
       }
     }
   }
 }
 
-@mixin tab-heading {
+.tab--active {
   border-bottom: 2px solid settings.$colour-accent;
 
   @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
     border-width: 0;
   }
-}
-
-.tab-list {
-  @include container();
-  @include list.basics();
-  margin-bottom: 0;
-}
-
-.tab {
-  @include tab();
-
-  > a {
-    @include tab-link();
-  }
-}
-
-.tab--active {
-  @include tab-heading();
 }
