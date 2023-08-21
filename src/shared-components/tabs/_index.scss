@@ -1,11 +1,11 @@
 @use 'sass:math';
-@use '../sass/settings';
-@use '../sass/functions';
+@use '../../sass/settings';
+@use '../../sass/functions';
 
-@use '../sass/breakpoints';
-@use '../sass/typography';
-@use '../sass/list';
-@use '../sass/card';
+@use '../../sass/breakpoints';
+@use '../../sass/typography';
+@use '../../sass/list';
+@use '../../sass/card';
 
 .tab-list {
   @include list.basics();
