@@ -7,8 +7,6 @@
 @use '../sass/list';
 @use '../sass/card';
 
-$_breakpoint-not-narrow: 740px;
-
 .tab-list {
   @include list.basics();
   border-bottom: 2px solid transparent;
@@ -39,18 +37,18 @@ $_breakpoint-not-narrow: 740px;
   > a {
     &:link,
     &:visited {
-      color: settings.$colour-text-primary;
+      color: settings.$colour-accent;
 
       &:hover,
       &:active {
-        color: settings.$colour-accent;
+        color: settings.$colour-accent-hover;
       }
     }
 
-    @media screen and (max-width: functions.px-to-em($_breakpoint-not-narrow)) {
+    @include breakpoints.not-narrow() {
       &:link,
       &:visited {
-        color: settings.$colour-accent;
+        color: settings.$colour-text-primary;
 
         /* stylelint-disable max-nesting-depth */
         &:hover,
@@ -58,9 +56,9 @@ $_breakpoint-not-narrow: 740px;
           color: settings.$colour-accent-hover;
         }
         /* stylelint-enable max-nesting-depth */
-
       }
     }
+
   }
 }
 
