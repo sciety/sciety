@@ -27,6 +27,10 @@ describe('construct-view-model', () => {
     const page = O.none;
     const evaluatedOnly = O.none;
 
+    describe('and there is a page of results, containing evaluated articles', () => {
+      it.todo('displays the evaluating groups as being related');
+    });
+
     describe('and there is only one page of results, with no evaluated articles', () => {
       const articleId = arbitraryDoi();
 
