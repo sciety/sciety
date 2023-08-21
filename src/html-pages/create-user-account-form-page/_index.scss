@@ -7,7 +7,7 @@
 
 .error-summary {
   border: settings.$border-width solid settings.$colour-alert;
-  padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  padding: functions.px-to-rem(settings.$default-form-gutter);
   margin-bottom: functions.px-to-rem(48px);
 
   p {
@@ -43,13 +43,13 @@
 .create-user-account-form__label {
   display: block;
   font-weight: bold;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
 }
 
 .create-user-account-form__input {
   display: block;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-vertical-spacing);
-  padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
+  padding: functions.px-to-rem(settings.$default-form-gutter);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
   width: 100%;
@@ -57,17 +57,17 @@
 
 .create-user-account-form__submit {
   @include button.primary();
-  margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
+  margin-right: functions.px-to-rem(settings.$default-form-element-separation);
 }
 
 .create-user-account-form__handle {
   display: flex;
   align-items: center;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-vertical-spacing);
+  margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
 
   .create-user-account-form__handle-url {
     background-color: settings.$colour-form-addon-background;
-    padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
+    padding: functions.px-to-rem(settings.$default-form-gutter);
     border-top: settings.$border-width solid settings.$colour-furniture;
     border-left: settings.$border-width solid settings.$colour-furniture;
     border-bottom: settings.$border-width solid settings.$colour-furniture;

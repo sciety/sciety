@@ -40,8 +40,8 @@ $_left-links-width-not-narrow: 280px;
 }
 
 .site-header__left_links {
-  padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
-  padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+  padding-left: functions.px-to-rem(settings.$default-gutter);
+  padding-right: functions.px-to-rem(settings.$default-gutter);
   border-bottom: 1px solid var(--colour-site-header-border);
   flex-grow: 1;
 
