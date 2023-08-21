@@ -13,6 +13,7 @@ import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
+import { RecordEvaluationPublicationCommand } from '../../src/write-side/commands';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
@@ -21,6 +22,7 @@ export type CommandHelpers = {
   createUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   deprecatedRecordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
+  recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   updateGroupDetails: (groupId: GroupId, largeLogoPath: string) => Promise<unknown>,
@@ -93,6 +95,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
   ),
+  recordEvaluationPublication: invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
       articleId,
