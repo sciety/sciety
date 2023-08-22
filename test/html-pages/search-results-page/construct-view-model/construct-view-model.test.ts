@@ -104,7 +104,7 @@ describe('construct-view-model', () => {
       });
 
       it('all article cards are included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual(
+        expect(result.itemCardsToDisplay).toStrictEqual(
           [
             expect.objectContaining({
               articleId,
@@ -171,7 +171,7 @@ describe('construct-view-model', () => {
       });
 
       it('no more than itemsPerPage article cards are included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual(
+        expect(result.itemCardsToDisplay).toStrictEqual(
           [
             expect.objectContaining({
               articleId,
@@ -231,7 +231,7 @@ describe('construct-view-model', () => {
       });
 
       it('there are no article cards included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual([]);
+        expect(result.itemCardsToDisplay).toStrictEqual([]);
       });
 
       it('the number of articles found is displayed', () => {
@@ -270,7 +270,7 @@ describe('construct-view-model', () => {
       });
 
       it('all group cards are included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual(
+        expect(result.itemCardsToDisplay).toStrictEqual(
           [
             expect.objectContaining({
               name: group.name,
@@ -310,7 +310,7 @@ describe('construct-view-model', () => {
       });
 
       it('there are no group cards included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual([]);
+        expect(result.itemCardsToDisplay).toStrictEqual([]);
       });
 
       it('the number of groups found is displayed', () => {

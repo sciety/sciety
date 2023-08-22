@@ -13,7 +13,7 @@ const renderSearchResult = (viewModel: ItemCardViewModel) => (
 );
 
 export const renderSearchResults = (viewModel: ViewModel): HtmlFragment => pipe(
-  viewModel.itemsToDisplay,
+  viewModel.itemCardsToDisplay,
   RA.map(renderSearchResult),
   renderSearchResultsList,
   wrapWithPaginationInformation(viewModel),

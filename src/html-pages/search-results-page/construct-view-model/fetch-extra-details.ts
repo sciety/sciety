@@ -58,7 +58,7 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
     (itemCardViewModels) => ({
       ...state,
       relatedGroups: constructRelatedGroups(),
-      itemsToDisplay: itemCardViewModels,
+      itemCardsToDisplay: itemCardViewModels,
       nextPageHref: pipe(
         {
           basePath: '',

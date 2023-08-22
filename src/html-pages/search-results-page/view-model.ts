@@ -25,6 +25,6 @@ export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
   availableArticleMatches: number,
   availableGroupMatches: number,
   category: string,
-  itemsToDisplay: ReadonlyArray<ItemCardViewModel>,
+  itemCardsToDisplay: ReadonlyArray<ItemCardViewModel>,
   relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };
