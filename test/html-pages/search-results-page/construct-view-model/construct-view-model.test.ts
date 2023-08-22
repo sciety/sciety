@@ -58,7 +58,7 @@ describe('construct-view-model', () => {
 
     describe('and there is a page of results, containing evaluated articles', () => {
       const articleId = arbitraryDoi();
-      let relatedGroups: SomeRelatedGroups;
+      let items: SomeRelatedGroups['items'];
       const command = arbitraryAddGroupCommand();
 
       const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
@@ -76,15 +76,16 @@ describe('construct-view-model', () => {
           articleId,
           groupId: command.groupId,
         });
-        relatedGroups = pipe(
+        items = pipe(
           await getArticleCategoryViewModelContaining(articleId),
           (viewModel) => viewModel.relatedGroups,
           ensure(isSomeRelatedGroups),
+          (someRelatedGroups) => someRelatedGroups.items,
         );
       });
 
       it.skip('displays the evaluating groups as being related', () => {
-        expect(relatedGroups.items[0].groupName).toBe(command.name);
+        expect(items[0].groupName).toBe(command.name);
       });
     });
 
