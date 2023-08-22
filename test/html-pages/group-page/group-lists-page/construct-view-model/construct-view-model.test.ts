@@ -26,7 +26,7 @@ describe('construct-view-model', () => {
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
       await framework.commandHelpers.createList(middleList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), middleList.id);

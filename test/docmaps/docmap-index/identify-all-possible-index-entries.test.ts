@@ -47,7 +47,7 @@ describe('identify-all-possible-index-entries', () => {
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(supportedGroups[0]);
+      await framework.commandHelpers.deprecatedCreateGroup(supportedGroups[0]);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       result = pipe(
@@ -100,7 +100,7 @@ describe('identify-all-possible-index-entries', () => {
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(supportedGroups[0]);
+      await framework.commandHelpers.deprecatedCreateGroup(supportedGroups[0]);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation3);
@@ -128,7 +128,7 @@ describe('identify-all-possible-index-entries', () => {
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),

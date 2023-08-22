@@ -38,7 +38,7 @@ describe('construct-curation-statements', () => {
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
@@ -63,7 +63,7 @@ describe('construct-curation-statements', () => {
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await constructCurationStatements({
         ...framework.dependenciesForViews,
@@ -97,7 +97,7 @@ describe('construct-curation-statements', () => {
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       result = await constructCurationStatements({

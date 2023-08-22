@@ -24,8 +24,8 @@ describe('find-groups', () => {
     let result: ReadonlyArray<GroupId>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group1);
-      await framework.commandHelpers.createGroup(group2);
+      await framework.commandHelpers.deprecatedCreateGroup(group1);
+      await framework.commandHelpers.deprecatedCreateGroup(group2);
       result = await findGroups(dependencies, group1.name)();
     });
 

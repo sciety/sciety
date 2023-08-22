@@ -42,7 +42,7 @@ describe('sciety-feed-page', () => {
   });
 
   it('renders a single user followed editorial community as a card', async () => {
-    await framework.commandHelpers.createGroup(group);
+    await framework.commandHelpers.deprecatedCreateGroup(group);
     await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
     const renderedPage = await renderPage(20);
 
@@ -50,7 +50,7 @@ describe('sciety-feed-page', () => {
   });
 
   it('renders at most a page of cards at a time', async () => {
-    await framework.commandHelpers.createGroup(group);
+    await framework.commandHelpers.deprecatedCreateGroup(group);
     await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
     await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
     await framework.commandHelpers.followGroup(arbitraryUserId(), group.id);
@@ -65,7 +65,7 @@ describe('sciety-feed-page', () => {
     const articleId = arbitraryArticleId();
     const list = arbitraryList();
     const userId = arbitraryUserId();
-    await framework.commandHelpers.createGroup(group);
+    await framework.commandHelpers.deprecatedCreateGroup(group);
     await framework.commandHelpers.createList(list);
     await framework.commandHelpers.addArticleToList(articleId, list.id);
     await framework.commandHelpers.removeArticleFromList(articleId, list.id);

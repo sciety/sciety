@@ -45,7 +45,7 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await pipe(
         { articleId, groupId: group.id },
@@ -79,7 +79,7 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(firstEvaluation);
       await framework.commandHelpers.deprecatedRecordEvaluation(secondEvaluation);
       result = await pipe(
@@ -120,7 +120,7 @@ describe('generate-docmap-view-model', () => {
         ...defaultAdapters,
         fetchReview: shouldNotBeCalled,
       };
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
@@ -154,7 +154,7 @@ describe('generate-docmap-view-model', () => {
         ...defaultAdapters,
         fetchReview: () => TE.right({ url: sourceUrl }),
       };
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
@@ -191,8 +191,8 @@ describe('generate-docmap-view-model', () => {
         articleId,
         groupId: indexedGroupId,
       };
-      await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.createGroup(otherGroup);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(otherGroup);
       await framework.commandHelpers.deprecatedRecordEvaluation({
         ...arbitraryRecordedEvaluation(),
         groupId: otherGroup.id,
@@ -227,7 +227,7 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup({ ...group, id: indexedGroupId });
+      await framework.commandHelpers.deprecatedCreateGroup({ ...group, id: indexedGroupId });
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await pipe(
         {

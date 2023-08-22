@@ -17,7 +17,7 @@ import { RecordEvaluationPublicationCommand } from '../../src/write-side/command
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
-  createGroup: (group: Group) => Promise<unknown>,
+  deprecatedCreateGroup: (group: Group) => Promise<unknown>,
   createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
@@ -46,7 +46,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   ),
-  createGroup: async (group) => pipe(
+  deprecatedCreateGroup: async (group) => pipe(
     {
       groupId: group.id,
       name: group.name,

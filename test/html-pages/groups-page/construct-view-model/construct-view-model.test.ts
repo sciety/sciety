@@ -22,13 +22,13 @@ describe('construct-view-model', () => {
     const leastRecentlyActiveGroup = arbitraryGroup();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(mostRecentlyActiveGroup);
+      await framework.commandHelpers.deprecatedCreateGroup(mostRecentlyActiveGroup);
       await framework.commandHelpers.deprecatedRecordEvaluation({
         ...arbitraryRecordedEvaluation(),
         groupId: mostRecentlyActiveGroup.id,
         publishedAt: new Date('2020'),
       });
-      await framework.commandHelpers.createGroup(leastRecentlyActiveGroup);
+      await framework.commandHelpers.deprecatedCreateGroup(leastRecentlyActiveGroup);
       await framework.commandHelpers.deprecatedRecordEvaluation({
         ...arbitraryRecordedEvaluation(),
         groupId: leastRecentlyActiveGroup.id,

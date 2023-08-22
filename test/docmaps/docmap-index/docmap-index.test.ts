@@ -54,7 +54,7 @@ describe('docmap-index', () => {
       let response: { body: DocmapIndexBody, status: StatusCodes };
 
       beforeEach(async () => {
-        await framework.commandHelpers.createGroup(group);
+        await framework.commandHelpers.deprecatedCreateGroup(group);
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         response = await docmapIndex(defaultAdapters)({})();
       });

@@ -62,7 +62,7 @@ describe('construct-view-model', () => {
       const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
       beforeEach(async () => {
-        await framework.commandHelpers.createGroup(evaluatingGroup);
+        await framework.commandHelpers.deprecatedCreateGroup(evaluatingGroup);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           articleId,
@@ -244,7 +244,7 @@ describe('construct-view-model', () => {
       const query = group.name;
 
       beforeEach(async () => {
-        await framework.commandHelpers.createGroup(group);
+        await framework.commandHelpers.deprecatedCreateGroup(group);
         result = await pipe(
           {
             query, category, cursor, page, evaluatedOnly,

@@ -49,7 +49,7 @@ describe('my-feed acceptance', () => {
       const group = arbitraryGroup();
 
       beforeEach(async () => {
-        await framework.commandHelpers.createGroup(group);
+        await framework.commandHelpers.deprecatedCreateGroup(group);
         await framework.commandHelpers.followGroup(userDetails.id, group.id);
       });
 
@@ -73,7 +73,7 @@ describe('my-feed acceptance', () => {
       const group = arbitraryGroup();
 
       beforeEach(async () => {
-        await framework.commandHelpers.createGroup(group);
+        await framework.commandHelpers.deprecatedCreateGroup(group);
       });
 
       it('displays content in the form of article cards', async () => {

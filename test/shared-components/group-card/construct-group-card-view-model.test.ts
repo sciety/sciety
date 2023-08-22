@@ -28,7 +28,7 @@ describe('construct-group-card-view-model', () => {
     const group = arbitraryGroup();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
     });
 
     it('contains the group id', () => {
