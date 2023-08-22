@@ -11,7 +11,7 @@ type NoGroupsEvaluatedTheFoundArticles = {
   tag: 'no-groups-evaluated-the-found-articles',
 };
 
-type SomeRelatedGroups = {
+export type SomeRelatedGroups = {
   tag: 'some-related-groups',
   items: ReadonlyArray<{
     groupPageHref: string,

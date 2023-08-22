@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
-import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
+import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -56,7 +56,9 @@ describe('construct-view-model', () => {
 
     describe('and there is a page of results, containing evaluated articles', () => {
       const articleId = arbitraryDoi();
-      let relatedGroups: ViewModel['relatedGroups'];
+      let relatedGroups: SomeRelatedGroups;
+
+      const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({
@@ -66,6 +68,8 @@ describe('construct-view-model', () => {
         relatedGroups = pipe(
           await getArticleCategoryViewModelContaining(articleId),
           (viewModel) => viewModel.relatedGroups,
+          O.fromPredicate(isSomeRelatedGroups),
+          O.getOrElseW(shouldNotBeCalled),
         );
       });
 
