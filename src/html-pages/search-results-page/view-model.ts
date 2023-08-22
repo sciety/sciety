@@ -3,9 +3,9 @@ import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { GroupCardViewModel } from '../../shared-components/group-card';
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
 
-export type ItemViewModel = ArticleCardViewModel | GroupCardViewModel;
+export type ItemCardViewModel = ArticleCardViewModel | GroupCardViewModel;
 
-export const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleCardViewModel => 'articleId' in viewModel;
+export const isArticleViewModel = (viewModel: ItemCardViewModel): viewModel is ArticleCardViewModel => 'articleId' in viewModel;
 
 type NoGroupsEvaluatedTheFoundArticles = {
   tag: 'no-groups-evaluated-the-found-articles',
@@ -25,6 +25,6 @@ export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
   availableArticleMatches: number,
   availableGroupMatches: number,
   category: string,
-  itemsToDisplay: ReadonlyArray<ItemViewModel>,
+  itemsToDisplay: ReadonlyArray<ItemCardViewModel>,
   relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };

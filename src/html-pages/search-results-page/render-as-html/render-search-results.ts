@@ -6,9 +6,9 @@ import { renderSearchResultsList } from './render-search-results-list';
 import { renderArticleCard } from '../../../shared-components/article-card';
 import { renderGroupCard } from '../../../shared-components/group-card';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { isArticleViewModel, ItemViewModel, ViewModel } from '../view-model';
+import { isArticleViewModel, ItemCardViewModel, ViewModel } from '../view-model';
 
-const renderSearchResult = (viewModel: ItemViewModel) => (
+const renderSearchResult = (viewModel: ItemCardViewModel) => (
   isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
 );
 

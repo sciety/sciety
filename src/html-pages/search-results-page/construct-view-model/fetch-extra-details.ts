@@ -6,7 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { constructGroupCardViewModel } from '../../../shared-components/group-card';
 import * as DE from '../../../types/data-error';
-import { ItemViewModel, ViewModel } from '../view-model';
+import { ItemCardViewModel, ViewModel } from '../view-model';
 import {
   ArticleErrorCardViewModel,
   constructArticleCardViewModel,
@@ -14,9 +14,9 @@ import {
 import { Dependencies } from './dependencies';
 import { Group } from '../../../types/group';
 
-const fetchItemDetails = (
+const constructItemCardViewModel = (
   dependencies: Dependencies,
-) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError | ArticleErrorCardViewModel, ItemViewModel> => (
+) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError | ArticleErrorCardViewModel, ItemCardViewModel> => (
   isArticleItem(item)
     ? pipe(item.articleId, constructArticleCardViewModel(dependencies))
     : pipe(item.id, constructGroupCardViewModel(dependencies), T.of));
@@ -52,13 +52,13 @@ const constructRelatedGroups = (): ViewModel['relatedGroups'] => {
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
-  T.traverseArray(fetchItemDetails(dependencies)),
+  T.traverseArray(constructItemCardViewModel(dependencies)),
   T.map(flow(
     RA.rights,
-    (itemsToDisplay) => ({
+    (itemCardViewModels) => ({
       ...state,
       relatedGroups: constructRelatedGroups(),
-      itemsToDisplay,
+      itemsToDisplay: itemCardViewModels,
       nextPageHref: pipe(
         {
           basePath: '',
