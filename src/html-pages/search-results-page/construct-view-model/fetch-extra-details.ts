@@ -12,6 +12,7 @@ import {
   constructArticleCardViewModel,
 } from '../../../shared-components/article-card';
 import { Dependencies } from './dependencies';
+import { Group } from '../../../types/group';
 
 const fetchItemDetails = (
   dependencies: Dependencies,
@@ -32,7 +33,22 @@ export type LimitedSet = {
   numberOfPages: number,
 };
 
-const constructRelatedGroups = (): ViewModel['relatedGroups'] => ({ tag: 'no-groups-evaluated-the-found-articles' as const });
+const constructRelatedGroups = (): ViewModel['relatedGroups'] => {
+  const foundGroups: ReadonlyArray<Group> = [];
+  if (foundGroups.length > 0) {
+    return {
+      tag: 'some-related-groups',
+      items: pipe(
+        foundGroups,
+        RA.map((foundGroup) => ({
+          groupPageHref: `/groups/${foundGroup.slug}`,
+          groupName: foundGroup.name,
+        })),
+      ),
+    };
+  }
+  return { tag: 'no-groups-evaluated-the-found-articles' as const };
+};
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
