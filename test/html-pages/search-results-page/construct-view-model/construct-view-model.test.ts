@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Refinement } from 'fp-ts/Refinement';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -64,9 +63,9 @@ describe('construct-view-model', () => {
       const addGroup2Command = arbitraryAddGroupCommand();
       const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
-      const ensure = (refinement: Refinement<ViewModel['relatedGroups'], SomeRelatedGroups>) => (value: ViewModel['relatedGroups']): SomeRelatedGroups => pipe(
+      const ensureThereAreSomeRelatedGroups = (value: ViewModel['relatedGroups']): SomeRelatedGroups => pipe(
         value,
-        O.fromPredicate(refinement),
+        O.fromPredicate(isSomeRelatedGroups),
         O.getOrElseW(() => { throw new Error(`${value.tag} is not SomeRelatedGroups`); }),
       );
 
@@ -86,7 +85,7 @@ describe('construct-view-model', () => {
         groupNames = pipe(
           await getArticleCategoryViewModelContaining(articleId),
           (viewModel) => viewModel.relatedGroups,
-          ensure(isSomeRelatedGroups),
+          ensureThereAreSomeRelatedGroups,
           (someRelatedGroups) => someRelatedGroups.items,
           RA.map((item) => item.groupName),
         );
