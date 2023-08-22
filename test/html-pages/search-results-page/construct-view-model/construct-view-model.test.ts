@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { Refinement } from 'fp-ts/Refinement';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -62,6 +63,12 @@ describe('construct-view-model', () => {
 
       const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
+      const ensure = <A, B extends A>(refinement: Refinement<A, B>) => (value: A): B => pipe(
+        value,
+        O.fromPredicate(refinement),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(command);
         await framework.commandHelpers.recordEvaluationPublication({
@@ -72,12 +79,11 @@ describe('construct-view-model', () => {
         relatedGroups = pipe(
           await getArticleCategoryViewModelContaining(articleId),
           (viewModel) => viewModel.relatedGroups,
-          O.fromPredicate(isSomeRelatedGroups),
-          O.getOrElseW(shouldNotBeCalled),
+          ensure(isSomeRelatedGroups),
         );
       });
 
-      it.skip('displays the evaluating groups as being related', () => {
+      it('displays the evaluating groups as being related', () => {
         expect(relatedGroups.items[0].groupName).toBe(command.name);
       });
     });
