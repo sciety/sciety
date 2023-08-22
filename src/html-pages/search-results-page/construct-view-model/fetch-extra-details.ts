@@ -32,6 +32,8 @@ export type LimitedSet = {
   numberOfPages: number,
 };
 
+const constructRelatedGroups = (): ViewModel['relatedGroups'] => ({ tag: 'no-groups-evaluated-the-found-articles' as const });
+
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
   T.traverseArray(fetchItemDetails(dependencies)),
@@ -39,7 +41,7 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
     RA.rights,
     (itemsToDisplay) => ({
       ...state,
-      relatedGroups: { tag: 'no-groups-evaluated-the-found-articles' as const },
+      relatedGroups: constructRelatedGroups(),
       itemsToDisplay,
       nextPageHref: pipe(
         {
