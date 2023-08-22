@@ -60,8 +60,7 @@ describe('construct-view-model', () => {
     describe('and there is a page of results, containing evaluated articles', () => {
       const articleId = arbitraryDoi();
       let groupNames: ReadonlyArray<string>;
-      const command = arbitraryAddGroupCommand();
-
+      const addGroup1Command = arbitraryAddGroupCommand();
       const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
       const ensure = <A, B extends A>(refinement: Refinement<A, B>) => (value: A): B => pipe(
@@ -71,11 +70,11 @@ describe('construct-view-model', () => {
       );
 
       beforeEach(async () => {
-        await framework.commandHelpers.addGroup(command);
+        await framework.commandHelpers.addGroup(addGroup1Command);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           articleId,
-          groupId: command.groupId,
+          groupId: addGroup1Command.groupId,
         });
         groupNames = pipe(
           await getArticleCategoryViewModelContaining(articleId),
@@ -87,7 +86,7 @@ describe('construct-view-model', () => {
       });
 
       it.skip('displays the evaluating groups as being related', () => {
-        expect(groupNames[0]).toBe(command.name);
+        expect(groupNames).toBe([addGroup1Command.name]);
       });
     });
 
