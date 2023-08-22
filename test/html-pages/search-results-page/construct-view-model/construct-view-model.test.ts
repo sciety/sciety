@@ -56,17 +56,21 @@ describe('construct-view-model', () => {
 
     describe('and there is a page of results, containing evaluated articles', () => {
       const articleId = arbitraryDoi();
+      let relatedGroups: ViewModel['relatedGroups'];
 
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           articleId,
         });
-        result = await getArticleCategoryViewModelContaining(articleId);
+        relatedGroups = pipe(
+          await getArticleCategoryViewModelContaining(articleId),
+          (viewModel) => viewModel.relatedGroups,
+        );
       });
 
       it.skip('displays the evaluating groups as being related', () => {
-        expect(result.relatedGroups.tag).toBe('some-related-groups');
+        expect(relatedGroups.tag).toBe('some-related-groups');
       });
     });
 
