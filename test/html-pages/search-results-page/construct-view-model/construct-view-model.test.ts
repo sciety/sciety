@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Refinement } from 'fp-ts/Refinement';
@@ -58,7 +59,7 @@ describe('construct-view-model', () => {
 
     describe('and there is a page of results, containing evaluated articles', () => {
       const articleId = arbitraryDoi();
-      let items: SomeRelatedGroups['items'];
+      let groupNames: ReadonlyArray<string>;
       const command = arbitraryAddGroupCommand();
 
       const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
@@ -76,16 +77,17 @@ describe('construct-view-model', () => {
           articleId,
           groupId: command.groupId,
         });
-        items = pipe(
+        groupNames = pipe(
           await getArticleCategoryViewModelContaining(articleId),
           (viewModel) => viewModel.relatedGroups,
           ensure(isSomeRelatedGroups),
           (someRelatedGroups) => someRelatedGroups.items,
+          RA.map((item) => item.groupName),
         );
       });
 
       it.skip('displays the evaluating groups as being related', () => {
-        expect(items[0].groupName).toBe(command.name);
+        expect(groupNames[0]).toBe(command.name);
       });
     });
 
