@@ -64,7 +64,7 @@ describe('construct-view-model', () => {
       const addGroup2Command = arbitraryAddGroupCommand();
       const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
-      const ensure = <A extends ViewModel['relatedGroups'], B extends A>(refinement: Refinement<A, B>) => (value: A): B => pipe(
+      const ensure = (refinement: Refinement<ViewModel['relatedGroups'], SomeRelatedGroups>) => (value: ViewModel['relatedGroups']): SomeRelatedGroups => pipe(
         value,
         O.fromPredicate(refinement),
         O.getOrElseW(() => { throw new Error(`${value.tag} is not SomeRelatedGroups`); }),
