@@ -13,10 +13,11 @@ import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
-import { RecordEvaluationPublicationCommand } from '../../src/write-side/commands';
+import { AddGroupCommand, RecordEvaluationPublicationCommand } from '../../src/write-side/commands';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
+  addGroup: (command: AddGroupCommand) => Promise<unknown>,
   deprecatedCreateGroup: (group: Group) => Promise<unknown>,
   createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
@@ -46,6 +47,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   ),
+  addGroup: invoke(commandHandlers.createGroup, 'addGroup'),
   deprecatedCreateGroup: async (group) => pipe(
     {
       groupId: group.id,
