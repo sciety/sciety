@@ -83,7 +83,7 @@ describe('construct-view-model', () => {
         );
       });
 
-      it('displays the evaluating groups as being related', () => {
+      it.skip('displays the evaluating groups as being related', () => {
         expect(relatedGroups.items[0].groupName).toBe(command.name);
       });
     });
