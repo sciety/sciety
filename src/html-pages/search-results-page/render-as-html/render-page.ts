@@ -11,7 +11,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm(viewModel.query, viewModel.evaluatedOnly)}
-    ${renderRelatedGroups(viewModel.relatedGroups)}
+    ${viewModel.category === 'articles' ? renderRelatedGroups(viewModel.relatedGroups) : ''}
     <section class="search-results">
       ${renderSearchResults(viewModel)}
     </section>
