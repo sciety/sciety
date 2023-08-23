@@ -21,10 +21,10 @@ const constructItemCardViewModel = (
     ? pipe(item.articleId, constructArticleCardViewModel(dependencies))
     : pipe(item.id, constructGroupCardViewModel(dependencies), T.of));
 
-export type LimitedSet = {
+type LimitedSetOfGroups = {
   query: string,
   evaluatedOnly: boolean,
-  category: 'articles' | 'groups',
+  category: 'groups',
   availableArticleMatches: number,
   availableGroupMatches: number,
   itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
@@ -32,6 +32,20 @@ export type LimitedSet = {
   pageNumber: number,
   numberOfPages: number,
 };
+
+type LimitedSetOfArticles = {
+  query: string,
+  evaluatedOnly: boolean,
+  category: 'articles',
+  availableArticleMatches: number,
+  availableGroupMatches: number,
+  itemsToDisplay: ReadonlyArray<GroupItem | ArticleItem>,
+  nextCursor: O.Option<string>,
+  pageNumber: number,
+  numberOfPages: number,
+};
+
+export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
 
 const constructRelatedGroups = (): ViewModel['relatedGroups'] => {
   const foundGroups: ReadonlyArray<Group> = [];
