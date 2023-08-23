@@ -26,6 +26,13 @@ describe('construct-view-model', () => {
 
   describe('when the category is "articles"', () => {
     let result: ViewModel & { category: 'articles' };
+    const isSomeRelatedGroups = (value: ArticlesCategoryViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
+
+    const ensureThereAreSomeRelatedGroups = (value: ArticlesCategoryViewModel['relatedGroups']): SomeRelatedGroups => pipe(
+      value,
+      O.fromPredicate(isSomeRelatedGroups),
+      O.getOrElseW(() => { throw new Error(`${value.tag} is not SomeRelatedGroups`); }),
+    );
     const query = arbitraryString();
     const category = O.some('articles' as const);
     const cursor = O.none;
@@ -98,13 +105,6 @@ describe('construct-view-model', () => {
       let groupNames: ReadonlyArray<string>;
       const addGroup1Command = arbitraryAddGroupCommand();
       const addGroup2Command = arbitraryAddGroupCommand();
-      const isSomeRelatedGroups = (value: ArticlesCategoryViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
-
-      const ensureThereAreSomeRelatedGroups = (value: ArticlesCategoryViewModel['relatedGroups']): SomeRelatedGroups => pipe(
-        value,
-        O.fromPredicate(isSomeRelatedGroups),
-        O.getOrElseW(() => { throw new Error(`${value.tag} is not SomeRelatedGroups`); }),
-      );
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addGroup1Command);
