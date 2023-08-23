@@ -17,7 +17,6 @@ import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let defaultDependencies: TestFramework['dependenciesForViews'];
-  let result: ViewModel;
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -25,6 +24,7 @@ describe('construct-view-model', () => {
   });
 
   describe('when the category is "articles"', () => {
+    let result: ViewModel & { category: 'articles' };
     const query = arbitraryString();
     const category = O.some('articles' as const);
     const cursor = O.none;
@@ -170,6 +170,10 @@ describe('construct-view-model', () => {
             },
             itemsPerPage,
           ),
+          TE.filterOrElseW(
+            isArticleCategory,
+            shouldNotBeCalled,
+          ),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -230,6 +234,10 @@ describe('construct-view-model', () => {
             },
             1,
           ),
+          TE.filterOrElseW(
+            isArticleCategory,
+            shouldNotBeCalled,
+          ),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -253,6 +261,7 @@ describe('construct-view-model', () => {
   });
 
   describe('when the category is "groups"', () => {
+    let result: ViewModel;
     const category = O.some('groups' as const);
     const cursor = O.none;
     const page = O.none;

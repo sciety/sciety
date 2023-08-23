@@ -26,7 +26,6 @@ export type ArticlesCategoryViewModel = {
 
 type GroupsCategoryViewModel = {
   category: 'groups',
-  relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };
 
 type CategorySpecificViewModel = ArticlesCategoryViewModel | GroupsCategoryViewModel;
