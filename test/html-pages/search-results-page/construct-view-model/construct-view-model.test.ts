@@ -31,7 +31,11 @@ describe('construct-view-model', () => {
     const page = O.none;
     const evaluatedOnly = O.none;
 
-    const searchForArticles = (articleId: Doi, total: number, nextCursor: O.Option<string>) => () => () => TE.right({
+    const searchForArticlesReturningResults = (
+      articleId: Doi,
+      total: number,
+      nextCursor: O.Option<string>,
+    ) => () => () => TE.right({
       items: [
         {
           articleId,
@@ -52,7 +56,7 @@ describe('construct-view-model', () => {
       constructViewModel(
         {
           ...defaultDependencies,
-          searchForArticles: searchForArticles(articleId, 1, O.none),
+          searchForArticles: searchForArticlesReturningResults(articleId, 1, O.none),
         },
         1,
       ),
@@ -74,7 +78,7 @@ describe('construct-view-model', () => {
       constructViewModel(
         {
           ...defaultDependencies,
-          searchForArticles: searchForArticles(articleId, 2, O.some(cursorValue)),
+          searchForArticles: searchForArticlesReturningResults(articleId, 2, O.some(cursorValue)),
         },
         itemsPerPage,
       ),
@@ -85,6 +89,11 @@ describe('construct-view-model', () => {
       TE.getOrElse(shouldNotBeCalled),
     )();
 
+    const searchForArticlesReturningNoResults = () => () => TE.right({
+      items: [],
+      total: 0,
+      nextCursor: O.none,
+    });
     const getArticleCategoryViewModelForAPageWithNoResults = async () => pipe(
       {
         query, category, cursor, page, evaluatedOnly,
@@ -92,11 +101,7 @@ describe('construct-view-model', () => {
       constructViewModel(
         {
           ...defaultDependencies,
-          searchForArticles: () => () => TE.right({
-            items: [],
-            total: 0,
-            nextCursor: O.none,
-          }),
+          searchForArticles: searchForArticlesReturningNoResults,
         },
         1,
       ),
