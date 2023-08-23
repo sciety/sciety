@@ -13,6 +13,7 @@ import {
 } from '../../../shared-components/article-card';
 import { Dependencies } from './dependencies';
 import { Group } from '../../../types/group';
+import { Doi } from '../../../types/doi';
 
 const constructItemCardViewModel = (
   dependencies: Dependencies,
@@ -47,7 +48,8 @@ type LimitedSetOfArticles = {
 
 export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
 
-const constructRelatedGroups = (): ArticlesCategoryViewModel['relatedGroups'] => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const constructRelatedGroups = (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => {
   const foundGroups: ReadonlyArray<Group> = [];
   if (foundGroups.length > 0) {
     return {
@@ -80,11 +82,15 @@ const toFullPageViewModelForGroupsCategory = (
 });
 
 const toFullPageViewModelForArticlesCategory = (
-  state: LimitedSet,
+  state: LimitedSetOfArticles,
 ) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => ({
   ...state,
   category: 'articles' as const,
-  relatedGroups: constructRelatedGroups(),
+  relatedGroups: pipe(
+    state.itemsToDisplay,
+    RA.map((itemToDisplay) => itemToDisplay.articleId),
+    constructRelatedGroups,
+  ),
   itemCardsToDisplay: itemCardViewModels,
   nextPageHref: pipe(
     {
