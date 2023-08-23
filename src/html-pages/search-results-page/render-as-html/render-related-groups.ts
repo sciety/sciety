@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
+import { ArticlesCategoryViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
-export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): HtmlFragment => (relatedGroups.tag === 'some-related-groups'
+export const renderRelatedGroups = (relatedGroups: ArticlesCategoryViewModel['relatedGroups']): HtmlFragment => (relatedGroups.tag === 'some-related-groups'
   ? pipe(
     relatedGroups.items,
     RA.map((relatedGroup) => `

@@ -6,7 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { constructGroupCardViewModel } from '../../../shared-components/group-card';
 import * as DE from '../../../types/data-error';
-import { ItemCardViewModel, ViewModel } from '../view-model';
+import { ArticlesCategoryViewModel, ItemCardViewModel, ViewModel } from '../view-model';
 import {
   ArticleErrorCardViewModel,
   constructArticleCardViewModel,
@@ -47,7 +47,7 @@ type LimitedSetOfArticles = {
 
 export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
 
-const constructRelatedGroups = (): ViewModel['relatedGroups'] => {
+const constructRelatedGroups = (): ArticlesCategoryViewModel['relatedGroups'] => {
   const foundGroups: ReadonlyArray<Group> = [];
   if (foundGroups.length > 0) {
     return {

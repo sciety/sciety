@@ -19,7 +19,7 @@ export type SomeRelatedGroups = {
   }>,
 };
 
-type ArticlesCategoryViewModel = {
+export type ArticlesCategoryViewModel = {
   category: 'articles',
   relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };
