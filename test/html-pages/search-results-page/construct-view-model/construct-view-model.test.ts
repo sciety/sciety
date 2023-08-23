@@ -31,7 +31,7 @@ describe('construct-view-model', () => {
     const page = O.none;
     const evaluatedOnly = O.none;
     const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
-    const getArticleCategoryViewModelContaining = async (articleId: Doi) => pipe(
+    const getArticleCategoryViewModelForASinglePage = async (articleId: Doi) => pipe(
       {
         query, category, cursor, page, evaluatedOnly,
       },
@@ -52,6 +52,39 @@ describe('construct-view-model', () => {
           }),
         },
         1,
+      ),
+      TE.filterOrElseW(
+        isArticleCategory,
+        shouldNotBeCalled,
+      ),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
+
+    const getArticleCategoryViewModelWithAdditionalPages = async (
+      articleId: Doi,
+      cursorValue: string,
+      itemsPerPage: number,
+    ) => pipe(
+      {
+        query, category, cursor, page, evaluatedOnly,
+      },
+      constructViewModel(
+        {
+          ...defaultDependencies,
+          searchForArticles: () => () => TE.right({
+            items: [
+              {
+                articleId,
+                server: arbitraryArticleServer(),
+                title: arbitrarySanitisedHtmlFragment(),
+                authors: O.none,
+              },
+            ],
+            total: 2,
+            nextCursor: O.some(cursorValue),
+          }),
+        },
+        itemsPerPage,
       ),
       TE.filterOrElseW(
         isArticleCategory,
@@ -87,7 +120,7 @@ describe('construct-view-model', () => {
           groupId: addGroup2Command.groupId,
         });
         groupNames = pipe(
-          await getArticleCategoryViewModelContaining(articleId),
+          await getArticleCategoryViewModelForASinglePage(articleId),
           (viewModel) => viewModel.relatedGroups,
           ensureThereAreSomeRelatedGroups,
           (someRelatedGroups) => someRelatedGroups.items,
@@ -104,7 +137,7 @@ describe('construct-view-model', () => {
       const articleId = arbitraryDoi();
 
       beforeEach(async () => {
-        result = await getArticleCategoryViewModelContaining(articleId);
+        result = await getArticleCategoryViewModelForASinglePage(articleId);
       });
 
       it('all article cards are included in the view model', () => {
@@ -148,34 +181,7 @@ describe('construct-view-model', () => {
       const cursorValue = arbitraryWord();
 
       beforeEach(async () => {
-        result = await pipe(
-          {
-            query, category, cursor, page, evaluatedOnly,
-          },
-          constructViewModel(
-            {
-              ...defaultDependencies,
-              searchForArticles: () => () => TE.right({
-                items: [
-                  {
-                    articleId,
-                    server: arbitraryArticleServer(),
-                    title: arbitrarySanitisedHtmlFragment(),
-                    authors: O.none,
-                  },
-                ],
-                total: 2,
-                nextCursor: O.some(cursorValue),
-              }),
-            },
-            itemsPerPage,
-          ),
-          TE.filterOrElseW(
-            isArticleCategory,
-            shouldNotBeCalled,
-          ),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await getArticleCategoryViewModelWithAdditionalPages(articleId, cursorValue, itemsPerPage);
       });
 
       it('no more than itemsPerPage article cards are included in the view model', () => {
