@@ -52,6 +52,12 @@ export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
 const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => {
   // step 1: get a list of evaluations for each article id
   // step 2: get the group id for each evaluation
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const groupIds = pipe(
+    articleIds,
+    RA.flatMap(dependencies.getEvaluationsForDoi),
+    RA.map((recordedEvaluation) => recordedEvaluation.groupId),
+  );
   // step 3: lookup a group from each group id
   const foundGroups: ReadonlyArray<Group> = [];
   if (foundGroups.length > 0) {
