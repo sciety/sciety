@@ -100,6 +100,14 @@ describe('construct-view-model', () => {
       searchForArticlesReturningNoResults,
     );
 
+    const findNamesOfRelatedGroups = async (articleId: Doi) => pipe(
+      await getArticleCategoryViewModelForASinglePage(articleId),
+      (viewModel) => viewModel.relatedGroups,
+      ensureThereAreSomeRelatedGroups,
+      (someRelatedGroups) => someRelatedGroups.items,
+      RA.map((item) => item.groupName),
+    );
+
     describe('and there is a page of results, containing evaluated articles', () => {
       const articleId = arbitraryDoi();
       let groupNames: ReadonlyArray<string>;
@@ -119,13 +127,7 @@ describe('construct-view-model', () => {
           articleId,
           groupId: addGroup2Command.groupId,
         });
-        groupNames = pipe(
-          await getArticleCategoryViewModelForASinglePage(articleId),
-          (viewModel) => viewModel.relatedGroups,
-          ensureThereAreSomeRelatedGroups,
-          (someRelatedGroups) => someRelatedGroups.items,
-          RA.map((item) => item.groupName),
-        );
+        groupNames = await findNamesOfRelatedGroups(articleId);
       });
 
       it.skip('displays the evaluating groups as being related', () => {
