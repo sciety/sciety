@@ -88,23 +88,9 @@ describe('construct-view-model', () => {
       total: 0,
       nextCursor: O.none,
     });
-    const getArticleCategoryViewModelForAPageWithNoResults = async () => pipe(
-      {
-        query, category, cursor, page, evaluatedOnly,
-      },
-      constructViewModel(
-        {
-          ...defaultDependencies,
-          searchForArticles: searchForArticlesReturningNoResults,
-        },
-        1,
-      ),
-      TE.filterOrElseW(
-        isArticleCategory,
-        shouldNotBeCalled,
-      ),
-      TE.getOrElse(shouldNotBeCalled),
-    )();
+    const getArticleCategoryViewModelForAPageWithNoResults = async () => getArticleCategoryViewModel(
+      searchForArticlesReturningNoResults,
+    );
 
     describe('and there is a page of results, containing evaluated articles', () => {
       const articleId = arbitraryDoi();
