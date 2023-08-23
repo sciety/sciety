@@ -17,6 +17,7 @@ export const selectSubsetToDisplay = (state: Matches): LimitedSet => {
     case 'groups':
       return {
         ...state,
+        category: 'groups',
         availableArticleMatches: state.articles.total,
         availableGroupMatches: state.groups.length,
         itemsToDisplay: state.groups,
@@ -27,6 +28,7 @@ export const selectSubsetToDisplay = (state: Matches): LimitedSet => {
     case 'articles':
       return {
         ...state,
+        category: 'articles',
         availableArticleMatches: state.articles.total,
         availableGroupMatches: state.groups.length,
         itemsToDisplay: state.articles.items,
