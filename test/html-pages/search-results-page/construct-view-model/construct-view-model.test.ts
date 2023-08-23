@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { SearchForArticles } from '../../../../src/shared-ports/search-for-articles';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ArticlesCategoryViewModel, SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -49,14 +50,14 @@ describe('construct-view-model', () => {
     });
 
     const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
-    const getArticleCategoryViewModelForASinglePage = async (articleId: Doi) => pipe(
+    const getArticleCategoryViewModel = async (searchForArticles: SearchForArticles) => pipe(
       {
         query, category, cursor, page, evaluatedOnly,
       },
       constructViewModel(
         {
           ...defaultDependencies,
-          searchForArticles: searchForArticlesReturningResults(articleId, 1, O.none),
+          searchForArticles,
         },
         1,
       ),
@@ -66,6 +67,10 @@ describe('construct-view-model', () => {
       ),
       TE.getOrElse(shouldNotBeCalled),
     )();
+
+    const getArticleCategoryViewModelForASinglePage = async (
+      articleId: Doi,
+    ) => getArticleCategoryViewModel(searchForArticlesReturningResults(articleId, 1, O.none));
 
     const getArticleCategoryViewModelWithAdditionalPages = async (
       articleId: Doi,
