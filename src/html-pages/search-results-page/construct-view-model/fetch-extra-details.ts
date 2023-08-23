@@ -64,7 +64,9 @@ const constructRelatedGroups = (): ArticlesCategoryViewModel['relatedGroups'] =>
   return { tag: 'no-groups-evaluated-the-found-articles' as const };
 };
 
-const toFullPageViewModel = (state: LimitedSet) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => ({
+const toFullPageViewModelForArticlesCategory = (
+  state: LimitedSet,
+) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => ({
   ...state,
   relatedGroups: constructRelatedGroups(),
   itemCardsToDisplay: itemCardViewModels,
@@ -76,6 +78,12 @@ const toFullPageViewModel = (state: LimitedSet) => (itemCardViewModels: Readonly
     ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
   ),
 });
+const toFullPageViewModel = (state: LimitedSet) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => {
+  if (state.category === 'articles') {
+    return toFullPageViewModelForArticlesCategory(state)(itemCardViewModels);
+  }
+  return toFullPageViewModelForArticlesCategory(state)(itemCardViewModels);
+};
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
