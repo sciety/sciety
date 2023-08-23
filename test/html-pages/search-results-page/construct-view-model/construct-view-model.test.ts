@@ -30,7 +30,7 @@ describe('construct-view-model', () => {
     const cursor = O.none;
     const page = O.none;
     const evaluatedOnly = O.none;
-
+    const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
     const getArticleCategoryViewModelContaining = async (articleId: Doi) => pipe(
       {
         query, category, cursor, page, evaluatedOnly,
@@ -52,6 +52,10 @@ describe('construct-view-model', () => {
           }),
         },
         1,
+      ),
+      TE.filterOrElseW(
+        isArticleCategory,
+        shouldNotBeCalled,
       ),
       TE.getOrElse(shouldNotBeCalled),
     )();
