@@ -93,6 +93,28 @@ describe('construct-view-model', () => {
       TE.getOrElse(shouldNotBeCalled),
     )();
 
+    const getArticleCategoryViewModelForAPageWithNoResults = async () => pipe(
+      {
+        query, category, cursor, page, evaluatedOnly,
+      },
+      constructViewModel(
+        {
+          ...defaultDependencies,
+          searchForArticles: () => () => TE.right({
+            items: [],
+            total: 0,
+            nextCursor: O.none,
+          }),
+        },
+        1,
+      ),
+      TE.filterOrElseW(
+        isArticleCategory,
+        shouldNotBeCalled,
+      ),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
+
     describe('and there is a page of results, containing evaluated articles', () => {
       const articleId = arbitraryDoi();
       let groupNames: ReadonlyArray<string>;
@@ -225,27 +247,7 @@ describe('construct-view-model', () => {
 
     describe('but there are no results', () => {
       beforeEach(async () => {
-        result = await pipe(
-          {
-            query, category, cursor, page, evaluatedOnly,
-          },
-          constructViewModel(
-            {
-              ...defaultDependencies,
-              searchForArticles: () => () => TE.right({
-                items: [],
-                total: 0,
-                nextCursor: O.none,
-              }),
-            },
-            1,
-          ),
-          TE.filterOrElseW(
-            isArticleCategory,
-            shouldNotBeCalled,
-          ),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await getArticleCategoryViewModelForAPageWithNoResults();
       });
 
       it('there are no article cards included in the view model', () => {
