@@ -49,7 +49,7 @@ type LimitedSetOfArticles = {
 export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const constructRelatedGroups = (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => {
+const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => {
   // step 1: get a list of evaluations for each article id
   // step 2: get the group id for each evaluation
   // step 3: lookup a group from each group id
@@ -85,6 +85,7 @@ const toFullPageViewModelForGroupsCategory = (
 });
 
 const toFullPageViewModelForArticlesCategory = (
+  dependencies: Dependencies,
   state: LimitedSetOfArticles,
 ) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => ({
   ...state,
@@ -92,7 +93,7 @@ const toFullPageViewModelForArticlesCategory = (
   relatedGroups: pipe(
     state.itemsToDisplay,
     RA.map((itemToDisplay) => itemToDisplay.articleId),
-    constructRelatedGroups,
+    constructRelatedGroups(dependencies),
   ),
   itemCardsToDisplay: itemCardViewModels,
   nextPageHref: pipe(
@@ -104,9 +105,12 @@ const toFullPageViewModelForArticlesCategory = (
   ),
 });
 
-const toFullPageViewModel = (state: LimitedSet) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => {
+const toFullPageViewModel = (
+  dependencies: Dependencies,
+  state: LimitedSet,
+) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => {
   if (state.category === 'articles') {
-    return toFullPageViewModelForArticlesCategory(state)(itemCardViewModels);
+    return toFullPageViewModelForArticlesCategory(dependencies, state)(itemCardViewModels);
   }
   return toFullPageViewModelForGroupsCategory(state)(itemCardViewModels);
 };
@@ -116,6 +120,6 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
   T.traverseArray(constructItemCardViewModel(dependencies)),
   T.map(flow(
     RA.rights,
-    toFullPageViewModel(state),
+    toFullPageViewModel(dependencies, state),
   )),
 );
