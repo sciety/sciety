@@ -49,6 +49,12 @@ describe('construct-view-model', () => {
       nextCursor,
     });
 
+    const searchForArticlesReturningNoResults = () => () => TE.right({
+      items: [],
+      total: 0,
+      nextCursor: O.none,
+    });
+
     const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
     const getArticleCategoryViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
       {
@@ -83,11 +89,6 @@ describe('construct-view-model', () => {
       itemsPerPage,
     );
 
-    const searchForArticlesReturningNoResults = () => () => TE.right({
-      items: [],
-      total: 0,
-      nextCursor: O.none,
-    });
     const getArticleCategoryViewModelForAPageWithNoResults = async () => getArticleCategoryViewModel(
       searchForArticlesReturningNoResults,
     );
