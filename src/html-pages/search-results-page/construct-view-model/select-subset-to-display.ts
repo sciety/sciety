@@ -12,14 +12,27 @@ export type Matches = {
   articles: ArticleResults,
 };
 
-export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
-  ...state,
-  availableArticleMatches: state.articles.total,
-  availableGroupMatches: state.groups.length,
-  itemsToDisplay: (state.category === 'groups')
-    ? state.groups
-    : state.articles.items,
-  nextCursor: (state.category === 'groups') ? O.none : state.articles.nextCursor,
-  pageNumber: O.getOrElse(() => 1)(state.pageNumber),
-  numberOfPages: Math.ceil(state.articles.total / state.pageSize),
-});
+export const selectSubsetToDisplay = (state: Matches): LimitedSet => {
+  switch (state.category) {
+    case 'groups':
+      return {
+        ...state,
+        availableArticleMatches: state.articles.total,
+        availableGroupMatches: state.groups.length,
+        itemsToDisplay: state.groups,
+        nextCursor: O.none,
+        pageNumber: O.getOrElse(() => 1)(state.pageNumber),
+        numberOfPages: Math.ceil(state.articles.total / state.pageSize),
+      };
+    case 'articles':
+      return {
+        ...state,
+        availableArticleMatches: state.articles.total,
+        availableGroupMatches: state.groups.length,
+        itemsToDisplay: state.articles.items,
+        nextCursor: state.articles.nextCursor,
+        pageNumber: O.getOrElse(() => 1)(state.pageNumber),
+        numberOfPages: Math.ceil(state.articles.total / state.pageSize),
+      };
+  }
+};
