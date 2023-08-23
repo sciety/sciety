@@ -64,22 +64,24 @@ const constructRelatedGroups = (): ArticlesCategoryViewModel['relatedGroups'] =>
   return { tag: 'no-groups-evaluated-the-found-articles' as const };
 };
 
+const toFullPageViewModel = (state: LimitedSet) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => ({
+  ...state,
+  relatedGroups: constructRelatedGroups(),
+  itemCardsToDisplay: itemCardViewModels,
+  nextPageHref: pipe(
+    {
+      basePath: '',
+      pageNumber: state.pageNumber + 1,
+    },
+    ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
+  ),
+});
+
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
   T.traverseArray(constructItemCardViewModel(dependencies)),
   T.map(flow(
     RA.rights,
-    (itemCardViewModels) => ({
-      ...state,
-      relatedGroups: constructRelatedGroups(),
-      itemCardsToDisplay: itemCardViewModels,
-      nextPageHref: pipe(
-        {
-          basePath: '',
-          pageNumber: state.pageNumber + 1,
-        },
-        ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
-      ),
-    }),
+    toFullPageViewModel(state),
   )),
 );
