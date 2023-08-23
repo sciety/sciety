@@ -19,12 +19,22 @@ export type SomeRelatedGroups = {
   }>,
 };
 
-export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
+type ArticlesCategoryViewModel = {
+  category: 'articles',
+  relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
+};
+
+type GroupsCategoryViewModel = {
+  category: 'groups',
+  relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
+};
+
+type CategorySpecificViewModel = ArticlesCategoryViewModel | GroupsCategoryViewModel;
+
+export type ViewModel = CategorySpecificViewModel & PaginationViewModel & PaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
   availableArticleMatches: number,
   availableGroupMatches: number,
-  category: string,
   itemCardsToDisplay: ReadonlyArray<ItemCardViewModel>,
-  relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };
