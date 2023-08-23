@@ -30,6 +30,20 @@ describe('construct-view-model', () => {
     const cursor = O.none;
     const page = O.none;
     const evaluatedOnly = O.none;
+
+    const searchForArticles = (articleId: Doi, total: number, nextCursor: O.Option<string>) => () => () => TE.right({
+      items: [
+        {
+          articleId,
+          server: arbitraryArticleServer(),
+          title: arbitrarySanitisedHtmlFragment(),
+          authors: O.none,
+        },
+      ],
+      total,
+      nextCursor,
+    });
+
     const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
     const getArticleCategoryViewModelForASinglePage = async (articleId: Doi) => pipe(
       {
@@ -38,18 +52,7 @@ describe('construct-view-model', () => {
       constructViewModel(
         {
           ...defaultDependencies,
-          searchForArticles: () => () => TE.right({
-            items: [
-              {
-                articleId,
-                server: arbitraryArticleServer(),
-                title: arbitrarySanitisedHtmlFragment(),
-                authors: O.none,
-              },
-            ],
-            total: 1,
-            nextCursor: O.none,
-          }),
+          searchForArticles: searchForArticles(articleId, 1, O.none),
         },
         1,
       ),
@@ -71,18 +74,7 @@ describe('construct-view-model', () => {
       constructViewModel(
         {
           ...defaultDependencies,
-          searchForArticles: () => () => TE.right({
-            items: [
-              {
-                articleId,
-                server: arbitraryArticleServer(),
-                title: arbitrarySanitisedHtmlFragment(),
-                authors: O.none,
-              },
-            ],
-            total: 2,
-            nextCursor: O.some(cursorValue),
-          }),
+          searchForArticles: searchForArticles(articleId, 2, O.some(cursorValue)),
         },
         itemsPerPage,
       ),
