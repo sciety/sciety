@@ -108,7 +108,7 @@ describe('construct-view-model', () => {
       RA.map((item) => item.groupName),
     );
 
-    describe('and there is a page of results, containing evaluated articles', () => {
+    describe('and there is a page of results, containing an evaluated article, evaluated once by two different groups', () => {
       const articleId = arbitraryDoi();
       let groupNames: ReadonlyArray<string>;
       const addGroup1Command = arbitraryAddGroupCommand();
@@ -132,6 +132,31 @@ describe('construct-view-model', () => {
 
       it.skip('displays the evaluating groups as being related', () => {
         expect(groupNames).toBe([addGroup1Command.name, addGroup2Command.name]);
+      });
+    });
+
+    describe('and there is a page of results, containing an evaluated article, evaluated twice by the same group', () => {
+      const articleId = arbitraryDoi();
+      let groupNames: ReadonlyArray<string>;
+      const addGroup1Command = arbitraryAddGroupCommand();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.addGroup(addGroup1Command);
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId,
+          groupId: addGroup1Command.groupId,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId,
+          groupId: addGroup1Command.groupId,
+        });
+        groupNames = await findNamesOfRelatedGroups(articleId);
+      });
+
+      it.skip('displays the evaluating group once as being related', () => {
+        expect(groupNames).toBe([addGroup1Command.name]);
       });
     });
 
