@@ -20,7 +20,7 @@ $_common-space-beneath: 0.5rem;
 .related-groups {
 
   @include breakpoints.two-column-display {
-    grid-column: 9/-1;
+    grid-column: 10 / 13;
     grid-row: 3;
   }
 }
