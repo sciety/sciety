@@ -131,7 +131,7 @@ describe('construct-view-model', () => {
       });
 
       it.skip('displays the evaluating groups as being related', () => {
-        expect(groupNames).toBe([addGroup1Command.name, addGroup2Command.name]);
+        expect(groupNames).toStrictEqual([addGroup1Command.name, addGroup2Command.name]);
       });
     });
 

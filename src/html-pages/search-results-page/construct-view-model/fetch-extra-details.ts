@@ -59,7 +59,12 @@ const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: Read
     RA.map((recordedEvaluation) => recordedEvaluation.groupId),
   );
   // step 3: lookup a group from each group id
-  const foundGroups: ReadonlyArray<Group> = [];
+  const foundGroups: ReadonlyArray<Group> = pipe(
+    groupIds,
+    RA.map(dependencies.getGroup),
+    RA.compact,
+    () => [],
+  );
   if (foundGroups.length > 0) {
     return {
       tag: 'some-related-groups',
