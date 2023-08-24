@@ -37,7 +37,7 @@ const tabProps = (viewmodel: ViewModel) => ({
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   `
-    <p class="description-of-card-list">
+    <p>
       ${renderCountWithDescriptor(viewmodel.followerCount, 'user is', 'users are')} following this group.
     </p>
     ${renderFollowersList(viewmodel.followers)}

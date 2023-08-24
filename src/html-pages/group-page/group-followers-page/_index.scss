@@ -5,10 +5,6 @@
 @use '../../../sass/typography';
 @use '../../../sass/layout';
 
-.description-of-card-list {
-  @include layout.page-content-horizontal-margins();
-}
-
 .user-card {
   $_is-entire-card-linked: true;
   @include card.basics($_is-entire-card-linked);
