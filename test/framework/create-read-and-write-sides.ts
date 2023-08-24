@@ -8,7 +8,7 @@ import { createUserAccountCommandHandler } from '../../src/write-side/create-use
 import { followCommandHandler } from '../../src/write-side/follow/follow-command-handler';
 import {
   updateUserDetailsCommandHandler,
-  recordEvaluationCommandHandler,
+  recordEvaluationPublicationCommandHandler,
   createListCommandHandler,
   removeArticleFromListCommandHandler,
 } from '../../src/write-side/command-handlers';
@@ -45,7 +45,7 @@ const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) =>
   createList: createListCommandHandler(eventStore),
   createUserAccount: createUserAccountCommandHandler(eventStore),
   followGroup: followCommandHandler(eventStore),
-  recordEvaluation: recordEvaluationCommandHandler({ ...eventStore, ...queries }),
+  recordEvaluationPublication: recordEvaluationPublicationCommandHandler({ ...eventStore, ...queries }),
   removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
   unfollowGroup: unfollowCommandHandler(eventStore),
   updateGroupDetails: updateGroupDetails(eventStore),

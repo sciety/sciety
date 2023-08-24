@@ -95,9 +95,9 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
         O.getOrElseW(() => undefined),
       ),
     },
-    invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
+    invoke(commandHandlers.recordEvaluationPublication, 'recordEvaluationPublication'),
   ),
-  recordEvaluationPublication: invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
+  recordEvaluationPublication: invoke(commandHandlers.recordEvaluationPublication, 'recordEvaluationPublication'),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
       articleId,
