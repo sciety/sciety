@@ -48,7 +48,6 @@
 
 .create-new-list-call-to-action {
   @include button.primary();
-  @include layout.page-content-horizontal-margins();
 
   margin-top: functions.px-to-rem(16px);
   margin-bottom: functions.px-to-rem(16px);
