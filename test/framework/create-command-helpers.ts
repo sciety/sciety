@@ -47,7 +47,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   ),
-  addGroup: invoke(commandHandlers.createGroup, 'addGroup'),
+  addGroup: invoke(commandHandlers.addGroup, 'addGroup'),
   deprecatedCreateGroup: async (group) => pipe(
     {
       groupId: group.id,
@@ -58,7 +58,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       descriptionPath: group.descriptionPath,
       slug: group.slug,
     },
-    invoke(commandHandlers.createGroup, 'createGroup'),
+    invoke(commandHandlers.addGroup, 'addGroup'),
   ),
   createList: async (list) => pipe(
     {
