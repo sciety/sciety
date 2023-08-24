@@ -6,10 +6,9 @@ import { SearchForArticles } from '../../../../src/shared-ports/search-for-artic
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ArticlesCategoryViewModel, SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '../../../helpers';
+import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDoi } from '../../../types/doi.helper';
-import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { Doi } from '../../../../src/types/doi';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
@@ -22,24 +21,6 @@ const ensureThereAreSomeRelatedGroups = (value: ArticlesCategoryViewModel['relat
   O.fromPredicate(isSomeRelatedGroups),
   O.getOrElseW(() => { throw new Error(`${value.tag} is not SomeRelatedGroups`); }),
 );
-
-const searchForArticlesReturningResults = (
-  articleIds: ReadonlyArray<Doi>,
-  total: number,
-  nextCursor: O.Option<string>,
-) => () => () => TE.right({
-  items: pipe(
-    articleIds,
-    RA.map((articleId) => ({
-      articleId,
-      server: arbitraryArticleServer(),
-      title: arbitrarySanitisedHtmlFragment(),
-      authors: O.none,
-    })),
-  ),
-  total,
-  nextCursor,
-});
 
 const searchForArticlesReturningNoResults = () => () => TE.right({
   items: [],
@@ -84,15 +65,6 @@ describe('construct-related-groups', () => {
     ),
     TE.getOrElse(shouldNotBeCalled),
   )();
-
-  const getArticleCategoryViewModelWithAdditionalPages = async (
-    articleId: Doi,
-    cursorValue: string,
-    itemsPerPage: number,
-  ) => getArticleCategoryViewModel(
-    searchForArticlesReturningResults([articleId], 2, O.some(cursorValue)),
-    itemsPerPage,
-  );
 
   const getArticleCategoryViewModelForAPageWithNoResults = async () => getArticleCategoryViewModel(
     searchForArticlesReturningNoResults,
@@ -184,7 +156,7 @@ describe('construct-related-groups', () => {
     });
   });
 
-  describe('and there is only one page of results, with no evaluated articles', () => {
+  describe('and there are results, with no evaluated articles', () => {
     const articleId = arbitraryDoi();
     let relatedGroups: ArticlesCategoryViewModel['relatedGroups'];
 
@@ -194,20 +166,6 @@ describe('construct-related-groups', () => {
 
     it('no related groups are displayed', () => {
       expect(relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
-    });
-  });
-
-  describe('and there is more than one page of results, with no evaluated articles', () => {
-    const articleId = arbitraryDoi();
-    const itemsPerPage = 1;
-    const cursorValue = arbitraryWord();
-
-    beforeEach(async () => {
-      result = await getArticleCategoryViewModelWithAdditionalPages(articleId, cursorValue, itemsPerPage);
-    });
-
-    it('no related groups are displayed', () => {
-      expect(result.relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
     });
   });
 
