@@ -1,13 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { SearchForArticles } from '../../../../src/shared-ports/search-for-articles';
-import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
-import { ArticlesCategoryViewModel, SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
+import { ArticlesCategoryViewModel, SomeRelatedGroups } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryString } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { Doi } from '../../../../src/types/doi';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
@@ -22,53 +17,14 @@ const ensureThereAreSomeRelatedGroups = (value: ArticlesCategoryViewModel['relat
   O.getOrElseW(() => { throw new Error(`${value.tag} is not SomeRelatedGroups`); }),
 );
 
-const searchForArticlesReturningNoResults = () => () => TE.right({
-  items: [],
-  total: 0,
-  nextCursor: O.none,
-});
-
-const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
-
 describe('construct-related-groups', () => {
   let framework: TestFramework;
   let defaultDependencies: TestFramework['dependenciesForViews'];
-  let result: ViewModel & { category: 'articles' };
-  const query = arbitraryString();
-  const cursor = O.none;
-  const page = O.none;
-  const evaluatedOnly = O.none;
 
   beforeEach(() => {
     framework = createTestFramework();
     defaultDependencies = framework.dependenciesForViews;
   });
-
-  const getArticleCategoryViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
-    {
-      query,
-      category: O.some('articles' as const),
-      cursor,
-      page,
-      evaluatedOnly,
-    },
-    constructViewModel(
-      {
-        ...defaultDependencies,
-        searchForArticles,
-      },
-      itemsPerPage,
-    ),
-    TE.filterOrElseW(
-      isArticleCategory,
-      shouldNotBeCalled,
-    ),
-    TE.getOrElse(shouldNotBeCalled),
-  )();
-
-  const getArticleCategoryViewModelForAPageWithNoResults = async () => getArticleCategoryViewModel(
-    searchForArticlesReturningNoResults,
-  );
 
   const findNamesOfRelatedGroups = async (articleIds: ReadonlyArray<Doi>) => pipe(
     articleIds,
@@ -170,12 +126,14 @@ describe('construct-related-groups', () => {
   });
 
   describe('and there are no results', () => {
+    let relatedGroups: ArticlesCategoryViewModel['relatedGroups'];
+
     beforeEach(async () => {
-      result = await getArticleCategoryViewModelForAPageWithNoResults();
+      relatedGroups = constructRelatedGroups(defaultDependencies)([]);
     });
 
     it('no related groups are displayed', () => {
-      expect(result.relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
+      expect(relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
     });
   });
 });
