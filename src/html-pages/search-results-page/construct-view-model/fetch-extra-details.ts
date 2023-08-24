@@ -12,7 +12,6 @@ import {
   constructArticleCardViewModel,
 } from '../../../shared-components/article-card';
 import { Dependencies } from './dependencies';
-import { Group } from '../../../types/group';
 import { Doi } from '../../../types/doi';
 import * as GID from '../../../types/group-id';
 
@@ -49,21 +48,17 @@ type LimitedSetOfArticles = {
 
 export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
 
-const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => {
-  const groupIds = pipe(
-    articleIds,
-    RA.flatMap(dependencies.getEvaluationsForDoi),
-    RA.map((recordedEvaluation) => recordedEvaluation.groupId),
-    RA.uniq(GID.eq),
-  );
-  const foundGroups: ReadonlyArray<Group> = pipe(
-    groupIds,
-    RA.map(dependencies.getGroup),
-    RA.compact,
-  );
-  if (foundGroups.length > 0) {
-    return {
-      tag: 'some-related-groups',
+const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => pipe(
+  articleIds,
+  RA.flatMap(dependencies.getEvaluationsForDoi),
+  RA.map((recordedEvaluation) => recordedEvaluation.groupId),
+  RA.uniq(GID.eq),
+  RA.map(dependencies.getGroup),
+  RA.compact,
+  RA.matchW(
+    () => ({ tag: 'no-groups-evaluated-the-found-articles' as const }),
+    (foundGroups) => ({
+      tag: 'some-related-groups' as const,
       items: pipe(
         foundGroups,
         RA.map((foundGroup) => ({
@@ -71,10 +66,9 @@ const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: Read
           groupName: foundGroup.name,
         })),
       ),
-    };
-  }
-  return { tag: 'no-groups-evaluated-the-found-articles' as const };
-};
+    }),
+  ),
+);
 
 const toFullPageViewModelForGroupsCategory = (
   state: LimitedSet,
