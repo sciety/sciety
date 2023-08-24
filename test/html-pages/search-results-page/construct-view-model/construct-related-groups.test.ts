@@ -196,36 +196,6 @@ describe('construct-related-groups', () => {
       result = await getArticleCategoryViewModelForASinglePage([articleId]);
     });
 
-    it('all article cards are included in the view model', () => {
-      expect(result.itemCardsToDisplay).toStrictEqual(
-        [
-          expect.objectContaining({
-            articleId,
-          }),
-        ],
-      );
-    });
-
-    it('the articles tab is active', () => {
-      expect(result.category).toBe('articles');
-    });
-
-    it('the number of articles found is displayed', () => {
-      expect(result.availableArticleMatches).toBe(1);
-    });
-
-    it('the number of groups found is displayed', () => {
-      expect(result.availableGroupMatches).toBe(0);
-    });
-
-    it('the query is displayed', () => {
-      expect(result.query).toBe(query);
-    });
-
-    it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.evaluatedOnly).toBe(false);
-    });
-
     it('no related groups are displayed', () => {
       expect(result.relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
     });
@@ -240,68 +210,14 @@ describe('construct-related-groups', () => {
       result = await getArticleCategoryViewModelWithAdditionalPages(articleId, cursorValue, itemsPerPage);
     });
 
-    it('no more than itemsPerPage article cards are included in the view model', () => {
-      expect(result.itemCardsToDisplay).toStrictEqual(
-        [
-          expect.objectContaining({
-            articleId,
-          }),
-        ],
-      );
-    });
-
-    it('the articles tab is active', () => {
-      expect(result.category).toBe('articles');
-    });
-
-    it('the number of articles found is displayed', () => {
-      expect(result.availableArticleMatches).toBe(2);
-    });
-
-    it('the number of groups found is displayed', () => {
-      expect(result.availableGroupMatches).toBe(0);
-    });
-
-    it('the query is displayed', () => {
-      expect(result.query).toBe(query);
-    });
-
-    it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.evaluatedOnly).toBe(false);
-    });
-
-    it('the current page number is displayed', () => {
-      expect(result.pageNumber).toBe(1);
-    });
-
-    it('the total number of pages is displayed', () => {
-      expect(result.numberOfPages).toBe(2);
-    });
-
     it('no related groups are displayed', () => {
       expect(result.relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
     });
   });
 
-  describe('but there are no results', () => {
+  describe('and there are no results', () => {
     beforeEach(async () => {
       result = await getArticleCategoryViewModelForAPageWithNoResults();
-    });
-
-    it('there are no article cards included in the view model', () => {
-      expect(result.itemCardsToDisplay).toStrictEqual([]);
-    });
-
-    it('the number of articles found is displayed', () => {
-      expect(result.availableArticleMatches).toBe(0);
-    });
-
-    it('the query is displayed', () => {
-      expect(result.query).toBe(query);
-    });
-
-    it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.evaluatedOnly).toBe(false);
     });
 
     it('no related groups are displayed', () => {
