@@ -9,7 +9,7 @@
 @use '../../../sass/typography';
 
 .activity-feed__header {
-  @include layout.page-content-horizontal-margins();
+  //@include layout.page-content-horizontal-margins();
 }
 
 .activity-feed__list {
