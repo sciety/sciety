@@ -6,14 +6,13 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleItem, GroupItem, isArticleItem } from './data-types';
 import { constructGroupCardViewModel } from '../../../shared-components/group-card';
 import * as DE from '../../../types/data-error';
-import { ArticlesCategoryViewModel, ItemCardViewModel, ViewModel } from '../view-model';
+import { ItemCardViewModel, ViewModel } from '../view-model';
 import {
   ArticleErrorCardViewModel,
   constructArticleCardViewModel,
 } from '../../../shared-components/article-card';
 import { Dependencies } from './dependencies';
-import { Doi } from '../../../types/doi';
-import * as GID from '../../../types/group-id';
+import { constructRelatedGroups } from './construct-related-groups';
 
 const constructItemCardViewModel = (
   dependencies: Dependencies,
@@ -47,28 +46,6 @@ type LimitedSetOfArticles = {
 };
 
 export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
-
-const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => pipe(
-  articleIds,
-  RA.flatMap(dependencies.getEvaluationsForDoi),
-  RA.map((recordedEvaluation) => recordedEvaluation.groupId),
-  RA.uniq(GID.eq),
-  RA.map(dependencies.getGroup),
-  RA.compact,
-  RA.matchW(
-    () => ({ tag: 'no-groups-evaluated-the-found-articles' as const }),
-    (foundGroups) => ({
-      tag: 'some-related-groups' as const,
-      items: pipe(
-        foundGroups,
-        RA.map((foundGroup) => ({
-          groupPageHref: `/groups/${foundGroup.slug}`,
-          groupName: foundGroup.name,
-        })),
-      ),
-    }),
-  ),
-);
 
 const toFullPageViewModelForGroupsCategory = (
   state: LimitedSet,
