@@ -85,12 +85,6 @@ describe('construct-related-groups', () => {
     TE.getOrElse(shouldNotBeCalled),
   )();
 
-  const getArticleCategoryViewModelForASinglePage = async (
-    articleIds: ReadonlyArray<Doi>,
-  ) => getArticleCategoryViewModel(
-    searchForArticlesReturningResults(articleIds, 1, O.none),
-  );
-
   const getArticleCategoryViewModelWithAdditionalPages = async (
     articleId: Doi,
     cursorValue: string,
@@ -192,13 +186,14 @@ describe('construct-related-groups', () => {
 
   describe('and there is only one page of results, with no evaluated articles', () => {
     const articleId = arbitraryDoi();
+    let relatedGroups: ArticlesCategoryViewModel['relatedGroups'];
 
-    beforeEach(async () => {
-      result = await getArticleCategoryViewModelForASinglePage([articleId]);
+    beforeEach(() => {
+      relatedGroups = constructRelatedGroups(defaultDependencies)([articleId]);
     });
 
     it('no related groups are displayed', () => {
-      expect(result.relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
+      expect(relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
     });
   });
 
