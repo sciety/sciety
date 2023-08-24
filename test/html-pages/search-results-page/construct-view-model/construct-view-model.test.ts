@@ -275,6 +275,10 @@ describe('construct-view-model', () => {
       it('the total number of pages is displayed', () => {
         expect(result.numberOfPages).toBe(2);
       });
+
+      it('no related groups are displayed', () => {
+        expect(result.relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
+      });
     });
 
     describe('but there are no results', () => {
@@ -296,6 +300,10 @@ describe('construct-view-model', () => {
 
       it('the state of the filter for evaluated articles is displayed', () => {
         expect(result.evaluatedOnly).toBe(false);
+      });
+
+      it('no related groups are displayed', () => {
+        expect(result.relatedGroups.tag).toBe('no-groups-evaluated-the-found-articles');
       });
     });
   });
