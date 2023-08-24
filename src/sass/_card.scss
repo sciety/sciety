@@ -1,5 +1,6 @@
 @use 'breakpoints';
 @use 'functions';
+@use 'layout';
 @use 'list';
 @use 'settings';
 @use 'typography';
@@ -92,19 +93,9 @@ $_card-border-radius: settings.$border-radius;
   }
 }
 
-@mixin _allow-full-width-card-borders-when-narrow() {
-  margin-left: settings.$default-gutter * -1;
-  margin-right: settings.$default-gutter * -1;
-
-  @include breakpoints.not-narrow {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
 .card-list {
   @include list();
-  @include _allow-full-width-card-borders-when-narrow();
+  @include layout.allow-full-width-card-borders-when-narrow();
 }
 
 @mixin avatar() {
