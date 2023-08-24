@@ -13,6 +13,7 @@ import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { Doi } from '../../../../src/types/doi';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
 
 const isSomeRelatedGroups = (value: ArticlesCategoryViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
@@ -104,8 +105,8 @@ describe('construct-related-groups', () => {
   );
 
   const findNamesOfRelatedGroups = async (articleIds: ReadonlyArray<Doi>) => pipe(
-    await getArticleCategoryViewModelForASinglePage(articleIds),
-    (viewModel) => viewModel.relatedGroups,
+    articleIds,
+    constructRelatedGroups(defaultDependencies),
     ensureThereAreSomeRelatedGroups,
     (someRelatedGroups) => someRelatedGroups.items,
     RA.map((item) => item.groupName),
