@@ -10,7 +10,6 @@
 @use 'local-settings';
 
 .article-actions {
-  @include layout.page-content-horizontal-margins();
   @include layout.column-two();
   margin-bottom: local-settings.$component-vertical-spacing;
 
