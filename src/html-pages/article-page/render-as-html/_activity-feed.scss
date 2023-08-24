@@ -9,10 +9,12 @@
 @use '../../../sass/typography';
 
 .activity-feed__header {
+  @include layout.page-content-horizontal-margins();
 }
 
 .activity-feed__list {
   @include card.list();
+  @include layout.allow-full-width-card-borders-when-narrow();
 
   p:last-child {
     margin-bottom: 0;
