@@ -55,7 +55,3 @@ $_common-space-beneath: 0.5rem;
     margin-right: 1rem;
   }
 }
-
-.search-results__footer {
-  @include layout.page-content-horizontal-margins();
-}
