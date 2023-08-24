@@ -40,18 +40,19 @@ describe('construct-view-model', () => {
     const evaluatedOnly = O.none;
 
     const searchForArticlesReturningResults = (
-      articleId: Doi,
+      articleIds: ReadonlyArray<Doi>,
       total: number,
       nextCursor: O.Option<string>,
     ) => () => () => TE.right({
-      items: [
-        {
+      items: pipe(
+        articleIds,
+        RA.map((articleId) => ({
           articleId,
           server: arbitraryArticleServer(),
           title: arbitrarySanitisedHtmlFragment(),
           authors: O.none,
-        },
-      ],
+        })),
+      ),
       total,
       nextCursor,
     });
@@ -82,9 +83,9 @@ describe('construct-view-model', () => {
     )();
 
     const getArticleCategoryViewModelForASinglePage = async (
-      articleId: Doi,
+      articleIds: ReadonlyArray<Doi>,
     ) => getArticleCategoryViewModel(
-      searchForArticlesReturningResults(articleId, 1, O.none),
+      searchForArticlesReturningResults(articleIds, 1, O.none),
     );
 
     const getArticleCategoryViewModelWithAdditionalPages = async (
@@ -92,7 +93,7 @@ describe('construct-view-model', () => {
       cursorValue: string,
       itemsPerPage: number,
     ) => getArticleCategoryViewModel(
-      searchForArticlesReturningResults(articleId, 2, O.some(cursorValue)),
+      searchForArticlesReturningResults([articleId], 2, O.some(cursorValue)),
       itemsPerPage,
     );
 
@@ -100,8 +101,8 @@ describe('construct-view-model', () => {
       searchForArticlesReturningNoResults,
     );
 
-    const findNamesOfRelatedGroups = async (articleId: Doi) => pipe(
-      await getArticleCategoryViewModelForASinglePage(articleId),
+    const findNamesOfRelatedGroups = async (articleIds: ReadonlyArray<Doi>) => pipe(
+      await getArticleCategoryViewModelForASinglePage(articleIds),
       (viewModel) => viewModel.relatedGroups,
       ensureThereAreSomeRelatedGroups,
       (someRelatedGroups) => someRelatedGroups.items,
@@ -127,7 +128,7 @@ describe('construct-view-model', () => {
           articleId,
           groupId: addGroup2Command.groupId,
         });
-        groupNames = await findNamesOfRelatedGroups(articleId);
+        groupNames = await findNamesOfRelatedGroups([articleId]);
       });
 
       it('displays the evaluating groups as being related', () => {
@@ -152,7 +153,7 @@ describe('construct-view-model', () => {
           articleId,
           groupId: addGroup1Command.groupId,
         });
-        groupNames = await findNamesOfRelatedGroups(articleId);
+        groupNames = await findNamesOfRelatedGroups([articleId]);
       });
 
       it('displays the evaluating group once as being related', () => {
@@ -164,7 +165,7 @@ describe('construct-view-model', () => {
       const articleId = arbitraryDoi();
 
       beforeEach(async () => {
-        result = await getArticleCategoryViewModelForASinglePage(articleId);
+        result = await getArticleCategoryViewModelForASinglePage([articleId]);
       });
 
       it('all article cards are included in the view model', () => {
