@@ -10,7 +10,6 @@
 
 .tab-list {
   @include list.basics();
-  @include layout.page-content-horizontal-margins();
   border-bottom: 2px solid transparent;
   margin-bottom: 0;
 }
