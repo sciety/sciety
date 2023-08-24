@@ -14,19 +14,21 @@
   margin-bottom: local-settings.$component-vertical-spacing;
 }
 
-.article-page-header-wrapper--with-curation-statements {
-  @include layout.allow-edge-to-edge-content-when-narrow();
+@mixin _apply-page-gutter-as-padding() {
   padding-left: settings.$default-gutter;
   padding-right: settings.$default-gutter;
-
-  padding-bottom: local-settings.$component-vertical-spacing;
-  background-color: settings.$colour-background-grey;
 
   @include breakpoints.not-narrow() {
     padding-left: 0;
     padding-right: 0;
-
   }
+}
+
+.article-page-header-wrapper--with-curation-statements {
+  @include layout.allow-edge-to-edge-content-when-narrow();
+  @include _apply-page-gutter-as-padding();
+  padding-bottom: local-settings.$component-vertical-spacing;
+  background-color: settings.$colour-background-grey;
 }
 
 .page-header.page-header--article {
