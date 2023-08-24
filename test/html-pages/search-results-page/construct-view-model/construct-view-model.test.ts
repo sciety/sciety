@@ -136,6 +136,32 @@ describe('construct-view-model', () => {
       });
     });
 
+    describe('and there is a page of results, containing two evaluated articles, each evaluated once by the same group', () => {
+      const articleId1 = arbitraryDoi();
+      const articleId2 = arbitraryDoi();
+      let groupNames: ReadonlyArray<string>;
+      const addGroup1Command = arbitraryAddGroupCommand();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.addGroup(addGroup1Command);
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId1,
+          groupId: addGroup1Command.groupId,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId2,
+          groupId: addGroup1Command.groupId,
+        });
+        groupNames = await findNamesOfRelatedGroups([articleId1, articleId2]);
+      });
+
+      it('displays the evaluating group once as being related', () => {
+        expect(groupNames).toStrictEqual([addGroup1Command.name]);
+      });
+    });
+
     describe('and there is a page of results, containing an evaluated article, evaluated twice by the same group', () => {
       const articleId = arbitraryDoi();
       let groupNames: ReadonlyArray<string>;
