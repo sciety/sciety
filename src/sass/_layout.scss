@@ -34,7 +34,7 @@
   }
 }
 
-@mixin allow-full-width-card-borders-when-narrow() {
+@mixin allow-edge-to-edge-content-when-narrow() {
   margin-left: settings.$default-gutter * -1;
   margin-right: settings.$default-gutter * -1;
 

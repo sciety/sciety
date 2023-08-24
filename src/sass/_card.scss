@@ -95,7 +95,7 @@ $_card-border-radius: settings.$border-radius;
 
 .card-list {
   @include list();
-  @include layout.allow-full-width-card-borders-when-narrow();
+  @include layout.allow-edge-to-edge-content-when-narrow();
 }
 
 @mixin avatar() {

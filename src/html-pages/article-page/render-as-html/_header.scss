@@ -1,6 +1,7 @@
 @use '../../../sass/breakpoints';
 @use '../../../sass/settings';
 @use '../../../sass/functions';
+@use '../../../sass/layout';
 @use '../../../sass/list';
 
 @use 'local-settings';
@@ -14,8 +15,18 @@
 }
 
 .article-page-header-wrapper--with-curation-statements {
-  background-color: settings.$colour-background-grey;
+  @include layout.allow-edge-to-edge-content-when-narrow();
+  padding-left: settings.$default-gutter;
+  padding-right: settings.$default-gutter;
+
   padding-bottom: local-settings.$component-vertical-spacing;
+  background-color: settings.$colour-background-grey;
+
+  @include breakpoints.not-narrow() {
+    padding-left: 0;
+    padding-right: 0;
+
+  }
 }
 
 .page-header.page-header--article {

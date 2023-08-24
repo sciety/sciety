@@ -10,7 +10,7 @@
 
 .activity-feed__list {
   @include card.list();
-  @include layout.allow-full-width-card-borders-when-narrow();
+  @include layout.allow-edge-to-edge-content-when-narrow();
 
   p:last-child {
     margin-bottom: 0;
