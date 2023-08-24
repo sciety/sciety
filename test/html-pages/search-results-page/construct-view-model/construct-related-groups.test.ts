@@ -26,7 +26,7 @@ describe('construct-related-groups', () => {
     defaultDependencies = framework.dependenciesForViews;
   });
 
-  const findNamesOfRelatedGroups = async (articleIds: ReadonlyArray<Doi>) => pipe(
+  const findNamesOfRelatedGroups = (articleIds: ReadonlyArray<Doi>) => pipe(
     articleIds,
     constructRelatedGroups(defaultDependencies),
     ensureThereAreSomeRelatedGroups,
@@ -34,7 +34,7 @@ describe('construct-related-groups', () => {
     RA.map((item) => item.groupName),
   );
 
-  describe('and there is a page of results, containing an evaluated article, evaluated once by two different groups', () => {
+  describe('when the results consist of one article evaluated once by two different groups', () => {
     const articleId = arbitraryDoi();
     let groupNames: ReadonlyArray<string>;
     const addGroup1Command = arbitraryAddGroupCommand();
@@ -61,58 +61,58 @@ describe('construct-related-groups', () => {
     });
   });
 
-  describe('and there is a page of results, containing two evaluated articles, each evaluated once by the same group', () => {
+  describe('when the results consist of two articles that have been evaluated once by the same group', () => {
     const articleId1 = arbitraryDoi();
     const articleId2 = arbitraryDoi();
     let groupNames: ReadonlyArray<string>;
-    const addGroup1Command = arbitraryAddGroupCommand();
+    const addGroupCommand = arbitraryAddGroupCommand();
 
     beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroup1Command);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: articleId1,
-        groupId: addGroup1Command.groupId,
+        groupId: addGroupCommand.groupId,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: articleId2,
-        groupId: addGroup1Command.groupId,
+        groupId: addGroupCommand.groupId,
       });
       groupNames = await findNamesOfRelatedGroups([articleId1, articleId2]);
     });
 
     it('displays the evaluating group once as being related', () => {
-      expect(groupNames).toStrictEqual([addGroup1Command.name]);
+      expect(groupNames).toStrictEqual([addGroupCommand.name]);
     });
   });
 
-  describe('and there is a page of results, containing an evaluated article, evaluated twice by the same group', () => {
+  describe('when the results consist of an article that has been evaluated twice by the same group', () => {
     const articleId = arbitraryDoi();
     let groupNames: ReadonlyArray<string>;
-    const addGroup1Command = arbitraryAddGroupCommand();
+    const addGroupCommand = arbitraryAddGroupCommand();
 
     beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroup1Command);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId,
-        groupId: addGroup1Command.groupId,
+        groupId: addGroupCommand.groupId,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId,
-        groupId: addGroup1Command.groupId,
+        groupId: addGroupCommand.groupId,
       });
       groupNames = await findNamesOfRelatedGroups([articleId]);
     });
 
     it('displays the evaluating group once as being related', () => {
-      expect(groupNames).toStrictEqual([addGroup1Command.name]);
+      expect(groupNames).toStrictEqual([addGroupCommand.name]);
     });
   });
 
-  describe('and there are results, with no evaluated articles', () => {
+  describe('when there are results, with no evaluated articles', () => {
     const articleId = arbitraryDoi();
     let relatedGroups: ArticlesCategoryViewModel['relatedGroups'];
 
@@ -125,7 +125,7 @@ describe('construct-related-groups', () => {
     });
   });
 
-  describe('and there are no results', () => {
+  describe('when there are no results', () => {
     let relatedGroups: ArticlesCategoryViewModel['relatedGroups'];
 
     beforeEach(async () => {
