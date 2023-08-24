@@ -1,6 +1,6 @@
 import { toHtmlFragment } from '../../../types/html-fragment';
 
-const staticMessage = (message: string) => toHtmlFragment(`<p class="articles-static-message">${message}</p>`);
+const staticMessage = (message: string) => toHtmlFragment(`<p>${message}</p>`);
 
 export const noArticlesMessageForReader = staticMessage(
   'This list is currently empty. Try coming back later!',
