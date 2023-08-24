@@ -14,6 +14,7 @@ import {
 import { Dependencies } from './dependencies';
 import { Group } from '../../../types/group';
 import { Doi } from '../../../types/doi';
+import * as GID from '../../../types/group-id';
 
 const constructItemCardViewModel = (
   dependencies: Dependencies,
@@ -48,22 +49,17 @@ type LimitedSetOfArticles = {
 
 export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => {
-  // step 1: get a list of evaluations for each article id
-  // step 2: get the group id for each evaluation
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const groupIds = pipe(
     articleIds,
     RA.flatMap(dependencies.getEvaluationsForDoi),
     RA.map((recordedEvaluation) => recordedEvaluation.groupId),
+    RA.uniq(GID.eq),
   );
-  // step 3: lookup a group from each group id
   const foundGroups: ReadonlyArray<Group> = pipe(
     groupIds,
     RA.map(dependencies.getGroup),
     RA.compact,
-    () => [],
   );
   if (foundGroups.length > 0) {
     return {

@@ -130,7 +130,7 @@ describe('construct-view-model', () => {
         groupNames = await findNamesOfRelatedGroups(articleId);
       });
 
-      it.skip('displays the evaluating groups as being related', () => {
+      it('displays the evaluating groups as being related', () => {
         expect(groupNames).toStrictEqual([addGroup1Command.name, addGroup2Command.name]);
       });
     });
@@ -155,8 +155,8 @@ describe('construct-view-model', () => {
         groupNames = await findNamesOfRelatedGroups(articleId);
       });
 
-      it.skip('displays the evaluating group once as being related', () => {
-        expect(groupNames).toBe([addGroup1Command.name]);
+      it('displays the evaluating group once as being related', () => {
+        expect(groupNames).toStrictEqual([addGroup1Command.name]);
       });
     });
 
