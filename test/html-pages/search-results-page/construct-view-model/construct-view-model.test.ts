@@ -13,6 +13,32 @@ import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { Doi } from '../../../../src/types/doi';
 
+const searchForArticlesReturningResults = (
+  articleIds: ReadonlyArray<Doi>,
+  total: number,
+  nextCursor: O.Option<string>,
+) => () => () => TE.right({
+  items: pipe(
+    articleIds,
+    RA.map((articleId) => ({
+      articleId,
+      server: arbitraryArticleServer(),
+      title: arbitrarySanitisedHtmlFragment(),
+      authors: O.none,
+    })),
+  ),
+  total,
+  nextCursor,
+});
+
+const searchForArticlesReturningNoResults = () => () => TE.right({
+  items: [],
+  total: 0,
+  nextCursor: O.none,
+});
+
+const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
+
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let defaultDependencies: TestFramework['dependenciesForViews'];
@@ -31,31 +57,6 @@ describe('construct-view-model', () => {
     const page = O.none;
     const evaluatedOnly = O.none;
 
-    const searchForArticlesReturningResults = (
-      articleIds: ReadonlyArray<Doi>,
-      total: number,
-      nextCursor: O.Option<string>,
-    ) => () => () => TE.right({
-      items: pipe(
-        articleIds,
-        RA.map((articleId) => ({
-          articleId,
-          server: arbitraryArticleServer(),
-          title: arbitrarySanitisedHtmlFragment(),
-          authors: O.none,
-        })),
-      ),
-      total,
-      nextCursor,
-    });
-
-    const searchForArticlesReturningNoResults = () => () => TE.right({
-      items: [],
-      total: 0,
-      nextCursor: O.none,
-    });
-
-    const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
     const getArticleCategoryViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
       {
         query, category, cursor, page, evaluatedOnly,
