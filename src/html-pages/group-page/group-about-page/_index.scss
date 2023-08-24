@@ -4,7 +4,6 @@
 @use '../../../sass/layout';
 
 .group-page-about {
-  @include layout.page-content-horizontal-margins();
   margin-bottom: 1.5rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
