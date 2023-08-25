@@ -11,6 +11,8 @@
 }
 
 .supplementary-info--sciety-feed {
+  @include layout.allow-edge-to-edge-content-when-narrow();
+
   @include breakpoints.not-narrow() {
     padding-top: functions.px-to-rem(30px);
   }
