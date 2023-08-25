@@ -37,6 +37,7 @@
 }
 
 .create-user-account-form {
+  @include layout.allow-edge-to-edge-content-when-narrow();
   @include card.basics();
 }
 
