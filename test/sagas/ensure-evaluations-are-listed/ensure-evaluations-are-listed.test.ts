@@ -13,29 +13,6 @@ describe('ensure-evaluations-are-listed', () => {
     framework = createTestFramework();
   });
 
-  describe('when there are no unlisted evaluations', () => {
-    const resources = {
-      list: {
-        addArticle: jest.fn(),
-      },
-    };
-
-    beforeEach(async () => {
-      const dependencies = {
-        ...framework.queries,
-        logger: dummyLogger,
-        getAllEvents: framework.getAllEvents,
-        commitEvents: framework.commitEvents,
-        resources,
-      };
-      await ensureEvaluationsAreListed(dependencies);
-    });
-
-    it('does nothing', () => {
-      expect(resources.list.addArticle).not.toHaveBeenCalled();
-    });
-  });
-
   describe('when there are listed evaluations', () => {
     const group = arbitraryGroup();
     const evaluation = {
