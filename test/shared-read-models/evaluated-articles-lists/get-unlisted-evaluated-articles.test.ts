@@ -52,7 +52,7 @@ describe('get-unlisted-evaluated-articles', () => {
       )();
       const expectedOutcome = shouldReport ? [
         {
-          articleId,
+          articleId: articleId.value,
           listId,
         },
       ] : [];
