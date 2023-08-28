@@ -24,6 +24,8 @@ describe('ensure-evaluations-are-listed', () => {
       const dependencies = {
         ...framework.queries,
         logger: dummyLogger,
+        getAllEvents: framework.getAllEvents,
+        commitEvents: framework.commitEvents,
         resources,
       };
       await ensureEvaluationsAreListed(dependencies);
@@ -49,6 +51,8 @@ describe('ensure-evaluations-are-listed', () => {
 
       await ensureEvaluationsAreListed({
         ...framework.queries,
+        getAllEvents: framework.getAllEvents,
+        commitEvents: framework.commitEvents,
         logger: dummyLogger,
       });
 
