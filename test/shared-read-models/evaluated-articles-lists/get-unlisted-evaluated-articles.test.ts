@@ -44,15 +44,21 @@ describe('get-unlisted-evaluated-articles', () => {
       [[articleEvaluated, articleAdded, listIdentified], false],
       [[articleAdded, articleEvaluated, listIdentified], false],
       [[articleAdded, listIdentified, articleEvaluated], false],
-    ])('an article with lifecycle', (eventHistory, expectedOutcome) => {
-      it(`${summarise(eventHistory)} is${expectedOutcome ? '' : ' not'} listed as work for the saga`, () => {
-        const queryOutcome = pipe(
-          eventHistory,
-          RA.reduce(initialState(), handleEvent),
-          getUnlistedEvaluatedArticles,
-        )();
+    ])('an article with lifecycle', (eventHistory, shouldReport) => {
+      const queryOutcome = pipe(
+        eventHistory,
+        RA.reduce(initialState(), handleEvent),
+        getUnlistedEvaluatedArticles,
+      )();
+      const expectedOutcome = shouldReport ? [
+        {
+          articleId,
+          listId,
+        },
+      ] : [];
 
-        expect(queryOutcome.includes(articleId.value)).toStrictEqual(expectedOutcome);
+      it(`${summarise(eventHistory)} is${expectedOutcome ? '' : ' not'} listed as work for the saga`, () => {
+        expect(queryOutcome).toStrictEqual(expectedOutcome);
       });
     });
   });
