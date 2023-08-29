@@ -165,6 +165,13 @@
       ]
     },
     {
+      "label": "Create account form",
+      "url": "http://sciety_app/create-account-form",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "Site header",
       "url": "http://sciety_app/about",
       "selectors": [
