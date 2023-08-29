@@ -21,8 +21,10 @@ export const createUserAccountFormPageLayout = (user: O.Option<UserDetails>) => 
   <div class="create-user-account-form-page__container">
     ${siteHeader(user)}
 
-    <main id="mainContent" class="page-content create-user-account-form-page__main">
-      ${page.content}
+    <main id="mainContent" class="create-user-account-form-page__main">
+      <div class="page-content">
+        ${page.content}
+      </div>
     </main>
 
     ${siteFooter(user)}
