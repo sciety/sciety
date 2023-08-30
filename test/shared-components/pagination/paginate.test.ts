@@ -28,8 +28,7 @@ describe('paginate', () => {
       expect(result.items).toStrictEqual(['b']);
     });
 
-    it('returns the current and total pages', () => {
-      expect(result.pageNumber).toBe(2);
+    it('returns the total pages', () => {
       expect(result.numberOfPages).toBe(3);
     });
   });
@@ -52,7 +51,7 @@ describe('paginate', () => {
       [9, 1, O.none],
       [20, 2, O.none],
       [21, 3, O.none],
-    ])('given %d items and page %d is selected', (itemCount, page, nextPage) => {
+    ])('given %d items and page %d is the current page', (itemCount, page, nextPage) => {
       const result = pipe(
         generateItems(itemCount),
         paginate(itemsPerPage, page),
@@ -61,6 +60,10 @@ describe('paginate', () => {
 
       it(`returns ${itemCount} as the number of original items`, () => {
         expect(result.numberOfOriginalItems).toBe(itemCount);
+      });
+
+      it(`returns ${page} as the current page number`, () => {
+        expect(result.pageNumber).toBe(page);
       });
 
       it('returns no next page', () => {
@@ -72,7 +75,7 @@ describe('paginate', () => {
       [11, 1, 2],
       [20, 1, 2],
       [21, 2, 3],
-    ])('given %d items and page %d is selected', (itemCount, page, nextPage) => {
+    ])('given %d items and page %d is the current page', (itemCount, page, nextPage) => {
       const result = pipe(
         generateItems(itemCount),
         paginate(itemsPerPage, page),
@@ -81,6 +84,10 @@ describe('paginate', () => {
 
       it(`returns ${itemCount} as the number of original items`, () => {
         expect(result.numberOfOriginalItems).toBe(itemCount);
+      });
+
+      it(`returns ${page} as the current page number`, () => {
+        expect(result.pageNumber).toBe(page);
       });
 
       it(`returns ${nextPage} as the next page`, () => {
