@@ -26,12 +26,14 @@ type SelectedPage = {
   nextPageHref: OrderedArticleCards['nextPageHref'],
 };
 
+const generateHref = (groupSlug: string) => (page: number) => `/groups/${groupSlug}/feed?page=${page}`;
+
 const buildSelectedPage = (groupSlug: string) => (pageOfItems: PageOfItems<string>) => ({
   articleIds: pageOfItems.items,
   prevPageHref: O.none,
   nextPageHref: pipe(
     pageOfItems.nextPage,
-    O.map((nextPage) => `/groups/${groupSlug}/feed?page=${nextPage}`),
+    O.map(generateHref(groupSlug)),
   ),
 });
 
