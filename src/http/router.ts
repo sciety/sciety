@@ -75,7 +75,7 @@ import { applicationStatus } from '../views/status';
 import { listFeed } from '../views/list/list-feed';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
-import { styleGuidePage } from '../html-pages/style-guide-page/style-guide-page';
+import { styleGuidePage } from '../html-pages/style-guide-page';
 
 type Config = AuthenticationRoutesConfig;
 
