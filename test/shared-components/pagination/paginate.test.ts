@@ -32,10 +32,6 @@ describe('paginate', () => {
       expect(result.pageNumber).toBe(2);
       expect(result.numberOfPages).toBe(3);
     });
-
-    it('returns the count of original items', () => {
-      expect(result.numberOfOriginalItems).toBe(3);
-    });
   });
 
   describe('when there are no items', () => {
@@ -49,40 +45,46 @@ describe('paginate', () => {
     });
   });
 
-  describe('next page', () => {
-    describe('when paginating with 10 items per page', () => {
-      const itemsPerPage = 10;
+  describe('when paginating with 10 items per page', () => {
+    const itemsPerPage = 10;
 
-      describe.each([
-        [9, 1, O.none],
-        [20, 2, O.none],
-        [21, 3, O.none],
-      ])('given %d items and page %d is selected', (itemCount, page, nextPage) => {
-        const result = pipe(
-          generateItems(itemCount),
-          paginate(itemsPerPage, page),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+    describe.each([
+      [9, 1, O.none],
+      [20, 2, O.none],
+      [21, 3, O.none],
+    ])('given %d items and page %d is selected', (itemCount, page, nextPage) => {
+      const result = pipe(
+        generateItems(itemCount),
+        paginate(itemsPerPage, page),
+        E.getOrElseW(shouldNotBeCalled),
+      );
 
-        it('returns none', () => {
-          expect(result.nextPage).toStrictEqual(nextPage);
-        });
+      it(`returns ${itemCount} as the number of original items`, () => {
+        expect(result.numberOfOriginalItems).toBe(itemCount);
       });
 
-      describe.each([
-        [11, 1, 2],
-        [20, 1, 2],
-        [21, 2, 3],
-      ])('given %d items and page %d is selected', (itemCount, page, nextPage) => {
-        const result = pipe(
-          generateItems(itemCount),
-          paginate(itemsPerPage, page),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+      it('returns no next page', () => {
+        expect(result.nextPage).toStrictEqual(nextPage);
+      });
+    });
 
-        it(`returns ${nextPage}`, () => {
-          expect(result.nextPage).toStrictEqual(O.some(nextPage));
-        });
+    describe.each([
+      [11, 1, 2],
+      [20, 1, 2],
+      [21, 2, 3],
+    ])('given %d items and page %d is selected', (itemCount, page, nextPage) => {
+      const result = pipe(
+        generateItems(itemCount),
+        paginate(itemsPerPage, page),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
+      it(`returns ${itemCount} as the number of original items`, () => {
+        expect(result.numberOfOriginalItems).toBe(itemCount);
+      });
+
+      it(`returns ${nextPage} as the next page`, () => {
+        expect(result.nextPage).toStrictEqual(O.some(nextPage));
       });
     });
   });
