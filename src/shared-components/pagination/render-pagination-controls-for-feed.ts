@@ -11,7 +11,7 @@ export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragm
   O.fold(
     () => '',
     (url) => `<div class="pagination-controls">
-      <a href="${url}" class="pagination-controls__next_link">Older<span aria-hidden="true"> -&gt;</span></a>
+      <a href="${url}" class="pagination-controls__next_link">Older<span aria-hidden="true"> →</span></a>
     </div>`,
   ),
   toHtmlFragment,
