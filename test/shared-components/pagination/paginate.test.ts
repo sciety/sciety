@@ -50,21 +50,36 @@ describe('paginate', () => {
   });
 
   describe('next page', () => {
-    it.each([
-      [9, 1, O.none],
-      [11, 1, O.some(2)],
-      [20, 1, O.some(2)],
-      [20, 2, O.none],
-      [21, 2, O.some(3)],
-      [21, 3, O.none],
-    ])('given %d items and a request for page %d, returns the next page', (itemCount, page, nextPage) => {
-      const result = pipe(
-        generateItems(itemCount),
-        paginate(10, page),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+    describe('when paginating with 10 items per page', () => {
+      const itemsPerPage = 10;
 
-      expect(result.nextPage).toStrictEqual(nextPage);
+      it.each([
+        [9, 1, O.none],
+        [20, 2, O.none],
+        [21, 3, O.none],
+      ])('given %d items and a request for page %d, there is no next page', (itemCount, page, nextPage) => {
+        const result = pipe(
+          generateItems(itemCount),
+          paginate(itemsPerPage, page),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+
+        expect(result.nextPage).toStrictEqual(nextPage);
+      });
+
+      it.each([
+        [11, 1, O.some(2)],
+        [20, 1, O.some(2)],
+        [21, 2, O.some(3)],
+      ])('given %d items and a request for page %d, returns the next page', (itemCount, page, nextPage) => {
+        const result = pipe(
+          generateItems(itemCount),
+          paginate(itemsPerPage, page),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+
+        expect(result.nextPage).toStrictEqual(nextPage);
+      });
     });
   });
 
