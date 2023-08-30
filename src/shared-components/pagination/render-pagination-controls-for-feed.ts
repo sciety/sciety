@@ -18,6 +18,16 @@ const renderOlderLink = (viewModel: ViewModel) => pipe(
   O.map(toHtmlFragment),
 );
 
+const renderNewerLink = (viewModel: ViewModel) => pipe(
+  viewModel.prevPageHref,
+  O.map(
+    (url) => `
+      <a href="${url}" class="pagination-controls__next_link"><span aria-hidden="true">← </span>Newer</a>
+    `,
+  ),
+  O.map(toHtmlFragment),
+);
+
 type PaginationLinks = ReadonlyArray<O.Option<HtmlFragment>>;
 
 const renderPaginationControlsDiv = (paginationLinks: PaginationLinks) => pipe(
@@ -37,7 +47,7 @@ const renderPaginationControlsDiv = (paginationLinks: PaginationLinks) => pipe(
 export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
   [
     renderOlderLink(viewModel),
-    O.none,
+    renderNewerLink(viewModel),
   ],
   renderPaginationControlsDiv,
   toHtmlFragment,
