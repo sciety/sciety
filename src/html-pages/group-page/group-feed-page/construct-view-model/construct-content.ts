@@ -22,11 +22,13 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
 
 type SelectedPage = {
   articleIds: ReadonlyArray<string>,
+  prevPageHref: OrderedArticleCards['prevPageHref'],
   nextPageHref: OrderedArticleCards['nextPageHref'],
 };
 
 const buildSelectedPage = (groupSlug: string) => (pageOfItems: PageOfItems<string>) => ({
   articleIds: pageOfItems.items,
+  prevPageHref: O.none,
   nextPageHref: pipe(
     pageOfItems.nextPage,
     O.map((nextPage) => `/groups/${groupSlug}/feed?page=${nextPage}`),
@@ -43,7 +45,7 @@ const toOrderedArticleCards = (
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,
-    prevPageHref: O.none,
+    prevPageHref: selectedPage.prevPageHref,
     nextPageHref: selectedPage.nextPageHref,
   })),
 );
