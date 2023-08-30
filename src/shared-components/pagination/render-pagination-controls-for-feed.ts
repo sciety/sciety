@@ -18,6 +18,7 @@ const renderOlderLink = (viewModel: ViewModel) => pipe(
 
 type PaginationLinks = {
   olderLink: O.Option<HtmlFragment>,
+  newerLink: O.Option<HtmlFragment>,
 };
 
 const renderPaginationControlsDiv = (paginationLinks: PaginationLinks) => pipe(
@@ -33,6 +34,7 @@ const renderPaginationControlsDiv = (paginationLinks: PaginationLinks) => pipe(
 export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
   {
     olderLink: renderOlderLink(viewModel),
+    newerLink: O.none,
   },
   renderPaginationControlsDiv,
   toHtmlFragment,
