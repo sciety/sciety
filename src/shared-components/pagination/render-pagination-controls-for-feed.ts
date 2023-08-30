@@ -6,13 +6,29 @@ export type ViewModel = {
   nextPageHref: O.Option<string>,
 };
 
-export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
+const renderOlderLink = (viewModel: ViewModel) => pipe(
   viewModel.nextPageHref,
+  O.map(
+    (url) => `
+      <a href="${url}" class="pagination-controls__next_link">Older<span aria-hidden="true"> →</span></a>
+    `,
+  ),
+  O.map(toHtmlFragment),
+);
+
+const renderPaginationControlsDiv = (olderLink: O.Option<HtmlFragment>) => pipe(
+  olderLink,
   O.fold(
     () => '',
-    (url) => `<div class="pagination-controls">
-      <a href="${url}" class="pagination-controls__next_link">Older<span aria-hidden="true"> →</span></a>
+    (link) => `<div class="pagination-controls">
+      ${link}
     </div>`,
   ),
+);
+
+export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
+  viewModel,
+  renderOlderLink,
+  renderPaginationControlsDiv,
   toHtmlFragment,
 );
