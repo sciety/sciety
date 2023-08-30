@@ -6,7 +6,7 @@ import { templateListItems } from '../../../../shared-components/list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderArticleCard } from '../../../../shared-components/article-card';
 import { ViewModel } from '../view-model';
-import { PaginationControlsViewModel, renderPaginationControls } from '../../../../shared-components/pagination';
+import { PaginationControlsViewModel, renderPaginationControlsForFeed } from '../../../../shared-components/pagination';
 
 const renderCards = (
   paginationControlsViewModel: PaginationControlsViewModel,
@@ -21,7 +21,7 @@ const renderCards = (
         ${listContent}
       </ol>
     </section>
-    ${renderPaginationControls(paginationControlsViewModel)}
+    ${renderPaginationControlsForFeed(paginationControlsViewModel)}
   `,
   toHtmlFragment,
 );
