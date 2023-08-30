@@ -53,32 +53,36 @@ describe('paginate', () => {
     describe('when paginating with 10 items per page', () => {
       const itemsPerPage = 10;
 
-      it.each([
+      describe.each([
         [9, 1, O.none],
         [20, 2, O.none],
         [21, 3, O.none],
-      ])('given %d items and a request for page %d, there is no next page', (itemCount, page, nextPage) => {
+      ])('given %d items and page %d is selected', (itemCount, page, nextPage) => {
         const result = pipe(
           generateItems(itemCount),
           paginate(itemsPerPage, page),
           E.getOrElseW(shouldNotBeCalled),
         );
 
-        expect(result.nextPage).toStrictEqual(nextPage);
+        it('returns none', () => {
+          expect(result.nextPage).toStrictEqual(nextPage);
+        });
       });
 
-      it.each([
-        [11, 1, O.some(2)],
-        [20, 1, O.some(2)],
-        [21, 2, O.some(3)],
-      ])('given %d items and a request for page %d, returns the next page', (itemCount, page, nextPage) => {
+      describe.each([
+        [11, 1, 2],
+        [20, 1, 2],
+        [21, 2, 3],
+      ])('given %d items and page %d is selected', (itemCount, page, nextPage) => {
         const result = pipe(
           generateItems(itemCount),
           paginate(itemsPerPage, page),
           E.getOrElseW(shouldNotBeCalled),
         );
 
-        expect(result.nextPage).toStrictEqual(nextPage);
+        it(`returns ${nextPage}`, () => {
+          expect(result.nextPage).toStrictEqual(O.some(nextPage));
+        });
       });
     });
   });
