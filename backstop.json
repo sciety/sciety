@@ -199,6 +199,13 @@
     {
       "label": "Standard page layout, groups page",
       "url": "http://sciety_app/groups"
+    },
+    {
+      "label": "Style guide",
+      "url": "http://sciety_app/style-guide",
+      "selectors": [
+        "main"
+      ]
     }
   ],
   "paths": {
