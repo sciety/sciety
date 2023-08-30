@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type ViewModel = {
+  prevPageHref: O.Option<string>,
   nextPageHref: O.Option<string>,
 };
 

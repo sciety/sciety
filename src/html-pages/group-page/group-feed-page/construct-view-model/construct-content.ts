@@ -40,7 +40,12 @@ const toOrderedArticleCards = (
 ) => pipe(
   selectedPage.articleIds,
   T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
-  T.map((articleCards) => ({ tag: 'ordered-article-cards' as const, articleCards, nextPageHref: selectedPage.nextPageHref })),
+  T.map((articleCards) => ({
+    tag: 'ordered-article-cards' as const,
+    articleCards,
+    prevPageHref: O.none,
+    nextPageHref: selectedPage.nextPageHref,
+  })),
 );
 
 const toPageOfFeedContent = (

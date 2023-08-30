@@ -10,6 +10,7 @@ export const styleGuidePage: Page = {
       <h1>Style guide</h1>
     </header>
     <h2>Pagination controls for feed</h2>
-    ${renderPaginationControlsForFeed({ nextPageHref: O.some('/foo') })}
+    <h3>With a link only to older content</h3>
+    ${renderPaginationControlsForFeed({ prevPageHref: O.none, nextPageHref: O.some('/foo') })}
   `),
 };
