@@ -30,7 +30,10 @@ const generateHref = (groupSlug: string) => (page: number) => `/groups/${groupSl
 
 const buildSelectedPage = (groupSlug: string) => (pageOfItems: PageOfItems<string>) => ({
   articleIds: pageOfItems.items,
-  prevPageHref: O.none,
+  prevPageHref: pipe(
+    pageOfItems.prevPage,
+    O.map(generateHref(groupSlug)),
+  ),
   nextPageHref: pipe(
     pageOfItems.nextPage,
     O.map(generateHref(groupSlug)),
