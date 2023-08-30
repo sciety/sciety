@@ -16,6 +16,7 @@ export const paginate = (
   RA.matchW(
     () => E.right({
       items: [] as ReadonlyArray<Follower>,
+      prevPage: O.none,
       nextPage: O.none,
       pageNumber: 1,
       numberOfPages: 0,

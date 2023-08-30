@@ -93,6 +93,7 @@ describe('paginate', () => {
         items: [],
         pageNumber: 1,
         numberOfPages: 0,
+        prevPage: O.none,
         nextPage: O.none,
         numberOfOriginalItems: 0,
       });

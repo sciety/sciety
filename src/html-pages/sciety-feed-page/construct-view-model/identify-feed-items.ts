@@ -22,6 +22,7 @@ export const identifyFeedItems: IdentifyFeedItems = (pageSize, page) => flow(
   RA.match(
     () => E.right({
       items: [],
+      prevPage: O.none,
       nextPage: O.none,
       pageNumber: 1,
       numberOfPages: 1,
