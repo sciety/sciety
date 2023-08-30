@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type ViewModel = {
@@ -16,26 +17,27 @@ const renderOlderLink = (viewModel: ViewModel) => pipe(
   O.map(toHtmlFragment),
 );
 
-type PaginationLinks = {
-  olderLink: O.Option<HtmlFragment>,
-  newerLink: O.Option<HtmlFragment>,
-};
+type PaginationLinks = ReadonlyArray<O.Option<HtmlFragment>>;
 
 const renderPaginationControlsDiv = (paginationLinks: PaginationLinks) => pipe(
-  paginationLinks.olderLink,
-  O.fold(
+  paginationLinks,
+  RA.compact,
+  RA.match(
     () => '',
-    (link) => `<div class="pagination-controls">
-      ${link}
+    (links) => pipe(
+      links.join(''),
+      (content) => `<div class="pagination-controls">
+      ${content}
     </div>`,
+    ),
   ),
 );
 
 export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
-  {
-    olderLink: renderOlderLink(viewModel),
-    newerLink: O.none,
-  },
+  [
+    renderOlderLink(viewModel),
+    O.none,
+  ],
   renderPaginationControlsDiv,
   toHtmlFragment,
 );
