@@ -16,8 +16,12 @@ const renderOlderLink = (viewModel: ViewModel) => pipe(
   O.map(toHtmlFragment),
 );
 
-const renderPaginationControlsDiv = (links: { olderLink: O.Option<HtmlFragment> }) => pipe(
-  links.olderLink,
+type PaginationLinks = {
+  olderLink: O.Option<HtmlFragment>,
+};
+
+const renderPaginationControlsDiv = (paginationLinks: PaginationLinks) => pipe(
+  paginationLinks.olderLink,
   O.fold(
     () => '',
     (link) => `<div class="pagination-controls">
