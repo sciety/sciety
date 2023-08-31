@@ -32,7 +32,7 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.tabs),
-  activeTabIndex: 2,
+  activeTabIndex: 3,
 });
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(

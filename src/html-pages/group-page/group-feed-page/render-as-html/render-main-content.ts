@@ -7,7 +7,7 @@ import { renderListOfArticleCardsWithFallback } from './render-list-of-article-c
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.tabs),
-  activeTabIndex: 3,
+  activeTabIndex: 0,
 });
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(

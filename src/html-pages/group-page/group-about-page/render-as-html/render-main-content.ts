@@ -8,7 +8,7 @@ import { renderDescription } from './render-description';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.tabs),
-  activeTabIndex: 1,
+  activeTabIndex: 2,
 });
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
