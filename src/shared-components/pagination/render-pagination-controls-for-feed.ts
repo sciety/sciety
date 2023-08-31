@@ -27,7 +27,9 @@ const renderNewerLink = (viewModel: ViewModel) => pipe(
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const renderPageCount = (viewModel: ViewModel) => O.none;
+const renderPageCount = (viewModel: ViewModel) => (process.env.EXPERIMENT_ENABLED === 'true'
+  ? O.some('')
+  : O.none);
 
 type PaginationLinks = ReadonlyArray<O.Option<string>>;
 
