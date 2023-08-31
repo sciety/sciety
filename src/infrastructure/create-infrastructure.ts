@@ -14,16 +14,13 @@ import {
 } from './logger';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
-import {
-  DomainEvent, sort as sortEvents,
-} from '../domain-events';
+import { sort as sortEvents } from '../domain-events';
 import {
   editListDetailsCommandHandler,
   createListCommandHandler,
   recordSubjectAreaCommandHandler,
   removeArticleFromListCommandHandler,
 } from '../write-side/command-handlers';
-import { executePolicies } from '../policies/execute-policies';
 import { instantiate } from '../third-parties/instantiate';
 import { createRedisClient } from './create-redis-client';
 
@@ -109,27 +106,9 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         removeArticleFromList: removeArticleFromListCommandHandler(commandHandlerAdapters),
       };
 
-      const policiesAdapters = {
-        ...queries,
-        ...externalQueries,
-        commitEvents: commitEventsWithoutListeners,
-        getAllEvents: collectedAdapters.getAllEvents,
-        logger: collectedAdapters.logger,
-        addArticleToList: collectedAdapters.addArticleToList,
-        removeArticleFromList: collectedAdapters.removeArticleFromList,
-        createList: collectedAdapters.createList,
-      };
-
       const allAdapters = {
         ...collectedAdapters,
-        commitEvents: (eventsToCommit: ReadonlyArray<DomainEvent>) => pipe(
-          eventsToCommit,
-          commitEventsWithoutListeners,
-          T.chainFirst(() => pipe(
-            eventsToCommit,
-            T.traverseArray(executePolicies(policiesAdapters)),
-          )),
-        ),
+        commitEvents: commitEventsWithoutListeners,
       };
 
       if (process.env.USE_STUB_ADAPTERS === 'true') {
