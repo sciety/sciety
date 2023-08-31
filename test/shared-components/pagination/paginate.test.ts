@@ -70,7 +70,7 @@ describe('paginate', () => {
         expect(result.nextPage).toStrictEqual(nextPage);
       });
 
-      it(`returns ${prevPage._tag} as prevPage`, () => {
+      it(`returns ${O.getOrElseW(() => 'none')(prevPage)} as prevPage`, () => {
         expect(result.prevPage).toStrictEqual(prevPage);
       });
     });
