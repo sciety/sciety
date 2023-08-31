@@ -8,12 +8,16 @@ import { ListId } from '../../types/list-id';
 
 const hasBeenEvaluated = (a: ArticleState): boolean => a.evaluatedBy.length > 0;
 
-const listsFromWhichTheArticleIsMissing = (groups: ReadModel['groups']) => (a: ArticleState) => pipe(
+const listsThatShouldContainTheArticle = (groupsToEvaluatedArticlesLists: ReadModel['groups']) => (a: ArticleState) => pipe(
   a.evaluatedBy,
-  RA.filter((groupId) => groups.has(groupId)),
-  RA.map((groupId) => groups.get(groupId)),
+  RA.map((groupId) => groupsToEvaluatedArticlesLists.get(groupId)),
   RA.map(O.fromNullable),
   RA.compact,
+);
+
+const listsFromWhichTheArticleIsMissing = (groupsToEvaluatedArticlesLists: ReadModel['groups']) => (a: ArticleState) => pipe(
+  a,
+  listsThatShouldContainTheArticle(groupsToEvaluatedArticlesLists),
   RA.filter((listId) => !a.listedIn.includes(listId)),
 );
 
