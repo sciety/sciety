@@ -15,10 +15,12 @@ const listsThatShouldContainTheArticle = (groupsToEvaluatedArticlesLists: ReadMo
   RA.compact,
 );
 
+const doesNotContainTheArticle = (a: ArticleState) => (listId: ListId) => !a.listedIn.includes(listId);
+
 const listsFromWhichTheArticleIsMissing = (groupsToEvaluatedArticlesLists: ReadModel['groups']) => (a: ArticleState) => pipe(
   a,
   listsThatShouldContainTheArticle(groupsToEvaluatedArticlesLists),
-  RA.filter((listId) => !a.listedIn.includes(listId)),
+  RA.filter(doesNotContainTheArticle(a)),
 );
 
 type MissingArticle = {
