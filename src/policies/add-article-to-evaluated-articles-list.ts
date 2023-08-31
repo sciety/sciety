@@ -37,7 +37,7 @@ export const constructCommand = (
     }),
   ),
 );
-
+// ts-unused-exports:disable-next-line
 export const addArticleToEvaluatedArticlesList = (ports: Ports) => (event: DomainEvent): T.Task<void> => pipe(
   event,
   E.fromPredicate(isEventOfType('EvaluationPublicationRecorded'), () => 'not-interesting-event' as const),
