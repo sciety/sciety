@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
-import { OrderedArticleCards, ViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { constructArticleCardViewModel } from '../../../../shared-components/article-card';
 import { GroupId } from '../../../../types/group-id';
 import * as DE from '../../../../types/data-error';
@@ -20,44 +20,29 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
   E.fromOption(() => DE.notFound),
 );
 
-type SelectedPage = {
-  articleIds: ReadonlyArray<string>,
-  prevPageHref: OrderedArticleCards['prevPageHref'],
-  nextPageHref: OrderedArticleCards['nextPageHref'],
-  page: number,
-  pageCount: number,
-};
-
 const generateHref = (groupSlug: string) => (page: number) => `/groups/${groupSlug}/feed?page=${page}`;
-
-const buildSelectedPage = (groupSlug: string) => (pageOfItems: PageOfItems<string>) => ({
-  articleIds: pageOfItems.items,
-  prevPageHref: pipe(
-    pageOfItems.prevPage,
-    O.map(generateHref(groupSlug)),
-  ),
-  nextPageHref: pipe(
-    pageOfItems.nextPage,
-    O.map(generateHref(groupSlug)),
-  ),
-  page: pageOfItems.pageNumber,
-  pageCount: pageOfItems.numberOfPages,
-});
 
 const toOrderedArticleCards = (
   dependencies: Dependencies,
+  groupSlug: string,
 ) => (
-  selectedPage: SelectedPage,
+  pageOfArticleIds: PageOfItems<string>,
 ) => pipe(
-  selectedPage.articleIds,
+  pageOfArticleIds.items,
   T.traverseArray((articleId) => constructArticleCardViewModel(dependencies)(new Doi(articleId))),
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,
-    prevPageHref: selectedPage.prevPageHref,
-    nextPageHref: selectedPage.nextPageHref,
-    page: selectedPage.page,
-    pageCount: selectedPage.pageCount,
+    prevPageHref: pipe(
+      pageOfArticleIds.prevPage,
+      O.map(generateHref(groupSlug)),
+    ),
+    nextPageHref: pipe(
+      pageOfArticleIds.nextPage,
+      O.map(generateHref(groupSlug)),
+    ),
+    page: pageOfArticleIds.pageNumber,
+    pageCount: pageOfArticleIds.numberOfPages,
   })),
 );
 
@@ -69,12 +54,11 @@ const toPageOfFeedContent = (
 ) => (articleIds: ReadonlyArray<string>) => pipe(
   articleIds,
   paginate(pageSize, page),
-  E.bimap(
+  E.mapLeft(
     () => ({ tag: 'no-activity-yet' as const }),
-    buildSelectedPage(groupSlug),
   ),
   TE.fromEither,
-  TE.chainTaskK(toOrderedArticleCards(dependencies)),
+  TE.chainTaskK(toOrderedArticleCards(dependencies, groupSlug)),
   TE.toUnion,
 );
 
