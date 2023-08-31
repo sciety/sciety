@@ -21,8 +21,8 @@ describe('ensure-evaluations-are-listed', () => {
     let listedArticleIds: ReadonlyArray<string>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
 
       await ensureEvaluationsAreListed({
         ...framework.queries,
