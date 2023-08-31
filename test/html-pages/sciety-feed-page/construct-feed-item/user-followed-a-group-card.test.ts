@@ -55,8 +55,8 @@ describe('user-followed-a-group-card', () => {
       expect(viewModel.date).toStrictEqual(date);
     });
 
-    it('links to the group page about tab', async () => {
-      expect(viewModel.linkUrl).toBe(`/groups/${group.slug}/about`);
+    it('links to the group page', async () => {
+      expect(viewModel.linkUrl).toBe(`/groups/${group.slug}`);
     });
 
     it('includes the group\'s name in the details title', () => {
@@ -88,8 +88,8 @@ describe('user-followed-a-group-card', () => {
       expect(viewModel.avatarUrl).toBe('/static/images/sciety-logo.jpg');
     });
 
-    it('links to the group page about tab', async () => {
-      expect(viewModel.linkUrl).toBe(`/groups/${group.slug}/about`);
+    it('links to the group page', async () => {
+      expect(viewModel.linkUrl).toBe(`/groups/${group.slug}`);
     });
 
     it('includes the group\'s name in the details title', () => {
