@@ -15,7 +15,6 @@ const renderOlderLink = (viewModel: ViewModel) => pipe(
       <a href="${url}" class="pagination-controls__next_link">Older<span aria-hidden="true"> →</span></a>
     `,
   ),
-  O.map(toHtmlFragment),
 );
 
 const renderNewerLink = (viewModel: ViewModel) => pipe(
@@ -25,10 +24,9 @@ const renderNewerLink = (viewModel: ViewModel) => pipe(
       <a href="${url}" class="pagination-controls__next_link"><span aria-hidden="true">← </span>Newer</a>
     `,
   ),
-  O.map(toHtmlFragment),
 );
 
-type PaginationLinks = ReadonlyArray<O.Option<HtmlFragment>>;
+type PaginationLinks = ReadonlyArray<O.Option<string>>;
 
 const toPaginationControls = (paginationLinks: PaginationLinks) => pipe(
   paginationLinks,
