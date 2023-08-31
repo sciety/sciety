@@ -11,10 +11,16 @@ export const styleGuidePage: Page = {
     </header>
     <h2>Pagination controls for feed</h2>
     <h3>With a link only to older content</h3>
-    ${renderPaginationControlsForFeed({ prevPageHref: O.none, nextPageHref: O.some('/foo'), page: 1 })}
+    ${renderPaginationControlsForFeed({
+    prevPageHref: O.none, nextPageHref: O.some('/foo'), page: 1, pageCount: 42,
+  })}
     <h3>With a link only to newer content</h3>
-    ${renderPaginationControlsForFeed({ prevPageHref: O.some('/foo'), nextPageHref: O.none, page: 1 })}
+    ${renderPaginationControlsForFeed({
+    prevPageHref: O.some('/foo'), nextPageHref: O.none, page: 2, pageCount: 2,
+  })}
     <h3>With links to newer and older content</h3>
-    ${renderPaginationControlsForFeed({ prevPageHref: O.some('/foo'), nextPageHref: O.some('/foo'), page: 1 })}
+    ${renderPaginationControlsForFeed({
+    prevPageHref: O.some('/foo'), nextPageHref: O.some('/foo'), page: 2, pageCount: 42,
+  })}
   `),
 };

@@ -7,6 +7,7 @@ export type ViewModel = {
   prevPageHref: O.Option<string>,
   nextPageHref: O.Option<string>,
   page: number,
+  pageCount: number,
 };
 
 const renderOlderLink = (viewModel: ViewModel) => pipe(
@@ -28,7 +29,7 @@ const renderNewerLink = (viewModel: ViewModel) => pipe(
 );
 
 const renderPageCount = (viewModel: ViewModel) => (process.env.EXPERIMENT_ENABLED === 'true'
-  ? O.some(`${viewModel.page}`)
+  ? O.some(`Page ${viewModel.page} of ${viewModel.pageCount}`)
   : O.none);
 
 type PaginationLinks = ReadonlyArray<O.Option<string>>;

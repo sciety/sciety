@@ -25,6 +25,7 @@ type SelectedPage = {
   prevPageHref: OrderedArticleCards['prevPageHref'],
   nextPageHref: OrderedArticleCards['nextPageHref'],
   page: number,
+  pageCount: number,
 };
 
 const generateHref = (groupSlug: string) => (page: number) => `/groups/${groupSlug}/feed?page=${page}`;
@@ -40,6 +41,7 @@ const buildSelectedPage = (groupSlug: string) => (pageOfItems: PageOfItems<strin
     O.map(generateHref(groupSlug)),
   ),
   page: pageOfItems.pageNumber,
+  pageCount: pageOfItems.numberOfPages,
 });
 
 const toOrderedArticleCards = (
@@ -55,6 +57,7 @@ const toOrderedArticleCards = (
     prevPageHref: selectedPage.prevPageHref,
     nextPageHref: selectedPage.nextPageHref,
     page: selectedPage.page,
+    pageCount: selectedPage.pageCount,
   })),
 );
 
