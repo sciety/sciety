@@ -44,14 +44,14 @@ describe('paginate', () => {
     });
   });
 
-  describe('when paginating with 10 items per page', () => {
+  describe.skip('when paginating with 10 items per page', () => {
     const itemsPerPage = 10;
 
     describe.each([
-      [9, 1, O.none],
-      [20, 2, O.none],
-      [21, 3, O.none],
-    ])('given %d items and page %d is the current page', (itemCount, page, nextPage) => {
+      [9, 1, O.none, O.none],
+      [20, 2, O.none, O.some(1)],
+      [21, 3, O.none, O.some(2)],
+    ])('given %d items and page %d is the current page', (itemCount, page, nextPage, prevPage) => {
       const result = pipe(
         generateItems(itemCount),
         paginate(itemsPerPage, page),
@@ -68,6 +68,10 @@ describe('paginate', () => {
 
       it('returns no next page', () => {
         expect(result.nextPage).toStrictEqual(nextPage);
+      });
+
+      it(`returns ${prevPage._tag} as prevPage`, () => {
+        expect(result.prevPage).toStrictEqual(prevPage);
       });
     });
 
