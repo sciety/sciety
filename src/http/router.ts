@@ -211,7 +211,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     '/groups/:slug',
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/groups/${context.params.slug}/about`);
+      context.redirect(`/groups/${context.params.slug}/feed`);
 
       await next();
     },
