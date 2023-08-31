@@ -26,6 +26,9 @@ const renderNewerLink = (viewModel: ViewModel) => pipe(
   ),
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const renderPageCount = (viewModel: ViewModel) => O.none;
+
 type PaginationLinks = ReadonlyArray<O.Option<string>>;
 
 const toPaginationControls = (paginationLinks: PaginationLinks) => pipe(
@@ -45,6 +48,7 @@ const toPaginationControls = (paginationLinks: PaginationLinks) => pipe(
 export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
   [
     renderNewerLink(viewModel),
+    renderPageCount(viewModel),
     renderOlderLink(viewModel),
   ],
   toPaginationControls,
