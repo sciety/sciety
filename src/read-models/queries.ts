@@ -7,7 +7,7 @@ import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { lists } from './lists';
 import { users } from './users';
-import { addArticleToElifeSubjectAreaList } from '../add-article-to-elife-subject-area-list/elife-subject-area-lists';
+import { addArticleToElifeSubjectAreaList } from './elife-subject-area-lists';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 
 const queries = {

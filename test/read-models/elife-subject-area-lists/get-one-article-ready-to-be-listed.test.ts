@@ -3,16 +3,16 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   handleEvent, initialState,
-} from '../../../src/add-article-to-elife-subject-area-list/elife-subject-area-lists/handle-event';
-import { getOneArticleReadyToBeListed } from '../../../src/add-article-to-elife-subject-area-list/elife-subject-area-lists/get-one-article-ready-to-be-listed';
+} from '../../../src/read-models/elife-subject-area-lists/handle-event';
+import { getOneArticleReadyToBeListed } from '../../../src/read-models/elife-subject-area-lists/get-one-article-ready-to-be-listed';
 import { constructEvent } from '../../../src/domain-events';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 import { arbitraryDate } from '../../helpers';
-import { getCorrespondingListId } from '../../../src/add-article-to-elife-subject-area-list/elife-subject-area-lists/get-corresponding-list-id';
-import { elifeGroupId } from '../../../src/add-article-to-elife-subject-area-list/elife-subject-area-lists/data';
+import { getCorrespondingListId } from '../../../src/read-models/elife-subject-area-lists/get-corresponding-list-id';
+import { elifeGroupId } from '../../../src/read-models/elife-subject-area-lists/data';
 
 describe('get-one-article-ready-to-be-listed', () => {
   describe('given a bunch of events', () => {
