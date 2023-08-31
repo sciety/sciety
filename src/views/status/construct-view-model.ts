@@ -1,4 +1,6 @@
 import { Json } from 'fp-ts/Json';
+import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { Queries } from '../../shared-read-models';
 
 export const constructViewModel = (queries: Queries): Json => ({
@@ -14,6 +16,12 @@ export const constructViewModel = (queries: Queries): Json => ({
   },
   sagaWorkQueues: {
     elifeArticleStates: queries.elifeArticleStatus(),
-    unlistedArticles: queries.getUnlistedEvaluatedArticles(),
+    unlistedArticles: pipe(
+      queries.getUnlistedEvaluatedArticles(),
+      RA.map((missingArticle) => ({
+        articleId: missingArticle.articleId.value,
+        listId: missingArticle.listId,
+      })),
+    ),
   },
 });
