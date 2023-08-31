@@ -24,6 +24,7 @@ type SelectedPage = {
   articleIds: ReadonlyArray<string>,
   prevPageHref: OrderedArticleCards['prevPageHref'],
   nextPageHref: OrderedArticleCards['nextPageHref'],
+  page: number,
 };
 
 const generateHref = (groupSlug: string) => (page: number) => `/groups/${groupSlug}/feed?page=${page}`;
@@ -38,6 +39,7 @@ const buildSelectedPage = (groupSlug: string) => (pageOfItems: PageOfItems<strin
     pageOfItems.nextPage,
     O.map(generateHref(groupSlug)),
   ),
+  page: pageOfItems.pageNumber,
 });
 
 const toOrderedArticleCards = (
@@ -52,6 +54,7 @@ const toOrderedArticleCards = (
     articleCards,
     prevPageHref: selectedPage.prevPageHref,
     nextPageHref: selectedPage.nextPageHref,
+    page: selectedPage.page,
   })),
 );
 

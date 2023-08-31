@@ -6,6 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 export type ViewModel = {
   prevPageHref: O.Option<string>,
   nextPageHref: O.Option<string>,
+  page: number,
 };
 
 const renderOlderLink = (viewModel: ViewModel) => pipe(
@@ -26,9 +27,8 @@ const renderNewerLink = (viewModel: ViewModel) => pipe(
   ),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderPageCount = (viewModel: ViewModel) => (process.env.EXPERIMENT_ENABLED === 'true'
-  ? O.some('')
+  ? O.some(`${viewModel.page}`)
   : O.none);
 
 type PaginationLinks = ReadonlyArray<O.Option<string>>;
