@@ -4,7 +4,7 @@ import { getOneArticleIdInEvaluatedState } from './get-one-article-id-in-evaluat
 import { getOneArticleReadyToBeListed } from './get-one-article-ready-to-be-listed';
 import { elifeArticleStatus } from './elife-article-status';
 
-export const addArticleToElifeSubjectAreaList = {
+export const elifeSubjectAreaLists = {
   queries: {
     elifeArticleStatus,
     getArticleIdsByState,

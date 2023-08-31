@@ -7,11 +7,11 @@ import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { lists } from './lists';
 import { users } from './users';
-import { addArticleToElifeSubjectAreaList } from './elife-subject-area-lists';
+import { elifeSubjectAreaLists } from './elife-subject-area-lists';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 
 const queries = {
-  ...addArticleToElifeSubjectAreaList.queries,
+  ...elifeSubjectAreaLists.queries,
   ...annotations.queries,
   ...articleActivity.queries,
   ...evaluations.queries,

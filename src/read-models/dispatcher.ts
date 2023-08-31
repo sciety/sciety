@@ -12,7 +12,7 @@ import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { lists } from './lists';
 import { users } from './users';
-import { addArticleToElifeSubjectAreaList } from './elife-subject-area-lists';
+import { elifeSubjectAreaLists } from './elife-subject-area-lists';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
@@ -24,7 +24,7 @@ type Dispatcher = {
 
 export const dispatcher = (): Dispatcher => {
   const initialisedReadModels = [
-    new InitialisedReadModel(addArticleToElifeSubjectAreaList),
+    new InitialisedReadModel(elifeSubjectAreaLists),
     new InitialisedReadModel(annotations),
     new InitialisedReadModel(articleActivity),
     new InitialisedReadModel(evaluations),
