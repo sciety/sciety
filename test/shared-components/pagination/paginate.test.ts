@@ -51,6 +51,9 @@ describe('paginate', () => {
       [9, 1, O.none, O.none],
       [20, 2, O.none, O.some(1)],
       [21, 3, O.none, O.some(2)],
+      [11, 1, O.some(2), O.none],
+      [20, 1, O.some(2), O.none],
+      [21, 2, O.some(3), O.some(1)],
     ])('given %d items and page %d is the current page', (itemCount, page, nextPage, prevPage) => {
       const result = pipe(
         generateItems(itemCount),
@@ -66,36 +69,12 @@ describe('paginate', () => {
         expect(result.pageNumber).toBe(page);
       });
 
-      it('returns no next page', () => {
+      it(`returns ${O.getOrElseW(() => 'none')(nextPage)} as nextPage`, () => {
         expect(result.nextPage).toStrictEqual(nextPage);
       });
 
       it(`returns ${O.getOrElseW(() => 'none')(prevPage)} as prevPage`, () => {
         expect(result.prevPage).toStrictEqual(prevPage);
-      });
-    });
-
-    describe.each([
-      [11, 1, 2],
-      [20, 1, 2],
-      [21, 2, 3],
-    ])('given %d items and page %d is the current page', (itemCount, page, nextPage) => {
-      const result = pipe(
-        generateItems(itemCount),
-        paginate(itemsPerPage, page),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-
-      it(`returns ${itemCount} as the number of original items`, () => {
-        expect(result.numberOfOriginalItems).toBe(itemCount);
-      });
-
-      it(`returns ${page} as the current page number`, () => {
-        expect(result.pageNumber).toBe(page);
-      });
-
-      it(`returns ${nextPage} as the next page`, () => {
-        expect(result.nextPage).toStrictEqual(O.some(nextPage));
       });
     });
   });
