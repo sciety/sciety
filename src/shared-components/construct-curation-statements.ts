@@ -9,7 +9,7 @@ import * as GID from '../types/group-id';
 import { Doi } from '../types/doi';
 import { LanguageCode, detectLanguage } from './lang-attribute';
 import { EvaluationLocator } from '../types/evaluation-locator';
-import { Queries } from '../shared-read-models';
+import { Queries } from '../read-models';
 import { FetchReview, Logger } from '../shared-ports';
 
 export type Dependencies = Queries & {

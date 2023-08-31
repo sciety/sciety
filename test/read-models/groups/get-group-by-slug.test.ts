@@ -3,8 +3,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
 import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/shared-read-models/groups/handle-event';
-import { getGroupBySlug } from '../../../src/shared-read-models/groups/get-group-by-slug';
+import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
+import { getGroupBySlug } from '../../../src/read-models/groups/get-group-by-slug';
 import { arbitraryGroup } from '../../types/group.helper';
 
 const group = arbitraryGroup();

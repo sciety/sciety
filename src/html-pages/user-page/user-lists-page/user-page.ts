@@ -4,7 +4,7 @@ import { renderErrorPage, renderAsHtml } from './render-as-html';
 import { Page } from '../../../types/page';
 import { RenderPageError } from '../../../types/render-page-error';
 import { constructViewModel, Params } from './construct-view-model';
-import { Queries } from '../../../shared-read-models';
+import { Queries } from '../../../read-models';
 
 type UserPage = (params: Params) => TE.TaskEither<RenderPageError, Page>;
 

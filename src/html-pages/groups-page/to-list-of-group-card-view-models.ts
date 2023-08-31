@@ -9,7 +9,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { constructGroupCardViewModel, GroupCardViewModel } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
-import { Queries } from '../../shared-read-models';
+import { Queries } from '../../read-models';
 
 const byLatestActivity: Ord.Ord<GroupCardViewModel> = pipe(
   O.getOrd(D.Ord),

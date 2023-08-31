@@ -7,7 +7,7 @@ import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { Queries } from '../../shared-read-models';
+import { Queries } from '../../read-models';
 import { GroupCardViewModel } from './view-model';
 
 const calculateCuratedArticlesCount = (groupId: GroupId, queries: Queries) => pipe(

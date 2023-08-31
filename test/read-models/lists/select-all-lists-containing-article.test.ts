@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { arbitraryList } from '../../types/list-helper';
-import { handleEvent, initialState } from '../../../src/shared-read-models/lists/handle-event';
+import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
-import { selectAllListsContainingArticle } from '../../../src/shared-read-models/lists/select-all-lists-containing-article';
+import { selectAllListsContainingArticle } from '../../../src/read-models/lists/select-all-lists-containing-article';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 

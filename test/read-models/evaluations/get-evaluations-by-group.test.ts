@@ -5,8 +5,8 @@ import { constructEvent } from '../../../src/domain-events';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { handleEvent, initialState } from '../../../src/shared-read-models/evaluations/handle-event';
-import { getEvaluationsByGroup } from '../../../src/shared-read-models/evaluations/get-evaluations-by-group';
+import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
+import { getEvaluationsByGroup } from '../../../src/read-models/evaluations/get-evaluations-by-group';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 
 describe('get-evaluations-by-group', () => {

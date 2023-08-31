@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { handleEvent, initialState } from '../../../src/shared-read-models/followings/handle-event';
-import { isFollowing } from '../../../src/shared-read-models/followings/is-following';
+import { handleEvent, initialState } from '../../../src/read-models/followings/handle-event';
+import { isFollowing } from '../../../src/read-models/followings/is-following';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { constructEvent } from '../../../src/domain-events';
 

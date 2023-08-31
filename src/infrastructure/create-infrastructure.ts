@@ -7,7 +7,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { persistEvents } from './persist-events';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
-import { dispatcher } from '../shared-read-models';
+import { dispatcher } from '../read-models';
 import { getEventsFromDatabase } from './get-events-from-database';
 import {
   createLogger, Logger, Config as LoggerConfig,

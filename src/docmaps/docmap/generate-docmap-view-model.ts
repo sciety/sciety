@@ -13,7 +13,7 @@ import { Doi } from '../../types/doi';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
-import { Queries } from '../../shared-read-models';
+import { Queries } from '../../read-models';
 
 export type DocmapModel = {
   articleId: Doi,

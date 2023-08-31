@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { List } from '../../types/list';
 import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
-import { Queries } from '../../shared-read-models';
+import { Queries } from '../../read-models';
 
 export type Dependencies = Queries & {
   logger: Logger,

@@ -11,7 +11,7 @@ import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { UserId } from '../../../src/types/user-id';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryList } from '../../types/list-helper';
-import { Queries } from '../../../src/shared-read-models';
+import { Queries } from '../../../src/read-models';
 
 describe('save-article-handler', () => {
   const listId = arbitraryListId();

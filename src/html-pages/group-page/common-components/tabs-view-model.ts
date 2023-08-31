@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { Group } from '../../../types/group';
 import * as LOID from '../../../types/list-owner-id';
-import { Queries } from '../../../shared-read-models';
+import { Queries } from '../../../read-models';
 
 export type TabsViewModel = {
   groupSlug: string,

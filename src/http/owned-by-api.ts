@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import { OwnedByQuery } from '../types/codecs/OwnedByQuery';
 import * as LOID from '../types/list-owner-id';
-import { Queries } from '../shared-read-models';
+import { Queries } from '../read-models';
 
 export const ownedBy = (queries: Queries): Middleware => async ({ params, response }, next) => {
   pipe(

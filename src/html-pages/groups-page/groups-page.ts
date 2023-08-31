@@ -8,7 +8,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { constructViewModel } from './construct-view-model/construct-view-model';
-import { Queries } from '../../shared-read-models';
+import { Queries } from '../../read-models';
 
 const renderErrorPage = (error: DE.DataError): RenderPageError => ({
   type: error,

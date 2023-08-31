@@ -1,5 +1,5 @@
 import { GetAllEvents, Logger } from '../../../shared-ports';
-import { Queries } from '../../../shared-read-models';
+import { Queries } from '../../../read-models';
 
 export type Dependencies = Queries & {
   getAllEvents: GetAllEvents,

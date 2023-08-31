@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { toListOfGroupCardViewModels } from '../to-list-of-group-card-view-models';
 import * as DE from '../../../types/data-error';
 import { GroupCardViewModel } from '../../../shared-components/group-card';
-import { Queries } from '../../../shared-read-models';
+import { Queries } from '../../../read-models';
 
 export const constructViewModel = (
   queries: Queries,

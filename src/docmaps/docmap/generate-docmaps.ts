@@ -10,7 +10,7 @@ import { toDocmap } from './to-docmap';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { Doi } from '../../types/doi';
 import { supportedGroups } from '../supported-groups';
-import { Queries } from '../../shared-read-models';
+import { Queries } from '../../read-models';
 
 export type Ports = DocmapPorts & Queries;
 

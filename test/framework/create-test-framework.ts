@@ -3,7 +3,7 @@ import { CommandHelpers, createCommandHelpers } from './create-command-helpers';
 import { createHappyPathThirdPartyAdapters, HappyPathThirdPartyAdapters } from './happy-path-third-party-adapters';
 import { AbortTest, abortTest } from './abort-test';
 import { Logger } from '../../src/shared-ports';
-import { Queries } from '../../src/shared-read-models';
+import { Queries } from '../../src/read-models';
 import { dummyLogger } from '../dummy-logger';
 
 export type TestFramework = ReadAndWriteSides & {

@@ -15,7 +15,7 @@ import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import { Queries } from '../../shared-read-models';
+import { Queries } from '../../read-models';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 
 export const groupProperty = 'groupid';

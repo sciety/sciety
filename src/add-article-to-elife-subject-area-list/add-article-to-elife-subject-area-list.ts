@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import {
   AddArticleToList, Logger,
 } from '../shared-ports';
-import { Queries } from '../shared-read-models';
+import { Queries } from '../read-models';
 
 type Ports = Pick<Queries, 'getOneArticleReadyToBeListed'> & {
   logger: Logger,

@@ -1,4 +1,4 @@
-import { Queries } from '../../../shared-read-models';
+import { Queries } from '../../../read-models';
 import {
   FetchArticle,
   FetchRelatedArticles,

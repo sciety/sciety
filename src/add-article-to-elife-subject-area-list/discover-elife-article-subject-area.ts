@@ -5,7 +5,7 @@ import {
   Logger, RecordSubjectArea,
 } from '../shared-ports';
 import { Doi } from '../types/doi';
-import { Queries } from '../shared-read-models';
+import { Queries } from '../read-models';
 
 type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & {
   logger: Logger,

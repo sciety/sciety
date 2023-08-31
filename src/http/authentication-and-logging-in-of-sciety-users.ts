@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
 import { userIdCodec, UserId } from '../types/user-id';
 import { UserDetails } from '../types/user-details';
-import { Queries } from '../shared-read-models';
+import { Queries } from '../read-models';
 
 const passportUserCodec = t.type({
   state: t.type({

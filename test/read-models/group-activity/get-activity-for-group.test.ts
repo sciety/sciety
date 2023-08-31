@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { handleEvent, initialState } from '../../../src/shared-read-models/group-activity/handle-event';
+import { handleEvent, initialState } from '../../../src/read-models/group-activity/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { getActivityForGroup } from '../../../src/shared-read-models/group-activity/get-activity-for-group';
+import { getActivityForGroup } from '../../../src/read-models/group-activity/get-activity-for-group';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';

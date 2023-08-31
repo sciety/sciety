@@ -10,7 +10,7 @@ import { ViewModel } from '../view-model';
 import { constructListsTab } from './construct-lists-tab';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
 import { userIdCodec } from '../../../../types/user-id';
-import { Queries } from '../../../../shared-read-models';
+import { Queries } from '../../../../read-models';
 
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,

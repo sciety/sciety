@@ -2,11 +2,11 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/shared-read-models/groups/handle-event';
+import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryString } from '../../helpers';
-import { getGroup } from '../../../src/shared-read-models/groups/get-group';
+import { getGroup } from '../../../src/read-models/groups/get-group';
 
 const group = arbitraryGroup();
 

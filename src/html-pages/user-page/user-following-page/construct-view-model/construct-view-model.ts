@@ -8,7 +8,7 @@ import * as LOID from '../../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
 import { constructGroupCardViewModel } from '../../../../shared-components/group-card';
-import { Queries } from '../../../../shared-read-models';
+import { Queries } from '../../../../read-models';
 
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,

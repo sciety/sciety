@@ -6,7 +6,7 @@ import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './render-article-card-with-controls-and-annotation';
 import { ArticleCardViewModel } from './render-article-card';
-import { Queries } from '../../shared-read-models';
+import { Queries } from '../../read-models';
 
 type Ports = ConstructArticleCardViewModelDependencies & Queries;
 

@@ -6,8 +6,8 @@ import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { handleEvent, initialState } from '../../../src/shared-read-models/article-activity/handle-event';
-import { getActivityForArticle } from '../../../src/shared-read-models/article-activity/get-activity-for-article';
+import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event';
+import { getActivityForArticle } from '../../../src/read-models/article-activity/get-activity-for-article';
 import { arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-removal-recorded-event-helper';
 import { arbitraryDate } from '../../helpers';
 

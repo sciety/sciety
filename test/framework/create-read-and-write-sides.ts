@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { dispatcher, Queries } from '../../src/shared-read-models';
+import { dispatcher, Queries } from '../../src/read-models';
 import * as groupResource from '../../src/write-side/resources/group';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';

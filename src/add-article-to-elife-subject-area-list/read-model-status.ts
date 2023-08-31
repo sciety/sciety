@@ -1,6 +1,6 @@
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { Queries } from '../shared-read-models';
+import { Queries } from '../read-models';
 
 const formatForJson = (articleIds: ReturnType<Queries['getArticleIdsByState']>) => pipe(
   articleIds,
