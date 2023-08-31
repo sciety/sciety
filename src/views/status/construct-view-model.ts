@@ -14,6 +14,6 @@ export const constructViewModel = (queries: Queries): Json => ({
   },
   sagaWorkQueues: {
     elifeArticleStates: queries.elifeArticleStatus(),
-    unlistedArticles: queries.unlistedArticlesStatus(),
+    unlistedArticles: queries.getUnlistedEvaluatedArticles(),
   },
 });
