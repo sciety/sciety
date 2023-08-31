@@ -1,6 +1,6 @@
 import { discoverElifeArticleSubjectArea, addArticleToElifeSubjectAreaList } from '../add-article-to-elife-subject-area-list';
 import { CollectedPorts } from '../infrastructure';
-import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed/ensure-evaluations-are-listed';
+import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed';
 
 export const startSagas = (ports: CollectedPorts) => async (): Promise<void> => {
   ports.logger('info', 'Starting sagas');
