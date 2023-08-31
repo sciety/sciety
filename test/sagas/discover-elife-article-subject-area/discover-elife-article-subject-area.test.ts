@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { discoverElifeArticleSubjectArea } from '../../src/add-article-to-elife-subject-area-list';
-import { dummyLogger } from '../dummy-logger';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryDataError } from '../types/data-error.helper';
-import { arbitraryErrorMessage } from '../types/error-message.helper';
-import { arbitrarySubjectArea } from '../types/subject-area.helper';
+import { dummyLogger } from '../../dummy-logger';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryDataError } from '../../types/data-error.helper';
+import { arbitraryErrorMessage } from '../../types/error-message.helper';
+import { arbitrarySubjectArea } from '../../types/subject-area.helper';
+import { discoverElifeArticleSubjectArea } from '../../../src/sagas/discover-elife-article-subject-area/discover-elife-article-subject-area';
 
 describe('discover-elife-article-subject-area', () => {
   describe('when there is work to do', () => {

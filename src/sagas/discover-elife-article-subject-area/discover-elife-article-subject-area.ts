@@ -3,9 +3,9 @@ import { pipe } from 'fp-ts/function';
 import {
   GetArticleSubjectArea,
   Logger, RecordSubjectArea,
-} from '../shared-ports';
-import { Doi } from '../types/doi';
-import { Queries } from '../read-models';
+} from '../../shared-ports';
+import { Doi } from '../../types/doi';
+import { Queries } from '../../read-models';
 
 type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & {
   logger: Logger,
