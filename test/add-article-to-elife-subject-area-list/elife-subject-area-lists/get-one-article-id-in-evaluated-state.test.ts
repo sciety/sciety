@@ -3,13 +3,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   handleEvent, initialState,
-} from '../../../src/add-article-to-elife-subject-area-list/read-model/handle-event';
+} from '../../../src/add-article-to-elife-subject-area-list/elife-subject-area-lists/handle-event';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryDate } from '../../helpers';
-import { getOneArticleIdInEvaluatedState } from '../../../src/add-article-to-elife-subject-area-list/read-model/get-one-article-id-in-evaluated-state';
+import { getOneArticleIdInEvaluatedState } from '../../../src/add-article-to-elife-subject-area-list/elife-subject-area-lists/get-one-article-id-in-evaluated-state';
 import { Doi } from '../../../src/types/doi';
-import { elifeGroupId } from '../../../src/add-article-to-elife-subject-area-list/read-model/data';
+import { elifeGroupId } from '../../../src/add-article-to-elife-subject-area-list/elife-subject-area-lists/data';
 
 describe('get-one-article-id-in-evaluated-state', () => {
   describe('given a biorxiv article that has been evaluated by eLife', () => {
