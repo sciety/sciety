@@ -1,9 +1,9 @@
 import { ensureEvaluationsAreListed } from '../../../src/sagas/ensure-evaluations-are-listed/ensure-evaluations-are-listed';
 import { dummyLogger } from '../../dummy-logger';
 import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import * as LOID from '../../../src/types/list-owner-id';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 describe('ensure-evaluations-are-listed', () => {
   let framework: TestFramework;
@@ -13,15 +13,15 @@ describe('ensure-evaluations-are-listed', () => {
   });
 
   describe('when there are listed evaluations', () => {
-    const group = arbitraryGroup();
+    const addGroupCommand = arbitraryAddGroupCommand();
     const evaluation = {
       ...arbitraryRecordedEvaluation(),
-      groupId: group.id,
+      groupId: addGroupCommand.groupId,
     };
     let listedArticleIds: ReadonlyArray<string>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
 
       await ensureEvaluationsAreListed({
@@ -31,7 +31,7 @@ describe('ensure-evaluations-are-listed', () => {
         logger: dummyLogger,
       });
 
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
       listedArticleIds = list.articleIds;
     });
 
