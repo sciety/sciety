@@ -28,9 +28,9 @@ const renderNewerLink = (viewModel: ViewModel) => pipe(
   ),
 );
 
-const renderPageCount = (viewModel: ViewModel) => (process.env.EXPERIMENT_ENABLED === 'true'
-  ? O.some(`<span class="pagination-controls__page_count">Page ${viewModel.page} of ${viewModel.pageCount}</span>`)
-  : O.none);
+const renderPageCount = (viewModel: ViewModel) => (
+  O.some(`<span class="pagination-controls__page_count">Page ${viewModel.page} of ${viewModel.pageCount}</span>`)
+);
 
 type PaginationLinks = ReadonlyArray<O.Option<string>>;
 
