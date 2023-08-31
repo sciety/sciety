@@ -44,7 +44,7 @@ describe('paginate', () => {
     });
   });
 
-  describe.skip('when paginating with 10 items per page', () => {
+  describe('when paginating with 10 items per page', () => {
     const itemsPerPage = 10;
 
     describe.each([

@@ -30,7 +30,7 @@ export const paginate: Paginate = (pageSize, page) => (items) => pipe(
       pageNumber: page,
       numberOfPages: chunks.length,
       numberOfOriginalItems: items.length,
-      prevPage: O.none,
+      prevPage: page > 1 ? O.some(page - 1) : O.none,
       nextPage: pipe(
         page + 1,
         O.some,
