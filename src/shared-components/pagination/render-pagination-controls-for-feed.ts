@@ -30,7 +30,7 @@ const renderNewerLink = (viewModel: ViewModel) => pipe(
 
 type PaginationLinks = ReadonlyArray<O.Option<HtmlFragment>>;
 
-const renderPaginationControlsDiv = (paginationLinks: PaginationLinks) => pipe(
+const toPaginationControls = (paginationLinks: PaginationLinks) => pipe(
   paginationLinks,
   RA.compact,
   RA.match(
@@ -49,6 +49,6 @@ export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragm
     renderNewerLink(viewModel),
     renderOlderLink(viewModel),
   ],
-  renderPaginationControlsDiv,
+  toPaginationControls,
   toHtmlFragment,
 );
