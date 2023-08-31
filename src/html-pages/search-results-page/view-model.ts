@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { GroupCardViewModel } from '../../shared-components/group-card';
@@ -16,6 +17,7 @@ export type SomeRelatedGroups = {
   items: ReadonlyArray<{
     groupPageHref: string,
     groupName: string,
+    largeLogoUrl: O.Option<string>,
   }>,
 };
 

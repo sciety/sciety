@@ -31,6 +31,7 @@ export const constructRelatedGroups = (dependencies: Dependencies) => (articleId
         RA.map((foundGroup) => ({
           groupPageHref: `/groups/${foundGroup.slug}`,
           groupName: foundGroup.name,
+          largeLogoUrl: foundGroup.largeLogoPath,
         })),
       ),
     }),
