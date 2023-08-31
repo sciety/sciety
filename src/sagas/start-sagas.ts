@@ -4,8 +4,8 @@ import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed/ensu
 
 export const startSagas = (ports: CollectedPorts) => async (): Promise<void> => {
   ports.logger('info', 'Starting sagas');
-  setInterval(async () => discoverElifeArticleSubjectArea(ports), 661 * 1000);
-  setInterval(async () => addArticleToElifeSubjectAreaList(ports), 13 * 60 * 1000);
-  setInterval(async () => ensureEvaluationsAreListed(ports), 2 * 60 * 1000);
+  setInterval(async () => discoverElifeArticleSubjectArea(ports), 307 * 1000);
+  setInterval(async () => addArticleToElifeSubjectAreaList(ports), 311 * 1000);
+  setInterval(async () => ensureEvaluationsAreListed(ports), 317 * 1000);
   ports.logger('info', 'Sagas started');
 };
