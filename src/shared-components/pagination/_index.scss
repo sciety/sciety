@@ -1,3 +1,4 @@
+@use '../../sass/settings';
 @use '../../sass/functions';
 @use '../../sass/button';
 
@@ -8,4 +9,9 @@
 .pagination-controls__next_link {
   @include button.secondary-link();
   margin-bottom: functions.px-to-rem(16px);
+}
+
+.pagination-controls__page_count {
+  margin-left: settings.$default-gutter;
+  margin-right: settings.$default-gutter;
 }
