@@ -8,12 +8,14 @@ import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { lists } from './lists';
 import { users } from './users';
 import { addArticleToElifeSubjectAreaList } from '../add-article-to-elife-subject-area-list/read-model';
+import { evaluatedArticlesLists } from './evaluated-articles-lists';
 
 const queries = {
   ...addArticleToElifeSubjectAreaList.queries,
   ...annotations.queries,
   ...articleActivity.queries,
   ...evaluations.queries,
+  ...evaluatedArticlesLists.queries,
   ...followings.queries,
   ...groupActivity.queries,
   ...groups.queries,
