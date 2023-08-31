@@ -12,6 +12,8 @@ const generateItems = (eventCount: number): ReadonlyArray<number> => pipe(
   RA.map((k) => k as number),
 );
 
+const valueOf = O.getOrElseW(() => 'none');
+
 describe('paginate', () => {
   describe('when there are multiple items', () => {
     const result = pipe(
@@ -69,11 +71,11 @@ describe('paginate', () => {
         expect(result.pageNumber).toBe(page);
       });
 
-      it(`returns ${O.getOrElseW(() => 'none')(nextPage)} as nextPage`, () => {
+      it(`returns ${valueOf(nextPage)} as nextPage`, () => {
         expect(result.nextPage).toStrictEqual(nextPage);
       });
 
-      it(`returns ${O.getOrElseW(() => 'none')(prevPage)} as prevPage`, () => {
+      it(`returns ${valueOf(prevPage)} as prevPage`, () => {
         expect(result.prevPage).toStrictEqual(prevPage);
       });
     });
