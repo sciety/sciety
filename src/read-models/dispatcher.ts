@@ -14,6 +14,7 @@ import { lists } from './lists';
 import { users } from './users';
 import { elifeSubjectAreaLists } from './elife-subject-area-lists';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
+import { Logger } from '../shared-ports';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
@@ -22,7 +23,7 @@ type Dispatcher = {
   dispatchToAllReadModels: DispatchToAllReadModels,
 };
 
-export const dispatcher = (): Dispatcher => {
+export const dispatcher = (logger: Logger): Dispatcher => {
   const initialisedReadModels = [
     new InitialisedReadModel(elifeSubjectAreaLists),
     new InitialisedReadModel(annotations),
@@ -40,7 +41,11 @@ export const dispatcher = (): Dispatcher => {
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
     pipe(
       initialisedReadModels,
-      RA.map((readModel) => readModel.dispatch(events)),
+      RA.mapWithIndex((index, readModel) => {
+        const result = readModel.dispatch(events);
+        logger('debug', 'Initialised read model', { index });
+        return result;
+      }),
     );
   };
 

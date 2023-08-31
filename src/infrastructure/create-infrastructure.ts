@@ -73,7 +73,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const {
         dispatchToAllReadModels,
         queries,
-      } = dispatcher();
+      } = dispatcher(partialAdapters.logger);
 
       dispatchToAllReadModels(partialAdapters.events);
       partialAdapters.logger('info', 'All read models initialized');

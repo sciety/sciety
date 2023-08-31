@@ -17,6 +17,7 @@ import { CommandHandler } from '../../src/types/command-handler';
 import { AddGroupCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
 import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
 import { createInMemoryEventStore } from './create-in-memory-event-store';
+import { dummyLogger } from '../dummy-logger';
 
 type EventStore = {
   getAllEvents: GetAllEvents,
@@ -60,7 +61,7 @@ export type ReadAndWriteSides = {
 };
 
 export const createReadAndWriteSides = (): ReadAndWriteSides => {
-  const { dispatchToAllReadModels, queries } = dispatcher();
+  const { dispatchToAllReadModels, queries } = dispatcher(dummyLogger);
   const eventStore = createInMemoryEventStore(dispatchToAllReadModels);
   const commandHandlers = instantiateCommandHandlers(eventStore, queries);
   return {
