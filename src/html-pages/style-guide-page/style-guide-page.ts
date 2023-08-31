@@ -14,5 +14,7 @@ export const styleGuidePage: Page = {
     ${renderPaginationControlsForFeed({ prevPageHref: O.none, nextPageHref: O.some('/foo') })}
     <h3>With a link only to newer content</h3>
     ${renderPaginationControlsForFeed({ prevPageHref: O.some('/foo'), nextPageHref: O.none })}
+    <h3>With links to newer and older content</h3>
+    ${renderPaginationControlsForFeed({ prevPageHref: O.some('/foo'), nextPageHref: O.some('/foo') })}
   `),
 };
