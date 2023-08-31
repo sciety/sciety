@@ -9,7 +9,7 @@ $_input-height: 48px;
 $_search-icon-size: functions.px-to-rem(24px);
 $_search-input-width: 320px;
 $_search-button-width: 76px;
-$_search-button-width-with-separation: $_search-button-width + settings.$sciety-default-form-element-separation;
+$_search-button-width-with-separation: $_search-button-width + settings.$default-form-element-separation;
 $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-width-with-separation;
 
 .home-page-hero-search-form__visible_interactive_elements {
@@ -58,13 +58,13 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
   padding-top: functions.px-to-rem(17px);
   padding-bottom: functions.px-to-rem(17px);
   padding-left: functions.px-to-rem(46px);
-  padding-right: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  padding-right: functions.px-to-rem(settings.$default-form-gutter);
   color: settings.$colour-text-primary;
   margin-bottom: functions.px-to-rem(10px);
   width: functions.px-to-rem($_search-input-width);
 
   @include breakpoints.not-narrow() {
-    margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
+    margin-right: functions.px-to-rem(settings.$default-form-element-separation);
     margin-bottom: 0;
   }
 }

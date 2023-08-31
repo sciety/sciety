@@ -66,12 +66,7 @@ $_edit-details-icon-offset: 8px;
 
 .articles-page-count {
   @include typography.details();
-  @include layout.page-content-horizontal-margins();
   margin-bottom: functions.px-to-rem(16px);
-}
-
-.articles-static-message {
-  @include layout.page-content-horizontal-margins();
 }
 
 svg.saved-articles-control__icon {

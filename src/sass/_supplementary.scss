@@ -4,6 +4,7 @@
 @use 'button';
 
 .supplementary-info {
+  @include layout.allow-edge-to-edge-content-when-narrow();
   @include layout.column-two();
 }
 

@@ -93,7 +93,7 @@ describe('construct-listed-in', () => {
     let list: List;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(

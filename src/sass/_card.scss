@@ -1,5 +1,6 @@
 @use 'breakpoints';
 @use 'functions';
+@use 'layout';
 @use 'list';
 @use 'settings';
 @use 'typography';
@@ -12,7 +13,7 @@ $_card-border-radius: settings.$border-radius;
     position: relative;
   }
   background-color: settings.$colour-white;
-  padding: 1rem functions.px-to-rem(settings.$sciety-default-gutter);
+  padding: 1rem functions.px-to-rem(settings.$default-gutter);
 
   border: settings.$border-width solid settings.$colour-furniture;
   border-left-width: 0;
@@ -94,6 +95,7 @@ $_card-border-radius: settings.$border-radius;
 
 .card-list {
   @include list();
+  @include layout.allow-edge-to-edge-content-when-narrow();
 }
 
 @mixin avatar() {

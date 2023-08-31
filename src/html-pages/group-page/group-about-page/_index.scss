@@ -1,11 +1,12 @@
-
 @use '../../../sass/settings';
 @use '../../../sass/functions';
 @use '../../../sass/breakpoints';
+@use '../../../sass/layout';
 
 .group-page-about {
   margin-bottom: 1.5rem;
-  padding: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   background-color: settings.$colour-white;
 
   @include breakpoints.not-narrow {

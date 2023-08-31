@@ -29,8 +29,8 @@ $_arbitrary-large-amount-of-px: 9000px;
   background-color: settings.$colour-background-grey;
 
   @include breakpoints.not-narrow {
-    padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
-    padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+    padding-left: functions.px-to-rem(settings.$default-gutter);
+    padding-right: functions.px-to-rem(settings.$default-gutter);
   }
 
   @media screen and (min-width: common.$home-page-breakpoint) {

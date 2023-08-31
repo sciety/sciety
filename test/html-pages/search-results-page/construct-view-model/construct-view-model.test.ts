@@ -1,6 +1,8 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { SearchForArticles } from '../../../../src/shared-ports/search-for-articles';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -9,11 +11,37 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { arbitraryGroup } from '../../../types/group.helper';
+import { Doi } from '../../../../src/types/doi';
+
+const searchForArticlesReturningResults = (
+  articleIds: ReadonlyArray<Doi>,
+  total: number,
+  nextCursor: O.Option<string>,
+) => () => () => TE.right({
+  items: pipe(
+    articleIds,
+    RA.map((articleId) => ({
+      articleId,
+      server: arbitraryArticleServer(),
+      title: arbitrarySanitisedHtmlFragment(),
+      authors: O.none,
+    })),
+  ),
+  total,
+  nextCursor,
+});
+
+const searchForArticlesReturningNoResults = () => () => TE.right({
+  items: [],
+  total: 0,
+  nextCursor: O.none,
+});
+
+const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let defaultDependencies: TestFramework['dependenciesForViews'];
-  let result: ViewModel;
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -21,44 +49,60 @@ describe('construct-view-model', () => {
   });
 
   describe('when the category is "articles"', () => {
+    let result: ViewModel & { category: 'articles' };
+
     const query = arbitraryString();
     const category = O.some('articles' as const);
     const cursor = O.none;
     const page = O.none;
-    const evaluatedOnly = O.some(arbitraryString());
+    const evaluatedOnly = O.none;
 
-    describe('and there is only one page of results', () => {
+    const getArticleCategoryViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
+      {
+        query, category, cursor, page, evaluatedOnly,
+      },
+      constructViewModel(
+        {
+          ...defaultDependencies,
+          searchForArticles,
+        },
+        itemsPerPage,
+      ),
+      TE.filterOrElseW(
+        isArticleCategory,
+        shouldNotBeCalled,
+      ),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
+
+    const getArticleCategoryViewModelForASinglePage = async (
+      articleIds: ReadonlyArray<Doi>,
+    ) => getArticleCategoryViewModel(
+      searchForArticlesReturningResults(articleIds, 1, O.none),
+    );
+
+    const getArticleCategoryViewModelWithAdditionalPages = async (
+      articleId: Doi,
+      cursorValue: string,
+      itemsPerPage: number,
+    ) => getArticleCategoryViewModel(
+      searchForArticlesReturningResults([articleId], 2, O.some(cursorValue)),
+      itemsPerPage,
+    );
+
+    const getArticleCategoryViewModelForAPageWithNoResults = async () => getArticleCategoryViewModel(
+      searchForArticlesReturningNoResults,
+    );
+
+    describe('and there is only one page of results, with no evaluated articles', () => {
       const articleId = arbitraryDoi();
 
       beforeEach(async () => {
-        result = await pipe(
-          {
-            query, category, cursor, page, evaluatedOnly,
-          },
-          constructViewModel(
-            {
-              ...defaultDependencies,
-              searchForArticles: () => () => TE.right({
-                items: [
-                  {
-                    articleId,
-                    server: arbitraryArticleServer(),
-                    title: arbitrarySanitisedHtmlFragment(),
-                    authors: O.none,
-                  },
-                ],
-                total: 1,
-                nextCursor: O.none,
-              }),
-            },
-            1,
-          ),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await getArticleCategoryViewModelForASinglePage([articleId]);
       });
 
       it('all article cards are included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual(
+        expect(result.itemCardsToDisplay).toStrictEqual(
           [
             expect.objectContaining({
               articleId,
@@ -84,44 +128,21 @@ describe('construct-view-model', () => {
       });
 
       it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(true);
+        expect(result.evaluatedOnly).toBe(false);
       });
     });
 
-    describe('and there is more than one page of results', () => {
+    describe('and there is more than one page of results, with no evaluated articles', () => {
       const articleId = arbitraryDoi();
       const itemsPerPage = 1;
       const cursorValue = arbitraryWord();
 
       beforeEach(async () => {
-        result = await pipe(
-          {
-            query, category, cursor, page, evaluatedOnly,
-          },
-          constructViewModel(
-            {
-              ...defaultDependencies,
-              searchForArticles: () => () => TE.right({
-                items: [
-                  {
-                    articleId,
-                    server: arbitraryArticleServer(),
-                    title: arbitrarySanitisedHtmlFragment(),
-                    authors: O.none,
-                  },
-                ],
-                total: 2,
-                nextCursor: O.some(cursorValue),
-              }),
-            },
-            itemsPerPage,
-          ),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await getArticleCategoryViewModelWithAdditionalPages(articleId, cursorValue, itemsPerPage);
       });
 
       it('no more than itemsPerPage article cards are included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual(
+        expect(result.itemCardsToDisplay).toStrictEqual(
           [
             expect.objectContaining({
               articleId,
@@ -147,7 +168,7 @@ describe('construct-view-model', () => {
       });
 
       it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(true);
+        expect(result.evaluatedOnly).toBe(false);
       });
 
       it('the current page number is displayed', () => {
@@ -161,27 +182,11 @@ describe('construct-view-model', () => {
 
     describe('but there are no results', () => {
       beforeEach(async () => {
-        result = await pipe(
-          {
-            query, category, cursor, page, evaluatedOnly,
-          },
-          constructViewModel(
-            {
-              ...defaultDependencies,
-              searchForArticles: () => () => TE.right({
-                items: [],
-                total: 0,
-                nextCursor: O.none,
-              }),
-            },
-            1,
-          ),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await getArticleCategoryViewModelForAPageWithNoResults();
       });
 
       it('there are no article cards included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual([]);
+        expect(result.itemCardsToDisplay).toStrictEqual([]);
       });
 
       it('the number of articles found is displayed', () => {
@@ -193,12 +198,13 @@ describe('construct-view-model', () => {
       });
 
       it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(true);
+        expect(result.evaluatedOnly).toBe(false);
       });
     });
   });
 
   describe('when the category is "groups"', () => {
+    let result: ViewModel;
     const category = O.some('groups' as const);
     const cursor = O.none;
     const page = O.none;
@@ -209,7 +215,7 @@ describe('construct-view-model', () => {
       const query = group.name;
 
       beforeEach(async () => {
-        await framework.commandHelpers.createGroup(group);
+        await framework.commandHelpers.deprecatedCreateGroup(group);
         result = await pipe(
           {
             query, category, cursor, page, evaluatedOnly,
@@ -220,7 +226,7 @@ describe('construct-view-model', () => {
       });
 
       it('all group cards are included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual(
+        expect(result.itemCardsToDisplay).toStrictEqual(
           [
             expect.objectContaining({
               name: group.name,
@@ -260,7 +266,7 @@ describe('construct-view-model', () => {
       });
 
       it('there are no group cards included in the view model', () => {
-        expect(result.itemsToDisplay).toStrictEqual([]);
+        expect(result.itemCardsToDisplay).toStrictEqual([]);
       });
 
       it('the number of groups found is displayed', () => {

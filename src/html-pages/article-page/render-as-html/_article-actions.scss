@@ -10,11 +10,12 @@
 @use 'local-settings';
 
 .article-actions {
-  @include layout.page-content-horizontal-margins();
+  @include layout.column-two();
   margin-bottom: local-settings.$component-vertical-spacing;
 
   @include breakpoints.two-column-display {
-    grid-column: 10 / 13;
+    padding-left: functions.px-to-rem(40px);
+    grid-row: unset;
   }
 }
 

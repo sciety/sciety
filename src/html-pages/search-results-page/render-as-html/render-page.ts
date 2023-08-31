@@ -3,6 +3,7 @@ import { renderSearchResults } from './render-search-results';
 import { renderSearchForm } from '../../../shared-components/search-form';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
+import { renderRelatedGroups } from './render-related-groups';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   `
@@ -10,6 +11,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm(viewModel.query, viewModel.evaluatedOnly)}
+    ${viewModel.category === 'articles' ? renderRelatedGroups(viewModel.relatedGroups) : ''}
     <section class="search-results">
       ${renderSearchResults(viewModel)}
     </section>

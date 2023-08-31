@@ -6,11 +6,11 @@ import { recordPublication } from '../resources/evaluation';
 import { RecordEvaluationPublicationCommand } from '../commands';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 
-type RecordEvaluationCommandHandler = (
+type RecordEvaluationPublicationCommandHandler = (
   dependencies: DependenciesForCommands
 ) => CommandHandler<RecordEvaluationPublicationCommand>;
 
-export const recordEvaluationCommandHandler: RecordEvaluationCommandHandler = (
+export const recordEvaluationPublicationCommandHandler: RecordEvaluationPublicationCommandHandler = (
   dependencies,
 ) => (
   command,

@@ -34,7 +34,7 @@ describe('user-followed-a-group-card', () => {
     let viewModel: ScietyFeedCard;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.createUserAccount(userDetails);
       viewModel = pipe(
         event,
@@ -72,7 +72,7 @@ describe('user-followed-a-group-card', () => {
     let viewModel: ScietyFeedCard;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
       viewModel = pipe(
         event,
         userFollowedAGroupCard(dependencies),

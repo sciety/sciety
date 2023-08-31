@@ -48,7 +48,7 @@ describe('construct-content', () => {
       ...framework.happyPathThirdParties,
       logger: dummyLogger,
     };
-    await framework.commandHelpers.createGroup(group);
+    await framework.commandHelpers.deprecatedCreateGroup(group);
     groupEvaluatedArticlesList = pipe(
       framework.queries.getEvaluatedArticlesListIdForGroup(group.id),
       O.getOrElseW(shouldNotBeCalled),

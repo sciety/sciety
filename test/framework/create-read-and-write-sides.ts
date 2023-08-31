@@ -8,7 +8,7 @@ import { createUserAccountCommandHandler } from '../../src/write-side/create-use
 import { followCommandHandler } from '../../src/write-side/follow/follow-command-handler';
 import {
   updateUserDetailsCommandHandler,
-  recordEvaluationCommandHandler,
+  recordEvaluationPublicationCommandHandler,
   createListCommandHandler,
   removeArticleFromListCommandHandler,
 } from '../../src/write-side/command-handlers';
@@ -23,9 +23,9 @@ type EventStore = {
   commitEvents: CommitEvents,
 };
 
-type CreateGroup = (adapters: EventStore) => CommandHandler<AddGroupCommand>;
+type AddGroup = (adapters: EventStore) => CommandHandler<AddGroupCommand>;
 
-const createGroup: CreateGroup = (adapters) => (command) => pipe(
+const addGroup: AddGroup = (adapters) => (command) => pipe(
   adapters.getAllEvents,
   T.map(groupResource.create(command)),
   TE.chainTaskK(adapters.commitEvents),
@@ -41,11 +41,11 @@ const updateGroupDetails: UpdateGroupDetails = (adapters) => (command) => pipe(
 
 const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) => ({
   addArticleToList: addArticleToListCommandHandler(eventStore),
-  createGroup: createGroup(eventStore),
+  addGroup: addGroup(eventStore),
   createList: createListCommandHandler(eventStore),
   createUserAccount: createUserAccountCommandHandler(eventStore),
   followGroup: followCommandHandler(eventStore),
-  recordEvaluation: recordEvaluationCommandHandler({ ...eventStore, ...queries }),
+  recordEvaluationPublication: recordEvaluationPublicationCommandHandler({ ...eventStore, ...queries }),
   removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
   unfollowGroup: unfollowCommandHandler(eventStore),
   updateGroupDetails: updateGroupDetails(eventStore),

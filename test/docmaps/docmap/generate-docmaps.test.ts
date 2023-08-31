@@ -66,10 +66,10 @@ describe('generate-docmaps', () => {
     let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group1);
-      await framework.commandHelpers.createGroup(group2);
-      await framework.commandHelpers.recordEvaluation(evaluation1);
-      await framework.commandHelpers.recordEvaluation(evaluation2);
+      await framework.commandHelpers.deprecatedCreateGroup(group1);
+      await framework.commandHelpers.deprecatedCreateGroup(group2);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       response = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -98,8 +98,8 @@ describe('generate-docmaps', () => {
         groupId: group.id,
         articleId,
       };
-      await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       docmaps = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -131,10 +131,10 @@ describe('generate-docmaps', () => {
         groupId: group2.id,
         articleId,
       };
-      await framework.commandHelpers.createGroup(group1);
-      await framework.commandHelpers.createGroup(group2);
-      await framework.commandHelpers.recordEvaluation(evaluation1);
-      await framework.commandHelpers.recordEvaluation(evaluation2);
+      await framework.commandHelpers.deprecatedCreateGroup(group1);
+      await framework.commandHelpers.deprecatedCreateGroup(group2);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       docmaps = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -169,10 +169,10 @@ describe('generate-docmaps', () => {
         groupId: group2.id,
         articleId,
       };
-      await framework.commandHelpers.createGroup(group1);
-      await framework.commandHelpers.createGroup(group2);
-      await framework.commandHelpers.recordEvaluation(evaluation1);
-      await framework.commandHelpers.recordEvaluation(evaluation2);
+      await framework.commandHelpers.deprecatedCreateGroup(group1);
+      await framework.commandHelpers.deprecatedCreateGroup(group2);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       docmaps = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -206,9 +206,9 @@ describe('generate-docmaps', () => {
         groupId: group.id,
         articleId,
       };
-      await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation1);
-      await framework.commandHelpers.recordEvaluation(evaluation2);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       docmaps = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -241,9 +241,9 @@ describe('generate-docmaps', () => {
         articleId,
         evaluationLocator: failingReviewId,
       };
-      await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(goodEvaluation);
-      await framework.commandHelpers.recordEvaluation(badEvaluation);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedRecordEvaluation(goodEvaluation);
+      await framework.commandHelpers.deprecatedRecordEvaluation(badEvaluation);
       response = await pipe(
         generateDocmaps({
           ...defaultAdapters,

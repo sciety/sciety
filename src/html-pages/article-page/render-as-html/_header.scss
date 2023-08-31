@@ -1,6 +1,7 @@
 @use '../../../sass/breakpoints';
 @use '../../../sass/settings';
 @use '../../../sass/functions';
+@use '../../../sass/layout';
 @use '../../../sass/list';
 
 @use 'local-settings';
@@ -13,9 +14,21 @@
   margin-bottom: local-settings.$component-vertical-spacing;
 }
 
+@mixin _apply-page-gutter-as-padding() {
+  padding-left: settings.$default-gutter;
+  padding-right: settings.$default-gutter;
+
+  @include breakpoints.not-narrow() {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .article-page-header-wrapper--with-curation-statements {
-  background-color: settings.$colour-background-grey;
+  @include layout.allow-edge-to-edge-content-when-narrow();
+  @include _apply-page-gutter-as-padding();
   padding-bottom: local-settings.$component-vertical-spacing;
+  background-color: settings.$colour-background-grey;
 }
 
 .page-header.page-header--article {
@@ -25,8 +38,8 @@
 
   @include breakpoints.not-narrow {
     margin: 0 auto;
-    padding-left: functions.px-to-rem(settings.$sciety-default-gutter);
-    padding-right: functions.px-to-rem(settings.$sciety-default-gutter);
+    padding-left: functions.px-to-rem(settings.$default-gutter);
+    padding-right: functions.px-to-rem(settings.$default-gutter);
   }
 }
 

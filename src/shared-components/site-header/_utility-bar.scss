@@ -23,7 +23,7 @@ $_avatar-height-coupled-to-buttons: 34px;
   align-self: center;
 
   @include breakpoints.site-header() {
-    margin-right: functions.px-to-rem(settings.$sciety-default-gutter);
+    margin-right: functions.px-to-rem(settings.$default-gutter);
   }
 }
 

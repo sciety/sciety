@@ -3,15 +3,37 @@ import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { GroupCardViewModel } from '../../shared-components/group-card';
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
 
-export type ItemViewModel = ArticleCardViewModel | GroupCardViewModel;
+export type ItemCardViewModel = ArticleCardViewModel | GroupCardViewModel;
 
-export const isArticleViewModel = (viewModel: ItemViewModel): viewModel is ArticleCardViewModel => 'articleId' in viewModel;
+export const isArticleViewModel = (viewModel: ItemCardViewModel): viewModel is ArticleCardViewModel => 'articleId' in viewModel;
 
-export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
+type NoGroupsEvaluatedTheFoundArticles = {
+  tag: 'no-groups-evaluated-the-found-articles',
+};
+
+export type SomeRelatedGroups = {
+  tag: 'some-related-groups',
+  items: ReadonlyArray<{
+    groupPageHref: string,
+    groupName: string,
+  }>,
+};
+
+export type ArticlesCategoryViewModel = {
+  category: 'articles',
+  relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
+};
+
+type GroupsCategoryViewModel = {
+  category: 'groups',
+};
+
+type CategorySpecificViewModel = ArticlesCategoryViewModel | GroupsCategoryViewModel;
+
+export type ViewModel = CategorySpecificViewModel & PaginationViewModel & PaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
   availableArticleMatches: number,
   availableGroupMatches: number,
-  category: string,
-  itemsToDisplay: ReadonlyArray<ItemViewModel>,
+  itemCardsToDisplay: ReadonlyArray<ItemCardViewModel>,
 };

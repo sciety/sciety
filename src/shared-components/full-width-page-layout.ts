@@ -22,8 +22,10 @@ export const fullWidthPageLayout = (user: O.Option<UserDetails>) => (page: Page)
   <div class="standard-page-container">
     ${siteHeader(user)}
 
-    <main class="page-content" id="mainContent">
-      ${page.content}
+    <main id="mainContent">
+      <div class="page-content">
+        ${page.content}
+      </div>
     </main>
     ${siteFooter(user)}
   </div>

@@ -17,9 +17,21 @@ $_common-space-beneath: 0.5rem;
   margin-bottom: 0;
 }
 
+.related-groups {
+  @include layout.column-two();
+
+  @include breakpoints.two-column-display {
+    grid-row: 3;
+    padding-left: functions.px-to-rem(40px);
+  }
+}
+
+.related-groups__list {
+  @include list.basics()
+}
+
 .search-results__header {
   @include typography.details();
-  @include layout.page-content-horizontal-margins();
   padding-top: 1rem;
   margin-bottom: $_common-space-beneath;
 }
@@ -42,8 +54,4 @@ $_common-space-beneath: 0.5rem;
   &:first-child {
     margin-right: 1rem;
   }
-}
-
-.search-results__footer {
-  @include layout.page-content-horizontal-margins();
 }

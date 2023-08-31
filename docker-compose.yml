@@ -59,3 +59,4 @@ services:
   cache:
     container_name: sciety_cache
     image: redis
+    restart: unless-stopped

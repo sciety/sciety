@@ -8,7 +8,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 
 @mixin form {
   background-color: settings.$colour-white;
-  padding: functions.px-to-rem(16px) functions.px-to-rem(settings.$sciety-default-gutter);
+  padding: functions.px-to-rem(16px) functions.px-to-rem(settings.$default-gutter);
 
   border: settings.$border-width solid settings.$colour-furniture;
   border-left-width: 0;
@@ -29,19 +29,19 @@ $_microcopy-colour: settings.$colour-text-secondary;
   display: block;
   font-weight: bold;
   font-size: functions.px-to-rem(20px);
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
 }
 
 @mixin helper-text {
   color: $_microcopy-colour;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
 }
 
 @mixin field {
   display: block;
   width: 100%;
-  margin-bottom: functions.px-to-rem(settings.$sciety-default-form-gutter);
-  padding: functions.px-to-rem(settings.$sciety-default-form-gutter);
+  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+  padding: functions.px-to-rem(settings.$default-form-gutter);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
 }
@@ -52,7 +52,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 
 @mixin submit-button {
   @include button.primary();
-  margin-right: functions.px-to-rem(settings.$sciety-default-form-element-separation);
+  margin-right: functions.px-to-rem(settings.$default-form-element-separation);
 }
 
 @mixin cancel-button {

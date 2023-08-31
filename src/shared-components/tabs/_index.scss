@@ -1,0 +1,62 @@
+@use 'sass:math';
+@use '../../sass/settings';
+@use '../../sass/functions';
+@use '../../sass/layout';
+
+@use '../../sass/breakpoints';
+@use '../../sass/typography';
+@use '../../sass/list';
+@use '../../sass/card';
+
+.tab-list {
+  @include list.basics();
+  border-bottom: 2px solid transparent;
+  margin-bottom: 0;
+}
+
+.tab {
+  @include typography.button();
+
+  padding: 0;
+  margin-bottom: functions.px-to-rem(14px);
+  line-height: math.div(20px, 14px);
+  text-transform: uppercase;
+  font-weight: bold;
+
+  @include breakpoints.not-narrow() {
+    display: inline-block;
+    margin-bottom: -2px;
+    text-align: center;
+    padding: functions.px-to-rem(13px) 0.8rem functions.px-to-rem(15px);
+  }
+}
+
+.tab__link {
+  &:link,
+  &:visited {
+    color: settings.$colour-accent;
+
+    &:hover,
+    &:active {
+      color: settings.$colour-accent-hover;
+    }
+  }
+
+  @include breakpoints.not-narrow() {
+    &:link,
+    &:visited {
+      color: settings.$colour-text-primary;
+
+      &:hover,
+      &:active {
+        color: settings.$colour-accent-hover;
+      }
+    }
+  }
+}
+
+.tab--active {
+  @include breakpoints.not-narrow() {
+    border-bottom: 2px solid settings.$colour-accent;
+  }
+}

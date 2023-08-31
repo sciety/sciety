@@ -1,5 +1,5 @@
-@use '../../sass/layout';
+@use 'layout';
 
-.subscribe-content {
+.page-content {
   @include layout.page-content-horizontal-margins();
 }

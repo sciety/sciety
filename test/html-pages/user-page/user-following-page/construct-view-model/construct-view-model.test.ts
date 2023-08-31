@@ -29,9 +29,9 @@ describe('construct-view-model', () => {
     const group3 = arbitraryGroup();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group1);
-      await framework.commandHelpers.createGroup(group2);
-      await framework.commandHelpers.createGroup(group3);
+      await framework.commandHelpers.deprecatedCreateGroup(group1);
+      await framework.commandHelpers.deprecatedCreateGroup(group2);
+      await framework.commandHelpers.deprecatedCreateGroup(group3);
       await framework.commandHelpers.followGroup(user.id, group1.id);
       await framework.commandHelpers.followGroup(user.id, group2.id);
       await framework.commandHelpers.followGroup(user.id, group3.id);

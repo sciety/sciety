@@ -38,9 +38,9 @@ describe('construct-curation-statements', () => {
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation1);
-      await framework.commandHelpers.recordEvaluation(evaluation2);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
     });
 
@@ -63,8 +63,8 @@ describe('construct-curation-statements', () => {
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
       result = await constructCurationStatements({
         ...framework.dependenciesForViews,
         fetchReview: () => TE.left(DE.unavailable),
@@ -97,9 +97,9 @@ describe('construct-curation-statements', () => {
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.createGroup(group);
-      await framework.commandHelpers.recordEvaluation(evaluation1);
-      await framework.commandHelpers.recordEvaluation(evaluation2);
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       result = await constructCurationStatements({
         ...framework.dependenciesForViews,
         fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === evaluationLocator1

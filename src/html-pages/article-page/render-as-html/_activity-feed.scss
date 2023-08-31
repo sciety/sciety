@@ -8,12 +8,9 @@
 @use '../../../sass/states';
 @use '../../../sass/typography';
 
-.activity-feed__header {
-  @include layout.page-content-horizontal-margins();
-}
-
 .activity-feed__list {
   @include card.list();
+  @include layout.allow-edge-to-edge-content-when-narrow();
 
   p:last-child {
     margin-bottom: 0;
@@ -111,8 +108,4 @@ p.activity-feed__item__title {
       text-decoration: underline;
     }
   }
-}
-
-.related-articles__header {
-  @include layout.page-content-horizontal-margins();
 }

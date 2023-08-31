@@ -6,6 +6,7 @@ import * as DE from '../../types/data-error';
 
 export type PageOfItems<I> = {
   items: ReadonlyArray<I>,
+  prevPage: O.Option<number>,
   nextPage: O.Option<number>,
   pageNumber: number,
   numberOfPages: number,
@@ -29,6 +30,7 @@ export const paginate: Paginate = (pageSize, page) => (items) => pipe(
       pageNumber: page,
       numberOfPages: chunks.length,
       numberOfOriginalItems: items.length,
+      prevPage: O.none,
       nextPage: pipe(
         page + 1,
         O.some,

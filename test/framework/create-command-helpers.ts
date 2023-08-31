@@ -13,14 +13,17 @@ import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
+import { AddGroupCommand, RecordEvaluationPublicationCommand } from '../../src/write-side/commands';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
-  createGroup: (group: Group) => Promise<unknown>,
+  addGroup: (command: AddGroupCommand) => Promise<unknown>,
+  deprecatedCreateGroup: (group: Group) => Promise<unknown>,
   createList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
-  recordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
+  deprecatedRecordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
+  recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   updateGroupDetails: (groupId: GroupId, largeLogoPath: string) => Promise<unknown>,
@@ -44,7 +47,8 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   ),
-  createGroup: async (group) => pipe(
+  addGroup: invoke(commandHandlers.addGroup, 'addGroup'),
+  deprecatedCreateGroup: async (group) => pipe(
     {
       groupId: group.id,
       name: group.name,
@@ -54,7 +58,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
       descriptionPath: group.descriptionPath,
       slug: group.slug,
     },
-    invoke(commandHandlers.createGroup, 'createGroup'),
+    invoke(commandHandlers.addGroup, 'addGroup'),
   ),
   createList: async (list) => pipe(
     {
@@ -78,7 +82,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     { userId, groupId },
     invoke(flow(commandHandlers.followGroup, TE.rightTask), 'followGroup'),
   ),
-  recordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
+  deprecatedRecordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
     {
       groupId: evaluation.groupId,
       publishedAt: evaluation.publishedAt,
@@ -91,8 +95,9 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
         O.getOrElseW(() => undefined),
       ),
     },
-    invoke(commandHandlers.recordEvaluation, 'recordEvaluation'),
+    invoke(commandHandlers.recordEvaluationPublication, 'recordEvaluationPublication'),
   ),
+  recordEvaluationPublication: invoke(commandHandlers.recordEvaluationPublication, 'recordEvaluationPublication'),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
       articleId,
