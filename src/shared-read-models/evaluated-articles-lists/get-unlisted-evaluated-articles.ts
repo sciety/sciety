@@ -8,7 +8,7 @@ import { ListId } from '../../types/list-id';
 
 const hasBeenEvaluated = (a: ArticleState): boolean => a.evaluatedBy.length > 0;
 
-const missingLists = (groups: ReadModel['groups']) => (a: ArticleState) => pipe(
+const listsFromWhichTheArticleIsMissing = (groups: ReadModel['groups']) => (a: ArticleState) => pipe(
   a.evaluatedBy,
   RA.filter((groupId) => groups.has(groupId)),
   RA.map((groupId) => groups.get(groupId)),
@@ -33,7 +33,7 @@ const toPairs = (articleId: string, listIds: ReadonlyArray<ListId>): ReadonlyArr
 export const getUnlistedEvaluatedArticles = (readmodel: ReadModel) => (): ReadonlyArray<MissingArticle> => pipe(
   readmodel.articles,
   RM.filter(hasBeenEvaluated),
-  RM.map(missingLists(readmodel.groups)),
+  RM.map(listsFromWhichTheArticleIsMissing(readmodel.groups)),
   RM.filter((lists) => lists.length > 0),
   RM.collect(S.Ord)(toPairs),
   RA.flatten,
