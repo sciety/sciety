@@ -29,7 +29,7 @@ const renderNewerLink = (viewModel: ViewModel) => pipe(
 );
 
 const renderPageCount = (viewModel: ViewModel) => (
-  O.some(`<span class="pagination-controls__page_count">Page ${viewModel.page} of ${viewModel.pageCount}</span>`)
+  `<span class="pagination-controls__page_count">Page ${viewModel.page} of ${viewModel.pageCount}</span>`
 );
 
 type PaginationLinks = ReadonlyArray<O.Option<string>>;
@@ -51,7 +51,7 @@ const toPaginationControls = (paginationLinks: PaginationLinks) => pipe(
 export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
   [
     renderNewerLink(viewModel),
-    renderPageCount(viewModel),
+    O.some(renderPageCount(viewModel)),
     renderOlderLink(viewModel),
   ],
   toPaginationControls,
