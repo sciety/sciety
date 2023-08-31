@@ -22,7 +22,10 @@ type MissingArticle = {
   listId: ListId,
 };
 
-const toPairs = (articleId: string, listIds: ReadonlyArray<ListId>): ReadonlyArray<MissingArticle> => pipe(
+const toMissingArticleObjects = (
+  articleId: string,
+  listIds: ReadonlyArray<ListId>,
+): ReadonlyArray<MissingArticle> => pipe(
   listIds,
   RA.map((listId) => ({
     articleId,
@@ -35,6 +38,6 @@ export const getUnlistedEvaluatedArticles = (readmodel: ReadModel) => (): Readon
   RM.filter(hasBeenEvaluated),
   RM.map(listsFromWhichTheArticleIsMissing(readmodel.groups)),
   RM.filter((lists) => lists.length > 0),
-  RM.collect(S.Ord)(toPairs),
+  RM.collect(S.Ord)(toMissingArticleObjects),
   RA.flatten,
 );
