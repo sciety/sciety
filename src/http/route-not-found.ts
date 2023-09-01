@@ -2,7 +2,7 @@ import { Middleware } from '@koa/router';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
-import { standardPageLayout } from '../shared-components/standard-page-layout';
+import { standardPageLayout } from '../shared-components/layouts';
 import { toHtmlFragment } from '../types/html-fragment';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 

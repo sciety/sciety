@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { standardPageLayout } from '../shared-components/standard-page-layout';
+import { standardPageLayout } from '../shared-components/layouts';
 import { renderErrorPage } from './render-error-page';
 import * as DE from '../types/data-error';
 import { Page } from '../types/page';
