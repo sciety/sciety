@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { ArticleItem } from './data-types';
 import { ViewModel } from '../view-model';
 import {
@@ -19,31 +19,28 @@ type LimitedSet = {
   numberOfPages: number,
 };
 
-const toFullPageViewModel = (
-  dependencies: Dependencies,
-  state: LimitedSet,
-) => (articleCards: ViewModel['articleCards']) => ({
-  ...state,
-  relatedGroups: pipe(
-    state.itemsToDisplay,
-    RA.map((itemToDisplay) => itemToDisplay.articleId),
-    constructRelatedGroups(dependencies),
-  ),
-  articleCards,
-  nextPageHref: pipe(
-    {
-      basePath: '',
-      pageNumber: state.pageNumber + 1,
-    },
-    ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
-  ),
-});
-
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
   T.traverseArray((item) => constructArticleCardViewModel(dependencies)(item.articleId)),
-  T.map(flow(
+  T.map(
     RA.rights,
-    toFullPageViewModel(dependencies, state),
-  )),
+  ),
+  T.map(
+    (articleCards) => ({
+      ...state,
+      relatedGroups: pipe(
+        state.itemsToDisplay,
+        RA.map((itemToDisplay) => itemToDisplay.articleId),
+        constructRelatedGroups(dependencies),
+      ),
+      articleCards,
+      nextPageHref: pipe(
+        {
+          basePath: '',
+          pageNumber: state.pageNumber + 1,
+        },
+        ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
+      ),
+    }),
+  ),
 );
