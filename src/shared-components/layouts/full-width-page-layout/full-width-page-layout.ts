@@ -19,7 +19,7 @@ export const fullWidthPageLayout = (user: O.Option<UserDetails>) => (page: Page)
   )}
 <body>
   ${googleTagManagerNoScript()}
-  <div class="standard-page-container">
+  <div class="default-page-container">
     ${siteHeader(user)}
 
     <main id="mainContent">

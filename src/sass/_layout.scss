@@ -24,6 +24,20 @@
   user-select: unset;
 }
 
+@mixin force-page-to-fill-the-viewport-height() {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  main {
+    flex-grow: 1;
+  }
+}
+
+.default-page-container {
+  @include force-page-to-fill-the-viewport-height();
+}
+
 @mixin page-content-horizontal-margins() {
   margin-left: functions.px-to-rem(settings.$default-gutter);
   margin-right: functions.px-to-rem(settings.$default-gutter);
@@ -32,6 +46,12 @@
     margin-left: 0;
     margin-right: 0;
   }
+}
+
+.page-content {
+  @include page-content-horizontal-margins();
+  display: flex;
+  padding-bottom: 3rem;
 }
 
 @mixin allow-edge-to-edge-content-when-narrow() {
@@ -86,15 +106,5 @@
   @include breakpoints.two-column-display {
     grid-column: 9 / 13;
     grid-row: 2;
-  }
-}
-
-@mixin force-page-to-fill-the-viewport-height() {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-
-  main {
-    flex-grow: 1;
   }
 }

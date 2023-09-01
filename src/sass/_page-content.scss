@@ -1,7 +1,0 @@
-@use 'layout';
-
-.page-content {
-  @include layout.page-content-horizontal-margins();
-  display: flex;
-  padding-bottom: 3rem;
-}

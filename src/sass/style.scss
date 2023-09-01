@@ -1,7 +1,6 @@
 @use 'settings';
 @use 'functions';
 @use 'normalise';
-@use 'page-content';
 @use 'layout';
 
 @use 'page-header';
@@ -23,7 +22,6 @@
 @use 'states';
 @use '../shared-components/article-card';
 @use '../shared-components/pagination';
-@use '../shared-components/layouts/full-width-page-layout';
 @use '../shared-components/tabs';
 @use '../shared-components/group-card';
 @use '../shared-components/card-authors';
