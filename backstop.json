@@ -71,13 +71,6 @@
       ]
     },
     {
-      "label": "Group search",
-      "url": "http://sciety_app/search?query=peer+community+in+archaeology&category=groups",
-      "selectors": [
-        "main"
-      ]
-    },
-    {
       "label": "ScietyHQ user page lists tab",
       "url": "http://sciety_app/users/scietyHQ/lists",
       "selectors": [

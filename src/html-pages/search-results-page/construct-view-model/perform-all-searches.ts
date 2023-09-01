@@ -13,12 +13,7 @@ import { Dependencies } from './dependencies';
 
 export const paramsCodec = t.type({
   query: t.string,
-  category: tt.optionFromNullable(
-    t.union([
-      t.literal('groups'),
-      t.literal('articles'),
-    ]),
-  ),
+  category: tt.optionFromNullable(t.literal('articles')),
   cursor: tt.optionFromNullable(t.string),
   page: tt.optionFromNullable(tt.NumberFromString),
   evaluatedOnly: tt.optionFromNullable(t.unknown),

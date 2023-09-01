@@ -41,12 +41,4 @@ describe('add-group', () => {
 
     expect(title).toContain(newGroup.name);
   });
-
-  it('the group can be searched for', async () => {
-    const encodedGroupName = encodeURIComponent(newGroup.name);
-    await goto(`localhost:8080/search?query=${encodedGroupName}&category=groups`);
-    const groupWasFound = await text(newGroup.name, within($('.card-list'))).exists();
-
-    expect(groupWasFound).toBe(true);
-  });
 });

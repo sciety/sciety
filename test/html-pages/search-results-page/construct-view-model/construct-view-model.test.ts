@@ -10,7 +10,6 @@ import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { Doi } from '../../../../src/types/doi';
 
 const searchForArticlesReturningResults = (
@@ -201,85 +200,5 @@ describe('construct-view-model', () => {
         expect(result.evaluatedOnly).toBe(false);
       });
     });
-  });
-
-  describe('when the category is "groups"', () => {
-    let result: ViewModel;
-    const category = O.some('groups' as const);
-    const cursor = O.none;
-    const page = O.none;
-    const evaluatedOnly = O.none;
-
-    describe('and there are results', () => {
-      const group = arbitraryGroup();
-      const query = group.name;
-
-      beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateGroup(group);
-        result = await pipe(
-          {
-            query, category, cursor, page, evaluatedOnly,
-          },
-          constructViewModel(defaultDependencies, 1),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
-
-      it('all group cards are included in the view model', () => {
-        expect(result.itemCardsToDisplay).toStrictEqual(
-          [
-            expect.objectContaining({
-              name: group.name,
-            }),
-          ],
-        );
-      });
-
-      it('the groups tab is active', () => {
-        expect(result.category).toBe('groups');
-      });
-
-      it('the number of groups found is displayed', () => {
-        expect(result.availableGroupMatches).toBe(1);
-      });
-
-      it('the number of articles found is displayed', () => {
-        expect(result.availableArticleMatches).toBe(0);
-      });
-
-      it('the query is displayed', () => {
-        expect(result.query).toBe(query);
-      });
-    });
-
-    describe('but there are no results', () => {
-      const query = arbitraryString();
-
-      beforeEach(async () => {
-        result = await pipe(
-          {
-            query, category, cursor, page, evaluatedOnly,
-          },
-          constructViewModel(defaultDependencies, 1),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
-
-      it('there are no group cards included in the view model', () => {
-        expect(result.itemCardsToDisplay).toStrictEqual([]);
-      });
-
-      it('the number of groups found is displayed', () => {
-        expect(result.availableGroupMatches).toBe(0);
-      });
-
-      it('the query is displayed', () => {
-        expect(result.query).toBe(query);
-      });
-    });
-  });
-
-  describe('when the category is not provided', () => {
-    it.todo('the category defaults to articles');
   });
 });

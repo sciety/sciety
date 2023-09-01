@@ -43,47 +43,6 @@ describe('select-subset-to-display', () => {
     });
   });
 
-  describe('given the category of "groups"', () => {
-    it('returns only groups when given articles and groups', () => {
-      const groupItem = arbitraryGroupItem();
-      const state = {
-        query: '',
-        evaluatedOnly: false,
-        pageSize: 2,
-        pageNumber: O.none,
-        category: 'groups' as const,
-        groups: [groupItem],
-        articles: {
-          items: [arbitraryArticleItem()],
-          total: 1,
-          nextCursor: O.some(arbitraryWord()),
-        },
-      };
-      const result = selectSubsetToDisplay(state);
-
-      expect(result.itemsToDisplay).toStrictEqual([groupItem]);
-    });
-
-    it('nextCursor should be none', () => {
-      const state = {
-        query: '',
-        evaluatedOnly: false,
-        pageSize: 2,
-        pageNumber: O.none,
-        category: 'groups' as const,
-        groups: [arbitraryGroupItem()],
-        articles: {
-          items: [],
-          total: 0,
-          nextCursor: O.some(arbitraryWord()),
-        },
-      };
-      const result = selectSubsetToDisplay(state);
-
-      expect(result.nextCursor).toStrictEqual(O.none);
-    });
-  });
-
   it('returns the correct numbers of available matches for each category', () => {
     const numberOfMatchingArticles = arbitraryNumber(2, 1000);
     const state = {
