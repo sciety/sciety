@@ -3,10 +3,6 @@
 @use '../../../sass/layout';
 @use '../../../sass/settings';
 
-.standard-page-container {
-  @include layout.page-container();
-}
-
 .page-content {
   display: flex;
   padding-bottom: 3rem;
