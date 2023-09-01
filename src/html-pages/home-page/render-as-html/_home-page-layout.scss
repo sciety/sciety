@@ -1,5 +1,5 @@
 @use '../../../sass/layout';
 
 .home-page-container {
-  @include layout.page-container();
+  @include layout.force-page-to-fill-the-viewport-height();
 }

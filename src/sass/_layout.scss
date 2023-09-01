@@ -89,7 +89,7 @@
   }
 }
 
-@mixin page-container() {
+@mixin force-page-to-fill-the-viewport-height() {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
