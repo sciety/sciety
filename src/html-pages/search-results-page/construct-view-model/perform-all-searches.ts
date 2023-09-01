@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constant, pipe, tupled } from 'fp-ts/function';
+import { pipe, tupled } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { findGroups } from './find-groups';
@@ -13,7 +13,6 @@ import { Dependencies } from './dependencies';
 
 export const paramsCodec = t.type({
   query: t.string,
-  category: tt.optionFromNullable(t.literal('articles')),
   cursor: tt.optionFromNullable(t.string),
   page: tt.optionFromNullable(tt.NumberFromString),
   evaluatedOnly: tt.optionFromNullable(t.unknown),
@@ -36,7 +35,7 @@ export const performAllSearches: PerformAllSearches = (dependencies) => (pageSiz
     ),
     pageSize: TE.right(pageSize),
     pageNumber: TE.right(params.page),
-    category: TE.right(O.getOrElseW(constant('articles' as const))(params.category)),
+    category: TE.right('articles' as const),
     articles: pipe(
       [
         params.query,
