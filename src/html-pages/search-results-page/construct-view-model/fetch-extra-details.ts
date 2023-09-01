@@ -28,7 +28,7 @@ type LimitedSetOfArticles = {
 
 export type LimitedSet = LimitedSetOfArticles;
 
-const toFullPageViewModelForArticlesCategory = (
+const toFullPageViewModel = (
   dependencies: Dependencies,
   state: LimitedSetOfArticles,
 ) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => ({
@@ -47,13 +47,6 @@ const toFullPageViewModelForArticlesCategory = (
     ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
   ),
 });
-
-const toFullPageViewModel = (
-  dependencies: Dependencies,
-  state: LimitedSet,
-) => (
-  itemCardViewModels: ReadonlyArray<ItemCardViewModel>,
-) => toFullPageViewModelForArticlesCategory(dependencies, state)(itemCardViewModels);
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
