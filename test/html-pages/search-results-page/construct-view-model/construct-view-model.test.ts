@@ -118,10 +118,6 @@ describe('construct-view-model', () => {
         expect(result.availableArticleMatches).toBe(1);
       });
 
-      it('the number of groups found is displayed', () => {
-        expect(result.availableGroupMatches).toBe(0);
-      });
-
       it('the query is displayed', () => {
         expect(result.query).toBe(query);
       });
@@ -156,10 +152,6 @@ describe('construct-view-model', () => {
 
       it('the number of articles found is displayed', () => {
         expect(result.availableArticleMatches).toBe(2);
-      });
-
-      it('the number of groups found is displayed', () => {
-        expect(result.availableGroupMatches).toBe(0);
       });
 
       it('the query is displayed', () => {

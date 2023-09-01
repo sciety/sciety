@@ -29,6 +29,5 @@ export type ViewModel = ArticlesCategoryViewModel & PaginationViewModel & Pagina
   query: string,
   evaluatedOnly: boolean,
   availableArticleMatches: number,
-  availableGroupMatches: number,
   itemCardsToDisplay: ReadonlyArray<ItemCardViewModel>,
 };
