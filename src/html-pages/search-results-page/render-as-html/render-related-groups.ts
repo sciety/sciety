@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
-const foo = (relatedGroup: (ViewModel['relatedGroups'] & { tag: 'some-related-groups' })['items'][number]) => pipe(
+const renderLargeLogoLink = (relatedGroup: (ViewModel['relatedGroups'] & { tag: 'some-related-groups' })['items'][number]) => pipe(
   relatedGroup.largeLogoUrl,
   O.match(
     () => '',
@@ -19,7 +19,7 @@ export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): 
     relatedGroups.items,
     RA.map((relatedGroup) => `
       <li role="listitem">
-       ${foo(relatedGroup)}
+       ${renderLargeLogoLink(relatedGroup)}
       </li>
     `),
     (items) => items.join(''),
