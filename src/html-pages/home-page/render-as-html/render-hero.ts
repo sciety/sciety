@@ -9,7 +9,6 @@ const renderSearchForm = () => `
     </div>
     <button type="reset" class="visually-hidden">Reset</button>
     <input type="hidden" name="evaluatedOnly" value="true">
-    <input type="hidden" name="category" value="articles">
   </form>
 `;
 
