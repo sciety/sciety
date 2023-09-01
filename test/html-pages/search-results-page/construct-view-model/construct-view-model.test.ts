@@ -50,7 +50,7 @@ describe('construct-view-model', () => {
   const query = arbitraryString();
   const cursor = O.none;
   const page = O.none;
-  const evaluatedOnly = O.none;
+  const evaluatedOnly = false;
 
   const getViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
     {

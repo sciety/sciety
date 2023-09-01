@@ -12,7 +12,7 @@ export const paramsCodec = t.type({
   query: t.string,
   cursor: tt.optionFromNullable(t.string),
   page: tt.optionFromNullable(tt.NumberFromString),
-  evaluatedOnly: tt.optionFromNullable(t.unknown),
+  evaluatedOnly: tt.withFallback(tt.BooleanFromString, false),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
@@ -24,17 +24,11 @@ export const constructViewModel = (
   [
     params.query,
     params.cursor,
-    pipe(
-      params.evaluatedOnly,
-      O.isSome,
-    ),
+    params.evaluatedOnly,
   ],
   tupled(dependencies.searchForArticles(pageSize)),
   TE.map((articles) => ({
-    evaluatedOnly: pipe(
-      params.evaluatedOnly,
-      O.isSome,
-    ),
+    evaluatedOnly: params.evaluatedOnly,
     itemsToDisplay: articles.items,
     query: params.query,
     nextCursor: articles.nextCursor,
