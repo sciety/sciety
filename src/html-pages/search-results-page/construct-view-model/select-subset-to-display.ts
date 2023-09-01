@@ -13,7 +13,6 @@ export type Matches = {
 
 export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
   ...state,
-  category: 'articles',
   availableArticleMatches: state.articles.total,
   availableGroupMatches: state.groups.length,
   itemsToDisplay: state.articles.items,

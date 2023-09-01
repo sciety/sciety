@@ -21,22 +21,9 @@ const constructItemCardViewModel = (
     ? pipe(item.articleId, constructArticleCardViewModel(dependencies))
     : pipe(item.id, constructGroupCardViewModel(dependencies), T.of));
 
-type LimitedSetOfGroups = {
-  query: string,
-  evaluatedOnly: boolean,
-  category: 'groups',
-  availableArticleMatches: number,
-  availableGroupMatches: number,
-  itemsToDisplay: ReadonlyArray<GroupItem>,
-  nextCursor: O.Option<string>,
-  pageNumber: number,
-  numberOfPages: number,
-};
-
 type LimitedSetOfArticles = {
   query: string,
   evaluatedOnly: boolean,
-  category: 'articles',
   availableArticleMatches: number,
   availableGroupMatches: number,
   itemsToDisplay: ReadonlyArray<ArticleItem>,
@@ -45,22 +32,7 @@ type LimitedSetOfArticles = {
   numberOfPages: number,
 };
 
-export type LimitedSet = LimitedSetOfGroups | LimitedSetOfArticles;
-
-const toFullPageViewModelForGroupsCategory = (
-  state: LimitedSet,
-) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => ({
-  ...state,
-  category: 'groups' as const,
-  itemCardsToDisplay: itemCardViewModels,
-  nextPageHref: pipe(
-    {
-      basePath: '',
-      pageNumber: state.pageNumber + 1,
-    },
-    ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
-  ),
-});
+export type LimitedSet = LimitedSetOfArticles;
 
 const toFullPageViewModelForArticlesCategory = (
   dependencies: Dependencies,
@@ -86,12 +58,9 @@ const toFullPageViewModelForArticlesCategory = (
 const toFullPageViewModel = (
   dependencies: Dependencies,
   state: LimitedSet,
-) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => {
-  if (state.category === 'articles') {
-    return toFullPageViewModelForArticlesCategory(dependencies, state)(itemCardViewModels);
-  }
-  return toFullPageViewModelForGroupsCategory(state)(itemCardViewModels);
-};
+) => (
+  itemCardViewModels: ReadonlyArray<ItemCardViewModel>,
+) => toFullPageViewModelForArticlesCategory(dependencies, state)(itemCardViewModels);
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
