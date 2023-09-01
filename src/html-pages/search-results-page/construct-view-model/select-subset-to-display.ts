@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { ArticleResults } from './data-types';
 import { LimitedSet } from './fetch-extra-details';
 
-export type Matches = {
+type Matches = {
   query: string,
   evaluatedOnly: boolean,
   pageNumber: O.Option<number>,
