@@ -28,6 +28,5 @@ export type ArticlesCategoryViewModel = {
 export type ViewModel = ArticlesCategoryViewModel & PaginationViewModel & PaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
-  availableArticleMatches: number,
   itemCardsToDisplay: ReadonlyArray<ItemCardViewModel>,
 };

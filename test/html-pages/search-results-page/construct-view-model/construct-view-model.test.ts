@@ -114,10 +114,6 @@ describe('construct-view-model', () => {
         expect(result.category).toBe('articles');
       });
 
-      it('the number of articles found is displayed', () => {
-        expect(result.availableArticleMatches).toBe(1);
-      });
-
       it('the query is displayed', () => {
         expect(result.query).toBe(query);
       });
@@ -150,10 +146,6 @@ describe('construct-view-model', () => {
         expect(result.category).toBe('articles');
       });
 
-      it('the number of articles found is displayed', () => {
-        expect(result.availableArticleMatches).toBe(2);
-      });
-
       it('the query is displayed', () => {
         expect(result.query).toBe(query);
       });
@@ -178,10 +170,6 @@ describe('construct-view-model', () => {
 
       it('there are no article cards included in the view model', () => {
         expect(result.itemCardsToDisplay).toStrictEqual([]);
-      });
-
-      it('the number of articles found is displayed', () => {
-        expect(result.availableArticleMatches).toBe(0);
       });
 
       it('the query is displayed', () => {
