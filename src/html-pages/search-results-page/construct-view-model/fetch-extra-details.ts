@@ -19,7 +19,7 @@ type LimitedSetOfArticles = {
   numberOfPages: number,
 };
 
-export type LimitedSet = LimitedSetOfArticles;
+type LimitedSet = LimitedSetOfArticles;
 
 const toFullPageViewModel = (
   dependencies: Dependencies,

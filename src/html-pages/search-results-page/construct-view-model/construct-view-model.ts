@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import * as DE from '../../../types/data-error';
 import { fetchExtraDetails } from './fetch-extra-details';
 import { Params, performSearch } from './perform-search';
-import { selectSubsetToDisplay } from './select-subset-to-display';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 
@@ -15,15 +14,15 @@ export const constructViewModel = (
   params,
   performSearch(dependencies)(pageSize),
   TE.map((articles) => ({
-    query: params.query,
     evaluatedOnly: pipe(
       params.evaluatedOnly,
       O.isSome,
     ),
-    pageSize,
-    pageNumber: params.page,
-    articles,
+    itemsToDisplay: articles.items,
+    query: params.query,
+    nextCursor: articles.nextCursor,
+    pageNumber: O.getOrElse(() => 1)(params.page),
+    numberOfPages: Math.ceil(articles.total / pageSize),
   })),
-  TE.map(selectSubsetToDisplay),
   TE.chainTaskK(fetchExtraDetails(dependencies)),
 );
