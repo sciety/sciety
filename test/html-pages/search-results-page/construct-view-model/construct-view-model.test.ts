@@ -45,125 +45,123 @@ describe('construct-view-model', () => {
     defaultDependencies = framework.dependenciesForViews;
   });
 
-  describe('when the category is "articles"', () => {
-    let result: ViewModel;
+  let result: ViewModel;
 
-    const query = arbitraryString();
-    const cursor = O.none;
-    const page = O.none;
-    const evaluatedOnly = O.none;
+  const query = arbitraryString();
+  const cursor = O.none;
+  const page = O.none;
+  const evaluatedOnly = O.none;
 
-    const getArticleCategoryViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
+  const getViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
+    {
+      query, cursor, page, evaluatedOnly,
+    },
+    constructViewModel(
       {
-        query, cursor, page, evaluatedOnly,
+        ...defaultDependencies,
+        searchForArticles,
       },
-      constructViewModel(
-        {
-          ...defaultDependencies,
-          searchForArticles,
-        },
-        itemsPerPage,
-      ),
-      TE.getOrElse(shouldNotBeCalled),
-    )();
-
-    const getArticleCategoryViewModelForASinglePage = async (
-      articleIds: ReadonlyArray<Doi>,
-    ) => getArticleCategoryViewModel(
-      searchForArticlesReturningResults(articleIds, 1, O.none),
-    );
-
-    const getArticleCategoryViewModelWithAdditionalPages = async (
-      articleId: Doi,
-      cursorValue: string,
-      itemsPerPage: number,
-    ) => getArticleCategoryViewModel(
-      searchForArticlesReturningResults([articleId], 2, O.some(cursorValue)),
       itemsPerPage,
-    );
+    ),
+    TE.getOrElse(shouldNotBeCalled),
+  )();
 
-    const getArticleCategoryViewModelForAPageWithNoResults = async () => getArticleCategoryViewModel(
-      searchForArticlesReturningNoResults,
-    );
+  const getViewModelForASinglePage = async (
+    articleIds: ReadonlyArray<Doi>,
+  ) => getViewModel(
+    searchForArticlesReturningResults(articleIds, 1, O.none),
+  );
 
-    describe('and there is only one page of results, with no evaluated articles', () => {
-      const articleId = arbitraryDoi();
+  const getViewModelWithAdditionalPages = async (
+    articleId: Doi,
+    cursorValue: string,
+    itemsPerPage: number,
+  ) => getViewModel(
+    searchForArticlesReturningResults([articleId], 2, O.some(cursorValue)),
+    itemsPerPage,
+  );
 
-      beforeEach(async () => {
-        result = await getArticleCategoryViewModelForASinglePage([articleId]);
-      });
+  const getViewModelForAPageWithNoResults = async () => getViewModel(
+    searchForArticlesReturningNoResults,
+  );
 
-      it('all article cards are included in the view model', () => {
-        expect(result.itemCardsToDisplay).toStrictEqual(
-          [
-            expect.objectContaining({
-              articleId,
-            }),
-          ],
-        );
-      });
+  describe('and there is only one page of results, with no evaluated articles', () => {
+    const articleId = arbitraryDoi();
 
-      it('the query is displayed', () => {
-        expect(result.query).toBe(query);
-      });
-
-      it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(false);
-      });
+    beforeEach(async () => {
+      result = await getViewModelForASinglePage([articleId]);
     });
 
-    describe('and there is more than one page of results, with no evaluated articles', () => {
-      const articleId = arbitraryDoi();
-      const itemsPerPage = 1;
-      const cursorValue = arbitraryWord();
-
-      beforeEach(async () => {
-        result = await getArticleCategoryViewModelWithAdditionalPages(articleId, cursorValue, itemsPerPage);
-      });
-
-      it('no more than itemsPerPage article cards are included in the view model', () => {
-        expect(result.itemCardsToDisplay).toStrictEqual(
-          [
-            expect.objectContaining({
-              articleId,
-            }),
-          ],
-        );
-      });
-
-      it('the query is displayed', () => {
-        expect(result.query).toBe(query);
-      });
-
-      it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(false);
-      });
-
-      it('the current page number is displayed', () => {
-        expect(result.pageNumber).toBe(1);
-      });
-
-      it('the total number of pages is displayed', () => {
-        expect(result.numberOfPages).toBe(2);
-      });
+    it('all article cards are included in the view model', () => {
+      expect(result.itemCardsToDisplay).toStrictEqual(
+        [
+          expect.objectContaining({
+            articleId,
+          }),
+        ],
+      );
     });
 
-    describe('but there are no results', () => {
-      beforeEach(async () => {
-        result = await getArticleCategoryViewModelForAPageWithNoResults();
-      });
+    it('the query is displayed', () => {
+      expect(result.query).toBe(query);
+    });
 
-      it('there are no article cards included in the view model', () => {
-        expect(result.itemCardsToDisplay).toStrictEqual([]);
-      });
+    it('the state of the filter for evaluated articles is displayed', () => {
+      expect(result.evaluatedOnly).toBe(false);
+    });
+  });
 
-      it('the query is displayed', () => {
-        expect(result.query).toBe(query);
-      });
+  describe('and there is more than one page of results, with no evaluated articles', () => {
+    const articleId = arbitraryDoi();
+    const itemsPerPage = 1;
+    const cursorValue = arbitraryWord();
 
-      it('the state of the filter for evaluated articles is displayed', () => {
-        expect(result.evaluatedOnly).toBe(false);
-      });
+    beforeEach(async () => {
+      result = await getViewModelWithAdditionalPages(articleId, cursorValue, itemsPerPage);
+    });
+
+    it('no more than itemsPerPage article cards are included in the view model', () => {
+      expect(result.itemCardsToDisplay).toStrictEqual(
+        [
+          expect.objectContaining({
+            articleId,
+          }),
+        ],
+      );
+    });
+
+    it('the query is displayed', () => {
+      expect(result.query).toBe(query);
+    });
+
+    it('the state of the filter for evaluated articles is displayed', () => {
+      expect(result.evaluatedOnly).toBe(false);
+    });
+
+    it('the current page number is displayed', () => {
+      expect(result.pageNumber).toBe(1);
+    });
+
+    it('the total number of pages is displayed', () => {
+      expect(result.numberOfPages).toBe(2);
+    });
+  });
+
+  describe('but there are no results', () => {
+    beforeEach(async () => {
+      result = await getViewModelForAPageWithNoResults();
+    });
+
+    it('there are no article cards included in the view model', () => {
+      expect(result.itemCardsToDisplay).toStrictEqual([]);
+    });
+
+    it('the query is displayed', () => {
+      expect(result.query).toBe(query);
+    });
+
+    it('the state of the filter for evaluated articles is displayed', () => {
+      expect(result.evaluatedOnly).toBe(false);
     });
   });
 });
