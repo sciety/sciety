@@ -1,12 +1,9 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, tupled } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { findGroups } from './find-groups';
 import { Matches } from './select-subset-to-display';
 import * as DE from '../../../types/data-error';
 import { Dependencies } from './dependencies';
@@ -45,11 +42,6 @@ export const performAllSearches: PerformAllSearches = (dependencies) => (pageSiz
         ),
       ],
       tupled(dependencies.searchForArticles(pageSize)),
-    ),
-    groups: pipe(
-      findGroups(dependencies, params.query),
-      T.map(RA.map((groupId) => ({ id: groupId }))),
-      TE.rightTask,
     ),
   },
   sequenceS(TE.ApplyPar),
