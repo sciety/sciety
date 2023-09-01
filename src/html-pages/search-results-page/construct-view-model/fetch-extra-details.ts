@@ -37,7 +37,6 @@ const toFullPageViewModelForArticlesCategory = (
   state: LimitedSetOfArticles,
 ) => (itemCardViewModels: ReadonlyArray<ItemCardViewModel>) => ({
   ...state,
-  category: 'articles' as const,
   relatedGroups: pipe(
     state.itemsToDisplay,
     RA.map((itemToDisplay) => itemToDisplay.articleId),

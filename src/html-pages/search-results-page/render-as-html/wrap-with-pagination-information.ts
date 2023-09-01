@@ -9,7 +9,6 @@ const articleServersSeparatedByComma = `<b>${articleServers.biorxiv.name}</b>, <
 export type PaginationViewModel = {
   query: string,
   evaluatedOnly: boolean,
-  category: 'articles',
   nextCursor: O.Option<string>,
   pageNumber: number,
   numberOfPages: number,

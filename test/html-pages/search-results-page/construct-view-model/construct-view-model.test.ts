@@ -36,8 +36,6 @@ const searchForArticlesReturningNoResults = () => () => TE.right({
   nextCursor: O.none,
 });
 
-const isArticleCategory = (value: ViewModel): value is ViewModel & { category: 'articles' } => value.category === 'articles';
-
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let defaultDependencies: TestFramework['dependenciesForViews'];
@@ -48,17 +46,16 @@ describe('construct-view-model', () => {
   });
 
   describe('when the category is "articles"', () => {
-    let result: ViewModel & { category: 'articles' };
+    let result: ViewModel;
 
     const query = arbitraryString();
-    const category = O.some('articles' as const);
     const cursor = O.none;
     const page = O.none;
     const evaluatedOnly = O.none;
 
     const getArticleCategoryViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
       {
-        query, category, cursor, page, evaluatedOnly,
+        query, cursor, page, evaluatedOnly,
       },
       constructViewModel(
         {
@@ -66,10 +63,6 @@ describe('construct-view-model', () => {
           searchForArticles,
         },
         itemsPerPage,
-      ),
-      TE.filterOrElseW(
-        isArticleCategory,
-        shouldNotBeCalled,
       ),
       TE.getOrElse(shouldNotBeCalled),
     )();
@@ -110,10 +103,6 @@ describe('construct-view-model', () => {
         );
       });
 
-      it('the articles tab is active', () => {
-        expect(result.category).toBe('articles');
-      });
-
       it('the query is displayed', () => {
         expect(result.query).toBe(query);
       });
@@ -140,10 +129,6 @@ describe('construct-view-model', () => {
             }),
           ],
         );
-      });
-
-      it('the articles tab is active', () => {
-        expect(result.category).toBe('articles');
       });
 
       it('the query is displayed', () => {

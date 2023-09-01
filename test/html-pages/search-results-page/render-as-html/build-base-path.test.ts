@@ -5,7 +5,6 @@ describe('buildBasePath', () => {
   it('encodes the cursor for http', () => {
     const nextLinkAnchor = buildBasePath({
       pageNumber: 2,
-      category: 'articles',
       query: 'bats',
       evaluatedOnly: false,
       nextCursor: O.some('foo+/bar'),
@@ -20,7 +19,6 @@ describe('buildBasePath', () => {
   it('encodes the query for http', () => {
     const nextLinkAnchor = buildBasePath({
       pageNumber: 2,
-      category: 'articles',
       query: 'bats+bugs',
       evaluatedOnly: false,
       nextCursor: O.some('foo'),
@@ -35,7 +33,6 @@ describe('buildBasePath', () => {
   describe('when the evaluatedOnly filter is set', () => {
     const nextLinkAnchor = buildBasePath({
       pageNumber: 2,
-      category: 'articles',
       query: 'bats',
       evaluatedOnly: true,
       nextCursor: O.some('foo'),
