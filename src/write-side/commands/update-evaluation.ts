@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
 import { evaluationTypeCodec } from './record-evaluation-publication';
 
-const updateEvaluationCommandCodec = t.strict({
+export const updateEvaluationCommandCodec = t.strict({
   evaluationLocator: evaluationLocatorCodec,
   evaluationType: evaluationTypeCodec,
 });
