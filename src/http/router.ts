@@ -88,42 +88,60 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/',
-    pageHandler(adapters, () => TE.right(homePage(adapters)), homePageLayout),
+    pageHandler(
+      adapters,
+      () => TE.right(homePage(adapters)),
+      homePageLayout,
+    ),
   );
 
   router.get(
     '/my-feed',
-    pageHandler(adapters, createPageFromParams(
-      myFeedParams,
-      myFeedPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        myFeedParams,
+        myFeedPage(adapters),
+      ),
+    ),
   );
 
   router.get(
     '/sciety-feed',
-    pageHandler(adapters, createPageFromParams(
-      scietyFeedCodec,
-      scietyFeedPage(adapters)(20),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        scietyFeedCodec,
+        scietyFeedPage(adapters)(20),
+      ),
+    ),
   );
 
   router.get(
     '/about',
-    pageHandler(adapters, () => aboutPage(adapters.fetchStaticFile)),
+    pageHandler(
+      adapters,
+      () => aboutPage(adapters.fetchStaticFile),
+    ),
   );
 
   router.get(
     '/lists/:listId/subscribe',
-    pageHandler(adapters, subscribeToListPage(adapters)),
+    pageHandler(
+      adapters,
+      subscribeToListPage(adapters),
+    ),
   );
 
   router.get(
     '/action-failed',
-    pageHandler(adapters,
+    pageHandler(
+      adapters,
       createPageFromParams(
         actionFailedPageParamsCodec,
         actionFailedPage,
-      )),
+      ),
+    ),
   );
 
   router.get(
@@ -138,18 +156,24 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/users/:handle/lists',
-    pageHandler(adapters, createPageFromParams(
-      userListsPageParams,
-      userListsPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        userListsPageParams,
+        userListsPage(adapters),
+      ),
+    ),
   );
 
   router.get(
     '/users/:handle/following',
-    pageHandler(adapters, createPageFromParams(
-      userFollowingPageParams,
-      userFollowingPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        userFollowingPageParams,
+        userFollowingPage(adapters),
+      ),
+    ),
   );
 
   router.get(
@@ -158,13 +182,16 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(adapters, flow(
-      searchResultsPageParams.decode,
-      E.fold(
-        () => TE.right(searchPage),
-        searchResultsPage(adapters)(20),
+    pageHandler(
+      adapters,
+      flow(
+        searchResultsPageParams.decode,
+        E.fold(
+          () => TE.right(searchPage),
+          searchResultsPage(adapters)(20),
+        ),
       ),
-    )),
+    ),
   );
 
   router.get(
@@ -189,7 +216,11 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/articles/activity/:doi(.+)',
-    pageHandler(adapters, articlePage(adapters), fullWidthPageLayout),
+    pageHandler(
+      adapters,
+      articlePage(adapters),
+      fullWidthPageLayout,
+    ),
   );
 
   router.get(
@@ -206,7 +237,10 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/groups',
-    pageHandler(adapters, () => groupsPage(adapters)),
+    pageHandler(
+      adapters,
+      () => groupsPage(adapters),
+    ),
   );
 
   router.get(
@@ -221,47 +255,65 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/groups/:slug/lists',
-    pageHandler(adapters, createPageFromParams(
-      GLP.paramsCodec,
-      GLP.constructAndRenderPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        GLP.paramsCodec,
+        GLP.constructAndRenderPage(adapters),
+      ),
+    ),
   );
 
   router.get(
     '/groups/:slug/about',
-    pageHandler(adapters, createPageFromParams(
-      GAP.paramsCodec,
-      GAP.constructAndRenderPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        GAP.paramsCodec,
+        GAP.constructAndRenderPage(adapters),
+      ),
+    ),
   );
 
   router.get(
     '/groups/:slug/followers',
-    pageHandler(adapters, createPageFromParams(
-      GFP.paramsCodec,
-      GFP.constructAndRenderPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        GFP.paramsCodec,
+        GFP.constructAndRenderPage(adapters),
+      ),
+    ),
   );
 
   router.get(
     '/groups/:slug/feed',
-    pageHandler(adapters, createPageFromParams(
-      GFEP.paramsCodec,
-      GFEP.constructAndRenderPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        GFEP.paramsCodec,
+        GFEP.constructAndRenderPage(adapters),
+      ),
+    ),
   );
 
   router.get(
     '/lists',
-    pageHandler(adapters, () => listsPage(adapters)),
+    pageHandler(
+      adapters,
+      () => listsPage(adapters),
+    ),
   );
 
   router.get(
     '/lists/:id',
-    pageHandler(adapters, createPageFromParams(
-      listPageParams,
-      listPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        listPageParams,
+        listPage(adapters),
+      ),
+    ),
   );
 
   router.get(
@@ -271,18 +323,24 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/lists/:id/edit-details',
-    pageHandler(adapters, createPageFromParams(
-      editListDetailsFormPageParamsCodec,
-      editListDetailsFormPage(adapters),
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        editListDetailsFormPageParamsCodec,
+        editListDetailsFormPage(adapters),
+      ),
+    ),
   );
 
   router.get(
     '/annotations/create-annotation-form-avasthi-reading',
-    pageHandler(adapters, createPageFromParams(
-      createAnnotationFormPageParamsCodec,
-      createAnnotationFormPage,
-    )),
+    pageHandler(
+      adapters,
+      createPageFromParams(
+        createAnnotationFormPageParamsCodec,
+        createAnnotationFormPage,
+      ),
+    ),
   );
 
   router.redirect('/blog', 'https://blog.sciety.org', StatusCodes.PERMANENT_REDIRECT);
@@ -294,12 +352,18 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/legal',
-    pageHandler(adapters, () => pipe(legalPage, TE.right)),
+    pageHandler(
+      adapters,
+      () => pipe(legalPage, TE.right),
+    ),
   );
 
   router.get(
     '/style-guide',
-    pageHandler(adapters, () => pipe(styleGuidePage, TE.right)),
+    pageHandler(
+      adapters,
+      () => pipe(styleGuidePage, TE.right),
+    ),
   );
 
   // COMMANDS
