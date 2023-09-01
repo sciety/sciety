@@ -22,17 +22,10 @@ export type SomeRelatedGroups = {
 };
 
 export type ArticlesCategoryViewModel = {
-  category: 'articles',
   relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };
 
-type GroupsCategoryViewModel = {
-  category: 'groups',
-};
-
-type CategorySpecificViewModel = ArticlesCategoryViewModel | GroupsCategoryViewModel;
-
-export type ViewModel = CategorySpecificViewModel & PaginationViewModel & PaginationControlsViewModel & {
+export type ViewModel = ArticlesCategoryViewModel & PaginationViewModel & PaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
   availableArticleMatches: number,
