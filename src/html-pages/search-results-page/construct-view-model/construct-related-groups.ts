@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { Doi } from '../../../types/doi';
-import { ArticlesCategoryViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 import * as GID from '../../../types/group-id';
 
@@ -15,7 +15,7 @@ const getGroup = (dependencies: Dependencies) => (groupId: GID.GroupId) => pipe(
   }),
 );
 
-export const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ArticlesCategoryViewModel['relatedGroups'] => pipe(
+export const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ViewModel['relatedGroups'] => pipe(
   articleIds,
   RA.flatMap(dependencies.getEvaluationsForDoi),
   RA.map((recordedEvaluation) => recordedEvaluation.groupId),

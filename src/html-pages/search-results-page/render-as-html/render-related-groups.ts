@@ -1,10 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { ArticlesCategoryViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
-const foo = (relatedGroup: (ArticlesCategoryViewModel['relatedGroups'] & { tag: 'some-related-groups' })['items'][number]) => pipe(
+const foo = (relatedGroup: (ViewModel['relatedGroups'] & { tag: 'some-related-groups' })['items'][number]) => pipe(
   relatedGroup.largeLogoUrl,
   O.match(
     () => '',
@@ -14,7 +14,7 @@ const foo = (relatedGroup: (ArticlesCategoryViewModel['relatedGroups'] & { tag: 
   ),
 );
 
-export const renderRelatedGroups = (relatedGroups: ArticlesCategoryViewModel['relatedGroups']): HtmlFragment => (relatedGroups.tag === 'some-related-groups'
+export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): HtmlFragment => (relatedGroups.tag === 'some-related-groups'
   ? pipe(
     relatedGroups.items,
     RA.map((relatedGroup) => `

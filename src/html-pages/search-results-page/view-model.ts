@@ -21,12 +21,9 @@ export type SomeRelatedGroups = {
   }>,
 };
 
-export type ArticlesCategoryViewModel = {
-  relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
-};
-
-export type ViewModel = ArticlesCategoryViewModel & PaginationViewModel & PaginationControlsViewModel & {
+export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
   itemCardsToDisplay: ReadonlyArray<ItemCardViewModel>,
+  relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };

@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticlesCategoryViewModel, SomeRelatedGroups } from '../../../../src/html-pages/search-results-page/view-model';
+import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { Doi } from '../../../../src/types/doi';
@@ -9,9 +9,9 @@ import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
 
-const isSomeRelatedGroups = (value: ArticlesCategoryViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
+const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
-const ensureThereAreSomeRelatedGroups = (value: ArticlesCategoryViewModel['relatedGroups']): SomeRelatedGroups => pipe(
+const ensureThereAreSomeRelatedGroups = (value: ViewModel['relatedGroups']): SomeRelatedGroups => pipe(
   value,
   O.fromPredicate(isSomeRelatedGroups),
   O.getOrElseW(() => { throw new Error(`${value.tag} is not SomeRelatedGroups`); }),
@@ -114,7 +114,7 @@ describe('construct-related-groups', () => {
 
   describe('when there are results, with no evaluated articles', () => {
     const articleId = arbitraryDoi();
-    let relatedGroups: ArticlesCategoryViewModel['relatedGroups'];
+    let relatedGroups: ViewModel['relatedGroups'];
 
     beforeEach(() => {
       relatedGroups = constructRelatedGroups(defaultDependencies)([articleId]);
@@ -126,7 +126,7 @@ describe('construct-related-groups', () => {
   });
 
   describe('when there are no results', () => {
-    let relatedGroups: ArticlesCategoryViewModel['relatedGroups'];
+    let relatedGroups: ViewModel['relatedGroups'];
 
     beforeEach(async () => {
       relatedGroups = constructRelatedGroups(defaultDependencies)([]);
