@@ -10,7 +10,7 @@ import {
 import { Dependencies } from './dependencies';
 import { constructRelatedGroups } from './construct-related-groups';
 
-type LimitedSetOfArticles = {
+type LimitedSet = {
   query: string,
   evaluatedOnly: boolean,
   itemsToDisplay: ReadonlyArray<ArticleItem>,
@@ -19,11 +19,9 @@ type LimitedSetOfArticles = {
   numberOfPages: number,
 };
 
-type LimitedSet = LimitedSetOfArticles;
-
 const toFullPageViewModel = (
   dependencies: Dependencies,
-  state: LimitedSetOfArticles,
+  state: LimitedSet,
 ) => (articleCards: ViewModel['articleCards']) => ({
   ...state,
   relatedGroups: pipe(
