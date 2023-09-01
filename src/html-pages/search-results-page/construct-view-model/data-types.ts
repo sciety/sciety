@@ -16,8 +16,6 @@ export type ArticleItem = {
   authors: ArticleAuthors,
 };
 
-export const isArticleItem = (item: ArticleItem | GroupItem): item is ArticleItem => 'articleId' in item;
-
 export type ArticleResults = {
   items: ReadonlyArray<ArticleItem>,
   total: number,

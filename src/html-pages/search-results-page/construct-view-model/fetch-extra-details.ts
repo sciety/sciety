@@ -3,9 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleItem, GroupItem, isArticleItem } from './data-types';
-import { constructGroupCardViewModel } from '../../../shared-components/group-card';
-import * as DE from '../../../types/data-error';
+import { ArticleItem } from './data-types';
 import { ItemCardViewModel, ViewModel } from '../view-model';
 import {
   ArticleErrorCardViewModel,
@@ -16,10 +14,8 @@ import { constructRelatedGroups } from './construct-related-groups';
 
 const constructItemCardViewModel = (
   dependencies: Dependencies,
-) => (item: ArticleItem | GroupItem): TE.TaskEither<DE.DataError | ArticleErrorCardViewModel, ItemCardViewModel> => (
-  isArticleItem(item)
-    ? pipe(item.articleId, constructArticleCardViewModel(dependencies))
-    : pipe(item.id, constructGroupCardViewModel(dependencies), T.of));
+) => (item: ArticleItem): TE.TaskEither<ArticleErrorCardViewModel, ItemCardViewModel> => (
+  pipe(item.articleId, constructArticleCardViewModel(dependencies)));
 
 type LimitedSetOfArticles = {
   query: string,

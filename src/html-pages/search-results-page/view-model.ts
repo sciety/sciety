@@ -1,10 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
-import { GroupCardViewModel } from '../../shared-components/group-card';
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
 
-export type ItemCardViewModel = ArticleCardViewModel | GroupCardViewModel;
+export type ItemCardViewModel = ArticleCardViewModel;
 
 export const isArticleViewModel = (viewModel: ItemCardViewModel): viewModel is ArticleCardViewModel => 'articleId' in viewModel;
 
