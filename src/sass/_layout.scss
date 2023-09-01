@@ -34,7 +34,7 @@
   }
 }
 
-.default-page-container {
+.page-container {
   @include force-page-to-fill-the-viewport-height();
 }
 

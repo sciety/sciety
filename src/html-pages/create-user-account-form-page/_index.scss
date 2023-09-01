@@ -20,8 +20,7 @@
   }
 }
 
-.create-user-account-form-page__container {
-  @include layout.force-page-to-fill-the-viewport-height();
+.page-container--create-user-account-form {
   background-color: settings.$colour-background-grey;
 }
 

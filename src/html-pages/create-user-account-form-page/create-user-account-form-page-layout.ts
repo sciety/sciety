@@ -18,7 +18,7 @@ export const createUserAccountFormPageLayout = (user: O.Option<UserDetails>) => 
   )}
 <body>
   ${googleTagManagerNoScript()}
-  <div class="create-user-account-form-page__container">
+  <div class="page-container page-container--create-user-account-form">
     ${siteHeader(user)}
 
     <main id="mainContent" class="create-user-account-form-page__main">
