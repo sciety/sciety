@@ -1,11 +1,8 @@
 import { arbitraryBoolean, arbitraryString } from '../../../helpers';
 import { buildPageUrl } from '../../../../src/html-pages/search-results-page/render-as-html/build-page-url';
 
-const arbitraryCategory = (): 'articles' | 'groups' => (arbitraryBoolean() ? 'articles' : 'groups');
-
 describe('build-page-url', () => {
   const defaultParams = {
-    category: arbitraryCategory(),
     query: arbitraryString(),
     evaluatedOnly: arbitraryBoolean(),
   };
