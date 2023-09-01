@@ -3,10 +3,6 @@ import { PaginationViewModel } from './render-as-html/wrap-with-pagination-infor
 import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
 
-export type ItemCardViewModel = ArticleCardViewModel;
-
-export const isArticleViewModel = (viewModel: ItemCardViewModel): viewModel is ArticleCardViewModel => 'articleId' in viewModel;
-
 type NoGroupsEvaluatedTheFoundArticles = {
   tag: 'no-groups-evaluated-the-found-articles',
 };
@@ -23,6 +19,6 @@ export type SomeRelatedGroups = {
 export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
-  itemCardsToDisplay: ReadonlyArray<ItemCardViewModel>,
+  itemCardsToDisplay: ReadonlyArray<ArticleCardViewModel>,
   relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };

@@ -3,17 +3,12 @@ import { pipe } from 'fp-ts/function';
 import { wrapWithPaginationInformation } from './wrap-with-pagination-information';
 import { renderSearchResultsList } from './render-search-results-list';
 import { renderArticleCard } from '../../../shared-components/article-card';
-import { renderGroupCard } from '../../../shared-components/group-card';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { isArticleViewModel, ItemCardViewModel, ViewModel } from '../view-model';
-
-const renderSearchResult = (viewModel: ItemCardViewModel) => (
-  isArticleViewModel(viewModel) ? renderArticleCard(viewModel) : renderGroupCard(viewModel)
-);
+import { ViewModel } from '../view-model';
 
 export const renderSearchResults = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.itemCardsToDisplay,
-  RA.map(renderSearchResult),
+  RA.map(renderArticleCard),
   renderSearchResultsList,
   wrapWithPaginationInformation(viewModel),
   toHtmlFragment,
