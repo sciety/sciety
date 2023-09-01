@@ -7,23 +7,17 @@ export type Matches = {
   evaluatedOnly: boolean,
   pageNumber: O.Option<number>,
   pageSize: number,
-  category: 'articles',
   groups: ReadonlyArray<GroupItem>,
   articles: ArticleResults,
 };
 
-export const selectSubsetToDisplay = (state: Matches): LimitedSet => {
-  switch (state.category) {
-    case 'articles':
-      return {
-        ...state,
-        category: 'articles',
-        availableArticleMatches: state.articles.total,
-        availableGroupMatches: state.groups.length,
-        itemsToDisplay: state.articles.items,
-        nextCursor: state.articles.nextCursor,
-        pageNumber: O.getOrElse(() => 1)(state.pageNumber),
-        numberOfPages: Math.ceil(state.articles.total / state.pageSize),
-      };
-  }
-};
+export const selectSubsetToDisplay = (state: Matches): LimitedSet => ({
+  ...state,
+  category: 'articles',
+  availableArticleMatches: state.articles.total,
+  availableGroupMatches: state.groups.length,
+  itemsToDisplay: state.articles.items,
+  nextCursor: state.articles.nextCursor,
+  pageNumber: O.getOrElse(() => 1)(state.pageNumber),
+  numberOfPages: Math.ceil(state.articles.total / state.pageSize),
+});

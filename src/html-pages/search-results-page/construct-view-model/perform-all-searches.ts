@@ -35,7 +35,6 @@ export const performAllSearches: PerformAllSearches = (dependencies) => (pageSiz
     ),
     pageSize: TE.right(pageSize),
     pageNumber: TE.right(params.page),
-    category: TE.right('articles' as const),
     articles: pipe(
       [
         params.query,
