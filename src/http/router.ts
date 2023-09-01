@@ -72,7 +72,7 @@ import * as evaluationResource from '../write-side/resources/evaluation';
 import * as groupResource from '../write-side/resources/group';
 import * as listResource from '../write-side/resources/list';
 import * as userResource from '../write-side/resources/user';
-import { fullWidthPageLayout } from '../shared-components/layouts';
+import { fullWidthPageLayout } from '../html-pages/layouts';
 import { applicationStatus } from '../views/status';
 import { listFeed } from '../views/list/list-feed';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';

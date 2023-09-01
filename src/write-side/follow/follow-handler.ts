@@ -9,7 +9,7 @@ import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { followCommandHandler } from './follow-command-handler';
 import { renderErrorPage } from '../../http/render-error-page';
-import { standardPageLayout } from '../../shared-components/layouts';
+import { standardPageLayout } from '../../html-pages/layouts';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';

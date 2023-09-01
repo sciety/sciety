@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
 import { renderErrorPage } from './render-error-page';
 import { Logger } from '../infrastructure';
-import { standardPageLayout } from '../shared-components/layouts';
+import { standardPageLayout } from '../html-pages/layouts';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type KoaSendError = {

@@ -2,7 +2,7 @@ import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { renderErrorPage } from './render-error-page';
-import { standardPageLayout } from '../shared-components/layouts';
+import { standardPageLayout } from '../html-pages/layouts';
 import { toHtmlFragment } from '../types/html-fragment';
 
 type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
