@@ -1,6 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { applyTabControls } from './apply-tab-controls';
 import { wrapWithPaginationInformation } from './wrap-with-pagination-information';
 import { renderSearchResultsList } from './render-search-results-list';
 import { renderArticleCard } from '../../../shared-components/article-card';
@@ -17,6 +16,5 @@ export const renderSearchResults = (viewModel: ViewModel): HtmlFragment => pipe(
   RA.map(renderSearchResult),
   renderSearchResultsList,
   wrapWithPaginationInformation(viewModel),
-  applyTabControls(viewModel),
   toHtmlFragment,
 );
