@@ -7,7 +7,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
 export const renderSearchResults = (viewModel: ViewModel): HtmlFragment => pipe(
-  viewModel.itemCardsToDisplay,
+  viewModel.articleCards,
   RA.map(renderArticleCard),
   renderSearchResultsList,
   wrapWithPaginationInformation(viewModel),

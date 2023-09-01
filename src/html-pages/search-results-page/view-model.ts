@@ -19,6 +19,6 @@ export type SomeRelatedGroups = {
 export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
-  itemCardsToDisplay: ReadonlyArray<ArticleCardViewModel>,
+  articleCards: ReadonlyArray<ArticleCardViewModel>,
   relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };

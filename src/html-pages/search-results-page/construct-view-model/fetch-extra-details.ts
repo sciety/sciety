@@ -24,14 +24,14 @@ export type LimitedSet = LimitedSetOfArticles;
 const toFullPageViewModel = (
   dependencies: Dependencies,
   state: LimitedSetOfArticles,
-) => (itemCardViewModels: ViewModel['itemCardsToDisplay']) => ({
+) => (articleCards: ViewModel['articleCards']) => ({
   ...state,
   relatedGroups: pipe(
     state.itemsToDisplay,
     RA.map((itemToDisplay) => itemToDisplay.articleId),
     constructRelatedGroups(dependencies),
   ),
-  itemCardsToDisplay: itemCardViewModels,
+  articleCards,
   nextPageHref: pipe(
     {
       basePath: '',
