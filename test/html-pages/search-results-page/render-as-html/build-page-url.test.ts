@@ -10,15 +10,6 @@ describe('build-page-url', () => {
     evaluatedOnly: arbitraryBoolean(),
   };
 
-  it('builds the URL with the correct category', () => {
-    const result = buildPageUrl({
-      ...defaultParams,
-      category: 'articles',
-    });
-
-    expect(result).toContain('category=articles');
-  });
-
   it('builds the URL with the correct query', () => {
     const query = 'a search term';
     const result = buildPageUrl({

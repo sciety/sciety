@@ -2,7 +2,6 @@ import { pipe } from 'fp-ts/function';
 
 type UrlParams = {
   query: string,
-  category: 'articles' | 'groups',
   evaluatedOnly: boolean,
 };
 
@@ -17,5 +16,5 @@ const renderQuery = (query: string) => pipe(
 type BuildPageUrl = (urlParams: UrlParams) => string;
 
 export const buildPageUrl: BuildPageUrl = ({
-  query, category, evaluatedOnly,
-}) => `/search?${renderQuery(query)}&category=${category}${renderEvaluatedOnly(evaluatedOnly)}`;
+  query, evaluatedOnly,
+}) => `/search?${renderQuery(query)}${renderEvaluatedOnly(evaluatedOnly)}`;
