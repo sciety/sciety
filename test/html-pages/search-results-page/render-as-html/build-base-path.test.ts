@@ -12,7 +12,7 @@ describe('buildBasePath', () => {
       numberOfPages: 3,
     });
 
-    const expectedHref = '/search?query=bats&category=articles&cursor=foo%2B%2Fbar&';
+    const expectedHref = '/search?query=bats&cursor=foo%2B%2Fbar&';
 
     expect(nextLinkAnchor).toStrictEqual(O.some(expectedHref));
   });
@@ -27,7 +27,7 @@ describe('buildBasePath', () => {
       numberOfPages: 3,
     });
 
-    const expectedHref = '/search?query=bats%2Bbugs&category=articles&cursor=foo&';
+    const expectedHref = '/search?query=bats%2Bbugs&cursor=foo&';
 
     expect(nextLinkAnchor).toStrictEqual(O.some(expectedHref));
   });
@@ -43,7 +43,7 @@ describe('buildBasePath', () => {
     });
 
     it('includes the filter in the href', () => {
-      const expectedHref = '/search?query=bats&category=articles&cursor=foo&evaluatedOnly=true&';
+      const expectedHref = '/search?query=bats&cursor=foo&evaluatedOnly=true&';
 
       expect(nextLinkAnchor).toStrictEqual(O.some(expectedHref));
     });

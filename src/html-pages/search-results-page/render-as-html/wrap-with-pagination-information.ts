@@ -9,7 +9,7 @@ const articleServersSeparatedByComma = `<b>${articleServers.biorxiv.name}</b>, <
 export type PaginationViewModel = {
   query: string,
   evaluatedOnly: boolean,
-  category: 'articles' | 'groups',
+  category: 'articles',
   nextCursor: O.Option<string>,
   pageNumber: number,
   numberOfPages: number,
@@ -35,16 +35,14 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationViewM
 
 export const buildBasePath = (viewModel: PaginationViewModel): O.Option<string> => pipe(
   viewModel.nextCursor,
-  O.map((cursor) => `/search?query=${encodeURIComponent(viewModel.query)}&category=${viewModel.category}&cursor=${encodeURIComponent(cursor)}${viewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
+  O.map((cursor) => `/search?query=${encodeURIComponent(viewModel.query)}&cursor=${encodeURIComponent(cursor)}${viewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
 );
 
-const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => (viewModel.category === 'articles'
-  ? `
+const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => `
       ${renderArticlesSearchResultsHeader(viewModel)}
       ${c}
       ${renderNextLinkOrCallsToAction(viewModel.pageNumber + 1, buildBasePath(viewModel))}
-    `
-  : c);
+    `;
 
 type WrapWithPaginationInformation = (viewModel: PaginationViewModel)
 => (content: O.Option<HtmlFragment>)
