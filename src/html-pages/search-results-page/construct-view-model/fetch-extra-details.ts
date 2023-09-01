@@ -24,8 +24,6 @@ const constructItemCardViewModel = (
 type LimitedSetOfArticles = {
   query: string,
   evaluatedOnly: boolean,
-  availableArticleMatches: number,
-  availableGroupMatches: number,
   itemsToDisplay: ReadonlyArray<ArticleItem>,
   nextCursor: O.Option<string>,
   pageNumber: number,
