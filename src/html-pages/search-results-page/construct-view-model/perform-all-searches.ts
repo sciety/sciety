@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, tupled } from 'fp-ts/function';
@@ -22,27 +21,23 @@ type PerformAllSearches = (
 ) => (pageSize: number) => (params: Params) => TE.TaskEither<DE.DataError, Matches>;
 
 export const performAllSearches: PerformAllSearches = (dependencies) => (pageSize) => (params) => pipe(
-  {
-    query: TE.right(params.query),
-    evaluatedOnly: TE.right(
-      pipe(
-        params.evaluatedOnly,
-        O.isSome,
-      ),
+  [
+    params.query,
+    params.cursor,
+    pipe(
+      params.evaluatedOnly,
+      O.isSome,
     ),
-    pageSize: TE.right(pageSize),
-    pageNumber: TE.right(params.page),
-    articles: pipe(
-      [
-        params.query,
-        params.cursor,
-        pipe(
-          params.evaluatedOnly,
-          O.isSome,
-        ),
-      ],
-      tupled(dependencies.searchForArticles(pageSize)),
+  ],
+  tupled(dependencies.searchForArticles(pageSize)),
+  TE.map((articles) => ({
+    query: params.query,
+    evaluatedOnly: pipe(
+      params.evaluatedOnly,
+      O.isSome,
     ),
-  },
-  sequenceS(TE.ApplyPar),
+    pageSize,
+    pageNumber: params.page,
+    articles,
+  })),
 );
