@@ -9,12 +9,12 @@ import { renderHeader } from './render-header';
 import { renderRelatedArticlesLink } from './render-related-articles-link';
 
 const renderReviewingGroups = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
-  <div>
-    <h4>Reviewed by:</h4>
-    <ul>
-      <li>eLife</li>
+  <section>
+    <h2>Reviewed by:</h2>
+    <ul role="list">
+      <li role="listitem">eLife</li>
     </ul>
-  </div>
+  </section>
 ` : '');
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
