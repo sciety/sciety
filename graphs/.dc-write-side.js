@@ -207,10 +207,10 @@ module.exports = {
       path: 'node_modules'
     },
 
-    includeOnly : 'src|test',
-    exclude: '^src/index',
+    includeOnly : 'src',
+    exclude: 'index',
     reaches: 'src/write-side',
-    collapse: 2,
+    collapse: 3,
 
     /* dependency-cruiser will include modules matching against the focus
        regular expression in its output, as well as their neighbours (direct
@@ -348,7 +348,7 @@ module.exports = {
             {
               criteria: { consolidated: true },
               attributes: {
-                shape: 'box',
+                shape: 'folder',
                 style: 'rounded, filled',
               },
             },
