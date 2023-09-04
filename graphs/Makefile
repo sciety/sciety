@@ -21,7 +21,7 @@ $(SRC_DIAG): $(TS_SOURCES)
 	> $@
 
 $(WRITE_SIDE_DIAG): $(TS_SOURCES) $(TS_TESTS)
-	(cd ..; npx depcruise --config graphs/.dependency-cruiser.js --include-only 'src|test' --collapse 2 --reaches write-side -T archi src test) \
+	(cd ..; npx depcruise --config graphs/.dc-write-side.js -T archi src test) \
 	| $(dot) -Tsvg \
 	> $@
 
