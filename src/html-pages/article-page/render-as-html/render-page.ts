@@ -10,8 +10,8 @@ import { renderRelatedArticlesLink } from './render-related-articles-link';
 
 const renderReviewingGroups = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
   <section>
-    <h2>Reviewed by:</h2>
-    <ul role="list">
+    <h2 class="article-actions-heading">Reviewed by</h2>
+    <ul role="list" class="article-actions-reviewing-groups">
       <li role="listitem">eLife</li>
     </ul>
   </section>
