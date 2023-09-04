@@ -16,6 +16,7 @@ import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/construct-curation-statements';
 import { Dependencies } from './dependencies';
+import { constructReviewingGroups } from './construct-reviewing-groups';
 
 type Params = {
   doi: Doi,
@@ -52,7 +53,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
         })),
       ),
-      reviewingGroups: ['eLife'],
+      reviewingGroups: constructReviewingGroups(dependencies, params.doi),
     })),
   )),
 );
