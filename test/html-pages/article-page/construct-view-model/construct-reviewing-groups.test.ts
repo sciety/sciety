@@ -38,7 +38,7 @@ describe('construct-reviewing-groups', () => {
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
 
-    it('returns an array containing the reviewing group\'s name once', () => {
+    it('returns an array containing the group\'s name once', () => {
       expect(result).toStrictEqual([reviewingGroupName]);
     });
   });
@@ -67,7 +67,7 @@ describe('construct-reviewing-groups', () => {
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
 
-    it('returns an array containing the reviewing group\'s name once', () => {
+    it('returns an array containing the group\'s name once', () => {
       expect(result).toStrictEqual([reviewingGroupName]);
     });
   });
@@ -102,7 +102,7 @@ describe('construct-reviewing-groups', () => {
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
 
-    it('returns an array containing all the reviewing groups\' names once', () => {
+    it('returns an array containing all the groups\' names once', () => {
       expect(new Set(result)).toStrictEqual(new Set([reviewingGroup1Name, reviewingGroup2Name]));
     });
   });
@@ -133,6 +133,29 @@ describe('construct-reviewing-groups', () => {
 
     it('the group\'s name is not in the array returned', () => {
       expect(result).toStrictEqual([]);
+    });
+  });
+
+  describe('when an article has been evaluated by one group once, and the evaluation type is unknown', () => {
+    const evaluatingGroupName = arbitraryString();
+    const addGroupCommand = {
+      ...arbitraryAddGroupCommand(),
+      name: evaluatingGroupName,
+    };
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: reviewedArticle,
+        groupId: addGroupCommand.groupId,
+        evaluationType: undefined,
+      });
+      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+    });
+
+    it('returns an array containing the group\'s name once', () => {
+      expect(result).toStrictEqual([evaluatingGroupName]);
     });
   });
 });
