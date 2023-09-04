@@ -11,7 +11,9 @@ import {
 } from '../../../../src/html-pages/article-page/construct-view-model/construct-reviewing-groups';
 
 describe('construct-reviewing-groups', () => {
+  const reviewedArticle = arbitraryArticleId();
   let framework: TestFramework;
+  let result: ViewModel['reviewingGroups'];
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -23,8 +25,6 @@ describe('construct-reviewing-groups', () => {
       ...arbitraryAddGroupCommand(),
       name: reviewingGroupName,
     };
-    const reviewedArticle = arbitraryArticleId();
-    let result: ViewModel['reviewingGroups'];
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
@@ -42,7 +42,30 @@ describe('construct-reviewing-groups', () => {
   });
 
   describe('when an article has been reviewed by one group twice', () => {
-    it.todo('returns an array containing the reviewing group\'s name once');
+    const reviewingGroupName = arbitraryString();
+    const addGroupCommand = {
+      ...arbitraryAddGroupCommand(),
+      name: reviewingGroupName,
+    };
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: reviewedArticle,
+        groupId: addGroupCommand.groupId,
+      });
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: reviewedArticle,
+        groupId: addGroupCommand.groupId,
+      });
+      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+    });
+
+    it.skip('returns an array containing the reviewing group\'s name once', () => {
+      expect(result).toStrictEqual([reviewingGroupName]);
+    });
   });
 
   describe('when an article has been reviewed by more than one group', () => {
