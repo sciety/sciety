@@ -12,26 +12,23 @@ import { renderRelatedArticlesLink } from './render-related-articles-link';
 import { templateListItems } from '../../../shared-components/list-items';
 
 const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroups']) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    if (reviewingGroups.length === 0) {
-      return toHtmlFragment('');
-    }
-    return pipe(
-      reviewingGroups,
-      RA.map(toHtmlFragment),
-      (listItems) => templateListItems(listItems),
-      (listItems) => `
-        <section>
-          <h2 class="article-actions-heading">Reviewed by</h2>
-          <ul role="list" class="article-actions-reviewing-groups">
-            ${listItems}
-          </ul>
-        </section>
-      `,
-      toHtmlFragment,
-    );
+  if (reviewingGroups.length === 0) {
+    return toHtmlFragment('');
   }
-  return '';
+  return pipe(
+    reviewingGroups,
+    RA.map(toHtmlFragment),
+    (listItems) => templateListItems(listItems),
+    (listItems) => `
+      <section>
+        <h2 class="article-actions-heading">Reviewed by</h2>
+        <ul role="list" class="article-actions-reviewing-groups">
+          ${listItems}
+        </ul>
+      </section>
+    `,
+    toHtmlFragment,
+  );
 };
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
