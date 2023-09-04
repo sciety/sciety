@@ -19,22 +19,24 @@ describe('construct-reviewing-groups', () => {
 
   describe('when an article has been reviewed by one group once', () => {
     const reviewingGroupName = arbitraryString();
+    const addGroupCommand = {
+      ...arbitraryAddGroupCommand(),
+      name: reviewingGroupName,
+    };
     const reviewedArticle = arbitraryArticleId();
     let result: ViewModel['reviewingGroups'];
 
     beforeEach(async () => {
-      await framework.commandHelpers.addGroup({
-        ...arbitraryAddGroupCommand(),
-        name: reviewingGroupName,
-      });
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: reviewedArticle,
+        groupId: addGroupCommand.groupId,
       });
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
 
-    it.skip('returns an array containing the reviewing group\'s name once', () => {
+    it('returns an array containing the reviewing group\'s name once', () => {
       expect(result).toStrictEqual([reviewingGroupName]);
     });
   });
