@@ -23,6 +23,10 @@
   @include typography.heading-3();
 }
 
+.article-actions-reviewing-groups {
+  @include list.basics();
+}
+
 .full-article-button {
   @include button.primary-link();
   margin-bottom: functions.px-to-rem(32px);
