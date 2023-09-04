@@ -5,9 +5,7 @@ import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 
 export const constructReviewingGroups = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dependencies: Dependencies,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   articleId: Doi,
 ): ViewModel['reviewingGroups'] => pipe(
   articleId,
@@ -16,4 +14,5 @@ export const constructReviewingGroups = (
   RA.map((groupId) => dependencies.getGroup(groupId)),
   RA.compact,
   RA.map((group) => group.name),
+  (groupNames) => [...new Set(groupNames)],
 );

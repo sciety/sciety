@@ -63,7 +63,7 @@ describe('construct-reviewing-groups', () => {
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
 
-    it.skip('returns an array containing the reviewing group\'s name once', () => {
+    it('returns an array containing the reviewing group\'s name once', () => {
       expect(result).toStrictEqual([reviewingGroupName]);
     });
   });
