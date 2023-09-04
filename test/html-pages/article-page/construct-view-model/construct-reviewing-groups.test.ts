@@ -131,7 +131,7 @@ describe('construct-reviewing-groups', () => {
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
 
-    it.skip('the group\'s name is not in the array returned', () => {
+    it('the group\'s name is not in the array returned', () => {
       expect(result).toStrictEqual([]);
     });
   });
