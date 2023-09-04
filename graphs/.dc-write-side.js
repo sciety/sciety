@@ -21,7 +21,7 @@ module.exports = {
         "add an exception for it in your dependency-cruiser configuration. By default " +
         "this rule does not scrutinize dot-files (e.g. .eslintrc.js), TypeScript declaration " +
         "files (.d.ts), tsconfig.json and some of the babel and webpack configs.",
-      severity: 'warn',
+      severity: 'error',
       from: {
         orphan: true,
         pathNot: [
@@ -208,9 +208,8 @@ module.exports = {
     },
 
     includeOnly : 'src',
-    exclude: 'index',
     reaches: 'src/write-side',
-    collapse: 3,
+    collapse: 6,
 
     /* dependency-cruiser will include modules matching against the focus
        regular expression in its output, as well as their neighbours (direct
@@ -354,7 +353,7 @@ module.exports = {
             },
             {
               criteria: { source: 'write-side' },
-              attributes: { fillcolor: '#c9dff4', color: 'black', fontcolor: 'black' },
+              attributes: { fillcolor: '#c9dff4' },
             },
             {
               criteria: { source: 'html-pages|views|shared-components|docmaps|coupling' },
