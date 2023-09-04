@@ -69,7 +69,36 @@ describe('construct-reviewing-groups', () => {
   });
 
   describe('when an article has been reviewed by more than one group', () => {
-    it.todo('returns an array containing all the reviewing groups\' names once');
+    const reviewingGroup1Name = arbitraryString();
+    const reviewingGroup2Name = arbitraryString();
+    const addGroup1Command = {
+      ...arbitraryAddGroupCommand(),
+      name: reviewingGroup1Name,
+    };
+    const addGroup2Command = {
+      ...arbitraryAddGroupCommand(),
+      name: reviewingGroup2Name,
+    };
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroup1Command);
+      await framework.commandHelpers.addGroup(addGroup2Command);
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: reviewedArticle,
+        groupId: addGroup1Command.groupId,
+      });
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: reviewedArticle,
+        groupId: addGroup2Command.groupId,
+      });
+      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+    });
+
+    it('returns an array containing all the reviewing groups\' names once', () => {
+      expect(new Set(result)).toStrictEqual(new Set([reviewingGroup1Name, reviewingGroup2Name]));
+    });
   });
 
   describe('when an article has not been reviewed by any groups', () => {
