@@ -9,6 +9,7 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import {
   constructReviewingGroups,
 } from '../../../../src/html-pages/article-page/construct-view-model/construct-reviewing-groups';
+import { arbitraryDoi } from '../../../types/doi.helper';
 
 describe('construct-reviewing-groups', () => {
   const reviewedArticle = arbitraryArticleId();
@@ -102,7 +103,13 @@ describe('construct-reviewing-groups', () => {
   });
 
   describe('when an article has not been reviewed by any groups', () => {
-    it.todo('returns an empty array');
+    beforeEach(async () => {
+      result = constructReviewingGroups(framework.dependenciesForViews, arbitraryDoi());
+    });
+
+    it('returns an empty array', () => {
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe('when an article has a curation statement by a group', () => {
