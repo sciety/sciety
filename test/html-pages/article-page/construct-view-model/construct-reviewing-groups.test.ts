@@ -33,6 +33,7 @@ describe('construct-reviewing-groups', () => {
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: reviewedArticle,
         groupId: addGroupCommand.groupId,
+        evaluationType: 'review',
       });
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
@@ -55,11 +56,13 @@ describe('construct-reviewing-groups', () => {
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: reviewedArticle,
         groupId: addGroupCommand.groupId,
+        evaluationType: 'review',
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: reviewedArticle,
         groupId: addGroupCommand.groupId,
+        evaluationType: 'review',
       });
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
@@ -88,11 +91,13 @@ describe('construct-reviewing-groups', () => {
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: reviewedArticle,
         groupId: addGroup1Command.groupId,
+        evaluationType: 'review',
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: reviewedArticle,
         groupId: addGroup2Command.groupId,
+        evaluationType: 'review',
       });
       result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
     });
@@ -113,6 +118,21 @@ describe('construct-reviewing-groups', () => {
   });
 
   describe('when an article has a curation statement by a group', () => {
-    it.todo('the group\'s name is not in the array returned');
+    const addGroupCommand = arbitraryAddGroupCommand();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: reviewedArticle,
+        groupId: addGroupCommand.groupId,
+        evaluationType: 'curation-statement',
+      });
+      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+    });
+
+    it.skip('the group\'s name is not in the array returned', () => {
+      expect(result).toStrictEqual([]);
+    });
   });
 });
