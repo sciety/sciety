@@ -11,7 +11,7 @@ import { renderHeader } from './render-header';
 import { renderRelatedArticlesLink } from './render-related-articles-link';
 import { templateListItems } from '../../../shared-components/list-items';
 
-const renderReviewingGroups = (reviewingGroups: ReadonlyArray<string>) => {
+const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroups']) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     if (reviewingGroups.length === 0) {
       return toHtmlFragment('');
@@ -39,7 +39,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
     ${renderHeader(viewmodel)}
     <div class="sciety-grid-two-columns">
       <section class="article-actions">
-        ${renderReviewingGroups(['eLife'])}
+        ${renderReviewingGroups(viewmodel.reviewingGroups)}
         <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
         ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
         <div class="list-management">
