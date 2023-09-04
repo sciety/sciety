@@ -8,11 +8,21 @@ import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 import { renderHeader } from './render-header';
 import { renderRelatedArticlesLink } from './render-related-articles-link';
 
+const renderReviewingGroups = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
+  <div>
+    <h4>Reviewed by:</h4>
+    <ul>
+      <li>eLife</li>
+    </ul>
+  </div>
+` : '');
+
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="article-page-wrapper">
     ${renderHeader(viewmodel)}
     <div class="sciety-grid-two-columns">
       <section class="article-actions">
+        ${renderReviewingGroups()}
         <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
         ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
         <div class="list-management">
