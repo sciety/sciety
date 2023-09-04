@@ -117,7 +117,7 @@ describe('construct-reviewing-groups', () => {
     });
   });
 
-  describe('when an article has a curation statement by a group', () => {
+  describe('when an article has been evaluated by one group once, with a curation statement', () => {
     const addGroupCommand = arbitraryAddGroupCommand();
 
     beforeEach(async () => {
@@ -134,6 +134,10 @@ describe('construct-reviewing-groups', () => {
     it('the group\'s name is not in the array returned', () => {
       expect(result).toStrictEqual([]);
     });
+  });
+
+  describe('when an article has been evaluated by one group twice, with both a curation statement and an evaluation of an unknown type', () => {
+    it.todo('returns an array containing the group\'s name once');
   });
 
   describe('when an article has been evaluated by one group once, and the evaluation type is unknown', () => {
