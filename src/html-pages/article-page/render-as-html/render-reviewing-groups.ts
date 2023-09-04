@@ -10,6 +10,7 @@ export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroup
   }
   return pipe(
     reviewingGroups,
+    RA.map((group) => group.name),
     RA.map(toHtmlFragment),
     (listItems) => renderListItems(listItems),
     (listItems) => `

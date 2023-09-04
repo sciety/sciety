@@ -23,4 +23,5 @@ export const constructReviewingGroups = (
   RA.compact,
   RA.map((group) => group.name),
   (groupNames) => [...new Set(groupNames)],
+  RA.map((name) => ({ name })),
 );
