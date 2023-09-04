@@ -12,7 +12,7 @@ import {
 import { arbitraryDoi } from '../../../types/doi.helper';
 
 describe('construct-reviewing-groups', () => {
-  const reviewedArticle = arbitraryArticleId();
+  const article = arbitraryArticleId();
   let framework: TestFramework;
   let result: ViewModel['reviewingGroups'];
 
@@ -31,11 +31,11 @@ describe('construct-reviewing-groups', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: reviewedArticle,
+        articleId: article,
         groupId: addGroupCommand.groupId,
         evaluationType: 'review',
       });
-      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+      result = constructReviewingGroups(framework.dependenciesForViews, article);
     });
 
     it('returns an array containing the group\'s name once', () => {
@@ -54,17 +54,17 @@ describe('construct-reviewing-groups', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: reviewedArticle,
+        articleId: article,
         groupId: addGroupCommand.groupId,
         evaluationType: 'review',
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: reviewedArticle,
+        articleId: article,
         groupId: addGroupCommand.groupId,
         evaluationType: 'review',
       });
-      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+      result = constructReviewingGroups(framework.dependenciesForViews, article);
     });
 
     it('returns an array containing the group\'s name once', () => {
@@ -89,17 +89,17 @@ describe('construct-reviewing-groups', () => {
       await framework.commandHelpers.addGroup(addGroup2Command);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: reviewedArticle,
+        articleId: article,
         groupId: addGroup1Command.groupId,
         evaluationType: 'review',
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: reviewedArticle,
+        articleId: article,
         groupId: addGroup2Command.groupId,
         evaluationType: 'review',
       });
-      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+      result = constructReviewingGroups(framework.dependenciesForViews, article);
     });
 
     it('returns an array containing all the groups\' names once', () => {
@@ -124,11 +124,11 @@ describe('construct-reviewing-groups', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: reviewedArticle,
+        articleId: article,
         groupId: addGroupCommand.groupId,
         evaluationType: 'curation-statement',
       });
-      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+      result = constructReviewingGroups(framework.dependenciesForViews, article);
     });
 
     it('the group\'s name is not in the array returned', () => {
@@ -137,7 +137,32 @@ describe('construct-reviewing-groups', () => {
   });
 
   describe('when an article has been evaluated by one group twice, with both a curation statement and an evaluation of an unknown type', () => {
-    it.todo('returns an array containing the group\'s name once');
+    const evaluatingGroupName = arbitraryString();
+    const addGroupCommand = {
+      ...arbitraryAddGroupCommand(),
+      name: evaluatingGroupName,
+    };
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: article,
+        groupId: addGroupCommand.groupId,
+        evaluationType: undefined,
+      });
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: article,
+        groupId: addGroupCommand.groupId,
+        evaluationType: 'curation-statement',
+      });
+      result = constructReviewingGroups(framework.dependenciesForViews, article);
+    });
+
+    it('returns an array containing the group\'s name once', () => {
+      expect(result).toStrictEqual([evaluatingGroupName]);
+    });
   });
 
   describe('when an article has been evaluated by one group once, and the evaluation type is unknown', () => {
@@ -151,11 +176,11 @@ describe('construct-reviewing-groups', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: reviewedArticle,
+        articleId: article,
         groupId: addGroupCommand.groupId,
         evaluationType: undefined,
       });
-      result = constructReviewingGroups(framework.dependenciesForViews, reviewedArticle);
+      result = constructReviewingGroups(framework.dependenciesForViews, article);
     });
 
     it('returns an array containing the group\'s name once', () => {
