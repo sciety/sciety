@@ -8,7 +8,7 @@ const renderItemClassAttribute = (itemClass: ItemClass) => (itemClass !== undefi
 
 const renderItem = (itemClass: ItemClass) => (item: HtmlFragment) => `<li${renderItemClassAttribute(itemClass)} role="listitem">${item}</li>\n`;
 
-export const templateListItems = (items: ReadonlyArray<HtmlFragment>, itemClass?: string): HtmlFragment => pipe(
+export const renderListItems = (items: ReadonlyArray<HtmlFragment>, itemClass?: string): HtmlFragment => pipe(
   items,
   RA.map(renderItem(itemClass)),
   (listItems) => listItems.join(''),

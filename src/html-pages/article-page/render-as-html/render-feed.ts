@@ -3,7 +3,7 @@ import { flow } from 'fp-ts/function';
 import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
 import { renderEvaluationFeedItem } from './render-evaluation-feed-item';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderListItems } from '../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { FeedItem } from '../view-model';
 
@@ -26,7 +26,7 @@ export const renderFeed: RenderFeed = flow(
     <section class="activity-feed">
       <h2 class="activity-feed__header">Article activity feed</h2>
       <ol role="list" class="activity-feed__list">
-        ${templateListItems(items, 'activity-feed__item')}
+        ${renderListItems(items, 'activity-feed__item')}
       </ol>
     </section>
   `,

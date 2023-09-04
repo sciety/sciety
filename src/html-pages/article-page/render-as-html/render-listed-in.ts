@@ -1,6 +1,6 @@
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderListItems } from '../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
@@ -16,7 +16,7 @@ export const renderListedIn = (listedIn: ViewModel['listedIn']): HtmlFragment =>
   RA.match(
     () => 'This article is not in any list yet, why not add it to one of your lists.',
     flow(
-      templateListItems,
+      renderListItems,
       renderList,
     ),
   ),

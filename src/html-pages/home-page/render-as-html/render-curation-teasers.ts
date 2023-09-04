@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderListItems } from '../../../shared-components/render-list-items';
 import { ViewModel } from '../view-model';
 
 const renderCurationTeaser = (viewModel: ViewModel['curationTeasers'][number]) => toHtmlFragment(`
@@ -23,7 +23,7 @@ const renderCurationTeaser = (viewModel: ViewModel['curationTeasers'][number]) =
 export const renderCurationTeasers = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.curationTeasers,
   RA.map(renderCurationTeaser),
-  templateListItems,
+  renderListItems,
   (listItems) => `
     <section class="curation-teasers">
       <h2 class="curation-teasers__title">Recent curated preprints</h2>

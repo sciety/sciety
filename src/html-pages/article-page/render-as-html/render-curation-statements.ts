@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderListItems } from '../../../shared-components/render-list-items';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
 const renderGroupLogo = (curationStatement: ViewModel['curationStatements'][number]) => pipe(
@@ -33,7 +33,7 @@ export const renderCurationStatements = (curationStatements: ViewModel['curation
   return pipe(
     curationStatements,
     RA.map(renderCurationStatement),
-    (listItems) => templateListItems(listItems, 'curation-statement'),
+    (listItems) => renderListItems(listItems, 'curation-statement'),
     (listItems) => `<span class="visually-hidden">Curation statements for this article: </span><ul class="curation-statements" role="list">${listItems}</ul>`,
     toHtmlFragment,
   );

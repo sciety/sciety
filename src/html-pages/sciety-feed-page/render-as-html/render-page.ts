@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderListItems } from '../../../shared-components/render-list-items';
 import { renderPaginationControls } from '../../../shared-components/pagination';
 import { supplementaryCard } from '../../../shared-components/supplementary-card';
 import { supplementaryInfo } from '../../../shared-components/supplementary-info';
@@ -32,7 +32,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
         Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of activity</span>
       </p>
       <ol class="card-list">
-        ${templateListItems(cards)}
+        ${renderListItems(cards)}
       </ol>
       ${renderPaginationControls({
     nextPageHref: pipe(

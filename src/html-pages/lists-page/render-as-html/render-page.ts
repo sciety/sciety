@@ -3,12 +3,12 @@ import { pipe } from 'fp-ts/function';
 import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListCard } from '../../../shared-components/list-card';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderListItems } from '../../../shared-components/render-list-items';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel,
   RA.map(renderListCard),
-  (cards) => templateListItems(cards),
+  (cards) => renderListItems(cards),
   (listCards) => `
     <header class="page-header">
       <h1>

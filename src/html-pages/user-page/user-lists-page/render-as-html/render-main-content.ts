@@ -5,7 +5,7 @@ import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ListsTab, ViewModel } from '../view-model';
 import { tabList } from './tab-list';
-import { templateListItems } from '../../../../shared-components/list-items';
+import { renderListItems } from '../../../../shared-components/render-list-items';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.userDetails.handle, viewmodel.listCount, viewmodel.groupIds.length),
@@ -23,7 +23,7 @@ const renderCallToAction = (activeTab: ListsTab) => (activeTab.showCreateNewList
 const renderMultipleListCards = (cardViewModels: ReadonlyArray<ListCardViewModel>) => pipe(
   cardViewModels,
   RA.map(renderListCard),
-  (renderedCards) => templateListItems(renderedCards),
+  (renderedCards) => renderListItems(renderedCards),
   (templatedItems) => `
     <ol class="card-list" role="list">
       ${templatedItems}

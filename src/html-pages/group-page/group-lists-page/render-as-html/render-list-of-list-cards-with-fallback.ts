@@ -1,12 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card';
-import { templateListItems } from '../../../../shared-components/list-items';
+import { renderListItems } from '../../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
   cards,
-  (items) => templateListItems(items),
+  (items) => renderListItems(items),
   (listContent) => `
     <section class="group-page-lists">
       <ol class="card-list" role="list">

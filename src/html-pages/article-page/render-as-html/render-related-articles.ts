@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderListItems } from '../../../shared-components/render-list-items';
 import { renderArticleCard } from '../../../shared-components/article-card/render-article-card';
 import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -13,7 +13,7 @@ export const renderRelatedArticles = (viewmodel: ViewModel): HtmlFragment => pip
     (relatedArticles) => pipe(
       relatedArticles,
       RA.map(renderArticleCard),
-      templateListItems,
+      renderListItems,
       (listContent) => `
   <div id="relatedArticles">
     <h2 class="related-articles__header">Related articles</h2>

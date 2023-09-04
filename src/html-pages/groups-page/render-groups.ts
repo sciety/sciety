@@ -1,4 +1,4 @@
-import { templateListItems } from '../../shared-components/list-items';
+import { renderListItems } from '../../shared-components/render-list-items';
 import { supplementaryCard } from '../../shared-components/supplementary-card';
 import { supplementaryInfo } from '../../shared-components/supplementary-info';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -22,7 +22,7 @@ export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment 
     <p>Select a group to follow their work.</p>
   </header>
   <ol class="card-list" role="list">
-    ${templateListItems(groups)}
+    ${renderListItems(groups)}
   </ol>
   ${supplementaryInfo(supplementaryItems)}
 `);

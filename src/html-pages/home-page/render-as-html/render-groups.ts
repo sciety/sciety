@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { templateListItems } from '../../../shared-components/list-items';
+import { renderListItems } from '../../../shared-components/render-list-items';
 
 type GroupLinkViewModel = {
   link: string,
@@ -17,7 +17,7 @@ export const renderGroups = (viewModel: GroupsViewModel): HtmlFragment => pipe(
   viewModel,
   RA.map(renderGroup),
   RA.map(toHtmlFragment),
-  templateListItems,
+  renderListItems,
   (listContent) => `
 <section class="home-page-groups">
   <h2 class="home-page-groups__title">Groups evaluating preprints on Sciety</h2>
