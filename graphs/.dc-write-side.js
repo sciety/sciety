@@ -208,6 +208,7 @@ module.exports = {
     },
 
     includeOnly : 'src|test',
+    exclude: '^src/index',
     reaches: 'src/write-side',
     collapse: 2,
 
@@ -330,16 +331,44 @@ module.exports = {
       // extensions: [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
     },
     reporterOptions: {
-      dot: {
-        collapsePattern: 'node_modules/[^/]+',
-        theme: {
-          graph: { rankdir: "TD" },
-        },
-      },
       archi: {
         collapsePattern: '^(packages|src|lib|app|bin|test(s?)|spec(s?))/[^/]+|node_modules/[^/]+',
         theme: {
-          graph: { rankdir: "TD" },
+          graph: { rankdir: "LR" },
+          node: {
+            shape: 'box',
+            style: 'rounded, filled',
+          },
+          edge: {
+            style: 'dashed',
+            penwidth: '1.0',
+            color: '#888888',
+          },
+          modules: [
+            {
+              criteria: { consolidated: true },
+              attributes: {
+                shape: 'box',
+                style: 'rounded, filled',
+              },
+            },
+            {
+              criteria: { source: 'write-side' },
+              attributes: { fillcolor: '#c9dff4', color: 'black', fontcolor: 'black' },
+            },
+            {
+              criteria: { source: 'html-pages|views|shared-components|docmaps|coupling' },
+              attributes: { fillcolor: 'white' },
+            },
+            {
+              criteria: { source: 'infrastructure|framework|http' },
+              attributes: { fillcolor: '#f8cce0' },
+            },
+            {
+              criteria: { source: 'sagas' },
+              attributes: { fillcolor: '#d0bfe8' },
+            },
+          ],
         },
       },
       "text": {
