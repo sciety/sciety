@@ -153,12 +153,16 @@ module.exports = {
               attributes: { fillcolor: 'white' },
             },
             {
-              criteria: { source: 'infrastructure|framework|http' },
+              criteria: { source: 'infrastructure|framework|http|third-parties' },
               attributes: { fillcolor: '#f8cce0' },
             },
             {
-              criteria: { source: 'sagas' },
+              criteria: { source: 'sagas|ingest' },
               attributes: { fillcolor: '#d0bfe8' },
+            },
+            {
+              criteria: { source: 'read-models' },
+              attributes: { fillcolor: '#b6e4db' },
             },
           ],
         },
