@@ -81,4 +81,5 @@ export type ViewModel = {
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string }>,
   relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
   curationStatements: ReadonlyArray<CurationStatementViewModel>,
+  reviewingGroups: ReadonlyArray<string>,
 };

@@ -52,6 +52,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
         })),
       ),
+      reviewingGroups: ['eLife'],
     })),
   )),
 );
