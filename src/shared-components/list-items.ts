@@ -2,11 +2,15 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
-const renderClassAttribute = (itemClass: string | undefined) => (itemClass !== undefined ? ` class="${itemClass}` : '');
+type ItemClass = string | undefined;
+
+const renderItemClassAttribute = (itemClass: ItemClass) => (itemClass !== undefined ? ` class="${itemClass}` : '');
+
+const renderItem = (itemClass: ItemClass) => (item: HtmlFragment) => `<li${renderItemClassAttribute(itemClass)} role="listitem">${item}</li>\n`;
 
 export const templateListItems = (items: ReadonlyArray<HtmlFragment>, itemClass?: string): HtmlFragment => pipe(
   items,
-  RA.map((item: HtmlFragment) => `<li${renderClassAttribute(itemClass)} role="listitem">${item}</li>\n`),
+  RA.map(renderItem(itemClass)),
   (listItems) => listItems.join(''),
   toHtmlFragment,
 );
