@@ -15,7 +15,6 @@ import { ConstructPage } from '../html-pages/construct-page';
 
 type ErrorToWebPage = (
   user: O.Option<UserDetails>,
-  pageLayout: PageLayout,
 ) => (
   error: RenderPageError
 ) => {
@@ -25,13 +24,13 @@ type ErrorToWebPage = (
 
 type PageLayout = (user: O.Option<UserDetails>) => (page: Page) => string;
 
-const toErrorResponse: ErrorToWebPage = (user, pageLayout) => (error) => pipe(
+const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   renderErrorPage(error.message),
   (content) => ({
     title: 'Error',
     content,
   }),
-  pageLayout(user),
+  standardPageLayout(user),
   (body) => ({
     body,
     status: pipe(
@@ -54,7 +53,7 @@ const pageToSuccessResponse = (
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const toWebPage = (user: O.Option<UserDetails>, pageLayout: PageLayout) => E.fold(
-  toErrorResponse(user, pageLayout),
+  toErrorResponse(user),
   pageToSuccessResponse(user, pageLayout),
 );
 
