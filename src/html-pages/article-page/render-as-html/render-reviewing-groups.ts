@@ -16,7 +16,7 @@ export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroup
     reviewingGroups,
     RA.map(createGroupLink),
     RA.map(toHtmlFragment),
-    (listItems) => renderListItems(listItems),
+    (listItems) => renderListItems(listItems, 'article-actions-reviewing-groups__item'),
     (listItems) => `
       <section>
         <h2 class="article-actions-heading">Reviewed by</h2>

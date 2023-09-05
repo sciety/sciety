@@ -27,6 +27,10 @@
   @include list.basics();
 }
 
+.article-actions-reviewing-groups__item {
+  margin-bottom: functions.px-to-rem(8px);
+}
+
 .full-article-button {
   @include button.primary-link();
   margin-bottom: functions.px-to-rem(32px);
