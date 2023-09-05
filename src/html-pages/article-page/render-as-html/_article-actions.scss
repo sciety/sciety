@@ -6,6 +6,7 @@
 @use '../../../sass/list';
 @use '../../../sass/settings';
 @use '../../../sass/typography';
+@use '../../../sass/contain-image';
 
 @use 'local-settings';
 
@@ -29,11 +30,14 @@
 
 .article-actions-reviewing-groups__item {
   margin-bottom: functions.px-to-rem(8px);
+  display: block;
+  width: 200px;
+  height: 70px;
 }
 
 .article-actions-reviewing-groups__item_logo {
-  max-width: 100%;
-  height: auto;
+    @include contain-image.contain-image();
+    object-position: 0% 50%;
 }
 
 .full-article-button {
