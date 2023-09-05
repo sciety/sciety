@@ -8,7 +8,7 @@ const supplementaryItems = [
     'Share your insights',
     toHtmlFragment(`
       <p>Join the growing number of journals, societies and preprint review clubs that are making Sciety their home.</p>
-      <a href="https://xag0lodamyw.typeform.com/groups-signup" class="supplementary-card__button_link">Create a group</a>
+      <a href="https://form.jotform.com/Sciety/groups-signup" class="supplementary-card__button_link">Create a group</a>
     `),
   ),
 ];
