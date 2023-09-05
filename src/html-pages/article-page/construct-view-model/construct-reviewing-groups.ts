@@ -11,6 +11,8 @@ const isNotCurationStatement = (evaluation: RecordedEvaluation) => pipe(
   O.getOrElseW(() => undefined),
 ) !== 'curation-statement';
 
+const unique = <A>(input: ReadonlyArray<A>) => [...new Set(input)];
+
 export const constructReviewingGroups = (
   dependencies: Dependencies,
   articleId: Doi,
@@ -19,8 +21,8 @@ export const constructReviewingGroups = (
   dependencies.getEvaluationsForDoi,
   RA.filter(isNotCurationStatement),
   RA.map((evaluation) => evaluation.groupId),
+  unique,
   RA.map((groupId) => dependencies.getGroup(groupId)),
   RA.compact,
-  (groups) => [...new Set(groups)],
   RA.map((group) => ({ name: group.name, href: `/groups/${group.slug}` })),
 );
