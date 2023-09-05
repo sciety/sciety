@@ -4,13 +4,17 @@ import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
 
+const createGroupLink = (group: ViewModel['reviewingGroups'][number]) => `
+<!-- a href="${group.href}" -->${group.name}<!-- /a -->
+`;
+
 export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
   if (reviewingGroups.length === 0) {
     return toHtmlFragment('');
   }
   return pipe(
     reviewingGroups,
-    RA.map((group) => group.name),
+    RA.map(createGroupLink),
     RA.map(toHtmlFragment),
     (listItems) => renderListItems(listItems),
     (listItems) => `
