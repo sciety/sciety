@@ -199,6 +199,7 @@ describe('construct-reviewing-groups', () => {
 
   describe('a reviewing group', () => {
     const addGroupCommand = arbitraryAddGroupCommand();
+    const linkToTheGroupsPage = `/groups/${addGroupCommand.slug}`;
     let result: ViewModel['reviewingGroups'];
 
     beforeEach(async () => {
@@ -216,6 +217,8 @@ describe('construct-reviewing-groups', () => {
       expect(result).toStrictEqual([expect.objectContaining({ name: addGroupCommand.name })]);
     });
 
-    it.todo('has an href');
+    it.skip('links to the group\'s page', () => {
+      expect(result).toStrictEqual([expect.objectContaining({ href: linkToTheGroupsPage })]);
+    });
   });
 });
