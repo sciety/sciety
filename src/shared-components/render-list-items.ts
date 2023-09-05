@@ -4,7 +4,7 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 type ItemClass = string | undefined;
 
-const renderItemClassAttribute = (itemClass: ItemClass) => (itemClass !== undefined ? ` class="${itemClass}` : '');
+const renderItemClassAttribute = (itemClass: ItemClass) => (itemClass !== undefined ? ` class="${itemClass}"` : '');
 
 const renderItem = (itemClass: ItemClass) => (item: HtmlFragment) => `<li${renderItemClassAttribute(itemClass)} role="listitem">${item}</li>\n`;
 
