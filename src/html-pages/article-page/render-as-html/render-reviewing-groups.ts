@@ -14,7 +14,7 @@ const renderGroupLogoWithTextFallback = (largeLogo: O.Option<string>, name: stri
 );
 
 const createGroupLink = (group: ViewModel['reviewingGroups'][number]) => `
-<a href="${group.href}">${renderGroupLogoWithTextFallback(O.none, group.name)}</a>
+<a href="${group.href}">${renderGroupLogoWithTextFallback(group.largeLogo, group.name)}</a>
 `;
 
 export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
