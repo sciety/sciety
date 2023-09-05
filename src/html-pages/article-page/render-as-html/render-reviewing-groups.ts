@@ -9,7 +9,7 @@ const renderGroupLogoWithTextFallback = (largeLogo: O.Option<string>, name: stri
   largeLogo,
   O.fold(
     () => name,
-    (logoPath) => `<img src="${logoPath}"alt="${name}">`,
+    (logoPath) => `<img src="${logoPath}"alt="${name}" class="article-actions-reviewing-groups__item_logo">`,
   ),
 );
 
