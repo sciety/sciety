@@ -10,7 +10,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
 
   <section>
     <p>
-      Here you can subscribe to <a href="${viewModel.listHref}">${viewModel.listName}</a>.
+      By subscribing to <a href="${viewModel.listHref}">${viewModel.listName}</a>, you will receive a weekly email update when new articles are added to the list. You may unsubscribe at any time.
     </p>
   </section>
   ${renderJotForm(viewModel.listId)}
