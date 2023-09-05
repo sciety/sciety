@@ -50,35 +50,28 @@ export const legalPage: Page = {
 
       <h4>Auth0</h4>
       <p>
-        Sciety uses Auth0 to authenticate you to the web app when you sign up or log in with an email address and password or choose an alternative login provider.
+      Sciety uses Auth0 to authenticate you to the web app when you sign up or log in with an email address and password or choose an alternative login provider, and this information is passed to and  stored in Auth0. The personal data stored in Auth0 is used only for the legitimate interest purposes of providing its services, namely authenticating users and not passed to any third party.  If you log in using any other type of connection, for example Twitter, Auth0 stores information provided by the external identity provider such as a user name and user identifier.
       </p>
-
       <p>
-        When you provide profile information such as email and password, you consent to this information being passed to and  stored in Auth0. The personal data stored in Auth0 is used only for the purposes of providing its services, namely authenticating users and not passed to any third party.  If you log in using any other type of connection, for example Twitter, Auth0 stores information provided by the external identity provider for future queries. 
-      </p>
-
-      <p>
-        Should you wish to withdraw this consent at any time, email <a href="mailto:data@elifesciences.org">data@elifesciences.org</a>.
-      </p>
-
-      <p>
-        For further details, please see the <a href="https://auth0.com/docs/secure/data-privacy-and-compliance">Auth0 Privacy Policy</a>.
-      </p>
-
-      <h4>Twitter</h4>
-      <p>
-        When you log in to your Twitter account through our site (for example to store your feed preferences) that interaction is directly with Twitter Inc. We only receive from Twitter a user name and user identifier. Your Twitter user identifier is associated with items that you follow on the site (groups, people, papers and evaluation events) and used to publicly display events that you follow on your user page.
+      Sciety has a legitimate interest in the user identifier to provide functionality, as it is associated with items that you follow on the site (groups, people, papers and evaluation events), lists you create and used to publicly display events that you follow on your user page. This information is not shared with any third parties, expect for those who help us process this data, and then solely for that purpose.
       </p>
 
       <h4>Hotjar</h4>
       <p>
-        Sciety makes use of a user behaviour analytics tool called Hotjar that helps us better understand the experience of using Sciety (e.g. how much time you spend on which pages, which links you choose to click, what you like and don’t like, etc.) and this enables us to build and maintain our service with user feedback. 
+      Sciety makes use of a user behaviour analytics tool called Hotjar that helps us better understand the experience of using Sciety (e.g. how much time you spend on which pages, which links you choose to click, what you like and don’t like, etc.) and this enables us to build and maintain our service with user feedback. 
       </p>
       <p>
-        Hotjar uses cookies and other technologies to collect data on our users’ behaviour and their devices. This includes a device's IP address (processed during your session and stored in a de-identified form), device screen size, device type (unique device identifiers), browser information, geographic location (country only), and the preferred language used to display our website. Hotjar stores this information on our behalf in a pseudonymized user profile. Hotjar is contractually forbidden to sell any of the data collected on our behalf.
+      Hotjar uses cookies and other technologies to collect data on our users’ behaviour and their devices. This includes a device's IP address (processed during your session and stored in a de-identified form), device screen size, device type (unique device identifiers), browser information, geographic location (country only), and the preferred language used to display our website. Hotjar stores this information on our behalf in a pseudonymized user profile. If you disable analytics cookies on Sciety, you won’t be tracked Hotjar. To disable analytics cookies, change your consent below. Hotjar is contractually forbidden to sell any of the data collected on our behalf. Hotjar carry out all processing operations in strict compliance with the EU General Data Protection Regulation (“GDPR”) (specifically but not limited to Article 6(1)(b) to (f) and Article 28) as well as the Laws of Malta, where Hotjar is incorporated, and other applicable global privacy and data protection laws such as the California Consumer Privacy Act (“CCPA”).
       </p>
+
+      <h4>Jotform</h4>
       <p>
-        For further details, please see the ‘about Hotjar’ section of <a href="https://help.hotjar.com/hc/en-us/categories/115001323967-About-Hotjar">Hotjar’s support site</a>.
+      Jotform is used by Sciety to collect email address data for the purposes of providing transactional notifications related to curation activity and pass this to Mailchimp to send list subscription emails. Jotform treats unique form questions and responses as information that is private, unless a party other than Jotform has made that information public. Jotform does not sell form data from Sciety, nor do they make it available to third parties without the Sciety’s permission. Data is only retained in Jotform for the time needed to process it, and is deleted after 24 hours.
+      </p>
+
+      <h4>Mailchimp</h4>
+      <p>
+      Mailchimp is used by Sciety to send transactional (for example list subscription notifications) and marketing emails (for example newsletters), which you can unsubscribe from by clicking the link at the bottom of the email. Sciety shares your contact information with mailchimp, our email marketing provider, so they can send these emails on our behalf. Mailchimp does not sell user data, but may share it with a sub-processor for storage and other processing necessary to provide, maintain and improve the service provided to Sciety.
       </p>
 
       <h3>
@@ -109,6 +102,10 @@ export const legalPage: Page = {
 
       <p>
         01st March 2023: added  Auth0 and Hotjar information.
+      </p>
+
+      <p>
+        5th September 2023: Clarified information on Auth0 and Hotjar. Added Mailchimp and Jotform.
       </p>
 
       <div id="cookieDeclaration">
