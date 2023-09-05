@@ -10,6 +10,7 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import {
   constructReviewingGroups,
 } from '../../../../src/html-pages/article-page/construct-view-model/construct-reviewing-groups';
+import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
 
 describe('construct-reviewing-groups', () => {
   const article = arbitraryArticleId();
@@ -197,7 +198,23 @@ describe('construct-reviewing-groups', () => {
   });
 
   describe('a reviewing group', () => {
-    it.todo('has a name');
+    const addGroupCommand = arbitraryAddGroupCommand();
+    let result: ViewModel['reviewingGroups'];
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId: article,
+        groupId: addGroupCommand.groupId,
+        evaluationType: undefined,
+      });
+      result = constructReviewingGroups(framework.dependenciesForViews, article);
+    });
+
+    it('has a name', () => {
+      expect(result).toStrictEqual([expect.objectContaining({ name: addGroupCommand.name })]);
+    });
 
     it.todo('has an href');
   });
