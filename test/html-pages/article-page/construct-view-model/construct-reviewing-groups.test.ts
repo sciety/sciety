@@ -200,7 +200,7 @@ describe('construct-reviewing-groups', () => {
   describe('a reviewing group', () => {
     const addGroupCommand = arbitraryAddGroupCommand();
     const linkToTheGroupsPage = `/groups/${addGroupCommand.slug}`;
-    let result: ViewModel['reviewingGroups'];
+    let result: ViewModel['reviewingGroups'][number];
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
@@ -210,15 +210,15 @@ describe('construct-reviewing-groups', () => {
         groupId: addGroupCommand.groupId,
         evaluationType: undefined,
       });
-      result = constructReviewingGroups(framework.dependenciesForViews, article);
+      result = constructReviewingGroups(framework.dependenciesForViews, article)[0];
     });
 
     it('has a name', () => {
-      expect(result).toStrictEqual([expect.objectContaining({ name: addGroupCommand.name })]);
+      expect(result.name).toStrictEqual(addGroupCommand.name);
     });
 
     it('links to the group\'s page', () => {
-      expect(result).toStrictEqual([expect.objectContaining({ href: linkToTheGroupsPage })]);
+      expect(result.href).toStrictEqual(linkToTheGroupsPage);
     });
   });
 });
