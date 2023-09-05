@@ -21,7 +21,6 @@ export const constructReviewingGroups = (
   RA.map((evaluation) => evaluation.groupId),
   RA.map((groupId) => dependencies.getGroup(groupId)),
   RA.compact,
-  RA.map((group) => group.name),
-  (groupNames) => [...new Set(groupNames)],
-  RA.map((name) => ({ name, href: '#' })),
+  (groups) => [...new Set(groups)],
+  RA.map((group) => ({ name: group.name, href: `/groups/${group.slug}` })),
 );

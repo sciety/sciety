@@ -217,7 +217,7 @@ describe('construct-reviewing-groups', () => {
       expect(result).toStrictEqual([expect.objectContaining({ name: addGroupCommand.name })]);
     });
 
-    it.skip('links to the group\'s page', () => {
+    it('links to the group\'s page', () => {
       expect(result).toStrictEqual([expect.objectContaining({ href: linkToTheGroupsPage })]);
     });
   });
