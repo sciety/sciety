@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
 
 const createGroupLink = (group: ViewModel['reviewingGroups'][number]) => `
-<!-- a href="${group.href}" -->${group.name}<!-- /a -->
+<a href="${group.href}">${group.name}</a>
 `;
 
 export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
