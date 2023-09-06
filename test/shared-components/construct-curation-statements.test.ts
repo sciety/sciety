@@ -53,12 +53,8 @@ describe('construct-curation-statements', () => {
       )();
     });
 
-    it('the curation statement by the existing group is returned', () => {
+    it('only returns the curation statement by the existing group', () => {
       expect(result).toStrictEqual([addGroupCommand.name]);
-    });
-
-    it('the curation statement by the missing group is skipped', () => {
-      expect(result).toHaveLength(1);
     });
   });
 
