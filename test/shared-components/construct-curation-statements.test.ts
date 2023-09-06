@@ -120,8 +120,8 @@ describe('construct-curation-statements', () => {
   });
 
   describe('when there are multiple curation statements by the same group', () => {
-    let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
-    const evaluationLocator = arbitraryEvaluationLocator();
+    let result: ReadonlyArray<EvaluationLocator>;
+    const latestEvaluationLocator = arbitraryEvaluationLocator();
     const evaluation1Command = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: addGroupCommand.groupId,
@@ -131,7 +131,7 @@ describe('construct-curation-statements', () => {
     };
     const evaluation2Command = {
       ...arbitraryRecordEvaluationPublicationCommand(),
-      evaluationLocator,
+      evaluationLocator: latestEvaluationLocator,
       groupId: addGroupCommand.groupId,
       articleId,
       evaluationType: 'curation-statement' as const,
@@ -142,12 +142,14 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(evaluation1Command);
       await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
-      result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
+      result = await pipe(
+        constructCurationStatements(framework.dependenciesForViews, articleId),
+        T.map(RA.map((curationStatement) => curationStatement.evaluationLocator)),
+      )();
     });
 
     it('includes only the latest curation statement', () => {
-      expect(result).toHaveLength(1);
-      expect(result).toStrictEqual([expect.objectContaining({ evaluationLocator })]);
+      expect(result).toStrictEqual([latestEvaluationLocator]);
     });
   });
 });
