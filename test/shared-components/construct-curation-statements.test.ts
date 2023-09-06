@@ -78,6 +78,7 @@ describe('construct-curation-statements', () => {
 
   describe('when one curation statement can be retrieved and one cannot', () => {
     let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
+    const group2 = arbitraryGroup();
 
     const evaluationLocator1 = arbitraryEvaluationLocator();
     const evaluationLocator2 = arbitraryEvaluationLocator();
@@ -91,13 +92,14 @@ describe('construct-curation-statements', () => {
     const evaluation2 = {
       ...arbitraryRecordedEvaluation(),
       evaluationLocator: evaluationLocator2,
-      groupId: group.id,
+      groupId: group2.id,
       articleId,
       type: O.some('curation-statement' as const),
     };
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedCreateGroup(group2);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       result = await constructCurationStatements({
