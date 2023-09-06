@@ -11,6 +11,7 @@ import { LanguageCode, detectLanguage } from './lang-attribute';
 import { EvaluationLocator } from '../types/evaluation-locator';
 import { Queries } from '../read-models';
 import { FetchReview, Logger } from '../shared-ports';
+import { RecordedEvaluation } from '../types/recorded-evaluation';
 
 export type Dependencies = Queries & {
   fetchReview: FetchReview,
@@ -70,10 +71,15 @@ type ConstructCurationStatements = (
   doi: Doi
 ) => T.Task<ReadonlyArray<CurationStatementWithGroupAndContent>>;
 
+const onlyIncludeLatestCurationPerGroup = (
+  curationStatements: ReadonlyArray<RecordedEvaluation>,
+) => curationStatements;
+
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,
   dependencies.getEvaluationsForDoi,
   RA.filter((evaluation) => O.getEq(S.Eq).equals(evaluation.type, O.some('curation-statement'))),
+  onlyIncludeLatestCurationPerGroup,
   RA.map(addGroupInformation(dependencies)),
   RA.rights,
   T.traverseArray(addEvaluationText(dependencies)),
