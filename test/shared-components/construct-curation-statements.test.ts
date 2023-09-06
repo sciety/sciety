@@ -83,27 +83,27 @@ describe('construct-curation-statements', () => {
 
   describe('when one curation statement can be retrieved and one cannot', () => {
     let result: ReadonlyArray<EvaluationLocator>;
-    const group2 = arbitraryGroup();
+    const addGroup2Command = arbitraryAddGroupCommand();
     const retrievableEvaluationLocator = arbitraryEvaluationLocator();
-    const evaluation1 = {
-      ...arbitraryRecordedEvaluation(),
+    const evaluation1Command = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator: retrievableEvaluationLocator,
-      groupId: group.id,
+      groupId: addGroupCommand.groupId,
       articleId,
-      type: O.some('curation-statement' as const),
+      evaluationType: 'curation-statement' as const,
     };
-    const evaluation2 = {
-      ...arbitraryRecordedEvaluation(),
-      groupId: group2.id,
+    const evaluation2Command = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: addGroup2Command.groupId,
       articleId,
-      type: O.some('curation-statement' as const),
+      evaluationType: 'curation-statement' as const,
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedCreateGroup(group2);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.addGroup(addGroup2Command);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation1Command);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
       result = await pipe(
         constructCurationStatements({
           ...framework.dependenciesForViews,
