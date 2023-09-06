@@ -30,6 +30,7 @@ export type CurationStatementWithGroupAndContent = {
   groupLogo: O.Option<string>,
   statement: string,
   statementLanguageCode: O.Option<LanguageCode>,
+  evaluationLocator: EvaluationLocator,
 };
 
 const addGroupInformation = (dependencies: Dependencies) => (statement: CurationStatement) => pipe(
