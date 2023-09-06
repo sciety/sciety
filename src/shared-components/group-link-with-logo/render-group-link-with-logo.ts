@@ -16,7 +16,12 @@ export type GroupLinkWithLogoViewModel = {
   logoPath: O.Option<string>,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const renderLinkClass = (logoHorizontalAlignment: 'left' | 'center') => (
+  logoHorizontalAlignment === 'center'
+    ? 'class="group-link-with-logo group-link-with-logo--center-align"'
+    : 'class="group-link-with-logo group-link-with-logo--left-align"'
+);
+
 export const renderGroupLinkWithLogo = (logoHorizontalAlignment: 'left' | 'center') => (viewModel: GroupLinkWithLogoViewModel): HtmlFragment => toHtmlFragment(`
-  <a href="${viewModel.href}" class="group-link-with-logo">${renderGroupLogoWithTextFallback(viewModel.logoPath, viewModel.groupName)}</a>
+  <a href="${viewModel.href}" ${renderLinkClass(logoHorizontalAlignment)}>${renderGroupLogoWithTextFallback(viewModel.logoPath, viewModel.groupName)}</a>
 `);
