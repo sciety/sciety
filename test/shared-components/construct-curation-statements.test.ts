@@ -144,7 +144,7 @@ describe('construct-curation-statements', () => {
       result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
     });
 
-    it.skip('includes only the latest curation statement', () => {
+    it('includes only the latest curation statement', () => {
       expect(result).toHaveLength(1);
       expect(result).toStrictEqual([expect.objectContaining({ evaluationLocator })]);
     });

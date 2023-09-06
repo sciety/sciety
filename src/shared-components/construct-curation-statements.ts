@@ -7,6 +7,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
+import * as Eq from 'fp-ts/Eq';
 import * as GID from '../types/group-id';
 import { Doi } from '../types/doi';
 import { LanguageCode, detectLanguage } from './lang-attribute';
@@ -74,11 +75,16 @@ const byPublishedAt: Ord.Ord<RecordedEvaluation> = pipe(
   Ord.contramap((entry) => entry.publishedAt),
 );
 
+const hasSameGroupId: Eq.Eq<RecordedEvaluation> = Eq.struct({
+  groupId: S.Eq,
+});
+
 const onlyIncludeLatestCurationPerGroup = (
   curationStatements: ReadonlyArray<RecordedEvaluation>,
 ) => pipe(
   curationStatements,
   RA.sort(byPublishedAt),
+  RA.uniq(hasSameGroupId),
 );
 
 type ConstructCurationStatements = (
