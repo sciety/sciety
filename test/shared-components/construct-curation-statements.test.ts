@@ -1,6 +1,9 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
 import { createTestFramework, TestFramework } from '../framework';
 import { arbitraryGroup } from '../types/group.helper';
@@ -24,7 +27,7 @@ describe('construct-curation-statements', () => {
   const articleId = arbitraryArticleId();
 
   describe('when there are multiple curation statements but only one of the groups exists', () => {
-    let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
+    let result: ReadonlyArray<string>;
     const evaluation1 = {
       ...arbitraryRecordedEvaluation(),
       groupId: group.id,
@@ -41,11 +44,14 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
-      result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
+      result = await pipe(
+        constructCurationStatements(framework.dependenciesForViews, articleId),
+        T.map(RA.map((curationStatements) => curationStatements.groupName)),
+      )();
     });
 
     it('the curation statement by the existing group is returned', () => {
-      expect(result).toStrictEqual([expect.objectContaining({ groupName: group.name })]);
+      expect(result).toStrictEqual([group.name]);
     });
 
     it('the curation statement by the missing group is skipped', () => {
