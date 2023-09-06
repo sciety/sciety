@@ -82,21 +82,18 @@ describe('construct-curation-statements', () => {
   });
 
   describe('when one curation statement can be retrieved and one cannot', () => {
-    let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
+    let result: ReadonlyArray<EvaluationLocator>;
     const group2 = arbitraryGroup();
-
-    const evaluationLocator1 = arbitraryEvaluationLocator();
-    const evaluationLocator2 = arbitraryEvaluationLocator();
+    const retrievableEvaluationLocator = arbitraryEvaluationLocator();
     const evaluation1 = {
       ...arbitraryRecordedEvaluation(),
-      evaluationLocator: evaluationLocator1,
+      evaluationLocator: retrievableEvaluationLocator,
       groupId: group.id,
       articleId,
       type: O.some('curation-statement' as const),
     };
     const evaluation2 = {
       ...arbitraryRecordedEvaluation(),
-      evaluationLocator: evaluationLocator2,
       groupId: group2.id,
       articleId,
       type: O.some('curation-statement' as const),
@@ -107,19 +104,22 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.deprecatedCreateGroup(group2);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
-      result = await constructCurationStatements({
-        ...framework.dependenciesForViews,
-        fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === evaluationLocator1
-          ? TE.left(DE.unavailable)
-          : TE.right({
-            url: new URL(arbitraryUri()),
-            fullText: arbitrarySanitisedHtmlFragment(),
-          })),
-      }, articleId)();
+      result = await pipe(
+        constructCurationStatements({
+          ...framework.dependenciesForViews,
+          fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === retrievableEvaluationLocator
+            ? TE.right({
+              url: new URL(arbitraryUri()),
+              fullText: arbitrarySanitisedHtmlFragment(),
+            })
+            : TE.left(DE.unavailable)),
+        }, articleId),
+        T.map(RA.map((curationStatement) => curationStatement.evaluationLocator)),
+      )();
     });
 
-    it('that curation statement is skipped', () => {
-      expect(result).toHaveLength(1);
+    it('only returns the retrievable curation statement', () => {
+      expect(result).toStrictEqual([retrievableEvaluationLocator]);
     });
   });
 
