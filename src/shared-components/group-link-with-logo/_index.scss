@@ -1,0 +1,12 @@
+@use '../../sass/contain-image';
+
+.group-link-with-logo {
+  display: block;
+  width: 200px;
+  height: 70px;
+}
+
+.group-link-with-logo__logo {
+    @include contain-image.contain-image();
+    object-position: 0% 50%;
+}
