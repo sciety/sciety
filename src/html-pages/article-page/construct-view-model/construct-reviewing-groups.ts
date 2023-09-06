@@ -22,7 +22,10 @@ export const constructReviewingGroups = (
   RA.filter(isNotCurationStatement),
   RA.map((evaluation) => evaluation.groupId),
   unique,
-  RA.map((groupId) => dependencies.getGroup(groupId)),
+  RA.map((groupId) => pipe(
+    groupId,
+    dependencies.getGroup,
+    O.map((group) => ({ groupName: group.name, href: `/groups/${group.slug}`, logoPath: group.largeLogoPath })),
+  )),
   RA.compact,
-  RA.map((group) => ({ groupName: group.name, href: `/groups/${group.slug}`, logoPath: group.largeLogoPath })),
 );
