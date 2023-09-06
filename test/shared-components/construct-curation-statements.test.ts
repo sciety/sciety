@@ -32,12 +32,12 @@ describe('construct-curation-statements', () => {
     evaluationType: 'curation-statement' as const,
   };
 
-  const getEvaluationLocator = async (dependencies: Dependencies) => pipe(
+  const getCurationStatementLocators = async (dependencies: Dependencies) => pipe(
     constructCurationStatements(dependencies, articleId),
     T.map(RA.map((curationStatements) => curationStatements.evaluationLocator)),
   )();
 
-  let result: ReadonlyArray<EvaluationLocator>;
+  let curationStatementLocators: ReadonlyArray<EvaluationLocator>;
 
   describe('when there are multiple curation statements but only one of the groups exists', () => {
     const evaluation2Command = {
@@ -50,11 +50,11 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.addGroup(addGroupA);
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
-      result = await getEvaluationLocator(framework.dependenciesForViews);
+      curationStatementLocators = await getCurationStatementLocators(framework.dependenciesForViews);
     });
 
     it('only returns the curation statement by the existing group', () => {
-      expect(result).toStrictEqual([recordCurationStatementByGroupA.evaluationLocator]);
+      expect(curationStatementLocators).toStrictEqual([recordCurationStatementByGroupA.evaluationLocator]);
     });
   });
 
@@ -62,14 +62,14 @@ describe('construct-curation-statements', () => {
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupA);
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
-      result = await getEvaluationLocator({
+      curationStatementLocators = await getCurationStatementLocators({
         ...framework.dependenciesForViews,
         fetchReview: () => TE.left(DE.unavailable),
       });
     });
 
     it('returns no curation statements', () => {
-      expect(result).toStrictEqual([]);
+      expect(curationStatementLocators).toStrictEqual([]);
     });
   });
 
@@ -89,7 +89,7 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.addGroup(addGroupB);
       await framework.commandHelpers.recordEvaluationPublication(recordRetrievableCurationStatementByGroupB);
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
-      result = await getEvaluationLocator({
+      curationStatementLocators = await getCurationStatementLocators({
         ...framework.dependenciesForViews,
         fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === retrievableEvaluationLocator
           ? TE.right({
@@ -101,7 +101,7 @@ describe('construct-curation-statements', () => {
     });
 
     it('only returns the retrievable curation statement', () => {
-      expect(result).toStrictEqual([retrievableEvaluationLocator]);
+      expect(curationStatementLocators).toStrictEqual([retrievableEvaluationLocator]);
     });
   });
 
@@ -117,11 +117,11 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.addGroup(addGroupA);
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       await framework.commandHelpers.recordEvaluationPublication(recordLaterCurationStatementByGroupA);
-      result = await getEvaluationLocator(framework.dependenciesForViews);
+      curationStatementLocators = await getCurationStatementLocators(framework.dependenciesForViews);
     });
 
     it('includes only the latest curation statement', () => {
-      expect(result).toStrictEqual([latestEvaluationLocator]);
+      expect(curationStatementLocators).toStrictEqual([latestEvaluationLocator]);
     });
   });
 });
