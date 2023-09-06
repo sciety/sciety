@@ -32,13 +32,13 @@
   margin-bottom: functions.px-to-rem(16px);
 }
 
-.article-actions-reviewing-groups__item_link {
+.group-link-with-logo {
   display: block;
   width: 200px;
   height: 70px;
 }
 
-.article-actions-reviewing-groups__item_logo {
+.group-link-with-logo__logo {
     @include contain-image.contain-image();
     object-position: 0% 50%;
 }

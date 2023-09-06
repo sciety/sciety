@@ -9,12 +9,14 @@ const renderGroupLogoWithTextFallback = (largeLogo: O.Option<string>, name: stri
   largeLogo,
   O.fold(
     () => name,
-    (logoPath) => `<img src="${logoPath}"alt="${name}" class="article-actions-reviewing-groups__item_logo">`,
+    (logoPath) => `<img src="${logoPath}"alt="${name}" class="group-link-with-logo__logo">`,
   ),
 );
 
-const createGroupLink = (group: ViewModel['reviewingGroups'][number]) => `
-<a href="${group.href}" class="article-actions-reviewing-groups__item_link">${renderGroupLogoWithTextFallback(group.largeLogo, group.name)}</a>
+type GroupLinkWithLogoViewModel = { href: string, largeLogo: O.Option<string>, name: string };
+
+const renderGroupLinkWithLogo = ({ href, largeLogo, name }: GroupLinkWithLogoViewModel) => `
+<a href="${href}" class="group-link-with-logo">${renderGroupLogoWithTextFallback(largeLogo, name)}</a>
 `;
 
 export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
@@ -23,7 +25,7 @@ export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroup
   }
   return pipe(
     reviewingGroups,
-    RA.map(createGroupLink),
+    RA.map(renderGroupLinkWithLogo),
     RA.map(toHtmlFragment),
     (listItems) => renderListItems(listItems, 'article-actions-reviewing-groups__item'),
     (listItems) => `
