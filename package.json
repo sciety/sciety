@@ -61,7 +61,7 @@
     "@types/sanitize-html": "^2.9.0",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
-    "@typescript-eslint/parser": "^6.5.0",
+    "@typescript-eslint/parser": "^6.6.0",
     "backstopjs": "^6.2.2",
     "browserslist": "^4.21.10",
     "dependency-cruiser": "13.1.5",
