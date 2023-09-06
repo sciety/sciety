@@ -4,7 +4,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
 import { GroupLinkWithLogoViewModel, renderGroupLinkWithLogo } from '../../../shared-components/group-link-with-logo';
 
-export type GroupsViewModel = ReadonlyArray<GroupLinkWithLogoViewModel>;
+type GroupsViewModel = ReadonlyArray<GroupLinkWithLogoViewModel>;
 
 export const renderGroups = (viewModel: GroupsViewModel): HtmlFragment => pipe(
   viewModel,

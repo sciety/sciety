@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { GroupsViewModel } from './render-as-html/render-groups';
 import { HtmlFragment } from '../../types/html-fragment';
 import { GroupId } from '../../types/group-id';
+import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link-with-logo';
 
 type CurationTeaser = {
   articleLink: string,
@@ -12,6 +12,6 @@ type CurationTeaser = {
 };
 
 export type ViewModel = {
-  groups: O.Option<GroupsViewModel>,
+  groups: O.Option<ReadonlyArray<GroupLinkWithLogoViewModel>>,
   curationTeasers: ReadonlyArray<CurationTeaser>,
 };
