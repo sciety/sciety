@@ -23,7 +23,7 @@ describe('construct-reviewing-groups', () => {
   describe('which groups to include', () => {
     const getReviewingGroupNames = () => pipe(
       constructReviewingGroups(framework.dependenciesForViews, article),
-      RA.map((reviewingGroup) => reviewingGroup.name),
+      RA.map((reviewingGroup) => reviewingGroup.groupName),
     );
 
     let result: ReadonlyArray<string>;
@@ -214,7 +214,7 @@ describe('construct-reviewing-groups', () => {
     });
 
     it('has a name', () => {
-      expect(result.name).toStrictEqual(addGroupCommand.name);
+      expect(result.groupName).toStrictEqual(addGroupCommand.name);
     });
 
     it('links to the group\'s page', () => {

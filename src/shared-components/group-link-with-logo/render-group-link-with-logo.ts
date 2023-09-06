@@ -10,8 +10,12 @@ const renderGroupLogoWithTextFallback = (largeLogo: O.Option<string>, name: stri
   ),
 );
 
-export type GroupLinkWithLogoViewModel = { href: string, largeLogo: O.Option<string>, name: string };
+export type GroupLinkWithLogoViewModel = {
+  groupName: string,
+  href: string,
+  logoPath: O.Option<string>,
+};
 
-export const renderGroupLinkWithLogo = ({ href, largeLogo, name }: GroupLinkWithLogoViewModel): HtmlFragment => toHtmlFragment(`
-  <a href="${href}" class="group-link-with-logo">${renderGroupLogoWithTextFallback(largeLogo, name)}</a>
+export const renderGroupLinkWithLogo = (viewModel: GroupLinkWithLogoViewModel): HtmlFragment => toHtmlFragment(`
+  <a href="${viewModel.href}" class="group-link-with-logo">${renderGroupLogoWithTextFallback(viewModel.logoPath, viewModel.groupName)}</a>
 `);

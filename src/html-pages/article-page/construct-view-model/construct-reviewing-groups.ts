@@ -24,5 +24,5 @@ export const constructReviewingGroups = (
   unique,
   RA.map((groupId) => dependencies.getGroup(groupId)),
   RA.compact,
-  RA.map((group) => ({ name: group.name, href: `/groups/${group.slug}`, largeLogo: group.largeLogoPath })),
+  RA.map((group) => ({ groupName: group.name, href: `/groups/${group.slug}`, logoPath: group.largeLogoPath })),
 );
