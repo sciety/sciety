@@ -32,17 +32,6 @@ $_common-space-beneath: 0.5rem;
   @include list.basics()
 }
 
-.related-groups__link {
-  display: block;
-  width: 200px;
-  height: 70px;
-
-  img {
-    @include contain-image.contain-image();
-    object-position: 0% 50%;
-  }
-}
-
 .search-results {
   margin-bottom: functions.px-to-rem(48px);
 }
