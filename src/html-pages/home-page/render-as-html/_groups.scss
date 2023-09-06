@@ -31,17 +31,6 @@
   gap: functions.px-to-rem(56px) functions.px-to-rem(32px);
 }
 
-.home-page-groups-list__link {
-  display: block;
-  width: 200px;
-  height: 70px;
-
-  img {
-    @include contain-image.contain-image();
-    object-position: 50% 50%;
-  }
-}
-
 .home-page-groups__button_wrapper {
   display: flex;
   justify-content: center;

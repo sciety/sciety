@@ -2,20 +2,13 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
+import { GroupLinkWithLogoViewModel, renderGroupLinkWithLogo } from '../../../shared-components/group-link-with-logo';
 
-type GroupLinkViewModel = {
-  link: string,
-  logoPath: string,
-  name: string,
-};
-
-const renderGroup = (groupLink: GroupLinkViewModel) => `<a href="${groupLink.link}" class="home-page-groups-list__link"><img src="${groupLink.logoPath}" alt="${groupLink.name}"></a>`;
-
-export type GroupsViewModel = ReadonlyArray<GroupLinkViewModel>;
+export type GroupsViewModel = ReadonlyArray<GroupLinkWithLogoViewModel>;
 
 export const renderGroups = (viewModel: GroupsViewModel): HtmlFragment => pipe(
   viewModel,
-  RA.map(renderGroup),
+  RA.map(renderGroupLinkWithLogo('center')),
   RA.map(toHtmlFragment),
   renderListItems,
   (listContent) => `

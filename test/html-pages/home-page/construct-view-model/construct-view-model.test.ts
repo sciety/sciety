@@ -35,29 +35,29 @@ describe('construct-view-model', () => {
 
       it('returns the groups in the specified order', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
-          expect.objectContaining({ name: group1.name }),
-          expect.objectContaining({ name: group2.name }),
+          expect.objectContaining({ groupName: group1.name }),
+          expect.objectContaining({ groupName: group2.name }),
         ]));
       });
 
       it('returns the links to their group pages', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
-          expect.objectContaining({ link: `/groups/${group1.slug}` }),
-          expect.objectContaining({ link: `/groups/${group2.slug}` }),
+          expect.objectContaining({ href: `/groups/${group1.slug}` }),
+          expect.objectContaining({ href: `/groups/${group2.slug}` }),
         ]));
       });
 
       it('returns their names', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
-          expect.objectContaining({ name: group1.name }),
-          expect.objectContaining({ name: group2.name }),
+          expect.objectContaining({ groupName: group1.name }),
+          expect.objectContaining({ groupName: group2.name }),
         ]));
       });
 
       it('returns their provided logo paths', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
-          expect.objectContaining({ logoPath: group1LogoPath }),
-          expect.objectContaining({ logoPath: group2LogoPath }),
+          expect.objectContaining({ logoPath: O.some(group1LogoPath) }),
+          expect.objectContaining({ logoPath: O.some(group2LogoPath) }),
         ]));
       });
     });
