@@ -11,7 +11,7 @@ export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroup
   }
   return pipe(
     reviewingGroups,
-    RA.map(renderGroupLinkWithLogo),
+    RA.map(renderGroupLinkWithLogo('left')),
     RA.map(toHtmlFragment),
     (listItems) => renderListItems(listItems, 'article-actions-reviewing-groups__item'),
     (listItems) => `

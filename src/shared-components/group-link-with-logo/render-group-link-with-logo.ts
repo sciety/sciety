@@ -16,6 +16,7 @@ export type GroupLinkWithLogoViewModel = {
   logoPath: O.Option<string>,
 };
 
-export const renderGroupLinkWithLogo = (viewModel: GroupLinkWithLogoViewModel): HtmlFragment => toHtmlFragment(`
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const renderGroupLinkWithLogo = (logoHorizontalAlignment: 'left' | 'center') => (viewModel: GroupLinkWithLogoViewModel): HtmlFragment => toHtmlFragment(`
   <a href="${viewModel.href}" class="group-link-with-logo">${renderGroupLogoWithTextFallback(viewModel.logoPath, viewModel.groupName)}</a>
 `);

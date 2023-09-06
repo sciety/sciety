@@ -9,7 +9,7 @@ export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): 
     relatedGroups.items,
     RA.map((relatedGroup) => `
       <li role="listitem" class="related-groups__list_item">
-       ${renderGroupLinkWithLogo(relatedGroup)}
+       ${renderGroupLinkWithLogo('left')(relatedGroup)}
       </li>
     `),
     (items) => items.join(''),
