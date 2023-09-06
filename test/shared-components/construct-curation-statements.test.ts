@@ -1,13 +1,10 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { arbitraryAddGroupCommand } from '../write-side/commands/add-group-command.helper';
-import { arbitraryRecordedEvaluation } from '../types/recorded-evaluation.helper';
 import { createTestFramework, TestFramework } from '../framework';
-import { arbitraryGroup } from '../types/group.helper';
 import {
   constructCurationStatements,
 } from '../../src/shared-components/construct-curation-statements';
@@ -25,7 +22,6 @@ describe('construct-curation-statements', () => {
     framework = createTestFramework();
   });
 
-  const group = arbitraryGroup();
   const addGroupCommand = arbitraryAddGroupCommand();
   const articleId = arbitraryArticleId();
 
@@ -126,26 +122,26 @@ describe('construct-curation-statements', () => {
   describe('when there are multiple curation statements by the same group', () => {
     let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
     const evaluationLocator = arbitraryEvaluationLocator();
-    const evaluation1 = {
-      ...arbitraryRecordedEvaluation(),
-      groupId: group.id,
+    const evaluation1Command = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: addGroupCommand.groupId,
       articleId,
-      type: O.some('curation-statement' as const),
+      evaluationType: 'curation-statement' as const,
       publishedAt: new Date('2023-08-01'),
     };
-    const evaluation2 = {
-      ...arbitraryRecordedEvaluation(),
+    const evaluation2Command = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator,
-      groupId: group.id,
+      groupId: addGroupCommand.groupId,
       articleId,
-      type: O.some('curation-statement' as const),
+      evaluationType: 'curation-statement' as const,
       publishedAt: new Date('2023-08-05'),
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation1Command);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
       result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
     });
 
