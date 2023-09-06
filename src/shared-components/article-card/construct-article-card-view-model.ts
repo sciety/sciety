@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
-import { CurationStatementWithGroupAndContent, constructCurationStatements } from '../construct-curation-statements';
+import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../read-models';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
@@ -33,7 +33,7 @@ const getArticleDetails = (ports: Dependencies) => fetchArticleDetails(
   ports.fetchArticle,
 );
 const transformIntoCurationStatementViewModel = (
-  curationStatement: CurationStatementWithGroupAndContent,
+  curationStatement: CurationStatementViewModel,
 ): CurationStatementTeaserViewModel => ({
   groupName: curationStatement.groupName,
   quote: sanitise(toHtmlFragment(curationStatement.statement)),

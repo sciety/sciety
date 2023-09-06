@@ -8,13 +8,14 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
 import * as Eq from 'fp-ts/Eq';
-import * as GID from '../types/group-id';
-import { Doi } from '../types/doi';
-import { LanguageCode, detectLanguage } from './lang-attribute';
-import { EvaluationLocator } from '../types/evaluation-locator';
-import { Queries } from '../read-models';
-import { FetchReview, Logger } from '../shared-ports';
-import { RecordedEvaluation } from '../types/recorded-evaluation';
+import * as GID from '../../types/group-id';
+import { Doi } from '../../types/doi';
+import { detectLanguage } from '../lang-attribute';
+import { EvaluationLocator } from '../../types/evaluation-locator';
+import { Queries } from '../../read-models';
+import { FetchReview, Logger } from '../../shared-ports';
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { ViewModel } from './view-model';
 
 export type Dependencies = Queries & {
   fetchReview: FetchReview,
@@ -25,16 +26,6 @@ type CurationStatement = {
   articleId: Doi,
   evaluationLocator: EvaluationLocator,
   groupId: GID.GroupId,
-};
-
-export type CurationStatementWithGroupAndContent = {
-  groupId: GID.GroupId,
-  groupName: string,
-  groupSlug: string,
-  groupLogo: O.Option<string>,
-  statement: string,
-  statementLanguageCode: O.Option<LanguageCode>,
-  evaluationLocator: EvaluationLocator,
 };
 
 const addGroupInformation = (dependencies: Dependencies) => (statement: CurationStatement) => pipe(
@@ -90,7 +81,7 @@ const onlyIncludeLatestCurationPerGroup = (
 type ConstructCurationStatements = (
   dependencies: Dependencies,
   doi: Doi
-) => T.Task<ReadonlyArray<CurationStatementWithGroupAndContent>>;
+) => T.Task<ReadonlyArray<ViewModel>>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,

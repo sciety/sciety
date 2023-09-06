@@ -6,7 +6,7 @@ import {
   FindVersionsForArticleDoi,
   Logger,
 } from '../../../shared-ports';
-import { Dependencies as ConstructCurationStatementsDependencies } from '../../../shared-components/construct-curation-statements';
+import { Dependencies as ConstructCurationStatementsDependencies } from '../../../shared-components/curation-statements/construct-curation-statements';
 
 export type Dependencies = Queries & ConstructCurationStatementsDependencies & {
   fetchArticle: FetchArticle,
