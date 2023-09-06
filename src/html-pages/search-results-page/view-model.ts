@@ -10,9 +10,9 @@ type NoGroupsEvaluatedTheFoundArticles = {
 export type SomeRelatedGroups = {
   tag: 'some-related-groups',
   items: ReadonlyArray<{
-    groupPageHref: string,
+    href: string,
     groupName: string,
-    largeLogoUrl: O.Option<string>,
+    logoPath: O.Option<string>,
   }>,
 };
 
