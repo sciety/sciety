@@ -32,6 +32,10 @@ $_common-space-beneath: 0.5rem;
   @include list.basics()
 }
 
+.related-groups__list_item {
+  margin-bottom: functions.px-to-rem(16px);
+}
+
 .search-results {
   margin-bottom: functions.px-to-rem(48px);
 }

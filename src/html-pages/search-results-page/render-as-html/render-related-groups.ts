@@ -8,7 +8,7 @@ export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): 
   ? pipe(
     relatedGroups.items,
     RA.map((relatedGroup) => `
-      <li role="listitem">
+      <li role="listitem" class="related-groups__list_item">
        ${renderGroupLinkWithLogo({ name: relatedGroup.groupName, href: relatedGroup.groupPageHref, largeLogo: relatedGroup.largeLogoUrl })}
       </li>
     `),
