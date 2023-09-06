@@ -20,20 +20,21 @@ export const constructRelatedGroups = (dependencies: Dependencies) => (articleId
   RA.flatMap(dependencies.getEvaluationsForDoi),
   RA.map((recordedEvaluation) => recordedEvaluation.groupId),
   RA.uniq(GID.eq),
-  RA.map(getGroup(dependencies)),
+  RA.map((groupId) => pipe(
+    groupId,
+    getGroup(dependencies),
+    O.map((foundGroup) => ({
+      href: `/groups/${foundGroup.slug}`,
+      groupName: foundGroup.name,
+      logoPath: foundGroup.largeLogoPath,
+    })),
+  )),
   RA.compact,
   RA.matchW(
     () => ({ tag: 'no-groups-evaluated-the-found-articles' as const }),
-    (foundGroups) => ({
+    (groupLinkWithLogoViewModels) => ({
       tag: 'some-related-groups' as const,
-      items: pipe(
-        foundGroups,
-        RA.map((foundGroup) => ({
-          href: `/groups/${foundGroup.slug}`,
-          groupName: foundGroup.name,
-          logoPath: foundGroup.largeLogoPath,
-        })),
-      ),
+      items: groupLinkWithLogoViewModels,
     }),
   ),
 );
