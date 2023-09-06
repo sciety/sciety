@@ -7,6 +7,13 @@
 }
 
 .group-link-with-logo__logo {
-    @include contain-image.contain-image();
+  @include contain-image.contain-image();
+
+  .group-link-with-logo--left-align & {
     object-position: 0% 50%;
+  }
+
+  .group-link-with-logo--center-align & {
+    object-position: 50% 50%;
+  }
 }
