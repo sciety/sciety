@@ -14,6 +14,7 @@ import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
 import { EvaluationLocator } from '../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
 import { arbitraryRecordEvaluationPublicationCommand } from '../write-side/commands/record-evaluation-publication-command.helper';
+import { Dependencies } from '../../src/html-pages/article-page/construct-view-model/dependencies';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;
@@ -31,8 +32,14 @@ describe('construct-curation-statements', () => {
     evaluationType: 'curation-statement' as const,
   };
 
+  const getEvaluationLocator = async (dependencies: Dependencies) => pipe(
+    constructCurationStatements(dependencies, articleId),
+    T.map(RA.map((curationStatements) => curationStatements.evaluationLocator)),
+  )();
+
+  let result: ReadonlyArray<EvaluationLocator>;
+
   describe('when there are multiple curation statements but only one of the groups exists', () => {
-    let result: ReadonlyArray<string>;
     const evaluation2Command = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       articleId,
@@ -43,27 +50,22 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.addGroup(addGroupA);
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
-      result = await pipe(
-        constructCurationStatements(framework.dependenciesForViews, articleId),
-        T.map(RA.map((curationStatements) => curationStatements.groupName)),
-      )();
+      result = await getEvaluationLocator(framework.dependenciesForViews);
     });
 
     it('only returns the curation statement by the existing group', () => {
-      expect(result).toStrictEqual([addGroupA.name]);
+      expect(result).toStrictEqual([recordCurationStatementByGroupA.evaluationLocator]);
     });
   });
 
   describe('when no curation statements can be retrieved', () => {
-    let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
-
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupA);
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
-      result = await constructCurationStatements({
+      result = await getEvaluationLocator({
         ...framework.dependenciesForViews,
         fetchReview: () => TE.left(DE.unavailable),
-      }, articleId)();
+      });
     });
 
     it('returns no curation statements', () => {
@@ -72,7 +74,6 @@ describe('construct-curation-statements', () => {
   });
 
   describe('when one curation statement can be retrieved and one cannot', () => {
-    let result: ReadonlyArray<EvaluationLocator>;
     const addGroupB = arbitraryAddGroupCommand();
     const retrievableEvaluationLocator = arbitraryEvaluationLocator();
     const recordRetrievableCurationStatementByGroupB = {
@@ -88,18 +89,15 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.addGroup(addGroupB);
       await framework.commandHelpers.recordEvaluationPublication(recordRetrievableCurationStatementByGroupB);
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
-      result = await pipe(
-        constructCurationStatements({
-          ...framework.dependenciesForViews,
-          fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === retrievableEvaluationLocator
-            ? TE.right({
-              url: new URL(arbitraryUri()),
-              fullText: arbitrarySanitisedHtmlFragment(),
-            })
-            : TE.left(DE.unavailable)),
-        }, articleId),
-        T.map(RA.map((curationStatement) => curationStatement.evaluationLocator)),
-      )();
+      result = await getEvaluationLocator({
+        ...framework.dependenciesForViews,
+        fetchReview: (evaluationLocator: EvaluationLocator) => (evaluationLocator === retrievableEvaluationLocator
+          ? TE.right({
+            url: new URL(arbitraryUri()),
+            fullText: arbitrarySanitisedHtmlFragment(),
+          })
+          : TE.left(DE.unavailable)),
+      });
     });
 
     it('only returns the retrievable curation statement', () => {
@@ -108,7 +106,6 @@ describe('construct-curation-statements', () => {
   });
 
   describe('when there are multiple curation statements by the same group', () => {
-    let result: ReadonlyArray<EvaluationLocator>;
     const latestEvaluationLocator = arbitraryEvaluationLocator();
     const recordLaterCurationStatementByGroupA = {
       ...recordCurationStatementByGroupA,
@@ -120,10 +117,7 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.addGroup(addGroupA);
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       await framework.commandHelpers.recordEvaluationPublication(recordLaterCurationStatementByGroupA);
-      result = await pipe(
-        constructCurationStatements(framework.dependenciesForViews, articleId),
-        T.map(RA.map((curationStatement) => curationStatement.evaluationLocator)),
-      )();
+      result = await getEvaluationLocator(framework.dependenciesForViews);
     });
 
     it('includes only the latest curation statement', () => {
