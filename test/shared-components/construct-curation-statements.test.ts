@@ -117,6 +117,34 @@ describe('construct-curation-statements', () => {
   });
 
   describe('when there are multiple curation statements by the same group', () => {
-    it.todo('includes only the latest curation statement');
+    let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const evaluation1 = {
+      ...arbitraryRecordedEvaluation(),
+      groupId: group.id,
+      articleId,
+      type: O.some('curation-statement' as const),
+      publishedAt: new Date('2023-08-01'),
+    };
+    const evaluation2 = {
+      ...arbitraryRecordedEvaluation(),
+      evaluationLocator,
+      groupId: group.id,
+      articleId,
+      type: O.some('curation-statement' as const),
+      publishedAt: new Date('2023-08-05'),
+    };
+
+    beforeEach(async () => {
+      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
+      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      result = await constructCurationStatements(framework.dependenciesForViews, articleId)();
+    });
+
+    it.skip('includes only the latest curation statement', () => {
+      expect(result).toHaveLength(1);
+      expect(result).toStrictEqual([expect.objectContaining({ evaluationLocator })]);
+    });
   });
 });
