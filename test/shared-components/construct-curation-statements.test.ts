@@ -60,16 +60,16 @@ describe('construct-curation-statements', () => {
 
   describe('when a curation statement cannot be retrieved', () => {
     let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
-    const evaluation = {
-      ...arbitraryRecordedEvaluation(),
-      groupId: group.id,
+    const evaluationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: addGroupCommand.groupId,
       articleId,
-      type: O.some('curation-statement' as const),
+      evaluationType: 'curation-statement' as const,
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.recordEvaluationPublication(evaluationCommand);
       result = await constructCurationStatements({
         ...framework.dependenciesForViews,
         fetchReview: () => TE.left(DE.unavailable),
@@ -77,7 +77,7 @@ describe('construct-curation-statements', () => {
     });
 
     it('that curation statement is skipped', () => {
-      expect(result).toHaveLength(0);
+      expect(result).toStrictEqual([]);
     });
   });
 
