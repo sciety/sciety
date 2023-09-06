@@ -16,6 +16,7 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
 import { EvaluationLocator } from '../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
+import { arbitraryRecordEvaluationPublicationCommand } from '../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;
@@ -30,22 +31,22 @@ describe('construct-curation-statements', () => {
 
   describe('when there are multiple curation statements but only one of the groups exists', () => {
     let result: ReadonlyArray<string>;
-    const evaluation1 = {
-      ...arbitraryRecordedEvaluation(),
+    const evaluation1Command = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: addGroupCommand.groupId,
       articleId,
-      type: O.some('curation-statement' as const),
+      evaluationType: 'curation-statement' as const,
     };
-    const evaluation2 = {
-      ...arbitraryRecordedEvaluation(),
+    const evaluation2Command = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       articleId,
-      type: O.some('curation-statement' as const),
+      evaluationType: 'curation-statement' as const,
     };
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation1Command);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
       result = await pipe(
         constructCurationStatements(framework.dependenciesForViews, articleId),
         T.map(RA.map((curationStatements) => curationStatements.groupName)),
