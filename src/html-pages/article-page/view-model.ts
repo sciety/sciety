@@ -12,6 +12,7 @@ import { ListId } from '../../types/list-id';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
 import * as GID from '../../types/group-id';
+import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link-with-logo';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',
@@ -81,5 +82,5 @@ export type ViewModel = {
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string }>,
   relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
   curationStatements: ReadonlyArray<CurationStatementViewModel>,
-  reviewingGroups: ReadonlyArray<{ name: string, href: string, largeLogo: O.Option<string> }>,
+  reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
 };
