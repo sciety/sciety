@@ -5,8 +5,12 @@ import { Doi } from '../../../types/doi';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 import * as GID from '../../../types/group-id';
+import { Queries } from '../../../read-models';
+import { Logger } from '../../../shared-ports';
 
-const getGroup = (dependencies: Dependencies) => (groupId: GID.GroupId) => pipe(
+type ConstructGroupLinkWithLogoViewModelDependencies = Queries & { logger: Logger };
+
+const getGroup = (dependencies: ConstructGroupLinkWithLogoViewModelDependencies) => (groupId: GID.GroupId) => pipe(
   groupId,
   dependencies.getGroup,
   O.orElse(() => {
@@ -15,7 +19,9 @@ const getGroup = (dependencies: Dependencies) => (groupId: GID.GroupId) => pipe(
   }),
 );
 
-const constructGroupLinkWithLogoViewModel = (dependencies: Dependencies) => (groupId: GID.GroupId) => pipe(
+const constructGroupLinkWithLogoViewModel = (
+  dependencies: ConstructGroupLinkWithLogoViewModelDependencies,
+) => (groupId: GID.GroupId) => pipe(
   groupId,
   getGroup(dependencies),
   O.map((foundGroup) => ({
