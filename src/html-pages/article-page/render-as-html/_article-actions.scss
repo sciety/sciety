@@ -25,6 +25,7 @@
 
 .article-actions-reviewing-groups {
   @include list.basics();
+  margin-bottom: functions.px-to-rem(32px);
 }
 
 .article-actions-reviewing-groups__item {
