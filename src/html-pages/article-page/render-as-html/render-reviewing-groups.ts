@@ -28,7 +28,7 @@ export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroup
     (listItems) => renderListItems(listItems, 'article-actions-reviewing-groups__item'),
     (listItems) => `
       <section>
-        <h2 class="article-actions-heading">Reviewed by</h2>
+        <h2 class="article-actions-heading"><span class="visually-hidden">This article has been </span>Reviewed by<span class="visually-hidden"> the following groups</span></h2>
         <ul role="list" class="article-actions-reviewing-groups">
           ${listItems}
         </ul>
