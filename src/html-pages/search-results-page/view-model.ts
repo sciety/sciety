@@ -1,7 +1,7 @@
-import * as O from 'fp-ts/Option';
 import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
+import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link-with-logo';
 
 type NoGroupsEvaluatedTheFoundArticles = {
   tag: 'no-groups-evaluated-the-found-articles',
@@ -9,11 +9,7 @@ type NoGroupsEvaluatedTheFoundArticles = {
 
 export type SomeRelatedGroups = {
   tag: 'some-related-groups',
-  items: ReadonlyArray<{
-    href: string,
-    groupName: string,
-    logoPath: O.Option<string>,
-  }>,
+  items: ReadonlyArray<GroupLinkWithLogoViewModel>,
 };
 
 export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
