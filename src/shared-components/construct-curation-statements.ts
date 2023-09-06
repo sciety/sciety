@@ -1,4 +1,6 @@
 import * as E from 'fp-ts/Either';
+import * as D from 'fp-ts/Date';
+import * as Ord from 'fp-ts/Ord';
 import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -66,14 +68,23 @@ const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => 
   })),
 );
 
+const byPublishedAt: Ord.Ord<RecordedEvaluation> = pipe(
+  D.Ord,
+  Ord.reverse,
+  Ord.contramap((entry) => entry.publishedAt),
+);
+
+const onlyIncludeLatestCurationPerGroup = (
+  curationStatements: ReadonlyArray<RecordedEvaluation>,
+) => pipe(
+  curationStatements,
+  RA.sort(byPublishedAt),
+);
+
 type ConstructCurationStatements = (
   dependencies: Dependencies,
   doi: Doi
 ) => T.Task<ReadonlyArray<CurationStatementWithGroupAndContent>>;
-
-const onlyIncludeLatestCurationPerGroup = (
-  curationStatements: ReadonlyArray<RecordedEvaluation>,
-) => curationStatements;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,
