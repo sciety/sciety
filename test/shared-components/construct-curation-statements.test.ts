@@ -22,17 +22,17 @@ describe('construct-curation-statements', () => {
     framework = createTestFramework();
   });
 
-  const addGroupCommand = arbitraryAddGroupCommand();
   const articleId = arbitraryArticleId();
+  const addGroupA = arbitraryAddGroupCommand();
+  const recordCurationStatementByGroupA = {
+    ...arbitraryRecordEvaluationPublicationCommand(),
+    groupId: addGroupA.groupId,
+    articleId,
+    evaluationType: 'curation-statement' as const,
+  };
 
   describe('when there are multiple curation statements but only one of the groups exists', () => {
     let result: ReadonlyArray<string>;
-    const evaluation1Command = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      groupId: addGroupCommand.groupId,
-      articleId,
-      evaluationType: 'curation-statement' as const,
-    };
     const evaluation2Command = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       articleId,
@@ -40,8 +40,8 @@ describe('construct-curation-statements', () => {
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(evaluation1Command);
+      await framework.commandHelpers.addGroup(addGroupA);
+      await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
       result = await pipe(
         constructCurationStatements(framework.dependenciesForViews, articleId),
@@ -50,56 +50,44 @@ describe('construct-curation-statements', () => {
     });
 
     it('only returns the curation statement by the existing group', () => {
-      expect(result).toStrictEqual([addGroupCommand.name]);
+      expect(result).toStrictEqual([addGroupA.name]);
     });
   });
 
-  describe('when a curation statement cannot be retrieved', () => {
+  describe('when no curation statements can be retrieved', () => {
     let result: Awaited<ReturnType<ReturnType<typeof constructCurationStatements>>>;
-    const evaluationCommand = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      groupId: addGroupCommand.groupId,
-      articleId,
-      evaluationType: 'curation-statement' as const,
-    };
 
     beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(evaluationCommand);
+      await framework.commandHelpers.addGroup(addGroupA);
+      await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       result = await constructCurationStatements({
         ...framework.dependenciesForViews,
         fetchReview: () => TE.left(DE.unavailable),
       }, articleId)();
     });
 
-    it('that curation statement is skipped', () => {
+    it('returns no curation statements', () => {
       expect(result).toStrictEqual([]);
     });
   });
 
   describe('when one curation statement can be retrieved and one cannot', () => {
     let result: ReadonlyArray<EvaluationLocator>;
-    const addGroup2Command = arbitraryAddGroupCommand();
+    const addGroupB = arbitraryAddGroupCommand();
     const retrievableEvaluationLocator = arbitraryEvaluationLocator();
-    const evaluation1Command = {
+    const recordRetrievableCurationStatementByGroupB = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator: retrievableEvaluationLocator,
-      groupId: addGroupCommand.groupId,
-      articleId,
-      evaluationType: 'curation-statement' as const,
-    };
-    const evaluation2Command = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      groupId: addGroup2Command.groupId,
+      groupId: addGroupB.groupId,
       articleId,
       evaluationType: 'curation-statement' as const,
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.addGroup(addGroup2Command);
-      await framework.commandHelpers.recordEvaluationPublication(evaluation1Command);
-      await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
+      await framework.commandHelpers.addGroup(addGroupA);
+      await framework.commandHelpers.addGroup(addGroupB);
+      await framework.commandHelpers.recordEvaluationPublication(recordRetrievableCurationStatementByGroupB);
+      await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       result = await pipe(
         constructCurationStatements({
           ...framework.dependenciesForViews,
@@ -122,26 +110,16 @@ describe('construct-curation-statements', () => {
   describe('when there are multiple curation statements by the same group', () => {
     let result: ReadonlyArray<EvaluationLocator>;
     const latestEvaluationLocator = arbitraryEvaluationLocator();
-    const evaluation1Command = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      groupId: addGroupCommand.groupId,
-      articleId,
-      evaluationType: 'curation-statement' as const,
-      publishedAt: new Date('2023-08-01'),
-    };
-    const evaluation2Command = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
+    const recordLaterCurationStatementByGroupA = {
+      ...recordCurationStatementByGroupA,
       evaluationLocator: latestEvaluationLocator,
-      groupId: addGroupCommand.groupId,
-      articleId,
-      evaluationType: 'curation-statement' as const,
       publishedAt: new Date('2023-08-05'),
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(evaluation1Command);
-      await framework.commandHelpers.recordEvaluationPublication(evaluation2Command);
+      await framework.commandHelpers.addGroup(addGroupA);
+      await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
+      await framework.commandHelpers.recordEvaluationPublication(recordLaterCurationStatementByGroupA);
       result = await pipe(
         constructCurationStatements(framework.dependenciesForViews, articleId),
         T.map(RA.map((curationStatement) => curationStatement.evaluationLocator)),
