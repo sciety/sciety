@@ -115,4 +115,8 @@ describe('construct-curation-statements', () => {
       expect(result).toHaveLength(1);
     });
   });
+
+  describe('when there are multiple curation statements by the same group', () => {
+    it.todo('includes only the latest curation statement');
+  });
 });
