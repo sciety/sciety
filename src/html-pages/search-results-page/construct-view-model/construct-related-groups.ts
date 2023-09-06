@@ -15,20 +15,22 @@ const getGroup = (dependencies: Dependencies) => (groupId: GID.GroupId) => pipe(
   }),
 );
 
+const constructGroupLinkWithLogoViewModel = (dependencies: Dependencies) => (groupId: GID.GroupId) => pipe(
+  groupId,
+  getGroup(dependencies),
+  O.map((foundGroup) => ({
+    href: `/groups/${foundGroup.slug}`,
+    groupName: foundGroup.name,
+    logoPath: foundGroup.largeLogoPath,
+  })),
+);
+
 export const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ViewModel['relatedGroups'] => pipe(
   articleIds,
   RA.flatMap(dependencies.getEvaluationsForDoi),
   RA.map((recordedEvaluation) => recordedEvaluation.groupId),
   RA.uniq(GID.eq),
-  RA.map((groupId) => pipe(
-    groupId,
-    getGroup(dependencies),
-    O.map((foundGroup) => ({
-      href: `/groups/${foundGroup.slug}`,
-      groupName: foundGroup.name,
-      logoPath: foundGroup.largeLogoPath,
-    })),
-  )),
+  RA.map(constructGroupLinkWithLogoViewModel(dependencies)),
   RA.compact,
   RA.matchW(
     () => ({ tag: 'no-groups-evaluated-the-found-articles' as const }),
