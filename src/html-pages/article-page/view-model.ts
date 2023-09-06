@@ -62,8 +62,8 @@ type CurationStatementViewModel = {
   groupName: string,
   groupSlug: string,
   groupLogo: O.Option<string>,
-  fullText: string,
-  fullTextLanguageCode: O.Option<LanguageCode>,
+  statement: string,
+  statementLanguageCode: O.Option<LanguageCode>,
 };
 
 export type ViewModel = {
