@@ -40,8 +40,9 @@ COPY test/ test/
 COPY src/ src/
 COPY static/ static/
 COPY data/ data/
+COPY scripts/ scripts/
 
-CMD ["npm", "run", "start:dev"]
+CMD ["sh", "./scripts/start-dev.sh"]
 
 
 
