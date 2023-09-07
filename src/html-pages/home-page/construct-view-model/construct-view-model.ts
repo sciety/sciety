@@ -10,14 +10,15 @@ export type GroupsToHighlight = ReadonlyArray<{
   groupId: GID.GroupId,
 }>;
 
-export const constructViewModel = (dependencies: Dependencies, groupsToHighlight: GroupsToHighlight): ViewModel => pipe(
+const constructGroups = (dependencies: Dependencies, groupsToHighlight: GroupsToHighlight) => pipe(
   groupsToHighlight,
   O.traverseArray((groupToHighlight) => pipe(
     groupToHighlight.groupId,
     constructGroupLinkWithLogo(dependencies),
   )),
-  (groupsViewModel) => ({
-    groups: groupsViewModel,
-    curationTeasers: constructCurationTeasers(dependencies),
-  }),
 );
+
+export const constructViewModel = (dependencies: Dependencies, groupsToHighlight: GroupsToHighlight): ViewModel => ({
+  groups: constructGroups(dependencies, groupsToHighlight),
+  curationTeasers: constructCurationTeasers(dependencies),
+});
