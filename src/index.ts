@@ -23,6 +23,7 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
     logger('debug', 'Signal received');
   },
   signals: ['SIGINT', 'SIGTERM'],
+  useExit0: true,
 });
 
 type NoopPolicy = (event: DomainEvent) => T.Task<void>;
