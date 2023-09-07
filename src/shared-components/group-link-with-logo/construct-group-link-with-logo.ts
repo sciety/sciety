@@ -7,7 +7,7 @@ import { ViewModel } from './view-model';
 
 export type ConstructGroupLinkWithLogoDependencies = Queries & { logger: Logger };
 
-export const constructGroupLinkWithLogoViewModel = (
+export const constructGroupLinkWithLogo = (
   dependencies: ConstructGroupLinkWithLogoDependencies,
 ) => (groupId: GID.GroupId): O.Option<ViewModel> => pipe(
   groupId,

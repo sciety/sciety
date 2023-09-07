@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { constructGroupLinkWithLogoViewModel } from '../../../shared-components/group-link-with-logo/construct-group-link-with-logo-view-model';
+import { constructGroupLinkWithLogo } from '../../../shared-components/group-link-with-logo/construct-group-link-with-logo';
 import { RecordedEvaluation } from '../../../types/recorded-evaluation';
 import { Doi } from '../../../types/doi';
 import { ViewModel } from '../view-model';
@@ -23,6 +23,6 @@ export const constructReviewingGroups = (
   RA.filter(isNotCurationStatement),
   RA.map((evaluation) => evaluation.groupId),
   unique,
-  RA.map(constructGroupLinkWithLogoViewModel(dependencies)),
+  RA.map(constructGroupLinkWithLogo(dependencies)),
   RA.compact,
 );
