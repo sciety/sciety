@@ -103,4 +103,4 @@ COPY data/ data/
 HEALTHCHECK --interval=5s --timeout=1s \
   CMD wget --quiet --tries=1 --spider http://localhost:80/ping || exit 1
 
-CMD ["npm", "run", "start"]
+CMD ["node", "./build/index.js"]
