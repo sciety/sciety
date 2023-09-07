@@ -10,20 +10,15 @@ import { Logger } from '../../../shared-ports';
 
 type ConstructGroupLinkWithLogoViewModelDependencies = Queries & { logger: Logger };
 
-const getGroup = (dependencies: ConstructGroupLinkWithLogoViewModelDependencies) => (groupId: GID.GroupId) => pipe(
+const constructGroupLinkWithLogoViewModel = (
+  dependencies: ConstructGroupLinkWithLogoViewModelDependencies,
+) => (groupId: GID.GroupId) => pipe(
   groupId,
   dependencies.getGroup,
   O.orElse(() => {
     dependencies.logger('error', 'Group missing from readmodel', { groupId });
     return O.none;
   }),
-);
-
-const constructGroupLinkWithLogoViewModel = (
-  dependencies: ConstructGroupLinkWithLogoViewModelDependencies,
-) => (groupId: GID.GroupId) => pipe(
-  groupId,
-  getGroup(dependencies),
   O.map((foundGroup) => ({
     href: `/groups/${foundGroup.slug}`,
     groupName: foundGroup.name,
