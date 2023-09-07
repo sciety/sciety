@@ -10,7 +10,6 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import {
   constructReviewingGroups,
 } from '../../../../src/html-pages/article-page/construct-view-model/construct-reviewing-groups';
-import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
 
 describe('construct-reviewing-groups', () => {
   const article = arbitraryArticleId();
@@ -194,31 +193,6 @@ describe('construct-reviewing-groups', () => {
       it('returns an array containing the group\'s name once', () => {
         expect(result).toStrictEqual([evaluatingGroupName]);
       });
-    });
-  });
-
-  describe('a reviewing group', () => {
-    const addGroupCommand = arbitraryAddGroupCommand();
-    const linkToTheGroupsPage = `/groups/${addGroupCommand.slug}`;
-    let result: ViewModel['reviewingGroups'][number];
-
-    beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication({
-        ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: article,
-        groupId: addGroupCommand.groupId,
-        evaluationType: undefined,
-      });
-      result = constructReviewingGroups(framework.dependenciesForViews, article)[0];
-    });
-
-    it('has a name', () => {
-      expect(result.groupName).toStrictEqual(addGroupCommand.name);
-    });
-
-    it('links to the group\'s page', () => {
-      expect(result.href).toStrictEqual(linkToTheGroupsPage);
     });
   });
 });
