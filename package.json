@@ -103,7 +103,6 @@
     "lint:typescript:prod": "tsc --noEmit",
     "lint:unused-exports": "ts-unused-exports tsconfig.json --silent",
     "watch:typescript": "tsc --noEmit --watch",
-    "start": "node ./build/index.js",
     "test": "jest --colors",
     "test:coverage": "jest --colors --coverage"
   }
