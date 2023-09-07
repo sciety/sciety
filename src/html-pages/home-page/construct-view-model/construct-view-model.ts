@@ -4,6 +4,7 @@ import { ViewModel } from '../view-model';
 import * as GID from '../../../types/group-id';
 import { Dependencies } from '../dependencies';
 import { constructCurationTeasers } from './construct-curation-teasers';
+import { constructGroupLinkWithLogoViewModel } from '../../../shared-components/group-link-with-logo';
 
 export type GroupsToHighlight = ReadonlyArray<{
   groupId: GID.GroupId,
@@ -13,12 +14,7 @@ export const constructViewModel = (dependencies: Dependencies, groupsToHighlight
   groupsToHighlight,
   O.traverseArray((groupToHighlight) => pipe(
     groupToHighlight.groupId,
-    dependencies.getGroup,
-    O.map((group) => ({
-      logoPath: group.largeLogoPath,
-      href: `/groups/${group.slug}`,
-      groupName: group.name,
-    })),
+    constructGroupLinkWithLogoViewModel(dependencies),
   )),
   (groupsViewModel) => ({
     groups: groupsViewModel,
