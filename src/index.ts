@@ -15,6 +15,14 @@ import {
 import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { startSagas } from './sagas';
 
+function handle(signal: string) {
+  console.log(`>>>>>> Received ${signal}`);
+  process.exit(0);
+}
+
+process.on('SIGINT', handle);
+process.on('SIGTERM', handle);
+
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
     logger('debug', 'Shutting server down');
