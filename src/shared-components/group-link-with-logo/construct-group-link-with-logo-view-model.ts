@@ -5,10 +5,10 @@ import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
 import { ViewModel } from './view-model';
 
-type ConstructGroupLinkWithLogoViewModelDependencies = Queries & { logger: Logger };
+export type ConstructGroupLinkWithLogoDependencies = Queries & { logger: Logger };
 
 export const constructGroupLinkWithLogoViewModel = (
-  dependencies: ConstructGroupLinkWithLogoViewModelDependencies,
+  dependencies: ConstructGroupLinkWithLogoDependencies,
 ) => (groupId: GID.GroupId): O.Option<ViewModel> => pipe(
   groupId,
   dependencies.getGroup,
