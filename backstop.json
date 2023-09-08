@@ -175,7 +175,7 @@
       "label": "Site footer",
       "url": "http://sciety_app/about",
       "selectors": [
-        ".standard-page-container > footer"
+        ".page-container > footer"
       ]
     },
     {
