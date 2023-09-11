@@ -118,5 +118,9 @@
 }
 
 @mixin curation-statement() {
-  font-family: settings.$font-family;
+  font-family: settings.$font-serif;
+
+  p {
+    font-family: settings.$font-serif;
+  };
 }
