@@ -97,9 +97,6 @@
 .curation-statement-full-text {
   @include curation-statement.quote(
     $quotation-mark-font-size: 48px,
-    $open-quotation-left-offset: 0,
-    $open-quotation-top-offset: 0,
-    $close-quotation-right-offset: 0,
     $close-quotation-bottom-offset: -32px,
   );
   @include typography.curation-statement();

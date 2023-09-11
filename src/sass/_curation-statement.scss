@@ -3,10 +3,10 @@
 
 @mixin quote(
 $quotation-mark-font-size,
-$open-quotation-left-offset,
-$open-quotation-top-offset,
-$close-quotation-right-offset,
-$close-quotation-bottom-offset,
+$open-quotation-left-offset: 0,
+$open-quotation-top-offset: 0,
+$close-quotation-right-offset: 0,
+$close-quotation-bottom-offset: 0,
   ) {
   position: relative;
 

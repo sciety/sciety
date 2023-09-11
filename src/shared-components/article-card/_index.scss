@@ -82,9 +82,6 @@ $_card-padding: 16px;
 .article-card-teasers__teaser_quote {
   @include curation-statement.quote(
     $quotation-mark-font-size: 32px,
-    $open-quotation-left-offset: 0,
-    $open-quotation-top-offset: 0,
-    $close-quotation-right-offset: 0,
     $close-quotation-bottom-offset: -8px,
   );
   @include typography.curation-statement();
