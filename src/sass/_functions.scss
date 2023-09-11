@@ -3,6 +3,9 @@
 @use 'settings';
 
 @function px-to-rem($px) {
+  @if $px == 0 {
+    @return 0;
+  }
   @return math.div($px, settings.$base-font-measure) * 1rem;
 }
 

@@ -99,7 +99,7 @@
     $open-quotation-left-offset: 0,
     $open-quotation-top-offset: 0,
     $close-quotation-right-offset: 0,
-    $close-quotation-bottom-offset: functions.px-to-rem(-32px),
+    $close-quotation-bottom-offset: -32px,
   );
   @include typography.curation-statement();
   padding-left: functions.px-to-rem(32px);

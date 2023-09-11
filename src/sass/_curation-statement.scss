@@ -1,4 +1,5 @@
 @use 'settings';
+@use 'functions';
 
 @mixin quote(
   $open-quotation-left-offset, 
@@ -17,13 +18,13 @@
 
   &::before {
     content: '\201C';
-    left: $open-quotation-left-offset;
-    top: $open-quotation-top-offset;
+    left: functions.px-to-rem($open-quotation-left-offset);
+    top: functions.px-to-rem($open-quotation-top-offset);
   }
 
   &::after {
     content: '\201D';
-    right: $close-quotation-right-offset;
-    bottom: $close-quotation-bottom-offset;
+    right: functions.px-to-rem($close-quotation-right-offset);
+    bottom: functions.px-to-rem($close-quotation-bottom-offset);
   }
 }
