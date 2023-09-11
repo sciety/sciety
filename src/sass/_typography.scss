@@ -116,3 +116,7 @@
     margin-right: 0.25rem;
   }
 }
+
+@mixin curation-statement() {
+  font-family: settings.$font-family;
+}

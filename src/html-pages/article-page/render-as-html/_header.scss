@@ -1,6 +1,7 @@
 @use '../../../sass/breakpoints';
 @use '../../../sass/settings';
 @use '../../../sass/functions';
+@use '../../../sass/typography';
 @use '../../../sass/layout';
 @use '../../../sass/list';
 
@@ -93,6 +94,7 @@
 }
 
 .curation-statement-full-text {
+  @include typography.curation-statement();
   position: relative;
   padding-left: functions.px-to-rem(32px);
   padding-right: functions.px-to-rem(32px);

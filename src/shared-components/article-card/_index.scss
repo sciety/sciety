@@ -79,6 +79,7 @@ $_card-padding: 16px;
 }
 
 .article-card-teasers__teaser_quote {
+  @include typography.curation-statement();
   padding-left: functions.px-to-rem($_card-padding);
   padding-right: functions.px-to-rem($_card-padding);
   position: relative;
