@@ -123,13 +123,11 @@ $_arbitrary-large-amount-of-px: 9000px;
   }
 
   &::before {
-    content: '\201C';
     left: -24px;
     top: -16px;
   }
 
   &::after {
-    content: '\201D';
     right: -24px;
     bottom: 0;
   }

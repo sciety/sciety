@@ -107,13 +107,11 @@
   }
 
   &::before {
-    content: '\201C';
     left: 0;
     top: 0;
   }
 
   &::after {
-    content: '\201D';
     right: 0;
     bottom: functions.px-to-rem(-32px);
   }

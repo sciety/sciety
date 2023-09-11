@@ -9,4 +9,12 @@
     color: settings.$colour-accent;
     font-family: settings.$font-serif;
   }
+
+  &::before {
+    content: '\201C';
+  }
+
+  &::after {
+    content: '\201D';
+  }
 }
