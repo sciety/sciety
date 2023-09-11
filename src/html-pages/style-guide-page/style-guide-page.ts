@@ -1,7 +1,10 @@
 import * as O from 'fp-ts/Option';
+import { sanitise } from '../../types/sanitised-html-fragment';
+import { renderArticleCard } from '../../shared-components/article-card/render-article-card';
 import { renderPaginationControlsForFeed } from '../../shared-components/pagination/render-pagination-controls-for-feed';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
+import { Doi } from '../../types/doi';
 
 export const styleGuidePage: Page = {
   title: 'Style guide',
@@ -21,6 +24,23 @@ export const styleGuidePage: Page = {
     <h3>With links to newer and older content</h3>
     ${renderPaginationControlsForFeed({
     prevPageHref: O.some('/foo'), nextPageHref: O.some('/foo'), page: 2, pageCount: 42,
+  })}
+    <h2>Article card with curation statement</h2>
+    ${renderArticleCard({
+    articleId: new Doi('10.1101/foo'),
+    articleLink: '/articles/foo',
+    title: sanitise(toHtmlFragment('Some title')),
+    authors: O.some(['Doctor Smith']),
+    latestVersionDate: O.some(new Date('2023-09-11')),
+    latestActivityAt: O.some(new Date('2023-09-10')),
+    evaluationCount: O.some(1),
+    listMembershipCount: O.some(1),
+    curationStatementsTeasers: [{
+      groupName: 'Awesome group',
+      quote: sanitise(toHtmlFragment(`<p><strong>elife assessment:</strong></p>
+        <p>This small-sized clinical trial comparing nebulized dornase-alfa to best available care in patients hospitalized with COVID-19 pneumonia is valuable, but in its present form the paper is incomplete: the number of randomized participants is small, investigators describe also a contemporary cohort of controls and the study concludes about decrease of inflammation (reflected by CRP levels) after 7 days of treatment but no other statistically significant clinical benefit.</p>`)),
+      quoteLanguageCode: O.some('en'),
+    }],
   })}
   `),
 };
