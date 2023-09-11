@@ -124,7 +124,6 @@ $_arbitrary-large-amount-of-px: 9000px;
   &::before,
   &::after {
     font-size: functions.px-to-rem(48px);
-    line-height: 1;
   }
 }
 
