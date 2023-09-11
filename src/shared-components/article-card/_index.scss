@@ -86,6 +86,7 @@ $_card-padding: 16px;
 
   &::before,
   &::after {
+    font-family: settings.$font-serif;
     position: absolute;
     font-size: functions.px-to-rem(32px);
     line-height: 0.5;
