@@ -80,7 +80,10 @@ $_card-padding: 16px;
 }
 
 .article-card-teasers__teaser_quote {
-  @include curation-statement.quote($open-quotation-left-offset: 0);
+  @include curation-statement.quote(
+    $open-quotation-left-offset: 0,
+    $open-quotation-top-offset: 8px
+  );
   @include typography.curation-statement();
   padding-left: functions.px-to-rem($_card-padding);
   padding-right: functions.px-to-rem($_card-padding);
@@ -89,10 +92,6 @@ $_card-padding: 16px;
   &::after {
     font-size: functions.px-to-rem(32px);
     line-height: 0.5;
-  }
-
-  &::before {
-    top: 8px;
   }
 
   &::after {
