@@ -116,7 +116,9 @@ $_arbitrary-large-amount-of-px: 9000px;
 .curation-teaser__quote_wrapper {
   @include curation-statement.quote(
     $open-quotation-left-offset: -24px,
-    $open-quotation-top-offset: -16px
+    $open-quotation-top-offset: -16px,
+    $close-quotation-right-offset: -24px,
+    $close-quotation-bottom-offset: 0,
   );
 
   &::before,
@@ -124,12 +126,6 @@ $_arbitrary-large-amount-of-px: 9000px;
     font-size: functions.px-to-rem(48px);
     line-height: 1;
   }
-
-  &::after {
-    right: -24px;
-    bottom: 0;
-  }
-
 }
 
 .curation-teaser__quote {

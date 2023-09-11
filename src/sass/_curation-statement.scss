@@ -1,6 +1,11 @@
 @use 'settings';
 
-@mixin quote($open-quotation-left-offset, $open-quotation-top-offset) {
+@mixin quote(
+  $open-quotation-left-offset, 
+  $open-quotation-top-offset,
+  $close-quotation-right-offset,
+  $close-quotation-bottom-offset,
+  ) {
   position: relative;
 
   &::before,
@@ -18,5 +23,7 @@
 
   &::after {
     content: '\201D';
+    right: $close-quotation-right-offset;
+    bottom: $close-quotation-bottom-offset;
   }
 }

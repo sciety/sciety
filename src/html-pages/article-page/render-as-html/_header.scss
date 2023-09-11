@@ -97,7 +97,9 @@
 .curation-statement-full-text {
   @include curation-statement.quote(
     $open-quotation-left-offset: 0,
-    $open-quotation-top-offset: 0
+    $open-quotation-top-offset: 0,
+    $close-quotation-right-offset: 0,
+    $close-quotation-bottom-offset: functions.px-to-rem(-32px),
   );
   @include typography.curation-statement();
   padding-left: functions.px-to-rem(32px);
@@ -107,10 +109,5 @@
   &::after {
     font-size: functions.px-to-rem(48px);
     line-height: 1;
-  }
-
-  &::after {
-    right: 0;
-    bottom: functions.px-to-rem(-32px);
   }
 }
