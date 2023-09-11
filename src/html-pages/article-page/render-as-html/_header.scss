@@ -102,9 +102,6 @@
 
   &::before,
   &::after {
-    position: absolute;
-    color: settings.$colour-accent;
-    font-family: settings.$font-serif;
     font-size: functions.px-to-rem(48px);
     line-height: 1;
   }

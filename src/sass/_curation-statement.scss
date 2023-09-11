@@ -1,3 +1,12 @@
+@use 'settings';
+
 @mixin quote() {
   position: relative;
+
+  &::before,
+  &::after {
+    position: absolute;
+    color: settings.$colour-accent;
+    font-family: settings.$font-serif;
+  }
 }
