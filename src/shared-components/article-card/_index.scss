@@ -81,6 +81,7 @@ $_card-padding: 16px;
 
 .article-card-teasers__teaser_quote {
   @include curation-statement.quote(
+    $quotation-mark-font-size: 32px,
     $open-quotation-left-offset: 0,
     $open-quotation-top-offset: 0,
     $close-quotation-right-offset: 0,
@@ -89,9 +90,4 @@ $_card-padding: 16px;
   @include typography.curation-statement();
   padding-left: functions.px-to-rem($_card-padding);
   padding-right: functions.px-to-rem($_card-padding);
-
-  &::before,
-  &::after {
-    font-size: functions.px-to-rem(32px);
-  }
 }

@@ -2,10 +2,11 @@
 @use 'functions';
 
 @mixin quote(
-  $open-quotation-left-offset, 
-  $open-quotation-top-offset,
-  $close-quotation-right-offset,
-  $close-quotation-bottom-offset,
+$quotation-mark-font-size,
+$open-quotation-left-offset,
+$open-quotation-top-offset,
+$close-quotation-right-offset,
+$close-quotation-bottom-offset,
   ) {
   position: relative;
 
@@ -14,6 +15,7 @@
     position: absolute;
     color: settings.$colour-accent;
     font-family: settings.$font-serif;
+    font-size: functions.px-to-rem($quotation-mark-font-size);
     line-height: 1;
   }
 

@@ -115,16 +115,12 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 .curation-teaser__quote_wrapper {
   @include curation-statement.quote(
+    $quotation-mark-font-size: 48px,
     $open-quotation-left-offset: -24px,
     $open-quotation-top-offset: -16px,
     $close-quotation-right-offset: -24px,
     $close-quotation-bottom-offset: 0,
   );
-
-  &::before,
-  &::after {
-    font-size: functions.px-to-rem(48px);
-  }
 }
 
 .curation-teaser__quote {
