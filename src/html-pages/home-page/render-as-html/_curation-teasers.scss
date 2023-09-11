@@ -5,6 +5,7 @@
 @use '../../../sass/typography';
 @use '../../../sass/breakpoints';
 @use '../../../sass/card';
+@use '../../../sass/curation-statement';
 @use 'common';
 
 $_arbitrary-large-amount-of-px: 9000px;
@@ -113,7 +114,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .curation-teaser__quote_wrapper {
-  position: relative;
+  @include curation-statement.quote();
 
   &::before,
   &::after {

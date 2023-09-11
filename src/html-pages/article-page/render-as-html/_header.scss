@@ -4,6 +4,7 @@
 @use '../../../sass/typography';
 @use '../../../sass/layout';
 @use '../../../sass/list';
+@use '../../../sass/curation-statement';
 
 @use 'local-settings';
 
@@ -94,8 +95,8 @@
 }
 
 .curation-statement-full-text {
+  @include curation-statement.quote();
   @include typography.curation-statement();
-  position: relative;
   padding-left: functions.px-to-rem(32px);
   padding-right: functions.px-to-rem(32px);
 

@@ -2,6 +2,7 @@
 @use '../../sass/functions';
 @use '../../sass/card';
 @use '../../sass/typography';
+@use '../../sass/curation-statement';
 @use '../../sass/breakpoints';
 
 @use '../../sass/list';
@@ -79,10 +80,10 @@ $_card-padding: 16px;
 }
 
 .article-card-teasers__teaser_quote {
+  @include curation-statement.quote();
   @include typography.curation-statement();
   padding-left: functions.px-to-rem($_card-padding);
   padding-right: functions.px-to-rem($_card-padding);
-  position: relative;
 
   &::before,
   &::after {
