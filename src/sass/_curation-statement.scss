@@ -1,6 +1,6 @@
 @use 'settings';
 
-@mixin quote() {
+@mixin quote($open-quotation-left-offset) {
   position: relative;
 
   &::before,
@@ -12,6 +12,7 @@
 
   &::before {
     content: '\201C';
+    left: $open-quotation-left-offset;
   }
 
   &::after {
