@@ -31,7 +31,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <p class="sciety-feed-page-numbers">
         Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of activity</span>
       </p>
-      <ol class="card-list">
+      <ol class="card-list" role="list">
         ${renderListItems(cards)}
       </ol>
       ${renderPaginationControls({
