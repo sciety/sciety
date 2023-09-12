@@ -38,6 +38,13 @@ $_value-statements-max-width: functions.px-to-rem(996px);
   @include breakpoints.not-narrow() {
     flex-direction: row-reverse;
   }
+
+  .home-page-value-statement__copy {
+    @include breakpoints.not-narrow() {
+      margin-right: 0;
+      margin-left: 4rem;
+    }
+  }
 }
 
 .home-page-value-statement__copy {
@@ -59,5 +66,5 @@ $_value-statements-max-width: functions.px-to-rem(996px);
   width: 100%;
   max-width: 490px;
   height: auto;
-  max-height: 250px;
+  max-height: 365px;
 }
