@@ -31,6 +31,7 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 
   @include breakpoints.not-narrow() {
     display: flex;
+    align-items: center;
   }
 }
 
@@ -48,8 +49,6 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 }
 
 .home-page-value-statement__copy {
-  padding-top: 2rem;
-
   @include breakpoints.not-narrow() {
     width: 50ch;
     margin-right: 4rem;
