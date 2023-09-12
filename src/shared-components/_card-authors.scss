@@ -1,8 +1,9 @@
+@use '../sass/functions';
 @use '../sass/list';
 
 .card-authors {
   @include list.basics();
-  margin-bottom: 0.5rem;
+  margin-bottom: functions.px-to-rem(24px);
 }
 
 .card-authors__author {

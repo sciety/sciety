@@ -13,14 +13,18 @@ $_card-padding: 16px;
 
 .article-card {
   background-color: settings.$colour-white;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2.5rem;
 
   border-bottom: settings.$border-width solid settings.$colour-furniture;
 }
 
 .article-card__title {
-  @include card.title();
+  font-family: settings.$font-family;
+  font-size: functions.px-to-rem(24px);
+  line-height: 1.3;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 .article-card__error_message {
@@ -61,7 +65,7 @@ $_card-padding: 16px;
 
 .article-card-teasers {
   @include list.basics();
-  margin-bottom: functions.px-to-rem(16px);
+  margin-bottom: functions.px-to-rem(24px);
   background-color: settings.$colour-background-grey;
   padding: functions.px-to-rem($_card-padding);
 }
