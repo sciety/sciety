@@ -1,6 +1,7 @@
 @use '../../../sass/functions';
 @use '../../../sass/settings';
 @use '../../../sass/breakpoints';
+@use '../../../sass/typography';
 @use 'common';
 
 $_value-statements-max-width: functions.px-to-rem(996px);
@@ -19,6 +20,10 @@ $_value-statements-max-width: functions.px-to-rem(996px);
   margin-left: auto;
   margin-right: auto;
   max-width: $_value-statements-max-width;
+}
+
+.home-page-value-statements__title {
+  @include typography.heading-2();
 }
 
 .home-page-value-statement {

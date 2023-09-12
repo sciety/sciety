@@ -3,7 +3,7 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 export const renderValueStatements = toHtmlFragment(`
     <section class="home-page-value-statements-wrapper">
       <div class="home-page-value-statements">
-        <h2>How does Sciety work?</h2>
+        <h2 class="home-page-value-statements__title">How does Sciety work?</h2>
         <article class="home-page-value-statement">
             <div class="home-page-value-statement__copy">
                 <h3 class="home-page-value-statement__heading">Explore preprints, reviews and recommendations</h3>
