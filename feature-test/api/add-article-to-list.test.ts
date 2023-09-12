@@ -28,7 +28,7 @@ describe('add an article to a list', () => {
 
     it('displays the article', async () => {
       await goto(`localhost:8080/lists/${listId}`);
-      const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId.value}"]`).exists();
+      const articleIsDisplayed = await $(`.article-card [href="/articles/activity/${articleId.value}"]`).exists();
 
       expect(articleIsDisplayed).toBe(true);
     });
