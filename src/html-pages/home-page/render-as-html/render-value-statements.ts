@@ -11,7 +11,7 @@ export const renderValueStatements = toHtmlFragment(`
             </div>
             <img src="/static/images/home-page/value-statements/illustration-1.svg" alt="placeholder image" class="home-page-value-statement__image">
         </article>
-        <article class="home-page-value-statement">
+        <article class="home-page-value-statement home-page-value-statement--reverse-order">
             <div class="home-page-value-statement__copy">
                 <h3 class="home-page-value-statement__heading">Discover the next advancement in your field</h3>
                 <p>Search and sort through the vast preprint literature and find relevant and impactful studies in your area of expertise, alongside evaluations from trusted experts.</p>

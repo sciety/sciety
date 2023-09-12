@@ -34,6 +34,12 @@ $_value-statements-max-width: functions.px-to-rem(996px);
   }
 }
 
+.home-page-value-statement--reverse-order {
+  @include breakpoints.not-narrow() {
+    flex-direction: row-reverse;
+  }
+}
+
 .home-page-value-statement__copy {
   padding-top: 2rem;
 
