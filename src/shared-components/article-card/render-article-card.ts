@@ -78,14 +78,12 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
   }
   return pipe(
     curationStatementsTeasers,
-    RA.map(({
-      groupName, quote: content, quoteLanguageCode: contentLanguageCode, groupPageHref,
-    }) => `
+    RA.map((curationStatementTeaser) => `
       <li role="listitem" class="article-card-teasers__teaser">
         <article>
-          <h4 class="article-card-teasers__teaser_heading">Curated by <a href="${groupPageHref}"><strong>${groupName}</strong></a></h4>
-          <div ${renderLangAttribute(contentLanguageCode)}class="article-card-teasers__teaser_quote">
-            ${content}
+          <h4 class="article-card-teasers__teaser_heading">Curated by <a href="${curationStatementTeaser.groupPageHref}"><strong>${curationStatementTeaser.groupName}</strong></a></h4>
+          <div ${renderLangAttribute(curationStatementTeaser.quoteLanguageCode)}class="article-card-teasers__teaser_quote">
+            ${curationStatementTeaser.quote}
           </div>
         </article>
       </li>
