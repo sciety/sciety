@@ -98,7 +98,7 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
 };
 
 export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
-  <h3 class="article-card__title"><a class="article-card__link" href="${model.articleLink}">${model.title}</a></h3>
+  <h3 class="article-card__title"><a href="${model.articleLink}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.curationStatementsTeasers)}
   <footer class="article-card__footer">

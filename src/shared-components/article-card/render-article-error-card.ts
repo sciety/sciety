@@ -38,7 +38,7 @@ const renderErrorMessage = DE.match({
 export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): HtmlFragment => (
   toHtmlFragment(`
     <article class="article-card">
-      <a class="article-card__link" href="${viewModel.href}">
+      <a href="${viewModel.href}">
         <p class="article-card__error_message">
           ${renderErrorMessage(viewModel.error)}<br>
           ${viewModel.articleId.value}
