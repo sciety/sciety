@@ -12,7 +12,10 @@ $_footer-icon-separation: 16px;
 $_card-padding: 16px;
 
 .article-card {
-  @include card.basics();
+  background-color: settings.$colour-white;
+  padding: 1rem functions.px-to-rem(settings.$default-gutter);
+
+  border-bottom: settings.$border-width solid settings.$colour-furniture;
 }
 
 .article-card__title {
