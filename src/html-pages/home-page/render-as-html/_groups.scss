@@ -18,7 +18,6 @@
 }
 
 .home-page-groups__title {
-  @include typography.section();
   margin-bottom: functions.px-to-rem(32px);
 
   @include breakpoints.not-narrow() {
