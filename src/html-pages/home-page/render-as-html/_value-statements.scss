@@ -23,9 +23,7 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 }
 
 .home-page-value-statements__title {
-  @include breakpoints.not-narrow() {
-    font-size: common.$section-heading-not-narrow-size;
-  }
+  @include common.section-heading-on-not-narrow();
 }
 
 .home-page-value-statement {

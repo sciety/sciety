@@ -18,11 +18,8 @@
 }
 
 .home-page-groups__title {
+  @include common.section-heading-on-not-narrow();
   margin-bottom: functions.px-to-rem(32px);
-
-  @include breakpoints.not-narrow() {
-    font-size: common.$section-heading-not-narrow-size;
-  }
 }
 
 .home-page-groups-list {
