@@ -24,6 +24,10 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 
 .home-page-value-statements__title {
   @include typography.heading-2();
+
+  @include breakpoints.not-narrow() {
+    font-size: common.$section-heading-not-narrow-size;
+  }
 }
 
 .home-page-value-statement {

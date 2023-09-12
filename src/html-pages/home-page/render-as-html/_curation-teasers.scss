@@ -65,6 +65,10 @@ $_arbitrary-large-amount-of-px: 9000px;
   @include typography.section();
   @include layout.page-content-horizontal-margins();
   margin-bottom: functions.px-to-rem(20px);
+
+  @include breakpoints.not-narrow() {
+    font-size: common.$section-heading-not-narrow-size;
+  }
 }
 
 .curation-teasers__teasers {
