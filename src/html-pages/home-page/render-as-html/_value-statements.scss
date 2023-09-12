@@ -48,8 +48,6 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 }
 
 .home-page-value-statement__heading {
-  margin-bottom: 2rem;
-
   @include breakpoints.not-narrow() {
     font-size: functions.px-to-rem(22px);
   }
