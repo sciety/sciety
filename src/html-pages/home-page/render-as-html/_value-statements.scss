@@ -35,16 +35,9 @@ $_value-statements-max-width: functions.px-to-rem(996px);
   }
 }
 
-.home-page-value-statement--reverse-order {
+.home-page-value-statement.home-page-value-statement--reverse-order {
   @include breakpoints.not-narrow() {
     flex-direction: row-reverse;
-  }
-
-  .home-page-value-statement__copy {
-    @include breakpoints.not-narrow() {
-      margin-right: 0;
-      margin-left: 4rem;
-    }
   }
 }
 
@@ -53,6 +46,13 @@ $_value-statements-max-width: functions.px-to-rem(996px);
     width: 50ch;
     margin-right: 4rem;
   } 
+
+  .home-page-value-statement--reverse-order & {
+    @include breakpoints.not-narrow() {
+      margin-right: 0;
+      margin-left: 4rem;
+    }
+  }
 }
 
 .home-page-value-statement__heading {
