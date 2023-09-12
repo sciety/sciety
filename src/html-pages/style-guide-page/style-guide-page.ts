@@ -5,6 +5,8 @@ import { renderPaginationControlsForFeed } from '../../shared-components/paginat
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { Doi } from '../../types/doi';
+import { renderArticleCardWithControlsAndAnnotation } from '../../shared-components/article-card';
+import * as LID from '../../types/list-id';
 
 export const styleGuidePage: Page = {
   title: 'Style guide',
@@ -25,7 +27,7 @@ export const styleGuidePage: Page = {
     ${renderPaginationControlsForFeed({
     prevPageHref: O.some('/foo'), nextPageHref: O.some('/foo'), page: 2, pageCount: 42,
   })}
-    <h2>Article card with curation statement</h2>
+    <h2>Article summary with curation statement</h2>
     ${renderArticleCard({
     articleId: new Doi('10.1101/foo'),
     articleLink: '/articles/foo',
@@ -41,6 +43,25 @@ export const styleGuidePage: Page = {
         <p>This small-sized clinical trial comparing nebulized dornase-alfa to best available care in patients hospitalized with COVID-19 pneumonia is valuable, but in its present form the paper is incomplete: the number of randomized participants is small, investigators describe also a contemporary cohort of controls and the study concludes about decrease of inflammation (reflected by CRP levels) after 7 days of treatment but no other statistically significant clinical benefit.</p>`)),
       quoteLanguageCode: O.some('en'),
     }],
+  })}
+    
+    <h2>Article summary with trashcan</h2>
+    ${renderArticleCardWithControlsAndAnnotation({
+    articleId: new Doi('10.1101/foo'),
+    hasControls: true,
+    annotationContent: O.none,
+    listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
+    articleCard: {
+      articleId: new Doi('10.1101/foo'),
+      articleLink: '/articles/foo',
+      title: sanitise(toHtmlFragment('Some title')),
+      authors: O.some(['Doctor Smith']),
+      latestVersionDate: O.some(new Date('2023-09-11')),
+      latestActivityAt: O.some(new Date('2023-09-10')),
+      evaluationCount: O.some(1),
+      listMembershipCount: O.some(1),
+      curationStatementsTeasers: [],
+    },
   })}
   `),
 };
