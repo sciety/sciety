@@ -21,10 +21,14 @@ $_card-padding: 16px;
 
 .article-card__title {
   font-family: settings.$font-family;
-  font-size: functions.px-to-rem(24px);
+  font-size: functions.px-to-rem(20px);
   line-height: 1.3;
   font-weight: bold;
   margin-bottom: 1rem;
+
+  @include breakpoints.not-narrow() {
+    font-size: functions.px-to-rem(24px);
+  }
 }
 
 .article-card__error_message {
