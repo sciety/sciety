@@ -7,6 +7,7 @@ import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../../../shared-components/article-card';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { renderListItems } from '../../../shared-components/render-list-items';
 
 type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<
@@ -21,11 +22,7 @@ export const renderArticlesList: RenderArticlesList = (articles) => pipe(
     renderArticleErrorCard,
     renderArticleCardWithControlsAndAnnotation,
   )),
-  RA.map((activity) => `<li>${activity}</li>`),
-  (renderedActivities) => `
-    <ol class="article-list" role="list">
-      ${renderedActivities.join('')}
-    </ol>
-  `,
+  (listItems) => renderListItems(listItems),
+  (list) => `<ol class="article-list" role="list">${list}</ol>`,
   toHtmlFragment,
 );
