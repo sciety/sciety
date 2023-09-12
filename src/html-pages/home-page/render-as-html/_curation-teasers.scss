@@ -62,7 +62,6 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .curation-teasers__title {
-  @include typography.section();
   @include layout.page-content-horizontal-margins();
   margin-bottom: functions.px-to-rem(20px);
 
