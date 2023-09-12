@@ -11,6 +11,7 @@ import { LanguageCode, renderLangAttribute } from '../lang-attribute';
 import { Doi } from '../../types/doi';
 
 export type CurationStatementTeaserViewModel = {
+  groupPageHref: string,
   groupName: string,
   quote: SanitisedHtmlFragment,
   quoteLanguageCode: O.Option<LanguageCode>,

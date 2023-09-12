@@ -38,6 +38,7 @@ export const styleGuidePage: Page = {
     evaluationCount: O.some(1),
     listMembershipCount: O.some(1),
     curationStatementsTeasers: [{
+      groupPageHref: '/foo',
       groupName: 'Awesome group',
       quote: sanitise(toHtmlFragment(`<p><strong>elife assessment:</strong></p>
         <p>This small-sized clinical trial comparing nebulized dornase-alfa to best available care in patients hospitalized with COVID-19 pneumonia is valuable, but in its present form the paper is incomplete: the number of randomized participants is small, investigators describe also a contemporary cohort of controls and the study concludes about decrease of inflammation (reflected by CRP levels) after 7 days of treatment but no other statistically significant clinical benefit.</p>`)),
