@@ -17,7 +17,7 @@ const renderCards = (
   (items) => renderListItems(items),
   (listContent) => `
     <section class="group-page-feed">
-      <ol class="card-list" role="list">
+      <ol class="article-list" role="list">
         ${listContent}
       </ol>
     </section>

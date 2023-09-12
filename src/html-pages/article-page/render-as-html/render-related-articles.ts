@@ -17,7 +17,7 @@ export const renderRelatedArticles = (viewmodel: ViewModel): HtmlFragment => pip
       (listContent) => `
   <div id="relatedArticles">
     <h2 class="related-articles__header">Related articles</h2>
-    <ol class="card-list" role="list">
+    <ol class="article-list" role="list">
       ${listContent}
     </ol>
   </div>

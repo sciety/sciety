@@ -13,7 +13,8 @@ $_card-padding: 16px;
 
 .article-card {
   background-color: settings.$colour-white;
-  padding: 1rem functions.px-to-rem(settings.$default-gutter);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 
   border-bottom: settings.$border-width solid settings.$colour-furniture;
 }

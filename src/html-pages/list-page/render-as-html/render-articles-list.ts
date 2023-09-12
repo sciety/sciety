@@ -23,7 +23,7 @@ export const renderArticlesList: RenderArticlesList = (articles) => pipe(
   )),
   RA.map((activity) => `<li>${activity}</li>`),
   (renderedActivities) => `
-    <ol class="card-list" role="list">
+    <ol class="article-list" role="list">
       ${renderedActivities.join('')}
     </ol>
   `,
