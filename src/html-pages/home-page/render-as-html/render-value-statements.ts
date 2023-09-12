@@ -6,8 +6,8 @@ export const renderValueStatements = toHtmlFragment(`
         <h2>How does Sciety work?</h2>
         <article class="home-page-value-statement">
             <div class="home-page-value-statement__copy">
-                <h3>A central place for preprints, reviews and recommendations</h3>
-                <p>Sciety brings together groups of researchers who are evaluating and curating the preprints they find interesting or important.</p>
+                <h3>Explore preprints, reviews and recommendations</h3>
+                <p>Sciety brings together groups of researchers who are evaluating and curating the preprints they find interesting or important in a central place.</p>
             </div>
             <img src="/static/images/home-page/value-statements/illustration-1.svg" alt="placeholder image" class="home-page-value-statement__image">
         </article>
