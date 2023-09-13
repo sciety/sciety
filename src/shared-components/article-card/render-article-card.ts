@@ -51,15 +51,19 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
+const renderMeta = (model: ArticleCardViewModel) => `
+  <div class="article-card__meta">
+    ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
+  </div>
+`;
+
 export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a href="${model.articleLink}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.curationStatementsTeasers)}
   ${renderReviewingGroupsWithLink(model.reviewingGroups)}
   <footer class="article-card__footer">
-    <div class="article-card__meta">
-      ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
-    </div>
+    ${renderMeta(model)}
   </footer>
 `);
 
