@@ -17,6 +17,11 @@ export type CurationStatementTeaserViewModel = {
   quoteLanguageCode: O.Option<LanguageCode>,
 };
 
+type ReviewingGroupViewModel = {
+  groupPageHref: string,
+  groupName: string,
+};
+
 export type ArticleCardViewModel = {
   articleId: Doi,
   articleLink: string,
@@ -27,6 +32,7 @@ export type ArticleCardViewModel = {
   evaluationCount: O.Option<number>,
   listMembershipCount: O.Option<number>,
   curationStatementsTeasers: ReadonlyArray<CurationStatementTeaserViewModel>,
+  reviewingGroups: ReadonlyArray<ReviewingGroupViewModel>,
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
@@ -98,22 +104,6 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
   );
 };
 
-type ReviewingGroupViewModel = {
-  groupPageHref: string,
-  groupName: string,
-};
-
-const hardcodedGroups: ReadonlyArray<ReviewingGroupViewModel> = [
-  {
-    groupPageHref: '/foo',
-    groupName: 'Awesome group',
-  },
-  {
-    groupPageHref: '/bar',
-    groupName: 'Awesome society',
-  },
-];
-
 const renderReviewingGroupsWithLink = (reviewingGroups: ReadonlyArray<ReviewingGroupViewModel>) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     if (reviewingGroups.length === 0) {
@@ -133,7 +123,7 @@ export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFrag
   <h3 class="article-card__title"><a href="${model.articleLink}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.curationStatementsTeasers)}
-  ${renderReviewingGroupsWithLink(hardcodedGroups)}
+  ${renderReviewingGroupsWithLink(model.reviewingGroups)}
   <footer class="article-card__footer">
     <div class="article-card__meta">
       ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}

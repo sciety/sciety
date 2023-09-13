@@ -42,6 +42,17 @@ const transformIntoCurationStatementViewModel = (
   quoteLanguageCode: curationStatement.statementLanguageCode,
 });
 
+const hardcodedGroups: ArticleCardViewModel['reviewingGroups'] = [
+  {
+    groupPageHref: '/foo',
+    groupName: 'Awesome group',
+  },
+  {
+    groupPageHref: '/bar',
+    groupName: 'Awesome society',
+  },
+];
+
 export const constructArticleCardViewModel = (
   ports: Dependencies,
 ) => (articleId: Doi): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardViewModel> => pipe(
@@ -92,6 +103,7 @@ export const constructArticleCardViewModel = (
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),
       ),
+      reviewingGroups: hardcodedGroups,
     })),
     TE.rightTask,
   )),
