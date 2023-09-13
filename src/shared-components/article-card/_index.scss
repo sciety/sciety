@@ -35,6 +35,10 @@ $_card-padding: 16px;
   margin-bottom: functions.px-to-rem(8px);
 }
 
+.article-card__reviewing_groups {
+  font-weight: bold;
+}
+
 .article-card__footer {
   display: flex;
   justify-content: space-between;
@@ -83,7 +87,7 @@ $_card-padding: 16px;
 }
 
 .article-card-teasers__teaser_heading {
-  font-weight: normal;
+  font-weight: bold;
 }
 
 .article-card-teasers__teaser_quote {

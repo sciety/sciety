@@ -112,7 +112,7 @@ const renderReviewingGroupsWithLink = (reviewingGroups: ReadonlyArray<ReviewingG
     reviewingGroups,
     RA.map((group) => `<a href="${group.groupPageHref}">${group.groupName}</a>`),
     (links) => links.join(', '),
-    (groupNamesWithLinks) => `<p>Reviewed by ${groupNamesWithLinks}</p>`,
+    (groupNamesWithLinks) => `<p class="article-card__reviewing_groups">Reviewed by ${groupNamesWithLinks}</p>`,
   );
 };
 
