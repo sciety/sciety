@@ -46,6 +46,29 @@ export const styleGuidePage: Page = {
     }],
     reviewingGroups: [],
   })}
+
+    <h2>Article summary with reviewing groups</h2>
+    ${renderArticleCard({
+    articleId: new Doi('10.1101/foo'),
+    articleLink: '/articles/foo',
+    title: sanitise(toHtmlFragment('Some title')),
+    authors: O.some(['Doctor Smith']),
+    latestVersionDate: O.some(new Date('2023-09-11')),
+    latestActivityAt: O.some(new Date('2023-09-10')),
+    evaluationCount: O.some(1),
+    listMembershipCount: O.some(1),
+    curationStatementsTeasers: [],
+    reviewingGroups: [
+      {
+        groupPageHref: '/anything',
+        groupName: 'Awesome group',
+      },
+      {
+        groupPageHref: '/anything',
+        groupName: 'Awesome society',
+      },
+    ],
+  })}
     
     <h2>Article summary with trashcan</h2>
     ${renderArticleCardWithControlsAndAnnotation({
