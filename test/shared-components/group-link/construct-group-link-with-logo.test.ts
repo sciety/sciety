@@ -1,14 +1,14 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { ViewModel } from '../../../src/shared-components/group-link-with-logo/view-model';
+import { ViewModel } from '../../../src/shared-components/group-link/view-model';
 import {
   arbitraryRecordEvaluationPublicationCommand,
 } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
-import { constructGroupLinkWithLogo } from '../../../src/shared-components/group-link-with-logo';
+import { constructGroupLinkWithLogo } from '../../../src/shared-components/group-link';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('construct-group-link-with-logo', () => {

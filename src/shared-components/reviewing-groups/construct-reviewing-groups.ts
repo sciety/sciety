@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../read-models';
-import { GroupLinkWithLogoViewModel, constructGroupLinkWithLogo, ConstructGroupLinkWithLogoDependencies } from '../group-link-with-logo';
+import { GroupLinkWithLogoViewModel, constructGroupLinkWithLogo, ConstructGroupLinkWithLogoDependencies } from '../group-link';
 
 type Dependencies = Queries
 & ConstructGroupLinkWithLogoDependencies;

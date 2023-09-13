@@ -7,7 +7,7 @@ import {
   Logger,
 } from '../../../shared-ports';
 import { Dependencies as ConstructCurationStatementsDependencies } from '../../../shared-components/curation-statements/construct-curation-statements';
-import { ConstructGroupLinkWithLogoDependencies } from '../../../shared-components/group-link-with-logo';
+import { ConstructGroupLinkWithLogoDependencies } from '../../../shared-components/group-link';
 
 export type Dependencies = Queries
 & ConstructCurationStatementsDependencies
