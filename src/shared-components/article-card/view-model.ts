@@ -16,7 +16,7 @@ type ReviewingGroupViewModel = {
   groupName: string,
 };
 
-export type ArticleCardViewModel = {
+export type ViewModel = {
   articleId: Doi,
   articleLink: string,
   title: SanitisedHtmlFragment,

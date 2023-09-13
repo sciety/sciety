@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { ArticleCardViewModel } from './view-model';
+import { ViewModel } from './view-model';
 
-export const renderReviewingGroupsWithLink = (reviewingGroups: ArticleCardViewModel['reviewingGroups']): HtmlFragment => {
+export const renderReviewingGroupsWithLink = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
   if (reviewingGroups.length === 0) {
     return toHtmlFragment('');
   }

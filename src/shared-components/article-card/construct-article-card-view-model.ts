@@ -16,7 +16,7 @@ import {
 } from '../../shared-ports';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { ArticleCardViewModel } from './view-model';
+import { ViewModel } from './view-model';
 import { constructReviewingGroups } from '../../html-pages/article-page/construct-view-model/construct-reviewing-groups';
 
 export type Dependencies = Queries
@@ -36,7 +36,7 @@ const getArticleDetails = (ports: Dependencies) => fetchArticleDetails(
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
-): ArticleCardViewModel['curationStatementsTeasers'][number] => ({
+): ViewModel['curationStatementsTeasers'][number] => ({
   groupPageHref: `/groups/${curationStatement.groupSlug}`,
   groupName: curationStatement.groupName,
   quote: sanitise(toHtmlFragment(curationStatement.statement)),
@@ -45,7 +45,7 @@ const transformIntoCurationStatementViewModel = (
 
 export const constructArticleCardViewModel = (
   ports: Dependencies,
-) => (articleId: Doi): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardViewModel> => pipe(
+) => (articleId: Doi): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
   ports.getActivityForDoi(articleId),
   (articleActivity) => pipe(
     articleActivity.articleId,

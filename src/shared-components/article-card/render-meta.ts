@@ -3,11 +3,11 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { templateDate } from '../date';
-import { ArticleCardViewModel } from './view-model';
+import { ViewModel } from './view-model';
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
-const renderEvaluationCount = (evaluationCount: ArticleCardViewModel['evaluationCount']) => pipe(
+const renderEvaluationCount = (evaluationCount: ViewModel['evaluationCount']) => pipe(
   evaluationCount,
   O.fold(
     () => '<span class="visually-hidden">This article has no evaluations</span>',
@@ -19,7 +19,7 @@ const renderEvaluationCount = (evaluationCount: ArticleCardViewModel['evaluation
   ),
 );
 
-const renderListMembershipCount = (listMembershipCount: ArticleCardViewModel['listMembershipCount']) => pipe(
+const renderListMembershipCount = (listMembershipCount: ViewModel['listMembershipCount']) => pipe(
   listMembershipCount,
   O.fold(
     constant(''),
@@ -48,7 +48,7 @@ const renderArticleLatestActivityDate = O.fold(
   ),
 );
 
-export const renderMeta = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
+export const renderMeta = (model: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="article-card__meta">
     ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
   </div>

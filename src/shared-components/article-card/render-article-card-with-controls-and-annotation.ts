@@ -4,13 +4,13 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { renderArticleCardContents } from './render-article-card';
-import { ArticleCardViewModel } from './view-model';
+import { ViewModel } from './view-model';
 import { Doi } from '../../types/doi';
 
 type AnnotationContent = O.Option<HtmlFragment>;
 
 export type ArticleCardWithControlsAndAnnotationViewModel = {
-  articleCard: ArticleCardViewModel,
+  articleCard: ViewModel,
   hasControls: boolean,
   annotationContent: O.Option<HtmlFragment>,
   listId: ListId,

@@ -5,7 +5,7 @@ import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './render-article-card-with-controls-and-annotation';
-import { ArticleCardViewModel } from './view-model';
+import { ViewModel } from './view-model';
 import { Queries } from '../../read-models';
 
 type Ports = ConstructArticleCardViewModelDependencies & Queries;
@@ -15,7 +15,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   editCapability: boolean,
   listId: ListId,
   articleId: Doi,
-) => (articleCard: ArticleCardViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
+) => (articleCard: ViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
   {
     articleCard,
     annotationContent: ports.getAnnotationContent(listId, articleId),
