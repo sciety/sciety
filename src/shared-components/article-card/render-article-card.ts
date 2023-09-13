@@ -97,9 +97,19 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
   `,
   );
 };
+const groups = [
+  {
+    groupPageHref: '/foo',
+    groupName: 'Awesome group',
+  },
+  {
+    groupPageHref: '/bar',
+    groupName: 'Awesome society',
+  },
+];
 
 const renderReviewingGroupsWithLink = () => (process.env.EXPERIMENT_ENABLED === 'true'
-  ? '<p>Reviewed by <a href="/foo">Awesome group</a>, <a href="/bar">Awesome society</a></p>'
+  ? `<p>Reviewed by <a href="${groups[0].groupPageHref}">${groups[0].groupName}</a>, <a href="${groups[1].groupPageHref}">${groups[1].groupName}</a></p>`
   : '');
 
 export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
