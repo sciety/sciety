@@ -105,18 +105,15 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
 };
 
 const renderReviewingGroupsWithLink = (reviewingGroups: ReadonlyArray<ReviewingGroupViewModel>) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    if (reviewingGroups.length === 0) {
-      return '';
-    }
-    return pipe(
-      reviewingGroups,
-      RA.map((group) => `<a href="${group.groupPageHref}">${group.groupName}</a>`),
-      (links) => links.join(', '),
-      (groupNamesWithLinks) => `<p>Reviewed by ${groupNamesWithLinks}</p>`,
-    );
+  if (reviewingGroups.length === 0) {
+    return '';
   }
-  return '';
+  return pipe(
+    reviewingGroups,
+    RA.map((group) => `<a href="${group.groupPageHref}">${group.groupName}</a>`),
+    (links) => links.join(', '),
+    (groupNamesWithLinks) => `<p>Reviewed by ${groupNamesWithLinks}</p>`,
+  );
 };
 
 export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
