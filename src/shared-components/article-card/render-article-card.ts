@@ -98,7 +98,9 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
   );
 };
 
-const renderReviewingGroupsWithLink = () => (process.env.EXPERIMENT_ENABLED === 'true' ? 'Reviewed by Awesome group' : '');
+const renderReviewingGroupsWithLink = () => (process.env.EXPERIMENT_ENABLED === 'true'
+  ? '<p>Reviewed by <a href="/foo">Awesome group</a>, <a href="/bar">Awesome society</a></p>'
+  : '');
 
 export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a href="${model.articleLink}">${model.title}</a></h3>
