@@ -27,7 +27,8 @@ export const styleGuidePage: Page = {
     ${renderPaginationControlsForFeed({
     prevPageHref: O.some('/foo'), nextPageHref: O.some('/foo'), page: 2, pageCount: 42,
   })}
-    <h2>Article summary with curation statement</h2>
+    <h2>Article summary</h2>
+    <h3>With curation statement</h3>
     ${renderArticleCard({
     articleId: new Doi('10.1101/foo'),
     articleLink: '/articles/foo',
@@ -47,7 +48,7 @@ export const styleGuidePage: Page = {
     reviewingGroups: [],
   })}
 
-    <h2>Article summary with reviewing groups</h2>
+    <h3>With reviewing groups</h3>
     ${renderArticleCard({
     articleId: new Doi('10.1101/foo'),
     articleLink: '/articles/foo',
@@ -70,7 +71,7 @@ export const styleGuidePage: Page = {
     ],
   })}
     
-    <h2>Article summary with trashcan</h2>
+    <h3>With trashcan</h3>
     ${renderArticleCardWithControlsAndAnnotation({
     articleId: new Doi('10.1101/foo'),
     hasControls: true,
