@@ -4,10 +4,10 @@ import * as O from 'fp-ts/Option';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../read-models';
-import { GroupLinkWithLogoViewModel, constructGroupLinkWithLogo, ConstructGroupLinkWithLogoDependencies } from '../group-link';
+import { GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies } from '../group-link';
 
 type Dependencies = Queries
-& ConstructGroupLinkWithLogoDependencies;
+& ConstructGroupLinkDependencies;
 
 const isNotCurationStatement = (evaluation: RecordedEvaluation) => pipe(
   evaluation.type,
@@ -25,6 +25,6 @@ export const constructReviewingGroups = (
   RA.filter(isNotCurationStatement),
   RA.map((evaluation) => evaluation.groupId),
   unique,
-  RA.map(constructGroupLinkWithLogo(dependencies)),
+  RA.map(constructGroupLink(dependencies)),
   RA.compact,
 );

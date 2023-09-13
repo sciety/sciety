@@ -8,7 +8,7 @@ import {
 
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
-import { constructGroupLinkWithLogo } from '../../../src/shared-components/group-link';
+import { constructGroupLink } from '../../../src/shared-components/group-link';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('construct-group-link-with-logo', () => {
@@ -29,7 +29,7 @@ describe('construct-group-link-with-logo', () => {
     });
     result = pipe(
       addGroupCommand.groupId,
-      constructGroupLinkWithLogo(framework.dependenciesForViews),
+      constructGroupLink(framework.dependenciesForViews),
       O.getOrElseW(shouldNotBeCalled),
     );
   });

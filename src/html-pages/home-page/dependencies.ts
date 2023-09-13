@@ -1,7 +1,7 @@
 import { Queries } from '../../read-models';
-import { ConstructGroupLinkWithLogoDependencies } from '../../shared-components/group-link';
+import { ConstructGroupLinkDependencies } from '../../shared-components/group-link';
 import { Logger } from '../../shared-ports';
 
-export type Dependencies = Queries & ConstructGroupLinkWithLogoDependencies & {
+export type Dependencies = Queries & ConstructGroupLinkDependencies & {
   logger: Logger,
 };
