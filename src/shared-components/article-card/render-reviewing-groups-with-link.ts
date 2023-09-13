@@ -3,7 +3,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 
-const renderGroupLinkAsText = (group: ViewModel['reviewingGroups'][number]) => `<a href="${group.groupPageHref}">${group.groupName}</a>`;
+type GroupLinkAsTextViewModel = {
+  groupPageHref: string,
+  groupName: string,
+};
+
+const renderGroupLinkAsText = (group: GroupLinkAsTextViewModel) => `<a href="${group.groupPageHref}">${group.groupName}</a>`;
 
 export const renderReviewingGroupsWithLink = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
   if (reviewingGroups.length === 0) {
