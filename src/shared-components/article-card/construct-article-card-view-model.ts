@@ -93,13 +93,7 @@ export const constructArticleCardViewModel = (
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),
       ),
-      reviewingGroups: pipe(
-        constructReviewingGroups(ports, articleId),
-        RA.map((reviewingGroup) => ({
-          ...reviewingGroup,
-          groupPageHref: reviewingGroup.href,
-        })),
-      ),
+      reviewingGroups: constructReviewingGroups(ports, articleId),
     })),
     TE.rightTask,
   )),

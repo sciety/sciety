@@ -61,11 +61,11 @@ export const styleGuidePage: Page = {
     curationStatementsTeasers: [],
     reviewingGroups: [
       {
-        groupPageHref: '/anything',
+        href: '/anything',
         groupName: 'Awesome group',
       },
       {
-        groupPageHref: '/anything',
+        href: '/anything',
         groupName: 'Awesome society',
       },
     ],
