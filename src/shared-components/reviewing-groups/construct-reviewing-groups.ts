@@ -1,11 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { constructGroupLinkWithLogo, ConstructGroupLinkWithLogoDependencies } from '../group-link-with-logo/construct-group-link-with-logo';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { Doi } from '../../types/doi';
-import { ViewModel } from '../../html-pages/article-page/view-model';
 import { Queries } from '../../read-models';
+import { GroupLinkWithLogoViewModel, constructGroupLinkWithLogo, ConstructGroupLinkWithLogoDependencies } from '../group-link-with-logo';
 
 type Dependencies = Queries
 & ConstructGroupLinkWithLogoDependencies;
@@ -20,7 +19,7 @@ const unique = <A>(input: ReadonlyArray<A>) => [...new Set(input)];
 export const constructReviewingGroups = (
   dependencies: Dependencies,
   articleId: Doi,
-): ViewModel['reviewingGroups'] => pipe(
+): ReadonlyArray<GroupLinkWithLogoViewModel> => pipe(
   articleId,
   dependencies.getEvaluationsForDoi,
   RA.filter(isNotCurationStatement),
