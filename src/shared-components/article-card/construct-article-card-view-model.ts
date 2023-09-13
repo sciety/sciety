@@ -16,7 +16,7 @@ import {
 } from '../../shared-ports';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { CurationStatementTeaserViewModel, ArticleCardViewModel } from './render-article-card';
+import { ArticleCardViewModel } from './view-model';
 import { constructReviewingGroups } from '../../html-pages/article-page/construct-view-model/construct-reviewing-groups';
 
 export type Dependencies = Queries
@@ -36,7 +36,7 @@ const getArticleDetails = (ports: Dependencies) => fetchArticleDetails(
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
-): CurationStatementTeaserViewModel => ({
+): ArticleCardViewModel['curationStatementsTeasers'][number] => ({
   groupPageHref: `/groups/${curationStatement.groupSlug}`,
   groupName: curationStatement.groupName,
   quote: sanitise(toHtmlFragment(curationStatement.statement)),

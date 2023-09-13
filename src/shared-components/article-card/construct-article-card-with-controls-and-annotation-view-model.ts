@@ -5,7 +5,7 @@ import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './render-article-card-with-controls-and-annotation';
-import { ArticleCardViewModel } from './render-article-card';
+import { ArticleCardViewModel } from './view-model';
 import { Queries } from '../../read-models';
 
 type Ports = ConstructArticleCardViewModelDependencies & Queries;

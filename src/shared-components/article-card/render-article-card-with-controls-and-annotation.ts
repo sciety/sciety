@@ -3,7 +3,8 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import { ArticleCardViewModel, renderArticleCardContents } from './render-article-card';
+import { renderArticleCardContents } from './render-article-card';
+import { ArticleCardViewModel } from './view-model';
 import { Doi } from '../../types/doi';
 
 type AnnotationContent = O.Option<HtmlFragment>;
