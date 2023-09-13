@@ -108,14 +108,20 @@ const groups = [
   },
 ];
 
-const renderReviewingGroupsWithLink = () => (process.env.EXPERIMENT_ENABLED === 'true'
-  ? pipe(
-    groups,
-    RA.map((group) => `<a href="${group.groupPageHref}">${group.groupName}</a>`),
-    (links) => links.join(', '),
-    (groupNamesWithLinks) => `<p>Reviewed by ${groupNamesWithLinks}</p>`,
-  )
-  : '');
+const renderReviewingGroupsWithLink = () => {
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    if (groups.length === 0) {
+      return '';
+    }
+    return pipe(
+      groups,
+      RA.map((group) => `<a href="${group.groupPageHref}">${group.groupName}</a>`),
+      (links) => links.join(', '),
+      (groupNamesWithLinks) => `<p>Reviewed by ${groupNamesWithLinks}</p>`,
+    );
+  }
+  return '';
+};
 
 export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a href="${model.articleLink}">${model.title}</a></h3>
