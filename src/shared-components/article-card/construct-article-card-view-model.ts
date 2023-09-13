@@ -17,6 +17,7 @@ import {
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { CurationStatementTeaserViewModel, ArticleCardViewModel } from './render-article-card';
+import { constructReviewingGroups } from '../../html-pages/article-page/construct-view-model/construct-reviewing-groups';
 
 export type Dependencies = Queries
 & GetLatestArticleVersionDatePorts
@@ -41,17 +42,6 @@ const transformIntoCurationStatementViewModel = (
   quote: sanitise(toHtmlFragment(curationStatement.statement)),
   quoteLanguageCode: curationStatement.statementLanguageCode,
 });
-
-const hardcodedGroups: ArticleCardViewModel['reviewingGroups'] = [
-  {
-    groupPageHref: '/foo',
-    groupName: 'Awesome group',
-  },
-  {
-    groupPageHref: '/bar',
-    groupName: 'Awesome society',
-  },
-];
 
 export const constructArticleCardViewModel = (
   ports: Dependencies,
@@ -103,7 +93,13 @@ export const constructArticleCardViewModel = (
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),
       ),
-      reviewingGroups: hardcodedGroups,
+      reviewingGroups: pipe(
+        constructReviewingGroups(ports, articleId),
+        RA.map((reviewingGroup) => ({
+          ...reviewingGroup,
+          groupPageHref: reviewingGroup.href,
+        })),
+      ),
     })),
     TE.rightTask,
   )),
