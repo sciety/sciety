@@ -5,8 +5,8 @@ import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
-import { renderLangAttribute } from '../lang-attribute';
 import { ArticleCardViewModel } from './view-model';
+import { renderCurationStatements } from './render-curation-statements';
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
@@ -50,32 +50,6 @@ const renderArticleLatestActivityDate = O.fold(
     wrapInSpan,
   ),
 );
-
-const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewModel['curationStatementsTeasers']) => {
-  if (curationStatementsTeasers.length === 0) {
-    return '';
-  }
-  return pipe(
-    curationStatementsTeasers,
-    RA.map((curationStatementTeaser) => `
-      <li role="listitem" class="article-card-teasers__teaser">
-        <article>
-          <h4 class="article-card-teasers__teaser_heading">Curated by <a href="${curationStatementTeaser.groupPageHref}"><strong>${curationStatementTeaser.groupName}</strong></a></h4>
-          <div ${renderLangAttribute(curationStatementTeaser.quoteLanguageCode)}class="article-card-teasers__teaser_quote">
-            ${curationStatementTeaser.quote}
-          </div>
-        </article>
-      </li>
-    `),
-    (listItems) => listItems.join(''),
-    (listContent) => `
-    <div class="visually-hidden">This article has been curated by ${renderCountWithDescriptor(curationStatementsTeasers.length, 'group', 'groups')}:</div>
-    <ul class="article-card-teasers" role="list">
-      ${listContent}
-    </ul>
-  `,
-  );
-};
 
 const renderReviewingGroupsWithLink = (reviewingGroups: ArticleCardViewModel['reviewingGroups']) => {
   if (reviewingGroups.length === 0) {
