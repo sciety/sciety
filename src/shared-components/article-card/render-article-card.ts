@@ -98,10 +98,13 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
   );
 };
 
+const renderReviewingGroupsWithLink = () => (process.env.EXPERIMENT_ENABLED === 'true' ? 'Reviewed by Awesome group' : '');
+
 export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a href="${model.articleLink}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.curationStatementsTeasers)}
+  ${renderReviewingGroupsWithLink()}
   <footer class="article-card__footer">
     <div class="article-card__meta">
       ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}

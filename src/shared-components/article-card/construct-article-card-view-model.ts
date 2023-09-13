@@ -32,6 +32,7 @@ const getArticleDetails = (ports: Dependencies) => fetchArticleDetails(
   getLatestArticleVersionDate(ports),
   ports.fetchArticle,
 );
+
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
 ): CurationStatementTeaserViewModel => ({
