@@ -4,12 +4,13 @@ import * as GID from '../../types/group-id';
 import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
 import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
+import { GroupLinkAsTextViewModel } from './group-link-as-text-view-model';
 
 export type ConstructGroupLinkDependencies = Queries & { logger: Logger };
 
 export const constructGroupLink = (
   dependencies: ConstructGroupLinkDependencies,
-) => (groupId: GID.GroupId): O.Option<GroupLinkWithLogoViewModel> => pipe(
+) => (groupId: GID.GroupId): O.Option<GroupLinkWithLogoViewModel & GroupLinkAsTextViewModel> => pipe(
   groupId,
   dependencies.getGroup,
   O.orElse(() => {
