@@ -3,13 +3,13 @@ import * as O from 'fp-ts/Option';
 import * as GID from '../../types/group-id';
 import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
-import { ViewModel } from './view-model';
+import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 
 export type ConstructGroupLinkDependencies = Queries & { logger: Logger };
 
 export const constructGroupLink = (
   dependencies: ConstructGroupLinkDependencies,
-) => (groupId: GID.GroupId): O.Option<ViewModel> => pipe(
+) => (groupId: GID.GroupId): O.Option<GroupLinkWithLogoViewModel> => pipe(
   groupId,
   dependencies.getGroup,
   O.orElse(() => {

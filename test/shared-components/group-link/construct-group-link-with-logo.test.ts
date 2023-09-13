@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { ViewModel } from '../../../src/shared-components/group-link/view-model';
+import { GroupLinkWithLogoViewModel } from '../../../src/shared-components/group-link/group-link-with-logo-view-model';
 import {
   arbitraryRecordEvaluationPublicationCommand,
 } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -15,7 +15,7 @@ describe('construct-group-link-with-logo', () => {
   const article = arbitraryArticleId();
   const addGroupCommand = arbitraryAddGroupCommand();
   const linkToTheGroupsPage = `/groups/${addGroupCommand.slug}`;
-  let result: ViewModel;
+  let result: GroupLinkWithLogoViewModel;
   let framework: TestFramework;
 
   beforeEach(async () => {

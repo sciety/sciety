@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { ViewModel } from './view-model';
+import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 
-const renderGroupLogoWithTextFallback = (viewModel: ViewModel) => pipe(
+const renderGroupLogoWithTextFallback = (viewModel: GroupLinkWithLogoViewModel) => pipe(
   viewModel.logoPath,
   O.fold(
     () => viewModel.groupName,
@@ -20,7 +20,7 @@ const renderAlignmentClass = (logoHorizontalAlignment: 'left' | 'center') => {
   }
 };
 
-export const renderGroupLinkWithLogo = (logoHorizontalAlignment: 'left' | 'center') => (viewModel: ViewModel): HtmlFragment => pipe(
+export const renderGroupLinkWithLogo = (logoHorizontalAlignment: 'left' | 'center') => (viewModel: GroupLinkWithLogoViewModel): HtmlFragment => pipe(
   viewModel,
   renderGroupLogoWithTextFallback,
   (logoWithTextFallback) => `
