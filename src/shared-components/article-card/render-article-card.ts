@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { templateDate } from '../date';
 import { renderAuthors } from '../render-card-authors';
 import { ArticleCardViewModel } from './view-model';
 import { renderCurationStatements } from './render-curation-statements';
+import { renderReviewingGroupsWithLink } from './render-reviewing-groups-with-link';
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
@@ -50,18 +50,6 @@ const renderArticleLatestActivityDate = O.fold(
     wrapInSpan,
   ),
 );
-
-const renderReviewingGroupsWithLink = (reviewingGroups: ArticleCardViewModel['reviewingGroups']) => {
-  if (reviewingGroups.length === 0) {
-    return '';
-  }
-  return pipe(
-    reviewingGroups,
-    RA.map((group) => `<a href="${group.groupPageHref}">${group.groupName}</a>`),
-    (links) => links.join(', '),
-    (groupNamesWithLinks) => `<p class="article-card__reviewing_groups">Reviewed by ${groupNamesWithLinks}</p>`,
-  );
-};
 
 export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a href="${model.articleLink}">${model.title}</a></h3>
