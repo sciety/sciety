@@ -97,7 +97,13 @@ const renderCurationStatements = (curationStatementsTeasers: ArticleCardViewMode
   `,
   );
 };
-const groups = [
+
+type ReviewingGroupViewModel = {
+  groupPageHref: string,
+  groupName: string,
+};
+
+const hardcodedGroups: ReadonlyArray<ReviewingGroupViewModel> = [
   {
     groupPageHref: '/foo',
     groupName: 'Awesome group',
@@ -108,13 +114,13 @@ const groups = [
   },
 ];
 
-const renderReviewingGroupsWithLink = () => {
+const renderReviewingGroupsWithLink = (reviewingGroups: ReadonlyArray<ReviewingGroupViewModel>) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    if (groups.length === 0) {
+    if (reviewingGroups.length === 0) {
       return '';
     }
     return pipe(
-      groups,
+      reviewingGroups,
       RA.map((group) => `<a href="${group.groupPageHref}">${group.groupName}</a>`),
       (links) => links.join(', '),
       (groupNamesWithLinks) => `<p>Reviewed by ${groupNamesWithLinks}</p>`,
@@ -127,7 +133,7 @@ export const renderArticleCardContents = (model: ArticleCardViewModel): HtmlFrag
   <h3 class="article-card__title"><a href="${model.articleLink}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.curationStatementsTeasers)}
-  ${renderReviewingGroupsWithLink()}
+  ${renderReviewingGroupsWithLink(hardcodedGroups)}
   <footer class="article-card__footer">
     <div class="article-card__meta">
       ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderArticleVersionDate(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
