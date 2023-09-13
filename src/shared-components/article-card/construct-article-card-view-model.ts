@@ -17,9 +17,10 @@ import {
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
-import { constructReviewingGroups } from '../reviewing-groups';
+import { ConstructReviewingGroupsDependencies, constructReviewingGroups } from '../reviewing-groups';
 
 export type Dependencies = Queries
+& ConstructReviewingGroupsDependencies
 & GetLatestArticleVersionDatePorts
 & {
   fetchArticle: FetchArticle,
