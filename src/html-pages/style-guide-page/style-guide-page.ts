@@ -5,8 +5,9 @@ import { renderPaginationControlsForFeed } from '../../shared-components/paginat
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { Doi } from '../../types/doi';
-import { renderArticleCardWithControlsAndAnnotation } from '../../shared-components/article-card';
+import { renderArticleCardWithControlsAndAnnotation, renderArticleErrorCard } from '../../shared-components/article-card';
 import * as LID from '../../types/list-id';
+import * as DE from '../../types/data-error';
 
 export const styleGuidePage: Page = {
   title: 'Style guide',
@@ -89,6 +90,15 @@ export const styleGuidePage: Page = {
       curationStatementsTeasers: [],
       reviewingGroups: [],
     },
+  })}
+
+    <h3>With error</h3>
+    ${renderArticleErrorCard({
+    evaluationCount: 1,
+    href: '/articles/foo',
+    latestActivityAt: O.some(new Date('2023-09-10')),
+    error: DE.notFound,
+    articleId: new Doi('10.1101/foo'),
   })}
   `),
 };
