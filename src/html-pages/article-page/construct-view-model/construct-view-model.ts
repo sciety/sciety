@@ -16,7 +16,7 @@ import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
-import { constructReviewingGroups } from './construct-reviewing-groups';
+import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 
 type Params = {
   doi: Doi,

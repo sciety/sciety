@@ -17,7 +17,7 @@ import {
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
-import { constructReviewingGroups } from '../../html-pages/article-page/construct-view-model/construct-reviewing-groups';
+import { constructReviewingGroups } from '../reviewing-groups';
 
 export type Dependencies = Queries
 & GetLatestArticleVersionDatePorts

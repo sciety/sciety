@@ -1,15 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { arbitraryString } from '../../../helpers';
-import { createTestFramework, TestFramework } from '../../../framework';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { arbitraryString } from '../../helpers';
+import { createTestFramework, TestFramework } from '../../framework';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import {
   arbitraryRecordEvaluationPublicationCommand,
-} from '../../../write-side/commands/record-evaluation-publication-command.helper';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
+} from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import {
   constructReviewingGroups,
-} from '../../../../src/html-pages/article-page/construct-view-model/construct-reviewing-groups';
+} from '../../../src/shared-components/reviewing-groups/construct-reviewing-groups';
 
 describe('construct-reviewing-groups', () => {
   const article = arbitraryArticleId();
