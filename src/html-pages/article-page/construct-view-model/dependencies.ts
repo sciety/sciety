@@ -7,11 +7,11 @@ import {
   Logger,
 } from '../../../shared-ports';
 import { Dependencies as ConstructCurationStatementsDependencies } from '../../../shared-components/curation-statements/construct-curation-statements';
-import { ConstructGroupLinkDependencies } from '../../../shared-components/group-link';
+import { ConstructReviewingGroupsDependencies } from '../../../shared-components/reviewing-groups';
 
 export type Dependencies = Queries
 & ConstructCurationStatementsDependencies
-& ConstructGroupLinkDependencies
+& ConstructReviewingGroupsDependencies
 & {
   fetchArticle: FetchArticle,
   fetchRelatedArticles: FetchRelatedArticles,

@@ -6,7 +6,7 @@ import { Doi } from '../../types/doi';
 import { Queries } from '../../read-models';
 import { GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies } from '../group-link';
 
-type Dependencies = Queries
+export type Dependencies = Queries
 & ConstructGroupLinkDependencies;
 
 const isNotCurationStatement = (evaluation: RecordedEvaluation) => pipe(
