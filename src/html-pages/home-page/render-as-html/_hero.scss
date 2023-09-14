@@ -20,12 +20,20 @@ $_width-at-which-image-is-too-narrow: 1680px;
 
 .home-page-hero-wrapper {
   background-color: settings.$colour-brand;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
 
   img {
-    opacity: 0.4;
-    overflow: hidden;
+    display: none;
+  }
+
+  @include breakpoints.site-header() {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+
+    img {
+      display: unset;
+      opacity: 0.4;
+      overflow: hidden;
+    }
   }
 }
 
@@ -54,7 +62,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
   max-width: fit-content;
   justify-self: center;
 
-  @media screen and (min-width: common.$home-page-breakpoint) {
+  @include breakpoints.site-header() {
     padding-top: functions.px-to-rem(193px);
     padding-bottom: functions.px-to-rem(235px);
   }
