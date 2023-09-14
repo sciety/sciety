@@ -26,7 +26,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   padding-bottom: common.$section-vertical-separation;
   padding-top: common.$section-vertical-separation;
   max-width: functions.px-to-rem(settings.$max-site-width);
-  background-color: settings.$colour-background-grey;
+  background-color: #F5F6FA;
 
   @include breakpoints.not-narrow {
     padding-left: functions.px-to-rem(settings.$default-gutter);
@@ -38,7 +38,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 
     &::before {
       content: '';
-      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-background-grey;
+      border-left: $_arbitrary-large-amount-of-px solid #F5F6FA;
       position: absolute;
       bottom: 0;
       left: calc(#{$_arbitrary-large-amount-of-px} * -1);
@@ -49,7 +49,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 
     &::after {
       content: '';
-      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-background-grey;
+      border-left: $_arbitrary-large-amount-of-px solid #F5F6FA;
       position: absolute;
       bottom: 0;
       left: 0;
