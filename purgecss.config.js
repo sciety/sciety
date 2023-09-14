@@ -15,5 +15,6 @@ module.exports = {
     'th',
     'tr',
     'pre',
+    'about-page-call-to-action',
   ],
 };

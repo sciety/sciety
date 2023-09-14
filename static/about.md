@@ -21,4 +21,4 @@ Societies, journals and other groups of scientists are helping by highlighting t
 
 Sciety also enables scientists to share the evaluated preprints that they think are interesting or relevant to their work, which in turn helps their fellow researchers discover the latest and best new research.
 
-[Find evaluated preprints today](/search)
+<a href="/search" class="about-page-call-to-action">Find evaluated preprints today</a>

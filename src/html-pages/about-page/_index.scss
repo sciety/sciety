@@ -1,0 +1,5 @@
+@use '../../sass/button';
+
+.about-page-call-to-action {
+	@include button.primary-link();
+}
