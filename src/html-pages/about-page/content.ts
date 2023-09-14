@@ -1,4 +1,4 @@
-const blogLinks = `
+export const blogLinks = `
 <p><a href="https://blog.sciety.org/what-is-public-preprint-evaluation/">What are evaluations and where do they come from?</a></p>
 
 <p><a href="https://blog.sciety.org/more-about-sciety/)">More about how Sciety was created</a></p>
@@ -31,6 +31,4 @@ export const content = `
 <p>Sciety also enables scientists to share the evaluated preprints that they think are interesting or relevant to their work, which in turn helps their fellow researchers discover the latest and best new research.</p>
 
 <p><a href="/search" class="about-page-call-to-action">Find evaluated preprints today</a></p>
-
-${blogLinks}
 `;
