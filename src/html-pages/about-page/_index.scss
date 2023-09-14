@@ -16,6 +16,11 @@
 		padding-top: functions.px-to-rem(32px);
 		padding-bottom: functions.px-to-rem(32px);
 		border-bottom: settings.$colour-furniture solid 1px;
+
+		a {
+			font-weight: bold;
+			color: settings.$colour-text-primary;
+		}
 	}
 
 }
