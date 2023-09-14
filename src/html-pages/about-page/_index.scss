@@ -1,57 +1,54 @@
-@use '../../sass/button';
-@use '../../sass/list';
-@use '../../sass/functions';
-@use '../../sass/settings';
-
+@use "../../sass/button";
+@use "../../sass/list";
+@use "../../sass/functions";
+@use "../../sass/settings";
 
 .about-page-figure {
-	margin-top: 0;
-	margin-left: 0;
-	margin-right: 0;
-	margin-bottom: functions.px-to-rem(32px);
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: functions.px-to-rem(32px);
 
-	img {
-		width: 100%;
-		margin-bottom: functions.px-to-rem(8px);
-	}
+  img {
+    width: 100%;
+    margin-bottom: functions.px-to-rem(8px);
+  }
 
-	figcaption {
-		text-align: center;
-		font-style: italic;
-	}
+  figcaption {
+    text-align: center;
+    font-style: italic;
+  }
 }
 
 .about-page-call-to-action {
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .about-page-call-to-action__link {
-	@include button.primary-link();
-	margin-bottom: functions.px-to-rem(24px);
+  @include button.primary-link();
+  margin-bottom: functions.px-to-rem(24px);
 }
 
 .about-page__blog_links_list {
-	@include list.basics();
+  @include list.basics();
 
-	li {
-		padding-top: functions.px-to-rem(32px);
-		padding-bottom: functions.px-to-rem(32px);
-		border-bottom: settings.$colour-furniture solid 1px;
+  li {
+    padding-top: functions.px-to-rem(32px);
+    padding-bottom: functions.px-to-rem(32px);
+    border-bottom: settings.$colour-furniture solid 1px;
 
-		a {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+    a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-			font-weight: bold;
-			color: settings.$colour-text-primary;
+      font-weight: bold;
+      color: settings.$colour-text-primary;
+    }
 
-		}
-
-		a::after {
-			content: '❯';
-		}
-	}
-
+    a::after {
+      content: "❯";
+    }
+  }
 }
