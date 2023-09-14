@@ -29,6 +29,18 @@
 
 .home-page-hero__left_image {
   justify-self: end;
+
+  @media screen and (min-width: functions.px-to-em(1680px)) {
+    justify-self: start;
+  }
+}
+
+.home-page-hero__right_image {
+  justify-self: start;
+
+  @media screen and (min-width: functions.px-to-em(1680px)) {
+    justify-self: end;
+  }
 }
 
 .home-page-hero {

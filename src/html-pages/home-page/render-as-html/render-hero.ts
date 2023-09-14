@@ -27,6 +27,6 @@ export const renderHero: HtmlFragment = toHtmlFragment(`
         ${renderSearchForm()}
       </section>
     </div>
-    <img src="/static/images/home-page/sciety-pattern-right.svg" />
+    <img class="home-page-hero__right_image" src="/static/images/home-page/sciety-pattern-right.svg" />
   </section>
 `);
