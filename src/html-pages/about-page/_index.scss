@@ -1,6 +1,7 @@
 @use '../../sass/button';
 @use '../../sass/list';
 @use '../../sass/functions';
+@use '../../sass/settings';
 
 
 .about-page-call-to-action {
@@ -12,7 +13,9 @@
 	@include list.basics();
 
 	li {
-		margin-bottom: functions.px-to-rem(16px);
+		padding-top: functions.px-to-rem(32px);
+		padding-bottom: functions.px-to-rem(32px);
+		border-bottom: settings.$colour-furniture solid 1px;
 	}
 
 }
