@@ -23,14 +23,14 @@
 .about-page-call-to-action {
   display: flex;
   justify-content: center;
+
+	a {
+	  @include button.primary-link();
+	  margin-bottom: functions.px-to-rem(24px);
+	}
 }
 
-.about-page-call-to-action__link {
-  @include button.primary-link();
-  margin-bottom: functions.px-to-rem(24px);
-}
-
-.about-page__blog_links_list {
+.about-page-blog-links {
   @include list.basics();
 
   li {
