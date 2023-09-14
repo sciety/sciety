@@ -18,8 +18,16 @@
 		border-bottom: settings.$colour-furniture solid 1px;
 
 		a {
+		display: flex;
+		justify-content: space-between;
+
 			font-weight: bold;
 			color: settings.$colour-text-primary;
+
+		}
+
+		a::after {
+			content: '❯';
 		}
 	}
 
