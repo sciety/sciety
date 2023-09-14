@@ -6,6 +6,12 @@ export const blogLinks = `
 </ul>
 `;
 
+export const callToAction = `
+<div class="about-page-call-to-action">
+  <a href="/search" class="about-page-call-to-action__link">Find evaluated preprints today</a>
+</div>
+`;
+
 export const content = `
 <p>Sciety was created by eLife to help scientists and researchers focus their attention on preprints that have been peer reviewed by groups that they trust.</p>
 
@@ -29,6 +35,4 @@ export const content = `
 </figure>
 
 <p>Sciety also enables scientists to share the evaluated preprints that they think are interesting or relevant to their work, which in turn helps their fellow researchers discover the latest and best new research.</p>
-
-<p><a href="/search" class="about-page-call-to-action">Find evaluated preprints today</a></p>
 `;

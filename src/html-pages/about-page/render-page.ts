@@ -1,5 +1,5 @@
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { blogLinks, content } from './content';
+import { blogLinks, callToAction, content } from './content';
 
 export const renderPage = (): HtmlFragment => toHtmlFragment(
   `
@@ -10,6 +10,7 @@ export const renderPage = (): HtmlFragment => toHtmlFragment(
   </header>
   <div>
     ${content}
+    ${callToAction}
     ${blogLinks}
   </div>
 `,
