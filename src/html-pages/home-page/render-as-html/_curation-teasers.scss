@@ -23,7 +23,6 @@ $_arbitrary-large-amount-of-px: 9000px;
 .curation-teasers {
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: calc(2 * #{common.$section-vertical-separation});
   padding-bottom: common.$section-vertical-separation;
   padding-top: common.$section-vertical-separation;
   max-width: functions.px-to-rem(settings.$max-site-width);

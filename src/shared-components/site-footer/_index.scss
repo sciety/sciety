@@ -26,6 +26,10 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .home-page-container & {
+    border-top-width: 0;
+  }
 }
 
 .pre-footer__slogan {
