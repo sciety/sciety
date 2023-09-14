@@ -17,6 +17,10 @@ $_arbitrary-large-amount-of-px: 9000px;
   -webkit-line-clamp: $number-of-lines;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  p {
+    display: inline;
+  }
 }
 /* stylelint-enable value-no-vendor-prefix */
 
