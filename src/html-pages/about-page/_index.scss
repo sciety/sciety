@@ -4,6 +4,16 @@
 @use '../../sass/settings';
 
 
+.about-page-figure {
+	img {
+		width: 100%;
+	}
+
+	figcaption {
+		text-align: center;
+	}
+}
+
 .about-page-call-to-action {
 	display: flex;
 	justify-content: center;
