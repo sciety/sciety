@@ -14,7 +14,7 @@ const renderSearchForm = () => `
 
 export const renderHero: HtmlFragment = toHtmlFragment(`
   <section class="home-page-hero-wrapper">
-    <img src="/static/images/home-page/sciety-pattern-left.svg" />
+    <img class="home-page-hero__left_image" src="/static/images/home-page/sciety-pattern-left.svg" />
     <div class="home-page-hero">
       <h1 class="home-page-hero__content_title">
         The home of preprint curation
