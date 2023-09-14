@@ -109,7 +109,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/about',
-    pageHandler(adapters, () => aboutPage(adapters.fetchStaticFile)),
+    pageHandler(adapters, () => aboutPage({})),
   );
 
   router.get(
