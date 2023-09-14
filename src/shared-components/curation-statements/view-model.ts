@@ -6,7 +6,6 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 export type ViewModel = {
   groupId: GID.GroupId,
   groupName: string,
-  groupSlug: string,
   groupLogo: O.Option<string>,
   groupPageHref: string,
   statement: string,

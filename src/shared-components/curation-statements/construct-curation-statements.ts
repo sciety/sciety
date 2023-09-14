@@ -37,7 +37,6 @@ const addGroupInformation = (dependencies: Dependencies) => (statement: Curation
   E.map((group) => ({
     ...statement,
     groupName: group.name,
-    groupSlug: group.slug,
     groupLogo: group.largeLogoPath,
     groupPageHref: `/groups/${group.slug}`,
   })),

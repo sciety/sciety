@@ -38,7 +38,7 @@ const getArticleDetails = (ports: Dependencies) => fetchArticleDetails(
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
 ): ViewModel['curationStatementsTeasers'][number] => ({
-  groupPageHref: `/groups/${curationStatement.groupSlug}`,
+  groupPageHref: curationStatement.groupPageHref,
   groupName: curationStatement.groupName,
   quote: sanitise(toHtmlFragment(curationStatement.statement)),
   quoteLanguageCode: curationStatement.statementLanguageCode,
