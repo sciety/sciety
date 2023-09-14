@@ -1,11 +1,18 @@
 @use '../../sass/button';
 @use '../../sass/list';
+@use '../../sass/functions';
+
+
+.about-page-call-to-action {
+	@include button.primary-link();
+	margin-bottom: functions.px-to-rem(24px);
+}
 
 .about-page__blog_links_list {
 	@include list.basics();
 
-}
+	li {
+		margin-bottom: functions.px-to-rem(16px);
+	}
 
-.about-page-call-to-action {
-	@include button.primary-link();
 }
