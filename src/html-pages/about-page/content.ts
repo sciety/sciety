@@ -1,7 +1,7 @@
 export const blogLinks = `
 <ul class="about-page-blog-links">
   <li><a href="https://blog.sciety.org/what-is-public-preprint-evaluation/">What are evaluations and where do they come from?</a></li>
-  <li><a href="https://blog.sciety.org/more-about-sciety/)">More about how Sciety was created</a></li>
+  <li><a href="https://blog.sciety.org/more-about-sciety/">More about how Sciety was created</a></li>
   <li><a href="https://blog.sciety.org/join-as-a-group-on-sciety/">How to join Sciety as a group that provides preprint review and curation</a></li>
 </ul>
 `;
