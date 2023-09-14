@@ -14,7 +14,7 @@ const renderSearchForm = () => `
 
 export const renderHero: HtmlFragment = toHtmlFragment(`
   <section class="home-page-hero-wrapper">
-    <img class="home-page-hero__left_image" src="/static/images/home-page/sciety-pattern-left.svg" />
+    <img class="home-page-hero__left_image" src="/static/images/home-page/sciety-pattern-left.svg" alt=""/>
     <div class="home-page-hero">
       <h1 class="home-page-hero__content_title">
         The home of preprint curation
@@ -27,6 +27,6 @@ export const renderHero: HtmlFragment = toHtmlFragment(`
         ${renderSearchForm()}
       </section>
     </div>
-    <img class="home-page-hero__right_image" src="/static/images/home-page/sciety-pattern-right.svg" />
+    <img class="home-page-hero__right_image" src="/static/images/home-page/sciety-pattern-right.svg" alt=""/>
   </section>
 `);

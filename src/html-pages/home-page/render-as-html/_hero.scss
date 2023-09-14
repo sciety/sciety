@@ -7,6 +7,8 @@
 @use 'common';
 @use 'hero-search-form';
 
+$_width-at-which-image-is-too-narrow: 1680px;
+
 @mixin _vertical-spacing-in-hero() {
   margin-bottom: functions.px-to-rem(20px);
 
@@ -30,7 +32,7 @@
 .home-page-hero__left_image {
   justify-self: end;
 
-  @media screen and (min-width: functions.px-to-em(1680px)) {
+  @media screen and (min-width: functions.px-to-em($_width-at-which-image-is-too-narrow)) {
     justify-self: start;
   }
 }
@@ -38,7 +40,7 @@
 .home-page-hero__right_image {
   justify-self: start;
 
-  @media screen and (min-width: functions.px-to-em(1680px)) {
+  @media screen and (min-width: functions.px-to-em($_width-at-which-image-is-too-narrow)) {
     justify-self: end;
   }
 }
