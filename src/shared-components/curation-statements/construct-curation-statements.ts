@@ -39,16 +39,11 @@ const addGroupInformation = (dependencies: Dependencies) => (statement: Curation
     groupName: group.name,
     groupSlug: group.slug,
     groupLogo: group.largeLogoPath,
+    groupPageHref: `/groups/${group.slug}`,
   })),
 );
 
-type Partial = {
-  groupName: string,
-  groupSlug: string,
-  groupLogo: O.Option<string>,
-  evaluationLocator: EvaluationLocator,
-  groupId: GID.GroupId,
-};
+type Partial = Omit<ViewModel, 'statementLanguageCode' | 'statement'>;
 
 const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => pipe(
   partial.evaluationLocator,

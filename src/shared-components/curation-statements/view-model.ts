@@ -8,6 +8,7 @@ export type ViewModel = {
   groupName: string,
   groupSlug: string,
   groupLogo: O.Option<string>,
+  groupPageHref: string,
   statement: string,
   statementLanguageCode: O.Option<LanguageCode>,
   evaluationLocator: EvaluationLocator,
