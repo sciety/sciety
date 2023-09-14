@@ -1,4 +1,10 @@
 @use '../../sass/button';
+@use '../../sass/list';
+
+.about-page__blog_links_list {
+	@include list.basics();
+
+}
 
 .about-page-call-to-action {
 	@include button.primary-link();
