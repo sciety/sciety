@@ -1,5 +1,5 @@
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { renderAuthors } from '../render-card-authors';
+import { renderAuthors } from './render-card-authors';
 import { ViewModel } from './view-model';
 import { renderCurationStatements } from './render-curation-statements';
 import { renderReviewingGroupsWithLink } from './render-reviewing-groups-with-link';

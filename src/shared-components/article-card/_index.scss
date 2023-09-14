@@ -4,8 +4,8 @@
 @use '../../sass/typography';
 @use '../../sass/curation-statement';
 @use '../../sass/breakpoints';
-
 @use '../../sass/list';
+@use './card-authors';
 
 $_optional-controls-icon-size: 24px;
 $_footer-icon-separation: 16px;
