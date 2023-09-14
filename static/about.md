@@ -22,3 +22,9 @@ Societies, journals and other groups of scientists are helping by highlighting t
 Sciety also enables scientists to share the evaluated preprints that they think are interesting or relevant to their work, which in turn helps their fellow researchers discover the latest and best new research.
 
 <a href="/search" class="about-page-call-to-action">Find evaluated preprints today</a>
+
+[What are evaluations and where do they come from?](https://blog.sciety.org/what-is-public-preprint-evaluation/)
+
+[More about how Sciety was created](https://blog.sciety.org/more-about-sciety/)
+
+[How to join Sciety as a group that provides preprint review and curation](https://blog.sciety.org/join-as-a-group-on-sciety/)
