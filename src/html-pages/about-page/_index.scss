@@ -5,12 +5,19 @@
 
 
 .about-page-figure {
+	margin-top: 0;
+	margin-left: 0;
+	margin-right: 0;
+	margin-bottom: functions.px-to-rem(32px);
+
 	img {
 		width: 100%;
+		margin-bottom: functions.px-to-rem(8px);
 	}
 
 	figcaption {
 		text-align: center;
+		font-style: italic;
 	}
 }
 
