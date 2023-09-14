@@ -5,6 +5,7 @@ module.exports = {
   ],
   coverageDirectory: './coverage',
   coverageReporters: ['json', 'lcov', 'html', 'text'],
+  reporters: ['jest-wip-reporter'],
   roots: ['./src/', './test/'],
   testEnvironment: 'node',
   testRunner: 'jest-circus/runner',
