@@ -24,33 +24,36 @@
   background-color: settings.$colour-brand;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
+      img {
+        opacity: 0.1;
+        overflow: hidden;
+      }
+  // &::before,
+  // &::after {
+  //   content: '';
+  //   display: block;
+  //   background-color: settings.$colour-brand;
 
-  &::before,
-  &::after {
-    content: '';
-    display: block;
-    background-color: settings.$colour-brand;
+  //   @include _enough-space-for-sciety-triangles {
+  //     background-repeat: no-repeat;
+  //     background-size: contain;
+  //     opacity: 0.1;
+  //   }
+  // }
 
-    @include _enough-space-for-sciety-triangles {
-      background-repeat: no-repeat;
-      background-size: contain;
-      opacity: 0.1;
-    }
-  }
+  // &::before {
+  //   @include _enough-space-for-sciety-triangles {
+  //     background-image: url('/static/images/home-page/sciety-pattern-left.svg');
+  //     background-position: 0 0;
+  //   }
+  // }
 
-  &::before {
-    @include _enough-space-for-sciety-triangles {
-      background-image: url('/static/images/home-page/sciety-pattern-left.svg');
-      background-position: 0 0;
-    }
-  }
-
-  &::after {
-    @include _enough-space-for-sciety-triangles {
-      background-image: url('/static/images/home-page/sciety-pattern-right.svg');
-      background-position: 100% 0;
-    }
-  }
+  // &::after {
+  //   @include _enough-space-for-sciety-triangles {
+  //     background-image: url('/static/images/home-page/sciety-pattern-right.svg');
+  //     background-position: 100% 0;
+  //   }
+  // }
 
 }
 
