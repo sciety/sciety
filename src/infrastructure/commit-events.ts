@@ -4,12 +4,12 @@ import * as L from './logger';
 import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 import { CommitEvents } from '../shared-ports';
-import { toErrorMessage } from '../types/error-message';
+import { ErrorMessage, toErrorMessage } from '../types/error-message';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
   dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void,
-  persistEvents: (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<never, void>,
+  persistEvents: (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<ErrorMessage, void>,
   logger: L.Logger,
 };
 
