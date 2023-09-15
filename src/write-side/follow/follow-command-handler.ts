@@ -2,6 +2,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
+import { ResourceAction } from '../resources/resource-action';
 import { isFollowing } from './is-following';
 import { constructEvent } from '../../domain-events';
 import { FollowCommand } from '../commands';
@@ -12,18 +14,23 @@ type FollowCommandHandler = (
   dependencies: DependenciesForCommands
 ) => CommandHandler<FollowCommand>;
 
-export const followCommandHandler: FollowCommandHandler = (
-  dependencies,
-) => (command) => pipe(
-  dependencies.getAllEvents,
-  T.map(isFollowing(command.userId, command.groupId)),
-  T.map(B.fold(
+const follow: ResourceAction<FollowCommand> = (command) => (events) => pipe(
+  events,
+  isFollowing(command.userId, command.groupId),
+  B.fold(
     () => [constructEvent('UserFollowedEditorialCommunity')({
       userId: command.userId,
       editorialCommunityId: command.groupId,
     })],
     () => [],
-  )),
-  TE.rightTask,
+  ),
+  E.right,
+);
+
+export const followCommandHandler: FollowCommandHandler = (
+  dependencies,
+) => (command) => pipe(
+  dependencies.getAllEvents,
+  T.map(follow(command)),
   TE.chainTaskK(dependencies.commitEvents),
 );
