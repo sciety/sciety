@@ -1,4 +1,5 @@
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent } from '../../src/domain-events';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { dummyLogger } from '../dummy-logger';
@@ -18,7 +19,7 @@ export const createInMemoryEventStore = (dispatchToAllReadModels: DispatchToAllR
     commitEvents: commitEvents({
       inMemoryEvents: allEvents,
       dispatchToAllReadModels,
-      persistEvents: async () => undefined,
+      persistEvents: () => TE.right(undefined),
       logger: dummyLogger,
     }),
   };

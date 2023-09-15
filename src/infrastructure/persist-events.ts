@@ -1,6 +1,7 @@
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
+import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent, domainEventCodec } from '../domain-events';
 
 const encodeEvent = (event: DomainEvent) => pipe(
@@ -16,8 +17,9 @@ const writeEventToDatabase = (pool: Pool) => (event: DomainEvent) => async () =>
   encodeEvent(event),
 );
 
-export const persistEvents = (pool: Pool) => async (events: ReadonlyArray<DomainEvent>): Promise<void> => pipe(
+export const persistEvents = (pool: Pool) => (events: ReadonlyArray<DomainEvent>): TE.TaskEither<never, void> => pipe(
   events,
   T.traverseArray(writeEventToDatabase(pool)),
   T.map(() => undefined),
-)();
+  TE.rightTask,
+);
