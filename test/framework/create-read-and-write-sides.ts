@@ -4,13 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { dispatcher, Queries } from '../../src/read-models';
 import * as groupResource from '../../src/write-side/resources/group';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
-import { createUserAccountCommandHandler } from '../../src/write-side/create-user-account';
 import { followCommandHandler } from '../../src/write-side/follow/follow-command-handler';
 import {
   updateUserDetailsCommandHandler,
   recordEvaluationPublicationCommandHandler,
   createListCommandHandler,
   removeArticleFromListCommandHandler,
+  createUserAccountCommandHandler,
 } from '../../src/write-side/command-handlers';
 import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
 import { CommandHandler } from '../../src/types/command-handler';

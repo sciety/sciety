@@ -1,3 +1,4 @@
+export { createUserAccountCommandHandler } from './create-user-account-command-handler';
 export { updateUserDetailsCommandHandler } from './update-user-details-command-handler';
 export { editListDetailsCommandHandler } from './edit-list-details-command-handler';
 export { recordEvaluationPublicationCommandHandler } from './record-evaluation-publication-command-handler';

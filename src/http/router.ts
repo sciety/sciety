@@ -59,7 +59,6 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../ht
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
 import * as authentication from './authentication';
-import { createUserAccountCommandHandler } from '../write-side/create-user-account';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
 import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams } from './create-page-from-params';
@@ -78,6 +77,7 @@ import { listFeed } from '../views/list/list-feed';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
 import { styleGuidePage } from '../html-pages/style-guide-page';
+import { createUserAccountCommandHandler } from '../write-side/command-handlers';
 
 type Config = AuthenticationRoutesConfig;
 
