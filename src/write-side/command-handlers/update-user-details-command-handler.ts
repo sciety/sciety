@@ -15,5 +15,5 @@ export const updateUserDetailsCommandHandler: UpdateUserDetailsCommandHandler = 
   dependencies.getAllEvents,
   TE.rightTask,
   TE.chainEitherKW(userResource.update(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );

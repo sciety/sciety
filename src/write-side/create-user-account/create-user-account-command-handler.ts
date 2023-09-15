@@ -11,5 +11,5 @@ export const createUserAccountCommandHandler = (
 ): CommandHandler<CreateUserAccountCommand> => (command) => pipe(
   dependencies.getAllEvents,
   T.map(create(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );

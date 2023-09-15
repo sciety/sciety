@@ -17,5 +17,5 @@ export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
 ) => pipe(
   dependencies.getAllEvents,
   T.map(addArticle(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );

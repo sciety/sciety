@@ -17,5 +17,5 @@ export const createListCommandHandler: CreateListCommandHandler = (
 ) => pipe(
   dependencies.getAllEvents,
   T.map(listResource.create(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );

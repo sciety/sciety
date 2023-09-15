@@ -1,5 +1,5 @@
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 
-export type CommitEvents = (event: ReadonlyArray<DomainEvent>) => T.Task<CommandResult>;
+export type CommitEvents = (event: ReadonlyArray<DomainEvent>) => TE.TaskEither<never, CommandResult>;

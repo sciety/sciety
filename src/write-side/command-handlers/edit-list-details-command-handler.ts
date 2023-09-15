@@ -17,5 +17,5 @@ export const editListDetailsCommandHandler: EditListDetailsCommandHandler = (
 ) => pipe(
   dependencies.getAllEvents,
   T.map(listResource.update(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );

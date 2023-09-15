@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as L from './logger';
 import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
@@ -17,11 +18,11 @@ export const commitEvents = ({
   logger,
 }: Dependencies): CommitEvents => (events) => async () => {
   if (events.length === 0) {
-    return 'no-events-created' as CommandResult;
+    return E.right('no-events-created' as CommandResult);
   }
   await persistEvents(events);
   inMemoryEvents.push(...events);
   dispatchToAllReadModels(events);
   logger('info', 'Events committed', { events });
-  return 'events-created' as CommandResult;
+  return E.right('events-created' as CommandResult);
 };

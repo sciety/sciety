@@ -17,5 +17,5 @@ export const recordSubjectAreaCommandHandler: RecordSubjectAreaCommandHandler = 
 ) => pipe(
   dependencies.getAllEvents,
   T.map(recordSubjectArea(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );

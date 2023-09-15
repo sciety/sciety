@@ -1,5 +1,4 @@
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { isFollowing } from './is-following';
@@ -29,5 +28,4 @@ export const unfollowCommandHandler = (
     })],
   )),
   T.chain(dependencies.commitEvents),
-  TE.rightTask,
 );

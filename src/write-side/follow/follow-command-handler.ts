@@ -32,5 +32,5 @@ export const followCommandHandler: FollowCommandHandler = (
 ) => (command) => pipe(
   dependencies.getAllEvents,
   T.map(follow(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );

@@ -29,7 +29,7 @@ type AddGroup = (adapters: EventStore) => CommandHandler<AddGroupCommand>;
 const addGroup: AddGroup = (adapters) => (command) => pipe(
   adapters.getAllEvents,
   T.map(groupResource.create(command)),
-  TE.chainTaskK(adapters.commitEvents),
+  TE.chainW(adapters.commitEvents),
 );
 
 type UpdateGroupDetails = (adapters: EventStore) => CommandHandler<UpdateGroupDetailsCommand>;
@@ -37,7 +37,7 @@ type UpdateGroupDetails = (adapters: EventStore) => CommandHandler<UpdateGroupDe
 const updateGroupDetails: UpdateGroupDetails = (adapters) => (command) => pipe(
   adapters.getAllEvents,
   T.map(groupResource.update(command)),
-  TE.chainTaskK(adapters.commitEvents),
+  TE.chainW(adapters.commitEvents),
 );
 
 const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) => ({

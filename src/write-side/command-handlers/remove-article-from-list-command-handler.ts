@@ -17,5 +17,5 @@ export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHa
 ) => pipe(
   dependencies.getAllEvents,
   T.map(removeArticle(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );

@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { ParameterizedContext } from 'koa';
 import { validateAndExecuteCommand, Dependencies } from '../../../src/http/forms/validate-and-execute-command';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
@@ -33,7 +34,7 @@ describe('validate-and-execute-command', () => {
     const koaContext = buildKoaContext(formBody);
     const dependencies: Dependencies = {
       ...defaultDependencies,
-      commitEvents: () => T.of('events-created'),
+      commitEvents: () => TE.right('events-created'),
     };
 
     it('succeeds', async () => {

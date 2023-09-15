@@ -21,7 +21,7 @@ export const executeCommand = <C extends GenericCommand>(
       dependencies.getAllEvents,
       TE.rightTask,
       TE.chainEitherKW(resourceAction(command)),
-      TE.chainTaskK(dependencies.commitEvents),
+      TE.chainW(dependencies.commitEvents),
     )),
     TE.mapLeft((errorMessage) => {
       dependencies.logger(

@@ -17,5 +17,5 @@ export const recordEvaluationPublicationCommandHandler: RecordEvaluationPublicat
 ) => pipe(
   dependencies.getAllEvents,
   T.map(recordPublication(command)),
-  TE.chainTaskK(dependencies.commitEvents),
+  TE.chainW(dependencies.commitEvents),
 );
