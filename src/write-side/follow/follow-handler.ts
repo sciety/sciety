@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { followCommandHandler } from './follow-command-handler';
+import { followCommandHandler } from '../command-handlers';
 import { renderErrorPage } from '../../http/render-error-page';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { Logger } from '../../shared-ports';

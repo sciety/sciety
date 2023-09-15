@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { dispatcher, Queries } from '../../src/read-models';
 import * as groupResource from '../../src/write-side/resources/group';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
-import { followCommandHandler } from '../../src/write-side/follow/follow-command-handler';
+import { followCommandHandler } from '../../src/write-side/command-handlers/follow-command-handler';
 import {
   updateUserDetailsCommandHandler,
   recordEvaluationPublicationCommandHandler,
@@ -12,7 +12,7 @@ import {
   removeArticleFromListCommandHandler,
   createUserAccountCommandHandler,
 } from '../../src/write-side/command-handlers';
-import { unfollowCommandHandler } from '../../src/write-side/follow/unfollow-command-handler';
+import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler';
 import { CommandHandler } from '../../src/types/command-handler';
 import { AddGroupCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
 import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';

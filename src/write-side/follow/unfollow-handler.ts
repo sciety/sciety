@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { unfollowCommandHandler } from './unfollow-command-handler';
+import { unfollowCommandHandler } from '../command-handlers';
 import { Logger } from '../../shared-ports';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { DependenciesForCommands } from '../dependencies-for-commands';
