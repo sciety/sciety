@@ -1,4 +1,4 @@
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
@@ -80,7 +80,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   ),
   followGroup: async (userId, groupId) => pipe(
     { userId, groupId },
-    invoke(flow(commandHandlers.followGroup, TE.rightTask), 'followGroup'),
+    invoke(commandHandlers.followGroup, 'followGroup'),
   ),
   deprecatedRecordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
     {
