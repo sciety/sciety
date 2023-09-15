@@ -4,7 +4,7 @@ import * as L from './logger';
 import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 import { CommitEvents } from '../shared-ports';
-import { ErrorMessage, toErrorMessage } from '../types/error-message';
+import { ErrorMessage } from '../types/error-message';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
@@ -22,9 +22,10 @@ export const commitEvents = ({
   if (events.length === 0) {
     return E.right('no-events-created' as CommandResult);
   }
-  if (E.isLeft(await persistEvents(events)())) {
-    logger('error', 'Failed to persist events');
-    return E.left(toErrorMessage('Failed to persist events'));
+  const resultOfPersistEvents = await persistEvents(events)();
+  if (E.isLeft(resultOfPersistEvents)) {
+    logger('error', resultOfPersistEvents.left);
+    return resultOfPersistEvents;
   }
   inMemoryEvents.push(...events);
   dispatchToAllReadModels(events);
