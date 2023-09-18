@@ -9,7 +9,7 @@ import { Doi } from '../../types/doi';
 
 type Annotation = {
   author: string,
-  content: O.Option<HtmlFragment>,
+  content: HtmlFragment,
 };
 
 export type ArticleCardWithControlsAndAnnotationViewModel = {
@@ -17,7 +17,7 @@ export type ArticleCardWithControlsAndAnnotationViewModel = {
   hasControls: boolean,
   listId: ListId,
   articleId: Doi,
-  annotation: Annotation,
+  annotation: O.Option<Annotation>,
 };
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
@@ -49,12 +49,12 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
 );
 
 const renderAnnotationContent = (annotation: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
-  annotation.content,
+  annotation,
   O.match(
     () => '',
-    (content) => `
+    ({ content, author }) => `
       <section class="article-card-annotation">
-        <h4 class="visually-hidden">Annotation by ${annotation.author}</h4>
+        <h4 class="visually-hidden">Annotation by ${author}</h4>
         <p>${content}</p>
       </section>
     `,

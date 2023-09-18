@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import { constructArticleCardViewModel, Dependencies as ConstructArticleCardViewModelDependencies } from './construct-article-card-view-model';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { ListId } from '../../types/list-id';
@@ -21,10 +22,13 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
     hasControls: editCapability,
     listId,
     articleId,
-    annotation: {
-      content: ports.getAnnotationContent(listId, articleId),
-      author: 'AvasthiReading',
-    },
+    annotation: pipe(
+      ports.getAnnotationContent(listId, articleId),
+      O.map((content) => ({
+        content,
+        author: 'AvasthiReading',
+      })),
+    ),
   },
 );
 
