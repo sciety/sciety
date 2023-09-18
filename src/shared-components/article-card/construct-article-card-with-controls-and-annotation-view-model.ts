@@ -4,10 +4,10 @@ import { constructArticleCardViewModel, Dependencies as ConstructArticleCardView
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
-import { ArticleCardWithControlsAndAnnotationViewModel } from './render-article-card-with-controls-and-annotation';
 import { ViewModel } from './view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
+import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 
 type Ports = ConstructArticleCardViewModelDependencies & Queries;
 

@@ -4,21 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { renderArticleCardContents } from './render-article-card';
-import { ViewModel } from './view-model';
 import { Doi } from '../../types/doi';
-
-type Annotation = {
-  author: string,
-  content: HtmlFragment,
-};
-
-export type ArticleCardWithControlsAndAnnotationViewModel = {
-  articleCard: ViewModel,
-  hasControls: boolean,
-  listId: ListId,
-  articleId: Doi,
-  annotation: O.Option<Annotation>,
-};
+import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   articleId.value,
