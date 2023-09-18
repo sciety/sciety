@@ -92,6 +92,29 @@ export const styleGuidePage: Page = {
     },
   })}
 
+    <h3>With annotation</h3>
+    ${renderArticleCardWithControlsAndAnnotation({
+    articleId: new Doi('10.1101/foo'),
+    hasControls: false,
+    annotation: O.some({
+      content: toHtmlFragment('Some content'),
+      author: 'AvasthiReading',
+    }),
+    listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
+    articleCard: {
+      articleId: new Doi('10.1101/foo'),
+      articleLink: '/articles/foo',
+      title: sanitise(toHtmlFragment('Some title')),
+      authors: O.some(['Doctor Smith']),
+      latestVersionDate: O.some(new Date('2023-09-11')),
+      latestActivityAt: O.some(new Date('2023-09-10')),
+      evaluationCount: O.some(1),
+      listMembershipCount: O.some(1),
+      curationStatementsTeasers: [],
+      reviewingGroups: [],
+    },
+  })}
+
     <h3>With error</h3>
     ${renderArticleErrorCard({
     evaluationCount: 1,
