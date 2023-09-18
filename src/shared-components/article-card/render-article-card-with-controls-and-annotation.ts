@@ -59,12 +59,12 @@ const renderAnnotationContent = (content: AnnotationContent, annotationAuthor: s
   ),
 );
 
-export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel, annotationAuthor: string): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel): HtmlFragment => toHtmlFragment(`
   <article>
     <section class="article-card">
       ${renderArticleCardContents(viewModel.articleCard)}
       ${renderControls(viewModel)}
     </section>
-    ${renderAnnotationContent(viewModel.annotationContent, annotationAuthor)}
+    ${renderAnnotationContent(viewModel.annotationContent, viewModel.annotationAuthor)}
   </article>
 `);
