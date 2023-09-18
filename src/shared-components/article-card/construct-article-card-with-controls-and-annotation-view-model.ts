@@ -18,11 +18,13 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
 ) => (articleCard: ViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
   {
     articleCard,
-    annotationContent: ports.getAnnotationContent(listId, articleId),
     hasControls: editCapability,
     listId,
     articleId,
-    annotationAuthor: 'AvasthiReading',
+    annotation: {
+      content: ports.getAnnotationContent(listId, articleId),
+      author: 'AvasthiReading',
+    },
   },
 );
 

@@ -7,15 +7,17 @@ import { renderArticleCardContents } from './render-article-card';
 import { ViewModel } from './view-model';
 import { Doi } from '../../types/doi';
 
-type AnnotationContent = O.Option<HtmlFragment>;
+type Annotation = {
+  author: string,
+  content: O.Option<HtmlFragment>,
+};
 
 export type ArticleCardWithControlsAndAnnotationViewModel = {
   articleCard: ViewModel,
   hasControls: boolean,
-  annotationContent: O.Option<HtmlFragment>,
   listId: ListId,
   articleId: Doi,
-  annotationAuthor: string,
+  annotation: Annotation,
 };
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
@@ -46,14 +48,14 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   ),
 );
 
-const renderAnnotationContent = (content: AnnotationContent, annotationAuthor: string) => pipe(
-  content,
+const renderAnnotationContent = (annotation: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
+  annotation.content,
   O.match(
     () => '',
-    (annotation) => `
+    (content) => `
       <section class="article-card-annotation">
-        <h4 class="visually-hidden">Annotation by ${annotationAuthor}</h4>
-        <p>${annotation}</p>
+        <h4 class="visually-hidden">Annotation by ${annotation.author}</h4>
+        <p>${content}</p>
       </section>
     `,
   ),
@@ -65,6 +67,6 @@ export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCar
       ${renderArticleCardContents(viewModel.articleCard)}
       ${renderControls(viewModel)}
     </section>
-    ${renderAnnotationContent(viewModel.annotationContent, viewModel.annotationAuthor)}
+    ${renderAnnotationContent(viewModel.annotation)}
   </article>
 `);
