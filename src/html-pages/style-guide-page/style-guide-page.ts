@@ -77,6 +77,7 @@ export const styleGuidePage: Page = {
     articleId: new Doi('10.1101/foo'),
     hasControls: true,
     annotationContent: O.none,
+    annotationAuthor: 'AvasthiReading',
     listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCard: {
       articleId: new Doi('10.1101/foo'),

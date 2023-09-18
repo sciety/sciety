@@ -22,6 +22,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
     hasControls: editCapability,
     listId,
     articleId,
+    annotationAuthor: 'AvasthiReading',
   },
 );
 

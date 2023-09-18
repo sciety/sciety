@@ -15,6 +15,7 @@ export type ArticleCardWithControlsAndAnnotationViewModel = {
   annotationContent: O.Option<HtmlFragment>,
   listId: ListId,
   articleId: Doi,
+  annotationAuthor: string,
 };
 
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
