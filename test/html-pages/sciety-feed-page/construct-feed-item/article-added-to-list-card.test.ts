@@ -71,7 +71,7 @@ describe('article-added-to-list-card', () => {
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
-        await framework.commandHelpers.createList(list);
+        await framework.commandHelpers.deprecatedCreateList(list);
         viewModel = pipe(
           constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: list.id, date }),
           articleAddedToListCard(dependencies),

@@ -67,7 +67,7 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         list = arbitraryList(LOID.fromUserId(userDetails.id));
-        await framework.commandHelpers.createList(list);
+        await framework.commandHelpers.deprecatedCreateList(list);
         usersLists = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id));
         viewModel = await pipe(
           {
@@ -138,7 +138,7 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         list = arbitraryList(LOID.fromUserId(userDetails.id));
-        await framework.commandHelpers.createList(list);
+        await framework.commandHelpers.deprecatedCreateList(list);
         await framework.commandHelpers.addArticleToList(articleId, list.id);
         viewModel = await pipe(
           {

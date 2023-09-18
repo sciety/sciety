@@ -32,7 +32,7 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
-      await framework.commandHelpers.createList(updatedList);
+      await framework.commandHelpers.deprecatedCreateList(updatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
     });
 

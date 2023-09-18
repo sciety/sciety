@@ -28,7 +28,7 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createUserAccount(user);
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), initialUserList.id);
-      await framework.commandHelpers.createList(updatedList);
+      await framework.commandHelpers.deprecatedCreateList(updatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
 
       viewmodel = constructViewModel({ ...framework.queries, logger: dummyLogger });
@@ -55,7 +55,7 @@ describe('construct-view-model', () => {
       let viewmodel: ViewModel;
 
       beforeEach(async () => {
-        await framework.commandHelpers.createList(list);
+        await framework.commandHelpers.deprecatedCreateList(list);
         await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
 
         viewmodel = constructViewModel({ ...framework.queries, logger: dummyLogger });

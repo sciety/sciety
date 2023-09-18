@@ -28,9 +28,9 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
       initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
-      await framework.commandHelpers.createList(middleList);
+      await framework.commandHelpers.deprecatedCreateList(middleList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), middleList.id);
-      await framework.commandHelpers.createList(mostRecentlyUpdatedList);
+      await framework.commandHelpers.deprecatedCreateList(mostRecentlyUpdatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), mostRecentlyUpdatedList.id);
 
       viewmodel = await pipe(

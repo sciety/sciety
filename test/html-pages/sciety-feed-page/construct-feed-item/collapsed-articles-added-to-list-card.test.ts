@@ -84,7 +84,7 @@ describe('collapsed-articles-added-to-list-card', () => {
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
-        await framework.commandHelpers.createList(list);
+        await framework.commandHelpers.deprecatedCreateList(list);
         viewModel = pipe(
           event,
           collapsedArticlesAddedToListCard(dependencies),

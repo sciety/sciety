@@ -36,7 +36,7 @@ describe('create user list', () => {
       const list = arbitraryList(LOID.fromUserId(user.id));
 
       beforeEach(async () => {
-        await framework.commandHelpers.createList(list);
+        await framework.commandHelpers.deprecatedCreateList(list);
       });
 
       describe('on the user-lists page', () => {

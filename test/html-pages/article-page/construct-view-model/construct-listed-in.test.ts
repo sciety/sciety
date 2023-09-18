@@ -72,7 +72,7 @@ describe('construct-listed-in', () => {
 
     beforeEach(async () => {
       const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
-      await framework.commandHelpers.createList(list);
+      await framework.commandHelpers.deprecatedCreateList(list);
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(
         articleId,

@@ -103,7 +103,7 @@ describe('construct-article-card-view-model', () => {
     let successfulViewModel: ArticleCardViewModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createList(list);
+      await framework.commandHelpers.deprecatedCreateList(list);
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       successfulViewModel = await pipe(
         articleId,

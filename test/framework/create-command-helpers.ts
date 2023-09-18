@@ -1,6 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { CreateListCommand } from '../../src/write-side/commands/create-list';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { UserDetails } from '../../src/types/user-details';
 import { Group } from '../../src/types/group';
@@ -19,7 +20,8 @@ export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   addGroup: (command: AddGroupCommand) => Promise<unknown>,
   deprecatedCreateGroup: (group: Group) => Promise<unknown>,
-  createList: (list: List) => Promise<unknown>,
+  createList: (command: CreateListCommand) => Promise<unknown>,
+  deprecatedCreateList: (list: List) => Promise<unknown>,
   createUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   deprecatedRecordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
@@ -60,7 +62,8 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.addGroup, 'addGroup'),
   ),
-  createList: async (list) => pipe(
+  createList: invoke(commandHandlers.createList, 'createList'),
+  deprecatedCreateList: async (list) => pipe(
     {
       listId: list.id,
       ownerId: list.ownerId,
