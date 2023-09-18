@@ -45,13 +45,13 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   ),
 );
 
-const renderAnnotationContent = (content: AnnotationContent) => pipe(
+const renderAnnotationContent = (content: AnnotationContent, annotationAuthor: string) => pipe(
   content,
   O.match(
     () => '',
     (annotation) => `
       <section class="article-card-annotation">
-        <h4 class="visually-hidden">Annotation by AvasthiReading</h4>
+        <h4 class="visually-hidden">Annotation by ${annotationAuthor}</h4>
         <p>${annotation}</p>
       </section>
     `,
@@ -64,6 +64,6 @@ export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCar
       ${renderArticleCardContents(viewModel.articleCard)}
       ${renderControls(viewModel)}
     </section>
-    ${renderAnnotationContent(viewModel.annotationContent)}
+    ${renderAnnotationContent(viewModel.annotationContent, 'AvasthiReading')}
   </article>
 `);
