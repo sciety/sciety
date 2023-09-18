@@ -90,7 +90,8 @@ export const styleGuidePage: Page = {
       curationStatementsTeasers: [],
       reviewingGroups: [],
     },
-  })}
+  },
+  'AvasthiReading')}
 
     <h3>With error</h3>
     ${renderArticleErrorCard({

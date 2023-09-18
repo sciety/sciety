@@ -20,7 +20,7 @@ export const renderArticlesList: RenderArticlesList = (articles) => pipe(
   articles,
   RA.map(E.fold(
     renderArticleErrorCard,
-    renderArticleCardWithControlsAndAnnotation,
+    (articleCard) => renderArticleCardWithControlsAndAnnotation(articleCard, 'AvasthiReading'),
   )),
   (listItems) => renderListItems(listItems),
   (list) => `<ol class="article-list" role="list">${list}</ol>`,
