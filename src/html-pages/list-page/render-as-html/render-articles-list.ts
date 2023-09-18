@@ -3,11 +3,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   ArticleErrorCardViewModel, renderArticleErrorCard,
-  ArticleCardWithControlsAndAnnotationViewModel,
-  renderArticleCardWithControlsAndAnnotation,
 } from '../../../shared-components/article-card';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
+import {
+  ArticleCardWithControlsAndAnnotationViewModel, renderArticleCardWithControlsAndAnnotation,
+} from '../../../shared-components/article-card-with-controls-and-annotation';
 
 type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<

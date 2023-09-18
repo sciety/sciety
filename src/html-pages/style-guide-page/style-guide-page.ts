@@ -5,9 +5,12 @@ import { renderPaginationControlsForFeed } from '../../shared-components/paginat
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { Doi } from '../../types/doi';
-import { renderArticleCardWithControlsAndAnnotation, renderArticleErrorCard } from '../../shared-components/article-card';
+import { renderArticleErrorCard } from '../../shared-components/article-card';
 import * as LID from '../../types/list-id';
 import * as DE from '../../types/data-error';
+import {
+  renderArticleCardWithControlsAndAnnotation,
+} from '../../shared-components/article-card-with-controls-and-annotation';
 
 export const styleGuidePage: Page = {
   title: 'Style guide',

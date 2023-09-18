@@ -3,11 +3,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { ArticleErrorCardViewModel } from '../../../shared-components/article-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
   constructArticleCardWithControlsAndAnnotationViewModel,
-  ArticleErrorCardViewModel,
-} from '../../../shared-components/article-card';
+} from '../../../shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems } from '../../../shared-components/pagination';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';

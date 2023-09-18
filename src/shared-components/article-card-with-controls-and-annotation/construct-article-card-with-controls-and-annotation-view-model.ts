@@ -1,10 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructArticleCardViewModel, Dependencies as ConstructArticleCardViewModelDependencies } from './construct-article-card-view-model';
-import { ArticleErrorCardViewModel } from './render-article-error-card';
+import { constructArticleCardViewModel, Dependencies as ConstructArticleCardViewModelDependencies } from '../article-card/construct-article-card-view-model';
+import { ArticleErrorCardViewModel } from '../article-card/render-article-error-card';
 import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
-import { ViewModel } from './view-model';
+import { ViewModel } from '../article-card/view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
