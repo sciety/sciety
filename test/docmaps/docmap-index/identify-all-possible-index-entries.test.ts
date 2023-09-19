@@ -121,15 +121,15 @@ describe('identify-all-possible-index-entries', () => {
 
   describe('when there is an evaluated event by an unsupported group', () => {
     const addGroupCommand = arbitraryAddGroupCommand();
-    const evaluation = {
-      ...arbitraryRecordedEvaluation(),
+    const recordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: addGroupCommand.groupId,
     };
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
@@ -142,14 +142,14 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when a supported group cannot be fetched', () => {
-    const evaluation = {
-      ...arbitraryRecordedEvaluation(),
+    const recordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: supportedGroupIds[0],
     };
     let result: ReturnType<typeof identifyAllPossibleIndexEntries>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.recordEvaluationPublication(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
       );

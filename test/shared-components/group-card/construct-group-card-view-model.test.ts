@@ -5,11 +5,11 @@ import * as DE from '../../../src/types/data-error';
 import { constructGroupCardViewModel } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { AddGroupCommand } from '../../../src/write-side/commands';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-group-card-view-model', () => {
   let framework: TestFramework;
@@ -62,7 +62,7 @@ describe('construct-group-card-view-model', () => {
     describe('and has performed an evaluation', () => {
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({
-          ...arbitraryRecordedEvaluation(),
+          ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
         });
       });
@@ -83,7 +83,7 @@ describe('construct-group-card-view-model', () => {
     describe('and has published one curation statements for an article', () => {
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({
-          ...arbitraryRecordedEvaluation(),
+          ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',
         });
@@ -107,13 +107,13 @@ describe('construct-group-card-view-model', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({
-          ...arbitraryRecordedEvaluation(),
+          ...arbitraryRecordEvaluationPublicationCommand(),
           articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',
         });
         await framework.commandHelpers.recordEvaluationPublication({
-          ...arbitraryRecordedEvaluation(),
+          ...arbitraryRecordEvaluationPublicationCommand(),
           articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',

@@ -53,7 +53,7 @@ describe('construct-related-groups', () => {
         articleId,
         groupId: addGroup2Command.groupId,
       });
-      groupNames = await findNamesOfRelatedGroups([articleId]);
+      groupNames = findNamesOfRelatedGroups([articleId]);
     });
 
     it('displays the evaluating groups as being related', () => {
@@ -79,7 +79,7 @@ describe('construct-related-groups', () => {
         articleId: articleId2,
         groupId: addGroupCommand.groupId,
       });
-      groupNames = await findNamesOfRelatedGroups([articleId1, articleId2]);
+      groupNames = findNamesOfRelatedGroups([articleId1, articleId2]);
     });
 
     it('displays the evaluating group once as being related', () => {
@@ -104,7 +104,7 @@ describe('construct-related-groups', () => {
         articleId,
         groupId: addGroupCommand.groupId,
       });
-      groupNames = await findNamesOfRelatedGroups([articleId]);
+      groupNames = findNamesOfRelatedGroups([articleId]);
     });
 
     it('displays the evaluating group once as being related', () => {

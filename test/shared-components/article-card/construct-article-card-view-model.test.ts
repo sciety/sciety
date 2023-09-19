@@ -10,9 +10,9 @@ import { constructArticleCardViewModel } from '../../../src/shared-components/ar
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { ArticleCardViewModel } from '../../../src/shared-components/article-card';
-import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { ArticleErrorCardViewModel } from '../../../src/shared-components/article-card/render-article-error-card';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-article-card-view-model', () => {
   let framework: TestFramework;
@@ -62,13 +62,13 @@ describe('construct-article-card-view-model', () => {
 
     describe('when an article has been evaluated', () => {
       const articleId = arbitraryArticleId();
-      const evaluation = {
-        ...arbitraryRecordedEvaluation(),
+      const command = {
+        ...arbitraryRecordEvaluationPublicationCommand(),
         articleId,
       };
 
       beforeEach(async () => {
-        await framework.commandHelpers.recordEvaluationPublication(evaluation);
+        await framework.commandHelpers.recordEvaluationPublication(command);
         viewModel = await pipe(
           articleId,
           constructArticleCardViewModel({

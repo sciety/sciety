@@ -13,12 +13,11 @@ import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { sanitise } from '../../../../src/types/sanitised-html-fragment';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { RecordedEvaluation } from '../../../../src/types/recorded-evaluation';
-import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
 import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('my-feed acceptance', () => {
   let framework: TestFramework;
@@ -77,22 +76,34 @@ describe('my-feed acceptance', () => {
       });
 
       it('displays content in the form of article cards', async () => {
-        const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: addGroupCommand.groupId };
+        const command = {
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: addGroupCommand.groupId,
+        };
         await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
-        await framework.commandHelpers.recordEvaluationPublication(evaluation);
+        await framework.commandHelpers.recordEvaluationPublication(command);
         const html = await myFeed(defaultDependencies)(createUserAccountCommand.userId, 20, 1)();
 
         expect(html).toContain('class="article-card"');
       });
 
       it('renders at most a page of cards at a time', async () => {
-        const evaluation1: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: addGroupCommand.groupId };
-        const evaluation2: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: addGroupCommand.groupId };
-        const evaluation3: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: addGroupCommand.groupId };
+        const recordEvaluation1 = {
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: addGroupCommand.groupId,
+        };
+        const recordEvaluation2 = {
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: addGroupCommand.groupId,
+        };
+        const recordEvaluation3 = {
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: addGroupCommand.groupId,
+        };
         await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
-        await framework.commandHelpers.recordEvaluationPublication(evaluation1);
-        await framework.commandHelpers.recordEvaluationPublication(evaluation2);
-        await framework.commandHelpers.recordEvaluationPublication(evaluation3);
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluation1);
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluation2);
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluation3);
         const pageSize = 2;
         const renderedComponent = await myFeed(defaultDependencies)(createUserAccountCommand.userId, pageSize, 1)();
         const html = JSDOM.fragment(renderedComponent);
@@ -108,9 +119,12 @@ describe('my-feed acceptance', () => {
       it.todo('each article is only displayed once');
 
       it('displayed articles have to have been evaluated by a followed group', async () => {
-        const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: addGroupCommand.groupId };
+        const recordEvaluation = {
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: addGroupCommand.groupId,
+        };
         await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
-        await framework.commandHelpers.recordEvaluationPublication(evaluation);
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluation);
         const dependencies = {
           ...defaultDependencies,
           fetchArticle: () => TE.right({
@@ -128,9 +142,12 @@ describe('my-feed acceptance', () => {
 
       describe('when details of all articles cannot be fetched', () => {
         it('display only an error message', async () => {
-          const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: addGroupCommand.groupId };
+          const recordEvaluation = {
+            ...arbitraryRecordEvaluationPublicationCommand(),
+            groupId: addGroupCommand.groupId,
+          };
           await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
-          await framework.commandHelpers.recordEvaluationPublication(evaluation);
+          await framework.commandHelpers.recordEvaluationPublication(recordEvaluation);
           const dependencies = {
             ...defaultDependencies,
             fetchArticle: () => TE.left(DE.unavailable),
