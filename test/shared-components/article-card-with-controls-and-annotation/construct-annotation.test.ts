@@ -126,6 +126,8 @@ describe('construct-annotation', () => {
       expect(result.content).toStrictEqual(content);
     });
 
-    it.todo('returns a static value as the author');
+    it.failing('returns a static value as the author', () => {
+      expect(result.author).toBe('An unknown author');
+    });
   });
 });
