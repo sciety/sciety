@@ -5,10 +5,10 @@ import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { List } from '../../../../src/types/list';
 import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
@@ -71,9 +71,12 @@ describe('construct-listed-in', () => {
     let listedIn: ViewModel['listedIn'];
 
     beforeEach(async () => {
-      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
-      await framework.commandHelpers.deprecatedCreateList(list);
-      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      const createListCommand = {
+        ...arbitraryCreateListCommand(),
+        ownerId: LOID.fromUserId(arbitraryUserId()),
+      };
+      await framework.commandHelpers.createList(createListCommand);
+      await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
       listedIn = pipe(
         articleId,
         constructListedIn(framework.dependenciesForViews),

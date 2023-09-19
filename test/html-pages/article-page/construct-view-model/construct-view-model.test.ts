@@ -9,9 +9,10 @@ import { constructViewModel } from '../../../../src/html-pages/article-page/cons
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { List } from '../../../../src/types/list';
-import { arbitraryList } from '../../../types/list-helper';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { LoggedInUserListManagement } from '../../../../src/html-pages/article-page/view-model';
+import { CreateListCommand } from '../../../../src/write-side/commands';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -61,13 +62,16 @@ describe('construct-view-model', () => {
     });
 
     describe('when the article is not saved to any of the user\'s multiple lists', () => {
-      let list: List;
+      let createListCommand: CreateListCommand;
       let viewModel: LoggedInUserListManagement;
       let usersLists: ReadonlyArray<List>;
 
       beforeEach(async () => {
-        list = arbitraryList(LOID.fromUserId(userDetails.id));
-        await framework.commandHelpers.deprecatedCreateList(list);
+        createListCommand = {
+          ...arbitraryCreateListCommand(),
+          ownerId: LOID.fromUserId(userDetails.id),
+        };
+        await framework.commandHelpers.createList(createListCommand);
         usersLists = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id));
         viewModel = await pipe(
           {
@@ -133,13 +137,16 @@ describe('construct-view-model', () => {
     });
 
     describe('when the article is saved to another user list', () => {
-      let list: List;
+      let createListCommand: CreateListCommand;
       let viewModel: LoggedInUserListManagement;
 
       beforeEach(async () => {
-        list = arbitraryList(LOID.fromUserId(userDetails.id));
-        await framework.commandHelpers.deprecatedCreateList(list);
-        await framework.commandHelpers.addArticleToList(articleId, list.id);
+        createListCommand = {
+          ...arbitraryCreateListCommand(),
+          ownerId: LOID.fromUserId(userDetails.id),
+        };
+        await framework.commandHelpers.createList(createListCommand);
+        await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
         viewModel = await pipe(
           {
             doi: articleId,
@@ -154,13 +161,13 @@ describe('construct-view-model', () => {
 
       it('list management has access to list id', () => {
         expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listId: list.id,
+          listId: createListCommand.listId,
         })));
       });
 
       it('list management has access to list name', () => {
         expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listName: list.name,
+          listName: createListCommand.name,
         })));
       });
     });
