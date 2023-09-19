@@ -64,11 +64,22 @@ describe('get-annotation-content', () => {
     });
   });
 
-  describe('an annotated article has removed from its list', () => {
-    it.todo('returns no annotation');
+  describe('an annotated article has been removed from its list', () => {
+    const readmodel = pipe(
+      [
+        constructEvent('ArticleAddedToList')({ articleId, listId }),
+        constructEvent('AnnotationCreated')({ target: { articleId, listId }, content }),
+        constructEvent('ArticleRemovedFromList')({ articleId, listId }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it.failing('returns no annotation', () => {
+      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.none);
+    });
   });
 
-  describe('an annotated article has removed from its list and then re-added', () => {
+  describe('an annotated article has been removed from its list and then re-added', () => {
     it.todo('returns no annotation');
   });
 
