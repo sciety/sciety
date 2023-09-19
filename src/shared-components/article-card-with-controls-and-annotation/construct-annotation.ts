@@ -10,7 +10,7 @@ const getAnnotationAuthorDisplayName = (ports: Queries, listId: ListId) => pipe(
   ports.lookupList,
   O.map((list) => list.ownerId),
   O.match(
-    () => '',
+    () => 'An unknown author',
     () => 'AvasthiReading',
   ),
 );

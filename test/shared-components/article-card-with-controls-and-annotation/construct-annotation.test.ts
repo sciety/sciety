@@ -126,7 +126,7 @@ describe('construct-annotation', () => {
       expect(result.content).toStrictEqual(content);
     });
 
-    it.failing('returns a static value as the author', () => {
+    it('returns a static value as the author', () => {
       expect(result.author).toBe('An unknown author');
     });
   });
