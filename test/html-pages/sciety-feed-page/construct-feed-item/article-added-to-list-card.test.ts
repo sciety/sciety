@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryList } from '../../../types/list-helper';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { createTestFramework, TestFramework } from '../../../framework';
@@ -12,6 +11,7 @@ import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 
 describe('article-added-to-list-card', () => {
   let framework: TestFramework;
@@ -67,13 +67,16 @@ describe('article-added-to-list-card', () => {
     });
 
     describe('when user details are not found', () => {
-      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+      const createListCommand = {
+        ...arbitraryCreateListCommand(),
+        ownerId: LOID.fromUserId(arbitraryUserId()),
+      };
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateList(list);
+        await framework.commandHelpers.createList(createListCommand);
         viewModel = pipe(
-          constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: list.id, date }),
+          constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: createListCommand.listId, date }),
           articleAddedToListCard(dependencies),
           O.getOrElseW(shouldNotBeCalled),
         );
@@ -92,7 +95,7 @@ describe('article-added-to-list-card', () => {
       });
 
       it('includes the link to the generic list page', async () => {
-        expect(viewModel.linkUrl).toBe(`/lists/${list.id}`);
+        expect(viewModel.linkUrl).toBe(`/lists/${createListCommand.listId}`);
       });
     });
   });

@@ -7,9 +7,9 @@ import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryList } from '../../types/list-helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../framework';
+import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 
 describe('sciety-feed-page', () => {
   const group = arbitraryGroup();
@@ -33,9 +33,9 @@ describe('sciety-feed-page', () => {
   });
 
   it('renders a single article added to a list as a card', async () => {
-    const list = arbitraryList();
-    await framework.commandHelpers.deprecatedCreateList(list);
-    await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
+    const createListCommand = arbitraryCreateListCommand();
+    await framework.commandHelpers.createList(createListCommand);
+    await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createListCommand.listId);
     const renderedPage = await renderPage(20);
 
     expect(renderedPage).toContain('added an article to a list');
@@ -63,12 +63,12 @@ describe('sciety-feed-page', () => {
 
   it('does not render uninteresting events', async () => {
     const articleId = arbitraryArticleId();
-    const list = arbitraryList();
+    const createListCommand = arbitraryCreateListCommand();
     const userId = arbitraryUserId();
     await framework.commandHelpers.deprecatedCreateGroup(group);
-    await framework.commandHelpers.deprecatedCreateList(list);
-    await framework.commandHelpers.addArticleToList(articleId, list.id);
-    await framework.commandHelpers.removeArticleFromList(articleId, list.id);
+    await framework.commandHelpers.createList(createListCommand);
+    await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+    await framework.commandHelpers.removeArticleFromList(articleId, createListCommand.listId);
     await framework.commandHelpers.unfollowGroup(userId, group.id);
     const renderedPage = await renderPage(10);
     const html = JSDOM.fragment(renderedPage);

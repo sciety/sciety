@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
-import { arbitraryList } from '../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructViewModel } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
@@ -55,12 +54,15 @@ describe('construct-view-model', () => {
 
   describe('when there is a populated user list', () => {
     describe('when the user information cannot be retrieved', () => {
-      const list = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+      const createListCommand = {
+        ...arbitraryCreateListCommand(),
+        ownerId: LOID.fromUserId(arbitraryUserId()),
+      };
       let viewmodel: ViewModel;
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateList(list);
-        await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
+        await framework.commandHelpers.createList(createListCommand);
+        await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createListCommand.listId);
 
         viewmodel = constructViewModel({ ...framework.queries, logger: dummyLogger });
       });
