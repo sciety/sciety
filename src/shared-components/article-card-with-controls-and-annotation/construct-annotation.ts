@@ -4,13 +4,14 @@ import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../read-models';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
+import { unknownAuthor } from './static-messages';
 
 const getAnnotationAuthorDisplayName = (ports: Queries, listId: ListId) => pipe(
   listId,
   ports.lookupList,
   O.map((list) => list.ownerId),
   O.match(
-    () => 'An unknown author',
+    () => unknownAuthor,
     (ownerId) => {
       switch (ownerId.tag) {
         case 'group-id':
@@ -18,14 +19,14 @@ const getAnnotationAuthorDisplayName = (ports: Queries, listId: ListId) => pipe(
             ownerId.value,
             ports.getGroup,
             O.map((group) => group.name),
-            O.getOrElse(() => 'An unknown author'),
+            O.getOrElse(() => unknownAuthor),
           );
         case 'user-id':
           return pipe(
             ownerId.value,
             ports.lookupUser,
             O.map((user) => user.displayName),
-            O.getOrElse(() => 'An unknown author'),
+            O.getOrElse(() => unknownAuthor),
           );
       }
     },

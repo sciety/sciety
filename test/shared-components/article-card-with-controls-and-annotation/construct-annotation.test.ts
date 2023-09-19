@@ -14,6 +14,7 @@ import { arbitraryCreateListCommand } from '../../write-side/commands/create-lis
 import { arbitraryHtmlFragment } from '../../helpers';
 import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
+import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-messages';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
@@ -111,7 +112,7 @@ describe('construct-annotation', () => {
       });
 
       it('returns a static value as the author', () => {
-        expect(result.author).toBe('An unknown author');
+        expect(result.author).toBe(unknownAuthor);
       });
     });
   });
