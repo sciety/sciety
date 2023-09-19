@@ -97,7 +97,7 @@ describe('construct-annotation', () => {
       expect(result.content).toStrictEqual(content);
     });
 
-    it.failing('returns the group name as the author', () => {
+    it('returns the group name as the author', () => {
       expect(result.author).toStrictEqual(addGroupCommand.name);
     });
   });

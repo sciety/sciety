@@ -11,7 +11,19 @@ const getAnnotationAuthorDisplayName = (ports: Queries, listId: ListId) => pipe(
   O.map((list) => list.ownerId),
   O.match(
     () => 'An unknown author',
-    () => 'AvasthiReading',
+    (ownerId) => {
+      switch (ownerId.tag) {
+        case 'group-id':
+          return pipe(
+            ownerId.value,
+            ports.getGroup,
+            O.map((group) => group.name),
+            O.getOrElse(() => 'An unknown author'),
+          );
+        case 'user-id':
+          return 'AvasthiReading';
+      }
+    },
   ),
 );
 
