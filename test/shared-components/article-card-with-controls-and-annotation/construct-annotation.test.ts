@@ -16,8 +16,6 @@ import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 describe('construct-annotation', () => {
-  const articleId = arbitraryArticleId();
-  const content = arbitraryHtmlFragment();
   let framework: TestFramework;
 
   beforeEach(() => {
@@ -32,98 +30,95 @@ describe('construct-annotation', () => {
     });
   });
 
-  describe('when there is an annotation on a list owned by a user', () => {
-    const createUserAccountCommand = arbitraryCreateUserAccountCommand();
-    const createListCommand = {
-      ...arbitraryCreateListCommand(),
-      ownerId: LOID.fromUserId(createUserAccountCommand.userId),
-    };
+  describe('when there is an annotation', () => {
+    const articleId = arbitraryArticleId();
+    const content = arbitraryHtmlFragment();
     let result: {
       author: string,
       content: HtmlFragment,
     };
 
-    beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
-      await framework.commandHelpers.createList(createListCommand);
-      await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
-      await framework.commandHelpers.createAnnotation({
-        content,
-        target: { listId: createListCommand.listId, articleId },
+    describe('on a list owned by a user', () => {
+      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
+      const createListCommand = {
+        ...arbitraryCreateListCommand(),
+        ownerId: LOID.fromUserId(createUserAccountCommand.userId),
+      };
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+        await framework.commandHelpers.createList(createListCommand);
+        await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+        await framework.commandHelpers.createAnnotation({
+          content,
+          target: { listId: createListCommand.listId, articleId },
+        });
+        result = pipe(
+          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
+          O.getOrElseW(shouldNotBeCalled),
+        );
       });
-      result = pipe(
-        constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
-        O.getOrElseW(shouldNotBeCalled),
-      );
-    });
 
-    it('returns its content', async () => {
-      expect(result.content).toStrictEqual(content);
-    });
-
-    it('returns its author', () => {
-      expect(result.author).toStrictEqual(createUserAccountCommand.displayName);
-    });
-  });
-
-  describe('when there is an annotation on a list owned by a group', () => {
-    const addGroupCommand = arbitraryAddGroupCommand();
-    const createListCommand = {
-      ...arbitraryCreateListCommand(),
-      ownerId: LOID.fromGroupId(addGroupCommand.groupId),
-    };
-    let result: {
-      author: string,
-      content: HtmlFragment,
-    };
-
-    beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.createList(createListCommand);
-      await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
-      await framework.commandHelpers.createAnnotation({
-        content,
-        target: { listId: createListCommand.listId, articleId },
+      it('returns its content', async () => {
+        expect(result.content).toStrictEqual(content);
       });
-      result = pipe(
-        constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
-        O.getOrElseW(shouldNotBeCalled),
-      );
-    });
 
-    it('returns its content', () => {
-      expect(result.content).toStrictEqual(content);
-    });
-
-    it('returns the group name as the author', () => {
-      expect(result.author).toStrictEqual(addGroupCommand.name);
-    });
-  });
-
-  describe('when there is an annotation, but the list owner information is not available', () => {
-    const listId = arbitraryListId();
-    let result: {
-      author: string,
-      content: HtmlFragment,
-    };
-
-    beforeEach(async () => {
-      await framework.commandHelpers.createAnnotation({
-        content,
-        target: { listId, articleId },
+      it('returns its author', () => {
+        expect(result.author).toStrictEqual(createUserAccountCommand.displayName);
       });
-      result = pipe(
-        constructAnnotation(framework.dependenciesForViews)(listId, articleId),
-        O.getOrElseW(shouldNotBeCalled),
-      );
     });
 
-    it('returns its content', () => {
-      expect(result.content).toStrictEqual(content);
+    describe('on a list owned by a group', () => {
+      const addGroupCommand = arbitraryAddGroupCommand();
+      const createListCommand = {
+        ...arbitraryCreateListCommand(),
+        ownerId: LOID.fromGroupId(addGroupCommand.groupId),
+      };
+
+      beforeEach(async () => {
+        await framework.commandHelpers.addGroup(addGroupCommand);
+        await framework.commandHelpers.createList(createListCommand);
+        await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+        await framework.commandHelpers.createAnnotation({
+          content,
+          target: { listId: createListCommand.listId, articleId },
+        });
+        result = pipe(
+          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
+          O.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it('returns its content', () => {
+        expect(result.content).toStrictEqual(content);
+      });
+
+      it('returns the group name as the author', () => {
+        expect(result.author).toStrictEqual(addGroupCommand.name);
+      });
     });
 
-    it('returns a static value as the author', () => {
-      expect(result.author).toBe('An unknown author');
+    describe('but the list owner information is not available', () => {
+      const listId = arbitraryListId();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createAnnotation({
+          content,
+          target: { listId, articleId },
+        });
+        result = pipe(
+          constructAnnotation(framework.dependenciesForViews)(listId, articleId),
+          O.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it('returns its content', () => {
+        expect(result.content).toStrictEqual(content);
+      });
+
+      it('returns a static value as the author', () => {
+        expect(result.author).toBe('An unknown author');
+      });
     });
   });
 });
