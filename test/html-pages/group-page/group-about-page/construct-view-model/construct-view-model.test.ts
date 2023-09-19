@@ -3,13 +3,13 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { arbitraryGroup } from '../../../../types/group.helper';
-import { arbitraryList } from '../../../../types/list-helper';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { ViewModel } from '../../../../../src/html-pages/group-page/group-about-page/view-model';
 import { constructViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/construct-view-model';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { List } from '../../../../../src/types/list';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -21,17 +21,23 @@ describe('construct-view-model', () => {
 
   describe('when the group has more than one list', () => {
     let initialGroupList: List;
-    const middleList = arbitraryList(LOID.fromGroupId(group.id));
-    const mostRecentlyUpdatedList = arbitraryList(LOID.fromGroupId(group.id));
+    const createMiddleList = {
+      ...arbitraryCreateListCommand(),
+      ownerId: LOID.fromGroupId(group.id),
+    };
+    const createMostRecentlyUpdatedList = {
+      ...arbitraryCreateListCommand(),
+      ownerId: LOID.fromGroupId(group.id),
+    };
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
       initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
-      await framework.commandHelpers.deprecatedCreateList(middleList);
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), middleList.id);
-      await framework.commandHelpers.deprecatedCreateList(mostRecentlyUpdatedList);
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), mostRecentlyUpdatedList.id);
+      await framework.commandHelpers.createList(createMiddleList);
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createMiddleList.listId);
+      await framework.commandHelpers.createList(createMostRecentlyUpdatedList);
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createMostRecentlyUpdatedList.listId);
 
       viewmodel = await pipe(
         {
@@ -46,10 +52,10 @@ describe('construct-view-model', () => {
     it('returns lists in descending order of updated date', () => {
       expect(viewmodel.ourLists.lists).toStrictEqual([
         expect.objectContaining({
-          listId: mostRecentlyUpdatedList.id,
+          listId: createMostRecentlyUpdatedList.listId,
         }),
         expect.objectContaining({
-          listId: middleList.id,
+          listId: createMiddleList.listId,
         }),
         expect.objectContaining({
           listId: initialGroupList.id,
