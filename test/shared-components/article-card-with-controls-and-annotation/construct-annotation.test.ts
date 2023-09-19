@@ -13,6 +13,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryHtmlFragment } from '../../helpers';
 import { HtmlFragment } from '../../../src/types/html-fragment';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
@@ -66,7 +67,35 @@ describe('construct-annotation', () => {
   });
 
   describe('when there is an annotation on a list owned by a group', () => {
-    it.todo('returns its content');
+    const addGroupCommand = arbitraryAddGroupCommand();
+    const createListCommand = {
+      ...arbitraryCreateListCommand(),
+      ownerId: LOID.fromGroupId(addGroupCommand.groupId),
+    };
+    const articleId = arbitraryArticleId();
+    const content = arbitraryHtmlFragment();
+    let result: {
+      author: string,
+      content: HtmlFragment,
+    };
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.createList(createListCommand);
+      await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+      await framework.commandHelpers.createAnnotation({
+        content,
+        target: { listId: createListCommand.listId, articleId },
+      });
+      result = pipe(
+        constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it('returns its content', () => {
+      expect(result.content).toStrictEqual(content);
+    });
 
     it.todo('returns a static value as the author');
   });
