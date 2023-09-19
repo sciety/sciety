@@ -63,4 +63,16 @@ describe('get-annotation-content', () => {
       expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.none);
     });
   });
+
+  describe('an annotated article has removed from its list', () => {
+    it.todo('returns no annotation');
+  });
+
+  describe('an annotated article has removed from its list and then re-added', () => {
+    it.todo('returns no annotation');
+  });
+
+  describe('an annotated article was removed from its list, re-added and re-annotated', () => {
+    it.todo('returns only the new annotation');
+  });
 });
