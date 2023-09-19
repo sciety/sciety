@@ -61,10 +61,9 @@ describe('construct-group-card-view-model', () => {
 
     describe('and has performed an evaluation', () => {
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedRecordEvaluation({
+        await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordedEvaluation(),
           groupId: group.id,
-          type: O.none,
         });
       });
 
@@ -83,10 +82,10 @@ describe('construct-group-card-view-model', () => {
 
     describe('and has published one curation statements for an article', () => {
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedRecordEvaluation({
+        await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordedEvaluation(),
           groupId: group.id,
-          type: O.some('curation-statement'),
+          evaluationType: 'curation-statement',
         });
       });
 
@@ -107,17 +106,17 @@ describe('construct-group-card-view-model', () => {
       const articleId = arbitraryDoi();
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedRecordEvaluation({
+        await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordedEvaluation(),
           articleId,
           groupId: group.id,
-          type: O.some('curation-statement'),
+          evaluationType: 'curation-statement',
         });
-        await framework.commandHelpers.deprecatedRecordEvaluation({
+        await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordedEvaluation(),
           articleId,
           groupId: group.id,
-          type: O.some('curation-statement'),
+          evaluationType: 'curation-statement',
         });
       });
 
