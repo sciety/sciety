@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import {
@@ -14,6 +15,7 @@ import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.hel
 import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('identify-all-possible-index-entries', () => {
   const supportedGroupCommands = [
@@ -34,25 +36,24 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when a supported group has evaluated multiple articles', () => {
-    const earlierDate = new Date('1990');
-    const laterDate = new Date('2000');
-    const evaluation1: RecordedEvaluation = {
-      ...arbitraryRecordedEvaluation(),
+    const command1 = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: supportedGroupIds[0],
-      recordedAt: earlierDate,
     };
-    const evaluation2: RecordedEvaluation = {
-      ...arbitraryRecordedEvaluation(),
+    const command2 = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: supportedGroupIds[0],
-      recordedAt: laterDate,
     };
-
+    let evaluation1: RecordedEvaluation;
+    let evaluation2: RecordedEvaluation;
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(supportedGroupCommands[0]);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.recordEvaluationPublication(command1);
+      evaluation1 = framework.queries.getEvaluationsForDoi(command1.articleId)[0];
+      await T.delay(10)(async () => framework.commandHelpers.recordEvaluationPublication(command2))();
+      evaluation2 = framework.queries.getEvaluationsForDoi(command2.articleId)[0];
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
@@ -62,14 +63,14 @@ describe('identify-all-possible-index-entries', () => {
     it('returns a list of all the evaluated index entry models', () => {
       expect(result).toStrictEqual([
         {
-          articleId: evaluation2.articleId,
-          groupId: evaluation2.groupId,
+          articleId: command2.articleId,
+          groupId: command2.groupId,
           updated: evaluation2.recordedAt,
           publisherAccountId: publisherAccountId(supportedGroupCommands[0]),
         },
         {
-          articleId: evaluation1.articleId,
-          groupId: evaluation1.groupId,
+          articleId: command1.articleId,
+          groupId: command1.groupId,
           updated: evaluation1.recordedAt,
           publisherAccountId: publisherAccountId(supportedGroupCommands[0]),
         },
