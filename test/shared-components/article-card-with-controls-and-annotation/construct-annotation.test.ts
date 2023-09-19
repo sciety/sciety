@@ -17,6 +17,7 @@ import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-co
 
 describe('construct-annotation', () => {
   const articleId = arbitraryArticleId();
+  const content = arbitraryHtmlFragment();
   let framework: TestFramework;
 
   beforeEach(() => {
@@ -37,7 +38,6 @@ describe('construct-annotation', () => {
       ...arbitraryCreateListCommand(),
       ownerId: LOID.fromUserId(createUserAccountCommand.userId),
     };
-    const content = arbitraryHtmlFragment();
     let result: {
       author: string,
       content: HtmlFragment,
@@ -72,7 +72,6 @@ describe('construct-annotation', () => {
       ...arbitraryCreateListCommand(),
       ownerId: LOID.fromGroupId(addGroupCommand.groupId),
     };
-    const content = arbitraryHtmlFragment();
     let result: {
       author: string,
       content: HtmlFragment,
@@ -103,7 +102,6 @@ describe('construct-annotation', () => {
 
   describe('when there is an annotation, but the list owner information is not available', () => {
     const listId = arbitraryListId();
-    const content = arbitraryHtmlFragment();
     let result: {
       author: string,
       content: HtmlFragment,
