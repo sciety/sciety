@@ -8,7 +8,6 @@ import { UserDetails } from '../../src/types/user-details';
 import { Group } from '../../src/types/group';
 import { UserId } from '../../src/types/user-id';
 import { GroupId } from '../../src/types/group-id';
-import { List } from '../../src/types/list';
 import { ListId } from '../../src/types/list-id';
 import { Doi } from '../../src/types/doi';
 import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
@@ -23,7 +22,6 @@ export type CommandHelpers = {
   deprecatedCreateGroup: (group: Group) => Promise<unknown>,
   createAnnotation: (command: CreateAnnotationCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
-  deprecatedCreateList: (list: List) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
   deprecatedCreateUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
@@ -67,15 +65,6 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   ),
   createAnnotation: invoke(commandHandlers.createAnnotation, 'createAnnotation'),
   createList: invoke(commandHandlers.createList, 'createList'),
-  deprecatedCreateList: async (list) => pipe(
-    {
-      listId: list.id,
-      ownerId: list.ownerId,
-      name: list.name,
-      description: list.description,
-    },
-    invoke(commandHandlers.createList, 'createList'),
-  ),
   createUserAccount: invoke(commandHandlers.createUserAccount, 'createUserAccount'),
   deprecatedCreateUserAccount: async (user) => pipe(
     {
