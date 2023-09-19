@@ -97,7 +97,9 @@ describe('construct-annotation', () => {
       expect(result.content).toStrictEqual(content);
     });
 
-    it.todo('returns a static value as the author');
+    it.failing('returns the group name as the author', () => {
+      expect(result.author).toStrictEqual(addGroupCommand.name);
+    });
   });
 
   describe('when there is an annotation, but the list owner information is not available', () => {
