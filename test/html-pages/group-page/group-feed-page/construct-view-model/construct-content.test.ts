@@ -5,23 +5,27 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { dummyLogger } from '../../../../dummy-logger';
 import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
-import { arbitraryGroup } from '../../../../types/group.helper';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
 import { Doi } from '../../../../../src/types/doi';
 import { ListId } from '../../../../../src/types/list-id';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 
 describe('construct-content', () => {
   let framework: TestFramework;
   let dependencies: Dependencies;
-  const group = arbitraryGroup();
+  const addGroupCommand = arbitraryAddGroupCommand();
   let groupEvaluatedArticlesList: ListId;
   const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
   const getContent = () => constructContent(
     dependencies,
-    group,
+    {
+      ...addGroupCommand,
+      id: addGroupCommand.groupId,
+      largeLogoPath: O.none,
+    },
     3,
     1,
   );
@@ -48,9 +52,9 @@ describe('construct-content', () => {
       ...framework.happyPathThirdParties,
       logger: dummyLogger,
     };
-    await framework.commandHelpers.deprecatedCreateGroup(group);
+    await framework.commandHelpers.addGroup(addGroupCommand);
     groupEvaluatedArticlesList = pipe(
-      framework.queries.getEvaluatedArticlesListIdForGroup(group.id),
+      framework.queries.getEvaluatedArticlesListIdForGroup(addGroupCommand.groupId),
       O.getOrElseW(shouldNotBeCalled),
     );
   });
@@ -103,7 +107,7 @@ describe('construct-content', () => {
     });
 
     it('does have a link to the next page', () => {
-      expect(nextPageHref).toStrictEqual(O.some(`/groups/${group.slug}/feed?page=2`));
+      expect(nextPageHref).toStrictEqual(O.some(`/groups/${addGroupCommand.slug}/feed?page=2`));
     });
   });
 

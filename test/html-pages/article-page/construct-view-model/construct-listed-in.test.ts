@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in';
@@ -9,6 +8,7 @@ import { List } from '../../../../src/types/list';
 import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
@@ -92,12 +92,12 @@ describe('construct-listed-in', () => {
 
   describe('when the article is in a list owned by a group', () => {
     let listedIn: ViewModel['listedIn'];
-    const group = arbitraryGroup();
+    const addGroupCommand = arbitraryAddGroupCommand();
     let list: List;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group);
-      list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(group.id))[0];
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(
         articleId,
@@ -119,7 +119,7 @@ describe('construct-listed-in', () => {
 
     it('returns the list owner name', () => {
       expect(listedIn).toStrictEqual([expect.objectContaining({
-        listOwnerName: group.name,
+        listOwnerName: addGroupCommand.name,
       })]);
     });
   });
