@@ -61,7 +61,7 @@ describe('construct-annotation', () => {
       expect(result.content).toStrictEqual(content);
     });
 
-    it.failing('returns its author', () => {
+    it('returns its author', () => {
       expect(result.author).toStrictEqual(createUserAccountCommand.displayName);
     });
   });

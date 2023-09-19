@@ -21,7 +21,12 @@ const getAnnotationAuthorDisplayName = (ports: Queries, listId: ListId) => pipe(
             O.getOrElse(() => 'An unknown author'),
           );
         case 'user-id':
-          return 'AvasthiReading';
+          return pipe(
+            ownerId.value,
+            ports.lookupUser,
+            O.map((user) => user.displayName),
+            O.getOrElse(() => 'An unknown author'),
+          );
       }
     },
   ),
