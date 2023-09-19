@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { constructViewModel } from '../../../../src/html-pages/home-page/construct-view-model/construct-view-model';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { ViewModel } from '../../../../src/html-pages/home-page/view-model';
 import { arbitraryString } from '../../../helpers';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 
 describe('construct-view-model', () => {
@@ -17,43 +17,42 @@ describe('construct-view-model', () => {
     let viewModel: ViewModel;
 
     describe('when all groups can be found', () => {
-      const group1 = arbitraryGroup();
-      const group2 = arbitraryGroup();
+      const addGroup1 = arbitraryAddGroupCommand();
+      const addGroup2 = arbitraryAddGroupCommand();
       const group1LogoPath = arbitraryString();
       const group2LogoPath = arbitraryString();
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateGroup(group1);
-        await framework.commandHelpers.updateGroupDetails(group1.id, group1LogoPath);
-        await framework.commandHelpers.deprecatedCreateGroup(group2);
-        await framework.commandHelpers.updateGroupDetails(group2.id, group2LogoPath);
+        await framework.commandHelpers.addGroup(addGroup1);
+        await framework.commandHelpers.updateGroupDetails(addGroup1.groupId, group1LogoPath);
+        await framework.commandHelpers.addGroup(addGroup2);
+        await framework.commandHelpers.updateGroupDetails(addGroup2.groupId, group2LogoPath);
         viewModel = constructViewModel(framework.dependenciesForViews, [
-          { groupId: group1.id },
-          { groupId: group2.id },
+          { groupId: addGroup1.groupId },
+          { groupId: addGroup2.groupId },
         ]);
       });
 
       it('returns the groups in the specified order', () => {
         expect(viewModel.groups).toStrictEqual(O.some([
-          expect.objectContaining({ groupName: group1.name }),
-          expect.objectContaining({ groupName: group2.name }),
+          expect.objectContaining({ groupName: addGroup1.name }),
+          expect.objectContaining({ groupName: addGroup2.name }),
         ]));
       });
     });
 
     describe('when any of the groups can not be found', () => {
-      const existingGroup = arbitraryGroup();
-      const notSelectedGroup = arbitraryGroup();
-      const notExistingGroupId = arbitraryGroupId();
+      const addExistingGroup = arbitraryAddGroupCommand();
+      const addNotSelectedGroup = arbitraryAddGroupCommand();
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateGroup(existingGroup);
-        await framework.commandHelpers.updateGroupDetails(existingGroup.id, arbitraryString());
-        await framework.commandHelpers.deprecatedCreateGroup(notSelectedGroup);
-        await framework.commandHelpers.updateGroupDetails(notSelectedGroup.id, arbitraryString());
+        await framework.commandHelpers.addGroup(addExistingGroup);
+        await framework.commandHelpers.updateGroupDetails(addExistingGroup.groupId, arbitraryString());
+        await framework.commandHelpers.addGroup(addNotSelectedGroup);
+        await framework.commandHelpers.updateGroupDetails(addNotSelectedGroup.groupId, arbitraryString());
         viewModel = constructViewModel(framework.dependenciesForViews, [
-          { groupId: existingGroup.id },
-          { groupId: notExistingGroupId },
+          { groupId: addExistingGroup.groupId },
+          { groupId: arbitraryGroupId() },
         ]);
       });
 

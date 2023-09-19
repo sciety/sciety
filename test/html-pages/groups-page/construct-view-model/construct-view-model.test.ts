@@ -3,9 +3,9 @@ import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/html-pages/groups-page/construct-view-model/construct-view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
 import { GroupCardViewModel } from '../../../../src/shared-components/group-card/view-model';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 
 type ViewModel = ReadonlyArray<GroupCardViewModel>;
 
@@ -18,20 +18,20 @@ describe('construct-view-model', () => {
   });
 
   describe('when there is more than one group', () => {
-    const mostRecentlyActiveGroup = arbitraryGroup();
-    const leastRecentlyActiveGroup = arbitraryGroup();
+    const addMostRecentlyActiveGroup = arbitraryAddGroupCommand();
+    const addLeastRecentlyActiveGroup = arbitraryAddGroupCommand();
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(mostRecentlyActiveGroup);
+      await framework.commandHelpers.addGroup(addMostRecentlyActiveGroup);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordedEvaluation(),
-        groupId: mostRecentlyActiveGroup.id,
+        groupId: addMostRecentlyActiveGroup.groupId,
         publishedAt: new Date('2020'),
       });
-      await framework.commandHelpers.deprecatedCreateGroup(leastRecentlyActiveGroup);
+      await framework.commandHelpers.addGroup(addLeastRecentlyActiveGroup);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordedEvaluation(),
-        groupId: leastRecentlyActiveGroup.id,
+        groupId: addLeastRecentlyActiveGroup.groupId,
         publishedAt: new Date('1970'),
       });
       result = await pipe(
@@ -44,10 +44,10 @@ describe('construct-view-model', () => {
     it('the group cards are listed in descending order of latest activity', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
-          name: mostRecentlyActiveGroup.name,
+          name: addMostRecentlyActiveGroup.name,
         }),
         expect.objectContaining({
-          name: leastRecentlyActiveGroup.name,
+          name: addLeastRecentlyActiveGroup.name,
         }),
       ]);
     });
