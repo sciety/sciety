@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { CreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
-import { UserDetails } from '../../src/types/user-details';
 import { Group } from '../../src/types/group';
 import { UserId } from '../../src/types/user-id';
 import { GroupId } from '../../src/types/group-id';
@@ -23,7 +22,6 @@ export type CommandHelpers = {
   createAnnotation: (command: CreateAnnotationCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
-  deprecatedCreateUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   deprecatedRecordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
@@ -66,15 +64,6 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   createAnnotation: invoke(commandHandlers.createAnnotation, 'createAnnotation'),
   createList: invoke(commandHandlers.createList, 'createList'),
   createUserAccount: invoke(commandHandlers.createUserAccount, 'createUserAccount'),
-  deprecatedCreateUserAccount: async (user) => pipe(
-    {
-      userId: user.id,
-      handle: user.handle,
-      avatarUrl: user.avatarUrl,
-      displayName: user.displayName,
-    },
-    invoke(commandHandlers.createUserAccount, 'createUserAccount'),
-  ),
   followGroup: async (userId, groupId) => pipe(
     { userId, groupId },
     invoke(commandHandlers.followGroup, 'followGroup'),
