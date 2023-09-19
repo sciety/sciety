@@ -103,7 +103,28 @@ describe('construct-annotation', () => {
   });
 
   describe('when there is an annotation, but the list owner information is not available', () => {
-    it.todo('returns its content');
+    const listId = arbitraryListId();
+    const articleId = arbitraryArticleId();
+    const content = arbitraryHtmlFragment();
+    let result: {
+      author: string,
+      content: HtmlFragment,
+    };
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createAnnotation({
+        content,
+        target: { listId, articleId },
+      });
+      result = pipe(
+        constructAnnotation(framework.dependenciesForViews)(listId, articleId),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it('returns its content', () => {
+      expect(result.content).toStrictEqual(content);
+    });
 
     it.todo('returns a static value as the author');
   });
