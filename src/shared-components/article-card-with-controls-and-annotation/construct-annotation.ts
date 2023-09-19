@@ -5,25 +5,31 @@ import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../read-models';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
+import { GroupId } from '../../types/group-id';
+import { UserId } from '../../types/user-id';
 
-const getAnnotationAuthorDisplayName = (dependencies: Queries, listId: ListId) => pipe(
+const getGroupName = (dependencies: Queries, groupId: GroupId) => pipe(
+  groupId,
+  dependencies.getGroup,
+  O.map((group) => group.name),
+);
+
+const getUserDisplayName = (dependencies: Queries, userId: UserId) => pipe(
+  userId,
+  dependencies.lookupUser,
+  O.map((user) => user.displayName),
+);
+
+const getAnnotationAuthor = (dependencies: Queries, listId: ListId) => pipe(
   listId,
   dependencies.lookupList,
   O.map((list) => list.ownerId),
   O.chain((ownerId) => {
     switch (ownerId.tag) {
       case 'group-id':
-        return pipe(
-          ownerId.value,
-          dependencies.getGroup,
-          O.map((group) => group.name),
-        );
+        return getGroupName(dependencies, ownerId.value);
       case 'user-id':
-        return pipe(
-          ownerId.value,
-          dependencies.lookupUser,
-          O.map((user) => user.displayName),
-        );
+        return getUserDisplayName(dependencies, ownerId.value);
     }
   }),
 );
@@ -33,7 +39,7 @@ export const constructAnnotation = (dependencies: Queries) => (listId: ListId, a
   O.map((content) => ({
     content,
     author: pipe(
-      getAnnotationAuthorDisplayName(dependencies, listId),
+      getAnnotationAuthor(dependencies, listId),
       O.getOrElse(() => unknownAuthor),
     ),
   })),
