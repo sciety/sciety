@@ -68,7 +68,7 @@ describe('construct-article-card-view-model', () => {
       };
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+        await framework.commandHelpers.recordEvaluationPublication(evaluation);
         viewModel = await pipe(
           articleId,
           constructArticleCardViewModel({

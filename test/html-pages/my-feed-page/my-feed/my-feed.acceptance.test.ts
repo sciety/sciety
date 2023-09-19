@@ -79,7 +79,7 @@ describe('my-feed acceptance', () => {
       it('displays content in the form of article cards', async () => {
         const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
         await framework.commandHelpers.followGroup(userDetails.id, group.id);
-        await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+        await framework.commandHelpers.recordEvaluationPublication(evaluation);
         const html = await myFeed(defaultDependencies)(userDetails.id, 20, 1)();
 
         expect(html).toContain('class="article-card"');
@@ -90,9 +90,9 @@ describe('my-feed acceptance', () => {
         const evaluation2: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
         const evaluation3: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
         await framework.commandHelpers.followGroup(userDetails.id, group.id);
-        await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-        await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
-        await framework.commandHelpers.deprecatedRecordEvaluation(evaluation3);
+        await framework.commandHelpers.recordEvaluationPublication(evaluation1);
+        await framework.commandHelpers.recordEvaluationPublication(evaluation2);
+        await framework.commandHelpers.recordEvaluationPublication(evaluation3);
         const pageSize = 2;
         const renderedComponent = await myFeed(defaultDependencies)(userDetails.id, pageSize, 1)();
         const html = JSDOM.fragment(renderedComponent);
@@ -110,7 +110,7 @@ describe('my-feed acceptance', () => {
       it('displayed articles have to have been evaluated by a followed group', async () => {
         const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
         await framework.commandHelpers.followGroup(userDetails.id, group.id);
-        await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+        await framework.commandHelpers.recordEvaluationPublication(evaluation);
         const dependencies = {
           ...defaultDependencies,
           fetchArticle: () => TE.right({
@@ -130,7 +130,7 @@ describe('my-feed acceptance', () => {
         it('display only an error message', async () => {
           const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
           await framework.commandHelpers.followGroup(userDetails.id, group.id);
-          await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+          await framework.commandHelpers.recordEvaluationPublication(evaluation);
           const dependencies = {
             ...defaultDependencies,
             fetchArticle: () => TE.left(DE.unavailable),
