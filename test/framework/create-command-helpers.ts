@@ -15,7 +15,7 @@ import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
-import { AddGroupCommand, RecordEvaluationPublicationCommand } from '../../src/write-side/commands';
+import { AddGroupCommand, CreateUserAccountCommand, RecordEvaluationPublicationCommand } from '../../src/write-side/commands';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
@@ -24,6 +24,7 @@ export type CommandHelpers = {
   createAnnotation: (command: CreateAnnotationCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
   deprecatedCreateList: (list: List) => Promise<unknown>,
+  createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
   deprecatedCreateUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   deprecatedRecordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
@@ -75,6 +76,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.createList, 'createList'),
   ),
+  createUserAccount: invoke(commandHandlers.createUserAccount, 'createUserAccount'),
   deprecatedCreateUserAccount: async (user) => pipe(
     {
       userId: user.id,
