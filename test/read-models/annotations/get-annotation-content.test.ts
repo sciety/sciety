@@ -96,6 +96,20 @@ describe('get-annotation-content', () => {
   });
 
   describe('an annotated article was removed from its list, re-added and re-annotated', () => {
-    it.todo('returns only the new annotation');
+    const newContent = toHtmlFragment(arbitraryString());
+    const readmodel = pipe(
+      [
+        constructEvent('ArticleAddedToList')({ articleId, listId }),
+        constructEvent('AnnotationCreated')({ target: { articleId, listId }, content }),
+        constructEvent('ArticleRemovedFromList')({ articleId, listId }),
+        constructEvent('ArticleAddedToList')({ articleId, listId }),
+        constructEvent('AnnotationCreated')({ target: { articleId, listId }, content: newContent }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it('returns only the new annotation', () => {
+      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(newContent));
+    });
   });
 });
