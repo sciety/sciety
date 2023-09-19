@@ -22,17 +22,21 @@ describe('construct-annotation', () => {
   });
 
   describe('when there is an annotation', () => {
-    it('returns its content', async () => {
-      const framework = createTestFramework();
-      const createListCommand = arbitraryCreateListCommand();
-      const articleId = arbitraryArticleId();
-      const content = arbitraryHtmlFragment();
+    const framework = createTestFramework();
+    const createListCommand = arbitraryCreateListCommand();
+    const articleId = arbitraryArticleId();
+    const content = arbitraryHtmlFragment();
+
+    beforeEach(async () => {
       await framework.commandHelpers.createList(createListCommand);
       await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
       await framework.commandHelpers.createAnnotation({
         content,
         target: { listId: createListCommand.listId, articleId },
       });
+    });
+
+    it('returns its content', async () => {
       const result = pipe(
         constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
         O.getOrElseW(shouldNotBeCalled),
