@@ -5,15 +5,15 @@ import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
 import * as api from '../helpers/api-helpers';
-import { arbitraryUserDetails } from '../../test/types/user-details.helper';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
 
 describe('login-via-call-to-action', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
-  const userDetails = arbitraryUserDetails();
+  const createUserAccountCommand = arbitraryCreateUserAccountCommand();
 
   beforeAll(async () => {
-    await api.createUser(userDetails);
+    await api.createUser(createUserAccountCommand);
     await api.addGroup(addGroupCommand);
   });
 
@@ -33,7 +33,7 @@ describe('login-via-call-to-action', () => {
     describe('when I attempt to follow the group and successfully log in', () => {
       beforeEach(async () => {
         await click('Follow');
-        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+        await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
       it('i am still on the group page and I am logged in', async () => {
@@ -54,7 +54,7 @@ describe('login-via-call-to-action', () => {
       beforeEach(async () => {
         await goto(articlePage);
         await click('Log in to save this article');
-        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+        await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
       it('i am still on the article page and I am logged in', async () => {

@@ -4,21 +4,21 @@ import {
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { screenshotTeardown } from './utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
-import { UserDetails } from '../src/types/user-details';
-import { arbitraryUserDetails } from '../test/types/user-details.helper';
 import * as apiHelpers from './helpers/api-helpers';
+import { CreateUserAccountCommand } from '../src/write-side/commands';
+import { arbitraryCreateUserAccountCommand } from '../test/write-side/commands/create-user-account-command.helper';
 
 describe('journey-to-create-new-list', () => {
   describe('when the user is on their My Lists page', () => {
-    let userDetails: UserDetails;
+    let createUserAccountCommand: CreateUserAccountCommand;
 
     beforeEach(async () => {
-      userDetails = arbitraryUserDetails();
-      await apiHelpers.createUser(userDetails);
+      createUserAccountCommand = arbitraryCreateUserAccountCommand();
+      await apiHelpers.createUser(createUserAccountCommand);
       await openBrowser();
       await goto('localhost:8080/');
       await click('Log in');
-      await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+      await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       await click('My Lists');
     });
 
@@ -41,7 +41,7 @@ describe('journey-to-create-new-list', () => {
         const finalPage = await currentURL();
         const finalPageContent = await $('main').text();
 
-        expect(finalPage).toContain(`/users/${userDetails.handle}/lists`);
+        expect(finalPage).toContain(`/users/${createUserAccountCommand.handle}/lists`);
         expect(finalPageContent).toContain(listName);
         expect(finalPageContent).toContain(listDescription);
       });
@@ -61,7 +61,7 @@ describe('journey-to-create-new-list', () => {
         const finalPage = await currentURL();
         const finalPageContent = await $('main').text();
 
-        expect(finalPage).toContain(`/users/${userDetails.handle}/lists`);
+        expect(finalPage).toContain(`/users/${createUserAccountCommand.handle}/lists`);
         expect(finalPageContent).toContain(listName);
       });
     });

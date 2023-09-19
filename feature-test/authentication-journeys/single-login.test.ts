@@ -6,15 +6,15 @@ import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { getIdOfFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper';
 import * as api from '../helpers/api-helpers';
-import { arbitraryUserDetails } from '../../test/types/user-details.helper';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
 
 describe('single-login', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
-  const userDetails = arbitraryUserDetails();
+  const createUserAccountCommand = arbitraryCreateUserAccountCommand();
 
   beforeAll(async () => {
-    await api.createUser(userDetails);
+    await api.createUser(createUserAccountCommand);
     await api.addGroup(addGroupCommand);
   });
 
@@ -36,8 +36,8 @@ describe('single-login', () => {
     ['Sciety feed page', '/sciety-feed'],
     ['Search page', '/search'],
     ['Search results page', '/search?category=articles&query=covid&evaluatedOnly=true'],
-    ['User page, lists tab', `/users/${userDetails.handle}/lists`],
-    ['User page, following tab', `/users/${userDetails.handle}/lists`],
+    ['User page, lists tab', `/users/${createUserAccountCommand.handle}/lists`],
+    ['User page, following tab', `/users/${createUserAccountCommand.handle}/lists`],
   ])('when I am on the %s and I am not logged in', (name, page) => {
     beforeEach(async () => {
       await goto(`localhost:8080${page}`);
@@ -46,7 +46,7 @@ describe('single-login', () => {
     describe('when I log in', () => {
       beforeEach(async () => {
         await click('Log In');
-        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+        await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
       it(`i am still on the ${name} and I am logged in`, async () => {
@@ -65,14 +65,14 @@ describe('single-login', () => {
     let page: string;
 
     beforeEach(async () => {
-      page = `/lists/${await getIdOfFirstListOwnedByUser(userDetails.id)}`;
+      page = `/lists/${await getIdOfFirstListOwnedByUser(createUserAccountCommand.userId)}`;
       await goto(`localhost:8080${page}`);
     });
 
     describe('when I log in', () => {
       beforeEach(async () => {
         await click('Log In');
-        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+        await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
       it('i am still on the List page and I am logged in', async () => {

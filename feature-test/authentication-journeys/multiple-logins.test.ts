@@ -4,13 +4,13 @@ import {
 import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import * as api from '../helpers/api-helpers';
-import { arbitraryUserDetails } from '../../test/types/user-details.helper';
+import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
 
 describe('multiple-logins', () => {
-  const userDetails = arbitraryUserDetails();
+  const createUserAccountCommand = arbitraryCreateUserAccountCommand();
 
   beforeAll(async () => {
-    await api.createUser(userDetails);
+    await api.createUser(createUserAccountCommand);
   });
 
   beforeEach(async () => {
@@ -33,7 +33,7 @@ describe('multiple-logins', () => {
       beforeEach(async () => {
         await goto(scietyFeedPage);
         await click('Log In');
-        await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+        await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
       it('i am still on the Sciety feed page and I am logged in', async () => {
@@ -53,7 +53,7 @@ describe('multiple-logins', () => {
     beforeEach(async () => {
       await goto(articlePage);
       await click('Log In');
-      await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+      await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
     });
 
     describe('when I log out and go to the Sciety feed page', () => {
@@ -67,7 +67,7 @@ describe('multiple-logins', () => {
       describe('when I log in successfully again', () => {
         beforeEach(async () => {
           await click('Log In');
-          await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+          await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
         });
 
         it('i am still on the Sciety feed page', async () => {

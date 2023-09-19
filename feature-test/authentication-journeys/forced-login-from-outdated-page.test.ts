@@ -5,13 +5,13 @@ import {
 import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import * as api from '../helpers/api-helpers';
-import { arbitraryUserDetails } from '../../test/types/user-details.helper';
+import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
 
 describe('forced-login-from-outdated-page', () => {
-  const userDetails = arbitraryUserDetails();
+  const createUserAccountCommand = arbitraryCreateUserAccountCommand();
 
   beforeAll(async () => {
-    await api.createUser(userDetails);
+    await api.createUser(createUserAccountCommand);
   });
 
   beforeEach(async () => {
@@ -27,7 +27,7 @@ describe('forced-login-from-outdated-page', () => {
     beforeEach(async () => {
       await goto(articlePage);
       await click('Log In');
-      await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+      await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
     });
 
     describe('when I log out from another tab', () => {
@@ -45,7 +45,7 @@ describe('forced-login-from-outdated-page', () => {
 
         describe('when I log back in again', () => {
           beforeEach(async () => {
-            await completeLoginViaStubWithSpecifiedUserId(userDetails.id);
+            await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
           });
 
           it('i am still on the article page', async () => {
