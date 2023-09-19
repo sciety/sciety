@@ -6,9 +6,9 @@ import { Queries } from '../../read-models';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 import { unknownAuthor } from './static-messages';
 
-const getAnnotationAuthorDisplayName = (ports: Queries, listId: ListId) => pipe(
+const getAnnotationAuthorDisplayName = (dependencies: Queries, listId: ListId) => pipe(
   listId,
-  ports.lookupList,
+  dependencies.lookupList,
   O.map((list) => list.ownerId),
   O.match(
     () => unknownAuthor,
@@ -17,14 +17,14 @@ const getAnnotationAuthorDisplayName = (ports: Queries, listId: ListId) => pipe(
         case 'group-id':
           return pipe(
             ownerId.value,
-            ports.getGroup,
+            dependencies.getGroup,
             O.map((group) => group.name),
             O.getOrElse(() => unknownAuthor),
           );
         case 'user-id':
           return pipe(
             ownerId.value,
-            ports.lookupUser,
+            dependencies.lookupUser,
             O.map((user) => user.displayName),
             O.getOrElse(() => unknownAuthor),
           );
@@ -33,10 +33,10 @@ const getAnnotationAuthorDisplayName = (ports: Queries, listId: ListId) => pipe(
   ),
 );
 
-export const constructAnnotation = (ports: Queries) => (listId: ListId, articleId: Doi): ArticleCardWithControlsAndAnnotationViewModel['annotation'] => pipe(
-  ports.getAnnotationContent(listId, articleId),
+export const constructAnnotation = (dependencies: Queries) => (listId: ListId, articleId: Doi): ArticleCardWithControlsAndAnnotationViewModel['annotation'] => pipe(
+  dependencies.getAnnotationContent(listId, articleId),
   O.map((content) => ({
     content,
-    author: getAnnotationAuthorDisplayName(ports, listId),
+    author: getAnnotationAuthorDisplayName(dependencies, listId),
   })),
 );
