@@ -15,25 +15,37 @@ import {
 export const styleGuidePage: Page = {
   title: 'Style guide',
   content: toHtmlFragment(`
+<style>
+  ._style-guide-heading {
+    font-family: monospace;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    margin-left: -3rem;
+    background-color: wheat;
+    color: teal;
+    padding: 1.5rem 3rem;
+  }
+</style>
     <header class="page-header">
       <h1>Style guide</h1>
     </header>
-    <h2>Pagination controls for feed</h2>
-    <h3>With a link only to older content</h3>
-    ${renderPaginationControlsForFeed({
+    <div>
+      <h2 class="_style-guide-heading">Pagination controls for feed</h2>
+      <h3 class="_style-guide-heading">With a link only to older content</h3>
+      ${renderPaginationControlsForFeed({
     prevPageHref: O.none, nextPageHref: O.some('/foo'), page: 1, pageCount: 42,
   })}
-    <h3>With a link only to newer content</h3>
-    ${renderPaginationControlsForFeed({
+      <h3 class="_style-guide-heading">With a link only to newer content</h3>
+      ${renderPaginationControlsForFeed({
     prevPageHref: O.some('/foo'), nextPageHref: O.none, page: 2, pageCount: 2,
   })}
-    <h3>With links to newer and older content</h3>
-    ${renderPaginationControlsForFeed({
+      <h3 class="_style-guide-heading">With links to newer and older content</h3>
+      ${renderPaginationControlsForFeed({
     prevPageHref: O.some('/foo'), nextPageHref: O.some('/foo'), page: 2, pageCount: 42,
   })}
-    <h2>Article summary</h2>
-    <h3>With curation statement</h3>
-    ${renderArticleCard({
+      <h2 class="_style-guide-heading">Article summary</h2>
+      <h3 class="_style-guide-heading">With curation statement</h3>
+      ${renderArticleCard({
     articleId: new Doi('10.1101/foo'),
     articleLink: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
@@ -46,14 +58,14 @@ export const styleGuidePage: Page = {
       groupPageHref: '/foo',
       groupName: 'Awesome group',
       quote: sanitise(toHtmlFragment(`<p><strong>elife assessment:</strong></p>
-        <p>This small-sized clinical trial comparing nebulized dornase-alfa to best available care in patients hospitalized with COVID-19 pneumonia is valuable, but in its present form the paper is incomplete: the number of randomized participants is small, investigators describe also a contemporary cohort of controls and the study concludes about decrease of inflammation (reflected by CRP levels) after 7 days of treatment but no other statistically significant clinical benefit.</p>`)),
+          <p>This small-sized clinical trial comparing nebulized dornase-alfa to best available care in patients hospitalized with COVID-19 pneumonia is valuable, but in its present form the paper is incomplete: the number of randomized participants is small, investigators describe also a contemporary cohort of controls and the study concludes about decrease of inflammation (reflected by CRP levels) after 7 days of treatment but no other statistically significant clinical benefit.</p>`)),
       quoteLanguageCode: O.some('en'),
     }],
     reviewingGroups: [],
   })}
-
-    <h3>With reviewing groups</h3>
-    ${renderArticleCard({
+  
+      <h3 class="_style-guide-heading">With reviewing groups</h3>
+      ${renderArticleCard({
     articleId: new Doi('10.1101/foo'),
     articleLink: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
@@ -74,9 +86,9 @@ export const styleGuidePage: Page = {
       },
     ],
   })}
-    
-    <h3>With trashcan</h3>
-    ${renderArticleCardWithControlsAndAnnotation({
+      
+      <h3 class="_style-guide-heading">With trashcan</h3>
+      ${renderArticleCardWithControlsAndAnnotation({
     articleId: new Doi('10.1101/foo'),
     hasControls: true,
     annotation: O.none,
@@ -94,9 +106,9 @@ export const styleGuidePage: Page = {
       reviewingGroups: [],
     },
   })}
-
-    <h3>With annotation</h3>
-    ${renderArticleCardWithControlsAndAnnotation({
+  
+      <h3 class="_style-guide-heading">With annotation</h3>
+      ${renderArticleCardWithControlsAndAnnotation({
     articleId: new Doi('10.1101/foo'),
     hasControls: false,
     annotation: O.some({
@@ -117,14 +129,15 @@ export const styleGuidePage: Page = {
       reviewingGroups: [],
     },
   })}
-
-    <h3>With error</h3>
-    ${renderArticleErrorCard({
+  
+      <h3 class="_style-guide-heading">With error</h3>
+      ${renderArticleErrorCard({
     evaluationCount: 1,
     href: '/articles/foo',
     latestActivityAt: O.some(new Date('2023-09-10')),
     error: DE.notFound,
     articleId: new Doi('10.1101/foo'),
   })}
+    </div>
   `),
 };
