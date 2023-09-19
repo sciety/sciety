@@ -10,6 +10,7 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model-with-avatar';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -21,15 +22,18 @@ describe('construct-view-model', () => {
 
   describe('when there are two populated user lists', () => {
     let initialUserList: List;
-    const updatedList = arbitraryList(LOID.fromUserId(user.id));
+    const command = {
+      ...arbitraryCreateListCommand(),
+      ownerId: LOID.fromUserId(user.id),
+    };
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(user);
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), initialUserList.id);
-      await framework.commandHelpers.deprecatedCreateList(updatedList);
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
+      await framework.commandHelpers.createList(command);
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), command.listId);
 
       viewmodel = constructViewModel({ ...framework.queries, logger: dummyLogger });
     });
@@ -43,7 +47,7 @@ describe('construct-view-model', () => {
 
     it('the most recently updated list is shown first', async () => {
       expect(viewmodel).toStrictEqual([
-        expect.objectContaining({ listId: updatedList.id }),
+        expect.objectContaining({ listId: command.listId }),
         expect.objectContaining({ listId: initialUserList.id }),
       ]);
     });

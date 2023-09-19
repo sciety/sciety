@@ -11,9 +11,9 @@ import {
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
 import { arbitraryUserDetails } from '../types/user-details.helper';
-import { arbitraryList } from '../types/list-helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
 import { createTestFramework, TestFramework } from '../framework';
+import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper';
 
 describe('create user list', () => {
   let framework: TestFramework;
@@ -33,10 +33,13 @@ describe('create user list', () => {
     });
 
     describe('when the user creates a new list', () => {
-      const list = arbitraryList(LOID.fromUserId(user.id));
+      const command = {
+        ...arbitraryCreateListCommand(),
+        ownerId: LOID.fromUserId(user.id),
+      };
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateList(list);
+        await framework.commandHelpers.createList(command);
       });
 
       describe('on the user-lists page', () => {
@@ -63,7 +66,7 @@ describe('create user list', () => {
             RA.map((l) => l.listId),
           );
 
-          expect(listIds).toContain(list.id);
+          expect(listIds).toContain(command.listId);
         });
       });
 

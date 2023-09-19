@@ -6,11 +6,11 @@ import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { List } from '../../../../../src/types/list';
-import { arbitraryList } from '../../../../types/list-helper';
 import { arbitraryUserDetails } from '../../../../types/user-details.helper';
 import { constructViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/view-model';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -28,12 +28,15 @@ describe('construct-view-model', () => {
 
   describe('when the user owns two lists', () => {
     let initialUserList: List;
-    const updatedList = arbitraryList(LOID.fromUserId(user.id));
+    const command = {
+      ...arbitraryCreateListCommand(),
+      ownerId: LOID.fromUserId(user.id),
+    };
 
     beforeEach(async () => {
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
-      await framework.commandHelpers.deprecatedCreateList(updatedList);
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), updatedList.id);
+      await framework.commandHelpers.createList(command);
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), command.listId);
     });
 
     describe('and the lists tab is selected', () => {
@@ -56,7 +59,7 @@ describe('construct-view-model', () => {
       it('the most recently updated list is shown first', async () => {
         expect(viewmodel).toStrictEqual(expect.objectContaining({
           ownedLists: [
-            expect.objectContaining({ listId: updatedList.id }),
+            expect.objectContaining({ listId: command.listId }),
             expect.objectContaining({ listId: initialUserList.id }),
           ],
         }));
