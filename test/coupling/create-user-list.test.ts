@@ -5,15 +5,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { ViewModel as UserListsPage } from '../../src/html-pages/user-page/user-lists-page/view-model';
 import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/user-lists-page/construct-view-model';
 import * as LOID from '../../src/types/list-owner-id';
-import {
-  constructViewModel as constructGroupFollowersPage,
-} from '../../src/html-pages/group-page/group-followers-page/construct-view-model/construct-view-model'; import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model';
+import { constructViewModel as constructGroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/construct-view-model/construct-view-model';
+import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryGroup } from '../types/group.helper';
-import { arbitraryUserDetails } from '../types/user-details.helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
 import { createTestFramework, TestFramework } from '../framework';
 import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../write-side/commands/create-user-account-command.helper';
 
 describe('create user list', () => {
   let framework: TestFramework;
@@ -23,19 +22,19 @@ describe('create user list', () => {
   });
 
   describe('given a user who is following a group', () => {
-    const user = arbitraryUserDetails();
+    const createUserAccountCommand = arbitraryCreateUserAccountCommand();
     const group = arbitraryGroup();
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateUserAccount(user);
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.followGroup(user.id, group.id);
+      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group.id);
     });
 
     describe('when the user creates a new list', () => {
       const command = {
         ...arbitraryCreateListCommand(),
-        ownerId: LOID.fromUserId(user.id),
+        ownerId: LOID.fromUserId(createUserAccountCommand.userId),
       };
 
       beforeEach(async () => {
@@ -48,7 +47,7 @@ describe('create user list', () => {
         beforeEach(async () => {
           userListsPage = await pipe(
             {
-              handle: user.handle as string as CandidateUserHandle,
+              handle: createUserAccountCommand.handle as string as CandidateUserHandle,
               user: O.none,
             },
             constructUserListsPage({ ...framework.queries }),

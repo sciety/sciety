@@ -5,10 +5,10 @@ import { pipe } from 'fp-ts/function';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
-import { arbitraryUserDetails } from '../../types/user-details.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { constructViewModel } from '../../../src/views/list/construct-view-model';
 import { Doi } from '../../../src/types/doi';
+import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -22,9 +22,9 @@ describe('construct-view-model', () => {
     const articleId2 = arbitraryArticleId();
     let orderedArticleIds: ReadonlyArray<Doi>;
     const createList = async () => {
-      const userDetails = arbitraryUserDetails();
-      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       return list.id;
     };
 

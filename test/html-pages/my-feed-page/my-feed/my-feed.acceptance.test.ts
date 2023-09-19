@@ -14,11 +14,11 @@ import { sanitise } from '../../../../src/types/sanitised-html-fragment';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryGroup } from '../../../types/group.helper';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { RecordedEvaluation } from '../../../../src/types/recorded-evaluation';
 import { arbitraryRecordedEvaluation } from '../../../types/recorded-evaluation.helper';
 import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
 import { arbitraryDoi } from '../../../types/doi.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('my-feed acceptance', () => {
   let framework: TestFramework;
@@ -39,10 +39,10 @@ describe('my-feed acceptance', () => {
   });
 
   describe('when there is a logged in user', () => {
-    const userDetails = arbitraryUserDetails();
+    const createUserAccountCommand = arbitraryCreateUserAccountCommand();
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
     });
 
     describe('following groups that have no evaluations', () => {
@@ -50,11 +50,11 @@ describe('my-feed acceptance', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.deprecatedCreateGroup(group);
-        await framework.commandHelpers.followGroup(userDetails.id, group.id);
+        await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group.id);
       });
 
       it('displays the calls to action to follow other groups or return later', async () => {
-        const html = await myFeed(defaultDependencies)(userDetails.id, 20, 1)();
+        const html = await myFeed(defaultDependencies)(createUserAccountCommand.userId, 20, 1)();
 
         expect(html).toContain(noEvaluationsYet);
       });
@@ -63,7 +63,7 @@ describe('my-feed acceptance', () => {
     // Your feed is empty! Start following some groups to see their most recent evaluations right here.
     describe('not following any groups', () => {
       it('displays call to action to follow groups', async () => {
-        const html = await myFeed(defaultDependencies)(userDetails.id, 20, 1)();
+        const html = await myFeed(defaultDependencies)(createUserAccountCommand.userId, 20, 1)();
 
         expect(html).toContain(followSomething);
       });
@@ -78,9 +78,9 @@ describe('my-feed acceptance', () => {
 
       it('displays content in the form of article cards', async () => {
         const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
-        await framework.commandHelpers.followGroup(userDetails.id, group.id);
+        await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group.id);
         await framework.commandHelpers.recordEvaluationPublication(evaluation);
-        const html = await myFeed(defaultDependencies)(userDetails.id, 20, 1)();
+        const html = await myFeed(defaultDependencies)(createUserAccountCommand.userId, 20, 1)();
 
         expect(html).toContain('class="article-card"');
       });
@@ -89,12 +89,12 @@ describe('my-feed acceptance', () => {
         const evaluation1: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
         const evaluation2: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
         const evaluation3: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
-        await framework.commandHelpers.followGroup(userDetails.id, group.id);
+        await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group.id);
         await framework.commandHelpers.recordEvaluationPublication(evaluation1);
         await framework.commandHelpers.recordEvaluationPublication(evaluation2);
         await framework.commandHelpers.recordEvaluationPublication(evaluation3);
         const pageSize = 2;
-        const renderedComponent = await myFeed(defaultDependencies)(userDetails.id, pageSize, 1)();
+        const renderedComponent = await myFeed(defaultDependencies)(createUserAccountCommand.userId, pageSize, 1)();
         const html = JSDOM.fragment(renderedComponent);
         const itemCount = Array.from(html.querySelectorAll('.article-card')).length;
 
@@ -109,7 +109,7 @@ describe('my-feed acceptance', () => {
 
       it('displayed articles have to have been evaluated by a followed group', async () => {
         const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
-        await framework.commandHelpers.followGroup(userDetails.id, group.id);
+        await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group.id);
         await framework.commandHelpers.recordEvaluationPublication(evaluation);
         const dependencies = {
           ...defaultDependencies,
@@ -121,7 +121,7 @@ describe('my-feed acceptance', () => {
             doi: arbitraryDoi(),
           }),
         };
-        const html = await myFeed(dependencies)(userDetails.id, 20, 1)();
+        const html = await myFeed(dependencies)(createUserAccountCommand.userId, 20, 1)();
 
         expect(html).toContain('My article title');
       });
@@ -129,13 +129,13 @@ describe('my-feed acceptance', () => {
       describe('when details of all articles cannot be fetched', () => {
         it('display only an error message', async () => {
           const evaluation: RecordedEvaluation = { ...arbitraryRecordedEvaluation(), groupId: group.id };
-          await framework.commandHelpers.followGroup(userDetails.id, group.id);
+          await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group.id);
           await framework.commandHelpers.recordEvaluationPublication(evaluation);
           const dependencies = {
             ...defaultDependencies,
             fetchArticle: () => TE.left(DE.unavailable),
           };
-          const html = await myFeed(dependencies)(userDetails.id, 20, 1)();
+          const html = await myFeed(dependencies)(createUserAccountCommand.userId, 20, 1)();
 
           expect(html).toContain(troubleFetchingTryAgain);
         });
