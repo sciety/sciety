@@ -16,6 +16,7 @@ import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 describe('construct-annotation', () => {
+  const articleId = arbitraryArticleId();
   let framework: TestFramework;
 
   beforeEach(() => {
@@ -36,7 +37,6 @@ describe('construct-annotation', () => {
       ...arbitraryCreateListCommand(),
       ownerId: LOID.fromUserId(createUserAccountCommand.userId),
     };
-    const articleId = arbitraryArticleId();
     const content = arbitraryHtmlFragment();
     let result: {
       author: string,
@@ -72,7 +72,6 @@ describe('construct-annotation', () => {
       ...arbitraryCreateListCommand(),
       ownerId: LOID.fromGroupId(addGroupCommand.groupId),
     };
-    const articleId = arbitraryArticleId();
     const content = arbitraryHtmlFragment();
     let result: {
       author: string,
@@ -104,7 +103,6 @@ describe('construct-annotation', () => {
 
   describe('when there is an annotation, but the list owner information is not available', () => {
     const listId = arbitraryListId();
-    const articleId = arbitraryArticleId();
     const content = arbitraryHtmlFragment();
     let result: {
       author: string,
