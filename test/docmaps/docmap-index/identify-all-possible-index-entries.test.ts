@@ -79,35 +79,31 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when a supported group has evaluated an article multiple times', () => {
-    const earlierDate = new Date('1990');
-    const middleDate = new Date('2012');
-    const latestDate = new Date('2021');
     const articleId = arbitraryArticleId();
-    const evaluation1: RecordedEvaluation = {
+    const command1: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
       groupId: supportedGroupIds[0],
       articleId,
-      recordedAt: earlierDate,
     };
-    const evaluation2: RecordedEvaluation = {
+    const command2: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
       groupId: supportedGroupIds[0],
       articleId,
-      recordedAt: latestDate,
     };
-    const evaluation3: RecordedEvaluation = {
+    const command3: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
       groupId: supportedGroupIds[0],
       articleId,
-      recordedAt: middleDate,
     };
+    let evaluation3: RecordedEvaluation;
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(supportedGroupCommands[0]);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation3);
+      await framework.commandHelpers.recordEvaluationPublication(command1);
+      await T.delay(10)(async () => framework.commandHelpers.recordEvaluationPublication(command2))();
+      await T.delay(10)(async () => framework.commandHelpers.recordEvaluationPublication(command3))();
+      evaluation3 = framework.queries.getEvaluationsForDoi(command3.articleId)[2];
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
@@ -117,7 +113,7 @@ describe('identify-all-possible-index-entries', () => {
     it('returns the latest updated date', () => {
       expect(result).toStrictEqual([
         expect.objectContaining({
-          updated: latestDate,
+          updated: evaluation3.recordedAt,
         }),
       ]);
     });
