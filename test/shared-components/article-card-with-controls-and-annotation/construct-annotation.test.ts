@@ -44,17 +44,15 @@ describe('construct-annotation', () => {
         ...arbitraryCreateListCommand(),
         ownerId: LOID.fromUserId(createUserAccountCommand.userId),
       };
+      const target = { listId: createListCommand.listId, articleId };
 
       beforeEach(async () => {
         await framework.commandHelpers.createUserAccount(createUserAccountCommand);
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
-        await framework.commandHelpers.createAnnotation({
-          content,
-          target: { listId: createListCommand.listId, articleId },
-        });
+        await framework.commandHelpers.createAnnotation({ content, target });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
+          constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
@@ -74,17 +72,15 @@ describe('construct-annotation', () => {
         ...arbitraryCreateListCommand(),
         ownerId: LOID.fromGroupId(addGroupCommand.groupId),
       };
+      const target = { listId: createListCommand.listId, articleId };
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
-        await framework.commandHelpers.createAnnotation({
-          content,
-          target: { listId: createListCommand.listId, articleId },
-        });
+        await framework.commandHelpers.createAnnotation({ content, target });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
+          constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
@@ -100,14 +96,12 @@ describe('construct-annotation', () => {
 
     describe('but the list owner information is not available', () => {
       const listId = arbitraryListId();
+      const target = { listId, articleId };
 
       beforeEach(async () => {
-        await framework.commandHelpers.createAnnotation({
-          content,
-          target: { listId, articleId },
-        });
+        await framework.commandHelpers.createAnnotation({ content, target });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(listId, articleId),
+          constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
