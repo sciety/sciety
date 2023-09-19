@@ -3,11 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import {
-  DocmapModel,
-  generateDocmapViewModel,
-  Ports,
-} from '../../../src/docmaps/docmap/generate-docmap-view-model';
+import { DocmapModel, generateDocmapViewModel, Ports } from '../../../src/docmaps/docmap/generate-docmap-view-model';
 import * as DE from '../../../src/types/data-error';
 import { inferredSourceUrl } from '../../../src/types/evaluation-locator';
 import { arbitraryUri } from '../../helpers';
@@ -19,6 +15,7 @@ import { arbitraryNcrcId, arbitraryReviewDoi } from '../../types/evaluation-loca
 import { TestFramework, createTestFramework } from '../../framework';
 import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 const indexedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();
@@ -36,19 +33,19 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when there is an evaluation by the selected group', () => {
-    const group = arbitraryGroup();
+    const addGroupCommand = arbitraryAddGroupCommand();
     const evaluation: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
       articleId,
-      groupId: group.id,
+      groupId: addGroupCommand.groupId,
     };
     let result: DocmapModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
-        { articleId, groupId: group.id },
+        { articleId, groupId: addGroupCommand.groupId },
         generateDocmapViewModel(defaultAdapters),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
@@ -59,31 +56,33 @@ describe('generate-docmap-view-model', () => {
     });
 
     it('includes the group', async () => {
-      expect(result).toStrictEqual(expect.objectContaining({ group }));
+      expect(result).toStrictEqual(expect.objectContaining({
+        group: expect.objectContaining({ id: addGroupCommand.groupId }),
+      }));
     });
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
-    const group = arbitraryGroup();
+    const addGroupCommand = arbitraryAddGroupCommand();
     const firstEvaluation = {
       ...arbitraryRecordedEvaluation(),
       articleId,
-      groupId: group.id,
+      groupId: addGroupCommand.groupId,
     };
     const secondEvaluation = {
       ...arbitraryRecordedEvaluation(),
       articleId,
-      groupId: group.id,
+      groupId: addGroupCommand.groupId,
     };
 
     let result: DocmapModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(firstEvaluation);
       await framework.commandHelpers.recordEvaluationPublication(secondEvaluation);
       result = await pipe(
-        generateDocmapViewModel(defaultAdapters)({ articleId, groupId: group.id }),
+        generateDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -109,10 +108,10 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      const group = arbitraryGroup();
+      const addGroupCommand = arbitraryAddGroupCommand();
       const evaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
+        groupId: addGroupCommand.groupId,
         evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
         articleId,
       };
@@ -120,10 +119,10 @@ describe('generate-docmap-view-model', () => {
         ...defaultAdapters,
         fetchReview: shouldNotBeCalled,
       };
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
-        generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
+        generateDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -143,10 +142,10 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      const group = arbitraryGroup();
+      const addGroupCommand = arbitraryAddGroupCommand();
       const evaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
+        groupId: addGroupCommand.groupId,
         evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
         articleId,
       };
@@ -154,10 +153,10 @@ describe('generate-docmap-view-model', () => {
         ...defaultAdapters,
         fetchReview: () => TE.right({ url: sourceUrl }),
       };
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
-        generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
+        generateDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -181,21 +180,21 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there are evaluations by other groups', () => {
     it('only uses the evaluation by the selected group', async () => {
-      const group = {
-        ...arbitraryGroup(),
-        id: indexedGroupId,
+      const addGroup = {
+        ...arbitraryAddGroupCommand(),
+        groupId: indexedGroupId,
       };
-      const otherGroup = arbitraryGroup();
+      const addOtherGroup = arbitraryAddGroupCommand();
       const evaluationByThisGroup: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
         articleId,
         groupId: indexedGroupId,
       };
-      await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedCreateGroup(otherGroup);
+      await framework.commandHelpers.addGroup(addGroup);
+      await framework.commandHelpers.addGroup(addOtherGroup);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordedEvaluation(),
-        groupId: otherGroup.id,
+        groupId: addOtherGroup.groupId,
         articleId,
       });
       await framework.commandHelpers.recordEvaluationPublication(evaluationByThisGroup);
@@ -227,7 +226,7 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup({ ...group, id: indexedGroupId });
+      await framework.commandHelpers.addGroup({ ...group, groupId: indexedGroupId });
       await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
         {

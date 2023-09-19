@@ -11,11 +11,11 @@ import * as GID from '../../../src/types/group-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryNcrcId } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
@@ -52,22 +52,22 @@ describe('generate-docmaps', () => {
   });
 
   describe('when the article has been evaluated only by unsupported groups', () => {
-    const group1 = arbitraryGroup();
-    const group2 = arbitraryGroup();
+    const addGroup1 = arbitraryAddGroupCommand();
+    const addGroup2 = arbitraryAddGroupCommand();
     const evaluation1 = {
       ...arbitraryRecordedEvaluation(),
-      groupId: group1.id,
+      groupId: addGroup1.groupId,
     };
     const evaluation2 = {
       ...arbitraryRecordedEvaluation(),
-      groupId: group2.id,
+      groupId: addGroup2.groupId,
     };
 
     let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group1);
-      await framework.commandHelpers.deprecatedCreateGroup(group2);
+      await framework.commandHelpers.addGroup(addGroup1);
+      await framework.commandHelpers.addGroup(addGroup2);
       await framework.commandHelpers.recordEvaluationPublication(evaluation1);
       await framework.commandHelpers.recordEvaluationPublication(evaluation2);
       response = await pipe(
@@ -89,16 +89,16 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      const group = {
-        ...arbitraryGroup(),
-        id: ncrcGroupId,
+      const addGroupCommand = {
+        ...arbitraryAddGroupCommand(),
+        groupId: ncrcGroupId,
       };
       const evaluation = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
+        groupId: addGroupCommand.groupId,
         articleId,
       };
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(evaluation);
       docmaps = await pipe(
         articleId.value,
@@ -116,23 +116,23 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      const group1 = {
-        ...arbitraryGroup(),
-        id: ncrcGroupId,
+      const addGroup1 = {
+        ...arbitraryAddGroupCommand(),
+        groupId: ncrcGroupId,
       };
-      const group2 = arbitraryGroup();
+      const addGroup2 = arbitraryAddGroupCommand();
       const evaluation1 = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group1.id,
+        groupId: addGroup1.groupId,
         articleId,
       };
       const evaluation2 = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group2.id,
+        groupId: addGroup2.groupId,
         articleId,
       };
-      await framework.commandHelpers.deprecatedCreateGroup(group1);
-      await framework.commandHelpers.deprecatedCreateGroup(group2);
+      await framework.commandHelpers.addGroup(addGroup1);
+      await framework.commandHelpers.addGroup(addGroup2);
       await framework.commandHelpers.recordEvaluationPublication(evaluation1);
       await framework.commandHelpers.recordEvaluationPublication(evaluation2);
       docmaps = await pipe(
@@ -151,26 +151,26 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      const group1 = {
-        ...arbitraryGroup(),
-        id: ncrcGroupId,
+      const addGroup1 = {
+        ...arbitraryAddGroupCommand(),
+        groupId: ncrcGroupId,
       };
-      const group2 = {
-        ...arbitraryGroup(),
-        id: rapidReviewsGroupId,
+      const addGroup2 = {
+        ...arbitraryAddGroupCommand(),
+        groupId: rapidReviewsGroupId,
       };
       const evaluation1 = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group1.id,
+        groupId: addGroup1.groupId,
         articleId,
       };
       const evaluation2 = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group2.id,
+        groupId: addGroup2.groupId,
         articleId,
       };
-      await framework.commandHelpers.deprecatedCreateGroup(group1);
-      await framework.commandHelpers.deprecatedCreateGroup(group2);
+      await framework.commandHelpers.addGroup(addGroup1);
+      await framework.commandHelpers.addGroup(addGroup2);
       await framework.commandHelpers.recordEvaluationPublication(evaluation1);
       await framework.commandHelpers.recordEvaluationPublication(evaluation2);
       docmaps = await pipe(
@@ -192,21 +192,21 @@ describe('generate-docmaps', () => {
     let docmaps: ReadonlyArray<Docmap>;
 
     beforeEach(async () => {
-      const group = {
-        ...arbitraryGroup(),
-        id: ncrcGroupId,
+      const addGroupCommand = {
+        ...arbitraryAddGroupCommand(),
+        groupId: ncrcGroupId,
       };
       const evaluation1 = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
+        groupId: addGroupCommand.groupId,
         articleId,
       };
       const evaluation2 = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
+        groupId: addGroupCommand.groupId,
         articleId,
       };
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(evaluation1);
       await framework.commandHelpers.recordEvaluationPublication(evaluation2);
       docmaps = await pipe(
@@ -225,23 +225,23 @@ describe('generate-docmaps', () => {
     let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
 
     beforeEach(async () => {
-      const group = {
-        ...arbitraryGroup(),
+      const addGroupCommand = {
+        ...arbitraryAddGroupCommand(),
         id: ncrcGroupId,
       };
       const failingReviewId = arbitraryNcrcId();
       const goodEvaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
+        groupId: addGroupCommand.id,
         articleId,
       };
       const badEvaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
-        groupId: group.id,
+        groupId: addGroupCommand.id,
         articleId,
         evaluationLocator: failingReviewId,
       };
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(goodEvaluation);
       await framework.commandHelpers.recordEvaluationPublication(badEvaluation);
       response = await pipe(
