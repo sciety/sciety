@@ -6,8 +6,8 @@ import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { constructViewModel } from '../../../../../src/html-pages/user-page/user-following-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-following-page/view-model';
-import { arbitraryGroup } from '../../../../types/group.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -24,17 +24,17 @@ describe('construct-view-model', () => {
   });
 
   describe('when the user follows three groups', () => {
-    const group1 = arbitraryGroup();
-    const group2 = arbitraryGroup();
-    const group3 = arbitraryGroup();
+    const addGroup1 = arbitraryAddGroupCommand();
+    const addGroup2 = arbitraryAddGroupCommand();
+    const addGroup3 = arbitraryAddGroupCommand();
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group1);
-      await framework.commandHelpers.deprecatedCreateGroup(group2);
-      await framework.commandHelpers.deprecatedCreateGroup(group3);
-      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group1.id);
-      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group2.id);
-      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group3.id);
+      await framework.commandHelpers.addGroup(addGroup1);
+      await framework.commandHelpers.addGroup(addGroup2);
+      await framework.commandHelpers.addGroup(addGroup3);
+      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroup1.groupId);
+      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroup2.groupId);
+      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroup3.groupId);
     });
 
     describe('when the followed groups tab is selected', () => {
@@ -62,9 +62,9 @@ describe('construct-view-model', () => {
       it.failing('returns them in order of most recently followed first', async () => {
         expect(viewmodel).toStrictEqual(expect.objectContaining({
           followedGroups: O.some([
-            expect.objectContaining({ id: group3.id }),
-            expect.objectContaining({ id: group2.id }),
-            expect.objectContaining({ id: group1.id }),
+            expect.objectContaining({ id: addGroup3.groupId }),
+            expect.objectContaining({ id: addGroup2.groupId }),
+            expect.objectContaining({ id: addGroup1.groupId }),
           ]),
         }));
       });

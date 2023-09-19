@@ -8,11 +8,11 @@ import * as LOID from '../../src/types/list-owner-id';
 import { constructViewModel as constructGroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/construct-view-model/construct-view-model';
 import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryGroup } from '../types/group.helper';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
 import { createTestFramework, TestFramework } from '../framework';
 import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../write-side/commands/create-user-account-command.helper';
+import { arbitraryAddGroupCommand } from '../write-side/commands/add-group-command.helper';
 
 describe('create user list', () => {
   let framework: TestFramework;
@@ -23,12 +23,12 @@ describe('create user list', () => {
 
   describe('given a user who is following a group', () => {
     const createUserAccountCommand = arbitraryCreateUserAccountCommand();
-    const group = arbitraryGroup();
+    const addGroupCommand = arbitraryAddGroupCommand();
 
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
-      await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group.id);
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
     });
 
     describe('when the user creates a new list', () => {
@@ -75,7 +75,7 @@ describe('create user list', () => {
         beforeEach(async () => {
           groupFollowersPage = await pipe(
             {
-              slug: group.slug,
+              slug: addGroupCommand.slug,
               user: O.none,
               page: 1,
             },
