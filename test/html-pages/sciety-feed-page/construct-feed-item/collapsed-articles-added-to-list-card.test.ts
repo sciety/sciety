@@ -7,10 +7,10 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { createTestFramework, TestFramework } from '../../../framework';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { List } from '../../../../src/types/list';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('collapsed-articles-added-to-list-card', () => {
   let framework: TestFramework;
@@ -33,13 +33,13 @@ describe('collapsed-articles-added-to-list-card', () => {
     const articleCount = arbitraryNumber(2, 10);
 
     describe('when user details are available', () => {
-      const user = arbitraryUserDetails();
+      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
       let list: List;
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateUserAccount(user);
-        list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+        await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+        list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
         viewModel = pipe(
           {
             type: 'CollapsedArticlesAddedToList' as const,
@@ -53,11 +53,11 @@ describe('collapsed-articles-added-to-list-card', () => {
       });
 
       it('includes the user\'s handle in the title text', async () => {
-        expect(viewModel.titleText).toContain(user.handle);
+        expect(viewModel.titleText).toContain(createUserAccountCommand.handle);
       });
 
       it('includes the user\'s avatar', async () => {
-        expect(viewModel.avatarUrl).toStrictEqual(user.avatarUrl);
+        expect(viewModel.avatarUrl).toStrictEqual(createUserAccountCommand.avatarUrl);
       });
 
       it('includes the event date', async () => {

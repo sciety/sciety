@@ -4,7 +4,6 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { List } from '../../../../src/types/list';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
@@ -12,6 +11,7 @@ import { arbitraryUserId } from '../../../types/user-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('article-added-to-list-card', () => {
   let framework: TestFramework;
@@ -30,7 +30,7 @@ describe('article-added-to-list-card', () => {
   });
 
   describe('when a user owns the list', () => {
-    const user = arbitraryUserDetails();
+    const createuserAccountCommand = arbitraryCreateUserAccountCommand();
     const date = new Date('2021-09-15');
 
     describe('when user details are available', () => {
@@ -38,8 +38,8 @@ describe('article-added-to-list-card', () => {
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateUserAccount(user);
-        userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+        await framework.commandHelpers.createUserAccount(createuserAccountCommand);
+        userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createuserAccountCommand.userId))[0];
         await framework.commandHelpers.addArticleToList(arbitraryArticleId(), userList.id);
 
         viewModel = pipe(
@@ -50,11 +50,11 @@ describe('article-added-to-list-card', () => {
       });
 
       it('includes the user\'s handle in the title text', async () => {
-        expect(viewModel.titleText).toContain(user.handle);
+        expect(viewModel.titleText).toContain(createuserAccountCommand.handle);
       });
 
       it('includes the user\'s avatar', async () => {
-        expect(viewModel.avatarUrl).toStrictEqual(user.avatarUrl);
+        expect(viewModel.avatarUrl).toStrictEqual(createuserAccountCommand.avatarUrl);
       });
 
       it('includes the event date', async () => {

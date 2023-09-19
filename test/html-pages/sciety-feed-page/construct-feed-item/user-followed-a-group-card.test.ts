@@ -6,16 +6,16 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructEvent } from '../../../../src/domain-events';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('user-followed-a-group-card', () => {
-  const userDetails = arbitraryUserDetails();
+  const createUserAccountCommand = arbitraryCreateUserAccountCommand();
   const date = arbitraryDate();
   const group = arbitraryGroup();
   const event = constructEvent('UserFollowedEditorialCommunity')({
-    userId: userDetails.id,
+    userId: createUserAccountCommand.userId,
     editorialCommunityId: group.id,
     date,
   });
@@ -35,7 +35,7 @@ describe('user-followed-a-group-card', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       viewModel = pipe(
         event,
         userFollowedAGroupCard(dependencies),
@@ -44,11 +44,11 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('displays the user\'s avatar', async () => {
-      expect(viewModel.avatarUrl).toStrictEqual(userDetails.avatarUrl);
+      expect(viewModel.avatarUrl).toStrictEqual(createUserAccountCommand.avatarUrl);
     });
 
     it('displays the user\'s handle in the title', async () => {
-      expect(viewModel.titleText).toContain(userDetails.handle);
+      expect(viewModel.titleText).toContain(createUserAccountCommand.handle);
     });
 
     it('displays the date of the event', async () => {
