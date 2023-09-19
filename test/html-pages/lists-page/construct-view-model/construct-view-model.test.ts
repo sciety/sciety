@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import { constructViewModel } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
@@ -10,10 +9,11 @@ import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model-with-avatar';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  const user = arbitraryUserDetails();
+  const createUserAccountCommand = arbitraryCreateUserAccountCommand();
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -23,13 +23,13 @@ describe('construct-view-model', () => {
     let initialUserList: List;
     const command = {
       ...arbitraryCreateListCommand(),
-      ownerId: LOID.fromUserId(user.id),
+      ownerId: LOID.fromUserId(createUserAccountCommand.userId),
     };
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateUserAccount(user);
-      initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+      initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), initialUserList.id);
       await framework.commandHelpers.createList(command);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), command.listId);
@@ -39,8 +39,8 @@ describe('construct-view-model', () => {
 
     it('the user avatar is included in each card', () => {
       expect(viewmodel).toStrictEqual([
-        expect.objectContaining({ avatarUrl: O.some(user.avatarUrl) }),
-        expect.objectContaining({ avatarUrl: O.some(user.avatarUrl) }),
+        expect.objectContaining({ avatarUrl: O.some(createUserAccountCommand.avatarUrl) }),
+        expect.objectContaining({ avatarUrl: O.some(createUserAccountCommand.avatarUrl) }),
       ]);
     });
 

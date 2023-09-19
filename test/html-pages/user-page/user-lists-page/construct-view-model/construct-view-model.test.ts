@@ -6,35 +6,35 @@ import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { List } from '../../../../../src/types/list';
-import { arbitraryUserDetails } from '../../../../types/user-details.helper';
 import { constructViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/view-model';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let viewmodel: ViewModel;
-  const user = arbitraryUserDetails();
+  const createUserAccountCommand = arbitraryCreateUserAccountCommand();
   const pageParams = {
-    handle: user.handle as string as CandidateUserHandle,
+    handle: createUserAccountCommand.handle as string as CandidateUserHandle,
     user: O.none,
   };
 
   beforeEach(async () => {
     framework = createTestFramework();
-    await framework.commandHelpers.deprecatedCreateUserAccount(user);
+    await framework.commandHelpers.createUserAccount(createUserAccountCommand);
   });
 
   describe('when the user owns two lists', () => {
     let initialUserList: List;
     const command = {
       ...arbitraryCreateListCommand(),
-      ownerId: LOID.fromUserId(user.id),
+      ownerId: LOID.fromUserId(createUserAccountCommand.userId),
     };
 
     beforeEach(async () => {
-      initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+      initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.createList(command);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), command.listId);
     });
@@ -69,7 +69,7 @@ describe('construct-view-model', () => {
 
   describe('when the user saves an article to the default list for the first time', () => {
     beforeEach(async () => {
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
     });
 
@@ -98,9 +98,9 @@ describe('construct-view-model', () => {
     });
 
     it('exposes the user details', async () => {
-      expect(viewmodel.userDetails.handle).toBe(user.handle);
-      expect(viewmodel.userDetails.displayName).toBe(user.displayName);
-      expect(viewmodel.userDetails.avatarUrl).toBe(user.avatarUrl);
+      expect(viewmodel.userDetails.handle).toBe(createUserAccountCommand.handle);
+      expect(viewmodel.userDetails.displayName).toBe(createUserAccountCommand.displayName);
+      expect(viewmodel.userDetails.avatarUrl).toBe(createUserAccountCommand.avatarUrl);
     });
   });
 });

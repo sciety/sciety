@@ -4,23 +4,23 @@ import { pipe } from 'fp-ts/function';
 import { CandidateUserHandle } from '../../../../../src/types/candidate-user-handle';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../../framework';
-import { arbitraryUserDetails } from '../../../../types/user-details.helper';
 import { constructViewModel } from '../../../../../src/html-pages/user-page/user-following-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-following-page/view-model';
 import { arbitraryGroup } from '../../../../types/group.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let viewmodel: ViewModel;
-  const user = arbitraryUserDetails();
+  const createUserAccountCommand = arbitraryCreateUserAccountCommand();
   const pageParams = {
-    handle: user.handle as string as CandidateUserHandle,
+    handle: createUserAccountCommand.handle as string as CandidateUserHandle,
     user: O.none,
   };
 
   beforeEach(async () => {
     framework = createTestFramework();
-    await framework.commandHelpers.deprecatedCreateUserAccount(user);
+    await framework.commandHelpers.createUserAccount(createUserAccountCommand);
   });
 
   describe('when the user follows three groups', () => {
@@ -32,9 +32,9 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.deprecatedCreateGroup(group1);
       await framework.commandHelpers.deprecatedCreateGroup(group2);
       await framework.commandHelpers.deprecatedCreateGroup(group3);
-      await framework.commandHelpers.followGroup(user.id, group1.id);
-      await framework.commandHelpers.followGroup(user.id, group2.id);
-      await framework.commandHelpers.followGroup(user.id, group3.id);
+      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group1.id);
+      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group2.id);
+      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, group3.id);
     });
 
     describe('when the followed groups tab is selected', () => {
@@ -81,9 +81,9 @@ describe('construct-view-model', () => {
     });
 
     it('exposes the user details', async () => {
-      expect(viewmodel.userDetails.handle).toBe(user.handle);
-      expect(viewmodel.userDetails.displayName).toBe(user.displayName);
-      expect(viewmodel.userDetails.avatarUrl).toBe(user.avatarUrl);
+      expect(viewmodel.userDetails.handle).toBe(createUserAccountCommand.handle);
+      expect(viewmodel.userDetails.displayName).toBe(createUserAccountCommand.displayName);
+      expect(viewmodel.userDetails.avatarUrl).toBe(createUserAccountCommand.avatarUrl);
     });
   });
 });
