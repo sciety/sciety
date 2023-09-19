@@ -74,7 +74,7 @@ describe('get-annotation-content', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns no annotation', () => {
+    it('returns no annotation', () => {
       expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.none);
     });
   });

@@ -27,5 +27,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel[event.target.listId] = listState;
     handleLegacyAnnotations(readmodel, event);
   }
+  if (isEventOfType('ArticleRemovedFromList')(event)) {
+    const listState = readmodel[event.listId] ?? {};
+    delete listState[event.articleId.value];
+    readmodel[event.listId] = listState;
+  }
   return readmodel;
 };
