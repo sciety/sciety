@@ -23,7 +23,7 @@ describe('construct-view-model', () => {
     let orderedArticleIds: ReadonlyArray<Doi>;
     const createList = async () => {
       const userDetails = arbitraryUserDetails();
-      await framework.commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
       const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       return list.id;
     };

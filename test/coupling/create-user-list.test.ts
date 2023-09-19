@@ -27,7 +27,7 @@ describe('create user list', () => {
     const group = arbitraryGroup();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
+      await framework.commandHelpers.deprecatedCreateUserAccount(user);
       await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.followGroup(user.id, group.id);
     });

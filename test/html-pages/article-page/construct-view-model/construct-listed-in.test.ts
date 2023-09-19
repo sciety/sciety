@@ -39,7 +39,7 @@ describe('construct-listed-in', () => {
     let list: List;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
+      await framework.commandHelpers.deprecatedCreateUserAccount(user);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(

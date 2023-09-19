@@ -16,7 +16,7 @@ describe('get-user-owner-information', () => {
     const user = arbitraryUserDetails();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
+      await framework.commandHelpers.deprecatedCreateUserAccount(user);
     });
 
     it('returns the corresponding owner info', () => {

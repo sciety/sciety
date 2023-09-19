@@ -38,7 +38,7 @@ describe('collapsed-articles-added-to-list-card', () => {
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
-        await framework.commandHelpers.createUserAccount(user);
+        await framework.commandHelpers.deprecatedCreateUserAccount(user);
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
         viewModel = pipe(
           {

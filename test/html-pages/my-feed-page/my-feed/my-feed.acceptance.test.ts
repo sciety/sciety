@@ -42,7 +42,7 @@ describe('my-feed acceptance', () => {
     const userDetails = arbitraryUserDetails();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
     });
 
     describe('following groups that have no evaluations', () => {

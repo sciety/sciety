@@ -24,7 +24,7 @@ export type CommandHelpers = {
   createAnnotation: (command: CreateAnnotationCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
   deprecatedCreateList: (list: List) => Promise<unknown>,
-  createUserAccount: (user: UserDetails) => Promise<unknown>,
+  deprecatedCreateUserAccount: (user: UserDetails) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   deprecatedRecordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
@@ -75,7 +75,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.createList, 'createList'),
   ),
-  createUserAccount: async (user) => pipe(
+  deprecatedCreateUserAccount: async (user) => pipe(
     {
       userId: user.id,
       handle: user.handle,

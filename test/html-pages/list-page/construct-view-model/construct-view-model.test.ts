@@ -25,7 +25,7 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       userDetails = arbitraryUserDetails();
-      await framework.commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
       const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       const listId = list.id;
       await framework.commandHelpers.addArticleToList(articleId, listId);
@@ -60,7 +60,7 @@ describe('construct-view-model', () => {
   describe('ordering of list contents', () => {
     const createList = async () => {
       const userDetails = arbitraryUserDetails();
-      await framework.commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
       const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
       return list.id;
     };

@@ -35,7 +35,7 @@ describe('user-followed-a-group-card', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
       viewModel = pipe(
         event,
         userFollowedAGroupCard(dependencies),

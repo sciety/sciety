@@ -23,7 +23,7 @@ describe('construct-view-model', () => {
 
   beforeEach(async () => {
     framework = createTestFramework();
-    await framework.commandHelpers.createUserAccount(user);
+    await framework.commandHelpers.deprecatedCreateUserAccount(user);
   });
 
   describe('when the user owns two lists', () => {

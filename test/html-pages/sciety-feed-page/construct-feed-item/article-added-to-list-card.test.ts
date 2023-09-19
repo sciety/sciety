@@ -38,7 +38,7 @@ describe('article-added-to-list-card', () => {
       let viewModel: ScietyFeedCard;
 
       beforeEach(async () => {
-        await framework.commandHelpers.createUserAccount(user);
+        await framework.commandHelpers.deprecatedCreateUserAccount(user);
         userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
         await framework.commandHelpers.addArticleToList(arbitraryArticleId(), userList.id);
 

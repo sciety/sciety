@@ -26,7 +26,7 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       userDetails = arbitraryUserDetails();
-      await framework.commandHelpers.createUserAccount(userDetails);
+      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
     });
 
     describe('when the article is not saved to the user\'s only list', () => {

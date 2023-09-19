@@ -36,8 +36,8 @@ describe('augment-with-user-details', () => {
     const user2 = arbitraryUserDetails();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user2);
-      await framework.commandHelpers.createUserAccount(user1);
+      await framework.commandHelpers.deprecatedCreateUserAccount(user2);
+      await framework.commandHelpers.deprecatedCreateUserAccount(user1);
     });
 
     it('returns the user card view models in the same order as the input followers', () => {

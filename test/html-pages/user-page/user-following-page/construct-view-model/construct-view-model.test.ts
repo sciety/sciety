@@ -20,7 +20,7 @@ describe('construct-view-model', () => {
 
   beforeEach(async () => {
     framework = createTestFramework();
-    await framework.commandHelpers.createUserAccount(user);
+    await framework.commandHelpers.deprecatedCreateUserAccount(user);
   });
 
   describe('when the user follows three groups', () => {

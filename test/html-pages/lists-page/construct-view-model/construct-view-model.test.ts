@@ -29,7 +29,7 @@ describe('construct-view-model', () => {
     let viewmodel: ViewModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(user);
+      await framework.commandHelpers.deprecatedCreateUserAccount(user);
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(user.id))[0];
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), initialUserList.id);
       await framework.commandHelpers.createList(command);
