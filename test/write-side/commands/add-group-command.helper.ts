@@ -1,5 +1,5 @@
 import { AddGroupCommand } from '../../../src/write-side/commands';
-import { arbitraryString } from '../../helpers';
+import { arbitraryString, arbitraryWord } from '../../helpers';
 import { arbitraryDescriptionPath } from '../../types/description-path.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
@@ -10,5 +10,5 @@ export const arbitraryAddGroupCommand = (): AddGroupCommand => ({
   homepage: arbitraryString(),
   avatarPath: arbitraryString(),
   descriptionPath: arbitraryDescriptionPath(),
-  slug: arbitraryString(),
+  slug: arbitraryWord(),
 });

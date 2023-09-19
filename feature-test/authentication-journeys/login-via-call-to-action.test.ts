@@ -3,18 +3,18 @@ import {
 } from 'taiko';
 import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
-import { arbitraryGroup } from '../../test/types/group.helper';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
 import * as api from '../helpers/api-helpers';
 import { arbitraryUserDetails } from '../../test/types/user-details.helper';
+import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 
 describe('login-via-call-to-action', () => {
-  const groupA = arbitraryGroup();
+  const addGroupCommand = arbitraryAddGroupCommand();
   const userDetails = arbitraryUserDetails();
 
   beforeAll(async () => {
     await api.createUser(userDetails);
-    await api.addGroup(groupA);
+    await api.addGroup(addGroupCommand);
   });
 
   beforeEach(async () => {
@@ -24,7 +24,7 @@ describe('login-via-call-to-action', () => {
   afterEach(screenshotTeardown);
 
   describe('when I am on the group page and I am not logged in', () => {
-    const groupPageAboutTab = `http://localhost:8080/groups/${groupA.slug}/about`;
+    const groupPageAboutTab = `http://localhost:8080/groups/${addGroupCommand.slug}/about`;
 
     beforeEach(async () => {
       await goto(groupPageAboutTab);

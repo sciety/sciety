@@ -3,10 +3,10 @@ import {
 } from 'taiko';
 import { getIdOfFirstListOwnedByGroup } from '../helpers/get-first-list-owned-by.helper';
 import { screenshotTeardown } from '../utilities';
-import { arbitraryGroup } from '../../test/types/group.helper';
 import * as api from '../helpers/api-helpers';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
 import { ListId } from '../../src/types/list-id';
+import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 
 describe('add an article to a list', () => {
   beforeEach(async () => {
@@ -20,9 +20,9 @@ describe('add an article to a list', () => {
     let listId: ListId;
 
     beforeEach(async () => {
-      const group = arbitraryGroup();
-      await api.addGroup(group);
-      listId = await getIdOfFirstListOwnedByGroup(group.id);
+      const command = arbitraryAddGroupCommand();
+      await api.addGroup(command);
+      listId = await getIdOfFirstListOwnedByGroup(command.groupId);
       await api.addArticleToList(articleId, listId);
     });
 

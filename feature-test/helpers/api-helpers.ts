@@ -1,7 +1,7 @@
 import { Doi } from '../../src/types/doi';
-import { Group } from '../../src/types/group';
 import { ListId } from '../../src/types/list-id';
 import { UserDetails } from '../../src/types/user-details';
+import { AddGroupCommand } from '../../src/write-side/commands';
 import { callApi } from './call-api.helper';
 
 export const addArticleToList = async (articleId: Doi, listId: ListId): ReturnType<typeof callApi> => callApi(
@@ -12,10 +12,7 @@ export const addArticleToList = async (articleId: Doi, listId: ListId): ReturnTy
   },
 );
 
-export const addGroup = async (group: Group): ReturnType<typeof callApi> => callApi('api/add-group', {
-  ...group,
-  groupId: group.id,
-});
+export const addGroup = async (command: AddGroupCommand): ReturnType<typeof callApi> => callApi('api/add-group', command);
 
 export const createUser = async (userDetails: UserDetails): ReturnType<typeof callApi> => callApi('api/create-user', {
   ...userDetails,

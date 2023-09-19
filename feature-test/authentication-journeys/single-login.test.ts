@@ -5,17 +5,17 @@ import {
 import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { getIdOfFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper';
-import { arbitraryGroup } from '../../test/types/group.helper';
 import * as api from '../helpers/api-helpers';
 import { arbitraryUserDetails } from '../../test/types/user-details.helper';
+import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 
 describe('single-login', () => {
-  const groupA = arbitraryGroup();
+  const addGroupCommand = arbitraryAddGroupCommand();
   const userDetails = arbitraryUserDetails();
 
   beforeAll(async () => {
     await api.createUser(userDetails);
-    await api.addGroup(groupA);
+    await api.addGroup(addGroupCommand);
   });
 
   beforeEach(async () => {
@@ -27,9 +27,9 @@ describe('single-login', () => {
   describe.each([
     ['About page', '/about'],
     ['Article page', '/articles/activity/10.1101/2023.02.09.527915'],
-    ['Group page, about tab', `/groups/${groupA.slug}/about`],
-    ['Group page, followers tab', `/groups/${groupA.slug}/followers`],
-    ['Group page, lists tab', `/groups/${groupA.slug}/lists`],
+    ['Group page, about tab', `/groups/${addGroupCommand.slug}/about`],
+    ['Group page, followers tab', `/groups/${addGroupCommand.slug}/followers`],
+    ['Group page, lists tab', `/groups/${addGroupCommand.slug}/lists`],
     ['Groups page', '/groups'],
     ['Home page', '/'],
     ['Legal page', '/legal'],
