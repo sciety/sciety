@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { CreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
-import { Group } from '../../src/types/group';
 import { UserId } from '../../src/types/user-id';
 import { GroupId } from '../../src/types/group-id';
 import { ListId } from '../../src/types/list-id';
@@ -18,7 +17,6 @@ import { AddGroupCommand, CreateUserAccountCommand, RecordEvaluationPublicationC
 export type CommandHelpers = {
   addArticleToList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   addGroup: (command: AddGroupCommand) => Promise<unknown>,
-  deprecatedCreateGroup: (group: Group) => Promise<unknown>,
   createAnnotation: (command: CreateAnnotationCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
@@ -49,18 +47,6 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   ),
   addGroup: invoke(commandHandlers.addGroup, 'addGroup'),
-  deprecatedCreateGroup: async (group) => pipe(
-    {
-      groupId: group.id,
-      name: group.name,
-      shortDescription: group.shortDescription,
-      homepage: group.homepage,
-      avatarPath: group.avatarPath,
-      descriptionPath: group.descriptionPath,
-      slug: group.slug,
-    },
-    invoke(commandHandlers.addGroup, 'addGroup'),
-  ),
   createAnnotation: invoke(commandHandlers.createAnnotation, 'createAnnotation'),
   createList: invoke(commandHandlers.createList, 'createList'),
   createUserAccount: invoke(commandHandlers.createUserAccount, 'createUserAccount'),
