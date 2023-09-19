@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { CreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
@@ -8,7 +7,6 @@ import { UserId } from '../../src/types/user-id';
 import { GroupId } from '../../src/types/group-id';
 import { ListId } from '../../src/types/list-id';
 import { Doi } from '../../src/types/doi';
-import { RecordedEvaluation } from '../../src/types/recorded-evaluation';
 import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
@@ -21,7 +19,6 @@ export type CommandHelpers = {
   createList: (command: CreateListCommand) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
-  deprecatedRecordEvaluation: (evaluation: RecordedEvaluation) => Promise<unknown>,
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
   removeArticleFromList: (articleId: Doi, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
@@ -53,21 +50,6 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
   followGroup: async (userId, groupId) => pipe(
     { userId, groupId },
     invoke(commandHandlers.followGroup, 'followGroup'),
-  ),
-  deprecatedRecordEvaluation: async (evaluation: RecordedEvaluation) => pipe(
-    {
-      groupId: evaluation.groupId,
-      publishedAt: evaluation.publishedAt,
-      evaluationLocator: evaluation.evaluationLocator,
-      articleId: evaluation.articleId,
-      authors: evaluation.authors,
-      issuedAt: evaluation.recordedAt,
-      evaluationType: pipe(
-        evaluation.type,
-        O.getOrElseW(() => undefined),
-      ),
-    },
-    invoke(commandHandlers.recordEvaluationPublication, 'recordEvaluationPublication'),
   ),
   recordEvaluationPublication: invoke(commandHandlers.recordEvaluationPublication, 'recordEvaluationPublication'),
   removeArticleFromList: async (articleId, listId) => pipe(
