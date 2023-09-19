@@ -1,9 +1,9 @@
 import * as TE from 'fp-ts/TaskEither';
 import { GroupId } from '../../../../src/types/group-id';
 import { arbitraryString } from '../../../helpers';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { findGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/find-groups';
 import { TestFramework, createTestFramework } from '../../../framework';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 
 describe('find-groups', () => {
   let framework: TestFramework;
@@ -18,19 +18,19 @@ describe('find-groups', () => {
   });
 
   describe('when there are matching groups', () => {
-    const group1 = arbitraryGroup();
-    const group2 = arbitraryGroup();
+    const addGroup1 = arbitraryAddGroupCommand();
+    const addGroup2 = arbitraryAddGroupCommand();
 
     let result: ReadonlyArray<GroupId>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group1);
-      await framework.commandHelpers.deprecatedCreateGroup(group2);
-      result = await findGroups(dependencies, group1.name)();
+      await framework.commandHelpers.addGroup(addGroup1);
+      await framework.commandHelpers.addGroup(addGroup2);
+      result = await findGroups(dependencies, addGroup1.name)();
     });
 
     it('returns an array containing the groupId', async () => {
-      expect(result).toStrictEqual([group1.id]);
+      expect(result).toStrictEqual([addGroup1.groupId]);
     });
   });
 
