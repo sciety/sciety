@@ -78,7 +78,7 @@ test-coverage: build
 	sed -i -e 's/\/app\/src/src/g' coverage/coverage-final.json
 
 jest-test:
-	EXPERIMENT_ENABLED="true" npx jest ${TEST}
+	EXPERIMENT_ENABLED="true" JWR_PROGRESS="tree" npx jest ${TEST}
 
 backstop-test: export TARGET = fast
 backstop-test: export USE_STUB_ADAPTERS = true
