@@ -10,7 +10,6 @@ import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryNcrcId, arbitraryReviewDoi } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
@@ -217,7 +216,10 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when there is a single evaluation by the selected group', () => {
-    const group = arbitraryGroup();
+    const addGroupCommand = {
+      ...arbitraryAddGroupCommand(),
+      groupId: indexedGroupId,
+    };
     const evaluation: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
       groupId: indexedGroupId,
@@ -226,7 +228,7 @@ describe('generate-docmap-view-model', () => {
     let result: DocmapModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.addGroup({ ...group, groupId: indexedGroupId });
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
         {

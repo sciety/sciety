@@ -227,17 +227,17 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       const addGroupCommand = {
         ...arbitraryAddGroupCommand(),
-        id: ncrcGroupId,
+        groupId: ncrcGroupId,
       };
       const failingReviewId = arbitraryNcrcId();
       const goodEvaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
-        groupId: addGroupCommand.id,
+        groupId: addGroupCommand.groupId,
         articleId,
       };
       const badEvaluation: RecordedEvaluation = {
         ...arbitraryRecordedEvaluation(),
-        groupId: addGroupCommand.id,
+        groupId: addGroupCommand.groupId,
         articleId,
         evaluationLocator: failingReviewId,
       };
