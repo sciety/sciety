@@ -3,8 +3,8 @@ import { pipe } from 'fp-ts/function';
 import { augmentWithUserDetails } from '../../../../../src/html-pages/group-page/group-followers-page/construct-view-model/augment-with-user-details';
 import { arbitraryNumber } from '../../../../helpers';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
-import { arbitraryUserDetails } from '../../../../types/user-details.helper';
 import { TestFramework, createTestFramework } from '../../../../framework';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
 describe('augment-with-user-details', () => {
   let framework: TestFramework;
@@ -32,23 +32,23 @@ describe('augment-with-user-details', () => {
   });
 
   describe('when the following users do exist', () => {
-    const user1 = arbitraryUserDetails();
-    const user2 = arbitraryUserDetails();
+    const createUserAccount1 = arbitraryCreateUserAccountCommand();
+    const createUserAccount2 = arbitraryCreateUserAccountCommand();
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateUserAccount(user2);
-      await framework.commandHelpers.deprecatedCreateUserAccount(user1);
+      await framework.commandHelpers.createUserAccount(createUserAccount2);
+      await framework.commandHelpers.createUserAccount(createUserAccount1);
     });
 
     it('returns the user card view models in the same order as the input followers', () => {
       const followers = [
         {
-          userId: user1.id,
+          userId: createUserAccount1.userId,
           listCount: arbitraryNumber(0, 10),
           followedGroupCount: arbitraryNumber(0, 10),
         },
         {
-          userId: user2.id,
+          userId: createUserAccount2.userId,
           listCount: arbitraryNumber(0, 10),
           followedGroupCount: arbitraryNumber(0, 10),
         },
@@ -60,8 +60,8 @@ describe('augment-with-user-details', () => {
       );
 
       expect(handles).toStrictEqual([
-        user1.handle,
-        user2.handle,
+        createUserAccount1.handle,
+        createUserAccount2.handle,
       ]);
     });
   });

@@ -2,14 +2,14 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { UserDetails } from '../../../../src/types/user-details';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { ViewModel } from '../../../../src/html-pages/list-page/view-model';
 import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
 import { createTestFramework, TestFramework } from '../../../framework';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
 import * as LOID from '../../../../src/types/list-owner-id';
+import { CreateUserAccountCommand } from '../../../../src/write-side/commands';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -20,20 +20,20 @@ describe('construct-view-model', () => {
 
   describe('when a user saves an article that is not in any list', () => {
     let viewModel: ViewModel;
-    let userDetails: UserDetails;
+    let createUserAccountCommand: CreateUserAccountCommand;
     const articleId = arbitraryArticleId();
 
     beforeEach(async () => {
-      userDetails = arbitraryUserDetails();
-      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      createUserAccountCommand = arbitraryCreateUserAccountCommand();
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       const listId = list.id;
       await framework.commandHelpers.addArticleToList(articleId, listId);
       viewModel = await pipe(
         {
           page: 1,
           id: listId,
-          user: O.some({ id: userDetails.id }),
+          user: O.some({ id: createUserAccountCommand.userId }),
         },
         constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
@@ -59,9 +59,9 @@ describe('construct-view-model', () => {
 
   describe('ordering of list contents', () => {
     const createList = async () => {
-      const userDetails = arbitraryUserDetails();
-      await framework.commandHelpers.deprecatedCreateUserAccount(userDetails);
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(userDetails.id))[0];
+      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       return list.id;
     };
 
