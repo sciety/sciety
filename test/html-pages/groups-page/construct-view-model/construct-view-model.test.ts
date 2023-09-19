@@ -23,13 +23,13 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(mostRecentlyActiveGroup);
-      await framework.commandHelpers.deprecatedRecordEvaluation({
+      await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordedEvaluation(),
         groupId: mostRecentlyActiveGroup.id,
         publishedAt: new Date('2020'),
       });
       await framework.commandHelpers.deprecatedCreateGroup(leastRecentlyActiveGroup);
-      await framework.commandHelpers.deprecatedRecordEvaluation({
+      await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordedEvaluation(),
         groupId: leastRecentlyActiveGroup.id,
         publishedAt: new Date('1970'),

@@ -46,7 +46,7 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
         { articleId, groupId: group.id },
         generateDocmapViewModel(defaultAdapters),
@@ -80,8 +80,8 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(firstEvaluation);
-      await framework.commandHelpers.deprecatedRecordEvaluation(secondEvaluation);
+      await framework.commandHelpers.recordEvaluationPublication(firstEvaluation);
+      await framework.commandHelpers.recordEvaluationPublication(secondEvaluation);
       result = await pipe(
         generateDocmapViewModel(defaultAdapters)({ articleId, groupId: group.id }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
@@ -121,7 +121,7 @@ describe('generate-docmap-view-model', () => {
         fetchReview: shouldNotBeCalled,
       };
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
@@ -155,7 +155,7 @@ describe('generate-docmap-view-model', () => {
         fetchReview: () => TE.right({ url: sourceUrl }),
       };
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
         generateDocmapViewModel(ports)({ articleId, groupId: group.id }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
@@ -193,12 +193,12 @@ describe('generate-docmap-view-model', () => {
       };
       await framework.commandHelpers.deprecatedCreateGroup(group);
       await framework.commandHelpers.deprecatedCreateGroup(otherGroup);
-      await framework.commandHelpers.deprecatedRecordEvaluation({
+      await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordedEvaluation(),
         groupId: otherGroup.id,
         articleId,
       });
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluationByThisGroup);
+      await framework.commandHelpers.recordEvaluationPublication(evaluationByThisGroup);
 
       const result = await pipe(
         {
@@ -228,7 +228,7 @@ describe('generate-docmap-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup({ ...group, id: indexedGroupId });
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = await pipe(
         {
           articleId,

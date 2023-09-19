@@ -129,7 +129,7 @@ describe('identify-all-possible-index-entries', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
@@ -149,7 +149,7 @@ describe('identify-all-possible-index-entries', () => {
     let result: ReturnType<typeof identifyAllPossibleIndexEntries>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
       );

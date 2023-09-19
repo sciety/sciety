@@ -68,8 +68,8 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       await framework.commandHelpers.deprecatedCreateGroup(group1);
       await framework.commandHelpers.deprecatedCreateGroup(group2);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation1);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation2);
       response = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -99,7 +99,7 @@ describe('generate-docmaps', () => {
         articleId,
       };
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation);
       docmaps = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -133,8 +133,8 @@ describe('generate-docmaps', () => {
       };
       await framework.commandHelpers.deprecatedCreateGroup(group1);
       await framework.commandHelpers.deprecatedCreateGroup(group2);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation1);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation2);
       docmaps = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -171,8 +171,8 @@ describe('generate-docmaps', () => {
       };
       await framework.commandHelpers.deprecatedCreateGroup(group1);
       await framework.commandHelpers.deprecatedCreateGroup(group2);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation1);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation2);
       docmaps = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -207,8 +207,8 @@ describe('generate-docmaps', () => {
         articleId,
       };
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
-      await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation1);
+      await framework.commandHelpers.recordEvaluationPublication(evaluation2);
       docmaps = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
@@ -242,8 +242,8 @@ describe('generate-docmaps', () => {
         evaluationLocator: failingReviewId,
       };
       await framework.commandHelpers.deprecatedCreateGroup(group);
-      await framework.commandHelpers.deprecatedRecordEvaluation(goodEvaluation);
-      await framework.commandHelpers.deprecatedRecordEvaluation(badEvaluation);
+      await framework.commandHelpers.recordEvaluationPublication(goodEvaluation);
+      await framework.commandHelpers.recordEvaluationPublication(badEvaluation);
       response = await pipe(
         generateDocmaps({
           ...defaultAdapters,
