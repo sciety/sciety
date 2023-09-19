@@ -3,7 +3,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
-import { arbitraryList } from '../../types/list-helper';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { dummyLogger } from '../../dummy-logger';
 import * as DE from '../../../src/types/data-error';
@@ -13,6 +12,7 @@ import { createTestFramework, TestFramework } from '../../framework';
 import { ArticleCardViewModel } from '../../../src/shared-components/article-card';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { ArticleErrorCardViewModel } from '../../../src/shared-components/article-card/render-article-error-card';
+import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 
 describe('construct-article-card-view-model', () => {
   let framework: TestFramework;
@@ -99,12 +99,12 @@ describe('construct-article-card-view-model', () => {
 
   describe('when an article appears in lists', () => {
     const articleId = arbitraryArticleId();
-    const list = arbitraryList();
+    const command = arbitraryCreateListCommand();
     let successfulViewModel: ArticleCardViewModel;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateList(list);
-      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      await framework.commandHelpers.createList(command);
+      await framework.commandHelpers.addArticleToList(articleId, command.listId);
       successfulViewModel = await pipe(
         articleId,
         constructArticleCardViewModel({
