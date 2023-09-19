@@ -8,16 +8,19 @@ import {
 } from '../../../src/docmaps/docmap-index/identify-all-possible-index-entries';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { RecordedEvaluation } from '../../../src/types/recorded-evaluation';
 import { dummyLogger } from '../../dummy-logger';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 describe('identify-all-possible-index-entries', () => {
-  const supportedGroups = [arbitraryGroup(), arbitraryGroup()];
-  const supportedGroupIds = supportedGroups.map((group) => group.id);
+  const supportedGroupCommands = [
+    arbitraryAddGroupCommand(),
+    arbitraryAddGroupCommand(),
+  ];
+  const supportedGroupIds = supportedGroupCommands.map((cmd) => cmd.groupId);
 
   let framework: TestFramework;
   let defaultAdapters: Ports;
@@ -35,19 +38,19 @@ describe('identify-all-possible-index-entries', () => {
     const laterDate = new Date('2000');
     const evaluation1: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
-      groupId: supportedGroups[0].id,
+      groupId: supportedGroupIds[0],
       recordedAt: earlierDate,
     };
     const evaluation2: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
-      groupId: supportedGroups[0].id,
+      groupId: supportedGroupIds[0],
       recordedAt: laterDate,
     };
 
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(supportedGroups[0]);
+      await framework.commandHelpers.addGroup(supportedGroupCommands[0]);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       result = pipe(
@@ -62,13 +65,13 @@ describe('identify-all-possible-index-entries', () => {
           articleId: evaluation2.articleId,
           groupId: evaluation2.groupId,
           updated: evaluation2.recordedAt,
-          publisherAccountId: publisherAccountId(supportedGroups[0]),
+          publisherAccountId: publisherAccountId(supportedGroupCommands[0]),
         },
         {
           articleId: evaluation1.articleId,
           groupId: evaluation1.groupId,
           updated: evaluation1.recordedAt,
-          publisherAccountId: publisherAccountId(supportedGroups[0]),
+          publisherAccountId: publisherAccountId(supportedGroupCommands[0]),
         },
       ]);
     });
@@ -81,26 +84,26 @@ describe('identify-all-possible-index-entries', () => {
     const articleId = arbitraryArticleId();
     const evaluation1: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
-      groupId: supportedGroups[0].id,
+      groupId: supportedGroupIds[0],
       articleId,
       recordedAt: earlierDate,
     };
     const evaluation2: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
-      groupId: supportedGroups[0].id,
+      groupId: supportedGroupIds[0],
       articleId,
       recordedAt: latestDate,
     };
     const evaluation3: RecordedEvaluation = {
       ...arbitraryRecordedEvaluation(),
-      groupId: supportedGroups[0].id,
+      groupId: supportedGroupIds[0],
       articleId,
       recordedAt: middleDate,
     };
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(supportedGroups[0]);
+      await framework.commandHelpers.addGroup(supportedGroupCommands[0]);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation1);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation2);
       await framework.commandHelpers.deprecatedRecordEvaluation(evaluation3);
@@ -120,15 +123,15 @@ describe('identify-all-possible-index-entries', () => {
   });
 
   describe('when there is an evaluated event by an unsupported group', () => {
-    const group = arbitraryGroup();
+    const addGroupCommand = arbitraryAddGroupCommand();
     const evaluation = {
       ...arbitraryRecordedEvaluation(),
-      groupId: group.id,
+      groupId: addGroupCommand.groupId,
     };
     let result: ReadonlyArray<DocmapIndexEntryModel>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.deprecatedCreateGroup(group);
+      await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(evaluation);
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),

@@ -1,11 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
 import * as GID from '../../../src/types/group-id';
-import { arbitraryGroup } from '../../types/group.helper';
 import { Ports } from '../../../src/docmaps/docmap-index/docmap-index';
 import { TestFramework, createTestFramework } from '../../framework';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
@@ -43,18 +43,18 @@ describe('docmap-index', () => {
     });
 
     describe('when there are docmaps', () => {
-      const group = {
-        ...arbitraryGroup(),
-        id: ncrcGroupId,
+      const addGroupCommand = {
+        ...arbitraryAddGroupCommand(),
+        groupId: ncrcGroupId,
       };
       const recordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        groupId: group.id,
+        groupId: addGroupCommand.groupId,
       };
       let response: { body: DocmapIndexBody, status: StatusCodes };
 
       beforeEach(async () => {
-        await framework.commandHelpers.deprecatedCreateGroup(group);
+        await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         response = await docmapIndex(defaultAdapters)({})();
       });
