@@ -29,7 +29,7 @@ describe('construct-annotation', () => {
     });
   });
 
-  describe('when there is an annotation', () => {
+  describe('when there is an annotation on a list owned by a user', () => {
     const createUserAccountCommand = arbitraryCreateUserAccountCommand();
     const createListCommand = {
       ...arbitraryCreateListCommand(),
@@ -63,5 +63,17 @@ describe('construct-annotation', () => {
     it.failing('returns its author', () => {
       expect(result.author).toStrictEqual(createUserAccountCommand.displayName);
     });
+  });
+
+  describe('when there is an annotation on a list owned by a group', () => {
+    it.todo('returns its content');
+
+    it.todo('returns a static value as the author');
+  });
+
+  describe('when there is an annotation, but the list owner information is not available', () => {
+    it.todo('returns its content');
+
+    it.todo('returns a static value as the author');
   });
 });
