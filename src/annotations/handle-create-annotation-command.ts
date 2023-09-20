@@ -9,24 +9,26 @@ import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
 import { Doi } from '../types/doi';
 import { HtmlFragment, htmlFragmentCodec } from '../types/html-fragment';
-import { fromValidatedString } from '../types/list-id';
+import { fromValidatedString, ListId, listIdCodec } from '../types/list-id';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
 
 type Body = {
   annotationContent: HtmlFragment,
   articleId: Doi,
+  listId: ListId,
 };
 
 const bodyCodec = t.type({
   annotationContent: htmlFragmentCodec,
   articleId: DoiFromString,
+  listId: listIdCodec,
 });
 
-const transformToCommand = ({ annotationContent, articleId }: Body): CreateAnnotationCommand => ({
+const transformToCommand = ({ annotationContent, articleId, listId }: Body): CreateAnnotationCommand => ({
   content: annotationContent,
   target: {
     articleId,
-    listId: fromValidatedString('1af5b971-162e-4cf3-abdf-57e3bbfcd0d7'),
+    listId: fromValidatedString(listId),
   },
 });
 
