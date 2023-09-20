@@ -15,6 +15,7 @@ import { arbitraryHtmlFragment } from '../../helpers';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-messages';
 import { ArticleCardWithControlsAndAnnotationViewModel } from '../../../src/shared-components/article-card-with-controls-and-annotation';
+import { GetSome } from '../../type-optics';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
@@ -34,8 +35,7 @@ describe('construct-annotation', () => {
   describe('when there is an annotation', () => {
     const articleId = arbitraryArticleId();
     const content = arbitraryHtmlFragment();
-    type Some<T> = (T & { _tag: 'Some', value: unknown })['value'];
-    let result: Some<ArticleCardWithControlsAndAnnotationViewModel['annotation']>;
+    let result: GetSome<ArticleCardWithControlsAndAnnotationViewModel['annotation']>;
 
     describe('on a list owned by a user', () => {
       const createUserAccountCommand = arbitraryCreateUserAccountCommand();
