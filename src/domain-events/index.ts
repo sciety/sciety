@@ -74,9 +74,9 @@ export const domainEventCodec = t.union([
 ], 'type');
 
 export const currentOrLegacyDomainEventCodec = t.union([
-  legacyDomainEventCodec,
   domainEventCodec,
-]);
+  legacyDomainEventCodec,
+], 'type');
 
 export type CurrentOrLegacyDomainEvent = t.TypeOf<typeof currentOrLegacyDomainEventCodec>;
 
