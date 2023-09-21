@@ -19,6 +19,18 @@ $_card-padding: 16px;
   border-bottom: settings.$border-width solid settings.$colour-furniture;
 }
 
+.article-card--with-annotation {
+  @include breakpoints.two-column-display {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-column-gap: functions.px-to-rem(settings.$default-gutter);
+  }
+}
+
+.article-card-content {
+  grid-column: 1/9;
+}
+
 .article-card__title {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(20px);
@@ -57,6 +69,7 @@ $_card-padding: 16px;
 }
 
 .article-card-annotation {
+  grid-column: 9/13;
   padding: functions.px-to-rem($_card-padding);
   margin-top: functions.px-to-rem(40px);
   border: settings.$border-width solid settings.$colour-accent;
