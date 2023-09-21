@@ -3,8 +3,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
 import { Logger } from './logger';
 import {
@@ -47,10 +47,11 @@ const decodeEvents = (
     date: row.date,
     ...row.payload,
   })),
-  currentOrLegacyDomainEventsCodec.decode,
-  // eslint-disable-next-line fp-ts/prefer-bimap
+  flow(
+    currentOrLegacyDomainEventsCodec.decode,
+    E.mapLeft(formatValidationErrors),
+  ),
   E.map(RA.map(upgradeLegacyEventIfNecessary)),
-  E.mapLeft((errors) => PR.failure(errors)),
 );
 
 export const getEventsFromDatabase = (
