@@ -6,6 +6,7 @@ import { ViewModel } from '../article-card/view-model';
 
 type Annotation = {
   author: string,
+  authorAvatarPath: string,
   content: HtmlFragment,
 };
 
