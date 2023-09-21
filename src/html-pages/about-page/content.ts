@@ -19,7 +19,7 @@ export const content = `
 
 <figure class="about-page-figure">
 <img src="/static/images/about-page/preprints-in-europe-pmc.png" alt="graph of preprints in Europe PMC showing massive growth">
-<figcaption>Preprints in Europe PMC</figcaption>
+<figcaption>Preprints in Europe PMC (source: <a href="https://europepmc.org/Preprints">Europe PMC</a>)</figcaption>
 </figure>
 
 <p>Societies, journals and other groups of scientists are helping by highlighting the preprints that they think are the most important and providing public review and curation to share with their peers. Sciety brings the review and curation of preprints from multiple groups into one place to make them easier to find.</p>
