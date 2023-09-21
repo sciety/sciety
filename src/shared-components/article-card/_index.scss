@@ -67,6 +67,16 @@ $_card-padding: 16px;
   }
 }
 
+.article-card-annotation__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: functions.px-to-rem(12px);
+
+  h4 {
+    margin-bottom: 0;
+  }
+}
+
 .article-card-teasers {
   @include list.basics();
   margin-bottom: functions.px-to-rem(24px);

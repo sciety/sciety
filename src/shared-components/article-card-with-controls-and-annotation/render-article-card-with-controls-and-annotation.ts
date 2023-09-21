@@ -41,8 +41,10 @@ const renderAnnotationContent = (viewModel: ArticleCardWithControlsAndAnnotation
     () => '',
     (annotation) => `
       <section class="article-card-annotation">
-        <img class="sciety-feed-card__avatar" src="${annotation.authorAvatarPath}" alt="">
-        <h4>${annotation.author}</h4>
+        <header class="article-card-annotation__header">
+          <img class="sciety-feed-card__avatar" src="${annotation.authorAvatarPath}" alt="">
+          <h4>${annotation.author}</h4>
+        </header>
         <p>${annotation.content}</p>
       </section>
     `,
