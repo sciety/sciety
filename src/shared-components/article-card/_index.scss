@@ -19,11 +19,20 @@ $_card-padding: 16px;
   border-bottom: settings.$border-width solid settings.$colour-furniture;
 }
 
-.article-card--with-annotation {
+.article-card.article-card--with-annotation {
   @include breakpoints.two-column-display {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-column-gap: functions.px-to-rem(settings.$default-gutter);
+    padding-bottom: 0;
+    border-bottom-width: 0;
+  }
+
+  .article-card-content {
+    @include breakpoints.two-column-display {
+      padding-bottom: 2.5rem;
+      border-bottom: settings.$border-width solid settings.$colour-furniture;
+    }
   }
 }
 
