@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
 import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
@@ -37,7 +37,9 @@ const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): Domai
   return event;
 };
 
-const decodeEvents = (rows: ReadonlyArray<EventRow>): E.Either<Error, ReadonlyArray<DomainEvent>> => pipe(
+const decodeEvents = (
+  rows: ReadonlyArray<EventRow>,
+): E.Either<ReadonlyArray<string>, ReadonlyArray<DomainEvent>> => pipe(
   rows,
   RA.map((row) => ({
     id: row.id,
@@ -48,17 +50,17 @@ const decodeEvents = (rows: ReadonlyArray<EventRow>): E.Either<Error, ReadonlyAr
   currentOrLegacyDomainEventsCodec.decode,
   // eslint-disable-next-line fp-ts/prefer-bimap
   E.map(RA.map(upgradeLegacyEventIfNecessary)),
-  E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+  E.mapLeft((errors) => PR.failure(errors)),
 );
 
 export const getEventsFromDatabase = (
   pool: Pool,
   logger: Logger,
-): TE.TaskEither<Error, ReadonlyArray<DomainEvent>> => pipe(
+): TE.TaskEither<unknown, ReadonlyArray<DomainEvent>> => pipe(
   TE.tryCatch(async () => {
     await waitForTableToExist(pool, logger);
     return pool.query<EventRow>(selectAllEvents);
-  }, E.toError),
+  }, flow(E.toError, (e) => [e.message])),
   TE.map((result) => result.rows),
   TE.chainFirstTaskK((rows) => T.of(logger('debug', 'Successfully retrieved rows from database', { count: rows.length }))),
   TE.chainEitherK(decodeEvents),
