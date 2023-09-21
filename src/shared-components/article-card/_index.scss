@@ -70,10 +70,14 @@ $_card-padding: 16px;
 
 .article-card-annotation {
   grid-column: 9/13;
-  padding: functions.px-to-rem($_card-padding);
-  margin-top: functions.px-to-rem(40px);
   border: settings.$border-width solid settings.$colour-accent;
   border-radius: settings.$border-radius;
+  padding: functions.px-to-rem($_card-padding);
+  margin-top: functions.px-to-rem(40px);
+
+  @include breakpoints.two-column-display() {
+    margin-top: 0;
+  }
 
   p:last-child {
     margin-bottom: 0;
