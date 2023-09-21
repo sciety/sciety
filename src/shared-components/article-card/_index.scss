@@ -58,6 +58,7 @@ $_card-padding: 16px;
 
 .article-card-annotation {
   padding: functions.px-to-rem($_card-padding);
+  margin-top: functions.px-to-rem(40px);
   margin-left: functions.px-to-rem($_card-padding);
   margin-right: settings.$border-radius;
   background-color: settings.$colour-background-grey;

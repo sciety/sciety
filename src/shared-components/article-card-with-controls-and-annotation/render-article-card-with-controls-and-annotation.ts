@@ -53,7 +53,7 @@ export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCar
     <section class="article-card">
       ${renderArticleCardContents(viewModel.articleCard)}
       ${renderControls(viewModel)}
+      ${renderAnnotationContent(viewModel.annotation)}
     </section>
-    ${renderAnnotationContent(viewModel.annotation)}
   </article>
 `);
