@@ -49,11 +49,9 @@ const renderAnnotationContent = (annotation: ArticleCardWithControlsAndAnnotatio
 );
 
 export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel): HtmlFragment => toHtmlFragment(`
-  <article>
-    <section class="article-card">
-      ${renderArticleCardContents(viewModel.articleCard)}
-      ${renderControls(viewModel)}
-      ${renderAnnotationContent(viewModel.annotation)}
-    </section>
+  <article class="article-card">
+    ${renderArticleCardContents(viewModel.articleCard)}
+    ${renderControls(viewModel)}
+    ${renderAnnotationContent(viewModel.annotation)}
   </article>
 `);
