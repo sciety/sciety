@@ -8,7 +8,7 @@ import { Doi } from '../../../../src/types/doi';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
-import { GetTag } from '../../../type-optics';
+import { FromObjectInsideArray, GetTag } from '../../../type-optics';
 
 const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
@@ -35,7 +35,9 @@ describe('construct-related-groups', () => {
     RA.map((item) => item.groupName),
   );
 
-  type GroupNames = ReadonlyArray<(GetTag<ViewModel['relatedGroups'], 'some-related-groups' >)['items'][number]['groupName']>;
+  type GroupNames = FromObjectInsideArray<(GetTag<
+  ViewModel['relatedGroups'], 'some-related-groups' >)['items'], 'groupName'
+  >;
 
   describe('when the results consist of one article evaluated once by two different groups', () => {
     const articleId = arbitraryDoi();
