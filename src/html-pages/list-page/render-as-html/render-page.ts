@@ -16,8 +16,10 @@ const renderListOrMessage = (viewModel: ViewModel) => {
 };
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
-  ${renderHeader(viewModel)}
-  <section>
-    ${renderListOrMessage(viewModel)}
-  </section>
+  <div class="sciety-grid-two-columns">
+    ${renderHeader(viewModel)}
+    <section>
+      ${renderListOrMessage(viewModel)}
+    </section>
+  </div>
 `);
