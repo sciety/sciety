@@ -114,7 +114,7 @@ export const styleGuidePage: Page = {
     annotation: O.some({
       content: toHtmlFragment('Some content'),
       author: 'AvasthiReading',
-      authorAvatarPath: '',
+      authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCard: {

@@ -70,7 +70,7 @@ export const constructAnnotation = (dependencies: Queries) => (listId: ListId, a
     ),
     authorAvatarPath: pipe(
       getAnnotationAuthorAvatarPath(dependencies, listId),
-      O.getOrElse(() => ''),
+      O.getOrElse(() => '/static/images/profile-dark.svg'),
     ),
   })),
 );

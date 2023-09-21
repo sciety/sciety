@@ -35,14 +35,15 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   ),
 );
 
-const renderAnnotationContent = (annotation: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
-  annotation,
+const renderAnnotationContent = (viewModel: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
+  viewModel,
   O.match(
     () => '',
-    ({ content, author }) => `
+    (annotation) => `
       <section class="article-card-annotation">
-        <h4>${author}</h4>
-        <p>${content}</p>
+        <img class="sciety-feed-card__avatar" src="${annotation.authorAvatarPath}" alt="">
+        <h4>${annotation.author}</h4>
+        <p>${annotation.content}</p>
       </section>
     `,
   ),
