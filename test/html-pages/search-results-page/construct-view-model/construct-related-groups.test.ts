@@ -34,9 +34,11 @@ describe('construct-related-groups', () => {
     RA.map((item) => item.groupName),
   );
 
+  type GroupNames = ReadonlyArray<(ViewModel['relatedGroups'] & { tag: 'some-related-groups' })['items'][number]['groupName']>;
+
   describe('when the results consist of one article evaluated once by two different groups', () => {
     const articleId = arbitraryDoi();
-    let groupNames: ReadonlyArray<string>;
+    let groupNames: GroupNames;
     const addGroup1Command = arbitraryAddGroupCommand();
     const addGroup2Command = arbitraryAddGroupCommand();
 
@@ -64,7 +66,7 @@ describe('construct-related-groups', () => {
   describe('when the results consist of two articles that have been evaluated once by the same group', () => {
     const articleId1 = arbitraryDoi();
     const articleId2 = arbitraryDoi();
-    let groupNames: ReadonlyArray<string>;
+    let groupNames: GroupNames;
     const addGroupCommand = arbitraryAddGroupCommand();
 
     beforeEach(async () => {
@@ -89,7 +91,7 @@ describe('construct-related-groups', () => {
 
   describe('when the results consist of an article that has been evaluated twice by the same group', () => {
     const articleId = arbitraryDoi();
-    let groupNames: ReadonlyArray<string>;
+    let groupNames: GroupNames;
     const addGroupCommand = arbitraryAddGroupCommand();
 
     beforeEach(async () => {
