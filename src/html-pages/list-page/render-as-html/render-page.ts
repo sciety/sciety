@@ -18,7 +18,7 @@ const renderListOrMessage = (viewModel: ViewModel) => {
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="sciety-grid-two-columns">
     ${renderHeader(viewModel)}
-    <section>
+    <section class="list-page-content">
       ${renderListOrMessage(viewModel)}
     </section>
   </div>

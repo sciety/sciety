@@ -40,6 +40,10 @@ $_edit-details-icon-offset: 8px;
   margin-bottom: functions.px-to-rem(16px);
 }
 
+.list-page-content {
+  grid-column: 1/-1;
+}
+
 .list-page-actions {
   a {
     margin-bottom: functions.px-to-rem(32px);
