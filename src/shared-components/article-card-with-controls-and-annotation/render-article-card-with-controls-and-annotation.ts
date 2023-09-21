@@ -41,7 +41,7 @@ const renderAnnotationContent = (annotation: ArticleCardWithControlsAndAnnotatio
     () => '',
     ({ content, author }) => `
       <section class="article-card-annotation">
-        <h4>Annotation by ${author}</h4>
+        <h4>${author}</h4>
         <p>${content}</p>
       </section>
     `,
