@@ -43,13 +43,14 @@ const byUuid: Ord.Ord<DomainEvent> = pipe(
 
 export const sort = A.sortBy([byDate, byUuid]);
 
+const legacyDomainEventCodec = evaluationRecordedEventCodec;
+
 export const domainEventCodec = t.union([
   annotationCreatedEventCodec,
   articleAddedToListEventCodec,
   articleRemovedFromListEventCodec,
   curationStatementRecordedEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
-  evaluationRecordedEventCodec,
   evaluationPublicationRecordedEventCodec,
   evaluationRemovalRecordedEventCodec,
   evaluationUpdatedEventCodec,
@@ -71,6 +72,13 @@ export const domainEventCodec = t.union([
   userUnfollowedEditorialCommunityEventCodec,
   userUnsavedArticleEventCodec,
 ], 'type');
+
+export const currentOrLegacyDomainEventCodec = t.union([
+  legacyDomainEventCodec,
+  domainEventCodec,
+]);
+
+export type CurrentOrLegacyDomainEvent = t.TypeOf<typeof currentOrLegacyDomainEventCodec>;
 
 export type DomainEvent = t.TypeOf<typeof domainEventCodec>;
 

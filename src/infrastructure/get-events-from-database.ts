@@ -5,9 +5,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Pool } from 'pg';
-import { domainEventsCodec, EventRow, selectAllEvents } from './events-table';
+import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
 import { Logger } from './logger';
-import { DomainEvent, isEventOfType } from '../domain-events';
+import {
+  DomainEvent, CurrentOrLegacyDomainEvent,
+} from '../domain-events';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');
@@ -25,8 +27,8 @@ const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   }
 };
 
-const upgradeEventIfNecessary = (event: DomainEvent) => {
-  if (isEventOfType('EvaluationRecorded')(event)) {
+const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): DomainEvent => {
+  if (event.type === 'EvaluationRecorded') {
     return {
       ...event,
       type: 'EvaluationPublicationRecorded' as const,
@@ -35,7 +37,7 @@ const upgradeEventIfNecessary = (event: DomainEvent) => {
   return event;
 };
 
-const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
+const decodeEvents = (rows: ReadonlyArray<EventRow>): E.Either<Error, ReadonlyArray<DomainEvent>> => pipe(
   rows,
   RA.map((row) => ({
     id: row.id,
@@ -43,9 +45,9 @@ const decodeEvents = (rows: ReadonlyArray<EventRow>) => pipe(
     date: row.date,
     ...row.payload,
   })),
-  domainEventsCodec.decode,
+  currentOrLegacyDomainEventsCodec.decode,
   // eslint-disable-next-line fp-ts/prefer-bimap
-  E.map(RA.map(upgradeEventIfNecessary)),
+  E.map(RA.map(upgradeLegacyEventIfNecessary)),
   E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
 );
 

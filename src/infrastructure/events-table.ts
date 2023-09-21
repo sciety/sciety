@@ -1,8 +1,8 @@
 import { JsonRecord } from 'fp-ts/Json';
 import * as t from 'io-ts';
-import { domainEventCodec } from '../domain-events';
+import { currentOrLegacyDomainEventCodec } from '../domain-events';
 
-export const domainEventsCodec = t.readonlyArray(domainEventCodec);
+export const currentOrLegacyDomainEventsCodec = t.readonlyArray(currentOrLegacyDomainEventCodec);
 
 export type EventRow = {
   id: string,
