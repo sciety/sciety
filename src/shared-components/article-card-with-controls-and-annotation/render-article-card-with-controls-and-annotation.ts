@@ -27,11 +27,21 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
+const renderLinkToAnnotationForm = () => {
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    return '<a href="/annotations/create-annotation-form-avasthi-reading">Annotate</a>';
+  }
+  return '';
+};
+
 const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel) => pipe(
   viewModel.hasControls,
   B.fold(
     () => toHtmlFragment(''),
-    () => renderRemoveArticleForm(viewModel.articleId, viewModel.listId),
+    () => `
+      ${renderRemoveArticleForm(viewModel.articleId, viewModel.listId)}
+      ${renderLinkToAnnotationForm()}
+    `,
   ),
 );
 
