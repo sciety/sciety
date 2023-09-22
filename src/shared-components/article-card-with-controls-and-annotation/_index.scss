@@ -1,0 +1,54 @@
+@use '../../sass/avatar';
+@use '../../sass/settings';
+@use '../../sass/functions';
+@use '../../sass/breakpoints';
+
+.article-card.article-card--with-annotation {
+  @include breakpoints.two-column-display {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-column-gap: functions.px-to-rem(settings.$default-gutter);
+    padding-bottom: 0;
+    border-bottom-width: 0;
+  }
+
+  .article-card-content {
+    @include breakpoints.two-column-display {
+      padding-bottom: 2.5rem;
+      border-bottom: settings.$border-width solid settings.$colour-furniture;
+    }
+  }
+}
+
+.article-card-annotation {
+  grid-column: 9/13;
+  border: settings.$border-width solid settings.$colour-accent;
+  border-radius: settings.$border-radius;
+  padding: functions.px-to-rem(16px);
+  margin-top: functions.px-to-rem(40px);
+
+  @include breakpoints.two-column-display() {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.article-card-annotation__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: functions.px-to-rem(12px);
+
+  h4 {
+    margin-bottom: 0;
+  }
+}
+
+.article-card-annotation__avatar {
+  @include avatar.border();
+  width: avatar.$size--small;
+  height: avatar.$size--small;
+  margin-right: functions.px-to-rem(16px);
+}
