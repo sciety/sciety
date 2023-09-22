@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const callApi = async (endpoint: string, payload: Record<string, unknown>): Promise<unknown> => axios.post(
-  `http://localhost:8080/${endpoint}`,
+  `http://localhost:${process.env.APP_PORT ?? '8080'}/${endpoint}`,
   JSON.stringify(payload),
   {
     headers: {
