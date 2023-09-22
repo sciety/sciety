@@ -14,6 +14,7 @@ import { htmlFragmentCodec } from '../types/html-fragment';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import * as LID from '../types/list-id';
 import { Queries } from '../read-models';
+import { UserId } from '../types/user-id';
 
 type CommandHandler = (input: unknown) => TE.TaskEither<unknown, CommandResult>;
 
@@ -24,6 +25,8 @@ const bodyCodec = t.type({
 });
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts;
+
+const scietyAdminUserId = 'auth0|650d543de75a96413ce859b1' as UserId;
 
 const requireUserToOwnTheList = (adapters: Dependencies): Middleware => async (context, next) => {
   pipe(
@@ -40,7 +43,9 @@ const requireUserToOwnTheList = (adapters: Dependencies): Middleware => async (c
       ),
     },
     sequenceS(O.Apply),
-    O.filter(({ loggedInUser, listOwnerId }) => loggedInUser.id === listOwnerId || loggedInUser.id === 'auth0|650d543de75a96413ce859b1'),
+    O.filter(({ loggedInUser, listOwnerId }) => (
+      loggedInUser.id === listOwnerId || loggedInUser.id === scietyAdminUserId
+    )),
     O.match(
       () => {
         context.response.status = StatusCodes.FORBIDDEN;
