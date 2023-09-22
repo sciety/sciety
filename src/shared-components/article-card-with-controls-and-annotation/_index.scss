@@ -28,6 +28,17 @@
   margin-top: functions.px-to-rem(40px);
   position: relative;
 
+  &::before {
+    content: '';
+    background-image: url('/static/images/annotation-triangle.svg');
+    height: 32px;
+    width: 32px;
+    position: absolute;
+    transform: rotate(90deg);
+    top: functions.px-to-rem(-31px);
+    left: functions.px-to-rem(32px);
+  }
+
   @include breakpoints.two-column-display() {
     margin-top: 0;
 
