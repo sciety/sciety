@@ -43,11 +43,6 @@
     margin-top: 0;
 
     &::before {
-      content: '';
-      background-image: url('/static/images/annotation-triangle.svg');
-      height: 32px;
-      width: 32px;
-      position: absolute;
       transform: unset;
       top: functions.px-to-rem(48px);
       left: functions.px-to-rem(-32px);
