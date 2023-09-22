@@ -56,7 +56,7 @@ export const createApplicationServer = (
     app,
   ));
 
-  const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
+  const shouldUseStubAdapters = process.env.USE_STUB_LOGIN === 'true';
 
   koaPassport.use(auth0PassportStrategy());
   if (shouldUseStubAdapters) {

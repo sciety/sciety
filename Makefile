@@ -82,6 +82,7 @@ jest-test:
 
 backstop-test: export TARGET = fast
 backstop-test: export USE_STUB_ADAPTERS = true
+backstop-test: export USE_STUB_LOGIN = true
 backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
@@ -164,6 +165,7 @@ prod-sql:
 
 taiko: export TARGET = fast
 taiko: export USE_STUB_ADAPTERS = true
+taiko: export USE_STUB_LOGIN = true
 taiko: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh

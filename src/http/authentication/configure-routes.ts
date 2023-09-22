@@ -119,7 +119,7 @@ const configureAuth0Routes = (
 };
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts, config: Config): void => {
-  const shouldUseStubAdapters = process.env.USE_STUB_ADAPTERS === 'true';
+  const shouldUseStubAdapters = process.env.USE_STUB_LOGIN === 'true';
 
   configureAuth0Routes(router, adapters, shouldUseStubAdapters, config);
 };
