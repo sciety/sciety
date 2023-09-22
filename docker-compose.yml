@@ -49,8 +49,6 @@ services:
     volumes:
       - './data/backstop.csv:/data/backstop.csv'
       - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
-    ports:
-      - '5432:5432'
     healthcheck:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s
