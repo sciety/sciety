@@ -45,7 +45,7 @@ const parser = new XMLParser({
 });
 
 export const identifyCandidates = (responseBody: string): E.Either<string, ReadonlyArray<Prelight>> => pipe(
-  parser.parse(responseBody) as JSON,
+  parser.parse(responseBody),
   prelightsFeedCodec.decode,
   E.bimap(
     (errors) => PR.failure(errors).join('\n'),
