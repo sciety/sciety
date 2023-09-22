@@ -56,6 +56,9 @@ $_card-padding: 16px;
 }
 
 .article-card__controls {
+  display: flex;
+  gap: settings.$default-gutter;
+  align-items: center;
   margin-top: functions.px-to-rem(16px);
 }
 

@@ -10,7 +10,6 @@ import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-wi
 const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   articleId.value,
   (id) => `
-    <div class="article-card__controls">
       <form method="post" action="/forms/remove-article-from-list">
         <input type="hidden" name="articleid" value="${id}">
         <input type="hidden" name="listid" value="${listId}">
@@ -22,14 +21,13 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
           </svg>
         </button>
       </form>
-    </div>
   `,
   toHtmlFragment,
 );
 
 const renderLinkToAnnotationForm = () => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return '<a href="/annotations/create-annotation-form-avasthi-reading">Annotate</a>';
+    return '<a href="/annotations/create-annotation-form-avasthi-reading">Add annotation</a>';
   }
   return '';
 };
@@ -39,8 +37,10 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   B.fold(
     () => toHtmlFragment(''),
     () => `
+    <div class="article-card__controls">
       ${renderRemoveArticleForm(viewModel.articleId, viewModel.listId)}
       ${renderLinkToAnnotationForm()}
+    </div>
     `,
   ),
 );
