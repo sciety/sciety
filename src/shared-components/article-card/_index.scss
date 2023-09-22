@@ -1,3 +1,4 @@
+@use '../../sass/avatar';
 @use '../../sass/settings';
 @use '../../sass/functions';
 @use '../../sass/card';
@@ -101,6 +102,13 @@ $_card-padding: 16px;
   h4 {
     margin-bottom: 0;
   }
+}
+
+.article-card-annotation__avatar {
+  @include avatar.border();
+  width: avatar.$size--small;
+  height: avatar.$size--small;
+  margin-right: functions.px-to-rem(16px);
 }
 
 .article-card-teasers {
