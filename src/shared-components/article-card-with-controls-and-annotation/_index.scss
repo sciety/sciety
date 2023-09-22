@@ -26,9 +26,20 @@
   border-radius: settings.$border-radius;
   padding: functions.px-to-rem(16px);
   margin-top: functions.px-to-rem(40px);
+  position: relative;
 
   @include breakpoints.two-column-display() {
     margin-top: 0;
+
+    &::before {
+      content: '';
+      background-image: url('/static/images/annotation-triangle.svg');
+      height: 32px;
+      width: 32px;
+      position: absolute;
+      top: functions.px-to-rem(48px);
+      left: functions.px-to-rem(-31px);
+    }
   }
 
 	p {
@@ -38,6 +49,7 @@
   p:last-child {
     margin-bottom: 0;
   }
+
 }
 
 .article-card-annotation__header {
