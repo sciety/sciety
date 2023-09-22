@@ -3,6 +3,8 @@
 @use '../../sass/functions';
 @use '../../sass/breakpoints';
 
+$_triangle-size: 32px;
+
 .article-card.article-card--with-annotation {
   @include breakpoints.two-column-display {
     display: grid;
@@ -31,11 +33,11 @@
   &::before {
     content: '';
     background-image: url('/static/images/annotation-triangle.svg');
-    height: 32px;
-    width: 32px;
+    height: $_triangle-size;
+    width: $_triangle-size;
     position: absolute;
     transform: rotate(90deg);
-    top: functions.px-to-rem(-32px);
+    top: functions.px-to-rem(-$_triangle-size);
     left: functions.px-to-rem(32px);
   }
 
@@ -45,7 +47,7 @@
     &::before {
       transform: unset;
       top: functions.px-to-rem(48px);
-      left: functions.px-to-rem(-32px);
+      left: functions.px-to-rem(-$_triangle-size);
     }
   }
 
