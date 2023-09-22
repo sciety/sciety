@@ -44,7 +44,7 @@ describe('remove-article-from-list', () => {
           const listId = await getIdOfFirstListOwnedByUser(testUserId);
           listPage = `localhost:8080/lists/${listId}`;
           await goto(listPage);
-          const articleCardDeleteButtonSelector = '.article-card form[action="/forms/remove-article-from-list"]';
+          const articleCardDeleteButtonSelector = 'button[aria-label="Remove this article from the list"]';
           const deleteButton = $(articleCardDeleteButtonSelector);
           await click(deleteButton);
         });
