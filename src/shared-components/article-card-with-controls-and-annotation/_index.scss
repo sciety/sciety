@@ -48,6 +48,7 @@
       height: 32px;
       width: 32px;
       position: absolute;
+      transform: unset;
       top: functions.px-to-rem(48px);
       left: functions.px-to-rem(-31px);
     }
