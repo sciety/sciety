@@ -2,21 +2,29 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="8.4689999mm"
-   height="8.4960833mm"
-   viewBox="0 0 8.4689999 8.4960833"
+   width="33"
+   height="32"
+   viewBox="0 0 8.73125 8.4666667"
    version="1.1"
    id="svg1"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs1" />
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264998;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+     id="rect1"
+     width="0.52170104"
+     height="8.1823702"
+     x="8.209549"
+     y="0.14370964" />
   <g
      id="layer1"
-     transform="translate(-63.414018,-108.34302)">
+     transform="matrix(1.0023708,0,0,1,-63.413779,-108.34302)"
+     style="fill:#ffffff;fill-opacity:1;stroke-width:0.998817">
     <path
-       style="fill:#ffffff;fill-opacity:1;stroke:#ce481a;stroke-width:0.26458333;stroke-dasharray:none;stroke-opacity:1"
-       d="m 71.775808,108.36384 -8.310187,4.16772 8.406817,4.2868"
+       style="fill:#ffffff;fill-opacity:1;stroke:#ce481a;stroke-width:0.264686;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 71.714179,108.49318 -8.300161,4.08317 8.169,4.08317"
        id="path1" />
   </g>
 </svg>
