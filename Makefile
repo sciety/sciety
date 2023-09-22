@@ -2,7 +2,7 @@ ifeq (${TARGET},)
 TARGET := dev
 endif
 
-DOCKER_COMPOSE = docker-compose --file docker-compose.yml --file docker-compose.$(TARGET).yml
+DOCKER_COMPOSE = docker compose --file docker-compose.yml --file docker-compose.$(TARGET).yml
 DATA_VOLUME := $(shell pwd)
 IMAGE := sciety/sciety
 IMAGE_TAG := local
