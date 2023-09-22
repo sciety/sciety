@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { unknownAuthor } from './static-messages';
+import { missingAvatarFallback, unknownAuthor } from './static-content';
 import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
 import { Queries } from '../../read-models';
@@ -70,7 +70,7 @@ export const constructAnnotation = (dependencies: Queries) => (listId: ListId, a
     ),
     authorAvatarPath: pipe(
       getAnnotationAuthorAvatarPath(dependencies, listId),
-      O.getOrElse(() => '/static/images/profile-dark.svg'),
+      O.getOrElse(() => missingAvatarFallback),
     ),
   })),
 );

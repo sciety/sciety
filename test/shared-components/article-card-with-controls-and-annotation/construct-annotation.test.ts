@@ -14,7 +14,7 @@ import { arbitraryCreateListCommand } from '../../write-side/commands/create-lis
 import { arbitraryHtmlFragment } from '../../helpers';
 import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-messages';
+import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-content';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
