@@ -6,7 +6,6 @@ DOCKER_COMPOSE = docker-compose --file docker-compose.yml --file docker-compose.
 DATA_VOLUME := $(shell pwd)
 IMAGE := sciety/sciety
 IMAGE_TAG := local
-PORT := 8080
 AWS_DEFAULT_REGION := us-east-1
 
 export IMAGE
