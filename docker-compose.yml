@@ -34,7 +34,7 @@ services:
       AUTH0_CLIENT_SECRET: '${AUTH0_CLIENT_SECRET:-auth0-client-secret}'
       AUTH0_CALLBACK_URL: 'http://localhost:8080/auth0/callback'
     ports:
-      - '8080:80'
+      - '${APP_PORT:-8080}:80'
     restart: unless-stopped
     depends_on:
       - cache
@@ -49,8 +49,6 @@ services:
     volumes:
       - './data/backstop.csv:/data/backstop.csv'
       - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
-    ports:
-      - '5432:5432'
     healthcheck:
       test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
       interval: 5s

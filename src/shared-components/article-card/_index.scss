@@ -56,9 +56,7 @@ $_card-padding: 16px;
 }
 
 .article-card__controls {
-  position: absolute;
-  bottom: functions.px-to-rem(12px);
-  right: functions.px-to-rem($_card-padding);
+  margin-top: functions.px-to-rem(16px);
 }
 
 
