@@ -279,6 +279,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/annotations/create-annotation-form-avasthi-reading',
+    requireLoggedInUser(adapters),
     pageHandler(adapters, createPageFromParams(
       createAnnotationFormPageParamsCodec,
       createAnnotationFormPage,
