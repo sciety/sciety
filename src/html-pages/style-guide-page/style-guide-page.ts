@@ -130,6 +130,30 @@ export const styleGuidePage: Page = {
       reviewingGroups: [],
     },
   })}
+
+      <h3 class="_style-guide-heading">With annotation and controls</h3>
+      ${renderArticleCardWithControlsAndAnnotation({
+    articleId: new Doi('10.1101/foo'),
+    hasControls: true,
+    annotation: O.some({
+      content: toHtmlFragment('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
+      author: 'AvasthiReading',
+      authorAvatarPath: '/static/images/profile-dark.svg',
+    }),
+    listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
+    articleCard: {
+      articleId: new Doi('10.1101/foo'),
+      articleLink: '/articles/foo',
+      title: sanitise(toHtmlFragment('Some title')),
+      authors: O.some(['Doctor Smith']),
+      latestVersionDate: O.some(new Date('2023-09-11')),
+      latestActivityAt: O.some(new Date('2023-09-10')),
+      evaluationCount: O.some(1),
+      listMembershipCount: O.some(1),
+      curationStatementsTeasers: [],
+      reviewingGroups: [],
+    },
+  })}
   
       <h3 class="_style-guide-heading">With error</h3>
       ${renderArticleErrorCard({
