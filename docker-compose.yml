@@ -1,4 +1,5 @@
 version: '3.8'
+name: 'sciety'
 
 services:
   app:
@@ -10,7 +11,7 @@ services:
       APP_CACHE: "redis"
       APP_ORIGIN: "http://localhost:${APP_PORT:-8080}"
       APP_SECRET: "secret"
-      CACHE_HOST: "sciety_cache"
+      CACHE_HOST: "sciety-cache-1"
       USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
       USE_STUB_LOGIN: '${USE_STUB_LOGIN:-false}'
       CROSSREF_API_BEARER_TOKEN:
@@ -56,6 +57,5 @@ services:
     restart: unless-stopped
 
   cache:
-    container_name: sciety_cache
     image: redis
     restart: unless-stopped
