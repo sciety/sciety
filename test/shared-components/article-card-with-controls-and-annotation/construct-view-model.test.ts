@@ -33,7 +33,7 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addArticleToList(articleId, listId);
     });
 
-    describe('when the logged in user is the list owner', () => {
+    describe('when the user is allowed to edit the list', () => {
       describe('when it never has been annotated', () => {
         let formHref: (ArticleCardWithControlsAndAnnotationViewModel['controls'] & { _tag: 'Some' })['value']['createAnnotationFormHref'];
 
@@ -77,24 +77,7 @@ describe('construct-view-model', () => {
       });
     });
 
-    describe('when the user is not logged in', () => {
-      let controls: ArticleCardWithControlsAndAnnotationViewModel['controls'];
-
-      beforeEach(async () => {
-        controls = await pipe(
-          articleId,
-          constructViewModel(framework.dependenciesForViews, false, listId),
-          T.map(mustBeOnTheRight),
-          T.map((viewModel) => viewModel.controls),
-        )();
-      });
-
-      it('does not display a call to action to create an annotation', () => {
-        expect(O.isNone(controls)).toBe(true);
-      });
-    });
-
-    describe('when the logged in user is not the list owner', () => {
+    describe('when the user is not allowed to edit the list', () => {
       let controls: ArticleCardWithControlsAndAnnotationViewModel['controls'];
 
       beforeEach(async () => {
