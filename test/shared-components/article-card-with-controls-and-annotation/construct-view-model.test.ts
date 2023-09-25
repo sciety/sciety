@@ -71,7 +71,7 @@ describe('construct-view-model', () => {
           )();
         });
 
-        it.failing('does not display a call to action to create an annotation', () => {
+        it('does not display a call to action to create an annotation', () => {
           expect(O.isNone(formHref)).toBe(true);
         });
       });

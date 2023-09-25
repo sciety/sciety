@@ -19,19 +19,22 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   listId: ListId,
   articleId: Doi,
 ) => (articleCard: ViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
-  {
+  constructAnnotation(ports)(listId, articleId),
+  (annotation) => ({
     articleCard,
     hasControls: editCapability,
     listId,
     articleId,
-    annotation: constructAnnotation(ports)(listId, articleId),
+    annotation,
     createAnnotationFormHref: `/annotations/create-annotation-form?${articleIdInputName}=${articleId.value}&${listIdInputName}=${listId}`,
     controls: editCapability ? O.some({
       listId,
       articleId,
-      createAnnotationFormHref: O.some(`/annotations/create-annotation-form?${articleIdInputName}=${articleId.value}&${listIdInputName}=${listId}`),
+      createAnnotationFormHref: O.isNone(annotation)
+        ? O.some(`/annotations/create-annotation-form?${articleIdInputName}=${articleId.value}&${listIdInputName}=${listId}`)
+        : O.none,
     }) : O.none,
-  },
+  }),
 );
 
 export const constructViewModel = (
