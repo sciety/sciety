@@ -28,7 +28,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   },
 );
 
-export const constructArticleCardWithControlsAndAnnotationViewModel = (
+export const constructViewModel = (
   ports: Ports,
   editCapability: boolean,
   listId: ListId,

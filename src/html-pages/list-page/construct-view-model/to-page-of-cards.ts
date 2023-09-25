@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { ArticleErrorCardViewModel } from '../../../shared-components/article-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
-  constructArticleCardWithControlsAndAnnotationViewModel,
+  constructViewModel,
 } from '../../../shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems } from '../../../shared-components/pagination';
 import { ListId } from '../../../types/list-id';
@@ -22,7 +22,7 @@ export const toPageOfCards = (
   pageOfArticles: PageOfItems<Doi>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ContentWithPaginationViewModel['articles']> => pipe(
   pageOfArticles.items,
-  T.traverseArray(constructArticleCardWithControlsAndAnnotationViewModel(dependencies, editCapability, listId)),
+  T.traverseArray(constructViewModel(dependencies, editCapability, listId)),
   T.map(E.fromPredicate(RA.some(E.isRight), () => 'no-articles-can-be-fetched' as const)),
   TE.chainTaskK(T.traverseArray(
     E.foldW(
