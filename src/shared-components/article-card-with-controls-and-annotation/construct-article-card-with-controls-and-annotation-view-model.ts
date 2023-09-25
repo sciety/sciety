@@ -8,7 +8,7 @@ import { ViewModel } from '../article-card/view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
-import { articleIdInputName, listIdInputName } from '../../annotations/create-annotation-form-page';
+import { articleIdInputName, listIdInputName } from '../../html-pages/create-annotation-form-page/create-annotation-form-page';
 
 type Ports = ConstructArticleCardViewModelDependencies & Queries;
 

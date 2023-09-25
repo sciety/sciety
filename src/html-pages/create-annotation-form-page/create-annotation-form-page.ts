@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
-import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
-import { RenderPageError } from '../types/render-page-error';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { Page } from '../../types/page';
+import { RenderPageError } from '../../types/render-page-error';
 
 export const paramsCodec = t.type({
   articleId: t.string,

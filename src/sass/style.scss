@@ -8,6 +8,7 @@
 @use 'button';
 @use '../html-pages/about-page';
 @use '../html-pages/article-page/render-as-html';
+@use '../html-pages/create-annotation-form-page';
 @use '../html-pages/create-user-account-form-page';
 @use '../html-pages/edit-list-details-form-page';
 @use '../html-pages/group-page';
@@ -34,7 +35,6 @@
 @use '../shared-components/site-footer';
 @use '../shared-components/group-link';
 @use 'supplementary';
-@use '../annotations/create-annotation-form';
 
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
