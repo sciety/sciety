@@ -26,11 +26,11 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
     articleId,
     annotation: constructAnnotation(ports)(listId, articleId),
     createAnnotationFormHref: `/annotations/create-annotation-form?${articleIdInputName}=${articleId.value}&${listIdInputName}=${listId}`,
-    controls: O.some({
+    controls: editCapability ? O.some({
       listId,
       articleId,
       createAnnotationFormHref: O.some(`/annotations/create-annotation-form?${articleIdInputName}=${articleId.value}&${listIdInputName}=${listId}`),
-    }),
+    }) : O.none,
   },
 );
 
