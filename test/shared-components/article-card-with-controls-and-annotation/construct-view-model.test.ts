@@ -1,13 +1,19 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import { ArticleCardWithControlsAndAnnotationViewModel, constructViewModel } from '../../../src/shared-components/article-card-with-controls-and-annotation';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
+
+const mustBeOnTheRight = E.getOrElseW((left: unknown) => {
+  throw new Error(`Must be on the right. Left was: ${JSON.stringify(left, null, 2)}`);
+});
+
+const mustBeSome = O.getOrElseW(() => {
+  throw new Error('Received O.None but wanted O.Some');
+});
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -34,9 +40,9 @@ describe('construct-view-model', () => {
           formHref = await pipe(
             articleId,
             constructViewModel(framework.dependenciesForViews, true, listId),
-            TE.getOrElse(shouldNotBeCalled),
+            T.map(mustBeOnTheRight),
             T.map((viewModel) => viewModel.controls),
-            TO.getOrElse(shouldNotBeCalled),
+            T.map(mustBeSome),
             T.map((controls) => controls.createAnnotationFormHref),
           )();
         });
