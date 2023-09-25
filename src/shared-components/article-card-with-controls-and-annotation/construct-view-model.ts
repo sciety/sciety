@@ -1,4 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { constructArticleCardViewModel, Dependencies as ConstructArticleCardViewModelDependencies } from '../article-card/construct-article-card-view-model';
 import { ArticleErrorCardViewModel } from '../article-card/render-article-error-card';
@@ -25,6 +26,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
     articleId,
     annotation: constructAnnotation(ports)(listId, articleId),
     createAnnotationFormHref: `/annotations/create-annotation-form?${articleIdInputName}=${articleId.value}&${listIdInputName}=${listId}`,
+    controls: O.none,
   },
 );
 

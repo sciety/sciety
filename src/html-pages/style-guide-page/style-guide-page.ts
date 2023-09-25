@@ -106,6 +106,11 @@ export const styleGuidePage: Page = {
       reviewingGroups: [],
     },
     createAnnotationFormHref: '#',
+    controls: O.some({
+      listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
+      articleId: new Doi('10.1101/foo'),
+      createAnnotationFormHref: O.some('#'),
+    }),
   })}
 
       <h3 class="_style-guide-heading">With annotation</h3>
@@ -131,6 +136,7 @@ export const styleGuidePage: Page = {
       reviewingGroups: [],
     },
     createAnnotationFormHref: '#',
+    controls: O.none,
   })}
 
       <h3 class="_style-guide-heading">With annotation and controls</h3>
@@ -156,6 +162,11 @@ export const styleGuidePage: Page = {
       reviewingGroups: [],
     },
     createAnnotationFormHref: '#',
+    controls: O.some({
+      articleId: new Doi('10.1101/foo'),
+      listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
+      createAnnotationFormHref: O.none,
+    }),
   })}
   
       <h3 class="_style-guide-heading">With error</h3>
