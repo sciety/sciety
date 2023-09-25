@@ -4,7 +4,7 @@ services:
   app:
     build:
       target: dev
-    image: ${IMAGE}:${IMAGE_TAG}-dev
+    image: '${IMAGE}:${IMAGE_TAG}-dev'
     volumes:
       - './.eslint:/app/.eslint'
       - './.gcp-ncrc-key.json:/var/run/secrets/app/.gcp-ncrc-key.json'

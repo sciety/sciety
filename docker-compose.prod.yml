@@ -5,7 +5,7 @@ services:
     build:
       target: prod
     environment:
-      EXPERIMENT_ENABLED: "false"
-    image: ${IMAGE}:${IMAGE_TAG}
+      EXPERIMENT_ENABLED: 'false'
+    image: '${IMAGE}:${IMAGE_TAG}'
     volumes:
       - './.gcp-ncrc-key.json:/var/run/secrets/app/.gcp-ncrc-key.json'

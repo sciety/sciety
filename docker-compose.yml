@@ -6,29 +6,29 @@ services:
     build:
       context: .
     environment:
-      ALLOW_SITE_CRAWLERS: "true"
-      APP_CACHE: "redis"
-      APP_ORIGIN: "http://localhost:${APP_PORT:-8080}"
-      APP_SECRET: "secret"
-      CACHE_HOST: cache
+      ALLOW_SITE_CRAWLERS: 'true'
+      APP_CACHE: 'redis'
+      APP_ORIGIN: 'http://localhost:${APP_PORT:-8080}'
+      APP_SECRET: 'secret'
+      CACHE_HOST: 'cache'
       USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
       USE_STUB_LOGIN: '${USE_STUB_LOGIN:-false}'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
-      EXPERIMENT_ENABLED: "true"
+      EXPERIMENT_ENABLED: 'true'
       FATHOM_SITE_ID:
       GOOGLE_TAG_MANAGER_ID:
-      SCIETY_API: "http://app"
-      SCIETY_TEAM_API_BEARER_TOKEN: "secret"
+      SCIETY_API: 'http://app'
+      SCIETY_TEAM_API_BEARER_TOKEN: 'secret'
       INGEST_DEBUG:
       INGEST_EXCEPT:
       INGEST_ONLY:
       INGEST_DAYS:
       LOG_LEVEL:
-      PGUSER: user
-      PGHOST: db
-      PGPASSWORD: secret
-      PGDATABASE: sciety
+      PGUSER: 'user'
+      PGHOST: 'db'
+      PGPASSWORD: 'secret'
+      PGDATABASE: 'sciety'
       PRELIGHTS_FEED_KEY:
       AUTH0_CLIENT_ID: '${AUTH0_CLIENT_ID:-auth0-client-id}'
       AUTH0_DOMAIN: 'dev-sqa2k3wwnhpxk36d.eu.auth0.com'
@@ -43,14 +43,14 @@ services:
   db:
     image: postgres:12.3-alpine
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: sciety
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'secret'
+      POSTGRES_DB: 'sciety'
     volumes:
       - './data/backstop.csv:/data/backstop.csv'
       - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
     healthcheck:
-      test: pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1
+      test: 'pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1'
       interval: 5s
     restart: unless-stopped
 
