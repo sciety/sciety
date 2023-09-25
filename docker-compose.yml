@@ -42,7 +42,6 @@ services:
       - cache
 
   db:
-    container_name: sciety_db
     image: postgres:12.3-alpine
     environment:
       POSTGRES_USER: user
