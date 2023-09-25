@@ -39,7 +39,7 @@ const renderLinkToAnnotationForm = (href: O.Option<string>) => {
 
 const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel) => pipe(
   viewModel.controls,
-  O.fold(
+  O.match(
     () => toHtmlFragment(''),
     (controls) => `
     <div class="article-card__controls">
