@@ -25,9 +25,9 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
-const renderLinkToAnnotationForm = () => {
+const renderLinkToAnnotationForm = (href: string) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return '<a href="/annotations/create-annotation-form-avasthi-reading">Add annotation</a>';
+    return `<a href="${href}">Add annotation</a>`;
   }
   return '';
 };
@@ -39,7 +39,7 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
     () => `
     <div class="article-card__controls">
       ${renderRemoveArticleForm(viewModel.articleId, viewModel.listId)}
-      ${renderLinkToAnnotationForm()}
+      ${renderLinkToAnnotationForm('/annotations/create-annotation-form-avasthi-reading')}
     </div>
     `,
   ),
