@@ -18,7 +18,7 @@ const renderArticleIdInput = (articleId: O.Option<string>) => pipe(
     () => '',
     (id) => id,
   ),
-  (value) => `<input type="text" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id" value="${value}">
+  (value) => `<input type="hidden" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id" value="${value}">
 `,
 );
 
@@ -28,7 +28,7 @@ const renderListIdInput = (listId: O.Option<string>) => pipe(
     () => '',
     (id) => id,
   ),
-  (value) => `<input type="text" name="listId" id="listId" placeholder="" class="annotation-form-article-id" value="${value}">
+  (value) => `<input type="hidden" name="listId" id="listId" placeholder="" class="annotation-form-article-id" value="${value}">
 `,
 );
 
@@ -43,9 +43,7 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = ({ articleId, 
     <form method="POST" action="/annotations/create-annotation">
       <label for="annotationContent">Annotation content</label>
       <textarea id="annotationContent" name="annotationContent" rows="10" class="annotation-form-content"></textarea>
-      <label for="listId">List Id</label>
       ${renderListIdInput(listId)}
-      <label for="articleId">Article DOI</label>
       ${renderArticleIdInput(articleId)}
       <div class="annotation-form-controls">
         <button class="annotation-form-submit">Create annotation</button>
