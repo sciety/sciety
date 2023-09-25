@@ -58,7 +58,20 @@ describe('construct-view-model', () => {
     });
 
     describe('when the user is not logged in', () => {
-      it.todo('does not display a call to action to create an annotation');
+      let controls: ArticleCardWithControlsAndAnnotationViewModel['controls'];
+
+      beforeEach(async () => {
+        controls = await pipe(
+          articleId,
+          constructViewModel(framework.dependenciesForViews, false, listId),
+          T.map(mustBeOnTheRight),
+          T.map((viewModel) => viewModel.controls),
+        )();
+      });
+
+      it.failing('does not display a call to action to create an annotation', () => {
+        expect(O.isNone(controls)).toBe(true);
+      });
     });
 
     describe('when the logged in user is not the list owner', () => {
