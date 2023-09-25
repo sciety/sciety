@@ -22,13 +22,15 @@ const renderArticleIdInput = (articleId: O.Option<string>) => pipe(
 `,
 );
 
+export const listIdInputName = 'listId';
+
 const renderListIdInput = (listId: O.Option<string>) => pipe(
   listId,
   O.fold(
     () => '',
     (id) => id,
   ),
-  (value) => `<input type="hidden" name="listId" id="listId" placeholder="" class="annotation-form-article-id" value="${value}">
+  (value) => `<input type="hidden" name="${listIdInputName}" id="listId" placeholder="" class="annotation-form-article-id" value="${value}">
 `,
 );
 
