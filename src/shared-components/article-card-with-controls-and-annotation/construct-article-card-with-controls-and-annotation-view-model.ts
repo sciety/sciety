@@ -8,7 +8,7 @@ import { ViewModel } from '../article-card/view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
-import { listIdInputName } from '../../annotations/create-annotation-form-page';
+import { articleIdInputName, listIdInputName } from '../../annotations/create-annotation-form-page';
 
 type Ports = ConstructArticleCardViewModelDependencies & Queries;
 
@@ -24,7 +24,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
     listId,
     articleId,
     annotation: constructAnnotation(ports)(listId, articleId),
-    createAnnotationFormHref: `/annotations/create-annotation-form-avasthi-reading?articleId=${articleId.value}&${listIdInputName}=${listId}`,
+    createAnnotationFormHref: `/annotations/create-annotation-form-avasthi-reading?${articleIdInputName}=${articleId.value}&${listIdInputName}=${listId}`,
   },
 );
 
