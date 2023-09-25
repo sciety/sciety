@@ -16,4 +16,5 @@ export type ArticleCardWithControlsAndAnnotationViewModel = {
   listId: ListId,
   articleId: Doi,
   annotation: O.Option<Annotation>,
+  createAnnotationFormHref: string,
 };

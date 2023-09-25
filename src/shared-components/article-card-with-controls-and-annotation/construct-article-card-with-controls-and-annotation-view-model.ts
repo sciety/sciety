@@ -23,6 +23,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
     listId,
     articleId,
     annotation: constructAnnotation(ports)(listId, articleId),
+    createAnnotationFormHref: `/annotations/create-annotation-form-avasthi-reading?articleId=${articleId.value}&listId=${listId}`,
   },
 );
 

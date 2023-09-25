@@ -39,7 +39,7 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
     () => `
     <div class="article-card__controls">
       ${renderRemoveArticleForm(viewModel.articleId, viewModel.listId)}
-      ${renderLinkToAnnotationForm(`/annotations/create-annotation-form-avasthi-reading?articleId=${viewModel.articleId.value}&listId=${viewModel.listId}`)}
+      ${renderLinkToAnnotationForm(viewModel.createAnnotationFormHref)}
     </div>
     `,
   ),

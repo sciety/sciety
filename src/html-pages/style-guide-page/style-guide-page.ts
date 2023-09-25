@@ -86,7 +86,7 @@ export const styleGuidePage: Page = {
       },
     ],
   })}
-      
+
       <h3 class="_style-guide-heading">With trashcan</h3>
       ${renderArticleCardWithControlsAndAnnotation({
     articleId: new Doi('10.1101/foo'),
@@ -105,8 +105,9 @@ export const styleGuidePage: Page = {
       curationStatementsTeasers: [],
       reviewingGroups: [],
     },
+    createAnnotationFormHref: '#',
   })}
-  
+
       <h3 class="_style-guide-heading">With annotation</h3>
       ${renderArticleCardWithControlsAndAnnotation({
     articleId: new Doi('10.1101/foo'),
@@ -129,6 +130,7 @@ export const styleGuidePage: Page = {
       curationStatementsTeasers: [],
       reviewingGroups: [],
     },
+    createAnnotationFormHref: '#',
   })}
 
       <h3 class="_style-guide-heading">With annotation and controls</h3>
@@ -153,6 +155,7 @@ export const styleGuidePage: Page = {
       curationStatementsTeasers: [],
       reviewingGroups: [],
     },
+    createAnnotationFormHref: '#',
   })}
   
       <h3 class="_style-guide-heading">With error</h3>
