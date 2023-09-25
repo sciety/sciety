@@ -22,35 +22,35 @@
   "scenarios": [
     {
       "label": "Home page",
-      "url": "http://sciety-app-1",
+      "url": "http://sciety-test-app-1",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "My feed (logged out)",
-      "url": "http://sciety-app-1/my-feed",
+      "url": "http://sciety-test-app-1/my-feed",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Sciety feed",
-      "url": "http://sciety-app-1/sciety-feed",
+      "url": "http://sciety-test-app-1/sciety-feed",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "An article page",
-      "url": "http://sciety-app-1/articles/10.1101/646810",
+      "url": "http://sciety-test-app-1/articles/10.1101/646810",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "An article page (expanded reviews)",
-      "url": "http://sciety-app-1/articles/10.1101/646810",
+      "url": "http://sciety-test-app-1/articles/10.1101/646810",
       "clickSelector": ".activity-feed__item__toggle",
       "selectors": [
         "main"
@@ -58,98 +58,98 @@
     },
     {
       "label": "An article page with curation statements",
-      "url": "http://sciety-app-1/articles/activity/10.1101/2022.02.23.481615",
+      "url": "http://sciety-test-app-1/articles/activity/10.1101/2022.02.23.481615",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Article search",
-      "url": "http://sciety-app-1/search?query=elephant+shark",
+      "url": "http://sciety-test-app-1/search?query=elephant+shark",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "ScietyHQ user page lists tab",
-      "url": "http://sciety-app-1/users/scietyHQ/lists",
+      "url": "http://sciety-test-app-1/users/scietyHQ/lists",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "ScietyHQ user page following tab",
-      "url": "http://sciety-app-1/users/scietyHQ/following",
+      "url": "http://sciety-test-app-1/users/scietyHQ/following",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "ScietyHQ saved articles list page",
-      "url": "http://sciety-app-1/lists/bcff0509-ad66-4868-a512-d762dd28f885",
+      "url": "http://sciety-test-app-1/lists/bcff0509-ad66-4868-a512-d762dd28f885",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Group page, lists tab",
-      "url": "http://sciety-app-1/groups/pci-zoology/lists",
+      "url": "http://sciety-test-app-1/groups/pci-zoology/lists",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Group page, about tab",
-      "url": "http://sciety-app-1/groups/pci-zoology/about",
+      "url": "http://sciety-test-app-1/groups/pci-zoology/about",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Group page, followers",
-      "url": "http://sciety-app-1/groups/pci-zoology/followers",
+      "url": "http://sciety-test-app-1/groups/pci-zoology/followers",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Group page, feed",
-      "url": "http://sciety-app-1/groups/pci-zoology/feed",
+      "url": "http://sciety-test-app-1/groups/pci-zoology/feed",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "List page",
-      "url": "http://sciety-app-1/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7",
+      "url": "http://sciety-test-app-1/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Groups page",
-      "url": "http://sciety-app-1/groups",
+      "url": "http://sciety-test-app-1/groups",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Lists page",
-      "url": "http://sciety-app-1/lists",
+      "url": "http://sciety-test-app-1/lists",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "About",
-      "url": "http://sciety-app-1/about",
+      "url": "http://sciety-test-app-1/about",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Legal information",
-      "url": "http://sciety-app-1/legal",
+      "url": "http://sciety-test-app-1/legal",
       "selectors": [
         "main"
       ],
@@ -159,43 +159,43 @@
     },
     {
       "label": "Create account form",
-      "url": "http://sciety-app-1/create-account-form",
+      "url": "http://sciety-test-app-1/create-account-form",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Site header",
-      "url": "http://sciety-app-1/about",
+      "url": "http://sciety-test-app-1/about",
       "selectors": [
         ".site-header"
       ]
     },
     {
       "label": "Site footer",
-      "url": "http://sciety-app-1/about",
+      "url": "http://sciety-test-app-1/about",
       "selectors": [
         ".standard-page-container > footer"
       ]
     },
     {
       "label": "Error page",
-      "url": "http://sciety-app-1/garbage-url",
+      "url": "http://sciety-test-app-1/garbage-url",
       "selectors": [
         "main"
       ]
     },
     {
       "label": "Home page layout, home page",
-      "url": "http://sciety-app-1"
+      "url": "http://sciety-test-app-1"
     },
     {
       "label": "Standard page layout, groups page",
-      "url": "http://sciety-app-1/groups"
+      "url": "http://sciety-test-app-1/groups"
     },
     {
       "label": "Style guide",
-      "url": "http://sciety-app-1/style-guide",
+      "url": "http://sciety-test-app-1/style-guide",
       "selectors": [
         "main"
       ]
@@ -213,7 +213,7 @@
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
-  "dockerCommandTemplate": "docker run --rm -i --user $(id -u):$(id -g) --network sciety_default --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
+  "dockerCommandTemplate": "docker run --rm -i --user $(id -u):$(id -g) --network sciety-test_default --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 25,
   "debug": false,
