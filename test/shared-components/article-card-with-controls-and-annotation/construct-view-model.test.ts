@@ -6,6 +6,7 @@ import { ArticleCardWithControlsAndAnnotationViewModel, constructViewModel } fro
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
+import { arbitraryHtmlFragment } from '../../helpers';
 
 const mustBeOnTheRight = E.getOrElseW((left: unknown) => {
   throw new Error(`Must be on the right. Left was: ${JSON.stringify(left, null, 2)}`);
@@ -53,7 +54,26 @@ describe('construct-view-model', () => {
       });
 
       describe('when it is currently annotated', () => {
-        it.todo('does not display a call to action to create an annotation');
+        let formHref: (ArticleCardWithControlsAndAnnotationViewModel['controls'] & { _tag: 'Some' })['value']['createAnnotationFormHref'];
+
+        beforeEach(async () => {
+          await framework.commandHelpers.createAnnotation({
+            content: arbitraryHtmlFragment(),
+            target: { articleId, listId },
+          });
+          formHref = await pipe(
+            articleId,
+            constructViewModel(framework.dependenciesForViews, true, listId),
+            T.map(mustBeOnTheRight),
+            T.map((viewModel) => viewModel.controls),
+            T.map(mustBeSome),
+            T.map((controls) => controls.createAnnotationFormHref),
+          )();
+        });
+
+        it.failing('does not display a call to action to create an annotation', () => {
+          expect(O.isNone(formHref)).toBe(true);
+        });
       });
     });
 
