@@ -18,7 +18,7 @@ const renderArticleIdInput = (articleId: O.Option<string>) => pipe(
     () => '',
     (id) => id,
   ),
-  (value) => `<input type="hidden" name="articleId" id="articleId" placeholder="10.1101/2022.04.01.486801" class="annotation-form-article-id" value="${value}">
+  (value) => `<input type="hidden" name="articleId" value="${value}">
 `,
 );
 
@@ -30,7 +30,7 @@ const renderListIdInput = (listId: O.Option<string>) => pipe(
     () => '',
     (id) => id,
   ),
-  (value) => `<input type="hidden" name="${listIdInputName}" id="listId" placeholder="" class="annotation-form-article-id" value="${value}">
+  (value) => `<input type="hidden" name="${listIdInputName}" value="${value}">
 `,
 );
 
