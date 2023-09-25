@@ -12,11 +12,7 @@ type Annotation = {
 
 export type ArticleCardWithControlsAndAnnotationViewModel = {
   articleCard: ViewModel,
-  hasControls: boolean,
-  listId: ListId,
-  articleId: Doi,
   annotation: O.Option<Annotation>,
-  createAnnotationFormHref: string,
   controls: O.Option<{
     listId: ListId,
     articleId: Doi,

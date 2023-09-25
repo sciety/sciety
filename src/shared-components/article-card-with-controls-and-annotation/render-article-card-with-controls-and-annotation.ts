@@ -1,4 +1,3 @@
-import * as B from 'fp-ts/boolean';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -25,21 +24,27 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
-const renderLinkToAnnotationForm = (href: string) => {
+const renderLinkToAnnotationForm = (href: O.Option<string>) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return `<a href="${href}">Add annotation</a>`;
+    return pipe(
+      href,
+      O.match(
+        () => '',
+        (h) => `<a href="${h}">Add annotation</a>`,
+      ),
+    );
   }
   return '';
 };
 
 const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel) => pipe(
-  viewModel.hasControls,
-  B.fold(
+  viewModel.controls,
+  O.fold(
     () => toHtmlFragment(''),
-    () => `
+    (controls) => `
     <div class="article-card__controls">
-      ${renderRemoveArticleForm(viewModel.articleId, viewModel.listId)}
-      ${renderLinkToAnnotationForm(viewModel.createAnnotationFormHref)}
+      ${renderRemoveArticleForm(controls.articleId, controls.listId)}
+      ${renderLinkToAnnotationForm(controls.createAnnotationFormHref)}
     </div>
     `,
   ),

@@ -89,10 +89,7 @@ export const styleGuidePage: Page = {
 
       <h3 class="_style-guide-heading">With trashcan</h3>
       ${renderArticleCardWithControlsAndAnnotation({
-    articleId: new Doi('10.1101/foo'),
-    hasControls: true,
     annotation: O.none,
-    listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCard: {
       articleId: new Doi('10.1101/foo'),
       articleLink: '/articles/foo',
@@ -105,7 +102,6 @@ export const styleGuidePage: Page = {
       curationStatementsTeasers: [],
       reviewingGroups: [],
     },
-    createAnnotationFormHref: '#',
     controls: O.some({
       listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
       articleId: new Doi('10.1101/foo'),
@@ -115,14 +111,11 @@ export const styleGuidePage: Page = {
 
       <h3 class="_style-guide-heading">With annotation</h3>
       ${renderArticleCardWithControlsAndAnnotation({
-    articleId: new Doi('10.1101/foo'),
-    hasControls: false,
     annotation: O.some({
       content: toHtmlFragment('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
       author: 'AvasthiReading',
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
-    listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCard: {
       articleId: new Doi('10.1101/foo'),
       articleLink: '/articles/foo',
@@ -135,20 +128,16 @@ export const styleGuidePage: Page = {
       curationStatementsTeasers: [],
       reviewingGroups: [],
     },
-    createAnnotationFormHref: '#',
     controls: O.none,
   })}
 
       <h3 class="_style-guide-heading">With annotation and controls</h3>
       ${renderArticleCardWithControlsAndAnnotation({
-    articleId: new Doi('10.1101/foo'),
-    hasControls: true,
     annotation: O.some({
       content: toHtmlFragment('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
       author: 'AvasthiReading',
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
-    listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCard: {
       articleId: new Doi('10.1101/foo'),
       articleLink: '/articles/foo',
@@ -161,7 +150,6 @@ export const styleGuidePage: Page = {
       curationStatementsTeasers: [],
       reviewingGroups: [],
     },
-    createAnnotationFormHref: '#',
     controls: O.some({
       articleId: new Doi('10.1101/foo'),
       listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
