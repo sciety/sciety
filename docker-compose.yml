@@ -3,7 +3,6 @@ name: 'sciety'
 
 services:
   app:
-    container_name: sciety_app
     build:
       context: .
     environment:
