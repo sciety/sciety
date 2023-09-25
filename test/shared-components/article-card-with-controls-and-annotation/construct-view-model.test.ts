@@ -33,7 +33,7 @@ describe('construct-view-model', () => {
     });
 
     describe('when the logged in user is the list owner', () => {
-      describe.skip('when it never has been annotated', () => {
+      describe('when it never has been annotated', () => {
         let formHref: (ArticleCardWithControlsAndAnnotationViewModel['controls'] & { _tag: 'Some' })['value']['createAnnotationFormHref'];
 
         beforeEach(async () => {
