@@ -92,7 +92,7 @@ make backstop-test SCENARIO="header|footer"
 The following target runs all static code checks:
 
 ```shell
-make lint
+make check
 ```
 
 You can fix problems, where possible, by executing:
