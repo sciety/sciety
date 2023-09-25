@@ -11,15 +11,15 @@ import { constructAnnotation } from './construct-annotation';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 import { articleIdInputName, listIdInputName } from '../../html-pages/create-annotation-form-page/create-annotation-form-page';
 
-type Ports = ConstructArticleCardViewModelDependencies & Queries;
+type Dependencies = ConstructArticleCardViewModelDependencies & Queries;
 
 const toArticleCardWithControlsAndAnnotationViewModel = (
-  ports: Ports,
+  dependencies: Dependencies,
   editCapability: boolean,
   listId: ListId,
   articleId: Doi,
 ) => (articleCard: ViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
-  constructAnnotation(ports)(listId, articleId),
+  constructAnnotation(dependencies)(listId, articleId),
   (annotation) => ({
     articleCard,
     hasControls: editCapability,
@@ -38,13 +38,13 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
 );
 
 export const constructViewModel = (
-  ports: Ports,
+  dependencies: Dependencies,
   editCapability: boolean,
   listId: ListId,
 ) => (
   articleId: Doi,
 ): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
   articleId,
-  constructArticleCardViewModel(ports),
-  TE.map(toArticleCardWithControlsAndAnnotationViewModel(ports, editCapability, listId, articleId)),
+  constructArticleCardViewModel(dependencies),
+  TE.map(toArticleCardWithControlsAndAnnotationViewModel(dependencies, editCapability, listId, articleId)),
 );
