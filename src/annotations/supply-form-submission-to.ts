@@ -59,11 +59,7 @@ export const supplyFormSubmissionTo: SupplyFormSubmissionTo = (adapters, handler
         context.response.body = 'Only the list owner is allowed to annotate their list.';
       },
       async () => {
-        await pipe(
-          context.request.body,
-          handler,
-        )();
-
+        await handler(context.request.body)();
         pipe(
           context.request.body,
           bodyCodec.decode,
