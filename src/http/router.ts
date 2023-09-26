@@ -357,16 +357,16 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
         bodyCodec.decode,
         E.map(transformToCommand),
         TE.fromEither,
-        TE.chainFirstTaskK(
-          (command) => T.of(
-            adapters.logger('debug', 'Received CreateAnnotation command', { command }),
-          ),
-        ),
+        // TE.chainFirstTaskK(
+        //   (command) => T.of(
+        //     adapters.logger('debug', 'Received CreateAnnotation command', { command }),
+        //   ),
+        // ),
         TE.chainTaskK((command) => pipe(
           adapters.getAllEvents,
           T.map(executeCreateAnnotationCommand(command)),
         )),
-        TE.chainTaskK(adapters.commitEvents),
+        // TE.chainTaskK(adapters.commitEvents),
         TE.map(() => 'no-events-created'),
       )();
       await next();
