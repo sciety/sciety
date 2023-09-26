@@ -3,7 +3,8 @@ import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
-import { renderPage, ViewModel } from './render-page';
+import { renderPage } from './render-page';
+import { ViewModel } from './view-model';
 
 export const paramsCodec = t.type({
   articleId: t.string,

@@ -1,12 +1,8 @@
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { ViewModel } from './view-model';
 
 export const listIdInputName = 'listId';
 export const articleIdInputName = 'articleId';
-
-export type ViewModel = {
-  articleId: string,
-  listId: string,
-};
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
     <h1>Create an annotation for an article on a list</h1>
