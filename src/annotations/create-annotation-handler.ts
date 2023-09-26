@@ -20,7 +20,7 @@ const isUserAllowedToCreateAnnotation = (
 
 type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
 
-export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context, next) => {
+export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context) => {
   const loggedInUser = getLoggedInScietyUser(adapters, context);
   if (O.isNone(loggedInUser)) {
     context.response.status = StatusCodes.FORBIDDEN;
@@ -35,10 +35,8 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
   }
 
   await pipe(
-    command,
-    O.fromEither,
-    O.map((body) => body.listId),
-    O.chain(adapters.lookupList),
+    command.right.listId,
+    adapters.lookupList,
     O.chainNullableK((list) => list.ownerId.value),
     O.filter((listOwnerId) => isUserAllowedToCreateAnnotation(loggedInUser.value.id, listOwnerId)),
     O.match(
@@ -48,12 +46,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
       },
       async () => {
         await handleCreateAnnotationCommand(adapters)(context.request.body)();
-        pipe(
-          context.request.body,
-          createAnnotationCommandCodec.decode,
-          E.map((params) => context.redirect(`/lists/${params.listId}`)),
-        );
-        await next();
+        context.redirect(`/lists/${command.right.listId}`);
       },
     ),
   );
