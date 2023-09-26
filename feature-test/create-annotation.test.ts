@@ -1,5 +1,5 @@
 import {
-  click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
+  $, click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
 } from 'taiko';
 import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
@@ -43,7 +43,11 @@ describe('create-annotation', () => {
           expect(currentPage).toBe(`http://localhost:8080/lists/${listId}`);
         });
 
-        it.todo('the annotation is visible');
+        it('the annotation is visible', async () => {
+          const annotation = await $('.article-card-annotation').text();
+
+          expect(annotation).toContain('abc');
+        });
       });
     });
   });
