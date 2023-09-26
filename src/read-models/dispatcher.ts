@@ -43,7 +43,7 @@ export const dispatcher = (logger: Logger): Dispatcher => {
       initialisedReadModels,
       RA.mapWithIndex((index, readModel) => {
         const result = readModel.dispatch(events);
-        logger('debug', 'Initialised read model', { index });
+        logger('debug', 'Events handled by read model', { index });
         return result;
       }),
     );
