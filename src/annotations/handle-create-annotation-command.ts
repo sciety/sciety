@@ -32,7 +32,7 @@ const transformToCommand = ({ annotationContent, articleId, listId }: Body): Cre
   },
 });
 
-type Dependencies = DependenciesForCommands & {
+export type Dependencies = DependenciesForCommands & {
   logger: Logger,
 };
 
