@@ -8,10 +8,11 @@ import { constructViewModel } from '../../../../src/html-pages/article-page/cons
 import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
 import { createTestFramework, TestFramework } from '../../../framework';
-import { LoggedInUserListManagement } from '../../../../src/html-pages/article-page/view-model';
+import { LoggedInUserListManagement, ViewModel } from '../../../../src/html-pages/article-page/view-model';
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { GetRight, GetSome } from '../../../type-optics';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -31,7 +32,7 @@ describe('construct-view-model', () => {
 
     describe('when the article is not saved to the user\'s only list', () => {
       let list: List;
-      let viewModel: LoggedInUserListManagement;
+      let viewModel: GetSome<ViewModel['userListManagement']>;
 
       beforeEach(async () => {
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
@@ -105,12 +106,12 @@ describe('construct-view-model', () => {
 
     describe('when the article is saved to the default user list', () => {
       let list: List;
-      let viewModel: LoggedInUserListManagement;
+      let listSummary: GetRight<GetSome<ViewModel['userListManagement']>>;
 
       beforeEach(async () => {
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
         await framework.commandHelpers.addArticleToList(articleId, list.id);
-        viewModel = await pipe(
+        listSummary = await pipe(
           {
             doi: articleId,
             user: O.some({ id: createUserAccountCommand.userId }),
@@ -119,25 +120,22 @@ describe('construct-view-model', () => {
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),
+          TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
       it('list management has access to list id', async () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listId: list.id,
-        })));
+        expect(listSummary.listId).toStrictEqual(list.id);
       });
 
       it('list management has access to list name', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listName: list.name,
-        })));
+        expect(listSummary.listName).toStrictEqual(list.name);
       });
     });
 
     describe('when the article is saved to another user list', () => {
       let createListCommand: CreateListCommand;
-      let viewModel: LoggedInUserListManagement;
+      let listSummary: GetRight<GetSome<ViewModel['userListManagement']>>;
 
       beforeEach(async () => {
         createListCommand = {
@@ -146,7 +144,7 @@ describe('construct-view-model', () => {
         };
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
-        viewModel = await pipe(
+        listSummary = await pipe(
           {
             doi: articleId,
             user: O.some({ id: createUserAccountCommand.userId }),
@@ -155,19 +153,16 @@ describe('construct-view-model', () => {
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),
+          TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
       it('list management has access to list id', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listId: createListCommand.listId,
-        })));
+        expect(listSummary.listId).toStrictEqual(createListCommand.listId);
       });
 
       it('list management has access to list name', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listName: createListCommand.name,
-        })));
+        expect(listSummary.listName).toStrictEqual(createListCommand.name);
       });
     });
   });
