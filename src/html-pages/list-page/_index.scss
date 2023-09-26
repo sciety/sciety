@@ -8,7 +8,6 @@
 @use '../../sass/button';
 @use '../../sass/functions';
 
-$_remove-article-icon-size: 24px;
 $_edit-details-icon-size: 24px;
 $_edit-details-icon-offset: 8px;
 
@@ -73,19 +72,6 @@ $_edit-details-icon-offset: 8px;
   margin-bottom: functions.px-to-rem(16px);
 }
 
-svg.saved-articles-control__icon {
-  fill: settings.$colour-text-primary;
-}
-
 .saved-articles-control {
-  border-width: 0;
-  padding: 0;
-  display: block;
-  height: $_remove-article-icon-size;
-  width: $_remove-article-icon-size;
-  background-color: transparent;
-
-  &:hover svg.saved-articles-control__icon {
-    fill: settings.$colour-accent;
-  }
+  @include button.secondary();
 }
