@@ -1,6 +1,7 @@
 import {
   $, click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
 } from 'taiko';
+import { arbitraryString } from '../test/helpers';
 import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
@@ -29,10 +30,12 @@ describe('create-annotation', () => {
       });
 
       describe('when I annotate the article', () => {
+        const annotationContent = arbitraryString();
+
         beforeEach(async () => {
           await click('saved articles');
           await click('Add annotation');
-          await write('abc', into(textBox('Annotation content')));
+          await write(annotationContent, into(textBox('Annotation content')));
           await click('Create annotation');
         });
 
@@ -46,7 +49,7 @@ describe('create-annotation', () => {
         it('the annotation is visible', async () => {
           const annotation = await $('.article-card-annotation').text();
 
-          expect(annotation).toContain('abc');
+          expect(annotation).toContain(annotationContent);
         });
       });
     });
