@@ -29,9 +29,9 @@ const isUserAllowedToCreateAnnotation = (
   listOwnerId: UserId | GroupId,
 ) => userId === listOwnerId || userId === scietyAdminUserId;
 
-type SupplyFormSubmissionTo = (adapters: Dependencies) => Middleware;
+type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
 
-export const supplyFormSubmissionTo: SupplyFormSubmissionTo = (adapters) => async (context, next) => {
+export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context, next) => {
   await pipe(
     {
       loggedInUser: getLoggedInScietyUser(adapters, context),

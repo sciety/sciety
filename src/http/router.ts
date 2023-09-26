@@ -17,7 +17,7 @@ import { redirectBack } from './redirect-back';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
-import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
+import { createAnnotationHandler } from '../annotations/create-annotation-handler';
 import {
   addArticleToListCommandCodec,
   editListDetailsCommandCodec,
@@ -348,7 +348,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.post(
     '/annotations/create-annotation',
     bodyParser({ enableTypes: ['form'] }),
-    supplyFormSubmissionTo(adapters),
+    createAnnotationHandler(adapters),
   );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
