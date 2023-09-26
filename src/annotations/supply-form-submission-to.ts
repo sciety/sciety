@@ -3,7 +3,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import compose from 'koa-compose';
 import { sequenceS } from 'fp-ts/Apply';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
@@ -33,7 +32,12 @@ const isUserAllowedToCreateAnnotation = (
   listOwnerId: UserId | GroupId,
 ) => userId === listOwnerId || userId === scietyAdminUserId;
 
-const requireUserToOwnTheList = (adapters: Dependencies): Middleware => async (context, next) => {
+type SupplyFormSubmissionTo = (
+  adapters: Dependencies,
+  handler: CommandHandler,
+) => Middleware;
+
+export const supplyFormSubmissionTo: SupplyFormSubmissionTo = (adapters, handler) => async (context, next) => {
   await pipe(
     {
       loggedInUser: getLoggedInScietyUser(adapters, context),
@@ -54,30 +58,19 @@ const requireUserToOwnTheList = (adapters: Dependencies): Middleware => async (c
         context.response.status = StatusCodes.FORBIDDEN;
         context.response.body = 'Only the list owner is allowed to annotate their list.';
       },
-      async () => { await next(); },
+      async () => {
+        await pipe(
+          context.request.body,
+          handler,
+        )();
+
+        pipe(
+          context.request.body,
+          bodyCodec.decode,
+          E.map((params) => context.redirect(`/lists/${params.listId}`)),
+        );
+        await next();
+      },
     ),
   );
 };
-
-type SupplyFormSubmissionTo = (
-  adapters: Dependencies,
-  handler: CommandHandler,
-) => Middleware;
-
-export const supplyFormSubmissionTo: SupplyFormSubmissionTo = (adapters, handler) => compose([
-  requireUserToOwnTheList(adapters),
-  async (context, next) => {
-    await pipe(
-      context.request.body,
-      handler,
-    )();
-
-    pipe(
-      context.request.body,
-      bodyCodec.decode,
-      E.map((params) => context.redirect(`/lists/${params.listId}`)),
-    );
-
-    await next();
-  },
-]);
