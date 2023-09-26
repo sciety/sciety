@@ -24,18 +24,13 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
   toHtmlFragment,
 );
 
-const renderLinkToAnnotationForm = (href: O.Option<string>) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return pipe(
-      href,
-      O.match(
-        () => '',
-        (h) => `<a href="${h}">Add annotation</a>`,
-      ),
-    );
-  }
-  return '';
-};
+const renderLinkToAnnotationForm = (href: O.Option<string>) => pipe(
+  href,
+  O.match(
+    () => '',
+    (h) => `<a href="${h}">Add annotation</a>`,
+  ),
+);
 
 const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel) => pipe(
   viewModel.controls,
