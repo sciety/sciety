@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { sequenceS } from 'fp-ts/Apply';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../http/authentication-and-logging-in-of-sciety-users';
@@ -40,20 +39,14 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
   }
 
   await pipe(
-    {
-      loggedInUser,
-      listOwnerId: pipe(
-        context.request.body,
-        bodyCodec.decode,
-        O.fromEither,
-        O.map((body) => body.listId),
-        O.map(LID.fromValidatedString),
-        O.chain(adapters.lookupList),
-        O.chainNullableK((list) => list.ownerId.value),
-      ),
-    },
-    sequenceS(O.Apply),
-    O.filter((stuff) => isUserAllowedToCreateAnnotation(stuff.loggedInUser.id, stuff.listOwnerId)),
+    context.request.body,
+    bodyCodec.decode,
+    O.fromEither,
+    O.map((body) => body.listId),
+    O.map(LID.fromValidatedString),
+    O.chain(adapters.lookupList),
+    O.chainNullableK((list) => list.ownerId.value),
+    O.filter((listOwnerId) => isUserAllowedToCreateAnnotation(loggedInUser.value.id, listOwnerId)),
     O.match(
       async () => {
         context.response.status = StatusCodes.FORBIDDEN;
