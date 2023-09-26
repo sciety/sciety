@@ -2,22 +2,12 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../http/authentication-and-logging-in-of-sciety-users';
-import { htmlFragmentCodec } from '../types/html-fragment';
-import { DoiFromString } from '../types/codecs/DoiFromString';
-import * as LID from '../types/list-id';
 import { Queries } from '../read-models';
 import { UserId } from '../types/user-id';
 import { GroupId } from '../types/group-id';
-import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
-
-const bodyCodec = t.type({
-  annotationContent: htmlFragmentCodec,
-  articleId: DoiFromString,
-  listId: LID.listIdCodec,
-});
+import { createAnnotationCommandCodec, handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies;
 
@@ -40,10 +30,9 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
 
   await pipe(
     context.request.body,
-    bodyCodec.decode,
+    createAnnotationCommandCodec.decode,
     O.fromEither,
     O.map((body) => body.listId),
-    O.map(LID.fromValidatedString),
     O.chain(adapters.lookupList),
     O.chainNullableK((list) => list.ownerId.value),
     O.filter((listOwnerId) => isUserAllowedToCreateAnnotation(loggedInUser.value.id, listOwnerId)),
@@ -56,7 +45,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
         await handleCreateAnnotationCommand(adapters)(context.request.body)();
         pipe(
           context.request.body,
-          bodyCodec.decode,
+          createAnnotationCommandCodec.decode,
           E.map((params) => context.redirect(`/lists/${params.listId}`)),
         );
         await next();

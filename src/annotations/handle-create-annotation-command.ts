@@ -7,22 +7,17 @@ import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execu
 import { Logger } from '../shared-ports';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
-import { Doi } from '../types/doi';
-import { HtmlFragment, htmlFragmentCodec } from '../types/html-fragment';
-import { fromValidatedString, ListId, listIdCodec } from '../types/list-id';
+import { htmlFragmentCodec } from '../types/html-fragment';
+import { fromValidatedString, listIdCodec } from '../types/list-id';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
 
-type Body = {
-  annotationContent: HtmlFragment,
-  articleId: Doi,
-  listId: ListId,
-};
-
-const bodyCodec = t.type({
+export const createAnnotationCommandCodec = t.type({
   annotationContent: htmlFragmentCodec,
   articleId: DoiFromString,
   listId: listIdCodec,
 });
+
+type Body = t.TypeOf<typeof createAnnotationCommandCodec>;
 
 const transformToCommand = ({ annotationContent, articleId, listId }: Body): CreateAnnotationCommand => ({
   content: annotationContent,
@@ -42,7 +37,7 @@ type HandleCreateAnnotationCommand = (
 
 export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dependencies) => (input) => pipe(
   input,
-  bodyCodec.decode,
+  createAnnotationCommandCodec.decode,
   E.map(transformToCommand),
   TE.fromEither,
   TE.chainFirstTaskK(
