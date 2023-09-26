@@ -3,7 +3,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 export const listIdInputName = 'listId';
 export const articleIdInputName = 'articleId';
 
-type ViewModel = {
+export type ViewModel = {
   articleId: string,
   listId: string,
 };
