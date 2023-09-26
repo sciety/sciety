@@ -72,6 +72,10 @@ $_edit-details-icon-offset: 8px;
   margin-bottom: functions.px-to-rem(16px);
 }
 
-.saved-articles-control {
+.saved-articles-control--remove {
   @include button.secondary();
+}
+
+.saved-articles-control--annotate {
+  @include button.primary-link();
 }

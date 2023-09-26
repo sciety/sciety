@@ -12,7 +12,7 @@ const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
       <form method="post" action="/forms/remove-article-from-list">
         <input type="hidden" name="articleid" value="${id}">
         <input type="hidden" name="listid" value="${listId}">
-        <button aria-label="Remove this article from the list" class="saved-articles-control">
+        <button aria-label="Remove this article from the list" class="saved-articles-control--remove">
         Remove article
         </button>
       </form>
@@ -24,7 +24,7 @@ const renderLinkToAnnotationForm = (href: O.Option<string>) => pipe(
   href,
   O.match(
     () => '',
-    (h) => `<a href="${h}">Add annotation</a>`,
+    (h) => `<a href="${h}" class="saved-articles-control--annotate">Add annotation</a>`,
   ),
 );
 
@@ -34,8 +34,8 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
     () => toHtmlFragment(''),
     (controls) => `
     <div class="article-card__controls">
-      ${renderRemoveArticleForm(controls.articleId, controls.listId)}
       ${renderLinkToAnnotationForm(controls.createAnnotationFormHref)}
+      ${renderRemoveArticleForm(controls.articleId, controls.listId)}
     </div>
     `,
   ),
