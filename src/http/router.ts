@@ -363,8 +363,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
         //   ),
         // ),
         TE.chainTaskK((command) => pipe(
-          adapters.getAllEvents,
-          T.map(executeCreateAnnotationCommand(command)),
+          T.of([]),
+          // T.map(executeCreateAnnotationCommand(command)),
         )),
         // TE.chainTaskK(adapters.commitEvents),
         TE.map(() => 'no-events-created'),
