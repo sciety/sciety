@@ -348,6 +348,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post(
     '/annotations/create-annotation',
+    bodyParser({ enableTypes: ['form'] }),
     supplyFormSubmissionTo(adapters, handleCreateAnnotationCommand(adapters)),
   );
 

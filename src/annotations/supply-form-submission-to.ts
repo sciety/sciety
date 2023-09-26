@@ -3,7 +3,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
 import { sequenceS } from 'fp-ts/Apply';
 import * as t from 'io-ts';
@@ -66,7 +65,6 @@ type SupplyFormSubmissionTo = (
 ) => Middleware;
 
 export const supplyFormSubmissionTo: SupplyFormSubmissionTo = (adapters, handler) => compose([
-  bodyParser({ enableTypes: ['form'] }),
   requireUserToOwnTheList(adapters),
   async (context, next) => {
     await pipe(
