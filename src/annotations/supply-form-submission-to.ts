@@ -35,7 +35,7 @@ const isUserAllowedToCreateAnnotation = (
 ) => userId === listOwnerId || userId === scietyAdminUserId;
 
 const requireUserToOwnTheList = (adapters: Dependencies): Middleware => async (context, next) => {
-  pipe(
+  await pipe(
     {
       loggedInUser: getLoggedInScietyUser(adapters, context),
       listOwnerId: pipe(
@@ -51,7 +51,7 @@ const requireUserToOwnTheList = (adapters: Dependencies): Middleware => async (c
     sequenceS(O.Apply),
     O.filter(({ loggedInUser, listOwnerId }) => isUserAllowedToCreateAnnotation(loggedInUser.id, listOwnerId)),
     O.match(
-      () => {
+      async () => {
         context.response.status = StatusCodes.FORBIDDEN;
         context.response.body = 'Only the list owner is allowed to annotate their list.';
       },
