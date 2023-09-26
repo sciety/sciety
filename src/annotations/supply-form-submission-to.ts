@@ -34,7 +34,7 @@ const isUserAllowedToCreateAnnotation = (
   listOwnerId: UserId | GroupId,
 ) => userId === listOwnerId || userId === scietyAdminUserId;
 
-const requireUserToOwnTheList = (adapters: Dependencies): Middleware => async (context, next) => {
+export const requireUserToOwnTheList = (adapters: Dependencies): Middleware => async (context, next) => {
   pipe(
     {
       loggedInUser: getLoggedInScietyUser(adapters, context),

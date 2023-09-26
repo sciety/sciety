@@ -18,7 +18,7 @@ import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
 import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
-import { supplyFormSubmissionTo } from '../annotations/supply-form-submission-to';
+import { requireUserToOwnTheList } from '../annotations/supply-form-submission-to';
 import {
   addArticleToListCommandCodec,
   editListDetailsCommandCodec,
@@ -348,7 +348,17 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post(
     '/annotations/create-annotation',
-    supplyFormSubmissionTo(adapters, handleCreateAnnotationCommand(adapters)),
+    bodyParser({ enableTypes: ['form'] }),
+    requireUserToOwnTheList(adapters),
+    async (context, next) => {
+      await pipe(
+        context.request.body,
+        handleCreateAnnotationCommand(adapters),
+      )();
+      await next();
+    },
+    redirectBack,
+
   );
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
