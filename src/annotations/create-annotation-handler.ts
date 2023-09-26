@@ -32,9 +32,16 @@ const isUserAllowedToCreateAnnotation = (
 type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
 
 export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context, next) => {
+  const loggedInUser = getLoggedInScietyUser(adapters, context);
+  if (O.isNone(loggedInUser)) {
+    context.response.status = StatusCodes.FORBIDDEN;
+    context.response.body = 'You must be logged in to annotate a list.';
+    return;
+  }
+
   await pipe(
     {
-      loggedInUser: getLoggedInScietyUser(adapters, context),
+      loggedInUser,
       listOwnerId: pipe(
         context.request.body,
         bodyCodec.decode,
@@ -46,7 +53,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
       ),
     },
     sequenceS(O.Apply),
-    O.filter(({ loggedInUser, listOwnerId }) => isUserAllowedToCreateAnnotation(loggedInUser.id, listOwnerId)),
+    O.filter((stuff) => isUserAllowedToCreateAnnotation(stuff.loggedInUser.id, stuff.listOwnerId)),
     O.match(
       async () => {
         context.response.status = StatusCodes.FORBIDDEN;
