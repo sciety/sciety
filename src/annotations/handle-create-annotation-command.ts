@@ -18,13 +18,13 @@ type Body = {
   listId: ListId,
 };
 
-const bodyCodec = t.type({
+export const bodyCodec = t.type({
   annotationContent: htmlFragmentCodec,
   articleId: DoiFromString,
   listId: listIdCodec,
 });
 
-const transformToCommand = ({ annotationContent, articleId, listId }: Body): CreateAnnotationCommand => ({
+export const transformToCommand = ({ annotationContent, articleId, listId }: Body): CreateAnnotationCommand => ({
   content: annotationContent,
   target: {
     articleId,

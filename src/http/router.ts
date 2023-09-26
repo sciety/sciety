@@ -17,7 +17,7 @@ import { redirectBack } from './redirect-back';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
-import { handleCreateAnnotationCommand } from '../annotations/handle-create-annotation-command';
+import { bodyCodec, transformToCommand } from '../annotations/handle-create-annotation-command';
 import { requireUserToOwnTheList } from '../annotations/supply-form-submission-to';
 import {
   addArticleToListCommandCodec,
@@ -78,6 +78,7 @@ import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
 import { styleGuidePage } from '../html-pages/style-guide-page';
 import { createUserAccountCommandHandler } from '../write-side/command-handlers';
+import { executeCreateAnnotationCommand } from '../annotations/execute-create-annotation-command';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -353,7 +354,20 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     async (context, next) => {
       await pipe(
         context.request.body,
-        handleCreateAnnotationCommand(adapters),
+        bodyCodec.decode,
+        E.map(transformToCommand),
+        TE.fromEither,
+        TE.chainFirstTaskK(
+          (command) => T.of(
+            adapters.logger('debug', 'Received CreateAnnotation command', { command }),
+          ),
+        ),
+        TE.chainTaskK((command) => pipe(
+          adapters.getAllEvents,
+          T.map(executeCreateAnnotationCommand(command)),
+        )),
+        TE.chainTaskK(adapters.commitEvents),
+        TE.map(() => 'no-events-created'),
       )();
       await next();
     },
