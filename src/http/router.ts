@@ -352,6 +352,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     bodyParser({ enableTypes: ['form'] }),
     requireUserToOwnTheList(adapters),
     async (context, next) => {
+      console.log('>>>>>> before the await pipe');
       await pipe(
         context.request.body,
         bodyCodec.decode,
@@ -369,7 +370,9 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
         // TE.chainTaskK(adapters.commitEvents),
         TE.map(() => 'no-events-created'),
       )();
+      console.log('>>>>>> after the await pipe');
       await next();
+      console.log('>>>>>> after the await next');
     },
     redirectBack,
 
