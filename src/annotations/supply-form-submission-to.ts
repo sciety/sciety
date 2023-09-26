@@ -7,7 +7,7 @@ import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
 import { sequenceS } from 'fp-ts/Apply';
 import * as t from 'io-ts';
-import { redirectBack } from '../http/redirect-back';
+import * as E from 'fp-ts/Either';
 import { CommandResult } from '../types/command-result';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../http/authentication-and-logging-in-of-sciety-users';
 import { htmlFragmentCodec } from '../types/html-fragment';
@@ -74,7 +74,12 @@ export const supplyFormSubmissionTo: SupplyFormSubmissionTo = (adapters, handler
       handler,
     )();
 
+    pipe(
+      context.request.body,
+      bodyCodec.decode,
+      E.map((params) => context.redirect(`/lists/${params.listId}`)),
+    );
+
     await next();
   },
-  redirectBack,
 ]);
