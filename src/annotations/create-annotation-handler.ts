@@ -27,10 +27,15 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
     context.response.body = 'You must be logged in to annotate a list.';
     return;
   }
+  const command = createAnnotationCommandCodec.decode(context.request.body);
+  if (E.isLeft(command)) {
+    context.response.status = StatusCodes.BAD_REQUEST;
+    context.response.body = 'Cannot understand the command.';
+    return;
+  }
 
   await pipe(
-    context.request.body,
-    createAnnotationCommandCodec.decode,
+    command,
     O.fromEither,
     O.map((body) => body.listId),
     O.chain(adapters.lookupList),
