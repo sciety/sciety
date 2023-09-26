@@ -362,8 +362,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
         //     adapters.logger('debug', 'Received CreateAnnotation command', { command }),
         //   ),
         // ),
-        TE.chainTaskK((command) => pipe(
-          T.of([]),
+        TE.chainW((command) => pipe(
+          TE.right([]),
           // T.map(executeCreateAnnotationCommand(command)),
         )),
         // TE.chainTaskK(adapters.commitEvents),
