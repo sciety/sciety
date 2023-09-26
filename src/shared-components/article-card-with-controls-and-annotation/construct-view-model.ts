@@ -22,11 +22,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   constructAnnotation(dependencies)(listId, articleId),
   (annotation) => ({
     articleCard,
-    hasControls: editCapability,
-    listId,
-    articleId,
     annotation,
-    createAnnotationFormHref: `/annotations/create-annotation-form?${articleIdInputName}=${articleId.value}&${listIdInputName}=${listId}`,
     controls: editCapability ? O.some({
       listId,
       articleId,
