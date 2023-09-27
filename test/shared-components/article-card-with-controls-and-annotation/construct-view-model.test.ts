@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { ArticleCardWithControlsAndAnnotationViewModel, constructViewModel } from '../../../src/shared-components/article-card-with-controls-and-annotation';
+import { ArticleCardWithControlsAndAnnotationViewModel, constructArticleCardWithControlsAndAnnotation } from '../../../src/shared-components/article-card-with-controls-and-annotation';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
@@ -40,7 +40,7 @@ describe('construct-view-model', () => {
         beforeEach(async () => {
           formHref = await pipe(
             articleId,
-            constructViewModel(framework.dependenciesForViews, true, listId),
+            constructArticleCardWithControlsAndAnnotation(framework.dependenciesForViews, true, listId),
             T.map(mustBeOnTheRight),
             T.map((viewModel) => viewModel.controls),
             T.map(mustBeSome),
@@ -63,7 +63,7 @@ describe('construct-view-model', () => {
           });
           formHref = await pipe(
             articleId,
-            constructViewModel(framework.dependenciesForViews, true, listId),
+            constructArticleCardWithControlsAndAnnotation(framework.dependenciesForViews, true, listId),
             T.map(mustBeOnTheRight),
             T.map((viewModel) => viewModel.controls),
             T.map(mustBeSome),
@@ -83,7 +83,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         controls = await pipe(
           articleId,
-          constructViewModel(framework.dependenciesForViews, false, listId),
+          constructArticleCardWithControlsAndAnnotation(framework.dependenciesForViews, false, listId),
           T.map(mustBeOnTheRight),
           T.map((viewModel) => viewModel.controls),
         )();

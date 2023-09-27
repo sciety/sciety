@@ -33,7 +33,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   }),
 );
 
-export const constructViewModel = (
+export const constructArticleCardWithControlsAndAnnotation = (
   dependencies: Dependencies,
   editCapability: boolean,
   listId: ListId,
