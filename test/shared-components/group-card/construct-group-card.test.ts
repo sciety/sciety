@@ -11,7 +11,7 @@ import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-co
 import { AddGroupCommand } from '../../../src/write-side/commands';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
-describe('construct-group-card-view-model', () => {
+describe('construct-group-card', () => {
   let framework: TestFramework;
 
   beforeEach(() => {
