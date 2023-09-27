@@ -4,7 +4,7 @@ import * as TO from 'fp-ts/TaskOption';
 import * as O from 'fp-ts/Option';
 import { SearchForArticles } from '../../src/shared-ports/search-for-articles';
 import {
-  FetchArticle, FetchRelatedArticles, FetchReview, FetchStaticFile, FindVersionsForArticleDoi,
+  FetchArticle, FetchRelatedArticles, FetchReview, FetchStaticFile, FindVersionsForArticleDoi, GetArticleSubjectArea,
 } from '../../src/shared-ports';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -13,6 +13,7 @@ import {
 } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryArticleServer } from '../types/article-server.helper';
 
 export type HappyPathThirdPartyAdapters = {
   fetchArticle: FetchArticle,
@@ -20,6 +21,7 @@ export type HappyPathThirdPartyAdapters = {
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  getArticleSubjectArea: GetArticleSubjectArea,
   searchForArticles: SearchForArticles,
 };
 
@@ -50,6 +52,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
       version: 1,
     },
   ]),
+  getArticleSubjectArea: () => TE.right({ value: arbitraryString(), server: arbitraryArticleServer() }),
   searchForArticles: () => () => TE.right({
     items: [],
     total: 0,
