@@ -63,7 +63,7 @@ export const evaluationToFeedItem = (
   }) => ({
     type: 'evaluation' as const,
     id: feedEvent.evaluationLocator,
-    source: review.url,
+    sourceHref: review.url,
     publishedAt: feedEvent.publishedAt,
     ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),

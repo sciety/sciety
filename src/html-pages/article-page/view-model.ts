@@ -17,7 +17,7 @@ import { CurationStatementViewModel } from '../../shared-components/curation-sta
 export type EvaluationFeedItem = {
   type: 'evaluation',
   id: EL.EvaluationLocator,
-  source: O.Option<URL>,
+  sourceHref: O.Option<URL>,
   publishedAt: Date,
   groupName: string,
   groupHref: string,

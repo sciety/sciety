@@ -10,7 +10,7 @@ import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helpe
 export const arbitrary = (): EvaluationFeedItem => ({
   type: 'evaluation',
   id: arbitraryEvaluationLocator(),
-  source: O.some(new URL(arbitraryUri())),
+  sourceHref: O.some(new URL(arbitraryUri())),
   publishedAt: new Date(),
   groupHref: arbitraryWord(),
   groupName: 'group 1',
@@ -31,12 +31,12 @@ export const withNoFullText = (rfi: EvaluationFeedItem): EvaluationFeedItem => (
 
 export const withSource = (uri: string) => (rfi: EvaluationFeedItem): EvaluationFeedItem => ({
   ...rfi,
-  source: O.some(new URL(uri)),
+  sourceHref: O.some(new URL(uri)),
 });
 
 export const withNoSource = (rfi: EvaluationFeedItem): EvaluationFeedItem => ({
   ...rfi,
-  source: O.none,
+  sourceHref: O.none,
 });
 
 export const withDate = (publishedAt: Date) => (rfi: EvaluationFeedItem): EvaluationFeedItem => ({

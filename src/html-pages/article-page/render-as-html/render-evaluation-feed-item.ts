@@ -25,7 +25,7 @@ const eventMetadata = (review: EvaluationFeedItem) => toHtmlFragment(`
 `);
 
 const appendSourceLink = flow(
-  (review: EvaluationFeedItem) => review.source,
+  (review: EvaluationFeedItem) => review.sourceHref,
   O.map(flow(
     (source) => `
       <div data-read-original-source>
