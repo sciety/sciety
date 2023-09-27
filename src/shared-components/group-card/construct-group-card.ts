@@ -26,7 +26,7 @@ const calculateListCount = (groupId: GroupId, queries: Queries) => pipe(
   RA.size,
 );
 
-export const constructGroupCardViewModel = (
+export const constructGroupCard = (
   queries: Queries,
 ) => (
   groupId: GroupId,

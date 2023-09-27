@@ -6,7 +6,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { flow, pipe } from 'fp-ts/function';
-import { constructGroupCardViewModel, GroupCardViewModel } from '../../shared-components/group-card';
+import { constructGroupCard, GroupCardViewModel } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { Queries } from '../../read-models';
@@ -23,7 +23,7 @@ type ToListOfGroupCardViewModels = (queries: Queries)
 
 export const toListOfGroupCardViewModels: ToListOfGroupCardViewModels = (queries) => flow(
   RA.map((group) => group.id),
-  E.traverseArray(constructGroupCardViewModel(queries)),
+  E.traverseArray(constructGroupCard(queries)),
   E.map(RA.sort(byLatestActivity)),
   T.of,
 );

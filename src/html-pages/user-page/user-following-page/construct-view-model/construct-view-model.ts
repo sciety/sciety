@@ -7,7 +7,7 @@ import * as DE from '../../../../types/data-error';
 import * as LOID from '../../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
-import { constructGroupCardViewModel } from '../../../../shared-components/group-card';
+import { constructGroupCard } from '../../../../shared-components/group-card';
 import { Queries } from '../../../../read-models';
 
 export const userPageParams = t.type({
@@ -35,7 +35,7 @@ export const constructViewModel: ConstructViewModel = (queries) => (params) => p
     listCount: lists.length,
     followedGroups: pipe(
       groupIds,
-      E.traverseArray(constructGroupCardViewModel(queries)),
+      E.traverseArray(constructGroupCard(queries)),
       O.fromEither,
     ),
   })),

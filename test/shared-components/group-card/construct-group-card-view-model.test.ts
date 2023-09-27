@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as DE from '../../../src/types/data-error';
-import { constructGroupCardViewModel } from '../../../src/shared-components/group-card';
+import { constructGroupCard } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -20,7 +20,7 @@ describe('construct-group-card-view-model', () => {
 
   const constructedViewModel = (command: AddGroupCommand) => pipe(
     command.groupId,
-    constructGroupCardViewModel(framework.queries),
+    constructGroupCard(framework.queries),
     E.getOrElseW(shouldNotBeCalled),
   );
 
@@ -140,7 +140,7 @@ describe('construct-group-card-view-model', () => {
     beforeEach(() => {
       viewModel = pipe(
         arbitraryGroupId(),
-        constructGroupCardViewModel(framework.queries),
+        constructGroupCard(framework.queries),
       );
     });
 
