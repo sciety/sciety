@@ -16,7 +16,7 @@ const mustBeSome = O.getOrElseW(() => {
   throw new Error('Received O.None but wanted O.Some');
 });
 
-describe('construct-view-model', () => {
+describe('construct-article-card-with-controls-and-annotation', () => {
   let framework: TestFramework;
 
   beforeEach(() => {
