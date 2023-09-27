@@ -4,7 +4,7 @@ import { GroupId } from '../../types/group-id';
 import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
 
 type CurationTeaser = {
-  articleLink: string,
+  articleHref: string,
   groupId: GroupId,
   quote: HtmlFragment,
   caption: string,

@@ -26,6 +26,6 @@ export const constructCurationTeaser = (dependencies: Dependencies) => (curation
   (caption) => ({
     ...curationStatement,
     caption,
-    articleLink: `/articles/${curationStatement.articleId.value}`,
+    articleHref: `/articles/${curationStatement.articleId.value}`,
   }),
 );

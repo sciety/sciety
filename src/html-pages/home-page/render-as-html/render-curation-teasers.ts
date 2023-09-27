@@ -8,13 +8,13 @@ const renderCurationTeaser = (viewModel: ViewModel['curationTeasers'][number]) =
   <article>
     <figure class="curation-teaser">
       <div class="curation-teaser__quote_wrapper">
-        <blockquote class="curation-teaser__quote" cite="${viewModel.articleLink}">
+        <blockquote class="curation-teaser__quote" cite="${viewModel.articleHref}">
           ${viewModel.quote}
         </blockquote>
       </div>
       <figcaption>
         <p class="curation-teaser__strapline">${viewModel.caption}</p>
-        <cite><a href="${viewModel.articleLink}">${viewModel.articleTitle}</a></cite>
+        <cite><a href="${viewModel.articleHref}">${viewModel.articleTitle}</a></cite>
       </figcaption>
     </figure>
   </article>
