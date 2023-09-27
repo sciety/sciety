@@ -16,6 +16,7 @@ export const constructViewModel = (
   {
     articleId,
     listId,
+    articleTitle: '',
   },
   TE.right,
 );
