@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { constructArticleCardViewModel, Dependencies as ConstructArticleCardViewModelDependencies } from '../article-card/construct-article-card-view-model';
+import { constructArticleCard, Dependencies as ConstructArticleCardViewModelDependencies } from '../article-card/construct-article-card';
 import { ArticleErrorCardViewModel } from '../article-card/render-article-error-card';
 import { ListId } from '../../types/list-id';
 import { Doi } from '../../types/doi';
@@ -41,6 +41,6 @@ export const constructViewModel = (
   articleId: Doi,
 ): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
   articleId,
-  constructArticleCardViewModel(dependencies),
+  constructArticleCard(dependencies),
   TE.map(toArticleCardWithControlsAndAnnotationViewModel(dependencies, editCapability, listId, articleId)),
 );

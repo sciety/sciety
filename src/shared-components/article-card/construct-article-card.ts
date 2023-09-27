@@ -44,7 +44,7 @@ const transformIntoCurationStatementViewModel = (
   quoteLanguageCode: curationStatement.statementLanguageCode,
 });
 
-export const constructArticleCardViewModel = (
+export const constructArticleCard = (
   ports: Dependencies,
 ) => (articleId: Doi): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
   ports.getActivityForDoi(articleId),

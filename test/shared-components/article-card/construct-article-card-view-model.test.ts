@@ -6,7 +6,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { dummyLogger } from '../../dummy-logger';
 import * as DE from '../../../src/types/data-error';
-import { constructArticleCardViewModel } from '../../../src/shared-components/article-card/construct-article-card-view-model';
+import { constructArticleCard } from '../../../src/shared-components/article-card/construct-article-card';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { ArticleCardViewModel } from '../../../src/shared-components/article-card';
@@ -29,7 +29,7 @@ describe('construct-article-card-view-model', () => {
       beforeEach(async () => {
         viewModel = await pipe(
           articleId,
-          constructArticleCardViewModel({
+          constructArticleCard({
             ...framework.queries,
             ...framework.happyPathThirdParties,
             logger: dummyLogger,
@@ -71,7 +71,7 @@ describe('construct-article-card-view-model', () => {
         await framework.commandHelpers.recordEvaluationPublication(command);
         viewModel = await pipe(
           articleId,
-          constructArticleCardViewModel({
+          constructArticleCard({
             ...framework.queries,
             ...framework.happyPathThirdParties,
             logger: dummyLogger,
@@ -107,7 +107,7 @@ describe('construct-article-card-view-model', () => {
       await framework.commandHelpers.addArticleToList(articleId, command.listId);
       successfulViewModel = await pipe(
         articleId,
-        constructArticleCardViewModel({
+        constructArticleCard({
           ...framework.queries,
           ...framework.happyPathThirdParties,
           logger: dummyLogger,
@@ -128,7 +128,7 @@ describe('construct-article-card-view-model', () => {
     beforeEach(async () => {
       successfulViewModel = await pipe(
         articleId,
-        constructArticleCardViewModel({
+        constructArticleCard({
           ...framework.queries,
           ...framework.happyPathThirdParties,
           logger: dummyLogger,
@@ -146,7 +146,7 @@ describe('construct-article-card-view-model', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         arbitraryArticleId(),
-        constructArticleCardViewModel({
+        constructArticleCard({
           ...framework.queries,
           ...framework.happyPathThirdParties,
           fetchArticle: () => TE.left(DE.unavailable),
@@ -164,7 +164,7 @@ describe('construct-article-card-view-model', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         arbitraryArticleId(),
-        constructArticleCardViewModel({
+        constructArticleCard({
           ...framework.queries,
           ...framework.happyPathThirdParties,
           findVersionsForArticleDoi: () => TO.none,

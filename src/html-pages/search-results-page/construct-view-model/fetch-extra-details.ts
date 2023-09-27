@@ -4,9 +4,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ArticleItem } from './data-types';
 import { ViewModel } from '../view-model';
-import {
-  constructArticleCardViewModel,
-} from '../../../shared-components/article-card';
+import { constructArticleCard } from '../../../shared-components/article-card';
 import { Dependencies } from './dependencies';
 import { constructRelatedGroups } from './construct-related-groups';
 
@@ -21,7 +19,7 @@ type LimitedSet = {
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
-  T.traverseArray((item) => constructArticleCardViewModel(dependencies)(item.articleId)),
+  T.traverseArray((item) => constructArticleCard(dependencies)(item.articleId)),
   T.map(
     RA.rights,
   ),
