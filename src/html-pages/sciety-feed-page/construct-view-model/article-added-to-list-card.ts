@@ -24,7 +24,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (dependencies) => 
   O.map(
     (viewModel) => ({
       titleText: `${viewModel.ownerName} added an article to a list`,
-      linkUrl: viewModel.linkUrl,
+      feedItemHref: viewModel.linkUrl,
       avatarUrl: viewModel.ownerAvatarUrl,
       date: event.date,
       details: {

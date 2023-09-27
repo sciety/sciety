@@ -9,7 +9,7 @@ describe('sciety-feed-card', () => {
         titleText: arbitraryString(),
         avatarUrl: arbitraryUri(),
         date: arbitraryDate(),
-        linkUrl: arbitraryUri(),
+        feedItemHref: arbitraryUri(),
       });
 
       expect(rendered).not.toContain('sciety-feed-card__details');
@@ -22,7 +22,7 @@ describe('sciety-feed-card', () => {
         titleText: arbitraryString(),
         avatarUrl: arbitraryUri(),
         date: arbitraryDate(),
-        linkUrl: arbitraryUri(),
+        feedItemHref: arbitraryUri(),
         details: {
           title: toHtmlFragment(arbitraryString()),
           content: toHtmlFragment(arbitraryString()),

@@ -22,7 +22,7 @@ export const collapsedArticlesAddedToListCard = (
   O.map(
     (viewModel) => ({
       titleText: `${viewModel.ownerName} added ${collapsedEvents.articleCount} articles to a list`,
-      linkUrl: viewModel.linkUrl,
+      feedItemHref: viewModel.linkUrl,
       avatarUrl: viewModel.ownerAvatarUrl,
       date: collapsedEvents.date,
       details: {

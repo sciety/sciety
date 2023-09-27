@@ -62,7 +62,7 @@ describe('article-added-to-list-card', () => {
       });
 
       it('includes the link to the list page', async () => {
-        expect(viewModel.linkUrl).toBe(`/lists/${userList.id}`);
+        expect(viewModel.feedItemHref).toBe(`/lists/${userList.id}`);
       });
     });
 
@@ -95,7 +95,7 @@ describe('article-added-to-list-card', () => {
       });
 
       it('includes the link to the generic list page', async () => {
-        expect(viewModel.linkUrl).toBe(`/lists/${createListCommand.listId}`);
+        expect(viewModel.feedItemHref).toBe(`/lists/${createListCommand.listId}`);
       });
     });
   });

@@ -65,7 +65,7 @@ describe('collapsed-articles-added-to-list-card', () => {
       });
 
       it('includes the link to the list page', async () => {
-        expect(viewModel.linkUrl).toBe(`/lists/${list.id}`);
+        expect(viewModel.feedItemHref).toBe(`/lists/${list.id}`);
       });
 
       it('includes the article count', async () => {
@@ -108,7 +108,7 @@ describe('collapsed-articles-added-to-list-card', () => {
       });
 
       it('includes the link to the list page', async () => {
-        expect(viewModel.linkUrl).toBe(`/lists/${createListCommand.listId}`);
+        expect(viewModel.feedItemHref).toBe(`/lists/${createListCommand.listId}`);
       });
 
       it('includes the article count', async () => {

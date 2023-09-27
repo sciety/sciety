@@ -18,7 +18,7 @@ export const renderScietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment =>
     <article class="sciety-feed-card">
         <div class="sciety-feed-card__event_title">
           <img class="sciety-feed-card__avatar" src="${viewModel.avatarUrl}" alt="">
-          <h2 class="sciety-feed-card__event_title_text"><a href="${viewModel.linkUrl}" class="sciety-feed-card__link">${viewModel.titleText}</a></h2>
+          <h2 class="sciety-feed-card__event_title_text"><a href="${viewModel.feedItemHref}" class="sciety-feed-card__link">${viewModel.titleText}</a></h2>
           ${templateDate(viewModel.date, 'sciety-feed-card__event_date')}
         </div>
         ${details}

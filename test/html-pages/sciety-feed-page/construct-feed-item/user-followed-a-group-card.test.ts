@@ -56,7 +56,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('links to the group page', async () => {
-      expect(viewModel.linkUrl).toBe(`/groups/${addGroupCommand.slug}`);
+      expect(viewModel.feedItemHref).toBe(`/groups/${addGroupCommand.slug}`);
     });
 
     it('includes the group\'s name in the details title', () => {
@@ -89,7 +89,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('links to the group page', async () => {
-      expect(viewModel.linkUrl).toBe(`/groups/${addGroupCommand.slug}`);
+      expect(viewModel.feedItemHref).toBe(`/groups/${addGroupCommand.slug}`);
     });
 
     it('includes the group\'s name in the details title', () => {
