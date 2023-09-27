@@ -5,6 +5,7 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { renderPage } from './render-page';
 import { Dependencies, constructViewModel } from './construct-view-model';
+import { toErrorPage } from './to-error-page';
 
 export const paramsCodec = t.type({
   articleId: t.string,
@@ -20,9 +21,11 @@ type CreateAnnotationFormPage = (dependencies: Dependencies)
 export const createAnnotationFormPage: CreateAnnotationFormPage = (dependencies) => (params) => pipe(
   params,
   ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies),
-  (viewModel) => ({
-    title: 'Create an annotation',
-    content: renderPage(viewModel),
-  }),
-  TE.right,
+  TE.bimap(
+    toErrorPage,
+    (viewModel) => ({
+      title: 'Create an annotation',
+      content: renderPage(viewModel),
+    }),
+  ),
 );
