@@ -281,7 +281,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     requireLoggedInUser(adapters),
     pageHandler(adapters, createPageFromParams(
       createAnnotationFormPageParamsCodec,
-      createAnnotationFormPage,
+      createAnnotationFormPage(adapters),
     )),
   );
 
