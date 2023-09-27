@@ -47,7 +47,7 @@ export const styleGuidePage: Page = {
       <h3 class="_style-guide-heading">With curation statement</h3>
       ${renderArticleCard({
     articleId: new Doi('10.1101/foo'),
-    articleLink: '/articles/foo',
+    articleHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
     latestVersionDate: O.some(new Date('2023-09-11')),
@@ -67,7 +67,7 @@ export const styleGuidePage: Page = {
       <h3 class="_style-guide-heading">With reviewing groups</h3>
       ${renderArticleCard({
     articleId: new Doi('10.1101/foo'),
-    articleLink: '/articles/foo',
+    articleHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
     latestVersionDate: O.some(new Date('2023-09-11')),
@@ -92,7 +92,7 @@ export const styleGuidePage: Page = {
     annotation: O.none,
     articleCard: {
       articleId: new Doi('10.1101/foo'),
-      articleLink: '/articles/foo',
+      articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
       latestVersionDate: O.some(new Date('2023-09-11')),
@@ -118,7 +118,7 @@ export const styleGuidePage: Page = {
     }),
     articleCard: {
       articleId: new Doi('10.1101/foo'),
-      articleLink: '/articles/foo',
+      articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
       latestVersionDate: O.some(new Date('2023-09-11')),
@@ -140,7 +140,7 @@ export const styleGuidePage: Page = {
     }),
     articleCard: {
       articleId: new Doi('10.1101/foo'),
-      articleLink: '/articles/foo',
+      articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
       latestVersionDate: O.some(new Date('2023-09-11')),

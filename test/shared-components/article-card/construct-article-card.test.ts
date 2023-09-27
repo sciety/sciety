@@ -55,7 +55,7 @@ describe('construct-article-card', () => {
 
       it('the article card links to the article page', () => {
         expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          articleLink: `/articles/activity/${articleId.value}`,
+          articleHref: `/articles/activity/${articleId.value}`,
         })));
       });
     });

@@ -71,7 +71,7 @@ export const constructArticleCard = (
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, curationStatements }) => ({
       articleId: partial.articleId,
-      articleLink: `/articles/activity/${partial.articleId.value}`,
+      articleHref: `/articles/activity/${partial.articleId.value}`,
       title: partial.title,
       authors: partial.authors,
       latestVersionDate,
