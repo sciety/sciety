@@ -14,7 +14,7 @@ import { ArticleErrorCardViewModel } from '../../../src/shared-components/articl
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
-describe('construct-article-card-view-model', () => {
+describe('construct-article-card', () => {
   let framework: TestFramework;
   let viewModel: E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>;
 
