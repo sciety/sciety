@@ -357,7 +357,11 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/add-group', createApiRouteForResourceAction(adapters, addGroupCommandCodec, groupResource.create));
 
-  router.post('/api/create-user', createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)));
+  router.post(
+    '/api/create-user',
+    bodyParser({ enableTypes: ['json'] }),
+    createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)),
+  );
 
   router.post('/api/edit-list-details', createApiRouteForResourceAction(adapters, editListDetailsCommandCodec, listResource.update));
 
