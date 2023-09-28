@@ -1,28 +1,18 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { constructViewModel } from '../../../src/html-pages/create-annotation-form-page/construct-view-model';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as DE from '../../../src/types/data-error';
 import { ViewModel } from '../../../src/html-pages/create-annotation-form-page/view-model';
-import { ArticleDetails } from '../../../src/third-parties/external-queries';
-import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
-import { arbitraryArticleServer } from '../../types/article-server.helper';
+import { arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { List } from '../../../src/types/list';
 import { arbitraryListId } from '../../types/list-id.helper';
-
-const arbitraryArticleDetails = (): ArticleDetails => ({
-  abstract: arbitrarySanitisedHtmlFragment(),
-  authors: O.some([arbitraryString()]),
-  doi: arbitraryArticleId(),
-  title: arbitrarySanitisedHtmlFragment(),
-  server: arbitraryArticleServer(),
-});
+import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
