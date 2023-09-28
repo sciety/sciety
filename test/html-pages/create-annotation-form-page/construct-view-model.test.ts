@@ -36,7 +36,7 @@ describe('construct-view-model', () => {
       userList = await setUpAUserList();
       viewModel = await pipe(
         constructViewModel(
-          arbitraryArticleId().value,
+          arbitraryArticleId(),
           userList.id,
           {
             ...framework.dependenciesForViews,
@@ -63,7 +63,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       const userList = await setUpAUserList();
       result = await constructViewModel(
-        arbitraryArticleId().value,
+        arbitraryArticleId(),
         userList.id,
         {
           ...framework.dependenciesForViews,
@@ -81,7 +81,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       result = await pipe(
         constructViewModel(
-          arbitraryArticleId().value,
+          arbitraryArticleId(),
           arbitraryListId(),
           framework.dependenciesForViews,
         ),

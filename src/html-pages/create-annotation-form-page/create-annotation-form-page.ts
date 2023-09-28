@@ -6,10 +6,12 @@ import { RenderPageError } from '../../types/render-page-error';
 import { renderPage } from './render-page';
 import { Dependencies, constructViewModel } from './construct-view-model';
 import { toErrorPage } from './to-error-page';
+import { DoiFromString } from '../../types/codecs/DoiFromString';
+import { listIdCodec } from '../../types/list-id';
 
 export const paramsCodec = t.type({
-  articleId: t.string,
-  listId: t.string,
+  articleId: DoiFromString,
+  listId: listIdCodec,
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;

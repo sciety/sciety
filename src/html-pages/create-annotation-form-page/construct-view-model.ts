@@ -11,7 +11,6 @@ import { DataError } from '../../types/data-error';
 import * as DE from '../../types/data-error';
 import { Doi } from '../../types/doi';
 import { ListId } from '../../types/list-id';
-import * as LID from '../../types/list-id';
 
 export type Dependencies = Queries & ExternalQueries;
 
@@ -30,13 +29,13 @@ const getListName = (dependencies: Dependencies, listId: ListId) => pipe(
 );
 
 export const constructViewModel = (
-  articleId: string,
-  listId: string,
+  articleId: Doi,
+  listId: ListId,
   dependencies: Dependencies,
 ): TE.TaskEither<DataError, ViewModel> => pipe(
   {
-    articleTitle: getArticleTitle(dependencies, new Doi(articleId)),
-    listName: getListName(dependencies, LID.fromValidatedString(listId)),
+    articleTitle: getArticleTitle(dependencies, articleId),
+    listName: getListName(dependencies, listId),
   },
   sequenceS(TE.ApplyPar),
   TE.map((partial) => ({
