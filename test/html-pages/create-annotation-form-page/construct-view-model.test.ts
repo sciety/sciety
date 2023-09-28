@@ -12,6 +12,9 @@ import { ViewModel } from '../../../src/html-pages/create-annotation-form-page/v
 import { ArticleDetails } from '../../../src/third-parties/external-queries';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
+import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
+import * as LOID from '../../../src/types/list-owner-id';
+import { List } from '../../../src/types/list';
 
 const arbitraryArticleDetails = (): ArticleDetails => ({
   abstract: arbitrarySanitisedHtmlFragment(),
@@ -55,8 +58,27 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the list title is available', () => {
-    it.todo('returns the list title');
+  describe('when the list name is available', () => {
+    const createUserAccountCommand = arbitraryCreateUserAccountCommand();
+    let viewModel: ViewModel;
+    let userList: List;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+      userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
+      viewModel = await pipe(
+        constructViewModel(
+          arbitraryArticleId().value,
+          arbitraryListId(),
+          framework.dependenciesForViews,
+        ),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.failing('returns the list name', () => {
+      expect(viewModel.listName).toStrictEqual(userList.name);
+    });
   });
 
   describe('when the article title is not available', () => {
@@ -76,7 +98,7 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the list title is not available', () => {
+  describe('when the list name is not available', () => {
     it.todo('returns on the left');
   });
 });

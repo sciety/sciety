@@ -4,4 +4,5 @@ export type ViewModel = {
   articleId: string,
   listId: string,
   articleTitle: SanitisedHtmlFragment,
+  listName: string,
 };

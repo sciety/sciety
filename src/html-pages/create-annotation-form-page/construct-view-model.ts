@@ -24,5 +24,6 @@ export const constructViewModel = (
     articleId,
     listId,
     articleTitle,
+    listName: '',
   })),
 );
