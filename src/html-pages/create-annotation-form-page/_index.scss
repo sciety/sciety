@@ -2,6 +2,10 @@
 @use '../../sass/functions';
 @use '../../sass/button';
 
+.annotation-form-article-title {
+  font-weight: normal;
+}
+
 .annotation-form-content {
   width: 100%;
   margin-bottom: functions.px-to-rem(8px);
