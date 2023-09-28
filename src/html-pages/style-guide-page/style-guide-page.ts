@@ -11,6 +11,7 @@ import * as DE from '../../types/data-error';
 import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
+import { renderPage } from '../create-annotation-form-page/render-page';
 
 export const styleGuidePage: Page = {
   title: 'Style guide',
@@ -164,6 +165,15 @@ export const styleGuidePage: Page = {
     latestActivityAt: O.some(new Date('2023-09-10')),
     error: DE.notFound,
     articleId: new Doi('10.1101/foo'),
+  })}
+
+      <h2 class="_style-guide-heading">Forms</h2>
+      <h3 class="_style-guide-heading">Create annotation</h3>
+      ${renderPage({
+    articleId: new Doi('10.1101/1234'),
+    listId: LID.fromValidatedString('foo'),
+    articleTitle: sanitise(toHtmlFragment('New Article')),
+    listName: 'Someone\'s saved articles',
   })}
     </div>
   `),
