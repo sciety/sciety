@@ -37,7 +37,7 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when the article title and list name are available', () => {
+  describe('when the article title is available and the list exists', () => {
     let viewModel: ViewModel;
     let userList: List;
     const title = arbitrarySanitisedHtmlFragment();
@@ -60,11 +60,11 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it('returns the article title', () => {
+    it('contains the article title', () => {
       expect(viewModel.articleTitle).toStrictEqual(title);
     });
 
-    it('returns the list name', () => {
+    it('contains the list name', () => {
       expect(viewModel.listName).toStrictEqual(userList.name);
     });
   });
@@ -87,7 +87,7 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the list name is not available', () => {
+  describe('when the list does not exist', () => {
     beforeEach(async () => {
       result = await pipe(
         constructViewModel(
