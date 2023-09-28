@@ -13,7 +13,7 @@ import { SearchResults } from '../shared-ports/search-for-articles';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 
-type ArticleDetails = {
+export type ArticleDetails = {
   abstract: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   doi: Doi,
