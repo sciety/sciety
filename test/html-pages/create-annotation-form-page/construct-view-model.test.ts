@@ -14,6 +14,7 @@ import { arbitraryArticleServer } from '../../types/article-server.helper';
 import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { List } from '../../../src/types/list';
+import { arbitraryListId } from '../../types/list-id.helper';
 
 const arbitraryArticleDetails = (): ArticleDetails => ({
   abstract: arbitrarySanitisedHtmlFragment(),
@@ -86,6 +87,18 @@ describe('construct-view-model', () => {
   });
 
   describe('when the list name is not available', () => {
-    it.todo('returns on the left');
+    beforeEach(async () => {
+      result = await pipe(
+        constructViewModel(
+          arbitraryArticleId().value,
+          arbitraryListId(),
+          framework.dependenciesForViews,
+        ),
+      )();
+    });
+
+    it.failing('returns on the left', () => {
+      expect(result).toStrictEqual(E.left(expect.anything()));
+    });
   });
 });
