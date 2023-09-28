@@ -6,7 +6,6 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { constructViewModel } from '../../../src/html-pages/create-annotation-form-page/construct-view-model';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
 import * as DE from '../../../src/types/data-error';
 import { ViewModel } from '../../../src/html-pages/create-annotation-form-page/view-model';
 import { ArticleDetails } from '../../../src/third-parties/external-queries';
@@ -44,7 +43,7 @@ describe('construct-view-model', () => {
       viewModel = await pipe(
         constructViewModel(
           arbitraryArticleId().value,
-          arbitraryListId(),
+          userList.id,
           {
             ...framework.dependenciesForViews,
             fetchArticle: () => TE.right({
@@ -61,7 +60,7 @@ describe('construct-view-model', () => {
       expect(viewModel.articleTitle).toStrictEqual(title);
     });
 
-    it.failing('returns the list name', () => {
+    it('returns the list name', () => {
       expect(viewModel.listName).toStrictEqual(userList.name);
     });
   });
