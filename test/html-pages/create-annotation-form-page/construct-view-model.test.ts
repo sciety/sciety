@@ -27,6 +27,11 @@ const arbitraryArticleDetails = (): ArticleDetails => ({
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let result: Awaited<ReturnType<ReturnType<typeof constructViewModel>>>;
+  const setUpAUserList = async () => {
+    const createUserAccountCommand = arbitraryCreateUserAccountCommand();
+    await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+    return framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
+  };
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -38,9 +43,7 @@ describe('construct-view-model', () => {
     const title = arbitrarySanitisedHtmlFragment();
 
     beforeEach(async () => {
-      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
-      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
-      userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
+      userList = await setUpAUserList();
       viewModel = await pipe(
         constructViewModel(
           arbitraryArticleId().value,
@@ -68,9 +71,7 @@ describe('construct-view-model', () => {
 
   describe('when the article title is not available', () => {
     beforeEach(async () => {
-      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
-      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
-      const userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
+      const userList = await setUpAUserList();
       result = await constructViewModel(
         arbitraryArticleId().value,
         userList.id,
