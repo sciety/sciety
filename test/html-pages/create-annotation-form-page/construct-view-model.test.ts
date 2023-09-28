@@ -26,7 +26,7 @@ const arbitraryArticleDetails = (): ArticleDetails => ({
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let result: Awaited<ReturnType<ReturnType<typeof constructViewModel>>>;
+  let result: E.Either<unknown, ViewModel>;
   const setUpAUserList = async () => {
     const createUserAccountCommand = arbitraryCreateUserAccountCommand();
     await framework.commandHelpers.createUserAccount(createUserAccountCommand);
