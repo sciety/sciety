@@ -13,7 +13,6 @@ import { ArticleDetails } from '../../../src/third-parties/external-queries';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const arbitraryArticleDetails = (): ArticleDetails => ({
   abstract: arbitrarySanitisedHtmlFragment(),
   authors: O.some([arbitraryString()]),
@@ -51,7 +50,7 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it.failing('returns the article title', () => {
+    it('returns the article title', () => {
       expect(viewModel.articleTitle).toStrictEqual(title);
     });
   });
@@ -72,7 +71,7 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it.failing('returns on the left', () => {
+    it('returns on the left', () => {
       expect(result).toStrictEqual(E.left(expect.anything()));
     });
   });
