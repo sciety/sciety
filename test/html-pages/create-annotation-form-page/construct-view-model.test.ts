@@ -32,20 +32,27 @@ describe('construct-view-model', () => {
 
   describe('when the article title is available', () => {
     let viewModel: ViewModel;
+    const title = arbitrarySanitisedHtmlFragment();
 
     beforeEach(async () => {
       viewModel = await pipe(
         constructViewModel(
           arbitraryArticleId().value,
           arbitraryListId(),
-          framework.dependenciesForViews,
+          {
+            ...framework.dependenciesForViews,
+            fetchArticle: () => TE.right({
+              ...arbitraryArticleDetails(),
+              title,
+            }),
+          },
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
 
-    it('returns the article title', () => {
-      expect(viewModel.articleTitle).toStrictEqual(expect.anything());
+    it.failing('returns the article title', () => {
+      expect(viewModel.articleTitle).toStrictEqual(title);
     });
   });
 
