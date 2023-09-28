@@ -32,11 +32,15 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when the article title is available', () => {
+  describe('when the article title and list name are available', () => {
     let viewModel: ViewModel;
+    let userList: List;
     const title = arbitrarySanitisedHtmlFragment();
 
     beforeEach(async () => {
+      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+      userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       viewModel = await pipe(
         constructViewModel(
           arbitraryArticleId().value,
@@ -56,25 +60,6 @@ describe('construct-view-model', () => {
     it('returns the article title', () => {
       expect(viewModel.articleTitle).toStrictEqual(title);
     });
-  });
-
-  describe('when the list name is available', () => {
-    const createUserAccountCommand = arbitraryCreateUserAccountCommand();
-    let viewModel: ViewModel;
-    let userList: List;
-
-    beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
-      userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-      viewModel = await pipe(
-        constructViewModel(
-          arbitraryArticleId().value,
-          arbitraryListId(),
-          framework.dependenciesForViews,
-        ),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
 
     it.failing('returns the list name', () => {
       expect(viewModel.listName).toStrictEqual(userList.name);
@@ -83,9 +68,12 @@ describe('construct-view-model', () => {
 
   describe('when the article title is not available', () => {
     beforeEach(async () => {
+      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+      const userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       result = await constructViewModel(
         arbitraryArticleId().value,
-        arbitraryListId(),
+        userList.id,
         {
           ...framework.dependenciesForViews,
           fetchArticle: () => TE.left(DE.notFound),
