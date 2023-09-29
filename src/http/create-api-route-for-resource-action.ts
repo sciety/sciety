@@ -3,8 +3,6 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { StatusCodes } from 'http-status-codes';
-import bodyParser from 'koa-bodyparser';
-import compose from 'koa-compose';
 import { GenericCommand } from '../types/command-handler';
 import { CollectedPorts } from '../infrastructure';
 import { ResourceAction } from '../write-side/resources/resource-action';
@@ -50,9 +48,4 @@ export const createApiRouteForResourceAction = <C extends GenericCommand>(
   ports: CollectedPorts,
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
-): Middleware => compose(
-    [
-      bodyParser({ enableTypes: ['json'] }),
-      executeAndRespond(ports, codec, resourceAction),
-    ],
-  );
+): Middleware => executeAndRespond(ports, codec, resourceAction);

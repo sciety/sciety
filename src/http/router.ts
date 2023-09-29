@@ -349,32 +349,37 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     createAnnotationHandler(adapters),
   );
 
-  router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
+  const apiRouter = new Router();
+  apiRouter.prefix('/api');
+  apiRouter.use(bodyParser({ enableTypes: ['json'] }));
 
-  router.post('/api/add-article-to-list', createApiRouteForResourceAction(adapters, addArticleToListCommandCodec, listResource.addArticle));
+  apiRouter.get('/lists/owned-by/:ownerId', ownedBy(adapters));
 
-  router.post('/api/add-group', createApiRouteForResourceAction(adapters, addGroupCommandCodec, groupResource.create));
+  apiRouter.post('/add-article-to-list', createApiRouteForResourceAction(adapters, addArticleToListCommandCodec, listResource.addArticle));
+  apiRouter.post('/add-group', createApiRouteForResourceAction(adapters, addGroupCommandCodec, groupResource.create));
 
-  router.post(
-    '/api/create-user',
+  apiRouter.post(
+    '/create-user',
     createApiRouteForResourceAction(adapters, createUserAccountCommandCodec, userResource.create),
   );
 
-  router.post('/api/edit-list-details', createApiRouteForResourceAction(adapters, editListDetailsCommandCodec, listResource.update));
+  apiRouter.post('/edit-list-details', createApiRouteForResourceAction(adapters, editListDetailsCommandCodec, listResource.update));
 
-  router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
+  apiRouter.post('/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
 
-  router.post('/api/record-evaluation-publication', createApiRouteForResourceAction(adapters, recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
+  apiRouter.post('/record-evaluation-publication', createApiRouteForResourceAction(adapters, recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
 
-  router.post('/api/record-evaluation-removal', createApiRouteForResourceAction(adapters, recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
+  apiRouter.post('/record-evaluation-removal', createApiRouteForResourceAction(adapters, recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
 
-  router.post('/api/remove-article-from-list', createApiRouteForResourceAction(adapters, removeArticleFromListCommandCodec, listResource.removeArticle));
+  apiRouter.post('/remove-article-from-list', createApiRouteForResourceAction(adapters, removeArticleFromListCommandCodec, listResource.removeArticle));
 
-  router.post('/api/update-evaluation', createApiRouteForResourceAction(adapters, updateEvaluationCommandCodec, evaluationResource.update));
+  apiRouter.post('/update-evaluation', createApiRouteForResourceAction(adapters, updateEvaluationCommandCodec, evaluationResource.update));
 
-  router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
+  apiRouter.post('/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
 
-  router.post('/api/update-user-details', createApiRouteForResourceAction(adapters, updateUserDetailsCommandCodec, userResource.update));
+  apiRouter.post('/update-user-details', createApiRouteForResourceAction(adapters, updateUserDetailsCommandCodec, userResource.update));
+
+  router.use(apiRouter.routes());
 
   // AUTHENTICATION
 
