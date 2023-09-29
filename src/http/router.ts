@@ -64,7 +64,6 @@ import { createPageFromParams } from './create-page-from-params';
 import { createListHandler } from './forms/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 import { listsPage } from '../html-pages/lists-page';
-import { createApiRouteForCommand } from './create-api-route-for-command';
 import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
 import * as evaluationResource from '../write-side/resources/evaluation';
 import * as groupResource from '../write-side/resources/group';
@@ -76,7 +75,6 @@ import { listFeed } from '../views/list/list-feed';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
 import { styleGuidePage } from '../html-pages/style-guide-page';
-import { createUserAccountCommandHandler } from '../write-side/command-handlers';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -359,8 +357,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post(
     '/api/create-user',
-    bodyParser({ enableTypes: ['json'] }),
-    createApiRouteForCommand(adapters, createUserAccountCommandCodec, createUserAccountCommandHandler(adapters)),
+    createApiRouteForResourceAction(adapters, createUserAccountCommandCodec, userResource.create),
   );
 
   router.post('/api/edit-list-details', createApiRouteForResourceAction(adapters, editListDetailsCommandCodec, listResource.update));
