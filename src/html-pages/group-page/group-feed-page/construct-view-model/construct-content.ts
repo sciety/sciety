@@ -41,6 +41,7 @@ const toOrderedArticleCards = (
       pageOfArticleIds.nextPage,
       O.map(generateHref(groupSlug)),
     ),
+    forwardPageLabel: 'Older',
     page: pageOfArticleIds.pageNumber,
     pageCount: pageOfArticleIds.numberOfPages,
   })),

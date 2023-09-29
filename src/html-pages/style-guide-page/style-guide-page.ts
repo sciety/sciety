@@ -34,15 +34,15 @@ export const styleGuidePage: Page = {
       <h2 class="_style-guide-heading">Pagination controls for feed</h2>
       <h3 class="_style-guide-heading">With a link only to older content</h3>
       ${renderPaginationControlsForFeed({
-    backwardPageHref: O.none, forwardPageHref: O.some('/foo'), page: 1, pageCount: 42,
+    backwardPageHref: O.none, forwardPageHref: O.some('/foo'), page: 1, pageCount: 42, forwardPageLabel: 'Older',
   })}
       <h3 class="_style-guide-heading">With a link only to newer content</h3>
       ${renderPaginationControlsForFeed({
-    backwardPageHref: O.some('/foo'), forwardPageHref: O.none, page: 2, pageCount: 2,
+    backwardPageHref: O.some('/foo'), forwardPageHref: O.none, page: 2, pageCount: 2, forwardPageLabel: 'Older',
   })}
       <h3 class="_style-guide-heading">With links to newer and older content</h3>
       ${renderPaginationControlsForFeed({
-    backwardPageHref: O.some('/foo'), forwardPageHref: O.some('/foo'), page: 2, pageCount: 42,
+    backwardPageHref: O.some('/foo'), forwardPageHref: O.some('/foo'), page: 2, pageCount: 42, forwardPageLabel: 'Older',
   })}
       <h2 class="_style-guide-heading">Pagination controls [default]</h2>
       <h3 class="_style-guide-heading">With a link only to the next page</h3>

@@ -6,6 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 export type ViewModel = {
   backwardPageHref: O.Option<string>,
   forwardPageHref: O.Option<string>,
+  forwardPageLabel?: string,
   page: number,
   pageCount: number,
 };
