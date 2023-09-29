@@ -33,11 +33,11 @@ const toOrderedArticleCards = (
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,
-    prevPageHref: pipe(
+    backwardPageHref: pipe(
       pageOfArticleIds.prevPage,
       O.map(generateHref(groupSlug)),
     ),
-    nextPageHref: pipe(
+    forwardPageHref: pipe(
       pageOfArticleIds.nextPage,
       O.map(generateHref(groupSlug)),
     ),

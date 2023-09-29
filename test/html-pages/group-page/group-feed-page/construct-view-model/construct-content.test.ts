@@ -71,7 +71,7 @@ describe('construct-content', () => {
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
       articleIds = getArticleIdsFromContent(orderedArticleCards);
-      nextPageHref = orderedArticleCards.nextPageHref;
+      nextPageHref = orderedArticleCards.forwardPageHref;
     });
 
     it('has the most recently added article as the first article card', () => {
@@ -99,7 +99,7 @@ describe('construct-content', () => {
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
       articleIds = getArticleIdsFromContent(orderedArticleCards);
-      nextPageHref = orderedArticleCards.nextPageHref;
+      nextPageHref = orderedArticleCards.forwardPageHref;
     });
 
     it('has the most recently added article as the first article card', () => {

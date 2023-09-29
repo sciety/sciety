@@ -4,14 +4,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type ViewModel = {
-  prevPageHref: O.Option<string>,
-  nextPageHref: O.Option<string>,
+  backwardPageHref: O.Option<string>,
+  forwardPageHref: O.Option<string>,
   page: number,
   pageCount: number,
 };
 
-const renderOlderLink = (viewModel: ViewModel) => pipe(
-  viewModel.nextPageHref,
+const renderForwardLink = (viewModel: ViewModel) => pipe(
+  viewModel.forwardPageHref,
   O.map(
     (url) => `
       <a href="${url}" class="pagination-controls__next_link">Older<span aria-hidden="true"> →</span></a>
@@ -19,8 +19,8 @@ const renderOlderLink = (viewModel: ViewModel) => pipe(
   ),
 );
 
-const renderNewerLink = (viewModel: ViewModel) => pipe(
-  viewModel.prevPageHref,
+const renderBackwardLink = (viewModel: ViewModel) => pipe(
+  viewModel.backwardPageHref,
   O.map(
     (url) => `
       <a href="${url}" class="pagination-controls__next_link"><span aria-hidden="true">← </span>Newer</a>
@@ -50,9 +50,9 @@ const toPaginationControls = (paginationLinks: PaginationLinks) => pipe(
 
 export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
   [
-    renderNewerLink(viewModel),
+    renderBackwardLink(viewModel),
     O.some(renderPageCount(viewModel)),
-    renderOlderLink(viewModel),
+    renderForwardLink(viewModel),
   ],
   toPaginationControls,
   toHtmlFragment,
