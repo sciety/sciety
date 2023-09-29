@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { renderPaginationControls } from '../../../../shared-components/pagination';
+import { renderLegacyPaginationControls } from '../../../../shared-components/pagination';
 import { paginate } from './paginate';
 import { augmentWithUserDetails } from './augment-with-user-details';
 import { userIdCodec } from '../../../../types/user-id';
@@ -50,7 +50,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       isFollowing: isFollowing(dependencies)(group.id, params.user),
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
-      nextLink: renderPaginationControls({
+      nextLink: renderLegacyPaginationControls({
         nextPageHref: pipe(
           pageOfFollowers.nextPage,
           O.map(

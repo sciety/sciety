@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { renderListItems } from '../../../shared-components/render-list-items';
-import { renderPaginationControls } from '../../../shared-components/pagination';
+import { renderLegacyPaginationControls } from '../../../shared-components/pagination';
 import { supplementaryCard } from '../../../shared-components/supplementary-card';
 import { supplementaryInfo } from '../../../shared-components/supplementary-info';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -34,7 +34,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <ol class="card-list" role="list">
         ${renderListItems(cards)}
       </ol>
-      ${renderPaginationControls({
+      ${renderLegacyPaginationControls({
     nextPageHref: pipe(
       viewModel.nextPage,
       O.map(

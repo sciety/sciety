@@ -1,6 +1,6 @@
 import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information';
 import { ArticleCardViewModel } from '../../shared-components/article-card';
-import { PaginationControlsViewModel } from '../../shared-components/pagination';
+import { LegacyPaginationControlsViewModel } from '../../shared-components/pagination';
 import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
 
 type NoGroupsEvaluatedTheFoundArticles = {
@@ -12,7 +12,7 @@ export type SomeRelatedGroups = {
   items: ReadonlyArray<GroupLinkWithLogoViewModel>,
 };
 
-export type ViewModel = PaginationViewModel & PaginationControlsViewModel & {
+export type ViewModel = PaginationViewModel & LegacyPaginationControlsViewModel & {
   query: string,
   evaluatedOnly: boolean,
   articleCards: ReadonlyArray<ArticleCardViewModel>,

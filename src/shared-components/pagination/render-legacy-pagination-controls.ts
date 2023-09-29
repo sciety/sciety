@@ -6,7 +6,7 @@ export type ViewModel = {
   nextPageHref: O.Option<string>,
 };
 
-export const renderPaginationControls = (viewModel: ViewModel): HtmlFragment => pipe(
+export const renderLegacyPaginationControls = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.nextPageHref,
   O.fold(
     () => '',
