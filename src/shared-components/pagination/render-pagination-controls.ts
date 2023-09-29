@@ -50,7 +50,7 @@ const toPaginationControls = (paginationLinks: PaginationLinks) => pipe(
   ),
 );
 
-export const renderPaginationControlsForFeed = (viewModel: ViewModel): HtmlFragment => pipe(
+export const renderPaginationControls = (viewModel: ViewModel): HtmlFragment => pipe(
   [
     renderBackwardLink(viewModel),
     O.some(renderPageCount(viewModel)),

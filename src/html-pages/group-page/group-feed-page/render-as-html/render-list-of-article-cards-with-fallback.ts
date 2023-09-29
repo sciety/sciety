@@ -6,10 +6,10 @@ import { renderListItems } from '../../../../shared-components/render-list-items
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderArticleCard } from '../../../../shared-components/article-card';
 import { ViewModel } from '../view-model';
-import { PaginationControlsForFeedViewModel, renderPaginationControlsForFeed } from '../../../../shared-components/pagination';
+import { PaginationControlsViewModel, renderPaginationControls } from '../../../../shared-components/pagination';
 
 const renderCards = (
-  paginationControlsForFeedViewModel: PaginationControlsForFeedViewModel,
+  paginationControlsViewModel: PaginationControlsViewModel,
 ) => (
   cards: ReadonlyArray<HtmlFragment>,
 ) => pipe(
@@ -21,7 +21,7 @@ const renderCards = (
         ${listContent}
       </ol>
     </section>
-    ${renderPaginationControlsForFeed(paginationControlsForFeedViewModel)}
+    ${renderPaginationControls(paginationControlsViewModel)}
   `,
   toHtmlFragment,
 );

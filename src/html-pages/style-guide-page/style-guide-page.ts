@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { renderArticleCard } from '../../shared-components/article-card/render-article-card';
-import { renderPaginationControlsForFeed } from '../../shared-components/pagination/render-pagination-controls-for-feed';
+import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
 import { Doi } from '../../types/doi';
@@ -33,7 +33,7 @@ export const styleGuidePage: Page = {
     <div>
       <h2 class="_style-guide-heading">Pagination controls for feed</h2>
       <h3 class="_style-guide-heading">With a link only to older content</h3>
-      ${renderPaginationControlsForFeed({
+      ${renderPaginationControls({
     backwardPageHref: O.none,
     forwardPageHref: O.some('/foo'),
     page: 1,
@@ -42,7 +42,7 @@ export const styleGuidePage: Page = {
     backwardPageLabel: 'Newer',
   })}
       <h3 class="_style-guide-heading">With a link only to newer content</h3>
-      ${renderPaginationControlsForFeed({
+      ${renderPaginationControls({
     backwardPageHref: O.some('/foo'),
     forwardPageHref: O.none,
     page: 2,
@@ -51,7 +51,7 @@ export const styleGuidePage: Page = {
     backwardPageLabel: 'Newer',
   })}
       <h3 class="_style-guide-heading">With links to newer and older content</h3>
-      ${renderPaginationControlsForFeed({
+      ${renderPaginationControls({
     backwardPageHref: O.some('/foo'),
     forwardPageHref: O.some('/foo'),
     page: 2,
@@ -61,11 +61,11 @@ export const styleGuidePage: Page = {
   })}
       <h2 class="_style-guide-heading">Pagination controls [default]</h2>
       <h3 class="_style-guide-heading">With a link only to the next page</h3>
-      ${renderPaginationControlsForFeed({
+      ${renderPaginationControls({
     backwardPageHref: O.none, forwardPageHref: O.some('/foo'), page: 1, pageCount: 42,
   })}
       <h3 class="_style-guide-heading">With a link only to the previous page</h3>
-      ${renderPaginationControlsForFeed({
+      ${renderPaginationControls({
     backwardPageHref: O.some('/foo'), forwardPageHref: O.none, page: 2, pageCount: 2,
   })}
       <h2 class="_style-guide-heading">Article summary</h2>
