@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { StatusCodes } from 'http-status-codes';
@@ -32,20 +32,18 @@ const executeAndRespond = <C extends GenericCommand>(
       return;
     }
 
-    await pipe(
+    const commandResult = await pipe(
       context.request.body,
       executeCommand(ports, codec, resourceAction),
-      TE.match(
-        (error) => {
-          context.response.status = StatusCodes.BAD_REQUEST;
-          context.response.body = { error };
-        },
-        (eventsCreated) => {
-          context.response.status = eventsCreated === 'events-created' ? StatusCodes.CREATED : StatusCodes.OK;
-          context.response.body = '';
-        },
-      ),
     )();
+    if (E.isLeft(commandResult)) {
+      context.response.status = StatusCodes.BAD_REQUEST;
+      context.response.body = { error: commandResult.left };
+      return;
+    }
+
+    context.response.status = commandResult.right === 'events-created' ? StatusCodes.CREATED : StatusCodes.OK;
+    context.response.body = '';
   };
 
 export const createApiRouteForResourceAction = <C extends GenericCommand>(
