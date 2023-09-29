@@ -15,7 +15,7 @@ const renderForwardLink = (viewModel: ViewModel) => pipe(
   viewModel.forwardPageHref,
   O.map(
     (url) => `
-      <a href="${url}" class="pagination-controls__next_link">Older<span aria-hidden="true"> →</span></a>
+      <a href="${url}" class="pagination-controls__next_link">${viewModel.forwardPageLabel ?? 'Next'}<span aria-hidden="true"> →</span></a>
     `,
   ),
 );
