@@ -64,6 +64,10 @@ export const styleGuidePage: Page = {
       ${renderPaginationControlsForFeed({
     backwardPageHref: O.none, forwardPageHref: O.some('/foo'), page: 1, pageCount: 42,
   })}
+      <h3 class="_style-guide-heading">With a link only to the previous page</h3>
+      ${renderPaginationControlsForFeed({
+    backwardPageHref: O.some('/foo'), forwardPageHref: O.none, page: 2, pageCount: 2,
+  })}
       <h2 class="_style-guide-heading">Article summary</h2>
       <h3 class="_style-guide-heading">With curation statement</h3>
       ${renderArticleCard({
