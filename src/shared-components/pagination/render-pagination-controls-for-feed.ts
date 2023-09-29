@@ -5,6 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type ViewModel = {
   backwardPageHref: O.Option<string>,
+  backwardPageLabel?: string,
   forwardPageHref: O.Option<string>,
   forwardPageLabel?: string,
   page: number,
@@ -24,7 +25,7 @@ const renderBackwardLink = (viewModel: ViewModel) => pipe(
   viewModel.backwardPageHref,
   O.map(
     (url) => `
-      <a href="${url}" class="pagination-controls__next_link"><span aria-hidden="true">← </span>Newer</a>
+      <a href="${url}" class="pagination-controls__next_link"><span aria-hidden="true">← </span>${viewModel.backwardPageLabel ?? 'Previous'}</a>
     `,
   ),
 );

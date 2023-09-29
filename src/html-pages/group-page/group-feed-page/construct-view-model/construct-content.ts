@@ -37,6 +37,7 @@ const toOrderedArticleCards = (
       pageOfArticleIds.prevPage,
       O.map(generateHref(groupSlug)),
     ),
+    backwardPageLabel: 'Newer',
     forwardPageHref: pipe(
       pageOfArticleIds.nextPage,
       O.map(generateHref(groupSlug)),
