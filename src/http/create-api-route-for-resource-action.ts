@@ -7,7 +7,6 @@ import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
 import { GenericCommand } from '../types/command-handler';
 import { CollectedPorts } from '../infrastructure';
-import { logRequestBody } from './api/log-request-body';
 import { ResourceAction } from '../write-side/resources/resource-action';
 import { executeCommand } from '../write-side/commands';
 import { getSecretSafely } from './api/get-secret-safely';
@@ -17,6 +16,15 @@ const executeAndRespond = <C extends GenericCommand>(
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
 ): Middleware => async (context) => {
+    ports.logger(
+      'debug',
+      'Received command',
+      {
+        body: context.request.body,
+        url: context.request.url,
+      },
+    );
+
     const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
     if (context.request.headers.authorization !== `Bearer ${expectedToken}`) {
       context.response.body = 'Unauthorized';
@@ -47,7 +55,6 @@ export const createApiRouteForResourceAction = <C extends GenericCommand>(
 ): Middleware => compose(
     [
       bodyParser({ enableTypes: ['json'] }),
-      logRequestBody(ports.logger),
       executeAndRespond(ports, codec, resourceAction),
     ],
   );
