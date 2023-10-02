@@ -1,12 +1,53 @@
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import * as evaluationResource from '../../../../src/write-side/resources/evaluation';
+import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+import { UpdateEvaluationCommand } from '../../../../src/write-side/commands';
+
+const expectEvent = (fields: Record<string, unknown>) => ({
+  id: expect.any(String),
+  date: expect.any(Date),
+  type: 'EvaluationUpdated',
+  evaluationLocator: undefined,
+  evaluationType: undefined,
+  ...fields,
+});
+
 describe('update', () => {
   describe('when the evalution publication has been recorded', () => {
     describe('when passed a new value for a single attribute', () => {
       describe.each([
-        ['type'],
-        ['authors'],
+        ['evaluationType' as const],
+        // ['authors'],
       ])('%s', (attributeToBeChanged) => {
         describe('and this evaluation has never been updated', () => {
-          it.todo(`raises an event to update the evaluation ${attributeToBeChanged}`);
+          const evaluationLocator = arbitraryEvaluationLocator();
+          const command: UpdateEvaluationCommand = {
+            ...arbitraryUpdateEvaluationCommand(),
+            evaluationLocator,
+          };
+          const eventsRaised = pipe(
+            [
+              {
+                ...arbitraryEvaluationPublicationRecordedEvent(),
+                evaluationLocator,
+              },
+            ],
+            evaluationResource.update(command),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+
+          it(`raises an event to update the evaluation ${attributeToBeChanged}`, () => {
+            expect(eventsRaised).toStrictEqual([
+              expectEvent({
+                evaluationLocator: command.evaluationLocator,
+                [attributeToBeChanged]: command[attributeToBeChanged],
+              }),
+            ]);
+          });
         });
 
         describe(`and this evaluations's ${attributeToBeChanged} has previously been updated`, () => {
