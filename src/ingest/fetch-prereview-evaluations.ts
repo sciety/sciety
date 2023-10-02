@@ -38,6 +38,7 @@ type Review = {
   handle: string | Doi,
   reviewDoi: O.Option<Doi>,
   isPublished: boolean,
+  authors: ReadonlyArray<string>,
 };
 
 const toEvaluationOrSkip = (preprint: Review) => pipe(
@@ -59,7 +60,7 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
     date: p.date,
     articleDoi: p.handle.value,
     evaluationLocator: `doi:${p.reviewDoi.value.value}`,
-    authors: [],
+    authors: p.authors,
   })),
 );
 
@@ -70,6 +71,7 @@ const toIndividualReviews = (preprint: PreReviewPreprint) => pipe(
     handle: preprint.handle,
     reviewDoi: review.doi,
     isPublished: review.isPublished,
+    authors: [],
   })),
 );
 
