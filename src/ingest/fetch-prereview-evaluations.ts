@@ -21,6 +21,9 @@ const preReviewPreprint = t.type({
     createdAt: tt.DateFromISOString,
     doi: tt.optionFromNullable(DoiFromString),
     isPublished: t.boolean,
+    authors: t.readonlyArray(t.type({
+      name: t.string,
+    })),
   })),
 });
 
