@@ -49,13 +49,13 @@ type ListSummary = {
   listId: ListId,
 };
 
-type ArticleNotInAnyList = {
+type SaveToAListForms = {
   lists: ReadonlyArray<ListSummary>,
 };
 
-type ArticleSavedToThisList = ListSummary;
+type ContainingList = ListSummary;
 
-export type LoggedInUserListManagement = E.Either<ArticleNotInAnyList, ArticleSavedToThisList>;
+export type LoggedInUserListManagement = E.Either<SaveToAListForms, ContainingList>;
 
 export type ViewModel = {
   doi: Doi,
