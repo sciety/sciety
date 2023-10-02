@@ -1,105 +1,63 @@
-import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
-import { constructEvent } from '../../../../src/domain-events';
-import { update } from '../../../../src/write-side/resources/evaluation';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
-import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
-import { EvaluationType } from '../../../../src/types/recorded-evaluation';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-
-const evaluationRecordedWithType = (
-  evaluationLocator: EvaluationLocator,
-  evaluationType: EvaluationType | undefined,
-) => ({
-  ...arbitraryEvaluationPublicationRecordedEvent(),
-  evaluationLocator,
-  evaluationType,
-});
-
-const evaluationUpdatedWithType = (
-  evaluationLocator: EvaluationLocator,
-  evaluationType: EvaluationType | undefined,
-) => constructEvent('EvaluationUpdated')({
-  evaluationLocator,
-  evaluationType,
-});
-
 describe('update', () => {
-  describe('when the evaluation locator has been recorded', () => {
-    const evaluationLocator = arbitraryEvaluationLocator();
-    const command = {
-      evaluationLocator,
-      evaluationType: 'author-response' as const,
-    };
-
-    describe('when the evaluation type has been recorded in the EvaluationRecorded event', () => {
-      describe('and the command matches the existing evaluation type', () => {
-        const existingEvents = [
-          evaluationRecordedWithType(evaluationLocator, 'author-response'),
-        ];
-        const generatedEvents = pipe(
-          existingEvents,
-          update(command),
-        );
-
-        it('returns no events', () => {
-          expect(generatedEvents).toStrictEqual(E.right([]));
+  describe('when the evalution publication has been recorded', () => {
+    describe('when passed a new value for a single attribute', () => {
+      describe.each([
+        ['type'],
+        ['authors'],
+      ])('%s', (attributeToBeChanged) => {
+        describe('and this evaluation has never been updated', () => {
+          it.todo(`raises an event to update the evaluation ${attributeToBeChanged}`);
         });
-      });
 
-      describe('and the command does not match the existing evaluation type', () => {
-        const existingEvents = [
-          evaluationRecordedWithType(evaluationLocator, 'review'),
-        ];
-        const generatedEvents = pipe(
-          existingEvents,
-          update(command),
-        );
-
-        it('returns an EvaluationUpdated event', () => {
-          expect(generatedEvents).toStrictEqual(E.right([expect.objectContaining({
-            type: 'EvaluationUpdated',
-            evaluationLocator: command.evaluationLocator,
-            evaluationType: command.evaluationType,
-          })]));
+        describe(`and this evaluations's ${attributeToBeChanged} has previously been updated`, () => {
+          it.todo(`raises an event to update the evaluation ${attributeToBeChanged}`);
         });
       });
     });
 
-    describe('when the evaluation type has already been updated in the EvaluationUpdated event', () => {
-      describe('and the command does not match the existing evaluation type', () => {
-        const existingEvents = [
-          evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
-          evaluationUpdatedWithType(evaluationLocator, 'review'),
-        ];
-        const generatedEvents = pipe(
-          existingEvents,
-          update(command),
-        );
-
-        it('returns an EvaluationUpdated event', () => {
-          expect(generatedEvents).toStrictEqual(E.right([expect.objectContaining({
-            type: 'EvaluationUpdated',
-            evaluationLocator: command.evaluationLocator,
-            evaluationType: command.evaluationType,
-          })]));
+    describe('when passed a new value for one attribute and an unchanged value for a different attribute', () => {
+      describe.each([
+        ['type', 'authors'],
+        ['authors', 'type'],
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      ])('new %s, existing %s', (attributeToBeChanged, unchangedAttribute) => {
+        describe('and this evaluation\'s details have never been updated', () => {
+          it.todo(`raises an event to only update the evaluation ${attributeToBeChanged}`);
         });
-      });
 
-      describe('and the command matches the existing evaluation type', () => {
-        const existingEvents = [
-          evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
-          evaluationUpdatedWithType(evaluationLocator, command.evaluationType),
-        ];
-        const generatedEvents = pipe(
-          existingEvents,
-          update(command),
-        );
-
-        it('returns no events', () => {
-          expect(generatedEvents).toStrictEqual(E.right([]));
+        describe(`and this evaluations's ${attributeToBeChanged} has previously been updated`, () => {
+          it.todo(`raises an event to only update the evaluation's ${attributeToBeChanged}`);
         });
       });
     });
+
+    describe('when passed an unchanged value for a single attribute', () => {
+      describe.each([
+        ['type'],
+        ['authors'],
+      ])('%s', (attributeToBeChanged) => {
+        describe('and this evaluation\'s details have never been updated', () => {
+          it.todo('raises no events');
+        });
+
+        describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
+          it.todo('raises no events');
+        });
+      });
+    });
+  });
+
+  describe('when the evaluation publication has not been recorded', () => {
+    describe('when passed any command', () => {
+      it.todo('returns an error');
+    });
+  });
+
+  describe('when an EvaluationUpdated event exists without a previous EvaluationPublicationRecorded event', () => {
+    it.todo('returns an error');
+  });
+
+  describe('when an EvaluationUpdated event is followed by a EvaluationPublicationRecorded event', () => {
+    it.todo('returns an error');
   });
 });
