@@ -42,16 +42,10 @@ const contextCodec = t.type({
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context, next) => {
   await pipe(
     {
-      articleId: pipe(
+      body: pipe(
         context,
         contextCodec.decode,
-        E.map((ctx) => ctx.request.body[articleIdFieldName]),
-        O.fromEither,
-      ),
-      listId: pipe(
-        context,
-        contextCodec.decode,
-        E.map((ctx) => ctx.request.body.listId),
+        E.map((ctx) => ctx.request.body),
         O.fromEither,
       ),
       userId: pipe(
@@ -65,8 +59,8 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
         dependencies.logger('error', 'saveArticleHandler codec failed or missing user', { requestBody: context.request.body }),
         () => T.of(undefined),
       ),
-      ({ articleId, listId, userId }) => pipe(
-        { articleId, listId },
+      ({ userId, body }) => pipe(
+        { articleId: body[articleIdFieldName], listId: body.listId },
         TE.of,
         TE.chainFirst(flow(
           (command) => checkUserOwnsList(dependencies, command.listId, userId),
