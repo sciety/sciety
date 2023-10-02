@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
 import { arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-updated-event.helper';
 import * as evaluationResource from '../../../../src/write-side/resources/evaluation';
@@ -30,12 +29,14 @@ describe('update', () => {
           const command: UpdateEvaluationCommand = {
             ...arbitraryUpdateEvaluationCommand(),
             evaluationLocator,
+            evaluationType: 'review',
           };
           const eventsRaised = pipe(
             [
               {
                 ...arbitraryEvaluationPublicationRecordedEvent(),
                 evaluationLocator,
+                evaluationType: undefined,
               },
             ],
             evaluationResource.update(command),
@@ -53,11 +54,11 @@ describe('update', () => {
         });
 
         describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
-          const newValue = arbitraryEvaluationType();
           const evaluationLocator = arbitraryEvaluationLocator();
           const command: UpdateEvaluationCommand = {
             ...arbitraryUpdateEvaluationCommand(),
             evaluationLocator,
+            evaluationType: 'review',
           };
           const eventsRaised = pipe(
             [
@@ -68,7 +69,7 @@ describe('update', () => {
               {
                 ...arbitraryEvaluationUpdatedEvent(),
                 evaluationLocator,
-                [attributeToBeChanged]: newValue,
+                [attributeToBeChanged]: 'author-response',
               },
             ],
             evaluationResource.update(command),
