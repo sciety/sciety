@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as PR from 'io-ts/PathReporter';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
@@ -29,6 +30,15 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
   }
   const command = createAnnotationCommandCodec.decode(context.request.body);
   if (E.isLeft(command)) {
+    adapters.logger(
+      'error',
+      'Failed to decode the create annotation form',
+      {
+        codecDecodingError: PR.failure(command.left),
+        requestBody: context.request.body,
+        loggedInUserId: loggedInUser.value.id,
+      },
+    );
     context.response.status = StatusCodes.BAD_REQUEST;
     context.response.body = 'Cannot understand the command.';
     return;
