@@ -13,6 +13,7 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from '../../http/forms/check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
+import { userGeneratedInputCodec } from '../../types/user-generated-input';
 
 export const articleIdFieldName = 'articleid';
 
@@ -23,10 +24,18 @@ type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
 
 const contextCodec = t.type({
   request: t.type({
-    body: t.type({
-      [articleIdFieldName]: DoiFromString,
-      listId: listIdCodec,
-    }),
+    body: t.intersection([
+      t.strict({
+        [articleIdFieldName]: DoiFromString,
+        listId: listIdCodec,
+      }),
+      t.partial({
+        annotationContent: userGeneratedInputCodec({
+          maxInputLength: 4000,
+          allowEmptyInput: true,
+        }),
+      }),
+    ]),
   }),
 });
 
