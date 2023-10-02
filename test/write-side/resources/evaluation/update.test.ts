@@ -107,10 +107,29 @@ describe('update', () => {
     describe('when passed an unchanged value for a single attribute', () => {
       describe.each([
         ['type'],
-        ['authors'],
+        // ['authors'],
       ])('%s', (attributeToBeChanged) => {
         describe('and this evaluation\'s details have never been updated', () => {
-          it.todo('raises no events');
+          const evaluationLocator = arbitraryEvaluationLocator();
+          const eventsRaised = pipe(
+            [
+              {
+                ...arbitraryEvaluationPublicationRecordedEvent(),
+                evaluationLocator,
+                evaluationType: 'review',
+              },
+            ],
+            evaluationResource.update({
+              ...arbitraryUpdateEvaluationCommand(),
+              evaluationLocator,
+              evaluationType: 'review',
+            }),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+
+          it('raises no events', () => {
+            expect(eventsRaised).toStrictEqual([]);
+          });
         });
 
         describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
