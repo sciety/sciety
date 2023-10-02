@@ -64,14 +64,17 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
   })),
 );
 
-const toIndividualReviews = (preprint: PreReviewPreprint) => pipe(
+const toIndividualReviews = (preprint: PreReviewPreprint): ReadonlyArray<Review> => pipe(
   preprint.fullReviews,
   RA.map((review) => ({
     date: review.createdAt,
     handle: preprint.handle,
     reviewDoi: review.doi,
     isPublished: review.isPublished,
-    authors: [],
+    authors: pipe(
+      review.authors,
+      RA.map((author) => author.name),
+    ),
   })),
 );
 
