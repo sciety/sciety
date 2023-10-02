@@ -7,12 +7,13 @@ import { CreateAnnotationCommand, executeCreateAnnotationCommand } from './execu
 import { Logger } from '../shared-ports';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
-import { htmlFragmentCodec } from '../types/html-fragment';
 import { fromValidatedString, listIdCodec } from '../types/list-id';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
+import { userGeneratedInputCodec } from '../types/user-generated-input';
+import { toHtmlFragment } from '../types/html-fragment';
 
 export const createAnnotationCommandCodec = t.type({
-  annotationContent: htmlFragmentCodec,
+  annotationContent: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: false }),
   articleId: DoiFromString,
   listId: listIdCodec,
 });
@@ -20,7 +21,7 @@ export const createAnnotationCommandCodec = t.type({
 type Body = t.TypeOf<typeof createAnnotationCommandCodec>;
 
 const transformToCommand = ({ annotationContent, articleId, listId }: Body): CreateAnnotationCommand => ({
-  content: annotationContent,
+  content: toHtmlFragment(annotationContent),
   target: {
     articleId,
     listId: fromValidatedString(listId),
