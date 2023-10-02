@@ -1,6 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-updated-event.helper';
 import * as evaluationResource from '../../../../src/write-side/resources/evaluation';
 import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -50,8 +52,37 @@ describe('update', () => {
           });
         });
 
-        describe(`and this evaluations's ${attributeToBeChanged} has previously been updated`, () => {
-          it.todo(`raises an event to update the evaluation ${attributeToBeChanged}`);
+        describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
+          const newValue = arbitraryEvaluationType();
+          const evaluationLocator = arbitraryEvaluationLocator();
+          const command: UpdateEvaluationCommand = {
+            ...arbitraryUpdateEvaluationCommand(),
+            evaluationLocator,
+          };
+          const eventsRaised = pipe(
+            [
+              {
+                ...arbitraryEvaluationPublicationRecordedEvent(),
+                evaluationLocator,
+              },
+              {
+                ...arbitraryEvaluationUpdatedEvent(),
+                evaluationLocator,
+                [attributeToBeChanged]: newValue,
+              },
+            ],
+            evaluationResource.update(command),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+
+          it(`raises an event to update the evaluation ${attributeToBeChanged}`, () => {
+            expect(eventsRaised).toStrictEqual([
+              expectEvent({
+                evaluationLocator: command.evaluationLocator,
+                [attributeToBeChanged]: command[attributeToBeChanged],
+              }),
+            ]);
+          });
         });
       });
     });
