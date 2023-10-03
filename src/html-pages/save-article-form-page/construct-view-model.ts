@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { sequenceS } from 'fp-ts/Apply';
 import * as LID from '../../types/list-id';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
@@ -13,12 +14,13 @@ const listId = LID.fromValidatedString('fake-list-id');
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  params.articleId,
-  dependencies.fetchArticle,
-  TE.map((articleDetails) => articleDetails.title),
-  TE.map((articleTitle) => ({
+  {
+    article: dependencies.fetchArticle(params.articleId),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map((partial) => ({
     articleId: params.articleId,
-    articleTitle,
+    articleTitle: partial.article.title,
     listId,
     listName,
     userListNames: [
