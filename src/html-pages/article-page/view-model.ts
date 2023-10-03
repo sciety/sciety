@@ -49,7 +49,7 @@ type ListSummary = {
   listId: ListId,
 };
 
-type SaveToAListForms = {
+export type SaveToAListForms = {
   lists: ReadonlyArray<ListSummary>,
 };
 

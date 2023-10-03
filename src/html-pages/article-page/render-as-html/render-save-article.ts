@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
 import { renderSaveToListForm } from '../../../write-side/save-article/render-save-to-list-form';
-import { ViewModel } from '../view-model';
+import { SaveToAListForms, ViewModel } from '../view-model';
 
 const renderLinkToUserListArticleIsInto = (listId: ListId, listName: string) => `
   <section>
@@ -26,16 +26,18 @@ const renderSaveToListSection = (forms: string) => `
   </section>
 `;
 
+const renderSaveToList = (viewmodel: ViewModel) => (notInAnyList: SaveToAListForms) => pipe(
+  notInAnyList.lists,
+  RA.map((list) => renderSaveToListForm(viewmodel.doi, list.listId, list.listName)),
+  (forms) => renderSaveToListSection(forms.join('')),
+);
+
 export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.userListManagement,
   O.match(
     renderLoggedOutCallToAction,
     E.match(
-      (notInAnyList) => pipe(
-        notInAnyList.lists,
-        RA.map((list) => renderSaveToListForm(viewmodel.doi, list.listId, list.listName)),
-        (forms) => renderSaveToListSection(forms.join('')),
-      ),
+      renderSaveToList(viewmodel),
       (savedToThisList) => renderLinkToUserListArticleIsInto(savedToThisList.listId, savedToThisList.listName),
     ),
   ),
