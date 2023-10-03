@@ -3,9 +3,6 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName } from '../../write-side/save-article/save-article-handler';
 import { ViewModel } from './view-model';
 
-const listName = 'My test list';
-const listId = 'fake-list-id';
-
 export const renderAsHtml = (viewModel: ViewModel): Page => ({
   title: 'Save article page',
   content: toHtmlFragment(`
@@ -14,8 +11,8 @@ export const renderAsHtml = (viewModel: ViewModel): Page => ({
   </header>
   <form class="save-article-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
-    <input type="hidden" name="listId" value="${listId}">
-    <div class="list-name">${listName}</div>
+    <input type="hidden" name="listId" value="${viewModel.listId}">
+    <div class="list-name">${viewModel.listName}</div>
     <button type="submit" class="save-article-button">
       Save article
     </button>
