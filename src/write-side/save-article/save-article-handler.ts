@@ -31,7 +31,7 @@ const contextCodec = t.type({
 });
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
-  await pipe(
+  const foo = pipe(
     {
       body: pipe(
         context,
@@ -45,28 +45,34 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
       ),
     },
     sequenceS(O.Apply),
-    O.fold(
-      () => pipe(
-        dependencies.logger('error', 'saveArticleHandler codec failed or missing user', { requestBody: context.request.body }),
-        () => T.of(undefined),
-      ),
-      ({ userId, body }) => pipe(
-        { articleId: body[articleIdFieldName], listId: body.listId },
-        TE.of,
-        TE.chainFirst(flow(
-          (command) => checkUserOwnsList(dependencies, command.listId, userId),
-          TE.mapLeft((logEntry) => {
-            dependencies.logger('error', logEntry.message, logEntry.payload);
-            return logEntry;
-          }),
-        )),
-        TE.chainW(dependencies.addArticleToList),
-        TE.getOrElseW((error) => {
-          dependencies.logger('error', 'saveArticleHandler failed', { error });
-          return T.of(error);
+  );
+  if (O.isNone(foo)) {
+    dependencies.logger('error', 'saveArticleHandler codec failed or missing user', { requestBody: context.request.body });
+    context.redirect('back');
+    return;
+  }
+
+  await pipe(
+    foo.value,
+    ({ userId, body }) => pipe(
+      {
+        articleId: body[articleIdFieldName],
+        listId: body.listId,
+      },
+      TE.of,
+      TE.chainFirst(flow(
+        (command) => checkUserOwnsList(dependencies, command.listId, userId),
+        TE.mapLeft((logEntry) => {
+          dependencies.logger('error', logEntry.message, logEntry.payload);
+          return logEntry;
         }),
-        T.map(() => undefined),
-      ),
+      )),
+      TE.chainW(dependencies.addArticleToList),
+      TE.getOrElseW((error) => {
+        dependencies.logger('error', 'saveArticleHandler failed', { error });
+        return T.of(error);
+      }),
+      T.map(() => undefined),
     ),
   )();
 
