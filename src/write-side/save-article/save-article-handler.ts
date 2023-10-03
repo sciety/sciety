@@ -30,7 +30,7 @@ const contextCodec = t.type({
   }),
 });
 
-export const saveArticleHandler = (dependencies: Ports): Middleware => async (context, next) => {
+export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
   await pipe(
     {
       body: pipe(
@@ -70,5 +70,5 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     ),
   )();
 
-  await next();
+  context.redirect('back');
 };

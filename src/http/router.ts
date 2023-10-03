@@ -326,7 +326,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     bodyParser({ enableTypes: ['form'] }),
     requireLoggedInUser(adapters),
     saveArticleHandler(adapters),
-    redirectBack,
   );
 
   router.post(
