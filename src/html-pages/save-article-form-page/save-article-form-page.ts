@@ -1,19 +1,26 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { renderAsHtml } from './render-as-html';
 import { constructViewModel } from './construct-view-model';
-import { Doi } from '../../types/doi';
+import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { paramsCodec } from './params';
 
 type SaveArticleFormPage = TE.TaskEither<RenderPageError, Page>;
 
-export const saveArticleFormPage = (): SaveArticleFormPage => pipe(
-  {
-    articleId: new Doi('10.1101/123456'),
-
-  },
-  constructViewModel,
-  renderAsHtml,
-  TE.right,
+export const saveArticleFormPage = (input: unknown): SaveArticleFormPage => pipe(
+  input,
+  paramsCodec.decode,
+  E.map(constructViewModel),
+  E.bimap(
+    () => ({
+      type: DE.unavailable,
+      message: toHtmlFragment('Missing information about which article to save.'),
+    }),
+    renderAsHtml,
+  ),
+  TE.fromEither,
 );
