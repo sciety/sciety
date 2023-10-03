@@ -51,6 +51,7 @@ type ListSummary = {
 
 export type SaveToAListForms = {
   lists: ReadonlyArray<ListSummary>,
+  saveArticleHref: string,
 };
 
 type ContainingList = ListSummary;

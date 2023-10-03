@@ -24,7 +24,10 @@ export const constructUserListManagement = (user: O.Option<{ id: UserId }>, depe
             listId: list.id,
             listName: list.name,
           })),
-          (lists) => E.left({ lists }),
+          (lists) => E.left({
+            lists,
+            saveArticleHref: '/save-article',
+          }),
         ),
         (list) => E.right({
           listId: list.id,
