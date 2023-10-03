@@ -23,6 +23,7 @@ const renderSaveToListSection = (forms: string) => `
   <section>
     <h2 class="article-actions-heading">Save to a list</h2>
     ${forms}
+    ${process.env.EXPERIMENT_ENABLED === 'true' ? '<a href="/save-article">Save this article</a>' : ''}
   </section>
 `;
 
