@@ -7,5 +7,9 @@ type SaveArticleFormPage = TE.TaskEither<RenderPageError, Page>;
 
 export const saveArticleFormPage = (): SaveArticleFormPage => TE.right({
   title: 'Save article page',
-  content: toHtmlFragment(''),
+  content: toHtmlFragment(`
+  <header class="page-header">
+    <h1>Save article</h1>
+  </header>
+  `),
 });
