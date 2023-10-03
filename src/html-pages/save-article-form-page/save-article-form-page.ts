@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
 import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { renderAsHtml } from './render-as-html';
@@ -15,13 +14,13 @@ type SaveArticleFormPage = TE.TaskEither<RenderPageError, Page>;
 export const saveArticleFormPage = (dependencies: Dependencies) => (input: unknown): SaveArticleFormPage => pipe(
   input,
   paramsCodec.decode,
-  E.map(constructViewModel(dependencies)),
-  E.bimap(
+  TE.fromEither,
+  TE.chainW(constructViewModel(dependencies)),
+  TE.bimap(
     () => ({
       type: DE.unavailable,
       message: toHtmlFragment('Missing information about which article to save.'),
     }),
     renderAsHtml,
   ),
-  TE.fromEither,
 );
