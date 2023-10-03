@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe, flow } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
@@ -54,21 +54,22 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
 
   const articleId = params.value.body[articleIdFieldName];
   const listId = params.value.body.listId;
+  const command = {
+    articleId,
+    listId,
+  };
+
+  const logEntry = checkUserOwnsList(dependencies, listId, params.value.userId);
+  if (E.isLeft(logEntry)) {
+    dependencies.logger('error', logEntry.left.message, logEntry.left.payload);
+    dependencies.logger('error', 'saveArticleHandler failed', { error: logEntry.left });
+    context.redirect(`/articles/${articleId.value}`);
+    return;
+  }
 
   await pipe(
-    {
-      articleId: params.value.body[articleIdFieldName],
-      listId: params.value.body.listId,
-    },
-    TE.of,
-    TE.chainFirstEitherK(flow(
-      () => checkUserOwnsList(dependencies, listId, params.value.userId),
-      E.mapLeft((logEntry) => {
-        dependencies.logger('error', logEntry.message, logEntry.payload);
-        return logEntry;
-      }),
-    )),
-    TE.chainW(dependencies.addArticleToList),
+    command,
+    dependencies.addArticleToList,
     TE.getOrElseW((error) => {
       dependencies.logger('error', 'saveArticleHandler failed', { error });
       return T.of(error);
