@@ -18,8 +18,6 @@ export const renderAsHtml = (viewModel: ViewModel): Page => ({
   </ul>
   <form class="save-article-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
-    <input type="hidden" name="listId" value="${viewModel.listId}">
-    <div class="list-name">${viewModel.listName}</div>
     <button type="submit" class="save-article-button">
       Save article
     </button>
