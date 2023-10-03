@@ -8,13 +8,14 @@ import { constructViewModel } from './construct-view-model';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { paramsCodec } from './params';
+import { Dependencies } from './dependencies';
 
 type SaveArticleFormPage = TE.TaskEither<RenderPageError, Page>;
 
-export const saveArticleFormPage = (input: unknown): SaveArticleFormPage => pipe(
+export const saveArticleFormPage = (dependencies: Dependencies) => (input: unknown): SaveArticleFormPage => pipe(
   input,
   paramsCodec.decode,
-  E.map(constructViewModel),
+  E.map(constructViewModel(dependencies)),
   E.bimap(
     () => ({
       type: DE.unavailable,

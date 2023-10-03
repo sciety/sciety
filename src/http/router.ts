@@ -277,7 +277,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/save-article',
-    pageHandler(adapters, saveArticleFormPage),
+    pageHandler(adapters, saveArticleFormPage(adapters)),
   );
 
   router.get(
