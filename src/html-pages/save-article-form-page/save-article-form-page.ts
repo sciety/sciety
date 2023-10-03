@@ -4,11 +4,16 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { renderAsHtml } from './render-as-html';
 import { constructViewModel } from './construct-view-model';
+import { Doi } from '../../types/doi';
 
 type SaveArticleFormPage = TE.TaskEither<RenderPageError, Page>;
 
 export const saveArticleFormPage = (): SaveArticleFormPage => pipe(
-  constructViewModel(),
+  {
+    articleId: new Doi('10.1101/123456'),
+
+  },
+  constructViewModel,
   renderAsHtml,
   TE.right,
 );
