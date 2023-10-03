@@ -9,6 +9,9 @@ export const renderAsHtml = (viewModel: ViewModel): Page => ({
   <header class="page-header">
     <h1>Save article</h1>
   </header>
+  <p>
+    ${viewModel.articleTitle}
+  </p>
   <form class="save-article-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
     <input type="hidden" name="listId" value="${viewModel.listId}">
