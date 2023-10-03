@@ -75,6 +75,7 @@ import { listFeed } from '../views/list/list-feed';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
 import { styleGuidePage } from '../html-pages/style-guide-page';
+import { saveArticlePage } from '../html-pages/save-article-page';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -272,6 +273,11 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
       editListDetailsFormPageParamsCodec,
       editListDetailsFormPage(adapters),
     )),
+  );
+
+  router.get(
+    '/save-article',
+    pageHandler(adapters, () => saveArticlePage()),
   );
 
   router.get(
