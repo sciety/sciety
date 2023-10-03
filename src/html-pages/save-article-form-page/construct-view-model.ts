@@ -5,6 +5,7 @@ import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { ViewModel } from './view-model';
 import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 const listName = 'My test list';
 const listId = LID.fromValidatedString('fake-list-id');
@@ -20,5 +21,9 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     articleTitle,
     listId,
     listName,
+    userListNames: [
+      toHtmlFragment('List Name A'),
+      toHtmlFragment('List Name B'),
+    ],
   })),
 );

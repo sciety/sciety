@@ -7,4 +7,5 @@ export type ViewModel = {
   articleTitle: HtmlFragment,
   listId: ListId,
   listName: string,
+  userListNames: ReadonlyArray<HtmlFragment>,
 };

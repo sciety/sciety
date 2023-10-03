@@ -2,6 +2,7 @@ import { Page } from '../../types/page';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName } from '../../write-side/save-article/save-article-handler';
 import { ViewModel } from './view-model';
+import { renderListItems } from '../../shared-components/render-list-items';
 
 export const renderAsHtml = (viewModel: ViewModel): Page => ({
   title: 'Save article page',
@@ -13,8 +14,7 @@ export const renderAsHtml = (viewModel: ViewModel): Page => ({
     ${viewModel.articleTitle}
   </p>
   <ul>
-    <li>ListIdA - ListTitleA</li>
-    <li>ListIdB - ListTitleB</li>
+    ${renderListItems(viewModel.userListNames)}
   </ul>
   <form class="save-article-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
