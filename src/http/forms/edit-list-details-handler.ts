@@ -72,7 +72,7 @@ export const editListDetailsHandler = (adapters: Ports): Middleware => async (co
     },
     sequenceS(E.Apply),
     TE.fromEither,
-    TE.chainFirstW(({ command, userDetails }) => checkUserOwnsList(adapters, command.listId, userDetails.id)),
+    TE.chainFirstEitherKW(({ command, userDetails }) => checkUserOwnsList(adapters, command.listId, userDetails.id)),
     TE.chainW(({ command, userDetails }) => pipe(
       command,
       handleCommand(adapters),

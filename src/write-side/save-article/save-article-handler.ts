@@ -61,9 +61,9 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
       listId: params.value.body.listId,
     },
     TE.of,
-    TE.chainFirst(flow(
+    TE.chainFirstEitherK(flow(
       () => checkUserOwnsList(dependencies, listId, params.value.userId),
-      TE.mapLeft((logEntry) => {
+      E.mapLeft((logEntry) => {
         dependencies.logger('error', logEntry.message, logEntry.payload);
         return logEntry;
       }),

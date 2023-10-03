@@ -53,9 +53,9 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
     ),
   )),
   TE.fromEither,
-  TE.chainFirstW(flow(
+  TE.chainFirstEitherKW(flow(
     ({ command, userId }) => checkUserOwnsList(dependencies, command.listId, userId),
-    TE.mapLeft((logEntry) => {
+    E.mapLeft((logEntry) => {
       dependencies.logger('error', logEntry.message, logEntry.payload);
       return logEntry;
     }),

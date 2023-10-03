@@ -1,5 +1,5 @@
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
@@ -13,11 +13,11 @@ export type Ports = {
 export const checkUserOwnsList = (adapters: Ports, listId: ListId, userId: UserId) => pipe(
   listId,
   adapters.lookupList,
-  TE.fromOption(() => ({
+  E.fromOption(() => ({
     message: 'List id not found',
     payload: { listId, userId },
   })),
-  TE.filterOrElseW(
+  E.filterOrElseW(
     (list) => LOID.eqListOwnerId.equals(list.ownerId, LOID.fromUserId(userId)),
     (list) => ({
       message: 'List owner id does not match user id',
