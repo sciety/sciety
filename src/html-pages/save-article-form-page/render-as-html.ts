@@ -5,12 +5,12 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName } from '../../write-side/save-article/save-article-handler';
 import { ViewModel } from './view-model';
 
-const renderLists = (listNames: ViewModel['userListNames']) => pipe(
-  listNames,
-  RA.map((listName) => `
+const renderLists = (lists: ViewModel['userLists']) => pipe(
+  lists,
+  RA.map((list) => `
     <div>
-      <input type="radio" id="${listName}" name="drone" value="fake-list-id" />
-      <label for="${listName}">${listName}</label>
+      <input type="radio" id="list-id-${list.id}" name="listId" value="${list.id}" />
+      <label for="list-id-${list.id}">${list.name}</label>
     </div>
   `),
   (divs) => divs.join(''),
@@ -28,7 +28,7 @@ export const renderAsHtml = (viewModel: ViewModel): Page => ({
   <form class="save-article-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
     <div>
-      ${renderLists(viewModel.userListNames)}
+      ${renderLists(viewModel.userLists)}
     </div>
     <button type="submit" class="save-article-button">
       Save article
