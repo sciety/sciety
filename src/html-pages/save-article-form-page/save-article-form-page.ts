@@ -3,9 +3,9 @@ import { Page } from '../../types/page';
 import { RenderPageError } from '../../types/render-page-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 
-type SaveArticlePage = TE.TaskEither<RenderPageError, Page>;
+type SaveArticleFormPage = TE.TaskEither<RenderPageError, Page>;
 
-export const saveArticlePage = (): SaveArticlePage => TE.right({
+export const saveArticleFormPage = (): SaveArticleFormPage => TE.right({
   title: 'Save article page',
   content: toHtmlFragment(''),
 });
