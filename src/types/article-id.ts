@@ -18,10 +18,6 @@ export class ArticleId {
     this.value = doi;
   }
 
-  hasPrefix(prefix: string): boolean {
-    return this.value.startsWith(`${prefix}/`);
-  }
-
   toString(): string {
     return `doi:${this.value}`;
   }
@@ -31,7 +27,7 @@ export const isArticleId = (value: unknown): value is ArticleId => value instanc
 
 export const fromString = (value: string): O.Option<ArticleId> => O.tryCatch(() => new ArticleId(value));
 
-export const hasPrefix = (prefix: string) => (doi: ArticleId): boolean => doi.hasPrefix(prefix);
+export const hasPrefix = (prefix: string) => (doi: ArticleId): boolean => doi.value.startsWith(`${prefix}/`);
 
 export const eqDoi: Eq.Eq<ArticleId> = pipe(
   S.Eq,

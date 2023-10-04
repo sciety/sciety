@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { ArticleId } from '../../src/types/article-id';
+import * as AID from '../../src/types/article-id';
 
 describe('article-id', () => {
   it.each([
@@ -15,8 +16,8 @@ describe('article-id', () => {
   it('has a prefix', () => {
     const articleId = new ArticleId('10.5281/zenodo.3678326');
 
-    expect(articleId.hasPrefix('10.5281')).toBe(true);
-    expect(articleId.hasPrefix('10.5282')).toBe(false);
+    expect(AID.hasPrefix('10.5281')(articleId)).toBe(true);
+    expect(AID.hasPrefix('10.5282')(articleId)).toBe(false);
   });
 
   it.each([

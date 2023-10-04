@@ -3,6 +3,7 @@
 import { biorxivAndMedrxivPublisherDoiPrefix, elifeGroupId, elifeSubjectAreaLists } from './data';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
+import * as AID from '../../types/article-id';
 
 type ArticleStateWithSubjectArea =
  | { name: 'subject-area-known', subjectArea: SubjectArea }
@@ -29,7 +30,7 @@ export const isStateWithSubjectArea = (state: ArticleState):
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    if (event.articleId.hasPrefix(biorxivAndMedrxivPublisherDoiPrefix)) {
+    if (AID.hasPrefix(biorxivAndMedrxivPublisherDoiPrefix)(event.articleId)) {
       if (event.groupId === elifeGroupId) {
         const key = event.articleId.value;
         const transitions = {

@@ -7,6 +7,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
+import * as AID from '../../types/article-id';
 import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { GetArticleSubjectArea, Logger } from '../../shared-ports';
@@ -31,7 +32,8 @@ const mapResponse = flow(
 );
 
 export const getBiorxivOrMedrxivCategory = (dependencies: Dependencies): GetArticleSubjectArea => (articleId) => pipe(
-  articleId.hasPrefix('10.1101'),
+  articleId,
+  AID.hasPrefix('10.1101'),
   B.match(
     () => E.left(DE.unavailable),
     () => E.right([
