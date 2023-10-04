@@ -21,7 +21,7 @@ import {
   recordSubjectAreaCommandHandler,
   removeArticleFromListCommandHandler,
 } from '../write-side/command-handlers';
-import { instantiate } from '../third-parties/instantiate';
+import { instantiate } from '../third-parties';
 import { createRedisClient } from './create-redis-client';
 
 type Dependencies = LoggerConfig & {
