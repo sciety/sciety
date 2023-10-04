@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import { Queries } from '../../read-models';
-import { ExternalQueries } from '../../third-parties/external-queries';
+import { ExternalQueries } from '../../third-parties';
 import { ViewModel } from './view-model';
 import { DataError } from '../../types/data-error';
 import * as DE from '../../types/data-error';
