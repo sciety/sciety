@@ -20,7 +20,7 @@ export const saveArticleFormPage = (
   TE.bimap(
     () => ({
       type: DE.unavailable,
-      message: toHtmlFragment('Missing information about which article to save.'),
+      message: toHtmlFragment('Sorry, something went wrong. Please try again later.'),
     }),
     renderAsHtml,
   ),
