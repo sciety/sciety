@@ -1,22 +1,22 @@
 import { pipe } from 'fp-ts/function';
 import { ArticleId } from '../../src/types/article-id';
 
-describe('doi', () => {
+describe('article-id', () => {
   it.each([
     '10.5281/zenodo.3678326',
     'doi:10.5281/zenodo.3678326', // TODO: is this ever needed?
   ])('accepts valid DOI syntax', (doiSyntaxExample) => {
     expect(pipe(
       new ArticleId(doiSyntaxExample),
-      (doi) => doi.value,
+      (articleId) => articleId.value,
     )).toBe('10.5281/zenodo.3678326');
   });
 
   it('has a prefix', () => {
-    const doi = new ArticleId('10.5281/zenodo.3678326');
+    const articleId = new ArticleId('10.5281/zenodo.3678326');
 
-    expect(doi.hasPrefix('10.5281')).toBe(true);
-    expect(doi.hasPrefix('10.5282')).toBe(false);
+    expect(articleId.hasPrefix('10.5281')).toBe(true);
+    expect(articleId.hasPrefix('10.5282')).toBe(false);
   });
 
   it.each([
