@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { DoiFromString } from '../../../src/types/codecs/DoiFromString';
-import { arbitraryDoi } from '../article-id.helper';
+import { arbitraryArticleId } from '../article-id.helper';
 
 describe('codec DoiFromString', () => {
   it('encodes and decodes back to the same value', () => {
-    const doi = arbitraryDoi();
+    const doi = arbitraryArticleId();
 
     expect(pipe(
       doi,

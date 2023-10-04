@@ -7,7 +7,7 @@ import { getArticleVersionEventsFromBiorxiv } from '../../../src/third-parties/b
 import { ArticleId } from '../../../src/types/article-id';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
-import { arbitraryDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as DE from '../../../src/types/data-error';
 
 describe('get-article-version-events-from-biorxiv', () => {
@@ -125,7 +125,7 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         });
 
-        const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryDoi(), 'biorxiv')();
+        const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryArticleId(), 'biorxiv')();
 
         expect(events).toStrictEqual(O.none);
       });

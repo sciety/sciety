@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { fetchNcrcEvaluations } from '../../src/ingest/fetch-ncrc-evaluations';
 import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/article-id.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 
 const arbitraryGoogleSheetsResponse = {
   config: {},
@@ -50,7 +50,7 @@ describe('fetch-ncrc-evaluations', () => {
             ...arbitraryGoogleSheetsResponse,
             data: {
               values: [
-                ['123', 0, 0, 0, 0, 0, arbitraryDoi().value],
+                ['123', 0, 0, 0, 0, 0, arbitraryArticleId().value],
               ],
             },
           }),
@@ -73,7 +73,7 @@ describe('fetch-ncrc-evaluations', () => {
             ...arbitraryGoogleSheetsResponse,
             data: {
               values: [
-                ['123', 0, 0, 0, 0, 0, arbitraryDoi().value, 0, 0, 0, 0, 0, 0, 0, 'nature', 0, 0, 0, arbitraryDate().toISOString()],
+                ['123', 0, 0, 0, 0, 0, arbitraryArticleId().value, 0, 0, 0, 0, 0, 0, 0, 'nature', 0, 0, 0, arbitraryDate().toISOString()],
               ],
             },
           }),

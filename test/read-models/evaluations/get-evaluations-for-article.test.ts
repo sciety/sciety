@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { getEvaluationsForArticle } from '../../../src/read-models/evaluations/get-evaluations-for-article';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
-import { arbitraryDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
@@ -45,8 +45,8 @@ const evaluationRecordedWithType = (
 
 describe('get-evaluations-for-article', () => {
   describe('when there is an arbitrary number of evaluations', () => {
-    const article1 = arbitraryDoi();
-    const article2 = arbitraryDoi();
+    const article1 = arbitraryArticleId();
+    const article2 = arbitraryArticleId();
     const evaluationLocator1 = arbitraryEvaluationLocator();
     const evaluationLocator2 = arbitraryEvaluationLocator();
     const evaluationLocator3 = arbitraryEvaluationLocator();
@@ -54,7 +54,7 @@ describe('get-evaluations-for-article', () => {
     it.each([
       ['two evaluations', article1, [evaluationLocator1, evaluationLocator3]],
       ['one evaluation', article2, [evaluationLocator2]],
-      ['no evaluations', arbitraryDoi(), []],
+      ['no evaluations', arbitraryArticleId(), []],
     ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
       const actualEvaluations = pipe(
         [
@@ -71,7 +71,7 @@ describe('get-evaluations-for-article', () => {
   });
 
   describe('when an evaluation has been recorded and then erased', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const evaluationLocator = arbitraryEvaluationLocator();
     const actualEvaluations = pipe(
       [
@@ -88,7 +88,7 @@ describe('get-evaluations-for-article', () => {
   });
 
   describe('when an evaluation publication and its removal have been recorded', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const evaluationLocator = arbitraryEvaluationLocator();
     const actualEvaluations = pipe(
       [
@@ -108,7 +108,7 @@ describe('get-evaluations-for-article', () => {
   });
 
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const evaluationLocator = arbitraryEvaluationLocator();
     const groupId = arbitraryGroupId();
     const result = pipe(
@@ -130,7 +130,7 @@ describe('get-evaluations-for-article', () => {
   });
 
   describe('when an evaluation is recorded', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
 
     it.each([
       ['curation-statement', O.some('curation-statement')],
@@ -154,7 +154,7 @@ describe('get-evaluations-for-article', () => {
   });
 
   describe('when the type of an evaluation is updated later', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const evaluationLocator = arbitraryEvaluationLocator();
 
     it.each([
@@ -181,7 +181,7 @@ describe('get-evaluations-for-article', () => {
   });
 
   describe('when the evaluation has been recorded multiple times', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const evaluationLocator = arbitraryEvaluationLocator();
     const actualEvaluations = pipe(
       [

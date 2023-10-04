@@ -3,13 +3,13 @@ import { extractPrelights } from '../../../src/ingest/third-parties/prelights/ex
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
 } from '../../helpers';
-import { arbitraryDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi', () => {
     const postNumber = arbitraryNumber(1000, 100000);
     const pubDate = arbitraryDate();
-    const preprintDoi = arbitraryDoi('10.1101');
+    const preprintDoi = arbitraryArticleId('10.1101');
     const author = `${arbitraryString()}, ${arbitraryString()}`;
     const result = pipe(
       [{
@@ -92,7 +92,7 @@ describe('extract-prelights', () => {
         guid,
         category: '<a name = "highlight">highlight</a>',
         pubDate: arbitraryDate(),
-        preprintDoi: arbitraryDoi('10.1234').value,
+        preprintDoi: arbitraryArticleId('10.1234').value,
         author: arbitraryString(),
       }],
       extractPrelights,

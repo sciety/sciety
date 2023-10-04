@@ -6,7 +6,7 @@ import { fetchRapidReviews } from '../../src/ingest/fetch-rapid-reviews';
 import { FeedData } from '../../src/ingest/types/feed-data';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/article-id.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 
 const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
   {
@@ -30,7 +30,7 @@ describe('fetch-rapid-reviews', () => {
 
   describe('when there is a valid Crossref review', () => {
     it('returns 1 evaluation and no skipped items', async () => {
-      const articleDoi = arbitraryDoi().value;
+      const articleDoi = arbitraryArticleId().value;
       const date = arbitraryDate();
       const reviewUrl = arbitraryUri();
       const items = [
@@ -62,7 +62,7 @@ describe('fetch-rapid-reviews', () => {
 
   describe('when there is a valid Crossref review that is not by Rapid Reviews Infectious Diseases', () => {
     it('returns a skipped item', async () => {
-      const articleDoi = arbitraryDoi().value;
+      const articleDoi = arbitraryArticleId().value;
       const date = arbitraryDate();
       const reviewUrl = arbitraryUri();
       const items = [
@@ -94,7 +94,7 @@ describe('fetch-rapid-reviews', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
         author: [
           { given: 'Fred', family: 'Blogs' },
           { given: 'Joe', family: 'Smith' },
@@ -128,7 +128,7 @@ describe('fetch-rapid-reviews', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
         resource: {
           primary: {
             URL: arbitraryPrimaryUrl,
@@ -157,7 +157,7 @@ describe('fetch-rapid-reviews', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
         author: [],
         resource: {
           primary: {
@@ -188,7 +188,7 @@ describe('fetch-rapid-reviews', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
         author: [{ family: familyName }],
         resource: {
           primary: {
@@ -222,7 +222,7 @@ describe('fetch-rapid-reviews', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryDoi().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
         author: [{
           given: givenName,
           family: familyName,

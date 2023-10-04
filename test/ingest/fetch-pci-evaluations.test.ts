@@ -5,7 +5,7 @@ import { fetchPciEvaluations } from '../../src/ingest/fetch-pci-evaluations';
 import { daysAgo } from '../../src/ingest/time';
 import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/article-id.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 
 const ingest = (xml: string) => pipe(
   {
@@ -33,8 +33,8 @@ describe('fetch-pci-evaluations', () => {
 
   describe('when there is a valid evaluation', () => {
     it('returns 1 evaluation and no skipped items', async () => {
-      const articleId = arbitraryDoi().value;
-      const reviewId = arbitraryDoi().value;
+      const articleId = arbitraryArticleId().value;
+      const reviewId = arbitraryArticleId().value;
       const date = daysAgo(5);
       const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -102,7 +102,7 @@ describe('fetch-pci-evaluations', () => {
               <doi>${evaluationId}</doi>
               <date>${daysAgo(5).toISOString()}</date>
             </resource>
-            <doi>${arbitraryDoi().value}</doi>
+            <doi>${arbitraryArticleId().value}</doi>
           </link>
         </links>
       `;

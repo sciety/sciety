@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as CR from '../../../src/ingest/third-parties/crossref';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
-import { arbitraryDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
   const fetchData = <D>() => TE.right({ message: { items } } as unknown as D);
@@ -19,7 +19,7 @@ describe('fetch-all-reviews-by', () => {
 
   describe('when there is a review', () => {
     it('returns the review', async () => {
-      const articleDoi = arbitraryDoi().value;
+      const articleDoi = arbitraryArticleId().value;
       const date = arbitraryDate();
       const reviewUrl = arbitraryUri();
       const givenName1 = arbitraryWord();

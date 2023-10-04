@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryDoi } from '../../../types/article-id.helper';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { ArticleId } from '../../../../src/types/article-id';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
@@ -35,7 +35,7 @@ describe('construct-related-groups', () => {
   );
 
   describe('when the results consist of one article evaluated once by two different groups', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     let groupNames: ReadonlyArray<string>;
     const addGroup1Command = arbitraryAddGroupCommand();
     const addGroup2Command = arbitraryAddGroupCommand();
@@ -62,8 +62,8 @@ describe('construct-related-groups', () => {
   });
 
   describe('when the results consist of two articles that have been evaluated once by the same group', () => {
-    const articleId1 = arbitraryDoi();
-    const articleId2 = arbitraryDoi();
+    const articleId1 = arbitraryArticleId();
+    const articleId2 = arbitraryArticleId();
     let groupNames: ReadonlyArray<string>;
     const addGroupCommand = arbitraryAddGroupCommand();
 
@@ -88,7 +88,7 @@ describe('construct-related-groups', () => {
   });
 
   describe('when the results consist of an article that has been evaluated twice by the same group', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     let groupNames: ReadonlyArray<string>;
     const addGroupCommand = arbitraryAddGroupCommand();
 
@@ -113,7 +113,7 @@ describe('construct-related-groups', () => {
   });
 
   describe('when there are results, with no evaluated articles', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     let relatedGroups: ViewModel['relatedGroups'];
 
     beforeEach(() => {

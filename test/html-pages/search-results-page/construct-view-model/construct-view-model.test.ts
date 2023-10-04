@@ -8,7 +8,7 @@ import { ViewModel } from '../../../../src/html-pages/search-results-page/view-m
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryDoi } from '../../../types/article-id.helper';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { ArticleId } from '../../../../src/types/article-id';
 
@@ -86,7 +86,7 @@ describe('construct-view-model', () => {
   );
 
   describe('and there is only one page of results, with no evaluated articles', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
 
     beforeEach(async () => {
       result = await getViewModelForASinglePage([articleId]);
@@ -112,7 +112,7 @@ describe('construct-view-model', () => {
   });
 
   describe('and there is more than one page of results, with no evaluated articles', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const itemsPerPage = 1;
     const cursorValue = arbitraryWord();
 

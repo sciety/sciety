@@ -6,7 +6,7 @@ import { constructGroupCard } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { AddGroupCommand } from '../../../src/write-side/commands';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -103,7 +103,7 @@ describe('construct-group-card', () => {
     });
 
     describe('and has published two curation statements for the same article', () => {
-      const articleId = arbitraryDoi();
+      const articleId = arbitraryArticleId();
 
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({

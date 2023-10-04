@@ -7,7 +7,7 @@ import { SubjectArea } from '../../../src/types/subject-area';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { ArticleId } from '../../../src/types/article-id';
 
 describe('get-biorxiv-or-medrxiv-category', () => {
@@ -30,7 +30,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         getBiorxivOrMedrxivCategory(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -64,7 +64,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         getBiorxivOrMedrxivCategory(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -87,7 +87,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
     let result: E.Either<DE.DataError, SubjectArea>;
 
     beforeEach(async () => {
-      result = await getBiorxivOrMedrxivCategory(ports)(arbitraryDoi())();
+      result = await getBiorxivOrMedrxivCategory(ports)(arbitraryArticleId())();
     });
 
     it('returns a left', () => {
@@ -114,7 +114,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         getBiorxivOrMedrxivCategory(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -151,7 +151,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         getBiorxivOrMedrxivCategory(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -170,7 +170,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
     let result: E.Either<DE.DataError, SubjectArea>;
 
     beforeEach(async () => {
-      result = await getBiorxivOrMedrxivCategory(ports)(arbitraryDoi())();
+      result = await getBiorxivOrMedrxivCategory(ports)(arbitraryArticleId())();
     });
 
     it('returns a left', () => {

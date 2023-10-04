@@ -7,7 +7,7 @@ import { fetchArticleDetails } from '../../../src/shared-components/article-card
 import * as DE from '../../../src/types/data-error';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryArticleId, arbitraryDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
 
@@ -38,7 +38,7 @@ describe('fetch-article-details', () => {
 
     it('returns an O.none for the latest version date when it fails', async () => {
       const articleDetails = await pipe(
-        arbitraryDoi(),
+        arbitraryArticleId(),
         fetchArticleDetails(() => TO.none, getArticle),
       )();
 
@@ -57,7 +57,7 @@ describe('fetch-article-details', () => {
       const articleDetails = await fetchArticleDetails(
         () => TO.some(new Date()),
         () => TE.left(DE.unavailable),
-      )(arbitraryDoi())();
+      )(arbitraryArticleId())();
 
       expect(articleDetails).toStrictEqual(E.left(DE.unavailable));
     });

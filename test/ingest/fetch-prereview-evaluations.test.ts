@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
 import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/article-id.helper';
+import { arbitraryArticleId } from '../types/article-id.helper';
 
 describe('fetch-prereview-evaluations', () => {
   describe('when the reponse includes no preprints', () => {
@@ -26,11 +26,11 @@ describe('fetch-prereview-evaluations', () => {
   });
 
   describe('when the response includes a biorxiv preprint with valid reviews', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const date1 = arbitraryDate();
     const date2 = arbitraryDate();
-    const reviewDoi1 = arbitraryDoi();
-    const reviewDoi2 = arbitraryDoi();
+    const reviewDoi1 = arbitraryArticleId();
+    const reviewDoi2 = arbitraryArticleId();
     const response = [
       {
         handle: articleId.value,
@@ -76,10 +76,10 @@ describe('fetch-prereview-evaluations', () => {
   });
 
   describe('when the response includes a biorxiv preprint with a review that lacks a DOI', () => {
-    const articleId = arbitraryDoi();
+    const articleId = arbitraryArticleId();
     const date1 = arbitraryDate();
     const date2 = arbitraryDate();
-    const reviewDoi1 = arbitraryDoi();
+    const reviewDoi1 = arbitraryArticleId();
     const response = [
       {
         handle: articleId.value,
@@ -121,7 +121,7 @@ describe('fetch-prereview-evaluations', () => {
   });
 
   describe('when the response includes an unpublished review', () => {
-    const articleId = arbitraryDoi('10.1234');
+    const articleId = arbitraryArticleId('10.1234');
     const response = [
       {
         handle: articleId.value,
