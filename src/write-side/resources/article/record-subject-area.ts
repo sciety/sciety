@@ -3,14 +3,14 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { isEventOfType, constructEvent } from '../../../domain-events';
-import { ArticleId, eqDoi } from '../../../types/article-id';
+import { ArticleId, eqArticleId } from '../../../types/article-id';
 import { toErrorMessage } from '../../../types/error-message';
 import { RecordSubjectAreaCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
 const buildUpArticleSubjectAreaResourceFor = (articleId: ArticleId) => flow(
   RA.filter(isEventOfType('SubjectAreaRecorded')),
-  RA.filter((event) => eqDoi.equals(event.articleId, articleId)),
+  RA.filter((event) => eqArticleId.equals(event.articleId, articleId)),
   RA.head,
   O.map((event) => event.subjectArea),
 );

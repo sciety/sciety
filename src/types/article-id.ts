@@ -29,7 +29,7 @@ export const fromString = (value: string): O.Option<ArticleId> => O.tryCatch(() 
 
 export const hasPrefix = (prefix: string) => (doi: ArticleId): boolean => doi.value.startsWith(`${prefix}/`);
 
-export const eqDoi: Eq.Eq<ArticleId> = pipe(
+export const eqArticleId: Eq.Eq<ArticleId> = pipe(
   S.Eq,
-  Eq.contramap((doi) => doi.value),
+  Eq.contramap((articleId) => articleId.value),
 );

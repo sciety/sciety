@@ -8,14 +8,14 @@ import * as S from 'fp-ts/string';
 import * as ER from './error-response';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-import * as Doi from '../../types/article-id';
+import * as AID from '../../types/article-id';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
 import { publisherAccountId } from '../docmap/publisher-account-id';
 import { Queries } from '../../read-models';
 
 export type DocmapIndexEntryModel = {
-  articleId: Doi.ArticleId,
+  articleId: AID.ArticleId,
   groupId: GID.GroupId,
   updated: Date,
   publisherAccountId: string,
@@ -28,7 +28,7 @@ const byDate: Ord.Ord<DocmapIndexEntryModel> = pipe(
 );
 
 const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
-  articleId: Doi.eqDoi,
+  articleId: AID.eqArticleId,
   groupId: S.Eq,
 });
 

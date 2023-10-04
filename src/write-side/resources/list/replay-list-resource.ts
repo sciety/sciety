@@ -7,7 +7,7 @@ import {
   DomainEvent,
 } from '../../../domain-events';
 import { ListResource } from './list-resource';
-import { eqDoi } from '../../../types/article-id';
+import { eqArticleId } from '../../../types/article-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
 
@@ -50,7 +50,7 @@ const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: D
       resource,
       E.map((listResource) => pipe(
         listResource.articleIds,
-        A.filter((articleId) => !eqDoi.equals(articleId, event.articleId)),
+        A.filter((articleId) => !eqArticleId.equals(articleId, event.articleId)),
         (ids) => ({ ...listResource, articleIds: ids }),
       )),
     );
