@@ -9,7 +9,7 @@ import * as PR from 'io-ts/PathReporter';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';
-import { ArticleId, isDoi } from '../types/article-id';
+import { ArticleId, isArticleId } from '../types/article-id';
 
 type Ports = {
   fetchData: FetchData,
@@ -49,7 +49,7 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
     () => ({ item: preprint.handle.toString(), reason: 'is not published' }),
   ),
   E.filterOrElse(
-    (p): p is Review & { handle: ArticleId } => isDoi(p.handle),
+    (p): p is Review & { handle: ArticleId } => isArticleId(p.handle),
     () => ({ item: preprint.handle.toString(), reason: 'not a DOI' }),
   ),
   E.filterOrElse(

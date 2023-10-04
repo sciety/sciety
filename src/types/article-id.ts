@@ -28,7 +28,7 @@ export class ArticleId {
   }
 }
 
-export const isDoi = (value: unknown): value is ArticleId => value instanceof ArticleId;
+export const isArticleId = (value: unknown): value is ArticleId => value instanceof ArticleId;
 
 export const isValidDoi = (value: string): boolean => doiRegex.test(value);
 
