@@ -7,7 +7,7 @@ import { renderEditListDetailsFormPage } from './render-edit-list-details-form-p
 import { listIdCodec, ListId } from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 import { RenderPageError } from '../../types/render-page-error';
 
 export const editListDetailsFormPageParamsCodec = t.type({
@@ -23,7 +23,7 @@ const renderNoSuchListError = (): RenderPageError => (
 
 export const editListDetailsFormPage = (dependencies: Dependencies) => (
   params: { id: ListId },
-): TE.TaskEither<RenderPageError, Page> => pipe(
+): TE.TaskEither<RenderPageError, HtmlPage> => pipe(
   params.id,
   constructViewModel(dependencies),
   E.bimap(

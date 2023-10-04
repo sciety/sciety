@@ -10,7 +10,7 @@ import { renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { userIdCodec } from '../../types/user-id';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 
 export const myFeedParams = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -21,7 +21,7 @@ export const myFeedParams = t.type({
 
 type Params = t.TypeOf<typeof myFeedParams>;
 
-type HomePage = (params: Params) => TE.TaskEither<never, Page>;
+type HomePage = (params: Params) => TE.TaskEither<never, HtmlPage>;
 
 const callToAction = toHtmlFragment('<p><a href="/log-in">Log in</a> to follow your favourite Sciety groups and see what they have evaluated.</p>');
 

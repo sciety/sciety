@@ -1,6 +1,6 @@
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 
 export type ViewModel = {
   listName: string,
@@ -10,7 +10,7 @@ export type ViewModel = {
   listDescriptionMaxLength: number,
 };
 
-export const renderEditListDetailsFormPage = (viewModel: ViewModel): Page => (
+export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage => (
   {
     title: 'Edit list details',
     content: toHtmlFragment(`

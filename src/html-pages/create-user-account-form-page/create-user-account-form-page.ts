@@ -4,7 +4,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 import { UserGeneratedInput } from '../../types/user-generated-input';
 
 export const paramsCodec = t.type({
@@ -37,7 +37,7 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
 export const renderFormPage = (
   fullName: UserGeneratedInput,
   handle: UserGeneratedInput,
-) => (params: Params): Page => pipe(
+) => (params: Params): HtmlPage => pipe(
   params.errorSummary,
   renderErrorSummary,
   (errorSummary) => ({
@@ -63,7 +63,7 @@ export const renderFormPage = (
   }),
 );
 
-export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, Page> => pipe(
+export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, HtmlPage> => pipe(
   params,
   renderFormPage('' as UserGeneratedInput, '' as UserGeneratedInput),
   TE.right,

@@ -1,7 +1,7 @@
 import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 
-export const legalPage: Page = {
+export const legalPage: HtmlPage = {
   title: 'Legal information',
   content: toHtmlFragment(`
     <header class="page-header">

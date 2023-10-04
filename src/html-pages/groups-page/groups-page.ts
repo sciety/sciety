@@ -5,7 +5,7 @@ import { renderGroups } from './render-groups';
 import { renderGroupCard } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 import { RenderPageError } from '../../types/render-page-error';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { Queries } from '../../read-models';
@@ -15,7 +15,7 @@ const renderErrorPage = (error: DE.DataError): RenderPageError => ({
   message: toHtmlFragment('We\'re having trouble accessing search right now, please try again later.'),
 });
 
-type GroupsPage = TE.TaskEither<RenderPageError, Page>;
+type GroupsPage = TE.TaskEither<RenderPageError, HtmlPage>;
 
 export const groupsPage = (queries: Queries): GroupsPage => pipe(
   constructViewModel(queries),

@@ -1,8 +1,8 @@
 import { renderSearchForm } from '../../shared-components/search-form';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 
-export const searchPage: Page = {
+export const searchPage: HtmlPage = {
   title: 'Search',
   content: toHtmlFragment(`
     <header class="page-header page-header--search-results">

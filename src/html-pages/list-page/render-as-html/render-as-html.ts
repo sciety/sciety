@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { Page } from '../../../types/page';
+import { HtmlPage } from '../../../types/html-page';
 import { ViewModel } from '../view-model';
 import { renderPage } from './render-page';
 
-export const renderAsHtml = (viewModel: ViewModel): Page => ({
+export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.name,
   openGraph: {
     title: viewModel.name,

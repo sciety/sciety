@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 
 // TODO: should all be HtmlFragment
 type Components = {
@@ -15,7 +15,7 @@ const render = (components: Components) => `
   </div>
 `;
 
-export const renderPage = (components: Components): Page => ({
+export const renderPage = (components: Components): HtmlPage => ({
   title: 'My Feed',
   content: pipe(components, render, toHtmlFragment),
 });

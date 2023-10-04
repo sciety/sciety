@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
 import { constructViewModel } from './construct-view-model';
 import { renderAsHtml, toErrorPage } from './render-as-html';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 import { RenderPageError } from '../../types/render-page-error';
 import { Dependencies } from './construct-view-model/dependencies';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
@@ -16,7 +16,7 @@ const articlePageParams = t.type({
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
-type ArticlePage = (dependencies: Dependencies) => (params: unknown) => TE.TaskEither<RenderPageError, Page>;
+type ArticlePage = (dependencies: Dependencies) => (params: unknown) => TE.TaskEither<RenderPageError, HtmlPage>;
 
 export const articlePage: ArticlePage = (dependencies) => (params) => pipe(
   params,

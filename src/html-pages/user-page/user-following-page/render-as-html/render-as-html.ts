@@ -1,9 +1,9 @@
-import { Page } from '../../../../types/page';
+import { HtmlPage } from '../../../../types/html-page';
 import { ViewModel } from '../view-model';
 import { renderDescription } from './render-description';
 import { renderPage } from './render-page';
 
-export const renderAsHtml = (viewmodel: ViewModel): Page => ({
+export const renderAsHtml = (viewmodel: ViewModel): HtmlPage => ({
   title: viewmodel.userDetails.displayName,
   openGraph: {
     title: viewmodel.userDetails.displayName,

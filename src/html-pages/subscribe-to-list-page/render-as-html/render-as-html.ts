@@ -1,8 +1,8 @@
 import { ViewModel } from '../view-model';
 import { renderPage } from './render-page';
-import { Page } from '../../../types/page';
+import { HtmlPage } from '../../../types/html-page';
 
-export const renderAsHtml = (viewModel: ViewModel): Page => ({
+export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.pageHeading,
   content: renderPage(viewModel),
 });

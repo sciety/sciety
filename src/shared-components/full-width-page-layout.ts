@@ -4,11 +4,11 @@ import { googleTagManagerNoScript } from './analytics';
 import { head } from './head';
 import { siteFooter } from './site-footer';
 import { siteHeader } from './site-header';
-import { Page } from '../types/page';
+import { HtmlPage } from '../types/html-page';
 import { UserDetails } from '../types/user-details';
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const fullWidthPageLayout = (user: O.Option<UserDetails>) => (page: Page): string => `<!doctype html>
+export const fullWidthPageLayout = (user: O.Option<UserDetails>) => (page: HtmlPage): string => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(
     pipe(

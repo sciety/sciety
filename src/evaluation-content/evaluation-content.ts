@@ -2,12 +2,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
+import { HtmlPage } from '../types/html-page';
 import { RenderPageError } from '../types/render-page-error';
 import * as EL from '../types/evaluation-locator';
 import { FetchReview } from '../shared-ports';
 
-type EvaluationContent = TE.TaskEither<RenderPageError, Page>;
+type EvaluationContent = TE.TaskEither<RenderPageError, HtmlPage>;
 
 export const paramsCodec = t.type({
   reviewid: EL.evaluationLocatorCodec,

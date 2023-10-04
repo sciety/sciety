@@ -1,3 +1,3 @@
-import { Page } from '../types/page';
+import { HtmlPage } from '../types/html-page';
 
-export const contentOnlyLayout = () => (page: Page): Page['content'] => page.content;
+export const contentOnlyLayout = () => (page: HtmlPage): HtmlPage['content'] => page.content;

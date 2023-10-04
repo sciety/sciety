@@ -1,6 +1,6 @@
 import { HtmlFragment } from './html-fragment';
 
-export type Page = {
+export type HtmlPage = {
   title: string,
   description?: string,
   content: HtmlFragment,

@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { renderErrorPage } from './render-error-page';
 import * as DE from '../types/data-error';
-import { Page } from '../types/page';
+import { HtmlPage } from '../types/html-page';
 import { RenderPageError } from '../types/render-page-error';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 import { UserDetails } from '../types/user-details';
@@ -22,7 +22,7 @@ type ErrorToWebPage = (
   status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
 };
 
-type PageLayout = (user: O.Option<UserDetails>) => (page: Page) => string;
+type PageLayout = (user: O.Option<UserDetails>) => (page: HtmlPage) => string;
 
 const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   renderErrorPage(error.message),
@@ -46,7 +46,7 @@ const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
 const pageToSuccessResponse = (
   user: O.Option<UserDetails>,
   pageLayout: PageLayout,
-) => (page: Page) => ({
+) => (page: HtmlPage) => ({
   body: pageLayout(user)(page),
   status: StatusCodes.OK,
 });

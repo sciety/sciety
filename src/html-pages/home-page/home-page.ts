@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 import { renderHomepage } from './render-as-html/render-home-page';
 import { constructViewModel, GroupsToHighlight } from './construct-view-model/construct-view-model';
 import * as GID from '../../types/group-id';
@@ -32,7 +32,7 @@ const groupsToHighlight: GroupsToHighlight = [
   },
 ];
 
-export const homePage = (dependencies: Dependencies): Page => pipe(
+export const homePage = (dependencies: Dependencies): HtmlPage => pipe(
   constructViewModel(dependencies, groupsToHighlight),
   renderHomepage,
   (content) => ({

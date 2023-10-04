@@ -3,7 +3,7 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 import { renderArticleCard } from '../../shared-components/article-card/render-article-card';
 import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 import { ArticleId } from '../../types/article-id';
 import { renderArticleErrorCard } from '../../shared-components/article-card';
 import * as LID from '../../types/list-id';
@@ -13,7 +13,7 @@ import {
 } from '../../shared-components/article-card-with-controls-and-annotation';
 import { renderPage } from '../create-annotation-form-page/render-page';
 
-export const styleGuidePage: Page = {
+export const styleGuidePage: HtmlPage = {
   title: 'Style guide',
   content: toHtmlFragment(`
 <style>

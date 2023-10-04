@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Page } from '../../types/page';
+import { HtmlPage } from '../../types/html-page';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName } from '../../write-side/save-article/save-article-handler';
 import { ViewModel } from './view-model';
@@ -16,7 +16,7 @@ const renderLists = (lists: ViewModel['userLists']) => pipe(
   (divs) => divs.join(''),
 );
 
-export const renderAsHtml = (viewModel: ViewModel): Page => ({
+export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: 'Save article page',
   content: toHtmlFragment(`
   <header class="page-header">

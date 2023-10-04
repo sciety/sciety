@@ -2,12 +2,12 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { Page } from '../types/page';
+import { HtmlPage } from '../types/html-page';
 import { UserId } from '../types/user-id';
 
 export const head = (
   userId: O.Option<UserId>,
-  page: Omit<Page, 'content'>,
+  page: Omit<HtmlPage, 'content'>,
 ): HtmlFragment => toHtmlFragment(`
 <head>
   <meta charset="utf-8">
