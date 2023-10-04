@@ -11,7 +11,11 @@ import { Dependencies } from './dependencies';
 
 type SaveArticleFormPage = TE.TaskEither<RenderPageError, Page>;
 
-export const saveArticleFormPage = (dependencies: Dependencies) => (input: unknown): SaveArticleFormPage => pipe(
+export const saveArticleFormPage = (
+  dependencies: Dependencies,
+) => (
+  input: Record<string, unknown>,
+): SaveArticleFormPage => pipe(
   input,
   paramsCodec.decode,
   TE.fromEither,
