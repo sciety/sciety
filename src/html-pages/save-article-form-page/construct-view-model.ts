@@ -18,7 +18,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       O.map((user) => user.id),
       O.map(LOID.fromUserId),
       O.map(dependencies.selectAllListsOwnedBy),
-      TE.fromOption(() => DE.unavailable),
+      TE.fromOption(() => {
+        dependencies.logger('error', 'Tried to save an article, but no user is available');
+        return DE.unavailable;
+      }),
     ),
   },
   sequenceS(TE.ApplyPar),
