@@ -11,7 +11,7 @@ import { userHasEditCapability } from './user-has-edit-capability';
 import { ListId, listIdCodec } from '../../../types/list-id';
 import { userIdCodec, UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 
@@ -42,10 +42,10 @@ const constructContentViewModel: ConstructContentViewModel = (
   articleIds, dependencies, params, editCapability, listId,
 ) => pipe(
   articleIds,
-  RA.map((articleId) => new Doi(articleId)),
+  RA.map((articleId) => new ArticleId(articleId)),
   TE.right,
   TE.chainW(
-    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, Doi>(
+    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, ArticleId>(
       () => TE.right('no-articles' as const),
       constructContentWithPaginationViewModel(dependencies, params.page, editCapability, listId),
     ),

@@ -7,10 +7,10 @@ import { Evaluation } from './evaluation';
 import { DocmapModel } from './generate-docmap-view-model';
 import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import * as EL from '../../types/evaluation-locator';
 
-const createAction = (articleId: Doi) => (evaluation: Evaluation) => ({
+const createAction = (articleId: ArticleId) => (evaluation: Evaluation) => ({
   participants: pipe(
     evaluation.authors,
     RA.match(

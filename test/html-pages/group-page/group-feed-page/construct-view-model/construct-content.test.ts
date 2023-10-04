@@ -9,7 +9,7 @@ import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
-import { Doi } from '../../../../../src/types/doi';
+import { ArticleId } from '../../../../../src/types/article-id';
 import { ListId } from '../../../../../src/types/list-id';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 
@@ -62,7 +62,7 @@ describe('construct-content', () => {
   describe('when the group\'s evaluated articles list contains two articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
-    let articleIds: ReadonlyArray<Doi>;
+    let articleIds: ReadonlyArray<ArticleId>;
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
@@ -88,7 +88,7 @@ describe('construct-content', () => {
     const article2 = arbitraryArticleId();
     const article3 = arbitraryArticleId();
     const article4 = arbitraryArticleId();
-    let articleIds: ReadonlyArray<Doi>;
+    let articleIds: ReadonlyArray<ArticleId>;
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {

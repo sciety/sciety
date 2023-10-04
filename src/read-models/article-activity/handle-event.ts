@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ListId } from '../../types/list-id';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 
 type EvaluationState = {
@@ -14,7 +14,7 @@ type EvaluationState = {
 };
 
 type ArticleState = {
-  articleId: Doi,
+  articleId: ArticleId,
   evaluationStates: Array<EvaluationState>,
   lists: Set<ListId>,
 };

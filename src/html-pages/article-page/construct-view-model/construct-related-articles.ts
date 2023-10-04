@@ -4,12 +4,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { constructArticleCard } from '../../../shared-components/article-card';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 
 export const constructRelatedArticles = (
-  doi: Doi, dependencies: Dependencies,
+  doi: ArticleId, dependencies: Dependencies,
 ): T.Task<ViewModel['relatedArticles']> => pipe(
   dependencies.fetchRelatedArticles(doi),
   TE.map(RA.takeLeft(3)),

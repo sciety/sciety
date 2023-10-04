@@ -7,7 +7,7 @@ import {
   DomainEvent,
 } from '../../../domain-events';
 import { ListResource } from './list-resource';
-import { eqDoi } from '../../../types/doi';
+import { eqDoi } from '../../../types/article-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
 

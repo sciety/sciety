@@ -8,12 +8,12 @@ import { arbitraryDoi } from '../../types/doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
-import { Doi } from '../../../src/types/doi';
+import { ArticleId } from '../../../src/types/article-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-removal-recorded-event-helper';
 
-const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
+const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
     events,
     RA.reduce(initialState(), handleEvent),
@@ -24,7 +24,7 @@ const runQuery = (articleId: Doi) => (events: ReadonlyArray<DomainEvent>) => {
   );
 };
 
-const evaluationRecorded = (articleId: Doi, evaluationLocator: EvaluationLocator) => (
+const evaluationRecorded = (articleId: ArticleId, evaluationLocator: EvaluationLocator) => (
   {
     ...arbitraryEvaluationPublicationRecordedEvent(),
     articleId,
@@ -33,7 +33,7 @@ const evaluationRecorded = (articleId: Doi, evaluationLocator: EvaluationLocator
 );
 
 const evaluationRecordedWithType = (
-  articleId: Doi,
+  articleId: ArticleId,
   evaluationLocator: EvaluationLocator,
   evaluationType: EvaluationType,
 ) => ({

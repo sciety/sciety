@@ -4,14 +4,14 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { constructEvent } from '../../../domain-events';
 import { ListResource } from './list-resource';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { ListId } from '../../../types/list-id';
 import { replayListResource } from './replay-list-resource';
 import { RemoveArticleFromListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
 type Command = {
-  articleId: Doi,
+  articleId: ArticleId,
   listId: ListId,
 };
 

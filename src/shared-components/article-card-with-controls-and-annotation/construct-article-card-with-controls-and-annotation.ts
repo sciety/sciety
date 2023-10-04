@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { constructArticleCard, Dependencies as ConstructArticleCardViewModelDependencies } from '../article-card/construct-article-card';
 import { ArticleErrorCardViewModel } from '../article-card/render-article-error-card';
 import { ListId } from '../../types/list-id';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { ViewModel } from '../article-card/view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
@@ -17,7 +17,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   dependencies: Dependencies,
   editCapability: boolean,
   listId: ListId,
-  articleId: Doi,
+  articleId: ArticleId,
 ) => (articleCard: ViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
   constructAnnotation(dependencies)(listId, articleId),
   (annotation) => ({
@@ -38,7 +38,7 @@ export const constructArticleCardWithControlsAndAnnotation = (
   editCapability: boolean,
   listId: ListId,
 ) => (
-  articleId: Doi,
+  articleId: ArticleId,
 ): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
   articleId,
   constructArticleCard(dependencies),

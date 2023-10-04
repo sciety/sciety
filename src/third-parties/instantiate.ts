@@ -14,7 +14,7 @@ import { fetchCrossrefArticle } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
-import { Doi } from '../types/doi';
+import { ArticleId } from '../types/article-id';
 import { QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
@@ -24,7 +24,7 @@ import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cac
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-) => (doi: Doi, server: ArticleServer) => {
+) => (doi: ArticleId, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(doi, server);
   }

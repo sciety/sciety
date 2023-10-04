@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { toPageOfCards } from './to-page-of-cards';
 import { paginate } from '../../../shared-components/pagination';
 import * as DE from '../../../types/data-error';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { ContentWithPaginationViewModel } from '../view-model';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
@@ -23,7 +23,7 @@ export const constructContentWithPaginationViewModel = (
   pageNumber: number,
   editCapability: boolean,
   listId: ListId,
-) => (articleIds: ReadonlyArray<Doi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
+) => (articleIds: ReadonlyArray<ArticleId>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
   articleIds,
   paginate(20, pageNumber),
   TE.fromEither,

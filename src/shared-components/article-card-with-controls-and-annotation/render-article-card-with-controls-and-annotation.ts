@@ -3,10 +3,10 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { renderArticleCardContents } from '../article-card/render-article-card';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 
-const renderRemoveArticleForm = (articleId: Doi, listId: ListId) => pipe(
+const renderRemoveArticleForm = (articleId: ArticleId, listId: ListId) => pipe(
   articleId.value,
   (id) => `
       <form method="post" action="/forms/remove-article-from-list">

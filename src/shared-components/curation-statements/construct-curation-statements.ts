@@ -9,7 +9,7 @@ import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
 import * as Eq from 'fp-ts/Eq';
 import * as GID from '../../types/group-id';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { detectLanguage } from '../lang-attribute';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
@@ -23,7 +23,7 @@ export type Dependencies = Queries & {
 };
 
 type CurationStatement = {
-  articleId: Doi,
+  articleId: ArticleId,
   evaluationLocator: EvaluationLocator,
   groupId: GID.GroupId,
 };
@@ -74,7 +74,7 @@ const onlyIncludeLatestCurationPerGroup = (
 
 type ConstructCurationStatements = (
   dependencies: Dependencies,
-  doi: Doi
+  doi: ArticleId
 ) => T.Task<ReadonlyArray<ViewModel>>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(

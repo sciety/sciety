@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { ArticleAuthors } from '../../types/article-authors';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { LanguageCode } from '../lang-attribute';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { GroupLinkAsTextViewModel } from '../group-link';
 
 type CurationStatementTeaserViewModel = {
@@ -13,7 +13,7 @@ type CurationStatementTeaserViewModel = {
 };
 
 export type ViewModel = {
-  articleId: Doi,
+  articleId: ArticleId,
   articleHref: string,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,

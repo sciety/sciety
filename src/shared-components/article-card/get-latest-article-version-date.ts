@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleServer } from '../../types/article-server';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { FindVersionsForArticleDoi } from '../../shared-ports';
 
 export type Ports = {
@@ -13,7 +13,7 @@ export type Ports = {
 
 type GetLatestArticleVersionDate = (
   ports: Ports,
-) => (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
+) => (articleDoi: ArticleId, server: ArticleServer) => TO.TaskOption<Date>;
 
 export const getLatestArticleVersionDate: GetLatestArticleVersionDate = (
   ports,

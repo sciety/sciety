@@ -9,21 +9,21 @@ import { flow, pipe } from 'fp-ts/function';
 import { Evaluation } from './evaluation';
 import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
 import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
 
 export type DocmapModel = {
-  articleId: Doi,
+  articleId: ArticleId,
   group: Group,
   inputPublishedDate: O.Option<Date>,
   evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation>,
 };
 
 type DocmapIdentifier = {
-  articleId: Doi,
+  articleId: ArticleId,
   groupId: GroupId,
 };
 

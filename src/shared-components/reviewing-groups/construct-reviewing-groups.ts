@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { GroupLinkAsTextViewModel } from '../group-link/group-link-as-text-view-model';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { Queries } from '../../read-models';
 import { GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies } from '../group-link';
 
@@ -19,7 +19,7 @@ const unique = <A>(input: ReadonlyArray<A>) => [...new Set(input)];
 
 export const constructReviewingGroups = (
   dependencies: Dependencies,
-  articleId: Doi,
+  articleId: ArticleId,
 ): ReadonlyArray<GroupLinkWithLogoViewModel & GroupLinkAsTextViewModel> => pipe(
   articleId,
   dependencies.getEvaluationsForDoi,

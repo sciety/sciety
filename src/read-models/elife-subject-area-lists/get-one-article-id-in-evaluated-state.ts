@@ -3,9 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import { Doi, fromString as doiFromString } from '../../types/doi';
+import { ArticleId, fromString as doiFromString } from '../../types/article-id';
 
-type GetOneArticleIdInEvaluatedState = () => O.Option<Doi>;
+type GetOneArticleIdInEvaluatedState = () => O.Option<ArticleId>;
 
 export const getOneArticleIdInEvaluatedState = (readModel: ReadModel): GetOneArticleIdInEvaluatedState => () => pipe(
   readModel,

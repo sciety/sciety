@@ -1,9 +1,9 @@
-import { Doi } from '../../src/types/doi';
+import { ArticleId } from '../../src/types/article-id';
 import { ListId } from '../../src/types/list-id';
 import { AddGroupCommand, CreateUserAccountCommand } from '../../src/write-side/commands';
 import { callApi } from './call-api.helper';
 
-export const addArticleToList = async (articleId: Doi, listId: ListId): ReturnType<typeof callApi> => callApi(
+export const addArticleToList = async (articleId: ArticleId, listId: ListId): ReturnType<typeof callApi> => callApi(
   'api/add-article-to-list',
   {
     articleId: articleId.value,

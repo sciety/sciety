@@ -9,12 +9,12 @@ import { ExternalQueries } from '../../third-parties';
 import { ViewModel } from './view-model';
 import { DataError } from '../../types/data-error';
 import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { ListId } from '../../types/list-id';
 
 export type Dependencies = Queries & ExternalQueries;
 
-const getArticleTitle = (dependencies: Dependencies, articleId: Doi) => pipe(
+const getArticleTitle = (dependencies: Dependencies, articleId: ArticleId) => pipe(
   articleId,
   dependencies.fetchArticle,
   TE.map((articleDetails) => articleDetails.title),
@@ -29,7 +29,7 @@ const getListName = (dependencies: Dependencies, listId: ListId) => pipe(
 );
 
 export const constructViewModel = (
-  articleId: Doi,
+  articleId: ArticleId,
   listId: ListId,
   dependencies: Dependencies,
 ): TE.TaskEither<DataError, ViewModel> => pipe(

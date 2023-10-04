@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryDoi } from '../../../types/doi.helper';
-import { Doi } from '../../../../src/types/doi';
+import { ArticleId } from '../../../../src/types/article-id';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
@@ -26,7 +26,7 @@ describe('construct-related-groups', () => {
     defaultDependencies = framework.dependenciesForViews;
   });
 
-  const findNamesOfRelatedGroups = (articleIds: ReadonlyArray<Doi>) => pipe(
+  const findNamesOfRelatedGroups = (articleIds: ReadonlyArray<ArticleId>) => pipe(
     articleIds,
     constructRelatedGroups(defaultDependencies),
     ensureThereAreSomeRelatedGroups,

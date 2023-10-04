@@ -13,10 +13,10 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
 
-const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: Doi) => {
+const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: ArticleId) => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;

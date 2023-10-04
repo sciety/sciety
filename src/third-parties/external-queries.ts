@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import { ArticleServer } from '../types/article-server';
 import { ArticleVersion } from '../types/article-version';
 import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
+import { ArticleId } from '../types/article-id';
 import { Evaluation } from '../types/evaluation';
 import { EvaluationLocator } from '../types/evaluation-locator';
 import { SubjectArea } from '../types/subject-area';
@@ -16,31 +16,31 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 export type ArticleDetails = {
   abstract: SanitisedHtmlFragment,
   authors: ArticleAuthors,
-  doi: Doi,
+  doi: ArticleId,
   title: SanitisedHtmlFragment,
   server: ArticleServer,
 };
 
-type FetchArticle = (doi: Doi) => TE.TaskEither<DE.DataError, ArticleDetails>;
+type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
 type RelatedArticle = {
-  articleId: Doi,
+  articleId: ArticleId,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
 };
 
-type FetchRelatedArticles = (doi: Doi) => TE.TaskEither<DE.DataError, ReadonlyArray<RelatedArticle>>;
+type FetchRelatedArticles = (doi: ArticleId) => TE.TaskEither<DE.DataError, ReadonlyArray<RelatedArticle>>;
 
 type FetchReview = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
 type FindVersionsForArticleDoi = (
-  doi: Doi,
+  doi: ArticleId,
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
-type GetArticleSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, SubjectArea>;
+type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
 
 type SearchForArticles = (
   pageSize: number,

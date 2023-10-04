@@ -4,10 +4,10 @@ import { pipe } from 'fp-ts/function';
 import * as R from 'fp-ts/Record';
 import { ReadModel } from './handle-event';
 import { ListId } from '../../types/list-id';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { HtmlFragment } from '../../types/html-fragment';
 
-type GetAnnotationContent = (listId: ListId, articleId: Doi) => O.Option<HtmlFragment>;
+type GetAnnotationContent = (listId: ListId, articleId: ArticleId) => O.Option<HtmlFragment>;
 
 export const getAnnotationContent = (readModel: ReadModel): GetAnnotationContent => (listId, articleId) => pipe(
   readModel,

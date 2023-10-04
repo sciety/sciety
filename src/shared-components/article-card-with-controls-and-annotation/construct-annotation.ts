@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { missingAvatarFallback, unknownAuthor } from './static-content';
 import { ListId } from '../../types/list-id';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { Queries } from '../../read-models';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 import { GroupId } from '../../types/group-id';
@@ -60,7 +60,7 @@ const getAnnotationAuthorAvatarPath = (dependencies: Queries, listId: ListId) =>
   }),
 );
 
-export const constructAnnotation = (dependencies: Queries) => (listId: ListId, articleId: Doi): ArticleCardWithControlsAndAnnotationViewModel['annotation'] => pipe(
+export const constructAnnotation = (dependencies: Queries) => (listId: ListId, articleId: ArticleId): ArticleCardWithControlsAndAnnotationViewModel['annotation'] => pipe(
   dependencies.getAnnotationContent(listId, articleId),
   O.map((content) => ({
     content,

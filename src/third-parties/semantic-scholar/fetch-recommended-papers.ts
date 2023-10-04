@@ -5,7 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { Doi, isValidDoi } from '../../types/doi';
+import { ArticleId, isValidDoi } from '../../types/article-id';
 import { Logger, FetchRelatedArticles } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
@@ -38,7 +38,7 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 export const fetchRecommendedPapers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): FetchRelatedArticles => (doi: Doi) => pipe(
+): FetchRelatedArticles => (doi: ArticleId) => pipe(
   `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`,
   queryExternalService(),
   TE.chainEitherKW(flow(
@@ -73,6 +73,6 @@ export const fetchRecommendedPapers = (
   TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle.articleId))),
   TE.map(RA.map((item) => ({
     ...item,
-    articleId: new Doi(item.articleId),
+    articleId: new ArticleId(item.articleId),
   }))),
 );

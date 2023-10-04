@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../date';
 import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export type ArticleErrorCardViewModel = {
@@ -10,7 +10,7 @@ export type ArticleErrorCardViewModel = {
   href: string,
   latestActivityAt: O.Option<Date>,
   error: DE.DataError,
-  articleId: Doi,
+  articleId: ArticleId,
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);

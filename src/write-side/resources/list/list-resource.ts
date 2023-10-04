@@ -1,7 +1,7 @@
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 
 export type ListResource = {
-  articleIds: Array<Doi>,
+  articleIds: Array<ArticleId>,
   name: string,
   description: string,
 };

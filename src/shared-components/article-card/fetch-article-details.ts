@@ -6,22 +6,22 @@ import { pipe } from 'fp-ts/function';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
-type GetArticle = (doi: Doi) => TE.TaskEither<DE.DataError, {
+type GetArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   server: ArticleServer,
 }>;
 
-type GetLatestArticleVersionDate = (articleDoi: Doi, server: ArticleServer) => TO.TaskOption<Date>;
+type GetLatestArticleVersionDate = (articleDoi: ArticleId, server: ArticleServer) => TO.TaskOption<Date>;
 
 type FetchArticleDetails = (
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
   getArticle: GetArticle,
-) => (doi: Doi) => TE.TaskEither<DE.DataError, {
-  articleId: Doi,
+) => (doi: ArticleId) => TE.TaskEither<DE.DataError, {
+  articleId: ArticleId,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,

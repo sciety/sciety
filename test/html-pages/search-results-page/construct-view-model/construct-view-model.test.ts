@@ -10,10 +10,10 @@ import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDoi } from '../../../types/doi.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
-import { Doi } from '../../../../src/types/doi';
+import { ArticleId } from '../../../../src/types/article-id';
 
 const searchForArticlesReturningResults = (
-  articleIds: ReadonlyArray<Doi>,
+  articleIds: ReadonlyArray<ArticleId>,
   total: number,
   nextCursor: O.Option<string>,
 ) => () => () => TE.right({
@@ -67,13 +67,13 @@ describe('construct-view-model', () => {
   )();
 
   const getViewModelForASinglePage = async (
-    articleIds: ReadonlyArray<Doi>,
+    articleIds: ReadonlyArray<ArticleId>,
   ) => getViewModel(
     searchForArticlesReturningResults(articleIds, 1, O.none),
   );
 
   const getViewModelWithAdditionalPages = async (
-    articleId: Doi,
+    articleId: ArticleId,
     cursorValue: string,
     itemsPerPage: number,
   ) => getViewModel(

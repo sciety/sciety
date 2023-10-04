@@ -4,7 +4,7 @@ import {
   GetArticleSubjectArea,
   Logger, RecordSubjectArea,
 } from '../../shared-ports';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { Queries } from '../../read-models';
 
 type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & {
@@ -13,7 +13,7 @@ type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & {
   getArticleSubjectArea: GetArticleSubjectArea,
 };
 
-const buildRecordSubjectAreaCommand = (adapters: Ports) => (articleId: Doi) => pipe(
+const buildRecordSubjectAreaCommand = (adapters: Ports) => (articleId: ArticleId) => pipe(
   articleId,
   adapters.getArticleSubjectArea,
   TE.bimap(

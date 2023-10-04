@@ -4,7 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as E from 'fp-ts/Either';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { HtmlFragment } from '../../types/html-fragment';
 import * as EL from '../../types/evaluation-locator';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -59,7 +59,7 @@ type ContainingList = ListSummary;
 export type LoggedInUserListManagement = E.Either<SaveToAListForms, ContainingList>;
 
 export type ViewModel = {
-  doi: Doi,
+  doi: ArticleId,
   title: string,
   titleLanguageCode: O.Option<LanguageCode>,
   authors: ArticleAuthors,

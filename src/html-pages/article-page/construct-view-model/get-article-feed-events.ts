@@ -9,7 +9,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import { FeedEvent, getFeedEventsContent } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 
@@ -24,7 +24,7 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 );
 
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
-=> (doi: Doi, server: ArticleServer)
+=> (doi: ArticleId, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (

@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
@@ -36,7 +36,7 @@ const getListOwnerName = (dependencies: Dependencies) => (ownerId: ListOwnerId) 
   }
 };
 
-export const constructListedIn = (dependencies: Dependencies) => (articleId: Doi): ViewModel['listedIn'] => pipe(
+export const constructListedIn = (dependencies: Dependencies) => (articleId: ArticleId): ViewModel['listedIn'] => pipe(
   articleId,
   dependencies.selectAllListsContainingArticle,
   RA.map((list) => ({

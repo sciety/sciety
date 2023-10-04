@@ -1,12 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 import * as GID from '../../../types/group-id';
 import { constructGroupLink } from '../../../shared-components/group-link';
 
-export const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<Doi>): ViewModel['relatedGroups'] => pipe(
+export const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<ArticleId>): ViewModel['relatedGroups'] => pipe(
   articleIds,
   RA.flatMap(dependencies.getEvaluationsForDoi),
   RA.map((recordedEvaluation) => recordedEvaluation.groupId),

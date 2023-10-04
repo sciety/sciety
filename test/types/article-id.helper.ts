@@ -1,4 +1,4 @@
-import { Doi } from '../../src/types/doi';
+import { ArticleId } from '../../src/types/article-id';
 import { arbitraryNumber } from '../helpers';
 
-export const arbitraryArticleId = (prefix = '10.1101'): Doi => new Doi(`${prefix}/${arbitraryNumber(100000, 999999)}`);
+export const arbitraryArticleId = (prefix = '10.1101'): ArticleId => new ArticleId(`${prefix}/${arbitraryNumber(100000, 999999)}`);

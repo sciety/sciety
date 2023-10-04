@@ -1,4 +1,4 @@
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { SubjectArea } from '../../types/subject-area';
 
-export type RecordSubjectAreaCommand = { articleId: Doi, subjectArea: SubjectArea };
+export type RecordSubjectAreaCommand = { articleId: ArticleId, subjectArea: SubjectArea };

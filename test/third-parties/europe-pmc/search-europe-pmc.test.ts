@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
-import { Doi } from '../../../src/types/doi';
+import { ArticleId } from '../../../src/types/article-id';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryWord } from '../../helpers';
 import { SearchResults } from '../../../src/shared-ports/search-for-articles';
@@ -53,7 +53,7 @@ describe('search-europe-pmc adapter', () => {
       total: 3,
       items: [
         {
-          articleId: new Doi('10.1111/1234'),
+          articleId: new ArticleId('10.1111/1234'),
           server: 'biorxiv',
           title: 'Article title',
           authors: O.some([
@@ -62,7 +62,7 @@ describe('search-europe-pmc adapter', () => {
           ]),
         },
         {
-          articleId: new Doi('10.1111/4321'),
+          articleId: new ArticleId('10.1111/4321'),
           server: 'biorxiv',
           title: 'Another Article title',
           authors: O.some([

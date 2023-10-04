@@ -7,7 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { SupportedArticleServer } from './article-server-with-version-information';
 import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { ArticleVersion } from '../../types/article-version';
 import { Logger } from '../../shared-ports';
 import { QueryExternalService } from '../query-external-service';
@@ -18,11 +18,11 @@ type Dependencies = {
 };
 
 type GetArticleVersionEventsFromBiorxiv = (
-  doi: Doi,
+  doi: ArticleId,
   server: SupportedArticleServer,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
 
-const mapResponse = (doi: Doi, server: SupportedArticleServer) => flow(
+const mapResponse = (doi: ArticleId, server: SupportedArticleServer) => flow(
   (response: ResponseWithVersions) => response.collection,
   RNEA.map(({ version, date }) => ({
     source: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),

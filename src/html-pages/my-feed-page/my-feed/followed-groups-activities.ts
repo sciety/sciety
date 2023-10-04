@@ -6,7 +6,7 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
 import { ArticleActivity } from '../../../types/article-activity';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { GroupId } from '../../../types/group-id';
 
 type ArticleActivityDetails = {
@@ -63,7 +63,7 @@ const addEventToActivities = (
 );
 
 const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{
-  articleId: Doi,
+  articleId: ArticleId,
   mostRecentRecordedEvaluationByFollowedGroups: Date,
   latestArticleActivityDate: Date,
   evaluationCount: number,
@@ -84,7 +84,7 @@ export const followedGroupsActivities: FollowedGroupsActivities = (events) => (g
   RA.filter(isEventOfType('EvaluationPublicationRecorded')),
   RA.reduce(new Map(), addEventToActivities(groupIds)),
   RM.filterMapWithIndex(flow(
-    (key, activityDetails) => O.some({ articleId: new Doi(key), ...activityDetails }),
+    (key, activityDetails) => O.some({ articleId: new ArticleId(key), ...activityDetails }),
     O.filter((activityDetails) => activityDetails.evaluatedByFollowedGroup),
   )),
   RM.values(byMostRecentRecordedEvaluationByFollowedGroups),

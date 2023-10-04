@@ -6,7 +6,7 @@ import { SupportedArticleServer } from './article-server-with-version-informatio
 import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
 } from './biorxiv-details-api-response';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
 import { Logger } from '../../shared-ports';
 
@@ -15,11 +15,14 @@ type Dependencies = {
   logger: Logger,
 };
 
-const constructUrl = (doi: Doi, server: SupportedArticleServer) => (
+const constructUrl = (doi: ArticleId, server: SupportedArticleServer) => (
   `https://api.biorxiv.org/details/${server}/${doi.value}`
 );
 
-type FetchArticleDetails = ({ queryExternalService, logger }: Dependencies, doi: Doi, server: SupportedArticleServer)
+type FetchArticleDetails = ({
+  queryExternalService,
+  logger,
+}: Dependencies, doi: ArticleId, server: SupportedArticleServer)
 => TE.TaskEither<void, ResponseWithVersions>;
 
 export const fetchArticleDetails: FetchArticleDetails = ({ queryExternalService, logger }, doi, server) => pipe(

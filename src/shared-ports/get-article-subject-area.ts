@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
-import { Doi } from '../types/doi';
+import { ArticleId } from '../types/article-id';
 import { SubjectArea } from '../types/subject-area';
 
-export type GetArticleSubjectArea = (articleId: Doi) => TE.TaskEither<DE.DataError, SubjectArea>;
+export type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;

@@ -4,7 +4,7 @@ import { renderArticleCard } from '../../shared-components/article-card/render-a
 import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { Page } from '../../types/page';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { renderArticleErrorCard } from '../../shared-components/article-card';
 import * as LID from '../../types/list-id';
 import * as DE from '../../types/data-error';
@@ -75,7 +75,7 @@ export const styleGuidePage: Page = {
       <h2 class="_style-guide-heading">Article summary</h2>
       <h3 class="_style-guide-heading">With curation statement</h3>
       ${renderArticleCard({
-    articleId: new Doi('10.1101/foo'),
+    articleId: new ArticleId('10.1101/foo'),
     articleHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
@@ -95,7 +95,7 @@ export const styleGuidePage: Page = {
   
       <h3 class="_style-guide-heading">With reviewing groups</h3>
       ${renderArticleCard({
-    articleId: new Doi('10.1101/foo'),
+    articleId: new ArticleId('10.1101/foo'),
     articleHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
@@ -120,7 +120,7 @@ export const styleGuidePage: Page = {
       ${renderArticleCardWithControlsAndAnnotation({
     annotation: O.none,
     articleCard: {
-      articleId: new Doi('10.1101/foo'),
+      articleId: new ArticleId('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -133,7 +133,7 @@ export const styleGuidePage: Page = {
     },
     controls: O.some({
       listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
-      articleId: new Doi('10.1101/foo'),
+      articleId: new ArticleId('10.1101/foo'),
       createAnnotationFormHref: O.some('#'),
     }),
   })}
@@ -146,7 +146,7 @@ export const styleGuidePage: Page = {
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     articleCard: {
-      articleId: new Doi('10.1101/foo'),
+      articleId: new ArticleId('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -168,7 +168,7 @@ export const styleGuidePage: Page = {
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     articleCard: {
-      articleId: new Doi('10.1101/foo'),
+      articleId: new ArticleId('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -180,7 +180,7 @@ export const styleGuidePage: Page = {
       reviewingGroups: [],
     },
     controls: O.some({
-      articleId: new Doi('10.1101/foo'),
+      articleId: new ArticleId('10.1101/foo'),
       listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
       createAnnotationFormHref: O.none,
     }),
@@ -192,13 +192,13 @@ export const styleGuidePage: Page = {
     href: '/articles/foo',
     latestActivityAt: O.some(new Date('2023-09-10')),
     error: DE.notFound,
-    articleId: new Doi('10.1101/foo'),
+    articleId: new ArticleId('10.1101/foo'),
   })}
 
       <h2 class="_style-guide-heading">Forms</h2>
       <h3 class="_style-guide-heading">Create annotation</h3>
       ${renderPage({
-    articleId: new Doi('10.1101/1234'),
+    articleId: new ArticleId('10.1101/1234'),
     listId: LID.fromValidatedString('foo'),
     articleTitle: sanitise(toHtmlFragment('New Article')),
     listName: 'Someone\'s saved articles',

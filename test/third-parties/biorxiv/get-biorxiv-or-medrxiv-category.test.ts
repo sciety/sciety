@@ -8,7 +8,7 @@ import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDoi } from '../../types/doi.helper';
-import { Doi } from '../../../src/types/doi';
+import { ArticleId } from '../../../src/types/article-id';
 
 describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on biorxiv', () => {
@@ -179,7 +179,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
   });
 
   describe('when the article doi has a prefix that is not supported', () => {
-    const researchSquareArticleDoi = new Doi('10.21203/rs.3.rs-2197876/v1');
+    const researchSquareArticleDoi = new ArticleId('10.21203/rs.3.rs-2197876/v1');
     const logger = jest.fn(dummyLogger);
     const ports = {
       queryExternalService: shouldNotBeCalled,

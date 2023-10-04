@@ -6,7 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
 import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { Queries } from '../../read-models';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { Ports as GetLatestArticleVersionDatePorts, getLatestArticleVersionDate } from './get-latest-article-version-date';
@@ -46,7 +46,7 @@ const transformIntoCurationStatementViewModel = (
 
 export const constructArticleCard = (
   ports: Dependencies,
-) => (articleId: Doi): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
+) => (articleId: ArticleId): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
   ports.getActivityForDoi(articleId),
   (articleActivity) => pipe(
     articleActivity.articleId,

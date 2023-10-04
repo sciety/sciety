@@ -7,7 +7,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
 import { constructListedIn } from './construct-listed-in';
@@ -19,7 +19,7 @@ import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 
 type Params = {
-  doi: Doi,
+  doi: ArticleId,
   user: O.Option<{ id: UserId }>,
 };
 

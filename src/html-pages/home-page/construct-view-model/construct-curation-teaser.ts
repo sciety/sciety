@@ -4,10 +4,10 @@ import { ViewModel } from '../view-model';
 import { Dependencies } from '../dependencies';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment } from '../../../types/html-fragment';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 
 export type CurationStatement = {
-  articleId: Doi,
+  articleId: ArticleId,
   groupId: GroupId,
   quote: HtmlFragment,
   articleTitle: HtmlFragment,

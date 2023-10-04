@@ -9,7 +9,7 @@ import * as DE from '../../../src/types/data-error';
 import { fetchRecommendedPapers } from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { Doi } from '../../../src/types/doi';
+import { ArticleId } from '../../../src/types/article-id';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];
@@ -49,7 +49,7 @@ describe('fetch-recommended-papers', () => {
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [{
-        articleId: new Doi(supportedArticleId),
+        articleId: new ArticleId(supportedArticleId),
         title: articleTitle,
         authors: O.some(articleAuthors),
       }];
@@ -75,7 +75,7 @@ describe('fetch-recommended-papers', () => {
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [expect.objectContaining({
-        articleId: new Doi(supportedBiorxivArticleId),
+        articleId: new ArticleId(supportedBiorxivArticleId),
       })];
 
       expect(result).toStrictEqual(expected);
@@ -105,7 +105,7 @@ describe('fetch-recommended-papers', () => {
         TE.getOrElseW(shouldNotBeCalled),
       )();
       const expected: RelatedArticles = [expect.objectContaining({
-        articleId: new Doi(supportedBiorxivArticleId),
+        articleId: new ArticleId(supportedBiorxivArticleId),
       })];
 
       expect(result).toStrictEqual(expected);

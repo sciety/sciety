@@ -9,7 +9,7 @@ import { constructContentWithPaginationViewModel } from './construct-content-wit
 import { getOwnerName } from './get-owner-name';
 import { listIdCodec } from '../../../types/list-id';
 import * as DE from '../../../types/data-error';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 
@@ -39,7 +39,7 @@ export const constructViewModel = (
   TE.fromOption(() => DE.notFound),
   TE.chainTaskK((partialPageViewModel) => pipe(
     partialPageViewModel.articleIds,
-    RA.map((articleId) => new Doi(articleId)),
+    RA.map((articleId) => new ArticleId(articleId)),
     constructContentWithPaginationViewModel(dependencies, partialPageViewModel.listId),
     T.map(
       (articles) => ({

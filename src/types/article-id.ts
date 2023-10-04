@@ -6,7 +6,7 @@ import * as S from 'fp-ts/string';
 // TODO choose one or the other
 const doiRegex = /^(?:doi:)?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 
-export class Doi {
+export class ArticleId {
   readonly value: string;
 
   constructor(input: string) {
@@ -28,15 +28,15 @@ export class Doi {
   }
 }
 
-export const isDoi = (value: unknown): value is Doi => value instanceof Doi;
+export const isDoi = (value: unknown): value is ArticleId => value instanceof ArticleId;
 
 export const isValidDoi = (value: string): boolean => doiRegex.test(value);
 
-export const fromString = (value: string): O.Option<Doi> => O.tryCatch(() => new Doi(value));
+export const fromString = (value: string): O.Option<ArticleId> => O.tryCatch(() => new ArticleId(value));
 
-export const hasPrefix = (prefix: string) => (doi: Doi): boolean => doi.hasPrefix(prefix);
+export const hasPrefix = (prefix: string) => (doi: ArticleId): boolean => doi.hasPrefix(prefix);
 
-export const eqDoi: Eq.Eq<Doi> = pipe(
+export const eqDoi: Eq.Eq<ArticleId> = pipe(
   S.Eq,
   Eq.contramap((doi) => doi.value),
 );

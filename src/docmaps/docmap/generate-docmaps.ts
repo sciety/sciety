@@ -8,13 +8,13 @@ import { Docmap } from './docmap-type';
 import { Ports as DocmapPorts, generateDocmapViewModel } from './generate-docmap-view-model';
 import { toDocmap } from './to-docmap';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { supportedGroups } from '../supported-groups';
 import { Queries } from '../../read-models';
 
 export type Ports = DocmapPorts & Queries;
 
-const getEvaluatingGroupIds = (ports: Ports) => (doi: Doi) => pipe(
+const getEvaluatingGroupIds = (ports: Ports) => (doi: ArticleId) => pipe(
   ports.getEvaluationsForDoi(doi),
   T.of,
   T.map(flow(
@@ -30,7 +30,7 @@ const validateDoi = flow(
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Invalid DOI requested' })),
 );
 
-const getDocmapViewModels = (ports: Ports) => (articleId: Doi) => pipe(
+const getDocmapViewModels = (ports: Ports) => (articleId: ArticleId) => pipe(
   articleId,
   getEvaluatingGroupIds(ports),
   TE.rightTask,

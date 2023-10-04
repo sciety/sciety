@@ -2,14 +2,14 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Doi } from '../../../types/doi';
+import { ArticleId } from '../../../types/article-id';
 import { UserId } from '../../../types/user-id';
 import * as LOID from '../../../types/list-owner-id';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 
-export const constructUserListManagement = (user: O.Option<{ id: UserId }>, dependencies: Dependencies, articleId: Doi): ViewModel['userListManagement'] => pipe(
+export const constructUserListManagement = (user: O.Option<{ id: UserId }>, dependencies: Dependencies, articleId: ArticleId): ViewModel['userListManagement'] => pipe(
   user,
   O.map(
     ({ id }) => pipe(

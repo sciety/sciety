@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { Doi } from '../../src/types/doi';
+import { ArticleId } from '../../src/types/article-id';
 
 describe('doi', () => {
   it.each([
@@ -7,13 +7,13 @@ describe('doi', () => {
     'doi:10.5281/zenodo.3678326', // TODO: is this ever needed?
   ])('accepts valid DOI syntax', (doiSyntaxExample) => {
     expect(pipe(
-      new Doi(doiSyntaxExample),
+      new ArticleId(doiSyntaxExample),
       (doi) => doi.value,
     )).toBe('10.5281/zenodo.3678326');
   });
 
   it('has a prefix', () => {
-    const doi = new Doi('10.5281/zenodo.3678326');
+    const doi = new ArticleId('10.5281/zenodo.3678326');
 
     expect(doi.hasPrefix('10.5281')).toBe(true);
     expect(doi.hasPrefix('10.5282')).toBe(false);
@@ -29,6 +29,6 @@ describe('doi', () => {
     '10/134980',
     '10.001/001#00',
   ])('rejects invalid DOI syntax', (badDoiSyntaxExample) => {
-    expect(() => new Doi(badDoiSyntaxExample)).toThrow(new Error(`'${badDoiSyntaxExample}' is not a possible DOI`));
+    expect(() => new ArticleId(badDoiSyntaxExample)).toThrow(new Error(`'${badDoiSyntaxExample}' is not a possible DOI`));
   });
 });

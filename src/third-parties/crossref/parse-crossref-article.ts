@@ -5,7 +5,7 @@ import * as R from 'fp-ts/Record';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer, articleServers } from '../../types/article-server';
-import { Doi } from '../../types/doi';
+import { ArticleId } from '../../types/article-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { Logger } from '../../shared-ports';
@@ -14,7 +14,7 @@ const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)
 );
 
-export const getAbstract = (doc: Document, doi: Doi, logger: Logger): SanitisedHtmlFragment => {
+export const getAbstract = (doc: Document, doi: ArticleId, logger: Logger): SanitisedHtmlFragment => {
   const abstractElement = getElement(doc, 'abstract');
 
   if (typeof abstractElement?.textContent !== 'string') {
@@ -74,7 +74,7 @@ export const getAbstract = (doc: Document, doi: Doi, logger: Logger): SanitisedH
   );
 };
 
-export const getTitle = (doc: Document, doi: Doi, logger: Logger): SanitisedHtmlFragment => {
+export const getTitle = (doc: Document, doi: ArticleId, logger: Logger): SanitisedHtmlFragment => {
   const titlesElement = getElement(doc, 'titles');
   const titleElement = titlesElement?.getElementsByTagName('title')[0];
   let title = 'Unknown title';
