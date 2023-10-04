@@ -5,7 +5,7 @@ import { fetchPciEvaluations } from '../../src/ingest/fetch-pci-evaluations';
 import { daysAgo } from '../../src/ingest/time';
 import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryDoi } from '../types/article-id.helper';
 
 const ingest = (xml: string) => pipe(
   {

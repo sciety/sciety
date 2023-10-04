@@ -6,7 +6,7 @@ import { fetchCrossrefArticle } from '../../../src/third-parties/crossref/fetch-
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryDoi } from '../../types/article-id.helper';
 
 describe('fetch-crossref-article', () => {
   const doi = arbitraryDoi();

@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryDoi } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';

@@ -7,7 +7,7 @@ import { getArticleVersionEventsFromBiorxiv } from '../../../src/third-parties/b
 import { ArticleId } from '../../../src/types/article-id';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryDoi } from '../../types/article-id.helper';
 import * as DE from '../../../src/types/data-error';
 
 describe('get-article-version-events-from-biorxiv', () => {

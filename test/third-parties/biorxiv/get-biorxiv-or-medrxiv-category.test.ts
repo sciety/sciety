@@ -7,7 +7,7 @@ import { SubjectArea } from '../../../src/types/subject-area';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryDoi } from '../../types/article-id.helper';
 import { ArticleId } from '../../../src/types/article-id';
 
 describe('get-biorxiv-or-medrxiv-category', () => {

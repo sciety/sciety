@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { getEvaluationsForArticle } from '../../../src/read-models/evaluations/get-evaluations-for-article';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryDoi } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';

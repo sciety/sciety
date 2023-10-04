@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { fetchNcrcEvaluations } from '../../src/ingest/fetch-ncrc-evaluations';
 import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryDoi } from '../types/article-id.helper';
 
 const arbitraryGoogleSheetsResponse = {
   config: {},

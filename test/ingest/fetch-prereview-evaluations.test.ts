@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
 import { arbitraryDate } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryDoi } from '../types/article-id.helper';
 
 describe('fetch-prereview-evaluations', () => {
   describe('when the reponse includes no preprints', () => {

@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryDoi } from '../../../types/doi.helper';
+import { arbitraryDoi } from '../../../types/article-id.helper';
 import { ArticleId } from '../../../../src/types/article-id';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';

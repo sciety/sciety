@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { DoiFromString } from '../../../src/types/codecs/DoiFromString';
-import { arbitraryDoi } from '../doi.helper';
+import { arbitraryDoi } from '../article-id.helper';
 
 describe('codec DoiFromString', () => {
   it('encodes and decodes back to the same value', () => {

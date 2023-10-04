@@ -14,7 +14,7 @@ import { sanitise } from '../../../../src/types/sanitised-html-fragment';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
-import { arbitraryDoi } from '../../../types/doi.helper';
+import { arbitraryDoi } from '../../../types/article-id.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';

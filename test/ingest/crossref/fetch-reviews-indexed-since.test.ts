@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as CR from '../../../src/ingest/third-parties/crossref';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryDoi } from '../../types/article-id.helper';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
   const fetchData = <D>() => TE.right({ message: { items } } as unknown as D);

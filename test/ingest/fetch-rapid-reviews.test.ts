@@ -6,7 +6,7 @@ import { fetchRapidReviews } from '../../src/ingest/fetch-rapid-reviews';
 import { FeedData } from '../../src/ingest/types/feed-data';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryDoi } from '../types/article-id.helper';
 
 const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
   {

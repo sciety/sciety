@@ -1,6 +1,6 @@
 import { EventOfType, constructEvent } from '../../src/domain-events';
 import { arbitraryDate } from '../helpers';
-import { arbitraryDoi } from '../types/doi.helper';
+import { arbitraryDoi } from '../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
 import { arbitraryEvaluationType } from '../types/evaluation-type.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';

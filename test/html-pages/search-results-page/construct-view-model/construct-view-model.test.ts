@@ -8,7 +8,7 @@ import { ViewModel } from '../../../../src/html-pages/search-results-page/view-m
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryDoi } from '../../../types/doi.helper';
+import { arbitraryDoi } from '../../../types/article-id.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { ArticleId } from '../../../../src/types/article-id';
 

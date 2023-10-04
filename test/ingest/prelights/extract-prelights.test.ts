@@ -3,7 +3,7 @@ import { extractPrelights } from '../../../src/ingest/third-parties/prelights/ex
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
 } from '../../helpers';
-import { arbitraryDoi } from '../../types/doi.helper';
+import { arbitraryDoi } from '../../types/article-id.helper';
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi', () => {
