@@ -5,7 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { ArticleId, isValidDoi } from '../../types/article-id';
+import { ArticleId, doiRegex } from '../../types/article-id';
 import { Logger, FetchRelatedArticles } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
@@ -32,6 +32,8 @@ const paperWithDoi = t.type({
 const semanticScholarRecommendedPapersResponseCodec = t.type({
   recommendedPapers: t.array(t.union([paperWithDoi, paperWithoutDoi])),
 });
+
+const isValidDoi = (value: string): boolean => doiRegex.test(value);
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 

@@ -3,8 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 
-// TODO choose one or the other
-const doiRegex = /^(?:doi:)?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
+export const doiRegex = /^(?:doi:)?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 
 export class ArticleId {
   readonly value: string;
@@ -29,8 +28,6 @@ export class ArticleId {
 }
 
 export const isArticleId = (value: unknown): value is ArticleId => value instanceof ArticleId;
-
-export const isValidDoi = (value: string): boolean => doiRegex.test(value);
 
 export const fromString = (value: string): O.Option<ArticleId> => O.tryCatch(() => new ArticleId(value));
 
