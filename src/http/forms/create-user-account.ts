@@ -11,6 +11,7 @@ import { createUserAccountFormPageLayout } from '../../html-pages/create-user-ac
 import { toWebPage } from '../page-handler';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
+import { ViewModel } from '../../html-pages/create-user-account-form-page/view-model';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
@@ -21,9 +22,12 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
       (formDetails) => {
         const page = pipe(
           {
+            pageHeader: 'Sign up',
             errorSummary: O.some(''),
-          },
-          renderFormPage(formDetails.fullName, formDetails.handle),
+            handle: formDetails.fullName,
+            fullName: formDetails.fullName,
+          } satisfies ViewModel,
+          renderFormPage,
           E.right,
           toWebPage(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
         );
