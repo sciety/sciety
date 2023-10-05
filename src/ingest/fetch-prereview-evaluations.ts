@@ -45,16 +45,16 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
   preprint,
   E.right,
   E.filterOrElse(
-    (p) => p.isPublished,
-    () => ({ item: preprint.handle.toString(), reason: 'is not published' }),
-  ),
-  E.filterOrElse(
     (p): p is Review & { handle: ArticleId } => isArticleId(p.handle),
     () => ({ item: preprint.handle.toString(), reason: 'not a DOI' }),
   ),
   E.filterOrElse(
     (p): p is Review & { handle: ArticleId, reviewDoi: O.Some<ArticleId> } => O.isSome(p.reviewDoi),
     () => ({ item: `${preprint.handle.toString()} / ${preprint.date.toISOString()}`, reason: 'review has no DOI' }),
+  ),
+  E.filterOrElse(
+    (p) => p.isPublished,
+    () => ({ item: preprint.handle.toString(), reason: 'is not published' }),
   ),
   E.map((p) => ({
     date: p.date,

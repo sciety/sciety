@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
-import { arbitraryDate } from '../helpers';
+import { arbitraryDate, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 
@@ -126,7 +126,9 @@ describe('fetch-prereview-evaluations', () => {
       {
         handle: articleId.value,
         fullReviews: [
-          { createdAt: arbitraryDate().toString(), isPublished: false, authors: [] },
+          {
+            createdAt: arbitraryDate().toString(), doi: `10.1234/${arbitraryWord()}`, isPublished: false, authors: [],
+          },
         ],
       },
     ];
