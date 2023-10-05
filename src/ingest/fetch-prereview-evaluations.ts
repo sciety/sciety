@@ -9,7 +9,7 @@ import * as PR from 'io-ts/PathReporter';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';
-import { ArticleId, isArticleId } from '../types/article-id';
+import * as AID from '../types/article-id';
 
 type Ports = {
   fetchData: FetchData,
@@ -35,8 +35,8 @@ type PreReviewPreprint = t.TypeOf<typeof preReviewPreprint>;
 
 type Review = {
   date: Date,
-  handle: string | ArticleId,
-  reviewDoi: O.Option<ArticleId>,
+  handle: string | AID.ArticleId,
+  reviewDoi: O.Option<AID.ArticleId>,
   isPublished: boolean,
   authors: ReadonlyArray<string>,
 };
@@ -45,16 +45,16 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
   preprint,
   E.right,
   E.filterOrElse(
-    (p): p is Review & { handle: ArticleId } => isArticleId(p.handle),
-    () => ({ item: preprint.handle.toString(), reason: 'not a DOI' }),
+    (p): p is Review & { handle: AID.ArticleId } => AID.isArticleId(p.handle),
+    () => ({ item: preprint.handle as string, reason: 'article has no DOI' }),
   ),
   E.filterOrElse(
-    (p): p is Review & { handle: ArticleId, reviewDoi: O.Some<ArticleId> } => O.isSome(p.reviewDoi),
-    () => ({ item: `${preprint.handle.toString()} / ${preprint.date.toISOString()}`, reason: 'review has no DOI' }),
+    (p): p is Review & { handle: AID.ArticleId, reviewDoi: O.Some<AID.ArticleId> } => O.isSome(p.reviewDoi),
+    () => ({ item: `${AID.toString(preprint.handle as AID.ArticleId)} / ${preprint.date.toISOString()}`, reason: 'review has no DOI' }),
   ),
   E.filterOrElse(
     (p) => p.isPublished,
-    () => ({ item: preprint.handle.toString(), reason: 'is not published' }),
+    () => ({ item: AID.toString(preprint.handle as AID.ArticleId), reason: 'is not published' }),
   ),
   E.map((p) => ({
     date: p.date,
