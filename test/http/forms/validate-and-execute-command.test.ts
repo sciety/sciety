@@ -52,11 +52,12 @@ describe('validate-and-execute-command', () => {
       [{ handle }, { fullName: '' as UserGeneratedInput, handle }],
       [{ fullName }, { fullName, handle: '' as UserGeneratedInput }],
       [{ }, { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ])('returns the form with any valid fields populated', async (body, expectedFormOutput) => {
       const koaContext = buildKoaContext(body);
       const result = await validateAndExecuteCommand(koaContext, defaultDependencies)();
 
-      expect(result).toStrictEqual(E.left(expectedFormOutput));
+      expect(result).toStrictEqual(E.left('validation-error'));
     });
   });
 
@@ -72,12 +73,13 @@ describe('validate-and-execute-command', () => {
       ['Invalid Full Name Due to being too looooong', 'validhandle', { fullName: 'Invalid Full Name Due to being too looooong', handle: 'validhandle' }],
       ['Invalid Full Name Due to being too looooong', '<unsafe>handle', { fullName: 'Invalid Full Name Due to being too looooong', handle: '' as UserGeneratedInput }],
       ['Invalid Full Name Due to being too looooong', 'invalidhandletoolong', { fullName: 'Invalid Full Name Due to being too looooong', handle: 'invalidhandletoolong' }],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ])('given %s and %s', async (fullNameInput, handleInput, expectedFormOutput) => {
       const formBody = { fullName: fullNameInput, handle: handleInput };
       const koaContext = buildKoaContext(formBody);
       const result = await validateAndExecuteCommand(koaContext, defaultDependencies)();
 
-      expect(result).toStrictEqual(E.left(expectedFormOutput));
+      expect(result).toStrictEqual(E.left('validation-error'));
     });
   });
 
@@ -99,15 +101,10 @@ describe('validate-and-execute-command', () => {
     };
     const koaContext = buildKoaContext(formBody, existingUser.id);
 
-    it('return a form populated with user input', async () => {
+    it('return a form validation error', async () => {
       const result = await validateAndExecuteCommand(koaContext, dependencies)();
 
-      expect(result).toStrictEqual(E.left({
-        fullName: formBody.fullName,
-        handle: existingUser.handle,
-      }));
+      expect(result).toStrictEqual(E.left('command-failed'));
     });
-
-    it.todo('return a pertinent error summary');
   });
 });

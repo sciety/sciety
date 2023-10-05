@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
@@ -9,7 +8,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
-import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
+import { userGeneratedInputCodec } from '../../types/user-generated-input';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { CommandResult } from '../../types/command-result';
 import { Logger } from '../../shared-ports';
@@ -26,15 +25,8 @@ const createUserAccountFormCodec = t.type({
   handle: userHandleCodec,
 });
 
-const unvalidatedFormDetailsCodec = t.type({
-  fullName: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
-  handle: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
-});
-
-type UnvalidatedFormDetails = t.TypeOf<typeof unvalidatedFormDetailsCodec>;
-
 type ValidateAndExecuteCommand = (context: ParameterizedContext, dependencies: Dependencies)
-=> TE.TaskEither<UnvalidatedFormDetails, CommandResult>;
+=> TE.TaskEither<'validation-error' | 'no-authenticated-user-id' | 'command-failed', CommandResult>;
 
 export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, dependencies) => pipe(
   {
@@ -43,13 +35,13 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, de
       createUserAccountFormCodec.decode,
       E.mapLeft((errors) => {
         dependencies.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
-        return 'validation-error';
+        return 'validation-error' as const;
       }),
     ),
     authenticatedUserId: pipe(
       context,
       getAuthenticatedUserIdFromContext,
-      E.fromOption(() => 'no-authenticated-user-id'),
+      E.fromOption(() => 'no-authenticated-user-id' as const),
     ),
   },
   sequenceS(E.Apply),
@@ -65,15 +57,7 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, de
     createUserAccountCommandHandler(dependencies),
     TE.mapLeft((error) => {
       dependencies.logger('error', 'createUserAccountCommandHandler failed', { error, command });
-      return 'command-failed';
+      return 'command-failed' as const;
     }),
-  )),
-  TE.mapLeft(() => pipe(
-    context.request.body,
-    unvalidatedFormDetailsCodec.decode,
-    E.getOrElse(() => ({
-      fullName: '' as UserGeneratedInput,
-      handle: '' as UserGeneratedInput,
-    })),
   )),
 );
