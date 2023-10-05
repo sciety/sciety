@@ -16,6 +16,10 @@
   @include form.label();
 }
 
+.save-article-page-form__helper_text {
+  @include form.helper-text();
+}
+
 .save-article-page-form__button {
   @include button.secondary();
 }
