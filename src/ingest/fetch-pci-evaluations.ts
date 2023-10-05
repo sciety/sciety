@@ -8,6 +8,7 @@ import { FetchData } from './fetch-data';
 import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';
+import * as AID from '../types/article-id';
 
 type Candidate = {
   date: string,
@@ -58,7 +59,7 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
         (validatedEvaluationDoi) => ({
           date: new Date(candidate.date),
           articleDoi,
-          evaluationLocator: validatedEvaluationDoi.toString(),
+          evaluationLocator: AID.toString(validatedEvaluationDoi),
           authors: [],
         }),
       ),
