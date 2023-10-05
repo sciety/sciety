@@ -21,7 +21,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
   }
 }
 
-.form-page-form {
+.standard-form {
   @include form-with-borders-and-white-background();
 }
 

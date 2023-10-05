@@ -22,7 +22,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   <header class="page-header">
     <h1>${viewModel.pageHeading}</h1>
   </header>
-  <form class="save-article-page-form form-page-form" method="post" action="/save-article">
+  <form class="save-article-page-form standard-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
     <fieldset class="save-article-page-form__fieldset" aria-describedby="saveArticlePageFormHelperTextForLists">
       <legend class="save-article-page-form__legend">
