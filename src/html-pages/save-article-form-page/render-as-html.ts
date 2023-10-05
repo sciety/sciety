@@ -17,10 +17,10 @@ const renderLists = (lists: ViewModel['userLists']) => pipe(
 );
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
-  title: 'Save article page',
+  title: `Save "${viewModel.articleTitle}" to my list`,
   content: toHtmlFragment(`
   <header class="page-header">
-    <h1>${viewModel.articleTitle}</h1>
+    <h1>Save "${viewModel.articleTitle}" to my list</h1>
   </header>
   <form class="save-article-page-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
