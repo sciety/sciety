@@ -7,6 +7,8 @@
 }
 
 .save-article-page-form__fieldset {
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
   margin-bottom: settings.$default-form-vertical-spacing;
 }
 
