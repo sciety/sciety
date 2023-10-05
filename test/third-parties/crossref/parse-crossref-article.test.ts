@@ -356,7 +356,7 @@ describe('parse-crossref-article', () => {
       expect(title).toBe('An article title');
     });
 
-    it.failing('trims leading and trailing whitespace', () => {
+    it('trims leading and trailing whitespace', () => {
       const response = crossrefResponseWith(`
         <titles>
           <title>

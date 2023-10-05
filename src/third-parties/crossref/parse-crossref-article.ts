@@ -82,7 +82,8 @@ export const getTitle = (doc: Document, doi: ArticleId, logger: Logger): Sanitis
   if (titleElement) {
     title = new XMLSerializer()
       .serializeToString(titleElement)
-      .replace(/^<title(?:.?)>([\s\S]*)<\/title>$/, '$1');
+      .replace(/^<title(?:.?)>([\s\S]*)<\/title>$/, '$1')
+      .trim();
   } else {
     logger('warn', 'Did not find title', { doi });
   }
