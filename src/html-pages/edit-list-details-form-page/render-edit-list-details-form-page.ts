@@ -17,7 +17,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
 <header class="page-header page-header--edit-list-details-form-page">
   <h1>Edit list details</h1>
 </header>
-<form action="/forms/edit-list-details" method="post" class="edit-list-details-form">
+<form action="/forms/edit-list-details" method="post" class="edit-list-details-form form-page-form">
   <input type="hidden" value="${viewModel.listId}" name="listId">
   <section class="edit-list-details-form__section">
     <label for="listName" class="edit-list-details-form__label">List name</label>

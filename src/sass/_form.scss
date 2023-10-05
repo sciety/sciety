@@ -21,6 +21,10 @@ $_microcopy-colour: settings.$colour-text-secondary;
   }
 }
 
+.form-page-form {
+  @include form-with-borders-and-white-background();
+}
+
 @mixin section {
   margin-bottom: functions.px-to-rem(48px);
 }
