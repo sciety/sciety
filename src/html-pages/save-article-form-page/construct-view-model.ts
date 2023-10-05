@@ -7,6 +7,7 @@ import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { ViewModel } from './view-model';
 import * as DE from '../../types/data-error';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -27,7 +28,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   sequenceS(TE.ApplyPar),
   TE.map((partial) => ({
     articleId: params.articleId,
-    articleTitle: partial.article.title,
     userLists: partial.userLists,
+    pageHeading: toHtmlFragment(`Save "${partial.article.title}" to my list`),
   })),
 );

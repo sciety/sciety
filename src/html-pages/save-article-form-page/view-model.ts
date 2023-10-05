@@ -4,9 +4,9 @@ import { ListId } from '../../types/list-id';
 
 export type ViewModel = {
   articleId: ArticleId,
-  articleTitle: HtmlFragment,
   userLists: ReadonlyArray<{
     id: ListId,
     name: string,
   }>,
+  pageHeading: HtmlFragment,
 };
