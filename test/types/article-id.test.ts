@@ -25,7 +25,7 @@ describe('article-id', () => {
     const articleId = arbitraryArticleId();
 
     it('prefixes with "doi:"', () => {
-      expect(articleId.toString()).toBe(AID.toString(articleId));
+      expect(AID.toString(articleId)).toBe(`doi:${articleId.value}`);
     });
   });
 

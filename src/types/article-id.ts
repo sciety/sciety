@@ -17,10 +17,6 @@ export class ArticleId {
 
     this.value = doi;
   }
-
-  toString(): string {
-    return `doi:${this.value}`;
-  }
 }
 
 export const isArticleId = (value: unknown): value is ArticleId => value instanceof ArticleId;
