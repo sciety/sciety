@@ -13,7 +13,7 @@
 }
 
 .edit-list-details-form {
-  @include form.form();
+  @include form.form-with-borders-and-white-background();
 }
 
 .edit-list-details-form__section {

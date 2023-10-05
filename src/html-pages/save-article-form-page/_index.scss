@@ -3,7 +3,7 @@
 @use '../../sass/settings';
 
 .save-article-page-form {
-  @include form.form();
+  @include form.form-with-borders-and-white-background();
 }
 
 .save-article-page-form__fieldset {
