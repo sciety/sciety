@@ -1,8 +1,13 @@
-@use '../../sass/form';
 @use '../../sass/button';
+@use '../../sass/form';
+@use '../../sass/settings';
 
 .save-article-page-form {
   @include form.form();
+}
+
+.save-article-page-form__fieldset {
+  margin-bottom: settings.$default-form-vertical-spacing;
 }
 
 .save-article-page-form__legend {
