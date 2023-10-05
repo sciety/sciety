@@ -4,6 +4,7 @@ import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-eval
 import { arbitraryDate, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import * as AID from '../../src/types/article-id';
 
 describe('fetch-prereview-evaluations', () => {
   describe('when the reponse includes no preprints', () => {
@@ -141,7 +142,7 @@ describe('fetch-prereview-evaluations', () => {
       expect(await result()).toStrictEqual(E.right(expect.objectContaining({
         skippedItems: [
           {
-            item: articleId.toString(),
+            item: AID.toString(articleId),
             reason: 'is not published',
           },
         ],
