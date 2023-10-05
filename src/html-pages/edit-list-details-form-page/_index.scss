@@ -21,7 +21,7 @@
 }
 
 .edit-list-details-form__label {
-  @include form.label();
+  @include form.labelling();
 }
 
 .edit-list-details-form__helper_text {

@@ -25,7 +25,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
   margin-bottom: functions.px-to-rem(48px);
 }
 
-@mixin label {
+@mixin labelling {
   display: block;
   font-weight: bold;
   font-size: functions.px-to-rem(20px);

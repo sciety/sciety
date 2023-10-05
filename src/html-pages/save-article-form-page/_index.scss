@@ -13,7 +13,7 @@
 }
 
 .save-article-page-form__legend {
-  @include form.label();
+  @include form.labelling();
 }
 
 .save-article-page-form__helper_text {
