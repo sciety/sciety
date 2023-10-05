@@ -20,10 +20,10 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: 'Save article page',
   content: toHtmlFragment(`
   <header class="page-header">
-    <h1>Save article</h1>
+    <h1>${viewModel.articleTitle}</h1>
   </header>
   <p>
-    ${viewModel.articleTitle}
+    Choose the list you want to save this article to.
   </p>
   <form class="save-article-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
