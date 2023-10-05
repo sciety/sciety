@@ -356,6 +356,19 @@ describe('parse-crossref-article', () => {
       expect(title).toBe('An article title');
     });
 
+    it.failing('trims leading and trailing whitespace', () => {
+      const response = crossrefResponseWith(`
+        <titles>
+          <title>
+            An article title
+          </title>
+        </titles>`);
+      const doc = parser.parseFromString(response, 'text/xml');
+      const title = getTitle(doc, doi, dummyLogger);
+
+      expect(title).toBe('An article title');
+    });
+
     it('returns `Unknown title` when no title present', async () => {
       const response = crossrefResponseWith('');
       const doc = parser.parseFromString(response, 'text/xml');
