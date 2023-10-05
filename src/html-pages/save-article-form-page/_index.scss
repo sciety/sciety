@@ -1,0 +1,5 @@
+@use '../../sass/form';
+
+.save-article-form__legend {
+  @include form.label();
+}

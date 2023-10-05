@@ -25,7 +25,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   <form class="save-article-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
     <fieldset>
-    <legend>
+    <legend class="save-article-form__legend">
     Which list do you want to save this article to?
     </legend>
       ${renderLists(viewModel.userLists)}
