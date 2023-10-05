@@ -1,5 +1,14 @@
 @use '../../sass/form';
+@use '../../sass/button';
 
-.save-article-form__legend {
+.save-article-page-form {
+  @include form.form();
+}
+
+.save-article-page-form__legend {
   @include form.label();
+}
+
+.save-article-page-form__button {
+  @include button.secondary();
 }
