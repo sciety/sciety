@@ -1,6 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { ArticleId } from '../../src/types/article-id';
 import * as AID from '../../src/types/article-id';
+import { arbitraryArticleId } from './article-id.helper';
 
 describe('article-id', () => {
   it.each([
@@ -18,6 +19,14 @@ describe('article-id', () => {
 
     expect(AID.hasPrefix('10.5281')(articleId)).toBe(true);
     expect(AID.hasPrefix('10.5282')(articleId)).toBe(false);
+  });
+
+  describe('toString()', () => {
+    const articleId = arbitraryArticleId();
+
+    it('prefixes with "doi:"', () => {
+      expect(articleId.toString()).toBe(AID.toString(articleId));
+    });
   });
 
   it.each([

@@ -27,6 +27,8 @@ export const isArticleId = (value: unknown): value is ArticleId => value instanc
 
 export const fromString = (value: string): O.Option<ArticleId> => O.tryCatch(() => new ArticleId(value));
 
+export const toString = (value: ArticleId): string => `doi:${value.value}`;
+
 export const hasPrefix = (prefix: string) => (doi: ArticleId): boolean => doi.value.startsWith(`${prefix}/`);
 
 export const eqArticleId: Eq.Eq<ArticleId> = pipe(
