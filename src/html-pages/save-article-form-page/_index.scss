@@ -11,10 +11,6 @@
   @include form.helper-text();
 }
 
-.save-article-page-form__button {
-  @include form.submit-button();
-}
-
 .save-article-page-form__target_wrapper {
   display: flex;
   align-items: center;

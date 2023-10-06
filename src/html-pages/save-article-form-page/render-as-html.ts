@@ -31,7 +31,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
       <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
       ${renderLists(viewModel.userLists)}
     </fieldset>
-    <button type="submit" class="save-article-page-form__button">
+    <button type="submit">
       Save article
     </button>
   </form>
