@@ -11,10 +11,9 @@ import * as DE from '../../types/data-error';
 import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
-import { renderPage } from '../create-annotation-form-page/render-page';
 
-export const styleGuidePage: HtmlPage = {
-  title: 'Style guide',
+export const sharedComponentsPage: HtmlPage = {
+  title: 'Shared components',
   content: toHtmlFragment(`
 <style>
   ._style-guide-heading {
@@ -28,7 +27,7 @@ export const styleGuidePage: HtmlPage = {
   }
 </style>
     <header class="page-header">
-      <h1>Style guide</h1>
+      <h1>Shared components</h1>
     </header>
     <div>
       <h2 class="_style-guide-heading">Pagination controls for feed</h2>
@@ -195,14 +194,6 @@ export const styleGuidePage: HtmlPage = {
     articleId: new ArticleId('10.1101/foo'),
   })}
 
-      <h2 class="_style-guide-heading">Forms</h2>
-      <h3 class="_style-guide-heading">Create annotation</h3>
-      ${renderPage({
-    articleId: new ArticleId('10.1101/1234'),
-    listId: LID.fromValidatedString('foo'),
-    articleTitle: sanitise(toHtmlFragment('New Article')),
-    listName: 'Someone\'s saved articles',
-  })}
     </div>
   `),
 };

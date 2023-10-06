@@ -74,7 +74,7 @@ import { applicationStatus } from '../views/status';
 import { listFeed } from '../views/list/list-feed';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
-import { styleGuidePage } from '../html-pages/style-guide-page';
+import { referencePage, sharedComponentsPage } from '../html-pages/style-guide-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 
 type Config = AuthenticationRoutesConfig;
@@ -303,8 +303,13 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
-    '/style-guide',
-    pageHandler(adapters, () => pipe(styleGuidePage, TE.right)),
+    '/style-guide/reference',
+    pageHandler(adapters, () => pipe(referencePage, TE.right)),
+  );
+
+  router.get(
+    '/style-guide/shared-components',
+    pageHandler(adapters, () => pipe(sharedComponentsPage, TE.right)),
   );
 
   // COMMANDS
