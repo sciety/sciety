@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
-import { SaveToAListForms, ViewModel } from '../view-model';
+import { SaveArticleCta, ViewModel } from '../view-model';
 
 const renderLinkToUserListArticleIsInto = (listId: ListId, listName: string) => `
   <section>
@@ -17,9 +17,9 @@ const renderLinkToUserListArticleIsInto = (listId: ListId, listName: string) => 
 
 const renderLoggedOutCallToAction = () => '<a href="/log-in" class="logged-out-call-to-action">Log in to save this article</a>';
 
-const renderSaveToList = (notInAnyList: SaveToAListForms) => `
+const renderSaveToList = (saveArticleCta: SaveArticleCta) => `
 <section>
-  <a href="${notInAnyList.saveArticleHref}" class="article-actions__save_article">Save this article</a>
+  <a href="${saveArticleCta.saveArticleHref}" class="article-actions__save_article">Save this article</a>
 </section>
 `;
 

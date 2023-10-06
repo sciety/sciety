@@ -49,13 +49,13 @@ type ListSummary = {
   listId: ListId,
 };
 
-export type SaveToAListForms = {
+export type SaveArticleCta = {
   saveArticleHref: string,
 };
 
 type ContainingList = ListSummary;
 
-export type LoggedInUserListManagement = E.Either<SaveToAListForms, ContainingList>;
+export type LoggedInUserListManagement = E.Either<SaveArticleCta, ContainingList>;
 
 export type ViewModel = {
   doi: ArticleId,
