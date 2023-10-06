@@ -124,6 +124,14 @@ input[type='checkbox'] {
   margin-left: 0;
 }
 
+input[type='radio'] {
+  flex-shrink: 0;
+  height: functions.px-to-rem(22px);
+  width: functions.px-to-rem(22px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 /*
 Prevent styling of <a> elements that aren't links
 */
