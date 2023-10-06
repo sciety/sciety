@@ -25,6 +25,30 @@ export const referencePage: HtmlPage = {
     </header>
     <div>
       <h2 class="_style-guide-heading">Forms</h2>
+      <h3 class="_style-guide-heading">Standard</h3>
+      <form class="standard-form" method="post" action="#">
+        <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
+          <legend>
+            Which list do you want to save this article to?
+          </legend>
+          <p id="saveArticlePageFormHelperTextForLists">Select one of your lists.</p>
+          <div>
+            <input type="radio" id="list-id-1" name="listId" value="1"/>
+            <label for="list-id-1">List A</label>
+          </div>
+          <div>
+            <input type="radio" id="list-id-2" name="listId" value="2"/>
+            <label for="list-id-2">List B</label>
+          </div>
+          <div>
+            <input type="radio" id="list-id-3" name="listId" value="3"/>
+            <label for="list-id-3">List C</label>
+          </div>
+        </fieldset>
+        <button type="submit">
+          Submit
+        </button>
+      </form>
       <h3 class="_style-guide-heading">Create annotation</h3>
       ${renderPage({
     articleId: new ArticleId('10.1101/1234'),
