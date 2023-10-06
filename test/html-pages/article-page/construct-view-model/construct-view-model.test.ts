@@ -29,41 +29,9 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
     });
 
-    describe('when the article is not saved to the user\'s only list', () => {
-      let list: List;
-      let viewModel: LoggedInUserListManagement;
-
-      beforeEach(async () => {
-        list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-        viewModel = await pipe(
-          {
-            doi: articleId,
-            user: O.some({ id: createUserAccountCommand.userId }),
-          },
-          constructViewModel(framework.dependenciesForViews),
-          TE.map((v) => v.userListManagement),
-          TE.map(O.getOrElseW(shouldNotBeCalled)),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
-      });
-
-      it.failing('list management has access to the default user list id', () => {
-        expect(viewModel).toStrictEqual(E.left(expect.objectContaining({
-          lists: [expect.objectContaining({ listId: list.id })],
-        })));
-      });
-
-      it.failing('list management has access to the default user list name', () => {
-        expect(viewModel).toStrictEqual(E.left(expect.objectContaining({
-          lists: [expect.objectContaining({ listName: list.name })],
-        })));
-      });
-    });
-
     describe('when the article is not saved to any of the user\'s multiple lists', () => {
       let createListCommand: CreateListCommand;
       let viewModel: LoggedInUserListManagement;
-      let usersLists: ReadonlyArray<List>;
 
       beforeEach(async () => {
         createListCommand = {
@@ -71,7 +39,6 @@ describe('construct-view-model', () => {
           ownerId: LOID.fromUserId(createUserAccountCommand.userId),
         };
         await framework.commandHelpers.createList(createListCommand);
-        usersLists = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId));
         viewModel = await pipe(
           {
             doi: articleId,
@@ -84,12 +51,9 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it.failing('the user\'s lists are ordered by descending of lastUpdated', () => {
+      it('displays save this article call to action', () => {
         expect(viewModel).toStrictEqual(E.left(expect.objectContaining({
-          lists: [
-            expect.objectContaining({ listId: usersLists[1].id }),
-            expect.objectContaining({ listId: usersLists[0].id }),
-          ],
+          saveArticleHref: expect.anything(),
         })));
       });
     });
