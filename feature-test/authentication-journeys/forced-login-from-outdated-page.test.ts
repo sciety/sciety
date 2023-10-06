@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   click, currentURL, goto, openBrowser, openTab, switchTo,
 } from 'taiko';
@@ -36,11 +35,10 @@ describe('forced-login-from-outdated-page', () => {
         await click('Log out');
       });
 
-      describe.skip('when I go back to the original tab and I attempt to save the article', () => {
+      describe('when I go back to the original tab and I attempt to save the article', () => {
         beforeEach(async () => {
           await switchTo(new RegExp(articlePage));
-          console.log(await currentURL());
-          await click('Save article');
+          await click('Save this article');
         });
 
         describe('when I log back in again', () => {
