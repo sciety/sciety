@@ -1,6 +1,6 @@
 /* eslint-disable jest-formatting/padding-around-all */
 import {
-  $, click, closeBrowser, currentURL, goto, link, openBrowser,
+  $, click, closeBrowser, currentURL, goto, link, openBrowser, radioButton,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
@@ -24,7 +24,7 @@ describe('save-article-to-list', () => {
       await closeBrowser();
     });
 
-    describe.skip('and saves an article that isn\'t in any list, without creating an annotation', () => {
+    describe('and saves an article that isn\'t in any list, without creating an annotation', () => {
       const userProfilePage = `localhost:8080/users/${userHandle}`;
       const scietyFeedPage = 'localhost:8080/sciety-feed';
 
@@ -34,6 +34,8 @@ describe('save-article-to-list', () => {
       const listCardTimeSelector = '.list-card time';
 
       beforeAll(async () => {
+        await click('Save this article');
+        await click(radioButton(`${userHandle}'s saved articles`));
         await click('Save article');
       });
 
