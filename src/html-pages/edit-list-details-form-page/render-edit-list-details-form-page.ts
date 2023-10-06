@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { HtmlPage } from '../../types/html-page';
@@ -22,7 +23,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
   <section class="edit-list-details-form__section">
     <label for="listName" class="edit-list-details-form__label">List name</label>
     <p class="edit-list-details-form__helper_text">Give the list a descriptive title.</p>
-    <input type="text" id="listName" name="name" class="edit-list-details-form__field" value="${viewModel.listName}" pattern="[^<>]+" required maxlength="${viewModel.listNameMaxLength}">
+    <input type="text" id="listName" name="name" class="edit-list-details-form__field" value="${htmlEscape(viewModel.listName)}" pattern="[^<>]+" required maxlength="${viewModel.listNameMaxLength}">
     <p class="edit-list-details-form__constraints">Maximum ${viewModel.listNameMaxLength} characters</p>
   </section>
   <section class="edit-list-details-form__section">
