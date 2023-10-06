@@ -23,10 +23,12 @@ describe('create-annotation', () => {
       await createUserAccountAndLogIn(userId);
     });
 
-    describe.skip('with an article on my list', () => {
+    describe('with an article on my list', () => {
       beforeEach(async () => {
         await goto(`localhost:8080/articles/${arbitraryArticleId().value}`);
-        await click('Save article');
+        await click('Save this article');
+        await click($('input[type="radio"]'));
+        await click($('button[type="submit"]'));
       });
 
       describe('when I annotate the article', () => {
