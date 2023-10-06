@@ -218,6 +218,15 @@ exploratory-test-from-prod: node_modules clean-db build
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
 
+ingestion-dev: node_modules clean-db build
+	${DOCKER_COMPOSE} up -d db
+	scripts/wait-for-database.sh
+	${DOCKER_COMPOSE} exec -T db psql -c "CREATE TABLE IF NOT EXISTS events ( id uuid, type varchar, date timestamp, payload jsonb, PRIMARY KEY (id));" sciety user
+	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/group-joined.csv' WITH CSV" sciety user
+	${DOCKER_COMPOSE} up -d app
+	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} logs -f app
+
 replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from-prod
 	kubectl run psql \
 	--image=postgres:12.3 \
