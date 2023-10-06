@@ -1,5 +1,5 @@
 import { renderFeed } from './render-feed';
-import { renderSaveArticle } from './render-save-article';
+import { renderUserListManagement } from './render-user-list-management';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderListedIn } from './render-listed-in';
@@ -19,7 +19,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
         ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
         <div class="list-management">
           ${renderListedIn(viewmodel.listedIn)}
-          ${renderSaveArticle(viewmodel)}
+          ${renderUserListManagement(viewmodel)}
         </div>
       </section>
       <section>

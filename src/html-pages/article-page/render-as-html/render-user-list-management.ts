@@ -23,7 +23,7 @@ const renderSaveToList = (notInAnyList: SaveToAListForms) => `
 </section>
 `;
 
-export const renderSaveArticle = (viewmodel: ViewModel): HtmlFragment => pipe(
+export const renderUserListManagement = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.userListManagement,
   O.match(
     renderLoggedOutCallToAction,
