@@ -53,20 +53,6 @@
   margin-bottom: functions.px-to-rem(24px);
 }
 
-.list-name {
-  font-size: functions.px-to-rem(18px);
-  margin-bottom: functions.px-to-rem(8px);
-}
-
-.save-article-form {
-  margin-bottom: functions.px-to-rem(24px);
-}
-
-.save-article-button {
-  @include button.secondary();
-  margin-right: functions.px-to-rem(32px);
-}
-
 .saved-to-list {
   @include typography.button();
   display: flex;
