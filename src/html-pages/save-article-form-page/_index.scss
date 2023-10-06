@@ -3,10 +3,6 @@
 @use '../../sass/functions';
 @use '../../sass/settings';
 
-.save-article-page-form {
-  @include form.form-with-borders-and-white-background();
-}
-
 .save-article-page-form__helper_text {
   @include form.helper-text();
 }
