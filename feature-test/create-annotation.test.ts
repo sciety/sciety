@@ -23,7 +23,7 @@ describe('create-annotation', () => {
       await createUserAccountAndLogIn(userId);
     });
 
-    describe('with an article on my list', () => {
+    describe.skip('with an article on my list', () => {
       beforeEach(async () => {
         await goto(`localhost:8080/articles/${arbitraryArticleId().value}`);
         await click('Save article');

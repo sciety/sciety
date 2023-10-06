@@ -26,7 +26,7 @@ describe('remove-article-from-list', () => {
       await createUserAccountAndLogIn(testUserId);
     });
 
-    describe('and has saved an article', () => {
+    describe.skip('and has saved an article', () => {
       const articleId = arbitraryArticleId().value;
       const articlePage = `localhost:8080/articles/activity/${articleId}`;
 

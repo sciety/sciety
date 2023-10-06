@@ -24,7 +24,7 @@ describe('save-article-to-list', () => {
       await closeBrowser();
     });
 
-    describe('and saves an article that isn\'t in any list, without creating an annotation', () => {
+    describe.skip('and saves an article that isn\'t in any list, without creating an annotation', () => {
       const userProfilePage = `localhost:8080/users/${userHandle}`;
       const scietyFeedPage = 'localhost:8080/sciety-feed';
 

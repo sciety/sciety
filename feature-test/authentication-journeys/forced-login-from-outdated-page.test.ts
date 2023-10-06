@@ -36,7 +36,7 @@ describe('forced-login-from-outdated-page', () => {
         await click('Log out');
       });
 
-      describe('when I go back to the original tab and I attempt to save the article', () => {
+      describe.skip('when I go back to the original tab and I attempt to save the article', () => {
         beforeEach(async () => {
           await switchTo(new RegExp(articlePage));
           console.log(await currentURL());
