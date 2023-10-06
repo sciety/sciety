@@ -1,5 +1,5 @@
 import {
-  click, closeBrowser, currentURL, goto, openBrowser, radioButton,
+  click, closeBrowser, currentURL, goto, openBrowser, $,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
@@ -25,8 +25,8 @@ describe('save-article-to-list', () => {
     describe('and saves an article that isn\'t in any list, without creating an annotation', () => {
       beforeAll(async () => {
         await click('Save this article');
-        await click(radioButton(`${userHandle}'s saved articles`));
-        await click('Save article');
+        await click($('input[type="radio"]'));
+        await click($('button[type="submit"]'));
       });
 
       it('i am returned to the same article page', async () => {
