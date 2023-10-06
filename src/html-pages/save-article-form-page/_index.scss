@@ -25,6 +25,10 @@
   @include form.submit-button();
 }
 
+.save-article-page-form__target_wrapper {
+  margin-bottom: functions.px-to-rem(8px);
+}
+
 .save-article-page-form__target {
   height: functions.px-to-rem(22px);
   width: functions.px-to-rem(22px);
