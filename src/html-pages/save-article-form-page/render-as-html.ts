@@ -9,7 +9,7 @@ const renderLists = (lists: ViewModel['userLists']) => pipe(
   lists,
   RA.map((list) => `
     <div>
-      <input type="radio" id="list-id-${list.id}" name="listId" value="${list.id}" />
+      <input type="radio" id="list-id-${list.id}" name="listId" value="${list.id}" class="save-article-page-form__target"/>
       <label for="list-id-${list.id}">${list.name}</label>
     </div>
   `),
