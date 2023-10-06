@@ -120,6 +120,12 @@ button {
   cursor: pointer;
 }
 
+fieldset {
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
+  margin-bottom: settings.$default-form-vertical-spacing;
+}
+
 input[type='checkbox'] {
   margin-left: 0;
 }
