@@ -26,13 +26,15 @@ describe('remove-article-from-list', () => {
       await createUserAccountAndLogIn(testUserId);
     });
 
-    describe.skip('and has saved an article', () => {
+    describe('and has saved an article', () => {
       const articleId = arbitraryArticleId().value;
       const articlePage = `localhost:8080/articles/activity/${articleId}`;
 
       beforeAll(async () => {
         await goto(articlePage);
-        await click('Save article');
+        await click('Save this article');
+        await click($('input[type="radio"]'));
+        await click($('button[type="submit"]'));
       });
 
       describe('and they click the trash can', () => {
