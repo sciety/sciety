@@ -100,3 +100,7 @@
     margin-bottom: functions.px-to-rem(8px);
   }
 }
+
+.article-actions__save_article {
+  @include button.primary-link();
+}
