@@ -1,5 +1,6 @@
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { htmlEscape } from 'escape-goat';
 import { renderListItems } from '../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
@@ -12,7 +13,7 @@ const renderList = (listContent: string) => `
 
 export const renderListedIn = (listedIn: ViewModel['listedIn']): HtmlFragment => pipe(
   listedIn,
-  RA.map((item) => toHtmlFragment(`<a href="/lists/${item.listId}">${item.listName}</a> (${item.listOwnerName})`)),
+  RA.map((item) => toHtmlFragment(`<a href="/lists/${item.listId}">${htmlEscape(item.listName)}</a> (${htmlEscape(item.listOwnerName)})`)),
   RA.match(
     () => 'This article is not in any list yet, why not add it to one of your lists.',
     flow(
