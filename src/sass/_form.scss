@@ -6,11 +6,6 @@
 
 $_microcopy-colour: settings.$colour-text-secondary;
 
-@mixin submit-button {
-  @include button.primary();
-  margin-right: functions.px-to-rem(settings.$default-form-element-separation);
-}
-
 @mixin form-with-borders-and-white-background {
   background-color: settings.$colour-white;
   padding: functions.px-to-rem(16px) functions.px-to-rem(settings.$default-gutter);
@@ -30,7 +25,8 @@ $_microcopy-colour: settings.$colour-text-secondary;
   @include form-with-borders-and-white-background();
 
   button[type="submit"] {
-    @include submit-button();
+    @include button.primary();
+    margin-right: functions.px-to-rem(settings.$default-form-element-separation);
   }
 }
 
@@ -61,11 +57,6 @@ $_microcopy-colour: settings.$colour-text-secondary;
 
 @mixin constraints {
   color: $_microcopy-colour;
-}
-
-@mixin submit-button {
-  @include button.primary();
-  margin-right: functions.px-to-rem(settings.$default-form-element-separation);
 }
 
 @mixin cancel-button {
