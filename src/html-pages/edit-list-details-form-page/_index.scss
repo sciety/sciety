@@ -36,10 +36,6 @@
   @include form.constraints();
 }
 
-.edit-list-details-form__save {
-  @include form.submit-button();
-}
-
 .edit-list-details-form__cancel {
   @include form.cancel-button();
 }

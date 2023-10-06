@@ -31,7 +31,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
     <textarea id="listDescription" name="description" cols="30" rows="5" class="edit-list-details-form__field" maxlength="${viewModel.listDescriptionMaxLength}">${viewModel.listDescription}</textarea>
     <p class="edit-list-details-form__constraints">Maximum ${viewModel.listDescriptionMaxLength} characters</p>
   </section>
-  <button class="edit-list-details-form__save">Save</button><a href="/lists/${viewModel.listId}" class="edit-list-details-form__cancel">Cancel</a>
+  <button type="submit">Save</button><a href="/lists/${viewModel.listId}" class="edit-list-details-form__cancel">Cancel</a>
 </form>
 `),
   });
