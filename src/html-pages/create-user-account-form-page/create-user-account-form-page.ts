@@ -29,12 +29,12 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
 );
 
 export const renderFormPage = (viewModel: ViewModel): HtmlPage => ({
-  title: 'Sign up',
+  title: viewModel.pageHeader,
   content: toHtmlFragment(`
     <div class="create-user-account-form-wrapper">
       <header class="page-header">
         ${renderErrorSummary(viewModel.errorSummary)}
-        <h1>Sign up</h1>
+        <h1>${viewModel.pageHeader}</h1>
       </header>
       <form action="/forms/create-user-account" method="post" class="create-user-account-form">
         <h2>Sign up &ndash; Step 2 of 2</h2>
