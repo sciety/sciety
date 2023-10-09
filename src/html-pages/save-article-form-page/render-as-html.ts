@@ -16,7 +16,11 @@ const renderLists = (lists: ViewModel['userLists']) => pipe(
   (divs) => divs.join(''),
 );
 
-const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? '' : '');
+const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
+  <label for="annotationContent">Why are you saving this article (optional)?</label>
+  <textarea id="annotationContent"></textarea>
+`
+  : '');
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.pageHeading,
