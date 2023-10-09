@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { executeCreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
+import * as listResource from '../../src/write-side/resources/list';
 import { dispatcher, Queries } from '../../src/read-models';
 import * as groupResource from '../../src/write-side/resources/group';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
@@ -43,16 +43,16 @@ const updateGroupDetails: UpdateGroupDetails = (adapters) => (command) => pipe(
 
 type CreateAnnotation = (adapters: EventStore) => CommandHandler<CreateAnnotationCommand>;
 
-const createAnnotation: CreateAnnotation = (adapters) => (command) => pipe(
+const createAnnotationCommandHandler: CreateAnnotation = (adapters) => (command) => pipe(
   adapters.getAllEvents,
-  T.map((events) => executeCreateAnnotationCommand(command)(events)),
+  T.map((events) => listResource.createAnnotation(command)(events)),
   TE.chainW(adapters.commitEvents),
 );
 
 const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) => ({
   addArticleToList: addArticleToListCommandHandler(eventStore),
   addGroup: addGroup(eventStore),
-  createAnnotation: createAnnotation(eventStore),
+  createAnnotation: createAnnotationCommandHandler(eventStore),
   createList: createListCommandHandler(eventStore),
   createUserAccount: createUserAccountCommandHandler(eventStore),
   followGroup: followCommandHandler(eventStore),

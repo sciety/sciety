@@ -1,13 +1,13 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { executeCreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
-import { arbitraryHtmlFragment } from '../helpers';
-import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryListId } from '../types/list-id.helper';
-import { constructEvent } from '../../src/domain-events';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { createAnnotation } from '../../../../src/write-side/resources/list/create-annotation';
+import { arbitraryHtmlFragment } from '../../../helpers';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { constructEvent } from '../../../../src/domain-events';
 
-describe('execute-create-annotation-command', () => {
+describe('create-annotation', () => {
   const target = {
     articleId: arbitraryArticleId(),
     listId: arbitraryListId(),
@@ -21,7 +21,7 @@ describe('execute-create-annotation-command', () => {
   describe('given the target does not have an annotation, when the command is executed', () => {
     const result = pipe(
       [],
-      executeCreateAnnotationCommand(command),
+      createAnnotation(command),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -38,7 +38,7 @@ describe('execute-create-annotation-command', () => {
       [
         constructEvent('AnnotationCreated')({ target, content: arbitraryHtmlFragment() }),
       ],
-      executeCreateAnnotationCommand(command),
+      createAnnotation(command),
       E.getOrElseW(shouldNotBeCalled),
     );
 

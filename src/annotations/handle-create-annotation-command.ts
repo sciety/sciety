@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { executeCreateAnnotationCommand } from './execute-create-annotation-command';
+import * as listResource from '../write-side/resources/list';
 import { Logger } from '../shared-ports';
 import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
@@ -49,7 +49,7 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dep
   ),
   TE.chainW((command) => pipe(
     dependencies.getAllEvents,
-    T.map(executeCreateAnnotationCommand(command)),
+    T.map(listResource.createAnnotation(command)),
   )),
   TE.chainTaskK(dependencies.commitEvents),
   TE.map(() => 'no-events-created'),
