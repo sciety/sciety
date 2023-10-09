@@ -80,7 +80,7 @@ $_avatar-height-coupled-to-buttons: 34px;
   }
 }
 
-.utility-bar__list_link_button {
+.utility-bar__list_link_primary_button {
   @include button.primary-link();
 }
 

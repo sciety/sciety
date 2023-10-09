@@ -24,7 +24,7 @@ const listsMenuItem = () => `
 
 const logInMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/log-in" class="utility-bar__list_link_button">Log In</a>
+    <a href="/log-in" class="utility-bar__list_link_primary_button">Log In</a>
   </li>
 `;
 
