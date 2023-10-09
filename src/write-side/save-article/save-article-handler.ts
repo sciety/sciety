@@ -54,10 +54,6 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
 
   const articleId = params.value.body[articleIdFieldName];
   const listId = params.value.body.listId;
-  const command = {
-    articleId,
-    listId,
-  };
 
   const logEntry = checkUserOwnsList(dependencies, listId, params.value.userId);
   if (E.isLeft(logEntry)) {
@@ -68,7 +64,10 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
   }
 
   await pipe(
-    command,
+    {
+      articleId,
+      listId,
+    },
     dependencies.addArticleToList,
     TE.getOrElseW((error) => {
       dependencies.logger('error', 'saveArticleHandler failed', { error });
