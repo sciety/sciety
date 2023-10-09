@@ -38,7 +38,7 @@ describe('login-via-call-to-action', () => {
 
       it('i am still on the group page and I am logged in', async () => {
         const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_button').text();
+        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
 
         expect(result).toBe(groupPageAboutTab);
         expect(buttonText).toBe('Log Out');
@@ -58,7 +58,7 @@ describe('login-via-call-to-action', () => {
       });
 
       it('i am still on the article page and I am logged in', async () => {
-        const buttonText = await $('.utility-bar__list_link_button').text();
+        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
         const result = await currentURL();
 
         expect(result).toContain(articlePage);

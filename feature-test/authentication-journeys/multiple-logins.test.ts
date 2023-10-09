@@ -38,7 +38,7 @@ describe('multiple-logins', () => {
 
       it('i am still on the Sciety feed page and I am logged in', async () => {
         const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_button').text();
+        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
 
         expect(result).toBe(`http://${scietyFeedPage}`);
         expect(buttonText).toBe('Log Out');

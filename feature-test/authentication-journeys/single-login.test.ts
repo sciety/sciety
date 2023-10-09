@@ -51,7 +51,7 @@ describe('single-login', () => {
 
       it(`i am still on the ${name} and I am logged in`, async () => {
         const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_button').text();
+        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
 
         expect(result).toBe(`http://localhost:8080${page}`);
         expect(buttonText).toBe('Log Out');
@@ -77,7 +77,7 @@ describe('single-login', () => {
 
       it('i am still on the List page and I am logged in', async () => {
         const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_button').text();
+        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
 
         expect(result).toBe(`http://localhost:8080${page}`);
         expect(buttonText).toBe('Log Out');

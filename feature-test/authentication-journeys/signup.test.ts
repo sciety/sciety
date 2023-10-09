@@ -31,7 +31,7 @@ describe('signup', () => {
     });
 
     it('i am logged in', async () => {
-      const buttonText = await $('.utility-bar__list_link_button').text();
+      const buttonText = await $('.utility-bar__list_link_secondary_button').text();
 
       expect(buttonText).toBe('Log Out');
     });
