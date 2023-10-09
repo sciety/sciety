@@ -84,7 +84,7 @@ $_avatar-height-coupled-to-buttons: 34px;
   @include button.primary-link();
 }
 
-.utility-bar__list_link_sign_up_button {
+.utility-bar__list_link_secondary_button {
   @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;

@@ -30,13 +30,13 @@ const logInMenuItem = () => `
 
 const logOutMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/log-out" class="utility-bar__list_link_button">Log Out</a>
+    <a href="/log-out" class="utility-bar__list_link_secondary_button">Log Out</a>
   </li>
 `;
 
 const signUpMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/sign-up" class="utility-bar__list_link_sign_up_button">Sign Up</a>
+    <a href="/sign-up" class="utility-bar__list_link_secondary_button">Sign Up</a>
   </li>
 `;
 
