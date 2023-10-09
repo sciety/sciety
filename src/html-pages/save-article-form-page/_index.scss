@@ -12,3 +12,7 @@
   align-items: center;
   margin-bottom: functions.px-to-rem(8px);
 }
+
+.save-article-form-label {
+  @include form.labelling();
+}
