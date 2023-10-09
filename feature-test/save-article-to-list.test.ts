@@ -15,19 +15,19 @@ describe('save-article-to-list', () => {
     const articlePage = `localhost:8080/articles/activity/${articleId}`;
     let listId: ListId;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       await openBrowser();
       await createUserAccountAndLogIn(testUserId, userHandle);
       listId = await getIdOfFirstListOwnedByUser(testUserId);
       await goto(articlePage);
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
       await closeBrowser();
     });
 
     describe('and saves an article that isn\'t in any list, without creating an annotation', () => {
-      beforeAll(async () => {
+      beforeEach(async () => {
         await click('Save this article');
         await click($('input[type="radio"]'));
         await click($('button[type="submit"]'));
