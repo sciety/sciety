@@ -1,18 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../../types/html-page';
 import { UserGeneratedInput } from '../../types/user-generated-input';
 import { ViewModel } from './view-model';
-
-export const paramsCodec = t.type({
-  errorSummary: tt.optionFromNullable(t.unknown),
-});
-
-type Params = t.TypeOf<typeof paramsCodec>;
+import { ConstructPage } from '../construct-page';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,
@@ -57,16 +50,15 @@ export const renderFormPage = (viewModel: ViewModel): HtmlPage => ({
   `),
 });
 
-const constructViewModel = (params: Params): ViewModel => ({
+const emptyFormViewModel: ViewModel = {
   pageHeader: 'Sign up',
-  errorSummary: params.errorSummary,
+  errorSummary: O.none,
   handle: '' as UserGeneratedInput,
   fullName: '' as UserGeneratedInput,
-});
+};
 
-export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, HtmlPage> => pipe(
-  params,
-  constructViewModel,
+export const createUserAccountFormPage: ConstructPage = (): TE.TaskEither<never, HtmlPage> => pipe(
+  emptyFormViewModel,
   renderFormPage,
   TE.right,
 );

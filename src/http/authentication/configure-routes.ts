@@ -15,11 +15,10 @@ import {
 import { catchErrors } from '../catch-errors';
 import { createUserAccount } from '../forms/create-user-account';
 import { pageHandler } from '../page-handler';
-import { createUserAccountFormPage, paramsCodec as createUserAccountFormPageParamsCodec } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
+import { createUserAccountFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
 
 import { CollectedPorts } from '../../infrastructure';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
-import { createPageFromParams } from '../create-page-from-params';
 import { saveAuthenticationDestination } from '../authentication-destination';
 
 export type Config = LoginMiddlewaresConfig;
@@ -44,7 +43,7 @@ const configureAuth0Routes = (
     '/create-account-form',
     pageHandler(
       adapters,
-      createPageFromParams(createUserAccountFormPageParamsCodec, createUserAccountFormPage),
+      createUserAccountFormPage,
       createUserAccountFormPageLayout,
     ),
   );
