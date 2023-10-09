@@ -29,7 +29,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
   <section class="edit-list-details-form__section">
     <label for="listDescription" class="edit-list-details-form__label">Description (optional)</label>
     <p class="edit-list-details-form__helper_text">Add further context to help readers understand your list.</p>
-    <textarea id="listDescription" name="description" cols="30" rows="5" class="edit-list-details-form__field" maxlength="${viewModel.listDescriptionMaxLength}">${viewModel.listDescription}</textarea>
+    <textarea id="listDescription" name="description" cols="30" rows="5" maxlength="${viewModel.listDescriptionMaxLength}">${viewModel.listDescription}</textarea>
     <p class="edit-list-details-form__constraints">Maximum ${viewModel.listDescriptionMaxLength} characters</p>
   </section>
   <button type="submit">Save</button><a href="/lists/${viewModel.listId}" class="edit-list-details-form__cancel">Cancel</a>

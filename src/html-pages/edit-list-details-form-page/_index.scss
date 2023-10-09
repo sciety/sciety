@@ -28,10 +28,6 @@
   @include form.helper-text();
 }
 
-.edit-list-details-form__field {
-  @include form.field();
-}
-
 .edit-list-details-form__constraints {
   @include form.constraints();
 }
