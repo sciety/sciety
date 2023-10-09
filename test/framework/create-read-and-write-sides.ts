@@ -43,17 +43,16 @@ const updateGroupDetails: UpdateGroupDetails = (adapters) => (command) => pipe(
 
 type CreateAnnotation = (adapters: EventStore) => CommandHandler<CreateAnnotationCommand>;
 
-const createAnnotion: CreateAnnotation = (adapters) => (command) => pipe(
+const createAnnotation: CreateAnnotation = (adapters) => (command) => pipe(
   adapters.getAllEvents,
   T.map((events) => executeCreateAnnotationCommand(command)(events)),
-  TE.rightTask,
   TE.chainW(adapters.commitEvents),
 );
 
 const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) => ({
   addArticleToList: addArticleToListCommandHandler(eventStore),
   addGroup: addGroup(eventStore),
-  createAnnotation: createAnnotion(eventStore),
+  createAnnotation: createAnnotation(eventStore),
   createList: createListCommandHandler(eventStore),
   createUserAccount: createUserAccountCommandHandler(eventStore),
   followGroup: followCommandHandler(eventStore),

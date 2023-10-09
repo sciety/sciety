@@ -47,7 +47,7 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dep
       dependencies.logger('debug', 'Received CreateAnnotation command', { command }),
     ),
   ),
-  TE.chainTaskK((command) => pipe(
+  TE.chainW((command) => pipe(
     dependencies.getAllEvents,
     T.map(executeCreateAnnotationCommand(command)),
   )),

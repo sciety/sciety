@@ -1,5 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import { eqAnnotationTarget } from '../types/annotation-target';
 import {
   DomainEvent, EventOfType, isEventOfType, constructEvent,
@@ -8,7 +9,7 @@ import { CreateAnnotationCommand } from '../write-side/commands';
 
 type ExecuteCreateAnnotationCommand = (command: CreateAnnotationCommand)
 => (events: ReadonlyArray<DomainEvent>)
-=> ReadonlyArray<EventOfType<'AnnotationCreated'>>;
+=> E.Either<never, ReadonlyArray<EventOfType<'AnnotationCreated'>>>;
 
 export const executeCreateAnnotationCommand: ExecuteCreateAnnotationCommand = (command) => (events) => pipe(
   events,
@@ -18,4 +19,5 @@ export const executeCreateAnnotationCommand: ExecuteCreateAnnotationCommand = (c
     () => [constructEvent('AnnotationCreated')({ target: command.target, content: command.content })],
     () => [],
   ),
+  E.right,
 );

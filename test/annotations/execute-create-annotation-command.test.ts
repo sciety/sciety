@@ -1,4 +1,6 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { executeCreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
 import { arbitraryHtmlFragment } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -20,6 +22,7 @@ describe('execute-create-annotation-command', () => {
     const result = pipe(
       [],
       executeCreateAnnotationCommand(command),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
     it('returns an AnnotationCreated event that matches the intent of the command', () => {
@@ -36,6 +39,7 @@ describe('execute-create-annotation-command', () => {
         constructEvent('AnnotationCreated')({ target, content: arbitraryHtmlFragment() }),
       ],
       executeCreateAnnotationCommand(command),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
     it('returns no events', () => {
