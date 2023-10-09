@@ -6,6 +6,7 @@ import { arbitraryUserId } from '../../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { UserHandle } from '../../src/types/user-handle';
+import { isLoggedIn } from '../helpers/is-logged-in';
 
 describe('signup', () => {
   beforeEach(async () => {
@@ -31,9 +32,7 @@ describe('signup', () => {
     });
 
     it('i am logged in', async () => {
-      const buttonText = await $('.utility-bar__list_link_secondary_button').text();
-
-      expect(buttonText).toBe('Log Out');
+      expect(await isLoggedIn()).toBe(true);
     });
 
     it('the handle I supplied is used for my account', async () => {
