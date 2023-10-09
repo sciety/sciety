@@ -1,10 +1,11 @@
 import {
-  $, click, currentURL, goto, openBrowser,
+  click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import * as api from '../helpers/api-helpers';
 import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
+import { isLoggedIn } from '../helpers/is-logged-in';
 
 describe('multiple-logins', () => {
   const createUserAccountCommand = arbitraryCreateUserAccountCommand();
@@ -36,12 +37,12 @@ describe('multiple-logins', () => {
         await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
-      it('i am still on the Sciety feed page and I am logged in', async () => {
-        const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
+      it('i am still on the Sciety feed page', async () => {
+        expect(await currentURL()).toBe(`http://${scietyFeedPage}`);
+      });
 
-        expect(result).toBe(`http://${scietyFeedPage}`);
-        expect(buttonText).toBe('Log Out');
+      it('i am logged in', async () => {
+        expect(await isLoggedIn()).toBe(true);
       });
     });
   });

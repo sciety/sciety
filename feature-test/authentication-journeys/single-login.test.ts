@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import {
-  $, click, currentURL, goto, openBrowser,
+  click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
@@ -8,6 +8,7 @@ import { getIdOfFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.
 import * as api from '../helpers/api-helpers';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
+import { isLoggedIn } from '../helpers/is-logged-in';
 
 describe('single-login', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
@@ -49,12 +50,14 @@ describe('single-login', () => {
         await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
-      it(`i am still on the ${name} and I am logged in`, async () => {
+      it(`i am still on the ${name}`, async () => {
         const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
 
         expect(result).toBe(`http://localhost:8080${page}`);
-        expect(buttonText).toBe('Log Out');
+      });
+
+      it('i am logged in', async () => {
+        expect(await isLoggedIn()).toBe(true);
       });
 
       it.todo('clicking the back button doesn\'t result in an error');
@@ -75,12 +78,12 @@ describe('single-login', () => {
         await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
-      it('i am still on the List page and I am logged in', async () => {
-        const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
+      it('i am still on the List page', async () => {
+        expect(await currentURL()).toBe(`http://localhost:8080${page}`);
+      });
 
-        expect(result).toBe(`http://localhost:8080${page}`);
-        expect(buttonText).toBe('Log Out');
+      it('i am logged in', async () => {
+        expect(await isLoggedIn()).toBe(true);
       });
 
       it.todo('clicking the back button doesn\'t result in an error');

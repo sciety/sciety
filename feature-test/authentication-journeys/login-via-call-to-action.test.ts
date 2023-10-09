@@ -1,5 +1,5 @@
 import {
-  $, click, currentURL, goto, openBrowser,
+  click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { screenshotTeardown } from '../utilities';
 import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
@@ -7,6 +7,7 @@ import { arbitraryArticleId } from '../../test/types/article-id.helper';
 import * as api from '../helpers/api-helpers';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
+import { isLoggedIn } from '../helpers/is-logged-in';
 
 describe('login-via-call-to-action', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
@@ -36,12 +37,12 @@ describe('login-via-call-to-action', () => {
         await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
-      it('i am still on the group page and I am logged in', async () => {
-        const result = await currentURL();
-        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
+      it('i am still on the group page', async () => {
+        expect(await currentURL()).toBe(groupPageAboutTab);
+      });
 
-        expect(result).toBe(groupPageAboutTab);
-        expect(buttonText).toBe('Log Out');
+      it('i am logged in', async () => {
+        expect(await isLoggedIn()).toBe(true);
       });
     });
   });
@@ -57,12 +58,12 @@ describe('login-via-call-to-action', () => {
         await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
 
-      it('i am still on the article page and I am logged in', async () => {
-        const buttonText = await $('.utility-bar__list_link_secondary_button').text();
-        const result = await currentURL();
+      it('i am still on the article page', async () => {
+        expect(await currentURL()).toContain(articlePage);
+      });
 
-        expect(result).toContain(articlePage);
-        expect(buttonText).toBe('Log Out');
+      it('i am logged in', async () => {
+        expect(await isLoggedIn()).toBe(true);
       });
     });
   });
