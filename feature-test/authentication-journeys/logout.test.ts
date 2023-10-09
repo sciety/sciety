@@ -1,10 +1,11 @@
 import {
-  $, click, currentURL, goto, openBrowser,
+  click, currentURL, goto, openBrowser,
 } from 'taiko';
 import { createUserAccountAndLogIn } from '../helpers/create-user-account-and-log-in.helper';
 import { screenshotTeardown } from '../utilities';
 import { arbitraryUserId } from '../../test/types/user-id.helper';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
+import { isLoggedOut } from '../helpers/is-logged-out';
 
 describe('logout', () => {
   beforeEach(async () => {
@@ -25,9 +26,7 @@ describe('logout', () => {
       });
 
       it('i am logged out', async () => {
-        const buttonText = await $('.utility-bar__list_link_button').text();
-
-        expect(buttonText).toBe('Log In');
+        expect(await isLoggedOut()).toBe(true);
       });
 
       it('i am on the home page', async () => {
