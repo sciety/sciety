@@ -2,9 +2,9 @@ import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import * as tt from 'io-ts-types';
 import * as t from 'io-ts';
+import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
 } from '../authentication-and-logging-in-of-sciety-users';
@@ -24,33 +24,48 @@ const unvalidatedFormDetailsCodec = t.type({
 });
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
-  await pipe(
-    validateAndExecuteCommand(context, dependencies),
-    TE.bimap(
-      () => {
-        const page = pipe(
-          context.request.body,
-          unvalidatedFormDetailsCodec.decode,
-          E.getOrElse(() => ({
-            fullName: '' as UserGeneratedInput,
-            handle: '' as UserGeneratedInput,
-          })),
-          (formDetails) => ({
-            pageHeader: 'Sign up',
-            errorSummary: O.some(''),
-            handle: formDetails.fullName,
-            fullName: formDetails.fullName,
-          }) satisfies ViewModel,
-          renderFormPage,
-          E.right,
-          toWebPage(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
-        );
-        context.response.status = page.status;
-        context.response.type = 'html';
-        context.response.body = page.body;
-      },
-      () => redirectToAuthenticationDestination(context),
-    ),
-  )();
+  const result = await validateAndExecuteCommand(context, dependencies)();
+
+  if (E.isRight(result)) {
+    redirectToAuthenticationDestination(context);
+    return;
+  }
+
+  if (E.isLeft(result) && result.left === 'command-failed') {
+    context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    context.response.body = 'Your input appears to be valid but we failed to handle it.';
+    return;
+  }
+
+  if (E.isLeft(result) && result.left === 'no-authenticated-user-id') {
+    context.response.status = StatusCodes.UNAUTHORIZED;
+    context.response.body = 'You must be authenticated to perform this action.';
+    return;
+  }
+
+  if (E.isLeft(result) && result.left === 'validation-error') {
+    const page = pipe(
+      context.request.body,
+      unvalidatedFormDetailsCodec.decode,
+      E.getOrElse(() => ({
+        fullName: '' as UserGeneratedInput,
+        handle: '' as UserGeneratedInput,
+      })),
+      (formDetails) => ({
+        pageHeader: 'Sign up',
+        errorSummary: O.some(''),
+        handle: formDetails.fullName,
+        fullName: formDetails.fullName,
+      }) satisfies ViewModel,
+      renderFormPage,
+      E.right,
+      toWebPage(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
+    );
+    context.response.status = page.status;
+    context.response.type = 'html';
+    context.response.body = page.body;
+    return;
+  }
+
   await next();
 };
