@@ -16,6 +16,8 @@ const renderLists = (lists: ViewModel['userLists']) => pipe(
   (divs) => divs.join(''),
 );
 
+const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? '' : '');
+
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.pageHeading,
   content: toHtmlFragment(`
@@ -31,6 +33,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
       <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
       ${renderLists(viewModel.userLists)}
     </fieldset>
+    ${renderAddAnnotation()}
     <button type="submit">
       Save article
     </button>
