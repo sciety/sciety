@@ -1,10 +1,5 @@
-import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../../types/html-page';
-import { ArticleId } from '../../types/article-id';
-import * as LID from '../../types/list-id';
-
-import { renderPage } from '../create-annotation-form-page/render-page';
 
 export const referencePage: HtmlPage = {
   title: 'Reference',
@@ -45,17 +40,12 @@ export const referencePage: HtmlPage = {
             <label for="list-id-3">List C</label>
           </div>
         </fieldset>
+        <label for="annotationContent">Annotation content</label>
+        <textarea id="annotationContent" name="annotationContent" rows="10"></textarea>
         <button type="submit">
           Submit
         </button>
       </form>
-      <h3 class="_style-guide-heading">Create annotation</h3>
-      ${renderPage({
-    articleId: new ArticleId('10.1101/1234'),
-    listId: LID.fromValidatedString('foo'),
-    articleTitle: sanitise(toHtmlFragment('New Article')),
-    listName: 'Someone\'s saved articles',
-  })}
     </div>
   `),
 };
