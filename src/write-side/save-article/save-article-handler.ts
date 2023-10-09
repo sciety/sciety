@@ -77,5 +77,5 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     T.map(() => undefined),
   )();
 
-  context.redirect(`/articles/${articleId.value}`);
+  context.redirect(`/lists/${listId}`);
 };

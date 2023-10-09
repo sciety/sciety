@@ -4,6 +4,8 @@ import {
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { arbitraryUserHandle } from '../test/types/user-handle.helper';
+import { ListId } from '../src/types/list-id';
+import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 
 describe('save-article-to-list', () => {
   describe('when a new user logs in and visits an article page', () => {
@@ -11,10 +13,12 @@ describe('save-article-to-list', () => {
     const testUserId = arbitraryUserId();
     const articleId = '10.1101/2022.06.06.494969';
     const articlePage = `localhost:8080/articles/activity/${articleId}`;
+    let listId: ListId;
 
     beforeAll(async () => {
       await openBrowser();
       await createUserAccountAndLogIn(testUserId, userHandle);
+      listId = await getIdOfFirstListOwnedByUser(testUserId);
       await goto(articlePage);
     });
 
@@ -29,8 +33,8 @@ describe('save-article-to-list', () => {
         await click($('button[type="submit"]'));
       });
 
-      it('i am returned to the same article page', async () => {
-        expect(await currentURL()).toContain(articlePage);
+      it('i am taken to the list page', async () => {
+        expect(await currentURL()).toContain(listId);
       });
     });
   });
