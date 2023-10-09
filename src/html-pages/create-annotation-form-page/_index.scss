@@ -10,10 +10,6 @@
   font-weight: normal;
 }
 
-.annotation-form-controls {
-  display: flex;
-}
-
 .annotation-form-submit {
   @include button.primary();
 }

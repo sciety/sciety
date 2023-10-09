@@ -12,8 +12,6 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
       <textarea id="annotationContent" name="annotationContent" rows="10"></textarea>
       <input type="hidden" name="${listIdInputName}" value="${viewModel.listId}">
       <input type="hidden" name="${articleIdInputName}" value="${viewModel.articleId.value}">
-      <div class="annotation-form-controls">
-        <button class="annotation-form-submit">Create annotation</button>
-      </div>
+      <button class="annotation-form-submit">Create annotation</button>
     </form>
   `);
