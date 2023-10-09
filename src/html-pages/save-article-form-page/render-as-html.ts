@@ -17,8 +17,10 @@ const renderLists = (lists: ViewModel['userLists']) => pipe(
 );
 
 const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
+<section class="save-article-form-section">
   <label for="annotationContent" class="save-article-form-label">Why are you saving this article (optional)?</label>
   <textarea id="annotationContent"></textarea>
+</section>
 `
   : '');
 
