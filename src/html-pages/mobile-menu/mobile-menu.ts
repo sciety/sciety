@@ -27,14 +27,14 @@ const renderUserMenuLinks = (user: O.Option<UserDetails>) => pipe(
         <a href="/log-in" class="mobile-menu__link mobile-menu__link_primary_button">Log In</a>
       </li>
       <li>
-        <a href="/sign-up" class="mobile-menu__link mobile-menu__link_sign_up_button">Sign Up</a>
+        <a href="/sign-up" class="mobile-menu__link mobile-menu__link_secondary_button">Sign Up</a>
       </li>
     `,
     (loggedInUser) => `
       <li><a href="/my-feed" class="mobile-menu__link">My Feed</a></li>
       <li><a href="/users/${loggedInUser.handle}" class="mobile-menu__link">My Lists</a></li>
       <li>
-        <a href="/log-out" class="mobile-menu__link mobile-menu__link_primary_button">Log Out</a>
+        <a href="/log-out" class="mobile-menu__link mobile-menu__link_secondary_button">Log Out</a>
       </li>
     `,
   ),

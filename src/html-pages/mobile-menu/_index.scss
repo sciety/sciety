@@ -69,7 +69,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   @include button.primary-link();
 }
 
-.mobile-menu__link_sign_up_button {
+.mobile-menu__link_secondary_button {
   @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
