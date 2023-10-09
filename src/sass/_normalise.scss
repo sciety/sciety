@@ -116,6 +116,10 @@ textarea {
   font-size: inherit;
 }
 
+textarea {
+  @include form.field();
+}
+
 button {
   @include typography.button();
   cursor: pointer;
