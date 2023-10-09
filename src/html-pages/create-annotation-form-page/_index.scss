@@ -17,8 +17,3 @@
 .annotation-form-submit {
   @include button.primary();
 }
-
-.annotation-form-reset {
-  @include button.secondary();
-  margin-left: auto;
-}

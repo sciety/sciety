@@ -14,7 +14,6 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
       <input type="hidden" name="${articleIdInputName}" value="${viewModel.articleId.value}">
       <div class="annotation-form-controls">
         <button class="annotation-form-submit">Create annotation</button>
-        <button type="reset" class="annotation-form-reset">Reset</button>
       </div>
     </form>
   `);
