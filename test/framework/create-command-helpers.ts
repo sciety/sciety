@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { CreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { UserId } from '../../src/types/user-id';
@@ -10,7 +9,9 @@ import { ArticleId } from '../../src/types/article-id';
 import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
-import { AddGroupCommand, CreateUserAccountCommand, RecordEvaluationPublicationCommand } from '../../src/write-side/commands';
+import {
+  AddGroupCommand, CreateAnnotationCommand, CreateUserAccountCommand, RecordEvaluationPublicationCommand,
+} from '../../src/write-side/commands';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,

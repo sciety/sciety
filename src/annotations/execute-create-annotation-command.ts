@@ -1,15 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { AnnotationTarget, eqAnnotationTarget } from '../types/annotation-target';
-import { HtmlFragment } from '../types/html-fragment';
+import { eqAnnotationTarget } from '../types/annotation-target';
 import {
   DomainEvent, EventOfType, isEventOfType, constructEvent,
 } from '../domain-events';
-
-export type CreateAnnotationCommand = {
-  content: HtmlFragment,
-  target: AnnotationTarget,
-};
+import { CreateAnnotationCommand } from '../write-side/commands';
 
 type ExecuteCreateAnnotationCommand = (command: CreateAnnotationCommand)
 => (events: ReadonlyArray<DomainEvent>)

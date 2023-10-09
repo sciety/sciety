@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { CreateAnnotationCommand, executeCreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
+import { executeCreateAnnotationCommand } from '../../src/annotations/execute-create-annotation-command';
 import { dispatcher, Queries } from '../../src/read-models';
 import * as groupResource from '../../src/write-side/resources/group';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
@@ -15,7 +15,7 @@ import {
 } from '../../src/write-side/command-handlers';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler';
 import { CommandHandler } from '../../src/types/command-handler';
-import { AddGroupCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
+import { AddGroupCommand, CreateAnnotationCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
 import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
 import { createInMemoryEventStore } from './create-in-memory-event-store';
 import { dummyLogger } from '../dummy-logger';
