@@ -9,7 +9,7 @@ export const addArticleToListCommandCodec = t.intersection([
     listId: listIdCodec,
   }),
   t.partial({
-    annotation: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: false }),
+    annotation: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: true }),
   }),
 ]);
 
