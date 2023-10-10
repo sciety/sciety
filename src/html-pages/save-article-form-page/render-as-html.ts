@@ -27,6 +27,10 @@ const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
 const renderLists = (userLists: ViewModel['userLists'], articleName: ViewModel['article']['name']) => {
   if (userLists.length > 1) {
     return `
+      <dl>
+        <dt>Article</dt>
+        <dd>${articleName}</dd>
+      </dl>
       <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
       <legend>
         Which list do you want to save this article to?
