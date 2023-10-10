@@ -7,7 +7,7 @@ import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 
-describe('execute-command', () => {
+describe('add-article', () => {
   const listId = arbitraryListId();
   const articleId = arbitraryArticleId();
 
@@ -26,30 +26,36 @@ describe('execute-command', () => {
         }),
       );
 
-      it('succeeds with no events raised', () => {
+      it('succeeds, doing nothing', () => {
         expect(result).toStrictEqual(E.right([]));
       });
     });
 
     describe('and the article is not in the list', () => {
-      const result = pipe(
-        [
-          constructEvent('ListCreated')({
-            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+      describe('when no annotation is provided in the command', () => {
+        const result = pipe(
+          [
+            constructEvent('ListCreated')({
+              listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+            }),
+          ],
+          addArticle({
+            listId,
+            articleId,
           }),
-        ],
-        addArticle({
-          listId,
-          articleId,
-        }),
-      );
+        );
 
-      it('succeeds and raises an event', () => {
-        expect(result).toStrictEqual(E.right([expect.objectContaining({
-          type: 'ArticleAddedToList',
-          articleId,
-          listId,
-        })]));
+        it('succeeds, adding the article', () => {
+          expect(result).toStrictEqual(E.right([expect.objectContaining({
+            type: 'ArticleAddedToList',
+            articleId,
+            listId,
+          })]));
+        });
+      });
+
+      describe('when an annotation is provided in the command', () => {
+        it.todo('succeeds, adding the article and creating the annotation');
       });
     });
   });
