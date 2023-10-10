@@ -6,6 +6,7 @@ import { addArticle } from '../../../../src/write-side/resources/list/add-articl
 import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
 
 describe('add-article', () => {
   const listId = arbitraryListId();
@@ -55,7 +56,37 @@ describe('add-article', () => {
       });
 
       describe('when an annotation is provided in the command', () => {
-        it.todo('succeeds, adding the article and creating the annotation');
+        const annotation = arbitraryUserGeneratedInput();
+        const result = pipe(
+          [
+            constructEvent('ListCreated')({
+              listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+            }),
+          ],
+          addArticle({
+            listId,
+            articleId,
+            annotation,
+          }),
+        );
+
+        it.failing('succeeds, adding the article and creating the annotation', () => {
+          expect(result).toStrictEqual(E.right([
+            expect.objectContaining({
+              type: 'ArticleAddedToList',
+              articleId,
+              listId,
+            }),
+            expect.objectContaining({
+              type: 'AnnotationCreated',
+              target: {
+                articleId,
+                listId,
+              },
+              content: annotation,
+            }),
+          ]));
+        });
       });
     });
   });
