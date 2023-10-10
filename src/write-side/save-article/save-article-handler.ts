@@ -22,15 +22,11 @@ type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
 
 const contextCodec = t.type({
   request: t.type({
-    body: t.intersection([
-      t.strict({
-        [articleIdFieldName]: DoiFromString,
-        listId: listIdCodec,
-      }),
-      t.partial({
-        annotation: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: true }),
-      }),
-    ]),
+    body: t.strict({
+      [articleIdFieldName]: DoiFromString,
+      listId: listIdCodec,
+      annotation: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: true }),
+    }),
   }),
 });
 

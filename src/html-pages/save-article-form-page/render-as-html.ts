@@ -22,7 +22,7 @@ const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
   <textarea id="annotationContent" name="annotation"></textarea>
 </section>
 `
-  : '');
+  : '<input type="hidden" name="annotation" value="">');
 
 const renderLists = (userLists: ViewModel['userLists'], articleName: ViewModel['article']['name']) => {
   if (userLists.length > 1) {
