@@ -28,6 +28,23 @@ $_microcopy-colour: settings.$colour-text-secondary;
     @include button.primary();
     margin-right: functions.px-to-rem(settings.$default-form-element-separation);
   }
+
+  dl {
+    display: grid;
+    grid-template-columns: 2fr 8fr;
+    row-gap: functions.px-to-rem(6px);
+    padding: functions.px-to-rem(12px) 0;
+    margin-bottom: 1.5rem;
+    font-size: functions.px-to-rem(20px);
+  
+    dt {
+      font-weight: bold;
+    }
+  
+    dd {
+      margin-left: 0;
+    }
+  }
 }
 
 @mixin section {

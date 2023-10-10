@@ -39,10 +39,10 @@ const renderLists = (userLists: ViewModel['userLists']) => {
   const list = userLists[0];
   return `
   <input type="hidden" name="listId" value="${list.id}"/>
-  <div>
-    <p>Save to:</p>
-    <p>${list.name}</p>
-  </div>
+  <dl>
+    <dt>List</dt>
+    <dd>${list.name}</dd>
+  </dl>
   `;
 };
 

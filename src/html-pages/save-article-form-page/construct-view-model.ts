@@ -29,6 +29,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.map((partial) => ({
     articleId: params.articleId,
     userLists: partial.userLists,
-    pageHeading: toHtmlFragment(`Save "${partial.article.title}" to my list`),
+    pageHeading: toHtmlFragment(`Save "${partial.article.title}"`),
   })),
 );
