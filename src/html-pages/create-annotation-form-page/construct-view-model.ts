@@ -11,6 +11,7 @@ import { DataError } from '../../types/data-error';
 import * as DE from '../../types/data-error';
 import { ArticleId } from '../../types/article-id';
 import { ListId } from '../../types/list-id';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 export type Dependencies = Queries & ExternalQueries;
 
@@ -42,5 +43,6 @@ export const constructViewModel = (
     ...partial,
     articleId,
     listId,
+    pageHeading: toHtmlFragment('Create an annotation'),
   })),
 );

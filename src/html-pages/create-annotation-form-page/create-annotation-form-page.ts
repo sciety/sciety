@@ -26,7 +26,7 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = (dependencies)
   TE.bimap(
     toErrorPage,
     (viewModel) => ({
-      title: 'Create an annotation',
+      title: viewModel.pageHeading,
       content: renderPage(viewModel),
     }),
   ),

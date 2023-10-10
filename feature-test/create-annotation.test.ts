@@ -37,7 +37,7 @@ describe('create-annotation', () => {
           await click('saved articles');
           await click('Add annotation');
           await write(annotationContent, into(textBox('Annotation content')));
-          await click('Create annotation');
+          await click($('button[type="submit"]'));
         });
 
         it('i am back on the list page', async () => {
