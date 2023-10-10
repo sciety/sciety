@@ -71,6 +71,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     {
       articleId,
       listId,
+      annotation: params.value.body.annotation,
     },
     dependencies.addArticleToList,
     TE.getOrElseW((error) => {
