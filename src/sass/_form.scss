@@ -1,14 +1,16 @@
-@use 'functions';
-@use 'settings';
-@use 'typography';
-@use 'button';
-@use 'breakpoints';
+@use "functions";
+@use "settings";
+@use "typography";
+@use "button";
+@use "breakpoints";
 
 $_microcopy-colour: settings.$colour-text-secondary;
+$_label-font-size: functions.px-to-rem(20px);
 
 @mixin form-with-borders-and-white-background {
   background-color: settings.$colour-white;
-  padding: functions.px-to-rem(16px) functions.px-to-rem(settings.$default-gutter);
+  padding: functions.px-to-rem(16px)
+    functions.px-to-rem(settings.$default-gutter);
 
   border: settings.$border-width solid settings.$colour-furniture;
   border-left-width: 0;
@@ -26,7 +28,9 @@ $_microcopy-colour: settings.$colour-text-secondary;
 
   button[type="submit"] {
     @include button.primary();
-    margin-right: functions.px-to-rem(settings.$default-form-element-separation);
+    margin-right: functions.px-to-rem(
+      settings.$default-form-element-separation
+    );
   }
 
   dl {
@@ -35,12 +39,12 @@ $_microcopy-colour: settings.$colour-text-secondary;
     row-gap: functions.px-to-rem(6px);
     padding: functions.px-to-rem(12px) 0;
     margin-bottom: 1.5rem;
-    font-size: functions.px-to-rem(20px);
-  
+    font-size: $_label-font-size;
+
     dt {
       font-weight: bold;
     }
-  
+
     dd {
       margin-left: 0;
     }
@@ -54,7 +58,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
 @mixin labelling {
   display: block;
   font-weight: bold;
-  font-size: functions.px-to-rem(20px);
+  font-size: $_label-font-size;
   margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
 }
 
