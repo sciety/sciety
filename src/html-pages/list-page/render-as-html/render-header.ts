@@ -28,11 +28,11 @@ const renderRelatedArticlesLink = (url: ViewModel['relatedArticlesLink']) => pip
   ),
 );
 
-const renderSubscribeLink = (listId: ViewModel['listId'], editCapability: ViewModel['editCapability']) => pipe(
-  editCapability,
-  B.fold(
-    () => `<a class="list-page-actions__subscribe" href="/lists/${listId}/subscribe">Subscribe</a>`,
+const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
+  subscribeHref,
+  O.fold(
     () => '',
+    (href) => `<a class="list-page-actions__subscribe" href="${href}">Subscribe</a>`,
   ),
 );
 
@@ -48,7 +48,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
     <section class="list-page-actions">
       ${renderEditDetailsLink(viewModel.editCapability, viewModel.listId)}
       ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
-      ${renderSubscribeLink(viewModel.listId, viewModel.editCapability)}
+      ${renderSubscribeLink(viewModel.subscribeHref)}
     </section>
   </header>`,
   toHtmlFragment,
