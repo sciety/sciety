@@ -22,6 +22,16 @@ export const referencePage: HtmlPage = {
       <h2 class="_style-guide-heading">Forms</h2>
       <h3 class="_style-guide-heading">Standard</h3>
       <form class="standard-form" method="post" action="#">
+        <dl>
+          <dt>Article</dt>
+          <dd>The protective function of an immunity protein against the
+            <i>cis</i>
+            -toxic effects of a
+            <i>Xanthomonas</i>
+            Type IV Secretion System Effector</dd>
+          <dt>List</dt>
+          <dd>My reading list</dd>
+        </dl>
         <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
           <legend>
             Which list do you want to save this article to?
