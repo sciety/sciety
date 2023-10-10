@@ -53,10 +53,10 @@ $_label-font-size: functions.px-to-rem(20px);
       margin-bottom: functions.px-to-rem(6px);
     }
   }
-}
 
-@mixin section {
-  margin-bottom: functions.px-to-rem(48px);
+  section {
+    margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
+  }
 }
 
 @mixin labelling {

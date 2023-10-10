@@ -60,7 +60,10 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   <form class="standard-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.article.id.value}">
     ${renderDependingOnUserListCount(viewModel.userLists, viewModel.article.name)}
-    ${renderAddAnnotation()}
+    <section>
+      <label for="annotationContent" class="save-article-form-label">Why are you saving this article (optional)?</label>
+      <textarea id="annotationContent" name="annotation"></textarea>
+    </section>
     <button type="submit">
       Confirm
     </button>

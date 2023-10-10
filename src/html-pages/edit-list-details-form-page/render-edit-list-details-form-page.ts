@@ -20,13 +20,13 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
 </header>
 <form action="/forms/edit-list-details" method="post" class="edit-list-details-form standard-form">
   <input type="hidden" value="${viewModel.listId}" name="listId">
-  <section class="edit-list-details-form__section">
+  <section>
     <label for="listName" class="edit-list-details-form__label">List name</label>
     <p class="edit-list-details-form__helper_text">Give the list a descriptive title.</p>
     <input type="text" id="listName" name="name" class="edit-list-details-form__field" value="${htmlEscape(viewModel.listName)}" pattern="[^<>]+" required maxlength="${viewModel.listNameMaxLength}">
     <p class="edit-list-details-form__constraints">Maximum ${viewModel.listNameMaxLength} characters</p>
   </section>
-  <section class="edit-list-details-form__section">
+  <section>
     <label for="listDescription" class="edit-list-details-form__label">Description (optional)</label>
     <p class="edit-list-details-form__helper_text">Add further context to help readers understand your list.</p>
     <textarea id="listDescription" name="description" cols="30" rows="5" maxlength="${viewModel.listDescriptionMaxLength}">${viewModel.listDescription}</textarea>

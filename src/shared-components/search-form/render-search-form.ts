@@ -9,7 +9,7 @@ export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFra
     </div>
     <div class="search-form__positioning_context">
       ${htmlEscape`<input value="${query}" id="searchText" name="query" class="search-form__text">`}
-      <section class="search-form__section">
+      <section>
         <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter"${evaluatedOnly ? ' checked' : ''}>
         <label for="searchEvaluatedOnlyFilter" class="search-form__checkbox_label">Search only evaluated articles</label>
       </section>

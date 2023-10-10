@@ -16,10 +16,6 @@
   @include form.form-with-borders-and-white-background();
 }
 
-.edit-list-details-form__section {
-  @include form.section();
-}
-
 .edit-list-details-form__label {
   @include form.labelling();
 }

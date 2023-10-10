@@ -17,10 +17,6 @@ $_clear-button-inline-size: 48px;
   margin-bottom: functions.px-to-rem(48px);
 }
 
-.search-form__section {
-  @include form.section();
-}
-
 .search-form__helper_text {
   @include form.helper-text();
 }
