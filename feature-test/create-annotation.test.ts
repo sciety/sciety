@@ -27,7 +27,6 @@ describe('create-annotation', () => {
       beforeEach(async () => {
         await goto(`localhost:8080/articles/${arbitraryArticleId().value}`);
         await click('Save this article');
-        await click($('input[type="radio"]'));
         await click($('button[type="submit"]'));
       });
 

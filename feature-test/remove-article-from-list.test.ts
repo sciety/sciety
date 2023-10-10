@@ -33,7 +33,6 @@ describe('remove-article-from-list', () => {
       beforeAll(async () => {
         await goto(articlePage);
         await click('Save this article');
-        await click($('input[type="radio"]'));
         await click($('button[type="submit"]'));
       });
 

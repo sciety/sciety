@@ -29,7 +29,6 @@ describe('save-article-to-list', () => {
     describe('and saves an article that isn\'t in any list, without creating an annotation', () => {
       beforeEach(async () => {
         await click('Save this article');
-        await click($('input[type="radio"]'));
         await click($('button[type="submit"]'));
       });
 
