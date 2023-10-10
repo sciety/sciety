@@ -5,7 +5,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName } from '../../write-side/save-article/save-article-handler';
 import { ViewModel } from './view-model';
 
-const renderLists = (lists: ViewModel['userLists']) => pipe(
+const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   lists,
   RA.map((list) => `
     <div class="save-article-page-form__target_wrapper">
@@ -23,6 +23,29 @@ const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
 </section>
 `
   : '');
+const renderLists = (userLists: ViewModel['userLists']) => pipe(
+  userLists,
+  RA.match(
+    () => `
+    <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
+    <legend>
+      Which list do you want to save this article to?
+    </legend>
+    <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
+      ${renderListRadios(userLists)}
+    </fieldset>
+    `,
+    () => `
+    <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
+    <legend>
+      Which list do you want to save this article to?
+    </legend>
+    <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
+      ${renderListRadios(userLists)}
+    </fieldset>
+    `,
+  ),
+);
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.pageHeading,
@@ -32,13 +55,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   </header>
   <form class="standard-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
-    <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
-      <legend>
-      Which list do you want to save this article to?
-      </legend>
-      <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
-      ${renderLists(viewModel.userLists)}
-    </fieldset>
+    ${renderLists(viewModel.userLists)}
     ${renderAddAnnotation()}
     <button type="submit">
       Save article
