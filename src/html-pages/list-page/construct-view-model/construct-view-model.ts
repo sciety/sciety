@@ -63,20 +63,23 @@ export const constructViewModel = (
 ) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   params.id,
   dependencies.lookupList,
-  O.chain((list) => pipe(
-    getOwnerInformation(dependencies)(list.ownerId),
+  O.map((list) => ({
+    ...list,
+    listId: list.id,
+    basePath: `/lists/${list.id}`,
+    articleCount: list.articleIds.length,
+    listOwnerId: list.ownerId,
+    relatedArticlesLink: list.articleIds.length > 0
+      ? O.some(`https://labs.sciety.org/lists/by-id/${list.id}/article-recommendations?from-sciety=true`)
+      : O.none,
+    editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
+    listPageAbsoluteUrl: new URL(`${process.env.APP_ORIGIN ?? 'https://sciety.org'}/lists/${list.id}`),
+  })),
+  O.chain((partial) => pipe(
+    getOwnerInformation(dependencies)(partial.ownerId),
     O.map((ownerInformation) => ({
       ...ownerInformation,
-      ...list,
-      listId: list.id,
-      basePath: `/lists/${list.id}`,
-      listPageAbsoluteUrl: new URL(`${process.env.APP_ORIGIN ?? 'https://sciety.org'}/lists/${list.id}`),
-      articleCount: list.articleIds.length,
-      listOwnerId: list.ownerId,
-      editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
-      relatedArticlesLink: list.articleIds.length > 0
-        ? O.some(`https://labs.sciety.org/lists/by-id/${list.id}/article-recommendations?from-sciety=true`)
-        : O.none,
+      ...partial,
     })),
   )),
   TE.fromOption(() => DE.notFound),
