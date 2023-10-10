@@ -11,7 +11,7 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from '../../http/forms/check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
-import { userGeneratedInputCodec } from '../../types/user-generated-input';
+import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
 
 export const articleIdFieldName = 'articleid';
 
@@ -63,11 +63,15 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
+  const fromFormInputToOptionalProperty = (value: UserGeneratedInput) => (
+    value.length === 0 ? undefined : value
+  );
+
   await pipe(
     {
       articleId,
       listId,
-      annotation: params.value.body.annotation,
+      annotation: fromFormInputToOptionalProperty(params.value.body.annotation),
     },
     dependencies.addArticleToList,
     TE.getOrElseW((error) => {
