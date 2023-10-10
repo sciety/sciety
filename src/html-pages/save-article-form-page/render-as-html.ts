@@ -24,31 +24,31 @@ const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
 `
   : '<input type="hidden" name="annotation" value="">');
 
-const renderLists = (userLists: ViewModel['userLists'], articleName: ViewModel['article']['name']) => {
-  if (userLists.length > 1) {
+const renderDependingOnUserListCount = (userLists: ViewModel['userLists'], articleName: ViewModel['article']['name']) => {
+  if (userLists.length === 1) {
+    const list = userLists[0];
     return `
       <dl>
         <dt>Article</dt>
         <dd>${articleName}</dd>
+        <dt>List</dt>
+        <dd>${list.name}</dd>
       </dl>
-      <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
-      <legend>
-        Which list do you want to save this article to?
-      </legend>
-      <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
-        ${renderListRadios(userLists)}
-      </fieldset>
-    `;
+      <input type="hidden" name="listId" value="${list.id}"/>
+  `;
   }
-  const list = userLists[0];
   return `
-  <input type="hidden" name="listId" value="${list.id}"/>
-  <dl>
-    <dt>Article</dt>
-    <dd>${articleName}</dd>
-    <dt>List</dt>
-    <dd>${list.name}</dd>
-  </dl>
+    <dl>
+      <dt>Article</dt>
+      <dd>${articleName}</dd>
+    </dl>
+    <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
+    <legend>
+      Which list do you want to save this article to?
+    </legend>
+    <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
+      ${renderListRadios(userLists)}
+    </fieldset>
   `;
 };
 
@@ -60,7 +60,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   </header>
   <form class="standard-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.article.id.value}">
-    ${renderLists(viewModel.userLists, viewModel.article.name)}
+    ${renderDependingOnUserListCount(viewModel.userLists, viewModel.article.name)}
     ${renderAddAnnotation()}
     <button type="submit">
       Confirm
