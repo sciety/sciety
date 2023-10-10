@@ -34,12 +34,14 @@ $_label-font-size: functions.px-to-rem(20px);
   }
 
   dl {
-    display: grid;
-    grid-template-columns: 2fr 8fr;
-    row-gap: functions.px-to-rem(6px);
     padding: functions.px-to-rem(12px) 0;
     margin-bottom: 1.5rem;
     font-size: $_label-font-size;
+
+    @include breakpoints.not-narrow() {
+      display: grid;
+      grid-template-columns: 2fr 8fr;
+    }
 
     dt {
       font-weight: bold;
@@ -47,6 +49,7 @@ $_label-font-size: functions.px-to-rem(20px);
 
     dd {
       margin-left: 0;
+      margin-bottom: functions.px-to-rem(6px);
     }
   }
 }
