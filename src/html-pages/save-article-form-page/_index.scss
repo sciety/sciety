@@ -14,7 +14,7 @@
 }
 
 .save-article-form-section {
-  margin-bottom: settings.$default-form-vertical-spacing;
+  margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
 }
 
 .save-article-form-label {
