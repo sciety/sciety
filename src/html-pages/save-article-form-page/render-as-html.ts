@@ -63,7 +63,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
     ${renderLists(viewModel.userLists, viewModel.article.name)}
     ${renderAddAnnotation()}
     <button type="submit">
-      Save article
+      Confirm
     </button>
   </form>
 `),
