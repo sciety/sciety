@@ -36,14 +36,13 @@ const renderLists = (userLists: ViewModel['userLists']) => {
       </fieldset>
     `;
   }
+  const list = userLists[0];
   return `
-    <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
-    <legend>
-      Which list do you want to save this article to?
-    </legend>
-    <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
-      ${renderListRadios(userLists)}
-    </fieldset>
+  <input type="hidden" name="listId" value="${list.id}"/>
+  <div>
+    <p>Save to:</p>
+    <p>${list.name}</p>
+  </div>
   `;
 };
 
