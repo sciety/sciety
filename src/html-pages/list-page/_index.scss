@@ -46,7 +46,7 @@ $_edit-details-icon-offset: 8px;
 .list-page-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: functions.px-to-rem(settings.$site-header-click-target-separation);
+  gap: functions.px-to-rem(settings.$click-target-separation);
   margin-bottom: functions.px-to-rem(32px);
 }
 

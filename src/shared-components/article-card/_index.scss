@@ -57,7 +57,7 @@ $_card-padding: 16px;
 
 .article-card__controls {
   display: flex;
-  gap: functions.px-to-rem(settings.$site-header-click-target-separation);
+  gap: functions.px-to-rem(settings.$click-target-separation);
   align-items: center;
   margin-top: functions.px-to-rem(16px);
 }

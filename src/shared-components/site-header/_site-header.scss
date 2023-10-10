@@ -97,7 +97,7 @@ $_left-links-width-not-narrow: 280px;
 
 .site-header__menu_link {
   display: flex;
-  margin-right: $_search-button-width-on-mobile - $_menu-icon-size + functions.px-to-rem(settings.$site-header-click-target-separation);
+  margin-right: $_search-button-width-on-mobile - $_menu-icon-size + functions.px-to-rem(settings.$click-target-separation);
   ;
 
   &::before {
@@ -114,7 +114,7 @@ $_left-links-width-not-narrow: 280px;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: 0.25rem functions.px-to-rem(12px - settings.$border-width);
   background-color: settings.$colour-white;
-  margin-left: functions.px-to-rem(settings.$site-header-click-target-separation);
+  margin-left: functions.px-to-rem(settings.$click-target-separation);
 
   &:link,
   &:visited {
