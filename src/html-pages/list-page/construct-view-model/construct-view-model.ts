@@ -75,6 +75,10 @@ export const constructViewModel = (
     editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
     listPageAbsoluteUrl: new URL(`${process.env.APP_ORIGIN ?? 'https://sciety.org'}/lists/${list.id}`),
   })),
+  O.map((partial) => ({
+    ...partial,
+    subscribeHref: partial.editCapability ? O.none : O.some(`/lists/${partial.listId}/subscribe`),
+  })),
   O.chain((partial) => pipe(
     getOwnerInformation(dependencies)(partial.ownerId),
     O.map((ownerInformation) => ({

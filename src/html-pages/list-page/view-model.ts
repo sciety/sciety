@@ -36,4 +36,5 @@ export type ViewModel = {
   content: Content,
   relatedArticlesLink: O.Option<string>,
   listPageAbsoluteUrl: URL,
+  subscribeHref: O.Option<string>,
 };
