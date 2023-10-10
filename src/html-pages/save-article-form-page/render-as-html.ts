@@ -23,10 +23,20 @@ const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
 </section>
 `
   : '');
-const renderLists = (userLists: ViewModel['userLists']) => pipe(
-  userLists,
-  RA.match(
-    () => `
+
+const renderLists = (userLists: ViewModel['userLists']) => {
+  if (userLists.length > 1) {
+    return `
+      <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
+      <legend>
+        Which list do you want to save this article to?
+      </legend>
+      <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
+        ${renderListRadios(userLists)}
+      </fieldset>
+    `;
+  }
+  return `
     <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
     <legend>
       Which list do you want to save this article to?
@@ -34,18 +44,8 @@ const renderLists = (userLists: ViewModel['userLists']) => pipe(
     <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
       ${renderListRadios(userLists)}
     </fieldset>
-    `,
-    () => `
-    <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
-    <legend>
-      Which list do you want to save this article to?
-    </legend>
-    <p id="saveArticlePageFormHelperTextForLists" class="save-article-page-form__helper_text">Select one of your lists.</p>
-      ${renderListRadios(userLists)}
-    </fieldset>
-    `,
-  ),
-);
+  `;
+};
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.pageHeading,
