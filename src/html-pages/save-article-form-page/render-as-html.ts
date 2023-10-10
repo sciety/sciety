@@ -59,7 +59,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
     <h1>${viewModel.pageHeading}</h1>
   </header>
   <form class="standard-form" method="post" action="/save-article">
-    <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
+    <input type="hidden" name="${articleIdFieldName}" value="${viewModel.article.id.value}">
     ${renderLists(viewModel.userLists, viewModel.article.name)}
     ${renderAddAnnotation()}
     <button type="submit">

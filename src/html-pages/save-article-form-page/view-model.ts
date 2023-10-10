@@ -3,7 +3,6 @@ import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 
 export type ViewModel = {
-  articleId: ArticleId,
   article: {
     name: HtmlFragment,
     id: ArticleId,
