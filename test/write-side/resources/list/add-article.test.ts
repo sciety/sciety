@@ -70,7 +70,7 @@ describe('add-article', () => {
           }),
         );
 
-        it.failing('succeeds, adding the article and creating the annotation', () => {
+        it('succeeds, adding the article and creating the annotation', () => {
           expect(result).toStrictEqual(E.right([
             expect.objectContaining({
               type: 'ArticleAddedToList',
