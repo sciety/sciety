@@ -24,7 +24,7 @@ const renderAddAnnotation = () => (process.env.EXPERIMENT_ENABLED === 'true' ? `
 `
   : '');
 
-const renderLists = (userLists: ViewModel['userLists']) => {
+const renderLists = (userLists: ViewModel['userLists'], articleName: ViewModel['article']['name']) => {
   if (userLists.length > 1) {
     return `
       <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
@@ -40,6 +40,8 @@ const renderLists = (userLists: ViewModel['userLists']) => {
   return `
   <input type="hidden" name="listId" value="${list.id}"/>
   <dl>
+    <dt>Article</dt>
+    <dd>${articleName}</dd>
     <dt>List</dt>
     <dd>${list.name}</dd>
   </dl>
@@ -54,7 +56,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   </header>
   <form class="standard-form" method="post" action="/save-article">
     <input type="hidden" name="${articleIdFieldName}" value="${viewModel.articleId.value}">
-    ${renderLists(viewModel.userLists)}
+    ${renderLists(viewModel.userLists, viewModel.article.name)}
     ${renderAddAnnotation()}
     <button type="submit">
       Save article

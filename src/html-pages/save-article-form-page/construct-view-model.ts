@@ -28,6 +28,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   sequenceS(TE.ApplyPar),
   TE.map((partial) => ({
     articleId: params.articleId,
+    article: {
+      name: partial.article.title,
+      id: params.articleId,
+    },
     userLists: partial.userLists,
     pageHeading: toHtmlFragment(`Save "${partial.article.title}"`),
   })),
