@@ -16,13 +16,6 @@ const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   (divs) => divs.join(''),
 );
 
-const renderAddAnnotation = () => `
-<section class="save-article-form-section">
-  <label for="annotationContent" class="save-article-form-label">Why are you saving this article (optional)?</label>
-  <textarea id="annotationContent" name="annotation"></textarea>
-</section>
-`;
-
 const renderDependingOnUserListCount = (userLists: ViewModel['userLists'], articleName: ViewModel['article']['name']) => {
   if (userLists.length === 1) {
     const list = userLists[0];

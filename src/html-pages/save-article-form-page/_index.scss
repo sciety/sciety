@@ -13,10 +13,6 @@
   margin-bottom: functions.px-to-rem(8px);
 }
 
-.save-article-form-section {
-  margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
-}
-
 .save-article-form-label {
   @include form.labelling();
 }

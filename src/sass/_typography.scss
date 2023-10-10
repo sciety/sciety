@@ -21,13 +21,6 @@
   }
 }
 
-@mixin section() {
-  font-family: settings.$font-family;
-  font-size: functions.px-to-rem(26px);
-  line-height: 1.2;
-  font-weight: bold;
-}
-
 @mixin card-title () {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(18px);
