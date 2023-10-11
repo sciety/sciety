@@ -8,10 +8,11 @@ import { Dependencies, constructViewModel } from './construct-view-model';
 import { toErrorPage } from './to-error-page';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { listIdCodec } from '../../types/list-id';
+import { articleIdInputName, listIdInputName } from '../../standards';
 
 export const paramsCodec = t.type({
-  articleId: DoiFromString,
-  listId: listIdCodec,
+  [articleIdInputName]: DoiFromString,
+  [listIdInputName]: listIdCodec,
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;
