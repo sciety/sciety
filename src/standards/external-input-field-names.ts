@@ -1,3 +1,3 @@
-export const articleIdInputName = 'articleId';
-export const listIdInputName = 'listId';
-export const contentInput = 'content';
+export const articleId = 'articleId';
+export const listId = 'listId';
+export const content = 'content';

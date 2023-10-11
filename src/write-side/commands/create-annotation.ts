@@ -5,9 +5,9 @@ import { annotationContentCodec } from './annotation-content-codec';
 import { externalInputFieldNames } from '../../standards';
 
 export const createAnnotationCommandCodec = t.type({
-  [externalInputFieldNames.contentInput]: annotationContentCodec,
-  [externalInputFieldNames.articleIdInputName]: DoiFromString,
-  [externalInputFieldNames.listIdInputName]: listIdCodec,
+  [externalInputFieldNames.content]: annotationContentCodec,
+  [externalInputFieldNames.articleId]: DoiFromString,
+  [externalInputFieldNames.listId]: listIdCodec,
 });
 
 export type CreateAnnotationCommand = t.TypeOf<typeof createAnnotationCommandCodec>;

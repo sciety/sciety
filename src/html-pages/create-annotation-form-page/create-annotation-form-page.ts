@@ -11,8 +11,8 @@ import { listIdCodec } from '../../types/list-id';
 import { externalInputFieldNames } from '../../standards';
 
 export const paramsCodec = t.type({
-  [externalInputFieldNames.articleIdInputName]: DoiFromString,
-  [externalInputFieldNames.listIdInputName]: listIdCodec,
+  [externalInputFieldNames.articleId]: DoiFromString,
+  [externalInputFieldNames.listId]: listIdCodec,
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;

@@ -27,7 +27,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
       listId,
       articleId,
       createAnnotationFormHref: O.isNone(annotation)
-        ? O.some(`/annotations/create-annotation-form?${externalInputFieldNames.articleIdInputName}=${articleId.value}&${externalInputFieldNames.listIdInputName}=${listId}`)
+        ? O.some(`/annotations/create-annotation-form?${externalInputFieldNames.articleId}=${articleId.value}&${externalInputFieldNames.listId}=${listId}`)
         : O.none,
     }) : O.none,
   }),
