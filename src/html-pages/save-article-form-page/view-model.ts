@@ -12,4 +12,5 @@ export type ViewModel = {
     name: string,
   }>,
   pageHeading: HtmlFragment,
+  newPropertyWeWantToAdd: string,
 };

@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
+import { sanitise } from '../../types/sanitised-html-fragment';
 import * as LOID from '../../types/list-owner-id';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
