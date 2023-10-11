@@ -7,7 +7,7 @@ import { isEventOfType, constructEvent } from '../../../domain-events';
 import { CreateAnnotationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
-export const createAnnotation: ResourceAction<CreateAnnotationCommand> = (command) => (events) => pipe(
+export const annotate: ResourceAction<CreateAnnotationCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isEventOfType('AnnotationCreated')),
   RA.filter((event) => eqAnnotationTarget.equals(

@@ -45,7 +45,7 @@ type CreateAnnotation = (adapters: EventStore) => CommandHandler<CreateAnnotatio
 
 const createAnnotationCommandHandler: CreateAnnotation = (adapters) => (command) => pipe(
   adapters.getAllEvents,
-  T.map((events) => listResource.createAnnotation(command)(events)),
+  T.map((events) => listResource.annotate(command)(events)),
   TE.chainW(adapters.commitEvents),
 );
 
