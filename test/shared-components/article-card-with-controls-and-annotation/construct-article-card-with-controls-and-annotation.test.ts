@@ -60,6 +60,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
           await framework.commandHelpers.createAnnotation({
             content: arbitraryHtmlFragment(),
             target: { articleId, listId },
+            articleId,
           });
           formHref = await pipe(
             articleId,

@@ -51,7 +51,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.createUserAccount(createUserAccountCommand);
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
-        await framework.commandHelpers.createAnnotation({ content, target });
+        await framework.commandHelpers.createAnnotation({ content, target, articleId });
         result = pipe(
           constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
           O.getOrElseW(shouldNotBeCalled),
@@ -79,7 +79,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
-        await framework.commandHelpers.createAnnotation({ content, target });
+        await framework.commandHelpers.createAnnotation({ content, target, articleId });
         result = pipe(
           constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
           O.getOrElseW(shouldNotBeCalled),
@@ -100,7 +100,7 @@ describe('construct-annotation', () => {
       const target = { listId, articleId };
 
       beforeEach(async () => {
-        await framework.commandHelpers.createAnnotation({ content, target });
+        await framework.commandHelpers.createAnnotation({ content, target, articleId });
         result = pipe(
           constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
           O.getOrElseW(shouldNotBeCalled),

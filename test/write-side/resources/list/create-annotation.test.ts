@@ -8,14 +8,16 @@ import { arbitraryListId } from '../../../types/list-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
 
 describe('create-annotation', () => {
+  const articleId = arbitraryArticleId();
   const target = {
-    articleId: arbitraryArticleId(),
+    articleId,
     listId: arbitraryListId(),
   };
   const content = arbitraryHtmlFragment();
   const command = {
     content,
     target,
+    articleId,
   };
 
   describe('given the target does not have an annotation, when the command is executed', () => {

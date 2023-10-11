@@ -15,6 +15,6 @@ export const createAnnotationCommandCodec = t.type({
 export type CreateAnnotationCommand = {
   content: HtmlFragment,
   target: AnnotationTarget,
-  articleId?: ArticleId,
+  articleId: ArticleId,
   listId?: ListId,
 };
