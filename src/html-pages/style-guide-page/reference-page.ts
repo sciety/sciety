@@ -50,8 +50,10 @@ export const referencePage: HtmlPage = {
             <label for="list-id-3">List C</label>
           </div>
         </fieldset>
-        <label for="annotationContent">Annotation content</label>
-        <textarea id="annotationContent" name="annotationContent" rows="10"></textarea>
+        <section>
+          <label for="annotationContent" class="standard-form__sub_heading">Annotation content</label>
+          <textarea id="annotationContent" name="annotationContent" rows="10"></textarea>
+        </section>
         <button type="submit">
           Submit
         </button>
