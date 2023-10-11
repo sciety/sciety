@@ -36,6 +36,8 @@ services:
       AUTH0_CALLBACK_URL: 'http://localhost:${APP_PORT:-8080}/auth0/callback'
     ports:
       - '${APP_PORT:-8080}:80'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     restart: unless-stopped
     depends_on:
       - cache
