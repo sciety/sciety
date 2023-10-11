@@ -9,6 +9,7 @@ import { FetchData } from './fetch-data';
 import { Evaluation } from './types/evaluations';
 import { FetchEvaluations } from './update-all';
 import { DoiFromString } from '../types/codecs/DoiFromString';
+import { SkippedItem } from './types/skipped-item';
 
 type Ports = {
   fetchData: FetchData,
@@ -27,15 +28,20 @@ const preReviewResponse = t.readonlyArray(preReviewReview);
 
 type PreReviewReview = t.TypeOf<typeof preReviewReview>;
 
-const toEvaluation = (review: PreReviewReview) => ({
-  date: review.createdAt,
-  articleDoi: review.preprint.value,
-  evaluationLocator: `doi:${review.doi.value}`,
-  authors: pipe(
-    review.authors,
-    RA.map(author => author.name),
-  ),
-} satisfies Evaluation);
+const toEvaluationOrSkip = (
+  reviews: ReadonlyArray<PreReviewReview>,
+): ReadonlyArray<E.Either<SkippedItem, Evaluation>> => pipe(
+  reviews,
+  RA.map((review) => E.right({
+    date: review.createdAt,
+    articleDoi: review.preprint.value,
+    evaluationLocator: `doi:${review.doi.value}`,
+    authors: pipe(
+      review.authors,
+      RA.map((author) => author.name),
+    ),
+  } satisfies Evaluation)),
+);
 
 const identifyCandidates = (fetchData: FetchData) => pipe(
   fetchData<unknown>('http://host.docker.internal:3000/sciety-list', { Accept: 'application/json', Authorization: 'Bearer secret' }),
@@ -47,9 +53,9 @@ const identifyCandidates = (fetchData: FetchData) => pipe(
 
 export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
   identifyCandidates(ports.fetchData),
-  TE.map(RA.map(toEvaluation)),
+  TE.map(toEvaluationOrSkip),
   TE.map((parts) => ({
-    evaluations: parts,
-    skippedItems: [],
+    evaluations: RA.rights(parts),
+    skippedItems: RA.lefts(parts),
   })),
 );
