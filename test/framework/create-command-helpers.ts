@@ -10,13 +10,13 @@ import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
 import {
-  AddGroupCommand, CreateAnnotationCommand, CreateUserAccountCommand, RecordEvaluationPublicationCommand,
+  AddGroupCommand, AnnotateArticleInListCommand, CreateUserAccountCommand, RecordEvaluationPublicationCommand,
 } from '../../src/write-side/commands';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
   addGroup: (command: AddGroupCommand) => Promise<unknown>,
-  createAnnotation: (command: CreateAnnotationCommand) => Promise<unknown>,
+  createAnnotation: (command: AnnotateArticleInListCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,

@@ -13,4 +13,4 @@ export { updateGroupDetailsCommandCodec, UpdateGroupDetailsCommand } from './upd
 export { updateEvaluationCommandCodec, UpdateEvaluationCommand } from './update-evaluation';
 export { executeCommand } from './execute-command';
 export { recordEvaluationRemovalCommandCodec, RecordEvaluationRemovalCommand } from './record-evaluation-removal';
-export { createAnnotationCommandCodec, CreateAnnotationCommand } from './create-annotation';
+export { annotateArticleInListCommandCodec, AnnotateArticleInListCommand } from './annotate-article-in-list';

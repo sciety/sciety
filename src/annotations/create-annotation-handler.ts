@@ -9,7 +9,7 @@ import { Queries } from '../read-models';
 import { UserId } from '../types/user-id';
 import { GroupId } from '../types/group-id';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
-import { createAnnotationCommandCodec } from '../write-side/commands';
+import { annotateArticleInListCommandCodec } from '../write-side/commands';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies;
 
@@ -29,7 +29,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
     context.response.body = 'You must be logged in to annotate a list.';
     return;
   }
-  const command = createAnnotationCommandCodec.decode(context.request.body);
+  const command = annotateArticleInListCommandCodec.decode(context.request.body);
   if (E.isLeft(command)) {
     adapters.logger(
       'error',

@@ -4,10 +4,10 @@ import { listIdCodec } from '../../types/list-id';
 import { annotationContentCodec } from './annotation-content-codec';
 import { externalInputFieldNames } from '../../standards';
 
-export const createAnnotationCommandCodec = t.type({
+export const annotateArticleInListCommandCodec = t.type({
   [externalInputFieldNames.content]: annotationContentCodec,
   [externalInputFieldNames.articleId]: DoiFromString,
   [externalInputFieldNames.listId]: listIdCodec,
 });
 
-export type CreateAnnotationCommand = t.TypeOf<typeof createAnnotationCommandCodec>;
+export type AnnotateArticleInListCommand = t.TypeOf<typeof annotateArticleInListCommandCodec>;

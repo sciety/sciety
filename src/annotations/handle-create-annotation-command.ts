@@ -5,7 +5,7 @@ import * as listResource from '../write-side/resources/list';
 import { Logger } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
-import { createAnnotationCommandCodec } from '../write-side/commands';
+import { annotateArticleInListCommandCodec } from '../write-side/commands';
 
 export type Dependencies = DependenciesForCommands & {
   logger: Logger,
@@ -17,7 +17,7 @@ type HandleCreateAnnotationCommand = (
 
 export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dependencies) => (input) => pipe(
   input,
-  createAnnotationCommandCodec.decode,
+  annotateArticleInListCommandCodec.decode,
   TE.fromEither,
   TE.chainFirstTaskK(
     (command) => T.of(

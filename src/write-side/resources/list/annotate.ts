@@ -4,10 +4,10 @@ import * as E from 'fp-ts/Either';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { eqAnnotationTarget } from '../../../types/annotation-target';
 import { isEventOfType, constructEvent } from '../../../domain-events';
-import { CreateAnnotationCommand } from '../../commands';
+import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
-export const annotate: ResourceAction<CreateAnnotationCommand> = (command) => (events) => pipe(
+export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isEventOfType('AnnotationCreated')),
   RA.filter((event) => eqAnnotationTarget.equals(

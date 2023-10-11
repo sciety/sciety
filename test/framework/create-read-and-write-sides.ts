@@ -15,7 +15,7 @@ import {
 } from '../../src/write-side/command-handlers';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler';
 import { CommandHandler } from '../../src/types/command-handler';
-import { AddGroupCommand, CreateAnnotationCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
+import { AddGroupCommand, AnnotateArticleInListCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
 import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
 import { createInMemoryEventStore } from './create-in-memory-event-store';
 import { dummyLogger } from '../dummy-logger';
@@ -41,7 +41,7 @@ const updateGroupDetails: UpdateGroupDetails = (adapters) => (command) => pipe(
   TE.chainW(adapters.commitEvents),
 );
 
-type CreateAnnotation = (adapters: EventStore) => CommandHandler<CreateAnnotationCommand>;
+type CreateAnnotation = (adapters: EventStore) => CommandHandler<AnnotateArticleInListCommand>;
 
 const createAnnotationCommandHandler: CreateAnnotation = (adapters) => (command) => pipe(
   adapters.getAllEvents,

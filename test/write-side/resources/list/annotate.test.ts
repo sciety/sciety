@@ -6,7 +6,7 @@ import { arbitraryHtmlFragment } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
-import { CreateAnnotationCommand } from '../../../../src/write-side/commands';
+import { AnnotateArticleInListCommand } from '../../../../src/write-side/commands';
 import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
 
 describe('annotate', () => {
@@ -17,7 +17,7 @@ describe('annotate', () => {
     listId,
   };
   const content = arbitraryUserGeneratedInput();
-  const command: CreateAnnotationCommand = {
+  const command: AnnotateArticleInListCommand = {
     content,
     articleId,
     listId,
