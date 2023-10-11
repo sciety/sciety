@@ -7,6 +7,7 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
 import { CreateAnnotationCommand } from '../../../../src/write-side/commands';
+import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
 
 describe('create-annotation', () => {
   const articleId = arbitraryArticleId();
@@ -15,7 +16,7 @@ describe('create-annotation', () => {
     articleId,
     listId,
   };
-  const content = arbitraryHtmlFragment();
+  const content = arbitraryUserGeneratedInput();
   const command: CreateAnnotationCommand = {
     content,
     articleId,

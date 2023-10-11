@@ -1,6 +1,5 @@
 import * as t from 'io-ts';
-import { HtmlFragment } from '../../types/html-fragment';
-import { userGeneratedInputCodec } from '../../types/user-generated-input';
+import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { ListId, listIdCodec } from '../../types/list-id';
 import { ArticleId } from '../../types/article-id';
@@ -12,7 +11,7 @@ export const createAnnotationCommandCodec = t.type({
 });
 
 export type CreateAnnotationCommand = {
-  content: HtmlFragment,
+  content: UserGeneratedInput,
   articleId: ArticleId,
   listId: ListId,
 };

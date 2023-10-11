@@ -11,10 +11,10 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
-import { arbitraryHtmlFragment } from '../../helpers';
 import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-content';
+import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
@@ -33,7 +33,7 @@ describe('construct-annotation', () => {
 
   describe('when there is an annotation', () => {
     const articleId = arbitraryArticleId();
-    const content = arbitraryHtmlFragment();
+    const content = arbitraryUserGeneratedInput();
     let result: {
       author: string,
       content: HtmlFragment,

@@ -7,13 +7,12 @@ import * as listResource from '../write-side/resources/list';
 import { Logger } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
-import { toHtmlFragment } from '../types/html-fragment';
 import { CreateAnnotationCommand, createAnnotationCommandCodec } from '../write-side/commands';
 
 type Body = t.TypeOf<typeof createAnnotationCommandCodec>;
 
 const transformToCommand = ({ content, articleId, listId }: Body): CreateAnnotationCommand => ({
-  content: toHtmlFragment(content),
+  content,
   articleId,
   listId,
 });
