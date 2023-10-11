@@ -19,6 +19,8 @@ const transformToCommand = ({ content, articleId, listId }: Body): CreateAnnotat
     articleId,
     listId: fromValidatedString(listId),
   },
+  articleId,
+  listId,
 });
 
 export type Dependencies = DependenciesForCommands & {
