@@ -26,12 +26,13 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     ),
   },
   sequenceS(TE.ApplyPar),
-  TE.map((partial) => ({
+  TE.map((partial): ViewModel => ({
+    propertyThatIsNotInTheViewModelType: 42,
     article: {
       name: partial.article.title,
       id: params.articleId,
     },
     userLists: partial.userLists,
     pageHeading: toHtmlFragment('Save article'),
-  } satisfies ViewModel)),
+  })),
 );
