@@ -1,4 +1,4 @@
-import { articleIdInputName, contentInput, listIdInputName } from '../../standards';
+import { articleIdInputName, contentInput, listIdInputName } from '../../standards/external-input-field-names';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 

@@ -8,7 +8,7 @@ import { Dependencies, constructViewModel } from './construct-view-model';
 import { toErrorPage } from './to-error-page';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { listIdCodec } from '../../types/list-id';
-import { articleIdInputName, listIdInputName } from '../../standards';
+import { articleIdInputName, listIdInputName } from '../../standards/external-input-field-names';
 
 export const paramsCodec = t.type({
   [articleIdInputName]: DoiFromString,
