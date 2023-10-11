@@ -19,7 +19,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
     </dl>
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Annotation content</label>
-      <textarea id="annotationContent" name="annotationContent" rows="10"></textarea>
+      <textarea id="annotationContent" name="content" rows="10"></textarea>
     </section>
     <button type="submit">Confirm</button>
   </form>
