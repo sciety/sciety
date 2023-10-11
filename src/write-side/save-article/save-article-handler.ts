@@ -51,6 +51,12 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
       userId: pipe(
         getLoggedInScietyUser(dependencies, context),
         O.map((userDetails) => userDetails.id),
+        (details) => {
+          if (O.isNone(details)) {
+            dependencies.logger('error', 'Missing user', { requestBody: context.request.body });
+          }
+          return details;
+        },
       ),
     },
     sequenceS(O.Apply),
