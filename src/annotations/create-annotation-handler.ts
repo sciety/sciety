@@ -8,7 +8,8 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../h
 import { Queries } from '../read-models';
 import { UserId } from '../types/user-id';
 import { GroupId } from '../types/group-id';
-import { createAnnotationCommandCodec, handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
+import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
+import { createAnnotationCommandCodec } from '../write-side/commands';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies;
 

@@ -5,19 +5,11 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as listResource from '../write-side/resources/list';
 import { Logger } from '../shared-ports';
-import { DoiFromString } from '../types/codecs/DoiFromString';
 import { CommandResult } from '../types/command-result';
-import { fromValidatedString, listIdCodec } from '../types/list-id';
+import { fromValidatedString } from '../types/list-id';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
-import { userGeneratedInputCodec } from '../types/user-generated-input';
 import { toHtmlFragment } from '../types/html-fragment';
-import { CreateAnnotationCommand } from '../write-side/commands';
-
-export const createAnnotationCommandCodec = t.type({
-  annotationContent: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: false }),
-  articleId: DoiFromString,
-  listId: listIdCodec,
-});
+import { CreateAnnotationCommand, createAnnotationCommandCodec } from '../write-side/commands';
 
 type Body = t.TypeOf<typeof createAnnotationCommandCodec>;
 
