@@ -1,21 +1,11 @@
-import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import * as listResource from '../write-side/resources/list';
 import { Logger } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
-import { CreateAnnotationCommand, createAnnotationCommandCodec } from '../write-side/commands';
-
-type Body = t.TypeOf<typeof createAnnotationCommandCodec>;
-
-const transformToCommand = ({ content, articleId, listId }: Body): CreateAnnotationCommand => ({
-  content,
-  articleId,
-  listId,
-});
+import { createAnnotationCommandCodec } from '../write-side/commands';
 
 export type Dependencies = DependenciesForCommands & {
   logger: Logger,
@@ -28,7 +18,6 @@ type HandleCreateAnnotationCommand = (
 export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dependencies) => (input) => pipe(
   input,
   createAnnotationCommandCodec.decode,
-  E.map(transformToCommand),
   TE.fromEither,
   TE.chainFirstTaskK(
     (command) => T.of(
