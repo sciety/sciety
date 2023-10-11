@@ -1,15 +1,16 @@
 import * as E from 'fp-ts/Either';
+import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import * as AID from '../types/article-id';
+import { DoiFromString } from '../types/codecs/DoiFromString';
 import { FetchData } from './fetch-data';
 import { Evaluation } from './types/evaluations';
-import { FetchEvaluations } from './update-all';
-import { DoiFromString } from '../types/codecs/DoiFromString';
 import { SkippedItem } from './types/skipped-item';
+import { FetchEvaluations } from './update-all';
 
 type Ports = {
   fetchData: FetchData,
@@ -18,7 +19,7 @@ type Ports = {
 const preReviewReview = t.type({
   createdAt: tt.DateFromISOString,
   doi: DoiFromString,
-  preprint: DoiFromString,
+  preprint: t.union([DoiFromString, t.string]),
   authors: t.readonlyArray(t.type({
     name: t.string,
   })),
@@ -32,15 +33,17 @@ const toEvaluationOrSkip = (
   reviews: ReadonlyArray<PreReviewReview>,
 ): ReadonlyArray<E.Either<SkippedItem, Evaluation>> => pipe(
   reviews,
-  RA.map((review) => E.right({
-    date: review.createdAt,
-    articleDoi: review.preprint.value,
-    evaluationLocator: `doi:${review.doi.value}`,
-    authors: pipe(
-      review.authors,
-      RA.map((author) => author.name),
-    ),
-  } satisfies Evaluation)),
+  RA.map((review) => (AID.isArticleId(review.preprint)
+    ? E.right({
+      date: review.createdAt,
+      articleDoi: review.preprint.value,
+      evaluationLocator: `doi:${review.doi.value}`,
+      authors: pipe(
+        review.authors,
+        RA.map((author) => author.name),
+      ),
+    } satisfies Evaluation)
+    : E.left({ item: review.preprint as string, reason: 'article has no DOI' } satisfies SkippedItem))),
 );
 
 const identifyCandidates = (fetchData: FetchData) => pipe(
