@@ -8,11 +8,11 @@ import { Dependencies, constructViewModel } from './construct-view-model';
 import { toErrorPage } from './to-error-page';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { listIdCodec } from '../../types/list-id';
-import { articleIdInputName, listIdInputName } from '../../standards/external-input-field-names';
+import { externalInputFieldNames } from '../../standards';
 
 export const paramsCodec = t.type({
-  [articleIdInputName]: DoiFromString,
-  [listIdInputName]: listIdCodec,
+  [externalInputFieldNames.articleIdInputName]: DoiFromString,
+  [externalInputFieldNames.listIdInputName]: listIdCodec,
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;
