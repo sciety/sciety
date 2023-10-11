@@ -59,7 +59,6 @@ describe('construct-article-card-with-controls-and-annotation', () => {
         beforeEach(async () => {
           await framework.commandHelpers.createAnnotation({
             content: arbitraryHtmlFragment(),
-            target: { articleId, listId },
             articleId,
             listId,
           });

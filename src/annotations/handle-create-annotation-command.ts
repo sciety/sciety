@@ -6,7 +6,6 @@ import * as t from 'io-ts';
 import * as listResource from '../write-side/resources/list';
 import { Logger } from '../shared-ports';
 import { CommandResult } from '../types/command-result';
-import { fromValidatedString } from '../types/list-id';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
 import { toHtmlFragment } from '../types/html-fragment';
 import { CreateAnnotationCommand, createAnnotationCommandCodec } from '../write-side/commands';
@@ -15,10 +14,6 @@ type Body = t.TypeOf<typeof createAnnotationCommandCodec>;
 
 const transformToCommand = ({ content, articleId, listId }: Body): CreateAnnotationCommand => ({
   content: toHtmlFragment(content),
-  target: {
-    articleId,
-    listId: fromValidatedString(listId),
-  },
   articleId,
   listId,
 });

@@ -45,7 +45,6 @@ describe('construct-annotation', () => {
         ...arbitraryCreateListCommand(),
         ownerId: LOID.fromUserId(createUserAccountCommand.userId),
       };
-      const target = { listId: createListCommand.listId, articleId };
 
       beforeEach(async () => {
         await framework.commandHelpers.createUserAccount(createUserAccountCommand);
@@ -53,12 +52,11 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
         await framework.commandHelpers.createAnnotation({
           content,
-          target,
           articleId,
           listId: createListCommand.listId,
         });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
+          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
@@ -78,7 +76,6 @@ describe('construct-annotation', () => {
         ...arbitraryCreateListCommand(),
         ownerId: LOID.fromGroupId(addGroupCommand.groupId),
       };
-      const target = { listId: createListCommand.listId, articleId };
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
@@ -86,12 +83,11 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
         await framework.commandHelpers.createAnnotation({
           content,
-          target,
           articleId,
           listId: createListCommand.listId,
         });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
+          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
@@ -112,7 +108,6 @@ describe('construct-annotation', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createAnnotation({
           content,
-          target,
           articleId,
           listId,
         });

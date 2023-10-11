@@ -10,7 +10,7 @@ export const annotationTargetCodec = t.type({
   listId: listIdCodec,
 });
 
-export type AnnotationTarget = t.TypeOf<typeof annotationTargetCodec>;
+type AnnotationTarget = t.TypeOf<typeof annotationTargetCodec>;
 
 export const eqAnnotationTarget: Eq.Eq<AnnotationTarget> = pipe(
   {
