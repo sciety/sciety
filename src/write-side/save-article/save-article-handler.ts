@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
+import * as PR from 'io-ts/PathReporter';
 import { AddArticleToList, Logger } from '../../shared-ports';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
@@ -36,7 +37,15 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
       body: pipe(
         context,
         contextCodec.decode,
-        E.map((ctx) => ctx.request.body),
+        E.bimap(
+          (errors) => {
+            dependencies.logger('error', 'saveArticleHandler codec failed', {
+              requestBody: context.request.body,
+              errors: PR.failure(errors),
+            });
+          },
+          (ctx) => ctx.request.body,
+        ),
         O.fromEither,
       ),
       userId: pipe(
