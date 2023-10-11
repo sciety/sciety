@@ -13,8 +13,8 @@ import { CreateAnnotationCommand, createAnnotationCommandCodec } from '../write-
 
 type Body = t.TypeOf<typeof createAnnotationCommandCodec>;
 
-const transformToCommand = ({ annotationContent, articleId, listId }: Body): CreateAnnotationCommand => ({
-  content: toHtmlFragment(annotationContent),
+const transformToCommand = ({ content, articleId, listId }: Body): CreateAnnotationCommand => ({
+  content: toHtmlFragment(content),
   target: {
     articleId,
     listId: fromValidatedString(listId),

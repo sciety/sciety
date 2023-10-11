@@ -6,7 +6,7 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { listIdCodec } from '../../types/list-id';
 
 export const createAnnotationCommandCodec = t.type({
-  annotationContent: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: false }),
+  content: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: false }),
   articleId: DoiFromString,
   listId: listIdCodec,
 });
