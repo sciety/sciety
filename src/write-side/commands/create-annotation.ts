@@ -16,5 +16,5 @@ export type CreateAnnotationCommand = {
   content: HtmlFragment,
   target: AnnotationTarget,
   articleId: ArticleId,
-  listId?: ListId,
+  listId: ListId,
 };

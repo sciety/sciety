@@ -9,15 +9,17 @@ import { constructEvent } from '../../../../src/domain-events';
 
 describe('create-annotation', () => {
   const articleId = arbitraryArticleId();
+  const listId = arbitraryListId();
   const target = {
     articleId,
-    listId: arbitraryListId(),
+    listId,
   };
   const content = arbitraryHtmlFragment();
   const command = {
     content,
     target,
     articleId,
+    listId,
   };
 
   describe('given the target does not have an annotation, when the command is executed', () => {

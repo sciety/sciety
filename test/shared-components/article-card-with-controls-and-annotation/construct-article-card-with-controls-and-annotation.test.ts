@@ -61,6 +61,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
             content: arbitraryHtmlFragment(),
             target: { articleId, listId },
             articleId,
+            listId,
           });
           formHref = await pipe(
             articleId,
