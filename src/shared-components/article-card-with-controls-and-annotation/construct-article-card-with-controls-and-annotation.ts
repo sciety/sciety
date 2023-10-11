@@ -9,7 +9,8 @@ import { ViewModel } from '../article-card/view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
-import { articleIdInputName, listIdInputName } from '../../html-pages/create-annotation-form-page';
+import { listIdInputName } from '../../html-pages/create-annotation-form-page';
+import { articleIdInputName } from '../../standards';
 
 type Dependencies = ConstructArticleCardViewModelDependencies & Queries;
 

@@ -1,8 +1,8 @@
+import { articleIdInputName } from '../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 
 export const listIdInputName = 'listId';
-export const articleIdInputName = 'articleId';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header">
