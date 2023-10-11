@@ -55,7 +55,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
     ${renderDependingOnUserListCount(viewModel.userLists, viewModel.article.name)}
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Why are you saving this article (optional)?</label>
-      <textarea id="annotationContent" name="annotation"></textarea>
+      <textarea id="annotationContent" name="annotation" rows="10"></textarea>
     </section>
     <button type="submit">
       Confirm
