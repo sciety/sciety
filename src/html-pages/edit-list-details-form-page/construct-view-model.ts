@@ -19,5 +19,6 @@ export const constructViewModel = (dependencies: Dependencies) => (id: ListId): 
     listDescription: list.description,
     listNameMaxLength,
     listDescriptionMaxLength,
+    pageHeading: 'Edit list details',
   })),
 );

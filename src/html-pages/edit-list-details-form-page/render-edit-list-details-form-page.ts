@@ -9,14 +9,15 @@ export type ViewModel = {
   listId: ListId,
   listNameMaxLength: number,
   listDescriptionMaxLength: number,
+  pageHeading: string,
 };
 
 export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage => (
   {
-    title: 'Edit list details',
+    title: viewModel.pageHeading,
     content: toHtmlFragment(`
 <header class="page-header page-header--edit-list-details-form-page">
-  <h1>Edit list details</h1>
+  <h1>${viewModel.pageHeading}</h1>
 </header>
 <form action="/forms/edit-list-details" method="post" class="edit-list-details-form standard-form">
   <input type="hidden" value="${viewModel.listId}" name="listId">
