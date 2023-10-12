@@ -30,7 +30,7 @@ export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => to
     <div class="list-card__body">
       <div>
         <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${htmlEscape(viewModel.title)}</a></h3>
-        <p>${viewModel.description}</p>
+        <p>${htmlEscape(viewModel.description)}</p>
       </div>
       <div class="list-card__meta">
         <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
