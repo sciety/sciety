@@ -34,20 +34,19 @@ export const referencePage: HtmlPage = {
         </dl>
         <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
           <legend>
-            Which list do you want to save this article to?
+            Standard form fieldset legend
           </legend>
-          <p id="saveArticlePageFormHelperTextForLists">Select one of your lists.</p>
           <div>
-            <input type="radio" id="list-id-1" name="listId" value="1"/>
-            <label for="list-id-1">List A</label>
+            <input type="radio" id="item-a" name="listId" value="1"/>
+            <label for="item-a">Item A</label>
           </div>
           <div>
-            <input type="radio" id="list-id-2" name="listId" value="2"/>
-            <label for="list-id-2">List B</label>
+            <input type="radio" id="item-b" name="listId" value="2"/>
+            <label for="item-b">Item B</label>
           </div>
           <div>
-            <input type="radio" id="list-id-3" name="listId" value="3"/>
-            <label for="list-id-3">List C</label>
+            <input type="radio" id="item-c" name="listId" value="3"/>
+            <label for="item-c">Item C</label>
           </div>
         </fieldset>
         <section>
