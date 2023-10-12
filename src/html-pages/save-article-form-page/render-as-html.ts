@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlPage } from '../../types/html-page';
@@ -10,7 +11,7 @@ const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   RA.map((list) => `
     <div class="save-article-page-form__target_wrapper">
       <input type="radio" id="list-id-${list.id}" name="listId" value="${list.id}"/>
-      <label for="list-id-${list.id}">${list.name}</label>
+      <label for="list-id-${list.id}">${htmlEscape(list.name)}</label>
     </div>
   `),
   (divs) => divs.join(''),
@@ -24,7 +25,7 @@ const renderDependingOnUserListCount = (userLists: ViewModel['userLists'], artic
         <dt>Article</dt>
         <dd>${articleName}</dd>
         <dt>List</dt>
-        <dd>${list.name}</dd>
+        <dd>${htmlEscape(list.name)}</dd>
       </dl>
       <input type="hidden" name="listId" value="${list.id}"/>
   `;
