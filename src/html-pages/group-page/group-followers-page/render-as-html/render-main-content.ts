@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { renderTabs } from '../../../../shared-components/tabs';
@@ -9,7 +10,7 @@ import { renderCountWithDescriptor } from '../../../../shared-components/render-
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="user-card">
     <div class="user-card__body">
-      <h3 class="user-card__title"><a href="${userCard.link}" class="user-card__link">${userCard.title}</a></h3>
+      <h3 class="user-card__title"><a href="${userCard.link}" class="user-card__link">${htmlEscape(userCard.title)}</a></h3>
       <div class="user-card__handle">@${userCard.handle}</div>
       <span class="user-card__meta"><span class="visually-hidden">This user has </span><span>${renderCountWithDescriptor(userCard.listCount, 'list', 'lists')}</span><span>${userCard.followedGroupCount} groups followed</span></span>
     </div>

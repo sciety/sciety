@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
@@ -9,7 +10,7 @@ const renderLists = (lists: ViewModel['ourLists']['lists']) => pipe(
   lists,
   RA.map((viewModel) => (`
     <tr>
-      <td><a href="/lists/${viewModel.listId}">${viewModel.title}</a></td>
+      <td><a href="/lists/${viewModel.listId}">${htmlEscape(viewModel.title)}</a></td>
       <td class="our-lists__article_count">${viewModel.articleCount}<span aria-hidden="true"> articles</span></td>
       <td><span aria-hidden="true" class="our-lists__updated_label">Updated </span>${templateDate(viewModel.updatedAt)}</td>
     </tr>
