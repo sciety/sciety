@@ -36,15 +36,15 @@ export const referencePage: HtmlPage = {
           <legend>
             Standard form fieldset legend
           </legend>
-          <div class="standard-form__target_wrapper">
+          <div class="standard-form__labelled_selectable_control">
             <input type="radio" id="item-a" name="listId" value="1"/>
             <label for="item-a">Item A</label>
           </div>
-          <div class="standard-form__target_wrapper">
+          <div class="standard-form__labelled_selectable_control">
             <input type="radio" id="item-b" name="listId" value="2"/>
             <label for="item-b">Item B</label>
           </div>
-          <div class="standard-form__target_wrapper">
+          <div class="standard-form__labelled_selectable_control">
             <input type="radio" id="item-c" name="listId" value="3"/>
             <label for="item-c">Item C</label>
           </div>
