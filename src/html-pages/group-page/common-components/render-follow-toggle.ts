@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as B from 'fp-ts/boolean';
 import { flow } from 'fp-ts/function';
 import { GroupId } from '../../../types/group-id';
@@ -7,7 +8,7 @@ import { groupProperty } from '../../../write-side/follow/follow-handler';
 const renderFollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/follow">
     <input type="hidden" name="${groupProperty}" value="${groupId}" />
-    <button type="submit" class="follow-button" aria-label="Follow ${groupName}">
+    <button type="submit" class="follow-button" aria-label="Follow ${htmlEscape(groupName)}">
       Follow
     </button>
   </form>
@@ -16,7 +17,7 @@ const renderFollowButton = (groupId: GroupId, groupName: string) => `
 const renderUnfollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/unfollow">
     <input type="hidden" name="editorialcommunityid" value="${groupId}" />
-    <button type="submit" class="unfollow-button" aria-label="Unfollow ${groupName}">
+    <button type="submit" class="unfollow-button" aria-label="Unfollow ${htmlEscape(groupName)}">
       Unfollow
     </button>
   </form>
