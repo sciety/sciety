@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
@@ -10,7 +11,7 @@ export const renderAuthors = (authors: ArticleAuthors): HtmlFragment => pipe(
   O.fold(
     () => '',
     flow(
-      RA.map((author) => `<li>${author}</li>`),
+      RA.map((author) => `<li>${htmlEscape(author)}</li>`),
       (listItems) => listItems.join(''),
       (items) => `<ol aria-label="Authors of this article" class="article-author-list" role="list">${items}</ol>`,
     ),

@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
@@ -10,14 +11,14 @@ const renderGroupLogo = (curationStatement: ViewModel['curationStatements'][numb
   curationStatement.groupLogo,
   O.match(
     () => '',
-    (logoPath) => `<img src="${logoPath}" alt="${curationStatement.groupName} logo">`,
+    (logoPath) => `<img src="${logoPath}" alt="${htmlEscape(curationStatement.groupName)} logo">`,
   ),
 );
 
 const renderCurationStatement = (curationStatement: ViewModel['curationStatements'][number]) => toHtmlFragment(`
   <section>
     <header class="curation-statement-header">
-      <h2>Curated by <a href="${curationStatement.groupPageHref}">${curationStatement.groupName}</a></h2>
+      <h2>Curated by <a href="${curationStatement.groupPageHref}">${htmlEscape(curationStatement.groupName)}</a></h2>
       ${renderGroupLogo(curationStatement)}
     </header>
     <div${renderLangAttribute(curationStatement.statementLanguageCode)} class="curation-statement-full-text">
