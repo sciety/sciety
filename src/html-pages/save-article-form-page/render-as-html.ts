@@ -9,7 +9,7 @@ import { ViewModel } from './view-model';
 const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   lists,
   RA.map((list) => `
-    <div class="save-article-page-form__target_wrapper">
+    <div class="standard-form__target_wrapper">
       <input type="radio" id="list-id-${list.id}" name="listId" value="${list.id}"/>
       <label for="list-id-${list.id}">${htmlEscape(list.name)}</label>
     </div>

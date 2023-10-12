@@ -91,3 +91,9 @@ $_label-font-size: functions.px-to-rem(20px);
 .standard-form__constraints {
   color: $_microcopy-colour;
 }
+
+.standard-form__target_wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: functions.px-to-rem(8px);
+}
