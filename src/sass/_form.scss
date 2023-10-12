@@ -39,10 +39,6 @@ $_label-font-size: functions.px-to-rem(20px);
   border-radius: settings.$border-radius;
 }
 
-@mixin constraints {
-  color: $_microcopy-colour;
-}
-
 @mixin cancel-button {
   @include button.secondary-link();
 }
@@ -90,4 +86,8 @@ $_label-font-size: functions.px-to-rem(20px);
 .standard-form__helper_text {
   color: $_microcopy-colour;
   margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+}
+
+.standard-form__constraints {
+  color: $_microcopy-colour;
 }

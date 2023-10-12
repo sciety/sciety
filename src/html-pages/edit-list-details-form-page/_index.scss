@@ -16,10 +16,6 @@
   @include form.form-with-borders-and-white-background();
 }
 
-.edit-list-details-form__constraints {
-  @include form.constraints();
-}
-
 .edit-list-details-form__cancel {
   @include form.cancel-button();
 }

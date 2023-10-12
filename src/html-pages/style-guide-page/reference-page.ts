@@ -58,6 +58,7 @@ export const referencePage: HtmlPage = {
           <label for="annotationContent" class="standard-form__sub_heading">Standard form sub heading</label>
           <p class="standard-form__helper_text">Standard form helper text</p>
           <textarea id="annotationContent" name="annotationContent" rows="10"></textarea>
+          <p class="standard-form__constraints">Standard form constraints text</p>
         </section>
         <button type="submit">
           Submit
