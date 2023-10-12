@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -49,7 +50,7 @@ const renderAnnotationContent = (viewModel: ArticleCardWithControlsAndAnnotation
       <section class="article-card-annotation">
         <header class="article-card-annotation__header">
           <img class="article-card-annotation__avatar" src="${annotation.authorAvatarPath}" alt="">
-          <h4>${annotation.author}</h4>
+          <h4>${htmlEscape(annotation.author)}</h4>
         </header>
         <p>${annotation.content}</p>
       </section>

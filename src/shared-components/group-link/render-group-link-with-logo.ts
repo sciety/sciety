@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
@@ -6,8 +7,8 @@ import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 const renderGroupLogoWithTextFallback = (viewModel: GroupLinkWithLogoViewModel) => pipe(
   viewModel.logoPath,
   O.fold(
-    () => viewModel.groupName,
-    (logoPath) => `<img src="${logoPath}"alt="${viewModel.groupName}" class="group-link-with-logo__logo">`,
+    () => htmlEscape(viewModel.groupName),
+    (logoPath) => `<img src="${logoPath}"alt="${htmlEscape(viewModel.groupName)}" class="group-link-with-logo__logo">`,
   ),
 );
 

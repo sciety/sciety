@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
@@ -28,7 +29,7 @@ export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => to
   <article class="list-card">
     <div class="list-card__body">
       <div>
-        <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${viewModel.title}</a></h3>
+        <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${htmlEscape(viewModel.title)}</a></h3>
         <p>${viewModel.description}</p>
       </div>
       <div class="list-card__meta">
