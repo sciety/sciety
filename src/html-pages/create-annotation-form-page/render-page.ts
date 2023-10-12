@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 import { externalInputFieldNames } from '../../standards';
@@ -13,7 +14,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
       <dt>Article</dt>
       <dd>${viewModel.articleTitle}</dd>
       <dt>List</dt>
-      <dd>${viewModel.listName}</dd>
+      <dd>${htmlEscape(viewModel.listName)}</dd>
     </dl>
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Annotation content</label>

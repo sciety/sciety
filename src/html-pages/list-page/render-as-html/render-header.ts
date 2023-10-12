@@ -1,3 +1,4 @@
+import { htmlEscape } from 'escape-goat';
 import * as B from 'fp-ts/boolean';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
@@ -38,12 +39,12 @@ const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
-    <h1>${viewModel.name}</h1>
+    <h1>${htmlEscape(viewModel.name)}</h1>
     <p class="page-header__subheading">
       <img src="${viewModel.ownerAvatarPath}" alt="" class="page-header__avatar">
-      <span>A list by <a href="${viewModel.ownerHref}">${viewModel.ownerName}</a></span>
+      <span>A list by <a href="${viewModel.ownerHref}">${htmlEscape(viewModel.ownerName)}</a></span>
     </p>
-    <p class="page-header__description">${viewModel.description}</p>
+    <p class="page-header__description">${htmlEscape(viewModel.description)}</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.updatedAt)}</p>
     <section class="list-page-actions">
       ${renderEditDetailsLink(viewModel.editCapability, viewModel.listId)}
