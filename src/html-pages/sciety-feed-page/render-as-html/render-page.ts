@@ -25,7 +25,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   RA.map(renderScietyFeedCard),
   (cards) => `
     <header class="page-header">
-      <h1>Sciety Feed</h1>
+      <h1>${viewModel.pageHeading}</h1>
     </header>
     <section>
       <p class="sciety-feed-page-numbers">

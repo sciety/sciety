@@ -27,7 +27,11 @@ export const constructViewModel: ConstructViewModel = (dependencies, pageSize) =
   TE.chainW(({ items, ...rest }) => pipe(
     items,
     O.traverseArray(constructEventCard(dependencies)),
-    O.map((cards) => ({ cards, ...rest })),
+    O.map((cards) => ({
+      cards,
+      ...rest,
+      pageHeading: 'Sciety Feed',
+    })),
     TE.fromOption(() => DE.notFound),
   )),
 );

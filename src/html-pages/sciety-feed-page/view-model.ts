@@ -19,4 +19,5 @@ export type ViewModel = {
   nextPage: O.Option<number>,
   numberOfPages: number,
   pageNumber: number,
+  pageHeading: string,
 };
