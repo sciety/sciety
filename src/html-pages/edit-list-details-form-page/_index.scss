@@ -16,10 +16,6 @@
   @include form.form-with-borders-and-white-background();
 }
 
-.edit-list-details-form__helper_text {
-  @include form.helper-text();
-}
-
 .edit-list-details-form__constraints {
   @include form.constraints();
 }

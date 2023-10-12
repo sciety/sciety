@@ -30,11 +30,6 @@ $_label-font-size: functions.px-to-rem(20px);
   margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
 }
 
-@mixin helper-text {
-  color: $_microcopy-colour;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
-}
-
 @mixin field {
   display: block;
   width: 100%;
@@ -90,4 +85,9 @@ $_label-font-size: functions.px-to-rem(20px);
 
 .standard-form__sub_heading {
   @include labelling();
+}
+
+.standard-form__helper_text {
+  color: $_microcopy-colour;
+  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
 }

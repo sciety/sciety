@@ -3,10 +3,6 @@
 @use '../../sass/functions';
 @use '../../sass/settings';
 
-.save-article-page-form__helper_text {
-  @include form.helper-text();
-}
-
 .save-article-page-form__target_wrapper {
   display: flex;
   align-items: center;
