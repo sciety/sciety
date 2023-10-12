@@ -23,7 +23,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
   <section>
     <label for="listName" class="standard-form__sub_heading">List name</label>
     <p class="edit-list-details-form__helper_text">Give the list a descriptive title.</p>
-    <input type="text" id="listName" name="name" class="edit-list-details-form__field" value="${htmlEscape(viewModel.listName)}" pattern="[^<>]+" required maxlength="${viewModel.listNameMaxLength}">
+    <input type="text" id="listName" name="name" value="${htmlEscape(viewModel.listName)}" pattern="[^<>]+" required maxlength="${viewModel.listNameMaxLength}">
     <p class="edit-list-details-form__constraints">Maximum ${viewModel.listNameMaxLength} characters</p>
   </section>
   <section>
