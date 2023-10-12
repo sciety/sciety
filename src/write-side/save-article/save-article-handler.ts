@@ -62,7 +62,6 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     sequenceS(O.Apply),
   );
   if (O.isNone(params)) {
-    dependencies.logger('error', 'saveArticleHandler codec failed or missing user', { requestBody: context.request.body });
     context.redirect('back');
     return;
   }
