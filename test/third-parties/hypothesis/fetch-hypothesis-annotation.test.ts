@@ -82,10 +82,6 @@ some text`;
     });
   });
 
-  describe('when there is a selector with multiple text quotes', () => {
-    it.todo('unspecified behaviour');
-  });
-
   describe('when there is no selector', () => {
     it('returns the response text', () => {
       const input: HypothesisAnnotation = {
