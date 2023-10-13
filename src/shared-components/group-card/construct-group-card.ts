@@ -9,13 +9,23 @@ import * as LOID from '../../types/list-owner-id';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../read-models';
 import { GroupCardViewModel } from './view-model';
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
+
+const curationStatements = (evaluations: ReadonlyArray<RecordedEvaluation>) => pipe(
+  evaluations,
+  RA.filter((evaluation) => pipe(
+    evaluation.type,
+    O.fold(
+      () => false,
+      (evType) => evType === 'curation-statement',
+    ),
+  )),
+);
 
 const calculateCuratedArticlesCount = (groupId: GroupId, queries: Queries) => pipe(
   groupId,
   queries.getEvaluationsByGroup,
-  RA.map((recordedEvaluation) => recordedEvaluation.type),
-  RA.map(O.getOrElse(() => 'not-provided')),
-  RA.filter((evaluationType) => evaluationType === 'curation-statement'),
+  curationStatements,
   RA.size,
 );
 
