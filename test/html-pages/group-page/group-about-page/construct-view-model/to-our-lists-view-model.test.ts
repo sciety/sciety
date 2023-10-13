@@ -69,8 +69,4 @@ describe('to-our-lists-view-model', () => {
       expect(O.isNone(model.allListsUrl)).toBe(true);
     });
   });
-
-  describe('when the group has no lists', () => {
-    it.todo('tbd');
-  });
 });
