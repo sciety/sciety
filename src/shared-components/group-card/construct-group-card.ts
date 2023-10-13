@@ -11,7 +11,7 @@ import { Queries } from '../../read-models';
 import { GroupCardViewModel } from './view-model';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
-const curationStatements = (evaluations: ReadonlyArray<RecordedEvaluation>) => pipe(
+const evaluationsThatAreCurationStatements = (evaluations: ReadonlyArray<RecordedEvaluation>) => pipe(
   evaluations,
   RA.filter((evaluation) => pipe(
     evaluation.type,
@@ -22,10 +22,17 @@ const curationStatements = (evaluations: ReadonlyArray<RecordedEvaluation>) => p
   )),
 );
 
+const uniqueArticlesWithTheseEvaluations = (evaluations: ReadonlyArray<RecordedEvaluation>) => pipe(
+  evaluations,
+  RA.map(({ articleId }) => articleId),
+  (articleIds) => [...new Set(articleIds)],
+);
+
 const calculateCuratedArticlesCount = (groupId: GroupId, queries: Queries) => pipe(
   groupId,
   queries.getEvaluationsByGroup,
-  curationStatements,
+  evaluationsThatAreCurationStatements,
+  uniqueArticlesWithTheseEvaluations,
   RA.size,
 );
 

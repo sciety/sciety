@@ -128,7 +128,7 @@ describe('construct-group-card', () => {
         expect(O.isSome(constructedViewModel(addGroupCommand).latestActivityAt)).toBe(true);
       });
 
-      it.skip('has a curated articles count of 1', () => {
+      it('has a curated articles count of 1', () => {
         expect(constructedViewModel(addGroupCommand).curatedArticlesCount).toBe(1);
       });
     });
