@@ -25,10 +25,6 @@ describe('article-added-to-list-card', () => {
     };
   });
 
-  describe('when a group owns the list', () => {
-    it.todo('write tests');
-  });
-
   describe('when a user owns the list', () => {
     const createuserAccountCommand = arbitraryCreateUserAccountCommand();
     const date = new Date('2021-09-15');
