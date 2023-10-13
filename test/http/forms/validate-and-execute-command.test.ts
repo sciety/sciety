@@ -81,10 +81,6 @@ describe('validate-and-execute-command', () => {
     });
   });
 
-  describe('when there is no authenticated user', () => {
-    it.todo('return an oops page');
-  });
-
   describe('when the user handle already exists', () => {
     const existingUser = arbitraryUserDetails();
     const formBody = { fullName: arbitraryUserGeneratedInput(), handle: existingUser.handle };
