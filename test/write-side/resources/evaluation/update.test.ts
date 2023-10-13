@@ -18,7 +18,7 @@ const expectEvent = (fields: Record<string, unknown>) => ({
 });
 
 describe('update', () => {
-  describe('when the evalution publication has been recorded', () => {
+  describe('when the evaluation publication has been recorded', () => {
     describe('when passed a new value for a single attribute', () => {
       describe.each([
         ['evaluationType' as const],
