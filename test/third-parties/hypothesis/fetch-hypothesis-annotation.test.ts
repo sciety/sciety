@@ -53,8 +53,6 @@ describe('fetch-hypothesis-annotation', () => {
   });
 
   it.todo('test the 404 response when hypothesis group has removed an annotation');
-
-  it.todo('test the 500 response when hypothesis is unreachable');
 });
 
 describe('insertSelectedText', () => {
