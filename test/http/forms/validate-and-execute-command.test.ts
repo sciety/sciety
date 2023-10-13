@@ -107,7 +107,5 @@ describe('validate-and-execute-command', () => {
         handle: existingUser.handle,
       }));
     });
-
-    it.todo('return a pertinent error summary');
   });
 });
