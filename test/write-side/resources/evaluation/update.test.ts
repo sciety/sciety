@@ -121,18 +121,4 @@ describe('update', () => {
       });
     });
   });
-
-  describe('when the evaluation publication has not been recorded', () => {
-    describe('when passed any command', () => {
-      it.todo('returns an error');
-    });
-  });
-
-  describe('when an EvaluationUpdated event exists without a previous EvaluationPublicationRecorded event', () => {
-    it.todo('returns an error');
-  });
-
-  describe('when an EvaluationUpdated event is followed by a EvaluationPublicationRecorded event', () => {
-    it.todo('returns an error');
-  });
 });
