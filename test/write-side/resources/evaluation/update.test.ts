@@ -116,7 +116,31 @@ describe('update', () => {
         });
 
         describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
-          it.todo('raises no events');
+          const evaluationLocator = arbitraryEvaluationLocator();
+          const eventsRaised = pipe(
+            [
+              {
+                ...arbitraryEvaluationPublicationRecordedEvent(),
+                evaluationLocator,
+                evaluationType: 'curation-statement',
+              },
+              {
+                ...arbitraryEvaluationUpdatedEvent(),
+                evaluationLocator,
+                evaluationType: 'review',
+              },
+            ],
+            evaluationResource.update({
+              ...arbitraryUpdateEvaluationCommand(),
+              evaluationLocator,
+              evaluationType: 'review',
+            }),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+
+          it('raises no events', () => {
+            expect(eventsRaised).toStrictEqual([]);
+          });
         });
       });
     });
