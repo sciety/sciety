@@ -88,26 +88,9 @@ describe('update', () => {
       });
     });
 
-    describe('when passed a new value for one attribute and an unchanged value for a different attribute', () => {
-      describe.each([
-        ['type', 'authors'],
-        ['authors', 'type'],
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      ])('new %s, existing %s', (attributeToBeChanged, unchangedAttribute) => {
-        describe('and this evaluation\'s details have never been updated', () => {
-          it.todo(`raises an event to only update the evaluation ${attributeToBeChanged}`);
-        });
-
-        describe(`and this evaluations's ${attributeToBeChanged} has previously been updated`, () => {
-          it.todo(`raises an event to only update the evaluation's ${attributeToBeChanged}`);
-        });
-      });
-    });
-
     describe('when passed an unchanged value for a single attribute', () => {
       describe.each([
         ['type'],
-        // ['authors'],
       ])('%s', (attributeToBeChanged) => {
         describe('and this evaluation\'s details have never been updated', () => {
           const evaluationLocator = arbitraryEvaluationLocator();
