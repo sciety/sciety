@@ -24,10 +24,6 @@ describe('collapsed-articles-added-to-list-card', () => {
     };
   });
 
-  describe('when a group owns the list', () => {
-    it.todo('write tests');
-  });
-
   describe('when a user owns the list', () => {
     const date = arbitraryDate();
     const articleCount = arbitraryNumber(2, 10);
