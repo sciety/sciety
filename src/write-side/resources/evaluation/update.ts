@@ -2,7 +2,6 @@ import * as B from 'fp-ts/boolean';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import {
   EventOfType, constructEvent, DomainEvent, isEventOfType,
 } from '../../../domain-events';
@@ -31,7 +30,9 @@ type WriteModel = {
   authors: ReadonlyArray<string> | undefined,
 };
 
-const buildEvaluation = (event: RelevantEvent) => {
+type State = E.Either<ErrorMessage, WriteModel>;
+
+const buildEvaluation = (state: State, event: RelevantEvent): State => {
   switch (event.type) {
     case 'EvaluationPublicationRecorded':
     case 'EvaluationUpdated':
@@ -51,15 +52,7 @@ const constructWriteModel = (
 ) => (events: ReadonlyArray<DomainEvent>): E.Either<ErrorMessage, WriteModel> => pipe(
   events,
   filterToHistoryOf(evaluationLocator),
-  RA.match(
-    () => E.left(evaluationResourceError.doesNotExist),
-    (history) => E.right(history),
-  ),
-  E.chainW((evaluationHistory) => pipe(
-    evaluationHistory,
-    RNEA.last,
-    buildEvaluation,
-  )),
+  RA.reduce(E.left(evaluationResourceError.doesNotExist), buildEvaluation),
 );
 
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
