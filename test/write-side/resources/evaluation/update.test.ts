@@ -22,13 +22,14 @@ const expectEvent = (fields: Record<string, unknown>) => ({
 
 describe('update', () => {
   describe('when the evaluation publication has been recorded', () => {
+    const evaluationLocator = arbitraryEvaluationLocator();
+
     describe('when passed a new value for a single attribute', () => {
       describe('and this evaluation has never been updated', () => {
         describe.each([
           ['evaluationType' as const, 'review' as EvaluationType],
           ['authors' as const, [arbitraryString()]],
         ])('%s', (attributeToBeChanged, newValue) => {
-          const evaluationLocator = arbitraryEvaluationLocator();
           const command: UpdateEvaluationCommand = {
             evaluationLocator,
             [attributeToBeChanged]: newValue,
@@ -61,7 +62,6 @@ describe('update', () => {
           ['evaluationType' as const, 'curation-statement' as EvaluationType, 'review' as EvaluationType],
           ['authors' as const, [], [arbitraryString()]],
         ])('%s', (attributeToBeChanged, previousUpdateValue, newUpdateValue) => {
-          const evaluationLocator = arbitraryEvaluationLocator();
           const command: UpdateEvaluationCommand = {
             evaluationLocator,
             [attributeToBeChanged]: newUpdateValue,
@@ -99,7 +99,6 @@ describe('update', () => {
         ['evaluationType'],
       ])('%s', (attributeToBeChanged) => {
         describe('and this evaluation\'s details have never been updated', () => {
-          const evaluationLocator = arbitraryEvaluationLocator();
           const eventsRaised = pipe(
             [
               {
@@ -122,7 +121,6 @@ describe('update', () => {
         });
 
         describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
-          const evaluationLocator = arbitraryEvaluationLocator();
           const eventsRaised = pipe(
             [
               {
@@ -147,6 +145,48 @@ describe('update', () => {
           it('raises no events', () => {
             expect(eventsRaised).toStrictEqual([]);
           });
+        });
+      });
+    });
+
+    describe('when passed a new value for one attribute and an unchanged value for a different attribute', () => {
+      describe.each([
+        ['evaluationType' as const, 'authors' as const],
+        ['authors' as const, 'evaluationType' as const],
+      ])('new %s, existing %s', (attributeToBeChanged, unchangedAttribute) => {
+        const newValue = arbitraryString();
+
+        describe('and this evaluation has never been updated', () => {
+          const evaluationPublicationRecorded = {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            evaluationLocator,
+            evaluationType: 'curation-statement' as const,
+          };
+          const executeUpdateAction = (command: UpdateEvaluationCommand) => pipe(
+            [
+              evaluationPublicationRecorded,
+            ],
+            evaluationResource.update(command),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+          const eventsRaised = executeUpdateAction({
+            evaluationLocator,
+            [attributeToBeChanged]: newValue,
+            [unchangedAttribute]: evaluationPublicationRecorded[unchangedAttribute],
+          });
+
+          it(`raises an event to only update the ${attributeToBeChanged}`, () => {
+            expect(eventsRaised).toStrictEqual([
+              expectEvent({
+                evaluationLocator,
+                [attributeToBeChanged]: newValue,
+              }),
+            ]);
+          });
+        });
+
+        describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
+          it.todo(`raises an event to only update the ${attributeToBeChanged}`);
         });
       });
     });
