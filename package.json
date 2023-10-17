@@ -85,7 +85,7 @@
     "purgecss": "^5.0.0",
     "sass": "^1.69.3",
     "sass-unused": "^0.5.0",
-    "stylelint": "^15.10.3",
+    "stylelint": "^15.11.0",
     "stylelint-config-sass-guidelines": "^10.0.0",
     "stylelint-order": "^6.0.3",
     "taiko": "^1.3.10",
