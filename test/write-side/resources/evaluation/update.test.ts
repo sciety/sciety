@@ -90,7 +90,7 @@ describe('update', () => {
 
     describe('when passed an unchanged value for a single attribute', () => {
       describe.each([
-        ['type'],
+        ['evaluationType'],
       ])('%s', (attributeToBeChanged) => {
         describe('and this evaluation\'s details have never been updated', () => {
           const evaluationLocator = arbitraryEvaluationLocator();
