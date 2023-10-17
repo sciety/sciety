@@ -29,7 +29,6 @@ describe('update', () => {
         describe('and this evaluation has never been updated', () => {
           const evaluationLocator = arbitraryEvaluationLocator();
           const command: UpdateEvaluationCommand = {
-            ...arbitraryUpdateEvaluationCommand(),
             evaluationLocator,
             [attributeToBeChanged]: newValue,
           };
@@ -58,9 +57,8 @@ describe('update', () => {
         describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
           const evaluationLocator = arbitraryEvaluationLocator();
           const command: UpdateEvaluationCommand = {
-            ...arbitraryUpdateEvaluationCommand(),
             evaluationLocator,
-            evaluationType: 'review',
+            [attributeToBeChanged]: newValue,
           };
           const eventsRaised = pipe(
             [
