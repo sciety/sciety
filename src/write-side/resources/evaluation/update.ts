@@ -55,10 +55,14 @@ const constructWriteModel = (
   RA.reduce(E.left(evaluationResourceError.doesNotExist), buildEvaluation),
 );
 
+const calculateAttributesToUpdate = (command: UpdateEvaluationCommand) => (writeModel: WriteModel) => (
+  (writeModel.evaluationType !== command.evaluationType)
+);
+
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
   constructWriteModel(command.evaluationLocator),
-  E.map((writeModel) => (writeModel.evaluationType !== command.evaluationType)),
+  E.map(calculateAttributesToUpdate(command)),
   E.map(B.fold(
     () => [],
     () => [
