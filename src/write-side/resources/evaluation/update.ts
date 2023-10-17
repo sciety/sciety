@@ -31,6 +31,21 @@ type WriteModel = {
   authors: ReadonlyArray<string> | undefined,
 };
 
+const buildEvaluation = (event: RelevantEvent) => {
+  switch (event.type) {
+    case 'EvaluationPublicationRecorded':
+    case 'EvaluationUpdated':
+      return E.right({
+        evaluationType: event.evaluationType,
+        authors: undefined,
+      });
+    case 'IncorrectlyRecordedEvaluationErased':
+      return E.left(evaluationResourceError.doesNotExist);
+    case 'EvaluationRemovalRecorded':
+      return E.left(evaluationResourceError.previouslyRemovedCannotUpdate);
+  }
+};
+
 const constructWriteModel = (
   evaluationLocator: EvaluationLocator,
 ) => (events: ReadonlyArray<DomainEvent>): E.Either<ErrorMessage, WriteModel> => pipe(
@@ -43,20 +58,7 @@ const constructWriteModel = (
   E.chainW((evaluationHistory) => pipe(
     evaluationHistory,
     RNEA.last,
-    (event) => {
-      switch (event.type) {
-        case 'EvaluationPublicationRecorded':
-        case 'EvaluationUpdated':
-          return E.right({
-            evaluationType: event.evaluationType,
-            authors: undefined,
-          });
-        case 'IncorrectlyRecordedEvaluationErased':
-          return E.left(evaluationResourceError.doesNotExist);
-        case 'EvaluationRemovalRecorded':
-          return E.left(evaluationResourceError.previouslyRemovedCannotUpdate);
-      }
-    },
+    buildEvaluation,
   )),
 );
 
