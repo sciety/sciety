@@ -38,7 +38,7 @@ const buildEvaluation = (state: State, event: RelevantEvent): State => {
     case 'EvaluationUpdated':
       return E.right({
         evaluationType: event.evaluationType,
-        authors: undefined,
+        authors: event.authors,
       });
     case 'IncorrectlyRecordedEvaluationErased':
       return E.left(evaluationResourceError.doesNotExist);
