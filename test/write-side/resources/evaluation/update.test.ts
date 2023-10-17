@@ -183,7 +183,7 @@ describe('update', () => {
           });
         });
 
-        describe.skip(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
+        describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
           const evaluationPublicationRecorded = {
             ...arbitraryEvaluationPublicationRecordedEvent(),
             evaluationLocator,
@@ -196,6 +196,7 @@ describe('update', () => {
               {
                 ...arbitraryEvaluationUpdatedEvent(),
                 evaluationLocator,
+                [unchangedAttribute]: undefined,
                 [attributeToBeChanged]: previousUpdateValue,
               },
             ],

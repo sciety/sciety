@@ -9,7 +9,7 @@ import { UpdateEvaluationCommand } from '../../commands';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
 import { evaluationResourceError } from './evaluation-resource-error';
 import { EvaluationType } from '../../../types/recorded-evaluation';
-import { ErrorMessage } from '../../../types/error-message';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 
 type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 
@@ -39,10 +39,16 @@ const buildEvaluation = (state: State, event: RelevantEvent): State => {
         authors: event.authors,
       });
     case 'EvaluationUpdated':
-      return E.right({
-        evaluationType: event.evaluationType,
-        authors: event.authors,
-      });
+      return pipe(
+        state,
+        E.match(
+          () => E.left(toErrorMessage('')),
+          (evaluationState) => E.right({
+            evaluationType: event.evaluationType ?? evaluationState.evaluationType,
+            authors: event.authors ?? evaluationState.authors,
+          }),
+        ),
+      );
     case 'IncorrectlyRecordedEvaluationErased':
       return E.left(evaluationResourceError.doesNotExist);
     case 'EvaluationRemovalRecorded':
