@@ -78,8 +78,7 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (all
     ? [
       constructEvent('EvaluationUpdated')({
         evaluationLocator: command.evaluationLocator,
-        evaluationType: command.evaluationType,
-        authors: undefined,
+        ...attributesToChange,
       }),
     ]
     : [])),
