@@ -1,4 +1,3 @@
-import * as B from 'fp-ts/boolean';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
@@ -55,22 +54,33 @@ const constructWriteModel = (
   RA.reduce(E.left(evaluationResourceError.doesNotExist), buildEvaluation),
 );
 
-const calculateAttributesToUpdate = (command: UpdateEvaluationCommand) => (writeModel: WriteModel) => (
-  (writeModel.evaluationType !== command.evaluationType)
+const calculateAttributesToUpdate = (command: UpdateEvaluationCommand) => (writeModel: WriteModel) => ({
+  evaluationType: (command.evaluationType !== undefined
+    && command.evaluationType !== writeModel.evaluationType)
+    ? command.evaluationType
+    : undefined,
+  authors: (command.authors !== undefined
+    && command.authors !== writeModel.authors)
+    ? command.authors
+    : undefined,
+});
+
+const hasAnyValues = (attributes: Record<string, unknown | undefined>): boolean => (
+  (attributes.evaluationType !== undefined)
+  || (attributes.authors !== undefined)
 );
 
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
   constructWriteModel(command.evaluationLocator),
   E.map(calculateAttributesToUpdate(command)),
-  E.map(B.fold(
-    () => [],
-    () => [
+  E.map((attributesToChange) => (hasAnyValues(attributesToChange)
+    ? [
       constructEvent('EvaluationUpdated')({
         evaluationLocator: command.evaluationLocator,
         evaluationType: command.evaluationType,
         authors: undefined,
       }),
-    ],
-  )),
+    ]
+    : [])),
 );
