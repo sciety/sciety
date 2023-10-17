@@ -151,16 +151,15 @@ describe('update', () => {
 
     describe('when passed a new value for one attribute and an unchanged value for a different attribute', () => {
       describe.each([
-        ['evaluationType' as const, 'authors' as const],
-        ['authors' as const, 'evaluationType' as const],
-      ])('new %s, existing %s', (attributeToBeChanged, unchangedAttribute) => {
-        const newValue = arbitraryString();
-
+        ['evaluationType' as const, 'author-response' as const, 'authors' as const, [arbitraryString()]],
+        ['authors' as const, [arbitraryString()], 'evaluationType' as const, 'author-response' as const],
+      ])('new %s, existing %s', (attributeToBeChanged, newValue, unchangedAttribute, unchangingValue) => {
         describe('and this evaluation has never been updated', () => {
           const evaluationPublicationRecorded = {
             ...arbitraryEvaluationPublicationRecordedEvent(),
             evaluationLocator,
-            evaluationType: 'curation-statement' as const,
+            evaluationType: 'review' as const,
+            [unchangedAttribute]: unchangingValue,
           };
           const eventsRaised = pipe(
             [
@@ -169,8 +168,8 @@ describe('update', () => {
             evaluationResource.update({
               evaluationLocator,
               [attributeToBeChanged]: newValue,
-              [unchangedAttribute]: evaluationPublicationRecorded[unchangedAttribute],
-            }),
+              [unchangedAttribute]: unchangingValue,
+            } satisfies UpdateEvaluationCommand),
             E.getOrElseW(shouldNotBeCalled),
           );
 
