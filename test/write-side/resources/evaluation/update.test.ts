@@ -151,9 +151,9 @@ describe('update', () => {
 
     describe('when passed a new value for one attribute and an unchanged value for a different attribute', () => {
       describe.each([
-        ['evaluationType' as const, 'author-response' as const, 'authors' as const, [arbitraryString()]],
-        ['authors' as const, [arbitraryString()], 'evaluationType' as const, 'author-response' as const],
-      ])('new %s, existing %s', (attributeToBeChanged, newValue, unchangedAttribute, unchangingValue) => {
+        ['evaluationType' as const, 'curation-statement' as const, 'author-response' as const, 'authors' as const, [arbitraryString()]],
+        ['authors' as const, [arbitraryString()], [arbitraryString()], 'evaluationType' as const, 'author-response' as const],
+      ])('new %s, existing %s', (attributeToBeChanged, previousUpdateValue, newValue, unchangedAttribute, unchangingValue) => {
         describe('and this evaluation has never been updated', () => {
           const evaluationPublicationRecorded = {
             ...arbitraryEvaluationPublicationRecordedEvent(),
@@ -183,8 +183,38 @@ describe('update', () => {
           });
         });
 
-        describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
-          it.todo(`raises an event to only update the ${attributeToBeChanged}`);
+        describe.skip(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
+          const evaluationPublicationRecorded = {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            evaluationLocator,
+            evaluationType: 'review' as const,
+            [unchangedAttribute]: unchangingValue,
+          };
+          const eventsRaised = pipe(
+            [
+              evaluationPublicationRecorded,
+              {
+                ...arbitraryEvaluationUpdatedEvent(),
+                evaluationLocator,
+                [attributeToBeChanged]: previousUpdateValue,
+              },
+            ],
+            evaluationResource.update({
+              evaluationLocator,
+              [attributeToBeChanged]: newValue,
+              [unchangedAttribute]: unchangingValue,
+            } satisfies UpdateEvaluationCommand),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+
+          it(`raises an event to only update the ${attributeToBeChanged}`, () => {
+            expect(eventsRaised).toStrictEqual([
+              expectEvent({
+                evaluationLocator,
+                [attributeToBeChanged]: newValue,
+              }),
+            ]);
+          });
         });
       });
     });
