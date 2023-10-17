@@ -162,18 +162,17 @@ describe('update', () => {
             evaluationLocator,
             evaluationType: 'curation-statement' as const,
           };
-          const executeUpdateAction = (command: UpdateEvaluationCommand) => pipe(
+          const eventsRaised = pipe(
             [
               evaluationPublicationRecorded,
             ],
-            evaluationResource.update(command),
+            evaluationResource.update({
+              evaluationLocator,
+              [attributeToBeChanged]: newValue,
+              [unchangedAttribute]: evaluationPublicationRecorded[unchangedAttribute],
+            }),
             E.getOrElseW(shouldNotBeCalled),
           );
-          const eventsRaised = executeUpdateAction({
-            evaluationLocator,
-            [attributeToBeChanged]: newValue,
-            [unchangedAttribute]: evaluationPublicationRecorded[unchangedAttribute],
-          });
 
           it(`raises an event to only update the ${attributeToBeChanged}`, () => {
             expect(eventsRaised).toStrictEqual([
