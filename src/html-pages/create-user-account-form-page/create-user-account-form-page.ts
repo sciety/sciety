@@ -55,6 +55,7 @@ const emptyFormViewModel: ViewModel = {
   errorSummary: O.none,
   handle: '' as UserGeneratedInput,
   fullName: '' as UserGeneratedInput,
+  validationRecovery: O.none,
 };
 
 export const createUserAccountFormPage: ConstructPage = (): TE.TaskEither<never, HtmlPage> => pipe(
