@@ -9,5 +9,6 @@ export const evaluationUpdatedEventCodec = t.type({
   type: t.literal('EvaluationUpdated'),
   date: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
-  evaluationType: evaluationTypeCodec,
+  evaluationType: t.union([evaluationTypeCodec, t.undefined]),
+  authors: t.union([t.readonlyArray(t.string), t.undefined]),
 });

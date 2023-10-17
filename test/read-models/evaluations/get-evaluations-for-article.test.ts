@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { arbitraryEvaluationUpdatedEvent } from '../../domain-events/evaluation-updated-event.helper';
 import { getEvaluationsForArticle } from '../../../src/read-models/evaluations/get-evaluations-for-article';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
@@ -169,6 +170,7 @@ describe('get-evaluations-for-article', () => {
             initialType as unknown as EvaluationType,
           ),
           constructEvent('EvaluationUpdated')({
+            ...arbitraryEvaluationUpdatedEvent(),
             evaluationLocator,
             evaluationType: updatedType as unknown as EvaluationType,
           }),

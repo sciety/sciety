@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-updated-event.helper';
 import { constructEvent } from '../../../../src/domain-events';
 import { update } from '../../../../src/write-side/resources/evaluation';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
@@ -20,6 +21,7 @@ const evaluationUpdatedWithType = (
   evaluationLocator: EvaluationLocator,
   evaluationType: EvaluationType | undefined,
 ) => constructEvent('EvaluationUpdated')({
+  ...arbitraryEvaluationUpdatedEvent(),
   evaluationLocator,
   evaluationType,
 });

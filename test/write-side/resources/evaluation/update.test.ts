@@ -16,6 +16,7 @@ const expectEvent = (fields: Record<string, unknown>) => ({
   type: 'EvaluationUpdated',
   evaluationLocator: undefined,
   evaluationType: undefined,
+  authors: undefined,
   ...fields,
 });
 
