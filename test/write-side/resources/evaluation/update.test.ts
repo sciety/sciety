@@ -7,6 +7,7 @@ import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluati
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { UpdateEvaluationCommand } from '../../../../src/write-side/commands';
+import { EvaluationType } from '../../../../src/types/recorded-evaluation';
 
 const expectEvent = (fields: Record<string, unknown>) => ({
   id: expect.any(String),
@@ -21,15 +22,15 @@ describe('update', () => {
   describe('when the evaluation publication has been recorded', () => {
     describe('when passed a new value for a single attribute', () => {
       describe.each([
-        ['evaluationType' as const],
+        ['evaluationType' as const, 'review' as EvaluationType],
         // ['authors'],
-      ])('%s', (attributeToBeChanged) => {
+      ])('%s', (attributeToBeChanged, newValue) => {
         describe('and this evaluation has never been updated', () => {
           const evaluationLocator = arbitraryEvaluationLocator();
           const command: UpdateEvaluationCommand = {
             ...arbitraryUpdateEvaluationCommand(),
             evaluationLocator,
-            evaluationType: 'review',
+            [attributeToBeChanged]: newValue,
           };
           const eventsRaised = pipe(
             [
