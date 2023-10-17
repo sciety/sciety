@@ -8,6 +8,7 @@ export const updateEvaluationCommandCodec = t.intersection([
   }),
   t.partial({
     evaluationType: evaluationTypeCodec,
+    authors: t.readonlyArray(t.string),
   }),
 ]);
 
