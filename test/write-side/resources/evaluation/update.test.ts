@@ -57,13 +57,13 @@ describe('update', () => {
 
       describe('and this evaluation has previously been updated', () => {
         describe.each([
-          ['evaluationType' as const, 'review' as EvaluationType],
-          ['authors' as const, [arbitraryString()]],
-        ])('%s', (attributeToBeChanged, newValue) => {
+          ['evaluationType' as const, 'curation-statement' as EvaluationType, 'review' as EvaluationType],
+          ['authors' as const, [], [arbitraryString()]],
+        ])('%s', (attributeToBeChanged, previousUpdateValue, newUpdateValue) => {
           const evaluationLocator = arbitraryEvaluationLocator();
           const command: UpdateEvaluationCommand = {
             evaluationLocator,
-            [attributeToBeChanged]: newValue,
+            [attributeToBeChanged]: newUpdateValue,
           };
           const eventsRaised = pipe(
             [
@@ -74,7 +74,7 @@ describe('update', () => {
               {
                 ...arbitraryEvaluationUpdatedEvent(),
                 evaluationLocator,
-                [attributeToBeChanged]: 'author-response',
+                [attributeToBeChanged]: previousUpdateValue,
               },
             ],
             evaluationResource.update(command),
