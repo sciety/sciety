@@ -34,6 +34,10 @@ type State = E.Either<ErrorMessage, WriteModel>;
 const buildEvaluation = (state: State, event: RelevantEvent): State => {
   switch (event.type) {
     case 'EvaluationPublicationRecorded':
+      return E.right({
+        evaluationType: event.evaluationType,
+        authors: event.authors,
+      });
     case 'EvaluationUpdated':
       return E.right({
         evaluationType: event.evaluationType,
