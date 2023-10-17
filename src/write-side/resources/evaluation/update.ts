@@ -26,7 +26,10 @@ const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: Rea
   RA.filter((event) => event.evaluationLocator === evaluationLocator),
 );
 
-type WriteModel = { evaluationType: EvaluationType | undefined };
+type WriteModel = {
+  evaluationType: EvaluationType | undefined,
+  authors: ReadonlyArray<string> | undefined,
+};
 
 const constructWriteModel = (
   evaluationLocator: EvaluationLocator,
@@ -44,7 +47,10 @@ const constructWriteModel = (
       switch (event.type) {
         case 'EvaluationPublicationRecorded':
         case 'EvaluationUpdated':
-          return E.right({ evaluationType: event.evaluationType });
+          return E.right({
+            evaluationType: event.evaluationType,
+            authors: undefined,
+          });
         case 'IncorrectlyRecordedEvaluationErased':
           return E.left(evaluationResourceError.doesNotExist);
         case 'EvaluationRemovalRecorded':
