@@ -26,7 +26,7 @@ const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: Rea
 
 type WriteModel = {
   evaluationType: EvaluationType | undefined,
-  authors: ReadonlyArray<string> | undefined,
+  authors: ReadonlyArray<string>,
 };
 
 type State = E.Either<ErrorMessage, WriteModel>;
