@@ -10,7 +10,7 @@ export const unvalidatedFormDetailsCodec = t.type({
 
 export const formFieldsCodec = t.type({
   fullName: t.string,
-  hanle: t.string,
+  handle: t.string,
 });
 
 export const createUserAccountFormCodec = t.type({
