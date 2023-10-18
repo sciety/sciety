@@ -13,13 +13,12 @@ import {
   stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0, Config as LoginMiddlewaresConfig,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
-import { createUserAccount } from '../../write-side/forms/create-user-account';
+import { createUserAccount } from '../../write-side/forms/create-user/create-user-account';
 import { pageHandler } from '../page-handler';
-import { createUserAccountFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
-
 import { CollectedPorts } from '../../infrastructure';
-import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { saveAuthenticationDestination } from '../authentication-destination';
+import { createUserAccountFormPage } from '../../write-side/forms/create-user/create-user-account-form-page/create-user-account-form-page';
+import { createUserAccountFormPageLayout } from '../../write-side/forms/create-user/create-user-account-form-page/create-user-account-form-page-layout';
 
 export type Config = LoginMiddlewaresConfig;
 

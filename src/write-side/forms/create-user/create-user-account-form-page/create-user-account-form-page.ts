@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../../types/html-page';
-import { UserGeneratedInput } from '../../types/user-generated-input';
 import { ViewModel } from './view-model';
-import { ConstructPage } from '../construct-page';
+import { ConstructPage } from '../../../../html-pages/construct-page';
+import { toHtmlFragment } from '../../../../types/html-fragment';
+import { HtmlPage } from '../../../../types/html-page';
+import { UserGeneratedInput } from '../../../../types/user-generated-input';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,

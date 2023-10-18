@@ -7,14 +7,14 @@ import * as t from 'io-ts';
 import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
-} from '../../http/authentication-and-logging-in-of-sciety-users';
-import { renderFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
-import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
-import { toWebPage } from '../../http/page-handler';
+} from '../../../http/authentication-and-logging-in-of-sciety-users';
+import { toWebPage } from '../../../http/page-handler';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
-import { redirectToAuthenticationDestination } from '../../http/authentication-destination';
-import { ViewModel } from '../../html-pages/create-user-account-form-page/view-model';
-import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
+import { redirectToAuthenticationDestination } from '../../../http/authentication-destination';
+import { UserGeneratedInput, userGeneratedInputCodec } from '../../../types/user-generated-input';
+import { ViewModel } from './create-user-account-form-page/view-model';
+import { renderFormPage } from './create-user-account-form-page/create-user-account-form-page';
+import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
