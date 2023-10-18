@@ -53,11 +53,11 @@ describe('validate-and-execute-command', () => {
       [{ fullName }, { fullName, handle: '' as UserGeneratedInput }],
       [{ }, { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ])('returns the form with any valid fields populated', async (body, expectedFormOutput) => {
+    ])('return a form incomplete error', async (body, expectedFormOutput) => {
       const koaContext = buildKoaContext(body);
       const result = await validateAndExecuteCommand(koaContext, defaultDependencies)();
 
-      expect(result).toStrictEqual(E.left('validation-error'));
+      expect(result).toStrictEqual(E.left('missing-form-fields'));
     });
   });
 

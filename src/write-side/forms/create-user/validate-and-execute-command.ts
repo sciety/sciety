@@ -1,4 +1,4 @@
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
@@ -10,7 +10,7 @@ import { getAuthenticatedUserIdFromContext } from '../../../http/authentication-
 import { CommandResult } from '../../../types/command-result';
 import { Logger } from '../../../shared-ports';
 import { DependenciesForCommands } from '../../dependencies-for-commands';
-import { createUserAccountFormCodec } from './codecs';
+import { createUserAccountFormCodec, formFieldsCodec } from './codecs';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -19,25 +19,32 @@ export type Dependencies = DependenciesForCommands & {
 };
 
 type ValidateAndExecuteCommand = (context: ParameterizedContext, dependencies: Dependencies)
-=> TE.TaskEither<'validation-error' | 'no-authenticated-user-id' | 'command-failed', CommandResult>;
+=> TE.TaskEither<'missing-form-fields' | 'validation-error' | 'no-authenticated-user-id' | 'command-failed', CommandResult>;
 
 export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, dependencies) => pipe(
-  {
-    formUserDetails: pipe(
-      context.request.body,
-      createUserAccountFormCodec.decode,
-      E.mapLeft((errors) => {
-        dependencies.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
-        return 'validation-error' as const;
-      }),
-    ),
-    authenticatedUserId: pipe(
-      context,
-      getAuthenticatedUserIdFromContext,
-      E.fromOption(() => 'no-authenticated-user-id' as const),
-    ),
-  },
-  sequenceS(E.Apply),
+  context.request.body,
+  flow(
+    formFieldsCodec.decode,
+    E.mapLeft(() => 'missing-form-fields' as const),
+  ),
+  E.chainW((formFields) => pipe(
+    {
+      formUserDetails: pipe(
+        formFields,
+        createUserAccountFormCodec.decode,
+        E.mapLeft((errors) => {
+          dependencies.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
+          return 'validation-error' as const;
+        }),
+      ),
+      authenticatedUserId: pipe(
+        context,
+        getAuthenticatedUserIdFromContext,
+        E.fromOption(() => 'no-authenticated-user-id' as const),
+      ),
+    },
+    sequenceS(E.Apply),
+  )),
   E.map(({ formUserDetails, authenticatedUserId }) => ({
     ...formUserDetails,
     displayName: formUserDetails.fullName,

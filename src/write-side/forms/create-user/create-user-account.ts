@@ -13,7 +13,7 @@ import { UserGeneratedInput } from '../../../types/user-generated-input';
 import { ViewModel } from './create-user-account-form-page/view-model';
 import { renderFormPage } from './create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
-import { formFieldsCodec, unvalidatedFormDetailsCodec } from './codecs';
+import { unvalidatedFormDetailsCodec } from './codecs';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
@@ -28,21 +28,21 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     return;
   }
 
-  if (E.isLeft(result) && result.left === 'command-failed') {
-    context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-    context.response.body = 'Your input appears to be valid but we failed to handle it.';
-    return;
-  }
-
   if (E.isLeft(result) && result.left === 'no-authenticated-user-id') {
     context.response.status = StatusCodes.UNAUTHORIZED;
     context.response.body = 'You must be authenticated to perform this action.';
     return;
   }
 
-  if (E.isLeft(formFieldsCodec.decode(context.request.body))) {
+  if (E.isLeft(result) && result.left === 'missing-form-fields') {
     context.response.status = StatusCodes.BAD_REQUEST;
     context.response.body = 'Something went wrong when you submitted the form.';
+    return;
+  }
+
+  if (E.isLeft(result) && result.left === 'command-failed') {
+    context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    context.response.body = 'Your input appears to be valid but we failed to handle it.';
     return;
   }
 
