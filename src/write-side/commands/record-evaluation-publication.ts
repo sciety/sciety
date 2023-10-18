@@ -4,13 +4,14 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
 import { evaluationTypeCodec } from './evaluation-type';
+import { evaluationAuthorsCodec } from './evaluation-authors';
 
 const requiredFields = t.strict({
   groupId: GroupIdFromString,
   publishedAt: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
   articleId: DoiFromString,
-  authors: t.readonlyArray(t.string),
+  authors: evaluationAuthorsCodec,
 });
 
 const optionalFields = t.partial({

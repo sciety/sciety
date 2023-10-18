@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
 import { evaluationTypeCodec } from './evaluation-type';
+import { evaluationAuthorsCodec } from './evaluation-authors';
 
 export const updateEvaluationCommandCodec = t.intersection([
   t.strict({
@@ -8,7 +9,7 @@ export const updateEvaluationCommandCodec = t.intersection([
   }),
   t.partial({
     evaluationType: evaluationTypeCodec,
-    authors: t.readonlyArray(t.string),
+    authors: evaluationAuthorsCodec,
   }),
 ]);
 
