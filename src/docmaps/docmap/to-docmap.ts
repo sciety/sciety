@@ -40,6 +40,8 @@ const createAction = (articleId: ArticleId) => (evaluation: Evaluation) => ({
   ],
 });
 
+const constructDocmapUpdatedField = (evaluations: DocmapModel['evaluations']) => RNEA.last(evaluations).recordedAt.toISOString();
+
 export const toDocmap = ({
   group, inputPublishedDate, evaluations, articleId,
 }: DocmapModel): Docmap => ({
@@ -47,7 +49,7 @@ export const toDocmap = ({
   id: `https://sciety.org/docmaps/v1/articles/${articleId.value}/${group.slug}.docmap.json`,
   type: 'docmap',
   created: RNEA.head(evaluations).recordedAt.toISOString(),
-  updated: RNEA.last(evaluations).recordedAt.toISOString(),
+  updated: constructDocmapUpdatedField(evaluations),
   publisher: {
     id: group.homepage,
     name: group.name,
