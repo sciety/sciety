@@ -3,8 +3,8 @@ import * as tt from 'io-ts-types';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
-import { evaluationTypeCodec } from './evaluation-type';
-import { evaluationAuthorsCodec } from './evaluation-authors';
+import { evaluationTypeCodec } from './types/evaluation-type';
+import { evaluationAuthorsCodec } from './types/evaluation-authors';
 
 const requiredFields = t.strict({
   groupId: GroupIdFromString,
