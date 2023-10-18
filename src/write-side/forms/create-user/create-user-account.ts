@@ -60,7 +60,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
         errorSummary: O.some(''),
         handle: formDetails.handle,
         fullName: formDetails.fullName,
-        validationRecovery: constructValidationRecovery(context.request.body),
+        validationRecovery: constructValidationRecovery(formFields.right),
       }) satisfies ViewModel,
       renderFormPage,
       E.right,

@@ -36,7 +36,9 @@ export type CreateUserAccountForm = t.TypeOf<typeof createUserAccountFormCodec>;
 
 export const formFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props);
 
+type FormFields = t.TypeOf<typeof formFieldsCodec>;
+
 export const constructValidationRecovery = (
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  body: unknown,
+  input: FormFields,
 ): O.Option<ValidationRecovery<CreateUserAccountForm>> => O.none;
