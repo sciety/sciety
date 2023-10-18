@@ -23,6 +23,11 @@ const unvalidatedFormDetailsCodec = t.type({
   handle: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
 });
 
+const formFieldsCodec = t.type({
+  fullName: t.string,
+  hanle: t.string,
+});
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const constructValidationRecovery = (body: unknown) => O.none;
 
@@ -43,6 +48,12 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   if (E.isLeft(result) && result.left === 'no-authenticated-user-id') {
     context.response.status = StatusCodes.UNAUTHORIZED;
     context.response.body = 'You must be authenticated to perform this action.';
+    return;
+  }
+
+  if (E.isLeft(formFieldsCodec.decode(context.request.body))) {
+    context.response.status = StatusCodes.BAD_REQUEST;
+    context.response.body = 'Something went wrong when you submitted the form.';
     return;
   }
 
