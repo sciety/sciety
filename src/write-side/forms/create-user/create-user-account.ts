@@ -2,8 +2,6 @@ import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as tt from 'io-ts-types';
-import * as t from 'io-ts';
 import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
@@ -11,22 +9,13 @@ import {
 import { toWebPage } from '../../../http/page-handler';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../../../http/authentication-destination';
-import { UserGeneratedInput, userGeneratedInputCodec } from '../../../types/user-generated-input';
+import { UserGeneratedInput } from '../../../types/user-generated-input';
 import { ViewModel } from './create-user-account-form-page/view-model';
 import { renderFormPage } from './create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
+import { formFieldsCodec, unvalidatedFormDetailsCodec } from './codecs';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
-
-const unvalidatedFormDetailsCodec = t.type({
-  fullName: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
-  handle: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
-});
-
-const formFieldsCodec = t.type({
-  fullName: t.string,
-  hanle: t.string,
-});
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const constructValidationRecovery = (body: unknown) => O.none;
