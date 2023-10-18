@@ -2,15 +2,15 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { ParameterizedContext } from 'koa';
-import { validateAndExecuteCommand, Dependencies } from '../../../src/write-side/forms/create-user/validate-and-execute-command';
-import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
-import { arbitraryUserHandle } from '../../types/user-handle.helper';
-import { UserGeneratedInput } from '../../../src/types/user-generated-input';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { dummyLogger } from '../../dummy-logger';
+import { validateAndExecuteCommand, Dependencies } from '../../../../src/write-side/forms/create-user/validate-and-execute-command';
+import { arbitraryUserDetails } from '../../../types/user-details.helper';
+import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
+import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import { UserGeneratedInput } from '../../../../src/types/user-generated-input';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { constructEvent } from '../../../../src/domain-events';
+import { arbitraryUserId } from '../../../types/user-id.helper';
+import { dummyLogger } from '../../../dummy-logger';
 
 const defaultDependencies: Dependencies = {
   commitEvents: shouldNotBeCalled,
