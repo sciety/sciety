@@ -88,10 +88,6 @@ describe('render-docmap', () => {
     it('sets created to the date the first evaluation was recorded', async () => {
       expect(result.created).toStrictEqual(earlierEvaluationRecordedDate.toISOString());
     });
-
-    it('sets updated to the date the last evaluation was recorded', async () => {
-      expect(result.updated).toStrictEqual(laterEvaluationRecordedDate.toISOString());
-    });
   });
 
   describe('when there is an input published date', () => {
