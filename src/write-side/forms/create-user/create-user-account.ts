@@ -51,9 +51,6 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     context.response.body = pipe(
       {
         pageHeader: 'Sign up',
-        errorSummary: O.some(''),
-        handle: formFields.right.handle,
-        fullName: formFields.right.fullName,
         validationRecovery: constructValidationRecovery(formFields.right),
       } satisfies ViewModel,
       renderFormPage,

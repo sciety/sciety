@@ -5,7 +5,6 @@ import { ViewModel } from './view-model';
 import { ConstructPage } from '../../../../html-pages/construct-page';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage } from '../../../../types/html-page';
-import { UserGeneratedInput } from '../../../../types/user-generated-input';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,
@@ -28,22 +27,40 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   ),
 );
 
+const renderFullNameInput = (recovery: ViewModel['validationRecovery']) => pipe(
+  recovery,
+  O.map((r) => r.fullName.userInput),
+  O.getOrElse(() => ''),
+  (value) => `
+        <label for="fullName" class="create-user-account-form__label">Full name</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Alec Jeffreys" class="create-user-account-form__input" value="${value}">
+  `,
+);
+
+const renderHandleInput = (recovery: ViewModel['validationRecovery']) => pipe(
+  recovery,
+  O.map((r) => r.handle.userInput),
+  O.getOrElse(() => ''),
+  (value) => `
+        <label for="handle" class="create-user-account-form__label">Create a handle</label>
+        <div class='create-user-account-form__handle'>
+          <span class='create-user-account-form__handle-url'>sciety.org/users/</span><input type="text" id="handle" name="handle" placeholder="ajeff18" class="create-user-account-form__input" value="${value}">
+        </div>
+  `,
+);
+
 export const renderFormPage = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.pageHeader,
   content: toHtmlFragment(`
     <div class="create-user-account-form-wrapper">
       <header class="page-header">
-        ${renderErrorSummary(viewModel.errorSummary)}
+        ${renderErrorSummary(viewModel.validationRecovery)}
         <h1>${viewModel.pageHeader}</h1>
       </header>
       <form action="/forms/create-user-account" method="post" class="create-user-account-form">
         <h2>Sign up &ndash; Step 2 of 2</h2>
-        <label for="fullName" class="create-user-account-form__label">Full name</label>
-        <input type="text" id="fullName" name="fullName" placeholder="Alec Jeffreys" class="create-user-account-form__input" value="${viewModel.fullName}">
-        <label for="handle" class="create-user-account-form__label">Create a handle</label>
-        <div class='create-user-account-form__handle'>
-          <span class='create-user-account-form__handle-url'>sciety.org/users/</span><input type="text" id="handle" name="handle" placeholder="ajeff18" class="create-user-account-form__input" value="${viewModel.handle}">
-        </div>
+        ${renderFullNameInput(viewModel.validationRecovery)}
+        ${renderHandleInput(viewModel.validationRecovery)}
         <button id="createAccountButton" class="create-user-account-form__submit">Sign Up</button>
       </form>
     </div>
@@ -52,9 +69,6 @@ export const renderFormPage = (viewModel: ViewModel): HtmlPage => ({
 
 const emptyFormViewModel: ViewModel = {
   pageHeader: 'Sign up',
-  errorSummary: O.none,
-  handle: '' as UserGeneratedInput,
-  fullName: '' as UserGeneratedInput,
   validationRecovery: O.none,
 };
 
