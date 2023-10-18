@@ -23,6 +23,9 @@ const unvalidatedFormDetailsCodec = t.type({
   handle: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const constructValidationRecovery = (body: unknown) => O.none;
+
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
   const result = await validateAndExecuteCommand(context, dependencies)();
 
@@ -56,7 +59,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
         errorSummary: O.some(''),
         handle: formDetails.fullName,
         fullName: formDetails.fullName,
-        validationRecovery: O.none,
+        validationRecovery: constructValidationRecovery(context.request.body),
       }) satisfies ViewModel,
       renderFormPage,
       E.right,
