@@ -13,6 +13,7 @@ import { ArticleId } from '../../../src/types/article-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-removal-recorded-event-helper';
+import { arbitraryString } from '../../helpers';
 
 const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -179,6 +180,31 @@ describe('get-evaluations-for-article', () => {
       );
 
       expect(result[0].type).toStrictEqual(O.some(updatedType));
+    });
+  });
+
+  describe('when the authors of the evaluation are updated', () => {
+    const articleId = arbitraryArticleId();
+    const evaluationLocator = arbitraryEvaluationLocator();
+    const authors = [arbitraryString(), arbitraryString()];
+    const result = pipe(
+      [
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          evaluationLocator,
+          articleId,
+        },
+        {
+          ...arbitraryEvaluationUpdatedEvent(),
+          evaluationLocator,
+          authors,
+        },
+      ],
+      runQuery(articleId),
+    );
+
+    it.failing('updates evaluation authors', () => {
+      expect(result[0].authors).toStrictEqual(authors);
     });
   });
 
