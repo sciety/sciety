@@ -49,13 +49,15 @@ const renderHandleInput = (recovery: ViewModel['validationRecovery']) => pipe(
   `,
 );
 
+const pageHeader = 'Sign up';
+
 export const renderFormPage = (viewModel: ViewModel): HtmlPage => ({
-  title: viewModel.pageHeader,
+  title: pageHeader,
   content: toHtmlFragment(`
     <div class="create-user-account-form-wrapper">
       <header class="page-header">
         ${renderErrorSummary(viewModel.validationRecovery)}
-        <h1>${viewModel.pageHeader}</h1>
+        <h1>${pageHeader}</h1>
       </header>
       <form action="/forms/create-user-account" method="post" class="create-user-account-form">
         <h2>Sign up &ndash; Step 2 of 2</h2>
@@ -68,7 +70,6 @@ export const renderFormPage = (viewModel: ViewModel): HtmlPage => ({
 });
 
 const emptyFormViewModel: ViewModel = {
-  pageHeader: 'Sign up',
   validationRecovery: O.none,
 };
 
