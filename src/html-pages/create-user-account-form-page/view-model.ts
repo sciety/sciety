@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { UserGeneratedInput } from '../../types/user-generated-input';
-import { CreateUserAccountForm } from '../../http/forms/validate-and-execute-command';
+import { CreateUserAccountForm } from '../../write-side/forms/validate-and-execute-command';
 
 type ValidationRecovery<T extends Record<string, unknown>> = {
   [K in keyof T]: {

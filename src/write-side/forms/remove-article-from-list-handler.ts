@@ -6,12 +6,12 @@ import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { removeArticleFromListCommandCodec } from '../../write-side/commands/remove-article-from-list';
-import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
+import { removeArticleFromListCommandCodec } from '../commands/remove-article-from-list';
+import { removeArticleFromListCommandHandler } from '../command-handlers';
 import { Logger } from '../../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 import { UserDetails } from '../../types/user-details';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type Ports = DependenciesForCommands & CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,

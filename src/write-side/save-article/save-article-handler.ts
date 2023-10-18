@@ -11,7 +11,7 @@ import {
 } from '../../shared-ports';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from '../../http/forms/check-user-owns-list';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from '../forms/check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
 
 export const articleIdFieldName = 'articleid';

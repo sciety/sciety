@@ -6,11 +6,11 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
+import { EditListDetailsCommand, editListDetailsCommandCodec } from '../commands/edit-list-details';
 import { ActionFailedErrorType } from '../../html-pages/action-failed/action-failed-page';
 import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
 
 type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   editListDetails: EditListDetails,
