@@ -1,15 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { UserGeneratedInput } from '../../../../types/user-generated-input';
-import { CreateUserAccountForm } from '../codecs';
-
-type ValidationRecovery<T extends Record<string, unknown>> = {
-  [K in keyof T]: {
-    name: K,
-    userInput:
-    string,
-    error: O.Option<string>,
-  }
-};
+import { CreateUserAccountForm, ValidationRecovery } from '../validation';
 
 export type ViewModel = {
   pageHeader: string,

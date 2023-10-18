@@ -13,12 +13,9 @@ import { UserGeneratedInput } from '../../../types/user-generated-input';
 import { ViewModel } from './create-user-account-form-page/view-model';
 import { renderFormPage } from './create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
-import { unvalidatedFormDetailsCodec } from './codecs';
+import { constructValidationRecovery, unvalidatedFormDetailsCodec } from './validation';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const constructValidationRecovery = (body: unknown) => O.none;
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
   const result = await validateAndExecuteCommand(context, dependencies)();

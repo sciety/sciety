@@ -10,7 +10,7 @@ import { getAuthenticatedUserIdFromContext } from '../../../http/authentication-
 import { CommandResult } from '../../../types/command-result';
 import { Logger } from '../../../shared-ports';
 import { DependenciesForCommands } from '../../dependencies-for-commands';
-import { createUserAccountFormCodec, formFieldsCodec } from './codecs';
+import { createUserAccountFormCodec, formFieldsCodec } from './validation';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
