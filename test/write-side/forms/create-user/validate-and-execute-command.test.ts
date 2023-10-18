@@ -11,6 +11,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructEvent } from '../../../../src/domain-events';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
+import { arbitraryWord } from '../../../helpers';
 
 const defaultDependencies: Dependencies = {
   commitEvents: shouldNotBeCalled,
@@ -84,7 +85,17 @@ describe('validate-and-execute-command', () => {
   });
 
   describe('when there is no authenticated user', () => {
-    it.todo('return an oops page');
+    const formBody = { fullName: arbitraryUserGeneratedInput(), handle: arbitraryWord() };
+    const koaContext = {
+      ...buildKoaContext(formBody),
+      state: {},
+    };
+
+    it('return an authentication needed error', async () => {
+      const result = await validateAndExecuteCommand(koaContext, defaultDependencies)();
+
+      expect(result).toStrictEqual(E.left('no-authenticated-user-id'));
+    });
   });
 
   describe('when the user handle already exists', () => {
