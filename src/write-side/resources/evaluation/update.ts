@@ -65,13 +65,17 @@ const constructWriteModel = (
   RA.reduce(E.left(evaluationResourceError.doesNotExist), buildEvaluation),
 );
 
+const areAuthorsEqual = (
+  authorsA: ReadonlyArray<string>,
+  authorsB: ReadonlyArray<string>,
+) => !(RA.getEq(S.Eq).equals(authorsA, authorsB));
+
 const calculateAttributesToUpdate = (command: UpdateEvaluationCommand) => (writeModel: WriteModel) => ({
   evaluationType: (command.evaluationType !== undefined
     && command.evaluationType !== writeModel.evaluationType)
     ? command.evaluationType
     : undefined,
-  authors: (command.authors !== undefined
-    && !(RA.getEq(S.Eq).equals(command.authors, writeModel.authors)))
+  authors: (command.authors !== undefined && areAuthorsEqual(command.authors, writeModel.authors))
     ? command.authors
     : undefined,
 });
