@@ -3,47 +3,51 @@ import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
-import {
-  Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
-} from '../../../http/authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext, getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../../../http/authentication-and-logging-in-of-sciety-users';
 import { toWebPage } from '../../../http/page-handler';
-import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../../../http/authentication-destination';
 import { UserGeneratedInput } from '../../../types/user-generated-input';
 import { ViewModel } from './create-user-account-form-page/view-model';
 import { renderFormPage } from './create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
-import { constructValidationRecovery, unvalidatedFormDetailsCodec } from './validation';
+import {
+  CreateUserAccountForm,
+  constructValidationRecovery, createUserAccountFormCodec, formFieldsCodec, unvalidatedFormDetailsCodec,
+} from './validation';
+import { CreateUserAccountCommand } from '../../commands';
+import { UserId } from '../../../types/user-id';
+import { createUserAccountCommandHandler } from '../../command-handlers';
+import { DependenciesForCommands } from '../../dependencies-for-commands';
 
-type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
+const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
+
+const toCommand = (authenticatedUserId: UserId) => (input: CreateUserAccountForm): CreateUserAccountCommand => ({
+  userId: authenticatedUserId,
+  displayName: input.fullName,
+  handle: input.handle,
+  avatarUrl: defaultSignUpAvatarUrl,
+});
+
+ type Dependencies = DependenciesForCommands & GetLoggedInScietyUserDependencies;
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
-  const result = await validateAndExecuteCommand(context, dependencies)();
+  const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
+  const formFields = formFieldsCodec.decode(context.request.body);
+  const validatedFormFields = createUserAccountFormCodec.decode(context.request.body);
 
-  if (E.isRight(result)) {
-    redirectToAuthenticationDestination(context);
-    return;
-  }
-
-  if (E.isLeft(result) && result.left === 'no-authenticated-user-id') {
+  if (O.isNone(authenticatedUserId)) {
     context.response.status = StatusCodes.UNAUTHORIZED;
     context.response.body = 'You must be authenticated to perform this action.';
     return;
   }
 
-  if (E.isLeft(result) && result.left === 'missing-form-fields') {
+  if (E.isLeft(formFields)) {
     context.response.status = StatusCodes.BAD_REQUEST;
     context.response.body = 'Something went wrong when you submitted the form.';
     return;
   }
 
-  if (E.isLeft(result) && result.left === 'command-failed') {
-    context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-    context.response.body = 'Your input appears to be valid but we failed to handle it.';
-    return;
-  }
-
-  if (E.isLeft(result) && result.left === 'validation-error') {
+  if (E.isLeft(validatedFormFields)) {
     const page = pipe(
       context.request.body,
       unvalidatedFormDetailsCodec.decode,
@@ -54,7 +58,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
       (formDetails) => ({
         pageHeader: 'Sign up',
         errorSummary: O.some(''),
-        handle: formDetails.fullName,
+        handle: formDetails.handle,
         fullName: formDetails.fullName,
         validationRecovery: constructValidationRecovery(context.request.body),
       }) satisfies ViewModel,
@@ -68,5 +72,18 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     return;
   }
 
+  const commandResult = await pipe(
+    validatedFormFields.right,
+    toCommand(authenticatedUserId.value),
+    createUserAccountCommandHandler(dependencies),
+  )();
+
+  if (E.isLeft(commandResult)) {
+    context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    context.response.body = 'Your input appears to be valid but we failed to handle it.';
+    return;
+  }
+
+  redirectToAuthenticationDestination(context);
   await next();
 };
