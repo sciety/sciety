@@ -52,7 +52,7 @@ const renderHandleInput = (recovery: ViewModel['validationRecovery']) => pipe(
 const pageHeader = 'Sign up';
 
 export const renderFormPage = (viewModel: ViewModel): HtmlPage => ({
-  title: pageHeader,
+  title: `${O.isSome(viewModel.validationRecovery) ? 'Error: ' : ''}${pageHeader}`,
   content: toHtmlFragment(`
     <div class="create-user-account-form-wrapper">
       <header class="page-header">
