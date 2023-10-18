@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
-import { evaluationTypeCodec } from './record-evaluation-publication';
+import { evaluationTypeCodec } from './evaluation-type';
 
 export const updateEvaluationCommandCodec = t.intersection([
   t.strict({

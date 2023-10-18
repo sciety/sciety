@@ -3,6 +3,7 @@ import * as tt from 'io-ts-types';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
+import { evaluationTypeCodec } from './evaluation-type';
 
 const requiredFields = t.strict({
   groupId: GroupIdFromString,
@@ -11,13 +12,6 @@ const requiredFields = t.strict({
   articleId: DoiFromString,
   authors: t.readonlyArray(t.string),
 });
-
-export const evaluationTypeCodec = t.union([
-  t.literal('review'),
-  t.literal('author-response'),
-  t.literal('curation-statement'),
-  t.literal('not-provided'),
-]);
 
 const optionalFields = t.partial({
   issuedAt: tt.DateFromISOString,
