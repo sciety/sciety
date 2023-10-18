@@ -52,7 +52,7 @@
     "@types/koa__router": "^12.0.1",
     "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-compose": "^3.2.6",
-    "@types/koa-passport": "^6.0.1",
+    "@types/koa-passport": "^6.0.2",
     "@types/koa-send": "^4.1.4",
     "@types/koa-session": "^6.4.2",
     "@types/node": "^18.18.5",
