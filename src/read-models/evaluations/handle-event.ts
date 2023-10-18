@@ -106,6 +106,12 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         evaluation.type = O.some(event.evaluationType);
       }
     }
+    if (event.authors !== undefined) {
+      const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
+      if (evaluation !== undefined) {
+        evaluation.authors = event.authors;
+      }
+    }
   }
   return readmodel;
 };

@@ -203,7 +203,7 @@ describe('get-evaluations-for-article', () => {
       runQuery(articleId),
     );
 
-    it.failing('updates evaluation authors', () => {
+    it('updates evaluation authors', () => {
       expect(result[0].authors).toStrictEqual(authors);
     });
   });
