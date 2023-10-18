@@ -5,6 +5,7 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../types/evaluation-locator';
 import { evaluationTypeCodec } from './types/evaluation-type';
+import { evaluationAuthorsCodec } from './types/evaluation-authors';
 
 export const evaluationRecordedEventCodec = t.type({
   id: EventIdFromString,
@@ -14,7 +15,7 @@ export const evaluationRecordedEventCodec = t.type({
   evaluationLocator: evaluationLocatorCodec,
   articleId: DoiFromString,
   publishedAt: tt.DateFromISOString,
-  authors: t.readonlyArray(t.string),
+  authors: evaluationAuthorsCodec,
   evaluationType: evaluationTypeCodec,
 });
 
@@ -26,6 +27,6 @@ export const evaluationPublicationRecordedEventCodec = t.type({
   evaluationLocator: evaluationLocatorCodec,
   articleId: DoiFromString,
   publishedAt: tt.DateFromISOString,
-  authors: t.readonlyArray(t.string),
+  authors: evaluationAuthorsCodec,
   evaluationType: evaluationTypeCodec,
 });

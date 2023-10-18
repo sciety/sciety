@@ -3,6 +3,7 @@ import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { evaluationLocatorCodec } from '../types/evaluation-locator';
 import { evaluationTypeCodec } from './types/evaluation-type';
+import { evaluationAuthorsCodec } from './types/evaluation-authors';
 
 export const evaluationUpdatedEventCodec = t.type({
   id: EventIdFromString,
@@ -10,5 +11,5 @@ export const evaluationUpdatedEventCodec = t.type({
   date: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
   evaluationType: t.union([evaluationTypeCodec, t.undefined]),
-  authors: t.union([t.readonlyArray(t.string), t.undefined]),
+  authors: t.union([evaluationAuthorsCodec, t.undefined]),
 });
