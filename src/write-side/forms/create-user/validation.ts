@@ -1,9 +1,8 @@
 import * as O from 'fp-ts/Option';
-import * as tt from 'io-ts-types';
 import * as R from 'fp-ts/Record';
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
-import { userGeneratedInputCodec, UserGeneratedInput } from '../../../types/user-generated-input';
+import { userGeneratedInputCodec } from '../../../types/user-generated-input';
 import { userHandleCodec } from '../../../types/user-handle';
 
 export type ValidationRecovery<T extends Record<string, unknown>> = {
@@ -21,11 +20,6 @@ const toFieldsCodec = <P extends t.Props>(props: P) => pipe(
   (stringProps) => stringProps as { [K in keyof P]: t.StringC },
   t.type,
 );
-
-export const unvalidatedFormDetailsCodec = t.type({
-  fullName: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
-  handle: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
-});
 
 export const createUserAccountFormCodec = t.type({
   fullName: userGeneratedInputCodec({ maxInputLength: 30 }),

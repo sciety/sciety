@@ -51,8 +51,7 @@ const pageToSuccessResponse = (
   status: StatusCodes.OK,
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const toWebPage = (user: O.Option<UserDetails>, pageLayout: PageLayout) => E.fold(
+const toWebPage = (user: O.Option<UserDetails>, pageLayout: PageLayout) => E.fold(
   toErrorResponse(user),
   pageToSuccessResponse(user, pageLayout),
 );

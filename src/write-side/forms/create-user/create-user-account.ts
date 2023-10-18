@@ -4,15 +4,13 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { getAuthenticatedUserIdFromContext, getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../../../http/authentication-and-logging-in-of-sciety-users';
-import { toWebPage } from '../../../http/page-handler';
 import { redirectToAuthenticationDestination } from '../../../http/authentication-destination';
-import { UserGeneratedInput } from '../../../types/user-generated-input';
 import { ViewModel } from './create-user-account-form-page/view-model';
 import { renderFormPage } from './create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
 import {
   CreateUserAccountForm,
-  constructValidationRecovery, createUserAccountFormCodec, formFieldsCodec, unvalidatedFormDetailsCodec,
+  constructValidationRecovery, createUserAccountFormCodec, formFieldsCodec,
 } from './validation';
 import { CreateUserAccountCommand } from '../../commands';
 import { UserId } from '../../../types/user-id';
@@ -48,27 +46,19 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   if (E.isLeft(validatedFormFields)) {
-    const page = pipe(
-      context.request.body,
-      unvalidatedFormDetailsCodec.decode,
-      E.getOrElse(() => ({
-        fullName: '' as UserGeneratedInput,
-        handle: '' as UserGeneratedInput,
-      })),
-      (formDetails) => ({
+    context.response.status = StatusCodes.BAD_REQUEST;
+    context.response.type = 'html';
+    context.response.body = pipe(
+      {
         pageHeader: 'Sign up',
         errorSummary: O.some(''),
-        handle: formDetails.handle,
-        fullName: formDetails.fullName,
+        handle: formFields.right.handle,
+        fullName: formFields.right.fullName,
         validationRecovery: constructValidationRecovery(formFields.right),
-      }) satisfies ViewModel,
+      } satisfies ViewModel,
       renderFormPage,
-      E.right,
-      toWebPage(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
+      createUserAccountFormPageLayout(getLoggedInScietyUser(dependencies, context)),
     );
-    context.response.status = page.status;
-    context.response.type = 'html';
-    context.response.body = page.body;
     return;
   }
 
