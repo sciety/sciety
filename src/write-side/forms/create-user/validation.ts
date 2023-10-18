@@ -7,7 +7,6 @@ import { userHandleCodec } from '../../../types/user-handle';
 
 export type ValidationRecovery<T extends Record<string, unknown>> = {
   [K in keyof T]: {
-    name: K,
     userInput:
     string,
     error: O.Option<string>,
@@ -33,6 +32,14 @@ export const formFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props);
 type FormFields = t.TypeOf<typeof formFieldsCodec>;
 
 export const constructValidationRecovery = (
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
   input: FormFields,
-): O.Option<ValidationRecovery<CreateUserAccountForm>> => O.none;
+): O.Option<ValidationRecovery<CreateUserAccountForm>> => O.some({
+  fullName: {
+    userInput: input.fullName,
+    error: O.none,
+  },
+  handle: {
+    userInput: input.handle,
+    error: O.none,
+  },
+});
