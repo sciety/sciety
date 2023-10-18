@@ -19,6 +19,13 @@ const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => isEventO
 || isEventOfType('IncorrectlyRecordedEvaluationErased')(event)
 || isEventOfType('EvaluationRemovalRecorded')(event);
 
+type EvaluationAuthors = ReadonlyArray<string>;
+
+const areAuthorsEqual = (
+  authorsA: EvaluationAuthors,
+  authorsB: EvaluationAuthors,
+) => !(RA.getEq(S.Eq).equals(authorsA, authorsB));
+
 const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
   RA.filter(isRelevantEvent),
@@ -27,7 +34,7 @@ const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: Rea
 
 type WriteModel = {
   evaluationType: EvaluationType | undefined,
-  authors: ReadonlyArray<string>,
+  authors: EvaluationAuthors,
 };
 
 type State = E.Either<ErrorMessage, WriteModel>;
@@ -64,11 +71,6 @@ const constructWriteModel = (
   filterToHistoryOf(evaluationLocator),
   RA.reduce(E.left(evaluationResourceError.doesNotExist), buildEvaluation),
 );
-
-const areAuthorsEqual = (
-  authorsA: ReadonlyArray<string>,
-  authorsB: ReadonlyArray<string>,
-) => !(RA.getEq(S.Eq).equals(authorsA, authorsB));
 
 const calculateAttributesToUpdate = (command: UpdateEvaluationCommand) => (writeModel: WriteModel) => ({
   evaluationType: (command.evaluationType !== undefined
