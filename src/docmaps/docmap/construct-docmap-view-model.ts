@@ -15,7 +15,7 @@ import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
 
-export type DocmapModel = {
+export type DocmapViewModel = {
   articleId: ArticleId,
   group: Group,
   inputPublishedDate: O.Option<Date>,
@@ -27,11 +27,11 @@ type DocmapIdentifier = {
   groupId: GroupId,
 };
 
-type GenerateDocmapViewModel = (
+type ConstructDocmapViewModel = (
   adapters: Ports
 ) => (
   docmapIdentifier: DocmapIdentifier
-) => TE.TaskEither<DE.DataError, DocmapModel>;
+) => TE.TaskEither<DE.DataError, DocmapViewModel>;
 
 type ReviewForArticle = {
   evaluationLocator: EvaluationLocator,
@@ -64,7 +64,7 @@ const extendWithSourceUrl = (adapters: Ports) => (evaluation: ReviewForArticle) 
   ),
 );
 
-export const generateDocmapViewModel: GenerateDocmapViewModel = (adapters) => ({ articleId, groupId }) => pipe(
+export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => ({ articleId, groupId }) => pipe(
   {
     articleId: TE.right(articleId),
     evaluations: pipe(

@@ -5,8 +5,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Docmap } from './docmap-type';
-import { Ports as DocmapPorts, generateDocmapViewModel } from './generate-docmap-view-model';
-import { toDocmap } from './to-docmap';
+import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
+import { renderDocmap } from './render-docmap';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { ArticleId } from '../../types/article-id';
 import { supportedGroups } from '../supported-groups';
@@ -34,7 +34,7 @@ const getDocmapViewModels = (ports: Ports) => (articleId: ArticleId) => pipe(
   articleId,
   getEvaluatingGroupIds(ports),
   TE.rightTask,
-  TE.chain(TE.traverseArray((groupId) => generateDocmapViewModel(ports)({ articleId, groupId }))),
+  TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(ports)({ articleId, groupId }))),
   TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
 );
 
@@ -52,6 +52,6 @@ export const generateDocmaps = (
   validateDoi,
   TE.fromEither,
   TE.chainW(getDocmapViewModels(ports)),
-  TE.map(RA.map(toDocmap)),
+  TE.map(RA.map(renderDocmap)),
   TE.chainEitherKW(errorOnEmpty),
 );

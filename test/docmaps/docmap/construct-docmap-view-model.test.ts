@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { DocmapModel, generateDocmapViewModel, Ports } from '../../../src/docmaps/docmap/generate-docmap-view-model';
+import { DocmapViewModel, constructDocmapViewModel, Ports } from '../../../src/docmaps/docmap/construct-docmap-view-model';
 import * as DE from '../../../src/types/data-error';
 import { inferredSourceUrl } from '../../../src/types/evaluation-locator';
 import { arbitraryUri } from '../../helpers';
@@ -18,7 +18,7 @@ import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/co
 const indexedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();
 
-describe('generate-docmap-view-model', () => {
+describe('construct-docmap-view-model', () => {
   let framework: TestFramework;
   let defaultAdapters: Ports;
 
@@ -37,14 +37,14 @@ describe('generate-docmap-view-model', () => {
       articleId,
       groupId: addGroupCommand.groupId,
     };
-    let result: DocmapModel;
+    let result: DocmapViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
       result = await pipe(
         { articleId, groupId: addGroupCommand.groupId },
-        generateDocmapViewModel(defaultAdapters),
+        constructDocmapViewModel(defaultAdapters),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -73,14 +73,14 @@ describe('generate-docmap-view-model', () => {
       groupId: addGroupCommand.groupId,
     };
 
-    let result: DocmapModel;
+    let result: DocmapViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(command1);
       await framework.commandHelpers.recordEvaluationPublication(command2);
       result = await pipe(
-        generateDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
+        constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -103,7 +103,7 @@ describe('generate-docmap-view-model', () => {
       inferredSourceUrl(evaluationLocatorWithInferrableSourceUrl),
       O.getOrElseW(shouldNotBeCalled),
     );
-    let result: DocmapModel;
+    let result: DocmapViewModel;
 
     beforeEach(async () => {
       const addGroupCommand = arbitraryAddGroupCommand();
@@ -120,7 +120,7 @@ describe('generate-docmap-view-model', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
       result = await pipe(
-        generateDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
+        constructDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -137,7 +137,7 @@ describe('generate-docmap-view-model', () => {
   describe('when we cannot infer a source URL for the evaluations', () => {
     const evaluationLocatorWithUninferrableSourceUrl = arbitraryNcrcId();
     const sourceUrl = new URL(arbitraryUri());
-    let result: DocmapModel;
+    let result: DocmapViewModel;
 
     beforeEach(async () => {
       const addGroupCommand = arbitraryAddGroupCommand();
@@ -154,7 +154,7 @@ describe('generate-docmap-view-model', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
       result = await pipe(
-        generateDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
+        constructDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -170,7 +170,7 @@ describe('generate-docmap-view-model', () => {
 
   describe('when there are no evaluations by the selected group', () => {
     it('returns an E.left of not-found', async () => {
-      const result = await generateDocmapViewModel(defaultAdapters)({ articleId, groupId: indexedGroupId })();
+      const result = await constructDocmapViewModel(defaultAdapters)({ articleId, groupId: indexedGroupId })();
 
       expect(result).toStrictEqual(E.left('not-found'));
     });
@@ -202,7 +202,7 @@ describe('generate-docmap-view-model', () => {
           articleId,
           groupId: indexedGroupId,
         },
-        generateDocmapViewModel(defaultAdapters),
+        constructDocmapViewModel(defaultAdapters),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
 
@@ -224,7 +224,7 @@ describe('generate-docmap-view-model', () => {
       groupId: indexedGroupId,
       articleId,
     };
-    let result: DocmapModel;
+    let result: DocmapViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
@@ -234,7 +234,7 @@ describe('generate-docmap-view-model', () => {
           articleId,
           groupId: indexedGroupId,
         },
-        generateDocmapViewModel(defaultAdapters),
+        constructDocmapViewModel(defaultAdapters),
         TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
       )();
     });
@@ -245,7 +245,7 @@ describe('generate-docmap-view-model', () => {
   });
 
   describe('when the group cannot be retrieved', () => {
-    let result: E.Either<DE.DataError, DocmapModel>;
+    let result: E.Either<DE.DataError, DocmapViewModel>;
 
     beforeEach(async () => {
       result = await pipe(
@@ -253,7 +253,7 @@ describe('generate-docmap-view-model', () => {
           articleId,
           groupId: indexedGroupId,
         },
-        generateDocmapViewModel(defaultAdapters),
+        constructDocmapViewModel(defaultAdapters),
       )();
     });
 

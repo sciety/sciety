@@ -7,8 +7,8 @@ import * as E from 'fp-ts/Either';
 import * as ER from './error-response';
 import { filterByParams } from './filter-by-params';
 import { identifyAllPossibleIndexEntries, Ports as IdentifyAllPossibleIndexEntriesPorts } from './identify-all-possible-index-entries';
-import { Ports as DocmapPorts, generateDocmapViewModel } from '../docmap/generate-docmap-view-model';
-import { toDocmap } from '../docmap/to-docmap';
+import { Ports as DocmapPorts, constructDocmapViewModel } from '../docmap/construct-docmap-view-model';
+import { renderDocmap } from '../docmap/render-docmap';
 import { supportedGroups } from '../supported-groups';
 
 export type Ports = DocmapPorts & IdentifyAllPossibleIndexEntriesPorts;
@@ -28,10 +28,10 @@ export const docmapIndex: DocmapIndex = (adapters) => (query) => pipe(
   E.chain(filterByParams(query)),
   TE.fromEither,
   TE.chainW(flow(
-    TE.traverseArray(generateDocmapViewModel(adapters)),
+    TE.traverseArray(constructDocmapViewModel(adapters)),
     TE.mapLeft(() => ER.internalServerError),
   )),
-  TE.map(RA.map(toDocmap)),
+  TE.map(RA.map(renderDocmap)),
   TE.map((docmaps) => ({
     body: { articles: docmaps },
     status: StatusCodes.OK,

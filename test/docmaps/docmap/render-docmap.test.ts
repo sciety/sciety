@@ -4,7 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
 import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
-import { toDocmap } from '../../../src/docmaps/docmap/to-docmap';
+import { renderDocmap } from '../../../src/docmaps/docmap/render-docmap';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -12,12 +12,12 @@ import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helpe
 
 const articleId = arbitraryArticleId();
 
-describe('to-docmap', () => {
+describe('render-docmap', () => {
   describe('docmap meta data', () => {
     const earlierEvaluationRecordedDate = new Date('1900');
     const laterEvaluationRecordedDate = new Date('2000');
     const group = arbitraryGroup();
-    const result = toDocmap({
+    const result = renderDocmap({
       articleId,
       group,
       inputPublishedDate: O.none,
@@ -40,7 +40,7 @@ describe('to-docmap', () => {
     });
 
     describe('the docmap id', () => {
-      const anotherDocmap = toDocmap({
+      const anotherDocmap = renderDocmap({
         articleId,
         group,
         inputPublishedDate: O.none,
@@ -96,7 +96,7 @@ describe('to-docmap', () => {
 
   describe('when there is an input published date', () => {
     const articleDate = arbitraryDate();
-    const result = toDocmap({
+    const result = renderDocmap({
       articleId,
       group: arbitraryGroup(),
       inputPublishedDate: O.some(articleDate),
@@ -119,7 +119,7 @@ describe('to-docmap', () => {
   });
 
   describe('when there is no input published date', () => {
-    const result = toDocmap({
+    const result = renderDocmap({
       articleId,
       group: arbitraryGroup(),
       inputPublishedDate: O.none,
@@ -164,7 +164,7 @@ describe('to-docmap', () => {
         authors: [authorName],
       },
     ];
-    const result = toDocmap({
+    const result = renderDocmap({
       articleId,
       group: arbitraryGroup(),
       inputPublishedDate: O.none,

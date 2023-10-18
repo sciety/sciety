@@ -4,7 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
 import { Docmap } from './docmap-type';
 import { Evaluation } from './evaluation';
-import { DocmapModel } from './generate-docmap-view-model';
+import { DocmapViewModel } from './construct-docmap-view-model';
 import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
 import { ArticleId } from '../../types/article-id';
@@ -40,11 +40,11 @@ const createAction = (articleId: ArticleId) => (evaluation: Evaluation) => ({
   ],
 });
 
-const constructDocmapUpdatedField = (evaluations: DocmapModel['evaluations']) => RNEA.last(evaluations).recordedAt.toISOString();
+const constructDocmapUpdatedField = (evaluations: DocmapViewModel['evaluations']) => RNEA.last(evaluations).recordedAt.toISOString();
 
-export const toDocmap = ({
+export const renderDocmap = ({
   group, inputPublishedDate, evaluations, articleId,
-}: DocmapModel): Docmap => ({
+}: DocmapViewModel): Docmap => ({
   '@context': 'https://w3id.org/docmaps/context.jsonld',
   id: `https://sciety.org/docmaps/v1/articles/${articleId.value}/${group.slug}.docmap.json`,
   type: 'docmap',
