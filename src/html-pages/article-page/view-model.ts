@@ -47,6 +47,7 @@ export type FeedItem =
 type ListSummary = {
   listName: string,
   listId: ListId,
+  listHref: string,
 };
 
 export type SaveArticleCta = {

@@ -18,6 +18,7 @@ export const constructUserListManagement = (user: O.Option<{ id: UserId }>, depe
         (list) => E.right({
           listId: list.id,
           listName: list.name,
+          listHref: `/lists/${list.id}`,
         }),
       ),
     ),
