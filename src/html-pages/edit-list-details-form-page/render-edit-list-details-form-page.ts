@@ -7,6 +7,7 @@ export type ViewModel = {
   listName: string,
   listDescription: string,
   listId: ListId,
+  listHref: string,
   listNameMaxLength: number,
   listDescriptionMaxLength: number,
   pageHeading: string,

@@ -16,6 +16,7 @@ export const constructViewModel = (dependencies: Dependencies) => (id: ListId): 
   E.map((list) => ({
     listName: list.name,
     listId: id,
+    listHref: `/lists/${id}`,
     listDescription: list.description,
     listNameMaxLength,
     listDescriptionMaxLength,
