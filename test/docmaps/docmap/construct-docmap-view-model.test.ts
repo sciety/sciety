@@ -10,10 +10,11 @@ import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryNcrcId, arbitraryReviewDoi } from '../../types/evaluation-locator.helper';
+import { arbitraryEvaluationLocator, arbitraryNcrcId, arbitraryReviewDoi } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { arbitraryUpdateEvaluationCommand } from '../../write-side/commands/update-evaluation-command.helper';
 
 const selectedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();
@@ -112,7 +113,37 @@ describe('construct-docmap-view-model', () => {
     });
 
     describe('when there is a single, but updated, recorded evaluation for the selected group', () => {
-      it.todo('the updatedAt is when the evaluation was updated');
+      let result: DocmapViewModel;
+      const evaluationPublicationRecordedDate = new Date('1980-01-01');
+      const evaluationUpdatedDate = new Date('2000-01-01');
+      const evaluationLocator = arbitraryEvaluationLocator();
+
+      const command = {
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        evaluationLocator,
+        articleId,
+        groupId: addGroupCommand.groupId,
+        issuedAt: evaluationPublicationRecordedDate,
+      };
+
+      const updateEvaluationCommand = {
+        ...arbitraryUpdateEvaluationCommand(),
+        evaluationLocator,
+        issuedAt: evaluationUpdatedDate,
+      };
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication(command);
+        await framework.commandHelpers.updateEvaluation(updateEvaluationCommand);
+        result = await pipe(
+          constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
+          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+        )();
+      });
+
+      it.failing('the updatedAt is when the evaluation was updated', () => {
+        expect(result.updatedAt).toStrictEqual(updateEvaluationCommand.issuedAt);
+      });
     });
 
     describe('when we can infer a source URL for the evaluations', () => {
