@@ -10,7 +10,11 @@ import { abortTest } from './abort-test';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
 import {
-  AddGroupCommand, AnnotateArticleInListCommand, CreateUserAccountCommand, RecordEvaluationPublicationCommand,
+  AddGroupCommand,
+  AnnotateArticleInListCommand,
+  CreateUserAccountCommand,
+  RecordEvaluationPublicationCommand,
+  UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
 
 export type CommandHelpers = {
@@ -23,6 +27,7 @@ export type CommandHelpers = {
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
   removeArticleFromList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
+  updateEvaluation: (command: UpdateEvaluationCommand) => Promise<unknown>,
   updateGroupDetails: (groupId: GroupId, largeLogoPath: string) => Promise<unknown>,
   updateUserDetails: (userId: UserId, avatarUrl?: string, displayName?: string) => Promise<unknown>,
 };
@@ -67,6 +72,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.unfollowGroup, 'unfollowGroup'),
   ),
+  updateEvaluation: invoke(commandHandlers.updateEvaluation, 'updateEvaluation'),
   updateGroupDetails: async (groupId, largeLogoPath) => pipe(
     {
       groupId,

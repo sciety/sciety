@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as listResource from '../../src/write-side/resources/list';
 import { dispatcher, Queries } from '../../src/read-models';
 import * as groupResource from '../../src/write-side/resources/group';
+import * as evaluationResource from '../../src/write-side/resources/evaluation';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { followCommandHandler } from '../../src/write-side/command-handlers/follow-command-handler';
 import {
@@ -15,7 +16,9 @@ import {
 } from '../../src/write-side/command-handlers';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler';
 import { CommandHandler } from '../../src/types/command-handler';
-import { AddGroupCommand, AnnotateArticleInListCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
+import {
+  AddGroupCommand, AnnotateArticleInListCommand, UpdateEvaluationCommand, UpdateGroupDetailsCommand,
+} from '../../src/write-side/commands';
 import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
 import { createInMemoryEventStore } from './create-in-memory-event-store';
 import { dummyLogger } from '../dummy-logger';
@@ -30,6 +33,12 @@ type AddGroup = (adapters: EventStore) => CommandHandler<AddGroupCommand>;
 const addGroup: AddGroup = (adapters) => (command) => pipe(
   adapters.getAllEvents,
   T.map(groupResource.create(command)),
+  TE.chainW(adapters.commitEvents),
+);
+
+const updateEvaluation = (adapters: EventStore): CommandHandler<UpdateEvaluationCommand> => (command) => pipe(
+  adapters.getAllEvents,
+  T.map(evaluationResource.update(command)),
   TE.chainW(adapters.commitEvents),
 );
 
@@ -59,6 +68,7 @@ const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) =>
   recordEvaluationPublication: recordEvaluationPublicationCommandHandler({ ...eventStore, ...queries }),
   removeArticleFromList: removeArticleFromListCommandHandler(eventStore),
   unfollowGroup: unfollowCommandHandler(eventStore),
+  updateEvaluation: updateEvaluation(eventStore),
   updateGroupDetails: updateGroupDetails(eventStore),
   updateUserDetails: updateUserDetailsCommandHandler(eventStore),
 });
