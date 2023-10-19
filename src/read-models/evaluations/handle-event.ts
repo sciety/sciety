@@ -79,6 +79,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         groupId: event.groupId,
         recordedAt: event.date,
         publishedAt: event.publishedAt,
+        updatedAt: new Date('1980-01-01'),
         authors: event.authors,
         type: O.fromNullable(event.evaluationType),
       };

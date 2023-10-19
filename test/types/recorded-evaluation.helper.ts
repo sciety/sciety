@@ -13,5 +13,6 @@ export const arbitraryRecordedEvaluation = (): RecordedEvaluation => ({
   publishedAt: arbitraryDate(),
   authors: [arbitraryString()],
   recordedAt: arbitraryDate(),
+  updatedAt: arbitraryDate(),
   type: O.some(arbitraryEvaluationType()),
 });

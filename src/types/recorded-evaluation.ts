@@ -18,6 +18,7 @@ export type RecordedEvaluation = {
   groupId: GroupId,
   recordedAt: Date,
   publishedAt: Date,
+  updatedAt: Date,
   authors: ReadonlyArray<string>,
   type: O.Option<EvaluationType>,
 };
