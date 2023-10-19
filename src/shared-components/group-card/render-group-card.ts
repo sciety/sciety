@@ -56,7 +56,7 @@ export const renderGroupCard = (viewModel: GroupCardViewModel): HtmlFragment => 
     <article class="group-card">
         <div class="group-card__body">
           <h3 class="group-card__title">
-            <a class="group-card__link" href="/groups/${viewModel.slug}">${htmlEscape(viewModel.name)}</a>
+            <a class="group-card__link" href="${viewModel.groupPageHref}">${htmlEscape(viewModel.name)}</a>
           </h3>
           <div class="group-card__description">
             ${viewModel.description}
