@@ -87,6 +87,12 @@ const hasAnyValues = (attributes: Record<string, unknown | undefined>): boolean 
   || (attributes.authors !== undefined)
 );
 
+const dateField = (command: UpdateEvaluationCommand) => (
+  command.issuedAt === undefined
+    ? {}
+    : { date: command.issuedAt }
+);
+
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
   constructWriteModel(command.evaluationLocator),
@@ -96,6 +102,7 @@ export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (all
       constructEvent('EvaluationUpdated')({
         evaluationLocator: command.evaluationLocator,
         ...attributesToChange,
+        ...dateField(command),
       }),
     ]
     : [])),

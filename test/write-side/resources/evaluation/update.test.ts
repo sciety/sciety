@@ -239,7 +239,7 @@ describe('update', () => {
         E.getOrElseW(shouldNotBeCalled),
       );
 
-      it.failing('raises an event with issuedAt as the date', () => {
+      it('raises an event with issuedAt as the date', () => {
         expect(eventsRaised[0].date).toStrictEqual(issuedAt);
       });
     });
