@@ -15,7 +15,7 @@ import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
-const indexedGroupId = arbitraryGroupId();
+const selectedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();
 
 describe('construct-docmap-view-model', () => {
@@ -30,229 +30,222 @@ describe('construct-docmap-view-model', () => {
     };
   });
 
-  describe('when there is an evaluation by the selected group', () => {
-    const addGroupCommand = arbitraryAddGroupCommand();
-    const recordEvaluationPublicationCommand = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      articleId,
-      groupId: addGroupCommand.groupId,
-    };
-    let result: DocmapViewModel;
-
-    beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-      result = await pipe(
-        { articleId, groupId: addGroupCommand.groupId },
-        constructDocmapViewModel(defaultAdapters),
-        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-      )();
-    });
-
-    it('includes the article id', async () => {
-      expect(result).toStrictEqual(expect.objectContaining({ articleId }));
-    });
-
-    it('includes the group', async () => {
-      expect(result).toStrictEqual(expect.objectContaining({
-        group: expect.objectContaining({ id: addGroupCommand.groupId }),
-      }));
-    });
-  });
-
-  describe('when there are multiple evaluations by the selected group', () => {
-    const earlierDate = new Date('1980-01-01');
-    const laterDate = new Date('2000-01-01');
-    const addGroupCommand = arbitraryAddGroupCommand();
-    const command1 = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      articleId,
-      groupId: addGroupCommand.groupId,
-      issuedAt: earlierDate,
-    };
-    const command2 = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      articleId,
-      groupId: addGroupCommand.groupId,
-      issuedAt: laterDate,
-    };
-
-    let result: DocmapViewModel;
-
-    beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(command1);
-      await framework.commandHelpers.recordEvaluationPublication(command2);
-      result = await pipe(
-        constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
-        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-      )();
-    });
-
-    it('returns all evaluations', () => {
-      expect(result.evaluations).toStrictEqual([
-        expect.objectContaining({
-          evaluationLocator: command1.evaluationLocator,
-        }),
-        expect.objectContaining({
-          evaluationLocator: command2.evaluationLocator,
-        }),
-      ]);
-    });
-
-    it('the updatedAt is when the most recently recorded evaluation was recorded', () => {
-      expect(result.updatedAt).toStrictEqual(laterDate);
-    });
-  });
-
-  describe('when there is a single, but updated, recorded evaluation for the selected group', () => {
-    it.todo('the updatedAt is when the evaluation was updated');
-  });
-
-  describe('when we can infer a source URL for the evaluations', () => {
-    const evaluationLocatorWithInferrableSourceUrl = arbitraryReviewDoi();
-    const sourceUrl = pipe(
-      inferredSourceUrl(evaluationLocatorWithInferrableSourceUrl),
-      O.getOrElseW(shouldNotBeCalled),
-    );
-    let result: DocmapViewModel;
-
-    beforeEach(async () => {
-      const addGroupCommand = arbitraryAddGroupCommand();
-      const recordEvaluationPublicationCommand = {
-        ...arbitraryRecordEvaluationPublicationCommand(),
-        groupId: addGroupCommand.groupId,
-        evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
-        articleId,
-      };
-      const ports: Ports = {
-        ...defaultAdapters,
-        fetchReview: shouldNotBeCalled,
-      };
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-      result = await pipe(
-        constructDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
-        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-      )();
-    });
-
-    it('returns the inferred source URL rather than calling the port', () => {
-      expect(result.evaluations).toStrictEqual([
-        expect.objectContaining({
-          sourceUrl,
-        }),
-      ]);
-    });
-  });
-
-  describe('when we cannot infer a source URL for the evaluations', () => {
-    const evaluationLocatorWithUninferrableSourceUrl = arbitraryNcrcId();
-    const sourceUrl = new URL(arbitraryUri());
-    let result: DocmapViewModel;
-
-    beforeEach(async () => {
-      const addGroupCommand = arbitraryAddGroupCommand();
-      const recordEvaluationPublicationCommand = {
-        ...arbitraryRecordEvaluationPublicationCommand(),
-        groupId: addGroupCommand.groupId,
-        evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
-        articleId,
-      };
-      const ports: Ports = {
-        ...defaultAdapters,
-        fetchReview: () => TE.right({ url: sourceUrl }),
-      };
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-      result = await pipe(
-        constructDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
-        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-      )();
-    });
-
-    it('obtains the source URL by calling the port', () => {
-      expect(result.evaluations).toStrictEqual([
-        expect.objectContaining({
-          sourceUrl,
-        }),
-      ]);
-    });
-  });
-
-  describe('when there are no evaluations by the selected group', () => {
-    it('returns an E.left of not-found', async () => {
-      const result = await constructDocmapViewModel(defaultAdapters)({ articleId, groupId: indexedGroupId })();
-
-      expect(result).toStrictEqual(E.left('not-found'));
-    });
-  });
-
-  describe('when there are evaluations by other groups', () => {
-    it('only uses the evaluation by the selected group', async () => {
-      const addGroup = {
-        ...arbitraryAddGroupCommand(),
-        groupId: indexedGroupId,
-      };
-      const addOtherGroup = arbitraryAddGroupCommand();
-      const recordEvaluationByThisGroup = {
-        ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId,
-        groupId: indexedGroupId,
-      };
-      await framework.commandHelpers.addGroup(addGroup);
-      await framework.commandHelpers.addGroup(addOtherGroup);
-      await framework.commandHelpers.recordEvaluationPublication({
-        ...arbitraryRecordEvaluationPublicationCommand(),
-        groupId: addOtherGroup.groupId,
-        articleId,
-      });
-      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationByThisGroup);
-
-      const result = await pipe(
-        {
-          articleId,
-          groupId: indexedGroupId,
-        },
-        constructDocmapViewModel(defaultAdapters),
-        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-      )();
-
-      expect(result.evaluations).toStrictEqual([
-        expect.objectContaining({
-          evaluationLocator: recordEvaluationByThisGroup.evaluationLocator,
-        }),
-      ]);
-    });
-  });
-
-  describe('when there is a single evaluation by the selected group', () => {
+  describe('when the selected group exists', () => {
     const addGroupCommand = {
       ...arbitraryAddGroupCommand(),
-      groupId: indexedGroupId,
+      groupId: selectedGroupId,
     };
-    const command = {
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      groupId: indexedGroupId,
-      articleId,
-    };
-    let result: DocmapViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.recordEvaluationPublication(command);
-      result = await pipe(
-        {
-          articleId,
-          groupId: indexedGroupId,
-        },
-        constructDocmapViewModel(defaultAdapters),
-        TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-      )();
     });
 
-    it('returns O.none for the input published date', async () => {
-      expect(result.inputPublishedDate).toStrictEqual(O.none);
+    describe('when there is an evaluation by the selected group', () => {
+      const recordEvaluationPublicationCommand = {
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId,
+        groupId: addGroupCommand.groupId,
+      };
+      let result: DocmapViewModel;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
+        result = await pipe(
+          { articleId, groupId: addGroupCommand.groupId },
+          constructDocmapViewModel(defaultAdapters),
+          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+        )();
+      });
+
+      it('includes the article id', async () => {
+        expect(result).toStrictEqual(expect.objectContaining({ articleId }));
+      });
+
+      it('includes the group', async () => {
+        expect(result).toStrictEqual(expect.objectContaining({
+          group: expect.objectContaining({ id: addGroupCommand.groupId }),
+        }));
+      });
+    });
+
+    describe('when there are multiple evaluations by the selected group', () => {
+      const earlierDate = new Date('1980-01-01');
+      const laterDate = new Date('2000-01-01');
+      const command1 = {
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId,
+        groupId: addGroupCommand.groupId,
+        issuedAt: earlierDate,
+      };
+      const command2 = {
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        articleId,
+        groupId: addGroupCommand.groupId,
+        issuedAt: laterDate,
+      };
+
+      let result: DocmapViewModel;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication(command1);
+        await framework.commandHelpers.recordEvaluationPublication(command2);
+        result = await pipe(
+          constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
+          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+        )();
+      });
+
+      it('returns all evaluations', () => {
+        expect(result.evaluations).toStrictEqual([
+          expect.objectContaining({
+            evaluationLocator: command1.evaluationLocator,
+          }),
+          expect.objectContaining({
+            evaluationLocator: command2.evaluationLocator,
+          }),
+        ]);
+      });
+
+      it('the updatedAt is when the most recently recorded evaluation was recorded', () => {
+        expect(result.updatedAt).toStrictEqual(laterDate);
+      });
+    });
+
+    describe('when there is a single, but updated, recorded evaluation for the selected group', () => {
+      it.todo('the updatedAt is when the evaluation was updated');
+    });
+
+    describe('when we can infer a source URL for the evaluations', () => {
+      const evaluationLocatorWithInferrableSourceUrl = arbitraryReviewDoi();
+      const sourceUrl = pipe(
+        inferredSourceUrl(evaluationLocatorWithInferrableSourceUrl),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+      let result: DocmapViewModel;
+
+      beforeEach(async () => {
+        const recordEvaluationPublicationCommand = {
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: addGroupCommand.groupId,
+          evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
+          articleId,
+        };
+        const ports: Ports = {
+          ...defaultAdapters,
+          fetchReview: shouldNotBeCalled,
+        };
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
+        result = await pipe(
+          constructDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
+          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+        )();
+      });
+
+      it('returns the inferred source URL rather than calling the port', () => {
+        expect(result.evaluations).toStrictEqual([
+          expect.objectContaining({
+            sourceUrl,
+          }),
+        ]);
+      });
+    });
+
+    describe('when we cannot infer a source URL for the evaluations', () => {
+      const evaluationLocatorWithUninferrableSourceUrl = arbitraryNcrcId();
+      const sourceUrl = new URL(arbitraryUri());
+      let result: DocmapViewModel;
+
+      beforeEach(async () => {
+        const recordEvaluationPublicationCommand = {
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: addGroupCommand.groupId,
+          evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
+          articleId,
+        };
+        const ports: Ports = {
+          ...defaultAdapters,
+          fetchReview: () => TE.right({ url: sourceUrl }),
+        };
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
+        result = await pipe(
+          constructDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
+          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+        )();
+      });
+
+      it('obtains the source URL by calling the port', () => {
+        expect(result.evaluations).toStrictEqual([
+          expect.objectContaining({
+            sourceUrl,
+          }),
+        ]);
+      });
+    });
+
+    describe('when there are no evaluations by the selected group', () => {
+      it('returns an E.left of not-found', async () => {
+        const result = await constructDocmapViewModel(defaultAdapters)({ articleId, groupId: selectedGroupId })();
+
+        expect(result).toStrictEqual(E.left('not-found'));
+      });
+    });
+
+    describe('when there are evaluations by other groups', () => {
+      it('only uses the evaluation by the selected group', async () => {
+        const addOtherGroup = arbitraryAddGroupCommand();
+        const recordEvaluationByThisGroup = {
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId,
+          groupId: selectedGroupId,
+        };
+        await framework.commandHelpers.addGroup(addOtherGroup);
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: addOtherGroup.groupId,
+          articleId,
+        });
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationByThisGroup);
+
+        const result = await pipe(
+          {
+            articleId,
+            groupId: selectedGroupId,
+          },
+          constructDocmapViewModel(defaultAdapters),
+          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+        )();
+
+        expect(result.evaluations).toStrictEqual([
+          expect.objectContaining({
+            evaluationLocator: recordEvaluationByThisGroup.evaluationLocator,
+          }),
+        ]);
+      });
+    });
+
+    describe('when there is a single evaluation by the selected group', () => {
+      const command = {
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        groupId: selectedGroupId,
+        articleId,
+      };
+      let result: DocmapViewModel;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication(command);
+        result = await pipe(
+          {
+            articleId,
+            groupId: selectedGroupId,
+          },
+          constructDocmapViewModel(defaultAdapters),
+          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+        )();
+      });
+
+      it('returns O.none for the input published date', async () => {
+        expect(result.inputPublishedDate).toStrictEqual(O.none);
+      });
     });
   });
 
@@ -263,7 +256,7 @@ describe('construct-docmap-view-model', () => {
       result = await pipe(
         {
           articleId,
-          groupId: indexedGroupId,
+          groupId: selectedGroupId,
         },
         constructDocmapViewModel(defaultAdapters),
       )();
