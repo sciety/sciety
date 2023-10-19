@@ -100,9 +100,13 @@ describe('construct-docmap-view-model', () => {
       ]);
     });
 
-    it('considers the most recently recorded evaluation for the updated date', () => {
+    it('the updatedAt is when the most recently recorded evaluation was recorded', () => {
       expect(result.updatedAt).toStrictEqual(laterDate);
     });
+  });
+
+  describe('when there is a single, but updated, recorded evaluation for the selected group', () => {
+    it.todo('the updatedAt is when the evaluation was updated');
   });
 
   describe('when we can infer a source URL for the evaluations', () => {
