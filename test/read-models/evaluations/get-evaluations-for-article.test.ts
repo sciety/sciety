@@ -161,14 +161,14 @@ describe('get-evaluations-for-article', () => {
     });
   });
 
-  describe('when the type of an evaluation is updated later', () => {
+  describe('when an evaluation is updated later', () => {
     const articleId = arbitraryArticleId();
     const evaluationLocator = arbitraryEvaluationLocator();
 
-    it.each([
+    describe.each([
       [undefined, 'curation-statement'],
       ['review', 'author-response'],
-    ])('updates the evaluation type from %s to %s', (initialType, updatedType) => {
+    ])('changing the evaluation type from %s to %s', (initialType, updatedType) => {
       const result = pipe(
         [
           evaluationRecordedWithType(
@@ -185,7 +185,11 @@ describe('get-evaluations-for-article', () => {
         runQuery(articleId),
       );
 
-      expect(result[0].type).toStrictEqual(O.some(updatedType));
+      it('updates the evaluation type', () => {
+        expect(result[0].type).toStrictEqual(O.some(updatedType));
+      });
+
+      it.todo('the updated date is the date of the update');
     });
   });
 
