@@ -8,6 +8,7 @@ type ListViewModel = {
   articleCount: number,
   updatedAt: Date,
   title: string,
+  listHref: string,
 };
 
 type OurListsViewModel = {
