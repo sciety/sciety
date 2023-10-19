@@ -13,7 +13,7 @@ import { ArticleId } from '../../../src/types/article-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-removal-recorded-event-helper';
-import { arbitraryString } from '../../helpers';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 
 const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -169,6 +169,7 @@ describe('get-evaluations-for-article', () => {
       [undefined, 'curation-statement'],
       ['review', 'author-response'],
     ])('changing the evaluation type from %s to %s', (initialType, updatedType) => {
+      const dateOfUpdate = arbitraryDate();
       const result = pipe(
         [
           evaluationRecordedWithType(
@@ -180,6 +181,7 @@ describe('get-evaluations-for-article', () => {
             ...arbitraryEvaluationUpdatedEvent(),
             evaluationLocator,
             evaluationType: updatedType as unknown as EvaluationType,
+            date: dateOfUpdate,
           }),
         ],
         runQuery(articleId),
@@ -189,7 +191,9 @@ describe('get-evaluations-for-article', () => {
         expect(result[0].type).toStrictEqual(O.some(updatedType));
       });
 
-      it.todo('the updated date is the date of the update');
+      it.failing('the updated date is the date of the update', () => {
+        expect(result[0].updatedAt).toStrictEqual(dateOfUpdate);
+      });
     });
   });
 
