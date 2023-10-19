@@ -107,15 +107,20 @@ describe('construct-docmap-view-model', () => {
         });
       });
 
-      describe('and they have been updated', () => {
+      describe('and they have been updated, in reverse order of their recording', () => {
+        const updateDate = new Date('2010-01-01');
+        const laterUpdateDate = new Date('2020-01-01');
+
         beforeEach(async () => {
           await framework.commandHelpers.updateEvaluation({
             ...arbitraryUpdateEvaluationCommand(),
-            evaluationLocator: command1.evaluationLocator,
+            evaluationLocator: command2.evaluationLocator,
+            issuedAt: updateDate,
           });
           await framework.commandHelpers.updateEvaluation({
             ...arbitraryUpdateEvaluationCommand(),
-            evaluationLocator: command2.evaluationLocator,
+            evaluationLocator: command1.evaluationLocator,
+            issuedAt: laterUpdateDate,
           });
           viewModel = await pipe(
             constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
@@ -127,7 +132,9 @@ describe('construct-docmap-view-model', () => {
           expect(viewModel.evaluations).toHaveLength(2);
         });
 
-        it.todo('the updatedAt is when the most recently updated evaluation was updated');
+        it.failing('the updatedAt is when the most recently updated evaluation was updated', () => {
+          expect(viewModel.updatedAt).toStrictEqual(laterUpdateDate);
+        });
       });
     });
 
