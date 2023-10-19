@@ -105,12 +105,14 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
       if (evaluation !== undefined) {
         evaluation.type = O.some(event.evaluationType);
+        evaluation.updatedAt = event.date;
       }
     }
     if (event.authors !== undefined) {
       const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
       if (evaluation !== undefined) {
         evaluation.authors = event.authors;
+        evaluation.updatedAt = event.date;
       }
     }
   }
