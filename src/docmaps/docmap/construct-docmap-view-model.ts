@@ -14,6 +14,7 @@ import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 export type DocmapViewModel = {
   articleId: ArticleId,
@@ -34,19 +35,11 @@ type ConstructDocmapViewModel = (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapViewModel>;
 
-type ReviewForArticle = {
-  evaluationLocator: EvaluationLocator,
-  groupId: GroupId,
-  recordedAt: Date,
-  publishedAt: Date,
-  authors: ReadonlyArray<string>,
-};
-
 export type Ports = Queries & GetDateOfMostRecentArticleVersionPorts & {
   fetchReview: (reviewId: EvaluationLocator) => TE.TaskEither<DE.DataError, { url: URL }>,
 };
 
-const extendWithSourceUrl = (adapters: Ports) => (evaluation: ReviewForArticle) => pipe(
+const extendWithSourceUrl = (adapters: Ports) => (evaluation: RecordedEvaluation) => pipe(
   evaluation.evaluationLocator,
   inferredSourceUrl,
   O.fold(
@@ -87,6 +80,6 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => 
   sequenceS(TE.ApplyPar),
   TE.map((partial) => ({
     ...partial,
-    updatedAt: RNEA.last(partial.evaluations).recordedAt,
+    updatedAt: RNEA.last(partial.evaluations).updatedAt,
   })),
 );

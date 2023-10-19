@@ -141,7 +141,7 @@ describe('construct-docmap-view-model', () => {
         )();
       });
 
-      it.failing('the updatedAt is when the evaluation was updated', () => {
+      it('the updatedAt is when the evaluation was updated', () => {
         expect(result.updatedAt).toStrictEqual(updateEvaluationCommand.issuedAt);
       });
     });
