@@ -38,10 +38,13 @@ describe('get-evaluations-with-no-type', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = getEvaluationsWithNoType(readModel)();
+    const result = pipe(
+      getEvaluationsWithNoType(readModel)(),
+      RA.map((evaluation) => evaluation.evaluationLocator),
+    );
 
     it('returns only the evaluations with no type', () => {
-      expect(result).toStrictEqual([evaluation2]);
+      expect(result).toStrictEqual([evaluation2.evaluationLocator]);
     });
   });
 });
