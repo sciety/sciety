@@ -198,6 +198,7 @@ describe('get-evaluations-for-article', () => {
   });
 
   describe('when the authors of the evaluation are updated', () => {
+    const dateOfUpdate = arbitraryDate();
     const articleId = arbitraryArticleId();
     const evaluationLocator = arbitraryEvaluationLocator();
     const authors = [arbitraryString(), arbitraryString()];
@@ -212,6 +213,7 @@ describe('get-evaluations-for-article', () => {
           ...arbitraryEvaluationUpdatedEvent(),
           evaluationLocator,
           authors,
+          date: dateOfUpdate,
         },
       ],
       runQuery(articleId),
@@ -219,6 +221,10 @@ describe('get-evaluations-for-article', () => {
 
     it('updates evaluation authors', () => {
       expect(result[0].authors).toStrictEqual(authors);
+    });
+
+    it('the updated date is the date of the update', () => {
+      expect(result[0].updatedAt).toStrictEqual(dateOfUpdate);
     });
   });
 
