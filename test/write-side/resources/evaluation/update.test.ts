@@ -111,6 +111,7 @@ describe('update', () => {
               ...arbitraryUpdateEvaluationCommand(),
               evaluationLocator,
               evaluationType: 'review',
+              authors: undefined,
             }),
             E.getOrElseW(shouldNotBeCalled),
           );
@@ -138,6 +139,7 @@ describe('update', () => {
               ...arbitraryUpdateEvaluationCommand(),
               evaluationLocator,
               evaluationType: 'review',
+              authors: undefined,
             }),
             E.getOrElseW(shouldNotBeCalled),
           );
