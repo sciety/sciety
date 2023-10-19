@@ -53,6 +53,7 @@ export const constructGroupCard = (
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
       curatedArticlesCount: calculateCuratedArticlesCount(groupId, queries),
       listCount: calculateListCount(groupId, queries),
+      groupPageHref: `/groups/${group.slug}`,
     })),
   )),
   E.fromOption(() => DE.notFound),

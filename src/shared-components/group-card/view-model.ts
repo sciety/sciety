@@ -13,4 +13,5 @@ export type GroupCardViewModel = {
   evaluationCount: number,
   curatedArticlesCount: number,
   latestActivityAt: O.Option<Date>,
+  groupPageHref: string,
 };
