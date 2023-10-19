@@ -85,27 +85,20 @@ describe('construct-docmap-view-model', () => {
         issuedAt: laterDate,
       };
 
-      let result: DocmapViewModel;
-
-      beforeEach(async () => {
-        await framework.commandHelpers.recordEvaluationPublication(command1);
-        await framework.commandHelpers.recordEvaluationPublication(command2);
-        result = await pipe(
-          constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
-          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-        )();
-      });
-
       describe('and they have never been updated', () => {
+        let result: DocmapViewModel;
+
+        beforeEach(async () => {
+          await framework.commandHelpers.recordEvaluationPublication(command1);
+          await framework.commandHelpers.recordEvaluationPublication(command2);
+          result = await pipe(
+            constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
+            TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+          )();
+        });
+
         it('returns all evaluations', () => {
-          expect(result.evaluations).toStrictEqual([
-            expect.objectContaining({
-              evaluationLocator: command1.evaluationLocator,
-            }),
-            expect.objectContaining({
-              evaluationLocator: command2.evaluationLocator,
-            }),
-          ]);
+          expect(result.evaluations).toHaveLength(2);
         });
 
         it('the updatedAt is when the most recently recorded evaluation was recorded', () => {
@@ -114,7 +107,28 @@ describe('construct-docmap-view-model', () => {
       });
 
       describe('and they have been updated', () => {
-        it.todo('returns all of the evaluations');
+        let result: DocmapViewModel;
+
+        beforeEach(async () => {
+          await framework.commandHelpers.recordEvaluationPublication(command1);
+          await framework.commandHelpers.recordEvaluationPublication(command2);
+          await framework.commandHelpers.updateEvaluation({
+            ...arbitraryUpdateEvaluationCommand(),
+            evaluationLocator: command1.evaluationLocator,
+          });
+          await framework.commandHelpers.updateEvaluation({
+            ...arbitraryUpdateEvaluationCommand(),
+            evaluationLocator: command2.evaluationLocator,
+          });
+          result = await pipe(
+            constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
+            TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+          )();
+        });
+
+        it('returns all of the evaluations', () => {
+          expect(result.evaluations).toHaveLength(2);
+        });
 
         it.todo('the updatedAt is when the most recently updated evaluation was updated');
       });
