@@ -40,23 +40,19 @@ const createAction = (articleId: ArticleId) => (evaluation: Evaluation) => ({
   ],
 });
 
-const constructDocmapUpdatedField = (evaluations: DocmapViewModel['evaluations']) => RNEA.last(evaluations).recordedAt.toISOString();
-
-export const renderDocmap = ({
-  group, inputPublishedDate, evaluations, articleId,
-}: DocmapViewModel): Docmap => ({
+export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   '@context': 'https://w3id.org/docmaps/context.jsonld',
-  id: `https://sciety.org/docmaps/v1/articles/${articleId.value}/${group.slug}.docmap.json`,
+  id: `https://sciety.org/docmaps/v1/articles/${viewModel.articleId.value}/${viewModel.group.slug}.docmap.json`,
   type: 'docmap',
-  created: RNEA.head(evaluations).recordedAt.toISOString(),
-  updated: constructDocmapUpdatedField(evaluations),
+  created: RNEA.head(viewModel.evaluations).recordedAt.toISOString(),
+  updated: viewModel.updatedAt.toISOString(),
   publisher: {
-    id: group.homepage,
-    name: group.name,
-    logo: `https://sciety.org${group.avatarPath}`,
-    homepage: group.homepage,
+    id: viewModel.group.homepage,
+    name: viewModel.group.name,
+    logo: `https://sciety.org${viewModel.group.avatarPath}`,
+    homepage: viewModel.group.homepage,
     account: {
-      id: publisherAccountId(group),
+      id: publisherAccountId(viewModel.group),
       service: 'https://sciety.org',
     },
   },
@@ -65,22 +61,22 @@ export const renderDocmap = ({
     '_:b0': {
       assertions: [],
       inputs: pipe(
-        inputPublishedDate,
+        viewModel.inputPublishedDate,
         O.fold(
           () => [{
-            doi: articleId.value,
-            url: `https://doi.org/${articleId.value}`,
+            doi: viewModel.articleId.value,
+            url: `https://doi.org/${viewModel.articleId.value}`,
           }],
           (date) => [{
-            doi: articleId.value,
-            url: `https://doi.org/${articleId.value}`,
+            doi: viewModel.articleId.value,
+            url: `https://doi.org/${viewModel.articleId.value}`,
             published: date.toISOString(),
           }],
         ),
       ),
       actions: pipe(
-        evaluations,
-        RA.map(createAction(articleId)),
+        viewModel.evaluations,
+        RA.map(createAction(viewModel.articleId)),
       ),
     },
   },
