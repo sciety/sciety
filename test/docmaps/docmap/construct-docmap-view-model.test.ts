@@ -69,7 +69,7 @@ describe('construct-docmap-view-model', () => {
       });
     });
 
-    describe('when there are multiple evaluations by the selected group', () => {
+    describe('when there are multiple evaluations recorded for the selected group', () => {
       const earlierDate = new Date('1980-01-01');
       const laterDate = new Date('2000-01-01');
       const command1 = {
@@ -96,19 +96,27 @@ describe('construct-docmap-view-model', () => {
         )();
       });
 
-      it('returns all evaluations', () => {
-        expect(result.evaluations).toStrictEqual([
-          expect.objectContaining({
-            evaluationLocator: command1.evaluationLocator,
-          }),
-          expect.objectContaining({
-            evaluationLocator: command2.evaluationLocator,
-          }),
-        ]);
+      describe('and they have never been updated', () => {
+        it('returns all evaluations', () => {
+          expect(result.evaluations).toStrictEqual([
+            expect.objectContaining({
+              evaluationLocator: command1.evaluationLocator,
+            }),
+            expect.objectContaining({
+              evaluationLocator: command2.evaluationLocator,
+            }),
+          ]);
+        });
+
+        it('the updatedAt is when the most recently recorded evaluation was recorded', () => {
+          expect(result.updatedAt).toStrictEqual(laterDate);
+        });
       });
 
-      it('the updatedAt is when the most recently recorded evaluation was recorded', () => {
-        expect(result.updatedAt).toStrictEqual(laterDate);
+      describe('and they have been updated', () => {
+        it.todo('returns all of the evaluations');
+
+        it.todo('the updatedAt is when the most recently updated evaluation was updated');
       });
     });
 
