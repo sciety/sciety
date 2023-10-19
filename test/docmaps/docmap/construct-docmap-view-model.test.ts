@@ -15,6 +15,7 @@ import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryUpdateEvaluationCommand } from '../../write-side/commands/update-evaluation-command.helper';
+import { DomainEvent } from '../../../src/domain-events';
 
 const selectedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();
@@ -136,8 +137,6 @@ describe('construct-docmap-view-model', () => {
 
     describe('when there is a single, but updated, recorded evaluation for the selected group', () => {
       let result: DocmapViewModel;
-      const evaluationPublicationRecordedDate = new Date('1980-01-01');
-      const evaluationUpdatedDate = new Date('2000-01-01');
       const evaluationLocator = arbitraryEvaluationLocator();
 
       const command = {
@@ -145,18 +144,18 @@ describe('construct-docmap-view-model', () => {
         evaluationLocator,
         articleId,
         groupId: addGroupCommand.groupId,
-        issuedAt: evaluationPublicationRecordedDate,
       };
 
       const updateEvaluationCommand = {
         ...arbitraryUpdateEvaluationCommand(),
         evaluationLocator,
-        issuedAt: evaluationUpdatedDate,
       };
+
+      let updateEvalutionEvent: DomainEvent;
 
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication(command);
-        await framework.commandHelpers.updateEvaluation(updateEvaluationCommand);
+        updateEvalutionEvent = await framework.commandHelpers.updateEvaluation(updateEvaluationCommand);
         result = await pipe(
           constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
@@ -164,7 +163,7 @@ describe('construct-docmap-view-model', () => {
       });
 
       it('the updatedAt is when the evaluation was updated', () => {
-        expect(result.updatedAt).toStrictEqual(updateEvaluationCommand.issuedAt);
+        expect(result.updatedAt).toStrictEqual(updateEvalutionEvent.date);
       });
     });
 

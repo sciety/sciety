@@ -19,7 +19,13 @@ export const createTestFramework = (): TestFramework => {
   return {
     ...framework,
     abortTest,
-    commandHelpers: createCommandHelpers(framework.commandHandlers),
+    commandHelpers: createCommandHelpers(
+      framework.commandHandlers,
+      {
+        commitEvents: framework.commitEvents,
+        getAllEvents: framework.getAllEvents,
+      },
+    ),
     happyPathThirdParties,
     dependenciesForViews: {
       ...framework.queries,

@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
+import * as T from 'fp-ts/Task';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { UserId } from '../../src/types/user-id';
@@ -16,6 +17,10 @@ import {
   RecordEvaluationPublicationCommand,
   UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
+import { update } from '../../src/write-side/resources/evaluation';
+import { ResourceAction } from '../../src/write-side/resources/resource-action';
+import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
+import { DomainEvent } from '../../src/domain-events';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
@@ -27,7 +32,7 @@ export type CommandHelpers = {
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
   removeArticleFromList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
-  updateEvaluation: (command: UpdateEvaluationCommand) => Promise<unknown>,
+  updateEvaluation: (command: UpdateEvaluationCommand) => Promise<DomainEvent>,
   updateGroupDetails: (groupId: GroupId, largeLogoPath: string) => Promise<unknown>,
   updateUserDetails: (userId: UserId, avatarUrl?: string, displayName?: string) => Promise<unknown>,
 };
@@ -41,7 +46,25 @@ const invoke = <C extends GenericCommand>(
     TE.getOrElse(abortTest(`${name} helper`)),
   )();
 
-export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
+const invokeResourceAction = <C extends GenericCommand>(
+  eventStore: EventStore,
+  action: ResourceAction<C>,
+  name: string,
+) => async (cmd: C): Promise<DomainEvent> => pipe(
+    eventStore.getAllEvents,
+    TE.rightTask,
+    TE.chainEitherK(action(cmd)),
+    TE.getOrElse(abortTest(`${name} helper`)),
+    T.chain(() => eventStore.getAllEvents),
+    T.map((events) => events[events.length - 1]),
+  )();
+
+type EventStore = {
+  getAllEvents: GetAllEvents,
+  commitEvents: CommitEvents,
+};
+
+export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers'], eventStore: EventStore): CommandHelpers => ({
   addArticleToList: async (articleId, listId) => pipe(
     {
       articleId,
@@ -72,7 +95,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     },
     invoke(commandHandlers.unfollowGroup, 'unfollowGroup'),
   ),
-  updateEvaluation: invoke(commandHandlers.updateEvaluation, 'updateEvaluation'),
+  updateEvaluation: invokeResourceAction(eventStore, update, 'updateEvaluation'),
   updateGroupDetails: async (groupId, largeLogoPath) => pipe(
     {
       groupId,
