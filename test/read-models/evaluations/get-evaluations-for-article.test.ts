@@ -155,7 +155,7 @@ describe('get-evaluations-for-article', () => {
         expect(result[0].type).toStrictEqual(expectedType);
       });
 
-      it.failing('the updated date is the date of the recording', () => {
+      it('the updated date is the date of the recording', () => {
         expect(result[0].updatedAt).toStrictEqual(result[0].recordedAt);
       });
     });
