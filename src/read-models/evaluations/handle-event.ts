@@ -101,19 +101,16 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     }
   }
   if (isEventOfType('EvaluationUpdated')(event)) {
+    const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
+    if (evaluation === undefined) {
+      return readmodel;
+    }
+    evaluation.updatedAt = event.date;
     if (event.evaluationType !== undefined) {
-      const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
-      if (evaluation !== undefined) {
-        evaluation.type = O.some(event.evaluationType);
-        evaluation.updatedAt = event.date;
-      }
+      evaluation.type = O.some(event.evaluationType);
     }
     if (event.authors !== undefined) {
-      const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
-      if (evaluation !== undefined) {
-        evaluation.authors = event.authors;
-        evaluation.updatedAt = event.date;
-      }
+      evaluation.authors = event.authors;
     }
   }
   return readmodel;
