@@ -134,12 +134,12 @@ describe('get-evaluations-for-article', () => {
   describe('when an evaluation is recorded', () => {
     const articleId = arbitraryArticleId();
 
-    it.each([
+    describe.each([
       ['curation-statement', O.some('curation-statement')],
       ['review', O.some('review')],
       ['author-response', O.some('author-response')],
       [undefined, O.none],
-    ])('as %s, the type is returned correctly', (inputType, expectedType) => {
+    ])('as %s', (inputType, expectedType) => {
       const result = pipe(
         [
           evaluationRecordedWithType(
@@ -151,7 +151,11 @@ describe('get-evaluations-for-article', () => {
         runQuery(articleId),
       );
 
-      expect(result[0].type).toStrictEqual(expectedType);
+      it('the type is returned correctly', () => {
+        expect(result[0].type).toStrictEqual(expectedType);
+      });
+
+      it.todo('the updated date is the date of the recording');
     });
   });
 
