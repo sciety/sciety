@@ -71,7 +71,7 @@ export type ViewModel = {
   latestActivity: O.Option<Date>,
   feedItemsByDateDescending: RNEA.ReadonlyNonEmptyArray<FeedItem>,
   userListManagement: O.Option<LoggedInUserListManagement>,
-  listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string }>,
+  listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string, listHref: string }>,
   relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
   curationStatements: ReadonlyArray<CurationStatementViewModel>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,

@@ -43,5 +43,6 @@ export const constructListedIn = (dependencies: Dependencies) => (articleId: Art
     listId: list.id,
     listName: list.name,
     listOwnerName: getListOwnerName(dependencies)(list.ownerId),
+    listHref: `/lists/${list.id}`,
   })),
 );
