@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
 import { arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-updated-event.helper';
 import * as evaluationResource from '../../../../src/write-side/resources/evaluation';
-import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { UpdateEvaluationCommand } from '../../../../src/write-side/commands';
 import { EvaluationType } from '../../../../src/types/recorded-evaluation';
-import { arbitraryString } from '../../../helpers';
+import { arbitraryDate, arbitraryString } from '../../../helpers';
 
 const expectEvent = (fields: Record<string, unknown>) => ({
   id: expect.any(String),
@@ -221,7 +221,25 @@ describe('update', () => {
     });
 
     describe('when passed an issuedAt', () => {
-      it.todo('raises an event with issuedAt as the date');
+      const issuedAt = arbitraryDate();
+      const eventsRaised = pipe(
+        [
+          {
+            ...arbitraryEvaluationPublicationRecordedEvent(),
+            evaluationLocator,
+          },
+        ],
+        evaluationResource.update({
+          ...arbitraryUpdateEvaluationCommand(),
+          evaluationLocator,
+          issuedAt,
+        }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
+      it.failing('raises an event with issuedAt as the date', () => {
+        expect(eventsRaised[0].date).toStrictEqual(issuedAt);
+      });
     });
   });
 });
