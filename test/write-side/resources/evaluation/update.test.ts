@@ -219,5 +219,9 @@ describe('update', () => {
         });
       });
     });
+
+    describe('when passed an issuedAt', () => {
+      it.todo('raises an event with issuedAt as the date');
+    });
   });
 });
