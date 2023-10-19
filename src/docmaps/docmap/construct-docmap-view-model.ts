@@ -83,7 +83,10 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => 
       adapters.getGroup(groupId),
       TE.fromOption(() => DE.notFound),
     ),
-    updatedAt: TE.right(new Date('01-01-1980')),
   },
   sequenceS(TE.ApplyPar),
+  TE.map((partial) => ({
+    ...partial,
+    updatedAt: RNEA.last(partial.evaluations).recordedAt,
+  })),
 );

@@ -100,7 +100,7 @@ describe('construct-docmap-view-model', () => {
       ]);
     });
 
-    it.failing('considers the most recently recorded evaluation for the updated date', () => {
+    it('considers the most recently recorded evaluation for the updated date', () => {
       expect(result.updatedAt).toStrictEqual(laterDate);
     });
   });
