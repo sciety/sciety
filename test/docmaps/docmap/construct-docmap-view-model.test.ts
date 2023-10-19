@@ -61,16 +61,20 @@ describe('construct-docmap-view-model', () => {
   });
 
   describe('when there are multiple evaluations by the selected group', () => {
+    const earlierDate = new Date('1980-01-01');
+    const laterDate = new Date('2000-01-01');
     const addGroupCommand = arbitraryAddGroupCommand();
     const command1 = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       articleId,
       groupId: addGroupCommand.groupId,
+      issuedAt: earlierDate,
     };
     const command2 = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       articleId,
       groupId: addGroupCommand.groupId,
+      issuedAt: laterDate,
     };
 
     let result: DocmapViewModel;
@@ -96,7 +100,9 @@ describe('construct-docmap-view-model', () => {
       ]);
     });
 
-    it.todo('considers the most recently updated evaluation for the updated date');
+    it.failing('considers the most recently recorded evaluation for the updated date', () => {
+      expect(result.updatedAt).toStrictEqual(laterDate);
+    });
   });
 
   describe('when we can infer a source URL for the evaluations', () => {
