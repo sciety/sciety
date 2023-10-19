@@ -37,6 +37,7 @@ describe('render-docmap', () => {
           authors: [],
         },
       ],
+      updatedAt: new Date(),
     });
 
     describe('the docmap id', () => {
@@ -53,6 +54,7 @@ describe('render-docmap', () => {
             authors: [],
           },
         ],
+        updatedAt: new Date(),
       });
 
       it('is a valid URL', () => {
@@ -105,6 +107,7 @@ describe('render-docmap', () => {
           authors: [],
         },
       ],
+      updatedAt: new Date(),
     });
 
     it('is included as the published date as an ISO string', () => {
@@ -128,6 +131,7 @@ describe('render-docmap', () => {
           authors: [],
         },
       ],
+      updatedAt: new Date(),
     });
 
     it('there is no published date', async () => {
@@ -165,6 +169,7 @@ describe('render-docmap', () => {
       group: arbitraryGroup(),
       inputPublishedDate: O.none,
       evaluations,
+      updatedAt: new Date(),
     });
 
     it('returns a single step', () => {
