@@ -6,6 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import * as D from 'fp-ts/Date';
 import { Evaluation } from './evaluation';
 import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
 import * as DE from '../../types/data-error';
@@ -80,6 +81,10 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => 
   sequenceS(TE.ApplyPar),
   TE.map((partial) => ({
     ...partial,
-    updatedAt: RNEA.last(partial.evaluations).updatedAt,
+    updatedAt: pipe(
+      partial.evaluations,
+      RNEA.map((evaluation) => evaluation.updatedAt),
+      RNEA.max(D.Ord),
+    ),
   })),
 );

@@ -132,7 +132,7 @@ describe('construct-docmap-view-model', () => {
           expect(viewModel.evaluations).toHaveLength(2);
         });
 
-        it.failing('the updatedAt is when the most recently updated evaluation was updated', () => {
+        it('the updatedAt is when the most recently updated evaluation was updated', () => {
           expect(viewModel.updatedAt).toStrictEqual(laterUpdateDate);
         });
       });
