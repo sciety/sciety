@@ -9,4 +9,12 @@ describe('update-idempotency', () => {
       expect(UI.isEmpty(input)).toBe(expected);
     });
   });
+
+  describe('onlyKeepUpdatedFields', () => {
+    it.each([
+      [{}, {}, {}],
+    ])('given %s returns %s', (input, state, expected) => {
+      expect(UI.onlyKeepUpdatedFields(input)(state)).toStrictEqual(expected);
+    });
+  });
 });
