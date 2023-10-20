@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
@@ -60,20 +59,10 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   steps: {
     '_:b0': {
       assertions: [],
-      inputs: pipe(
-        viewModel.inputPublishedDate,
-        O.fold(
-          () => [{
-            doi: viewModel.articleId.value,
-            url: `https://doi.org/${viewModel.articleId.value}`,
-          }],
-          (date) => [{
-            doi: viewModel.articleId.value,
-            url: `https://doi.org/${viewModel.articleId.value}`,
-            published: date.toISOString(),
-          }],
-        ),
-      ),
+      inputs: [{
+        doi: viewModel.articleId.value,
+        url: `https://doi.org/${viewModel.articleId.value}`,
+      }],
       actions: pipe(
         viewModel.evaluations,
         RA.map(createAction(viewModel.articleId)),

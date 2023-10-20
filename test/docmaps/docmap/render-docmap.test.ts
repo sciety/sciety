@@ -92,55 +92,6 @@ describe('render-docmap', () => {
     });
   });
 
-  describe('when there is an input published date', () => {
-    const articleDate = arbitraryDate();
-    const result = renderDocmap({
-      articleId,
-      group: arbitraryGroup(),
-      inputPublishedDate: O.some(articleDate),
-      evaluations: [
-        {
-          sourceUrl: new URL(arbitraryUri()),
-          evaluationLocator: arbitraryEvaluationLocator(),
-          recordedAt: arbitraryDate(),
-          publishedAt: arbitraryDate(),
-          authors: [],
-        },
-      ],
-      updatedAt: new Date(),
-    });
-
-    it('is included as the published date as an ISO string', () => {
-      expect(result.steps['_:b0'].inputs).toStrictEqual([
-        expect.objectContaining({ published: articleDate.toISOString() }),
-      ]);
-    });
-  });
-
-  describe('when there is no input published date', () => {
-    const result = renderDocmap({
-      articleId,
-      group: arbitraryGroup(),
-      inputPublishedDate: O.none,
-      evaluations: [
-        {
-          sourceUrl: new URL(arbitraryUri()),
-          evaluationLocator: arbitraryEvaluationLocator(),
-          recordedAt: arbitraryDate(),
-          publishedAt: arbitraryDate(),
-          authors: [],
-        },
-      ],
-      updatedAt: new Date(),
-    });
-
-    it('there is no published date', async () => {
-      expect(result.steps['_:b0'].inputs).toStrictEqual([
-        expect.not.objectContaining({ published: expect.anything }),
-      ]);
-    });
-  });
-
   describe('when there are multiple evaluations by the selected group', () => {
     const earlierEvaluationPublishedDate = new Date('1900');
     const laterEvaluationPublishedDate = new Date('2000');
