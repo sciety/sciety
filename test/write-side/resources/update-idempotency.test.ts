@@ -13,7 +13,8 @@ describe('update-idempotency', () => {
   describe('onlyKeepUpdatedFields', () => {
     it.each([
       [{}, {}, {}],
-    ])('given %s returns %s', (input, state, expected) => {
+      [{ a: 1 }, { a: 1 }, {}],
+    ])('input: %s and state: %s returns %s', (input, state, expected) => {
       expect(UI.onlyKeepUpdatedFields(input)(state)).toStrictEqual(expected);
     });
   });
