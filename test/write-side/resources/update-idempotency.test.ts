@@ -14,6 +14,7 @@ describe('update-idempotency', () => {
     it.each([
       [{}, {}, {}],
       [{ a: 1 }, { a: 1 }, {}],
+      [{ a: 1, b: 2 }, { a: 1, b: 1 }, { b: 2 }],
     ])('input: %s and state: %s returns %s', (input, state, expected) => {
       expect(UI.onlyKeepUpdatedFields(input)(state)).toStrictEqual(expected);
     });
