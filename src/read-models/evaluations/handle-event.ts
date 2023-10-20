@@ -94,12 +94,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   if (isEventOfType('EvaluationRemovalRecorded')(event)) {
     removeFromAllIndexes(event.evaluationLocator, readmodel);
   }
-  if (isEventOfType('CurationStatementRecorded')(event)) {
-    const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
-    if (evaluation !== undefined) {
-      evaluation.type = O.some('curation-statement');
-    }
-  }
   if (isEventOfType('EvaluationUpdated')(event)) {
     const evaluation = readmodel.byEvaluationLocator.get(event.evaluationLocator);
     if (evaluation === undefined) {

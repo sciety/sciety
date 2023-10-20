@@ -8,7 +8,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
 import { Logger } from './logger';
 import {
-  DomainEvent, CurrentOrLegacyDomainEvent,
+  DomainEvent, CurrentOrLegacyDomainEvent, EventOfType,
 } from '../domain-events';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
@@ -33,6 +33,14 @@ const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): Domai
       ...event,
       type: 'EvaluationPublicationRecorded' as const,
     };
+  }
+  if (event.type === 'CurationStatementRecorded') {
+    return {
+      ...event,
+      authors: undefined,
+      evaluationType: 'curation-statement',
+      type: 'EvaluationUpdated' as const,
+    } satisfies EventOfType<'EvaluationUpdated'>;
   }
   return event;
 };

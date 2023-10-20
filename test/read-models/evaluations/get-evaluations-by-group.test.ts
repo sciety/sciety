@@ -100,9 +100,9 @@ describe('get-evaluations-by-group', () => {
           evaluationLocator: evaluationLocator1,
           date: new Date('2020-05-19T00:00:00Z'),
         },
-        constructEvent('CurationStatementRecorded')({
-          articleId: article1,
-          groupId: group1,
+        constructEvent('EvaluationUpdated')({
+          evaluationType: 'curation-statement',
+          authors: undefined,
           evaluationLocator: evaluationLocator1,
         }),
       ],

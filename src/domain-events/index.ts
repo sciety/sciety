@@ -43,13 +43,16 @@ const byUuid: Ord.Ord<DomainEvent> = pipe(
 
 export const sort = A.sortBy([byDate, byUuid]);
 
-const legacyDomainEventCodec = evaluationRecordedEventCodec;
+const legacyDomainEventCodec = t.union([
+  evaluationRecordedEventCodec,
+  curationStatementRecordedEventCodec,
+
+], 'type');
 
 export const domainEventCodec = t.union([
   annotationCreatedEventCodec,
   articleAddedToListEventCodec,
   articleRemovedFromListEventCodec,
-  curationStatementRecordedEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
   evaluationPublicationRecordedEventCodec,
   evaluationRemovalRecordedEventCodec,

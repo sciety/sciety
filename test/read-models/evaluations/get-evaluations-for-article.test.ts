@@ -121,7 +121,11 @@ describe('get-evaluations-for-article', () => {
           articleId,
           evaluationLocator,
         },
-        constructEvent('CurationStatementRecorded')({ articleId, groupId, evaluationLocator }),
+        constructEvent('EvaluationUpdated')({
+          evaluationType: 'curation-statement',
+          authors: undefined,
+          evaluationLocator,
+        }),
       ],
       runQuery(articleId),
     );
