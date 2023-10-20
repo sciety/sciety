@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
 import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
@@ -20,7 +19,6 @@ describe('render-docmap', () => {
     const result = renderDocmap({
       articleId,
       group,
-      inputPublishedDate: O.none,
       evaluations: [
         {
           sourceUrl: new URL(arbitraryUri()),
@@ -44,7 +42,6 @@ describe('render-docmap', () => {
       const anotherDocmap = renderDocmap({
         articleId,
         group,
-        inputPublishedDate: O.none,
         evaluations: [
           {
             sourceUrl: new URL(arbitraryUri()),
@@ -118,7 +115,6 @@ describe('render-docmap', () => {
     const result = renderDocmap({
       articleId,
       group: arbitraryGroup(),
-      inputPublishedDate: O.none,
       evaluations,
       updatedAt: new Date(),
     });

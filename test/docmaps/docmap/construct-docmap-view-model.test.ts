@@ -276,30 +276,6 @@ describe('construct-docmap-view-model', () => {
         ]);
       });
     });
-
-    describe('when there is a single evaluation by the selected group', () => {
-      const command = {
-        ...arbitraryRecordEvaluationPublicationCommand(),
-        groupId: selectedGroupId,
-        articleId,
-      };
-
-      beforeEach(async () => {
-        await framework.commandHelpers.recordEvaluationPublication(command);
-        viewModel = await pipe(
-          {
-            articleId,
-            groupId: selectedGroupId,
-          },
-          constructDocmapViewModel(defaultAdapters),
-          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-        )();
-      });
-
-      it('returns O.none for the input published date', async () => {
-        expect(viewModel.inputPublishedDate).toStrictEqual(O.none);
-      });
-    });
   });
 
   describe('when the group cannot be retrieved', () => {

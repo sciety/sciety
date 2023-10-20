@@ -8,7 +8,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import { Evaluation } from './evaluation';
-import { Ports as GetDateOfMostRecentArticleVersionPorts, getPublishedDateOfMostRecentArticleVersion } from './get-published-date-of-most-recent-article-version';
 import * as DE from '../../types/data-error';
 import { ArticleId } from '../../types/article-id';
 import { Group } from '../../types/group';
@@ -20,7 +19,6 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 export type DocmapViewModel = {
   articleId: ArticleId,
   group: Group,
-  inputPublishedDate: O.Option<Date>,
   evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation>,
   updatedAt: Date,
 };
@@ -36,7 +34,7 @@ type ConstructDocmapViewModel = (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapViewModel>;
 
-export type Ports = Queries & GetDateOfMostRecentArticleVersionPorts & {
+export type Ports = Queries & {
   fetchReview: (reviewId: EvaluationLocator) => TE.TaskEither<DE.DataError, { url: URL }>,
 };
 
@@ -72,7 +70,6 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => 
         E.fromOption(() => DE.notFound),
       )),
     ),
-    inputPublishedDate: getPublishedDateOfMostRecentArticleVersion(adapters, articleId),
     group: pipe(
       adapters.getGroup(groupId),
       TE.fromOption(() => DE.notFound),
