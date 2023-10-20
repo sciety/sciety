@@ -54,7 +54,7 @@
     "@types/koa-compose": "^3.2.6",
     "@types/koa-passport": "^6.0.1",
     "@types/koa-send": "^4.1.4",
-    "@types/koa-session": "^6.4.2",
+    "@types/koa-session": "^6.4.4",
     "@types/node": "^18.18.5",
     "@types/passport-auth0": "^1.0.8",
     "@types/pg": "^8.10.5",
