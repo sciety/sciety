@@ -8,7 +8,7 @@ import { constructGroupLink } from '../../../shared-components/group-link';
 
 export const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<ArticleId>): ViewModel['relatedGroups'] => pipe(
   articleIds,
-  RA.flatMap(dependencies.getEvaluationsForDoi),
+  RA.flatMap(dependencies.getEvaluationsForArticle),
   RA.map((recordedEvaluation) => recordedEvaluation.groupId),
   RA.uniq(GID.eq),
   RA.map(constructGroupLink(dependencies)),

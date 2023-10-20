@@ -79,7 +79,7 @@ type ConstructCurationStatements = (
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
   doi,
-  dependencies.getEvaluationsForDoi,
+  dependencies.getEvaluationsForArticle,
   RA.filter((evaluation) => O.getEq(S.Eq).equals(evaluation.type, O.some('curation-statement'))),
   onlyIncludeLatestCurationPerGroup,
   RA.map(addGroupInformation(dependencies)),

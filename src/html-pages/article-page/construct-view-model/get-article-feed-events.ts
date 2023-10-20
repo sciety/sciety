@@ -34,7 +34,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => pipe(
   {
     evaluations: pipe(
-      dependencies.getEvaluationsForDoi(doi),
+      dependencies.getEvaluationsForArticle(doi),
       T.of,
       T.map(RA.map((evaluation) => ({
         ...evaluation,

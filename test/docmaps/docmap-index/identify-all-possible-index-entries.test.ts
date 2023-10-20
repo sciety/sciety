@@ -51,9 +51,9 @@ describe('identify-all-possible-index-entries', () => {
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(supportedGroupCommands[0]);
       await framework.commandHelpers.recordEvaluationPublication(command1);
-      evaluation1 = framework.queries.getEvaluationsForDoi(command1.articleId)[0];
+      evaluation1 = framework.queries.getEvaluationsForArticle(command1.articleId)[0];
       await T.delay(10)(async () => framework.commandHelpers.recordEvaluationPublication(command2))();
-      evaluation2 = framework.queries.getEvaluationsForDoi(command2.articleId)[0];
+      evaluation2 = framework.queries.getEvaluationsForArticle(command2.articleId)[0];
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),
@@ -103,7 +103,7 @@ describe('identify-all-possible-index-entries', () => {
       await framework.commandHelpers.recordEvaluationPublication(command1);
       await T.delay(10)(async () => framework.commandHelpers.recordEvaluationPublication(command2))();
       await T.delay(10)(async () => framework.commandHelpers.recordEvaluationPublication(command3))();
-      evaluation3 = framework.queries.getEvaluationsForDoi(command3.articleId)[2];
+      evaluation3 = framework.queries.getEvaluationsForArticle(command3.articleId)[2];
       result = pipe(
         identifyAllPossibleIndexEntries(supportedGroupIds, defaultAdapters),
         E.getOrElseW(shouldNotBeCalled),

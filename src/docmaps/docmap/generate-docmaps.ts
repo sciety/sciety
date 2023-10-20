@@ -15,7 +15,7 @@ import { Queries } from '../../read-models';
 export type Ports = DocmapPorts & Queries;
 
 const getEvaluatingGroupIds = (ports: Ports) => (doi: ArticleId) => pipe(
-  ports.getEvaluationsForDoi(doi),
+  ports.getEvaluationsForArticle(doi),
   T.of,
   T.map(flow(
     RA.filter(({ articleId }) => articleId.value === doi.value),

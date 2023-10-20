@@ -22,7 +22,7 @@ export const constructReviewingGroups = (
   articleId: ArticleId,
 ): ReadonlyArray<GroupLinkWithLogoViewModel & GroupLinkAsTextViewModel> => pipe(
   articleId,
-  dependencies.getEvaluationsForDoi,
+  dependencies.getEvaluationsForArticle,
   RA.filter(isNotCurationStatement),
   RA.map((evaluation) => evaluation.groupId),
   unique,

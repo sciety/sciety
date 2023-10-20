@@ -7,7 +7,7 @@ import { handleEvent, initialState } from './handle-event';
 export const evaluations = {
   queries: {
     evaluationsStatus,
-    getEvaluationsForDoi: getEvaluationsForArticle,
+    getEvaluationsForArticle,
     getEvaluationsByGroup,
     getEvaluationsWithNoType,
   },
