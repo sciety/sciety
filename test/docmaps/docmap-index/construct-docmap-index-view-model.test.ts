@@ -8,22 +8,12 @@ describe('construct-docmap-index-view-model', () => {
       it.todo('returns unmodified input');
     });
 
-    describe('when invalid params are given', () => {
-      it.todo('returns a "bad request"');
+    describe('when a particular publisher account ID is requested', () => {
+      it.todo('only returns docmaps by the corresponding group');
     });
 
-    describe('when passed a publisher account ID', () => {
-      it.todo('only returns entries by the corresponding group');
-    });
-
-    describe('when passed an "updated after" parameter', () => {
-      describe('when there are evaluations after the specified date', () => {
-        it.todo('only returns entries whose latest evaluation is after the specified date');
-      });
-
-      describe('when there are no evaluations after the specified date', () => {
-        it.todo('returns an empty array');
-      });
+    describe('when only docmaps updated after a certain date are requested', () => {
+      it.todo('only returns docmaps whose updated property is after the specified date');
     });
 
     describe('identify-all-possible-index-entries', () => {
