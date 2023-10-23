@@ -1,15 +1,23 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { DocmapIndexViewModel, constructDocmapIndexViewModel } from '../../../src/docmaps/docmap-index/docmap-index';
+import { TestFramework, createTestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('construct-docmap-index-view-model', () => {
+  let framework: TestFramework;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
+
   describe('when there are no docmaps', () => {
     let index: DocmapIndexViewModel;
 
     beforeEach(async () => {
       index = await pipe(
-        constructDocmapIndexViewModel(),
+        {},
+        constructDocmapIndexViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });

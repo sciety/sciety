@@ -20,7 +20,11 @@ type DocmapIndexBody = {
 
 export type DocmapIndexViewModel = ReadonlyArray<DocmapViewModel>;
 
-export const constructDocmapIndexViewModel = (): TE.TaskEither<ER.ErrorResponse, DocmapIndexViewModel> => TE.right([]);
+type ConstructDocmapIndexViewModel = (adapters: Ports)
+=> (query: unknown)
+=> TE.TaskEither<ER.ErrorResponse, DocmapIndexViewModel>;
+
+export const constructDocmapIndexViewModel: ConstructDocmapIndexViewModel = () => () => TE.right([]);
 
 type DocmapIndex = (adapters: Ports) => (query: Record<string, unknown>) => T.Task<{
   body: DocmapIndexBody,
