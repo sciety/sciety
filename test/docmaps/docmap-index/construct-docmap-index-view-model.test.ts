@@ -9,6 +9,7 @@ import { ArticleId } from '../../../src/types/article-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { supportedGroups } from '../../../src/docmaps/supported-groups';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 const arbitrarySupportedGroupId = () => supportedGroups[0];
 
@@ -48,13 +49,17 @@ describe('construct-docmap-index-view-model', () => {
       it.todo('only returns docmaps whose updated property is after the specified date');
     });
 
-    describe.skip('when a supported group has evaluated multiple articles', () => {
+    describe('when a supported group has evaluated multiple articles', () => {
       const articleId1 = arbitraryArticleId();
       const articleId2 = arbitraryArticleId();
       const groupId = arbitrarySupportedGroupId();
       let docmapArticleIds: ReadonlyArray<ArticleId>;
 
       beforeEach(async () => {
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId,
+        });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           articleId: articleId1,
@@ -73,7 +78,7 @@ describe('construct-docmap-index-view-model', () => {
         )();
       });
 
-      it('returns a docmap for every evaluated article', () => {
+      it.skip('returns a docmap for every evaluated article', () => {
         expect(docmapArticleIds).toStrictEqual([articleId1, articleId2]);
       });
     });
