@@ -2,28 +2,20 @@
 /* eslint-disable no-loops/no-loops */
 export const isEmpty = <T extends Record<string, unknown>>(object: T): boolean => Object.keys(object).length === 0;
 
-const removeUndefined = <T extends Record<string, unknown>>(input: T): Partial<T> => {
-  const result = input;
-  for (const key in result) {
-    if (result[key] === undefined) {
-      delete result[key];
-    }
+type KeysOfType<T, U> = { [K in keyof T]: T[K] extends U ? K : never }[keyof T];
+
+type RequiredKeys<T> = Exclude<KeysOfType<T, Exclude<T[keyof T], undefined>>, undefined>;
+
+type PropertiesThatCanBeUndefined<T extends Record<string, unknown>> = Omit<T, RequiredKeys<T>>;
+
+type ChangedFields = <C extends Record<string, unknown>>(command: C)
+=> (state: PropertiesThatCanBeUndefined<C>)
+=> Required<PropertiesThatCanBeUndefined<C>>;
+
+export const changedFields: ChangedFields = (command) => (state) => {
+  const result = command;
+  for (const key in state) {
+    if (command[key] === state[key]) { result[key] = undefined; }
   }
   return result;
 };
-
-type OnlyKeepUpdatedFields = <C extends Record<string, unknown>>(command: C) => <S extends C>(state: S) => Partial<C>;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const onlyKeepUpdatedFields: OnlyKeepUpdatedFields = (command) => (state) => {
-  const result: Partial<typeof command> = command;
-  for (const key in command) {
-    if (command[key] === state[key]) { result[key] = undefined; }
-  }
-  return removeUndefined(result);
-};
-
-type ChangedFields = <S extends Record<string, unknown>, C extends Partial<S>>(command: C) => (state: S) => S;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const changedFields: ChangedFields = (command) => (state) => state;
