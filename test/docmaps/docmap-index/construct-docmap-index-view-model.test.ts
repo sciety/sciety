@@ -1,6 +1,12 @@
+import { DocmapViewModel } from '../../../src/docmaps/docmap/construct-docmap-view-model';
+
 describe('construct-docmap-index-view-model', () => {
   describe('when there are no docmaps', () => {
-    it.todo('returns an empty list');
+    const index: ReadonlyArray<DocmapViewModel> = [];
+
+    it('returns an empty list', () => {
+      expect(index).toStrictEqual([]);
+    });
   });
 
   describe('when supported groups have evaluated some articles', () => {
