@@ -7,7 +7,7 @@ import * as E from 'fp-ts/Either';
 import * as ER from './error-response';
 import { filterByParams } from './filter-by-params';
 import { identifyAllPossibleIndexEntries, Ports as IdentifyAllPossibleIndexEntriesPorts } from './identify-all-possible-index-entries';
-import { Ports as DocmapPorts, constructDocmapViewModel } from '../docmap/construct-docmap-view-model';
+import { Ports as DocmapPorts, DocmapViewModel, constructDocmapViewModel } from '../docmap/construct-docmap-view-model';
 import { renderDocmap } from '../docmap/render-docmap';
 import { supportedGroups } from '../supported-groups';
 
@@ -17,6 +17,10 @@ type DocmapIndexBody = {
   articles?: ReadonlyArray<unknown>,
   error?: string,
 };
+
+type DocmapIndexViewModel = ReadonlyArray<DocmapViewModel>;
+
+export const constructDocmapIndexViewModel = (): DocmapIndexViewModel => [];
 
 type DocmapIndex = (adapters: Ports) => (query: Record<string, unknown>) => T.Task<{
   body: DocmapIndexBody,

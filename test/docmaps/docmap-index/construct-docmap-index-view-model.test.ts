@@ -1,8 +1,8 @@
-import { DocmapViewModel } from '../../../src/docmaps/docmap/construct-docmap-view-model';
+import { constructDocmapIndexViewModel } from '../../../src/docmaps/docmap-index/docmap-index';
 
 describe('construct-docmap-index-view-model', () => {
   describe('when there are no docmaps', () => {
-    const index: ReadonlyArray<DocmapViewModel> = [];
+    const index = constructDocmapIndexViewModel();
 
     it('returns an empty list', () => {
       expect(index).toStrictEqual([]);
