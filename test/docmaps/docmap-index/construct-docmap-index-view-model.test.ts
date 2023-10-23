@@ -41,8 +41,41 @@ describe('construct-docmap-index-view-model', () => {
       it.todo('returns a docmap for every combination of group and evaluated article');
     });
 
-    describe('when a particular publisher account ID is requested', () => {
-      it.todo('only returns docmaps by the corresponding group');
+    describe.skip('when a particular publisher account ID is requested', () => {
+      const articleId = arbitraryArticleId();
+      const groupId1 = arbitrarySupportedGroupId();
+      const groupId2 = arbitrarySupportedGroupId();
+      let docmapArticleIds: ReadonlyArray<ArticleId>;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId: groupId1,
+        });
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId: groupId2,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId,
+          groupId: groupId1,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: groupId2,
+        });
+        docmapArticleIds = await pipe(
+          {},
+          constructDocmapIndexViewModel(framework.dependenciesForViews),
+          TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
+          T.map(RA.map((docmap) => docmap.articleId)),
+        )();
+      });
+
+      it('only returns docmaps by the corresponding group', () => {
+        expect(docmapArticleIds).toStrictEqual([articleId]);
+      });
     });
 
     describe('when only docmaps updated after a certain date are requested', () => {
