@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
 import * as GID from '../../../src/types/group-id';
-import { Ports } from '../../../src/docmaps/docmap-index/docmap-index';
+import { Dependencies } from '../../../src/docmaps/docmap-index/docmap-index';
 import { TestFramework, createTestFramework } from '../../framework';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -14,7 +14,7 @@ describe('docmap-index', () => {
     error?: string,
   };
   let framework: TestFramework;
-  let defaultAdapters: Ports;
+  let defaultAdapters: Dependencies;
 
   beforeEach(async () => {
     framework = createTestFramework();

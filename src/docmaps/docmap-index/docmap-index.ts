@@ -6,12 +6,12 @@ import { StatusCodes } from 'http-status-codes';
 import * as E from 'fp-ts/Either';
 import * as ER from './error-response';
 import { filterByParams } from './filter-by-params';
-import { identifyAllPossibleIndexEntries, Ports as IdentifyAllPossibleIndexEntriesPorts } from './identify-all-possible-index-entries';
-import { Ports as DocmapPorts, DocmapViewModel, constructDocmapViewModel } from '../docmap/construct-docmap-view-model';
+import { identifyAllPossibleIndexEntries, Ports as IdentifyAllPossibleIndexEntriesDependencies } from './identify-all-possible-index-entries';
+import { Ports as DocmapDependencies, DocmapViewModel, constructDocmapViewModel } from '../docmap/construct-docmap-view-model';
 import { renderDocmap } from '../docmap/render-docmap';
 import { supportedGroups } from '../supported-groups';
 
-export type Ports = DocmapPorts & IdentifyAllPossibleIndexEntriesPorts;
+export type Dependencies = DocmapDependencies & IdentifyAllPossibleIndexEntriesDependencies;
 
 type DocmapIndexBody = {
   articles?: ReadonlyArray<unknown>,
@@ -20,28 +20,28 @@ type DocmapIndexBody = {
 
 export type DocmapIndexViewModel = ReadonlyArray<DocmapViewModel>;
 
-type ConstructDocmapIndexViewModel = (adapters: Ports)
+type ConstructDocmapIndexViewModel = (dependencies: Dependencies)
 => (query: Record<string, unknown>)
 => TE.TaskEither<ER.ErrorResponse, DocmapIndexViewModel>;
 
-export const constructDocmapIndexViewModel: ConstructDocmapIndexViewModel = (adapters) => (query) => pipe(
-  identifyAllPossibleIndexEntries(supportedGroups, adapters),
+export const constructDocmapIndexViewModel: ConstructDocmapIndexViewModel = (dependencies) => (query) => pipe(
+  identifyAllPossibleIndexEntries(supportedGroups, dependencies),
   E.chain(filterByParams(query)),
   TE.fromEither,
   TE.chainW(flow(
-    TE.traverseArray(constructDocmapViewModel(adapters)),
+    TE.traverseArray(constructDocmapViewModel(dependencies)),
     TE.mapLeft(() => ER.internalServerError),
   )),
 );
 
-type DocmapIndex = (adapters: Ports) => (query: Record<string, unknown>) => T.Task<{
+type DocmapIndex = (dependencies: Dependencies) => (query: Record<string, unknown>) => T.Task<{
   body: DocmapIndexBody,
   status: StatusCodes,
 }>;
 
-export const docmapIndex: DocmapIndex = (adapters) => (query) => pipe(
+export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
   query,
-  constructDocmapIndexViewModel(adapters),
+  constructDocmapIndexViewModel(dependencies),
   TE.map(RA.map(renderDocmap)),
   TE.map((docmaps) => ({
     body: { articles: docmaps },
