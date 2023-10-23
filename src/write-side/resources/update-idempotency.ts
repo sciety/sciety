@@ -22,3 +22,8 @@ export const onlyKeepUpdatedFields: OnlyKeepUpdatedFields = (command) => (state)
   }
   return removeUndefined(result);
 };
+
+type ChangedFields = <S extends Record<string, unknown>, C extends Partial<S>>(command: C) => (state: S) => S;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const changedFields: ChangedFields = (command) => (state) => state;
