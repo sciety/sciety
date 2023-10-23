@@ -78,8 +78,10 @@ describe('construct-docmap-index-view-model', () => {
         )();
       });
 
-      it.skip('returns a docmap for every evaluated article', () => {
-        expect(docmapArticleIds).toStrictEqual([articleId1, articleId2]);
+      it('returns a docmap for every evaluated article', () => {
+        expect(docmapArticleIds).toHaveLength(2);
+        expect(docmapArticleIds).toContain(articleId1);
+        expect(docmapArticleIds).toContain(articleId2);
       });
     });
   });
