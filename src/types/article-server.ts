@@ -38,6 +38,12 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
     versionsSupported: false,
     domain: 'osf.io',
   },
+  microbiologyresearch: {
+    name: 'Microbiology Research',
+    avatarUrl: '/static/images/osf.png',
+    versionsSupported: false,
+    domain: 'www.microbiologyresearch.org',
+  },
 };
 
 export const articleServerCodec = t.union(
@@ -47,6 +53,7 @@ export const articleServerCodec = t.union(
     t.literal('researchsquare'),
     t.literal('scielopreprints'),
     t.literal('osf'),
+    t.literal('microbiologyresearch'),
   ],
 );
 
@@ -54,7 +61,8 @@ export type ArticleServer = 'biorxiv'
 | 'medrxiv'
 | 'researchsquare'
 | 'scielopreprints'
-| 'osf';
+| 'osf'
+| 'microbiologyresearch';
 
 export const isSupportedArticle = (articleId: string): boolean => (
   !!articleId.match(/^10\.1101\/[0-9]{1,}/)
