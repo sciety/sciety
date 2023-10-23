@@ -1,30 +1,22 @@
 describe('construct-docmap-index-view-model', () => {
-  describe('docmap-index', () => {
-    describe('when all ports work', () => {
-      describe('and there are no docmaps', () => {
-        it.todo('return an empty list in the articles field');
+  describe('when there are no docmaps', () => {
+    it.todo('returns an empty list');
+  });
 
-        it.todo('return a 200 status code');
-      });
-
-      describe('when there are docmaps', () => {
-        it.todo('return them as a list in the articles field');
-
-        it.todo('return a 200 status code');
-      });
+  describe('when one of the docmaps requires a third-party query to construct', () => {
+    describe('when the third-party query succeeds', () => {
+      it.todo('returns the docmap as part of the index');
     });
 
-    describe('when any docmap fails to generate', () => {
-      it.todo('returns a body containing an error object');
-
-      it.todo('returns a 500 status code');
+    describe('when the third-party query fails', () => {
+      it.todo('fails to produce an index');
     });
+  });
 
-    describe('when the query parameters are invalid', () => {
-      it.todo('returns a body containing an error object');
+  describe('when the query parameters are invalid', () => {
+    it.todo('returns a body containing an error object');
 
-      it.todo('returns a 400 status code');
-    });
+    it.todo('returns a 400 status code');
   });
 
   describe('filter-by-params', () => {
