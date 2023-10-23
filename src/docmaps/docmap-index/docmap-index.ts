@@ -18,9 +18,9 @@ type DocmapIndexBody = {
   error?: string,
 };
 
-type DocmapIndexViewModel = ReadonlyArray<DocmapViewModel>;
+export type DocmapIndexViewModel = ReadonlyArray<DocmapViewModel>;
 
-export const constructDocmapIndexViewModel = (): DocmapIndexViewModel => [];
+export const constructDocmapIndexViewModel = (): TE.TaskEither<ER.ErrorResponse, DocmapIndexViewModel> => TE.right([]);
 
 type DocmapIndex = (adapters: Ports) => (query: Record<string, unknown>) => T.Task<{
   body: DocmapIndexBody,
@@ -35,6 +35,7 @@ export const docmapIndex: DocmapIndex = (adapters) => (query) => pipe(
     TE.traverseArray(constructDocmapViewModel(adapters)),
     TE.mapLeft(() => ER.internalServerError),
   )),
+  (foo) => foo,
   TE.map(RA.map(renderDocmap)),
   TE.map((docmaps) => ({
     body: { articles: docmaps },

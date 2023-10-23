@@ -1,8 +1,18 @@
-import { constructDocmapIndexViewModel } from '../../../src/docmaps/docmap-index/docmap-index';
+import { pipe } from 'fp-ts/function';
+import * as TE from 'fp-ts/TaskEither';
+import { DocmapIndexViewModel, constructDocmapIndexViewModel } from '../../../src/docmaps/docmap-index/docmap-index';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('construct-docmap-index-view-model', () => {
   describe('when there are no docmaps', () => {
-    const index = constructDocmapIndexViewModel();
+    let index: DocmapIndexViewModel;
+
+    beforeEach(async () => {
+      index = await pipe(
+        constructDocmapIndexViewModel(),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
     it('returns an empty list', () => {
       expect(index).toStrictEqual([]);
