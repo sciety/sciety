@@ -10,11 +10,12 @@ describe('update-idempotency', () => {
     });
   });
 
-  describe.skip('changedFields', () => {
+  describe('changedFields', () => {
     it.each([
       [{}, {}, {}],
       [{ a: 1 }, { a: 1 }, { a: undefined }],
       [{ a: ['1'] }, { a: ['1'] }, { a: undefined }],
+      [{ a: ['2'] }, { a: ['1'] }, { a: ['2'] }],
       [{ a: 1, b: 2 }, { a: 1, b: 1 }, { a: undefined, b: 2 }],
       [{ a: undefined, b: 2 }, { a: 1, b: 1 }, { a: undefined, b: 2 }],
       [{ a: undefined, b: 2 }, { a: undefined, b: 1 }, { a: undefined, b: 2 }],
