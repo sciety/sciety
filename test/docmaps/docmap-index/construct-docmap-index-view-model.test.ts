@@ -1,8 +1,16 @@
 import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { DocmapIndexViewModel, constructDocmapIndexViewModel } from '../../../src/docmaps/docmap-index/docmap-index';
 import { TestFramework, createTestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { supportedGroups } from '../../../src/docmaps/supported-groups';
+
+const arbitrarySupportedGroupId = () => supportedGroups[0];
 
 describe('construct-docmap-index-view-model', () => {
   let framework: TestFramework;
@@ -40,8 +48,34 @@ describe('construct-docmap-index-view-model', () => {
       it.todo('only returns docmaps whose updated property is after the specified date');
     });
 
-    describe('when a supported group has evaluated multiple articles', () => {
-      it.todo('returns a docmap for every evaluated article');
+    describe.skip('when a supported group has evaluated multiple articles', () => {
+      const articleId1 = arbitraryArticleId();
+      const articleId2 = arbitraryArticleId();
+      const groupId = arbitrarySupportedGroupId();
+      let docmapArticleIds: ReadonlyArray<ArticleId>;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId1,
+          groupId,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId2,
+          groupId,
+        });
+        docmapArticleIds = await pipe(
+          {},
+          constructDocmapIndexViewModel(framework.dependenciesForViews),
+          TE.getOrElse(shouldNotBeCalled),
+          T.map(RA.map((docmap) => docmap.articleId)),
+        )();
+      });
+
+      it('returns a docmap for every evaluated article', () => {
+        expect(docmapArticleIds).toStrictEqual([articleId1, articleId2]);
+      });
     });
   });
 
