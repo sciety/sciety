@@ -68,7 +68,7 @@ describe('construct-docmap-index-view-model', () => {
         docmapArticleIds = await pipe(
           {},
           constructDocmapIndexViewModel(framework.dependenciesForViews),
-          TE.getOrElse(shouldNotBeCalled),
+          TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
           T.map(RA.map((docmap) => docmap.articleId)),
         )();
       });
