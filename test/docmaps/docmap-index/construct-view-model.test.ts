@@ -4,7 +4,6 @@ import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { TestFramework, createTestFramework } from '../../framework';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { ArticleId } from '../../../src/types/article-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -14,7 +13,6 @@ import { Params } from '../../../src/docmaps/docmap-index/params';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryString } from '../../helpers';
-import { DocmapIndexViewModel } from '../../../src/docmaps/docmap-index/view-model';
 import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model';
 
 describe('construct-view-model', () => {
@@ -23,30 +21,30 @@ describe('construct-view-model', () => {
     publisheraccount: O.none,
   };
   let framework: TestFramework;
+  let docmapArticleIds: ReadonlyArray<ArticleId>;
+
+  const getDocmapsArticleIds = async (params: Params) => pipe(
+    params,
+    constructViewModel(framework.dependenciesForViews),
+    TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
+    T.map(RA.map((docmap) => docmap.articleId)),
+  )();
 
   beforeEach(() => {
     framework = createTestFramework();
   });
 
   describe('when there are no docmaps', () => {
-    let index: DocmapIndexViewModel;
-
     beforeEach(async () => {
-      index = await pipe(
-        defaultParams,
-        constructViewModel(framework.dependenciesForViews),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      docmapArticleIds = await getDocmapsArticleIds(defaultParams);
     });
 
     it('returns an empty list', () => {
-      expect(index).toStrictEqual([]);
+      expect(docmapArticleIds).toStrictEqual([]);
     });
   });
 
   describe('when only supported groups are involved', () => {
-    let docmapArticleIds: ReadonlyArray<ArticleId>;
-
     describe('when a single group has evaluated multiple articles', () => {
       const articleId1 = arbitraryArticleId();
       const articleId2 = arbitraryArticleId();
@@ -96,8 +94,6 @@ describe('construct-view-model', () => {
   });
 
   describe('filtering', () => {
-    let docmapArticleIds: ReadonlyArray<ArticleId>;
-
     describe('when the whole index is requested', () => {
       const articleId1 = arbitraryArticleId();
       const articleId2 = arbitraryArticleId();
