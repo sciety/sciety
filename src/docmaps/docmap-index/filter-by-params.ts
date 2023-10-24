@@ -39,18 +39,23 @@ const filterByUpdatedAfter = (
   ),
 );
 
-export const filterByParams: FilterByParams = (query) => (entries) => pipe(
+const decodeParams = (query: unknown) => pipe(
   query,
   paramsCodec.decode,
-  E.bimap(
+  E.mapLeft(
     (errors) => pipe(
       PR.failure(errors).join('\n'),
       ER.badRequest,
     ),
-    ({ publisheraccount, updatedAfter }) => pipe(
-      entries,
-      filterByUpdatedAfter(updatedAfter),
-      filterByPublisherAccount(publisheraccount),
-    ),
   ),
+);
+
+export const filterByParams: FilterByParams = (query) => (entries) => pipe(
+  query,
+  decodeParams,
+  E.map(({ publisheraccount, updatedAfter }) => pipe(
+    entries,
+    filterByUpdatedAfter(updatedAfter),
+    filterByPublisherAccount(publisheraccount),
+  )),
 );
