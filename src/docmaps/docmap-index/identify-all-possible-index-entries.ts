@@ -47,16 +47,16 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
 ) => pipe(
   supportedGroups,
   RA.chain(adapters.getEvaluationsByGroup),
-  E.traverseArray(({ articleId, groupId, recordedAt }) => pipe(
-    adapters.getGroup(groupId),
+  E.traverseArray((evaluation) => pipe(
+    adapters.getGroup(evaluation.groupId),
     E.fromOption(() => {
-      adapters.logger('error', 'docmap-index: a recorded evaluation refers to a non-existent group', { articleId, groupId, recordedAt });
+      adapters.logger('error', 'docmap-index: a recorded evaluation refers to a non-existent group', { evaluation });
       return DE.notFound;
     }),
     E.map((group) => ({
-      articleId,
-      groupId,
-      updated: recordedAt,
+      articleId: evaluation.articleId,
+      groupId: evaluation.groupId,
+      updated: evaluation.recordedAt,
       publisherAccountId: publisherAccountId(group),
     })),
   )),
