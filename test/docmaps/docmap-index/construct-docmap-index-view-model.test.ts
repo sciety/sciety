@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { DocmapIndexViewModel, constructDocmapIndexViewModel } from '../../../src/docmaps/docmap-index/docmap-index';
+import { constructDocmapIndexViewModel } from '../../../src/docmaps/docmap-index/docmap-index';
 import { TestFramework, createTestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { ArticleId } from '../../../src/types/article-id';
@@ -15,6 +15,7 @@ import { Params } from '../../../src/docmaps/docmap-index/params';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryString } from '../../helpers';
+import { DocmapIndexViewModel } from '../../../src/docmaps/docmap-index/view-model';
 
 describe('construct-docmap-index-view-model', () => {
   const defaultParams: Params = {
