@@ -65,12 +65,7 @@ describe('construct-view-model', () => {
           articleId: articleId2,
           groupId,
         });
-        docmapArticleIds = await pipe(
-          defaultParams,
-          constructViewModel(framework.dependenciesForViews),
-          TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
-          T.map(RA.map((docmap) => docmap.articleId)),
-        )();
+        docmapArticleIds = await getDocmapsArticleIds(defaultParams);
       });
 
       it('returns a docmap for every evaluated article', () => {
@@ -119,12 +114,7 @@ describe('construct-view-model', () => {
           articleId: articleId2,
           groupId: groupId2,
         });
-        docmapArticleIds = await pipe(
-          defaultParams,
-          constructViewModel(framework.dependenciesForViews),
-          TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
-          T.map(RA.map((docmap) => docmap.articleId)),
-        )();
+        docmapArticleIds = await getDocmapsArticleIds(defaultParams);
       });
 
       it('returns all docmaps', () => {
@@ -158,15 +148,10 @@ describe('construct-view-model', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: groupId2,
         });
-        docmapArticleIds = await pipe(
-          {
-            ...defaultParams,
-            publisheraccount: O.some(publisherAccountId(addGroup1Command)),
-          },
-          constructViewModel(framework.dependenciesForViews),
-          TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
-          T.map(RA.map((docmap) => docmap.articleId)),
-        )();
+        docmapArticleIds = await getDocmapsArticleIds({
+          ...defaultParams,
+          publisheraccount: O.some(publisherAccountId(addGroup1Command)),
+        });
       });
 
       it('only returns docmaps by the corresponding group', () => {
@@ -195,15 +180,10 @@ describe('construct-view-model', () => {
             issuedAt: new Date('2000-01-01'),
             groupId,
           });
-          docmapArticleIds = await pipe(
-            {
-              ...defaultParams,
-              updatedAfter: O.some(new Date('1990-01-01')),
-            },
-            constructViewModel(framework.dependenciesForViews),
-            TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
-            T.map(RA.map((docmap) => docmap.articleId)),
-          )();
+          docmapArticleIds = await getDocmapsArticleIds({
+            ...defaultParams,
+            updatedAfter: O.some(new Date('1990-01-01')),
+          });
         });
 
         it('returns the docmap whose updated property is after the specified date', () => {
@@ -233,15 +213,10 @@ describe('construct-view-model', () => {
             authors: [arbitraryString()],
             issuedAt: new Date('2000-01-01'),
           });
-          docmapArticleIds = await pipe(
-            {
-              ...defaultParams,
-              updatedAfter: O.some(new Date('1990-01-01')),
-            },
-            constructViewModel(framework.dependenciesForViews),
-            TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
-            T.map(RA.map((docmap) => docmap.articleId)),
-          )();
+          docmapArticleIds = await getDocmapsArticleIds({
+            ...defaultParams,
+            updatedAfter: O.some(new Date('1990-01-01')),
+          });
         });
 
         it('returns that docmap', () => {
