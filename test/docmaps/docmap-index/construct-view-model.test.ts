@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { constructDocmapIndexViewModel } from '../../../src/docmaps/docmap-index/docmap-index';
 import { TestFramework, createTestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { ArticleId } from '../../../src/types/article-id';
@@ -16,8 +15,9 @@ import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-accoun
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryString } from '../../helpers';
 import { DocmapIndexViewModel } from '../../../src/docmaps/docmap-index/view-model';
+import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model';
 
-describe('construct-docmap-index-view-model', () => {
+describe('construct-view-model', () => {
   const defaultParams: Params = {
     updatedAfter: O.none,
     publisheraccount: O.none,
@@ -34,7 +34,7 @@ describe('construct-docmap-index-view-model', () => {
     beforeEach(async () => {
       index = await pipe(
         defaultParams,
-        constructDocmapIndexViewModel(framework.dependenciesForViews),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -69,7 +69,7 @@ describe('construct-docmap-index-view-model', () => {
         });
         docmapArticleIds = await pipe(
           defaultParams,
-          constructDocmapIndexViewModel(framework.dependenciesForViews),
+          constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
           T.map(RA.map((docmap) => docmap.articleId)),
         )();
@@ -125,7 +125,7 @@ describe('construct-docmap-index-view-model', () => {
         });
         docmapArticleIds = await pipe(
           defaultParams,
-          constructDocmapIndexViewModel(framework.dependenciesForViews),
+          constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
           T.map(RA.map((docmap) => docmap.articleId)),
         )();
@@ -167,7 +167,7 @@ describe('construct-docmap-index-view-model', () => {
             ...defaultParams,
             publisheraccount: O.some(publisherAccountId(addGroup1Command)),
           },
-          constructDocmapIndexViewModel(framework.dependenciesForViews),
+          constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
           T.map(RA.map((docmap) => docmap.articleId)),
         )();
@@ -204,7 +204,7 @@ describe('construct-docmap-index-view-model', () => {
               ...defaultParams,
               updatedAfter: O.some(new Date('1990-01-01')),
             },
-            constructDocmapIndexViewModel(framework.dependenciesForViews),
+            constructViewModel(framework.dependenciesForViews),
             TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
             T.map(RA.map((docmap) => docmap.articleId)),
           )();
@@ -242,7 +242,7 @@ describe('construct-docmap-index-view-model', () => {
               ...defaultParams,
               updatedAfter: O.some(new Date('1990-01-01')),
             },
-            constructDocmapIndexViewModel(framework.dependenciesForViews),
+            constructViewModel(framework.dependenciesForViews),
             TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
             T.map(RA.map((docmap) => docmap.articleId)),
           )();
