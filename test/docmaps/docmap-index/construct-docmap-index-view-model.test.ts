@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -10,9 +11,13 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { supportedGroups } from '../../../src/docmaps/supported-groups';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
+import { Params } from '../../../src/docmaps/docmap-index/params';
 
 describe('construct-docmap-index-view-model', () => {
-  const defaultParams: Record<string, unknown> = {};
+  const defaultParams: Params = {
+    updatedAfter: O.none,
+    publisheraccount: O.none,
+  };
   let framework: TestFramework;
 
   beforeEach(() => {

@@ -33,7 +33,7 @@ const filterByUpdatedAfter = (
   ),
 );
 
-const decodeParams = (query: unknown): E.Either<ER.ErrorResponse, Params> => pipe(
+export const decodeParams = (query: unknown): E.Either<ER.ErrorResponse, Params> => pipe(
   query,
   paramsCodec.decode,
   E.mapLeft(
@@ -45,17 +45,14 @@ const decodeParams = (query: unknown): E.Either<ER.ErrorResponse, Params> => pip
 );
 
 type FilterByParams = (
-  input: Record<string, unknown>
+  params: Params,
 ) => (
   entries: ReadonlyArray<DocmapIndexEntryModel>
 ) => E.Either<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
 
-export const filterByParams: FilterByParams = (input) => (entries) => pipe(
-  input,
-  decodeParams,
-  E.map((params) => pipe(
-    entries,
-    filterByUpdatedAfter(params.updatedAfter),
-    filterByPublisherAccount(params.publisheraccount),
-  )),
+export const filterByParams: FilterByParams = (params) => (entries) => pipe(
+  entries,
+  filterByUpdatedAfter(params.updatedAfter),
+  filterByPublisherAccount(params.publisheraccount),
+  E.right,
 );

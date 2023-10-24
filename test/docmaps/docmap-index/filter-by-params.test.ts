@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-params';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
@@ -27,7 +28,10 @@ describe('filter-by-params', () => {
 
     const result = pipe(
       input,
-      filterByParams({}),
+      filterByParams({
+        publisheraccount: O.none,
+        updatedAfter: O.none,
+      }),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -56,7 +60,8 @@ describe('filter-by-params', () => {
     const result = pipe(
       allIndexEntries,
       filterByParams({
-        publisheraccount: publisherAccountId(requestedGroup),
+        publisheraccount: O.some(publisherAccountId(requestedGroup)),
+        updatedAfter: O.none,
       }),
       E.getOrElseW(shouldNotBeCalled),
     );
@@ -91,7 +96,7 @@ describe('filter-by-params', () => {
       ];
       const result = pipe(
         input,
-        filterByParams({ updatedAfter: specifiedDate.toISOString() }),
+        filterByParams({ updatedAfter: O.some(specifiedDate), publisheraccount: O.none }),
         E.getOrElseW(shouldNotBeCalled),
       );
 
@@ -117,7 +122,7 @@ describe('filter-by-params', () => {
       ];
       const result = pipe(
         input,
-        filterByParams({ updatedAfter: specifiedDate.toISOString() }),
+        filterByParams({ updatedAfter: O.some(specifiedDate), publisheraccount: O.none }),
         E.getOrElseW(shouldNotBeCalled),
       );
 

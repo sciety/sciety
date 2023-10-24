@@ -5,11 +5,12 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as E from 'fp-ts/Either';
 import * as ER from './error-response';
-import { filterByParams } from './filter-by-params';
+import { decodeParams, filterByParams } from './filter-by-params';
 import { identifyAllPossibleIndexEntries, Ports as IdentifyAllPossibleIndexEntriesDependencies } from './identify-all-possible-index-entries';
 import { Ports as DocmapDependencies, DocmapViewModel, constructDocmapViewModel } from '../docmap/construct-docmap-view-model';
 import { renderDocmap } from '../docmap/render-docmap';
 import { supportedGroups } from '../supported-groups';
+import { Params } from './params';
 
 export type Dependencies = DocmapDependencies & IdentifyAllPossibleIndexEntriesDependencies;
 
@@ -21,12 +22,12 @@ type DocmapIndexBody = {
 export type DocmapIndexViewModel = ReadonlyArray<DocmapViewModel>;
 
 type ConstructDocmapIndexViewModel = (dependencies: Dependencies)
-=> (query: Record<string, unknown>)
+=> (params: Params)
 => TE.TaskEither<ER.ErrorResponse, DocmapIndexViewModel>;
 
-export const constructDocmapIndexViewModel: ConstructDocmapIndexViewModel = (dependencies) => (query) => pipe(
+export const constructDocmapIndexViewModel: ConstructDocmapIndexViewModel = (dependencies) => (params) => pipe(
   identifyAllPossibleIndexEntries(supportedGroups, dependencies),
-  E.chain(filterByParams(query)),
+  E.chain(filterByParams(params)),
   TE.fromEither,
   TE.chainW(flow(
     TE.traverseArray(constructDocmapViewModel(dependencies)),
@@ -41,7 +42,9 @@ type DocmapIndex = (dependencies: Dependencies) => (query: Record<string, unknow
 
 export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
   query,
-  constructDocmapIndexViewModel(dependencies),
+  decodeParams,
+  TE.fromEither,
+  TE.chain(constructDocmapIndexViewModel(dependencies)),
   TE.map(RA.map(renderDocmap)),
   TE.map((docmaps) => ({
     body: { articles: docmaps },
