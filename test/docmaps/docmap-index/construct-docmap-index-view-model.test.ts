@@ -13,6 +13,8 @@ import { supportedGroups } from '../../../src/docmaps/supported-groups';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { Params } from '../../../src/docmaps/docmap-index/params';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { arbitraryString } from '../../helpers';
 
 describe('construct-docmap-index-view-model', () => {
   const defaultParams: Params = {
@@ -213,7 +215,41 @@ describe('construct-docmap-index-view-model', () => {
       });
 
       describe('when one evaluation has been recorded before that date and then updated after that date', () => {
-        it.todo('returns that docmap');
+        const relevantArticleId = arbitraryArticleId();
+        const groupId = supportedGroups[0];
+        const evaluationLocator = arbitraryEvaluationLocator();
+
+        beforeEach(async () => {
+          await framework.commandHelpers.addGroup({
+            ...arbitraryAddGroupCommand(),
+            groupId,
+          });
+          await framework.commandHelpers.recordEvaluationPublication({
+            ...arbitraryRecordEvaluationPublicationCommand(),
+            articleId: relevantArticleId,
+            evaluationLocator,
+            issuedAt: new Date('1980-01-01'),
+            groupId,
+          });
+          await framework.commandHelpers.updateEvaluation({
+            evaluationLocator,
+            authors: [arbitraryString()],
+            issuedAt: new Date('2000-01-01'),
+          });
+          docmapArticleIds = await pipe(
+            {
+              ...defaultParams,
+              updatedAfter: O.some(new Date('1990-01-01')),
+            },
+            constructDocmapIndexViewModel(framework.dependenciesForViews),
+            TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
+            T.map(RA.map((docmap) => docmap.articleId)),
+          )();
+        });
+
+        it.failing('returns that docmap', () => {
+          expect(docmapArticleIds).toStrictEqual([relevantArticleId]);
+        });
       });
     });
   });
