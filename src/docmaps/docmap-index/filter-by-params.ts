@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import * as ER from './error-response';
 import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
-import { paramsCodec } from './params';
+import { Params, paramsCodec } from './params';
 
 const filterByPublisherAccount = (
   requestedPublisherAccountId: O.Option<string>,
@@ -33,7 +33,7 @@ const filterByUpdatedAfter = (
   ),
 );
 
-const decodeParams = (query: unknown) => pipe(
+const decodeParams = (query: unknown): E.Either<ER.ErrorResponse, Params> => pipe(
   query,
   paramsCodec.decode,
   E.mapLeft(

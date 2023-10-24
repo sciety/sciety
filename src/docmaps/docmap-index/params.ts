@@ -5,3 +5,5 @@ export const paramsCodec = t.type({
   updatedAfter: tt.optionFromNullable(tt.DateFromISOString),
   publisheraccount: tt.optionFromNullable(t.string),
 });
+
+export type Params = t.TypeOf<typeof paramsCodec>;
