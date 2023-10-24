@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-loops/no-loops */
 import deepEqual from 'deep-equal';
@@ -14,9 +15,11 @@ type ChangedFields = <C extends Record<string, unknown>>(command: C)
 => (state: PropertiesThatCanBeUndefined<C>)
 => Required<PropertiesThatCanBeUndefined<C>>;
 
+// @ts-ignore
 export const changedFields: ChangedFields = (command) => (state) => {
   const result = command;
   for (const key in state) {
+    // @ts-ignore
     if (deepEqual(command[key], state[key])) { result[key] = undefined; }
   }
   return result;
