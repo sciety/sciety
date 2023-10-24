@@ -2,22 +2,16 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import * as ER from './error-response';
 import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
+import { paramsCodec } from './params';
 
 type FilterByParams = (
   query: Record<string, unknown>
 ) => (
   entries: ReadonlyArray<DocmapIndexEntryModel>
 ) => E.Either<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
-
-const paramsCodec = t.type({
-  updatedAfter: tt.optionFromNullable(tt.DateFromISOString),
-  publisheraccount: tt.optionFromNullable(t.string),
-});
 
 const filterByPublisherAccount = (
   requestedPublisherAccountId: O.Option<string>,
