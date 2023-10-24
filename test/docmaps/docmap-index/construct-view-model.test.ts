@@ -225,14 +225,4 @@ describe('construct-view-model', () => {
       });
     });
   });
-
-  describe('when one of the docmaps requires a third-party query to construct', () => {
-    describe('when the third-party query succeeds', () => {
-      it.todo('returns the docmap as part of the index');
-    });
-
-    describe('when the third-party query fails', () => {
-      it.todo('fails to produce an index');
-    });
-  });
 });
