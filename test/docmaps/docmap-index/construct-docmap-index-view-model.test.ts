@@ -176,7 +176,41 @@ describe('construct-docmap-index-view-model', () => {
     });
 
     describe('when only docmaps updated after a certain date are requested', () => {
-      it.todo('only returns docmaps whose updated property is after the specified date');
+      describe('when two evaluations have been recorded but not updated', () => {
+        const relevantArticleId = arbitraryArticleId();
+        const groupId = supportedGroups[0];
+
+        beforeEach(async () => {
+          await framework.commandHelpers.addGroup({
+            ...arbitraryAddGroupCommand(),
+            groupId,
+          });
+          await framework.commandHelpers.recordEvaluationPublication({
+            ...arbitraryRecordEvaluationPublicationCommand(),
+            issuedAt: new Date('1980-01-01'),
+            groupId,
+          });
+          await framework.commandHelpers.recordEvaluationPublication({
+            ...arbitraryRecordEvaluationPublicationCommand(),
+            articleId: relevantArticleId,
+            issuedAt: new Date('2000-01-01'),
+            groupId,
+          });
+          docmapArticleIds = await pipe(
+            {
+              ...defaultParams,
+              updatedAfter: O.some(new Date('1990-01-01')),
+            },
+            constructDocmapIndexViewModel(framework.dependenciesForViews),
+            TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
+            T.map(RA.map((docmap) => docmap.articleId)),
+          )();
+        });
+
+        it('only returns docmap whose updated property is after the specified date', () => {
+          expect(docmapArticleIds).toStrictEqual([relevantArticleId]);
+        });
+      });
     });
   });
 
