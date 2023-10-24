@@ -77,7 +77,35 @@ describe('construct-view-model', () => {
     });
 
     describe('when multiple groups have evaluated a single article', () => {
-      it.todo('returns a docmap for every group');
+      const groupId1 = supportedGroups[0];
+      const groupId2 = supportedGroups[1];
+      const articleId = arbitraryArticleId();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId: groupId1,
+        });
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId: groupId2,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId,
+          groupId: groupId1,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId,
+          groupId: groupId2,
+        });
+        docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+      });
+
+      it('returns a docmap for every group', () => {
+        expect(docmapArticleIds).toStrictEqual([articleId, articleId]);
+      });
     });
 
     describe('when multiple groups have evaluated multiple articles', () => {
