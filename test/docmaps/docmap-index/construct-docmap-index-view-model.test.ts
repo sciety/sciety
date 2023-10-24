@@ -176,7 +176,7 @@ describe('construct-docmap-index-view-model', () => {
     });
 
     describe('when only docmaps updated after a certain date are requested', () => {
-      describe('when two evaluations have been recorded but not updated', () => {
+      describe('when one evaluation has been recorded before that date and another has been recorded after that date', () => {
         const relevantArticleId = arbitraryArticleId();
         const groupId = supportedGroups[0];
 
@@ -207,9 +207,13 @@ describe('construct-docmap-index-view-model', () => {
           )();
         });
 
-        it('only returns docmap whose updated property is after the specified date', () => {
+        it('returns the docmap whose updated property is after the specified date', () => {
           expect(docmapArticleIds).toStrictEqual([relevantArticleId]);
         });
+      });
+
+      describe('when one evaluation has been recorded before that date and then updated after that date', () => {
+        it.todo('returns that docmap');
       });
     });
   });
