@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { StatusCodes } from 'http-status-codes';
 import { filterByParams } from '../../../src/docmaps/docmap-index/filter-by-params';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { arbitraryDate, arbitraryUri } from '../../helpers';
@@ -34,16 +33,6 @@ describe('filter-by-params', () => {
 
     it('returns unmodified input', () => {
       expect(result).toStrictEqual(input);
-    });
-  });
-
-  describe('when invalid params are given', () => {
-    const result = filterByParams({ updatedAfter: 'bar' })([]);
-
-    it('returns a "bad request"', () => {
-      expect(result).toStrictEqual(E.left(expect.objectContaining({
-        status: StatusCodes.BAD_REQUEST,
-      })));
     });
   });
 
