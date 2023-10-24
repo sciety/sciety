@@ -14,6 +14,7 @@ import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-accoun
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryString } from '../../helpers';
 import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('construct-view-model', () => {
   const defaultParams: Params = {
@@ -85,7 +86,23 @@ describe('construct-view-model', () => {
   });
 
   describe('when an unsupported group is involved', () => {
-    it.todo('excludes articles evaluated by the unsupported group');
+    const groupId = arbitraryGroupId();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup({
+        ...arbitraryAddGroupCommand(),
+        groupId,
+      });
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        groupId,
+      });
+      docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+    });
+
+    it('excludes articles evaluated by the unsupported group', () => {
+      expect(docmapArticleIds).toStrictEqual([]);
+    });
   });
 
   describe('filtering', () => {
