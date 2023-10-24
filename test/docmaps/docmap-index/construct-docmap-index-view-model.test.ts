@@ -11,8 +11,6 @@ import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/co
 import { supportedGroups } from '../../../src/docmaps/supported-groups';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
-const arbitrarySupportedGroupId = () => supportedGroups[0];
-
 describe('construct-docmap-index-view-model', () => {
   let framework: TestFramework;
 
@@ -43,8 +41,8 @@ describe('construct-docmap-index-view-model', () => {
 
     describe.skip('when a particular publisher account ID is requested', () => {
       const articleId = arbitraryArticleId();
-      const groupId1 = arbitrarySupportedGroupId();
-      const groupId2 = arbitrarySupportedGroupId();
+      const groupId1 = supportedGroups[0];
+      const groupId2 = supportedGroups[1];
       let docmapArticleIds: ReadonlyArray<ArticleId>;
 
       beforeEach(async () => {
@@ -85,7 +83,7 @@ describe('construct-docmap-index-view-model', () => {
     describe('when a supported group has evaluated multiple articles', () => {
       const articleId1 = arbitraryArticleId();
       const articleId2 = arbitraryArticleId();
-      const groupId = arbitrarySupportedGroupId();
+      const groupId = supportedGroups[0];
       let docmapArticleIds: ReadonlyArray<ArticleId>;
 
       beforeEach(async () => {
