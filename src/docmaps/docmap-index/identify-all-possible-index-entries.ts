@@ -56,7 +56,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
     E.map((group) => ({
       articleId: evaluation.articleId,
       groupId: evaluation.groupId,
-      updated: evaluation.recordedAt,
+      updated: evaluation.updatedAt,
       publisherAccountId: publisherAccountId(group),
     })),
   )),

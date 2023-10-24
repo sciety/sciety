@@ -247,7 +247,7 @@ describe('construct-docmap-index-view-model', () => {
           )();
         });
 
-        it.failing('returns that docmap', () => {
+        it('returns that docmap', () => {
           expect(docmapArticleIds).toStrictEqual([relevantArticleId]);
         });
       });
