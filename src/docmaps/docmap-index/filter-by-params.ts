@@ -7,12 +7,6 @@ import * as ER from './error-response';
 import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
 import { paramsCodec } from './params';
 
-type FilterByParams = (
-  query: Record<string, unknown>
-) => (
-  entries: ReadonlyArray<DocmapIndexEntryModel>
-) => E.Either<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
-
 const filterByPublisherAccount = (
   requestedPublisherAccountId: O.Option<string>,
 ) => (indexEntries: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
@@ -50,12 +44,18 @@ const decodeParams = (query: unknown) => pipe(
   ),
 );
 
-export const filterByParams: FilterByParams = (query) => (entries) => pipe(
-  query,
+type FilterByParams = (
+  input: Record<string, unknown>
+) => (
+  entries: ReadonlyArray<DocmapIndexEntryModel>
+) => E.Either<ER.ErrorResponse, ReadonlyArray<DocmapIndexEntryModel>>;
+
+export const filterByParams: FilterByParams = (input) => (entries) => pipe(
+  input,
   decodeParams,
-  E.map(({ publisheraccount, updatedAfter }) => pipe(
+  E.map((params) => pipe(
     entries,
-    filterByUpdatedAfter(updatedAfter),
-    filterByPublisherAccount(publisheraccount),
+    filterByUpdatedAfter(params.updatedAfter),
+    filterByPublisherAccount(params.publisheraccount),
   )),
 );
