@@ -46,25 +46,27 @@ describe('construct-view-model', () => {
   });
 
   describe('when only supported groups are involved', () => {
+    const groupId1 = supportedGroups[0];
+    const groupId2 = supportedGroups[1];
+
     describe('when a single group has evaluated multiple articles', () => {
       const articleId1 = arbitraryArticleId();
       const articleId2 = arbitraryArticleId();
-      const groupId = supportedGroups[0];
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup({
           ...arbitraryAddGroupCommand(),
-          groupId,
+          groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           articleId: articleId1,
-          groupId,
+          groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           articleId: articleId2,
-          groupId,
+          groupId: groupId1,
         });
         docmapArticleIds = await getDocmapsArticleIds(defaultParams);
       });
@@ -77,8 +79,6 @@ describe('construct-view-model', () => {
     });
 
     describe('when multiple groups have evaluated a single article', () => {
-      const groupId1 = supportedGroups[0];
-      const groupId2 = supportedGroups[1];
       const articleId = arbitraryArticleId();
 
       beforeEach(async () => {
@@ -109,7 +109,41 @@ describe('construct-view-model', () => {
     });
 
     describe('when multiple groups have evaluated multiple articles', () => {
-      it.todo('returns a docmap for every combination of group and evaluated article');
+      const articleId1 = arbitraryArticleId();
+      const articleId2 = arbitraryArticleId();
+
+      beforeEach(async () => {
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId: groupId1,
+        });
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId: groupId2,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId1,
+          groupId: groupId1,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId1,
+          groupId: groupId2,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId2,
+          groupId: groupId2,
+        });
+        docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+      });
+
+      it('returns a docmap for every combination of group and evaluated article', () => {
+        expect(docmapArticleIds).toContain(articleId1);
+        expect(docmapArticleIds).toContain(articleId2);
+        expect(docmapArticleIds).toHaveLength(3);
+      });
     });
   });
 
