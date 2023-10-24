@@ -41,7 +41,58 @@ describe('construct-docmap-index-view-model', () => {
     });
   });
 
-  describe('when supported groups have evaluated some articles', () => {
+  describe('when only supported groups are involved', () => {
+    let docmapArticleIds: ReadonlyArray<ArticleId>;
+
+    describe('when a single group has evaluated multiple articles', () => {
+      const articleId1 = arbitraryArticleId();
+      const articleId2 = arbitraryArticleId();
+      const groupId = supportedGroups[0];
+
+      beforeEach(async () => {
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId1,
+          groupId,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId2,
+          groupId,
+        });
+        docmapArticleIds = await pipe(
+          defaultParams,
+          constructDocmapIndexViewModel(framework.dependenciesForViews),
+          TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
+          T.map(RA.map((docmap) => docmap.articleId)),
+        )();
+      });
+
+      it('returns a docmap for every evaluated article', () => {
+        expect(docmapArticleIds).toHaveLength(2);
+        expect(docmapArticleIds).toContain(articleId1);
+        expect(docmapArticleIds).toContain(articleId2);
+      });
+    });
+
+    describe('when multiple groups have evaluated a single article', () => {
+      it.todo('returns a docmap for every group');
+    });
+
+    describe('when multiple groups have evaluated multiple articles', () => {
+      it.todo('returns a docmap for every combination of group and evaluated article');
+    });
+  });
+
+  describe('when an unsupported group is involved', () => {
+    it.todo('excludes articles evaluated by the unsupported group');
+  });
+
+  describe('filtering', () => {
     let docmapArticleIds: ReadonlyArray<ArticleId>;
 
     describe('when the whole index is requested', () => {
@@ -77,7 +128,7 @@ describe('construct-docmap-index-view-model', () => {
         )();
       });
 
-      it('returns a docmap for every combination of group and evaluated article', () => {
+      it('returns all docmaps', () => {
         expect(docmapArticleIds).toHaveLength(2);
         expect(docmapArticleIds).toContain(articleId1);
         expect(docmapArticleIds).toContain(articleId2);
@@ -127,45 +178,6 @@ describe('construct-docmap-index-view-model', () => {
     describe('when only docmaps updated after a certain date are requested', () => {
       it.todo('only returns docmaps whose updated property is after the specified date');
     });
-
-    describe('when a supported group has evaluated multiple articles', () => {
-      const articleId1 = arbitraryArticleId();
-      const articleId2 = arbitraryArticleId();
-      const groupId = supportedGroups[0];
-
-      beforeEach(async () => {
-        await framework.commandHelpers.addGroup({
-          ...arbitraryAddGroupCommand(),
-          groupId,
-        });
-        await framework.commandHelpers.recordEvaluationPublication({
-          ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId1,
-          groupId,
-        });
-        await framework.commandHelpers.recordEvaluationPublication({
-          ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId2,
-          groupId,
-        });
-        docmapArticleIds = await pipe(
-          defaultParams,
-          constructDocmapIndexViewModel(framework.dependenciesForViews),
-          TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
-          T.map(RA.map((docmap) => docmap.articleId)),
-        )();
-      });
-
-      it('returns a docmap for every evaluated article', () => {
-        expect(docmapArticleIds).toHaveLength(2);
-        expect(docmapArticleIds).toContain(articleId1);
-        expect(docmapArticleIds).toContain(articleId2);
-      });
-    });
-  });
-
-  describe('when there is an evaluated event by an unsupported group', () => {
-    it.todo('excludes articles evaluated by the unsupported group');
   });
 
   describe('when one of the docmaps requires a third-party query to construct', () => {
