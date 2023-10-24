@@ -12,6 +12,7 @@ import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/co
 import { supportedGroups } from '../../../src/docmaps/supported-groups';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { Params } from '../../../src/docmaps/docmap-index/params';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 
 describe('construct-docmap-index-view-model', () => {
   const defaultParams: Params = {
@@ -45,17 +46,18 @@ describe('construct-docmap-index-view-model', () => {
       it.todo('returns a docmap for every combination of group and evaluated article');
     });
 
-    describe.skip('when a particular publisher account ID is requested', () => {
+    describe('when a particular publisher account ID is requested', () => {
       const articleId = arbitraryArticleId();
       const groupId1 = supportedGroups[0];
+      const addGroup1Command = {
+        ...arbitraryAddGroupCommand(),
+        groupId: groupId1,
+      };
       const groupId2 = supportedGroups[1];
       let docmapArticleIds: ReadonlyArray<ArticleId>;
 
       beforeEach(async () => {
-        await framework.commandHelpers.addGroup({
-          ...arbitraryAddGroupCommand(),
-          groupId: groupId1,
-        });
+        await framework.commandHelpers.addGroup(addGroup1Command);
         await framework.commandHelpers.addGroup({
           ...arbitraryAddGroupCommand(),
           groupId: groupId2,
@@ -70,7 +72,10 @@ describe('construct-docmap-index-view-model', () => {
           groupId: groupId2,
         });
         docmapArticleIds = await pipe(
-          defaultParams,
+          {
+            ...defaultParams,
+            publisheraccount: O.some(publisherAccountId(addGroup1Command)),
+          },
           constructDocmapIndexViewModel(framework.dependenciesForViews),
           TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
           T.map(RA.map((docmap) => docmap.articleId)),
