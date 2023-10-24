@@ -12,6 +12,7 @@ import { supportedGroups } from '../../../src/docmaps/supported-groups';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 
 describe('construct-docmap-index-view-model', () => {
+  const defaultParams: Record<string, unknown> = {};
   let framework: TestFramework;
 
   beforeEach(() => {
@@ -23,7 +24,7 @@ describe('construct-docmap-index-view-model', () => {
 
     beforeEach(async () => {
       index = await pipe(
-        {},
+        defaultParams,
         constructDocmapIndexViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -64,7 +65,7 @@ describe('construct-docmap-index-view-model', () => {
           groupId: groupId2,
         });
         docmapArticleIds = await pipe(
-          {},
+          defaultParams,
           constructDocmapIndexViewModel(framework.dependenciesForViews),
           TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
           T.map(RA.map((docmap) => docmap.articleId)),
@@ -102,7 +103,7 @@ describe('construct-docmap-index-view-model', () => {
           groupId,
         });
         docmapArticleIds = await pipe(
-          {},
+          defaultParams,
           constructDocmapIndexViewModel(framework.dependenciesForViews),
           TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
           T.map(RA.map((docmap) => docmap.articleId)),
