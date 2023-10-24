@@ -42,8 +42,46 @@ describe('construct-docmap-index-view-model', () => {
   });
 
   describe('when supported groups have evaluated some articles', () => {
+    let docmapArticleIds: ReadonlyArray<ArticleId>;
+
     describe('when the whole index is requested', () => {
-      it.todo('returns a docmap for every combination of group and evaluated article');
+      const articleId1 = arbitraryArticleId();
+      const articleId2 = arbitraryArticleId();
+      const groupId1 = supportedGroups[0];
+      const groupId2 = supportedGroups[1];
+
+      beforeEach(async () => {
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId: groupId1,
+        });
+        await framework.commandHelpers.addGroup({
+          ...arbitraryAddGroupCommand(),
+          groupId: groupId2,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId1,
+          groupId: groupId1,
+        });
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          articleId: articleId2,
+          groupId: groupId2,
+        });
+        docmapArticleIds = await pipe(
+          defaultParams,
+          constructDocmapIndexViewModel(framework.dependenciesForViews),
+          TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
+          T.map(RA.map((docmap) => docmap.articleId)),
+        )();
+      });
+
+      it('returns a docmap for every combination of group and evaluated article', () => {
+        expect(docmapArticleIds).toHaveLength(2);
+        expect(docmapArticleIds).toContain(articleId1);
+        expect(docmapArticleIds).toContain(articleId2);
+      });
     });
 
     describe('when a particular publisher account ID is requested', () => {
@@ -54,7 +92,6 @@ describe('construct-docmap-index-view-model', () => {
         groupId: groupId1,
       };
       const groupId2 = supportedGroups[1];
-      let docmapArticleIds: ReadonlyArray<ArticleId>;
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addGroup1Command);
@@ -95,7 +132,6 @@ describe('construct-docmap-index-view-model', () => {
       const articleId1 = arbitraryArticleId();
       const articleId2 = arbitraryArticleId();
       const groupId = supportedGroups[0];
-      let docmapArticleIds: ReadonlyArray<ArticleId>;
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup({
