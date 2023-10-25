@@ -14,7 +14,7 @@ const extractService = (candidate: string) => {
   return service;
 };
 
-const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews'];
+const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews', 'acmi'];
 
 const isEvaluationLocator = (candidate: unknown): candidate is EvaluationLocator => (
   typeof candidate === 'string' && supportedServices.includes(extractService(candidate))
