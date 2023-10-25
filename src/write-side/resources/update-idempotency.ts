@@ -29,12 +29,16 @@ type ChangedFields = <I extends string, C extends Record<string, unknown> & Reco
 
 // @ts-ignore
 export const changedFields: ChangedFields = (command, idField) => (state) => {
-  const result = structuredClone(command);
-  delete result[idField];
+  const result: Partial<typeof command> = {};
 
-  for (const key in state) {
+  for (const key in command) {
     // @ts-ignore
-    if (deepEqual(command[key], state[key])) { result[key] = undefined; }
+    if (deepEqual(command[key], state[key])) {
+      result[key] = undefined;
+    } else {
+      result[key] = command[key];
+    }
   }
-  return result;
+  delete result[idField];
+  return removeUndefined(result);
 };
