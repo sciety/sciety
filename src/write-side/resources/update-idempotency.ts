@@ -21,6 +21,9 @@ export const changedFields: ChangedFields = (command, idField) => (state) => {
     if (key === idField) {
       continue;
     }
+    if (!Object.prototype.hasOwnProperty.call(state, key)) {
+      continue;
+    }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (deepEqual(command[key], state[key])) {

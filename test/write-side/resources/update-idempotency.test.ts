@@ -24,6 +24,8 @@ describe('update-idempotency', () => {
       [{ id: 'foo', a: undefined, b: 2 }, { a: 1, b: 1 }, { b: 2 }],
       [{ id: 'foo', a: undefined, b: 2 }, { a: undefined, b: 1 }, { b: 2 }],
       [{ id: 'foo', a: 1, b: 2 }, { a: undefined, b: 1 }, { a: 1, b: 2 }],
+      // field not known to state
+      [{ id: 'foo', a: 1 }, { b: 1 }, {}],
     ])('input: %s and state: %s returns %s', (input, state, expected) => {
       expect(UI.changedFields(input, 'id')(state)).toStrictEqual(expected);
     });
