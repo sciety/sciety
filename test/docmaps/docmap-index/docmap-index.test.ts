@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../src/docmaps/docmap-index';
 import * as GID from '../../../src/types/group-id';
-import { Dependencies } from '../../../src/docmaps/docmap-index/docmap-index';
+import { Dependencies } from '../../../src/docmaps/docmap-index/dependencies';
 import { TestFramework, createTestFramework } from '../../framework';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -13,11 +13,11 @@ describe('docmap-index', () => {
     error?: string,
   };
   let framework: TestFramework;
-  let defaultAdapters: Dependencies;
+  let defaultDependencies: Dependencies;
 
   beforeEach(async () => {
     framework = createTestFramework();
-    defaultAdapters = {
+    defaultDependencies = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
       logger: dummyLogger,
@@ -33,7 +33,7 @@ describe('docmap-index', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-      response = await docmapIndex(defaultAdapters)({})();
+      response = await docmapIndex(defaultDependencies)({})();
     });
 
     it('returns a body containing an error object', () => {
@@ -51,7 +51,7 @@ describe('docmap-index', () => {
     let response: { body: DocmapIndexBody, status: StatusCodes };
 
     beforeEach(async () => {
-      response = await docmapIndex(defaultAdapters)({
+      response = await docmapIndex(defaultDependencies)({
         updatedAfter: 'not-a-date',
       })();
     });

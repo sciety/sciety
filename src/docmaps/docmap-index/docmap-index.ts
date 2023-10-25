@@ -4,12 +4,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { decodeParams } from './filter-by-params';
-import { Ports as IdentifyAllPossibleIndexEntriesDependencies } from './identify-all-possible-index-entries';
-import { Ports as DocmapDependencies } from '../docmap/construct-docmap-view-model';
 import { renderDocmap } from '../docmap/render-docmap';
 import { constructViewModel } from './construct-view-model';
-
-export type Dependencies = DocmapDependencies & IdentifyAllPossibleIndexEntriesDependencies;
+import { Dependencies } from './dependencies';
 
 type DocmapIndexBody = {
   articles?: ReadonlyArray<unknown>,
