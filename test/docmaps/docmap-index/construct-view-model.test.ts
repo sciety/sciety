@@ -3,6 +3,8 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
+import { StatusCodes } from 'http-status-codes';
 import { TestFramework, createTestFramework } from '../../framework';
 import { ArticleId } from '../../../src/types/article-id';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -15,6 +17,8 @@ import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helpe
 import { arbitraryString } from '../../helpers';
 import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import * as ER from '../../../src/docmaps/docmap-index/error-response';
+import { DocmapIndexViewModel } from '../../../src/docmaps/docmap-index/view-model';
 
 describe('construct-view-model', () => {
   const defaultParams: Params = {
@@ -164,6 +168,28 @@ describe('construct-view-model', () => {
 
     it('excludes articles evaluated by the unsupported group', () => {
       expect(docmapArticleIds).toStrictEqual([]);
+    });
+  });
+
+  describe('when a supported group cannot be fetched', () => {
+    const recordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: supportedGroups[0],
+    };
+    let result: E.Either<ER.ErrorResponse, DocmapIndexViewModel>;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
+      result = await pipe(
+        defaultParams,
+        constructViewModel(framework.dependenciesForViews),
+      )();
+    });
+
+    it('fails with an internal server error', () => {
+      expect(result).toStrictEqual(E.left(expect.objectContaining({
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+      })));
     });
   });
 
