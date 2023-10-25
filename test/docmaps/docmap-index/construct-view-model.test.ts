@@ -171,7 +171,7 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when a supported group cannot be fetched', () => {
+  describe('when a supported group\'s details cannot be obtained', () => {
     const recordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: supportedGroups[0],
