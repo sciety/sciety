@@ -90,7 +90,7 @@ export const isEventOfType = <T extends EventName>(name: T) => (
   event: DomainEvent,
 ): event is EventOfType<T> => event.type === name;
 
-type EventSpecificFields<T extends EventName> = Omit<EventOfType<T>, 'type' | 'id' | 'date'>;
+export type EventSpecificFields<T extends EventName> = Omit<EventOfType<T>, 'type' | 'id' | 'date'>;
 
 type EventBase<T> = {
   id: EventId,

@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as UI from '../update-idempotency';
+import { toUpdatedEvent } from '../update-idempotency';
 import {
   EventOfType, constructEvent, DomainEvent, isEventOfType,
 } from '../../../domain-events';
@@ -76,17 +76,10 @@ const dateField = (command: UpdateEvaluationCommand) => (
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
   constructWriteModel(command.evaluationLocator),
-  E.map(UI.changedFields(command)),
-  E.map((changed) => (UI.isEmpty(changed)
-    ? []
-    : [
-      constructEvent('EvaluationUpdated')({
-        evaluationLocator: command.evaluationLocator,
-        evaluationType: undefined,
-        authors: undefined,
-        ...changed,
-        ...dateField(command),
-      }),
-    ]
-  )),
+  E.map(toUpdatedEvent(command, constructEvent('EvaluationUpdated')({
+    evaluationLocator: command.evaluationLocator,
+    evaluationType: undefined,
+    authors: undefined,
+    ...dateField(command),
+  }))),
 );

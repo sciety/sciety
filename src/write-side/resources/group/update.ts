@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as UI from '../update-idempotency';
+import { toUpdatedEvent } from '../update-idempotency';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import {
   isEventOfType, constructEvent, DomainEvent, EventOfType,
@@ -86,20 +86,14 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => isUpdatePermitted(command, events),
     () => toErrorMessage('group name already in use'),
   ),
-  E.map(UI.changedFields(command)),
-  E.map((changed) => (
-    UI.isEmpty(changed)
-      ? []
-      : [constructEvent('GroupDetailsUpdated')({
-        groupId: command.groupId,
-        homepage: undefined,
-        avatarPath: undefined,
-        descriptionPath: undefined,
-        slug: undefined,
-        name: undefined,
-        shortDescription: undefined,
-        largeLogoPath: undefined,
-        ...changed,
-      })]
-  )),
+  E.map(toUpdatedEvent(command, constructEvent('GroupDetailsUpdated')({
+    groupId: command.groupId,
+    homepage: undefined,
+    avatarPath: undefined,
+    descriptionPath: undefined,
+    slug: undefined,
+    name: undefined,
+    shortDescription: undefined,
+    largeLogoPath: undefined,
+  }))),
 );
