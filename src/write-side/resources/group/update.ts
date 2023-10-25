@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import * as UI from '../update-idempotency';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import {
   isEventOfType, constructEvent, DomainEvent, EventOfType,
@@ -78,27 +79,6 @@ const isUpdatePermitted = (command: UpdateGroupDetailsCommand, events: ReadonlyA
   (disallowedNames) => (command.name === undefined || !disallowedNames.includes(command.name)),
 );
 
-const calculateAttributesToUpdate = (
-  command: UpdateGroupDetailsCommand,
-  groupState: GroupState,
-) => ({
-  name: (command.name !== undefined && command.name !== groupState.name) ? command.name : undefined,
-  largeLogoPath: (command.largeLogoPath !== undefined
-    && command.largeLogoPath !== groupState.largeLogoPath)
-    ? command.largeLogoPath
-    : undefined,
-  shortDescription: (command.shortDescription !== undefined
-    && command.shortDescription !== groupState.shortDescription)
-    ? command.shortDescription
-    : undefined,
-});
-
-const hasAnyValues = (attributes: Record<string, string | undefined>): boolean => (
-  (attributes.name !== undefined)
-  || (attributes.shortDescription !== undefined)
-  || (attributes.largeLogoPath !== undefined)
-);
-
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
   events,
   getGroupState(command.groupId),
@@ -106,13 +86,20 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => isUpdatePermitted(command, events),
     () => toErrorMessage('group name already in use'),
   ),
-  E.map((groupState) => calculateAttributesToUpdate(command, groupState)),
-  E.map((attributesToUpdate) => (hasAnyValues(attributesToUpdate) ? [constructEvent('GroupDetailsUpdated')({
-    groupId: command.groupId,
-    homepage: undefined,
-    avatarPath: undefined,
-    descriptionPath: undefined,
-    slug: undefined,
-    ...attributesToUpdate,
-  })] : [])),
+  E.map(UI.changedFields(command, 'groupId')),
+  E.map((changed) => (
+    UI.isEmpty(changed)
+      ? []
+      : [constructEvent('GroupDetailsUpdated')({
+        groupId: command.groupId,
+        homepage: undefined,
+        avatarPath: undefined,
+        descriptionPath: undefined,
+        slug: undefined,
+        name: undefined,
+        shortDescription: undefined,
+        largeLogoPath: undefined,
+        ...changed,
+      })]
+  )),
 );

@@ -1,28 +1,23 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { UpdateUserDetailsCommand } from '../../commands';
-import { UserResource, replayUserResource } from './replay-user-resource';
-import { DomainEvent, constructEvent } from '../../../domain-events';
+import { replayUserResource } from './replay-user-resource';
+import { constructEvent } from '../../../domain-events';
 import { ResourceAction } from '../resource-action';
-
-type ExecuteCommand = (command: UpdateUserDetailsCommand)
-=> (userResource: UserResource)
-=> ReadonlyArray<DomainEvent>;
-
-const executeCommand: ExecuteCommand = (command) => (userResource) => {
-  const avatarUrl = (userResource.avatarUrl === command.avatarUrl) ? undefined : command.avatarUrl;
-  const displayName = (userResource.displayName === command.displayName) ? undefined : command.displayName;
-  return (avatarUrl === undefined && displayName === undefined)
-    ? []
-    : [constructEvent('UserDetailsUpdated')({
-      userId: command.userId,
-      avatarUrl,
-      displayName,
-    })];
-};
+import * as UI from '../update-idempotency';
 
 export const update: ResourceAction<UpdateUserDetailsCommand> = (command) => (events) => pipe(
   events,
   replayUserResource(command.userId),
-  E.map(executeCommand(command)),
+  E.map(UI.changedFields(command, 'userId')),
+  E.map((changed) => (
+    UI.isEmpty(changed)
+      ? []
+      : [constructEvent('UserDetailsUpdated')({
+        userId: command.userId,
+        avatarUrl: undefined,
+        displayName: undefined,
+        ...changed,
+      })]
+  )),
 );

@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as S from 'fp-ts/string';
+import * as UI from '../update-idempotency';
 import {
   EventOfType, constructEvent, DomainEvent, isEventOfType,
 } from '../../../domain-events';
@@ -20,11 +20,6 @@ const isRelevantEvent = (event: DomainEvent): event is RelevantEvent => isEventO
 || isEventOfType('EvaluationRemovalRecorded')(event);
 
 type EvaluationAuthors = ReadonlyArray<string>;
-
-const areAuthorsEqual = (
-  authorsA: EvaluationAuthors,
-  authorsB: EvaluationAuthors,
-) => !(RA.getEq(S.Eq).equals(authorsA, authorsB));
 
 const filterToHistoryOf = (evaluationLocator: EvaluationLocator) => (events: ReadonlyArray<DomainEvent>) => pipe(
   events,
@@ -72,21 +67,6 @@ const constructWriteModel = (
   RA.reduce(E.left(evaluationResourceError.doesNotExist), buildEvaluation),
 );
 
-const calculateAttributesToUpdate = (command: UpdateEvaluationCommand) => (writeModel: WriteModel) => ({
-  evaluationType: (command.evaluationType !== undefined
-    && command.evaluationType !== writeModel.evaluationType)
-    ? command.evaluationType
-    : undefined,
-  authors: (command.authors !== undefined && areAuthorsEqual(command.authors, writeModel.authors))
-    ? command.authors
-    : undefined,
-});
-
-const hasAnyValues = (attributes: Record<string, unknown | undefined>): boolean => (
-  (attributes.evaluationType !== undefined)
-  || (attributes.authors !== undefined)
-);
-
 const dateField = (command: UpdateEvaluationCommand) => (
   command.issuedAt === undefined
     ? {}
@@ -96,14 +76,17 @@ const dateField = (command: UpdateEvaluationCommand) => (
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
   constructWriteModel(command.evaluationLocator),
-  E.map(calculateAttributesToUpdate(command)),
-  E.map((attributesToChange) => (hasAnyValues(attributesToChange)
-    ? [
+  E.map(UI.changedFields(command, 'evaluationLocator')),
+  E.map((changed) => (UI.isEmpty(changed)
+    ? []
+    : [
       constructEvent('EvaluationUpdated')({
         evaluationLocator: command.evaluationLocator,
-        ...attributesToChange,
+        evaluationType: undefined,
+        authors: undefined,
+        ...changed,
         ...dateField(command),
       }),
     ]
-    : [])),
+  )),
 );

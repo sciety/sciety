@@ -15,7 +15,7 @@ const isARelevantEventForTheWriteModel = (event: DomainEvent): event is Relevant
   isEventOfType('UserCreatedAccount')(event) || isEventOfType('UserDetailsUpdated')(event)
 );
 
-export type UserResource = {
+type UserResource = {
   avatarUrl: string,
   displayName: string,
 };
