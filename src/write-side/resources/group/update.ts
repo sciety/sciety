@@ -86,7 +86,7 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
     () => isUpdatePermitted(command, events),
     () => toErrorMessage('group name already in use'),
   ),
-  E.map(UI.changedFields(command, 'groupId')),
+  E.map(UI.changedFields(command)),
   E.map((changed) => (
     UI.isEmpty(changed)
       ? []

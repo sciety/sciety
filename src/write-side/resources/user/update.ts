@@ -9,7 +9,7 @@ import * as UI from '../update-idempotency';
 export const update: ResourceAction<UpdateUserDetailsCommand> = (command) => (events) => pipe(
   events,
   replayUserResource(command.userId),
-  E.map(UI.changedFields(command, 'userId')),
+  E.map(UI.changedFields(command)),
   E.map((changed) => (
     UI.isEmpty(changed)
       ? []

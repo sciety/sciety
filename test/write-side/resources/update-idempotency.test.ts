@@ -13,21 +13,21 @@ describe('update-idempotency', () => {
   describe('changedFields', () => {
     it.each([
       // trivial
-      [{ id: 'foo' }, {}, {}],
-      [{ id: 'foo', a: 1 }, { a: 1 }, {}],
+      [{}, {}, {}],
+      [{ a: 1 }, { a: 1 }, {}],
       // involving objects
-      [{ id: 'foo', a: ['1'] }, { a: ['1'] }, {}],
-      [{ id: 'foo', a: ['2'] }, { a: ['1'] }, { a: ['2'] }],
+      [{ a: ['1'] }, { a: ['1'] }, {}],
+      [{ a: ['2'] }, { a: ['1'] }, { a: ['2'] }],
       // combinations of changed and unchanged
-      [{ id: 'foo', a: 1, b: 2 }, { a: 1, b: 1 }, { b: 2 }],
+      [{ a: 1, b: 2 }, { a: 1, b: 1 }, { b: 2 }],
       // combinations of changed and undefined
-      [{ id: 'foo', a: undefined, b: 2 }, { a: 1, b: 1 }, { b: 2 }],
-      [{ id: 'foo', a: undefined, b: 2 }, { a: undefined, b: 1 }, { b: 2 }],
-      [{ id: 'foo', a: 1, b: 2 }, { a: undefined, b: 1 }, { a: 1, b: 2 }],
+      [{ a: undefined, b: 2 }, { a: 1, b: 1 }, { b: 2 }],
+      [{ a: undefined, b: 2 }, { a: undefined, b: 1 }, { b: 2 }],
+      [{ a: 1, b: 2 }, { a: undefined, b: 1 }, { a: 1, b: 2 }],
       // field not known to state
-      [{ id: 'foo', a: 1 }, { b: 1 }, {}],
+      [{ id: 'foo', a: 2 }, { a: 1 }, { a: 2 }],
     ])('input: %s and state: %s returns %s', (input, state, expected) => {
-      expect(UI.changedFields(input, 'id')(state)).toStrictEqual(expected);
+      expect(UI.changedFields(input)(state)).toStrictEqual(expected);
     });
   });
 });

@@ -76,7 +76,7 @@ const dateField = (command: UpdateEvaluationCommand) => (
 export const update: ResourceAction<UpdateEvaluationCommand> = (command) => (allEvents) => pipe(
   allEvents,
   constructWriteModel(command.evaluationLocator),
-  E.map(UI.changedFields(command, 'evaluationLocator')),
+  E.map(UI.changedFields(command)),
   E.map((changed) => (UI.isEmpty(changed)
     ? []
     : [
