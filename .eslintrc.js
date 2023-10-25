@@ -53,6 +53,7 @@ module.exports = {
     'consistent-return': 'off',
     'default-case': 'off',
     'fp-ts/no-module-imports': 'off',
+    'fp-ts/prefer-bimap': 'off',
     'function-paren-newline': ['error', 'consistent'],
     'import/namespace': 'off',
     'import/no-cycle': 'off',

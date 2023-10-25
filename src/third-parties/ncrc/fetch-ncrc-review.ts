@@ -139,11 +139,9 @@ export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluatio
     refreshSheet(logger),
     TE.chainEitherKW(lookup(evaluationUuid)),
   )),
-  TE.bimap(
-    () => {
-      logger('error', 'NCRC evaluation id not found in sheet', { evaluationUuid });
-      return DE.notFound;
-    },
-    constructNcrcReview,
-  ),
+  TE.mapLeft(() => {
+    logger('error', 'NCRC evaluation id not found in sheet', { evaluationUuid });
+    return DE.notFound;
+  }),
+  TE.map(constructNcrcReview),
 );
