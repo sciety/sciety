@@ -1,5 +1,18 @@
 import * as t from 'io-ts';
 
+export const articleServerCodec = t.union(
+  [
+    t.literal('biorxiv'),
+    t.literal('medrxiv'),
+    t.literal('researchsquare'),
+    t.literal('scielopreprints'),
+    t.literal('osf'),
+    t.literal('microbiologyresearch'),
+  ],
+);
+
+export type ArticleServer = t.TypeOf<typeof articleServerCodec>;
+
 type ServerInfo = {
   name: string,
   avatarUrl: string,
@@ -45,19 +58,6 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
     domain: 'www.microbiologyresearch.org',
   },
 };
-
-export const articleServerCodec = t.union(
-  [
-    t.literal('biorxiv'),
-    t.literal('medrxiv'),
-    t.literal('researchsquare'),
-    t.literal('scielopreprints'),
-    t.literal('osf'),
-    t.literal('microbiologyresearch'),
-  ],
-);
-
-export type ArticleServer = t.TypeOf<typeof articleServerCodec>;
 
 export const isSupportedArticle = (articleId: string): boolean => (
   !!articleId.match(/^10\.1101\/[0-9]{1,}/)
