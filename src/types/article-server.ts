@@ -57,12 +57,7 @@ export const articleServerCodec = t.union(
   ],
 );
 
-export type ArticleServer = 'biorxiv'
-| 'medrxiv'
-| 'researchsquare'
-| 'scielopreprints'
-| 'osf'
-| 'microbiologyresearch';
+export type ArticleServer = t.TypeOf<typeof articleServerCodec>;
 
 export const isSupportedArticle = (articleId: string): boolean => (
   !!articleId.match(/^10\.1101\/[0-9]{1,}/)
