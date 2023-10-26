@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
+import * as TE from 'fp-ts/TaskEither';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -21,6 +22,7 @@ import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
 import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
+import * as DE from '../types/data-error';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
@@ -30,6 +32,11 @@ const findVersionsForArticleDoiFromSupportedServers = (
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(doi, server);
   }
   return TO.none;
+};
+
+const fetchAccessMicrobiology = (logger: Logger) => (key: string) => {
+  logger('debug', 'calling fetchAccessMicrobiology', { key });
+  return TE.left(DE.unavailable);
 };
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
@@ -71,6 +78,8 @@ export const instantiate = (
         {
           // eslint-disable-next-line quote-props
           '10.5281': fetchZenodoRecord(queryExternalService, logger),
+          // eslint-disable-next-line quote-props
+          '10.1099': fetchAccessMicrobiology(logger),
         },
       ),
       hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
