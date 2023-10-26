@@ -4,7 +4,7 @@ import { createClient } from 'redis';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
-import { EvaluationFetcher, fetchReview } from './fetch-review';
+import { fetchReview } from './fetch-review';
 import { fetchHypothesisAnnotation } from './hypothesis/fetch-hypothesis-annotation';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
@@ -20,6 +20,7 @@ import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
 import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
+import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
@@ -45,8 +46,6 @@ const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | un
     };
 };
 
-const fetchDoiEvaluationByPublisher = (evaluationFetcher: EvaluationFetcher): EvaluationFetcher => evaluationFetcher;
-
 export const instantiate = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
@@ -64,7 +63,6 @@ export const instantiate = (
     },
   );
 
-  // doi: fetchZenodoRecord(queryExternalService, logger),
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
