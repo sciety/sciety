@@ -34,7 +34,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
     });
   });
 
-  describe.skip('when a doi with an unknown prefix is passed in', () => {
+  describe('when a doi with an unknown prefix is passed in', () => {
     const doiPrefix = arbitraryString();
     const evaluationFetchersConfiguration = {
       [arbitraryString()]: () => TE.right(arbitraryEvaluation),
