@@ -69,7 +69,8 @@ export const instantiate = (
     fetchReview: fetchReview({
       doi: fetchDoiEvaluationByPublisher(
         {
-          zenodo: fetchZenodoRecord(queryExternalService, logger),
+          // eslint-disable-next-line quote-props
+          '10.5281': fetchZenodoRecord(queryExternalService, logger),
         },
       ),
       hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
