@@ -4,7 +4,7 @@ import { createClient } from 'redis';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
-import { fetchReview } from './fetch-review';
+import { EvaluationFetcher, fetchReview } from './fetch-review';
 import { fetchHypothesisAnnotation } from './hypothesis/fetch-hypothesis-annotation';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
@@ -45,6 +45,8 @@ const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | un
     };
 };
 
+const fetchDoiEvaluationByPublisher = (evaluationFetcher: EvaluationFetcher): EvaluationFetcher => evaluationFetcher;
+
 export const instantiate = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
@@ -62,11 +64,12 @@ export const instantiate = (
     },
   );
 
+  // doi: fetchZenodoRecord(queryExternalService, logger),
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({
-      doi: fetchZenodoRecord(queryExternalService, logger),
+      doi: fetchDoiEvaluationByPublisher(fetchZenodoRecord(queryExternalService, logger)),
       hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
       ncrc: fetchNcrcReview(logger),
       prelights: fetchPrelightsHighlight(queryExternalService, logger),
