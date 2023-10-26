@@ -67,7 +67,11 @@ export const instantiate = (
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({
-      doi: fetchDoiEvaluationByPublisher(fetchZenodoRecord(queryExternalService, logger)),
+      doi: fetchDoiEvaluationByPublisher(
+        {
+          zenodo: fetchZenodoRecord(queryExternalService, logger),
+        },
+      ),
       hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
       ncrc: fetchNcrcReview(logger),
       prelights: fetchPrelightsHighlight(queryExternalService, logger),

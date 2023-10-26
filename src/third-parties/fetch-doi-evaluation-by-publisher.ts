@@ -1,5 +1,5 @@
 import { EvaluationFetcher } from './fetch-review';
 
 export const fetchDoiEvaluationByPublisher = (
-  evaluationFetcher: EvaluationFetcher,
-): EvaluationFetcher => (key) => evaluationFetcher(key);
+  evaluationFetchers: Record<string, EvaluationFetcher>,
+): EvaluationFetcher => (key) => evaluationFetchers.zenodo(key);
