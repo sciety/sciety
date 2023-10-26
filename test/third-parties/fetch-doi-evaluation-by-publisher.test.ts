@@ -4,24 +4,26 @@ import { URL } from 'url';
 import * as DE from '../../src/types/data-error';
 import { fetchDoiEvaluationByPublisher } from '../../src/third-parties/fetch-doi-evaluation-by-publisher';
 import { Evaluation } from '../../src/types/evaluation';
-import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri } from '../helpers';
+import { arbitraryNumber, arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
 
 const arbitraryEvaluation: Evaluation = {
   fullText: arbitrarySanitisedHtmlFragment(),
   url: new URL(arbitraryUri()),
 };
+const arbitraryDoiPrefix = () => `10.${arbitraryNumber(1, 9999)}`;
 
 describe('fetch-doi-evaluation-by-publisher', () => {
+  let result: E.Either<DE.DataError, Evaluation>;
+
   describe('when a doi with a configured prefix is passed in', () => {
     describe('when the delegated doi fetcher returns a right', () => {
-      const doiPrefix = arbitraryString();
+      const configuredDoiPrefix = arbitraryDoiPrefix();
       const evaluationFetchersConfiguration = {
-        [doiPrefix]: () => TE.right(arbitraryEvaluation),
+        [configuredDoiPrefix]: () => TE.right(arbitraryEvaluation),
       };
-      let result: E.Either<DE.DataError, Evaluation>;
 
       beforeEach(async () => {
-        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration)(`${doiPrefix}/123`)();
+        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration)(`${configuredDoiPrefix}/123`)();
       });
 
       it('returns a right', () => {
@@ -35,14 +37,13 @@ describe('fetch-doi-evaluation-by-publisher', () => {
   });
 
   describe('when a doi with an unknown prefix is passed in', () => {
-    const doiPrefix = arbitraryString();
+    const unknownDoiPrefix = arbitraryDoiPrefix();
     const evaluationFetchersConfiguration = {
-      [arbitraryString()]: () => TE.right(arbitraryEvaluation),
+      [arbitraryDoiPrefix()]: () => TE.right(arbitraryEvaluation),
     };
-    let result: E.Either<DE.DataError, Evaluation>;
 
     beforeEach(async () => {
-      result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration)(`${doiPrefix}/123`)();
+      result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration)(`${unknownDoiPrefix}/123`)();
     });
 
     it('returns unavailable', () => {
