@@ -5,6 +5,7 @@ import * as DE from '../../src/types/data-error';
 import { fetchDoiEvaluationByPublisher } from '../../src/third-parties/fetch-doi-evaluation-by-publisher';
 import { Evaluation } from '../../src/types/evaluation';
 import { arbitraryNumber, arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
+import { arbitraryDataError } from '../types/data-error.helper';
 
 const arbitraryEvaluation: Evaluation = {
   fullText: arbitrarySanitisedHtmlFragment(),
@@ -16,8 +17,9 @@ describe('fetch-doi-evaluation-by-publisher', () => {
   let result: E.Either<DE.DataError, Evaluation>;
 
   describe('when a doi with a configured prefix is passed in', () => {
+    const configuredDoiPrefix = arbitraryDoiPrefix();
+
     describe('when the delegated doi fetcher returns a right', () => {
-      const configuredDoiPrefix = arbitraryDoiPrefix();
       const evaluationFetchersConfiguration = {
         [configuredDoiPrefix]: () => TE.right(arbitraryEvaluation),
       };
@@ -32,7 +34,18 @@ describe('fetch-doi-evaluation-by-publisher', () => {
     });
 
     describe('when the delegated doi fetcher returns a left', () => {
-      it.todo('returns a left');
+      const dataError = arbitraryDataError();
+      const evaluationFetchersConfiguration = {
+        [configuredDoiPrefix]: () => TE.left(dataError),
+      };
+
+      beforeEach(async () => {
+        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration)(`${configuredDoiPrefix}/123`)();
+      });
+
+      it('returns a left', () => {
+        expect(result).toStrictEqual(E.left(dataError));
+      });
     });
   });
 
