@@ -13,7 +13,7 @@ const arbitraryEvaluation: Evaluation = {
 
 describe('fetch-doi-evaluation-by-publisher', () => {
   describe('when a doi with a configured prefix is passed in', () => {
-    describe.skip('when the delegated doi fetcher returns a right', () => {
+    describe('when the delegated doi fetcher returns a right', () => {
       const doiPrefix = arbitraryString();
       const evaluationFetchersConfiguration = {
         [doiPrefix]: () => TE.right(arbitraryEvaluation),
@@ -25,7 +25,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
       });
 
       it('returns a right', () => {
-        expect(result).toStrictEqual(E.right);
+        expect(result).toStrictEqual(E.right(arbitraryEvaluation));
       });
     });
 
