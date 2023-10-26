@@ -75,6 +75,7 @@ export const instantiate = (
           // eslint-disable-next-line quote-props
           '10.1099': fetchAccessMicrobiologyEvaluation(logger),
         },
+        logger,
       ),
       hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
       ncrc: fetchNcrcReview(logger),

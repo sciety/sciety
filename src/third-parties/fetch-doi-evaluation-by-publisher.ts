@@ -6,8 +6,9 @@ import * as TE from 'fp-ts/TaskEither';
 import * as S from 'fp-ts/string';
 import { EvaluationFetcher } from './fetch-review';
 import * as DE from '../types/data-error';
+import { Logger } from '../shared-ports';
 
-const deriveFrom = (key: string) => pipe(
+const deriveDoiPrefixFrom = (key: string) => pipe(
   key,
   S.split('/'),
   RNEA.head,
@@ -15,11 +16,15 @@ const deriveFrom = (key: string) => pipe(
 
 export const fetchDoiEvaluationByPublisher = (
   evaluationFetchers: Record<string, EvaluationFetcher>,
+  logger: Logger,
 ): EvaluationFetcher => (key) => pipe(
   evaluationFetchers,
-  R.lookup(deriveFrom(key)),
+  R.lookup(deriveDoiPrefixFrom(key)),
   O.match(
-    () => TE.left(DE.unavailable),
+    () => {
+      logger('warn', 'Attempt to fetch evaluation with an unknown DOI prefix', { key });
+      return TE.left(DE.unavailable);
+    },
     (evaluationFetcher) => evaluationFetcher(key),
   ),
 );

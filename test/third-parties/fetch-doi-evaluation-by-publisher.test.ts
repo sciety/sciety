@@ -6,6 +6,7 @@ import { fetchDoiEvaluationByPublisher } from '../../src/third-parties/fetch-doi
 import { Evaluation } from '../../src/types/evaluation';
 import { arbitraryNumber, arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
 import { arbitraryDataError } from '../types/data-error.helper';
+import { dummyLogger } from '../dummy-logger';
 
 const arbitraryEvaluation: Evaluation = {
   fullText: arbitrarySanitisedHtmlFragment(),
@@ -25,7 +26,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
       };
 
       beforeEach(async () => {
-        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration)(`${configuredDoiPrefix}/123`)();
+        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${configuredDoiPrefix}/123`)();
       });
 
       it('returns a right', () => {
@@ -40,7 +41,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
       };
 
       beforeEach(async () => {
-        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration)(`${configuredDoiPrefix}/123`)();
+        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${configuredDoiPrefix}/123`)();
       });
 
       it('returns a left', () => {
@@ -56,7 +57,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
     };
 
     beforeEach(async () => {
-      result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration)(`${unknownDoiPrefix}/123`)();
+      result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${unknownDoiPrefix}/123`)();
     });
 
     it('returns unavailable', () => {
