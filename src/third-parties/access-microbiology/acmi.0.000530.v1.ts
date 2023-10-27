@@ -1,6 +1,6 @@
 /* eslint-disable no-irregular-whitespace */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
+export const accessMicrobiologyXmlResponse = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.1 20151215//EN" "JATS-archivearticle1.dtd">
 <article dtd-version="1.1" article-type="case-report" xml:lang="EN" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML" specific-use="pre-print">
   <front>

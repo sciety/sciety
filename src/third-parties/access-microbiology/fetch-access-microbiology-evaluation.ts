@@ -1,13 +1,19 @@
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
+import { XMLParser } from 'fast-xml-parser';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { EvaluationFetcher } from '../evaluation-fetcher';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { accessMicrobiologyXmlResponse } from './acmi.0.000530.v1';
+
+const parser = new XMLParser({});
 
 export const fetchAccessMicrobiologyEvaluation = (logger: Logger): EvaluationFetcher => (key: string) => {
-  logger('debug', 'calling fetchAccessMicrobiology', { key });
+  const parsedXmlResponse = parser.parse(accessMicrobiologyXmlResponse);
+
+  logger('debug', 'calling fetchAccessMicrobiology', { key, parsedXmlResponse });
   if (key === '10.1099/acmi.0.000530.v1.3') {
     return TE.right({
       url: new URL(`https://doi.org/${key}`),
