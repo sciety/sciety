@@ -12,14 +12,13 @@ import { accessMicrobiologyXmlResponse } from './acmi.0.000530.v1';
 
 const parser = new XMLParser({});
 
-const xmlCodec = t.type({
-  article: t.type({
+const xmlCodec = t.strict({
+  article: t.strict({
     'sub-article': t.readonlyArray(
-      t.type({
-        'front-stub': t.type({
+      t.strict({
+        'front-stub': t.strict({
           'article-id': t.string,
         }),
-        body: t.string,
       }),
     ),
   }),
@@ -32,7 +31,7 @@ export const fetchAccessMicrobiologyEvaluation = (logger: Logger): EvaluationFet
     xmlCodec.decode,
   );
 
-  logger('debug', 'calling fetchAccessMicrobiology', { key, decodedXmlResponse });
+  logger('debug', 'calling fetchAccessMicrobiology', { key, parsedXmlResponse, decodedXmlResponse });
   if (key === '10.1099/acmi.0.000530.v1.3') {
     return TE.right({
       url: new URL(`https://doi.org/${key}`),
