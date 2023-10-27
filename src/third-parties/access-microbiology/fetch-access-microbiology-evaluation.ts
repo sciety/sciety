@@ -28,14 +28,25 @@ const xmlCodec = t.strict({
 });
 
 export const fetchAccessMicrobiologyEvaluation = (logger: Logger): EvaluationFetcher => (key: string) => {
-  const parsedXmlResponse = parser.parse(accessMicrobiologyXmlResponse);
-
   logger('debug', 'calling fetchAccessMicrobiology', { key });
   if (key === '10.1099/acmi.0.000530.v1.3') {
     return pipe(
-      parsedXmlResponse,
+      parser.parse(accessMicrobiologyXmlResponse),
       xmlCodec.decode,
       E.map((response) => builder.build(response.article['sub-article'][2].body).toString() as string),
+      E.map((text) => ({
+        url: new URL(`https://doi.org/${key}`),
+        fullText: sanitise(toHtmlFragment(text)),
+      })),
+      E.mapLeft(() => DE.unavailable),
+      TE.fromEither,
+    );
+  }
+  if (key === '10.1099/acmi.0.000569.v1.4') {
+    return pipe(
+      parser.parse(''),
+      xmlCodec.decode,
+      E.map((response) => builder.build(response.article['sub-article'][3].body).toString() as string),
       E.map((text) => ({
         url: new URL(`https://doi.org/${key}`),
         fullText: sanitise(toHtmlFragment(text)),
