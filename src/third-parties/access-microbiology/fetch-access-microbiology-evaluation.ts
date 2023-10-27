@@ -19,6 +19,7 @@ const xmlCodec = t.strict({
         'front-stub': t.strict({
           'article-id': t.string,
         }),
+        body: t.unknown,
       }),
     ),
   }),
