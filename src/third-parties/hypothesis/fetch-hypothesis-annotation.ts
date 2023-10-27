@@ -8,7 +8,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { Logger } from '../../shared-ports';
-import { EvaluationFetcher } from '../fetch-review';
+import { EvaluationFetcher } from '../evaluation-fetcher';
 import { Evaluation } from '../../types/evaluation';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';

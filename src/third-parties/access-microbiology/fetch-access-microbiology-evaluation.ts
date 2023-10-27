@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-import { EvaluationFetcher } from '../fetch-review';
+import { EvaluationFetcher } from '../evaluation-fetcher';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 
