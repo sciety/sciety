@@ -1,6 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
 import { XMLParser } from 'fast-xml-parser';
+import * as t from 'io-ts';
+import { pipe } from 'fp-ts/function';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { EvaluationFetcher } from '../evaluation-fetcher';
@@ -10,10 +12,27 @@ import { accessMicrobiologyXmlResponse } from './acmi.0.000530.v1';
 
 const parser = new XMLParser({});
 
+const xmlCodec = t.type({
+  article: t.type({
+    'sub-article': t.readonlyArray(
+      t.type({
+        'front-stub': t.type({
+          'article-id': t.string,
+        }),
+        body: t.string,
+      }),
+    ),
+  }),
+});
+
 export const fetchAccessMicrobiologyEvaluation = (logger: Logger): EvaluationFetcher => (key: string) => {
   const parsedXmlResponse = parser.parse(accessMicrobiologyXmlResponse);
+  const decodedXmlResponse = pipe(
+    parsedXmlResponse,
+    xmlCodec.decode,
+  );
 
-  logger('debug', 'calling fetchAccessMicrobiology', { key, parsedXmlResponse });
+  logger('debug', 'calling fetchAccessMicrobiology', { key, decodedXmlResponse });
   if (key === '10.1099/acmi.0.000530.v1.3') {
     return TE.right({
       url: new URL(`https://doi.org/${key}`),
