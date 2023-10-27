@@ -27,13 +27,13 @@ export const content = `
 <p>Societies, journals and other groups of scientists are helping by highlighting the preprints that they think are the most important and providing public review and curation to share with their peers. Sciety brings the review and curation of preprints from multiple groups into one place to make them easier to find.</p>
 
 <figure class="about-page-figure">
-<img src="/static/images/about-page/number-of-evaluations-on-sciety.png" alt="graph showing increasing amount of evaluations on Sciety">
-<figcaption><a href="${scietyEvaluationGraphsSourceHref}">Number of evaluations on Sciety</a></figcaption>
+<img src="/static/images/about-page/number-of-evaluations-on-sciety.png" alt="graph showing amount of evaluations added to Sciety per month">
+<figcaption><a href="${scietyEvaluationGraphsSourceHref}">Number of evaluations added to Sciety per month</a></figcaption>
 </figure>
 
 <figure class="about-page-figure">
-<img src="/static/images/about-page/number-of-evaluated-articles-on-sciety.png" alt="graph showing increasing amount of evaluated articles on Sciety">
-<figcaption><a href="${scietyEvaluationGraphsSourceHref}">Number of evaluated articles on Sciety</a></figcaption>
+<img src="/static/images/about-page/number-of-evaluated-articles-on-sciety.png" alt="graph showing amount of evaluated articles added to Sciety per month">
+<figcaption><a href="${scietyEvaluationGraphsSourceHref}">Number of evaluated articles added to Sciety per month</a></figcaption>
 </figure>
 
 <p>Sciety also enables scientists to share the evaluated preprints that they think are interesting or relevant to their work, which in turn helps their fellow researchers discover the latest and best new research.</p>
