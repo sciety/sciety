@@ -28,31 +28,33 @@ const xmlCodec = t.strict({
   }),
 });
 
+const parseXml = (accessMicrobiologyXmlResponse: string) => pipe(
+  parser.parse(accessMicrobiologyXmlResponse),
+  xmlCodec.decode,
+  E.mapLeft(() => DE.unavailable),
+);
+
 export const fetchAccessMicrobiologyEvaluation = (logger: Logger): EvaluationFetcher => (key: string) => {
   logger('debug', 'calling fetchAccessMicrobiology', { key });
   if (key === '10.1099/acmi.0.000530.v1.3') {
     return pipe(
-      parser.parse(accessMicrobiologyXmlResponse000530),
-      xmlCodec.decode,
+      parseXml(accessMicrobiologyXmlResponse000530),
       E.map((response) => builder.build(response.article['sub-article'][2].body).toString() as string),
       E.map((text) => ({
         url: new URL(`https://doi.org/${key}`),
         fullText: sanitise(toHtmlFragment(text)),
       })),
-      E.mapLeft(() => DE.unavailable),
       TE.fromEither,
     );
   }
   if (key === '10.1099/acmi.0.000569.v1.4') {
     return pipe(
-      parser.parse(accessMicrobiologyXmlResponse000569),
-      xmlCodec.decode,
+      parseXml(accessMicrobiologyXmlResponse000569),
       E.map((response) => builder.build(response.article['sub-article'][3].body).toString() as string),
       E.map((text) => ({
         url: new URL(`https://doi.org/${key}`),
         fullText: sanitise(toHtmlFragment(text)),
       })),
-      E.mapLeft(() => DE.unavailable),
       TE.fromEither,
     );
   }
