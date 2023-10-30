@@ -9,7 +9,7 @@ export class ArticleId {
   readonly value: string;
 
   constructor(input: string) {
-    this.value = input;
+    this.value = input.replace(/^doi:/, '');
   }
 }
 
