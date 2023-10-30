@@ -35,6 +35,17 @@ type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
 => (doi: ArticleId, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
+const findVersionsForArticleDoi = (
+  dependencies: Dependencies,
+  doi: ArticleId,
+  server: ArticleServer,
+) => {
+  if (doi.value === '10.1099-acmi.0.000569.v1') {
+    return dependencies.findVersionsForArticleDoi(doi, server);
+  }
+  return dependencies.findVersionsForArticleDoi(doi, server);
+};
+
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   dependencies,
 ) => (
@@ -51,7 +62,8 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findVersionsForArticleDoi(doi, server),
+      // dependencies.findVersionsForArticleDoi(doi, server),
+      findVersionsForArticleDoi(dependencies, doi, server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({
