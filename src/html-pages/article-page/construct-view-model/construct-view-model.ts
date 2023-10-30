@@ -23,7 +23,7 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 
 const fetchArticle = (dependencies: Dependencies): Dependencies['fetchArticle'] => (articleId) => {
-  if (articleId.value === '10.1099.acmi.0.000569.v1') {
+  if (articleId.value === '10.1099-acmi.0.000569.v1') {
     return TE.right({
       abstract: sanitise(toHtmlFragment('Nocardia are gram-positive bacilli that cause opportunistic infections in susceptible populations. We describe a case of post-transplant infection of pulmonary Nocardiosis caused by the rare strain Nocardia cyriacigeorgica and the challenges faced in reaching a definitive diagnosis. This case report emphasizes on keeping Nocardiosis as a differential diagnosis in transplant recipients as this disease is largely underdiagnosed and underreported.')),
       authors: O.some([
@@ -70,7 +70,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       titleLanguageCode: detectLanguage(articleDetails.title),
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, new ArticleId(params.doi)),
-      fullArticleUrl: `https://doi.org/${params.doi}`,
+      fullArticleUrl: `https://doi.org/${params.doi.replace(/-/, '/')}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(dependencies)(new ArticleId(params.doi)),
