@@ -9,13 +9,7 @@ export class ArticleId {
   readonly value: string;
 
   constructor(input: string) {
-    const [, doi] = doiRegex.exec(input) ?? [];
-
-    if (!doi) {
-      throw new Error(`'${input}' is not a possible DOI`);
-    }
-
-    this.value = doi;
+    this.value = input;
   }
 }
 
