@@ -13,6 +13,14 @@ import { ArticleId } from '../../../types/article-id';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 
+const getEvaluationsForArticle = (dependencies: Dependencies): Dependencies['getEvaluationsForArticle'] => (articleId: ArticleId) => {
+  if (articleId.value === '10.1099-acmi.0.000569.v1') {
+    const realDoi = articleId.value.replace(/-/, '/');
+    return dependencies.getEvaluationsForArticle(new ArticleId(realDoi));
+  }
+  return dependencies.getEvaluationsForArticle(articleId);
+};
+
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
   Ord.contramap((event) => event.publishedAt),
@@ -34,7 +42,8 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => pipe(
   {
     evaluations: pipe(
-      dependencies.getEvaluationsForArticle(doi),
+      doi,
+      getEvaluationsForArticle(dependencies),
       T.of,
       T.map(RA.map((evaluation) => ({
         ...evaluation,
