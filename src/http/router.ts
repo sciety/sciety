@@ -55,6 +55,7 @@ import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../ht
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
 import * as authentication from './authentication';
+import * as formSubmissionHandlers from './form-submission-handlers';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
 import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams } from './create-page-from-params';
@@ -390,6 +391,10 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
 
   router.post('/api/update-user-details', createApiRouteForResourceAction(adapters, updateUserDetailsCommandCodec, userResource.update));
+
+  // FORM SUBMISSION HANDLERS
+
+  formSubmissionHandlers.configureRoutes(router, adapters);
 
   // AUTHENTICATION
 
