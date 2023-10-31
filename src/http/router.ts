@@ -74,8 +74,6 @@ import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
 import { referencePage, sharedComponentsPage, indexPage } from '../html-pages/style-guide-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
-import { followHandler } from './form-submission-handlers/follow-handler';
-import { unfollowHandler } from './form-submission-handlers/unfollow-handler';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -318,19 +316,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   // COMMANDS
-
-  router.post(
-    '/follow',
-    bodyParser({ enableTypes: ['form'] }),
-    followHandler(adapters),
-  );
-
-  router.post(
-    '/unfollow',
-    bodyParser({ enableTypes: ['form'] }),
-    requireLoggedInUser(adapters),
-    unfollowHandler(adapters),
-  );
 
   router.post(
     '/save-article',
