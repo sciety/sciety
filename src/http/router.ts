@@ -34,9 +34,6 @@ import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
-import {
-  followHandler, unfollowHandler,
-} from '../write-side/follow';
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { articlePage } from '../html-pages/article-page';
@@ -76,6 +73,8 @@ import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
 import { referencePage, sharedComponentsPage, indexPage } from '../html-pages/style-guide-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
+import { followHandler } from './form-submission-handlers/follow-handler';
+import { unfollowHandler } from './form-submission-handlers/unfollow-handler';
 
 type Config = AuthenticationRoutesConfig;
 

@@ -3,7 +3,7 @@ import * as B from 'fp-ts/boolean';
 import { flow } from 'fp-ts/function';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { groupProperty } from '../../../write-side/follow/follow-handler';
+import { groupProperty } from '../../../http/form-submission-handlers/follow-handler';
 
 const renderFollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/follow">

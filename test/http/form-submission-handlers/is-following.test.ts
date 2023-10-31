@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { isFollowing } from '../../../src/write-side/follow/is-following';
+import { isFollowing } from '../../../src/http/form-submission-handlers/is-following';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
