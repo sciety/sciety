@@ -17,7 +17,7 @@ import { redirectBack } from './redirect-back';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
-import { createAnnotationHandler } from '../annotations/create-annotation-handler';
+import { createAnnotationHandler } from './form-submission-handlers/create-annotation-handler';
 import {
   addArticleToListCommandCodec,
   editListDetailsCommandCodec,
@@ -51,7 +51,7 @@ import { CollectedPorts } from '../infrastructure';
 import { legalPage } from '../html-pages/legal-page';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
 
-import { saveArticleHandler } from '../write-side/save-article/save-article-handler';
+import { saveArticleHandler } from './form-submission-handlers/save-article-handler';
 import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page';
 import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';

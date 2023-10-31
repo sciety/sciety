@@ -4,12 +4,12 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../http/authentication-and-logging-in-of-sciety-users';
-import { Queries } from '../read-models';
-import { UserId } from '../types/user-id';
-import { GroupId } from '../types/group-id';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { Queries } from '../../read-models';
+import { UserId } from '../../types/user-id';
+import { GroupId } from '../../types/group-id';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
-import { annotateArticleInListCommandCodec } from '../write-side/commands';
+import { annotateArticleInListCommandCodec } from '../../write-side/commands';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies;
 

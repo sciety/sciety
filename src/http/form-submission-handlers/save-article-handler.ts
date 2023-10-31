@@ -9,8 +9,8 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as PR from 'io-ts/PathReporter';
 import { AddArticleToList, Logger } from '../../shared-ports';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../../http/authentication-and-logging-in-of-sciety-users';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from '../../http/form-submission-handlers/check-user-owns-list';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
 import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
 
