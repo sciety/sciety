@@ -16,7 +16,7 @@
     "escape-goat": "^3.0.0",
     "fast-xml-parser": "^4.3.2",
     "fp-ts": "^2.16.1",
-    "googleapis-common": "^6.0.4",
+    "googleapis-common": "^7.0.1",
     "http-status-codes": "^2.3.0",
     "io-ts": "^2.2.20",
     "io-ts-reporters": "^2.0.1",
