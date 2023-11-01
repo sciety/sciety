@@ -34,13 +34,13 @@ const isAnEventOfThisResource = (listId: ListId) => (event: RelevantEvent) => ev
 
 const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: DomainEvent) => {
   if (isEventOfType('ListCreated')(event)) {
-    return E.right({ articleIds: [], name: event.name, description: event.description });
+    return E.right({ articles: [], name: event.name, description: event.description } satisfies ListResource);
   }
   if (isEventOfType('ArticleAddedToList')(event)) {
     pipe(
       resource,
       E.map((listResource) => {
-        listResource.articleIds.push(event.articleId);
+        listResource.articles.push({ articleId: event.articleId, annotated: false } satisfies ListResource['articles'][number]);
         return undefined;
       }),
     );
@@ -49,22 +49,22 @@ const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: D
     return pipe(
       resource,
       E.map((listResource) => pipe(
-        listResource.articleIds,
-        A.filter((articleId) => !eqArticleId.equals(articleId, event.articleId)),
-        (ids) => ({ ...listResource, articleIds: ids }),
+        listResource.articles,
+        A.filter((article) => !eqArticleId.equals(article.articleId, event.articleId)),
+        (ids) => ({ ...listResource, articles: ids } satisfies ListResource),
       )),
     );
   }
   if (isEventOfType('ListNameEdited')(event)) {
     return pipe(
       resource,
-      E.map((listResource) => ({ ...listResource, name: event.name })),
+      E.map((listResource) => ({ ...listResource, name: event.name } satisfies ListResource)),
     );
   }
   if (isEventOfType('ListDescriptionEdited')(event)) {
     return pipe(
       resource,
-      E.map((listResource) => ({ ...listResource, description: event.description })),
+      E.map((listResource) => ({ ...listResource, description: event.description } satisfies ListResource)),
     );
   }
   return resource;

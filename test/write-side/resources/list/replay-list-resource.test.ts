@@ -30,7 +30,12 @@ describe('replay-list-resource', () => {
       );
 
       it('the article id is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [articleId] })));
+        expect(result).toStrictEqual(E.right(expect.objectContaining({
+          articles: [{
+            articleId,
+            annotated: false,
+          }],
+        })));
       });
 
       it('the list name is in the resource', () => {
@@ -56,7 +61,7 @@ describe('replay-list-resource', () => {
       );
 
       it('the article id is not in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [] })));
+        expect(result).toStrictEqual(E.right(expect.objectContaining({ articles: [] })));
       });
 
       it('the list name is in the resource', () => {
@@ -84,7 +89,7 @@ describe('replay-list-resource', () => {
       );
 
       it('the article id is not in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ articleIds: [] })));
+        expect(result).toStrictEqual(E.right(expect.objectContaining({ articles: [] })));
       });
 
       it('the list name is in the resource', () => {

@@ -16,8 +16,8 @@ type Command = {
 };
 
 const createAppropriateEvents = (command: Command) => (listResource: ListResource) => pipe(
-  listResource.articleIds,
-  RA.some((articleId) => articleId.value === command.articleId.value),
+  listResource.articles,
+  RA.some((article) => article.articleId.value === command.articleId.value),
   B.fold(
     () => [],
     () => [constructEvent('ArticleRemovedFromList')(command)],
