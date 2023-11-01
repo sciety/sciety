@@ -5,7 +5,7 @@ import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input
 import { EventOfType, constructEvent } from '../../../../src/domain-events';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryString } from '../../../helpers';
+import { arbitraryHtmlFragment, arbitraryString } from '../../../helpers';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 
 const arbitraryListCreatedEvent = (): EventOfType<'ListCreated'> => constructEvent('ListCreated')({
@@ -25,6 +25,14 @@ const arbitraryArticleRemovedFromListEvent = (): EventOfType<'ArticleRemovedFrom
   listId: arbitraryListId(),
 });
 
+const arbitraryAnnotationCreatedEvent = (): EventOfType<'AnnotationCreated'> => constructEvent('AnnotationCreated')({
+  target: {
+    articleId: arbitraryArticleId(),
+    listId: arbitraryListId(),
+  },
+  content: arbitraryHtmlFragment(),
+});
+
 describe('annotate', () => {
   const articleId = arbitraryArticleId();
   const listId = arbitraryListId();
@@ -41,7 +49,7 @@ describe('annotate', () => {
       listId,
     };
 
-    describe('and the article is in the list', () => {
+    describe('and the article is in the list without an annotation', () => {
       const relevantEvents = [
         listCreatedEvent,
         {
@@ -64,6 +72,32 @@ describe('annotate', () => {
           },
           content,
         })]));
+      });
+    });
+
+    describe('and the article is in the list with an annotation', () => {
+      const relevantEvents = [
+        listCreatedEvent,
+        {
+          ...arbitraryArticleAddedToListEvent(),
+          articleId,
+          listId,
+        },
+        {
+          ...arbitraryAnnotationCreatedEvent(),
+          target: {
+            articleId,
+            listId,
+          },
+        },
+      ];
+      const result = pipe(
+        relevantEvents,
+        annotate(annotateArticleInListCommand),
+      );
+
+      it('succeeds, without raising any event', () => {
+        expect(result).toStrictEqual(E.right([]));
       });
     });
 
