@@ -10,7 +10,7 @@ const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   lists,
   RA.map((list) => `
     <div class="standard-form__labelled_selectable_control">
-      <input type="radio" id="list-id-${list.id}" name="listId" value="${list.id}"/>
+      <input type="radio" id="list-id-${list.id}" name="listId" value="${list.id}" required/>
       <label for="list-id-${list.id}">${htmlEscape(list.name)}</label>
     </div>
   `),
