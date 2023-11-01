@@ -20,6 +20,11 @@ const arbitraryArticleAddedToListEvent = (): EventOfType<'ArticleAddedToList'> =
   listId: arbitraryListId(),
 });
 
+const arbitraryArticleRemovedFromListEvent = (): EventOfType<'ArticleRemovedFromList'> => constructEvent('ArticleRemovedFromList')({
+  articleId: arbitraryArticleId(),
+  listId: arbitraryListId(),
+});
+
 describe('annotate', () => {
   const articleId = arbitraryArticleId();
   const listId = arbitraryListId();
@@ -66,6 +71,29 @@ describe('annotate', () => {
       const result = pipe(
         [
           listCreatedEvent,
+        ],
+        annotate(annotateArticleInListCommand),
+      );
+
+      it.failing('fails', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
+    });
+
+    describe('and the article has been added to the list and then removed', () => {
+      const result = pipe(
+        [
+          listCreatedEvent,
+          {
+            ...arbitraryArticleAddedToListEvent(),
+            articleId,
+            listId,
+          },
+          {
+            ...arbitraryArticleRemovedFromListEvent(),
+            articleId,
+            listId,
+          },
         ],
         annotate(annotateArticleInListCommand),
       );
