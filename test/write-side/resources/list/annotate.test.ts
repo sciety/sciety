@@ -21,31 +21,35 @@ const arbitraryArticleAddedToListEvent = (): EventOfType<'ArticleAddedToList'> =
 });
 
 describe('annotate', () => {
+  const articleId = arbitraryArticleId();
+  const listId = arbitraryListId();
+  const content = arbitraryUserGeneratedInput();
+  const annotateArticleInListCommand = {
+    content,
+    articleId,
+    listId,
+  };
+
   describe('when the list exists', () => {
-    const articleId = arbitraryArticleId();
-    const listId = arbitraryListId();
-    const content = arbitraryUserGeneratedInput();
-    const relevantEvents = [
-      {
-        ...arbitraryListCreatedEvent(),
-        listId,
-      },
-      {
-        ...arbitraryArticleAddedToListEvent(),
-        articleId,
-        listId,
-      },
-    ];
-    const result = pipe(
-      relevantEvents,
-      annotate({
-        content,
-        articleId,
-        listId,
-      }),
-    );
+    const listCreatedEvent = {
+      ...arbitraryListCreatedEvent(),
+      listId,
+    };
 
     describe('and the article is in the list', () => {
+      const relevantEvents = [
+        listCreatedEvent,
+        {
+          ...arbitraryArticleAddedToListEvent(),
+          articleId,
+          listId,
+        },
+      ];
+      const result = pipe(
+        relevantEvents,
+        annotate(annotateArticleInListCommand),
+      );
+
       it('succeeds, raising a relevant event', () => {
         expect(result).toStrictEqual(E.right([expect.objectContaining({
           type: 'AnnotationCreated',
