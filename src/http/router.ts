@@ -5,19 +5,14 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import bodyParser from 'koa-bodyparser';
 import send from 'koa-send';
-import { editListDetailsHandler } from './form-submission-handlers/edit-list-details-handler';
-import { removeArticleFromListHandler } from './form-submission-handlers/remove-article-from-list-handler';
 import { loadStaticFile } from './load-static-file';
 import { ownedBy } from './owned-by-api';
 import { pageHandler } from './page-handler';
 import { ping } from './ping';
-import { redirectBack } from './redirect-back';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
-import { createAnnotationHandler } from './form-submission-handlers/create-annotation-handler';
 import {
   addArticleToListCommandCodec,
   editListDetailsCommandCodec,
@@ -48,7 +43,6 @@ import { CollectedPorts } from '../infrastructure';
 import { legalPage } from '../html-pages/legal-page';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
 
-import { saveArticleHandler } from './form-submission-handlers/save-article-handler';
 import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page';
 import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
@@ -59,7 +53,6 @@ import * as formSubmissionHandlers from './form-submission-handlers';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
 import { contentOnlyLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams } from './create-page-from-params';
-import { createListHandler } from './form-submission-handlers/create-list-handler';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 import { listsPage } from '../html-pages/lists-page';
 import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
@@ -315,41 +308,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     pageHandler(adapters, () => pipe(sharedComponentsPage, TE.right)),
   );
 
-  // COMMANDS
-
-  router.post(
-    '/save-article',
-    bodyParser({ enableTypes: ['form'] }),
-    requireLoggedInUser(adapters),
-    saveArticleHandler(adapters),
-  );
-
-  router.post(
-    '/forms/remove-article-from-list',
-    bodyParser({ enableTypes: ['form'] }),
-    requireLoggedInUser(adapters),
-    removeArticleFromListHandler(adapters),
-    redirectBack,
-  );
-
-  router.post(
-    '/forms/edit-list-details',
-    bodyParser({ enableTypes: ['form'] }),
-    editListDetailsHandler(adapters),
-  );
-
-  router.post(
-    '/forms/create-list',
-    bodyParser({ enableTypes: ['form'] }),
-    createListHandler(adapters),
-  );
-
-  router.post(
-    '/annotations/create-annotation',
-    bodyParser({ enableTypes: ['form'] }),
-    createAnnotationHandler(adapters),
-  );
-
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
   router.post('/api/add-article-to-list', createApiRouteForResourceAction(adapters, addArticleToListCommandCodec, listResource.addArticle));
@@ -377,11 +335,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.post('/api/update-user-details', createApiRouteForResourceAction(adapters, updateUserDetailsCommandCodec, userResource.update));
 
-  // FORM SUBMISSION HANDLERS
-
   formSubmissionHandlers.configureRoutes(router, adapters);
-
-  // AUTHENTICATION
 
   authentication.configureRoutes(router, adapters, config);
 
