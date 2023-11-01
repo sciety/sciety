@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import {
   EventOfType, isEventOfType,
   DomainEvent,
@@ -20,7 +21,8 @@ type RelevantEvent =
 | EventOfType<'ArticleAddedToList'>
 | EventOfType<'ArticleRemovedFromList'>
 | EventOfType<'ListNameEdited'>
-| EventOfType<'ListDescriptionEdited'>;
+| EventOfType<'ListDescriptionEdited'>
+| EventOfType<'ArticleInListAnnotated'>;
 
 const isARelevantEventForTheWriteModel = (event: DomainEvent): event is RelevantEvent => (
   isEventOfType('ListCreated')(event)
@@ -30,7 +32,7 @@ const isARelevantEventForTheWriteModel = (event: DomainEvent): event is Relevant
   || isEventOfType('ListDescriptionEdited')(event)
 );
 
-const isAnEventOfThisResource = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
+const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
 const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: DomainEvent) => {
   if (isEventOfType('ListCreated')(event)) {
@@ -41,6 +43,23 @@ const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: D
       resource,
       E.map((listResource) => {
         listResource.articles.push({ articleId: event.articleId, annotated: false } satisfies ListResource['articles'][number]);
+        return undefined;
+      }),
+    );
+  }
+  if (isEventOfType('ArticleInListAnnotated')(event)) {
+    pipe(
+      resource,
+      E.map((listResource) => {
+        pipe(
+          listResource.articles,
+          A.findFirst((article) => eqArticleId.equals(article.articleId, event.articleId)),
+          O.map((article) => {
+            // eslint-disable-next-line no-param-reassign
+            article.annotated = true;
+            return undefined;
+          }),
+        );
         return undefined;
       }),
     );
@@ -73,6 +92,6 @@ const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: D
 export const replayListResource: ReplayListResource = (listId) => (events) => pipe(
   events,
   RA.filter(isARelevantEventForTheWriteModel),
-  RA.filter(isAnEventOfThisResource(listId)),
+  RA.filter(isAnEventOfThisList(listId)),
   RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), updateResource),
 );
