@@ -63,7 +63,16 @@ describe('annotate', () => {
     });
 
     describe('and the article is not in the list', () => {
-      it.todo('fails');
+      const result = pipe(
+        [
+          listCreatedEvent,
+        ],
+        annotate(annotateArticleInListCommand),
+      );
+
+      it.failing('fails', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
     });
   });
 
