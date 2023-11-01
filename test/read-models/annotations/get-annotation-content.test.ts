@@ -17,7 +17,7 @@ describe('get-annotation-content', () => {
   describe('when the article has been annotated in the list', () => {
     const readmodel = pipe(
       [
-        constructEvent('AnnotationCreated')({ target: { listId, articleId }, content }),
+        constructEvent('ArticleInListAnnotated')({ listId, articleId, content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -30,7 +30,7 @@ describe('get-annotation-content', () => {
   describe('when the article has been annotated in a different list', () => {
     const readmodel = pipe(
       [
-        constructEvent('AnnotationCreated')({ target: { listId: arbitraryListId(), articleId }, content }),
+        constructEvent('ArticleInListAnnotated')({ listId: arbitraryListId(), articleId, content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -43,7 +43,7 @@ describe('get-annotation-content', () => {
   describe('when a different article has been annotated in the list', () => {
     const readmodel = pipe(
       [
-        constructEvent('AnnotationCreated')({ target: { listId, articleId: arbitraryArticleId() }, content }),
+        constructEvent('ArticleInListAnnotated')({ listId, articleId: arbitraryArticleId(), content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -68,7 +68,7 @@ describe('get-annotation-content', () => {
     const readmodel = pipe(
       [
         constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('AnnotationCreated')({ target: { articleId, listId }, content }),
+        constructEvent('ArticleInListAnnotated')({ articleId, listId, content }),
         constructEvent('ArticleRemovedFromList')({ articleId, listId }),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -83,7 +83,7 @@ describe('get-annotation-content', () => {
     const readmodel = pipe(
       [
         constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('AnnotationCreated')({ target: { articleId, listId }, content }),
+        constructEvent('ArticleInListAnnotated')({ articleId, listId, content }),
         constructEvent('ArticleRemovedFromList')({ articleId, listId }),
         constructEvent('ArticleAddedToList')({ articleId, listId }),
       ],
@@ -100,10 +100,10 @@ describe('get-annotation-content', () => {
     const readmodel = pipe(
       [
         constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('AnnotationCreated')({ target: { articleId, listId }, content }),
+        constructEvent('ArticleInListAnnotated')({ articleId, listId, content }),
         constructEvent('ArticleRemovedFromList')({ articleId, listId }),
         constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('AnnotationCreated')({ target: { articleId, listId }, content: newContent }),
+        constructEvent('ArticleInListAnnotated')({ articleId, listId, content: newContent }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

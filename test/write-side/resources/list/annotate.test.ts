@@ -25,11 +25,9 @@ const arbitraryArticleRemovedFromListEvent = (): EventOfType<'ArticleRemovedFrom
   listId: arbitraryListId(),
 });
 
-const arbitraryAnnotationCreatedEvent = (): EventOfType<'AnnotationCreated'> => constructEvent('AnnotationCreated')({
-  target: {
-    articleId: arbitraryArticleId(),
-    listId: arbitraryListId(),
-  },
+const arbitraryArticleInListAnnotatedEvent = (): EventOfType<'ArticleInListAnnotated'> => constructEvent('ArticleInListAnnotated')({
+  articleId: arbitraryArticleId(),
+  listId: arbitraryListId(),
   content: arbitraryHtmlFragment(),
 });
 
@@ -65,11 +63,9 @@ describe('annotate', () => {
 
       it('succeeds, raising a relevant event', () => {
         expect(result).toStrictEqual(E.right([expect.objectContaining({
-          type: 'AnnotationCreated',
-          target: {
-            articleId,
-            listId,
-          },
+          type: 'ArticleInListAnnotated',
+          articleId,
+          listId,
           content,
         })]));
       });
@@ -84,11 +80,9 @@ describe('annotate', () => {
           listId,
         },
         {
-          ...arbitraryAnnotationCreatedEvent(),
-          target: {
-            articleId,
-            listId,
-          },
+          ...arbitraryArticleInListAnnotatedEvent(),
+          articleId,
+          listId,
         },
       ];
       const result = pipe(

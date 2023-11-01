@@ -42,6 +42,16 @@ const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): Domai
       type: 'EvaluationUpdated' as const,
     } satisfies EventOfType<'EvaluationUpdated'>;
   }
+  if (event.type === 'AnnotationCreated') {
+    return {
+      id: event.id,
+      type: 'ArticleInListAnnotated',
+      date: event.date,
+      content: event.content,
+      articleId: event.target.articleId,
+      listId: event.target.listId,
+    };
+  }
   return event;
 };
 

@@ -9,16 +9,19 @@ import { ResourceAction } from '../resource-action';
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
-  RA.filter(isEventOfType('AnnotationCreated')),
+  RA.filter(isEventOfType('ArticleInListAnnotated')),
   RA.filter((event) => eqAnnotationTarget.equals(
-    event.target,
+    {
+      articleId: event.articleId,
+      listId: event.listId,
+    },
     {
       articleId: command.articleId,
       listId: command.listId,
     },
   )),
   RA.match(
-    () => [constructEvent('AnnotationCreated')({ target: { articleId: command.articleId, listId: command.listId }, content: toHtmlFragment(command.content) })],
+    () => [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: toHtmlFragment(command.content) })],
     () => [],
   ),
   E.right,

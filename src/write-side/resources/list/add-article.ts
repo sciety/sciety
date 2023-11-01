@@ -22,11 +22,9 @@ const constructEvents = (command: AddArticleToListCommand) => (
         articleId: command.articleId,
         listId: command.listId,
       }),
-      constructEvent('AnnotationCreated')({
-        target: {
-          articleId: command.articleId,
-          listId: command.listId,
-        },
+      constructEvent('ArticleInListAnnotated')({
+        articleId: command.articleId,
+        listId: command.listId,
         content: toHtmlFragment(command.annotation),
       }),
     ]

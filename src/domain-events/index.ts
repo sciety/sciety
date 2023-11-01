@@ -46,11 +46,10 @@ export const sort = A.sortBy([byDate, byUuid]);
 const legacyDomainEventCodec = t.union([
   evaluationRecordedEventCodec,
   curationStatementRecordedEventCodec,
-
+  annotationCreatedEventCodec,
 ], 'type');
 
 export const domainEventCodec = t.union([
-  annotationCreatedEventCodec,
   articleAddedToListEventCodec,
   articleInListAnnotatedEventCodec,
   articleRemovedFromListEventCodec,

@@ -78,11 +78,9 @@ describe('add-article', () => {
               listId,
             }),
             expect.objectContaining({
-              type: 'AnnotationCreated',
-              target: {
-                articleId,
-                listId,
-              },
+              type: 'ArticleInListAnnotated',
+              articleId,
+              listId,
               content: annotation,
             }),
           ]));
