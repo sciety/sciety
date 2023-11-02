@@ -104,8 +104,11 @@ describe('construct-annotation', () => {
     describe('but the list owner information is not available', () => {
       const listId = arbitraryListId();
       const target = { listId, articleId };
+      const createListCommand = arbitraryCreateListCommand();
 
       beforeEach(async () => {
+        await framework.commandHelpers.createList(createListCommand);
+        await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
         await framework.commandHelpers.createAnnotation({
           content,
           articleId,
