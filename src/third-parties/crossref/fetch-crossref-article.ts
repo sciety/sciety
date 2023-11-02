@@ -48,14 +48,8 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     title = getTitle(doc, doi, logger);
   } catch (error: unknown) {
     logger('error', 'Unable to parse document', { doi, response, error });
-
-    // TODO: decide a product direction covering all scenarios:
-    // - what happens with a 404?
-    // - what happens with a 50x?
-    // - what happens if the XML is corrupted?
     // - what happens if the title cannot be parsed (e.g. it's missing from the XML)?
     // - what happens if the abstract cannot be parsed (e.g. it has unforeseen tags)?
-    // - ...
     return E.left(DE.unavailable);
   }
   return E.right({
