@@ -12,9 +12,10 @@ import { FetchArticle, Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: ArticleId) => {
   if (response.length === 0) {
@@ -26,7 +27,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
       throw msg;
     },
   });
-  let abstract: SanitisedHtmlFragment;
+  let abstract: O.Option<SanitisedHtmlFragment>;
   let authors: ArticleAuthors;
   let server: O.Option<ArticleServer>;
   let title: SanitisedHtmlFragment;
@@ -45,6 +46,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     }
 
     abstract = getAbstract(doc, doi, logger);
+
     title = getTitle(doc, doi, logger);
   } catch (error: unknown) {
     logger('error', 'Unable to parse document', { doi, response, error });
@@ -53,7 +55,10 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     return E.left(DE.unavailable);
   }
   return E.right({
-    abstract,
+    abstract: pipe(
+      abstract,
+      O.getOrElse(() => sanitise(toHtmlFragment(`No abstract for ${doi.value} available`))),
+    ),
     title,
     authors,
     server: server.value,

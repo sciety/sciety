@@ -37,7 +37,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.stringContaining('Some random nonsense.'));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('Some random nonsense.')));
     });
 
     it('removes the <abstract> element', async () => {
@@ -48,8 +48,8 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.not.stringContaining('<abstract>'));
-      expect(abstract).toStrictEqual(expect.not.stringContaining('</abstract>'));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<abstract>')));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</abstract>')));
     });
 
     it('removes the first <title> if present', async () => {
@@ -61,7 +61,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.not.stringContaining('Abstract'));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('Abstract')));
     });
 
     it('replaces remaining <title>s with HTML <h3>s', async () => {
@@ -77,10 +77,10 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.stringContaining('<h3>should be an h3</h3>'));
-      expect(abstract).toStrictEqual(expect.stringContaining('<h3>should also be an h3</h3>'));
-      expect(abstract).toStrictEqual(expect.not.stringContaining('<title>'));
-      expect(abstract).toStrictEqual(expect.not.stringContaining('</title>'));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('<h3>should be an h3</h3>')));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('<h3>should also be an h3</h3>')));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<title>')));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</title>')));
     });
 
     it('renders italic if present', async () => {
@@ -98,8 +98,8 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.stringContaining('<i>Cannabis sativa</i>'));
-      expect(abstract).toStrictEqual(expect.stringContaining('<i>in vivo</i>'));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('<i>Cannabis sativa</i>')));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('<i>in vivo</i>')));
     });
 
     it('replaces <list> unordered list with HTML <ul>', async () => {
@@ -117,10 +117,10 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.stringContaining('<ul>'));
-      expect(abstract).toStrictEqual(expect.stringContaining('</ul>'));
-      expect(abstract).toStrictEqual(expect.stringContaining('<li>'));
-      expect(abstract).toStrictEqual(expect.stringContaining('</li>'));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('<ul>')));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('</ul>')));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('<li>')));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('</li>')));
     });
 
     it('replaces <sec> with HTML <section>', () => {
@@ -133,10 +133,10 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.stringContaining('<section>'));
-      expect(abstract).toStrictEqual(expect.stringContaining('</section>'));
-      expect(abstract).toStrictEqual(expect.not.stringContaining('<sec>'));
-      expect(abstract).toStrictEqual(expect.not.stringContaining('</sec>'));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('<section>')));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('</section>')));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<sec>')));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</sec>')));
     });
 
     it('strips <title> named Graphical abstract', () => {
@@ -169,8 +169,8 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.not.stringContaining('<section>'));
-      expect(abstract).toStrictEqual(expect.not.stringContaining('</section>'));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<section>')));
+      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</section>')));
     });
 
     it('doesn\'t strip <section> elements that are not empty', () => {
@@ -184,9 +184,9 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, doi, dummyLogger);
 
-      expect(abstract).toStrictEqual(expect.stringContaining('<section>'));
-      expect(abstract).toStrictEqual(expect.stringContaining('Lorem ipsum'));
-      expect(abstract).toStrictEqual(expect.stringContaining('</section>'));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('<section>')));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('Lorem ipsum')));
+      expect(abstract).toStrictEqual(O.some(expect.stringContaining('</section>')));
     });
   });
 
