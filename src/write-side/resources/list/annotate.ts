@@ -7,6 +7,11 @@ import { isEventOfType, constructEvent } from '../../../domain-events';
 import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
+const createAppropriateEvents = (command: AnnotateArticleInListCommand) => RA.match(
+  () => [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: toHtmlFragment(command.content) })],
+  () => [],
+);
+
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isEventOfType('ArticleInListAnnotated')),
@@ -20,9 +25,6 @@ export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) 
       listId: command.listId,
     },
   )),
-  RA.match(
-    () => [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: toHtmlFragment(command.content) })],
-    () => [],
-  ),
+  createAppropriateEvents(command),
   E.right,
 );
