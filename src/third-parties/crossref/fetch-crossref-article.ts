@@ -30,7 +30,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   let abstract: O.Option<SanitisedHtmlFragment>;
   let authors: ArticleAuthors;
   let server: O.Option<ArticleServer>;
-  let title: SanitisedHtmlFragment;
+  let title: O.Option<SanitisedHtmlFragment>;
   try {
     const doc = parser.parseFromString(response, 'text/xml');
     authors = getAuthors(doc);
@@ -50,7 +50,10 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
       logger('warn', 'Did not find abstract', { doi });
     }
 
-    title = getTitle(doc, doi, logger);
+    title = getTitle(doc);
+    if (O.isNone(title)) {
+      logger('warn', 'Did not find title', { doi });
+    }
   } catch (error: unknown) {
     logger('error', 'Unable to parse document', { doi, response, error });
     // - what happens if the title cannot be parsed (e.g. it's missing from the XML)?
@@ -62,7 +65,11 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
       abstract,
       O.getOrElse(() => sanitise(toHtmlFragment(`No abstract for ${doi.value} available`))),
     ),
-    title,
+    title: pipe(
+      title,
+      // TODO: the decision as to what to display on error should live with the rendering component
+      O.getOrElse(() => sanitise(toHtmlFragment('Unknown title'))),
+    ),
     authors,
     server: server.value,
     doi,

@@ -69,25 +69,22 @@ export const getAbstract = (doc: Document, doi: ArticleId, logger: Logger): O.Op
   );
 };
 
-export const getTitle = (doc: Document, doi: ArticleId, logger: Logger): SanitisedHtmlFragment => {
+export const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   const titlesElement = getElement(doc, 'titles');
   const titleElement = titlesElement?.getElementsByTagName('title')[0];
-  let title = 'Unknown title';
-  // TODO: the decision as to what to display on error should live with the rendering component
   if (titleElement) {
-    title = new XMLSerializer()
+    const title = new XMLSerializer()
       .serializeToString(titleElement)
       .replace(/^<title(?:.?)>([\s\S]*)<\/title>$/, '$1')
       .trim();
-  } else {
-    logger('warn', 'Did not find title', { doi });
+    return pipe(
+      title,
+      toHtmlFragment,
+      sanitise,
+      O.some,
+    );
   }
-
-  return pipe(
-    title,
-    toHtmlFragment,
-    sanitise,
-  );
+  return O.none;
 };
 
 export const getServer = flow(

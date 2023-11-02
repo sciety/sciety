@@ -351,9 +351,9 @@ describe('parse-crossref-article', () => {
           <title>An article title</title>
         </titles>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc, doi, dummyLogger);
+      const title = getTitle(doc);
 
-      expect(title).toBe('An article title');
+      expect(title).toStrictEqual(O.some('An article title'));
     });
 
     it('trims leading and trailing whitespace', () => {
@@ -364,17 +364,17 @@ describe('parse-crossref-article', () => {
           </title>
         </titles>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc, doi, dummyLogger);
+      const title = getTitle(doc);
 
-      expect(title).toBe('An article title');
+      expect(title).toStrictEqual(O.some('An article title'));
     });
 
     it('returns `Unknown title` when no title present', async () => {
       const response = crossrefResponseWith('');
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc, doi, dummyLogger);
+      const title = getTitle(doc);
 
-      expect(title).toBe('Unknown title');
+      expect(title).toStrictEqual(O.none);
     });
 
     it('extracts a title containing inline HTML tags from the XML response', async () => {
@@ -383,9 +383,9 @@ describe('parse-crossref-article', () => {
           <title>An article title for <i>C. elegans</i></title>
         </titles>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc, doi, dummyLogger);
+      const title = getTitle(doc);
 
-      expect(title).toBe('An article title for <i>C. elegans</i>');
+      expect(title).toStrictEqual(O.some('An article title for <i>C. elegans</i>'));
     });
 
     it('strips non html tags from the title', async () => {
@@ -394,9 +394,9 @@ describe('parse-crossref-article', () => {
           <title>An article title for <scp>C. elegans</scp></title>
         </titles>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc, doi, dummyLogger);
+      const title = getTitle(doc);
 
-      expect(title).toBe('An article title for C. elegans');
+      expect(title).toStrictEqual(O.some('An article title for C. elegans'));
     });
   });
 });
