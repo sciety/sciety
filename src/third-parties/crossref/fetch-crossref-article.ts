@@ -46,6 +46,9 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     }
 
     abstract = getAbstract(doc, doi, logger);
+    if (O.isNone(abstract)) {
+      logger('warn', 'Did not find abstract', { doi });
+    }
 
     title = getTitle(doc, doi, logger);
   } catch (error: unknown) {

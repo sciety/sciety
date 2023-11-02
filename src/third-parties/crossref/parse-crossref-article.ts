@@ -18,8 +18,6 @@ export const getAbstract = (doc: Document, doi: ArticleId, logger: Logger): O.Op
   const abstractElement = getElement(doc, 'abstract');
 
   if (typeof abstractElement?.textContent !== 'string') {
-    logger('warn', 'Did not find abstract', { doi });
-
     return O.none;
   }
 
