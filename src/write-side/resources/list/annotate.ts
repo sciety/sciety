@@ -7,19 +7,24 @@ import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 import { replayListResource } from './replay-list-resource';
 import { ListResource } from './list-resource';
+import { ArticleId } from '../../../types/article-id';
+import { toErrorMessage } from '../../../types/error-message';
 
-const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (listResource: ListResource) => pipe(
+const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListResource['articles'][number]) => (
+  article.annotated
+    ? []
+    : [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: toHtmlFragment(command.content) })]
+);
+
+const findRelevantArticle = (articleId: ArticleId) => (listResource: ListResource) => pipe(
   listResource.articles,
-  RA.filter((article) => article.articleId.value === command.articleId.value),
-  RA.filter((article) => article.annotated),
-  RA.match(
-    () => [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: toHtmlFragment(command.content) })],
-    () => [],
-  ),
+  RA.findFirst((article) => article.articleId.value === articleId.value),
+  E.fromOption(() => toErrorMessage('Article not in list')),
 );
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
   replayListResource(command.listId),
+  E.chain(findRelevantArticle(command.articleId)),
   E.map(createAppropriateEvents(command)),
 );
