@@ -17,6 +17,10 @@ import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: ArticleId) => {
+  if (response.length === 0) {
+    logger('error', 'Empty response from Crossref', { doi, response });
+    return E.left(DE.unavailable);
+  }
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
@@ -27,9 +31,6 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   let server: O.Option<ArticleServer>;
   let title: SanitisedHtmlFragment;
   try {
-    if (response.length === 0) {
-      throw new Error('Empty response from Crossref');
-    }
     const doc = parser.parseFromString(response, 'text/xml');
     authors = getAuthors(doc);
     server = getServer(doc);
