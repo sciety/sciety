@@ -36,7 +36,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     server = getServer(doc);
 
     if (O.isNone(authors)) {
-      logger('error', 'Unable to find authors', { doi, response });
+      logger('warn', 'Unable to find authors', { doi, response });
     }
 
     if (O.isNone(server)) {
