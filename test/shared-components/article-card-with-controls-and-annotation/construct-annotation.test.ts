@@ -102,8 +102,6 @@ describe('construct-annotation', () => {
     });
 
     describe('but the list owner information is not available', () => {
-      const listId = arbitraryListId();
-      const target = { listId, articleId };
       const createListCommand = arbitraryCreateListCommand();
 
       beforeEach(async () => {
@@ -112,10 +110,10 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.createAnnotation({
           content,
           articleId,
-          listId,
+          listId: createListCommand.listId,
         });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(target.listId, target.articleId),
+          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
           O.getOrElseW(shouldNotBeCalled),
         );
       });

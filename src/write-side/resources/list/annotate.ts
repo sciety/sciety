@@ -2,13 +2,16 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { eqAnnotationTarget } from '../../../types/annotation-target';
-import { isEventOfType, constructEvent, EventOfType } from '../../../domain-events';
+import { constructEvent } from '../../../domain-events';
 import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
+import { replayListResource } from './replay-list-resource';
+import { ListResource } from './list-resource';
 
-const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (events: ReadonlyArray<EventOfType<'ArticleInListAnnotated'>>) => pipe(
-  events,
+const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (listResource: ListResource) => pipe(
+  listResource.articles,
+  RA.filter((article) => article.articleId.value === command.articleId.value),
+  RA.filter((article) => article.annotated),
   RA.match(
     () => [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: toHtmlFragment(command.content) })],
     () => [],
@@ -17,17 +20,6 @@ const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (even
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
-  RA.filter(isEventOfType('ArticleInListAnnotated')),
-  RA.filter((event) => eqAnnotationTarget.equals(
-    {
-      articleId: event.articleId,
-      listId: event.listId,
-    },
-    {
-      articleId: command.articleId,
-      listId: command.listId,
-    },
-  )),
-  E.right,
+  replayListResource(command.listId),
   E.map(createAppropriateEvents(command)),
 );
