@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import * as A from 'fp-ts/Array';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
 import { annotationCreatedEventCodec, articleInListAnnotatedEventCodec } from './article-in-list-annotated-event';
 import { articleAddedToListEventCodec } from './article-added-to-list-event';
@@ -110,3 +111,13 @@ A extends EventSpecificFields<T>,
     date: new Date(),
     ...args,
   });
+
+type SubsetOfDomainEvent<Names extends Array<EventName>> = Extract<DomainEvent, { type: Names[number] }>;
+
+export const filterByName = <T extends Array<EventName>>(names: T) => (
+  events: ReadonlyArray<DomainEvent>,
+): ReadonlyArray<SubsetOfDomainEvent<T>> => pipe(
+  events,
+  RA.filter(({ type }) => names.includes(type)),
+  RA.map((filtered) => filtered as SubsetOfDomainEvent<T>),
+);

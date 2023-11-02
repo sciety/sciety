@@ -4,8 +4,9 @@ import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import {
-  EventOfType, isEventOfType,
+  isEventOfType,
   DomainEvent,
+  filterByName,
 } from '../../../domain-events';
 import { ListResource } from './list-resource';
 import { eqArticleId } from '../../../types/article-id';
@@ -16,21 +17,9 @@ type ReplayListResource = (listId: ListId)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<ErrorMessage, ListResource>;
 
-type RelevantEvent =
-| EventOfType<'ListCreated'>
-| EventOfType<'ArticleAddedToList'>
-| EventOfType<'ArticleRemovedFromList'>
-| EventOfType<'ListNameEdited'>
-| EventOfType<'ListDescriptionEdited'>
-| EventOfType<'ArticleInListAnnotated'>;
+type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
-const isARelevantEventForTheWriteModel = (event: DomainEvent): event is RelevantEvent => (
-  isEventOfType('ListCreated')(event)
-  || isEventOfType('ArticleAddedToList')(event)
-  || isEventOfType('ArticleRemovedFromList')(event)
-  || isEventOfType('ListNameEdited')(event)
-  || isEventOfType('ListDescriptionEdited')(event)
-);
+const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'ArticleAddedToList', 'ArticleRemovedFromList', 'ListNameEdited', 'ListDescriptionEdited', 'ArticleInListAnnotated']);
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
@@ -91,7 +80,7 @@ const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: D
 
 export const replayListResource: ReplayListResource = (listId) => (events) => pipe(
   events,
-  RA.filter(isARelevantEventForTheWriteModel),
+  filterToEventsRelevantToWriteModel,
   RA.filter(isAnEventOfThisList(listId)),
   RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), updateResource),
 );
