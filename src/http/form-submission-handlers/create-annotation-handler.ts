@@ -80,6 +80,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
           return;
         }
         context.response.status = StatusCodes.BAD_REQUEST;
+        context.response.type = 'html';
         context.response.body = await redisplayFormPage(
           adapters,
           { listId: command.right.listId, articleId: command.right.articleId },
