@@ -1,6 +1,5 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { annotationTargetCodec } from '../types/annotation-target';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { htmlFragmentCodec } from '../types/html-fragment';
 import { DoiFromString } from '../types/codecs/DoiFromString';
@@ -11,7 +10,10 @@ export const annotationCreatedEventCodec = t.type({
   type: t.literal('AnnotationCreated'),
   date: tt.DateFromISOString,
   content: htmlFragmentCodec,
-  target: annotationTargetCodec,
+  target: t.type({
+    articleId: DoiFromString,
+    listId: listIdCodec,
+  }),
 });
 
 export const articleInListAnnotatedEventCodec = t.type({
