@@ -2,34 +2,14 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { annotate } from '../../../../src/write-side/resources/list';
 import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
-import { EventOfType, constructEvent } from '../../../../src/domain-events';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryHtmlFragment, arbitraryString } from '../../../helpers';
-import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
-
-const arbitraryListCreatedEvent = (): EventOfType<'ListCreated'> => constructEvent('ListCreated')({
-  listId: arbitraryListId(),
-  name: arbitraryString(),
-  description: arbitraryString(),
-  ownerId: arbitraryListOwnerId(),
-});
-
-const arbitraryArticleAddedToListEvent = (): EventOfType<'ArticleAddedToList'> => constructEvent('ArticleAddedToList')({
-  articleId: arbitraryArticleId(),
-  listId: arbitraryListId(),
-});
-
-const arbitraryArticleRemovedFromListEvent = (): EventOfType<'ArticleRemovedFromList'> => constructEvent('ArticleRemovedFromList')({
-  articleId: arbitraryArticleId(),
-  listId: arbitraryListId(),
-});
-
-const arbitraryArticleInListAnnotatedEvent = (): EventOfType<'ArticleInListAnnotated'> => constructEvent('ArticleInListAnnotated')({
-  articleId: arbitraryArticleId(),
-  listId: arbitraryListId(),
-  content: arbitraryHtmlFragment(),
-});
+import {
+  arbitraryListCreatedEvent,
+  arbitraryArticleAddedToListEvent,
+  arbitraryArticleInListAnnotatedEvent,
+  arbitraryArticleRemovedFromListEvent,
+} from '../../../domain-events/list-resource-events.helper';
 
 describe('annotate', () => {
   const articleId = arbitraryArticleId();
