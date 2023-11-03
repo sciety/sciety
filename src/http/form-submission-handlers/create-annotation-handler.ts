@@ -33,7 +33,7 @@ const redisplayFormPage = (
   params: Params,
   user: O.Option<UserDetails>,
 ) => pipe(
-  createAnnotationFormPage(dependencies)(params, true),
+  createAnnotationFormPage(dependencies)(params, 'article-not-in-list'),
   TE.map((formPage) => ({
     title: `Error: ${formPage.title}`,
     content: formPage.content,

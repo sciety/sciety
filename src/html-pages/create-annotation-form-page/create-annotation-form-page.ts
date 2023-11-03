@@ -9,6 +9,7 @@ import { toErrorPage } from './to-error-page';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { listIdCodec } from '../../types/list-id';
 import { externalInputFieldNames } from '../../standards';
+import { UnrecoverableError } from './view-model';
 
 export const paramsCodec = t.type({
   [externalInputFieldNames.articleId]: DoiFromString,
@@ -18,17 +19,17 @@ export const paramsCodec = t.type({
 type Params = t.TypeOf<typeof paramsCodec>;
 
 type CreateAnnotationFormPage = (dependencies: Dependencies)
-=> (params: Params, unrecoverableError?: boolean)
+=> (params: Params, unrecoverableError?: UnrecoverableError)
 => TE.TaskEither<RenderPageError, HtmlPage>;
 
 export const createAnnotationFormPage: CreateAnnotationFormPage = (
   dependencies,
 ) => (
   params,
-  unrecoverableError = false,
+  unrecoverableError,
 ) => pipe(
   params,
-  ({ articleId, listId }) => constructViewModel(articleId, listId, unrecoverableError, dependencies),
+  ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies, unrecoverableError),
   TE.bimap(
     toErrorPage,
     (viewModel) => ({

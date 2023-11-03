@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import { Queries } from '../../read-models';
 import { ExternalQueries } from '../../third-parties';
-import { ViewModel } from './view-model';
+import { ViewModel, UnrecoverableError } from './view-model';
 import { DataError } from '../../types/data-error';
 import * as DE from '../../types/data-error';
 import { ArticleId } from '../../types/article-id';
@@ -32,8 +32,8 @@ const getListName = (dependencies: Dependencies, listId: ListId) => pipe(
 export const constructViewModel = (
   articleId: ArticleId,
   listId: ListId,
-  unrecoverableError: boolean,
   dependencies: Dependencies,
+  unrecoverableError?: UnrecoverableError,
 ): TE.TaskEither<DataError, ViewModel> => pipe(
   {
     articleTitle: getArticleTitle(dependencies, articleId),
@@ -45,6 +45,6 @@ export const constructViewModel = (
     articleId,
     listId,
     pageHeading: toHtmlFragment('Create an annotation'),
-    unrecoverableError,
+    unrecoverableError: O.fromNullable(unrecoverableError),
   })),
 );
