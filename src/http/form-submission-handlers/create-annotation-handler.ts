@@ -17,6 +17,7 @@ import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-a
 import { ExternalQueries } from '../../third-parties';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { UserDetails } from '../../types/user-details';
+import { renderErrorPage } from '../render-error-page';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
@@ -43,7 +44,7 @@ const redisplayFormPage = (
   TE.map(prependErrorToTitleForAccessibility),
   TE.map(standardPageLayout(user)),
   TE.match(
-    (renderPageError) => `Something went wrong when you submitted your annotation. ${renderPageError.message}`,
+    (renderPageError) => `Something went wrong when you submitted your annotation. ${renderErrorPage(renderPageError.message)}`,
     identity,
   ),
 );
