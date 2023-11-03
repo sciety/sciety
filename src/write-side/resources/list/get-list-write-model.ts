@@ -23,7 +23,7 @@ const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'Article
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
-const updateResource = (resource: E.Either<ErrorMessage, ListWriteModel>, event: DomainEvent) => {
+const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, event: DomainEvent) => {
   if (isEventOfType('ListCreated')(event)) {
     return E.right({ articles: [], name: event.name, description: event.description } satisfies ListWriteModel);
   }
@@ -82,5 +82,5 @@ export const getListWriteModel: GetListWriteModel = (listId) => (events) => pipe
   events,
   filterToEventsRelevantToWriteModel,
   RA.filter(isAnEventOfThisList(listId)),
-  RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), updateResource),
+  RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), updateListWriteModel),
 );
