@@ -5,7 +5,7 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructEvent } from '../../../domain-events';
 import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
-import { replayListResource } from './replay-list-resource';
+import { getListWriteModel } from './get-list-write-model';
 import { ListWriteModel } from './list-write-model';
 import { ArticleId } from '../../../types/article-id';
 import { toErrorMessage } from '../../../types/error-message';
@@ -24,7 +24,7 @@ const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteMo
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
-  replayListResource(command.listId),
+  getListWriteModel(command.listId),
   E.chain(findRelevantArticle(command.articleId)),
   E.map(createAppropriateEvents(command)),
 );

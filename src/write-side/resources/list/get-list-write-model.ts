@@ -13,7 +13,7 @@ import { eqArticleId } from '../../../types/article-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
 
-type ReplayListResource = (listId: ListId)
+type GetListWriteModel = (listId: ListId)
 => (events: ReadonlyArray<DomainEvent>)
 => E.Either<ErrorMessage, ListWriteModel>;
 
@@ -78,7 +78,7 @@ const updateResource = (resource: E.Either<ErrorMessage, ListWriteModel>, event:
   return resource;
 };
 
-export const replayListResource: ReplayListResource = (listId) => (events) => pipe(
+export const getListWriteModel: GetListWriteModel = (listId) => (events) => pipe(
   events,
   filterToEventsRelevantToWriteModel,
   RA.filter(isAnEventOfThisList(listId)),

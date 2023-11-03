@@ -6,7 +6,7 @@ import { constructEvent } from '../../../domain-events';
 import { ListWriteModel } from './list-write-model';
 import { ArticleId } from '../../../types/article-id';
 import { ListId } from '../../../types/list-id';
-import { replayListResource } from './replay-list-resource';
+import { getListWriteModel } from './get-list-write-model';
 import { RemoveArticleFromListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
@@ -26,6 +26,6 @@ const createAppropriateEvents = (command: Command) => (listResource: ListWriteMo
 
 export const removeArticle: ResourceAction<RemoveArticleFromListCommand> = (command) => (events) => pipe(
   events,
-  replayListResource(command.listId),
+  getListWriteModel(command.listId),
   E.map(createAppropriateEvents(command)),
 );

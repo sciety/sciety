@@ -5,7 +5,7 @@ import * as E from 'fp-ts/Either';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructEvent } from '../../../domain-events';
 import { ListWriteModel } from './list-write-model';
-import { replayListResource } from './replay-list-resource';
+import { getListWriteModel } from './get-list-write-model';
 import { ResourceAction } from '../resource-action';
 import { AddArticleToListCommand } from '../../commands';
 
@@ -41,6 +41,6 @@ const createAppropriateEvents = (command: AddArticleToListCommand) => (listResou
 
 export const addArticle: ResourceAction<AddArticleToListCommand> = (command) => (events) => pipe(
   events,
-  replayListResource(command.listId),
+  getListWriteModel(command.listId),
   E.map(createAppropriateEvents(command)),
 );

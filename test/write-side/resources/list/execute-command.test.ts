@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
 import { executeCommand } from '../../../../src/write-side/resources/list/execute-command';
-import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
+import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
@@ -31,7 +31,7 @@ describe('execute-command', () => {
           ownerId: arbitraryListOwnerId(),
         }),
       ],
-      replayListResource(listId),
+      getListWriteModel(listId),
       E.map(executeCommand(command)),
       E.getOrElseW(shouldNotBeCalled),
     );
@@ -58,7 +58,7 @@ describe('execute-command', () => {
           ownerId: arbitraryListOwnerId(),
         }),
       ],
-      replayListResource(listId),
+      getListWriteModel(listId),
       E.map(executeCommand(command)),
       E.getOrElseW(shouldNotBeCalled),
     );
@@ -84,7 +84,7 @@ describe('execute-command', () => {
             ownerId: arbitraryListOwnerId(),
           }),
         ],
-        replayListResource(listId),
+        getListWriteModel(listId),
         E.map(executeCommand(command)),
         E.getOrElseW(shouldNotBeCalled),
       );
@@ -111,7 +111,7 @@ describe('execute-command', () => {
           ownerId: arbitraryListOwnerId(),
         }),
       ],
-      replayListResource(listId),
+      getListWriteModel(listId),
       E.map(executeCommand(command)),
       E.getOrElseW(shouldNotBeCalled),
     );

@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
-import { replayListResource } from '../../../../src/write-side/resources/list/replay-list-resource';
+import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model';
 import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 
-describe('replay-list-resource', () => {
+describe('get-list-write-model', () => {
   const listId = arbitraryListId();
   const articleId = arbitraryArticleId();
 
@@ -26,7 +26,7 @@ describe('replay-list-resource', () => {
           }),
           constructEvent('ArticleAddedToList')({ articleId, listId }),
         ],
-        replayListResource(listId),
+        getListWriteModel(listId),
       );
 
       it('the article id is in the resource', () => {
@@ -57,7 +57,7 @@ describe('replay-list-resource', () => {
             ownerId: arbitraryListOwnerId(),
           }),
         ],
-        replayListResource(listId),
+        getListWriteModel(listId),
       );
 
       it('the article id is not in the resource', () => {
@@ -85,7 +85,7 @@ describe('replay-list-resource', () => {
           constructEvent('ArticleAddedToList')({ articleId, listId }),
           constructEvent('ArticleRemovedFromList')({ articleId, listId }),
         ],
-        replayListResource(listId),
+        getListWriteModel(listId),
       );
 
       it('the article id is not in the resource', () => {
@@ -112,7 +112,7 @@ describe('replay-list-resource', () => {
           }),
           constructEvent('ListNameEdited')({ listId, name: listName }),
         ],
-        replayListResource(listId),
+        getListWriteModel(listId),
       );
 
       it('the list name is in the resource', () => {
@@ -135,7 +135,7 @@ describe('replay-list-resource', () => {
           }),
           constructEvent('ListDescriptionEdited')({ listId, description: listDescription }),
         ],
-        replayListResource(listId),
+        getListWriteModel(listId),
       );
 
       it('the list name remains the same', () => {
@@ -152,7 +152,7 @@ describe('replay-list-resource', () => {
     const result = pipe(
       [
       ],
-      replayListResource(listId),
+      getListWriteModel(listId),
     );
 
     it('fails', () => {
