@@ -133,6 +133,13 @@ describe('annotate', () => {
   });
 
   describe('when the list does not exist', () => {
-    it.todo('fails');
+    const result = pipe(
+      [],
+      annotate(annotateArticleInListCommand),
+    );
+
+    it('fails', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });
