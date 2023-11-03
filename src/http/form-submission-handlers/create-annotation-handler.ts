@@ -56,8 +56,13 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
         context.response.body = 'Only the list owner is allowed to annotate their list.';
       },
       async () => {
-        await handleCreateAnnotationCommand(adapters)(context.request.body)();
-        context.redirect(`/lists/${command.right.listId}`);
+        const commandResult = await handleCreateAnnotationCommand(adapters)(context.request.body)();
+        if (E.isRight(commandResult)) {
+          context.redirect(`/lists/${command.right.listId}`);
+          return;
+        }
+        context.response.status = StatusCodes.BAD_REQUEST;
+        context.response.body = commandResult.left;
       },
     ),
   );
