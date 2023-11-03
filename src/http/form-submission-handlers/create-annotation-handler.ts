@@ -4,14 +4,18 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
+import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { Queries } from '../../read-models';
 import { UserId } from '../../types/user-id';
 import { GroupId } from '../../types/group-id';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { annotateArticleInListCommandCodec } from '../../write-side/commands';
+import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-annotation-form-page';
+import { ExternalQueries } from '../../third-parties';
 
-type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies;
+type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
 const scietyAdminUserId = 'auth0|650d543de75a96413ce859b1' as UserId;
 
@@ -20,7 +24,19 @@ const isUserAllowedToCreateAnnotation = (
   listOwnerId: UserId | GroupId,
 ) => userId === listOwnerId || userId === scietyAdminUserId;
 
-const redisplayFormPage = () => 'Something went wrong when you submitted your annotation.';
+type Params = t.TypeOf<typeof paramsCodec>;
+
+const redisplayFormPage = (
+  dependencies: Dependencies,
+  params: Params,
+) => pipe(
+  createAnnotationFormPage(dependencies)(params),
+  TE.map((page) => page.content),
+  TE.match(
+    () => 'Something went wrong when you submitted your annotation.',
+    () => 'Something went wrong when you submitted your annotation.',
+  ),
+);
 
 type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
 
@@ -64,7 +80,10 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
           return;
         }
         context.response.status = StatusCodes.BAD_REQUEST;
-        context.response.body = redisplayFormPage();
+        context.response.body = await redisplayFormPage(
+          adapters,
+          { listId: command.right.listId, articleId: command.right.articleId },
+        )();
       },
     ),
   );
