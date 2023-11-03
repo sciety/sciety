@@ -20,6 +20,8 @@ const isUserAllowedToCreateAnnotation = (
   listOwnerId: UserId | GroupId,
 ) => userId === listOwnerId || userId === scietyAdminUserId;
 
+const redisplayFormPage = () => 'Something went wrong when you submitted your annotation.';
+
 type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
 
 export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context) => {
@@ -62,7 +64,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
           return;
         }
         context.response.status = StatusCodes.BAD_REQUEST;
-        context.response.body = commandResult.left;
+        context.response.body = redisplayFormPage();
       },
     ),
   );
