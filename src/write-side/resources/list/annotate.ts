@@ -6,17 +6,17 @@ import { constructEvent } from '../../../domain-events';
 import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 import { replayListResource } from './replay-list-resource';
-import { ListResource } from './list-resource';
+import { ListWriteModel } from './list-write-model';
 import { ArticleId } from '../../../types/article-id';
 import { toErrorMessage } from '../../../types/error-message';
 
-const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListResource['articles'][number]) => (
+const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['articles'][number]) => (
   article.annotated
     ? []
     : [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: toHtmlFragment(command.content) })]
 );
 
-const findRelevantArticle = (articleId: ArticleId) => (listResource: ListResource) => pipe(
+const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteModel) => pipe(
   listResource.articles,
   RA.findFirst((article) => article.articleId.value === articleId.value),
   E.fromOption(() => toErrorMessage('Article not in list')),

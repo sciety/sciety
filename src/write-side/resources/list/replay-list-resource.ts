@@ -8,14 +8,14 @@ import {
   DomainEvent,
   filterByName,
 } from '../../../domain-events';
-import { ListResource } from './list-resource';
+import { ListWriteModel } from './list-write-model';
 import { eqArticleId } from '../../../types/article-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
 
 type ReplayListResource = (listId: ListId)
 => (events: ReadonlyArray<DomainEvent>)
-=> E.Either<ErrorMessage, ListResource>;
+=> E.Either<ErrorMessage, ListWriteModel>;
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
@@ -23,15 +23,15 @@ const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'Article
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
-const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: DomainEvent) => {
+const updateResource = (resource: E.Either<ErrorMessage, ListWriteModel>, event: DomainEvent) => {
   if (isEventOfType('ListCreated')(event)) {
-    return E.right({ articles: [], name: event.name, description: event.description } satisfies ListResource);
+    return E.right({ articles: [], name: event.name, description: event.description } satisfies ListWriteModel);
   }
   if (isEventOfType('ArticleAddedToList')(event)) {
     pipe(
       resource,
       E.map((listResource) => {
-        listResource.articles.push({ articleId: event.articleId, annotated: false } satisfies ListResource['articles'][number]);
+        listResource.articles.push({ articleId: event.articleId, annotated: false } satisfies ListWriteModel['articles'][number]);
         return undefined;
       }),
     );
@@ -59,20 +59,20 @@ const updateResource = (resource: E.Either<ErrorMessage, ListResource>, event: D
       E.map((listResource) => pipe(
         listResource.articles,
         A.filter((article) => !eqArticleId.equals(article.articleId, event.articleId)),
-        (ids) => ({ ...listResource, articles: ids } satisfies ListResource),
+        (ids) => ({ ...listResource, articles: ids } satisfies ListWriteModel),
       )),
     );
   }
   if (isEventOfType('ListNameEdited')(event)) {
     return pipe(
       resource,
-      E.map((listResource) => ({ ...listResource, name: event.name } satisfies ListResource)),
+      E.map((listResource) => ({ ...listResource, name: event.name } satisfies ListWriteModel)),
     );
   }
   if (isEventOfType('ListDescriptionEdited')(event)) {
     return pipe(
       resource,
-      E.map((listResource) => ({ ...listResource, description: event.description } satisfies ListResource)),
+      E.map((listResource) => ({ ...listResource, description: event.description } satisfies ListWriteModel)),
     );
   }
   return resource;

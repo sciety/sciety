@@ -1,18 +1,18 @@
 import { EditListDetailsCommand } from '../../commands';
 import { DomainEvent, constructEvent } from '../../../domain-events';
-import { ListResource } from './list-resource';
+import { ListWriteModel } from './list-write-model';
 
 type ExecuteCommand = (command: EditListDetailsCommand)
-=> (listResource: ListResource)
+=> (listResource: ListWriteModel)
 => ReadonlyArray<DomainEvent>;
 
-const handleEditingOfName = (listResource: ListResource, command: EditListDetailsCommand) => (
+const handleEditingOfName = (listResource: ListWriteModel, command: EditListDetailsCommand) => (
   (listResource.name === command.name)
     ? []
     : [constructEvent('ListNameEdited')({ listId: command.listId, name: command.name })]
 );
 
-const handleEditingOfDescription = (listResource: ListResource, command: EditListDetailsCommand) => (
+const handleEditingOfDescription = (listResource: ListWriteModel, command: EditListDetailsCommand) => (
   (listResource.description === command.description)
     ? []
     : [constructEvent('ListDescriptionEdited')({ listId: command.listId, description: command.description })]

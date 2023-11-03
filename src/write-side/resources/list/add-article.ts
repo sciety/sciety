@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructEvent } from '../../../domain-events';
-import { ListResource } from './list-resource';
+import { ListWriteModel } from './list-write-model';
 import { replayListResource } from './replay-list-resource';
 import { ResourceAction } from '../resource-action';
 import { AddArticleToListCommand } from '../../commands';
@@ -30,7 +30,7 @@ const constructEvents = (command: AddArticleToListCommand) => (
     ]
 );
 
-const createAppropriateEvents = (command: AddArticleToListCommand) => (listResource: ListResource) => pipe(
+const createAppropriateEvents = (command: AddArticleToListCommand) => (listResource: ListWriteModel) => pipe(
   listResource.articles,
   RA.some((article) => article.articleId.value === command.articleId.value),
   B.fold(
