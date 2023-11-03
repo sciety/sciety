@@ -5,7 +5,7 @@ import { recordSubjectArea } from '../../../../src/write-side/resources/article'
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper';
 
 describe('execute-command', () => {
   const articleId = arbitraryArticleId();

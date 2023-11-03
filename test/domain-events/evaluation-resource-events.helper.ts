@@ -1,5 +1,5 @@
 import { EventOfType, constructEvent } from '../../src/domain-events';
-import { arbitraryDate } from '../helpers';
+import { arbitraryDate, arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
 import { arbitraryEvaluationType } from '../types/evaluation-type.helper';
@@ -13,4 +13,15 @@ export const arbitraryEvaluationPublicationRecordedEvent = (): EventOfType<'Eval
   publishedAt: arbitraryDate(),
   date: arbitraryDate(),
   evaluationType: arbitraryEvaluationType(),
+});
+
+export const arbitraryEvaluationRemovalRecordedEvent = (): EventOfType<'EvaluationRemovalRecorded'> => constructEvent('EvaluationRemovalRecorded')({
+  evaluationLocator: arbitraryEvaluationLocator(),
+  reason: 'published-on-incorrect-article',
+});
+
+export const arbitraryEvaluationUpdatedEvent = (): EventOfType<'EvaluationUpdated'> => constructEvent('EvaluationUpdated')({
+  evaluationLocator: arbitraryEvaluationLocator(),
+  evaluationType: arbitraryEvaluationType(),
+  authors: [arbitraryString()],
 });

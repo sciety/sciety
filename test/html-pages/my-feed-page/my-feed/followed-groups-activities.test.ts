@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../../types/group-id.helper';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper';
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {

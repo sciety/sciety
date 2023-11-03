@@ -3,12 +3,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-publication-recorded-event.helper';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event';
 import { getActivityForArticle } from '../../../src/read-models/article-activity/get-activity-for-article';
-import { arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-removal-recorded-event-helper';
 import { arbitraryDate } from '../../helpers';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => pipe(
