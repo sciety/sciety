@@ -9,4 +9,5 @@ export type ViewModel = {
   articleTitle: SanitisedHtmlFragment,
   listName: string,
   pageHeading: HtmlFragment,
+  unrecoverableError: boolean,
 };

@@ -21,9 +21,14 @@ type CreateAnnotationFormPage = (dependencies: Dependencies)
 => (params: Params, unrecoverableError?: boolean)
 => TE.TaskEither<RenderPageError, HtmlPage>;
 
-export const createAnnotationFormPage: CreateAnnotationFormPage = (dependencies) => (params) => pipe(
+export const createAnnotationFormPage: CreateAnnotationFormPage = (
+  dependencies,
+) => (
   params,
-  ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies),
+  unrecoverableError = false,
+) => pipe(
+  params,
+  ({ articleId, listId }) => constructViewModel(articleId, listId, unrecoverableError, dependencies),
   TE.bimap(
     toErrorPage,
     (viewModel) => ({

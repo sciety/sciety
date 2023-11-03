@@ -32,6 +32,7 @@ const getListName = (dependencies: Dependencies, listId: ListId) => pipe(
 export const constructViewModel = (
   articleId: ArticleId,
   listId: ListId,
+  unrecoverableError: boolean,
   dependencies: Dependencies,
 ): TE.TaskEither<DataError, ViewModel> => pipe(
   {
@@ -44,5 +45,6 @@ export const constructViewModel = (
     articleId,
     listId,
     pageHeading: toHtmlFragment('Create an annotation'),
+    unrecoverableError,
   })),
 );

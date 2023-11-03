@@ -17,6 +17,7 @@ import { arbitraryArticleDetails } from '../../third-parties/external-queries.he
 describe('construct-view-model', () => {
   let framework: TestFramework;
   let result: E.Either<unknown, ViewModel>;
+  const unrecoverableError = false;
   const setUpAUserList = async () => {
     const createUserAccountCommand = arbitraryCreateUserAccountCommand();
     await framework.commandHelpers.createUserAccount(createUserAccountCommand);
@@ -38,6 +39,7 @@ describe('construct-view-model', () => {
         constructViewModel(
           arbitraryArticleId(),
           userList.id,
+          unrecoverableError,
           {
             ...framework.dependenciesForViews,
             fetchArticle: () => TE.right({
@@ -65,6 +67,7 @@ describe('construct-view-model', () => {
       result = await constructViewModel(
         arbitraryArticleId(),
         userList.id,
+        unrecoverableError,
         {
           ...framework.dependenciesForViews,
           fetchArticle: () => TE.left(DE.notFound),
@@ -83,6 +86,7 @@ describe('construct-view-model', () => {
         constructViewModel(
           arbitraryArticleId(),
           arbitraryListId(),
+          unrecoverableError,
           framework.dependenciesForViews,
         ),
       )();

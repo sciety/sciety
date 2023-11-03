@@ -3,8 +3,11 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 import { externalInputFieldNames } from '../../standards';
 
+const errorSummary = '';
+
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header">
+    ${viewModel.unrecoverableError ? errorSummary : ''}
     <h1>${viewModel.pageHeading}</h1>
   </header>
   <form class="standard-form" method="POST" action="/annotations/create-annotation">
