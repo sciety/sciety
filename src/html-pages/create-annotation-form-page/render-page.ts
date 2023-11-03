@@ -3,7 +3,12 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 import { externalInputFieldNames } from '../../standards';
 
-const errorSummary = '';
+const errorSummary = `
+  <div role='alert' class='error-summary'>
+    <h3>Something went wrong</h3>
+    <p>The article you are trying to annotate is not currently part of the list.</p>
+  </div>
+`;
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header">
