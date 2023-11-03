@@ -34,7 +34,7 @@ const redisplayFormPage = (
   params: Params,
   user: O.Option<UserDetails>,
 ) => pipe(
-  createAnnotationFormPage(dependencies)(params),
+  createAnnotationFormPage(dependencies)(params, true),
   TE.map((formPage) => ({
     title: `Error: ${formPage.title}`,
     content: toHtmlFragment('<p>Something went wrong when you submitted your annotation.</p>'),

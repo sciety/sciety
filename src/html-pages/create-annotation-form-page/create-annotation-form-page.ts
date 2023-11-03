@@ -18,7 +18,7 @@ export const paramsCodec = t.type({
 type Params = t.TypeOf<typeof paramsCodec>;
 
 type CreateAnnotationFormPage = (dependencies: Dependencies)
-=> (params: Params)
+=> (params: Params, unrecoverableError?: boolean)
 => TE.TaskEither<RenderPageError, HtmlPage>;
 
 export const createAnnotationFormPage: CreateAnnotationFormPage = (dependencies) => (params) => pipe(
