@@ -33,7 +33,7 @@ const redisplayFormPage = (
   createAnnotationFormPage(dependencies)(params),
   TE.map((page) => page.content),
   TE.match(
-    () => 'Something went wrong when you submitted your annotation.',
+    (renderPageError) => `Something went wrong when you submitted your annotation. ${renderPageError.message}`,
     () => 'Something went wrong when you submitted your annotation.',
   ),
 );
