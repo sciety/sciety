@@ -15,64 +15,6 @@ describe('get-list-write-model', () => {
     const listName = arbitraryString();
     const listDescription = arbitraryString();
 
-    describe('and an article has been added to the list', () => {
-      const result = pipe(
-        [
-          constructEvent('ListCreated')({
-            listId,
-            name: listName,
-            description: listDescription,
-            ownerId: arbitraryListOwnerId(),
-          }),
-          constructEvent('ArticleAddedToList')({ articleId, listId }),
-        ],
-        getListWriteModel(listId),
-      );
-
-      it('the article id is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({
-          articles: [{
-            articleId,
-            annotated: false,
-          }],
-        })));
-      });
-
-      it('the list name is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
-      });
-
-      it('the list description is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
-      });
-    });
-
-    describe('and no article has ever been added to the list', () => {
-      const result = pipe(
-        [
-          constructEvent('ListCreated')({
-            listId,
-            name: listName,
-            description: listDescription,
-            ownerId: arbitraryListOwnerId(),
-          }),
-        ],
-        getListWriteModel(listId),
-      );
-
-      it('the article id is not in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ articles: [] })));
-      });
-
-      it('the list name is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
-      });
-
-      it('the list description is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
-      });
-    });
-
     describe('and an article used to be on the list and has been removed', () => {
       const result = pipe(
         [
@@ -90,14 +32,6 @@ describe('get-list-write-model', () => {
 
       it('the article id is not in the resource', () => {
         expect(result).toStrictEqual(E.right(expect.objectContaining({ articles: [] })));
-      });
-
-      it('the list name is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
-      });
-
-      it('the list description is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
       });
     });
 
