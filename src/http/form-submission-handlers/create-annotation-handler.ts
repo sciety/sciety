@@ -9,6 +9,7 @@ import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { Queries } from '../../read-models';
 import { UserId } from '../../types/user-id';
+import { HtmlPage } from '../../types/html-page';
 import { GroupId } from '../../types/group-id';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { annotateArticleInListCommandCodec } from '../../write-side/commands';
@@ -28,16 +29,18 @@ const isUserAllowedToCreateAnnotation = (
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
+const prependErrorToTitleForAccessibility = (formPage: HtmlPage) => ({
+  title: `Error: ${formPage.title}`,
+  content: formPage.content,
+});
+
 const redisplayFormPage = (
   dependencies: Dependencies,
   params: Params,
   user: O.Option<UserDetails>,
 ) => pipe(
   createAnnotationFormPage(dependencies)(params, 'article-not-in-list'),
-  TE.map((formPage) => ({
-    title: `Error: ${formPage.title}`,
-    content: formPage.content,
-  })),
+  TE.map(prependErrorToTitleForAccessibility),
   TE.map(standardPageLayout(user)),
   TE.match(
     (renderPageError) => `Something went wrong when you submitted your annotation. ${renderPageError.message}`,
