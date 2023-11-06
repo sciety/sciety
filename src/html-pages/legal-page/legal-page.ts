@@ -28,6 +28,10 @@ export const legalPage: HtmlPage = {
         Evaluation content is created by the Group named alongside the evaluation content
         and is not owned by eLife or its licensors, and is subject to the licence terms shown on the Group's page.
       </p>
+      <h3>Use license</h3>
+      <p>
+        To provide article recommendations we make use of the <a href="https://www.semanticscholar.org/">Semantic Scholar Paper Corpus</a> (licensed under <a href="https://opendatacommons.org/licenses/by/1-0/">ODC-BY</a>). Semantic Scholar compiles hundreds of millions of published papers across many scientific fields.
+      </p>
 
       <h2>Privacy notice</h2>
 
