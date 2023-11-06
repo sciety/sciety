@@ -38,16 +38,24 @@ const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   }),
 );
 
-const pageToSuccessResponse = (
-  user: O.Option<UserDetails>,
-  pageLayout: PageLayout,
-) => (page: HtmlPage) => ({
+const pageToSuccessResponse = (user: O.Option<UserDetails>, pageLayout: PageLayout) => (page: HtmlPage) => ({
   body: pageLayout(user)(page),
   status: StatusCodes.OK,
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const constructHtmlResponse = (user: O.Option<UserDetails>, pageLayout: PageLayout) => E.fold(
-  toErrorResponse(user),
-  pageToSuccessResponse(user, pageLayout),
+type HtmlResponse = {
+  body: string,
+  status: StatusCodes,
+};
+
+type ConstructHtmlResponse = (userDetails: O.Option<UserDetails>, pageLayout: PageLayout)
+=> (renderedPage: E.Either<RenderPageError, HtmlPage>)
+=> HtmlResponse;
+
+export const constructHtmlResponse: ConstructHtmlResponse = (userDetails, pageLayout) => (renderedPage) => pipe(
+  renderedPage,
+  E.fold(
+    toErrorResponse(userDetails),
+    pageToSuccessResponse(userDetails, pageLayout),
+  ),
 );
