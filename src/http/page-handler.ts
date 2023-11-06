@@ -12,6 +12,7 @@ import { RenderPageError } from '../types/render-page-error';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 import { UserDetails } from '../types/user-details';
 import { ConstructPage } from '../html-pages/construct-page';
+import { PageLayout } from '../html-pages/page-layout';
 
 type ErrorToWebPage = (
   user: O.Option<UserDetails>,
@@ -21,8 +22,6 @@ type ErrorToWebPage = (
   body: string,
   status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
 };
-
-type PageLayout = (user: O.Option<UserDetails>) => (page: HtmlPage) => string;
 
 const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   renderErrorPage(error.message),

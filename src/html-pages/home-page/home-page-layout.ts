@@ -4,10 +4,9 @@ import { googleTagManagerNoScript } from '../../shared-components/analytics';
 import { head } from '../../shared-components/head';
 import { siteFooter } from '../../shared-components/site-footer';
 import { siteHeader } from '../../shared-components/site-header';
-import { HtmlPage } from '../../types/html-page';
-import { UserDetails } from '../../types/user-details';
+import { PageLayout } from '../page-layout';
 
-export const homePageLayout = (user: O.Option<UserDetails>) => (page: HtmlPage): string => `<!doctype html>
+export const homePageLayout: PageLayout = (user) => (page) => `<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(
     pipe(
