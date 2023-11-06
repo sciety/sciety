@@ -38,7 +38,7 @@
 @mixin body () {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(16px);
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
 @mixin button () {
