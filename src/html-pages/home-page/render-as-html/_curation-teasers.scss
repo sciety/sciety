@@ -126,7 +126,6 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .curation-teaser__quote {
-  @include typography.curation-statement();
   @include _clamp-to-max-number-of-lines(10);
 
   margin: 0;

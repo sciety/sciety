@@ -87,7 +87,6 @@ $_card-padding: 16px;
     $quotation-mark-font-size: 32px,
     $close-quotation-bottom-offset: -8px,
   );
-  @include typography.curation-statement();
   padding-left: functions.px-to-rem($_card-padding);
   padding-right: functions.px-to-rem($_card-padding);
 }
