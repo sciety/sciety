@@ -11,7 +11,7 @@ import { createUserAccountFormPageLayout } from '../../html-pages/create-user-ac
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
-import { setResponse } from '../set-response';
+import { setResponseOnContext } from '../set-response-on-context';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
@@ -28,7 +28,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
           E.right,
           constructHtmlResponse(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
         );
-        setResponse(htmlResponse, context);
+        setResponseOnContext(htmlResponse, context);
       },
       () => redirectToAuthenticationDestination(context),
     ),

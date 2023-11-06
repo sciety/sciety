@@ -7,7 +7,7 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './au
 import { ConstructPage } from '../html-pages/construct-page';
 import { PageLayout } from '../html-pages/page-layout';
 import { constructHtmlResponse } from '../html-pages/construct-html-response';
-import { setResponse } from './set-response';
+import { setResponseOnContext } from './set-response-on-context';
 
 export const pageHandler = (
   adapters: GetLoggedInScietyUserPorts,
@@ -37,7 +37,7 @@ export const pageHandler = (
     T.map(constructHtmlResponse(getLoggedInScietyUser(adapters, context), pageLayout)),
   )();
 
-  setResponse(response, context);
+  setResponseOnContext(response, context);
 
   await next();
 };

@@ -5,7 +5,7 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 import { constructHtmlResponse } from '../html-pages/construct-html-response';
 import * as DE from '../types/data-error';
-import { setResponse } from './set-response';
+import { setResponseOnContext } from './set-response-on-context';
 
 export const routeNotFound = (adapters: GetLoggedInScietyUserPorts): Middleware => async (context, next) => {
   if (context._matchedRoute === undefined) {
@@ -18,7 +18,7 @@ export const routeNotFound = (adapters: GetLoggedInScietyUserPorts): Middleware 
         message: toHtmlFragment('Page not found.'),
       }),
     );
-    setResponse(htmlResponse, context);
+    setResponseOnContext(htmlResponse, context);
   }
   await next();
 };

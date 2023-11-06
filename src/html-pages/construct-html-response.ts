@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { toHtmlFragment, HtmlFragment } from '../types/html-fragment';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
 import { HtmlPage } from '../types/html-page';
@@ -16,19 +17,20 @@ const toErrorResponse = (user: O.Option<UserDetails>) => (error: RenderPageError
     content,
   }),
   standardPageLayout(user),
-  (content) => ({
-    content,
+  toHtmlFragment,
+  (document) => ({
+    document,
     error: O.some(error.type),
   }),
 );
 
 const pageToSuccessResponse = (user: O.Option<UserDetails>, pageLayout: PageLayout) => (page: HtmlPage) => ({
-  content: pageLayout(user)(page),
+  document: toHtmlFragment(pageLayout(user)(page)),
   error: O.none,
 });
 
 export type HtmlResponse = {
-  content: string,
+  document: HtmlFragment,
   error: O.Option<DE.DataError>,
 };
 
