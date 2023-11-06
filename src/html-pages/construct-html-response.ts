@@ -27,7 +27,7 @@ const pageToSuccessResponse = (user: O.Option<UserDetails>, pageLayout: PageLayo
   error: O.none,
 });
 
-type HtmlResponse = {
+export type HtmlResponse = {
   content: string,
   error: O.Option<DE.DataError>,
 };

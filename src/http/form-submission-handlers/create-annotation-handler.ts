@@ -7,7 +7,6 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
-import * as DE from '../../types/data-error';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { Queries } from '../../read-models';
 import { UserId } from '../../types/user-id';
@@ -21,6 +20,7 @@ import { standardPageLayout } from '../../shared-components/standard-page-layout
 import { UserDetails } from '../../types/user-details';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { getHttpStatusCode } from '../get-http-status-code';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
@@ -100,19 +100,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
           { listId: command.right.listId, articleId: command.right.articleId },
           loggedInUser,
         )();
-        context.response.status = pipe(
-          htmlResponse.error,
-          O.match(
-            () => StatusCodes.OK,
-            (error) => pipe(
-              error,
-              DE.match({
-                notFound: () => StatusCodes.NOT_FOUND,
-                unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
-              }),
-            ),
-          ),
-        );
+        context.response.status = getHttpStatusCode(htmlResponse);
         context.response.type = 'html';
         context.response.body = htmlResponse.content;
       },

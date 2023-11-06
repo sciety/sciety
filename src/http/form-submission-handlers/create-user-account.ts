@@ -3,7 +3,6 @@ import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
 } from '../authentication-and-logging-in-of-sciety-users';
@@ -12,6 +11,7 @@ import { createUserAccountFormPageLayout } from '../../html-pages/create-user-ac
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
+import { getHttpStatusCode } from '../get-http-status-code';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
@@ -20,7 +20,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     validateAndExecuteCommand(context, dependencies),
     TE.bimap(
       (formDetails) => {
-        const page = pipe(
+        const htmlResponse = pipe(
           {
             errorSummary: O.some(''),
           },
@@ -28,9 +28,9 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
           E.right,
           constructHtmlResponse(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
         );
-        context.response.status = StatusCodes.OK;
+        context.response.status = getHttpStatusCode(htmlResponse);
         context.response.type = 'html';
-        context.response.body = page.content;
+        context.response.body = htmlResponse.content;
       },
       () => redirectToAuthenticationDestination(context),
     ),
