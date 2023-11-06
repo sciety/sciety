@@ -20,7 +20,7 @@ import { standardPageLayout } from '../../shared-components/standard-page-layout
 import { UserDetails } from '../../types/user-details';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { getHttpStatusCode } from '../get-http-status-code';
+import { setResponse } from '../set-response';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
@@ -100,9 +100,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
           { listId: command.right.listId, articleId: command.right.articleId },
           loggedInUser,
         )();
-        context.response.status = getHttpStatusCode(htmlResponse);
-        context.response.type = 'html';
-        context.response.body = htmlResponse.content;
+        setResponse(htmlResponse, context);
       },
     ),
   );
