@@ -18,7 +18,7 @@ export const renderGroups = (viewModel: GroupsViewModel): HtmlFragment => pipe(
   ${listContent}
   </ul>
   <div class="home-page-groups__button_wrapper">
-    <a href="/groups" class="home-page-groups__button">See all evaluating groups</a>
+    <a href="/groups" class="home-page-groups__button">See all participating groups</a>
   </div>
 </section>
 `,
