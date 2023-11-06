@@ -1,14 +1,18 @@
 ## Summary
 
-eLife reviews selected preprints in all areas of biology and medicine.
+eLife reviews preprints in the life sciences and medicine, and is committed to improving peer review to better convey the assessments made by editors and reviewers. Our approach brings together the immediacy and openness of a preprint with the scrutiny of peer review by experts.
 
 ## Evaluation model
 
-eLife’s editorial process produces two outputs: i) an assessment by peers designed to be posted alongside a preprint for the benefit of readers; ii) detailed feedback on the manuscript for the authors, including requests for revisions and suggestions for improvement. 
+Our approach brings together the immediacy and openness of a preprint with the scrutiny of peer review by experts.
 
-The assessment by peers includes an evaluation summary that captures the major conclusions of the review, and public reviews from each of the peer reviewers that outlines the strengths and weaknesses of the manuscript.
+- We only review articles that have been made available as preprints.
+- Editors who are active researchers decide which preprints are reviewed.
+- Editors and reviewers discuss the reviews with each other.
+- There is no accept/reject decision after peer review: rather, every article we review is published on the eLife website as a Reviewed Preprint that includes an eLife assessment, public reviews, and a response from the authors (if available).
+- We do not artificially limit the number of articles we review or publish.
+- At any point following peer review, authors can choose to have their Reviewed Preprint published as a regular journal article (known as the Version of Record) to mark the end of the publishing process.
 
-eLife’s Sciety feed includes peer reviews for preprints reviewed by the journal. Some of these preprints go on to be revised and published in eLife, while others will be published in other journals. Authors have the option to delay having the public reviews posted until their work has been accepted for publication by another journal.
 
 Read more [about eLife](https://elifesciences.org/about).
 
@@ -27,7 +31,7 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
     <dt>Inclusion of author response</dt>
     <dd>Yes</dd>
     <dt>Decision</dt>
-    <dd>Binary decision</dd>
+    <dd>Other scale or rating</dd>
     <dt>Review coverage</dt>
     <dd>Complete paper</dd>
     <dt>Reviewer identity known to</dt>
