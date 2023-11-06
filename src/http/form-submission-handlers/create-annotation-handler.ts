@@ -18,7 +18,7 @@ import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-a
 import { ExternalQueries } from '../../third-parties';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { UserDetails } from '../../types/user-details';
-import { toWebPage } from '../page-handler';
+import { toWebPage } from '../../html-pages/to-web-page';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;

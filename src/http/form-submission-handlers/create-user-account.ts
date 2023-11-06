@@ -8,7 +8,7 @@ import {
 } from '../authentication-and-logging-in-of-sciety-users';
 import { renderFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
-import { toWebPage } from '../page-handler';
+import { toWebPage } from '../../html-pages/to-web-page';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
 
