@@ -1,4 +1,6 @@
 import { pipe } from 'fp-ts/function';
+import * as D from 'fp-ts/Date';
+import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { GroupLinkAsTextViewModel } from '../group-link/group-link-as-text-view-model';
@@ -15,6 +17,12 @@ const isNotCurationStatement = (evaluation: RecordedEvaluation) => pipe(
   O.getOrElseW(() => undefined),
 ) !== 'curation-statement';
 
+const byPublishedAt: Ord.Ord<RecordedEvaluation> = pipe(
+  D.Ord,
+  Ord.reverse,
+  Ord.contramap((evaluation) => evaluation.publishedAt),
+);
+
 const unique = <A>(input: ReadonlyArray<A>) => [...new Set(input)];
 
 export const constructReviewingGroups = (
@@ -24,6 +32,7 @@ export const constructReviewingGroups = (
   articleId,
   dependencies.getEvaluationsForArticle,
   RA.filter(isNotCurationStatement),
+  RA.sort(byPublishedAt),
   RA.map((evaluation) => evaluation.groupId),
   unique,
   RA.map(constructGroupLink(dependencies)),
