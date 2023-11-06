@@ -6,7 +6,7 @@ import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 import { ConstructPage } from '../html-pages/construct-page';
 import { PageLayout } from '../html-pages/page-layout';
-import { toWebPage } from '../html-pages/to-web-page';
+import { constructHtmlResponse } from '../html-pages/construct-html-response';
 
 export const pageHandler = (
   adapters: GetLoggedInScietyUserPorts,
@@ -34,7 +34,7 @@ export const pageHandler = (
         ),
       ),
       handler,
-      T.map(toWebPage(getLoggedInScietyUser(adapters, context), pageLayout)),
+      T.map(constructHtmlResponse(getLoggedInScietyUser(adapters, context), pageLayout)),
     )();
 
     context.response.status = response.status;

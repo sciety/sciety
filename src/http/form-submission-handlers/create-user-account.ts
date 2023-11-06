@@ -8,7 +8,7 @@ import {
 } from '../authentication-and-logging-in-of-sciety-users';
 import { renderFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
-import { toWebPage } from '../../html-pages/to-web-page';
+import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
 
@@ -25,7 +25,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
           },
           renderFormPage(formDetails.fullName, formDetails.handle),
           E.right,
-          toWebPage(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
+          constructHtmlResponse(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
         );
         context.response.status = page.status;
         context.response.type = 'html';

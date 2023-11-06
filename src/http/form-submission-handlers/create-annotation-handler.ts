@@ -18,7 +18,7 @@ import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-a
 import { ExternalQueries } from '../../third-parties';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { UserDetails } from '../../types/user-details';
-import { toWebPage } from '../../html-pages/to-web-page';
+import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { toHtmlFragment } from '../../types/html-fragment';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
@@ -50,7 +50,7 @@ const redisplayFormPage = (
       message: toHtmlFragment(`Something went wrong when you submitted your annotation. ${renderPageError.message}`),
     }),
   ),
-  T.map(toWebPage(user, standardPageLayout)),
+  T.map(constructHtmlResponse(user, standardPageLayout)),
 );
 
 type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
