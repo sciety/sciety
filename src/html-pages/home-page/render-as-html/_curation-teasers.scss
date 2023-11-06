@@ -29,7 +29,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   margin-right: auto;
   padding-bottom: common.$section-vertical-separation;
   padding-top: common.$section-vertical-separation;
-  max-width: functions.px-to-rem(settings.$max-site-width);
+  max-width: common.$home-page-section-max-width;
   background-color: settings.$colour-curation-teasers-background;
 
   @include breakpoints.not-narrow {

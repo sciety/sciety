@@ -14,7 +14,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: common.$section-vertical-separation;
-  max-width: functions.px-to-rem(settings.$max-site-width);
+  max-width: common.$home-page-section-max-width;
 }
 
 .home-page-groups__title {
@@ -28,7 +28,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  gap: functions.px-to-rem(56px) functions.px-to-rem(32px);
+  gap: functions.px-to-rem(56px) functions.px-to-rem(56px);
 }
 
 .home-page-groups__button_wrapper {
