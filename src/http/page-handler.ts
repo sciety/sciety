@@ -38,9 +38,9 @@ export const pageHandler = (
       handler,
       T.map(constructHtmlResponse(getLoggedInScietyUser(adapters, context), pageLayout)),
       T.map((htmlResponse) => ({
-        body: htmlResponse.body,
+        body: htmlResponse.content,
         status: pipe(
-          htmlResponse.status,
+          htmlResponse.error,
           O.match(
             () => StatusCodes.OK,
             (error) => pipe(

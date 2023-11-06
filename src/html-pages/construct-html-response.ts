@@ -16,20 +16,20 @@ const toErrorResponse = (user: O.Option<UserDetails>) => (error: RenderPageError
     content,
   }),
   standardPageLayout(user),
-  (body) => ({
-    body,
-    status: O.some(error.type),
+  (content) => ({
+    content,
+    error: O.some(error.type),
   }),
 );
 
 const pageToSuccessResponse = (user: O.Option<UserDetails>, pageLayout: PageLayout) => (page: HtmlPage) => ({
-  body: pageLayout(user)(page),
-  status: O.none,
+  content: pageLayout(user)(page),
+  error: O.none,
 });
 
 type HtmlResponse = {
-  body: string,
-  status: O.Option<DE.DataError>,
+  content: string,
+  error: O.Option<DE.DataError>,
 };
 
 type ConstructHtmlResponse = (userDetails: O.Option<UserDetails>, pageLayout: PageLayout)

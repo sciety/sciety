@@ -30,7 +30,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
         );
         context.response.status = StatusCodes.OK;
         context.response.type = 'html';
-        context.response.body = page.body;
+        context.response.body = page.content;
       },
       () => redirectToAuthenticationDestination(context),
     ),

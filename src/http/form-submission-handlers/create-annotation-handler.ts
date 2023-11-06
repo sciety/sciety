@@ -101,7 +101,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
           loggedInUser,
         )();
         context.response.status = pipe(
-          htmlResponse.status,
+          htmlResponse.error,
           O.match(
             () => StatusCodes.OK,
             (error) => pipe(
@@ -114,7 +114,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
           ),
         );
         context.response.type = 'html';
-        context.response.body = htmlResponse.body;
+        context.response.body = htmlResponse.content;
       },
     ),
   );
