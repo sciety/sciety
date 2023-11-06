@@ -5,7 +5,6 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
-import { renderErrorPage } from './render-error-page';
 import * as DE from '../types/data-error';
 import { HtmlPage } from '../types/html-page';
 import { RenderPageError } from '../types/render-page-error';
@@ -13,6 +12,7 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './au
 import { UserDetails } from '../types/user-details';
 import { ConstructPage } from '../html-pages/construct-page';
 import { PageLayout } from '../html-pages/page-layout';
+import { renderErrorPage } from '../html-pages/render-error-page';
 
 type ErrorToWebPage = (
   user: O.Option<UserDetails>,

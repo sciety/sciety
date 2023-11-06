@@ -8,7 +8,6 @@ import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { followCommandHandler } from '../../write-side/command-handlers';
-import { renderErrorPage } from '../render-error-page';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
@@ -17,6 +16,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { Queries } from '../../read-models';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { renderErrorPage } from '../../html-pages/render-error-page';
 
 export const groupProperty = 'groupid';
 
