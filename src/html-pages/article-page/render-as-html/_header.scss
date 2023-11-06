@@ -31,6 +31,7 @@
   @include _apply-page-gutter-as-padding();
   padding-bottom: local-settings.$component-vertical-spacing;
   background-color: settings.$colour-background-grey;
+  margin-top: calc(-1 * settings.$border-width);
 }
 
 .page-header.page-header--article {
