@@ -1,13 +1,11 @@
 import { performance } from 'perf_hooks';
-import { auth, sheets, sheets_v4 } from '@googleapis/sheets';
+import { auth, sheets } from '@googleapis/sheets';
 import * as TE from 'fp-ts/TaskEither';
-import { GaxiosResponse } from 'googleapis-common';
-import Schema$ValueRange = sheets_v4.Schema$ValueRange;
 
 const getSheets = async (
   spreadsheetId: string,
   range: string,
-): Promise<GaxiosResponse<Schema$ValueRange>> => {
+) => {
   const startTime = performance.now();
   const myauth = new auth.GoogleAuth({
     keyFile: '/var/run/secrets/app/.gcp-ncrc-key.json',
@@ -27,7 +25,7 @@ const getSheets = async (
 export type FetchGoogleSheet = (
   spreadsheetId: string,
   range: string,
-) => TE.TaskEither<string, GaxiosResponse<Schema$ValueRange>>;
+) => TE.TaskEither<string, Awaited<ReturnType<typeof getSheets>>>;
 
 export const fetchGoogleSheet: FetchGoogleSheet = (spreadsheetId, range) => (
   TE.tryCatch(
