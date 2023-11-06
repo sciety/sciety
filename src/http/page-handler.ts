@@ -2,6 +2,8 @@ import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
+import * as DE from '../types/data-error';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 import { ConstructPage } from '../html-pages/construct-page';
@@ -35,6 +37,22 @@ export const pageHandler = (
       ),
       handler,
       T.map(constructHtmlResponse(getLoggedInScietyUser(adapters, context), pageLayout)),
+      T.map((htmlResponse) => ({
+        body: htmlResponse.body,
+        status: pipe(
+          htmlResponse.status,
+          O.match(
+            () => StatusCodes.OK,
+            (error) => pipe(
+              error,
+              DE.match({
+                notFound: () => StatusCodes.NOT_FOUND,
+                unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
+              }),
+            ),
+          ),
+        ),
+      })),
     )();
 
     context.response.status = response.status;

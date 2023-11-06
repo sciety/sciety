@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { StatusCodes } from 'http-status-codes';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
 import { HtmlPage } from '../types/html-page';
@@ -10,16 +9,7 @@ import { UserDetails } from '../types/user-details';
 import { PageLayout } from './page-layout';
 import { renderErrorPage } from './render-error-page';
 
-type ErrorToWebPage = (
-  user: O.Option<UserDetails>,
-) => (
-  error: RenderPageError
-) => {
-  body: string,
-  status: StatusCodes.NOT_FOUND | StatusCodes.SERVICE_UNAVAILABLE,
-};
-
-const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
+const toErrorResponse = (user: O.Option<UserDetails>) => (error: RenderPageError) => pipe(
   renderErrorPage(error.message),
   (content) => ({
     title: 'Error',
@@ -28,24 +18,18 @@ const toErrorResponse: ErrorToWebPage = (user) => (error) => pipe(
   standardPageLayout(user),
   (body) => ({
     body,
-    status: pipe(
-      error.type,
-      DE.match({
-        notFound: () => StatusCodes.NOT_FOUND,
-        unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
-      }),
-    ),
+    status: O.some(error.type),
   }),
 );
 
 const pageToSuccessResponse = (user: O.Option<UserDetails>, pageLayout: PageLayout) => (page: HtmlPage) => ({
   body: pageLayout(user)(page),
-  status: StatusCodes.OK,
+  status: O.none,
 });
 
 type HtmlResponse = {
   body: string,
-  status: StatusCodes,
+  status: O.Option<DE.DataError>,
 };
 
 type ConstructHtmlResponse = (userDetails: O.Option<UserDetails>, pageLayout: PageLayout)

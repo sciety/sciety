@@ -3,6 +3,7 @@ import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
 } from '../authentication-and-logging-in-of-sciety-users';
@@ -27,7 +28,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
           E.right,
           constructHtmlResponse(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
         );
-        context.response.status = page.status;
+        context.response.status = StatusCodes.OK;
         context.response.type = 'html';
         context.response.body = page.body;
       },

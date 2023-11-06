@@ -7,6 +7,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
+import * as DE from '../../types/data-error';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { Queries } from '../../read-models';
 import { UserId } from '../../types/user-id';
@@ -99,7 +100,19 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
           { listId: command.right.listId, articleId: command.right.articleId },
           loggedInUser,
         )();
-        context.response.status = htmlResponse.status;
+        context.response.status = pipe(
+          htmlResponse.status,
+          O.match(
+            () => StatusCodes.OK,
+            (error) => pipe(
+              error,
+              DE.match({
+                notFound: () => StatusCodes.NOT_FOUND,
+                unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
+              }),
+            ),
+          ),
+        );
         context.response.type = 'html';
         context.response.body = htmlResponse.body;
       },
