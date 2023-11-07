@@ -84,7 +84,7 @@ const configureAuth0Routes = (
     router.get(
       '/local/log-in-form',
       async (context: ParameterizedContext) => {
-        context.body = `
+        context.response.body = `
             <h1>Local auth</h1>
             <form action="/local/submit-user-id" method="post">
               <label for="userId">User id</label>

@@ -21,7 +21,7 @@ import { constructHtmlResponse } from '../../html-pages/construct-html-response'
 import { toHtmlFragment } from '../../types/html-fragment';
 import { setResponseOnContext } from '../set-response-on-context';
 import { GroupId } from '../../types/group-id';
-import * as DE from '../../types/data-error';
+import { toErrorHtmlDocument } from '../../html-pages/to-error-html-document';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
@@ -51,11 +51,6 @@ const redisplayFormPage = (
 );
 
 type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
-
-const toErrorHtmlDocument = (errorMessage: string) => constructHtmlResponse(O.none, standardPageLayout)(E.left({
-  message: toHtmlFragment(errorMessage),
-  type: DE.unavailable,
-})).document;
 
 export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context) => {
   const loggedInUser = getLoggedInScietyUser(adapters, context);
