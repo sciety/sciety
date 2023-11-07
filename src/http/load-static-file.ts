@@ -1,12 +1,9 @@
 import path from 'path';
 import { Middleware } from '@koa/router';
-import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
+import { toErrorHtmlDocument } from '../html-pages/to-error-html-document';
 import { Logger } from '../infrastructure';
-import { standardPageLayout } from '../shared-components/standard-page-layout';
-import { toHtmlFragment } from '../types/html-fragment';
-import { renderOopsMessage } from '../html-pages/render-oops-message';
 
 type KoaSendError = {
   status: number,
@@ -31,9 +28,6 @@ export const loadStaticFile = (logger: Logger): Middleware => async (context) =>
       logger('error', 'Static file could not be read', { error });
       context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
     }
-    context.response.body = standardPageLayout(O.none)({
-      title: 'Error',
-      content: renderOopsMessage(toHtmlFragment(pageMessage)),
-    });
+    context.response.body = toErrorHtmlDocument(pageMessage);
   }
 };
