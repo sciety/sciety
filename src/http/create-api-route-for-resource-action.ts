@@ -27,8 +27,8 @@ const executeAndRespond = <C extends GenericCommand>(
 
     const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
     if (context.request.headers.authorization !== `Bearer ${expectedToken}`) {
-      context.response.body = 'Unauthorized';
       context.response.status = StatusCodes.FORBIDDEN;
+      context.response.body = { error: 'Unauthorized' };
       return;
     }
 
@@ -43,7 +43,7 @@ const executeAndRespond = <C extends GenericCommand>(
     }
 
     context.response.status = commandResult.right === 'events-created' ? StatusCodes.CREATED : StatusCodes.OK;
-    context.response.body = '';
+    context.response.body = { commandResult };
   };
 
 export const createApiRouteForResourceAction = <C extends GenericCommand>(
