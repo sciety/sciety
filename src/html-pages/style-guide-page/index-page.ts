@@ -1,5 +1,5 @@
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 
 export const indexPage: HtmlPage = {
   title: 'Style guide',

@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { HtmlPage } from '../types/html-page';
+import { HtmlPage } from '../html-pages/html-page';
 import { UserDetails } from '../types/user-details';
 import { fullWidthPageLayout } from './full-width-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';

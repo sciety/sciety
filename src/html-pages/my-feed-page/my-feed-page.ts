@@ -10,7 +10,7 @@ import { renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
 import { userIdCodec } from '../../types/user-id';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 
 export const myFeedParams = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),

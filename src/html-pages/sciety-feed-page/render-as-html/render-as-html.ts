@@ -1,4 +1,4 @@
-import { HtmlPage } from '../../../types/html-page';
+import { HtmlPage } from '../../html-page';
 import { ViewModel } from '../view-model';
 import { renderPage } from './render-page';
 

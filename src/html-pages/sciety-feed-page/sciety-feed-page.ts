@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { renderErrorPage } from './render-as-html/render-error-page';
 import { renderAsHtml } from './render-as-html/render-as-html';

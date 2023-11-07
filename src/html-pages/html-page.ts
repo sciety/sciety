@@ -1,4 +1,4 @@
-import { HtmlFragment } from './html-fragment';
+import { HtmlFragment } from '../types/html-fragment';
 
 export type HtmlPage = {
   title: string,

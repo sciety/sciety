@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
-import { HtmlPage } from '../types/html-page';
+import { HtmlPage } from '../html-pages/html-page';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 

@@ -2,7 +2,7 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { HtmlPage } from '../types/html-page';
+import { HtmlPage } from '../html-pages/html-page';
 import { UserId } from '../types/user-id';
 
 export const head = (

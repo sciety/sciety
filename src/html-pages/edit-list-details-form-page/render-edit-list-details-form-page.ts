@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 
 export type ViewModel = {
   listName: string,

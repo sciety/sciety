@@ -10,7 +10,7 @@ import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { Queries } from '../../read-models';
 import { UserId } from '../../types/user-id';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../../html-pages/html-page';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { annotateArticleInListCommandCodec } from '../../write-side/commands';
 import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-annotation-form-page';

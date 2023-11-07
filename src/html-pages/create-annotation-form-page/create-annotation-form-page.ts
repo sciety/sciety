@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { renderPage } from './render-page';
 import { Dependencies, constructViewModel } from './construct-view-model';

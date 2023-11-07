@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
 import { constructViewModel } from './construct-view-model';
 import { renderAsHtml, toErrorPage } from './render-as-html';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { Dependencies } from './construct-view-model/dependencies';
 import { DoiFromString } from '../../types/codecs/DoiFromString';

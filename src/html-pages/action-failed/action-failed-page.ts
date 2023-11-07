@@ -5,7 +5,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 
 type ActionFailedPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;

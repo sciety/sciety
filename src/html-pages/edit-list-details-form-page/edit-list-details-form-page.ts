@@ -7,7 +7,7 @@ import { renderEditListDetailsFormPage } from './render-edit-list-details-form-p
 import { listIdCodec, ListId } from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 
 export const editListDetailsFormPageParamsCodec = t.type({

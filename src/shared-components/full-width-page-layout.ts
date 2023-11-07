@@ -7,7 +7,7 @@ import { siteHeader } from './site-header';
 import { PageLayout } from '../html-pages/page-layout';
 import { UserDetails } from '../types/user-details';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { HtmlPage } from '../types/html-page';
+import { HtmlPage } from '../html-pages/html-page';
 
 const wrapInHtmlDocument = (user: O.Option<UserDetails>, page: HtmlPage) => (styledContent: HtmlFragment) => `
   <!doctype html>

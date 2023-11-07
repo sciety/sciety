@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { Params } from './construct-view-model/construct-view-model';
 import { renderAsHtml } from './render-as-html/render-as-html';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 import { renderErrorPage } from './render-as-html/render-error-page';
 import { Dependencies, constructViewModel } from './construct-view-model';
 

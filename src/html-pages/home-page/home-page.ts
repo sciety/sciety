@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { HtmlPage } from '../../types/html-page';
+import { HtmlPage } from '../html-page';
 import { renderHomepage } from './render-as-html/render-home-page';
 import { constructViewModel, GroupsToHighlight } from './construct-view-model/construct-view-model';
 import * as GID from '../../types/group-id';
