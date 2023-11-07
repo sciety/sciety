@@ -11,7 +11,6 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../a
 import { Queries } from '../../read-models';
 import { UserId } from '../../types/user-id';
 import { HtmlPage } from '../../types/html-page';
-import { GroupId } from '../../types/group-id';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { annotateArticleInListCommandCodec } from '../../write-side/commands';
 import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-annotation-form-page';
@@ -21,15 +20,11 @@ import { UserDetails } from '../../types/user-details';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { setResponseOnContext } from '../set-response-on-context';
+import { GroupId } from '../../types/group-id';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
-const scietyAdminUserId = 'auth0|650d543de75a96413ce859b1' as UserId;
-
-const isUserAllowedToCreateAnnotation = (
-  userId: UserId,
-  listOwnerId: UserId | GroupId,
-) => userId === listOwnerId || userId === scietyAdminUserId;
+const isUserAllowedToCreateAnnotation = (userId: UserId, listOwnerId: UserId | GroupId) => userId === listOwnerId;
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
