@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
-import { RenderPageError } from '../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import { HtmlPage } from '../types/html-page';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -12,7 +12,7 @@ const toNotFound = () => ({
   message: toHtmlFragment('Page not found'),
 });
 
-type GeneratePage<P> = (params: P) => TE.TaskEither<RenderPageError, HtmlPage>;
+type GeneratePage<P> = (params: P) => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
 export const createPageFromParams = <P>(
   codec: t.Decoder<unknown, P>,

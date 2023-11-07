@@ -3,11 +3,11 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { toHtmlFragment } from '../types/html-fragment';
 import { HtmlPage } from '../types/html-page';
-import { RenderPageError } from '../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import * as EL from '../types/evaluation-locator';
 import { FetchReview } from '../shared-ports';
 
-type EvaluationContent = TE.TaskEither<RenderPageError, HtmlPage>;
+type EvaluationContent = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
 export const paramsCodec = t.type({
   reviewid: EL.evaluationLocatorCodec,

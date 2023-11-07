@@ -6,16 +6,16 @@ import { renderGroupCard } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../../types/html-page';
-import { RenderPageError } from '../../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { Queries } from '../../read-models';
 
-const renderErrorPage = (error: DE.DataError): RenderPageError => ({
+const renderErrorPage = (error: DE.DataError): ErrorPageBodyViewModel => ({
   type: error,
   message: toHtmlFragment('We\'re having trouble accessing search right now, please try again later.'),
 });
 
-type GroupsPage = TE.TaskEither<RenderPageError, HtmlPage>;
+type GroupsPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
 export const groupsPage = (queries: Queries): GroupsPage => pipe(
   constructViewModel(queries),

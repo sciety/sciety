@@ -5,12 +5,12 @@ import { toHtmlFragment, HtmlFragment } from '../types/html-fragment';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
 import { HtmlPage } from '../types/html-page';
-import { RenderPageError } from '../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import { UserDetails } from '../types/user-details';
 import { PageLayout } from './page-layout';
 import { renderErrorPage } from './render-error-page';
 
-const toErrorResponse = (user: O.Option<UserDetails>) => (error: RenderPageError) => pipe(
+const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyViewModel) => pipe(
   renderErrorPage(error.message),
   (content) => ({
     title: 'Error',
@@ -35,7 +35,7 @@ export type HtmlResponse = {
 };
 
 type ConstructHtmlResponse = (userDetails: O.Option<UserDetails>, pageLayout: PageLayout)
-=> (renderedPage: E.Either<RenderPageError, HtmlPage>)
+=> (renderedPage: E.Either<ErrorPageBodyViewModel, HtmlPage>)
 => HtmlResponse;
 
 export const constructHtmlResponse: ConstructHtmlResponse = (userDetails, pageLayout) => (renderedPage) => pipe(

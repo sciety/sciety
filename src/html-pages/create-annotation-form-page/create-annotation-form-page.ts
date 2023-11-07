@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import { HtmlPage } from '../../types/html-page';
-import { RenderPageError } from '../../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { renderPage } from './render-page';
 import { Dependencies, constructViewModel } from './construct-view-model';
 import { toErrorPage } from './to-error-page';
@@ -20,7 +20,7 @@ type Params = t.TypeOf<typeof paramsCodec>;
 
 type CreateAnnotationFormPage = (dependencies: Dependencies)
 => (params: Params, unrecoverableError?: UnrecoverableError)
-=> TE.TaskEither<RenderPageError, HtmlPage>;
+=> TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
 export const createAnnotationFormPage: CreateAnnotationFormPage = (
   dependencies,

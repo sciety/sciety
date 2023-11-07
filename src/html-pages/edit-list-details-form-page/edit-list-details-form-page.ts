@@ -8,13 +8,13 @@ import { listIdCodec, ListId } from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../../types/html-page';
-import { RenderPageError } from '../../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 
 export const editListDetailsFormPageParamsCodec = t.type({
   id: listIdCodec,
 });
 
-const renderNoSuchListError = (): RenderPageError => (
+const renderNoSuchListError = (): ErrorPageBodyViewModel => (
   {
     type: DE.notFound,
     message: toHtmlFragment('The list that you are trying to edit does not exist.'),
@@ -23,7 +23,7 @@ const renderNoSuchListError = (): RenderPageError => (
 
 export const editListDetailsFormPage = (dependencies: Dependencies) => (
   params: { id: ListId },
-): TE.TaskEither<RenderPageError, HtmlPage> => pipe(
+): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
   params.id,
   constructViewModel(dependencies),
   E.bimap(
