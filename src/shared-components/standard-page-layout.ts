@@ -1,10 +1,8 @@
-import * as O from 'fp-ts/Option';
-import { HtmlPage } from '../html-pages/html-page';
-import { UserDetails } from '../types/user-details';
 import { fullWidthPageLayout } from './full-width-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
+import { PageLayout } from '../html-pages/page-layout';
 
-export const standardPageLayout = (user: O.Option<UserDetails>) => (page: HtmlPage): string => (
+export const standardPageLayout: PageLayout = (user) => (page) => (
   fullWidthPageLayout(user)(
     {
       ...page,

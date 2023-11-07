@@ -5,8 +5,9 @@ import { head } from '../../shared-components/head';
 import { siteFooter } from '../../shared-components/site-footer';
 import { siteHeader } from '../../shared-components/site-header';
 import { PageLayout } from '../page-layout';
+import { toHtmlFragment } from '../../types/html-fragment';
 
-export const createUserAccountFormPageLayout: PageLayout = (user) => (page) => `<!doctype html>
+export const createUserAccountFormPageLayout: PageLayout = (user) => (page) => toHtmlFragment(`<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   ${head(
     pipe(
@@ -33,4 +34,4 @@ export const createUserAccountFormPageLayout: PageLayout = (user) => (page) => `
 
 </body>
 </html>
-`;
+`);
