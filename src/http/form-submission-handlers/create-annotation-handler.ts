@@ -21,6 +21,7 @@ import { constructHtmlResponse } from '../../html-pages/construct-html-response'
 import { toHtmlFragment } from '../../types/html-fragment';
 import { setResponseOnContext } from '../set-response-on-context';
 import { GroupId } from '../../types/group-id';
+import * as DE from '../../types/data-error';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
@@ -55,7 +56,10 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
   const loggedInUser = getLoggedInScietyUser(adapters, context);
   if (O.isNone(loggedInUser)) {
     context.response.status = StatusCodes.FORBIDDEN;
-    context.response.body = 'You must be logged in to annotate a list.';
+    context.response.body = constructHtmlResponse(O.none, standardPageLayout)(E.left({
+      message: toHtmlFragment('You must be logged in to annotate a list.'),
+      type: DE.unavailable,
+    })).document;
     return;
   }
   const command = annotateArticleInListCommandCodec.decode(context.request.body);
