@@ -5,21 +5,6 @@
 @use '../../sass/settings';
 @use '../../sass/layout';
 
-.error-summary {
-  border: settings.$border-width solid settings.$colour-alert;
-  padding: functions.px-to-rem(settings.$default-form-gutter);
-  margin-bottom: functions.px-to-rem(48px);
-
-  p {
-    color: settings.$colour-alert;
-  }
-
-  ul {
-    color: settings.$colour-alert;
-    margin-top: 0;
-  }
-}
-
 .create-user-account-form-page__container {
   @include layout.page-container();
   background-color: settings.$colour-background-grey;

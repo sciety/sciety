@@ -43,6 +43,21 @@ $_label-font-size: functions.px-to-rem(20px);
   @include button.secondary-link();
 }
 
+.error-summary {
+  border: settings.$border-width solid settings.$colour-alert;
+  padding: functions.px-to-rem(settings.$default-form-gutter);
+  margin-bottom: functions.px-to-rem(48px);
+
+  p {
+    color: settings.$colour-alert;
+  }
+
+  ul {
+    color: settings.$colour-alert;
+    margin-top: 0;
+  }
+}
+
 .standard-form {
   @include form-with-borders-and-white-background();
 
