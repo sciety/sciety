@@ -76,7 +76,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
       },
     );
     context.response.status = StatusCodes.BAD_REQUEST;
-    context.response.body = 'Cannot understand the command.';
+    context.response.body = toErrorHtmlDocument('Cannot understand the command.');
     return;
   }
 
