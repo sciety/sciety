@@ -8,15 +8,13 @@ import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { followCommandHandler } from '../../write-side/command-handlers';
-import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
-import { toHtmlFragment } from '../../types/html-fragment';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { Queries } from '../../read-models';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { renderOopsMessage } from '../../html-pages/render-oops-message';
+import { toErrorHtmlDocument } from '../../html-pages/to-error-html-document';
 
 export const groupProperty = 'groupid';
 
@@ -51,10 +49,7 @@ export const followHandler = (dependencies: Ports): Middleware => async (context
         dependencies.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
 
         context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-        context.response.body = standardPageLayout(O.none)({
-          title: 'Error',
-          content: renderOopsMessage(toHtmlFragment('Something went wrong; we\'re looking into it.')),
-        });
+        context.response.body = toErrorHtmlDocument('Something went wrong; we\'re looking into it.');
         return T.of(undefined);
       },
       (params) => pipe(
