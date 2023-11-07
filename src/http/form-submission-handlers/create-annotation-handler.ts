@@ -88,7 +88,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
     O.match(
       async () => {
         context.response.status = StatusCodes.FORBIDDEN;
-        context.response.body = 'Only the list owner is allowed to annotate their list.';
+        context.response.body = toErrorHtmlDocument('Only the list owner is allowed to annotate their list.');
       },
       async () => {
         const commandResult = await handleCreateAnnotationCommand(adapters)(context.request.body)();
