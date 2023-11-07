@@ -52,14 +52,16 @@ const redisplayFormPage = (
 
 type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
 
+const toErrorHtmlDocument = (errorMessage: string) => constructHtmlResponse(O.none, standardPageLayout)(E.left({
+  message: toHtmlFragment(errorMessage),
+  type: DE.unavailable,
+})).document;
+
 export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context) => {
   const loggedInUser = getLoggedInScietyUser(adapters, context);
   if (O.isNone(loggedInUser)) {
     context.response.status = StatusCodes.FORBIDDEN;
-    context.response.body = constructHtmlResponse(O.none, standardPageLayout)(E.left({
-      message: toHtmlFragment('You must be logged in to annotate a list.'),
-      type: DE.unavailable,
-    })).document;
+    context.response.body = toErrorHtmlDocument('You must be logged in to annotate a list.');
     return;
   }
   const command = annotateArticleInListCommandCodec.decode(context.request.body);
