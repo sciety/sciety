@@ -63,6 +63,19 @@ export const referencePage: HtmlPage = {
           Submit
         </button>
       </form>
+      <h3 class="_style-guide-heading">Error summary</h3>
+      <div role='alert' class='error-summary'>
+        <h3>Something went wrong</h3>
+        <p>
+          Please check the following:
+        </p>
+        <ul>
+          <li>Your full name and handle must not contain any of &quot;,&lt;,&gt;</li>
+          <li>Your full name must be 1-30 characters long</li>
+          <li>Your handle must be 4-15 characters long</li>
+          <li>Your handle must not be in use by anyone else</li>
+        </ul>
+      </div>
     </div>
   `),
 };
