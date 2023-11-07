@@ -6,7 +6,7 @@ import send from 'koa-send';
 import { Logger } from '../infrastructure';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
-import { renderErrorPage } from '../html-pages/render-error-page';
+import { renderOopsMessage } from '../html-pages/render-oops-message';
 
 type KoaSendError = {
   status: number,
@@ -33,7 +33,7 @@ export const loadStaticFile = (logger: Logger): Middleware => async (context) =>
     }
     context.response.body = standardPageLayout(O.none)({
       title: 'Error',
-      content: renderErrorPage(toHtmlFragment(pageMessage)),
+      content: renderOopsMessage(toHtmlFragment(pageMessage)),
     });
   }
 };

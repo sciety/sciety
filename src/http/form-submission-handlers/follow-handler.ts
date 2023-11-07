@@ -16,7 +16,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { Queries } from '../../read-models';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { renderErrorPage } from '../../html-pages/render-error-page';
+import { renderOopsMessage } from '../../html-pages/render-oops-message';
 
 export const groupProperty = 'groupid';
 
@@ -53,7 +53,7 @@ export const followHandler = (dependencies: Ports): Middleware => async (context
         context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
         context.response.body = standardPageLayout(O.none)({
           title: 'Error',
-          content: renderErrorPage(toHtmlFragment('Something went wrong; we\'re looking into it.')),
+          content: renderOopsMessage(toHtmlFragment('Something went wrong; we\'re looking into it.')),
         });
         return T.of(undefined);
       },

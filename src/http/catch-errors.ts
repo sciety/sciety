@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
-import { renderErrorPage } from '../html-pages/render-error-page';
+import { renderOopsMessage } from '../html-pages/render-oops-message';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { toHtmlFragment } from '../types/html-fragment';
 
@@ -17,7 +17,7 @@ export const catchErrors = (logger: Logger, logMessage: string, pageMessage: str
       context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
       context.response.body = standardPageLayout(O.none)({
         title: 'Error',
-        content: renderErrorPage(toHtmlFragment(pageMessage)),
+        content: renderOopsMessage(toHtmlFragment(pageMessage)),
       });
     }
   }

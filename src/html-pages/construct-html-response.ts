@@ -8,10 +8,10 @@ import { HtmlPage } from '../types/html-page';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import { UserDetails } from '../types/user-details';
 import { PageLayout } from './page-layout';
-import { renderErrorPage } from './render-error-page';
+import { renderOopsMessage } from './render-oops-message';
 
 const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyViewModel) => pipe(
-  renderErrorPage(error.message),
+  renderOopsMessage(error.message),
   (content) => ({
     title: 'Error',
     content,
