@@ -7,30 +7,30 @@ import { siteHeader } from './site-header';
 import { PageLayout } from '../html-pages/page-layout';
 
 // TODO: return a more specific type e.g. HtmlDocument
-export const fullWidthPageLayout: PageLayout = (user) => (page) => `<!doctype html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
-  ${head(
-    pipe(
-      user,
-      O.map((u) => u.id),
-    ),
-    page,
-  )}
-<body>
-  ${googleTagManagerNoScript()}
-  <div class="standard-page-container">
-    ${siteHeader(user)}
+export const fullWidthPageLayout: PageLayout = (user) => (page) => pipe(
+  `
+    <div class="standard-page-container">
+      ${siteHeader(user)}
 
-    <main id="mainContent">
-      <div class="page-content">
-        ${page.content}
-      </div>
-    </main>
-    ${siteFooter(user)}
-  </div>
+      <main id="mainContent">
+        <div class="page-content">
+          ${page.content}
+        </div>
+      </main>
+      ${siteFooter(user)}
+    </div>
+  `,
+  (styledContent) => `
+  <!doctype html>
+  <html lang="en" prefix="og: http://ogp.me/ns#">
+    ${head(pipe(user, O.map((u) => u.id)), page)}
+  <body>
+    ${googleTagManagerNoScript()}
+    ${styledContent}
 
-  <script src="/static/behaviour.js"></script>
+    <script src="/static/behaviour.js"></script>
 
-</body>
-</html>
-`;
+  </body>
+  </html>
+  `,
+);
