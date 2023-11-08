@@ -10,6 +10,7 @@ import { PageLayout } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
 import { CompleteHtmlDocument } from './complete-html-document';
 import { wrapInHtmlDocument } from './wrap-in-html-document';
+import { ClientClassification } from '../shared-components/head';
 
 const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyViewModel): HtmlResponse => pipe(
   renderOopsMessage(error.message),
@@ -45,7 +46,7 @@ export type HtmlResponse = {
 type ConstructHtmlResponse = (
   userDetails: O.Option<UserDetails>,
   pageLayout: PageLayout,
-  clientClassification?: unknown)
+  clientClassification?: ClientClassification)
 => (renderedPage: E.Either<ErrorPageBodyViewModel, HtmlPage>)
 => HtmlResponse;
 

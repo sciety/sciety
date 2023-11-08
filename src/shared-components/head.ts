@@ -5,6 +5,10 @@ import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
 import { HtmlPage } from '../html-pages/html-page';
 
+export type ClientClassification = {
+  userAgent: string | undefined,
+};
+
 export type DynamicHeadViewModel = Omit<HtmlPage, 'content'>;
 
 export const head = (
