@@ -42,11 +42,19 @@ export type HtmlResponse = {
   error: O.Option<DE.DataError>,
 };
 
-type ConstructHtmlResponse = (userDetails: O.Option<UserDetails>, pageLayout: PageLayout)
+type ConstructHtmlResponse = (
+  userDetails: O.Option<UserDetails>,
+  pageLayout: PageLayout,
+  clientClassification?: unknown)
 => (renderedPage: E.Either<ErrorPageBodyViewModel, HtmlPage>)
 => HtmlResponse;
 
-export const constructHtmlResponse: ConstructHtmlResponse = (userDetails, pageLayout) => (renderedPage) => pipe(
+export const constructHtmlResponse: ConstructHtmlResponse = (
+  userDetails,
+  pageLayout,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  clientClassification,
+) => (renderedPage) => pipe(
   renderedPage,
   E.fold(
     toErrorResponse(userDetails),

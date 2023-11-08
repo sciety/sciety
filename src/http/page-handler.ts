@@ -34,7 +34,13 @@ export const pageHandler = (
       ),
     ),
     handler,
-    T.map(constructHtmlResponse(getLoggedInScietyUser(adapters, context), pageLayout)),
+    T.map(constructHtmlResponse(
+      getLoggedInScietyUser(adapters, context),
+      pageLayout,
+      {
+        userAgent: context.req.headers['user-agent'],
+      },
+    )),
   )();
 
   setResponseOnContext(response, context);
