@@ -9,6 +9,7 @@ import { UserDetails } from '../types/user-details';
 import { PageLayout } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
 import { CompleteHtmlDocument } from './complete-html-document';
+import { wrapInHtmlDocument } from './wrap-in-html-document';
 
 const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyViewModel): HtmlResponse => pipe(
   renderOopsMessage(error.message),
@@ -17,6 +18,7 @@ const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyVi
     content,
   }),
   standardPageLayout(user),
+  wrapInHtmlDocument(user, { title: 'Error' }),
   (document) => ({
     document,
     error: O.some(error.type),
@@ -27,7 +29,11 @@ const pageToSuccessResponse = (
   user: O.Option<UserDetails>,
   pageLayout: PageLayout,
 ) => (page: HtmlPage): HtmlResponse => ({
-  document: pageLayout(user)(page),
+  document: pipe(
+    page,
+    pageLayout(user),
+    wrapInHtmlDocument(user, page),
+  ),
   error: O.none,
 });
 
