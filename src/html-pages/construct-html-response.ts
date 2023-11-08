@@ -10,7 +10,7 @@ import { PageLayout } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
 import { CompleteHtmlDocument } from './complete-html-document';
 
-export const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyViewModel): HtmlResponse => pipe(
+const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyViewModel): HtmlResponse => pipe(
   renderOopsMessage(error.message),
   (content) => ({
     title: 'Error',
