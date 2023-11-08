@@ -26,7 +26,7 @@ const renderWithoutClientClassification = (headTagContents: string) => `
 `;
 
 const renderWithClientClassification = (headTagContents: string, clientClassification: ClientClassification) => `
-  ${htmlEscape`<head data-user-agent="${clientClassification.userAgent}">`}
+  <head data-user-agent="${htmlEscape(clientClassification.userAgent ?? '')}">
   ${headTagContents}
   </head>
 `;
