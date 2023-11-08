@@ -19,11 +19,16 @@ export type DynamicHeadViewModel = {
   clientClassification?: ClientClassification,
 };
 
-const renderHeadTag = (headTagContents: string) => `
+const renderWithoutClientClassification = (headTagContents: string) => `
   <head>
   ${headTagContents}
   </head>
 `;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const renderHeadTag = (clientClassification: ClientClassification | undefined) => (headTagContents: string) => (
+  renderWithoutClientClassification(headTagContents)
+);
 
 export const head = (
   userId: O.Option<UserId>,
@@ -58,6 +63,6 @@ export const head = (
   ${googleTagManager(userId)}
   ${fathom()}
 `,
-  renderHeadTag,
+  renderHeadTag(dynamicHeadViewModel.clientClassification),
   toHtmlFragment,
 );
