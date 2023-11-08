@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { toHtmlFragment, HtmlFragment } from '../types/html-fragment';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
 import { HtmlPage } from './html-page';
@@ -9,6 +8,7 @@ import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import { UserDetails } from '../types/user-details';
 import { PageLayout } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
+import { CompleteHtmlDocument } from './complete-html-document';
 
 const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyViewModel) => pipe(
   renderOopsMessage(error.message),
@@ -17,7 +17,6 @@ const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyVi
     content,
   }),
   standardPageLayout(user),
-  toHtmlFragment,
   (document) => ({
     document,
     error: O.some(error.type),
@@ -25,12 +24,12 @@ const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyVi
 );
 
 const pageToSuccessResponse = (user: O.Option<UserDetails>, pageLayout: PageLayout) => (page: HtmlPage) => ({
-  document: toHtmlFragment(pageLayout(user)(page)),
+  document: pageLayout(user)(page),
   error: O.none,
 });
 
 export type HtmlResponse = {
-  document: HtmlFragment,
+  document: CompleteHtmlDocument,
   error: O.Option<DE.DataError>,
 };
 
