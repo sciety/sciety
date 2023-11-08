@@ -1,5 +1,4 @@
 import { Middleware } from '@koa/router';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
@@ -19,20 +18,8 @@ export const htmlFragmentHandler = (
       ...context.params,
       ...context.query,
       ...context.state,
+      user: undefined,
     },
-    (partialParams) => pipe(
-      getLoggedInScietyUser(adapters, context),
-      O.foldW(
-        () => ({
-          ...partialParams,
-          user: undefined,
-        }),
-        (user) => ({
-          ...partialParams,
-          user,
-        }),
-      ),
-    ),
     handler,
     T.map(constructHtmlResponse(getLoggedInScietyUser(adapters, context), pageLayout)),
   )();
