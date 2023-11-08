@@ -1,5 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
@@ -18,11 +19,17 @@ export type DynamicHeadViewModel = {
   clientClassification?: ClientClassification,
 };
 
+const renderHeadTag = (headTagContents: string) => `
+  <head>
+  ${headTagContents}
+  </head>
+`;
+
 export const head = (
   userId: O.Option<UserId>,
   dynamicHeadViewModel: DynamicHeadViewModel,
-): HtmlFragment => toHtmlFragment(`
-<head>
+): HtmlFragment => pipe(
+  `
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
@@ -50,5 +57,7 @@ export const head = (
 
   ${googleTagManager(userId)}
   ${fathom()}
-</head>
-`);
+`,
+  renderHeadTag,
+  toHtmlFragment,
+);
