@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { ClientClassification } from '../shared-components/head';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
 import { HtmlPage } from './html-page';
@@ -10,16 +11,20 @@ import { PageLayout } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
 import { CompleteHtmlDocument } from './complete-html-document';
 import { wrapInHtmlDocument } from './wrap-in-html-document';
-import { ClientClassification } from '../shared-components/head';
 
-const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyViewModel): HtmlResponse => pipe(
+const toErrorResponse = (
+  user: O.Option<UserDetails>,
+  clientClassification?: ClientClassification,
+) => (
+  error: ErrorPageBodyViewModel,
+): HtmlResponse => pipe(
   renderOopsMessage(error.message),
   (content) => ({
     title: 'Error',
     content,
   }),
   standardPageLayout(user),
-  wrapInHtmlDocument(user, { title: 'Error' }),
+  wrapInHtmlDocument(user, { title: 'Error', clientClassification }),
   (document) => ({
     document,
     error: O.some(error.type),
@@ -29,11 +34,12 @@ const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPageBodyVi
 const pageToSuccessResponse = (
   user: O.Option<UserDetails>,
   pageLayout: PageLayout,
+  clientClassification?: ClientClassification,
 ) => (page: HtmlPage): HtmlResponse => ({
   document: pipe(
     page,
     pageLayout(user),
-    wrapInHtmlDocument(user, page),
+    wrapInHtmlDocument(user, { ...page, clientClassification }),
   ),
   error: O.none,
 });
@@ -53,12 +59,11 @@ type ConstructHtmlResponse = (
 export const constructHtmlResponse: ConstructHtmlResponse = (
   userDetails,
   pageLayout,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   clientClassification,
 ) => (renderedPage) => pipe(
   renderedPage,
   E.fold(
-    toErrorResponse(userDetails),
-    pageToSuccessResponse(userDetails, pageLayout),
+    toErrorResponse(userDetails, clientClassification),
+    pageToSuccessResponse(userDetails, pageLayout, clientClassification),
   ),
 );

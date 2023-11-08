@@ -3,13 +3,20 @@ import * as O from 'fp-ts/Option';
 import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
-import { HtmlPage } from '../html-pages/html-page';
 
 export type ClientClassification = {
   userAgent: string | undefined,
 };
 
-export type DynamicHeadViewModel = Omit<HtmlPage, 'content'>;
+export type DynamicHeadViewModel = {
+  title: string,
+  description?: string,
+  openGraph?: {
+    title: string,
+    description: string,
+  },
+  clientClassification?: ClientClassification,
+};
 
 export const head = (
   userId: O.Option<UserId>,
