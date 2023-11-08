@@ -6,8 +6,6 @@ import { pipe } from 'fp-ts/function';
 import { ConstructPage } from '../html-pages/construct-page';
 import { setResponseOnContext } from './set-response-on-context';
 import { toCompleteHtmlDocument } from '../html-pages/complete-html-document';
-import { renderOopsMessage } from '../html-pages/render-oops-message';
-import { standardPageLayout } from '../shared-components/standard-page-layout';
 
 export const htmlFragmentHandler = (
   handler: ConstructPage,
@@ -18,14 +16,13 @@ export const htmlFragmentHandler = (
     T.map(
       E.fold(
         (error) => pipe(
-          renderOopsMessage(error.message),
+          error.message,
           (content) => ({
             title: 'Error',
             content,
           }),
-          standardPageLayout(O.none),
           (document) => ({
-            document,
+            document: toCompleteHtmlDocument(document.content),
             error: O.some(error.type),
           }),
         ),
