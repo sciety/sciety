@@ -23,7 +23,7 @@ export const toErrorResponse = (user: O.Option<UserDetails>) => (error: ErrorPag
   }),
 );
 
-export const pageToSuccessResponse = (
+const pageToSuccessResponse = (
   user: O.Option<UserDetails>,
   pageLayout: PageLayout,
 ) => (page: HtmlPage): HtmlResponse => ({

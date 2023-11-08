@@ -51,7 +51,6 @@ import { userPage as userListsPage, userPageParams as userListsPageParams } from
 import * as authentication from './authentication';
 import * as formSubmissionHandlers from './form-submission-handlers';
 import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
-import { contentWithoutLayout } from '../shared-components/content-only-layout';
 import { createPageFromParams } from './create-page-from-params';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 import { listsPage } from '../html-pages/lists-page';
@@ -189,7 +188,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
         evaluationContentParams,
         evaluationContent(adapters),
       ),
-      contentWithoutLayout,
     ),
   );
 
