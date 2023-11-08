@@ -4,8 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ConstructPage } from '../html-pages/construct-page';
-import { setResponseOnContext } from './set-response-on-context';
-import { toCompleteHtmlDocument } from '../html-pages/complete-html-document';
+import { getHttpStatusCode } from './get-http-status-code';
 
 export const htmlFragmentHandler = (
   handler: ConstructPage,
@@ -22,19 +21,21 @@ export const htmlFragmentHandler = (
             content,
           }),
           (document) => ({
-            document: toCompleteHtmlDocument(document.content),
+            document: document.content,
             error: O.some(error.type),
           }),
         ),
         (page) => ({
-          document: toCompleteHtmlDocument(page.content),
+          document: page.content,
           error: O.none,
         }),
       ),
     ),
   )();
 
-  setResponseOnContext(response, context);
+  context.response.status = getHttpStatusCode(response.error);
+  context.response.type = 'html';
+  context.response.body = response.document;
 
   await next();
 };
