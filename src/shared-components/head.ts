@@ -25,9 +25,8 @@ const renderWithoutClientClassification = (headTagContents: string) => `
   </head>
 `;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderWithClientClassification = (headTagContents: string, clientClassification: ClientClassification) => `
-  <head>
+  ${htmlEscape`<head data-user-agent="${clientClassification.userAgent}">`}
   ${headTagContents}
   </head>
 `;
