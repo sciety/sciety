@@ -2,26 +2,28 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { HtmlPage } from '../html-pages/html-page';
 import { UserId } from '../types/user-id';
+import { HtmlPage } from '../html-pages/html-page';
+
+export type DynamicHeadViewModel = Omit<HtmlPage, 'content'>;
 
 export const head = (
   userId: O.Option<UserId>,
-  page: Omit<HtmlPage, 'content'>,
+  dynamicHeadViewModel: DynamicHeadViewModel,
 ): HtmlFragment => toHtmlFragment(`
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
-    ${htmlEscape(page.title.startsWith('Sciety') ? page.title : `${page.title} | Sciety`)}
+    ${htmlEscape(dynamicHeadViewModel.title.startsWith('Sciety') ? dynamicHeadViewModel.title : `${dynamicHeadViewModel.title} | Sciety`)}
   </title>
-  ${(page.description) ? htmlEscape`<meta name="description" content="${page.description}">` : ''}
+  ${(dynamicHeadViewModel.description) ? htmlEscape`<meta name="description" content="${dynamicHeadViewModel.description}">` : ''}
   <link rel="stylesheet" href="/static/style.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@scietyHQ">
   <meta property="og:site_name" content="Sciety">
-  <meta property="og:title" content="${htmlEscape(page.openGraph ? page.openGraph.title : 'Sciety')}">
-  <meta property="og:description" content="${htmlEscape(page.openGraph ? page.openGraph.description : 'Let Sciety help you navigate the preprint landscape.')}">
+  <meta property="og:title" content="${htmlEscape(dynamicHeadViewModel.openGraph ? dynamicHeadViewModel.openGraph.title : 'Sciety')}">
+  <meta property="og:description" content="${htmlEscape(dynamicHeadViewModel.openGraph ? dynamicHeadViewModel.openGraph.description : 'Let Sciety help you navigate the preprint landscape.')}">
   <meta property="og:image" content="${process.env.APP_ORIGIN ?? ''}/static/images/sciety-twitter-profile.png">
   <link rel="icon" type="image/svg+xml" href="/static/images/favicons/favicon.svg">
 
