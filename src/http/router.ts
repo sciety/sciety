@@ -185,7 +185,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     '/evaluations/:reviewid/content',
     htmlFragmentHandler(
-      adapters,
       createPageFromParams(
         evaluationContentParams,
         evaluationContent(adapters),
