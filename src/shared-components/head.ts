@@ -21,18 +21,17 @@ export type DynamicHeadViewModel = {
 
 const renderWithoutClientClassification = (headTagContents: string) => `
   <head>
-  ${headTagContents}
+    ${headTagContents}
   </head>
 `;
 
 const renderWithClientClassification = (headTagContents: string, clientClassification: ClientClassification) => `
   <head data-user-agent="${htmlEscape(clientClassification.userAgent ?? '')}">
-  ${headTagContents}
+    ${headTagContents}
   </head>
 `;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const renderHeadTag = (clientClassification: ClientClassification | undefined) => (headTagContents: string) => (
+const renderHeadTag = (clientClassification: DynamicHeadViewModel['clientClassification']) => (headTagContents: string) => (
   clientClassification !== undefined
     ? renderWithClientClassification(headTagContents, clientClassification)
     : renderWithoutClientClassification(headTagContents)
