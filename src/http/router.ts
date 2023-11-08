@@ -67,6 +67,7 @@ import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { statusGroups } from '../views/status-groups';
 import { referencePage, sharedComponentsPage, indexPage } from '../html-pages/style-guide-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
+import { htmlFragmentHandler } from './html-fragment-handler';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -183,7 +184,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/evaluations/:reviewid/content',
-    pageHandler(
+    htmlFragmentHandler(
       adapters,
       createPageFromParams(
         evaluationContentParams,
