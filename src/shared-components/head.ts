@@ -26,8 +26,17 @@ const renderWithoutClientClassification = (headTagContents: string) => `
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const renderWithClientClassification = (headTagContents: string, clientClassification: ClientClassification) => `
+  <head>
+  ${headTagContents}
+  </head>
+`;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderHeadTag = (clientClassification: ClientClassification | undefined) => (headTagContents: string) => (
-  renderWithoutClientClassification(headTagContents)
+  clientClassification !== undefined
+    ? renderWithClientClassification(headTagContents, clientClassification)
+    : renderWithoutClientClassification(headTagContents)
 );
 
 export const head = (
