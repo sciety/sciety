@@ -2,8 +2,8 @@ import { pipe } from 'fp-ts/function';
 import { siteFooter } from '../../shared-components/site-footer';
 import { siteHeader } from '../../shared-components/site-header';
 import { PageLayout } from '../page-layout';
-import { toHtmlFragment } from '../../types/html-fragment';
 import { wrapInHtmlDocument } from '../wrap-in-html-document';
+import { toContentWrappedInLayout } from '../content-wrapped-in-layout';
 
 export const homePageLayout: PageLayout = (user) => (page) => pipe(
   `
@@ -17,6 +17,6 @@ export const homePageLayout: PageLayout = (user) => (page) => pipe(
     ${siteFooter(user)}
   </div>
 `,
-  toHtmlFragment,
+  toContentWrappedInLayout,
   wrapInHtmlDocument(user, page),
 );
