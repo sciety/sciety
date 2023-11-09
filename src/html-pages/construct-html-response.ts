@@ -52,7 +52,7 @@ export type HtmlResponse = {
 type ConstructHtmlResponse = (
   userDetails: O.Option<UserDetails>,
   pageLayout: PageLayout,
-  clientClassification?: ClientClassification)
+  clientClassification: ClientClassification)
 => (renderedPage: E.Either<ErrorPageBodyViewModel, HtmlPage>)
 => HtmlResponse;
 
