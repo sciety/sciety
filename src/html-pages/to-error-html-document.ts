@@ -10,7 +10,7 @@ import { ClientClassification } from '../shared-components/head';
 
 export const toErrorHtmlDocument = (
   errorMessage: string,
-  clientClassification?: ClientClassification,
+  clientClassification: ClientClassification,
 ): CompleteHtmlDocument => pipe(
   constructHtmlResponse(O.none, standardPageLayout, clientClassification)(E.left({
     message: toHtmlFragment(errorMessage),

@@ -22,6 +22,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { setResponseOnContext } from '../set-response-on-context';
 import { GroupId } from '../../types/group-id';
 import { toErrorHtmlDocument } from '../../html-pages/to-error-html-document';
+import { detectClientClassification } from '../detect-client-classification';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
@@ -56,7 +57,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
   const loggedInUser = getLoggedInScietyUser(adapters, context);
   if (O.isNone(loggedInUser)) {
     context.response.status = StatusCodes.FORBIDDEN;
-    context.response.body = toErrorHtmlDocument('You must be logged in to annotate a list.');
+    context.response.body = toErrorHtmlDocument('You must be logged in to annotate a list.', detectClientClassification(context));
     return;
   }
   const command = annotateArticleInListCommandCodec.decode(context.request.body);
@@ -71,7 +72,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
       },
     );
     context.response.status = StatusCodes.BAD_REQUEST;
-    context.response.body = toErrorHtmlDocument('Cannot understand the command.');
+    context.response.body = toErrorHtmlDocument('Cannot understand the command.', detectClientClassification(context));
     return;
   }
 
@@ -83,7 +84,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
     O.match(
       async () => {
         context.response.status = StatusCodes.FORBIDDEN;
-        context.response.body = toErrorHtmlDocument('Only the list owner is allowed to annotate their list.');
+        context.response.body = toErrorHtmlDocument('Only the list owner is allowed to annotate their list.', detectClientClassification(context));
       },
       async () => {
         const commandResult = await handleCreateAnnotationCommand(adapters)(context.request.body)();
