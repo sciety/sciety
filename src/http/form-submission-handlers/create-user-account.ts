@@ -12,6 +12,7 @@ import { constructHtmlResponse } from '../../html-pages/construct-html-response'
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
 import { setResponseOnContext } from '../set-response-on-context';
+import { detectClientClassification } from '../detect-client-classification';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 
@@ -26,7 +27,11 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
           },
           renderFormPage(formDetails.fullName, formDetails.handle),
           E.right,
-          constructHtmlResponse(getLoggedInScietyUser(dependencies, context), createUserAccountFormPageLayout),
+          constructHtmlResponse(
+            getLoggedInScietyUser(dependencies, context),
+            createUserAccountFormPageLayout,
+            detectClientClassification(context),
+          ),
         );
         setResponseOnContext(htmlResponse, context);
       },
