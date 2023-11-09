@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as PR from 'io-ts/PathReporter';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { Middleware } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -22,6 +22,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { setResponseOnContext } from '../set-response-on-context';
 import { GroupId } from '../../types/group-id';
 import { sendErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-error-html-response';
+import { detectClientClassification } from '../detect-client-classification';
 
 type Dependencies = Queries &
 GetLoggedInScietyUserPorts &
@@ -40,6 +41,7 @@ const prependErrorToTitleForAccessibility = (formPage: HtmlPage) => ({
 
 const redisplayFormPage = (
   dependencies: Dependencies,
+  context: ParameterizedContext,
   params: Params,
   user: O.Option<UserDetails>,
 ) => pipe(
@@ -51,7 +53,7 @@ const redisplayFormPage = (
       message: toHtmlFragment(`Something went wrong when you submitted your annotation. ${renderPageError.message}`),
     }),
   ),
-  T.map(constructHtmlResponse(user, standardPageLayout)),
+  T.map(constructHtmlResponse(user, standardPageLayout, detectClientClassification(context))),
 );
 
 type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
@@ -94,6 +96,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
         }
         const htmlResponse = await redisplayFormPage(
           dependencies,
+          context,
           { listId: command.right.listId, articleId: command.right.articleId },
           loggedInUser,
         )();
