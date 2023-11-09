@@ -15,6 +15,7 @@ import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { Queries } from '../../read-models';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { toErrorHtmlDocument } from '../../html-pages/to-error-html-document';
+import { detectClientClassification } from '../detect-client-classification';
 
 export const groupProperty = 'groupid';
 
@@ -51,9 +52,7 @@ export const followHandler = (dependencies: Ports): Middleware => async (context
         context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
         context.response.body = toErrorHtmlDocument(
           'Something went wrong; we\'re looking into it.',
-          {
-            userAgent: context.req.headers['user-agent'],
-          },
+          detectClientClassification(context),
         );
         return T.of(undefined);
       },

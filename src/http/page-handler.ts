@@ -8,6 +8,7 @@ import { ConstructPage } from '../html-pages/construct-page';
 import { PageLayout } from '../html-pages/page-layout';
 import { constructHtmlResponse } from '../html-pages/construct-html-response';
 import { setResponseOnContext } from './set-response-on-context';
+import { detectClientClassification } from './detect-client-classification';
 
 export const pageHandler = (
   adapters: GetLoggedInScietyUserPorts,
@@ -37,9 +38,7 @@ export const pageHandler = (
     T.map(constructHtmlResponse(
       getLoggedInScietyUser(adapters, context),
       pageLayout,
-      {
-        userAgent: context.req.headers['user-agent'],
-      },
+      detectClientClassification(context),
     )),
   )();
 
