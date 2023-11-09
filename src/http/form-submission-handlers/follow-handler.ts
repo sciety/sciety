@@ -47,7 +47,7 @@ export const followHandler = (dependencies: Ports): Middleware => async (context
     TE.fold(
       () => {
         dependencies.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
-        sendErrorHtmlResponse(context, StatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong; we\'re looking into it.');
+        sendErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong; we\'re looking into it.');
         return T.of(undefined);
       },
       (params) => pipe(

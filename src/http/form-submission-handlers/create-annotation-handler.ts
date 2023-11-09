@@ -54,17 +54,17 @@ const redisplayFormPage = (
   T.map(constructHtmlResponse(user, standardPageLayout)),
 );
 
-type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
+type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
 
-export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context) => {
-  const loggedInUser = getLoggedInScietyUser(adapters, context);
+export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) => async (context) => {
+  const loggedInUser = getLoggedInScietyUser(dependencies, context);
   if (O.isNone(loggedInUser)) {
-    sendErrorHtmlResponse(context, StatusCodes.FORBIDDEN, 'You must be logged in to annotate a list.');
+    sendErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to annotate a list.');
     return;
   }
   const command = annotateArticleInListCommandCodec.decode(context.request.body);
   if (E.isLeft(command)) {
-    adapters.logger(
+    dependencies.logger(
       'error',
       'Failed to decode the create annotation form',
       {
@@ -73,27 +73,27 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
         loggedInUserId: loggedInUser.value.id,
       },
     );
-    sendErrorHtmlResponse(context, StatusCodes.BAD_REQUEST, 'Cannot understand the command.');
+    sendErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Cannot understand the command.');
     return;
   }
 
   await pipe(
     command.right.listId,
-    adapters.lookupList,
+    dependencies.lookupList,
     O.chainNullableK((list) => list.ownerId.value),
     O.filter((listOwnerId) => isUserAllowedToCreateAnnotation(loggedInUser.value.id, listOwnerId)),
     O.match(
       async () => {
-        sendErrorHtmlResponse(context, StatusCodes.FORBIDDEN, 'Only the list owner is allowed to annotate their list.');
+        sendErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'Only the list owner is allowed to annotate their list.');
       },
       async () => {
-        const commandResult = await handleCreateAnnotationCommand(adapters)(context.request.body)();
+        const commandResult = await handleCreateAnnotationCommand(dependencies)(context.request.body)();
         if (E.isRight(commandResult)) {
           context.redirect(`/lists/${command.right.listId}`);
           return;
         }
         const htmlResponse = await redisplayFormPage(
-          adapters,
+          dependencies,
           { listId: command.right.listId, articleId: command.right.articleId },
           loggedInUser,
         )();

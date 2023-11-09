@@ -31,6 +31,6 @@ export const loadStaticFile = (dependencies: Dependencies): Middleware => async 
       dependencies.logger('error', 'Static file could not be read', { error });
       errorStatus = StatusCodes.INTERNAL_SERVER_ERROR;
     }
-    sendErrorHtmlResponse(context, errorStatus, pageMessage);
+    sendErrorHtmlResponse(dependencies, context, errorStatus, pageMessage);
   }
 };

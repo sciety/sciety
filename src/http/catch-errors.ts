@@ -12,7 +12,7 @@ export const catchErrors = (dependencies: Dependencies, logMessage: string, page
     } catch (error: unknown) {
       dependencies.logger('error', logMessage, { error });
 
-      sendErrorHtmlResponse(context, StatusCodes.INTERNAL_SERVER_ERROR, pageMessage);
+      sendErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, pageMessage);
     }
   }
 );
