@@ -3,7 +3,7 @@ import { Middleware } from '@koa/router';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
 import { Logger } from '../infrastructure';
-import { sendErrorHtmlResponse } from './send-error-html-response';
+import { sendErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from './send-error-html-response';
 
 type KoaSendError = {
   status: number,
@@ -13,7 +13,9 @@ const isKoaSendError = (variableToCheck: unknown): variableToCheck is KoaSendErr
   (variableToCheck as KoaSendError).status !== undefined
 );
 
-export const loadStaticFile = (logger: Logger): Middleware => async (context) => {
+type Dependencies = SendErrorHtmlResponseDependencies & { logger: Logger };
+
+export const loadStaticFile = (dependencies: Dependencies): Middleware => async (context) => {
   let pageMessage = 'Something went wrong, please try again.';
   let errorStatus: StatusCodes;
   const file = context.params.file.replace('editorial-communities', 'groups');
@@ -22,11 +24,11 @@ export const loadStaticFile = (logger: Logger): Middleware => async (context) =>
     await send(context, file, { root: staticFolder });
   } catch (error: unknown) {
     if (isKoaSendError(error) && error.status === 404) {
-      logger('warn', 'Static file not found', { error });
+      dependencies.logger('warn', 'Static file not found', { error });
       pageMessage = 'File not found';
       errorStatus = 404;
     } else {
-      logger('error', 'Static file could not be read', { error });
+      dependencies.logger('error', 'Static file could not be read', { error });
       errorStatus = StatusCodes.INTERNAL_SERVER_ERROR;
     }
     sendErrorHtmlResponse(context, errorStatus, pageMessage);

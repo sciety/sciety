@@ -5,7 +5,6 @@ import { toErrorHtmlDocument } from '../html-pages/to-error-html-document';
 import { detectClientClassification } from './detect-client-classification';
 import { Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 
-// ts-unused-exports:disable-next-line
 export type Dependencies = GetLoggedInScietyUserPorts;
 
 export const sendErrorHtmlResponse = (

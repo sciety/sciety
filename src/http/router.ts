@@ -397,7 +397,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/static/:file(.+)',
-    loadStaticFile(adapters.logger),
+    loadStaticFile(adapters),
   );
 
   return router;
