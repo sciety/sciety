@@ -1,15 +1,16 @@
 import { Middleware } from '@koa/router';
 import { StatusCodes } from 'http-status-codes';
-import { sendErrorHtmlResponse } from './send-error-html-response';
+import { sendErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from './send-error-html-response';
+import { Logger } from '../shared-ports';
 
-type Logger = (level: 'error', message: string, payload: Record<string, unknown>) => void;
+type Dependencies = SendErrorHtmlResponseDependencies & { logger: Logger };
 
-export const catchErrors = (logger: Logger, logMessage: string, pageMessage: string): Middleware => (
+export const catchErrors = (dependencies: Dependencies, logMessage: string, pageMessage: string): Middleware => (
   async (context, next) => {
     try {
       await next();
     } catch (error: unknown) {
-      logger('error', logMessage, { error });
+      dependencies.logger('error', logMessage, { error });
 
       sendErrorHtmlResponse(context, StatusCodes.INTERNAL_SERVER_ERROR, pageMessage);
     }

@@ -70,7 +70,7 @@ const configureAuth0Routes = (
   router.get(
     '/auth0/callback',
     catchErrors(
-      adapters.logger,
+      adapters,
       'Detected Auth0 callback error',
       'Something went wrong, please try again.',
     ),
