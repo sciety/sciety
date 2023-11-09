@@ -16,14 +16,8 @@ export type DynamicHeadViewModel = {
     title: string,
     description: string,
   },
-  clientClassification?: ClientClassification,
+  clientClassification: ClientClassification,
 };
-
-const renderWithoutClientClassification = (headTagContents: string) => `
-  <head>
-    ${headTagContents}
-  </head>
-`;
 
 const renderWithClientClassification = (headTagContents: string, clientClassification: ClientClassification) => `
   <head data-user-agent="${htmlEscape(clientClassification.userAgent ?? '')}">
@@ -32,9 +26,7 @@ const renderWithClientClassification = (headTagContents: string, clientClassific
 `;
 
 const renderHeadTag = (clientClassification: DynamicHeadViewModel['clientClassification']) => (headTagContents: string) => (
-  clientClassification !== undefined
-    ? renderWithClientClassification(headTagContents, clientClassification)
-    : renderWithoutClientClassification(headTagContents)
+  renderWithClientClassification(headTagContents, clientClassification)
 );
 
 export const head = (

@@ -14,7 +14,7 @@ import { wrapInHtmlDocument } from './wrap-in-html-document';
 
 const toErrorResponse = (
   user: O.Option<UserDetails>,
-  clientClassification?: ClientClassification,
+  clientClassification: ClientClassification,
 ) => (
   error: ErrorPageBodyViewModel,
 ): HtmlResponse => pipe(
@@ -34,7 +34,7 @@ const toErrorResponse = (
 const pageToSuccessResponse = (
   user: O.Option<UserDetails>,
   pageLayout: PageLayout,
-  clientClassification?: ClientClassification,
+  clientClassification: ClientClassification,
 ) => (page: HtmlPage): HtmlResponse => ({
   document: pipe(
     page,
