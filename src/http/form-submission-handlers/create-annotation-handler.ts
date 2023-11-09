@@ -21,9 +21,13 @@ import { constructHtmlResponse } from '../../html-pages/construct-html-response'
 import { toHtmlFragment } from '../../types/html-fragment';
 import { setResponseOnContext } from '../set-response-on-context';
 import { GroupId } from '../../types/group-id';
-import { sendErrorHtmlResponse } from '../send-error-html-response';
+import { sendErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-error-html-response';
 
-type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
+type Dependencies = Queries &
+GetLoggedInScietyUserPorts &
+HandleCreateAnnotationCommandDependencies &
+ExternalQueries &
+SendErrorHtmlResponseDependencies;
 
 const isUserAllowedToCreateAnnotation = (userId: UserId, listOwnerId: UserId | GroupId) => userId === listOwnerId;
 

@@ -14,11 +14,11 @@ import * as GroupId from '../../types/group-id';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { Queries } from '../../read-models';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { sendErrorHtmlResponse } from '../send-error-html-response';
+import { sendErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-error-html-response';
 
 export const groupProperty = 'groupid';
 
-type Ports = GetLoggedInScietyUserPorts & DependenciesForCommands & {
+type Ports = GetLoggedInScietyUserPorts & DependenciesForCommands & SendErrorHtmlResponseDependencies & {
   logger: Logger,
   getGroup: Queries['getGroup'],
 };
