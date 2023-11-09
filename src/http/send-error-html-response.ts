@@ -13,6 +13,7 @@ export const sendErrorHtmlResponse = (
   errorMessage: string,
 ): void => {
   context.response.status = statusCode;
+  context.response.type = 'html';
   context.response.body = toErrorHtmlDocument(
     errorMessage,
     detectClientClassification(context),
