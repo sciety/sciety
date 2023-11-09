@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
 import { toErrorHtmlDocument } from '../html-pages/to-error-html-document';
 import { Logger } from '../infrastructure';
+import { detectClientClassification } from './detect-client-classification';
 
 type KoaSendError = {
   status: number,
@@ -28,6 +29,6 @@ export const loadStaticFile = (logger: Logger): Middleware => async (context) =>
       logger('error', 'Static file could not be read', { error });
       context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
     }
-    context.response.body = toErrorHtmlDocument(pageMessage);
+    context.response.body = toErrorHtmlDocument(pageMessage, detectClientClassification(context));
   }
 };
