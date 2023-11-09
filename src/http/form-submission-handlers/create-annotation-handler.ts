@@ -21,8 +21,7 @@ import { constructHtmlResponse } from '../../html-pages/construct-html-response'
 import { toHtmlFragment } from '../../types/html-fragment';
 import { setResponseOnContext } from '../set-response-on-context';
 import { GroupId } from '../../types/group-id';
-import { toErrorHtmlDocument } from '../../html-pages/to-error-html-document';
-import { detectClientClassification } from '../detect-client-classification';
+import { sendErrorHtmlResponse } from '../send-error-html-response';
 
 type Dependencies = Queries & GetLoggedInScietyUserPorts & HandleCreateAnnotationCommandDependencies & ExternalQueries;
 
@@ -56,8 +55,7 @@ type CreateAnnotationHandler = (adapters: Dependencies) => Middleware;
 export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => async (context) => {
   const loggedInUser = getLoggedInScietyUser(adapters, context);
   if (O.isNone(loggedInUser)) {
-    context.response.status = StatusCodes.FORBIDDEN;
-    context.response.body = toErrorHtmlDocument('You must be logged in to annotate a list.', detectClientClassification(context));
+    sendErrorHtmlResponse(context, StatusCodes.FORBIDDEN, 'You must be logged in to annotate a list.');
     return;
   }
   const command = annotateArticleInListCommandCodec.decode(context.request.body);
@@ -71,8 +69,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
         loggedInUserId: loggedInUser.value.id,
       },
     );
-    context.response.status = StatusCodes.BAD_REQUEST;
-    context.response.body = toErrorHtmlDocument('Cannot understand the command.', detectClientClassification(context));
+    sendErrorHtmlResponse(context, StatusCodes.BAD_REQUEST, 'Cannot understand the command.');
     return;
   }
 
@@ -83,8 +80,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (adapters) => as
     O.filter((listOwnerId) => isUserAllowedToCreateAnnotation(loggedInUser.value.id, listOwnerId)),
     O.match(
       async () => {
-        context.response.status = StatusCodes.FORBIDDEN;
-        context.response.body = toErrorHtmlDocument('Only the list owner is allowed to annotate their list.', detectClientClassification(context));
+        sendErrorHtmlResponse(context, StatusCodes.FORBIDDEN, 'Only the list owner is allowed to annotate their list.');
       },
       async () => {
         const commandResult = await handleCreateAnnotationCommand(adapters)(context.request.body)();
