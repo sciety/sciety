@@ -49,7 +49,12 @@ export const followHandler = (dependencies: Ports): Middleware => async (context
         dependencies.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
 
         context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-        context.response.body = toErrorHtmlDocument('Something went wrong; we\'re looking into it.');
+        context.response.body = toErrorHtmlDocument(
+          'Something went wrong; we\'re looking into it.',
+          {
+            userAgent: context.req.headers['user-agent'],
+          },
+        );
         return T.of(undefined);
       },
       (params) => pipe(

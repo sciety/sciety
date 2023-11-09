@@ -6,9 +6,13 @@ import { constructHtmlResponse } from './construct-html-response';
 import { toHtmlFragment } from '../types/html-fragment';
 import * as DE from '../types/data-error';
 import { CompleteHtmlDocument } from './complete-html-document';
+import { ClientClassification } from '../shared-components/head';
 
-export const toErrorHtmlDocument = (errorMessage: string): CompleteHtmlDocument => pipe(
-  constructHtmlResponse(O.none, standardPageLayout)(E.left({
+export const toErrorHtmlDocument = (
+  errorMessage: string,
+  clientClassification?: ClientClassification,
+): CompleteHtmlDocument => pipe(
+  constructHtmlResponse(O.none, standardPageLayout, clientClassification)(E.left({
     message: toHtmlFragment(errorMessage),
     type: DE.unavailable,
   })).document,
