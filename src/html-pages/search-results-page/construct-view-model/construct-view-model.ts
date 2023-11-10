@@ -1,21 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, tupled } from 'fp-ts/function';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as DE from '../../../types/data-error';
 import { fetchExtraDetails } from './fetch-extra-details';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
-
-export const paramsCodec = t.type({
-  query: t.string,
-  cursor: tt.optionFromNullable(t.string),
-  page: tt.optionFromNullable(tt.NumberFromString),
-  evaluatedOnly: tt.withFallback(tt.BooleanFromString, false),
-});
-
-export type Params = t.TypeOf<typeof paramsCodec>;
+import { Params } from './params';
 
 export const constructViewModel = (
   dependencies: Dependencies,
