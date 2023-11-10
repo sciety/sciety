@@ -15,12 +15,12 @@ import {
 import { catchErrors } from '../catch-errors';
 import { createUserAccount } from '../form-submission-handlers/create-user-account';
 import { pageHandler } from '../page-handler';
-import { createUserAccountFormPage, paramsCodec as createUserAccountFormPageParamsCodec } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
-
+import { createUserAccountFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
 import { CollectedPorts } from '../../infrastructure';
 import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page/create-user-account-form-page-layout';
 import { createPageFromParams } from '../create-page-from-params';
 import { saveAuthenticationDestination } from '../authentication-destination';
+import { paramsCodec as createUserAccountFormPageParamsCodec } from '../../html-pages/create-user-account-form-page';
 
 export type Config = LoginMiddlewaresConfig;
 
