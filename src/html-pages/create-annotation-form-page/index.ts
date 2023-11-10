@@ -1,1 +1,2 @@
-export { createAnnotationFormPage, paramsCodec } from './create-annotation-form-page';
+export { createAnnotationFormPage } from './create-annotation-form-page';
+export { paramsCodec } from './params';
