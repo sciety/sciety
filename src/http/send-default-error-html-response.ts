@@ -6,7 +6,7 @@ import { Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser } from './au
 
 export type Dependencies = GetLoggedInScietyUserPorts;
 
-export const sendErrorHtmlResponse = (
+export const sendDefaultErrorHtmlResponse = (
   dependencies: Dependencies,
   context: ParameterizedContext,
   statusCode: StatusCodes,

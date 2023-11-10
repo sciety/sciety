@@ -3,7 +3,7 @@ import { Middleware } from '@koa/router';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
 import { Logger } from '../infrastructure';
-import { sendErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from './send-error-html-response';
+import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from './send-default-error-html-response';
 
 type KoaSendError = {
   status: number,
@@ -31,6 +31,6 @@ export const loadStaticFile = (dependencies: Dependencies): Middleware => async 
       dependencies.logger('error', 'Static file could not be read', { error });
       errorStatus = StatusCodes.INTERNAL_SERVER_ERROR;
     }
-    sendErrorHtmlResponse(dependencies, context, errorStatus, pageMessage);
+    sendDefaultErrorHtmlResponse(dependencies, context, errorStatus, pageMessage);
   }
 };

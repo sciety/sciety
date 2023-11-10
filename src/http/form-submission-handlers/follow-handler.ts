@@ -14,7 +14,7 @@ import * as GroupId from '../../types/group-id';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { Queries } from '../../read-models';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { sendErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-error-html-response';
+import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
 export const groupProperty = 'groupid';
 
@@ -47,7 +47,7 @@ export const followHandler = (dependencies: Ports): Middleware => async (context
     TE.fold(
       () => {
         dependencies.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
-        sendErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong; we\'re looking into it.');
+        sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong; we\'re looking into it.');
         return T.of(undefined);
       },
       (params) => pipe(

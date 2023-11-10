@@ -7,7 +7,7 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './au
 import { ConstructPage } from '../html-pages/construct-page';
 import { PageLayout } from '../html-pages/page-layout';
 import { constructHtmlResponse } from '../html-pages/construct-html-response';
-import { setResponseOnContext } from './set-response-on-context';
+import { sendHtmlResponse } from './send-html-response';
 import { detectClientClassification } from './detect-client-classification';
 
 export const pageHandler = (
@@ -42,7 +42,7 @@ export const pageHandler = (
     )),
   )();
 
-  setResponseOnContext(response, context);
+  sendHtmlResponse(response, context);
 
   await next();
 };
