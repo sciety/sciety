@@ -7,7 +7,7 @@ import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
 import { auth0PassportStrategy } from './authentication/auth0-passport-strategy';
 import { testingPassportStrategy } from './authentication/testing-passport-strategy';
-import { routeNotFound } from './route-not-found';
+import { respondWithNotFoundIfNoRoutesMatched } from './route-not-found';
 import { CollectedPorts } from '../infrastructure';
 import { EnvironmentVariables } from './environment-variables-codec';
 import { logRequestAndResponse } from './log-request-and-response';
@@ -75,7 +75,7 @@ export const createApplicationServer = (
   });
 
   app.use(router.middleware());
-  app.use(routeNotFound(ports));
+  app.use(respondWithNotFoundIfNoRoutesMatched(ports));
 
   app.on('error', (error) => {
     const payload = { error };
