@@ -59,7 +59,7 @@
     "@types/passport-auth0": "^1.0.8",
     "@types/pg": "^8.10.9",
     "@types/sanitize-html": "^2.9.3",
-    "@types/uuid": "^9.0.6",
+    "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.9.1",
     "backstopjs": "^6.2.2",
