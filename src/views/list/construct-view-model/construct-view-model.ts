@@ -4,20 +4,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerName } from './get-owner-name';
-import { listIdCodec } from '../../../types/list-id';
 import * as DE from '../../../types/data-error';
 import { ArticleId } from '../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
-
-export const paramsCodec = t.type({
-  id: listIdCodec,
-});
-
-type Params = t.TypeOf<typeof paramsCodec>;
+import { Params } from './params';
 
 export const constructViewModel = (
   dependencies: Dependencies,

@@ -1,2 +1,3 @@
 export { Dependencies } from './dependencies';
-export { constructViewModel, paramsCodec } from './construct-view-model';
+export { constructViewModel } from './construct-view-model';
+export { paramsCodec } from './params';
