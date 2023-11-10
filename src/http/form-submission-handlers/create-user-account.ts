@@ -6,8 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import {
   Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
 } from '../authentication-and-logging-in-of-sciety-users';
-import { renderFormPage } from '../../html-pages/create-user-account-form-page/create-user-account-form-page';
-import { createUserAccountFormPageLayout } from '../../html-pages/create-user-account-form-page';
+import { createUserAccountFormPageLayout, renderFormPage } from '../../html-pages/create-user-account-form-page';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
