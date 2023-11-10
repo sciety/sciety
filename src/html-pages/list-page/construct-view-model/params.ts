@@ -1,0 +1,14 @@
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import { listIdCodec } from '../../../types/list-id';
+import { userIdCodec } from '../../../types/user-id';
+
+export const paramsCodec = t.type({
+  page: tt.withFallback(tt.NumberFromString, 1),
+  id: listIdCodec,
+  user: tt.optionFromNullable(t.type({
+    id: userIdCodec,
+  })),
+});
+
+export type Params = t.TypeOf<typeof paramsCodec>;

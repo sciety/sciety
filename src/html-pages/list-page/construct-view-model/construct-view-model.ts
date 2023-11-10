@@ -3,27 +3,16 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerInformation } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
-import { ListId, listIdCodec } from '../../../types/list-id';
-import { userIdCodec, UserId } from '../../../types/user-id';
+import { ListId } from '../../../types/list-id';
+import { UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
 import { ArticleId } from '../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
-
-export const paramsCodec = t.type({
-  page: tt.withFallback(tt.NumberFromString, 1),
-  id: listIdCodec,
-  user: tt.optionFromNullable(t.type({
-    id: userIdCodec,
-  })),
-});
-
-export type Params = t.TypeOf<typeof paramsCodec>;
+import { Params } from './params';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
