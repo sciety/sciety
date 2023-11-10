@@ -1,11 +1,12 @@
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import { Logger } from '../../shared-ports';
 
 export const defaultDestination = '/';
 
 export const calculateAuthenticationDestination = (
-  referer: string | undefined, applicationHostname: string,
+  logger: Logger, referer: string | undefined, applicationHostname: string,
 ): string => pipe(
   referer,
   O.fromNullable,

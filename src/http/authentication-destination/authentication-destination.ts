@@ -3,6 +3,7 @@ import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 import { calculateAuthenticationDestination } from './calculate-authentication-destination';
+import { Logger } from '../../shared-ports';
 
 const contextCodec = t.type({
   session: t.type({
@@ -17,12 +18,14 @@ const getAuthenticationDestination = (context: ParameterizedContext) => pipe(
 );
 
 export const saveAuthenticationDestination = (
+  logger: Logger,
   applicationHostname: string,
 ): Middleware => async (context: ParameterizedContext, next) => {
   if (context.session === null) {
     throw new Error('Session not found in context');
   }
   context.session.authenticationDestination = calculateAuthenticationDestination(
+    logger,
     context.request.headers.referer,
     applicationHostname,
   );

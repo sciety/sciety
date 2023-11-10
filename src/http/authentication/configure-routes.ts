@@ -57,13 +57,13 @@ const configureAuth0Routes = (
 
   router.get(
     signUpRoute,
-    saveAuthenticationDestination(retrieveApplicationHostname(config)),
+    saveAuthenticationDestination(adapters.logger, retrieveApplicationHostname(config)),
     shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
   );
 
   router.get(
     logInRoute,
-    saveAuthenticationDestination(retrieveApplicationHostname(config)),
+    saveAuthenticationDestination(adapters.logger, retrieveApplicationHostname(config)),
     shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
   );
 
