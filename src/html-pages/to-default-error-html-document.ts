@@ -9,7 +9,7 @@ import { CompleteHtmlDocument } from './complete-html-document';
 import { ClientClassification } from '../shared-components/head';
 import { UserDetails } from '../types/user-details';
 
-export const toErrorHtmlDocument = (
+export const toDefaultErrorHtmlDocument = (
   errorMessage: string,
   clientClassification: ClientClassification,
   userDetails: O.Option<UserDetails>,
