@@ -1,2 +1,2 @@
-export { paramsCodec } from './construct-view-model/construct-view-model';
+export { paramsCodec } from './construct-view-model/params';
 export { constructAndRenderPage } from './construct-and-render-page';

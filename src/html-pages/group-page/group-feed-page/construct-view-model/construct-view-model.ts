@@ -1,24 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
-import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { Dependencies } from './dependencies';
 import { constructContent } from './construct-content';
-
-export const paramsCodec = t.type({
-  slug: t.string,
-  user: tt.optionFromNullable(t.type({
-    id: userIdCodec,
-  })),
-  page: tt.withFallback(tt.NumberFromString, 1),
-});
-
-export type Params = t.TypeOf<typeof paramsCodec>;
+import { Params } from './params';
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 

@@ -2,28 +2,16 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import { renderLegacyPaginationControls } from '../../../../shared-components/pagination';
 import { paginate } from './paginate';
 import { augmentWithUserDetails } from './augment-with-user-details';
-import { userIdCodec } from '../../../../types/user-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { findFollowers } from './find-followers';
 import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { GroupId } from '../../../../types/group-id';
 import { Dependencies } from './dependencies';
-
-export const paramsCodec = t.type({
-  slug: t.string,
-  user: tt.optionFromNullable(t.type({
-    id: userIdCodec,
-  })),
-  page: tt.withFallback(tt.NumberFromString, 1),
-});
-
-export type Params = t.TypeOf<typeof paramsCodec>;
+import { Params } from './params';
 
 const pageSize = 10;
 
