@@ -1,17 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
 import { UserGeneratedInput } from '../../types/user-generated-input';
-
-export const paramsCodec = t.type({
-  errorSummary: tt.optionFromNullable(t.unknown),
-});
-
-type Params = t.TypeOf<typeof paramsCodec>;
+import { Params } from './params';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,
