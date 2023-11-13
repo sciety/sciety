@@ -86,6 +86,10 @@ describe('add-article', () => {
           ]));
         });
       });
+
+      describe('when an annotation that is too long is provided in the command', () => {
+        it.todo('fails, without raising any events');
+      });
     });
   });
 });
