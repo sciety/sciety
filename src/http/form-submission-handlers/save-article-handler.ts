@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
-import { sequenceS } from 'fp-ts/Apply';
 import * as PR from 'io-ts/PathReporter';
 import { AddArticleToList, Logger } from '../../shared-ports';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
@@ -41,32 +40,27 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     context.redirect('back');
     return;
   }
-  const params = pipe(
-    {
-      body: pipe(
-        context,
-        contextCodec.decode,
-        E.bimap(
-          (errors) => {
-            dependencies.logger('error', 'saveArticleHandler codec failed', {
-              requestBody: context.request.body,
-              errors: PR.failure(errors),
-            });
-          },
-          (ctx) => ctx.request.body,
-        ),
-        O.fromEither,
-      ),
-    },
-    sequenceS(O.Apply),
+  const body = pipe(
+    context,
+    contextCodec.decode,
+    E.bimap(
+      (errors) => {
+        dependencies.logger('error', 'saveArticleHandler codec failed', {
+          requestBody: context.request.body,
+          errors: PR.failure(errors),
+        });
+      },
+      (ctx) => ctx.request.body,
+    ),
+    O.fromEither,
   );
-  if (O.isNone(params)) {
+  if (O.isNone(body)) {
     context.redirect('back');
     return;
   }
 
-  const articleId = params.value.body[articleIdFieldName];
-  const listId = params.value.body.listId;
+  const articleId = body.value[articleIdFieldName];
+  const listId = body.value.listId;
 
   const logEntry = checkUserOwnsList(dependencies, listId, loggedInUserId.value);
   if (E.isLeft(logEntry)) {
@@ -84,7 +78,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     {
       articleId,
       listId,
-      annotation: fromFormInputToOptionalProperty(params.value.body.annotation),
+      annotation: fromFormInputToOptionalProperty(body.value.annotation),
     },
     dependencies.addArticleToList,
     TE.getOrElseW((error) => {
