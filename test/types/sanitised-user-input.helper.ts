@@ -11,4 +11,6 @@ export const arbitrarySanitisedUserInput = (): SanitisedUserInput => pipe(
 );
 
 // ts-unused-exports:disable-next-line
-export const arbitraryLongSanitisedUserInput = (length: number): string => arbitraryWord(length) as SanitisedUserInput;
+export const arbitraryLongSanitisedUserInput = (
+  length: number,
+): SanitisedUserInput => arbitraryWord(length) as SanitisedUserInput;

@@ -6,7 +6,7 @@ import { addArticle } from '../../../../src/write-side/resources/list/add-articl
 import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
+import { arbitraryLongSanitisedUserInput, arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
 
 describe('add-article', () => {
   const listId = arbitraryListId();
@@ -88,7 +88,23 @@ describe('add-article', () => {
       });
 
       describe('when an annotation that is too long is provided in the command', () => {
-        it.todo('fails, without raising any events');
+        const annotationTooLong = arbitraryLongSanitisedUserInput(5000);
+        const result = pipe(
+          [
+            constructEvent('ListCreated')({
+              listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+            }),
+          ],
+          addArticle({
+            listId,
+            articleId,
+            annotation: annotationTooLong,
+          }),
+        );
+
+        it.failing('fails, without raising any events', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
       });
     });
   });
