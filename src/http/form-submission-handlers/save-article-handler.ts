@@ -20,14 +20,10 @@ type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,
 };
 
-const contextCodec = t.type({
-  request: t.type({
-    body: t.strict({
-      [articleIdFieldName]: DoiFromString,
-      listId: listIdCodec,
-      annotation: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: true }),
-    }),
-  }),
+const formBodyCodec = t.strict({
+  [articleIdFieldName]: DoiFromString,
+  listId: listIdCodec,
+  annotation: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: true }),
 });
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
@@ -40,27 +36,23 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     context.redirect('back');
     return;
   }
-  const body = pipe(
-    context,
-    contextCodec.decode,
-    E.bimap(
-      (errors) => {
-        dependencies.logger('error', 'saveArticleHandler codec failed', {
-          requestBody: context.request.body,
-          errors: PR.failure(errors),
-        });
-      },
-      (ctx) => ctx.request.body,
-    ),
-    O.fromEither,
+  const formBody = pipe(
+    context.request.body,
+    formBodyCodec.decode,
+    E.mapLeft((errors) => {
+      dependencies.logger('error', 'saveArticleHandler codec failed', {
+        requestBody: context.request.body,
+        errors: PR.failure(errors),
+      });
+    }),
   );
-  if (O.isNone(body)) {
+  if (E.isLeft(formBody)) {
     context.redirect('back');
     return;
   }
 
-  const articleId = body.value[articleIdFieldName];
-  const listId = body.value.listId;
+  const articleId = formBody.right[articleIdFieldName];
+  const listId = formBody.right.listId;
 
   const logEntry = checkUserOwnsList(dependencies, listId, loggedInUserId.value);
   if (E.isLeft(logEntry)) {
@@ -78,7 +70,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     {
       articleId,
       listId,
-      annotation: fromFormInputToOptionalProperty(body.value.annotation),
+      annotation: fromFormInputToOptionalProperty(formBody.right.annotation),
     },
     dependencies.addArticleToList,
     TE.getOrElseW((error) => {
