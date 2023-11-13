@@ -9,3 +9,6 @@ export const arbitrarySanitisedUserInput = (): SanitisedUserInput => pipe(
   sanitisedUserInputCodec({ maxInputLength: 12 }).decode,
   E.getOrElseW((errors) => { throw new Error(PR.failure(errors).join('')); }),
 );
+
+// ts-unused-exports:disable-next-line
+export const arbitraryLongSanitisedUserInput = (length: number): string => arbitraryWord(length) as SanitisedUserInput;

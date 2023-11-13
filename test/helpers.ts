@@ -21,8 +21,6 @@ export const arbitraryString = (): string => pipe(
   A.map((n) => arbitraryWord(n)),
 ).join(' ');
 
-export const arbitraryLongString = (length: number): string => arbitraryWord(length);
-
 export const arbitraryHtmlFragment = (): HtmlFragment => pipe(
   arbitraryString(),
   toHtmlFragment,
