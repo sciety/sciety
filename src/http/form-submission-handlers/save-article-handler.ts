@@ -12,6 +12,7 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../a
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
 import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
+import { AddArticleToListCommand } from '../../write-side/commands';
 
 export const articleIdFieldName = 'articleid';
 
@@ -66,12 +67,14 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     value.length === 0 ? undefined : value
   );
 
+  const command: AddArticleToListCommand = {
+    articleId,
+    listId,
+    annotation: fromFormInputToOptionalProperty(formBody.right.annotation),
+  };
+
   await pipe(
-    {
-      articleId,
-      listId,
-      annotation: fromFormInputToOptionalProperty(formBody.right.annotation),
-    },
+    command,
     dependencies.addArticleToList,
     TE.getOrElseW((error) => {
       dependencies.logger('error', 'saveArticleHandler failed', { error });
