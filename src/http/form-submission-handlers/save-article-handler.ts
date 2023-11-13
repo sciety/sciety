@@ -32,6 +32,15 @@ const contextCodec = t.type({
 });
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
+  const loggedInUserId = pipe(
+    getLoggedInScietyUser(dependencies, context),
+    O.map((userDetails) => userDetails.id),
+  );
+  if (O.isNone(loggedInUserId)) {
+    dependencies.logger('error', 'Missing user', { requestBody: context.request.body });
+    context.redirect('back');
+    return;
+  }
   const params = pipe(
     {
       body: pipe(
@@ -48,16 +57,6 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
         ),
         O.fromEither,
       ),
-      userId: pipe(
-        getLoggedInScietyUser(dependencies, context),
-        O.map((userDetails) => userDetails.id),
-        (details) => {
-          if (O.isNone(details)) {
-            dependencies.logger('error', 'Missing user', { requestBody: context.request.body });
-          }
-          return details;
-        },
-      ),
     },
     sequenceS(O.Apply),
   );
@@ -69,7 +68,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
   const articleId = params.value.body[articleIdFieldName];
   const listId = params.value.body.listId;
 
-  const logEntry = checkUserOwnsList(dependencies, listId, params.value.userId);
+  const logEntry = checkUserOwnsList(dependencies, listId, loggedInUserId.value);
   if (E.isLeft(logEntry)) {
     dependencies.logger('error', logEntry.left.message, logEntry.left.payload);
     dependencies.logger('error', 'saveArticleHandler failed', { error: logEntry.left });
