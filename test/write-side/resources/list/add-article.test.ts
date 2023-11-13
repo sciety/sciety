@@ -102,7 +102,7 @@ describe('add-article', () => {
           }),
         );
 
-        it.failing('fails, without raising any events', () => {
+        it.failing('fails', () => {
           expect(E.isLeft(result)).toBe(true);
         });
       });

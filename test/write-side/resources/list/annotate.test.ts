@@ -28,26 +28,32 @@ describe('annotate', () => {
     };
 
     describe('and the article is in the list without an annotation', () => {
-      const relevantEvents = [
-        listCreatedEvent,
-        {
-          ...arbitraryArticleAddedToListEvent(),
-          articleId,
-          listId,
-        },
-      ];
-      const result = pipe(
-        relevantEvents,
-        annotate(annotateArticleInListCommand),
-      );
+      describe('when the annotation is not too long', () => {
+        const relevantEvents = [
+          listCreatedEvent,
+          {
+            ...arbitraryArticleAddedToListEvent(),
+            articleId,
+            listId,
+          },
+        ];
+        const result = pipe(
+          relevantEvents,
+          annotate(annotateArticleInListCommand),
+        );
 
-      it('succeeds, raising a relevant event', () => {
-        expect(result).toStrictEqual(E.right([expect.objectContaining({
-          type: 'ArticleInListAnnotated',
-          articleId,
-          listId,
-          content,
-        })]));
+        it('succeeds, raising a relevant event', () => {
+          expect(result).toStrictEqual(E.right([expect.objectContaining({
+            type: 'ArticleInListAnnotated',
+            articleId,
+            listId,
+            content,
+          })]));
+        });
+      });
+
+      describe('when the annotation is too long', () => {
+        it.todo('fails');
       });
     });
 
