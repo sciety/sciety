@@ -6,18 +6,19 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import * as PR from 'io-ts/PathReporter';
-import { AddArticleToList, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
 import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
 import { AddArticleToListCommand } from '../../write-side/commands';
+import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
 export const articleIdFieldName = 'articleid';
 
-type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
-  addArticleToList: AddArticleToList,
+type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
 };
 
@@ -75,7 +76,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
 
   await pipe(
     command,
-    dependencies.addArticleToList,
+    addArticleToListCommandHandler(dependencies),
     TE.getOrElseW((error) => {
       dependencies.logger('error', 'saveArticleHandler failed', { error });
       return T.of(error);
