@@ -5,7 +5,9 @@ import { Logger } from '../../shared-ports';
 
 export const defaultDestination = '/';
 
-const toValidUrl = (candidateUrl: string) => O.some(new URL(candidateUrl));
+const toValidUrl = (candidateUrl: string) => pipe(
+  O.tryCatch(() => new URL(candidateUrl)),
+);
 
 const isHostedBy = (applicationHostname: string) => (url: URL) => url.hostname === applicationHostname;
 
