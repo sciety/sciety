@@ -6,7 +6,7 @@ import { validateAndExecuteCommand, Dependencies } from '../../../src/http/form-
 import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
-import { UserGeneratedInput } from '../../../src/types/user-generated-input';
+import { SanitisedUserInput } from '../../../src/types/sanitised-user-input';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryUserId } from '../../types/user-id.helper';
@@ -49,9 +49,9 @@ describe('validate-and-execute-command', () => {
     const fullName = arbitraryUserGeneratedInput();
 
     it.each([
-      [{ handle }, { fullName: '' as UserGeneratedInput, handle }],
-      [{ fullName }, { fullName, handle: '' as UserGeneratedInput }],
-      [{ }, { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
+      [{ handle }, { fullName: '' as SanitisedUserInput, handle }],
+      [{ fullName }, { fullName, handle: '' as SanitisedUserInput }],
+      [{ }, { fullName: '' as SanitisedUserInput, handle: '' as SanitisedUserInput }],
     ])('returns the form with any valid fields populated', async (body, expectedFormOutput) => {
       const koaContext = buildKoaContext(body);
       const result = await validateAndExecuteCommand(koaContext, defaultDependencies)();
@@ -62,15 +62,15 @@ describe('validate-and-execute-command', () => {
 
   describe('given unsafe or invalid inputs', () => {
     it.each([
-      ['Valid Full Name', '<unsafe>handle', { fullName: 'Valid Full Name', handle: '' as UserGeneratedInput }],
-      ['Valid Full Name', '"unsafe"handle', { fullName: 'Valid Full Name', handle: '' as UserGeneratedInput }],
+      ['Valid Full Name', '<unsafe>handle', { fullName: 'Valid Full Name', handle: '' as SanitisedUserInput }],
+      ['Valid Full Name', '"unsafe"handle', { fullName: 'Valid Full Name', handle: '' as SanitisedUserInput }],
       ['Valid Full Name', 'invalidhandletoolong', { fullName: 'Valid Full Name', handle: 'invalidhandletoolong' }],
-      ['<unsafe> Full Name', 'validhandle', { fullName: '' as UserGeneratedInput, handle: 'validhandle' }],
-      ['"unsafe" Full Name', 'validhandle', { fullName: '' as UserGeneratedInput, handle: 'validhandle' }],
-      ['<unsafe> Full Name', '<unsafe>handle', { fullName: '' as UserGeneratedInput, handle: '' as UserGeneratedInput }],
-      ['<unsafe> Full Name', 'invalidhandletoolong', { fullName: '' as UserGeneratedInput, handle: 'invalidhandletoolong' }],
+      ['<unsafe> Full Name', 'validhandle', { fullName: '' as SanitisedUserInput, handle: 'validhandle' }],
+      ['"unsafe" Full Name', 'validhandle', { fullName: '' as SanitisedUserInput, handle: 'validhandle' }],
+      ['<unsafe> Full Name', '<unsafe>handle', { fullName: '' as SanitisedUserInput, handle: '' as SanitisedUserInput }],
+      ['<unsafe> Full Name', 'invalidhandletoolong', { fullName: '' as SanitisedUserInput, handle: 'invalidhandletoolong' }],
       ['Invalid Full Name Due to being too looooong', 'validhandle', { fullName: 'Invalid Full Name Due to being too looooong', handle: 'validhandle' }],
-      ['Invalid Full Name Due to being too looooong', '<unsafe>handle', { fullName: 'Invalid Full Name Due to being too looooong', handle: '' as UserGeneratedInput }],
+      ['Invalid Full Name Due to being too looooong', '<unsafe>handle', { fullName: 'Invalid Full Name Due to being too looooong', handle: '' as SanitisedUserInput }],
       ['Invalid Full Name Due to being too looooong', 'invalidhandletoolong', { fullName: 'Invalid Full Name Due to being too looooong', handle: 'invalidhandletoolong' }],
     ])('given %s and %s', async (fullNameInput, handleInput, expectedFormOutput) => {
       const formBody = { fullName: fullNameInput, handle: handleInput };

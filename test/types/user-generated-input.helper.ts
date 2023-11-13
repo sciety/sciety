@@ -1,11 +1,11 @@
 import * as PR from 'io-ts/PathReporter';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { UserGeneratedInput, userGeneratedInputCodec } from '../../src/types/user-generated-input';
+import { SanitisedUserInput, sanitisedUserInputCodec } from '../../src/types/sanitised-user-input';
 import { arbitraryWord } from '../helpers';
 
-export const arbitraryUserGeneratedInput = (): UserGeneratedInput => pipe(
+export const arbitraryUserGeneratedInput = (): SanitisedUserInput => pipe(
   arbitraryWord(12),
-  userGeneratedInputCodec({ maxInputLength: 12 }).decode,
+  sanitisedUserInputCodec({ maxInputLength: 12 }).decode,
   E.getOrElseW((errors) => { throw new Error(PR.failure(errors).join('')); }),
 );

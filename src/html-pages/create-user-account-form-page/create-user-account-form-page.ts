@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
-import { UserGeneratedInput } from '../../types/user-generated-input';
+import { SanitisedUserInput } from '../../types/sanitised-user-input';
 import { Params } from './params';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
@@ -28,8 +28,8 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
 );
 
 export const renderFormPage = (
-  fullName: UserGeneratedInput,
-  handle: UserGeneratedInput,
+  fullName: SanitisedUserInput,
+  handle: SanitisedUserInput,
 ) => (params: Params): HtmlPage => pipe(
   params.errorSummary,
   renderErrorSummary,
@@ -58,6 +58,6 @@ export const renderFormPage = (
 
 export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, HtmlPage> => pipe(
   params,
-  renderFormPage('' as UserGeneratedInput, '' as UserGeneratedInput),
+  renderFormPage('' as SanitisedUserInput, '' as SanitisedUserInput),
   TE.right,
 );

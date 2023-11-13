@@ -1,13 +1,13 @@
 import * as t from 'io-ts';
 import { listIdCodec } from '../../types/list-id';
-import { userGeneratedInputCodec } from '../../types/user-generated-input';
+import { sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 
 export const listNameMaxLength = 100;
 export const listDescriptionMaxLength = 250;
 
 export const editListDetailsCommandCodec = t.strict({
-  name: userGeneratedInputCodec({ maxInputLength: listNameMaxLength }),
-  description: userGeneratedInputCodec({ maxInputLength: listDescriptionMaxLength, allowEmptyInput: true }),
+  name: sanitisedUserInputCodec({ maxInputLength: listNameMaxLength }),
+  description: sanitisedUserInputCodec({ maxInputLength: listDescriptionMaxLength, allowEmptyInput: true }),
   listId: listIdCodec,
 });
 

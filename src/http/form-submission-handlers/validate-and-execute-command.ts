@@ -9,7 +9,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler';
 import { userHandleCodec } from '../../types/user-handle';
-import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
+import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { CommandResult } from '../../types/command-result';
 import { Logger } from '../../shared-ports';
@@ -22,13 +22,13 @@ export type Dependencies = DependenciesForCommands & {
 };
 
 const createUserAccountFormCodec = t.type({
-  fullName: userGeneratedInputCodec({ maxInputLength: 30 }),
+  fullName: sanitisedUserInputCodec({ maxInputLength: 30 }),
   handle: userHandleCodec,
 });
 
 const unvalidatedFormDetailsCodec = t.type({
-  fullName: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
-  handle: tt.withFallback(userGeneratedInputCodec({ maxInputLength: 1000 }), '' as UserGeneratedInput),
+  fullName: tt.withFallback(sanitisedUserInputCodec({ maxInputLength: 1000 }), '' as SanitisedUserInput),
+  handle: tt.withFallback(sanitisedUserInputCodec({ maxInputLength: 1000 }), '' as SanitisedUserInput),
 });
 
 type UnvalidatedFormDetails = t.TypeOf<typeof unvalidatedFormDetailsCodec>;
@@ -72,8 +72,8 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, de
     context.request.body,
     unvalidatedFormDetailsCodec.decode,
     E.getOrElse(() => ({
-      fullName: '' as UserGeneratedInput,
-      handle: '' as UserGeneratedInput,
+      fullName: '' as SanitisedUserInput,
+      handle: '' as SanitisedUserInput,
     })),
   )),
 );

@@ -11,7 +11,7 @@ import { DoiFromString } from '../../types/codecs/DoiFromString';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
-import { UserGeneratedInput, userGeneratedInputCodec } from '../../types/user-generated-input';
+import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
@@ -25,7 +25,7 @@ type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & DependenciesF
 const formBodyCodec = t.strict({
   [articleIdFieldName]: DoiFromString,
   listId: listIdCodec,
-  annotation: userGeneratedInputCodec({ maxInputLength: 4000, allowEmptyInput: true }),
+  annotation: sanitisedUserInputCodec({ maxInputLength: 4000, allowEmptyInput: true }),
 });
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
@@ -64,7 +64,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  const fromFormInputToOptionalProperty = (value: UserGeneratedInput) => (
+  const fromFormInputToOptionalProperty = (value: SanitisedUserInput) => (
     value.length === 0 ? undefined : value
   );
 
