@@ -1,12 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
 import { addArticle } from '../../../../src/write-side/resources/list/add-article';
-import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryLongSanitisedUserInput, arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
+import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
 
 describe('add-article', () => {
   const listId = arbitraryListId();
@@ -16,9 +15,10 @@ describe('add-article', () => {
     describe('and the article is already in the list', () => {
       const result = pipe(
         [
-          constructEvent('ListCreated')({
-            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
-          }),
+          {
+            ...arbitraryListCreatedEvent(),
+            listId,
+          },
           constructEvent('ArticleAddedToList')({ articleId, listId }),
         ],
         addArticle({
@@ -36,9 +36,10 @@ describe('add-article', () => {
       describe('when no annotation is provided in the command', () => {
         const result = pipe(
           [
-            constructEvent('ListCreated')({
-              listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
-            }),
+            {
+              ...arbitraryListCreatedEvent(),
+              listId,
+            },
           ],
           addArticle({
             listId,
@@ -59,9 +60,10 @@ describe('add-article', () => {
         const annotation = arbitrarySanitisedUserInput();
         const result = pipe(
           [
-            constructEvent('ListCreated')({
-              listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
-            }),
+            {
+              ...arbitraryListCreatedEvent(),
+              listId,
+            },
           ],
           addArticle({
             listId,
@@ -91,9 +93,10 @@ describe('add-article', () => {
         const annotationTooLong = arbitraryLongSanitisedUserInput(5000);
         const result = pipe(
           [
-            constructEvent('ListCreated')({
-              listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
-            }),
+            {
+              ...arbitraryListCreatedEvent(),
+              listId,
+            },
           ],
           addArticle({
             listId,
