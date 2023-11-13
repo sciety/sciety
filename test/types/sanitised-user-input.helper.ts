@@ -4,7 +4,7 @@ import * as E from 'fp-ts/Either';
 import { SanitisedUserInput, sanitisedUserInputCodec } from '../../src/types/sanitised-user-input';
 import { arbitraryWord } from '../helpers';
 
-export const arbitraryUserGeneratedInput = (): SanitisedUserInput => pipe(
+export const arbitrarySanitisedUserInput = (): SanitisedUserInput => pipe(
   arbitraryWord(12),
   sanitisedUserInputCodec({ maxInputLength: 12 }).decode,
   E.getOrElseW((errors) => { throw new Error(PR.failure(errors).join('')); }),

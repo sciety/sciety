@@ -7,15 +7,15 @@ import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
-import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
+import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
 
 describe('execute-command', () => {
   const listId = arbitraryListId();
-  const listName = arbitraryUserGeneratedInput();
-  const listDescription = arbitraryUserGeneratedInput();
+  const listName = arbitrarySanitisedUserInput();
+  const listDescription = arbitrarySanitisedUserInput();
 
   describe('when the new name is different from the current name', () => {
-    const newName = arbitraryUserGeneratedInput();
+    const newName = arbitrarySanitisedUserInput();
     const command = {
       name: newName,
       description: listDescription,
@@ -42,7 +42,7 @@ describe('execute-command', () => {
   });
 
   describe('when the new description is different from the current description', () => {
-    const newDescription = arbitraryUserGeneratedInput();
+    const newDescription = arbitrarySanitisedUserInput();
     const command = {
       name: listName,
       description: newDescription,
@@ -94,8 +94,8 @@ describe('execute-command', () => {
   });
 
   describe('when both name and description are different from the current details', () => {
-    const newName = arbitraryUserGeneratedInput();
-    const newDescription = arbitraryUserGeneratedInput();
+    const newName = arbitrarySanitisedUserInput();
+    const newDescription = arbitrarySanitisedUserInput();
     const command = {
       name: newName,
       description: newDescription,

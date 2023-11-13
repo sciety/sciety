@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { sanitisedUserInputCodec } from '../../src/types/sanitised-user-input';
 import { arbitraryWord } from '../helpers';
 
-describe('user-generated-input', () => {
+describe('sanitised-user-input', () => {
   it('fails when supplied with script tag', () => {
     const result = sanitisedUserInputCodec({ maxInputLength: 100 }).decode('<script>');
 

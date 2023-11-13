@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { annotate } from '../../../../src/write-side/resources/list';
-import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
+import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import {
@@ -14,7 +14,7 @@ import {
 describe('annotate', () => {
   const articleId = arbitraryArticleId();
   const listId = arbitraryListId();
-  const content = arbitraryUserGeneratedInput();
+  const content = arbitrarySanitisedUserInput();
   const annotateArticleInListCommand = {
     content,
     articleId,

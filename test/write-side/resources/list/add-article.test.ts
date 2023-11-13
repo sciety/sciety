@@ -6,7 +6,7 @@ import { addArticle } from '../../../../src/write-side/resources/list/add-articl
 import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryUserGeneratedInput } from '../../../types/user-generated-input.helper';
+import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
 
 describe('add-article', () => {
   const listId = arbitraryListId();
@@ -56,7 +56,7 @@ describe('add-article', () => {
       });
 
       describe('when an annotation is provided in the command', () => {
-        const annotation = arbitraryUserGeneratedInput();
+        const annotation = arbitrarySanitisedUserInput();
         const result = pipe(
           [
             constructEvent('ListCreated')({

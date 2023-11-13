@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { ParameterizedContext } from 'koa';
 import { validateAndExecuteCommand, Dependencies } from '../../../src/http/form-submission-handlers/validate-and-execute-command';
 import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { arbitraryUserGeneratedInput } from '../../types/user-generated-input.helper';
+import { arbitrarySanitisedUserInput } from '../../types/sanitised-user-input.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { SanitisedUserInput } from '../../../src/types/sanitised-user-input';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -28,7 +28,7 @@ const buildKoaContext = (body: unknown, userId = arbitraryUserId()): Parameteriz
 describe('validate-and-execute-command', () => {
   describe('both user inputs are safe and valid', () => {
     const formBody = {
-      fullName: arbitraryUserGeneratedInput(),
+      fullName: arbitrarySanitisedUserInput(),
       handle: arbitraryUserHandle(),
     };
     const koaContext = buildKoaContext(formBody);
@@ -46,7 +46,7 @@ describe('validate-and-execute-command', () => {
 
   describe('when one or more fields are not present in the form', () => {
     const handle = arbitraryUserHandle();
-    const fullName = arbitraryUserGeneratedInput();
+    const fullName = arbitrarySanitisedUserInput();
 
     it.each([
       [{ handle }, { fullName: '' as SanitisedUserInput, handle }],
@@ -83,7 +83,7 @@ describe('validate-and-execute-command', () => {
 
   describe('when the user handle already exists', () => {
     const existingUser = arbitraryUserDetails();
-    const formBody = { fullName: arbitraryUserGeneratedInput(), handle: existingUser.handle };
+    const formBody = { fullName: arbitrarySanitisedUserInput(), handle: existingUser.handle };
     const dependencies: Dependencies = {
       ...defaultDependencies,
       getAllEvents: T.of([
