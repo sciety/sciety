@@ -9,6 +9,8 @@ const toValidUrl = (candidateUrl: string) => O.some(new URL(candidateUrl));
 
 const isHostedBy = (applicationHostname: string) => (url: URL) => url.hostname === applicationHostname;
 
+const urlToString = (url: URL) => url.toString();
+
 export const calculateAuthenticationDestination = (
   logger: Logger, referer: string | undefined, applicationHostname: string,
 ): string => pipe(
@@ -16,6 +18,6 @@ export const calculateAuthenticationDestination = (
   O.fromNullable,
   O.chain(toValidUrl),
   O.filter(isHostedBy(applicationHostname)),
-  O.map((url) => url.toString()),
+  O.map(urlToString),
   O.getOrElse(() => defaultDestination),
 );
