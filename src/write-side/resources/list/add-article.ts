@@ -8,6 +8,7 @@ import { ListWriteModel } from './list-write-model';
 import { getListWriteModel } from './get-list-write-model';
 import { ResourceAction } from '../resource-action';
 import { AddArticleToListCommand } from '../../commands';
+import { toErrorMessage } from '../../../types/error-message';
 
 const constructEvents = (command: AddArticleToListCommand) => (
   command.annotation === undefined
@@ -39,8 +40,19 @@ const createAppropriateEvents = (command: AddArticleToListCommand) => (listResou
   ),
 );
 
+const isAnnotationValidIfPresent = (command: AddArticleToListCommand) => () => {
+  if (command.annotation !== undefined) {
+    return command.annotation.length <= 4000;
+  }
+  return true;
+};
+
 export const addArticle: ResourceAction<AddArticleToListCommand> = (command) => (events) => pipe(
   events,
   getListWriteModel(command.listId),
+  E.filterOrElseW(
+    isAnnotationValidIfPresent(command),
+    () => toErrorMessage('Annotation too long'),
+  ),
   E.map(createAppropriateEvents(command)),
 );
