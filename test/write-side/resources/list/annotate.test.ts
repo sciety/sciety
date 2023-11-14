@@ -28,15 +28,18 @@ describe('annotate', () => {
     };
 
     describe('and the article is in the list without an annotation', () => {
+      const articleAddedToListEvent = {
+        ...arbitraryArticleAddedToListEvent(),
+        articleId,
+        listId,
+      };
+
+      const relevantEvents = [
+        listCreatedEvent,
+        articleAddedToListEvent,
+      ];
+
       describe('when the annotation is not too long', () => {
-        const relevantEvents = [
-          listCreatedEvent,
-          {
-            ...arbitraryArticleAddedToListEvent(),
-            articleId,
-            listId,
-          },
-        ];
         const result = pipe(
           relevantEvents,
           annotate(annotateArticleInListCommand),
@@ -53,22 +56,13 @@ describe('annotate', () => {
       });
 
       describe('when the annotation is too long', () => {
-        const relevantEvents = [
-          listCreatedEvent,
-          {
-            ...arbitraryArticleAddedToListEvent(),
-            articleId,
-            listId,
-          },
-        ];
-        const tooLongAnnotation = {
-          content: arbitraryLongSanitisedUserInput(5000),
-          articleId,
-          listId,
-        };
         const result = pipe(
           relevantEvents,
-          annotate(tooLongAnnotation),
+          annotate({
+            content: arbitraryLongSanitisedUserInput(5000),
+            articleId,
+            listId,
+          }),
         );
 
         it.failing('fails', () => {
