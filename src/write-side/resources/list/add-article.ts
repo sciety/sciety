@@ -9,6 +9,7 @@ import { getListWriteModel } from './get-list-write-model';
 import { ResourceAction } from '../resource-action';
 import { AddArticleToListCommand } from '../../commands';
 import { toErrorMessage } from '../../../types/error-message';
+import { isAnnotationLengthValid } from './is-annotation-length-valid';
 
 const constructEvents = (command: AddArticleToListCommand) => (
   command.annotation === undefined
@@ -42,7 +43,7 @@ const createAppropriateEvents = (command: AddArticleToListCommand) => (listResou
 
 const isAnnotationValidIfPresent = (command: AddArticleToListCommand) => () => {
   if (command.annotation !== undefined) {
-    return command.annotation.length <= 4000;
+    return isAnnotationLengthValid(command.annotation);
   }
   return true;
 };

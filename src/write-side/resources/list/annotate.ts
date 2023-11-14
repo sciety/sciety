@@ -9,6 +9,7 @@ import { getListWriteModel } from './get-list-write-model';
 import { ListWriteModel } from './list-write-model';
 import { ArticleId } from '../../../types/article-id';
 import { toErrorMessage } from '../../../types/error-message';
+import { isAnnotationLengthValid } from './is-annotation-length-valid';
 
 const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['articles'][number]) => (
   article.annotated
@@ -22,7 +23,7 @@ const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteMo
   E.fromOption(() => toErrorMessage('Article not in list')),
 );
 const isAnnotationValid = (command: AnnotateArticleInListCommand) => () => (
-  command.content.length <= 4000
+  isAnnotationLengthValid(command.content)
 );
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
