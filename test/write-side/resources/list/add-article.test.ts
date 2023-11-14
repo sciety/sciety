@@ -109,6 +109,10 @@ describe('add-article', () => {
           expect(E.isLeft(result)).toBe(true);
         });
       });
+
+      describe('when an annotation is provided as an empty string in the command', () => {
+        it.todo('fails');
+      });
     });
   });
 });
