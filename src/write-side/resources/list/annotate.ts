@@ -21,12 +21,16 @@ const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteMo
   RA.findFirst((article) => article.articleId.value === articleId.value),
   E.fromOption(() => toErrorMessage('Article not in list')),
 );
-const validateAnnotation = (article: ListWriteModel['articles'][number]) => E.right(article);
+const validateAnnotation = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['articles'][number]) => (
+  command.content.length > 4000
+    ? E.left(toErrorMessage('Annotation too long'))
+    : E.right(article)
+);
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
   getListWriteModel(command.listId),
   E.chain(findRelevantArticle(command.articleId)),
-  E.chainW(validateAnnotation),
+  E.chainW(validateAnnotation(command)),
   E.map(createAppropriateEvents(command)),
 );
