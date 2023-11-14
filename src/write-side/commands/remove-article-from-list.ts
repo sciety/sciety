@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
-import { DoiFromString } from '../../types/article-id';
+import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
 
 export const removeArticleFromListCommandCodec = t.strict({
-  articleId: DoiFromString,
+  articleId: articleIdCodec,
   listId: listIdCodec,
 });
 

@@ -8,7 +8,6 @@ import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
-import { DoiFromString } from '../types/article-id';
 import * as AID from '../types/article-id';
 
 type Ports = {
@@ -16,10 +15,10 @@ type Ports = {
 };
 
 const preReviewPreprint = t.type({
-  handle: t.union([DoiFromString, t.string]),
+  handle: t.union([AID.articleIdCodec, t.string]),
   fullReviews: t.readonlyArray(t.type({
     createdAt: tt.DateFromISOString,
-    doi: tt.optionFromNullable(DoiFromString),
+    doi: tt.optionFromNullable(AID.articleIdCodec),
     isPublished: t.boolean,
     authors: t.readonlyArray(t.type({
       name: t.string,

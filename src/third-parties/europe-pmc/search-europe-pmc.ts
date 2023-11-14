@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { ArticleServer } from '../../types/article-server';
-import { DoiFromString } from '../../types/article-id';
+import { articleIdCodec } from '../../types/article-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
@@ -36,7 +36,7 @@ const authorsFromJson = tt.optionFromNullable(t.type({
 type Authors = t.TypeOf<typeof authorsFromJson>;
 
 const itemFromJson = t.type({
-  doi: DoiFromString,
+  doi: articleIdCodec,
   title: t.string,
   authorList: authorsFromJson,
   bookOrReportDetails: t.type({

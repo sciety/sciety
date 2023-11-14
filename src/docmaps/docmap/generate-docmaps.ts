@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Docmap } from './docmap-type';
 import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
 import { renderDocmap } from './render-docmap';
-import { DoiFromString, ArticleId } from '../../types/article-id';
+import { articleIdCodec, ArticleId } from '../../types/article-id';
 import { supportedGroups } from '../supported-groups';
 import { Queries } from '../../read-models';
 
@@ -25,7 +25,7 @@ const getEvaluatingGroupIds = (ports: Ports) => (doi: ArticleId) => pipe(
 );
 
 const validateDoi = flow(
-  DoiFromString.decode,
+  articleIdCodec.decode,
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Invalid DOI requested' })),
 );
 

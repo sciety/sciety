@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { DoiFromString } from '../types/article-id';
+import { articleIdCodec } from '../types/article-id';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { userIdCodec } from '../types/user-id';
 
@@ -9,5 +9,5 @@ export const userUnsavedArticleEventCodec = t.type({
   type: t.literal('UserUnsavedArticle'),
   date: tt.DateFromISOString,
   userId: userIdCodec,
-  articleId: DoiFromString,
+  articleId: articleIdCodec,
 });

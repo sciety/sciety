@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { DoiFromString } from '../../../src/types/article-id';
+import { articleIdCodec } from '../../../src/types/article-id';
 import { arbitraryArticleId } from '../article-id.helper';
 
 describe('codec DoiFromString', () => {
@@ -9,8 +9,8 @@ describe('codec DoiFromString', () => {
 
     expect(pipe(
       doi,
-      DoiFromString.encode,
-      DoiFromString.decode,
+      articleIdCodec.encode,
+      articleIdCodec.decode,
     )).toStrictEqual(E.right(doi));
   });
 });

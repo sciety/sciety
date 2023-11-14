@@ -1,10 +1,10 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { DoiFromString } from '../../types/article-id';
+import { articleIdCodec } from '../../types/article-id';
 import { userIdCodec } from '../../types/user-id';
 
 export const paramsCodec = t.strict({
-  articleId: DoiFromString,
+  articleId: articleIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 

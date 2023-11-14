@@ -1,11 +1,11 @@
 import * as t from 'io-ts';
-import { DoiFromString } from '../../types/article-id';
+import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
 import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
 
 export const addArticleToListCommandCodec = t.intersection([
   t.strict({
-    articleId: DoiFromString,
+    articleId: articleIdCodec,
     listId: listIdCodec,
   }),
   t.partial({

@@ -7,7 +7,6 @@ import * as S from 'fp-ts/string';
 import { FetchData } from './fetch-data';
 import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
-import { DoiFromString } from '../types/article-id';
 import * as AID from '../types/article-id';
 
 type Candidate = {
@@ -50,7 +49,7 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
       candidate.reviewId,
       S.replace('https://doi.org/', ''),
       S.replace('http://dx.doi.org/', ''),
-      DoiFromString.decode,
+      AID.articleIdCodec.decode,
       E.bimap(
         () => ({
           item: candidate.reviewId,

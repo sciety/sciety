@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { DoiFromString } from '../types/article-id';
+import { articleIdCodec } from '../types/article-id';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../types/evaluation-locator';
@@ -11,5 +11,5 @@ export const curationStatementRecordedEventCodec = t.type({
   date: tt.DateFromISOString,
   groupId: GroupIdFromString,
   evaluationLocator: evaluationLocatorCodec,
-  articleId: DoiFromString,
+  articleId: articleIdCodec,
 });

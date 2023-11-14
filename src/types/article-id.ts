@@ -34,8 +34,8 @@ export const eqArticleId: Eq.Eq<ArticleId> = pipe(
   Eq.contramap((articleId) => articleId.value),
 );
 
-export const DoiFromString = new t.Type(
-  'DoiFromString',
+export const articleIdCodec = new t.Type(
+  'articleIdCodec',
   (u): u is ArticleId => u instanceof ArticleId,
   (u, c) => pipe(
     t.string.validate(u, c),
