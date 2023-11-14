@@ -42,9 +42,14 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   ),
 );
 
+const transformNewLineCharactersToBrTags = (plainText: string) => plainText.replaceAll('\n', '<br>\n');
+
 const renderAnnotationContent = (
   content: Annotation['content'],
-) => htmlEscape(content);
+) => pipe(
+  htmlEscape(content),
+  transformNewLineCharactersToBrTags,
+);
 
 const renderAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
   viewModel,
