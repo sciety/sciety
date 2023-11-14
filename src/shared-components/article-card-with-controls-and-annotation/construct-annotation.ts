@@ -7,6 +7,7 @@ import { Queries } from '../../read-models';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
+import { toUnsafeUserInput } from '../../types/unsafe-user-input';
 
 const getGroupName = (dependencies: Queries, groupId: GroupId) => pipe(
   groupId,
@@ -63,7 +64,7 @@ const getAnnotationAuthorAvatarPath = (dependencies: Queries, listId: ListId) =>
 export const constructAnnotation = (dependencies: Queries) => (listId: ListId, articleId: ArticleId): ArticleCardWithControlsAndAnnotationViewModel['annotation'] => pipe(
   dependencies.getAnnotationContent(listId, articleId),
   O.map((content) => ({
-    content,
+    content: toUnsafeUserInput(content),
     author: pipe(
       getAnnotationAuthor(dependencies, listId),
       O.getOrElse(() => unknownAuthor),

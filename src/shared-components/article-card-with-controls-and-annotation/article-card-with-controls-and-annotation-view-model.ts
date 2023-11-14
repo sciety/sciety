@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import { ArticleId } from '../../types/article-id';
-import { HtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { ViewModel } from '../article-card/view-model';
+import { UnsafeUserInput } from '../../types/unsafe-user-input';
 
 type Annotation = {
   author: string,
   authorAvatarPath: string,
-  content: HtmlFragment,
+  content: UnsafeUserInput,
 };
 
 export type ArticleCardWithControlsAndAnnotationViewModel = {
