@@ -1,7 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructEvent } from '../../../domain-events';
 import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
@@ -14,7 +13,7 @@ import { isAnnotationLengthValid } from './is-annotation-length-valid';
 const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['articles'][number]) => (
   article.annotated
     ? []
-    : [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: toHtmlFragment(command.content) })]
+    : [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: command.content })]
 );
 
 const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteModel) => pipe(

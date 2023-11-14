@@ -4,15 +4,14 @@ import * as O from 'fp-ts/Option';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { constructEvent } from '../../../src/domain-events';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { arbitraryString } from '../../helpers';
 import { getAnnotationContent } from '../../../src/read-models/annotations/get-annotation-content';
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
+import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
 
 describe('get-annotation-content', () => {
   const listId = arbitraryListId();
   const articleId = arbitraryArticleId();
-  const content = toHtmlFragment(arbitraryString());
+  const content = arbitraryUnsafeUserInput();
 
   describe('when the article has been annotated in the list', () => {
     const readmodel = pipe(
@@ -96,7 +95,7 @@ describe('get-annotation-content', () => {
   });
 
   describe('an annotated article was removed from its list, re-added and re-annotated', () => {
-    const newContent = toHtmlFragment(arbitraryString());
+    const newContent = arbitraryUnsafeUserInput();
     const readmodel = pipe(
       [
         constructEvent('ArticleAddedToList')({ articleId, listId }),

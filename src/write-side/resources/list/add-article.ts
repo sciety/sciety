@@ -2,7 +2,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructEvent } from '../../../domain-events';
 import { ListWriteModel } from './list-write-model';
 import { getListWriteModel } from './get-list-write-model';
@@ -27,7 +26,7 @@ const constructEvents = (command: AddArticleToListCommand) => (
       constructEvent('ArticleInListAnnotated')({
         articleId: command.articleId,
         listId: command.listId,
-        content: toHtmlFragment(command.annotation),
+        content: command.annotation,
       }),
     ]
 );
