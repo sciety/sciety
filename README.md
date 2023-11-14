@@ -107,6 +107,11 @@ To increase feedback speed you can gain partial coverage:
 ```shell
 make watch-typescript
 ```
+To temporarily ignore unused exports:
+```
+// ts-unused-exports:disable-next-line
+export const iAmUnused = true;
+```
 
 In our team we also rely on eslint feedback from our IDEs.
 
