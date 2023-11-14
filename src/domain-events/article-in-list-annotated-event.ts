@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { htmlFragmentCodec } from '../types/html-fragment';
-import { DoiFromString } from '../types/codecs/DoiFromString';
+import { DoiFromString } from '../types/article-id';
 import { listIdCodec } from '../types/list-id';
 
 export const annotationCreatedEventCodec = t.type({

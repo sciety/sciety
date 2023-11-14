@@ -8,7 +8,7 @@ import { renderAsHtml, toErrorPage } from './render-as-html';
 import { HtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { Dependencies } from './construct-view-model/dependencies';
-import { DoiFromString } from '../../types/codecs/DoiFromString';
+import { DoiFromString } from '../../types/article-id';
 import { userIdCodec } from '../../types/user-id';
 
 const articlePageParams = t.type({

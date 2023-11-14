@@ -7,8 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Docmap } from './docmap-type';
 import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
 import { renderDocmap } from './render-docmap';
-import { DoiFromString } from '../../types/codecs/DoiFromString';
-import { ArticleId } from '../../types/article-id';
+import { DoiFromString, ArticleId } from '../../types/article-id';
 import { supportedGroups } from '../supported-groups';
 import { Queries } from '../../read-models';
 

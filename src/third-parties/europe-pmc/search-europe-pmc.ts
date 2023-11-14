@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { ArticleServer } from '../../types/article-server';
-import { DoiFromString } from '../../types/codecs/DoiFromString';
+import { DoiFromString } from '../../types/article-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';

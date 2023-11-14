@@ -8,7 +8,7 @@ import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import { FetchData } from './fetch-data';
 import { FetchEvaluations } from './update-all';
-import { DoiFromString } from '../types/codecs/DoiFromString';
+import { DoiFromString } from '../types/article-id';
 import * as AID from '../types/article-id';
 
 type Ports = {

@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { DoiFromString } from '../../../src/types/codecs/DoiFromString';
+import { DoiFromString } from '../../../src/types/article-id';
 import { arbitraryArticleId } from '../article-id.helper';
 
 describe('codec DoiFromString', () => {

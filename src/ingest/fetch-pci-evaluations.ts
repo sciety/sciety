@@ -7,7 +7,7 @@ import * as S from 'fp-ts/string';
 import { FetchData } from './fetch-data';
 import { daysAgo } from './time';
 import { FetchEvaluations } from './update-all';
-import { DoiFromString } from '../types/codecs/DoiFromString';
+import { DoiFromString } from '../types/article-id';
 import * as AID from '../types/article-id';
 
 type Candidate = {

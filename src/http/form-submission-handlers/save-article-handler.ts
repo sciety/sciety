@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import * as PR from 'io-ts/PathReporter';
 import { Logger } from '../../shared-ports';
-import { DoiFromString } from '../../types/codecs/DoiFromString';
+import { DoiFromString } from '../../types/article-id';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';

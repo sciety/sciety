@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { DoiFromString } from '../../types/codecs/DoiFromString';
+import { DoiFromString } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
 import { externalInputFieldNames } from '../../standards';
 import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
