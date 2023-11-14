@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { ArticleId } from '../../src/types/article-id';
+import * as E from 'fp-ts/Either';
+import { ArticleId, articleIdCodec } from '../../src/types/article-id';
 import * as AID from '../../src/types/article-id';
 import { arbitraryArticleId } from './article-id.helper';
 
@@ -40,5 +41,15 @@ describe('article-id', () => {
     '10.001/001#00',
   ])('rejects invalid DOI syntax', (badDoiSyntaxExample) => {
     expect(() => new ArticleId(badDoiSyntaxExample)).toThrow(new Error(`'${badDoiSyntaxExample}' is not a possible DOI`));
+  });
+
+  it('encodes and decodes back to the same value', () => {
+    const doi = arbitraryArticleId();
+
+    expect(pipe(
+      doi,
+      articleIdCodec.encode,
+      articleIdCodec.decode,
+    )).toStrictEqual(E.right(doi));
   });
 });
