@@ -52,7 +52,7 @@ const renderAnnotationContent = (viewModel: ArticleCardWithControlsAndAnnotation
           <img class="article-card-annotation__avatar" src="${annotation.authorAvatarPath}" alt="">
           <h4>${htmlEscape(annotation.author)}</h4>
         </header>
-        <p>${annotation.content}</p>
+        <p>${htmlEscape(annotation.content)}</p>
       </section>
     `,
   ),
