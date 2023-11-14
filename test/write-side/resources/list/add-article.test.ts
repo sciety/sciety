@@ -126,7 +126,7 @@ describe('add-article', () => {
           }),
         );
 
-        it.failing('fails', () => {
+        it('fails', () => {
           expect(E.isLeft(result)).toBe(true);
         });
       });
