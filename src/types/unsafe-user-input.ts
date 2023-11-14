@@ -25,14 +25,12 @@ const areInputCharactersSafe = (
   ),
 );
 
-const isInputShortEnough = (config: Config, input: string) => input.length <= config.maxInputLength;
-
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // ts-unused-exports:disable-next-line
 export const unsafeUserInputCodec = (config: Config) => t.brand(
   t.string,
   (input): input is t.Branded<string, UnsafeUserInputBrand> => (
-    areInputCharactersSafe(config, input) && isInputShortEnough(config, input)
+    areInputCharactersSafe(config, input)
   ),
   'UnsafeUserInput',
 );
