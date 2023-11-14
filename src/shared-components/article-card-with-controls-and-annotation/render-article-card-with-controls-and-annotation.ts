@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { renderArticleCardContents } from '../article-card/render-article-card';
 import { ArticleId } from '../../types/article-id';
-import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
+import { Annotation, ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 
 const renderRemoveArticleForm = (articleId: ArticleId, listId: ListId) => pipe(
   articleId.value,
@@ -42,7 +42,11 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   ),
 );
 
-const renderAnnotationContent = (viewModel: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
+const renderAnnotationContent = (
+  content: Annotation['content'],
+) => htmlEscape(content);
+
+const renderAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
   viewModel,
   O.match(
     () => '',
@@ -52,7 +56,7 @@ const renderAnnotationContent = (viewModel: ArticleCardWithControlsAndAnnotation
           <img class="article-card-annotation__avatar" src="${annotation.authorAvatarPath}" alt="">
           <h4>${htmlEscape(annotation.author)}</h4>
         </header>
-        <p>${htmlEscape(annotation.content)}</p>
+        <p>${renderAnnotationContent(annotation.content)}</p>
       </section>
     `,
   ),
@@ -64,6 +68,6 @@ export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCar
       ${renderArticleCardContents(viewModel.articleCard)}
       ${renderControls(viewModel)}
     </div>
-    ${renderAnnotationContent(viewModel.annotation)}
+    ${renderAnnotation(viewModel.annotation)}
   </article>
 `);

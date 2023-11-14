@@ -4,7 +4,7 @@ import { ListId } from '../../types/list-id';
 import { ViewModel } from '../article-card/view-model';
 import { UnsafeUserInput } from '../../types/unsafe-user-input';
 
-type Annotation = {
+export type Annotation = {
   author: string,
   authorAvatarPath: string,
   content: UnsafeUserInput,
