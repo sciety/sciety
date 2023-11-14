@@ -10,6 +10,7 @@ import {
   arbitraryArticleInListAnnotatedEvent,
   arbitraryArticleRemovedFromListEvent,
 } from '../../../domain-events/list-resource-events.helper';
+import { toSanitisedUserInput } from '../../../../src/types/sanitised-user-input';
 
 describe('annotate', () => {
   const articleId = arbitraryArticleId();
@@ -39,7 +40,22 @@ describe('annotate', () => {
         articleAddedToListEvent,
       ];
 
-      describe('when the annotation is not too long', () => {
+      describe('when the annotation is an empty string', () => {
+        const result = pipe(
+          relevantEvents,
+          annotate({
+            content: toSanitisedUserInput(''),
+            articleId,
+            listId,
+          }),
+        );
+
+        it.failing('fails', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
+      });
+
+      describe('when the annotation is of an acceptable length', () => {
         const result = pipe(
           relevantEvents,
           annotate(annotateArticleInListCommand),
