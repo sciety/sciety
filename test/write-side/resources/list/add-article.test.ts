@@ -6,6 +6,7 @@ import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryLongSanitisedUserInput, arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
+import { toSanitisedUserInput } from '../../../../src/types/sanitised-user-input';
 
 describe('add-article', () => {
   const listId = arbitraryListId();
@@ -111,7 +112,23 @@ describe('add-article', () => {
       });
 
       describe('when an annotation is provided as an empty string in the command', () => {
-        it.todo('fails');
+        const result = pipe(
+          [
+            {
+              ...arbitraryListCreatedEvent(),
+              listId,
+            },
+          ],
+          addArticle({
+            listId,
+            articleId,
+            annotation: toSanitisedUserInput(''),
+          }),
+        );
+
+        it.failing('fails', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
       });
     });
   });
