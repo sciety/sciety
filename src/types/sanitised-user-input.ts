@@ -9,8 +9,6 @@ type SanitisedUserInputBrand = {
   readonly SanitisedUserInput: unique symbol,
 };
 
-export const toSanitisedUserInput = (value: string): SanitisedUserInput => value as SanitisedUserInput;
-
 type Config = {
   maxInputLength: number,
   allowEmptyInput?: boolean,

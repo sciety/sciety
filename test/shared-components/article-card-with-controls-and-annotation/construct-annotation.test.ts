@@ -14,7 +14,7 @@ import { arbitraryCreateListCommand } from '../../write-side/commands/create-lis
 import { HtmlFragment } from '../../../src/types/html-fragment';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-content';
-import { arbitrarySanitisedUserInput } from '../../types/sanitised-user-input.helper';
+import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
@@ -33,7 +33,7 @@ describe('construct-annotation', () => {
 
   describe('when there is an annotation', () => {
     const articleId = arbitraryArticleId();
-    const content = arbitrarySanitisedUserInput();
+    const content = arbitraryUnsafeUserInput();
     let result: {
       author: string,
       content: HtmlFragment,

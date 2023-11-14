@@ -4,9 +4,9 @@ import { constructEvent } from '../../../../src/domain-events';
 import { addArticle } from '../../../../src/write-side/resources/list/add-article';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryLongSanitisedUserInput, arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
-import { toSanitisedUserInput } from '../../../../src/types/sanitised-user-input';
+import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
+import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
 
 describe('add-article', () => {
   const listId = arbitraryListId();
@@ -58,7 +58,7 @@ describe('add-article', () => {
       });
 
       describe('when an annotation is provided in the command', () => {
-        const annotation = arbitrarySanitisedUserInput();
+        const annotation = arbitraryUnsafeUserInput();
         const result = pipe(
           [
             {
@@ -91,7 +91,7 @@ describe('add-article', () => {
       });
 
       describe('when an annotation that is too long is provided in the command', () => {
-        const annotationTooLong = arbitraryLongSanitisedUserInput(5000);
+        const annotationTooLong = arbitraryLongUnsafeUserInput(5000);
         const result = pipe(
           [
             {
@@ -122,7 +122,7 @@ describe('add-article', () => {
           addArticle({
             listId,
             articleId,
-            annotation: toSanitisedUserInput(''),
+            annotation: toUnsafeUserInput(''),
           }),
         );
 

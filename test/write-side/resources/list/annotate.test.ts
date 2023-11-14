@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { annotate } from '../../../../src/write-side/resources/list';
-import { arbitraryLongSanitisedUserInput, arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import {
@@ -10,12 +9,13 @@ import {
   arbitraryArticleInListAnnotatedEvent,
   arbitraryArticleRemovedFromListEvent,
 } from '../../../domain-events/list-resource-events.helper';
-import { toSanitisedUserInput } from '../../../../src/types/sanitised-user-input';
+import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
+import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 
 describe('annotate', () => {
   const articleId = arbitraryArticleId();
   const listId = arbitraryListId();
-  const content = arbitrarySanitisedUserInput();
+  const content = arbitraryUnsafeUserInput();
   const annotateArticleInListCommand = {
     content,
     articleId,
@@ -44,7 +44,7 @@ describe('annotate', () => {
         const result = pipe(
           relevantEvents,
           annotate({
-            content: toSanitisedUserInput(''),
+            content: toUnsafeUserInput(''),
             articleId,
             listId,
           }),
@@ -75,7 +75,7 @@ describe('annotate', () => {
         const result = pipe(
           relevantEvents,
           annotate({
-            content: arbitraryLongSanitisedUserInput(5000),
+            content: arbitraryLongUnsafeUserInput(5000),
             articleId,
             listId,
           }),
