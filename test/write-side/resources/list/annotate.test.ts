@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { annotate } from '../../../../src/write-side/resources/list';
-import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
+import { arbitraryLongSanitisedUserInput, arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import {
@@ -53,7 +53,27 @@ describe('annotate', () => {
       });
 
       describe('when the annotation is too long', () => {
-        it.todo('fails');
+        const relevantEvents = [
+          listCreatedEvent,
+          {
+            ...arbitraryArticleAddedToListEvent(),
+            articleId,
+            listId,
+          },
+        ];
+        const tooLongAnnotation = {
+          content: arbitraryLongSanitisedUserInput(5000),
+          articleId,
+          listId,
+        };
+        const result = pipe(
+          relevantEvents,
+          annotate(tooLongAnnotation),
+        );
+
+        it.failing('fails', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
       });
     });
 
