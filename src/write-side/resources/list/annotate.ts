@@ -21,10 +21,12 @@ const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteMo
   RA.findFirst((article) => article.articleId.value === articleId.value),
   E.fromOption(() => toErrorMessage('Article not in list')),
 );
+const validateAnnotation = (article: ListWriteModel['articles'][number]) => E.right(article);
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
   getListWriteModel(command.listId),
   E.chain(findRelevantArticle(command.articleId)),
+  E.chainW(validateAnnotation),
   E.map(createAppropriateEvents(command)),
 );
