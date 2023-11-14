@@ -5,9 +5,9 @@ import * as R from 'fp-ts/Record';
 import { ReadModel } from './handle-event';
 import { ListId } from '../../types/list-id';
 import { ArticleId } from '../../types/article-id';
-import { HtmlFragment } from '../../types/html-fragment';
+import { UnsafeUserInput } from '../../types/unsafe-user-input';
 
-type GetAnnotationContent = (listId: ListId, articleId: ArticleId) => O.Option<HtmlFragment>;
+type GetAnnotationContent = (listId: ListId, articleId: ArticleId) => O.Option<UnsafeUserInput>;
 
 export const getAnnotationContent = (readModel: ReadModel): GetAnnotationContent => (listId, articleId) => pipe(
   readModel,

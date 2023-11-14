@@ -22,7 +22,7 @@ describe('get-annotation-content', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('returns the annotation content as HTML', () => {
+    it('returns the annotation content', () => {
       expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(content));
     });
   });
