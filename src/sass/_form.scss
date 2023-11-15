@@ -98,6 +98,10 @@ $_label-font-size: functions.px-to-rem(20px);
   @include labelling();
 }
 
+.standard-form__sub_heading_secondary_text {
+  font-weight: normal;
+}
+
 .standard-form__helper_text {
   color: $_microcopy-colour;
   margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
