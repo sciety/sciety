@@ -29,7 +29,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
       <dd>${htmlEscape(viewModel.listName)}</dd>
     </dl>
     <section>
-      <label for="annotationContent" class="standard-form__sub_heading">Annotation content</label>
+      <label for="annotationContent" class="standard-form__sub_heading">Comment</label>
       <p class="standard-form__helper_text">Add a public comment to share with others what's interesting or important about this article.</p>
       <textarea id="annotationContent" name="${externalInputFieldNames.content}" rows="10" required></textarea>
     </section>

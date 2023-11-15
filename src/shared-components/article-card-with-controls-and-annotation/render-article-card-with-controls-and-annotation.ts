@@ -25,7 +25,7 @@ const renderLinkToAnnotationForm = (href: O.Option<string>) => pipe(
   href,
   O.match(
     () => '',
-    (h) => `<a href="${h}" class="saved-articles-control--annotate">Add annotation</a>`,
+    (h) => `<a href="${h}" class="saved-articles-control--annotate">Add comment</a>`,
   ),
 );
 

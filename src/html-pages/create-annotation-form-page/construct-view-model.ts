@@ -44,7 +44,7 @@ export const constructViewModel = (
     ...partial,
     articleId,
     listId,
-    pageHeading: toHtmlFragment('Create an annotation'),
+    pageHeading: toHtmlFragment('Share your thoughts'),
     unrecoverableError: O.fromNullable(unrecoverableError),
   })),
 );
