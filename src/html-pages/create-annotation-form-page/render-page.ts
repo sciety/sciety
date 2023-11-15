@@ -3,6 +3,7 @@ import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 import { externalInputFieldNames } from '../../standards';
+import { formHelperTexts } from '../standards';
 
 const renderErrorSummary = O.match(
   () => '',
@@ -30,7 +31,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
     </dl>
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Comment</label>
-      <p class="standard-form__helper_text">Add a public comment to share with others what's interesting or important about this article.</p>
+      <p class="standard-form__helper_text">${formHelperTexts.annotationContent}</p>
       <textarea id="annotationContent" name="${externalInputFieldNames.content}" rows="10" required></textarea>
     </section>
     <button type="submit">Confirm</button>
