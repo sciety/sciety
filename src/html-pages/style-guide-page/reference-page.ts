@@ -54,7 +54,7 @@ export const referencePage: HtmlPage = {
           <input type="text" name="" id="standardFormInput" />
         </section>
         <section>
-          <label for="annotationContent" class="standard-form__sub_heading">Standard form sub heading</label>
+          <label for="annotationContent" class="standard-form__sub_heading">Standard form sub heading <span class="standard-form__sub_heading_secondary_text">(Less important text)</span></label>
           <p class="standard-form__helper_text">Standard form helper text</p>
           <textarea id="annotationContent" name="annotationContent" rows="10"></textarea>
           <p class="standard-form__constraints">Standard form constraints text</p>
