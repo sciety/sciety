@@ -29,7 +29,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
     <p class="standard-form__constraints">Maximum ${viewModel.listNameMaxLength} characters</p>
   </section>
   <section>
-    <label for="listDescription" class="standard-form__sub_heading">Description (optional)</label>
+    <label for="listDescription" class="standard-form__sub_heading">Description <span class="standard-form__sub_heading_secondary_text">(optional)</span></label>
     <p class="standard-form__helper_text">Add further context to help readers understand your list.</p>
     <textarea id="listDescription" name="description" rows="5" maxlength="${viewModel.listDescriptionMaxLength}">${htmlEscape(viewModel.listDescription)}</textarea>
     <p class="standard-form__constraints">Maximum ${viewModel.listDescriptionMaxLength} characters</p>
