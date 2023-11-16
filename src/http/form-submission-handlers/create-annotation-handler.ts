@@ -91,7 +91,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
       async () => {
         const commandResult = await handleCreateAnnotationCommand(dependencies)(context.request.body)();
         if (E.isRight(commandResult)) {
-          context.redirect(`/lists/${command.right.listId}`);
+          context.redirect(`/lists/${command.right.listId}?success=true`);
           return;
         }
         const htmlResponse = await redisplayFormPage(
