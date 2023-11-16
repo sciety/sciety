@@ -14,8 +14,6 @@ export const wrapInHtmlDocument = (user: O.Option<UserDetails>, dynamicHeadViewM
     ${googleTagManagerNoScript()}
     ${contentWrappedInLayout}
 
-    <script src="/static/behaviour.js"></script>
-
   </body>
   </html>
 `);

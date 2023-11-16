@@ -45,13 +45,35 @@ const renderWithText = (teaserChars: number, review: EvaluationFeedItem, fullTex
     ${pipe(review, appendSourceLink, O.getOrElse(constant('')))}
   `;
   let feedItemBody = `
-    <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
-      <div class="hidden" data-teaser${renderLangAttribute(review.fullTextLanguageCode)}>
+    <div class="activity-feed__item__body"
+    _="
+    init
+      show <div[data-teaser]/> in me
+      show <button/> in me
+      hide <div[data-full-text]/> in me
+    end
+    "
+    >
+      <div style="display: none"data-teaser${renderLangAttribute(review.fullTextLanguageCode)}>
         ${teaserText}
       </div>
       <div data-full-text>
         ${fulltextAndSourceLink}
       </div>
+      <button style="display: none" class="activity-feed__item__toggle"
+      _="
+        on click
+          toggle *display of previous <div[data-teaser]/>
+          toggle *display of previous <div[data-full-text]/>
+          if my innerText is 'More'
+            put 'Less' into me
+          else if my innerText is 'Less'
+            put 'More' into me
+        end
+      "
+      >
+        More
+      </button>
     </div>
   `;
 
