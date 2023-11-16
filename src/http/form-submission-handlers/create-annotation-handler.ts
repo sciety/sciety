@@ -80,33 +80,37 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
     return;
   }
 
-  await pipe(
+  const listOwner = pipe(
     command.right.listId,
     dependencies.lookupList,
     O.chainNullableK((list) => list.ownerId.value),
-    O.filter((listOwnerId) => isUserAllowedToCreateAnnotation(loggedInUser.value.id, listOwnerId)),
-    O.match(
-      async () => {
-        sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'Only the list owner is allowed to annotate their list.');
-      },
-      async () => {
-        const commandResult = await handleCreateAnnotationCommand(dependencies)(context.request.body)();
-        if (E.isRight(commandResult)) {
-          if (commandResult.right === 'events-created') {
-            context.redirect(`/lists/${command.right.listId}?${inputFieldNames.success}=true`);
-            return;
-          }
-          context.redirect(`/lists/${command.right.listId}`);
-          return;
-        }
-        const htmlResponse = await redisplayFormPage(
-          dependencies,
-          context,
-          { listId: command.right.listId, articleId: command.right.articleId },
-          loggedInUser,
-        )();
-        sendHtmlResponse(htmlResponse, context);
-      },
-    ),
   );
+
+  if (O.isNone(listOwner)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'List on which you are trying to comment does not exist.');
+    return;
+  }
+
+  if (!isUserAllowedToCreateAnnotation(loggedInUser.value.id, listOwner.value)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'Only the list owner is allowed to annotate their list.');
+    return;
+  }
+
+  const commandResult = await handleCreateAnnotationCommand(dependencies)(context.request.body)();
+
+  if (E.isRight(commandResult)) {
+    if (commandResult.right === 'events-created') {
+      context.redirect(`/lists/${command.right.listId}?${inputFieldNames.success}=true`);
+      return;
+    }
+    context.redirect(`/lists/${command.right.listId}`);
+    return;
+  }
+  const htmlResponse = await redisplayFormPage(
+    dependencies,
+    context,
+    { listId: command.right.listId, articleId: command.right.articleId },
+    loggedInUser,
+  )();
+  sendHtmlResponse(htmlResponse, context);
 };
