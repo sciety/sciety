@@ -13,7 +13,7 @@ import { isAnnotationLengthValid } from './is-annotation-length-valid';
 const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['articles'][number]) => (
   article.annotated
     ? []
-    : [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: command.content })]
+    : [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: command.annotationContent })]
 );
 
 const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteModel) => pipe(
@@ -22,7 +22,7 @@ const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteMo
   E.fromOption(() => toErrorMessage('Article not in list')),
 );
 const isAnnotationValid = (command: AnnotateArticleInListCommand) => () => (
-  isAnnotationLengthValid(command.content)
+  isAnnotationLengthValid(command.annotationContent)
 );
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(

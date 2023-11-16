@@ -51,7 +51,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
         await framework.commandHelpers.createAnnotation({
-          content,
+          annotationContent: content,
           articleId,
           listId: createListCommand.listId,
         });
@@ -82,7 +82,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
         await framework.commandHelpers.createAnnotation({
-          content,
+          annotationContent: content,
           articleId,
           listId: createListCommand.listId,
         });
@@ -108,7 +108,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
         await framework.commandHelpers.createAnnotation({
-          content,
+          annotationContent: content,
           articleId,
           listId: createListCommand.listId,
         });

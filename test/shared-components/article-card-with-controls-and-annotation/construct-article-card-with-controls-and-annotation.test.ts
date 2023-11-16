@@ -58,7 +58,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
 
         beforeEach(async () => {
           await framework.commandHelpers.createAnnotation({
-            content: arbitraryUnsafeUserInput(),
+            annotationContent: arbitraryUnsafeUserInput(),
             articleId,
             listId,
           });

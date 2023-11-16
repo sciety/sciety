@@ -31,7 +31,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
     </dl>
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Comment</label>
-      <textarea id="annotationContent" name="${inputFieldNames.content}" rows="10" required></textarea>
+      <textarea id="annotationContent" name="${inputFieldNames.annotationContent}" rows="10" required></textarea>
     </section>
     <button type="submit">Confirm</button>
   </form>

@@ -11,13 +11,14 @@ import {
 } from '../../../domain-events/list-resource-events.helper';
 import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
+import { AnnotateArticleInListCommand } from '../../../../src/write-side/commands';
 
 describe('annotate', () => {
   const articleId = arbitraryArticleId();
   const listId = arbitraryListId();
   const content = arbitraryUnsafeUserInput();
-  const annotateArticleInListCommand = {
-    content,
+  const annotateArticleInListCommand: AnnotateArticleInListCommand = {
+    annotationContent: content,
     articleId,
     listId,
   };
@@ -44,7 +45,7 @@ describe('annotate', () => {
         const result = pipe(
           relevantEvents,
           annotate({
-            content: toUnsafeUserInput(''),
+            annotationContent: toUnsafeUserInput(''),
             articleId,
             listId,
           }),
@@ -75,7 +76,7 @@ describe('annotate', () => {
         const result = pipe(
           relevantEvents,
           annotate({
-            content: arbitraryLongUnsafeUserInput(5000),
+            annotationContent: arbitraryLongUnsafeUserInput(5000),
             articleId,
             listId,
           }),
