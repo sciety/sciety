@@ -16,7 +16,13 @@ export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFra
       <button type="submit" class="search-form__submit" aria-label="Run the search">Search</button>
       <button
         type="reset" id="clearSearchText" class="search-form__clear visually-hidden"
-        _="on click set #searchText@value to '' then toggle .visually-hidden on me"
+        _="
+          on click
+            toggle .visually-hidden on me
+            set #searchText@value to ''
+            call #searchText.focus()
+          end
+          "
       >
         <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
       </button>

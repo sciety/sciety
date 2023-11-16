@@ -54,8 +54,5 @@
         clearSearchText.classList.add('visually-hidden');
       }
     })
-    clearSearchText.addEventListener('click', function (e) {
-      searchInput.focus();
-    });
   }
 }(window.document));
