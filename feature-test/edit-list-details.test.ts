@@ -5,6 +5,7 @@ import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.h
 import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
+import { inputFieldNames } from '../src/standards';
 
 describe('edit-list-details', () => {
   let listId: string;
@@ -30,7 +31,7 @@ describe('edit-list-details', () => {
       const editDetailsLinkSelector = '.list-page-actions__edit_details_link';
       const editDetailsLink = $(editDetailsLinkSelector);
       await click(editDetailsLink);
-      await write(listName, into(textBox('List name')));
+      await write(listName, into(textBox({ name: inputFieldNames.listName })));
       await write(listDescription, into(textBox('Description')));
 
       const editListDetailsButtonSelector = 'form[action="/forms/edit-list-details"] button';
