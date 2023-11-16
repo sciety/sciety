@@ -55,7 +55,6 @@
       }
     })
     clearSearchText.addEventListener('click', function (e) {
-      searchInput.setAttribute('value', '');
       searchInput.focus();
     });
   }
