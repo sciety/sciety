@@ -5,6 +5,7 @@ $max-site-width: 1200px;
 
 $border-radius: 6px;
 $border-width: 1px;
+$border-width-wide: 5px;
 $focus-width: 3px;
 
 $colour-brand: rgb(52, 67, 74);
@@ -13,6 +14,7 @@ $colour-curation-teasers-background: rgb(245,246,250);
 $colour-accent: rgb(206, 72, 26);
 $colour-accent-hover: color.adjust($colour-accent, $lightness: -12%);
 $colour-alert: rgb(159, 0, 0);
+$colour-success: rgb(0, 112, 60);
 $colour-focus: rgb(245, 218, 209);
 $colour-text-primary: rgb(36, 42, 51);
 $colour-text-secondary: rgb(75, 96, 106);

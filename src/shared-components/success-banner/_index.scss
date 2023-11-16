@@ -3,7 +3,7 @@
 @use '../../sass/functions';
 
 .success-banner {
-  border: 5px solid #00703c;
+  border: settings.$border-width-wide solid settings.$colour-success;
   margin-bottom: functions.px-to-rem(48px);
 
   p {
@@ -13,7 +13,7 @@
 
 .success-banner__heading {
   padding: functions.px-to-rem(settings.$default-form-gutter);
-  background-color: #00703c;
+  background-color: settings.$colour-success;
   color: settings.$colour-white;
 
   h2 {
