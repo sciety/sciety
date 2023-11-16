@@ -3,7 +3,6 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { noArticlesCanBeFetchedMessage, noArticlesMessageForOwner, noArticlesMessageForReader } from './static-messages';
 import { ViewModel } from '../view-model';
 import { renderContentWithPagination } from './render-content-with-pagination';
-import { renderSuccessBanner } from './render-success-banner';
 
 const renderListOrMessage = (viewModel: ViewModel) => {
   switch (viewModel.content) {
@@ -18,7 +17,6 @@ const renderListOrMessage = (viewModel: ViewModel) => {
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="sciety-grid-two-columns">
-    ${renderSuccessBanner()}
     ${renderHeader(viewModel)}
     <section class="list-page-content">
       ${renderListOrMessage(viewModel)}

@@ -5,6 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
+import { renderSuccessBanner } from './render-success-banner';
 
 const renderArticleCount = (articleCount: ViewModel['articleCount']) => pipe(
   articleCount === 1,
@@ -39,6 +40,7 @@ const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
+    ${renderSuccessBanner()}
     <h1>${htmlEscape(viewModel.name)}</h1>
     <p class="page-header__subheading">
       <img src="${viewModel.ownerAvatarPath}" alt="" class="page-header__avatar">
