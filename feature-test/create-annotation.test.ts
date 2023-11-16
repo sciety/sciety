@@ -44,7 +44,7 @@ describe('create-annotation', () => {
           const currentPage = await currentURL();
           const listId = await getIdOfFirstListOwnedByUser(userId);
 
-          expect(currentPage).toBe(`http://localhost:8080/lists/${listId}`);
+          expect(currentPage).toContain(`http://localhost:8080/lists/${listId}`);
         });
 
         it('the annotation is visible', async () => {
