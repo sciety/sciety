@@ -28,6 +28,5 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dep
     dependencies.getAllEvents,
     T.map(listResource.annotate(command)),
   )),
-  TE.chainTaskK(dependencies.commitEvents),
-  TE.map(() => 'no-events-created'),
+  TE.chainW(dependencies.commitEvents),
 );
