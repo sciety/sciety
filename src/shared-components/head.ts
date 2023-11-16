@@ -58,6 +58,7 @@ export const head = (
   <meta name="msapplication-TileColor" content="#cf4500">
   <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
+  <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
 
   ${googleTagManager(userId)}
   ${fathom()}
