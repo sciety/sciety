@@ -32,6 +32,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       id: params.articleId,
     },
     userLists: partial.userLists,
-    pageHeading: toHtmlFragment('Save article'),
+    pageHeading: toHtmlFragment('Save an article to your list'),
   } satisfies ViewModel)),
 );
