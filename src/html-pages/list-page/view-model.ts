@@ -37,4 +37,5 @@ export type ViewModel = {
   relatedArticlesLink: O.Option<string>,
   listPageAbsoluteUrl: URL,
   subscribeHref: O.Option<string>,
+  showAnnotationSuccessBanner: boolean,
 };

@@ -1,4 +1,5 @@
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ViewModel } from '../view-model';
 
 const banner = `
   <div class="success-banner">
@@ -11,8 +12,8 @@ const banner = `
   </div>
 `;
 
-export const renderSuccessBanner = (): HtmlFragment => (
-  process.env.EXPERIMENT_ENABLED
+export const renderSuccessBanner = (viewModel: ViewModel): HtmlFragment => (
+  viewModel.showAnnotationSuccessBanner
     ? toHtmlFragment(banner)
     : toHtmlFragment('')
 );

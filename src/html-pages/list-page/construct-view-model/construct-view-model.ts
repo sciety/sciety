@@ -89,4 +89,8 @@ export const constructViewModel = (
       ...partialPageViewModel,
     })),
   )),
+  TE.map((partial) => ({
+    ...partial,
+    showAnnotationSuccessBanner: false,
+  })),
 );

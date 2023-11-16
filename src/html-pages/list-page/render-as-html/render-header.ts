@@ -40,7 +40,7 @@ const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
-    ${renderSuccessBanner()}
+    ${renderSuccessBanner(viewModel)}
     <h1>${htmlEscape(viewModel.name)}</h1>
     <p class="page-header__subheading">
       <img src="${viewModel.ownerAvatarPath}" alt="" class="page-header__avatar">
