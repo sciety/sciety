@@ -6,6 +6,7 @@ import { arbitraryArticleId } from '../test/types/article-id.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
+import { inputFieldNames } from '../src/standards';
 
 describe('create-annotation', () => {
   beforeEach(async () => {
@@ -36,7 +37,7 @@ describe('create-annotation', () => {
         beforeEach(async () => {
           await click('saved articles');
           await click('Add comment');
-          await write(annotationContent, into(textBox('Comment')));
+          await write(annotationContent, into(textBox({ name: inputFieldNames.annotationContent })));
           await click($('button[type="submit"]'));
         });
 
