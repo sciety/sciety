@@ -2,12 +2,12 @@ import * as O from 'fp-ts/Option';
 import { ArticleId } from '../../types/article-id';
 import { ListId } from '../../types/list-id';
 import { ViewModel } from '../article-card/view-model';
-import { UnsafeUserInput } from '../../types/unsafe-user-input';
+import { NotSafeToRender } from '../../read-models/annotations/handle-event';
 
-type Annotation = {
+export type Annotation = {
   author: string,
   authorAvatarPath: string,
-  content: UnsafeUserInput,
+  content: NotSafeToRender,
 };
 
 export type ArticleCardWithControlsAndAnnotationViewModel = {

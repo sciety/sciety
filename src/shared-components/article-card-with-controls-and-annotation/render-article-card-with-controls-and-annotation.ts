@@ -7,6 +7,7 @@ import { renderArticleCardContents } from '../article-card/render-article-card';
 import { ArticleId } from '../../types/article-id';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 import { safelyRenderUserInput } from '../safely-render-user-input';
+import { UnsafeUserInput } from '../../types/unsafe-user-input';
 
 const renderRemoveArticleForm = (articleId: ArticleId, listId: ListId) => pipe(
   articleId.value,
@@ -53,7 +54,7 @@ const renderAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewMod
           <img class="article-card-annotation__avatar" src="${annotation.authorAvatarPath}" alt="">
           <h4>${htmlEscape(annotation.author)}</h4>
         </header>
-        <p>${safelyRenderUserInput(annotation.content)}</p>
+        <p>${safelyRenderUserInput(annotation.content.content as UnsafeUserInput)}</p>
       </section>
     `,
   ),
