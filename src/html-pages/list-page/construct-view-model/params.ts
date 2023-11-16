@@ -9,6 +9,7 @@ export const paramsCodec = t.type({
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
   })),
+  success: tt.withFallback(tt.BooleanFromString, false),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
