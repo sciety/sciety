@@ -12,6 +12,7 @@ import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
 import { toUnsafeUserInput } from '../../types/unsafe-user-input';
+import { successBanner } from '../../shared-components/success-banner/success-banner';
 
 export const sharedComponentsPage: HtmlPage = {
   title: 'Shared components',
@@ -195,6 +196,8 @@ export const sharedComponentsPage: HtmlPage = {
     articleId: new ArticleId('10.1101/foo'),
   })}
 
+    <h3 class="_style-guide-heading">Success banner</h3>
+      ${successBanner('You done good.')}
     </div>
   `),
 };
