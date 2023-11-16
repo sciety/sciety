@@ -15,7 +15,7 @@ export const renderListedIn = (listedIn: ViewModel['listedIn']): HtmlFragment =>
   listedIn,
   RA.map((item) => toHtmlFragment(`<a href="${item.listHref}">${htmlEscape(item.listName)}</a> (${htmlEscape(item.listOwnerName)})`)),
   RA.match(
-    () => 'This article is not in any list yet, why not add it to one of your lists.',
+    () => 'This article is not in any list yet, why not save it to one of your lists.',
     flow(
       renderListItems,
       renderList,
