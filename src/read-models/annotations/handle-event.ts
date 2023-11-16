@@ -1,9 +1,16 @@
-import { UnsafeUserInput } from '../../types/unsafe-user-input';
 /* eslint-disable no-param-reassign */
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import * as LID from '../../types/list-id';
 
-type ListState = Record<string, UnsafeUserInput>;
+export type NotSafeToRender = {
+  content: string,
+};
+
+export const notSafeToRender = (input: string): NotSafeToRender => ({
+  content: input,
+});
+
+type ListState = Record<string, NotSafeToRender>;
 
 export type ReadModel = Record<LID.ListId, ListState>;
 
@@ -15,7 +22,7 @@ const actualListIdForAvasthiReadingUser = LID.fromValidatedString('dcc7c864-6630
 const handleLegacyAnnotations = (readmodel: ReadModel, event: EventOfType<'ArticleInListAnnotated'>) => {
   if (event.listId === targetListIdForAvasthiReadingUser) {
     const actualListState = readmodel[actualListIdForAvasthiReadingUser] ?? {};
-    actualListState[event.articleId.value] = event.content;
+    actualListState[event.articleId.value] = notSafeToRender(event.content);
     readmodel[actualListIdForAvasthiReadingUser] = actualListState;
   }
 };
@@ -23,7 +30,7 @@ const handleLegacyAnnotations = (readmodel: ReadModel, event: EventOfType<'Artic
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ArticleInListAnnotated')(event)) {
     const listState = readmodel[event.listId] ?? {};
-    listState[event.articleId.value] = event.content;
+    listState[event.articleId.value] = notSafeToRender(event.content);
     readmodel[event.listId] = listState;
     handleLegacyAnnotations(readmodel, event);
   }

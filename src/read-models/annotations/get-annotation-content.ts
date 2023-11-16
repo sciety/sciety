@@ -2,12 +2,11 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as R from 'fp-ts/Record';
-import { ReadModel } from './handle-event';
+import { NotSafeToRender, ReadModel } from './handle-event';
 import { ListId } from '../../types/list-id';
 import { ArticleId } from '../../types/article-id';
-import { UnsafeUserInput } from '../../types/unsafe-user-input';
 
-type GetAnnotationContent = (listId: ListId, articleId: ArticleId) => O.Option<UnsafeUserInput>;
+type GetAnnotationContent = (listId: ListId, articleId: ArticleId) => O.Option<NotSafeToRender>;
 
 export const getAnnotationContent = (readModel: ReadModel): GetAnnotationContent => (listId, articleId) => pipe(
   readModel,
