@@ -5,7 +5,8 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { renderArticleCardContents } from '../article-card/render-article-card';
 import { ArticleId } from '../../types/article-id';
-import { Annotation, ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
+import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
+import { safelyRenderUserInput } from '../safely-render-user-input';
 
 const renderRemoveArticleForm = (articleId: ArticleId, listId: ListId) => pipe(
   articleId.value,
@@ -42,15 +43,6 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   ),
 );
 
-const transformNewLineCharactersToBrTags = (plainText: string) => plainText.replaceAll('\n', '<br>\n');
-
-const renderAnnotationContent = (
-  content: Annotation['content'],
-) => pipe(
-  htmlEscape(content),
-  transformNewLineCharactersToBrTags,
-);
-
 const renderAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
   viewModel,
   O.match(
@@ -61,7 +53,7 @@ const renderAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewMod
           <img class="article-card-annotation__avatar" src="${annotation.authorAvatarPath}" alt="">
           <h4>${htmlEscape(annotation.author)}</h4>
         </header>
-        <p>${renderAnnotationContent(annotation.content)}</p>
+        <p>${safelyRenderUserInput(annotation.content)}</p>
       </section>
     `,
   ),
