@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { listIdCodec } from '../../../types/list-id';
 import { userIdCodec } from '../../../types/user-id';
+import { externalInputFieldNames } from '../../../standards';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),
@@ -9,7 +10,7 @@ export const paramsCodec = t.type({
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
   })),
-  success: tt.withFallback(tt.BooleanFromString, false),
+  [externalInputFieldNames.success]: tt.withFallback(tt.BooleanFromString, false),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;

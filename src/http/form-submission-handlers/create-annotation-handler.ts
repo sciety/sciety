@@ -23,6 +23,7 @@ import { sendHtmlResponse } from '../send-html-response';
 import { GroupId } from '../../types/group-id';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 import { detectClientClassification } from '../detect-client-classification';
+import { externalInputFieldNames } from '../../standards';
 
 type Dependencies = Queries &
 GetLoggedInScietyUserPorts &
@@ -91,7 +92,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
       async () => {
         const commandResult = await handleCreateAnnotationCommand(dependencies)(context.request.body)();
         if (E.isRight(commandResult)) {
-          context.redirect(`/lists/${command.right.listId}?success=true`);
+          context.redirect(`/lists/${command.right.listId}?${externalInputFieldNames.success}=true`);
           return;
         }
         const htmlResponse = await redisplayFormPage(
