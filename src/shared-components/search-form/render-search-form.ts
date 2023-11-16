@@ -8,17 +8,30 @@ export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFra
       Search articles by DOI, author or keyword.
     </div>
     <div class="search-form__positioning_context">
-      ${htmlEscape`<input value="${query}" id="searchText" name="query" class="search-form__text">`}
+      ${htmlEscape`<input
+        value="${query}" id="searchText" name="query" class="search-form__text"
+        _="
+          def setClearButtonVisibility()
+            if my value is not ''
+              remove .visually-hidden from #clearSearchText
+            else
+              add .visually-hidden to #clearSearchText
+          end
+          init setClearButtonVisibility() end
+          on input setClearButtonVisibility()
+          "
+        >`}
       <section>
-        <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter"${evaluatedOnly ? ' checked' : ''}>
+        <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter"${evaluatedOnly ? ' checked' : ''} >
         <label for="searchEvaluatedOnlyFilter" class="search-form__checkbox_label">Search only evaluated articles</label>
       </section>
       <button type="submit" class="search-form__submit" aria-label="Run the search">Search</button>
       <button
         type="reset" id="clearSearchText" class="search-form__clear visually-hidden"
         _="
+          init set @aria-label to 'Clear search text' end
           on click
-            toggle .visually-hidden on me
+            add .visually-hidden to me
             set #searchText@value to ''
             call #searchText.focus()
           end
