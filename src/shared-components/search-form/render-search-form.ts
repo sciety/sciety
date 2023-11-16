@@ -14,7 +14,7 @@ export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFra
         <label for="searchEvaluatedOnlyFilter" class="search-form__checkbox_label">Search only evaluated articles</label>
       </section>
       <button type="submit" class="search-form__submit" aria-label="Run the search">Search</button>
-      <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden">
+      <button type="reset" id="clearSearchText" class="search-form__clear visually-hidden" _="on click toggle .visually-hidden on me">
         <img src="/static/images/clear-search-text-icon.svg" class="search-form__clear_icon" alt="">
       </button>
     </div>

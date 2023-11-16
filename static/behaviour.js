@@ -56,7 +56,6 @@
     })
     clearSearchText.addEventListener('click', function (e) {
       searchInput.setAttribute('value', '');
-      clearSearchText.classList.add('visually-hidden');
       searchInput.focus();
     });
   }
