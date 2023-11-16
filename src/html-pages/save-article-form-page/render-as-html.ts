@@ -5,7 +5,6 @@ import { HtmlPage } from '../html-page';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName } from '../../http/form-submission-handlers/save-article-handler';
 import { ViewModel } from './view-model';
-import { formHelperTexts } from '../standards';
 
 const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   lists,
@@ -57,7 +56,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
     ${renderDependingOnUserListCount(viewModel.userLists, viewModel.article.name)}
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Why are you saving this article? <span class="standard-form__sub_heading_secondary_text">(optional)</span></label>
-      <p class="standard-form__helper_text">${formHelperTexts.annotationContent}</p>
+      <p class="standard-form__helper_text">Add a public comment to share with others what's interesting or important about this article.</p>
       <textarea id="annotationContent" name="annotation" rows="10"></textarea>
     </section>
     <button type="submit">
