@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
-import { externalInputFieldNames } from '../../standards';
+import { inputFieldNames } from '../../standards';
 
 const renderErrorSummary = O.match(
   () => '',
@@ -21,8 +21,8 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
     <p>Add a public comment to share with others what's interesting or important about this article.</p>
   </header>
   <form class="standard-form" method="POST" action="/annotations/create-annotation">
-    <input type="hidden" name="${externalInputFieldNames.articleId}" value="${viewModel.articleId.value}">
-    <input type="hidden" name="${externalInputFieldNames.listId}" value="${viewModel.listId}">
+    <input type="hidden" name="${inputFieldNames.articleId}" value="${viewModel.articleId.value}">
+    <input type="hidden" name="${inputFieldNames.listId}" value="${viewModel.listId}">
     <dl>
       <dt>Article</dt>
       <dd>${viewModel.articleTitle}</dd>
@@ -31,7 +31,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
     </dl>
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Comment</label>
-      <textarea id="annotationContent" name="${externalInputFieldNames.content}" rows="10" required></textarea>
+      <textarea id="annotationContent" name="${inputFieldNames.content}" rows="10" required></textarea>
     </section>
     <button type="submit">Confirm</button>
   </form>

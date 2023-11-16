@@ -9,7 +9,7 @@ import { ViewModel } from '../article-card/view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
-import { externalInputFieldNames } from '../../standards';
+import { inputFieldNames } from '../../standards';
 
 type Dependencies = ConstructArticleCardViewModelDependencies & Queries;
 
@@ -27,7 +27,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
       listId,
       articleId,
       createAnnotationFormHref: O.isNone(annotation)
-        ? O.some(`/annotations/create-annotation-form?${externalInputFieldNames.articleId}=${articleId.value}&${externalInputFieldNames.listId}=${listId}`)
+        ? O.some(`/annotations/create-annotation-form?${inputFieldNames.articleId}=${articleId.value}&${inputFieldNames.listId}=${listId}`)
         : O.none,
     }) : O.none,
   }),

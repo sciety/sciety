@@ -1,1 +1,1 @@
-export * as externalInputFieldNames from './external-input-field-names';
+export * as inputFieldNames from './input-field-names';

@@ -1,11 +1,11 @@
 import * as t from 'io-ts';
 import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
-import { externalInputFieldNames } from '../../standards';
+import { inputFieldNames } from '../../standards';
 
 export const paramsCodec = t.type({
-  [externalInputFieldNames.articleId]: articleIdCodec,
-  [externalInputFieldNames.listId]: listIdCodec,
+  [inputFieldNames.articleId]: articleIdCodec,
+  [inputFieldNames.listId]: listIdCodec,
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
