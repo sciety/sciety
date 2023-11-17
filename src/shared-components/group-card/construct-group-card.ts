@@ -12,6 +12,8 @@ import { Queries } from '../../read-models';
 import { GroupCardViewModel } from './view-model';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
+type Dependencies = Queries;
+
 const isCurationStatement = (
   recordedEvaluation: RecordedEvaluation,
 ) => {
@@ -21,38 +23,38 @@ const isCurationStatement = (
   return recordedEvaluation.type.value === 'curation-statement';
 };
 
-const calculateCuratedArticlesCount = (groupId: GroupId, queries: Queries) => pipe(
+const calculateCuratedArticlesCount = (groupId: GroupId, dependencies: Dependencies) => pipe(
   groupId,
-  queries.getEvaluationsByGroup,
+  dependencies.getEvaluationsByGroup,
   RA.filter(isCurationStatement),
   RA.map((curationStatement) => curationStatement.articleId.value),
   RA.uniq(S.Eq),
   RA.size,
 );
 
-const calculateListCount = (groupId: GroupId, queries: Queries) => pipe(
+const calculateListCount = (groupId: GroupId, dependencies: Dependencies) => pipe(
   groupId,
   LOID.fromGroupId,
-  queries.selectAllListsOwnedBy,
+  dependencies.selectAllListsOwnedBy,
   RA.size,
 );
 
 export const constructGroupCard = (
-  queries: Queries,
+  dependencies: Dependencies,
 ) => (
   groupId: GroupId,
 ): E.Either<DE.DataError, GroupCardViewModel> => pipe(
-  queries.getGroup(groupId),
+  dependencies.getGroup(groupId),
   O.chain((group) => pipe(
     group.id,
-    queries.getActivityForGroup,
+    dependencies.getActivityForGroup,
     O.map((activity) => ({
       ...group,
       ...activity,
-      followerCount: queries.getFollowers(groupId).length,
+      followerCount: dependencies.getFollowers(groupId).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
-      curatedArticlesCount: calculateCuratedArticlesCount(groupId, queries),
-      listCount: calculateListCount(groupId, queries),
+      curatedArticlesCount: calculateCuratedArticlesCount(groupId, dependencies),
+      listCount: calculateListCount(groupId, dependencies),
       groupPageHref: `/groups/${group.slug}`,
     })),
   )),
