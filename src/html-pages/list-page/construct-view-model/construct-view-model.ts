@@ -63,6 +63,7 @@ export const constructViewModel = (
       : O.none,
     editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
     listPageAbsoluteUrl: new URL(`${process.env.APP_ORIGIN ?? 'https://sciety.org'}/lists/${list.id}`),
+    editListDetailsHref: `/lists/${list.id}/edit-details`,
   })),
   O.map((partial) => ({
     ...partial,

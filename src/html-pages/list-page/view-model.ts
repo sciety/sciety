@@ -38,4 +38,5 @@ export type ViewModel = {
   listPageAbsoluteUrl: URL,
   subscribeHref: O.Option<string>,
   showAnnotationSuccessBanner: boolean,
+  editListDetailsHref: string,
 };

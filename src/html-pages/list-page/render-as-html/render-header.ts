@@ -14,11 +14,11 @@ const renderArticleCount = (articleCount: ViewModel['articleCount']) => pipe(
 
 const renderLastUpdated = (date: ViewModel['updatedAt']) => `<span>Last updated ${templateDate(date)}</span>`;
 
-const renderEditDetailsLink = (editCapability: ViewModel['editCapability'], listId: ViewModel['listId']) => pipe(
+const renderEditDetailsLink = (editCapability: ViewModel['editCapability'], editListDetailsHref: ViewModel['editListDetailsHref']) => pipe(
   editCapability,
   B.fold(
     () => '',
-    () => `<a href="/lists/${listId}/edit-details" class="list-page-actions__edit_details_link">Edit list details</a>`,
+    () => `<a href="${editListDetailsHref}" class="list-page-actions__edit_details_link">Edit list details</a>`,
   ),
 );
 
@@ -49,7 +49,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
     <p class="page-header__description">${htmlEscape(viewModel.description)}</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.updatedAt)}</p>
     <section class="list-page-actions">
-      ${renderEditDetailsLink(viewModel.editCapability, viewModel.listId)}
+      ${renderEditDetailsLink(viewModel.editCapability, viewModel.editListDetailsHref)}
       ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
       ${renderSubscribeLink(viewModel.subscribeHref)}
     </section>
