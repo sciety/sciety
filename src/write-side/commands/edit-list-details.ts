@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import { listIdCodec } from '../../types/list-id.js';
 import { sanitisedUserInputCodec } from '../../types/sanitised-user-input.js';
-import { inputFieldNames } from '../../standards/index.js';
+import { inputFieldNames } from '../../standards/input-field-names.js';
 
 export const listNameMaxLength = 100;
 export const listDescriptionMaxLength = 250;

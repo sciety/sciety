@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { listIdCodec } from '../../../types/list-id.js';
 import { userIdCodec } from '../../../types/user-id.js';
-import { inputFieldNames } from '../../../standards/index.js';
+import { inputFieldNames } from '../../../standards/input-field-names.js';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),

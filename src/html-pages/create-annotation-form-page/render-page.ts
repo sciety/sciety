@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
 import { ViewModel } from './view-model.js';
-import { inputFieldNames } from '../../standards/index.js';
+import { inputFieldNames } from '../../standards/input-field-names.js';
 
 const renderErrorSummary = O.match(
   () => '',

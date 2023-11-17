@@ -23,7 +23,7 @@ import { sendHtmlResponse } from '../send-html-response.js';
 import { GroupId } from '../../types/group-id.js';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response.js';
 import { detectClientClassification } from '../detect-client-classification.js';
-import { inputFieldNames } from '../../standards/index.js';
+import { inputFieldNames } from '../../standards/input-field-names.js';
 
 type Dependencies = Queries &
 GetLoggedInScietyUserPorts &

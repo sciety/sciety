@@ -2,7 +2,7 @@ import { htmlEscape } from 'escape-goat';
 import { toHtmlFragment } from '../../types/html-fragment.js';
 import { ListId } from '../../types/list-id.js';
 import { HtmlPage } from '../html-page.js';
-import { inputFieldNames } from '../../standards/index.js';
+import { inputFieldNames } from '../../standards/input-field-names.js';
 
 export type ViewModel = {
   listName: string,

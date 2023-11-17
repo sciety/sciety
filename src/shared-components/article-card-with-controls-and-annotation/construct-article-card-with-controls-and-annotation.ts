@@ -9,7 +9,7 @@ import { ViewModel } from '../article-card/view-model.js';
 import { Queries } from '../../read-models/index.js';
 import { constructAnnotation } from './construct-annotation.js';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model.js';
-import { inputFieldNames } from '../../standards/index.js';
+import { inputFieldNames } from '../../standards/input-field-names.js';
 
 type Dependencies = ConstructArticleCardViewModelDependencies & Queries;
 

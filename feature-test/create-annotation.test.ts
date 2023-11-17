@@ -6,7 +6,7 @@ import { arbitraryArticleId } from '../test/types/article-id.helper.js';
 import { arbitraryUserId } from '../test/types/user-id.helper.js';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper.js';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper.js';
-import { inputFieldNames } from '../src/standards/index.js';
+import { inputFieldNames } from '../src/standards/input-field-names.js';
 
 describe('create-annotation', () => {
   beforeEach(async () => {
