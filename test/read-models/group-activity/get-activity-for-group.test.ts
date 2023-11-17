@@ -1,15 +1,15 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { handleEvent, initialState } from '../../../src/read-models/group-activity/handle-event';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { getActivityForGroup } from '../../../src/read-models/group-activity/get-activity-for-group';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { arbitraryDate, arbitraryString } from '../../helpers';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { handleEvent, initialState } from '../../../src/read-models/group-activity/handle-event.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { getActivityForGroup } from '../../../src/read-models/group-activity/get-activity-for-group.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { arbitraryGroup } from '../../types/group.helper.js';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper.js';
+import { arbitraryDate, arbitraryString } from '../../helpers.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();

@@ -4,19 +4,19 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { feedSummary } from './feed-summary';
-import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
-import * as DE from '../../../types/data-error';
-import { ArticleId } from '../../../types/article-id';
-import { ViewModel } from '../view-model';
-import { UserId } from '../../../types/user-id';
-import { constructListedIn } from './construct-listed-in';
-import { constructUserListManagement } from './construct-user-list-management';
-import { constructRelatedArticles } from './construct-related-articles';
-import { detectLanguage } from '../../../shared-components/lang-attribute';
-import { constructCurationStatements } from '../../../shared-components/curation-statements';
-import { Dependencies } from './dependencies';
-import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
+import { feedSummary } from './feed-summary.js';
+import { getArticleFeedEventsByDateDescending } from './get-article-feed-events.js';
+import * as DE from '../../../types/data-error.js';
+import { ArticleId } from '../../../types/article-id.js';
+import { ViewModel } from '../view-model.js';
+import { UserId } from '../../../types/user-id.js';
+import { constructListedIn } from './construct-listed-in.js';
+import { constructUserListManagement } from './construct-user-list-management.js';
+import { constructRelatedArticles } from './construct-related-articles.js';
+import { detectLanguage } from '../../../shared-components/lang-attribute/index.js';
+import { constructCurationStatements } from '../../../shared-components/curation-statements/index.js';
+import { Dependencies } from './dependencies.js';
+import { constructReviewingGroups } from '../../../shared-components/reviewing-groups/index.js';
 
 type Params = {
   doi: ArticleId,

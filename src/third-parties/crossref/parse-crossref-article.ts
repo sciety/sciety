@@ -3,12 +3,12 @@ import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleAuthors } from '../../types/article-authors';
-import { ArticleServer, articleServers } from '../../types/article-server';
-import { ArticleId } from '../../types/article-id';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { Logger } from '../../shared-ports';
+import { ArticleAuthors } from '../../types/article-authors.js';
+import { ArticleServer, articleServers } from '../../types/article-server.js';
+import { ArticleId } from '../../types/article-id.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment.js';
+import { Logger } from '../../shared-ports/index.js';
 
 const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)

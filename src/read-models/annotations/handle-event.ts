@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
-import * as LID from '../../types/list-id';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events/index.js';
+import * as LID from '../../types/list-id.js';
 
 export type RawUserInput = {
   content: string,

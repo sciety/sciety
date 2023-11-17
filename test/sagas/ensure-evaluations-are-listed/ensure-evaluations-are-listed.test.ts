@@ -1,9 +1,9 @@
-import { ensureEvaluationsAreListed } from '../../../src/sagas/ensure-evaluations-are-listed/ensure-evaluations-are-listed';
-import { dummyLogger } from '../../dummy-logger';
-import { TestFramework, createTestFramework } from '../../framework';
-import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { ensureEvaluationsAreListed } from '../../../src/sagas/ensure-evaluations-are-listed/ensure-evaluations-are-listed.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { TestFramework, createTestFramework } from '../../framework/index.js';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper.js';
 
 describe('ensure-evaluations-are-listed', () => {
   let framework: TestFramework;

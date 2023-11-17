@@ -8,14 +8,14 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
 import * as Eq from 'fp-ts/Eq';
-import * as GID from '../../types/group-id';
-import { ArticleId } from '../../types/article-id';
-import { detectLanguage } from '../lang-attribute';
-import { EvaluationLocator } from '../../types/evaluation-locator';
-import { Queries } from '../../read-models';
-import { FetchReview, Logger } from '../../shared-ports';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { ViewModel } from './view-model';
+import * as GID from '../../types/group-id.js';
+import { ArticleId } from '../../types/article-id.js';
+import { detectLanguage } from '../lang-attribute/index.js';
+import { EvaluationLocator } from '../../types/evaluation-locator.js';
+import { Queries } from '../../read-models/index.js';
+import { FetchReview, Logger } from '../../shared-ports/index.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
+import { ViewModel } from './view-model.js';
 
 export type Dependencies = Queries & {
   fetchReview: FetchReview,

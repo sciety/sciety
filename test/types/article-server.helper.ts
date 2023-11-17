@@ -1,5 +1,5 @@
-import { ArticleServer } from '../../src/types/article-server';
-import { arbitraryNumber } from '../helpers';
+import { ArticleServer } from '../../src/types/article-server.js';
+import { arbitraryNumber } from '../helpers.js';
 
 export const arbitraryArticleServer = (): ArticleServer => {
   const articleServers: ReadonlyArray<ArticleServer> = [

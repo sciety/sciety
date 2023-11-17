@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
-import { listIdCodec } from '../../types/list-id';
-import * as LOID from '../../types/list-owner-id';
+import { listIdCodec } from '../../types/list-id.js';
+import * as LOID from '../../types/list-owner-id.js';
 
 const createListCommandCodec = t.strict({
   listId: listIdCodec,

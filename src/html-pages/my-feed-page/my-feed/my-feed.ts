@@ -4,20 +4,20 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { followedGroupsActivities } from './followed-groups-activities';
-import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models-skipping-failures';
+import { followedGroupsActivities } from './followed-groups-activities.js';
+import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models-skipping-failures.js';
 import {
   feedTitle,
   followSomething,
   noEvaluationsYet,
   troubleFetchingTryAgain,
-} from './static-content';
-import { renderArticleCard } from '../../../shared-components/article-card';
-import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../../shared-components/pagination';
-import { GroupId } from '../../../types/group-id';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { UserId } from '../../../types/user-id';
-import { Dependencies } from './dependencies';
+} from './static-content.js';
+import { renderArticleCard } from '../../../shared-components/article-card/index.js';
+import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../../shared-components/pagination/index.js';
+import { GroupId } from '../../../types/group-id.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { UserId } from '../../../types/user-id.js';
+import { Dependencies } from './dependencies.js';
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>

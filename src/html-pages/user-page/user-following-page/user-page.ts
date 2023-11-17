@@ -1,10 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { renderErrorPage, renderAsHtml } from './render-as-html';
-import { HtmlPage } from '../../html-page';
-import { ErrorPageBodyViewModel } from '../../../types/render-page-error';
-import { constructViewModel, Params } from './construct-view-model';
-import { Queries } from '../../../read-models';
+import { renderErrorPage, renderAsHtml } from './render-as-html/index.js';
+import { HtmlPage } from '../../html-page.js';
+import { ErrorPageBodyViewModel } from '../../../types/render-page-error.js';
+import { constructViewModel, Params } from './construct-view-model/index.js';
+import { Queries } from '../../../read-models/index.js';
 
 type UserPage = (params: Params) => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 

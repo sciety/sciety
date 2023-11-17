@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
-import { retryLater } from './static-messages';
-import { ArticleServer, articleServers } from '../../../types/article-server';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { retryLater } from './static-messages.js';
+import { ArticleServer, articleServers } from '../../../types/article-server.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
 
 export const renderVersionErrorFeedItem = (server: ArticleServer): HtmlFragment => pipe(
   articleServers[server],

@@ -1,9 +1,9 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel, Dependencies } from './construct-view-model/construct-view-model';
-import { HtmlPage } from '../html-page';
-import { ErrorPageBodyViewModel } from '../../types/render-page-error';
-import { renderAsHtml } from './render-as-html/render-as-html';
+import { constructViewModel, Dependencies } from './construct-view-model/construct-view-model.js';
+import { HtmlPage } from '../html-page.js';
+import { ErrorPageBodyViewModel } from '../../types/render-page-error.js';
+import { renderAsHtml } from './render-as-html/render-as-html.js';
 
 type ListsPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 

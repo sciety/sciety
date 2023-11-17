@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
-import { articleIdCodec } from '../../types/article-id';
-import { listIdCodec } from '../../types/list-id';
-import { inputFieldNames } from '../../standards';
-import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
+import { articleIdCodec } from '../../types/article-id.js';
+import { listIdCodec } from '../../types/list-id.js';
+import { inputFieldNames } from '../../standards/index.js';
+import { unsafeUserInputCodec } from '../../types/unsafe-user-input.js';
 
 export const annotateArticleInListCommandCodec = t.type({
   [inputFieldNames.annotationContent]: unsafeUserInputCodec,

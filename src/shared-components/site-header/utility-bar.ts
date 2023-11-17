@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { UserDetails } from '../../types/user-details';
-import { UserHandle } from '../../types/user-handle';
-import { ColourSchemes } from '../colour-schemes';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
+import { UserDetails } from '../../types/user-details.js';
+import { UserHandle } from '../../types/user-handle.js';
+import { ColourSchemes } from '../colour-schemes.js';
 
 const homeMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation" aria-hidden="true">

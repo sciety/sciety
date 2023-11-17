@@ -1,15 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { GroupLinkWithLogoViewModel } from '../../../src/shared-components/group-link/group-link-with-logo-view-model';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper.js';
+import { GroupLinkWithLogoViewModel } from '../../../src/shared-components/group-link/group-link-with-logo-view-model.js';
 import {
   arbitraryRecordEvaluationPublicationCommand,
-} from '../../write-side/commands/record-evaluation-publication-command.helper';
+} from '../../write-side/commands/record-evaluation-publication-command.helper.js';
 
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { createTestFramework, TestFramework } from '../../framework';
-import { constructGroupLink } from '../../../src/shared-components/group-link';
-import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { createTestFramework, TestFramework } from '../../framework/index.js';
+import { constructGroupLink } from '../../../src/shared-components/group-link/index.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
 
 describe('construct-group-link-with-logo', () => {
   const article = arbitraryArticleId();

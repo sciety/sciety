@@ -3,12 +3,12 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../../../types/data-error';
-import * as LOID from '../../../../types/list-owner-id';
-import { ViewModel } from '../view-model';
-import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
-import { constructGroupCard } from '../../../../shared-components/group-card';
-import { Queries } from '../../../../read-models';
+import * as DE from '../../../../types/data-error.js';
+import * as LOID from '../../../../types/list-owner-id.js';
+import { ViewModel } from '../view-model.js';
+import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle.js';
+import { constructGroupCard } from '../../../../shared-components/group-card/index.js';
+import { Queries } from '../../../../read-models/index.js';
 
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,

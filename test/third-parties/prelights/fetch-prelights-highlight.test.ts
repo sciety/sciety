@@ -3,11 +3,11 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchPrelightsHighlight } from '../../../src/third-parties/prelights';
-import * as DE from '../../../src/types/data-error';
-import { arbitraryString, arbitraryUri } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { dummyLogger } from '../../dummy-logger';
+import { fetchPrelightsHighlight } from '../../../src/third-parties/prelights/index.js';
+import * as DE from '../../../src/types/data-error.js';
+import { arbitraryString, arbitraryUri } from '../../helpers.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { dummyLogger } from '../../dummy-logger.js';
 
 const makeDoc = (descriptions: Array<string>) => `
   <!doctype html>

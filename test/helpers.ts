@@ -1,7 +1,7 @@
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../src/types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../src/types/sanitised-html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../src/types/html-fragment.js';
+import { sanitise, SanitisedHtmlFragment } from '../src/types/sanitised-html-fragment.js';
 
 export const arbitraryNumber = (min: number, max: number): number => (
   Math.floor(Math.random() * (max - min + 1) + min)

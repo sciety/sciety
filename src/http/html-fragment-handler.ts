@@ -2,8 +2,8 @@ import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { ConstructPage } from '../html-pages/construct-page';
-import { getHttpStatusCode } from './get-http-status-code';
+import { ConstructPage } from '../html-pages/construct-page.js';
+import { getHttpStatusCode } from './get-http-status-code.js';
 
 export const htmlFragmentHandler = (
   handler: ConstructPage,

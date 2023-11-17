@@ -1,10 +1,10 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { ArticleServer } from '../../../types/article-server';
-import { FeedItem } from '../view-model';
-import { EvaluationEvent, evaluationToFeedItem } from './evaluation-to-feed-item';
-import { Dependencies } from './dependencies';
+import { ArticleServer } from '../../../types/article-server.js';
+import { FeedItem } from '../view-model.js';
+import { EvaluationEvent, evaluationToFeedItem } from './evaluation-to-feed-item.js';
+import { Dependencies } from './dependencies.js';
 
 type ArticleVersionEvent = {
   type: 'article-version',

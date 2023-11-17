@@ -1,1 +1,1 @@
-export { subscribeToListPage } from './subscribe-to-list-page';
+export { subscribeToListPage } from './subscribe-to-list-page.js';

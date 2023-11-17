@@ -1,15 +1,15 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { constructArticleCard, Dependencies as ConstructArticleCardViewModelDependencies } from '../article-card/construct-article-card';
-import { ArticleErrorCardViewModel } from '../article-card/render-article-error-card';
-import { ListId } from '../../types/list-id';
-import { ArticleId } from '../../types/article-id';
-import { ViewModel } from '../article-card/view-model';
-import { Queries } from '../../read-models';
-import { constructAnnotation } from './construct-annotation';
-import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
-import { inputFieldNames } from '../../standards';
+import { constructArticleCard, Dependencies as ConstructArticleCardViewModelDependencies } from '../article-card/construct-article-card.js';
+import { ArticleErrorCardViewModel } from '../article-card/render-article-error-card.js';
+import { ListId } from '../../types/list-id.js';
+import { ArticleId } from '../../types/article-id.js';
+import { ViewModel } from '../article-card/view-model.js';
+import { Queries } from '../../read-models/index.js';
+import { constructAnnotation } from './construct-annotation.js';
+import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model.js';
+import { inputFieldNames } from '../../standards/index.js';
 
 type Dependencies = ConstructArticleCardViewModelDependencies & Queries;
 

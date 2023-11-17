@@ -2,11 +2,11 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchCrossrefArticle } from '../../../src/third-parties/crossref/fetch-crossref-article';
-import * as DE from '../../../src/types/data-error';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { fetchCrossrefArticle } from '../../../src/third-parties/crossref/fetch-crossref-article.js';
+import * as DE from '../../../src/types/data-error.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { arbitraryString } from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
 
 describe('fetch-crossref-article', () => {
   const doi = arbitraryArticleId();

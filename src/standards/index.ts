@@ -1,1 +1,1 @@
-export * as inputFieldNames from './input-field-names';
+export * as inputFieldNames from './input-field-names.js';

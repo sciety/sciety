@@ -1,1 +1,1 @@
-export { groupsPage } from './groups-page';
+export { groupsPage } from './groups-page.js';

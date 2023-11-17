@@ -3,11 +3,11 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { unfollowCommandHandler } from '../../write-side/command-handlers';
-import { Logger } from '../../shared-ports';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
+import { unfollowCommandHandler } from '../../write-side/command-handlers/index.js';
+import { Logger } from '../../shared-ports/index.js';
+import { GroupIdFromString } from '../../types/codecs/GroupIdFromString.js';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands.js';
 
 type Ports = GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,

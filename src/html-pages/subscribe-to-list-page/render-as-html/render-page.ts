@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
-import { ViewModel } from '../view-model';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { renderJotForm } from './render-jot-form';
+import { ViewModel } from '../view-model.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { renderJotForm } from './render-jot-form.js';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header">

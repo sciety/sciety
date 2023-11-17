@@ -1,1 +1,1 @@
-export { docmapIndex } from './docmap-index';
+export { docmapIndex } from './docmap-index.js';

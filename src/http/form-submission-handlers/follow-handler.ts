@@ -6,15 +6,15 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 import * as t from 'io-ts';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { followCommandHandler } from '../../write-side/command-handlers';
-import { Logger } from '../../shared-ports';
-import * as DE from '../../types/data-error';
-import * as GroupId from '../../types/group-id';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import { Queries } from '../../read-models';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
+import { followCommandHandler } from '../../write-side/command-handlers/index.js';
+import { Logger } from '../../shared-ports/index.js';
+import * as DE from '../../types/data-error.js';
+import * as GroupId from '../../types/group-id.js';
+import { GroupIdFromString } from '../../types/codecs/GroupIdFromString.js';
+import { Queries } from '../../read-models/index.js';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands.js';
+import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response.js';
 
 export const groupProperty = 'groupid';
 

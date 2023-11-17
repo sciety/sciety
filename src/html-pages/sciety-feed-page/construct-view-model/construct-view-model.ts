@@ -4,11 +4,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { constructEventCard } from './construct-event-card';
-import { identifyFeedItems } from './identify-feed-items';
-import * as DE from '../../../types/data-error';
-import { ViewModel } from '../view-model';
-import { Dependencies } from './dependencies';
+import { constructEventCard } from './construct-event-card.js';
+import { identifyFeedItems } from './identify-feed-items.js';
+import * as DE from '../../../types/data-error.js';
+import { ViewModel } from '../view-model.js';
+import { Dependencies } from './dependencies.js';
 
 export const scietyFeedCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),

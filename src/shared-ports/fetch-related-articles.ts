@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
-import { ArticleAuthors } from '../types/article-authors';
-import { ArticleId } from '../types/article-id';
-import * as DE from '../types/data-error';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { ArticleAuthors } from '../types/article-authors.js';
+import { ArticleId } from '../types/article-id.js';
+import * as DE from '../types/data-error.js';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment.js';
 
 export type RelatedArticles = ReadonlyArray<{
   articleId: ArticleId,

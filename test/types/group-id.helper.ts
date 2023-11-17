@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { flow, identity } from 'fp-ts/function';
-import { fromString, GroupId } from '../../src/types/group-id';
-import { arbitraryWord } from '../helpers';
+import { fromString, GroupId } from '../../src/types/group-id.js';
+import { arbitraryWord } from '../helpers.js';
 
 const fromStringNoOption: (id: string) => GroupId = flow(
   fromString,

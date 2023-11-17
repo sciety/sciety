@@ -1,7 +1,7 @@
-import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information';
-import { ArticleCardViewModel } from '../../shared-components/article-card';
-import { LegacyPaginationControlsViewModel } from '../../shared-components/pagination';
-import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
+import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information.js';
+import { ArticleCardViewModel } from '../../shared-components/article-card/index.js';
+import { LegacyPaginationControlsViewModel } from '../../shared-components/pagination/index.js';
+import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link/index.js';
 
 type NoGroupsEvaluatedTheFoundArticles = {
   tag: 'no-groups-evaluated-the-found-articles',

@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation } from './get-user-owner-information';
-import { ListOwnerId } from '../../../types/list-owner-id';
-import { Dependencies } from './dependencies';
+import { getUserOwnerInformation } from './get-user-owner-information.js';
+import { ListOwnerId } from '../../../types/list-owner-id.js';
+import { Dependencies } from './dependencies.js';
 
 type OwnerInformation = {
   ownerName: string,

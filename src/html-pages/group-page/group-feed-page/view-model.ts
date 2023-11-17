@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
-import { ArticleCardViewModel, ArticleErrorCardViewModel } from '../../../shared-components/article-card';
-import { PaginationControlsViewModel } from '../../../shared-components/pagination';
-import { Group } from '../../../types/group';
-import { PageHeaderViewModel } from '../common-components/page-header';
-import { TabsViewModel } from '../common-components/tabs-view-model';
+import { ArticleCardViewModel, ArticleErrorCardViewModel } from '../../../shared-components/article-card/index.js';
+import { PaginationControlsViewModel } from '../../../shared-components/pagination/index.js';
+import { Group } from '../../../types/group.js';
+import { PageHeaderViewModel } from '../common-components/page-header.js';
+import { TabsViewModel } from '../common-components/tabs-view-model.js';
 
 type NoActivity = { tag: 'no-activity-yet' };
 

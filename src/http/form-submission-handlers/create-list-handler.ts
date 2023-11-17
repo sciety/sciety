@@ -3,12 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
-import { Payload } from '../../infrastructure/logger';
-import { CreateList, Logger } from '../../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { CreateListCommand } from '../../write-side/commands';
-import * as LID from '../../types/list-id';
-import * as LOID from '../../types/list-owner-id';
+import { Payload } from '../../infrastructure/logger.js';
+import { CreateList, Logger } from '../../shared-ports/index.js';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
+import { CreateListCommand } from '../../write-side/commands/index.js';
+import * as LID from '../../types/list-id.js';
+import * as LOID from '../../types/list-owner-id.js';
 
 type Ports = GetLoggedInScietyUserPorts & {
   logger: Logger,

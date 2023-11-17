@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { userHandleCodec } from '../../src/types/user-handle';
+import { userHandleCodec } from '../../src/types/user-handle.js';
 
 describe('user-handle', () => {
   describe('permitted handles', () => {

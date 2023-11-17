@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, isEventOfType } from '../../domain-events';
-import { ListId } from '../../types/list-id';
-import { ListOwnerId } from '../../types/list-owner-id';
+import { DomainEvent, isEventOfType } from '../../domain-events/index.js';
+import { ListId } from '../../types/list-id.js';
+import { ListOwnerId } from '../../types/list-owner-id.js';
 
 type ListState = {
   id: ListId,

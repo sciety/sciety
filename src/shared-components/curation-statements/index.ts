@@ -1,2 +1,2 @@
-export { constructCurationStatements } from './construct-curation-statements';
-export { ViewModel as CurationStatementViewModel } from './view-model';
+export { constructCurationStatements } from './construct-curation-statements.js';
+export { ViewModel as CurationStatementViewModel } from './view-model.js';

@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import { descriptionPathCodec } from '../../types/description-path';
+import { GroupIdFromString } from '../../types/codecs/GroupIdFromString.js';
+import { descriptionPathCodec } from '../../types/description-path.js';
 
 export const updateGroupDetailsCommandCodec = t.intersection([
   t.strict({

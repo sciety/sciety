@@ -1,6 +1,6 @@
 import * as t from 'io-ts';
-import { userHandleCodec } from '../../types/user-handle';
-import { userIdCodec } from '../../types/user-id';
+import { userHandleCodec } from '../../types/user-handle.js';
+import { userIdCodec } from '../../types/user-id.js';
 
 export const createUserAccountCommandCodec = t.strict({
   userId: userIdCodec,

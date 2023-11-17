@@ -2,16 +2,16 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { dummyLogger } from '../../../../dummy-logger';
-import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model';
-import { createTestFramework, TestFramework } from '../../../../framework';
-import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
-import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
-import { ArticleId } from '../../../../../src/types/article-id';
-import { ListId } from '../../../../../src/types/list-id';
-import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { dummyLogger } from '../../../../dummy-logger.js';
+import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-feed-page/view-model.js';
+import { createTestFramework, TestFramework } from '../../../../framework/index.js';
+import { shouldNotBeCalled } from '../../../../should-not-be-called.js';
+import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content.js';
+import { arbitraryArticleId } from '../../../../types/article-id.helper.js';
+import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies.js';
+import { ArticleId } from '../../../../../src/types/article-id.js';
+import { ListId } from '../../../../../src/types/list-id.js';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper.js';
 
 describe('construct-content', () => {
   let framework: TestFramework;

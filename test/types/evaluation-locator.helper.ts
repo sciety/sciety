@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
-import { EvaluationLocator } from '../../src/types/evaluation-locator';
-import { arbitraryNumber, arbitraryWord } from '../helpers';
+import { EvaluationLocator } from '../../src/types/evaluation-locator.js';
+import { arbitraryNumber, arbitraryWord } from '../helpers.js';
 
 export const arbitraryReviewDoi = (): EvaluationLocator => (
   `doi:${arbitraryWord(20)}` as EvaluationLocator

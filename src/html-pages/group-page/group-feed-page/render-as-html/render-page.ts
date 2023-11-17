@@ -1,7 +1,7 @@
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { renderPageHeader } from '../../common-components/page-header';
-import { ViewModel } from '../view-model';
-import { renderMainContent } from './render-main-content';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment.js';
+import { renderPageHeader } from '../../common-components/page-header.js';
+import { ViewModel } from '../view-model.js';
+import { renderMainContent } from './render-main-content.js';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   ${renderPageHeader(viewmodel)}

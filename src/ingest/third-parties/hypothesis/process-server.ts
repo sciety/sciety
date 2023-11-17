@@ -4,9 +4,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
-import { Annotation } from './annotation';
-import { responseFromJson } from './response';
-import { FetchData } from '../../fetch-data';
+import { Annotation } from './annotation.js';
+import { responseFromJson } from './response.js';
+import { FetchData } from '../../fetch-data.js';
 
 const latestDateOf = (items: ReadonlyArray<Annotation>) => (
   encodeURIComponent(items[items.length - 1].created)

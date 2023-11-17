@@ -1,11 +1,11 @@
 import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
-import { callApi } from './helpers/call-api.helper';
-import { screenshotTeardown } from './utilities';
-import { arbitraryUserId } from '../test/types/user-id.helper';
-import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryGroup } from '../test/types/group.helper';
+import { callApi } from './helpers/call-api.helper.js';
+import { screenshotTeardown } from './utilities.js';
+import { arbitraryUserId } from '../test/types/user-id.helper.js';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper.js';
+import { arbitraryGroup } from '../test/types/group.helper.js';
 
 describe('unfollow a group', () => {
   const group = arbitraryGroup();

@@ -1,13 +1,24 @@
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { GenericCommand } from '../../types/command-handler';
-import { ResourceAction } from '../resources/resource-action';
-import { validateInputShape } from './validate-input-shape';
-import { ErrorMessage } from '../../types/error-message';
-import { CommandResult } from '../../types/command-result';
-import { DependenciesForCommands } from '../dependencies-for-commands';
-import { Logger } from '../../shared-ports';
+import { GenericCommand } from '../../types/command-handler.js';
+import { ResourceAction } from '../resources/resource-action.js';
+import { validateInputShape } from './validate-input-shape.js';
+import { ErrorMessage } from '../../types/error-message.js';
+import { CommandResult } from '../../types/command-result.js';
+import { DependenciesForCommands } from '../dependencies-for-commands.js';
+
+enum Level {
+  error,
+  warn,
+  info,
+  debug,
+}
+type LevelName = keyof typeof Level;
+
+type Payload = Record<string, unknown>;
+
+type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
 
 export const executeCommand = <C extends GenericCommand>(
   dependencies: DependenciesForCommands & { logger: Logger },

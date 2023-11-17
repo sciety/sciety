@@ -1,13 +1,13 @@
 import { URL } from 'url';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
-import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
-import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
-import { renderDocmap } from '../../../src/docmaps/docmap/render-docmap';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { Evaluation } from '../../../src/docmaps/docmap/evaluation.js';
+import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer.js';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id.js';
+import { renderDocmap } from '../../../src/docmaps/docmap/render-docmap.js';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryGroup } from '../../types/group.helper.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
 
 const articleId = arbitraryArticleId();
 

@@ -1,14 +1,14 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import { selectListContainingArticle } from '../../../src/read-models/lists/select-list-containing-article';
-import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event.js';
+import { selectListContainingArticle } from '../../../src/read-models/lists/select-list-containing-article.js';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { arbitraryString } from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
 
 describe('select-list-containing-article', () => {
   const articleId = arbitraryArticleId();

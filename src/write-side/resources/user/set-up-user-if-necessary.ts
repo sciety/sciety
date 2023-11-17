@@ -2,11 +2,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { v4 } from 'uuid';
-import * as LID from '../../../types/list-id';
-import { CreateUserAccountCommand } from '../../commands/create-user-account';
-import { DomainEvent, constructEvent, isEventOfType } from '../../../domain-events';
-import * as LOID from '../../../types/list-owner-id';
-import { UserId } from '../../../types/user-id';
+import * as LID from '../../../types/list-id.js';
+import { CreateUserAccountCommand } from '../../commands/create-user-account.js';
+import { DomainEvent, constructEvent, isEventOfType } from '../../../domain-events/index.js';
+import * as LOID from '../../../types/list-owner-id.js';
+import { UserId } from '../../../types/user-id.js';
 
 const isAccountCreatedBy = (userId: UserId) => (event: DomainEvent) => (
   isEventOfType('UserCreatedAccount')(event)

@@ -1,11 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card';
-import { renderTabs } from '../../../../shared-components/tabs';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { ListsTab, ViewModel } from '../view-model';
-import { tabList } from './tab-list';
-import { renderListItems } from '../../../../shared-components/render-list-items';
+import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card/index.js';
+import { renderTabs } from '../../../../shared-components/tabs/index.js';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment.js';
+import { ListsTab, ViewModel } from '../view-model.js';
+import { tabList } from './tab-list.js';
+import { renderListItems } from '../../../../shared-components/render-list-items.js';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.userDetails.handle, viewmodel.listCount, viewmodel.groupIds.length),

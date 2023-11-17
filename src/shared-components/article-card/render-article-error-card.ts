@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { templateDate } from '../date';
-import * as DE from '../../types/data-error';
-import { ArticleId } from '../../types/article-id';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { templateDate } from '../date.js';
+import * as DE from '../../types/data-error.js';
+import { ArticleId } from '../../types/article-id.js';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
 
 export type ArticleErrorCardViewModel = {
   evaluationCount: number,

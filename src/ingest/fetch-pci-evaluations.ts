@@ -4,10 +4,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import { FetchData } from './fetch-data';
-import { daysAgo } from './time';
-import { FetchEvaluations } from './update-all';
-import * as AID from '../types/article-id';
+import { FetchData } from './fetch-data.js';
+import { daysAgo } from './time.js';
+import { FetchEvaluations } from './update-all.js';
+import * as AID from '../types/article-id.js';
 
 type Candidate = {
   date: string,

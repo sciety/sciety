@@ -1,7 +1,7 @@
-import { CreateUserAccountCommand } from '../../../src/write-side/commands';
-import { arbitraryUri, arbitraryWord } from '../../helpers';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryUserHandle } from '../../types/user-handle.helper';
+import { CreateUserAccountCommand } from '../../../src/write-side/commands/index.js';
+import { arbitraryUri, arbitraryWord } from '../../helpers.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
+import { arbitraryUserHandle } from '../../types/user-handle.helper.js';
 
 export const arbitraryCreateUserAccountCommand = (): CreateUserAccountCommand => ({
   userId: arbitraryUserId(),

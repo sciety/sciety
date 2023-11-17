@@ -1,4 +1,4 @@
-import { constructNcrcReview } from '../../../src/third-parties/ncrc/construct-ncrc-review';
+import { constructNcrcReview } from '../../../src/third-parties/ncrc/construct-ncrc-review.js';
 
 describe('fetch-ncrc-review', () => {
   describe('construct-found-review', () => {

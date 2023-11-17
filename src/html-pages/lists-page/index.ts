@@ -1,1 +1,1 @@
-export { listsPage } from './lists-page';
+export { listsPage } from './lists-page.js';

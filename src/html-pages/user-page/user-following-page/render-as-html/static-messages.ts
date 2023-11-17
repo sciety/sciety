@@ -1,4 +1,4 @@
-import { toHtmlFragment } from '../../../../types/html-fragment';
+import { toHtmlFragment } from '../../../../types/html-fragment.js';
 
 export const informationUnavailable = toHtmlFragment(
   '<p class="static-message">We couldn\'t find this information; please try again later.</p>',

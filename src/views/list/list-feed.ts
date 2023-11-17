@@ -3,8 +3,8 @@ import { HttpStatusCode } from 'axios';
 import { flow, pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
-import { renderAsAtom } from './render-as-atom';
-import { Dependencies, constructViewModel, paramsCodec } from './construct-view-model';
+import { renderAsAtom } from './render-as-atom.js';
+import { Dependencies, constructViewModel, paramsCodec } from './construct-view-model/index.js';
 
 export const listFeed = (dependencies: Dependencies): Middleware => async (context, next) => {
   context.response.type = 'application/atom+xml';

@@ -1,9 +1,9 @@
-import { fetchStaticFile } from './fetch-static-file';
-import { localFetchArticleAdapter } from './local-fetch-article-adapter';
-import { searchEuropePmc } from './search-europe-pmc';
-import { findVersionsForArticleDoi } from './find-versions-for-article-doi';
-import { fetchReview } from './fetch-review';
-import { fetchRelatedArticles } from './fetch-related-articles';
+import { fetchStaticFile } from './fetch-static-file.js';
+import { localFetchArticleAdapter } from './local-fetch-article-adapter.js';
+import { searchEuropePmc } from './search-europe-pmc.js';
+import { findVersionsForArticleDoi } from './find-versions-for-article-doi.js';
+import { fetchReview } from './fetch-review.js';
+import { fetchRelatedArticles } from './fetch-related-articles.js';
 
 export const stubAdapters = {
   fetchArticle: localFetchArticleAdapter,

@@ -6,10 +6,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { flow, pipe } from 'fp-ts/function';
-import { constructGroupCard, GroupCardViewModel } from '../../shared-components/group-card';
-import * as DE from '../../types/data-error';
-import { Group } from '../../types/group';
-import { Queries } from '../../read-models';
+import { constructGroupCard, GroupCardViewModel } from '../../shared-components/group-card/index.js';
+import * as DE from '../../types/data-error.js';
+import { Group } from '../../types/group.js';
+import { Queries } from '../../read-models/index.js';
 
 const byLatestActivity: Ord.Ord<GroupCardViewModel> = pipe(
   O.getOrd(D.Ord),

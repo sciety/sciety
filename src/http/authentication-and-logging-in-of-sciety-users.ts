@@ -3,9 +3,9 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { userIdCodec, UserId } from '../types/user-id';
-import { UserDetails } from '../types/user-details';
-import { Queries } from '../read-models';
+import { userIdCodec, UserId } from '../types/user-id.js';
+import { UserDetails } from '../types/user-details.js';
+import { Queries } from '../read-models/index.js';
 
 const passportUserCodec = t.type({
   state: t.type({

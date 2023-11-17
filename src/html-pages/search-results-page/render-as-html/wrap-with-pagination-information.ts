@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderNextLinkOrCallsToAction } from './render-next-link-or-calls-to-action';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { articleServers } from '../../../types/article-server';
+import { renderNextLinkOrCallsToAction } from './render-next-link-or-calls-to-action.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { articleServers } from '../../../types/article-server.js';
 
 const articleServersSeparatedByComma = `<b>${articleServers.biorxiv.name}</b>, <b>${articleServers.medrxiv.name}</b>, <b>${articleServers.researchsquare.name}</b>, <b>${articleServers.scielopreprints.name}</b>`;
 

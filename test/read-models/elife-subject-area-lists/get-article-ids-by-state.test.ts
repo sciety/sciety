@@ -2,14 +2,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   handleEvent, initialState,
-} from '../../../src/read-models/elife-subject-area-lists/handle-event';
-import { elifeGroupId, elifeSubjectAreaLists } from '../../../src/read-models/elife-subject-area-lists/data';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitrarySubjectArea } from '../../types/subject-area.helper';
-import { arbitraryDate } from '../../helpers';
-import { getArticleIdsByState } from '../../../src/read-models/elife-subject-area-lists/get-article-ids-by-state';
+} from '../../../src/read-models/elife-subject-area-lists/handle-event.js';
+import { elifeGroupId, elifeSubjectAreaLists } from '../../../src/read-models/elife-subject-area-lists/data.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { arbitrarySubjectArea } from '../../types/subject-area.helper.js';
+import { arbitraryDate } from '../../helpers.js';
+import { getArticleIdsByState } from '../../../src/read-models/elife-subject-area-lists/get-article-ids-by-state.js';
 
 describe('get-article-ids-by-state', () => {
   describe('given a bunch of events', () => {

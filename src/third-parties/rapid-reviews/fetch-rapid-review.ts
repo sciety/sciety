@@ -6,12 +6,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { QueryExternalService } from '../query-external-service';
-import { EvaluationFetcher } from '../evaluation-fetcher';
-import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { Logger } from '../../shared-ports';
+import { QueryExternalService } from '../query-external-service.js';
+import { EvaluationFetcher } from '../evaluation-fetcher.js';
+import * as DE from '../../types/data-error.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { Logger } from '../../shared-ports/index.js';
 
 const summary = (logger: Logger) => (doc: Document) => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),

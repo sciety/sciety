@@ -2,11 +2,11 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { fetchZenodoRecord } from '../../../src/third-parties/zenodo/fetch-zenodo-record';
-import * as DE from '../../../src/types/data-error';
-import { arbitraryHtmlFragment } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { dummyLogger } from '../../dummy-logger';
+import { fetchZenodoRecord } from '../../../src/third-parties/zenodo/fetch-zenodo-record.js';
+import * as DE from '../../../src/types/data-error.js';
+import { arbitraryHtmlFragment } from '../../helpers.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { dummyLogger } from '../../dummy-logger.js';
 
 const notZenodoKey = '10.1234/zenodo/123';
 const zenodoKey = '10.5281/zenodo.6386692';

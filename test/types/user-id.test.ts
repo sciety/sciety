@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { userIdCodec } from '../../src/types/user-id';
-import { shouldNotBeCalled } from '../should-not-be-called';
+import { userIdCodec } from '../../src/types/user-id.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
 
 describe('user-id', () => {
   it.each([

@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { articleIdCodec } from '../types/article-id';
-import { listIdCodec } from '../types/list-id';
-import { unsafeUserInputCodec } from '../types/unsafe-user-input';
+import { EventIdFromString } from '../types/codecs/EventIdFromString.js';
+import { articleIdCodec } from '../types/article-id.js';
+import { listIdCodec } from '../types/list-id.js';
+import { unsafeUserInputCodec } from '../types/unsafe-user-input.js';
 
 export const annotationCreatedEventCodec = t.type({
   id: EventIdFromString,

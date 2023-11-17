@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { Middleware } from 'koa';
 import { pipe } from 'fp-ts/function';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users.js';
 
 export const requireLoggedInUser = (
   adapters: GetLoggedInScietyUserPorts,

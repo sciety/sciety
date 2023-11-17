@@ -1,10 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/followings/handle-event';
-import { getGroupsFollowedBy } from '../../../src/read-models/followings/get-groups-followed-by';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { handleEvent, initialState } from '../../../src/read-models/followings/handle-event.js';
+import { getGroupsFollowedBy } from '../../../src/read-models/followings/get-groups-followed-by.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
 
 describe('get-group-ids-followed-by', () => {
   const userId = arbitraryUserId();

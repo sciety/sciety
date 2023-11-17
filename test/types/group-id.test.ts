@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as GID from '../../src/types/group-id';
+import * as GID from '../../src/types/group-id.js';
 
 describe('group-id', () => {
   describe('fromNullable', () => {

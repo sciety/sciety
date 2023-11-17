@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { userIdCodec } from '../../types/user-id';
+import { userIdCodec } from '../../types/user-id.js';
 
 export const updateUserDetailsCommandCodec = t.strict({
   userId: userIdCodec,

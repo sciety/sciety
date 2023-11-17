@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import {
   CollapsedArticlesAddedToList, isArticleAddedToListEvent,
   isCollapsedArticlesAddedToList,
-} from './feed-item';
-import { userFollowedAGroupCard } from './user-followed-a-group-card';
-import { articleAddedToListCard } from './article-added-to-list-card';
-import { collapsedArticlesAddedToListCard } from './collapsed-articles-added-to-list-card';
-import { ScietyFeedCard } from '../view-model';
-import { DomainEvent, isEventOfType } from '../../../domain-events';
-import { Dependencies } from './dependencies';
+} from './feed-item.js';
+import { userFollowedAGroupCard } from './user-followed-a-group-card.js';
+import { articleAddedToListCard } from './article-added-to-list-card.js';
+import { collapsedArticlesAddedToListCard } from './collapsed-articles-added-to-list-card.js';
+import { ScietyFeedCard } from '../view-model.js';
+import { DomainEvent, isEventOfType } from '../../../domain-events/index.js';
+import { Dependencies } from './dependencies.js';
 
 export const constructEventCard = (
   dependencies: Dependencies,

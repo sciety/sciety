@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
-import { List } from '../../../types/list';
-import { Dependencies } from './dependencies';
+import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href.js';
+import { List } from '../../../types/list.js';
+import { Dependencies } from './dependencies.js';
 
 type ListWithAddedOwnershipInformation = {
   name: string,

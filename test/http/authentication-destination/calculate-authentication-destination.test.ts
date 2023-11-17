@@ -1,5 +1,5 @@
-import { defaultDestination, calculateAuthenticationDestination } from '../../../src/http/authentication-destination/calculate-authentication-destination';
-import { dummyLogger } from '../../dummy-logger';
+import { defaultDestination, calculateAuthenticationDestination } from '../../../src/http/authentication-destination/calculate-authentication-destination.js';
+import { dummyLogger } from '../../dummy-logger.js';
 
 describe('calculate-authentication-destination', () => {
   describe('when a referer is not provided', () => {

@@ -7,15 +7,15 @@ import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import {
   getAbstract, getAuthors, getServer, getTitle,
-} from './parse-crossref-article';
-import { FetchArticle, Logger } from '../../shared-ports';
-import { ArticleAuthors } from '../../types/article-authors';
-import { ArticleServer } from '../../types/article-server';
-import * as DE from '../../types/data-error';
-import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
-import { ArticleId } from '../../types/article-id';
-import { QueryExternalService } from '../query-external-service';
-import { toHtmlFragment } from '../../types/html-fragment';
+} from './parse-crossref-article.js';
+import { FetchArticle, Logger } from '../../shared-ports/index.js';
+import { ArticleAuthors } from '../../types/article-authors.js';
+import { ArticleServer } from '../../types/article-server.js';
+import * as DE from '../../types/data-error.js';
+import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment.js';
+import { ArticleId } from '../../types/article-id.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: ArticleId) => {
   if (response.length === 0) {

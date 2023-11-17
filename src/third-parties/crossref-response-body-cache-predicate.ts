@@ -1,5 +1,5 @@
-import { Logger } from '../shared-ports';
-import { ResponseBodyCachePredicate } from './caching-fetcher-factory';
+import { Logger } from '../shared-ports/index.js';
+import { ResponseBodyCachePredicate } from './caching-fetcher-factory.js';
 
 export const crossrefResponseBodyCachePredicate = (
   logger: Logger,

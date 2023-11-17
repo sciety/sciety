@@ -1,9 +1,9 @@
-import { EventOfType, constructEvent } from '../../src/domain-events';
-import { arbitraryDate, arbitraryString } from '../helpers';
-import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
-import { arbitraryEvaluationType } from '../types/evaluation-type.helper';
-import { arbitraryGroupId } from '../types/group-id.helper';
+import { EventOfType, constructEvent } from '../../src/domain-events/index.js';
+import { arbitraryDate, arbitraryString } from '../helpers.js';
+import { arbitraryArticleId } from '../types/article-id.helper.js';
+import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper.js';
+import { arbitraryEvaluationType } from '../types/evaluation-type.helper.js';
+import { arbitraryGroupId } from '../types/group-id.helper.js';
 
 export const arbitraryEvaluationPublicationRecordedEvent = (): EventOfType<'EvaluationPublicationRecorded'> => constructEvent('EvaluationPublicationRecorded')({
   groupId: arbitraryGroupId(),

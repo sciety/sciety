@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import { Logger } from '../shared-ports';
+import { Logger } from '../shared-ports/index.js';
 
 export const logRequestAndResponse = (logger: Logger): Middleware => async ({ request, res }, next) => {
   const startTime = new Date();

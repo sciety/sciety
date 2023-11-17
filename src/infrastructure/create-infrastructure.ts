@@ -4,25 +4,25 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { persistEvents } from './persist-events';
-import { CollectedPorts } from './collected-ports';
-import { commitEvents } from './commit-events';
-import { dispatcher } from '../read-models';
-import { getEventsFromDatabase } from './get-events-from-database';
+import { persistEvents } from './persist-events.js';
+import { CollectedPorts } from './collected-ports.js';
+import { commitEvents } from './commit-events.js';
+import { dispatcher } from '../read-models/index.js';
+import { getEventsFromDatabase } from './get-events-from-database.js';
 import {
   createLogger, Logger, Config as LoggerConfig,
-} from './logger';
-import { stubAdapters } from './stub-adapters';
-import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
-import { sort as sortEvents } from '../domain-events';
+} from './logger.js';
+import { stubAdapters } from './stub-adapters/index.js';
+import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler.js';
+import { sort as sortEvents } from '../domain-events/index.js';
 import {
   editListDetailsCommandHandler,
   createListCommandHandler,
   recordSubjectAreaCommandHandler,
   removeArticleFromListCommandHandler,
-} from '../write-side/command-handlers';
-import { instantiate } from '../third-parties';
-import { createRedisClient } from './create-redis-client';
+} from '../write-side/command-handlers/index.js';
+import { instantiate } from '../third-parties/index.js';
+import { createRedisClient } from './create-redis-client.js';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,

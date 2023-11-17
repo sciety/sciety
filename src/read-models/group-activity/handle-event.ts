@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
-import { GroupId } from '../../types/group-id';
-import { EvaluationLocator } from '../../types/evaluation-locator';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events/index.js';
+import { GroupId } from '../../types/group-id.js';
+import { EvaluationLocator } from '../../types/evaluation-locator.js';
 
 type EvaluationThumbnail = {
   evaluationLocator: EvaluationLocator,

@@ -1,8 +1,8 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
+import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model.js';
 
 const renderGroupLogoWithTextFallback = (viewModel: GroupLinkWithLogoViewModel) => pipe(
   viewModel.logoPath,

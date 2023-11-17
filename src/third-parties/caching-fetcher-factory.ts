@@ -14,10 +14,10 @@ import {
   buildStorage,
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
-import { logAndTransformToDataError } from './log-and-transform-to-data-error';
-import { Logger } from '../shared-ports';
-import { LevelName } from '../infrastructure/logger';
-import { QueryExternalService } from './query-external-service';
+import { logAndTransformToDataError } from './log-and-transform-to-data-error.js';
+import { Logger } from '../shared-ports/index.js';
+import { LevelName } from '../infrastructure/logger.js';
+import { QueryExternalService } from './query-external-service.js';
 
 const shouldCacheAccordingToStatusCode = (status: number) => [
   200, 203, 300, 301, 302, 404, 405, 410, 414, 501,

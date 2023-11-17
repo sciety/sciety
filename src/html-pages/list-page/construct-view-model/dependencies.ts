@@ -1,11 +1,11 @@
-import { Queries } from '../../../read-models';
+import { Queries } from '../../../read-models/index.js';
 import {
   FetchArticle,
   FetchRelatedArticles,
   FetchReview,
   FindVersionsForArticleDoi,
   Logger,
-} from '../../../shared-ports';
+} from '../../../shared-ports/index.js';
 
 export type Dependencies = Queries & {
   fetchArticle: FetchArticle,

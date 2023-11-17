@@ -2,7 +2,7 @@ import * as R from 'fp-ts/Record';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'fp-ts/Json';
-import { ReadModel } from './handle-event';
+import { ReadModel } from './handle-event.js';
 
 type CurrentStatus = () => Json;
 

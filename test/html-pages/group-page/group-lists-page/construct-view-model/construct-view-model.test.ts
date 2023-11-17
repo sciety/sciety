@@ -1,15 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { createTestFramework, TestFramework } from '../../../../framework';
-import * as LOID from '../../../../../src/types/list-owner-id';
-import { ViewModel } from '../../../../../src/html-pages/group-page/group-lists-page/view-model';
-import { constructViewModel } from '../../../../../src/html-pages/group-page/group-lists-page/construct-view-model/construct-view-model';
-import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { List } from '../../../../../src/types/list';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
-import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
-import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { createTestFramework, TestFramework } from '../../../../framework/index.js';
+import * as LOID from '../../../../../src/types/list-owner-id.js';
+import { ViewModel } from '../../../../../src/html-pages/group-page/group-lists-page/view-model.js';
+import { constructViewModel } from '../../../../../src/html-pages/group-page/group-lists-page/construct-view-model/construct-view-model.js';
+import { shouldNotBeCalled } from '../../../../should-not-be-called.js';
+import { List } from '../../../../../src/types/list.js';
+import { arbitraryArticleId } from '../../../../types/article-id.helper.js';
+import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper.js';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper.js';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

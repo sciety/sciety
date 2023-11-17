@@ -1,1 +1,1 @@
-export { fetchCrossrefArticle } from './fetch-crossref-article';
+export { fetchCrossrefArticle } from './fetch-crossref-article.js';

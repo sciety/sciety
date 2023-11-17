@@ -1,10 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ArticleId } from '../../types/article-id';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { SearchForArticles } from '../../shared-ports';
+import { ArticleId } from '../../types/article-id.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { SearchForArticles } from '../../shared-ports/index.js';
 
 export const searchEuropePmc: SearchForArticles = () => () => TE.right({
   items: [

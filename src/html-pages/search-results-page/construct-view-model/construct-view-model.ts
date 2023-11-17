@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, tupled } from 'fp-ts/function';
-import * as DE from '../../../types/data-error';
-import { fetchExtraDetails } from './fetch-extra-details';
-import { ViewModel } from '../view-model';
-import { Dependencies } from './dependencies';
-import { Params } from './params';
+import * as DE from '../../../types/data-error.js';
+import { fetchExtraDetails } from './fetch-extra-details.js';
+import { ViewModel } from '../view-model.js';
+import { Dependencies } from './dependencies.js';
+import { Params } from './params.js';
 
 export const constructViewModel = (
   dependencies: Dependencies,

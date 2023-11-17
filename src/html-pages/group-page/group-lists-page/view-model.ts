@@ -1,7 +1,7 @@
-import { ListCardViewModel } from '../../../shared-components/list-card/render-list-card';
-import { Group } from '../../../types/group';
-import { PageHeaderViewModel } from '../common-components/page-header';
-import { TabsViewModel } from '../common-components/tabs-view-model';
+import { ListCardViewModel } from '../../../shared-components/list-card/render-list-card.js';
+import { Group } from '../../../types/group.js';
+import { PageHeaderViewModel } from '../common-components/page-header.js';
+import { TabsViewModel } from '../common-components/tabs-view-model.js';
 
 export type ViewModel = PageHeaderViewModel & {
   group: Group,

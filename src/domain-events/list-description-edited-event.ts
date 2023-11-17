@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { listIdCodec } from '../types/list-id';
+import { EventIdFromString } from '../types/codecs/EventIdFromString.js';
+import { listIdCodec } from '../types/list-id.js';
 
 export const listDescriptionEditedEventCodec = t.type({
   id: EventIdFromString,

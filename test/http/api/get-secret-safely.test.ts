@@ -1,5 +1,5 @@
-import { getSecretSafely } from '../../../src/http/api/get-secret-safely';
-import { arbitraryWord } from '../../helpers';
+import { getSecretSafely } from '../../../src/http/api/get-secret-safely.js';
+import { arbitraryWord } from '../../helpers.js';
 
 describe('get-secret-safely', () => {
   describe('when the input is valid', () => {

@@ -1,13 +1,13 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { arbitraryList } from '../../types/list-helper';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import * as LOID from '../../../src/types/list-owner-id';
-import { selectAllListsContainingArticle } from '../../../src/read-models/lists/select-all-lists-containing-article';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryList } from '../../types/list-helper.js';
+import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { selectAllListsContainingArticle } from '../../../src/read-models/lists/select-all-lists-containing-article.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
 
 describe('select-all-lists-containing-article', () => {
   describe('when the article is not in any list', () => {

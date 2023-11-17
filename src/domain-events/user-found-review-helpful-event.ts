@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { userIdCodec } from '../types/user-id';
-import { evaluationLocatorCodec } from '../types/evaluation-locator';
+import { EventIdFromString } from '../types/codecs/EventIdFromString.js';
+import { userIdCodec } from '../types/user-id.js';
+import { evaluationLocatorCodec } from '../types/evaluation-locator.js';
 
 export const userFoundReviewHelpfulEventCodec = t.type({
   id: EventIdFromString,

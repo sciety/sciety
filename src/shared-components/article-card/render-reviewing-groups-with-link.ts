@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { ViewModel } from './view-model';
-import { renderGroupLinkAsText } from '../group-link';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
+import { ViewModel } from './view-model.js';
+import { renderGroupLinkAsText } from '../group-link/index.js';
 
 export const renderReviewingGroupsWithLink = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
   if (reviewingGroups.length === 0) {

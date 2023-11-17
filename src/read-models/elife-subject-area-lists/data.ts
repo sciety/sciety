@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as Gid from '../../types/group-id';
-import * as LID from '../../types/list-id';
+import * as Gid from '../../types/group-id.js';
+import * as LID from '../../types/list-id.js';
 
 export const elifeGroupId = Gid.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 

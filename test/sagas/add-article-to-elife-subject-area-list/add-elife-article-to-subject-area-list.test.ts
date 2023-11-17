@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { addArticleToElifeSubjectAreaList } from '../../../src/sagas/add-article-to-elife-subject-area-list/add-article-to-elife-subject-area-list';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
+import { addArticleToElifeSubjectAreaList } from '../../../src/sagas/add-article-to-elife-subject-area-list/add-article-to-elife-subject-area-list.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
 
 describe('add-elife-article-to-subject-area-list', () => {
   describe('when there is work to do', () => {

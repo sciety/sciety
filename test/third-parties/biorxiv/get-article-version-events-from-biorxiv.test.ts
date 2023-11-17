@@ -3,12 +3,12 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { getArticleVersionEventsFromBiorxiv } from '../../../src/third-parties/biorxiv';
-import { ArticleId } from '../../../src/types/article-id';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import * as DE from '../../../src/types/data-error';
+import { getArticleVersionEventsFromBiorxiv } from '../../../src/third-parties/biorxiv/index.js';
+import { ArticleId } from '../../../src/types/article-id.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { arbitraryString } from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import * as DE from '../../../src/types/data-error.js';
 
 describe('get-article-version-events-from-biorxiv', () => {
   describe('when biorxiv is available', () => {

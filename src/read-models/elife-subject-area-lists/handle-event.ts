@@ -1,9 +1,9 @@
 /* eslint-disable quote-props */
 /* eslint-disable no-param-reassign */
-import { biorxivAndMedrxivPublisherDoiPrefix, elifeGroupId, elifeSubjectAreaLists } from './data';
-import { DomainEvent, isEventOfType } from '../../domain-events';
-import { SubjectArea } from '../../types/subject-area';
-import * as AID from '../../types/article-id';
+import { biorxivAndMedrxivPublisherDoiPrefix, elifeGroupId, elifeSubjectAreaLists } from './data.js';
+import { DomainEvent, isEventOfType } from '../../domain-events/index.js';
+import { SubjectArea } from '../../types/subject-area.js';
+import * as AID from '../../types/article-id.js';
 
 type ArticleStateWithSubjectArea =
  | { name: 'subject-area-known', subjectArea: SubjectArea }

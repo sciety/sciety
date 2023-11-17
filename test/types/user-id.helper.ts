@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { UserId, userIdCodec } from '../../src/types/user-id';
-import { arbitraryNumber, arbitraryWord } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { UserId, userIdCodec } from '../../src/types/user-id.js';
+import { arbitraryNumber, arbitraryWord } from '../helpers.js';
 
 const prefixes = ['auth0|', 'twitter|', ''];
 

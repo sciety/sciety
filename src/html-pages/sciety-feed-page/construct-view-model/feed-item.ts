@@ -1,5 +1,5 @@
-import { DomainEvent, EventOfType } from '../../../domain-events';
-import { ListId } from '../../../types/list-id';
+import { DomainEvent, EventOfType } from '../../../domain-events/index.js';
+import { ListId } from '../../../types/list-id.js';
 
 export type CollapsedArticlesAddedToList = {
   type: 'CollapsedArticlesAddedToList',

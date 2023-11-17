@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../src/html-pages/edit-list-details-form-page/construct-view-model';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryList } from '../../types/list-helper';
-import { arbitraryListId } from '../../types/list-id.helper';
+import { constructViewModel } from '../../../src/html-pages/edit-list-details-form-page/construct-view-model.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryList } from '../../types/list-helper.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
 
 describe('construct-view-model', () => {
   describe('when the list exists', () => {

@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { HtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment } from '../../types/html-fragment.js';
 
 type ScietyFeedCardDetails = {
   title: HtmlFragment,

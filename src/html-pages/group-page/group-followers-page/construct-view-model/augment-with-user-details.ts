@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Follower, UserCardViewModel } from '../view-model';
-import { Dependencies } from './dependencies';
+import { Follower, UserCardViewModel } from '../view-model.js';
+import { Dependencies } from './dependencies.js';
 
 export const augmentWithUserDetails = (
   dependencies: Dependencies,

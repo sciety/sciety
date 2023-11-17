@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { evaluationLocatorCodec } from '../../types/evaluation-locator';
+import { evaluationLocatorCodec } from '../../types/evaluation-locator.js';
 
 export const eraseEvaluationCommandCodec = t.strict({
   evaluationLocator: evaluationLocatorCodec,

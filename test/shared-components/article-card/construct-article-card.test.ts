@@ -3,16 +3,16 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { dummyLogger } from '../../dummy-logger';
-import * as DE from '../../../src/types/data-error';
-import { constructArticleCard } from '../../../src/shared-components/article-card/construct-article-card';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { createTestFramework, TestFramework } from '../../framework';
-import { ArticleCardViewModel } from '../../../src/shared-components/article-card';
-import { ArticleErrorCardViewModel } from '../../../src/shared-components/article-card/render-article-error-card';
-import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import * as DE from '../../../src/types/data-error.js';
+import { constructArticleCard } from '../../../src/shared-components/article-card/construct-article-card.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { createTestFramework, TestFramework } from '../../framework/index.js';
+import { ArticleCardViewModel } from '../../../src/shared-components/article-card/index.js';
+import { ArticleErrorCardViewModel } from '../../../src/shared-components/article-card/render-article-error-card.js';
+import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper.js';
 
 describe('construct-article-card', () => {
   let framework: TestFramework;

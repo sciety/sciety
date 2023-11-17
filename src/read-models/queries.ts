@@ -1,14 +1,14 @@
-import { articleActivity } from './article-activity';
-import { evaluations } from './evaluations';
-import { annotations } from './annotations';
-import { followings } from './followings';
-import { groupActivity } from './group-activity';
-import { groups } from './groups';
-import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
-import { lists } from './lists';
-import { users } from './users';
-import { elifeSubjectAreaLists } from './elife-subject-area-lists';
-import { evaluatedArticlesLists } from './evaluated-articles-lists';
+import { articleActivity } from './article-activity/index.js';
+import { evaluations } from './evaluations/index.js';
+import { annotations } from './annotations/index.js';
+import { followings } from './followings/index.js';
+import { groupActivity } from './group-activity/index.js';
+import { groups } from './groups/index.js';
+import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists/index.js';
+import { lists } from './lists/index.js';
+import { users } from './users/index.js';
+import { elifeSubjectAreaLists } from './elife-subject-area-lists/index.js';
+import { evaluatedArticlesLists } from './evaluated-articles-lists/index.js';
 
 const queries = {
   ...elifeSubjectAreaLists.queries,

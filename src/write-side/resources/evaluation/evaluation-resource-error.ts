@@ -1,4 +1,4 @@
-import { toErrorMessage } from '../../../types/error-message';
+import { toErrorMessage } from '../../../types/error-message.js';
 
 export const evaluationResourceError = {
   doesNotExist: toErrorMessage('Evaluation does not exist'),

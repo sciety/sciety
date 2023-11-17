@@ -3,10 +3,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { ownedByQueryCodec } from '../types/codecs/owned-by-query-codec';
-import * as LOID from '../types/list-owner-id';
-import { Queries } from '../read-models';
-import { List } from '../types/list';
+import { ownedByQueryCodec } from '../types/codecs/owned-by-query-codec.js';
+import * as LOID from '../types/list-owner-id.js';
+import { Queries } from '../read-models/index.js';
+import { List } from '../types/list.js';
 
 const constructResponseModel = (lists: ReadonlyArray<List>) => pipe(
   lists,

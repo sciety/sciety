@@ -6,14 +6,14 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { ArticleServer } from '../../types/article-server';
-import { articleIdCodec } from '../../types/article-id';
-import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { Logger, SearchForArticles } from '../../shared-ports';
-import { constructQueryUrl } from './construct-query-url';
-import { QueryExternalService } from '../query-external-service';
+import { ArticleServer } from '../../types/article-server.js';
+import { articleIdCodec } from '../../types/article-id.js';
+import * as DE from '../../types/data-error.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { Logger, SearchForArticles } from '../../shared-ports/index.js';
+import { constructQueryUrl } from './construct-query-url.js';
+import { QueryExternalService } from '../query-external-service.js';
 
 const europePmcPublisher = t.union(
   [

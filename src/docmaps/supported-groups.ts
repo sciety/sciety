@@ -1,4 +1,4 @@
-import * as GID from '../types/group-id';
+import * as GID from '../types/group-id.js';
 
 const arcadiaScienceGroupId = GID.fromValidatedString('bc1f956b-12e8-4f5c-aadc-70f91347bd18');
 const asapBioGroupId = GID.fromValidatedString('50401e46-b764-47b7-8557-6bb35444b7c8');

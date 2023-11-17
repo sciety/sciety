@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
-import { extractPrelights } from '../../../src/ingest/third-parties/prelights/extract-prelights';
+import { extractPrelights } from '../../../src/ingest/third-parties/prelights/extract-prelights.js';
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
-} from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+} from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi', () => {

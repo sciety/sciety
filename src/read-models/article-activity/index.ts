@@ -1,5 +1,5 @@
-import { getActivityForArticle } from './get-activity-for-article';
-import { handleEvent, initialState } from './handle-event';
+import { getActivityForArticle } from './get-activity-for-article.js';
+import { handleEvent, initialState } from './handle-event.js';
 
 export const articleActivity = {
   queries: {

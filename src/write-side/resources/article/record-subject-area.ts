@@ -2,11 +2,11 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { isEventOfType, constructEvent } from '../../../domain-events';
-import { ArticleId, eqArticleId } from '../../../types/article-id';
-import { toErrorMessage } from '../../../types/error-message';
-import { RecordSubjectAreaCommand } from '../../commands';
-import { ResourceAction } from '../resource-action';
+import { isEventOfType, constructEvent } from '../../../domain-events/index.js';
+import { ArticleId, eqArticleId } from '../../../types/article-id.js';
+import { toErrorMessage } from '../../../types/error-message.js';
+import { RecordSubjectAreaCommand } from '../../commands/index.js';
+import { ResourceAction } from '../resource-action.js';
 
 const buildUpArticleSubjectAreaResourceFor = (articleId: ArticleId) => flow(
   RA.filter(isEventOfType('SubjectAreaRecorded')),

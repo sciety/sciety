@@ -1,6 +1,6 @@
-import { ArticleId } from '../../types/article-id';
-import { HtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
+import { ArticleId } from '../../types/article-id.js';
+import { HtmlFragment } from '../../types/html-fragment.js';
+import { ListId } from '../../types/list-id.js';
 
 export type ViewModel = {
   article: {

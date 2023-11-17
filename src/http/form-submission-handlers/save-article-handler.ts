@@ -6,15 +6,15 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import * as PR from 'io-ts/PathReporter';
-import { Logger } from '../../shared-ports';
-import { articleIdCodec } from '../../types/article-id';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { listIdCodec } from '../../types/list-id';
-import { AddArticleToListCommand } from '../../write-side/commands';
-import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
+import { Logger } from '../../shared-ports/index.js';
+import { articleIdCodec } from '../../types/article-id.js';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list.js';
+import { listIdCodec } from '../../types/list-id.js';
+import { AddArticleToListCommand } from '../../write-side/commands/index.js';
+import { addArticleToListCommandHandler } from '../../write-side/command-handlers/index.js';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands.js';
+import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input.js';
 
 export const articleIdFieldName = 'articleid';
 

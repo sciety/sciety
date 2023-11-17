@@ -2,10 +2,10 @@ import { htmlEscape } from 'escape-goat';
 import * as B from 'fp-ts/boolean';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { templateDate } from '../../../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ViewModel } from '../view-model';
-import { renderSuccessBanner } from './render-success-banner';
+import { templateDate } from '../../../shared-components/date.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ViewModel } from '../view-model.js';
+import { renderSuccessBanner } from './render-success-banner.js';
 
 const renderArticleCount = (articleCount: ViewModel['articleCount']) => pipe(
   articleCount === 1,

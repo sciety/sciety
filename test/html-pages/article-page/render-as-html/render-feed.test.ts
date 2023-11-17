@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
-import { renderFeed } from '../../../../src/html-pages/article-page/render-as-html/render-feed';
-import * as RFI from '../evaluation-feed-item.helper';
+import { renderFeed } from '../../../../src/html-pages/article-page/render-as-html/render-feed.js';
+import * as RFI from '../evaluation-feed-item.helper.js';
 
 describe('render-feed', () => {
   const rendered = pipe(

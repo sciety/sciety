@@ -7,13 +7,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler';
-import { userHandleCodec } from '../../types/user-handle';
-import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
-import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
-import { CommandResult } from '../../types/command-result';
-import { Logger } from '../../shared-ports';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler.js';
+import { userHandleCodec } from '../../types/user-handle.js';
+import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input.js';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users.js';
+import { CommandResult } from '../../types/command-result.js';
+import { Logger } from '../../shared-ports/index.js';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands.js';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 

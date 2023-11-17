@@ -1,15 +1,15 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as DE from '../../../src/types/data-error';
-import { constructGroupCard } from '../../../src/shared-components/group-card';
-import { createTestFramework, TestFramework } from '../../framework';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { AddGroupCommand } from '../../../src/write-side/commands';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import * as DE from '../../../src/types/data-error.js';
+import { constructGroupCard } from '../../../src/shared-components/group-card/index.js';
+import { createTestFramework, TestFramework } from '../../framework/index.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper.js';
+import { AddGroupCommand } from '../../../src/write-side/commands/index.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper.js';
 
 describe('construct-group-card', () => {
   let framework: TestFramework;

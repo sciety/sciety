@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { DomainEvent, constructEvent } from '../../../../src/domain-events';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
-import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper';
-import { update } from '../../../../src/write-side/resources/user';
-import { arbitraryUserId } from '../../../types/user-id.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { arbitraryUserDetails } from '../../../types/user-details.helper.js';
+import { DomainEvent, constructEvent } from '../../../../src/domain-events/index.js';
+import { arbitraryString, arbitraryUri } from '../../../helpers.js';
+import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper.js';
+import { update } from '../../../../src/write-side/resources/user/index.js';
+import { arbitraryUserId } from '../../../types/user-id.helper.js';
 
 describe('update', () => {
   let events: ReadonlyArray<DomainEvent>;

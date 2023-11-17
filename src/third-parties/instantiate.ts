@@ -1,27 +1,27 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
-import { ArticleServer } from '../types/article-server';
-import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
-import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
-import { fetchReview } from './fetch-review';
-import { fetchHypothesisAnnotation } from './hypothesis/fetch-hypothesis-annotation';
-import { fetchStaticFile } from './fetch-static-file';
-import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
-import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
-import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
-import { fetchCrossrefArticle } from './crossref';
-import { searchEuropePmc } from './europe-pmc';
-import { fetchPrelightsHighlight } from './prelights';
-import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
-import { ArticleId } from '../types/article-id';
-import { QueryExternalService } from './query-external-service';
-import { ExternalQueries } from './external-queries';
-import { Logger } from '../shared-ports';
-import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
-import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
-import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
-import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
+import { ArticleServer } from '../types/article-server.js';
+import { fetchNcrcReview } from './ncrc/fetch-ncrc-review.js';
+import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review.js';
+import { fetchReview } from './fetch-review.js';
+import { fetchHypothesisAnnotation } from './hypothesis/fetch-hypothesis-annotation.js';
+import { fetchStaticFile } from './fetch-static-file.js';
+import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record.js';
+import { getArticleVersionEventsFromBiorxiv } from './biorxiv/index.js';
+import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category.js';
+import { fetchCrossrefArticle } from './crossref/index.js';
+import { searchEuropePmc } from './europe-pmc/index.js';
+import { fetchPrelightsHighlight } from './prelights/index.js';
+import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers.js';
+import { ArticleId } from '../types/article-id.js';
+import { QueryExternalService } from './query-external-service.js';
+import { ExternalQueries } from './external-queries.js';
+import { Logger } from '../shared-ports/index.js';
+import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory.js';
+import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate.js';
+import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher.js';
+import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation.js';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,

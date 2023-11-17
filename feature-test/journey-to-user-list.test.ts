@@ -1,12 +1,12 @@
 import {
   $, click, goto, openBrowser,
 } from 'taiko';
-import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
-import { arbitraryString } from '../test/helpers';
-import { arbitraryUserHandle } from '../test/types/user-handle.helper';
-import { arbitraryUserId } from '../test/types/user-id.helper';
-import { callApi } from './helpers/call-api.helper';
-import { screenshotTeardown } from './utilities';
+import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id.js';
+import { arbitraryString } from '../test/helpers.js';
+import { arbitraryUserHandle } from '../test/types/user-handle.helper.js';
+import { arbitraryUserId } from '../test/types/user-id.helper.js';
+import { callApi } from './helpers/call-api.helper.js';
+import { screenshotTeardown } from './utilities.js';
 
 describe('journey-to-user-list', () => {
   const userId = arbitraryUserId();

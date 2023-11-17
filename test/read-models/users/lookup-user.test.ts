@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { arbitraryString, arbitraryUri } from '../../helpers';
-import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/users/handle-event';
-import { lookupUser } from '../../../src/read-models/users/lookup-user';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
+import { arbitraryUserDetails } from '../../types/user-details.helper.js';
+import { arbitraryString, arbitraryUri } from '../../helpers.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { handleEvent, initialState } from '../../../src/read-models/users/handle-event.js';
+import { lookupUser } from '../../../src/read-models/users/lookup-user.js';
 
 describe('lookup-user', () => {
   describe('when user exists', () => {

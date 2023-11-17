@@ -1,8 +1,8 @@
-import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
-import { arbitraryDate, arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
+import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/index.js';
+import { arbitraryDate, arbitraryString } from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
 
 export const arbitraryRecordEvaluationPublicationCommand = (): RecordEvaluationPublicationCommand => ({
   groupId: arbitraryGroupId(),

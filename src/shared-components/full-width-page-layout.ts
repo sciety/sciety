@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { siteFooter } from './site-footer';
-import { siteHeader } from './site-header';
-import { PageLayout } from '../html-pages/page-layout';
-import { toContentWrappedInLayout } from '../html-pages/content-wrapped-in-layout';
+import { siteFooter } from './site-footer/index.js';
+import { siteHeader } from './site-header/index.js';
+import { PageLayout } from '../html-pages/page-layout.js';
+import { toContentWrappedInLayout } from '../html-pages/content-wrapped-in-layout.js';
 
 export const fullWidthPageLayout: PageLayout = (user) => (page) => pipe(
   `

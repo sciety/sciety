@@ -1,12 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FetchData } from './fetch-data';
-import { daysAgo } from './time';
-import { FetchEvaluations } from './update-all';
-import * as Hyp from './third-parties/hypothesis';
-import { convertHypothesisAnnotationToEvaluation } from './third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
-import { tagToEvaluationTypeMap } from './tag-to-evaluation-type-map';
+import { FetchData } from './fetch-data.js';
+import { daysAgo } from './time.js';
+import { FetchEvaluations } from './update-all.js';
+import * as Hyp from './third-parties/hypothesis/index.js';
+import { convertHypothesisAnnotationToEvaluation } from './third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation.js';
+import { tagToEvaluationTypeMap } from './tag-to-evaluation-type-map.js';
 
 type Ports = {
   fetchData: FetchData,

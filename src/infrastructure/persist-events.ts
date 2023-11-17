@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as TE from 'fp-ts/TaskEither';
-import { DomainEvent, domainEventCodec } from '../domain-events';
-import { ErrorMessage, toErrorMessage } from '../types/error-message';
+import { DomainEvent, domainEventCodec } from '../domain-events/index.js';
+import { ErrorMessage, toErrorMessage } from '../types/error-message.js';
 
 const encodeEvent = (event: DomainEvent) => pipe(
   event,

@@ -1,9 +1,9 @@
 import { JSDOM } from 'jsdom';
-import { Tab, renderTabs } from '../../../src/shared-components/tabs';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
+import { Tab, renderTabs } from '../../../src/shared-components/tabs/index.js';
+import { toHtmlFragment } from '../../../src/types/html-fragment.js';
 import {
   arbitraryHtmlFragment, arbitraryNumber, arbitraryUri,
-} from '../../helpers';
+} from '../../helpers.js';
 
 type EachTabActiveOnce = ReadonlyArray<[{
   activeTabIndex: 0 | 1 | 2,

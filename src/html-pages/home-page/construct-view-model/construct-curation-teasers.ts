@@ -1,11 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import * as GID from '../../../types/group-id';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { Dependencies } from '../dependencies';
-import { CurationStatement, constructCurationTeaser } from './construct-curation-teaser';
-import { ArticleId } from '../../../types/article-id';
+import { ViewModel } from '../view-model.js';
+import * as GID from '../../../types/group-id.js';
+import { toHtmlFragment } from '../../../types/html-fragment.js';
+import { Dependencies } from '../dependencies.js';
+import { CurationStatement, constructCurationTeaser } from './construct-curation-teaser.js';
+import { ArticleId } from '../../../types/article-id.js';
 
 const curationTeaser1: CurationStatement = {
   articleId: new ArticleId('10.1101/2022.06.22.497259'),

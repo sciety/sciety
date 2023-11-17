@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { arbitraryEvaluationLocator } from './evaluation-locator.helper';
-import * as RI from '../../src/types/evaluation-locator';
-import { evaluationLocatorCodec } from '../../src/types/evaluation-locator';
-import { arbitraryUri, arbitraryWord } from '../helpers';
+import { arbitraryEvaluationLocator } from './evaluation-locator.helper.js';
+import * as RI from '../../src/types/evaluation-locator.js';
+import { evaluationLocatorCodec } from '../../src/types/evaluation-locator.js';
+import { arbitraryUri, arbitraryWord } from '../helpers.js';
 
 describe('review-id', () => {
   describe('when is a DOI', () => {

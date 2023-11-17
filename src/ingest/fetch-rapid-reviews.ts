@@ -3,10 +3,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FetchData } from './fetch-data';
-import { daysAgo } from './time';
-import { FetchEvaluations } from './update-all';
-import * as CR from './third-parties/crossref';
+import { FetchData } from './fetch-data.js';
+import { daysAgo } from './time.js';
+import { FetchEvaluations } from './update-all.js';
+import * as CR from './third-parties/crossref/index.js';
 
 type Ports = {
   fetchData: FetchData,

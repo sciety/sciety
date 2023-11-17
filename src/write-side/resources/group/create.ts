@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import * as LID from '../../../types/list-id';
-import * as LOID from '../../../types/list-owner-id';
-import { AddGroupCommand } from '../../commands';
-import { constructEvent } from '../../../domain-events';
-import * as AG from '../all-groups';
-import { ResourceAction } from '../resource-action';
+import * as LID from '../../../types/list-id.js';
+import * as LOID from '../../../types/list-owner-id.js';
+import { AddGroupCommand } from '../../commands/index.js';
+import { constructEvent } from '../../../domain-events/index.js';
+import * as AG from '../all-groups.js';
+import { ResourceAction } from '../resource-action.js';
 
 export const create: ResourceAction<AddGroupCommand> = (command) => (events) => pipe(
   AG.replay(events),

@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { htmlEscape } from 'escape-goat';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { SaveArticleCta, ViewModel } from '../view-model';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { SaveArticleCta, ViewModel } from '../view-model.js';
 
 const renderLinkToUserListArticleIsInto = (listName: string, listHref: string) => `
   <section>

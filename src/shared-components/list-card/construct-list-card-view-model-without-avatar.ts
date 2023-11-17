@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { List } from '../../types/list';
-import { ListCardViewModel } from './render-list-card';
+import { List } from '../../types/list.js';
+import { ListCardViewModel } from './render-list-card.js';
 
 export const constructListCardViewModelWithoutAvatar = (list: List): ListCardViewModel => ({
   listId: list.id,

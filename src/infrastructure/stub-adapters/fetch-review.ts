@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FetchReview } from '../../shared-ports';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
+import { FetchReview } from '../../shared-ports/index.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
 
 const htmlFullText = `
 <h1>Stubbed evaluation content</h1>

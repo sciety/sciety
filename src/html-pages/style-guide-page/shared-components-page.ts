@@ -1,18 +1,18 @@
 import * as O from 'fp-ts/Option';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { renderArticleCard } from '../../shared-components/article-card/render-article-card';
-import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
-import { ArticleId } from '../../types/article-id';
-import { renderArticleErrorCard } from '../../shared-components/article-card';
-import * as LID from '../../types/list-id';
-import * as DE from '../../types/data-error';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { renderArticleCard } from '../../shared-components/article-card/render-article-card.js';
+import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { HtmlPage } from '../html-page.js';
+import { ArticleId } from '../../types/article-id.js';
+import { renderArticleErrorCard } from '../../shared-components/article-card/index.js';
+import * as LID from '../../types/list-id.js';
+import * as DE from '../../types/data-error.js';
 import {
   renderArticleCardWithControlsAndAnnotation,
-} from '../../shared-components/article-card-with-controls-and-annotation';
-import { successBanner } from '../../shared-components/success-banner/success-banner';
-import { rawUserInput } from '../../read-models/annotations/handle-event';
+} from '../../shared-components/article-card-with-controls-and-annotation/index.js';
+import { successBanner } from '../../shared-components/success-banner/success-banner.js';
+import { rawUserInput } from '../../read-models/annotations/handle-event.js';
 
 export const sharedComponentsPage: HtmlPage = {
   title: 'Shared components',

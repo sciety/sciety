@@ -1,1 +1,1 @@
-export { myFeedPage, myFeedParams } from './my-feed-page';
+export { myFeedPage, myFeedParams } from './my-feed-page.js';

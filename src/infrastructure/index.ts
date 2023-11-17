@@ -1,3 +1,3 @@
-export { createInfrastructure } from './create-infrastructure';
-export { Logger, replaceError } from './logger';
-export { CollectedPorts } from './collected-ports';
+export { createInfrastructure } from './create-infrastructure.js';
+export { Logger, replaceError } from './logger.js';
+export { CollectedPorts } from './collected-ports.js';

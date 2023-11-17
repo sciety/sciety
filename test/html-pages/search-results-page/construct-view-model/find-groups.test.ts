@@ -1,9 +1,9 @@
 import * as TE from 'fp-ts/TaskEither';
-import { GroupId } from '../../../../src/types/group-id';
-import { arbitraryString } from '../../../helpers';
-import { findGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/find-groups';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { GroupId } from '../../../../src/types/group-id.js';
+import { arbitraryString } from '../../../helpers.js';
+import { findGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/find-groups.js';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper.js';
 
 describe('find-groups', () => {
   let framework: TestFramework;

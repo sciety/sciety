@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
-import { ArticleId } from '../../types/article-id';
-import { List } from '../../types/list';
+import { ReadModel } from './handle-event.js';
+import { ArticleId } from '../../types/article-id.js';
+import { List } from '../../types/list.js';
 
 type SelectAllListsContainingArticle = (articleId: ArticleId) => ReadonlyArray<List>;
 

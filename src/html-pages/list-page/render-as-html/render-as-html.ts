@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { HtmlPage } from '../../html-page';
-import { ViewModel } from '../view-model';
-import { renderPage } from './render-page';
+import { toHtmlFragment } from '../../../types/html-fragment.js';
+import { HtmlPage } from '../../html-page.js';
+import { ViewModel } from '../view-model.js';
+import { renderPage } from './render-page.js';
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.name,

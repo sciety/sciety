@@ -1,11 +1,11 @@
 import {
   $, click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
 } from 'taiko';
-import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
-import { arbitraryString, arbitraryWord } from '../test/helpers';
-import { arbitraryUserId } from '../test/types/user-id.helper';
-import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { inputFieldNames } from '../src/standards';
+import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper.js';
+import { arbitraryString, arbitraryWord } from '../test/helpers.js';
+import { arbitraryUserId } from '../test/types/user-id.helper.js';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper.js';
+import { inputFieldNames } from '../src/standards/index.js';
 
 describe('edit-list-details', () => {
   let listId: string;

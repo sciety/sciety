@@ -1,9 +1,9 @@
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { htmlEscape } from 'escape-goat';
-import { renderListItems } from '../../../shared-components/render-list-items';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ViewModel } from '../view-model';
+import { renderListItems } from '../../../shared-components/render-list-items.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ViewModel } from '../view-model.js';
 
 const renderList = (listContent: string) => `
   <ul role="list" class="listed-in-list">

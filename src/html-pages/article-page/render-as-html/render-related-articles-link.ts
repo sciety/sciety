@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ArticleCardViewModel } from '../../../shared-components/article-card';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ArticleCardViewModel } from '../../../shared-components/article-card/index.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
 
 export const renderRelatedArticlesLink = (
   relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,

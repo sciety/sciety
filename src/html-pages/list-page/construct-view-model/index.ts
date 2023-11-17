@@ -1,3 +1,3 @@
-export { Dependencies } from './dependencies';
-export { constructViewModel } from './construct-view-model';
-export { Params, paramsCodec } from './params';
+export { Dependencies } from './dependencies.js';
+export { constructViewModel } from './construct-view-model.js';
+export { Params, paramsCodec } from './params.js';

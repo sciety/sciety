@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { UserDetails } from '../../types/user-details';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
+import { UserDetails } from '../../types/user-details.js';
 
 const renderProfileLink = (user: O.Option<UserDetails>) => pipe(
   user,

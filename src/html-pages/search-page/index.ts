@@ -1,1 +1,1 @@
-export { searchPage } from './search-page';
+export { searchPage } from './search-page.js';

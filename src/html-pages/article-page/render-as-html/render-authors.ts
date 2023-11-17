@@ -2,8 +2,8 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleAuthors } from '../../../types/article-authors';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ArticleAuthors } from '../../../types/article-authors.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
 
 export const renderAuthors = (authors: ArticleAuthors): HtmlFragment => pipe(
   authors,

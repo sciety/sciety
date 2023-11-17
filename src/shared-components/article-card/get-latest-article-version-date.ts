@@ -3,9 +3,9 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
-import { ArticleServer } from '../../types/article-server';
-import { ArticleId } from '../../types/article-id';
-import { FindVersionsForArticleDoi } from '../../shared-ports';
+import { ArticleServer } from '../../types/article-server.js';
+import { ArticleId } from '../../types/article-id.js';
+import { FindVersionsForArticleDoi } from '../../shared-ports/index.js';
 
 export type Ports = {
   findVersionsForArticleDoi: FindVersionsForArticleDoi,

@@ -2,13 +2,13 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { SupportedArticleServer } from './article-server-with-version-information';
+import { SupportedArticleServer } from './article-server-with-version-information.js';
 import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
-} from './biorxiv-details-api-response';
-import { ArticleId } from '../../types/article-id';
-import { QueryExternalService } from '../query-external-service';
-import { Logger } from '../../shared-ports';
+} from './biorxiv-details-api-response.js';
+import { ArticleId } from '../../types/article-id.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { Logger } from '../../shared-ports/index.js';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,

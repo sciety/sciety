@@ -5,11 +5,11 @@ import * as t from 'io-ts';
 import { StatusCodes } from 'http-status-codes';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
-import { GenericCommand } from '../types/command-handler';
-import { CollectedPorts } from '../infrastructure';
-import { ResourceAction } from '../write-side/resources/resource-action';
-import { executeCommand } from '../write-side/commands';
-import { getSecretSafely } from './api/get-secret-safely';
+import { GenericCommand } from '../types/command-handler.js';
+import { CollectedPorts } from '../infrastructure/index.js';
+import { ResourceAction } from '../write-side/resources/resource-action.js';
+import { executeCommand } from '../write-side/commands/index.js';
+import { getSecretSafely } from './api/get-secret-safely.js';
 
 const executeAndRespond = <C extends GenericCommand>(
   ports: CollectedPorts,

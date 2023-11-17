@@ -1,17 +1,17 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { annotate } from '../../../../src/write-side/resources/list';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { arbitraryListId } from '../../../types/list-id.helper';
+import { annotate } from '../../../../src/write-side/resources/list/index.js';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { arbitraryListId } from '../../../types/list-id.helper.js';
 import {
   arbitraryListCreatedEvent,
   arbitraryArticleAddedToListEvent,
   arbitraryArticleInListAnnotatedEvent,
   arbitraryArticleRemovedFromListEvent,
-} from '../../../domain-events/list-resource-events.helper';
-import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
-import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
-import { AnnotateArticleInListCommand } from '../../../../src/write-side/commands';
+} from '../../../domain-events/list-resource-events.helper.js';
+import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper.js';
+import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input.js';
+import { AnnotateArticleInListCommand } from '../../../../src/write-side/commands/index.js';
 
 describe('annotate', () => {
   const articleId = arbitraryArticleId();

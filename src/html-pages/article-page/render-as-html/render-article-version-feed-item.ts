@@ -1,7 +1,7 @@
-import { templateDate } from '../../../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ArticleVersionFeedItem } from '../view-model';
-import { articleServers } from '../../../types/article-server';
+import { templateDate } from '../../../shared-components/date.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ArticleVersionFeedItem } from '../view-model.js';
+import { articleServers } from '../../../types/article-server.js';
 
 type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
 

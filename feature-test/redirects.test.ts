@@ -1,7 +1,7 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { screenshotTeardown } from './utilities';
+import { screenshotTeardown } from './utilities.js';
 
 describe('legacy redirects', () => {
   beforeEach(async () => {

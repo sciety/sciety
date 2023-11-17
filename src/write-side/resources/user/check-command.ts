@@ -1,10 +1,10 @@
 import * as B from 'fp-ts/boolean';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { CreateUserAccountCommand } from '../../commands';
-import { DomainEvent } from '../../../domain-events';
-import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
-import * as User from './handle-exists';
+import { CreateUserAccountCommand } from '../../commands/index.js';
+import { DomainEvent } from '../../../domain-events/index.js';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message.js';
+import * as User from './handle-exists.js';
 
 export const checkCommand = (
   command: CreateUserAccountCommand,

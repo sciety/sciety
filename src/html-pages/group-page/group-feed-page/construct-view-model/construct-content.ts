@@ -3,14 +3,14 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
-import { ViewModel } from '../view-model';
-import { constructArticleCard } from '../../../../shared-components/article-card';
-import { GroupId } from '../../../../types/group-id';
-import * as DE from '../../../../types/data-error';
-import { ArticleId } from '../../../../types/article-id';
-import { Dependencies } from './dependencies';
-import { PageOfItems, paginate } from '../../../../shared-components/pagination';
-import { Group } from '../../../../types/group';
+import { ViewModel } from '../view-model.js';
+import { constructArticleCard } from '../../../../shared-components/article-card/index.js';
+import { GroupId } from '../../../../types/group-id.js';
+import * as DE from '../../../../types/data-error.js';
+import { ArticleId } from '../../../../types/article-id.js';
+import { Dependencies } from './dependencies.js';
+import { PageOfItems, paginate } from '../../../../shared-components/pagination/index.js';
+import { Group } from '../../../../types/group.js';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,

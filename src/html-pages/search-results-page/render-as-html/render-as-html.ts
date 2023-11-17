@@ -1,6 +1,6 @@
-import { HtmlPage } from '../../html-page';
-import { ViewModel } from '../view-model';
-import { renderPage } from './render-page';
+import { HtmlPage } from '../../html-page.js';
+import { ViewModel } from '../view-model.js';
+import { renderPage } from './render-page.js';
 
 export const renderAsHtml = (searchResults: ViewModel): HtmlPage => ({
   title: `Search results for ${searchResults.query}`,

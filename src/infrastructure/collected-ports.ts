@@ -1,4 +1,4 @@
-import { SharedPorts } from '../shared-ports';
-import { Queries } from '../read-models';
+import { SharedPorts } from '../shared-ports/index.js';
+import { Queries } from '../read-models/index.js';
 
 export type CollectedPorts = SharedPorts & Queries;

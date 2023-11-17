@@ -2,17 +2,17 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as E from 'fp-ts/Either';
-import { ArticleAuthors } from '../../types/article-authors';
-import { ArticleServer } from '../../types/article-server';
-import { ArticleId } from '../../types/article-id';
-import { HtmlFragment } from '../../types/html-fragment';
-import * as EL from '../../types/evaluation-locator';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { ListId } from '../../types/list-id';
-import { ArticleCardViewModel } from '../../shared-components/article-card';
-import { LanguageCode } from '../../shared-components/lang-attribute';
-import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
-import { CurationStatementViewModel } from '../../shared-components/curation-statements';
+import { ArticleAuthors } from '../../types/article-authors.js';
+import { ArticleServer } from '../../types/article-server.js';
+import { ArticleId } from '../../types/article-id.js';
+import { HtmlFragment } from '../../types/html-fragment.js';
+import * as EL from '../../types/evaluation-locator.js';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment.js';
+import { ListId } from '../../types/list-id.js';
+import { ArticleCardViewModel } from '../../shared-components/article-card/index.js';
+import { LanguageCode } from '../../shared-components/lang-attribute/index.js';
+import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link/index.js';
+import { CurationStatementViewModel } from '../../shared-components/curation-statements/index.js';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',

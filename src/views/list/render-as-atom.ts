@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ViewModel } from './view-model';
+import { ViewModel } from './view-model.js';
 
 const renderUpdatedTagOfEntry = (date: ViewModel['articles'][number]['articleCard']['latestActivityAt']) => pipe(
   date,

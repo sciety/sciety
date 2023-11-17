@@ -1,11 +1,11 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { flow } from 'fp-ts/function';
-import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
-import { renderArticleVersionFeedItem } from './render-article-version-feed-item';
-import { renderEvaluationFeedItem } from './render-evaluation-feed-item';
-import { renderListItems } from '../../../shared-components/render-list-items';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { FeedItem } from '../view-model';
+import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item.js';
+import { renderArticleVersionFeedItem } from './render-article-version-feed-item.js';
+import { renderEvaluationFeedItem } from './render-evaluation-feed-item.js';
+import { renderListItems } from '../../../shared-components/render-list-items.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { FeedItem } from '../view-model.js';
 
 const renderFeedItem = (feedItem: FeedItem) => {
   switch (feedItem.type) {

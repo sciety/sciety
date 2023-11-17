@@ -3,12 +3,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
-import { Payload } from '../../infrastructure/logger';
-import { EditListDetails, Logger } from '../../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { validateCommandShape } from './validate-command-shape';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list.js';
+import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details.js';
+import { Payload } from '../../infrastructure/logger.js';
+import { EditListDetails, Logger } from '../../shared-ports/index.js';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
+import { validateCommandShape } from './validate-command-shape.js';
 
 type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   editListDetails: EditListDetails,

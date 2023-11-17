@@ -1,2 +1,2 @@
-export { Queries } from './queries';
-export { dispatcher } from './dispatcher';
+export { Queries } from './queries.js';
+export { dispatcher } from './dispatcher.js';

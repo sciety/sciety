@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Annotation } from './annotation';
-import { processServer } from './process-server';
-import { FetchData } from '../../fetch-data';
+import { Annotation } from './annotation.js';
+import { processServer } from './process-server.js';
+import { FetchData } from '../../fetch-data.js';
 
 export const fetchEvaluationsByGroupSince = (
   startDate: Date,

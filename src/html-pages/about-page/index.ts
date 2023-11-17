@@ -1,1 +1,1 @@
-export { aboutPage } from './about-page';
+export { aboutPage } from './about-page.js';

@@ -1,13 +1,13 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { getNonEmptyUserLists } from '../../../src/read-models/lists/get-non-empty-user-lists';
-import { arbitraryList } from '../../types/list-helper';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
+import { getNonEmptyUserLists } from '../../../src/read-models/lists/get-non-empty-user-lists.js';
+import { arbitraryList } from '../../types/list-helper.js';
+import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
 
 describe('get-non-empty-user-lists', () => {
   describe('when there are populated user lists', () => {

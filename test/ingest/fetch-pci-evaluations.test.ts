@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchPciEvaluations } from '../../src/ingest/fetch-pci-evaluations';
-import { daysAgo } from '../../src/ingest/time';
-import { arbitraryUri } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryArticleId } from '../types/article-id.helper';
+import { fetchPciEvaluations } from '../../src/ingest/fetch-pci-evaluations.js';
+import { daysAgo } from '../../src/ingest/time.js';
+import { arbitraryUri } from '../helpers.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { arbitraryArticleId } from '../types/article-id.helper.js';
 
 const ingest = (xml: string) => pipe(
   {

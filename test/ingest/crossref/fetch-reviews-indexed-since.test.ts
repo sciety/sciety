@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as CR from '../../../src/ingest/third-parties/crossref';
-import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import * as CR from '../../../src/ingest/third-parties/crossref/index.js';
+import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
   const fetchData = <D>() => TE.right({ message: { items } } as unknown as D);

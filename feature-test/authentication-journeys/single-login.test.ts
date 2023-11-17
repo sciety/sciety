@@ -2,13 +2,13 @@
 import {
   click, currentURL, goto, openBrowser,
 } from 'taiko';
-import { screenshotTeardown } from '../utilities';
-import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
-import { getIdOfFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper';
-import * as api from '../helpers/api-helpers';
-import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
-import { isLoggedIn } from '../helpers/is-logged-in';
+import { screenshotTeardown } from '../utilities.js';
+import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id.js';
+import { getIdOfFirstListOwnedByUser } from '../helpers/get-first-list-owned-by.helper.js';
+import * as api from '../helpers/api-helpers.js';
+import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper.js';
+import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper.js';
+import { isLoggedIn } from '../helpers/is-logged-in.js';
 
 describe('single-login', () => {
   const addGroupCommand = arbitraryAddGroupCommand();

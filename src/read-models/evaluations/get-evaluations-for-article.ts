@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { identity, pipe } from 'fp-ts/function';
-import { ArticleId } from '../../types/article-id';
-import { ReadModel } from './handle-event';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { ArticleId } from '../../types/article-id.js';
+import { ReadModel } from './handle-event.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
 
 type GetEvaluationsForArticle = (articleDoi: ArticleId) => ReadonlyArray<RecordedEvaluation>;
 

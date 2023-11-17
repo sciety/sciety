@@ -2,14 +2,14 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { ViewModel } from '../../../../src/html-pages/list-page/view-model';
-import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
-import { createTestFramework, TestFramework } from '../../../framework';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { CreateUserAccountCommand } from '../../../../src/write-side/commands';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { ViewModel } from '../../../../src/html-pages/list-page/view-model.js';
+import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model.js';
+import { createTestFramework, TestFramework } from '../../../framework/index.js';
+import * as LOID from '../../../../src/types/list-owner-id.js';
+import { CreateUserAccountCommand } from '../../../../src/write-side/commands/index.js';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper.js';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

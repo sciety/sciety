@@ -5,12 +5,12 @@ import * as E from 'fp-ts/Either';
 import Koa from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
-import { auth0PassportStrategy } from './authentication/auth0-passport-strategy';
-import { testingPassportStrategy } from './authentication/testing-passport-strategy';
-import { respondWithNotFoundIfNoRoutesMatched } from './route-not-found';
-import { CollectedPorts } from '../infrastructure';
-import { EnvironmentVariables } from './environment-variables-codec';
-import { logRequestAndResponse } from './log-request-and-response';
+import { auth0PassportStrategy } from './authentication/auth0-passport-strategy.js';
+import { testingPassportStrategy } from './authentication/testing-passport-strategy.js';
+import { respondWithNotFoundIfNoRoutesMatched } from './route-not-found.js';
+import { CollectedPorts } from '../infrastructure/index.js';
+import { EnvironmentVariables } from './environment-variables-codec.js';
+import { logRequestAndResponse } from './log-request-and-response.js';
 
 export const createApplicationServer = (
   router: Router,

@@ -1,7 +1,7 @@
-import { HtmlPage } from '../../../html-page';
-import { ViewModel } from '../view-model';
-import { renderDescription } from './render-description';
-import { renderPage } from './render-page';
+import { HtmlPage } from '../../../html-page.js';
+import { ViewModel } from '../view-model.js';
+import { renderDescription } from './render-description.js';
+import { renderPage } from './render-page.js';
 
 export const renderAsHtml = (viewmodel: ViewModel): HtmlPage => ({
   title: viewmodel.userDetails.displayName,

@@ -1,12 +1,12 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { PageOfItems, LegacyPaginationControlsViewModel } from '../../shared-components/pagination';
-import { ListId } from '../../types/list-id';
-import { ArticleErrorCardViewModel } from '../../shared-components/article-card';
+import { PageOfItems, LegacyPaginationControlsViewModel } from '../../shared-components/pagination/index.js';
+import { ListId } from '../../types/list-id.js';
+import { ArticleErrorCardViewModel } from '../../shared-components/article-card/index.js';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
-} from '../../shared-components/article-card-with-controls-and-annotation';
+} from '../../shared-components/article-card-with-controls-and-annotation/index.js';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 

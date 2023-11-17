@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
-import * as DE from '../types/data-error';
-import { LevelName } from '../infrastructure/logger';
+import * as DE from '../types/data-error.js';
+import { LevelName } from '../infrastructure/logger.js';
 
 export type QueryExternalService = (
   notFoundLogLevel?: LevelName,

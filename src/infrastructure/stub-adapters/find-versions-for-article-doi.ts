@@ -2,8 +2,8 @@ import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { FindVersionsForArticleDoi } from '../../shared-ports';
-import { ArticleVersion } from '../../types/article-version';
+import { FindVersionsForArticleDoi } from '../../shared-ports/index.js';
+import { ArticleVersion } from '../../types/article-version.js';
 
 export const findVersionsForArticleDoi: FindVersionsForArticleDoi = () => T.of(O.some([
   {

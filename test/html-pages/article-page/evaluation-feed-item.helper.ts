@@ -1,11 +1,11 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { EvaluationFeedItem } from '../../../src/html-pages/article-page/view-model';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { EvaluationFeedItem } from '../../../src/html-pages/article-page/view-model.js';
+import { toHtmlFragment } from '../../../src/types/html-fragment.js';
+import { sanitise } from '../../../src/types/sanitised-html-fragment.js';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
 
 export const arbitrary = (): EvaluationFeedItem => ({
   type: 'evaluation',

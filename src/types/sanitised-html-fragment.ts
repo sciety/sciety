@@ -1,5 +1,5 @@
 import sanitiseHtml from 'sanitize-html';
-import { HtmlFragment } from './html-fragment';
+import { HtmlFragment } from './html-fragment.js';
 
 export type SanitisedHtmlFragment = HtmlFragment & { readonly SanitisedHtmlFragment: unique symbol };
 

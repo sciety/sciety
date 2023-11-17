@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
-import { ArticleId } from '../../types/article-id';
-import { ListId } from '../../types/list-id';
-import { ViewModel } from '../article-card/view-model';
-import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { ArticleId } from '../../types/article-id.js';
+import { ListId } from '../../types/list-id.js';
+import { ViewModel } from '../article-card/view-model.js';
+import { RawUserInput } from '../../read-models/annotations/handle-event.js';
 
 export type Annotation = {
   author: string,

@@ -1,11 +1,11 @@
-import { constructEvent } from '../../../../src/domain-events';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { setUpUserIfNecessary } from '../../../../src/write-side/resources/user/set-up-user-if-necessary';
-import { CreateUserAccountCommand } from '../../../../src/write-side/commands';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
-import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import { constructEvent } from '../../../../src/domain-events/index.js';
+import * as LOID from '../../../../src/types/list-owner-id.js';
+import { setUpUserIfNecessary } from '../../../../src/write-side/resources/user/set-up-user-if-necessary.js';
+import { CreateUserAccountCommand } from '../../../../src/write-side/commands/index.js';
+import { arbitraryString, arbitraryUri } from '../../../helpers.js';
+import { arbitraryListId } from '../../../types/list-id.helper.js';
+import { arbitraryUserId } from '../../../types/user-id.helper.js';
+import { arbitraryUserHandle } from '../../../types/user-handle.helper.js';
 
 describe('set-up-user-if-necessary', () => {
   const command: CreateUserAccountCommand = {

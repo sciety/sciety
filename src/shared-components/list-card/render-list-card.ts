@@ -1,10 +1,10 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
-import { templateDate } from '../date';
-import { renderListPageLinkHref } from '../render-list-page-link-href';
-import { renderCountWithDescriptor } from '../render-count-with-descriptor';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
+import { ListId } from '../../types/list-id.js';
+import { templateDate } from '../date.js';
+import { renderListPageLinkHref } from '../render-list-page-link-href.js';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor.js';
 
 export type ListCardViewModel = {
   listId: ListId,

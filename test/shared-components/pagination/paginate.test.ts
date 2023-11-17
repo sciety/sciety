@@ -2,9 +2,9 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { paginate } from '../../../src/shared-components/pagination/paginate';
-import * as DE from '../../../src/types/data-error';
-import { shouldNotBeCalled } from '../../should-not-be-called';
+import { paginate } from '../../../src/shared-components/pagination/paginate.js';
+import * as DE from '../../../src/types/data-error.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
 
 const generateItems = (eventCount: number): ReadonlyArray<number> => pipe(
   Array(eventCount).keys(),

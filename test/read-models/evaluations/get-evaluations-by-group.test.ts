@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
-import { getEvaluationsByGroup } from '../../../src/read-models/evaluations/get-evaluations-by-group';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event.js';
+import { getEvaluationsByGroup } from '../../../src/read-models/evaluations/get-evaluations-by-group.js';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper.js';
 
 describe('get-evaluations-by-group', () => {
   const article1 = arbitraryArticleId();

@@ -4,9 +4,9 @@ import * as S from 'fp-ts/string';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as D from 'fp-ts/Date';
-import { ArticleActivity } from '../../types/article-activity';
-import { ArticleId } from '../../types/article-id';
-import { ReadModel } from './handle-event';
+import { ArticleActivity } from '../../types/article-activity.js';
+import { ArticleId } from '../../types/article-id.js';
+import { ReadModel } from './handle-event.js';
 
 type GetActivityForArticle = (articleId: ArticleId) => ArticleActivity;
 

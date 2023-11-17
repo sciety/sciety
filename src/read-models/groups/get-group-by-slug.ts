@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
-import { Group } from '../../types/group';
+import { ReadModel } from './handle-event.js';
+import { Group } from '../../types/group.js';
 
 type GetGroupBySlug = (slug: string) => O.Option<Group>;
 

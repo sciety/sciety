@@ -1,14 +1,14 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { renderGroups } from './render-groups';
-import { renderGroupCard } from '../../shared-components/group-card';
-import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
-import { ErrorPageBodyViewModel } from '../../types/render-page-error';
-import { constructViewModel } from './construct-view-model/construct-view-model';
-import { Queries } from '../../read-models';
+import { renderGroups } from './render-groups.js';
+import { renderGroupCard } from '../../shared-components/group-card/index.js';
+import * as DE from '../../types/data-error.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { HtmlPage } from '../html-page.js';
+import { ErrorPageBodyViewModel } from '../../types/render-page-error.js';
+import { constructViewModel } from './construct-view-model/construct-view-model.js';
+import { Queries } from '../../read-models/index.js';
 
 const renderErrorPage = (error: DE.DataError): ErrorPageBodyViewModel => ({
   type: error,

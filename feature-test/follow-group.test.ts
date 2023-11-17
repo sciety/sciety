@@ -1,12 +1,12 @@
 import {
   $, click, currentURL, goto, openBrowser, text, within,
 } from 'taiko';
-import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryUserId } from '../test/types/user-id.helper';
-import { screenshotTeardown } from './utilities';
-import { callApi } from './helpers/call-api.helper';
-import { arbitraryGroup } from '../test/types/group.helper';
-import { Group } from '../src/types/group';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper.js';
+import { arbitraryUserId } from '../test/types/user-id.helper.js';
+import { screenshotTeardown } from './utilities.js';
+import { callApi } from './helpers/call-api.helper.js';
+import { arbitraryGroup } from '../test/types/group.helper.js';
+import { Group } from '../src/types/group.js';
 
 describe('follow a group', () => {
   let group: Group;

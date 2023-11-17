@@ -7,14 +7,14 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
-import { Evaluation } from './evaluation';
-import * as DE from '../../types/data-error';
-import { ArticleId } from '../../types/article-id';
-import { Group } from '../../types/group';
-import { GroupId } from '../../types/group-id';
-import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
-import { Queries } from '../../read-models';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { Evaluation } from './evaluation.js';
+import * as DE from '../../types/data-error.js';
+import { ArticleId } from '../../types/article-id.js';
+import { Group } from '../../types/group.js';
+import { GroupId } from '../../types/group-id.js';
+import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator.js';
+import { Queries } from '../../read-models/index.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
 
 export type DocmapViewModel = {
   articleId: ArticleId,

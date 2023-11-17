@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticleServer } from '../../../types/article-server';
-import { FeedItem } from '../view-model';
+import { ArticleServer } from '../../../types/article-server.js';
+import { FeedItem } from '../view-model.js';
 
 type HandleArticleVersionErrors = (server: ArticleServer)
 => (feedItems: ReadonlyArray<FeedItem>)

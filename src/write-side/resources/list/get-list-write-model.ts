@@ -7,11 +7,11 @@ import {
   isEventOfType,
   DomainEvent,
   filterByName,
-} from '../../../domain-events';
-import { ListWriteModel } from './list-write-model';
-import { eqArticleId } from '../../../types/article-id';
-import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
-import { ListId } from '../../../types/list-id';
+} from '../../../domain-events/index.js';
+import { ListWriteModel } from './list-write-model.js';
+import { eqArticleId } from '../../../types/article-id.js';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message.js';
+import { ListId } from '../../../types/list-id.js';
 
 type GetListWriteModel = (listId: ListId)
 => (events: ReadonlyArray<DomainEvent>)

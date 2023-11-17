@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getBiorxivOrMedrxivCategory } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
-import * as DE from '../../../src/types/data-error';
-import { SubjectArea } from '../../../src/types/subject-area';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryDate } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { ArticleId } from '../../../src/types/article-id';
+import { getBiorxivOrMedrxivCategory } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-category.js';
+import * as DE from '../../../src/types/data-error.js';
+import { SubjectArea } from '../../../src/types/subject-area.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { arbitraryDate } from '../../helpers.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { ArticleId } from '../../../src/types/article-id.js';
 
 describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on biorxiv', () => {

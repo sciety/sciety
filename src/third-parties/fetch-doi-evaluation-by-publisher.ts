@@ -4,9 +4,9 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as S from 'fp-ts/string';
-import { EvaluationFetcher } from './evaluation-fetcher';
-import * as DE from '../types/data-error';
-import { Logger } from '../shared-ports';
+import { EvaluationFetcher } from './evaluation-fetcher.js';
+import * as DE from '../types/data-error.js';
+import { Logger } from '../shared-ports/index.js';
 
 const deriveDoiPrefixFrom = (key: string) => pipe(
   key,

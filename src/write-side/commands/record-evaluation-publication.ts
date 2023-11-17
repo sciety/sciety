@@ -1,10 +1,10 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { articleIdCodec } from '../../types/article-id';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
-import { evaluationLocatorCodec } from '../../types/evaluation-locator';
-import { evaluationTypeCodec } from './types/evaluation-type';
-import { evaluationAuthorsCodec } from './types/evaluation-authors';
+import { articleIdCodec } from '../../types/article-id.js';
+import { GroupIdFromString } from '../../types/codecs/GroupIdFromString.js';
+import { evaluationLocatorCodec } from '../../types/evaluation-locator.js';
+import { evaluationTypeCodec } from './types/evaluation-type.js';
+import { evaluationAuthorsCodec } from './types/evaluation-authors.js';
 
 const requiredFields = t.strict({
   groupId: GroupIdFromString,

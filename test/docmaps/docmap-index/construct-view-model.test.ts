@@ -5,20 +5,20 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { StatusCodes } from 'http-status-codes';
-import { TestFramework, createTestFramework } from '../../framework';
-import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
-import { supportedGroups } from '../../../src/docmaps/supported-groups';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { Params } from '../../../src/docmaps/docmap-index/params';
-import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryString } from '../../helpers';
-import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import * as ER from '../../../src/docmaps/docmap-index/error-response';
-import { DocmapIndexViewModel } from '../../../src/docmaps/docmap-index/view-model';
+import { TestFramework, createTestFramework } from '../../framework/index.js';
+import { ArticleId } from '../../../src/types/article-id.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper.js';
+import { supportedGroups } from '../../../src/docmaps/supported-groups.js';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper.js';
+import { Params } from '../../../src/docmaps/docmap-index/params.js';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { arbitraryString } from '../../helpers.js';
+import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import * as ER from '../../../src/docmaps/docmap-index/error-response.js';
+import { DocmapIndexViewModel } from '../../../src/docmaps/docmap-index/view-model.js';
 
 describe('construct-view-model', () => {
   const defaultParams: Params = {

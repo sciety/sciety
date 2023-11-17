@@ -4,10 +4,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { FetchGoogleSheet } from './fetch-google-sheet';
-import { supportedArticleIdFromLink } from './supported-article-id-from-link';
-import { FetchEvaluations } from './update-all';
-import { sheetId } from '../third-parties/ncrc/sheet-id';
+import { FetchGoogleSheet } from './fetch-google-sheet.js';
+import { supportedArticleIdFromLink } from './supported-article-id-from-link.js';
+import { FetchEvaluations } from './update-all.js';
+import { sheetId } from '../third-parties/ncrc/sheet-id.js';
 
 type Ports = {
   fetchGoogleSheet: FetchGoogleSheet,

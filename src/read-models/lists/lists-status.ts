@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { Json } from 'fp-ts/Json';
-import { ReadModel } from './handle-event';
-import { isGroupId } from '../../types/list-owner-id';
+import { ReadModel } from './handle-event.js';
+import { isGroupId } from '../../types/list-owner-id.js';
 
 export const listsStatus = (readModel: ReadModel) => (): Json => pipe(
   Object.values(readModel),

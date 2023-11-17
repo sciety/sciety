@@ -1,17 +1,17 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { getEvaluationsForArticle } from '../../../src/read-models/evaluations/get-evaluations-for-article';
-import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
-import { ArticleId } from '../../../src/types/article-id';
-import { EvaluationLocator } from '../../../src/types/evaluation-locator';
-import { EvaluationType } from '../../../src/types/recorded-evaluation';
-import { arbitraryDate, arbitraryString } from '../../helpers';
+import { getEvaluationsForArticle } from '../../../src/read-models/evaluations/get-evaluations-for-article.js';
+import { constructEvent, DomainEvent } from '../../../src/domain-events/index.js';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event.js';
+import { ArticleId } from '../../../src/types/article-id.js';
+import { EvaluationLocator } from '../../../src/types/evaluation-locator.js';
+import { EvaluationType } from '../../../src/types/recorded-evaluation.js';
+import { arbitraryDate, arbitraryString } from '../../helpers.js';
 
 const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(

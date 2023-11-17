@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { FetchStaticFile } from '../../shared-ports';
+import { FetchStaticFile } from '../../shared-ports/index.js';
 
 export const fetchStaticFile: FetchStaticFile = () => TE.right(`
 <div lang="pt">

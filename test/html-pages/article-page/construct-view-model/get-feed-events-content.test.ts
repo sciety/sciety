@@ -1,11 +1,11 @@
 import {
   FeedEvent,
   getFeedEventsContent,
-} from '../../../../src/html-pages/article-page/construct-view-model/get-feed-events-content';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { dummyLogger } from '../../../dummy-logger';
+} from '../../../../src/html-pages/article-page/construct-view-model/get-feed-events-content.js';
+import { arbitraryGroupId } from '../../../types/group-id.helper.js';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper.js';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { dummyLogger } from '../../../dummy-logger.js';
 
 describe('get-feed-events-content', () => {
   let framework: TestFramework;

@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import path from 'path';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../types/data-error';
-import { FetchStaticFile, Logger } from '../shared-ports';
+import * as DE from '../types/data-error.js';
+import { FetchStaticFile, Logger } from '../shared-ports/index.js';
 
 export const fetchStaticFile = (logger: Logger): FetchStaticFile => (filename) => pipe(
   path.resolve(__dirname, '..', '..', 'static', filename),

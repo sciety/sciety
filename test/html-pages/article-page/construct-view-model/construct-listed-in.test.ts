@@ -1,14 +1,14 @@
 import { pipe } from 'fp-ts/function';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { List } from '../../../../src/types/list';
-import { ViewModel } from '../../../../src/html-pages/article-page/view-model';
-import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { constructListedIn } from '../../../../src/html-pages/article-page/construct-view-model/construct-listed-in.js';
+import * as LOID from '../../../../src/types/list-owner-id.js';
+import { arbitraryUserId } from '../../../types/user-id.helper.js';
+import { List } from '../../../../src/types/list.js';
+import { ViewModel } from '../../../../src/html-pages/article-page/view-model.js';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper.js';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper.js';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper.js';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;

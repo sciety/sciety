@@ -1,12 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { renderArticleErrorCard } from '../../../../shared-components/article-card/render-article-error-card';
-import { renderListItems } from '../../../../shared-components/render-list-items';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { renderArticleCard } from '../../../../shared-components/article-card';
-import { ViewModel } from '../view-model';
-import { PaginationControlsViewModel, renderPaginationControls } from '../../../../shared-components/pagination';
+import { renderArticleErrorCard } from '../../../../shared-components/article-card/render-article-error-card.js';
+import { renderListItems } from '../../../../shared-components/render-list-items.js';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment.js';
+import { renderArticleCard } from '../../../../shared-components/article-card/index.js';
+import { ViewModel } from '../view-model.js';
+import { PaginationControlsViewModel, renderPaginationControls } from '../../../../shared-components/pagination/index.js';
 
 const renderCards = (
   paginationControlsViewModel: PaginationControlsViewModel,

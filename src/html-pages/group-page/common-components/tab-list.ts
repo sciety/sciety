@@ -1,7 +1,7 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { Tab } from '../../../shared-components/tabs';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { TabsViewModel } from './tabs-view-model';
+import { Tab } from '../../../shared-components/tabs/index.js';
+import { toHtmlFragment } from '../../../types/html-fragment.js';
+import { TabsViewModel } from './tabs-view-model.js';
 
 export const tabList = (viewmodel: TabsViewModel): RNEA.ReadonlyNonEmptyArray<Tab> => [
   {

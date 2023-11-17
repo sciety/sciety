@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { articleIdCodec } from '../types/article-id';
-import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { subjectAreaCodec } from '../types/subject-area';
+import { articleIdCodec } from '../types/article-id.js';
+import { EventIdFromString } from '../types/codecs/EventIdFromString.js';
+import { subjectAreaCodec } from '../types/subject-area.js';
 
 export const subjectAreaRecordedEventCodec = t.type({
   id: EventIdFromString,

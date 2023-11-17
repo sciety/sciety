@@ -1,1 +1,1 @@
-export { applicationStatus } from './application-status';
+export { applicationStatus } from './application-status.js';

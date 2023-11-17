@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import { lookupList } from '../../../src/read-models/lists/lookup-list';
-import { arbitraryDate, arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event.js';
+import { lookupList } from '../../../src/read-models/lists/lookup-list.js';
+import { arbitraryDate, arbitraryString } from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper.js';
 
 describe('lookup-list', () => {
   const listId = arbitraryListId();

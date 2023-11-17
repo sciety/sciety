@@ -1,1 +1,1 @@
-export { renderSearchForm } from './render-search-form';
+export { renderSearchForm } from './render-search-form.js';

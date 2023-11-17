@@ -5,19 +5,19 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
-import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements';
-import { ArticleId } from '../../types/article-id';
-import { Queries } from '../../read-models';
-import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { Ports as GetLatestArticleVersionDatePorts, getLatestArticleVersionDate } from './get-latest-article-version-date';
-import { fetchArticleDetails } from './fetch-article-details';
+import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements/index.js';
+import { ArticleId } from '../../types/article-id.js';
+import { Queries } from '../../read-models/index.js';
+import { ArticleErrorCardViewModel } from './render-article-error-card.js';
+import { Ports as GetLatestArticleVersionDatePorts, getLatestArticleVersionDate } from './get-latest-article-version-date.js';
+import { fetchArticleDetails } from './fetch-article-details.js';
 import {
   FetchArticle, FetchRelatedArticles, FetchReview, FindVersionsForArticleDoi, Logger,
-} from '../../shared-ports';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { ViewModel } from './view-model';
-import { ConstructReviewingGroupsDependencies, constructReviewingGroups } from '../reviewing-groups';
+} from '../../shared-ports/index.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { ViewModel } from './view-model.js';
+import { ConstructReviewingGroupsDependencies, constructReviewingGroups } from '../reviewing-groups/index.js';
 
 export type Dependencies = Queries
 & ConstructReviewingGroupsDependencies

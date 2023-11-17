@@ -4,10 +4,10 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
-import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
-import { ArticleActivity } from '../../../types/article-activity';
-import { ArticleId } from '../../../types/article-id';
-import { GroupId } from '../../../types/group-id';
+import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events/index.js';
+import { ArticleActivity } from '../../../types/article-activity.js';
+import { ArticleId } from '../../../types/article-id.js';
+import { GroupId } from '../../../types/group-id.js';
 
 type ArticleActivityDetails = {
   mostRecentRecordedEvaluationByFollowedGroups: Date,

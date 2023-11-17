@@ -1,9 +1,9 @@
-import { PageHeaderViewModel } from '../common-components/page-header';
-import { HtmlFragment } from '../../../types/html-fragment';
-import { UserHandle } from '../../../types/user-handle';
-import { TabsViewModel } from '../common-components/tabs-view-model';
-import { Group } from '../../../types/group';
-import { UserId } from '../../../types/user-id';
+import { PageHeaderViewModel } from '../common-components/page-header.js';
+import { HtmlFragment } from '../../../types/html-fragment.js';
+import { UserHandle } from '../../../types/user-handle.js';
+import { TabsViewModel } from '../common-components/tabs-view-model.js';
+import { Group } from '../../../types/group.js';
+import { UserId } from '../../../types/user-id.js';
 
 export type Follower = {
   userId: UserId,

@@ -2,13 +2,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { createTestFramework, TestFramework } from '../../framework';
-import * as LOID from '../../../src/types/list-owner-id';
-import { constructViewModel } from '../../../src/views/list/construct-view-model';
-import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { createTestFramework, TestFramework } from '../../framework/index.js';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { constructViewModel } from '../../../src/views/list/construct-view-model/index.js';
+import { ArticleId } from '../../../src/types/article-id.js';
+import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper.js';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

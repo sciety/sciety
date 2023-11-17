@@ -1,1 +1,1 @@
-export { searchEuropePmc } from './search-europe-pmc';
+export { searchEuropePmc } from './search-europe-pmc.js';

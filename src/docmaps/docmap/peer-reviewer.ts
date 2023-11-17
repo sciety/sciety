@@ -1,4 +1,4 @@
-import { Participant } from './docmap-type';
+import { Participant } from './docmap-type.js';
 
 export const anonymous = 'anonymous';
 

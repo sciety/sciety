@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { ReadModel } from './handle-event.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
 
 type GetEvaluationsWithNoType = () => ReadonlyArray<RecordedEvaluation>;
 

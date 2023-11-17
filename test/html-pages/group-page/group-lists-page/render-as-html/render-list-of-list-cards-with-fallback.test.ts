@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { renderListOfListCardsWithFallback } from '../../../../../src/html-pages/group-page/group-lists-page/render-as-html/render-list-of-list-cards-with-fallback';
-import { arbitraryDate, arbitraryString } from '../../../../helpers';
-import { arbitraryListId } from '../../../../types/list-id.helper';
+import { renderListOfListCardsWithFallback } from '../../../../../src/html-pages/group-page/group-lists-page/render-as-html/render-list-of-list-cards-with-fallback.js';
+import { arbitraryDate, arbitraryString } from '../../../../helpers.js';
+import { arbitraryListId } from '../../../../types/list-id.helper.js';
 
 describe('render-list-of-list-cards-with-fallback', () => {
   describe('when the group owns no lists', () => {

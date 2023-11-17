@@ -5,13 +5,13 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import * as ER from './error-response';
-import * as DE from '../../types/data-error';
-import * as AID from '../../types/article-id';
-import * as GID from '../../types/group-id';
-import { GroupId } from '../../types/group-id';
-import { publisherAccountId } from '../docmap/publisher-account-id';
-import { Dependencies } from './dependencies';
+import * as ER from './error-response.js';
+import * as DE from '../../types/data-error.js';
+import * as AID from '../../types/article-id.js';
+import * as GID from '../../types/group-id.js';
+import { GroupId } from '../../types/group-id.js';
+import { publisherAccountId } from '../docmap/publisher-account-id.js';
+import { Dependencies } from './dependencies.js';
 
 export type DocmapIndexEntryModel = {
   articleId: AID.ArticleId,

@@ -1,10 +1,10 @@
-import { handleEvent, initialState } from './handle-event';
-import { lookupList } from './lookup-list';
-import { selectListContainingArticle } from './select-list-containing-article';
-import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
-import { getNonEmptyUserLists } from './get-non-empty-user-lists';
-import { selectAllListsContainingArticle } from './select-all-lists-containing-article';
-import { listsStatus } from './lists-status';
+import { handleEvent, initialState } from './handle-event.js';
+import { lookupList } from './lookup-list.js';
+import { selectListContainingArticle } from './select-list-containing-article.js';
+import { selectAllListsOwnedBy } from './select-all-lists-owned-by.js';
+import { getNonEmptyUserLists } from './get-non-empty-user-lists.js';
+import { selectAllListsContainingArticle } from './select-all-lists-containing-article.js';
+import { listsStatus } from './lists-status.js';
 
 export const lists = {
   queries: {

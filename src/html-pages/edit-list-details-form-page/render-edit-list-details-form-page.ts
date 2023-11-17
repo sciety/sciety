@@ -1,8 +1,8 @@
 import { htmlEscape } from 'escape-goat';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
-import { HtmlPage } from '../html-page';
-import { inputFieldNames } from '../../standards';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { ListId } from '../../types/list-id.js';
+import { HtmlPage } from '../html-page.js';
+import { inputFieldNames } from '../../standards/index.js';
 
 export type ViewModel = {
   listName: string,

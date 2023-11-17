@@ -1,12 +1,12 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { arbitraryString, arbitraryUri } from '../../test/helpers';
-import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';
-import { arbitraryGroupId } from '../../test/types/group-id.helper';
-import { callApi } from '../helpers/call-api.helper';
-import { getIdOfFirstListOwnedByGroup } from '../helpers/get-first-list-owned-by.helper';
-import { screenshotTeardown } from '../utilities';
+import { arbitraryString, arbitraryUri } from '../../test/helpers.js';
+import { arbitraryDescriptionPath } from '../../test/types/description-path.helper.js';
+import { arbitraryGroupId } from '../../test/types/group-id.helper.js';
+import { callApi } from '../helpers/call-api.helper.js';
+import { getIdOfFirstListOwnedByGroup } from '../helpers/get-first-list-owned-by.helper.js';
+import { screenshotTeardown } from '../utilities.js';
 
 describe('remove an article from a list', () => {
   beforeEach(async () => {

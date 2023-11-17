@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
-import { descriptionPathCodec } from '../../src/types/description-path';
-import { arbitraryWord } from '../helpers';
+import { descriptionPathCodec } from '../../src/types/description-path.js';
+import { arbitraryWord } from '../helpers.js';
 
 describe('description-path-codec', () => {
   describe('that is a single file name with a markdown file extension', () => {

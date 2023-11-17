@@ -6,12 +6,12 @@ import { constant, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { sequenceS } from 'fp-ts/Apply';
-import { FeedEvent, getFeedEventsContent } from './get-feed-events-content';
-import { handleArticleVersionErrors } from './handle-article-version-errors';
-import { ArticleServer } from '../../../types/article-server';
-import { ArticleId } from '../../../types/article-id';
-import { FeedItem } from '../view-model';
-import { Dependencies } from './dependencies';
+import { FeedEvent, getFeedEventsContent } from './get-feed-events-content.js';
+import { handleArticleVersionErrors } from './handle-article-version-errors.js';
+import { ArticleServer } from '../../../types/article-server.js';
+import { ArticleId } from '../../../types/article-id.js';
+import { FeedItem } from '../view-model.js';
+import { Dependencies } from './dependencies.js';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,

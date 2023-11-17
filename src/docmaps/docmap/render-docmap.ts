@@ -1,13 +1,13 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
-import { Docmap } from './docmap-type';
-import { Evaluation } from './evaluation';
-import { DocmapViewModel } from './construct-docmap-view-model';
-import { anonymous, peerReviewer } from './peer-reviewer';
-import { publisherAccountId } from './publisher-account-id';
-import { ArticleId } from '../../types/article-id';
-import * as EL from '../../types/evaluation-locator';
+import { Docmap } from './docmap-type.js';
+import { Evaluation } from './evaluation.js';
+import { DocmapViewModel } from './construct-docmap-view-model.js';
+import { anonymous, peerReviewer } from './peer-reviewer.js';
+import { publisherAccountId } from './publisher-account-id.js';
+import { ArticleId } from '../../types/article-id.js';
+import * as EL from '../../types/evaluation-locator.js';
 
 const createAction = (articleId: ArticleId) => (evaluation: Evaluation) => ({
   participants: pipe(

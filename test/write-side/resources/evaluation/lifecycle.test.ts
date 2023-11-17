@@ -2,13 +2,13 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import {
   erase, update, recordPublication, recordRemoval,
-} from '../../../../src/write-side/resources/evaluation';
-import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import * as A from '../enact';
-import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
-import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
+} from '../../../../src/write-side/resources/evaluation/index.js';
+import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper.js';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper.js';
+import * as A from '../enact.js';
+import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper.js';
+import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper.js';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {

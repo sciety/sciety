@@ -2,14 +2,14 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { scietyFeedPage } from '../../../src/html-pages/sciety-feed-page/sciety-feed-page';
-import { dummyLogger } from '../../dummy-logger';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
+import { scietyFeedPage } from '../../../src/html-pages/sciety-feed-page/sciety-feed-page.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
+import { TestFramework, createTestFramework } from '../../framework/index.js';
+import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper.js';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper.js';
 
 describe('sciety-feed-page', () => {
   const addGroupCommand = arbitraryAddGroupCommand();

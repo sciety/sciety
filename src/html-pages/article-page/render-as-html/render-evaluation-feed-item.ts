@@ -2,12 +2,12 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
-import { missingFullTextAndSourceLink } from './static-messages';
-import { templateDate } from '../../../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import * as EL from '../../../types/evaluation-locator';
-import { EvaluationFeedItem } from '../view-model';
-import { renderLangAttribute } from '../../../shared-components/lang-attribute';
+import { missingFullTextAndSourceLink } from './static-messages.js';
+import { templateDate } from '../../../shared-components/date.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import * as EL from '../../../types/evaluation-locator.js';
+import { EvaluationFeedItem } from '../view-model.js';
+import { renderLangAttribute } from '../../../shared-components/lang-attribute/index.js';
 
 const avatar = (review: EvaluationFeedItem) => toHtmlFragment(`
   <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">

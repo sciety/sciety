@@ -4,12 +4,12 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { Docmap } from './docmap-type';
-import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
-import { renderDocmap } from './render-docmap';
-import { articleIdCodec, ArticleId } from '../../types/article-id';
-import { supportedGroups } from '../supported-groups';
-import { Queries } from '../../read-models';
+import { Docmap } from './docmap-type.js';
+import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model.js';
+import { renderDocmap } from './render-docmap.js';
+import { articleIdCodec, ArticleId } from '../../types/article-id.js';
+import { supportedGroups } from '../supported-groups.js';
+import { Queries } from '../../read-models/index.js';
 
 export type Ports = DocmapPorts & Queries;
 

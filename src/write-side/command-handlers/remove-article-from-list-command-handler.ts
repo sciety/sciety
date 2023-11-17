@@ -1,10 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
-import { removeArticle } from '../resources/list/remove-article';
-import { RemoveArticleFromListCommand } from '../commands';
-import { CommandHandler } from '../../types/command-handler';
-import { DependenciesForCommands } from '../dependencies-for-commands';
+import { removeArticle } from '../resources/list/remove-article.js';
+import { RemoveArticleFromListCommand } from '../commands/index.js';
+import { CommandHandler } from '../../types/command-handler.js';
+import { DependenciesForCommands } from '../dependencies-for-commands.js';
 
 type RemoveArticleFromListCommandHandler = (
   dependencies: DependenciesForCommands

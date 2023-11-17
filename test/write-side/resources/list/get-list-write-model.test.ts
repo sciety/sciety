@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
-import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model';
-import { arbitraryString } from '../../../helpers';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
+import { constructEvent } from '../../../../src/domain-events/index.js';
+import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model.js';
+import { arbitraryString } from '../../../helpers.js';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { arbitraryListId } from '../../../types/list-id.helper.js';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper.js';
 
 describe('get-list-write-model', () => {
   const listId = arbitraryListId();

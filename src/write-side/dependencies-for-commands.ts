@@ -1,4 +1,4 @@
-import { CommitEvents, GetAllEvents } from '../shared-ports';
+import { CommitEvents, GetAllEvents } from '../shared-ports/index.js';
 
 export type DependenciesForCommands = {
   getAllEvents: GetAllEvents,

@@ -7,12 +7,12 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
-import * as AID from '../../types/article-id';
-import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response';
-import { fetchArticleDetails } from './fetch-article-details';
-import { GetArticleSubjectArea, Logger } from '../../shared-ports';
-import * as DE from '../../types/data-error';
-import { QueryExternalService } from '../query-external-service';
+import * as AID from '../../types/article-id.js';
+import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response.js';
+import { fetchArticleDetails } from './fetch-article-details.js';
+import { GetArticleSubjectArea, Logger } from '../../shared-ports/index.js';
+import * as DE from '../../types/data-error.js';
+import { QueryExternalService } from '../query-external-service.js';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,

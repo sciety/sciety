@@ -1,7 +1,7 @@
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { Json } from 'fp-ts/Json';
-import { ArticleStateName, ReadModel } from './handle-event';
+import { ArticleStateName, ReadModel } from './handle-event.js';
 
 const getArticleIds = (readModel: ReadModel,
   selectedState: ArticleStateName): ReadonlyArray<string> => pipe(

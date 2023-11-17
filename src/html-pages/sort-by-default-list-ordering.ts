@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as Ord from 'fp-ts/Ord';
 import * as D from 'fp-ts/Date';
-import { List } from '../types/list';
+import { List } from '../types/list.js';
 
 const byDate: Ord.Ord<List> = pipe(
   D.Ord,

@@ -1,1 +1,1 @@
-export { saveArticleFormPage } from './save-article-form-page';
+export { saveArticleFormPage } from './save-article-form-page.js';

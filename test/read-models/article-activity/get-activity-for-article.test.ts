@@ -1,14 +1,14 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event';
-import { getActivityForArticle } from '../../../src/read-models/article-activity/get-activity-for-article';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { constructEvent, DomainEvent } from '../../../src/domain-events/index.js';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
+import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event.js';
+import { getActivityForArticle } from '../../../src/read-models/article-activity/get-activity-for-article.js';
+import { arbitraryDate } from '../../helpers.js';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => pipe(
   events,

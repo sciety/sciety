@@ -4,15 +4,15 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   handleEvent, initialState, ReadModel, ArticleState, ArticleStateName,
-} from '../../../src/read-models/elife-subject-area-lists/handle-event';
-import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/read-models/elife-subject-area-lists/data';
-import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import * as LID from '../../../src/types/list-id';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitrarySubjectArea } from '../../types/subject-area.helper';
-import { arbitraryDate } from '../../helpers';
+} from '../../../src/read-models/elife-subject-area-lists/handle-event.js';
+import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/read-models/elife-subject-area-lists/data.js';
+import { constructEvent, DomainEvent } from '../../../src/domain-events/index.js';
+import * as LID from '../../../src/types/list-id.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { arbitrarySubjectArea } from '../../types/subject-area.helper.js';
+import { arbitraryDate } from '../../helpers.js';
 
 describe('handle-event', () => {
   describe('the state machine of a single article', () => {

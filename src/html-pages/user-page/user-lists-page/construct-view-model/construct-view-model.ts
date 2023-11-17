@@ -4,13 +4,13 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
-import * as DE from '../../../../types/data-error';
-import * as LOID from '../../../../types/list-owner-id';
-import { ViewModel } from '../view-model';
-import { constructListsTab } from './construct-lists-tab';
-import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
-import { userIdCodec } from '../../../../types/user-id';
-import { Queries } from '../../../../read-models';
+import * as DE from '../../../../types/data-error.js';
+import * as LOID from '../../../../types/list-owner-id.js';
+import { ViewModel } from '../view-model.js';
+import { constructListsTab } from './construct-lists-tab.js';
+import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle.js';
+import { userIdCodec } from '../../../../types/user-id.js';
+import { Queries } from '../../../../read-models/index.js';
 
 export const userPageParams = t.type({
   handle: candidateUserHandleCodec,

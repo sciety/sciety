@@ -1,1 +1,1 @@
-export { siteHeader } from './site-header';
+export { siteHeader } from './site-header.js';

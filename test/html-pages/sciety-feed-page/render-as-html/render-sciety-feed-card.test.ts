@@ -1,6 +1,6 @@
-import { renderScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/render-as-html/render-sciety-feed-card';
-import { toHtmlFragment } from '../../../../src/types/html-fragment';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
+import { renderScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/render-as-html/render-sciety-feed-card.js';
+import { toHtmlFragment } from '../../../../src/types/html-fragment.js';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers.js';
 
 describe('sciety-feed-card', () => {
   describe('when the view model doesn\'t contain details', () => {

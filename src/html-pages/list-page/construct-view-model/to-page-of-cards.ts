@@ -3,16 +3,16 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleErrorCardViewModel } from '../../../shared-components/article-card';
+import { ArticleErrorCardViewModel } from '../../../shared-components/article-card/index.js';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
   constructArticleCardWithControlsAndAnnotation,
-} from '../../../shared-components/article-card-with-controls-and-annotation';
-import { PageOfItems } from '../../../shared-components/pagination';
-import { ListId } from '../../../types/list-id';
-import { Dependencies } from './dependencies';
-import { ContentWithPaginationViewModel } from '../view-model';
-import { ArticleId } from '../../../types/article-id';
+} from '../../../shared-components/article-card-with-controls-and-annotation/index.js';
+import { PageOfItems } from '../../../shared-components/pagination/index.js';
+import { ListId } from '../../../types/list-id.js';
+import { Dependencies } from './dependencies.js';
+import { ContentWithPaginationViewModel } from '../view-model.js';
+import { ArticleId } from '../../../types/article-id.js';
 
 export const toPageOfCards = (
   dependencies: Dependencies,

@@ -3,8 +3,8 @@ import * as O from 'fp-ts/Option';
 import koaPassport from 'koa-passport';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { redirectToAuthenticationDestination } from '../authentication-destination';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
+import { redirectToAuthenticationDestination } from '../authentication-destination/index.js';
 
 const oAuthScope = 'openid profile';
 

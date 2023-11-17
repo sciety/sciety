@@ -1,12 +1,12 @@
-import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
-import { fetchPciEvaluations } from './fetch-pci-evaluations';
-import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
-import { fetchRapidReviews } from './fetch-rapid-reviews';
-import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossref-via-biorxiv';
-import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
-import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user';
-import { GroupIngestionConfiguration } from './update-all';
-import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations';
+import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations.js';
+import { fetchPciEvaluations } from './fetch-pci-evaluations.js';
+import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations.js';
+import { fetchRapidReviews } from './fetch-rapid-reviews.js';
+import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossref-via-biorxiv.js';
+import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group.js';
+import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user.js';
+import { GroupIngestionConfiguration } from './update-all.js';
+import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations.js';
 
 // addArticleToEvaluatedArticlesList policy needs to be updated BEFORE adding a new group to this configuration
 export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = [

@@ -1,16 +1,16 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { collapsedArticlesAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
-import { arbitraryDate, arbitraryNumber } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
-import { createTestFramework, TestFramework } from '../../../framework';
-import { List } from '../../../../src/types/list';
-import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
-import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import * as LOID from '../../../../src/types/list-owner-id.js';
+import { collapsedArticlesAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card.js';
+import { arbitraryDate, arbitraryNumber } from '../../../helpers.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { arbitraryUserId } from '../../../types/user-id.helper.js';
+import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model.js';
+import { createTestFramework, TestFramework } from '../../../framework/index.js';
+import { List } from '../../../../src/types/list.js';
+import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/index.js';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper.js';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper.js';
 
 describe('collapsed-articles-added-to-list-card', () => {
   let framework: TestFramework;

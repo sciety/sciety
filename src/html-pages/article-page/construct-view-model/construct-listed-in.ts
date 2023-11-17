@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { ArticleId } from '../../../types/article-id';
-import { ListOwnerId } from '../../../types/list-owner-id';
-import { ViewModel } from '../view-model';
-import { Dependencies } from './dependencies';
+import { ArticleId } from '../../../types/article-id.js';
+import { ListOwnerId } from '../../../types/list-owner-id.js';
+import { ViewModel } from '../view-model.js';
+import { Dependencies } from './dependencies.js';
 
 const getListOwnerName = (dependencies: Dependencies) => (ownerId: ListOwnerId) => {
   switch (ownerId.tag) {

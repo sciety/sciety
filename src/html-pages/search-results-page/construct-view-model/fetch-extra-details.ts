@@ -2,11 +2,11 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { ArticleItem } from './data-types';
-import { ViewModel } from '../view-model';
-import { constructArticleCard } from '../../../shared-components/article-card';
-import { Dependencies } from './dependencies';
-import { constructRelatedGroups } from './construct-related-groups';
+import { ArticleItem } from './data-types.js';
+import { ViewModel } from '../view-model.js';
+import { constructArticleCard } from '../../../shared-components/article-card/index.js';
+import { Dependencies } from './dependencies.js';
+import { constructRelatedGroups } from './construct-related-groups.js';
 
 type LimitedSet = {
   query: string,

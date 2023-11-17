@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { FetchArticle } from '../../shared-ports';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
+import { FetchArticle } from '../../shared-ports/index.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
 
 export const localFetchArticleAdapter: FetchArticle = (doi) => TE.right({
   abstract: sanitise(toHtmlFragment(`

@@ -3,11 +3,11 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import {
   constructArticleCardWithControlsAndAnnotation,
-} from '../../../shared-components/article-card-with-controls-and-annotation';
-import { ArticleActivity } from '../../../types/article-activity';
-import { ListId } from '../../../types/list-id';
-import { Dependencies } from './dependencies';
-import { ViewModel } from '../view-model';
+} from '../../../shared-components/article-card-with-controls-and-annotation/index.js';
+import { ArticleActivity } from '../../../types/article-activity.js';
+import { ListId } from '../../../types/list-id.js';
+import { Dependencies } from './dependencies.js';
+import { ViewModel } from '../view-model.js';
 
 export const toPageOfCards = (
   dependencies: Dependencies,

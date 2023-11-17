@@ -2,18 +2,18 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import * as O from 'fp-ts/Option';
-import { SearchForArticles } from '../../src/shared-ports/search-for-articles';
+import { SearchForArticles } from '../../src/shared-ports/search-for-articles.js';
 import {
   FetchArticle, FetchRelatedArticles, FetchReview, FetchStaticFile, FindVersionsForArticleDoi, GetArticleSubjectArea,
-} from '../../src/shared-ports';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../src/types/html-fragment';
+} from '../../src/shared-ports/index.js';
+import { sanitise } from '../../src/types/sanitised-html-fragment.js';
+import { toHtmlFragment } from '../../src/types/html-fragment.js';
 import {
   arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri,
-} from '../helpers';
-import { ArticleServer } from '../../src/types/article-server';
-import { arbitraryArticleId } from '../types/article-id.helper';
-import { arbitraryArticleServer } from '../types/article-server.helper';
+} from '../helpers.js';
+import { ArticleServer } from '../../src/types/article-server.js';
+import { arbitraryArticleId } from '../types/article-id.helper.js';
+import { arbitraryArticleServer } from '../types/article-server.helper.js';
 
 export type HappyPathThirdPartyAdapters = {
   fetchArticle: FetchArticle,

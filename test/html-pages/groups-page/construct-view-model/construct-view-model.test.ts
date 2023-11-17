@@ -1,11 +1,11 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../../src/html-pages/groups-page/construct-view-model/construct-view-model';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { GroupCardViewModel } from '../../../../src/shared-components/group-card/view-model';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
+import { constructViewModel } from '../../../../src/html-pages/groups-page/construct-view-model/construct-view-model.js';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { GroupCardViewModel } from '../../../../src/shared-components/group-card/view-model.js';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper.js';
 
 type ViewModel = ReadonlyArray<GroupCardViewModel>;
 

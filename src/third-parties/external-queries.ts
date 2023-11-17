@@ -2,16 +2,16 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as O from 'fp-ts/Option';
-import { ArticleServer } from '../types/article-server';
-import { ArticleVersion } from '../types/article-version';
-import * as DE from '../types/data-error';
-import { ArticleId } from '../types/article-id';
-import { Evaluation } from '../types/evaluation';
-import { EvaluationLocator } from '../types/evaluation-locator';
-import { SubjectArea } from '../types/subject-area';
-import { SearchResults } from '../shared-ports/search-for-articles';
-import { ArticleAuthors } from '../types/article-authors';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { ArticleServer } from '../types/article-server.js';
+import { ArticleVersion } from '../types/article-version.js';
+import * as DE from '../types/data-error.js';
+import { ArticleId } from '../types/article-id.js';
+import { Evaluation } from '../types/evaluation.js';
+import { EvaluationLocator } from '../types/evaluation-locator.js';
+import { SubjectArea } from '../types/subject-area.js';
+import { SearchResults } from '../shared-ports/search-for-articles.js';
+import { ArticleAuthors } from '../types/article-authors.js';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment.js';
 
 export type ArticleDetails = {
   abstract: SanitisedHtmlFragment,

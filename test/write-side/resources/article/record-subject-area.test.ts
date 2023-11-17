@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
-import { recordSubjectArea } from '../../../../src/write-side/resources/article';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper';
+import { constructEvent } from '../../../../src/domain-events/index.js';
+import { recordSubjectArea } from '../../../../src/write-side/resources/article/index.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { arbitrarySubjectArea } from '../../../types/subject-area.helper.js';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper.js';
 
 describe('execute-command', () => {
   const articleId = arbitraryArticleId();

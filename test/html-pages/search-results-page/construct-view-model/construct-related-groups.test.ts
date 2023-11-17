@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { ArticleId } from '../../../../src/types/article-id';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
+import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model.js';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { ArticleId } from '../../../../src/types/article-id.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper.js';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper.js';
+import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups.js';
 
 const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 

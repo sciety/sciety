@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { arbitraryGroupId } from './group-id.helper';
-import { arbitraryUserId } from './user-id.helper';
-import * as LOID from '../../src/types/list-owner-id';
+import { arbitraryGroupId } from './group-id.helper.js';
+import { arbitraryUserId } from './user-id.helper.js';
+import * as LOID from '../../src/types/list-owner-id.js';
 
 describe('list-owner-id', () => {
   describe('given a list owner id that contains a user id', () => {

@@ -1,1 +1,1 @@
-export { statusGroups } from './status-groups';
+export { statusGroups } from './status-groups.js';

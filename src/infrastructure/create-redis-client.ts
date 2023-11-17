@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import { Logger } from './logger';
+import { Logger } from './logger.js';
 
 export const createRedisClient = async (logger: Logger): Promise<ReturnType<typeof createClient> | undefined> => {
   let redisClient: ReturnType<typeof createClient> | undefined;

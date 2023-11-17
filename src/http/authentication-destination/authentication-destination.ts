@@ -2,8 +2,8 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
-import { calculateAuthenticationDestination } from './calculate-authentication-destination';
-import { Logger } from '../../shared-ports';
+import { calculateAuthenticationDestination } from './calculate-authentication-destination.js';
+import { Logger } from '../../shared-ports/index.js';
 
 const contextCodec = t.type({
   session: t.type({

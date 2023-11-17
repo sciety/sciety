@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { create } from '../../../../src/write-side/resources/list/create';
-import { arbitraryString } from '../../../helpers';
-import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
-import { constructEvent } from '../../../../src/domain-events';
+import { create } from '../../../../src/write-side/resources/list/create.js';
+import { arbitraryString } from '../../../helpers.js';
+import { arbitraryListId } from '../../../types/list-id.helper.js';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper.js';
+import { constructEvent } from '../../../../src/domain-events/index.js';
 
 describe('create', () => {
   const input = {

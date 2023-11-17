@@ -3,11 +3,11 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { fetchArticleDetails } from '../../../src/shared-components/article-card/fetch-article-details';
-import * as DE from '../../../src/types/data-error';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { fetchArticleDetails } from '../../../src/shared-components/article-card/fetch-article-details.js';
+import * as DE from '../../../src/types/data-error.js';
+import { toHtmlFragment } from '../../../src/types/html-fragment.js';
+import { sanitise } from '../../../src/types/sanitised-html-fragment.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
 

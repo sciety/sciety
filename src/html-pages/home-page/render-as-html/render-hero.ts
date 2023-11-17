@@ -1,4 +1,4 @@
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
 
 const renderSearchForm = () => `
   <form class="home-page-hero-search-form" action="/search" method="get">

@@ -1,7 +1,7 @@
-import { AddGroupCommand } from '../../../src/write-side/commands';
-import { arbitraryString, arbitraryWord } from '../../helpers';
-import { arbitraryDescriptionPath } from '../../types/description-path.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
+import { AddGroupCommand } from '../../../src/write-side/commands/index.js';
+import { arbitraryString, arbitraryWord } from '../../helpers.js';
+import { arbitraryDescriptionPath } from '../../types/description-path.helper.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
 
 export const arbitraryAddGroupCommand = (): AddGroupCommand => ({
   groupId: arbitraryGroupId(),

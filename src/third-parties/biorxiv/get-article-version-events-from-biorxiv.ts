@@ -4,13 +4,13 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { SupportedArticleServer } from './article-server-with-version-information';
-import { ResponseWithVersions } from './biorxiv-details-api-response';
-import { fetchArticleDetails } from './fetch-article-details';
-import { ArticleId } from '../../types/article-id';
-import { ArticleVersion } from '../../types/article-version';
-import { Logger } from '../../shared-ports';
-import { QueryExternalService } from '../query-external-service';
+import { SupportedArticleServer } from './article-server-with-version-information.js';
+import { ResponseWithVersions } from './biorxiv-details-api-response.js';
+import { fetchArticleDetails } from './fetch-article-details.js';
+import { ArticleId } from '../../types/article-id.js';
+import { ArticleVersion } from '../../types/article-version.js';
+import { Logger } from '../../shared-ports/index.js';
+import { QueryExternalService } from '../query-external-service.js';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,

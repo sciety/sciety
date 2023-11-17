@@ -5,13 +5,13 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { ArticleId, doiRegex } from '../../types/article-id';
-import { Logger, FetchRelatedArticles } from '../../shared-ports';
-import * as DE from '../../types/data-error';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { isSupportedArticle } from '../../types/article-server';
-import { QueryExternalService } from '../query-external-service';
+import { ArticleId, doiRegex } from '../../types/article-id.js';
+import { Logger, FetchRelatedArticles } from '../../shared-ports/index.js';
+import * as DE from '../../types/data-error.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { isSupportedArticle } from '../../types/article-server.js';
+import { QueryExternalService } from '../query-external-service.js';
 
 const paperWithoutDoi = t.type({
   externalIds: t.type({

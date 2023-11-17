@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import { Dependencies } from '../dependencies';
-import { GroupId } from '../../../types/group-id';
-import { HtmlFragment } from '../../../types/html-fragment';
-import { ArticleId } from '../../../types/article-id';
+import { ViewModel } from '../view-model.js';
+import { Dependencies } from '../dependencies.js';
+import { GroupId } from '../../../types/group-id.js';
+import { HtmlFragment } from '../../../types/html-fragment.js';
+import { ArticleId } from '../../../types/article-id.js';
 
 export type CurationStatement = {
   articleId: ArticleId,

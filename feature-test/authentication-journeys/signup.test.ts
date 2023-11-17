@@ -1,12 +1,12 @@
 import {
   $, click, goto, openBrowser, into, write, textBox, currentURL,
 } from 'taiko';
-import { screenshotTeardown } from '../utilities';
-import { arbitraryUserId } from '../../test/types/user-id.helper';
-import { arbitraryUserHandle } from '../../test/types/user-handle.helper';
-import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
-import { UserHandle } from '../../src/types/user-handle';
-import { isLoggedIn } from '../helpers/is-logged-in';
+import { screenshotTeardown } from '../utilities.js';
+import { arbitraryUserId } from '../../test/types/user-id.helper.js';
+import { arbitraryUserHandle } from '../../test/types/user-handle.helper.js';
+import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id.js';
+import { UserHandle } from '../../src/types/user-handle.js';
+import { isLoggedIn } from '../helpers/is-logged-in.js';
 
 describe('signup', () => {
   beforeEach(async () => {
