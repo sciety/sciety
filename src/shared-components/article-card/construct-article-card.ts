@@ -7,28 +7,15 @@ import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
 import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements';
 import { ArticleId } from '../../types/article-id';
-import { Queries } from '../../read-models';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { Ports as GetLatestArticleVersionDatePorts, getLatestArticleVersionDate } from './get-latest-article-version-date';
+import { getLatestArticleVersionDate } from './get-latest-article-version-date';
 import { fetchArticleDetails } from './fetch-article-details';
-import {
-  FetchArticle, FetchRelatedArticles, FetchReview, FindVersionsForArticleDoi, Logger,
-} from '../../shared-ports';
+
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
-import { ConstructReviewingGroupsDependencies, constructReviewingGroups } from '../reviewing-groups';
-
-export type Dependencies = Queries
-& ConstructReviewingGroupsDependencies
-& GetLatestArticleVersionDatePorts
-& {
-  fetchArticle: FetchArticle,
-  fetchRelatedArticles: FetchRelatedArticles,
-  fetchReview: FetchReview,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  logger: Logger,
-};
+import { constructReviewingGroups } from '../reviewing-groups';
+import { Dependencies } from './dependencies';
 
 const getArticleDetails = (ports: Dependencies) => fetchArticleDetails(
   getLatestArticleVersionDate(ports),
