@@ -4,16 +4,16 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { Payload } from '../../infrastructure/logger.js';
-import { CreateList, Logger } from '../../shared-ports/index.js';
+import { Logger } from '../../shared-ports/index.js';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
 import { CreateListCommand } from '../../write-side/commands/index.js';
 import * as LID from '../../types/list-id.js';
 import * as LOID from '../../types/list-owner-id.js';
+import { CommandHandlers } from '../../write-side/command-handlers.js';
 
-type Ports = GetLoggedInScietyUserPorts & {
-  logger: Logger,
-  createList: CreateList,
-};
+type Ports = GetLoggedInScietyUserPorts
+& Pick<CommandHandlers, 'createList'>
+& { logger: Logger };
 
 export const createListHandler = (adapters: Ports): Middleware => async (context) => {
   await pipe(

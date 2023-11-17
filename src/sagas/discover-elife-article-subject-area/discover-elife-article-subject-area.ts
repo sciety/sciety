@@ -1,15 +1,14 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import {
-  GetArticleSubjectArea,
-  Logger, RecordSubjectArea,
-} from '../../shared-ports/index.js';
+import { GetArticleSubjectArea, Logger } from '../../shared-ports/index.js';
 import { ArticleId } from '../../types/article-id.js';
 import { Queries } from '../../read-models/index.js';
+import { CommandHandlers } from '../../write-side/command-handlers.js';
 
-type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & {
+type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'>
+& Pick<CommandHandlers, 'recordSubjectArea'>
+& {
   logger: Logger,
-  recordSubjectArea: RecordSubjectArea,
   getArticleSubjectArea: GetArticleSubjectArea,
 };
 

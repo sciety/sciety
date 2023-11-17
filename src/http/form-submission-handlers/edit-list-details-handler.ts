@@ -6,14 +6,15 @@ import { sequenceS } from 'fp-ts/Apply';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list.js';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details.js';
 import { Payload } from '../../infrastructure/logger.js';
-import { EditListDetails, Logger } from '../../shared-ports/index.js';
+import { Logger } from '../../shared-ports/index.js';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
 import { validateCommandShape } from './validate-command-shape.js';
+import { CommandHandlers } from '../../write-side/command-handlers.js';
 
-type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
-  editListDetails: EditListDetails,
-  logger: Logger,
-};
+type Ports = CheckUserOwnsListPorts
+& GetLoggedInScietyUserPorts
+& Pick<CommandHandlers, 'editListDetails'>
+& { logger: Logger };
 
 const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => pipe(
   command,
