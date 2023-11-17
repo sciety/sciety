@@ -15,7 +15,7 @@ import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-co
 import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-content';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
 import { Annotation } from '../../../src/shared-components/article-card-with-controls-and-annotation/article-card-with-controls-and-annotation-view-model';
-import { notSafeToRender } from '../../../src/read-models/annotations/handle-event';
+import { rawUserInput } from '../../../src/read-models/annotations/handle-event';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
@@ -60,7 +60,7 @@ describe('construct-annotation', () => {
       });
 
       it('returns its content', async () => {
-        expect(result.content).toStrictEqual(notSafeToRender(content));
+        expect(result.content).toStrictEqual(rawUserInput(content));
       });
 
       it('returns its author', () => {
@@ -91,7 +91,7 @@ describe('construct-annotation', () => {
       });
 
       it('returns its content', () => {
-        expect(result.content).toStrictEqual(notSafeToRender(content));
+        expect(result.content).toStrictEqual(rawUserInput(content));
       });
 
       it('returns the group name as the author', () => {
@@ -117,7 +117,7 @@ describe('construct-annotation', () => {
       });
 
       it('returns its content', () => {
-        expect(result.content).toStrictEqual(notSafeToRender(content));
+        expect(result.content).toStrictEqual(rawUserInput(content));
       });
 
       it('returns a static value as the author', () => {

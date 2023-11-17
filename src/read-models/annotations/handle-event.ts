@@ -2,15 +2,15 @@
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import * as LID from '../../types/list-id';
 
-export type NotSafeToRender = {
+export type RawUserInput = {
   content: string,
 };
 
-export const notSafeToRender = (input: string): NotSafeToRender => ({
+export const rawUserInput = (input: string): RawUserInput => ({
   content: input,
 });
 
-type ListState = Record<string, NotSafeToRender>;
+type ListState = Record<string, RawUserInput>;
 
 export type ReadModel = Record<LID.ListId, ListState>;
 
@@ -22,7 +22,7 @@ const actualListIdForAvasthiReadingUser = LID.fromValidatedString('dcc7c864-6630
 const handleLegacyAnnotations = (readmodel: ReadModel, event: EventOfType<'ArticleInListAnnotated'>) => {
   if (event.listId === targetListIdForAvasthiReadingUser) {
     const actualListState = readmodel[actualListIdForAvasthiReadingUser] ?? {};
-    actualListState[event.articleId.value] = notSafeToRender(event.content);
+    actualListState[event.articleId.value] = rawUserInput(event.content);
     readmodel[actualListIdForAvasthiReadingUser] = actualListState;
   }
 };
@@ -30,7 +30,7 @@ const handleLegacyAnnotations = (readmodel: ReadModel, event: EventOfType<'Artic
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ArticleInListAnnotated')(event)) {
     const listState = readmodel[event.listId] ?? {};
-    listState[event.articleId.value] = notSafeToRender(event.content);
+    listState[event.articleId.value] = rawUserInput(event.content);
     readmodel[event.listId] = listState;
     handleLegacyAnnotations(readmodel, event);
   }

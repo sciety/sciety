@@ -12,7 +12,7 @@ import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
 import { successBanner } from '../../shared-components/success-banner/success-banner';
-import { notSafeToRender } from '../../read-models/annotations/handle-event';
+import { rawUserInput } from '../../read-models/annotations/handle-event';
 
 export const sharedComponentsPage: HtmlPage = {
   title: 'Shared components',
@@ -142,7 +142,7 @@ export const sharedComponentsPage: HtmlPage = {
       <h3 class="_style-guide-heading">With annotation</h3>
       ${renderArticleCardWithControlsAndAnnotation({
     annotation: O.some({
-      content: notSafeToRender('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
+      content: rawUserInput('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
       author: 'AvasthiReading',
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
@@ -164,7 +164,7 @@ export const sharedComponentsPage: HtmlPage = {
       <h3 class="_style-guide-heading">With annotation and controls</h3>
       ${renderArticleCardWithControlsAndAnnotation({
     annotation: O.some({
-      content: notSafeToRender('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
+      content: rawUserInput('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
       author: 'AvasthiReading',
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),

@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { notSafeToRender, handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
+import { rawUserInput, handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { constructEvent } from '../../../src/domain-events';
@@ -22,7 +22,7 @@ describe('get-annotation-content', () => {
     );
 
     it('returns the annotation content', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(notSafeToRender(content)));
+      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(rawUserInput(content)));
     });
   });
 
@@ -108,7 +108,7 @@ describe('get-annotation-content', () => {
     );
 
     it('returns only the new annotation', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(notSafeToRender(newContent)));
+      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(rawUserInput(newContent)));
     });
   });
 });
