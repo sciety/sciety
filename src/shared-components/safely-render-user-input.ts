@@ -1,14 +1,14 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
-import { UnsafeUserInput } from '../types/unsafe-user-input';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { RawUserInput } from '../read-models/annotations/handle-event';
 
 const transformNewLineCharactersToBrTags = (plainText: string) => plainText.replaceAll('\n', '<br>\n');
 
 export const safelyRenderUserInput = (
-  content: UnsafeUserInput,
+  input: RawUserInput,
 ): HtmlFragment => pipe(
-  htmlEscape(content),
+  htmlEscape(input.content),
   transformNewLineCharactersToBrTags,
   toHtmlFragment,
 );
