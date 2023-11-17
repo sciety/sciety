@@ -9,7 +9,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { constructGroupCard, GroupCardViewModel } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
-import { Queries } from '../../read-models';
+import { Dependencies } from './construct-view-model/dependencies';
 
 const byLatestActivity: Ord.Ord<GroupCardViewModel> = pipe(
   O.getOrd(D.Ord),
@@ -17,13 +17,13 @@ const byLatestActivity: Ord.Ord<GroupCardViewModel> = pipe(
   Ord.contramap((group) => (group.latestActivityAt)),
 );
 
-type ToListOfGroupCardViewModels = (queries: Queries)
+type ToListOfGroupCardViewModels = (dependencies: Dependencies)
 => (groups: ReadonlyArray<Group>)
 => TE.TaskEither<DE.DataError, ReadonlyArray<GroupCardViewModel>>;
 
-export const toListOfGroupCardViewModels: ToListOfGroupCardViewModels = (queries) => flow(
+export const toListOfGroupCardViewModels: ToListOfGroupCardViewModels = (dependencies) => flow(
   RA.map((group) => group.id),
-  E.traverseArray(constructGroupCard(queries)),
+  E.traverseArray(constructGroupCard(dependencies)),
   E.map(RA.sort(byLatestActivity)),
   T.of,
 );
