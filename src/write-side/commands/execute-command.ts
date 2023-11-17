@@ -7,18 +7,7 @@ import { validateInputShape } from './validate-input-shape.js';
 import { ErrorMessage } from '../../types/error-message.js';
 import { CommandResult } from '../../types/command-result.js';
 import { DependenciesForCommands } from '../dependencies-for-commands.js';
-
-enum Level {
-  error,
-  warn,
-  info,
-  debug,
-}
-type LevelName = keyof typeof Level;
-
-type Payload = Record<string, unknown>;
-
-type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
+import { Logger } from '../../shared-ports/index.js';
 
 export const executeCommand = <C extends GenericCommand>(
   dependencies: DependenciesForCommands & { logger: Logger },
