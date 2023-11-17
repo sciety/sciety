@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { OwnedByQuery } from '../types/codecs/OwnedByQuery';
+import { ownedByQueryCodec } from '../types/codecs/owned-by-query-codec';
 import * as LOID from '../types/list-owner-id';
 import { Queries } from '../read-models';
 
@@ -20,7 +20,7 @@ export const ownedBy = (queries: Queries): Middleware => async ({ params, respon
       (items) => {
         response.status = StatusCodes.OK;
         response.set({ 'Content-Type': 'application/json' });
-        response.body = OwnedByQuery.encode({ items });
+        response.body = ownedByQueryCodec.encode({ items });
       },
     ),
   );
