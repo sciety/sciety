@@ -5,9 +5,11 @@ import * as DE from '../../../types/data-error';
 import { GroupCardViewModel } from '../../../shared-components/group-card';
 import { Queries } from '../../../read-models';
 
+type Dependencies = Queries;
+
 export const constructViewModel = (
-  queries: Queries,
+  dependencies: Dependencies,
 ): TE.TaskEither<DE.DataError, ReadonlyArray<GroupCardViewModel>> => pipe(
-  queries.getAllGroups(),
-  toListOfGroupCardViewModels(queries),
+  dependencies.getAllGroups(),
+  toListOfGroupCardViewModels(dependencies),
 );
