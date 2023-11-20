@@ -48,8 +48,8 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
   logValidCommand(dependencies, cmd.right);
 
   return pipe(
-    cmd,
-    E.chain((command) => pipe(
+    cmd.right,
+    (command) => pipe(
       userDetails,
       O.match(
         () => {
@@ -61,7 +61,7 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
           userId: user.id,
         }),
       ),
-    )),
+    ),
     TE.fromEither,
     TE.chainFirstEitherKW(flow(
       ({ command, userId }) => checkUserOwnsList(dependencies, command.listId, userId),
