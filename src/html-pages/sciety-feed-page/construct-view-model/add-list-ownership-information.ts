@@ -5,8 +5,8 @@ import { List } from '../../../types/list';
 import { Dependencies } from './dependencies';
 
 type ListWithAddedOwnershipInformation = {
-  name: string,
-  description: string,
+  name: List['name'],
+  description: List['description'],
   ownerName: string,
   ownerAvatarUrl: string,
   linkUrl: string,
