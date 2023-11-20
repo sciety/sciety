@@ -4,10 +4,10 @@ export type NotHtml = string & { readonly NotHtml: unique symbol };
 
 export type HtmlPageHead = {
   title: string,
-  description?: string,
+  description?: NotHtml,
   openGraph?: {
     title: string,
-    description: string,
+    description: NotHtml,
   },
 };
 
