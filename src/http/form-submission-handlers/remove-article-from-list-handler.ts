@@ -22,6 +22,12 @@ type FormBody = {
   listid: unknown,
 };
 
+const logInvalidCommand = (dependencies: Ports) => (errors: t.Errors) => pipe(
+  errors,
+  PR.failure,
+  (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
+);
+
 const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => {
   const cmd = removeArticleFromListCommandCodec.decode(
     {
@@ -33,11 +39,7 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
   return pipe(
     cmd,
     E.bimap(
-      (errors) => pipe(
-        errors,
-        PR.failure,
-        (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
-      ),
+      logInvalidCommand(dependencies),
       (command) => {
         dependencies.logger('info', 'received remove article from list form command', { command });
         return command;
