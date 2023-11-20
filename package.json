@@ -55,7 +55,7 @@
     "@types/koa-passport": "^6.0.3",
     "@types/koa-send": "^4.1.6",
     "@types/koa-session": "^6.4.5",
-    "@types/node": "^18.18.9",
+    "@types/node": "^18.18.10",
     "@types/passport-auth0": "^1.0.9",
     "@types/pg": "^8.10.9",
     "@types/sanitize-html": "^2.9.4",
