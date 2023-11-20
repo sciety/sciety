@@ -1,5 +1,7 @@
 import { HtmlFragment } from '../types/html-fragment';
 
+export type NotHtml = string & { readonly NotHtml: unique symbol };
+
 export type HtmlPageHead = {
   title: string,
   description?: string,
