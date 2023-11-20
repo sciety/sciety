@@ -61,7 +61,6 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
   return pipe(
     cmd.right,
     removeArticleFromListCommandHandler(dependencies),
-    TE.mapLeft(() => undefined),
   );
 };
 
