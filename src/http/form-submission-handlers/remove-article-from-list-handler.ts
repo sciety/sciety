@@ -47,20 +47,19 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
 
   logValidCommand(dependencies, cmd.right);
 
+  if (O.isNone(userDetails)) {
+    dependencies.logger('error', 'Logged in user not found', { command: cmd.right });
+    return TE.left(undefined);
+  }
+
   return pipe(
     cmd.right,
     (command) => pipe(
-      userDetails,
-      O.match(
-        () => {
-          dependencies.logger('error', 'Logged in user not found', { command });
-          return E.left(undefined);
-        },
-        (user) => E.right({
-          command,
-          userId: user.id,
-        }),
-      ),
+      userDetails.value,
+      (user) => E.right({
+        command,
+        userId: user.id,
+      }),
     ),
     TE.fromEither,
     TE.chainFirstEitherKW(flow(
