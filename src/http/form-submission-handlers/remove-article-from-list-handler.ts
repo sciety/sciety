@@ -59,13 +59,8 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
   }
 
   return pipe(
-    {
-      command: cmd.right,
-      userId: userDetails.value.id,
-    },
-    TE.right,
-    TE.map(({ command }) => command),
-    TE.chainW(removeArticleFromListCommandHandler(dependencies)),
+    cmd.right,
+    removeArticleFromListCommandHandler(dependencies),
     TE.mapLeft(() => undefined),
   );
 };
