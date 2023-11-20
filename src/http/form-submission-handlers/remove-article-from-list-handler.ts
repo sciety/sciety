@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
@@ -56,7 +55,7 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
   const ownershipCheckResult = checkUserOwnsList(dependencies, cmd.right.listId, userDetails.value.id);
   if (E.isLeft(ownershipCheckResult)) {
     dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
-    return T.of(ownershipCheckResult);
+    return TE.left(undefined);
   }
 
   return pipe(
@@ -65,9 +64,9 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
       userId: userDetails.value.id,
     },
     TE.right,
-    TE.chainFirstEitherKW(() => ownershipCheckResult),
     TE.map(({ command }) => command),
     TE.chainW(removeArticleFromListCommandHandler(dependencies)),
+    TE.mapLeft(() => undefined),
   );
 };
 
