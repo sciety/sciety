@@ -22,7 +22,7 @@ type FormBody = {
   listid: unknown,
 };
 
-const logInvalidCommand = (dependencies: Ports) => (errors: t.Errors) => pipe(
+const logInvalidCommand = (dependencies: Ports, errors: t.Errors) => pipe(
   errors,
   PR.failure,
   (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
@@ -42,7 +42,8 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
   );
 
   if (E.isLeft(cmd)) {
-    return TE.left(logInvalidCommand(dependencies)(cmd.left));
+    logInvalidCommand(dependencies, cmd.left);
+    return TE.left(undefined);
   }
 
   return pipe(
