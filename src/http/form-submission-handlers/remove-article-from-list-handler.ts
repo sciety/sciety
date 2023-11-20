@@ -22,47 +22,52 @@ type FormBody = {
   listid: unknown,
 };
 
-const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => pipe(
-  {
-    articleId: formBody.articleid,
-    listId: formBody.listid,
-  },
-  removeArticleFromListCommandCodec.decode,
-  E.bimap(
-    (errors) => pipe(
-      errors,
-      PR.failure,
-      (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
-    ),
-    (command) => {
-      dependencies.logger('info', 'received remove article from list form command', { command });
-      return command;
+const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => {
+  const cmd = removeArticleFromListCommandCodec.decode(
+    {
+      articleId: formBody.articleid,
+      listId: formBody.listid,
     },
-  ),
-  E.chainW((command) => pipe(
-    userDetails,
-    O.match(
-      () => {
-        dependencies.logger('error', 'Logged in user not found', { command });
-        return E.left(undefined);
+  );
+
+  return pipe(
+    cmd,
+    E.bimap(
+      (errors) => pipe(
+        errors,
+        PR.failure,
+        (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
+      ),
+      (command) => {
+        dependencies.logger('info', 'received remove article from list form command', { command });
+        return command;
       },
-      (user) => E.right({
-        command,
-        userId: user.id,
-      }),
     ),
-  )),
-  TE.fromEither,
-  TE.chainFirstEitherKW(flow(
-    ({ command, userId }) => checkUserOwnsList(dependencies, command.listId, userId),
-    E.mapLeft((logEntry) => {
-      dependencies.logger('error', logEntry.message, logEntry.payload);
-      return logEntry;
-    }),
-  )),
-  TE.map(({ command }) => command),
-  TE.chainW(removeArticleFromListCommandHandler(dependencies)),
-);
+    E.chainW((command) => pipe(
+      userDetails,
+      O.match(
+        () => {
+          dependencies.logger('error', 'Logged in user not found', { command });
+          return E.left(undefined);
+        },
+        (user) => E.right({
+          command,
+          userId: user.id,
+        }),
+      ),
+    )),
+    TE.fromEither,
+    TE.chainFirstEitherKW(flow(
+      ({ command, userId }) => checkUserOwnsList(dependencies, command.listId, userId),
+      E.mapLeft((logEntry) => {
+        dependencies.logger('error', logEntry.message, logEntry.payload);
+        return logEntry;
+      }),
+    )),
+    TE.map(({ command }) => command),
+    TE.chainW(removeArticleFromListCommandHandler(dependencies)),
+  );
+};
 
 const requestCodec = t.type({
   body: t.type({
