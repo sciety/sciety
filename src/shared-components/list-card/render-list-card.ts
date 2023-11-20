@@ -5,13 +5,15 @@ import { ListId } from '../../types/list-id';
 import { templateDate } from '../date';
 import { renderListPageLinkHref } from '../render-list-page-link-href';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
+import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { safelyRenderUserInput } from '../safely-render-user-input';
 
 export type ListCardViewModel = {
   listId: ListId,
   articleCount: number,
   updatedAt: O.Option<Date>,
   title: string,
-  description: string,
+  description: RawUserInput,
   avatarUrl: O.Option<string>,
 };
 
@@ -30,7 +32,7 @@ export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => to
     <div class="list-card__body">
       <div>
         <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${htmlEscape(viewModel.title)}</a></h3>
-        <p>${htmlEscape(viewModel.description)}</p>
+        <p>${safelyRenderUserInput(viewModel.description)}</p>
       </div>
       <div class="list-card__meta">
         <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}

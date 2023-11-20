@@ -4,6 +4,7 @@ import { List } from '../../types/list';
 import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
 import { Queries } from '../../read-models';
+import { rawUserInput } from '../../read-models/annotations/handle-event';
 
 export type Dependencies = Queries & {
   logger: Logger,
@@ -59,7 +60,7 @@ export const constructListCardViewModelWithAvatar = (
     articleCount: list.articleIds.length,
     updatedAt: O.some(list.updatedAt),
     title: list.name,
-    description: list.description,
+    description: rawUserInput(list.description),
     avatarUrl: O.some(ownerAvatarUrl),
   }),
 );

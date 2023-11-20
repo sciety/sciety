@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import { renderListOfListCardsWithFallback } from '../../../../../src/html-pages/group-page/group-lists-page/render-as-html/render-list-of-list-cards-with-fallback';
 import { arbitraryDate, arbitraryString } from '../../../../helpers';
 import { arbitraryListId } from '../../../../types/list-id.helper';
+import { rawUserInput } from '../../../../../src/read-models/annotations/handle-event';
 
 describe('render-list-of-list-cards-with-fallback', () => {
   describe('when the group owns no lists', () => {
@@ -18,7 +19,7 @@ describe('render-list-of-list-cards-with-fallback', () => {
       {
         title: listTitle,
         listId: arbitraryListId(),
-        description: arbitraryString(),
+        description: rawUserInput(arbitraryString()),
         articleCount: 0,
         updatedAt: O.some(arbitraryDate()),
         avatarUrl: O.none,
