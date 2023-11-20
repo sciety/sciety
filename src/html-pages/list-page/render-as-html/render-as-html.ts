@@ -9,8 +9,8 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
   title: viewModel.name,
   openGraph: {
     title: viewModel.name,
-    description: striptags(viewModel.description) as NotHtml,
+    description: striptags(viewModel.description.content) as NotHtml,
   },
-  description: striptags(viewModel.description) as NotHtml,
+  description: striptags(viewModel.description.content) as NotHtml,
   content: pipe(viewModel, renderPage, toHtmlFragment),
 });

@@ -13,6 +13,7 @@ import { ArticleId } from '../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 import { Params } from './params';
+import { rawUserInput } from '../../../read-models/annotations/handle-event';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
@@ -55,6 +56,7 @@ export const constructViewModel = (
   O.map((list) => ({
     ...list,
     listId: list.id,
+    description: rawUserInput(list.description),
     basePath: `/lists/${list.id}`,
     articleCount: list.articleIds.length,
     listOwnerId: list.ownerId,

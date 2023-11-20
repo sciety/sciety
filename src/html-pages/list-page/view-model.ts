@@ -7,6 +7,7 @@ import { ArticleErrorCardViewModel } from '../../shared-components/article-card'
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
 } from '../../shared-components/article-card-with-controls-and-annotation';
+import { RawUserInput } from '../../read-models/annotations/handle-event';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
@@ -24,7 +25,7 @@ type Content = Message | ContentWithPaginationViewModel;
 
 export type ViewModel = {
   name: string,
-  description: string,
+  description: RawUserInput,
   ownerName: string,
   ownerHref: string,
   ownerAvatarPath: string,
