@@ -5,8 +5,8 @@ import * as t from 'io-ts';
 import { flow, pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
+import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { removeArticleFromListCommandCodec } from '../../write-side/commands/remove-article-from-list';
 import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import { Logger } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
@@ -28,6 +28,11 @@ const logInvalidCommand = (dependencies: Ports) => (errors: t.Errors) => pipe(
   (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
 );
 
+const logValidCommand = (dependencies: Ports) => (command: RemoveArticleFromListCommand) => {
+  dependencies.logger('info', 'received remove article from list form command', { command });
+  return command;
+};
+
 const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => {
   const cmd = removeArticleFromListCommandCodec.decode(
     {
@@ -40,10 +45,7 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
     cmd,
     E.bimap(
       logInvalidCommand(dependencies),
-      (command) => {
-        dependencies.logger('info', 'received remove article from list form command', { command });
-        return command;
-      },
+      logValidCommand(dependencies),
     ),
     E.chainW((command) => pipe(
       userDetails,
