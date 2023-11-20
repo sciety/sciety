@@ -53,15 +53,11 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
   }
 
   return pipe(
-    cmd.right,
-    (command) => pipe(
-      userDetails.value,
-      (user) => E.right({
-        command,
-        userId: user.id,
-      }),
-    ),
-    TE.fromEither,
+    {
+      command: cmd.right,
+      userId: userDetails.value.id,
+    },
+    TE.right,
     TE.chainFirstEitherKW(flow(
       ({ command, userId }) => checkUserOwnsList(dependencies, command.listId, userId),
       E.mapLeft((logEntry) => {
