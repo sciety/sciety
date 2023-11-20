@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
@@ -52,19 +53,19 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
     return TE.left(undefined);
   }
 
+  const ownershipCheckResult = checkUserOwnsList(dependencies, cmd.right.listId, userDetails.value.id);
+  if (E.isLeft(ownershipCheckResult)) {
+    dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
+    return T.of(ownershipCheckResult);
+  }
+
   return pipe(
     {
       command: cmd.right,
       userId: userDetails.value.id,
     },
     TE.right,
-    TE.chainFirstEitherKW(flow(
-      ({ command, userId }) => checkUserOwnsList(dependencies, command.listId, userId),
-      E.mapLeft((logEntry) => {
-        dependencies.logger('error', logEntry.message, logEntry.payload);
-        return logEntry;
-      }),
-    )),
+    TE.chainFirstEitherKW(() => ownershipCheckResult),
     TE.map(({ command }) => command),
     TE.chainW(removeArticleFromListCommandHandler(dependencies)),
   );
