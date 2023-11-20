@@ -8,8 +8,8 @@ import * as tt from 'io-ts-types';
 import * as GID from '../../src/types/group-id';
 import * as UID from '../../src/types/user-id';
 import * as LOID from '../../src/types/list-owner-id';
-import { listCodec } from '../../src/types/list';
 import { ListId } from '../../src/types/list-id';
+import { listCodec } from '../../src/types/codecs/owned-by-query-codec';
 
 const responseCodec = t.type({
   data: t.type({
