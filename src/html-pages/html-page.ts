@@ -1,11 +1,14 @@
 import { HtmlFragment } from '../types/html-fragment';
 
-export type HtmlPage = {
+export type HtmlPageHead = {
   title: string,
   description?: string,
-  content: HtmlFragment,
   openGraph?: {
     title: string,
     description: string,
   },
+};
+
+export type HtmlPage = HtmlPageHead & {
+  content: HtmlFragment,
 };

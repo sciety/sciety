@@ -4,18 +4,13 @@ import { pipe } from 'fp-ts/function';
 import { fathom, googleTagManager } from './analytics';
 import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { UserId } from '../types/user-id';
+import { HtmlPageHead } from '../html-pages/html-page';
 
 export type ClientClassification = {
   userAgent: string | undefined,
 };
 
-export type DynamicHeadViewModel = {
-  title: string,
-  description?: string,
-  openGraph?: {
-    title: string,
-    description: string,
-  },
+export type DynamicHeadViewModel = HtmlPageHead & {
   clientClassification: ClientClassification,
 };
 
