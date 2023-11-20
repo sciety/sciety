@@ -28,9 +28,8 @@ const logInvalidCommand = (dependencies: Ports, errors: t.Errors) => pipe(
   (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
 );
 
-const logValidCommand = (dependencies: Ports) => (command: RemoveArticleFromListCommand) => {
+const logValidCommand = (dependencies: Ports, command: RemoveArticleFromListCommand) => {
   dependencies.logger('info', 'received remove article from list form command', { command });
-  return command;
 };
 
 const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => {
@@ -46,12 +45,11 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
     return TE.left(undefined);
   }
 
+  logValidCommand(dependencies, cmd.right);
+
   return pipe(
     cmd,
-    E.map(
-      logValidCommand(dependencies),
-    ),
-    E.chainW((command) => pipe(
+    E.chain((command) => pipe(
       userDetails,
       O.match(
         () => {
