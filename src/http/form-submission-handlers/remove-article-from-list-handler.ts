@@ -41,10 +41,13 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
     },
   );
 
+  if (E.isLeft(cmd)) {
+    return TE.left(logInvalidCommand(dependencies)(cmd.left));
+  }
+
   return pipe(
     cmd,
-    E.bimap(
-      logInvalidCommand(dependencies),
+    E.map(
       logValidCommand(dependencies),
     ),
     E.chainW((command) => pipe(
