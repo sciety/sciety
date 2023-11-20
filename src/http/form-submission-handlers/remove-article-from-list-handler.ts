@@ -73,10 +73,15 @@ const requestCodec = t.type({
 
 export const removeArticleFromListHandler = (dependencies: Ports): Middleware => async (context, next) => {
   const user = getLoggedInScietyUser(dependencies, context);
+  const formRequest = requestCodec.decode(context.request);
+  if (E.isLeft(formRequest)) {
+    context.redirect('/action-failed');
+    return;
+  }
+
   await pipe(
-    context.request,
-    requestCodec.decode,
-    TE.fromEither,
+    formRequest.right,
+    TE.right,
     TE.map((request) => request.body),
     TE.chainW(handleFormSubmission(dependencies, user)),
     TE.mapLeft(() => {
