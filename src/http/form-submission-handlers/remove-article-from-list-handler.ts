@@ -15,13 +15,13 @@ type Ports = DependenciesForCommands & CheckUserOwnsListPorts & GetLoggedInSciet
   logger: Logger,
 };
 
-const logInvalidCommand = (dependencies: Ports, errors: t.Errors) => pipe(
+const logCodecError = (dependencies: Ports, errors: t.Errors) => pipe(
   errors,
   PR.failure,
   (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
 );
 
-const logValidCommand = (dependencies: Ports, command: RemoveArticleFromListCommand) => {
+const logCodecSuccess = (dependencies: Ports, command: RemoveArticleFromListCommand) => {
   dependencies.logger('info', 'received remove article from list form command', { command });
 };
 
@@ -48,12 +48,12 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
   );
 
   if (E.isLeft(command)) {
-    logInvalidCommand(dependencies, command.left);
+    logCodecError(dependencies, command.left);
     context.redirect('/action-failed');
     return;
   }
 
-  logValidCommand(dependencies, command.right);
+  logCodecSuccess(dependencies, command.right);
 
   if (O.isNone(user)) {
     dependencies.logger('error', 'Logged in user not found', { command });
