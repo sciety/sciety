@@ -30,27 +30,20 @@ const logValidCommand = (dependencies: Ports, command: RemoveArticleFromListComm
 const handleFormSubmission = (
   dependencies: Ports,
   userDetails: O.Option<UserDetails>,
-) => (cmd: t.Validation<RemoveArticleFromListCommand>) => {
-  if (E.isLeft(cmd)) {
-    logInvalidCommand(dependencies, cmd.left);
-    return TE.left(undefined);
-  }
-
-  logValidCommand(dependencies, cmd.right);
-
+) => (cmd: RemoveArticleFromListCommand) => {
   if (O.isNone(userDetails)) {
-    dependencies.logger('error', 'Logged in user not found', { command: cmd.right });
+    dependencies.logger('error', 'Logged in user not found', { command: cmd });
     return TE.left(undefined);
   }
 
-  const ownershipCheckResult = checkUserOwnsList(dependencies, cmd.right.listId, userDetails.value.id);
+  const ownershipCheckResult = checkUserOwnsList(dependencies, cmd.listId, userDetails.value.id);
   if (E.isLeft(ownershipCheckResult)) {
     dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
     return TE.left(undefined);
   }
 
   return pipe(
-    removeArticleFromListCommandHandler(dependencies)(cmd.right),
+    removeArticleFromListCommandHandler(dependencies)(cmd),
     TE.mapLeft(() => undefined),
   );
 };
@@ -77,7 +70,15 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
     },
   );
 
-  const commandResult = await handleFormSubmission(dependencies, user)(cmd)();
+  if (E.isLeft(cmd)) {
+    logInvalidCommand(dependencies, cmd.left);
+    context.redirect('/action-failed');
+    return;
+  }
+
+  logValidCommand(dependencies, cmd.right);
+
+  const commandResult = await handleFormSubmission(dependencies, user)(cmd.right)();
 
   if (E.isLeft(commandResult)) {
     context.redirect('/action-failed');
