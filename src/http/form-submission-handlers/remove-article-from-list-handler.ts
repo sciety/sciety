@@ -41,39 +41,39 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
     return;
   }
 
-  const cmd = removeArticleFromListCommandCodec.decode(
+  const command = removeArticleFromListCommandCodec.decode(
     {
       articleId: formRequest.right.body.articleid,
       listId: formRequest.right.body.listid,
     },
   );
 
-  if (E.isLeft(cmd)) {
-    logInvalidCommand(dependencies, cmd.left);
+  if (E.isLeft(command)) {
+    logInvalidCommand(dependencies, command.left);
     context.redirect('/action-failed');
     return;
   }
 
-  logValidCommand(dependencies, cmd.right);
+  logValidCommand(dependencies, command.right);
 
   if (O.isNone(user)) {
-    dependencies.logger('error', 'Logged in user not found', { command: cmd });
+    dependencies.logger('error', 'Logged in user not found', { command });
     context.redirect('/action-failed');
     return;
   }
 
-  const ownershipCheckResult = checkUserOwnsList(dependencies, cmd.right.listId, user.value.id);
+  const ownershipCheckResult = checkUserOwnsList(dependencies, command.right.listId, user.value.id);
   if (E.isLeft(ownershipCheckResult)) {
     dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
     return TE.left(undefined);
   }
 
-  const commandResult = await removeArticleFromListCommandHandler(dependencies)(cmd.right)();
+  const commandResult = await removeArticleFromListCommandHandler(dependencies)(command.right)();
 
   if (E.isLeft(commandResult)) {
     context.redirect('/action-failed');
     return;
   }
 
-  context.redirect(`/lists/${cmd.right.listId}`);
+  context.redirect(`/lists/${command.right.listId}`);
 };
