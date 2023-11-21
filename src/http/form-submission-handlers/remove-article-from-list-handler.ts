@@ -26,13 +26,6 @@ const logValidCommand = (dependencies: Ports, command: RemoveArticleFromListComm
   dependencies.logger('info', 'received remove article from list form command', { command });
 };
 
-const handleFormSubmission = (
-  dependencies: Ports,
-) => (cmd: RemoveArticleFromListCommand) => pipe(
-  removeArticleFromListCommandHandler(dependencies)(cmd),
-  TE.mapLeft(() => undefined),
-);
-
 const requestCodec = t.type({
   body: t.type({
     articleid: t.unknown,
@@ -75,7 +68,7 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
     return TE.left(undefined);
   }
 
-  const commandResult = await handleFormSubmission(dependencies)(cmd.right)();
+  const commandResult = await removeArticleFromListCommandHandler(dependencies)(cmd.right)();
 
   if (E.isLeft(commandResult)) {
     context.redirect('/action-failed');
