@@ -6,7 +6,6 @@ import { followHandler } from './follow-handler';
 import { unfollowHandler } from './unfollow-handler';
 import { saveArticleHandler } from './save-article-handler';
 import { removeArticleFromListHandler } from './remove-article-from-list-handler';
-import { redirectBack } from '../redirect-back';
 import { editListDetailsHandler } from './edit-list-details-handler';
 import { createListHandler } from './create-list-handler';
 import { createAnnotationHandler } from './create-annotation-handler';
@@ -24,7 +23,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     bodyParser({ enableTypes: ['form'] }),
     requireLoggedInUser(adapters),
     removeArticleFromListHandler(adapters),
-    redirectBack,
   );
 
   router.post(

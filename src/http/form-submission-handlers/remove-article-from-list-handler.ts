@@ -87,6 +87,7 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
       context.redirect('/action-failed');
     }),
     TE.chainTaskK(() => async () => {
+      context.redirect('back');
       await next();
     }),
   )();
