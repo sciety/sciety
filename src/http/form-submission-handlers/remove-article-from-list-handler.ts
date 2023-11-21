@@ -79,10 +79,10 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
     return;
   }
 
+  const commandResult = handleFormSubmission(dependencies, user)(formRequest.right.body);
+
   await pipe(
-    formRequest.right.body,
-    TE.right,
-    TE.chainW(handleFormSubmission(dependencies, user)),
+    commandResult,
     TE.mapLeft(() => {
       context.redirect('/action-failed');
     }),
