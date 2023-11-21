@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
@@ -65,7 +64,8 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
   const ownershipCheckResult = checkUserOwnsList(dependencies, command.right.listId, user.value.id);
   if (E.isLeft(ownershipCheckResult)) {
     dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
-    return TE.left(undefined);
+    context.redirect('/action-failed');
+    return;
   }
 
   const commandResult = await removeArticleFromListCommandHandler(dependencies)(command.right)();
