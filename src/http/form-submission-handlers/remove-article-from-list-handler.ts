@@ -75,5 +75,5 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
     return;
   }
 
-  context.redirect('back');
+  context.redirect(`/lists/${cmd.right.listId}`);
 };
