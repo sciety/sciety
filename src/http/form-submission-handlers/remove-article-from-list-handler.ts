@@ -10,7 +10,6 @@ import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user
 import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import { Logger } from '../../shared-ports';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { UserDetails } from '../../types/user-details';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
 type Ports = DependenciesForCommands & CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
@@ -29,19 +28,10 @@ const logValidCommand = (dependencies: Ports, command: RemoveArticleFromListComm
 
 const handleFormSubmission = (
   dependencies: Ports,
-  userDetails: O.Some<UserDetails>,
-) => (cmd: RemoveArticleFromListCommand) => {
-  const ownershipCheckResult = checkUserOwnsList(dependencies, cmd.listId, userDetails.value.id);
-  if (E.isLeft(ownershipCheckResult)) {
-    dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
-    return TE.left(undefined);
-  }
-
-  return pipe(
-    removeArticleFromListCommandHandler(dependencies)(cmd),
-    TE.mapLeft(() => undefined),
-  );
-};
+) => (cmd: RemoveArticleFromListCommand) => pipe(
+  removeArticleFromListCommandHandler(dependencies)(cmd),
+  TE.mapLeft(() => undefined),
+);
 
 const requestCodec = t.type({
   body: t.type({
@@ -79,7 +69,13 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
     return;
   }
 
-  const commandResult = await handleFormSubmission(dependencies, user)(cmd.right)();
+  const ownershipCheckResult = checkUserOwnsList(dependencies, cmd.right.listId, user.value.id);
+  if (E.isLeft(ownershipCheckResult)) {
+    dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
+    return TE.left(undefined);
+  }
+
+  const commandResult = await handleFormSubmission(dependencies)(cmd.right)();
 
   if (E.isLeft(commandResult)) {
     context.redirect('/action-failed');
