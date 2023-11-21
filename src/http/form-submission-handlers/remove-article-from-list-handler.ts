@@ -58,10 +58,7 @@ const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDet
     return TE.left(undefined);
   }
 
-  return pipe(
-    cmd.right,
-    removeArticleFromListCommandHandler(dependencies),
-  );
+  return removeArticleFromListCommandHandler(dependencies)(cmd.right);
 };
 
 const requestCodec = t.type({
