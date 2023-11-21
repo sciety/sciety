@@ -29,13 +29,8 @@ const logValidCommand = (dependencies: Ports, command: RemoveArticleFromListComm
 
 const handleFormSubmission = (
   dependencies: Ports,
-  userDetails: O.Option<UserDetails>,
+  userDetails: O.Some<UserDetails>,
 ) => (cmd: RemoveArticleFromListCommand) => {
-  if (O.isNone(userDetails)) {
-    dependencies.logger('error', 'Logged in user not found', { command: cmd });
-    return TE.left(undefined);
-  }
-
   const ownershipCheckResult = checkUserOwnsList(dependencies, cmd.listId, userDetails.value.id);
   if (E.isLeft(ownershipCheckResult)) {
     dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
@@ -77,6 +72,12 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
   }
 
   logValidCommand(dependencies, cmd.right);
+
+  if (O.isNone(user)) {
+    dependencies.logger('error', 'Logged in user not found', { command: cmd });
+    context.redirect('/action-failed');
+    return;
+  }
 
   const commandResult = await handleFormSubmission(dependencies, user)(cmd.right)();
 
