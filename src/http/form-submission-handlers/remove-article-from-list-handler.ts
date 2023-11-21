@@ -17,11 +17,6 @@ type Ports = DependenciesForCommands & CheckUserOwnsListPorts & GetLoggedInSciet
   logger: Logger,
 };
 
-type FormBody = {
-  articleid: unknown,
-  listid: unknown,
-};
-
 const logInvalidCommand = (dependencies: Ports, errors: t.Errors) => pipe(
   errors,
   PR.failure,
@@ -32,14 +27,10 @@ const logValidCommand = (dependencies: Ports, command: RemoveArticleFromListComm
   dependencies.logger('info', 'received remove article from list form command', { command });
 };
 
-const handleFormSubmission = (dependencies: Ports, userDetails: O.Option<UserDetails>) => (formBody: FormBody) => {
-  const cmd = removeArticleFromListCommandCodec.decode(
-    {
-      articleId: formBody.articleid,
-      listId: formBody.listid,
-    },
-  );
-
+const handleFormSubmission = (
+  dependencies: Ports,
+  userDetails: O.Option<UserDetails>,
+) => (cmd: t.Validation<RemoveArticleFromListCommand>) => {
   if (E.isLeft(cmd)) {
     logInvalidCommand(dependencies, cmd.left);
     return TE.left(undefined);
@@ -79,7 +70,14 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
     return;
   }
 
-  const commandResult = await handleFormSubmission(dependencies, user)(formRequest.right.body)();
+  const cmd = removeArticleFromListCommandCodec.decode(
+    {
+      articleId: formRequest.right.body.articleid,
+      listId: formRequest.right.body.listid,
+    },
+  );
+
+  const commandResult = await handleFormSubmission(dependencies, user)(cmd)();
 
   if (E.isLeft(commandResult)) {
     context.redirect('/action-failed');
