@@ -71,7 +71,7 @@ const requestCodec = t.type({
   }),
 });
 
-export const removeArticleFromListHandler = (dependencies: Ports): Middleware => async (context, next) => {
+export const removeArticleFromListHandler = (dependencies: Ports): Middleware => async (context) => {
   const user = getLoggedInScietyUser(dependencies, context);
   const formRequest = requestCodec.decode(context.request);
   if (E.isLeft(formRequest)) {
@@ -88,7 +88,6 @@ export const removeArticleFromListHandler = (dependencies: Ports): Middleware =>
     }),
     TE.chainTaskK(() => async () => {
       context.redirect('back');
-      await next();
     }),
   )();
 };
