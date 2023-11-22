@@ -23,10 +23,14 @@ type Params = {
   user: O.Option<{ id: UserId }>,
 };
 
+const findExpressionOfArticleAsDoi = (articleId: ArticleId): ArticleId => articleId;
+
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  dependencies.fetchArticle(params.doi),
+  params.doi,
+  findExpressionOfArticleAsDoi,
+  dependencies.fetchArticle,
   TE.chainW((articleDetails) => pipe(
     {
       feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(params.doi, articleDetails.server),
