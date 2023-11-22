@@ -25,7 +25,6 @@ import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-f
 import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
-import { findExpressionOfArticleAsDoi } from '../html-pages/article-page/construct-view-model/construct-view-model';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
@@ -37,9 +36,14 @@ const findVersionsForArticleDoiFromSupportedServers = (
   if (server === 'microbiologyresearch') {
     if (articleId.value === 'uuid:30374f3c-92dc-4692-aac0-ed95883b9ea0') {
       return T.of(RNEA.fromArray([{
-        source: new URL(`https://doi.org/${findExpressionOfArticleAsDoi(articleId).value}`),
+        source: new URL('https://doi.org/10.1099/acmi.0.000530.v1'),
         publishedAt: new Date('2022-11-29'),
         version: 1,
+      },
+      {
+        source: new URL('https://doi.org/10.1099/acmi.0.000530.v2'),
+        publishedAt: new Date('2023-10-20'),
+        version: 2,
       }]));
     }
   }
