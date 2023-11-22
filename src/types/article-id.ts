@@ -11,7 +11,7 @@ export class ArticleId {
   readonly value: string;
 
   constructor(input: string) {
-    const [, doi] = doiRegex.exec(input) ?? [];
+    const doi = input.replace(/^doi:/, '');
 
     if (!doi) {
       throw new Error(`'${input}' is not a possible DOI`);
