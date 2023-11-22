@@ -30,16 +30,18 @@ import { findExpressionOfArticleAsDoi } from '../html-pages/article-page/constru
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-) => (doi: ArticleId, server: ArticleServer) => {
+) => (articleId: ArticleId, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
-    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(doi, server);
+    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(articleId, server);
   }
   if (server === 'microbiologyresearch') {
-    return T.of(RNEA.fromArray([{
-      source: new URL(`https://doi.org/${findExpressionOfArticleAsDoi(doi).value}`),
-      publishedAt: new Date('2022-11-29'),
-      version: 1,
-    }]));
+    if (articleId.value === 'uuid:30374f3c-92dc-4692-aac0-ed95883b9ea0') {
+      return T.of(RNEA.fromArray([{
+        source: new URL(`https://doi.org/${findExpressionOfArticleAsDoi(articleId).value}`),
+        publishedAt: new Date('2022-11-29'),
+        version: 1,
+      }]));
+    }
   }
   return TO.none;
 };
