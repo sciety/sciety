@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hello
+  name: sciety--prod--data-pipeline
 spec:
   schedule: "*/2 * * * *"
   jobTemplate:
@@ -10,7 +10,7 @@ spec:
         spec:
           restartPolicy: Never
           containers:
-          - name: hello
+          - name: ship-events-to-s3
             image: amazon/aws-cli:2.4.23
             imagePullPolicy: IfNotPresent
             env: 
