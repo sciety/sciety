@@ -7,7 +7,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
-import { ArticleId, hasPrefix } from '../../../types/article-id';
+import { ArticleId } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
 import { UserId } from '../../../types/user-id';
 import { constructListedIn } from './construct-listed-in';
@@ -25,8 +25,8 @@ type Params = {
 };
 
 const findExpressionOfArticleAsDoi = (articleId: ArticleId): DoiOfArticleExpression => {
-  if (hasPrefix('uuid')(articleId)) {
-    return articleId;
+  if (articleId.value.startsWith('uuid:')) {
+    return new DoiOfArticleExpression('10.1099/acmi.0.000530.v1');
   }
   return articleId;
 };
