@@ -12,6 +12,7 @@ import { SubjectArea } from '../types/subject-area';
 import { SearchResults } from '../shared-ports/search-for-articles';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { DoiOfArticleExpression } from '../types/doi-of-article-expression';
 
 export type ArticleDetails = {
   abstract: SanitisedHtmlFragment,
@@ -21,7 +22,7 @@ export type ArticleDetails = {
   server: ArticleServer,
 };
 
-type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
+type FetchArticle = (doi: DoiOfArticleExpression) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
 type RelatedArticle = {
   articleId: ArticleId,

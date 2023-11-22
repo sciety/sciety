@@ -17,13 +17,14 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
+import { DoiOfArticleExpression } from '../../../types/doi-of-article-expression';
 
 type Params = {
   doi: ArticleId,
   user: O.Option<{ id: UserId }>,
 };
 
-const findExpressionOfArticleAsDoi = (articleId: ArticleId): ArticleId => articleId;
+const findExpressionOfArticleAsDoi = (articleId: ArticleId): DoiOfArticleExpression => articleId;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
