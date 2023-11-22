@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "*/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: hello
+            image: amazon/aws-cli:2.4.23
+            imagePullPolicy: IfNotPresent
+            env: 
+              - name: PGDATABASE
+                valueFrom:
+                  secretKeyRef:
+                    name: hive-prod-rds-postgres
+                    key: postgresql-database
+              - name: PGUSER
+                valueFrom:
+                  secretKeyRef:
+                    name: hive-prod-rds-postgres
+                    key: postgresql-username
+              - name: PGPASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: hive-prod-rds-postgres
+                    key: postgresql-password
+              - name: PGHOST
+                valueFrom:
+                  secretKeyRef:
+                    name: hive-prod-rds-postgres
+                    key: postgresql-host
+              - name: PGPORT
+                valueFrom:
+                  secretKeyRef:
+                    name: hive-prod-rds-postgres
+                    key: postgresql-port
+              - name: AWS_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: sciety-events-shipper-aws-credentials
+                    key: id
+              - name: AWS_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: sciety-events-shipper-aws-credentials
+                    key: secret
+            command:
+            - /bin/bash 
+            - -c
+            - 'yum install --assumeyes --quiet postgresql && psql -A -t -c "select json_agg(events) from events;" > ./events.json && aws s3 cp "./events.json" "s3://sciety-data-extractions/events-from-cronjob.json"'
+
