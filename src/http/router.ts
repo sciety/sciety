@@ -177,7 +177,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
-    '/articles/activity/:doi(.+)',
+    '/articles/activity/:articleId(.+)',
     pageHandler(adapters, articlePage(adapters), fullWidthPageLayout),
   );
 

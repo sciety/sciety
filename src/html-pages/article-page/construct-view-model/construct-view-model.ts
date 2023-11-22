@@ -20,7 +20,7 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { DoiOfArticleExpression } from '../../../types/doi-of-article-expression';
 
 type Params = {
-  doi: ArticleId,
+  articleId: ArticleId,
   user: O.Option<{ id: UserId }>,
 };
 
@@ -34,14 +34,16 @@ const findExpressionOfArticleAsDoi = (articleId: ArticleId): DoiOfArticleExpress
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  params.doi,
+  params.articleId,
   findExpressionOfArticleAsDoi,
   dependencies.fetchArticle,
   TE.chainW((articleDetails) => pipe(
     {
-      feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(params.doi, articleDetails.server),
-      relatedArticles: constructRelatedArticles(params.doi, dependencies),
-      curationStatements: constructCurationStatements(dependencies, params.doi),
+      feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(
+        params.articleId, articleDetails.server,
+      ),
+      relatedArticles: constructRelatedArticles(params.articleId, dependencies),
+      curationStatements: constructCurationStatements(dependencies, params.articleId),
     },
     sequenceS(T.ApplyPar),
     TE.rightTask,
@@ -49,11 +51,11 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       ...articleDetails,
       titleLanguageCode: detectLanguage(articleDetails.title),
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
-      userListManagement: constructUserListManagement(params.user, dependencies, params.doi),
-      fullArticleUrl: `https://doi.org/${params.doi.value}`,
+      userListManagement: constructUserListManagement(params.user, dependencies, params.articleId),
+      fullArticleUrl: `https://doi.org/${params.articleId.value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
-      listedIn: constructListedIn(dependencies)(params.doi),
+      listedIn: constructListedIn(dependencies)(params.articleId),
       relatedArticles,
       curationStatements: pipe(
         curationStatements,
@@ -63,7 +65,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
         })),
       ),
-      reviewingGroups: constructReviewingGroups(dependencies, params.doi),
+      reviewingGroups: constructReviewingGroups(dependencies, params.articleId),
     })),
   )),
 );

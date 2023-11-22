@@ -12,7 +12,7 @@ import { articleIdCodec } from '../../types/article-id';
 import { userIdCodec } from '../../types/user-id';
 
 const articlePageParams = t.type({
-  doi: articleIdCodec,
+  articleId: articleIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
