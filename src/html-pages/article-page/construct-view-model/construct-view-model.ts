@@ -52,7 +52,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       titleLanguageCode: detectLanguage(articleDetails.title),
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, params.articleId),
-      fullArticleUrl: `https://doi.org/${params.articleId.value}`,
+      fullArticleUrl: `https://doi.org/${findExpressionOfArticleAsDoi(params.articleId).value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(dependencies)(params.articleId),
