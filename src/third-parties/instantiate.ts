@@ -1,6 +1,9 @@
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { createClient } from 'redis';
+import { URL } from 'url';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -22,6 +25,7 @@ import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-f
 import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
+import { findExpressionOfArticleAsDoi } from '../html-pages/article-page/construct-view-model/construct-view-model';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
@@ -30,9 +34,15 @@ const findVersionsForArticleDoiFromSupportedServers = (
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(doi, server);
   }
+  if (server === 'microbiologyresearch') {
+    return T.of(RNEA.fromArray([{
+      source: new URL(`https://doi.org/${findExpressionOfArticleAsDoi(doi).value}`),
+      publishedAt: new Date('2022-11-29'),
+      version: 1,
+    }]));
+  }
   return TO.none;
 };
-
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
   return redisClient !== undefined

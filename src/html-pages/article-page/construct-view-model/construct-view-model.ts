@@ -24,7 +24,7 @@ type Params = {
   user: O.Option<{ id: UserId }>,
 };
 
-const findExpressionOfArticleAsDoi = (articleId: ArticleId): DoiOfArticleExpression => {
+export const findExpressionOfArticleAsDoi = (articleId: ArticleId): DoiOfArticleExpression => {
   if (articleId.value.startsWith('uuid:')) {
     return new DoiOfArticleExpression('10.1099/acmi.0.000530.v1');
   }
