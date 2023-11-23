@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import * as TO from 'fp-ts/TaskOption';
+import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
@@ -42,14 +42,15 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findVersionsForArticleDoi(doi, server),
-      TO.matchW(
+      dependencies.findAllVersionsForArticleId(doi),
+      O.matchW(
         constant([]),
         RNEA.map((version) => ({
           type: 'article-version' as const,
           ...version,
         })),
       ),
+      T.of,
     ),
   },
   sequenceS(T.ApplyPar),

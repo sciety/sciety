@@ -1,9 +1,6 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { createClient } from 'redis';
-import { URL } from 'url';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -32,20 +29,6 @@ const findVersionsForArticleDoiFromSupportedServers = (
 ) => (articleId: ArticleId, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(articleId, server);
-  }
-  if (server === 'microbiologyresearch') {
-    if (articleId.value === 'uuid:30374f3c-92dc-4692-aac0-ed95883b9ea0') {
-      return T.of(RNEA.fromArray([{
-        source: new URL('https://doi.org/10.1099/acmi.0.000530.v1'),
-        publishedAt: new Date('2022-11-29'),
-        version: 1,
-      },
-      {
-        source: new URL('https://doi.org/10.1099/acmi.0.000530.v2'),
-        publishedAt: new Date('2023-10-20'),
-        version: 2,
-      }]));
-    }
   }
   return TO.none;
 };
