@@ -9,7 +9,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          containers:
+          initContainers:
           - name: ship-events-to-s3
             image: amazon/aws-cli:2.4.23
             imagePullPolicy: IfNotPresent
@@ -52,5 +52,21 @@ spec:
             command:
             - /bin/bash 
             - -c
-            - 'yum install --assumeyes --quiet postgresql && psql -A -t -c "select json_agg(events) from events;" > ./events.json && aws s3 cp "./events.json" "s3://sciety-data-extractions/events-from-cronjob.json"'
-
+            - 'yum install --assumeyes --quiet postgresql && psql -A -t -c "select json_agg(events) from events;" > /data/events.json && aws s3 cp "/data/events.json" "s3://sciety-data-extractions/events-from-cronjob.json"'
+            volumeMounts:
+              - mountPath: /data
+                name: data-volume
+          containers:
+          - name: bq-update-events
+            image: google/cloud-sdk:422.0.0-slim
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/bash 
+            - -c
+            - 'apt install jq python3-venv && cat /data/events.json | jq -c ".[]" > /data/events.jsonl && python3 -m venv venv && venv/bin/pip install bigquery_schema_generator==1.5 && cat /data/events.jsonl | venv/bin/generate-schema > events.bq-schema.json '
+            volumeMounts:
+              - mountPath: /data
+                name: data-volume
+          volumes:
+            - name: data-volume
+              emptyDir: {} 
