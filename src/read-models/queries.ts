@@ -9,6 +9,7 @@ import { lists } from './lists';
 import { users } from './users';
 import { elifeSubjectAreaLists } from './elife-subject-area-lists';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
+import { articleExpressions } from './article-expressions';
 
 const queries = {
   ...elifeSubjectAreaLists.queries,
@@ -22,6 +23,7 @@ const queries = {
   ...idsOfEvalutedArticlesLists.queries,
   ...lists.queries,
   ...users.queries,
+  ...articleExpressions.queries,
 };
 
 export type Queries = { [K in keyof typeof queries]: ReturnType<typeof queries[K]> };

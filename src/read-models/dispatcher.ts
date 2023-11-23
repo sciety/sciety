@@ -15,6 +15,7 @@ import { users } from './users';
 import { elifeSubjectAreaLists } from './elife-subject-area-lists';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 import { Logger } from '../shared-ports';
+import { articleExpressions } from './article-expressions';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 
@@ -36,6 +37,7 @@ export const dispatcher = (logger: Logger): Dispatcher => {
     new InitialisedReadModel(idsOfEvalutedArticlesLists),
     new InitialisedReadModel(lists),
     new InitialisedReadModel(users),
+    new InitialisedReadModel(articleExpressions),
   ];
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
