@@ -1,3 +1,5 @@
+import * as Docmaps from 'docmaps-sdk';
+
 export type Participant = PeerReviewer | SeniorEditor | Editor;
 
 type PeerReviewer = {
@@ -50,16 +52,16 @@ type Step = {
   actions: ReadonlyArray<Action>,
 };
 
-type Publisher = {
-  id: string,
-  name: string,
-  logo: string,
-  homepage: string,
-  account: {
-    id: string,
-    service: 'https://sciety.org',
-  },
-};
+// type Publisher = {
+//   id: string,
+//   name: string,
+//   logo: string,
+//   homepage: string,
+//   account: {
+//     id: string,
+//     service: 'https://sciety.org',
+//   },
+// };
 
 export type Docmap = {
   '@context': string,
@@ -67,7 +69,7 @@ export type Docmap = {
   type: 'docmap',
   created: string,
   updated: string,
-  publisher: Publisher,
+  publisher: Docmaps.PublisherT,
   'first-step': '_:b0',
   steps: Record<string, Step>,
 };

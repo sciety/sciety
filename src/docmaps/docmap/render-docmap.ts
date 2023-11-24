@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
+import { URL } from 'url';
 import { Docmap } from './docmap-type';
 import { Evaluation } from './evaluation';
 import { DocmapViewModel } from './construct-docmap-view-model';
@@ -48,11 +49,11 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   publisher: {
     id: viewModel.group.homepage,
     name: viewModel.group.name,
-    logo: `https://sciety.org${viewModel.group.avatarPath}`,
-    homepage: viewModel.group.homepage,
+    logo: new URL(`https://sciety.org${viewModel.group.avatarPath}`),
+    homepage: new URL(viewModel.group.homepage),
     account: {
       id: publisherAccountId(viewModel.group),
-      service: 'https://sciety.org',
+      service: new URL('https://sciety.org'),
     },
   },
   'first-step': '_:b0',
