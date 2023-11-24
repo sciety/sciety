@@ -15,9 +15,7 @@ type HardcodedReadModel = Map<string, RNEA.ReadonlyNonEmptyArray<ReadModelEntry>
 
 export type ReadModel = HardcodedReadModel;
 
-export const initialState = (): ReadModel => (new Map());
-
-export const hardcodedReadModel: HardcodedReadModel = new Map();
+const hardcodedReadModel: HardcodedReadModel = new Map();
 
 hardcodedReadModel.set(
   'uuid:30374f3c-92dc-4692-aac0-ed95883b9ea0',
@@ -34,6 +32,8 @@ hardcodedReadModel.set(
     version: 2,
   }],
 );
+
+export const initialState = (): ReadModel => hardcodedReadModel;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => readmodel;

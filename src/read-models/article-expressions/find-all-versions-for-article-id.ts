@@ -2,7 +2,7 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
-import { ReadModel, ReadModelEntry, hardcodedReadModel } from './handle-event';
+import { ReadModel, ReadModelEntry } from './handle-event';
 import { ArticleId } from '../../types/article-id';
 
 type FindAllVersionsForArticleId = (
@@ -12,6 +12,6 @@ type FindAllVersionsForArticleId = (
 export const findAllVersionsForArticleId = (
   readModel: ReadModel,
 ): FindAllVersionsForArticleId => (articleId) => pipe(
-  hardcodedReadModel.get(articleId.value),
+  readModel.get(articleId.value),
   O.fromNullable,
 );
