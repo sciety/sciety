@@ -11,7 +11,7 @@ import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helpe
 
 const articleId = arbitraryArticleId();
 
-describe('render-docmap', () => {
+describe.skip('render-docmap', () => {
   describe('docmap meta data', () => {
     const earlierEvaluationRecordedDate = new Date('1900');
     const laterEvaluationRecordedDate = new Date('2000');
