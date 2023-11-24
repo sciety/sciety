@@ -17,18 +17,29 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
+import {articleExpressions} from '../../../read-models/article-expressions';
 
 type Params = {
   articleId: ArticleId,
   user: O.Option<{ id: UserId }>,
 };
 
+const buildArticleUrl = (dependencies: Dependencies, params: Params) => pipe(
+  params.articleId,
+  dependencies.findExpressionOfArticleAsDoi,
+  O.match(
+    () => '',
+    (articleExpressionDoi) => `https://doi.org/${articleExpressionDoi.value}`,
+  ),
+);
+
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.articleId,
   dependencies.findExpressionOfArticleAsDoi,
-  dependencies.fetchArticle,
+  TE.fromOption(() => DE.notFound),
+  TE.chain(dependencies.fetchArticle),
   TE.chainW((articleDetails) => pipe(
     {
       feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(
@@ -44,7 +55,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       titleLanguageCode: detectLanguage(articleDetails.title),
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, params.articleId),
-      fullArticleUrl: `https://doi.org/${dependencies.findExpressionOfArticleAsDoi(params.articleId).value}`,
+      fullArticleUrl: buildArticleUrl(dependencies, params),
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(dependencies)(params.articleId),
