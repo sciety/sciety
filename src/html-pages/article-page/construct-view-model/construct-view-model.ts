@@ -17,25 +17,17 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { DoiOfArticleExpression } from '../../../types/doi-of-article-expression';
 
 type Params = {
   articleId: ArticleId,
   user: O.Option<{ id: UserId }>,
 };
 
-export const findExpressionOfArticleAsDoi = (articleId: ArticleId): DoiOfArticleExpression => {
-  if (articleId.value.startsWith('uuid:')) {
-    return new DoiOfArticleExpression('10.1099/acmi.0.000530.v1');
-  }
-  return articleId;
-};
-
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.articleId,
-  findExpressionOfArticleAsDoi,
+  dependencies.findExpressionOfArticleAsDoi,
   dependencies.fetchArticle,
   TE.chainW((articleDetails) => pipe(
     {
@@ -52,7 +44,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       titleLanguageCode: detectLanguage(articleDetails.title),
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, params.articleId),
-      fullArticleUrl: `https://doi.org/${findExpressionOfArticleAsDoi(params.articleId).value}`,
+      fullArticleUrl: `https://doi.org/${dependencies.findExpressionOfArticleAsDoi(params.articleId).value}`,
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
       listedIn: constructListedIn(dependencies)(params.articleId),
