@@ -17,7 +17,6 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import {articleExpressions} from '../../../read-models/article-expressions';
 
 type Params = {
   articleId: ArticleId,

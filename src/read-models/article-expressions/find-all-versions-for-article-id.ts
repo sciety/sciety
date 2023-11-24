@@ -2,9 +2,8 @@
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
+import { ReadModel, ReadModelEntry, hardcodedReadModel } from './handle-event';
 import { ArticleId } from '../../types/article-id';
-import { ReadModelEntry, hardcodedReadModel } from './hardcoded-read-model';
 
 type FindAllVersionsForArticleId = (
   articleId: ArticleId,

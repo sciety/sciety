@@ -4,8 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { ArticleId } from '../../types/article-id';
 import { ArticleExpressionDoi } from '../../types/article-expression-doi';
-import { ReadModel } from './handle-event';
-import { hardcodedReadModel } from './hardcoded-read-model';
+import { ReadModel, hardcodedReadModel } from './handle-event';
 
 export const findExpressionOfArticleAsDoi = (
   readModel: ReadModel,
