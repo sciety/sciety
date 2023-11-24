@@ -12,7 +12,7 @@ type FindAllVersionsForArticleId = (
 
 export const findAllVersionsForArticleId = (
   readModel: ReadModel,
-): FindAllVersionsForArticleId => () => pipe(
-  hardcodedReadModel.get('uuid:30374f3c-92dc-4692-aac0-ed95883b9ea0'),
+): FindAllVersionsForArticleId => (articleId) => pipe(
+  hardcodedReadModel.get(articleId.value),
   O.fromNullable,
 );
