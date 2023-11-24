@@ -52,4 +52,4 @@ spec:
             command:
             - /bin/bash 
             - -c
-            - 'yum install --assumeyes --quiet postgresql && psql -A -t -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > events.csv && aws s3 cp events.csv "s3://sciety-data-extractions/events-from-cronjob.csv"'
+            - 'yum install --assumeyes --quiet postgresql && psql -A -t -c "COPY events TO STDOUT WITH (FORMAT CSV, HEADER);" > events.csv && aws s3 cp events.csv "s3://sciety-data-extractions/events-from-cronjob.csv"'
