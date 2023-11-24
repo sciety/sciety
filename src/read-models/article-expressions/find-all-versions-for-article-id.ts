@@ -5,8 +5,14 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { ArticleId } from '../../types/article-id';
+import { DoiOfArticleExpression } from '../../types/doi-of-article-expression';
 
-type ReadModelEntry = { source: URL, publishedAt: Date, version: number };
+type ReadModelEntry = {
+  source: URL,
+  articleExpressionDoi: DoiOfArticleExpression,
+  publishedAt: Date,
+  version: number,
+};
 
 type HardcodedReadModel = Map<string, RNEA.ReadonlyNonEmptyArray<ReadModelEntry>>;
 
@@ -16,11 +22,13 @@ hardcodedReadModel.set(
   'uuid:30374f3c-92dc-4692-aac0-ed95883b9ea0',
   [{
     source: new URL('https://doi.org/10.1099/acmi.0.000530.v1'),
+    articleExpressionDoi: new DoiOfArticleExpression('10.1099/acmi.0.000530.v1'),
     publishedAt: new Date('2022-11-29'),
     version: 1,
   },
   {
     source: new URL('https://doi.org/10.1099/acmi.0.000530.v2'),
+    articleExpressionDoi: new DoiOfArticleExpression('10.1099/acmi.0.000530.v2'),
     publishedAt: new Date('2023-10-20'),
     version: 2,
   }],
