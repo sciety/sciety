@@ -1,15 +1,16 @@
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
-import { ArticleId } from '../../../types/article-id';
+import { articleIdCodec } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
-import { UserId } from '../../../types/user-id';
+import { userIdCodec } from '../../../types/user-id';
 import { constructListedIn } from './construct-listed-in';
 import { constructUserListManagement } from './construct-user-list-management';
 import { constructRelatedArticles } from './construct-related-articles';
@@ -18,10 +19,12 @@ import { constructCurationStatements } from '../../../shared-components/curation
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 
-type Params = {
-  doi: ArticleId,
-  user: O.Option<{ id: UserId }>,
-};
+export const paramsCodec = t.type({
+  doi: articleIdCodec,
+  user: tt.optionFromNullable(t.type({ id: userIdCodec })),
+});
+
+type Params = t.TypeOf<typeof paramsCodec>;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
