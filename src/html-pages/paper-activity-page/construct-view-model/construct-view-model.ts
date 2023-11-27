@@ -39,10 +39,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.chainW((articleDetails) => pipe(
     {
       feedItemsByDateDescending: (
-        getArticleFeedEventsByDateDescending(dependencies)(params.paperId, articleDetails.server)
+        getArticleFeedEventsByDateDescending(dependencies)(articleDetails.doi, articleDetails.server)
       ),
-      relatedArticles: constructRelatedArticles(params.paperId, dependencies),
-      curationStatements: constructCurationStatements(dependencies, params.paperId),
+      relatedArticles: constructRelatedArticles(articleDetails.doi, dependencies),
+      curationStatements: constructCurationStatements(dependencies, articleDetails.doi),
     },
     sequenceS(T.ApplyPar),
     TE.rightTask,
@@ -50,14 +50,14 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       ...articleDetails,
       titleLanguageCode: detectLanguage(articleDetails.title),
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
-      userListManagement: constructUserListManagement(params.user, dependencies, params.paperId),
+      userListManagement: constructUserListManagement(params.user, dependencies, articleDetails.doi),
       fullArticleUrl: pipe(
         params.paperId.value as PaperId,
         toFullArticleUrl,
       ),
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
-      listedIn: constructListedIn(dependencies)(params.paperId),
+      listedIn: constructListedIn(dependencies)(articleDetails.doi),
       relatedArticles,
       curationStatements: pipe(
         curationStatements,
@@ -67,7 +67,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
         })),
       ),
-      reviewingGroups: constructReviewingGroups(dependencies, params.paperId),
+      reviewingGroups: constructReviewingGroups(dependencies, articleDetails.doi),
     })),
   )),
 );
