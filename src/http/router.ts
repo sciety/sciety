@@ -167,17 +167,17 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
-    '/articles/:doi(10\\..+)',
+    '/articles/:paperId(10\\..+)',
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/articles/activity/${context.params.doi}`);
+      context.redirect(`/articles/activity/${context.params.paperId}`);
 
       await next();
     },
   );
 
   router.get(
-    '/articles/activity/:doi(.+)',
+    '/articles/activity/:paperId(.+)',
     pageHandler(adapters, paperActivityPage(adapters), fullWidthPageLayout),
   );
 

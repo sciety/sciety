@@ -41,7 +41,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.createList(createListCommand);
         viewModel = await pipe(
           {
-            doi: articleId,
+            paperId: articleId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -67,7 +67,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(articleId, list.id);
         viewModel = await pipe(
           {
-            doi: articleId,
+            paperId: articleId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -103,7 +103,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
         viewModel = await pipe(
           {
-            doi: articleId,
+            paperId: articleId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
