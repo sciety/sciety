@@ -19,8 +19,10 @@ import { constructCurationStatements } from '../../../shared-components/curation
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 
+const paperIdCodec = articleIdCodec;
+
 export const paramsCodec = t.type({
-  paperId: articleIdCodec,
+  paperId: paperIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
