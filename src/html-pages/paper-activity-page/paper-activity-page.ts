@@ -11,16 +11,18 @@ import { Dependencies } from './construct-view-model/dependencies';
 import { articleIdCodec } from '../../types/article-id';
 import { userIdCodec } from '../../types/user-id';
 
-const articlePageParams = t.type({
+const paramsCodec = t.type({
   doi: articleIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
-type ArticlePage = (dependencies: Dependencies) => (params: unknown) => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
+type PaperActivityPage = (dependencies: Dependencies)
+=> (params: unknown)
+=> TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
-export const articlePage: ArticlePage = (dependencies) => (params) => pipe(
+export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
   params,
-  articlePageParams.decode,
+  paramsCodec.decode,
   TE.fromEither,
   TE.mapLeft(() => DE.notFound),
   TE.chain(constructViewModel(dependencies)),

@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { EvaluationFeedItem } from '../../../src/html-pages/article-page/view-model';
+import { EvaluationFeedItem } from '../../../src/html-pages/paper-activity-page/view-model';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';

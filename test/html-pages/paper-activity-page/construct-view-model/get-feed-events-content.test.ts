@@ -1,7 +1,7 @@
 import {
   FeedEvent,
   getFeedEventsContent,
-} from '../../../../src/html-pages/article-page/construct-view-model/get-feed-events-content';
+} from '../../../../src/html-pages/paper-activity-page/construct-view-model/get-feed-events-content';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../../framework';

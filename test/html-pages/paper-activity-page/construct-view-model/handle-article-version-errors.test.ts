@@ -1,6 +1,6 @@
 import { URL } from 'url';
-import { handleArticleVersionErrors } from '../../../../src/html-pages/article-page/construct-view-model/handle-article-version-errors';
-import { FeedItem } from '../../../../src/html-pages/article-page/view-model';
+import { handleArticleVersionErrors } from '../../../../src/html-pages/paper-activity-page/construct-view-model/handle-article-version-errors';
+import { FeedItem } from '../../../../src/html-pages/paper-activity-page/view-model';
 import * as RFI from '../evaluation-feed-item.helper';
 
 describe('handle-article-version-errors', () => {

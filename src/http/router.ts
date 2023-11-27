@@ -31,7 +31,7 @@ import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
-import { articlePage } from '../html-pages/article-page';
+import { paperActivityPage } from '../html-pages/paper-activity-page';
 import * as GLP from '../html-pages/group-page/group-lists-page';
 import * as GAP from '../html-pages/group-page/group-about-page';
 import * as GFP from '../html-pages/group-page/group-followers-page';
@@ -178,7 +178,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/articles/activity/:doi(.+)',
-    pageHandler(adapters, articlePage(adapters), fullWidthPageLayout),
+    pageHandler(adapters, paperActivityPage(adapters), fullWidthPageLayout),
   );
 
   router.get(

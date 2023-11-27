@@ -14,7 +14,7 @@ import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helpe
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
-import { Dependencies } from '../../../src/html-pages/article-page/construct-view-model/dependencies';
+import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;

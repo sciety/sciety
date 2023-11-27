@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { feedSummary } from '../../../../src/html-pages/article-page/construct-view-model/feed-summary';
+import { feedSummary } from '../../../../src/html-pages/paper-activity-page/construct-view-model/feed-summary';
 import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../../helpers';
 import * as RFI from '../evaluation-feed-item.helper';
 

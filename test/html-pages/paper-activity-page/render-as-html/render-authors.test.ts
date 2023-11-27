@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { renderAuthors } from '../../../../src/html-pages/article-page/render-as-html/render-authors';
+import { renderAuthors } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-authors';
 import { arbitraryString } from '../../../helpers';
 
 describe('render-authors', () => {

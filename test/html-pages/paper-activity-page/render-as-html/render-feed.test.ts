@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
-import { renderFeed } from '../../../../src/html-pages/article-page/render-as-html/render-feed';
+import { renderFeed } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-feed';
 import * as RFI from '../evaluation-feed-item.helper';
 
 describe('render-feed', () => {

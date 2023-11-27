@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { renderEvaluationFeedItem } from '../../../../src/html-pages/article-page/render-as-html/render-evaluation-feed-item';
-import { missingFullTextAndSourceLink } from '../../../../src/html-pages/article-page/render-as-html/static-messages';
+import { renderEvaluationFeedItem } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-evaluation-feed-item';
+import { missingFullTextAndSourceLink } from '../../../../src/html-pages/paper-activity-page/render-as-html/static-messages';
 import { evaluationLocatorCodec } from '../../../../src/types/evaluation-locator';
 import { arbitraryNumber, arbitraryWord } from '../../../helpers';
 import * as RFI from '../evaluation-feed-item.helper';
