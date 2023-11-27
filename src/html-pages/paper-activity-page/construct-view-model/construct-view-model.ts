@@ -28,7 +28,9 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const toFullArticleUrl = (paperId: string) => `https://doi.org/${paperId}`;
+type PaperId = string & { readonly PaperId: unique symbol };
+
+const toFullArticleUrl = (paperId: PaperId) => `https://doi.org/${paperId}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -50,7 +52,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, params.paperId),
       fullArticleUrl: pipe(
-        params.paperId.value,
+        params.paperId.value as PaperId,
         toFullArticleUrl,
       ),
       feedItemsByDateDescending,
