@@ -60,7 +60,7 @@
     "@types/pg": "^8.10.9",
     "@types/sanitize-html": "^2.9.4",
     "@types/uuid": "^9.0.7",
-    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.11.0",
     "backstopjs": "^6.2.2",
     "browserslist": "^4.22.1",
