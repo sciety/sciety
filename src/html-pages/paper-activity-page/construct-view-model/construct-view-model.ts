@@ -19,16 +19,25 @@ import { constructCurationStatements } from '../../../shared-components/curation
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 
-const paperIdCodec = articleIdCodec;
+type PaperIdBrand = {
+  readonly PaperId: unique symbol,
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const paperIdCodec = t.brand(
+  t.string,
+  (input): input is t.Branded<string, PaperIdBrand> => input.length > 0,
+  'PaperId',
+);
+
+type PaperId = t.TypeOf<typeof paperIdCodec>;
 
 export const paramsCodec = t.type({
-  paperId: paperIdCodec,
+  paperId: articleIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
 type Params = t.TypeOf<typeof paramsCodec>;
-
-type PaperId = string & { readonly PaperId: unique symbol };
 
 const toFullArticleUrl = (paperId: PaperId) => `https://doi.org/${paperId}`;
 
