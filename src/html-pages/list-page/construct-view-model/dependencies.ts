@@ -1,16 +1,7 @@
 import { Queries } from '../../../read-models';
-import {
-  FetchArticle,
-  FetchRelatedArticles,
-  FetchReview,
-  FindVersionsForArticleDoi,
-  Logger,
-} from '../../../shared-ports';
+import { Logger } from '../../../shared-ports';
+import { ExternalQueries } from '../../../third-parties';
 
-export type Dependencies = Queries & {
-  fetchArticle: FetchArticle,
-  fetchRelatedArticles: FetchRelatedArticles,
-  fetchReview: FetchReview,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+export type Dependencies = Queries & ExternalQueries & {
   logger: Logger,
 };

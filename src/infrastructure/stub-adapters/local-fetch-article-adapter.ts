@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { FetchArticle } from '../../shared-ports';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { ExternalQueries } from '../../third-parties';
 
-export const localFetchArticleAdapter: FetchArticle = (doi) => TE.right({
+export const localFetchArticleAdapter: ExternalQueries['fetchArticle'] = (doi) => TE.right({
   abstract: sanitise(toHtmlFragment(`
     <p>
       Exact mechanisms of heat shock induced lifespan extension, while documented across species, are still not well understood. Here we put forth evidence that fully functional peroxisomes are required for the activation of the canonical heat shock response and heat-induced hormesis in

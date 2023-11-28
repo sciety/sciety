@@ -8,7 +8,7 @@ import { flow, pipe } from 'fp-ts/function';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from './parse-crossref-article';
-import { FetchArticle, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
@@ -16,6 +16,7 @@ import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-frag
 import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { ExternalQueries } from '../external-queries';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: ArticleId) => {
   if (response.length === 0) {
@@ -80,7 +81,7 @@ export const fetchCrossrefArticle = (
   queryExternalService: QueryExternalService,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-): FetchArticle => (doi) => {
+): ExternalQueries['fetchArticle'] => (doi) => {
   const url = `https://api.crossref.org/works/${doi.value}/transform`;
   const headers: Record<string, string> = {
     Accept: 'application/vnd.crossref.unixref+xml',
