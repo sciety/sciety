@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FetchReview } from '../../shared-ports';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
+import { ExternalQueries } from '../../third-parties';
 
 const htmlFullText = `
 <h1>Stubbed evaluation content</h1>
@@ -91,7 +91,7 @@ please follow <a href="https://scicrunch.org/ASWG/about/References">this link</a
 </div>
 `;
 
-export const fetchReview: FetchReview = () => TE.right({
+export const fetchReview: ExternalQueries['fetchReview'] = () => TE.right({
   url: new URL('http://example.com'),
   fullText: pipe(
     htmlFullText,

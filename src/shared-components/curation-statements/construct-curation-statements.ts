@@ -13,12 +13,12 @@ import { ArticleId } from '../../types/article-id';
 import { detectLanguage } from '../lang-attribute';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
-import { FetchReview, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ViewModel } from './view-model';
+import { ExternalQueries } from '../../third-parties';
 
-export type Dependencies = Queries & {
-  fetchReview: FetchReview,
+export type Dependencies = Queries & ExternalQueries & {
   logger: Logger,
 };
 
