@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { SearchForArticles } from '../../../../src/shared-ports/search-for-articles';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -11,6 +10,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { ArticleId } from '../../../../src/types/article-id';
+import { ExternalQueries } from '../../../../src/third-parties';
 
 const searchForArticlesReturningResults = (
   articleIds: ReadonlyArray<ArticleId>,
@@ -52,7 +52,7 @@ describe('construct-view-model', () => {
   const page = O.none;
   const evaluatedOnly = false;
 
-  const getViewModel = async (searchForArticles: SearchForArticles, itemsPerPage: number = 1) => pipe(
+  const getViewModel = async (searchForArticles: ExternalQueries['searchForArticles'], itemsPerPage: number = 1) => pipe(
     {
       query, cursor, page, evaluatedOnly,
     },

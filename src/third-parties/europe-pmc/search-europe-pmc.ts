@@ -11,9 +11,10 @@ import { articleIdCodec } from '../../types/article-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { Logger, SearchForArticles } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import { constructQueryUrl } from './construct-query-url';
 import { QueryExternalService } from '../query-external-service';
+import { ExternalQueries } from '../external-queries';
 
 const europePmcPublisher = t.union(
   [
@@ -119,7 +120,7 @@ const getFromUrl = (queryExternalService: QueryExternalService, logger: Logger) 
 export const searchEuropePmc = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): SearchForArticles => (pageSize) => (
+): ExternalQueries['searchForArticles'] => (pageSize) => (
   query,
   cursor,
   evaluatedOnly,

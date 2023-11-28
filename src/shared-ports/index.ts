@@ -16,7 +16,6 @@ export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
 export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
-export { SearchForArticles } from './search-for-articles';
 export { FindVersionsForArticleDoi } from './find-versions-for-article-doi';
 export { FetchRelatedArticles } from './fetch-related-articles';
 

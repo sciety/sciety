@@ -4,9 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { ArticleId } from '../../types/article-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { SearchForArticles } from '../../shared-ports';
+import { ExternalQueries } from '../../third-parties';
 
-export const searchEuropePmc: SearchForArticles = () => () => TE.right({
+export const searchEuropePmc: ExternalQueries['searchForArticles'] = () => () => TE.right({
   items: [
     {
       articleId: new ArticleId('10.1101/2022.12.15.520598'),
