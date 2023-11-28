@@ -30,10 +30,10 @@ const paperIdCodec = t.brand(
   'PaperId',
 );
 
-type PaperId = t.TypeOf<typeof paperIdCodec>;
+export type PaperId = t.TypeOf<typeof paperIdCodec>;
 
 export const paramsCodec = t.type({
-  paperId: articleIdCodec,
+  paperId: paperIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
@@ -43,8 +43,17 @@ const toFullArticleUrl = (paperId: PaperId) => `https://doi.org/${paperId}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
+const toPaperExpressionDoi = (paperId: PaperId) => pipe(
+  paperId,
+  articleIdCodec.decode,
+  TE.fromEither,
+  TE.mapLeft(() => DE.unavailable),
+);
+
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  dependencies.fetchArticle(params.paperId),
+  params.paperId,
+  toPaperExpressionDoi,
+  TE.chain(dependencies.fetchArticle),
   TE.chainW((articleDetails) => pipe(
     {
       feedItemsByDateDescending: (
@@ -61,7 +70,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, articleDetails.doi),
       fullArticleUrl: pipe(
-        params.paperId.value as PaperId,
+        params.paperId,
         toFullArticleUrl,
       ),
       feedItemsByDateDescending,

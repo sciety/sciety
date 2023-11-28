@@ -12,10 +12,13 @@ import { LoggedInUserListManagement } from '../../../../src/html-pages/paper-act
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { PaperId } from '../../../../src/html-pages/paper-activity-page/construct-view-model/construct-view-model';
+import { ArticleId } from '../../../../src/types/article-id';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  const articleId = arbitraryArticleId();
+  const paperId = arbitraryArticleId().value as PaperId;
+  const doiFromPaperId = new ArticleId(paperId);
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -41,7 +44,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.createList(createListCommand);
         viewModel = await pipe(
           {
-            paperId: articleId,
+            paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -64,10 +67,10 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-        await framework.commandHelpers.addArticleToList(articleId, list.id);
+        await framework.commandHelpers.addArticleToList(doiFromPaperId, list.id);
         viewModel = await pipe(
           {
-            paperId: articleId,
+            paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -100,10 +103,10 @@ describe('construct-view-model', () => {
           ownerId: LOID.fromUserId(createUserAccountCommand.userId),
         };
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+        await framework.commandHelpers.addArticleToList(doiFromPaperId, createListCommand.listId);
         viewModel = await pipe(
           {
-            paperId: articleId,
+            paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
