@@ -23,6 +23,8 @@ export type ArticleDetails = {
 
 type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
+type FetchPaperExpression = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
+
 type RelatedArticle = {
   articleId: ArticleId,
   title: SanitisedHtmlFragment,
@@ -48,6 +50,7 @@ type SearchForArticles = (
 
 export type ExternalQueries = {
   fetchArticle: FetchArticle,
+  fetchPaperExpression: FetchPaperExpression,
   fetchRelatedArticles: FetchRelatedArticles,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,

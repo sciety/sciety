@@ -14,9 +14,11 @@ import {
 import { ArticleServer } from '../../src/types/article-server';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryArticleServer } from '../types/article-server.helper';
+import { FetchPaperExpression } from '../../src/shared-ports/fetch-paper-expression';
 
 export type HappyPathThirdPartyAdapters = {
   fetchArticle: FetchArticle,
+  fetchPaperExpression: FetchPaperExpression,
   fetchRelatedArticles: FetchRelatedArticles,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
@@ -27,6 +29,13 @@ export type HappyPathThirdPartyAdapters = {
 
 export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters => ({
   fetchArticle: (doi) => TE.right({
+    doi,
+    authors: O.none,
+    title: sanitise(toHtmlFragment(arbitraryString())),
+    abstract: sanitise(toHtmlFragment(arbitraryString())),
+    server: 'biorxiv' as ArticleServer,
+  }),
+  fetchPaperExpression: (doi) => TE.right({
     doi,
     authors: O.none,
     title: sanitise(toHtmlFragment(arbitraryString())),
