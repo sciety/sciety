@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
-import { FetchStaticFile } from '../../shared-ports';
+import { ExternalQueries } from '../../third-parties';
 
-export const fetchStaticFile: FetchStaticFile = () => TE.right(`
+export const fetchStaticFile: ExternalQueries['fetchStaticFile'] = () => TE.right(`
 <div lang="pt">
 
 ## Resumo
