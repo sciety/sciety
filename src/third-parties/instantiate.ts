@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
-import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -17,12 +16,13 @@ import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
 import { ArticleId } from '../types/article-id';
 import { QueryExternalService } from './query-external-service';
-import { ExternalQueries, PaperExpressionLocator } from './external-queries';
+import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
 import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
+import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-crossref-article';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
@@ -67,9 +67,10 @@ export const instantiate = (
 
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
-    fetchPaperExpressionFrontMatter: (paperExpressionLocator: PaperExpressionLocator) => pipe(
-      new ArticleId(paperExpressionLocator),
-      fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
+    fetchPaperExpressionFrontMatter: fetchPaperExpressionFrontMatterFromCrossref(
+      queryCrossrefService,
+      logger,
+      crossrefApiBearerToken,
     ),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({

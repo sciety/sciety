@@ -103,3 +103,12 @@ export const fetchCrossrefArticle = (
     TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(response, logger, doi)),
   );
 };
+
+export const fetchPaperExpressionFrontMatterFromCrossref = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+  crossrefApiBearerToken: O.Option<string>,
+): ExternalQueries['fetchPaperExpressionFrontMatter'] => (paperExpressionLocator) => pipe(
+  new ArticleId(paperExpressionLocator),
+  fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
+);
