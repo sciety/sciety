@@ -12,6 +12,7 @@ export const stubAdapters = {
   fetchStaticFile,
   searchForArticles: searchEuropePmc,
   findVersionsForArticleDoi,
+  findVersionInformationForAllPaperExpressions: findVersionsForArticleDoi,
   fetchReview,
   fetchRelatedArticles,
 };

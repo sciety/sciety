@@ -65,6 +65,7 @@ export type ExternalQueries = {
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  findVersionInformationForAllPaperExpressions: FindVersionsForArticleDoi,
   getArticleSubjectArea: GetArticleSubjectArea,
   searchForArticles: SearchForArticles,
 };

@@ -91,6 +91,10 @@ export const instantiate = (
     fetchStaticFile: fetchStaticFile(logger),
     searchForArticles: searchEuropePmc(queryExternalService, logger),
     findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(queryExternalService, logger),
+    findVersionInformationForAllPaperExpressions: findVersionsForArticleDoiFromSupportedServers(
+      queryExternalService,
+      logger,
+    ),
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
   };
 };
