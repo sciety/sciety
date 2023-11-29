@@ -21,12 +21,20 @@ export type ArticleDetails = {
   server: ArticleServer,
 };
 
+type PaperExpressionFrontMatter = {
+  abstract: SanitisedHtmlFragment,
+  authors: ArticleAuthors,
+  doi: ArticleId,
+  title: SanitisedHtmlFragment,
+  server: ArticleServer,
+};
+
 type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
 type PaperExpressionLocator = string & { readonly PaperExpressionLocator: unique symbol };
 
 type FetchPaperExpressionFrontMatter = (paperExpressionLocator: PaperExpressionLocator)
-=> TE.TaskEither<DE.DataError, ArticleDetails>;
+=> TE.TaskEither<DE.DataError, PaperExpressionFrontMatter>;
 
 type RelatedArticle = {
   articleId: ArticleId,
