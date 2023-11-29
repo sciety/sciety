@@ -22,7 +22,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     abstract: sanitise(toHtmlFragment(arbitraryString())),
     server: 'biorxiv' as ArticleServer,
   }),
-  fetchPaperExpression: (doi) => TE.right({
+  fetchPaperExpressionFrontMatter: (doi) => TE.right({
     doi,
     authors: O.none,
     title: sanitise(toHtmlFragment(arbitraryString())),

@@ -66,7 +66,7 @@ export const instantiate = (
 
   return {
     fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
-    fetchPaperExpression: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
+    fetchPaperExpressionFrontMatter: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({
       doi: fetchDoiEvaluationByPublisher(
