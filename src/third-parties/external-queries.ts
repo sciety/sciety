@@ -52,6 +52,11 @@ type FindVersionsForArticleDoi = (
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
+type FindVersionInformationForAllPaperExpressions = (
+  doi: ArticleId,
+  server: ArticleServer
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
+
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
 
 type SearchForArticles = (
@@ -65,7 +70,7 @@ export type ExternalQueries = {
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  findVersionInformationForAllPaperExpressions: FindVersionsForArticleDoi,
+  findVersionInformationForAllPaperExpressions: FindVersionInformationForAllPaperExpressions,
   getArticleSubjectArea: GetArticleSubjectArea,
   searchForArticles: SearchForArticles,
 };
