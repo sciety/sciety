@@ -13,7 +13,7 @@ import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/wri
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { ArticleId } from '../../../../src/types/article-id';
-import { PaperId } from '../../../../src/html-pages/paper-activity-page/construct-view-model/paper-id';
+import { PaperId } from '../../../../src/third-parties';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

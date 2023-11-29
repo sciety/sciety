@@ -17,8 +17,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { PaperExpressionLocator } from '../../../third-parties';
-import { PaperId, paperIdCodec } from './paper-id';
+import { PaperExpressionLocator, PaperId, paperIdCodec } from '../../../third-parties';
 
 export const paramsCodec = t.type({
   paperId: paperIdCodec,

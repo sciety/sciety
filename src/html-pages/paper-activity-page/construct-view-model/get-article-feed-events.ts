@@ -12,7 +12,7 @@ import { ArticleServer } from '../../../types/article-server';
 import { ArticleId } from '../../../types/article-id';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
-import { PaperId } from './paper-id';
+import { PaperId } from '../../../third-parties';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
