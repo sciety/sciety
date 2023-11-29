@@ -31,7 +31,7 @@ type PaperExpressionFrontMatter = {
 
 type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
-type PaperExpressionLocator = string & { readonly PaperExpressionLocator: unique symbol };
+export type PaperExpressionLocator = string & { readonly PaperExpressionLocator: unique symbol };
 
 type FetchPaperExpressionFrontMatter = (paperExpressionLocator: PaperExpressionLocator)
 => TE.TaskEither<DE.DataError, PaperExpressionFrontMatter>;
