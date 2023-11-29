@@ -34,6 +34,16 @@ const findVersionsForArticleDoiFromSupportedServers = (
   return TO.none;
 };
 
+const findVersionInformationForAllPaperExpressionsFromSupportedServers = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+): ExternalQueries['findVersionInformationForAllPaperExpressions'] => (paperId, server) => {
+  if (server === 'biorxiv' || server === 'medrxiv') {
+    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(new ArticleId(paperId), server);
+  }
+  return TO.none;
+};
+
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
   return redisClient !== undefined
@@ -91,7 +101,7 @@ export const instantiate = (
     fetchStaticFile: fetchStaticFile(logger),
     searchForArticles: searchEuropePmc(queryExternalService, logger),
     findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(queryExternalService, logger),
-    findVersionInformationForAllPaperExpressions: findVersionsForArticleDoiFromSupportedServers(
+    findVersionInformationForAllPaperExpressions: findVersionInformationForAllPaperExpressionsFromSupportedServers(
       queryExternalService,
       logger,
     ),

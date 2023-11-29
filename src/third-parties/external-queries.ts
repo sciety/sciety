@@ -13,6 +13,7 @@ import { SearchResults } from '../shared-ports/search-for-articles';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { PaperExpressionLocator } from './paper-expression-locator';
+import { PaperId } from './paper-id';
 
 export type ArticleDetails = {
   abstract: SanitisedHtmlFragment,
@@ -53,7 +54,7 @@ type FindVersionsForArticleDoi = (
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 type FindVersionInformationForAllPaperExpressions = (
-  doi: ArticleId,
+  paperId: PaperId,
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
