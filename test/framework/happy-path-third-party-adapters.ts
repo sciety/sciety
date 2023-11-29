@@ -11,6 +11,7 @@ import { ArticleServer } from '../../src/types/article-server';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryArticleServer } from '../types/article-server.helper';
 import { ExternalQueries } from '../../src/third-parties';
+import { ArticleId } from '../../src/types/article-id';
 
 export type HappyPathThirdPartyAdapters = ExternalQueries;
 
@@ -22,8 +23,8 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     abstract: sanitise(toHtmlFragment(arbitraryString())),
     server: 'biorxiv' as ArticleServer,
   }),
-  fetchPaperExpressionFrontMatter: (doi) => TE.right({
-    doi,
+  fetchPaperExpressionFrontMatter: (paperExpressionLocator) => TE.right({
+    doi: new ArticleId(paperExpressionLocator),
     authors: O.none,
     title: sanitise(toHtmlFragment(arbitraryString())),
     abstract: sanitise(toHtmlFragment(arbitraryString())),
