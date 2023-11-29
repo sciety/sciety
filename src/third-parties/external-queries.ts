@@ -23,6 +23,9 @@ export type ArticleDetails = {
 
 type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type PaperExpressionLocator = string & { readonly PaperExpressionLocator: unique symbol };
+
 type FetchPaperExpressionFrontMatter = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
 type RelatedArticle = {
