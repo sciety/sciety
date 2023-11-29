@@ -12,6 +12,7 @@ import { SubjectArea } from '../types/subject-area';
 import { SearchResults } from '../shared-ports/search-for-articles';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
+import { PaperExpressionLocator } from './paper-expression-locator';
 
 export type ArticleDetails = {
   abstract: SanitisedHtmlFragment,
@@ -30,10 +31,6 @@ type PaperExpressionFrontMatter = {
 };
 
 type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
-
-type PaperExpressionLocator = string & { readonly PaperExpressionLocator: unique symbol };
-
-export const fromDoi = (doi: string): PaperExpressionLocator => `doi:${doi}` as PaperExpressionLocator;
 
 type FetchPaperExpressionFrontMatter = (paperExpressionLocator: PaperExpressionLocator)
 => TE.TaskEither<DE.DataError, PaperExpressionFrontMatter>;

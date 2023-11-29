@@ -17,7 +17,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { fromDoi } from '../../../third-parties/external-queries';
+import { PaperExpressionLocator } from '../../../third-parties';
 
 type PaperIdBrand = {
   readonly PaperId: unique symbol,
@@ -43,7 +43,7 @@ const toFullArticleUrl = (paperId: PaperId) => `https://doi.org/${paperId}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const findPaperExpressionLocatorAssumingPaperIdIsADoi = (paperId: PaperId) => fromDoi(paperId);
+const findPaperExpressionLocatorAssumingPaperIdIsADoi = (paperId: PaperId) => PaperExpressionLocator.fromDoi(paperId);
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.paperId,
