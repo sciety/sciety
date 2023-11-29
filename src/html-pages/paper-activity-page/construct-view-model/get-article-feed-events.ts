@@ -12,6 +12,7 @@ import { ArticleServer } from '../../../types/article-server';
 import { ArticleId } from '../../../types/article-id';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
+import { PaperId } from './paper-id';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -24,17 +25,18 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 );
 
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
-=> (doi: ArticleId, server: ArticleServer)
+=> (paperId: PaperId, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   dependencies,
 ) => (
-  doi, server,
+  paperId, server,
 ) => pipe(
-  {
+  new ArticleId(paperId),
+  (articleId) => ({
     evaluations: pipe(
-      dependencies.getEvaluationsForArticle(doi),
+      dependencies.getEvaluationsForArticle(articleId),
       T.of,
       T.map(RA.map((evaluation) => ({
         ...evaluation,
@@ -42,7 +44,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findVersionsForArticleDoi(doi, server),
+      dependencies.findVersionsForArticleDoi(articleId, server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({
@@ -51,7 +53,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
         })),
       ),
     ),
-  },
+  }),
   sequenceS(T.ApplyPar),
   T.map((feeds) => [...feeds.evaluations, ...feeds.versions]),
   T.map(RA.sort(byDateDescending)),

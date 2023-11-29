@@ -18,19 +18,7 @@ import { constructCurationStatements } from '../../../shared-components/curation
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 import { PaperExpressionLocator } from '../../../third-parties';
-
-type PaperIdBrand = {
-  readonly PaperId: unique symbol,
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const paperIdCodec = t.brand(
-  t.string,
-  (input): input is t.Branded<string, PaperIdBrand> => input.length > 0,
-  'PaperId',
-);
-
-export type PaperId = t.TypeOf<typeof paperIdCodec>;
+import { PaperId, paperIdCodec } from './paper-id';
 
 export const paramsCodec = t.type({
   paperId: paperIdCodec,
@@ -52,7 +40,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.chainW((articleDetails) => pipe(
     {
       feedItemsByDateDescending: (
-        getArticleFeedEventsByDateDescending(dependencies)(articleDetails.doi, articleDetails.server)
+        getArticleFeedEventsByDateDescending(dependencies)(params.paperId, articleDetails.server)
       ),
       relatedArticles: constructRelatedArticles(articleDetails.doi, dependencies),
       curationStatements: constructCurationStatements(dependencies, articleDetails.doi),

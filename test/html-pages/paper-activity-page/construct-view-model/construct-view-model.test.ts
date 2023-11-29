@@ -12,8 +12,8 @@ import { LoggedInUserListManagement } from '../../../../src/html-pages/paper-act
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { PaperId } from '../../../../src/html-pages/paper-activity-page/construct-view-model/construct-view-model';
 import { ArticleId } from '../../../../src/types/article-id';
+import { PaperId } from '../../../../src/html-pages/paper-activity-page/construct-view-model/paper-id';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
