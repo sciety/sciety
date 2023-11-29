@@ -5,10 +5,10 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleServer } from '../../types/article-server';
 import { ArticleId } from '../../types/article-id';
-import { FindVersionsForArticleDoi } from '../../shared-ports';
+import { ExternalQueries } from '../../third-parties';
 
 export type Ports = {
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  findVersionsForArticleDoi: ExternalQueries['findVersionsForArticleDoi'],
 };
 
 type GetLatestArticleVersionDate = (

@@ -2,10 +2,10 @@ import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { FindVersionsForArticleDoi } from '../../shared-ports';
 import { ArticleVersion } from '../../types/article-version';
+import { ExternalQueries } from '../../third-parties';
 
-export const findVersionsForArticleDoi: FindVersionsForArticleDoi = () => T.of(O.some([
+export const findVersionsForArticleDoi: ExternalQueries['findVersionsForArticleDoi'] = () => T.of(O.some([
   {
     source: new URL('https://www.biorxiv.org/content/10.1101/2022.08.20.504530v1'),
     publishedAt: new Date('1970'),
