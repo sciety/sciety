@@ -13,7 +13,6 @@ import { SearchResults } from '../shared-ports/search-for-articles';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { PaperExpressionLocator } from './paper-expression-locator';
-import { PaperId } from './paper-id';
 
 export type ArticleDetails = {
   abstract: SanitisedHtmlFragment,
@@ -53,11 +52,6 @@ type FindVersionsForArticleDoi = (
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
-type FindVersionInformationForAllPaperExpressions = (
-  paperId: PaperId,
-  server: ArticleServer
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
-
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
 
 type SearchForArticles = (
@@ -71,7 +65,6 @@ export type ExternalQueries = {
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
   findVersionsForArticleDoi: FindVersionsForArticleDoi,
-  findVersionInformationForAllPaperExpressions: FindVersionInformationForAllPaperExpressions,
   getArticleSubjectArea: GetArticleSubjectArea,
   searchForArticles: SearchForArticles,
 };

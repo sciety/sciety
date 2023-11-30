@@ -5,7 +5,6 @@ import { findVersionsForArticleDoi } from './find-versions-for-article-doi';
 import { fetchReview } from './fetch-review';
 import { fetchRelatedArticles } from './fetch-related-articles';
 import { localFetchPaperExpressionFrontMatter } from './local-fetch-paper-expression-front-matter';
-import { findVersionInformationForAllPaperExpressions } from './find-version-information-for-all-paper-expressions';
 
 export const stubAdapters = {
   fetchArticle: localFetchArticleAdapter,
@@ -13,7 +12,6 @@ export const stubAdapters = {
   fetchStaticFile,
   searchForArticles: searchEuropePmc,
   findVersionsForArticleDoi,
-  findVersionInformationForAllPaperExpressions,
   fetchReview,
   fetchRelatedArticles,
 };

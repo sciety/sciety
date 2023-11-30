@@ -49,13 +49,6 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
       version: 1,
     },
   ]),
-  findVersionInformationForAllPaperExpressions: () => TO.some([
-    {
-      source: new URL(arbitraryUri()),
-      publishedAt: arbitraryDate(),
-      version: 1,
-    },
-  ]),
   getArticleSubjectArea: () => TE.right({ value: arbitraryString(), server: arbitraryArticleServer() }),
   searchForArticles: () => () => TE.right({
     items: [],
