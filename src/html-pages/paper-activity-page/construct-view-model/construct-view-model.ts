@@ -32,7 +32,7 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 
 const findPaperExpressionLocatorAssumingPaperIdIsADoi = (
   paperId: PaperId.PaperId,
-) => PaperExpressionLocator.fromDoi(paperId);
+) => PaperExpressionLocator.fromDoi(PaperId.getDoiPortion(paperId));
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   PaperId.fromNonEmptyString(params.candidatePaperId),
