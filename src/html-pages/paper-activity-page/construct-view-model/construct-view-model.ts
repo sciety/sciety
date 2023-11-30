@@ -5,7 +5,6 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { NonEmptyString } from 'io-ts-types';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
@@ -18,7 +17,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { PaperExpressionLocator, PaperId, PaperIdThatIsADoi } from '../../../third-parties';
+import { PaperExpressionLocator, PaperId } from '../../../third-parties';
 
 export const paramsCodec = t.type({
   candidatePaperId: tt.NonEmptyString,
@@ -27,23 +26,23 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const toFullArticleUrl = (paperId: PaperId) => `https://doi.org/${paperId}`;
+const toFullArticleUrl = (paperId: PaperId.PaperId) => `https://doi.org/${paperId}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const findPaperExpressionLocatorAssumingPaperIdIsADoi = (paperId: PaperId) => PaperExpressionLocator.fromDoi(paperId);
-
-const fromCandidatePaperId = (candidate: NonEmptyString): PaperId => `${candidate}` as PaperIdThatIsADoi;
+const findPaperExpressionLocatorAssumingPaperIdIsADoi = (
+  paperId: PaperId.PaperId,
+) => PaperExpressionLocator.fromDoi(paperId);
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  fromCandidatePaperId(params.candidatePaperId),
+  PaperId.fromNonEmptyString(params.candidatePaperId),
   findPaperExpressionLocatorAssumingPaperIdIsADoi,
   dependencies.fetchPaperExpressionFrontMatter,
   TE.chainW((articleDetails) => pipe(
     {
       feedItemsByDateDescending: (
         getArticleFeedEventsByDateDescending(dependencies)(
-          fromCandidatePaperId(params.candidatePaperId),
+          PaperId.fromNonEmptyString(params.candidatePaperId),
           articleDetails.server,
         )
       ),
@@ -58,7 +57,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, articleDetails.doi),
       fullArticleUrl: pipe(
-        fromCandidatePaperId(params.candidatePaperId),
+        PaperId.fromNonEmptyString(params.candidatePaperId),
         toFullArticleUrl,
       ),
       feedItemsByDateDescending,

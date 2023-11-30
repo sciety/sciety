@@ -25,7 +25,7 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 );
 
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
-=> (paperId: PaperId, server: ArticleServer)
+=> (paperId: PaperId.PaperId, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
