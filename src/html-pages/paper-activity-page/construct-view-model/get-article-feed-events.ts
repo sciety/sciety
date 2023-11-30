@@ -33,10 +33,9 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => (
   paperId, server,
 ) => pipe(
-  new ArticleId(paperId),
-  (articleId) => ({
+  {
     evaluations: pipe(
-      dependencies.getEvaluationsForArticle(articleId),
+      dependencies.getEvaluationsForArticle(new ArticleId(paperId)),
       T.of,
       T.map(RA.map((evaluation) => ({
         ...evaluation,
@@ -44,7 +43,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findVersionsForArticleDoi(articleId, server),
+      dependencies.findVersionsForArticleDoi(new ArticleId(paperId), server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({
@@ -53,7 +52,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
         })),
       ),
     ),
-  }),
+  },
   sequenceS(T.ApplyPar),
   T.map((feeds) => [...feeds.evaluations, ...feeds.versions]),
   T.map(RA.sort(byDateDescending)),
