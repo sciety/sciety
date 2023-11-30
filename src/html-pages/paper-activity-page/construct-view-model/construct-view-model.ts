@@ -18,7 +18,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { PaperExpressionLocator, PaperId } from '../../../third-parties';
+import { PaperExpressionLocator, PaperId, PaperIdThatIsADoi } from '../../../third-parties';
 
 export const paramsCodec = t.type({
   candidatePaperId: tt.NonEmptyString,
@@ -33,7 +33,7 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 
 const findPaperExpressionLocatorAssumingPaperIdIsADoi = (paperId: PaperId) => PaperExpressionLocator.fromDoi(paperId);
 
-const fromCandidatePaperId = (candidate: NonEmptyString): PaperId => candidate as unknown as PaperId;
+const fromCandidatePaperId = (candidate: NonEmptyString): PaperId => `${candidate}` as PaperIdThatIsADoi;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   fromCandidatePaperId(params.candidatePaperId),
