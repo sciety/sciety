@@ -20,7 +20,7 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { PaperExpressionLocator, PaperId, paperIdCodec } from '../../../third-parties';
 
 export const paramsCodec = t.type({
-  paperId: paperIdCodec,
+  candidatePaperId: paperIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
@@ -33,13 +33,13 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 const findPaperExpressionLocatorAssumingPaperIdIsADoi = (paperId: PaperId) => PaperExpressionLocator.fromDoi(paperId);
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  params.paperId,
+  params.candidatePaperId,
   findPaperExpressionLocatorAssumingPaperIdIsADoi,
   dependencies.fetchPaperExpressionFrontMatter,
   TE.chainW((articleDetails) => pipe(
     {
       feedItemsByDateDescending: (
-        getArticleFeedEventsByDateDescending(dependencies)(params.paperId, articleDetails.server)
+        getArticleFeedEventsByDateDescending(dependencies)(params.candidatePaperId, articleDetails.server)
       ),
       relatedArticles: constructRelatedArticles(articleDetails.doi, dependencies),
       curationStatements: constructCurationStatements(dependencies, articleDetails.doi),
@@ -52,7 +52,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, articleDetails.doi),
       fullArticleUrl: pipe(
-        params.paperId,
+        params.candidatePaperId,
         toFullArticleUrl,
       ),
       feedItemsByDateDescending,
