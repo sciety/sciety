@@ -9,7 +9,6 @@ import { sequenceS } from 'fp-ts/Apply';
 import { FeedEvent, getFeedEventsContent } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
-import { ArticleId } from '../../../types/article-id';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 import { PaperId } from '../../../third-parties';
@@ -35,7 +34,9 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => pipe(
   {
     evaluations: pipe(
-      dependencies.getEvaluationsForArticle(new ArticleId(paperId)),
+      paperId,
+      PaperId.toArticleId,
+      dependencies.getEvaluationsForArticle,
       T.of,
       T.map(RA.map((evaluation) => ({
         ...evaluation,
@@ -43,7 +44,9 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findVersionsForArticleDoi(new ArticleId(paperId), server),
+      paperId,
+      PaperId.toArticleId,
+      (articleId) => dependencies.findVersionsForArticleDoi(articleId, server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({
