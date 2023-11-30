@@ -26,7 +26,7 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const toFullArticleUrl = (paperId: PaperId.PaperId) => `https://doi.org/${paperId}`;
+const toFullArticleUrl = (paperId: PaperId.PaperId) => `https://doi.org/${PaperId.getDoiPortion(paperId)}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
