@@ -14,7 +14,6 @@ import { fetchCrossrefArticle } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
-import { ArticleId } from '../types/article-id';
 import { QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
@@ -23,13 +22,14 @@ import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cac
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
 import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-crossref-article';
+import { PaperIdThatIsADoi, toArticleId } from './paper-id';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-) => (doi: ArticleId, server: ArticleServer) => {
+) => (paperId: PaperIdThatIsADoi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
-    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(doi, server);
+    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(toArticleId(paperId), server);
   }
   return TO.none;
 };

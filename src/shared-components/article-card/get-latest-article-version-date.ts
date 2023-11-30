@@ -5,7 +5,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe, tupled } from 'fp-ts/function';
 import { ArticleServer } from '../../types/article-server';
 import { ArticleId } from '../../types/article-id';
-import { ExternalQueries } from '../../third-parties';
+import { ExternalQueries, PaperId } from '../../third-parties';
 
 export type Ports = {
   findVersionsForArticleDoi: ExternalQueries['findVersionsForArticleDoi'],
@@ -20,7 +20,7 @@ export const getLatestArticleVersionDate: GetLatestArticleVersionDate = (
 ) => (
   doi, server,
 ) => pipe(
-  [doi, server],
+  [PaperId.fromArticleId(doi), server],
   tupled(ports.findVersionsForArticleDoi),
   T.map(O.map(flow(
     RNEA.last,

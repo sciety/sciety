@@ -7,6 +7,8 @@ export const getDoiPortion = (paperId: PaperIdThatIsADoi): string => paperId.spl
 
 export const toArticleId = (paperId: PaperIdThatIsADoi): ArticleId => new ArticleId(getDoiPortion(paperId));
 
+export const fromArticleId = (articleId: ArticleId): PaperIdThatIsADoi => `doi:${articleId.value}` as PaperIdThatIsADoi;
+
 export type PaperId = PaperIdThatIsADoi;
 
 export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => `doi:${candidate}` as PaperIdThatIsADoi;
