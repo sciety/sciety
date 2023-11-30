@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { NonEmptyString } from 'io-ts-types';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel } from '../../../../src/html-pages/paper-activity-page/construct-view-model';
@@ -13,11 +14,10 @@ import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/wri
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { ArticleId } from '../../../../src/types/article-id';
-import { PaperId } from '../../../../src/third-parties';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  const candidatePaperId = arbitraryArticleId().value as PaperId;
+  const candidatePaperId = arbitraryArticleId().value as NonEmptyString;
   const doiFromPaperId = new ArticleId(candidatePaperId);
 
   beforeEach(() => {

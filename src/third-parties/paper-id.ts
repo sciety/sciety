@@ -4,7 +4,7 @@ type PaperIdBrand = {
   readonly PaperId: unique symbol,
 };
 
-export const paperIdCodec = t.brand(
+const paperIdCodec = t.brand(
   t.string,
   (input): input is t.Branded<string, PaperIdBrand> => input.length > 0,
   'PaperId',

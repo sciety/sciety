@@ -17,10 +17,10 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { PaperExpressionLocator, PaperId, paperIdCodec } from '../../../third-parties';
+import { PaperExpressionLocator, PaperId } from '../../../third-parties';
 
 export const paramsCodec = t.type({
-  candidatePaperId: paperIdCodec,
+  candidatePaperId: tt.NonEmptyString,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
@@ -33,13 +33,16 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 const findPaperExpressionLocatorAssumingPaperIdIsADoi = (paperId: PaperId) => PaperExpressionLocator.fromDoi(paperId);
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  params.candidatePaperId,
+  params.candidatePaperId as unknown as PaperId,
   findPaperExpressionLocatorAssumingPaperIdIsADoi,
   dependencies.fetchPaperExpressionFrontMatter,
   TE.chainW((articleDetails) => pipe(
     {
       feedItemsByDateDescending: (
-        getArticleFeedEventsByDateDescending(dependencies)(params.candidatePaperId, articleDetails.server)
+        getArticleFeedEventsByDateDescending(dependencies)(
+          params.candidatePaperId as unknown as PaperId,
+          articleDetails.server,
+        )
       ),
       relatedArticles: constructRelatedArticles(articleDetails.doi, dependencies),
       curationStatements: constructCurationStatements(dependencies, articleDetails.doi),
@@ -52,7 +55,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       abstractLanguageCode: detectLanguage(articleDetails.abstract),
       userListManagement: constructUserListManagement(params.user, dependencies, articleDetails.doi),
       fullArticleUrl: pipe(
-        params.candidatePaperId,
+        params.candidatePaperId as unknown as PaperId,
         toFullArticleUrl,
       ),
       feedItemsByDateDescending,
