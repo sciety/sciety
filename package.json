@@ -58,7 +58,7 @@
     "@types/node": "^18.19.0",
     "@types/passport-auth0": "^1.0.9",
     "@types/pg": "^8.10.9",
-    "@types/sanitize-html": "^2.9.4",
+    "@types/sanitize-html": "^2.9.5",
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
