@@ -52,7 +52,9 @@ export const toArticleId = (paperId: PaperIdThatIsADoi): ArticleId => new Articl
 
 export const fromArticleId = (articleId: ArticleId): PaperIdThatIsADoi => `doi:${articleId.value}` as PaperIdThatIsADoi;
 
-export type PaperId = PaperIdThatIsADoi | PaperIdThatIsAUuid;
+const paperIdCodec = t.union([paperIdThatIsADoiCodec, paperIdThatIsAUuidCodec]);
+
+export type PaperId = t.TypeOf<typeof paperIdCodec>;
 
 export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => {
   if (uuid.validate(candidate)) {
