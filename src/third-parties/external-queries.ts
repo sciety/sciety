@@ -23,7 +23,7 @@ export type ArticleDetails = {
   server: ArticleServer,
 };
 
-type PaperExpressionFrontMatter = {
+export type PaperExpressionFrontMatter = {
   abstract: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   doi: ArticleId,

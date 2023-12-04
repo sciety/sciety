@@ -22,6 +22,7 @@ import { PaperExpressionLocator, PaperId } from '../../../third-parties';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ArticleId } from '../../../types/article-id';
+import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 
 export const paramsCodec = t.type({
   candidatePaperId: tt.NonEmptyString,
@@ -55,44 +56,49 @@ const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (p
   return TE.left(DE.notFound);
 };
 
+const constructRemainingViewModelForDoi = (
+  dependencies: Dependencies,
+  params: Params,
+) => (frontMatter: PaperExpressionFrontMatter) => pipe(
+  {
+    feedItemsByDateDescending: (
+      getArticleFeedEventsByDateDescending(dependencies)(
+        PaperId.fromNonEmptyString(params.candidatePaperId),
+        frontMatter.server,
+      )
+    ),
+    relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
+    curationStatements: constructCurationStatements(dependencies, frontMatter.doi),
+  },
+  sequenceS(T.ApplyPar),
+  TE.rightTask,
+  TE.map(({ curationStatements, feedItemsByDateDescending, relatedArticles }) => ({
+    ...frontMatter,
+    titleLanguageCode: detectLanguage(frontMatter.title),
+    abstractLanguageCode: detectLanguage(frontMatter.abstract),
+    userListManagement: constructUserListManagement(params.user, dependencies, frontMatter.doi),
+    fullArticleUrl: pipe(
+      PaperId.fromNonEmptyString(params.candidatePaperId),
+      toFullArticleUrl,
+    ),
+    feedItemsByDateDescending,
+    ...feedSummary(feedItemsByDateDescending),
+    listedIn: constructListedIn(dependencies)(frontMatter.doi),
+    relatedArticles,
+    curationStatements: pipe(
+      curationStatements,
+      RA.map((curationStatementWithGroupAndContent) => ({
+        ...curationStatementWithGroupAndContent,
+        fullText: curationStatementWithGroupAndContent.statement,
+        fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
+      })),
+    ),
+    reviewingGroups: constructReviewingGroups(dependencies, frontMatter.doi),
+  })),
+);
+
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   PaperId.fromNonEmptyString(params.candidatePaperId),
   getFrontMatterForMostRecentExpression(dependencies),
-  TE.chainW((frontMatter) => pipe(
-    {
-      feedItemsByDateDescending: (
-        getArticleFeedEventsByDateDescending(dependencies)(
-          PaperId.fromNonEmptyString(params.candidatePaperId),
-          frontMatter.server,
-        )
-      ),
-      relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
-      curationStatements: constructCurationStatements(dependencies, frontMatter.doi),
-    },
-    sequenceS(T.ApplyPar),
-    TE.rightTask,
-    TE.map(({ curationStatements, feedItemsByDateDescending, relatedArticles }) => ({
-      ...frontMatter,
-      titleLanguageCode: detectLanguage(frontMatter.title),
-      abstractLanguageCode: detectLanguage(frontMatter.abstract),
-      userListManagement: constructUserListManagement(params.user, dependencies, frontMatter.doi),
-      fullArticleUrl: pipe(
-        PaperId.fromNonEmptyString(params.candidatePaperId),
-        toFullArticleUrl,
-      ),
-      feedItemsByDateDescending,
-      ...feedSummary(feedItemsByDateDescending),
-      listedIn: constructListedIn(dependencies)(frontMatter.doi),
-      relatedArticles,
-      curationStatements: pipe(
-        curationStatements,
-        RA.map((curationStatementWithGroupAndContent) => ({
-          ...curationStatementWithGroupAndContent,
-          fullText: curationStatementWithGroupAndContent.statement,
-          fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
-        })),
-      ),
-      reviewingGroups: constructReviewingGroups(dependencies, frontMatter.doi),
-    })),
-  )),
+  TE.chainW(constructRemainingViewModelForDoi(dependencies, params)),
 );
