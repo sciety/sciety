@@ -30,39 +30,41 @@ const toFullArticleUrl = (paperId: PaperId.PaperId) => `https://doi.org/${PaperI
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const findPaperExpressionLocatorAssumingPaperIdIsADoi = (
-  paperId: PaperId.PaperId,
-) => PaperExpressionLocator.fromDoi(PaperId.getDoiPortion(paperId));
+const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperId) => pipe(
+  paperId,
+  PaperId.getDoiPortion,
+  PaperExpressionLocator.fromDoi,
+  dependencies.fetchPaperExpressionFrontMatter,
+);
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   PaperId.fromNonEmptyString(params.candidatePaperId),
-  findPaperExpressionLocatorAssumingPaperIdIsADoi,
-  dependencies.fetchPaperExpressionFrontMatter,
-  TE.chainW((articleDetails) => pipe(
+  getFrontMatterForMostRecentExpression(dependencies),
+  TE.chainW((frontMatter) => pipe(
     {
       feedItemsByDateDescending: (
         getArticleFeedEventsByDateDescending(dependencies)(
           PaperId.fromNonEmptyString(params.candidatePaperId),
-          articleDetails.server,
+          frontMatter.server,
         )
       ),
-      relatedArticles: constructRelatedArticles(articleDetails.doi, dependencies),
-      curationStatements: constructCurationStatements(dependencies, articleDetails.doi),
+      relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
+      curationStatements: constructCurationStatements(dependencies, frontMatter.doi),
     },
     sequenceS(T.ApplyPar),
     TE.rightTask,
     TE.map(({ curationStatements, feedItemsByDateDescending, relatedArticles }) => ({
-      ...articleDetails,
-      titleLanguageCode: detectLanguage(articleDetails.title),
-      abstractLanguageCode: detectLanguage(articleDetails.abstract),
-      userListManagement: constructUserListManagement(params.user, dependencies, articleDetails.doi),
+      ...frontMatter,
+      titleLanguageCode: detectLanguage(frontMatter.title),
+      abstractLanguageCode: detectLanguage(frontMatter.abstract),
+      userListManagement: constructUserListManagement(params.user, dependencies, frontMatter.doi),
       fullArticleUrl: pipe(
         PaperId.fromNonEmptyString(params.candidatePaperId),
         toFullArticleUrl,
       ),
       feedItemsByDateDescending,
       ...feedSummary(feedItemsByDateDescending),
-      listedIn: constructListedIn(dependencies)(articleDetails.doi),
+      listedIn: constructListedIn(dependencies)(frontMatter.doi),
       relatedArticles,
       curationStatements: pipe(
         curationStatements,
@@ -72,7 +74,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
         })),
       ),
-      reviewingGroups: constructReviewingGroups(dependencies, articleDetails.doi),
+      reviewingGroups: constructReviewingGroups(dependencies, frontMatter.doi),
     })),
   )),
 );
