@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { NonEmptyString } from 'io-ts-types';
+import { v4 } from 'uuid';
 import { PaperId } from '../../src/third-parties';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -19,8 +20,14 @@ describe('paper-id', () => {
   });
 
   describe('given a uuid', () => {
+    const input = v4() as NonEmptyString;
+
     describe('fromNonEmptyString', () => {
-      it.todo('constructs the paper id correctly');
+      const paperId = PaperId.fromNonEmptyString(input);
+
+      it.failing('detects that the paper id is a uuid', () => {
+        expect(PaperId.isUuid(paperId)).toBe(true);
+      });
     });
   });
 
