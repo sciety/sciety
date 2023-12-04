@@ -1,6 +1,28 @@
 import { NonEmptyString } from 'io-ts-types';
 import * as uuid from 'uuid';
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import { flow, identity, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { ArticleId } from '../types/article-id';
+
+const isValidUuid = (u: unknown): u is PaperIdThatIsAUuid => typeof u === 'string' && uuid.validate(u);
+
+export const paperIdThatIsAUuidCodec = new t.Type(
+  'paperIdThatIsAUuid',
+  isValidUuid,
+  (u, c) => pipe(
+    t.string.validate(u, c),
+    E.chain(flow(
+      O.fromPredicate(isValidUuid),
+      O.fold(
+        () => t.failure(u, c),
+        (id) => t.success(`uuid:${id}` as PaperIdThatIsAUuid),
+      ),
+    )),
+  ),
+  (a) => a.toString(),
+);
 
 type PaperIdThatIsAUuid = string & { readonly PaperIdThatIsAUuid: unique symbol };
 
@@ -16,7 +38,14 @@ export type PaperId = PaperIdThatIsADoi | PaperIdThatIsAUuid;
 
 export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => {
   if (uuid.validate(candidate)) {
-    return `uuid:${candidate}` as PaperIdThatIsAUuid;
+    return pipe(
+      candidate,
+      paperIdThatIsAUuidCodec.decode,
+      E.match(
+        () => { throw new Error('Cannot happen'); },
+        identity,
+      ),
+    );
   }
   return `doi:${candidate}` as PaperIdThatIsADoi;
 };
