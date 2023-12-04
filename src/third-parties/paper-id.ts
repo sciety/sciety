@@ -1,4 +1,5 @@
 import { NonEmptyString } from 'io-ts-types';
+import * as uuid from 'uuid';
 import { ArticleId } from '../types/article-id';
 
 export type PaperIdThatIsADoi = string & { readonly PaperIdThatIsADoi: unique symbol };
@@ -11,11 +12,8 @@ export const fromArticleId = (articleId: ArticleId): PaperIdThatIsADoi => `doi:$
 
 export type PaperId = PaperIdThatIsADoi;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const looksLikeAUuid = (candidate: NonEmptyString) => false;
-
 export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => {
-  if (looksLikeAUuid(candidate)) {
+  if (uuid.validate(candidate)) {
     return `uuid:${candidate}` as PaperId;
   }
   return `doi:${candidate}` as PaperIdThatIsADoi;

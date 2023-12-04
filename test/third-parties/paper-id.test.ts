@@ -25,11 +25,11 @@ describe('paper-id', () => {
     describe('fromNonEmptyString', () => {
       const paperId = PaperId.fromNonEmptyString(input);
 
-      it.failing('detects that the paper id is a uuid', () => {
+      it('detects that the paper id is a uuid', () => {
         expect(PaperId.isUuid(paperId)).toBe(true);
       });
 
-      it.failing('detects that the paper id is not a doi', () => {
+      it('detects that the paper id is not a doi', () => {
         expect(PaperId.isDoi(paperId)).toBe(false);
       });
     });
