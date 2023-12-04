@@ -25,12 +25,12 @@ describe('paper-id', () => {
     describe('fromNonEmptyString', () => {
       const paperId = PaperId.fromNonEmptyString(input);
 
-      it('detects that the paper id is a uuid', () => {
-        expect(PaperId.isUuid(paperId)).toBe(true);
-      });
-
       it('detects that the paper id is not a doi', () => {
         expect(PaperId.isDoi(paperId)).toBe(false);
+      });
+
+      it('detects that the paper id is a uuid', () => {
+        expect(PaperId.isUuid(paperId)).toBe(true);
       });
     });
   });
@@ -48,6 +48,12 @@ describe('paper-id', () => {
       it('detects that the paper id is not a uuid', () => {
         expect(PaperId.isUuid(paperId)).toBe(false);
       });
+    });
+  });
+
+  describe('given neither a uuid nor a doi', () => {
+    describe('fromNonEmptyString', () => {
+      it.todo('returns on the left');
     });
   });
 });
