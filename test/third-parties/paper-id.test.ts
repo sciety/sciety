@@ -28,6 +28,10 @@ describe('paper-id', () => {
       it.failing('detects that the paper id is a uuid', () => {
         expect(PaperId.isUuid(paperId)).toBe(true);
       });
+
+      it.failing('detects that the paper id is not a doi', () => {
+        expect(PaperId.isDoi(paperId)).toBe(false);
+      });
     });
   });
 
@@ -39,6 +43,10 @@ describe('paper-id', () => {
 
       it('detects that the paper id is a doi', () => {
         expect(PaperId.isDoi(paperId)).toBe(true);
+      });
+
+      it('detects that the paper id is not a uuid', () => {
+        expect(PaperId.isUuid(paperId)).toBe(false);
       });
     });
   });
