@@ -110,7 +110,27 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     return pipe(
       paperId,
       getFrontMatterForMostRecentExpression(dependencies),
-      TE.chainW(constructRemainingViewModelForDoi(dependencies, params)),
+      TE.map((frontMatter) => ({
+        doi: frontMatter.doi,
+        title: frontMatter.title,
+        titleLanguageCode: O.none,
+        authors: frontMatter.authors,
+        fullArticleUrl: '',
+        abstract: frontMatter.abstract,
+        abstractLanguageCode: O.none,
+        evaluationCount: 0,
+        latestVersion: O.none,
+        latestActivity: O.none,
+        feedItemsByDateDescending: [{
+          type: 'article-version-error',
+          server: frontMatter.server,
+        }],
+        userListManagement: O.none,
+        listedIn: [],
+        relatedArticles: O.none,
+        curationStatements: [],
+        reviewingGroups: [],
+      })),
     );
   }
   return TE.left(DE.notFound);
