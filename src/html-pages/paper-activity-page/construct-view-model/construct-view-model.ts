@@ -23,6 +23,7 @@ import { sanitise } from '../../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ArticleId } from '../../../types/article-id';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
+import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
 
 export const paramsCodec = t.type({
   candidatePaperId: tt.NonEmptyString,
@@ -31,7 +32,7 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const toFullArticleUrl = (paperId: PaperId.PaperId) => `https://doi.org/${PaperId.getDoiPortion(paperId)}`;
+const toFullArticleUrl = (paperId: PaperId.PaperIdThatIsADoi) => `https://doi.org/${PaperId.getDoiPortion(paperId)}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -59,14 +60,10 @@ const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (p
 const constructRemainingViewModelForDoi = (
   dependencies: Dependencies,
   params: Params,
+  paperId: PaperIdThatIsADoi,
 ) => (frontMatter: PaperExpressionFrontMatter) => pipe(
   {
-    feedItemsByDateDescending: (
-      getArticleFeedEventsByDateDescending(dependencies)(
-        PaperId.fromNonEmptyString(params.candidatePaperId),
-        frontMatter.server,
-      )
-    ),
+    feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(paperId, frontMatter.server),
     relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
     curationStatements: constructCurationStatements(dependencies, frontMatter.doi),
   },
@@ -77,10 +74,7 @@ const constructRemainingViewModelForDoi = (
     titleLanguageCode: detectLanguage(frontMatter.title),
     abstractLanguageCode: detectLanguage(frontMatter.abstract),
     userListManagement: constructUserListManagement(params.user, dependencies, frontMatter.doi),
-    fullArticleUrl: pipe(
-      PaperId.fromNonEmptyString(params.candidatePaperId),
-      toFullArticleUrl,
-    ),
+    fullArticleUrl: toFullArticleUrl(paperId),
     feedItemsByDateDescending,
     ...feedSummary(feedItemsByDateDescending),
     listedIn: constructListedIn(dependencies)(frontMatter.doi),
@@ -103,7 +97,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     return pipe(
       paperId,
       getFrontMatterForMostRecentExpression(dependencies),
-      TE.chainW(constructRemainingViewModelForDoi(dependencies, params)),
+      TE.chainW(constructRemainingViewModelForDoi(dependencies, params, paperId)),
     );
   }
   if (PaperId.isUuid(paperId)) {
