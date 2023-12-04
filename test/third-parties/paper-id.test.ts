@@ -16,4 +16,16 @@ describe('paper-id', () => {
       expect(result).toBe(original);
     });
   });
+
+  describe('given a uuid', () => {
+    describe('fromNonEmptyString', () => {
+      it.todo('constructs the paper id correctly');
+    });
+  });
+
+  describe('given a doi', () => {
+    describe('fromNonEmptyString', () => {
+      it.todo('constructs the paper id correctly');
+    });
+  });
 });
