@@ -6,15 +6,15 @@ import { flow, identity, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { ArticleId } from '../types/article-id';
 
-const isValidUuid = (u: unknown): u is PaperIdThatIsAUuid => typeof u === 'string' && uuid.validate(u);
+export const isUuid = (input: unknown): input is PaperIdThatIsAUuid => typeof input === 'string' && input.startsWith('uuid:');
 
-export const paperIdThatIsAUuidCodec = new t.Type(
+export const paperIdThatIsAUuidCodec = new t.Type<PaperIdThatIsAUuid, string, unknown>(
   'paperIdThatIsAUuid',
-  isValidUuid,
+  isUuid,
   (u, c) => pipe(
     t.string.validate(u, c),
     E.chain(flow(
-      O.fromPredicate(isValidUuid),
+      O.fromPredicate(uuid.validate),
       O.fold(
         () => t.failure(u, c),
         (id) => t.success(`uuid:${id}` as PaperIdThatIsAUuid),
@@ -51,5 +51,3 @@ export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => {
 };
 
 export const isDoi = (paperId: PaperId): paperId is PaperIdThatIsADoi => paperId.startsWith('doi:');
-
-export const isUuid = (paperId: PaperId): boolean => paperId.startsWith('uuid:');
