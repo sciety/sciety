@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { NonEmptyString } from 'io-ts-types';
 import { PaperId } from '../../src/third-parties';
 import { arbitraryString } from '../helpers';
+import { arbitraryArticleId } from '../types/article-id.helper';
 
 describe('paper-id', () => {
   describe('when a construction is followed by a destruction', () => {
@@ -23,9 +24,13 @@ describe('paper-id', () => {
     });
   });
 
-  describe('given a doi', () => {
+  describe('given an ambiguous, backwards-compatible input', () => {
     describe('fromNonEmptyString', () => {
-      it.todo('constructs the paper id correctly');
+      it('constructs the paper id correctly', () => {
+        const input = arbitraryArticleId().value as NonEmptyString;
+
+        expect(PaperId.fromNonEmptyString(input)).toBe(`doi:${input}`);
+      });
     });
   });
 });
