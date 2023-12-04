@@ -5,6 +5,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import * as O from 'fp-ts/Option';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
@@ -18,6 +19,9 @@ import { constructCurationStatements } from '../../../shared-components/curation
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 import { PaperExpressionLocator, PaperId } from '../../../third-parties';
+import { sanitise } from '../../../types/sanitised-html-fragment';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { ArticleId } from '../../../types/article-id';
 
 export const paramsCodec = t.type({
   candidatePaperId: tt.NonEmptyString,
@@ -30,7 +34,7 @@ const toFullArticleUrl = (paperId: PaperId.PaperId) => `https://doi.org/${PaperI
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperId) => {
+const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperId): ReturnType<Dependencies['fetchPaperExpressionFrontMatter']> => {
   if (PaperId.isDoi(paperId)) {
     return pipe(
       paperId,
@@ -39,7 +43,16 @@ const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (p
       dependencies.fetchPaperExpressionFrontMatter,
     );
   }
-  return TE.left(DE.unavailable);
+  if (PaperId.isUuid(paperId)) {
+    return TE.right({
+      abstract: sanitise(toHtmlFragment('An abstract')),
+      authors: O.some(['Author']),
+      doi: new ArticleId('10.9999/1234'),
+      title: sanitise(toHtmlFragment('The title')),
+      server: 'microbiologyresearch',
+    });
+  }
+  return TE.left(DE.notFound);
 };
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
