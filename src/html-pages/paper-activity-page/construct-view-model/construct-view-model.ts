@@ -30,13 +30,17 @@ const toFullArticleUrl = (paperId: PaperId.PaperId) => `https://doi.org/${PaperI
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperId) => pipe(
-  paperId,
-  TE.fromPredicate(PaperId.isDoi, () => DE.unavailable),
-  TE.map(PaperId.getDoiPortion),
-  TE.map(PaperExpressionLocator.fromDoi),
-  TE.chain(dependencies.fetchPaperExpressionFrontMatter),
-);
+const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperId) => {
+  if (PaperId.isDoi(paperId)) {
+    return pipe(
+      paperId,
+      PaperId.getDoiPortion,
+      PaperExpressionLocator.fromDoi,
+      dependencies.fetchPaperExpressionFrontMatter,
+    );
+  }
+  return TE.left(DE.unavailable);
+};
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   PaperId.fromNonEmptyString(params.candidatePaperId),
