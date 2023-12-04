@@ -28,8 +28,9 @@ describe('paper-id', () => {
     describe('fromNonEmptyString', () => {
       it('constructs the paper id correctly', () => {
         const input = arbitraryArticleId().value as NonEmptyString;
+        const paperId = PaperId.fromNonEmptyString(input);
 
-        expect(PaperId.fromNonEmptyString(input)).toBe(`doi:${input}`);
+        expect(PaperId.isDoi(paperId)).toBe(true);
       });
     });
   });

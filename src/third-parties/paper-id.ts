@@ -12,3 +12,5 @@ export const fromArticleId = (articleId: ArticleId): PaperIdThatIsADoi => `doi:$
 export type PaperId = PaperIdThatIsADoi;
 
 export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => `doi:${candidate}` as PaperIdThatIsADoi;
+
+export const isDoi = (paperId: PaperId): boolean => paperId.startsWith('doi:');
