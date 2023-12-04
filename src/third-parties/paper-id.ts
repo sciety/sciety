@@ -11,7 +11,15 @@ export const fromArticleId = (articleId: ArticleId): PaperIdThatIsADoi => `doi:$
 
 export type PaperId = PaperIdThatIsADoi;
 
-export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => `doi:${candidate}` as PaperIdThatIsADoi;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const looksLikeAUuid = (candidate: NonEmptyString) => false;
+
+export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => {
+  if (looksLikeAUuid(candidate)) {
+    return `uuid:${candidate}` as PaperId;
+  }
+  return `doi:${candidate}` as PaperIdThatIsADoi;
+};
 
 export const isDoi = (paperId: PaperId): boolean => paperId.startsWith('doi:');
 
