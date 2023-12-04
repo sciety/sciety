@@ -24,12 +24,13 @@ describe('paper-id', () => {
     });
   });
 
-  describe('given an ambiguous, backwards-compatible input', () => {
-    describe('fromNonEmptyString', () => {
-      it('constructs the paper id correctly', () => {
-        const input = arbitraryArticleId().value as NonEmptyString;
-        const paperId = PaperId.fromNonEmptyString(input);
+  describe('given a doi', () => {
+    const input = arbitraryArticleId().value as NonEmptyString;
 
+    describe('fromNonEmptyString', () => {
+      const paperId = PaperId.fromNonEmptyString(input);
+
+      it('detects that the paper id is a doi', () => {
         expect(PaperId.isDoi(paperId)).toBe(true);
       });
     });
