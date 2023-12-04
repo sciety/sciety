@@ -32,9 +32,10 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 
 const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperId) => pipe(
   paperId,
-  PaperId.getDoiPortion,
-  PaperExpressionLocator.fromDoi,
-  dependencies.fetchPaperExpressionFrontMatter,
+  TE.fromPredicate(PaperId.isDoi, () => DE.unavailable),
+  TE.map(PaperId.getDoiPortion),
+  TE.map(PaperExpressionLocator.fromDoi),
+  TE.chain(dependencies.fetchPaperExpressionFrontMatter),
 );
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
