@@ -97,8 +97,21 @@ const constructRemainingViewModelForDoi = (
   })),
 );
 
-export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  PaperId.fromNonEmptyString(params.candidatePaperId),
-  getFrontMatterForMostRecentExpression(dependencies),
-  TE.chainW(constructRemainingViewModelForDoi(dependencies, params)),
-);
+export const constructViewModel: ConstructViewModel = (dependencies) => (params) => {
+  const paperId = PaperId.fromNonEmptyString(params.candidatePaperId);
+  if (PaperId.isDoi(paperId)) {
+    return pipe(
+      paperId,
+      getFrontMatterForMostRecentExpression(dependencies),
+      TE.chainW(constructRemainingViewModelForDoi(dependencies, params)),
+    );
+  }
+  if (PaperId.isUuid(paperId)) {
+    return pipe(
+      paperId,
+      getFrontMatterForMostRecentExpression(dependencies),
+      TE.chainW(constructRemainingViewModelForDoi(dependencies, params)),
+    );
+  }
+  return TE.left(DE.notFound);
+};
