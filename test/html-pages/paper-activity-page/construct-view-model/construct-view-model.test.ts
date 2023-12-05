@@ -17,7 +17,7 @@ import { PaperId } from '../../../../src/third-parties';
 describe('construct-view-model', () => {
   let framework: TestFramework;
   const doi = arbitraryArticleId();
-  const candidatePaperId = pipe(
+  const paperId = pipe(
     doi.value,
     PaperId.paperIdCodec.decode,
     E.getOrElseW(shouldNotBeCalled),
@@ -47,7 +47,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.createList(createListCommand);
         viewModel = await pipe(
           {
-            candidatePaperId,
+            paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -73,7 +73,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(doi, list.id);
         viewModel = await pipe(
           {
-            candidatePaperId,
+            paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -109,7 +109,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(doi, createListCommand.listId);
         viewModel = await pipe(
           {
-            candidatePaperId,
+            paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),

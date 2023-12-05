@@ -169,10 +169,10 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   const doesNotBeginWithActivity = '10\\..+';
 
   router.get(
-    `/articles/:candidatePaperId(${doesNotBeginWithActivity})`,
+    `/articles/:paperId(${doesNotBeginWithActivity})`,
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/articles/activity/${context.params.candidatePaperId}`);
+      context.redirect(`/articles/activity/${context.params.paperId}`);
 
       await next();
     },
@@ -181,7 +181,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   const isAllowedToContainSlashes = '.+';
 
   router.get(
-    `/articles/activity/:candidatePaperId(${isAllowedToContainSlashes})`,
+    `/articles/activity/:paperId(${isAllowedToContainSlashes})`,
     pageHandler(adapters, paperActivityPage(adapters), fullWidthPageLayout),
   );
 

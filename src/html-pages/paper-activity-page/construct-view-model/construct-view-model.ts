@@ -26,7 +26,7 @@ import { PaperExpressionFrontMatter } from '../../../third-parties/external-quer
 import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
 
 export const paramsCodec = t.type({
-  candidatePaperId: PaperId.paperIdCodec,
+  paperId: PaperId.paperIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
@@ -92,17 +92,16 @@ const constructRemainingViewModelForDoi = (
 );
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => {
-  const paperId = params.candidatePaperId;
-  if (PaperId.isDoi(paperId)) {
+  if (PaperId.isDoi(params.paperId)) {
     return pipe(
-      paperId,
+      params.paperId,
       getFrontMatterForMostRecentExpression(dependencies),
-      TE.chainW(constructRemainingViewModelForDoi(dependencies, params, paperId)),
+      TE.chainW(constructRemainingViewModelForDoi(dependencies, params, params.paperId)),
     );
   }
-  if (PaperId.isUuid(paperId)) {
+  if (PaperId.isUuid(params.paperId)) {
     return pipe(
-      paperId,
+      params.paperId,
       getFrontMatterForMostRecentExpression(dependencies),
       TE.map((frontMatter) => ({
         doi: frontMatter.doi,
