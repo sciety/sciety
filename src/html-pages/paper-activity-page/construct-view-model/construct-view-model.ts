@@ -91,6 +91,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     source: URL,
     server: ArticleServer,
     publishedAt: Date,
+    locator: PaperExpressionLocator.PaperExpressionLocator,
   };
 
   const hardcodedPaperExpressions: RNEA.ReadonlyNonEmptyArray<PaperExpression> = [
@@ -99,25 +100,27 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       source: new URL('https://doi.org/10.1099/acmi.0.000659.v3'),
       server: 'microbiologyresearch' as const,
       publishedAt: new Date('2023-10-05'),
+      locator: PaperExpressionLocator.fromDoi('10.1099/acmi.0.000659.v3'),
     },
     {
       version: 2,
       source: new URL('https://doi.org/10.1099/acmi.0.000659.v2'),
       server: 'microbiologyresearch' as const,
       publishedAt: new Date('2023-09-07'),
+      locator: PaperExpressionLocator.fromDoi('10.1099/acmi.0.000659.v2'),
     },
     {
       version: 1,
       source: new URL('https://doi.org/10.1099/acmi.0.000659.v1'),
       server: 'microbiologyresearch' as const,
       publishedAt: new Date('2023-06-29'),
+      locator: PaperExpressionLocator.fromDoi('10.1099/acmi.0.000659.v1'),
     },
   ];
 
   if (params.paperId === 'uuid:54844ee0-0cbd-40a6-8a57-56118412410c') {
     return pipe(
-      '10.1099/acmi.0.000659.v3',
-      PaperExpressionLocator.fromDoi,
+      hardcodedPaperExpressions[0].locator,
       dependencies.fetchPaperExpressionFrontMatter,
       TE.map((frontMatter) => ({
         doi: frontMatter.doi,
