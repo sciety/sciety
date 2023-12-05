@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { ArticleId } from '../types/article-id';
 
 export const isDoi = (input: unknown): input is PaperIdThatIsADoi => typeof input === 'string' && input.startsWith('doi:');
 
@@ -24,3 +25,9 @@ export const paperIdThatIsADoiCodec = new t.Type<PaperIdThatIsADoi, string, unkn
 );
 
 export type PaperIdThatIsADoi = string & { readonly PaperIdThatIsADoi: unique symbol };
+
+export const getDoiPortion = (paperId: PaperIdThatIsADoi): string => paperId.split(':')[1];
+
+export const toArticleId = (paperId: PaperIdThatIsADoi): ArticleId => new ArticleId(getDoiPortion(paperId));
+
+export const fromArticleId = (articleId: ArticleId): PaperIdThatIsADoi => `doi:${articleId.value}` as PaperIdThatIsADoi;
