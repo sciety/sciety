@@ -26,7 +26,7 @@ import { PaperExpressionFrontMatter } from '../../../third-parties/external-quer
 import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
 
 export const paramsCodec = t.type({
-  candidatePaperId: tt.NonEmptyString,
+  candidatePaperId: PaperId.paperIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
@@ -92,7 +92,7 @@ const constructRemainingViewModelForDoi = (
 );
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => {
-  const paperId = PaperId.fromNonEmptyString(params.candidatePaperId);
+  const paperId = params.candidatePaperId;
   if (PaperId.isDoi(paperId)) {
     return pipe(
       paperId,

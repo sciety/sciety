@@ -1,8 +1,7 @@
-import { NonEmptyString } from 'io-ts-types';
 import * as uuid from 'uuid';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { ArticleId } from '../types/article-id';
 
@@ -57,24 +56,3 @@ export const fromArticleId = (articleId: ArticleId): PaperIdThatIsADoi => `doi:$
 export const paperIdCodec = t.union([paperIdThatIsADoiCodec, paperIdThatIsAUuidCodec]);
 
 export type PaperId = t.TypeOf<typeof paperIdCodec>;
-
-export const fromNonEmptyString = (candidate: NonEmptyString): PaperId => {
-  if (uuid.validate(candidate)) {
-    return pipe(
-      candidate,
-      paperIdThatIsAUuidCodec.decode,
-      E.match(
-        () => { throw new Error('Cannot happen'); },
-        identity,
-      ),
-    );
-  }
-  return pipe(
-    candidate,
-    paperIdThatIsADoiCodec.decode,
-    E.match(
-      () => { throw new Error('Cannot happen'); },
-      identity,
-    ),
-  );
-};
