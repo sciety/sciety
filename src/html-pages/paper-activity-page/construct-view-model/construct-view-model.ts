@@ -97,32 +97,29 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       TE.chainW(constructRemainingViewModelForDoi(dependencies, params, params.paperId)),
     );
   }
-  if (PaperId.isUuid(params.paperId)) {
-    return pipe(
-      params.paperId,
-      getFrontMatterForMostRecentExpression(dependencies),
-      TE.map((frontMatter) => ({
-        doi: frontMatter.doi,
-        title: frontMatter.title,
-        titleLanguageCode: O.none,
-        authors: frontMatter.authors,
-        fullArticleUrl: '',
-        abstract: frontMatter.abstract,
-        abstractLanguageCode: O.none,
-        evaluationCount: 0,
-        latestVersion: O.none,
-        latestActivity: O.none,
-        feedItemsByDateDescending: [{
-          type: 'article-version-error',
-          server: frontMatter.server,
-        }],
-        userListManagement: O.none,
-        listedIn: [],
-        relatedArticles: O.none,
-        curationStatements: [],
-        reviewingGroups: [],
-      })),
-    );
-  }
-  return TE.left(DE.notFound);
+  return pipe(
+    params.paperId,
+    getFrontMatterForMostRecentExpression(dependencies),
+    TE.map((frontMatter) => ({
+      doi: frontMatter.doi,
+      title: frontMatter.title,
+      titleLanguageCode: O.none,
+      authors: frontMatter.authors,
+      fullArticleUrl: '',
+      abstract: frontMatter.abstract,
+      abstractLanguageCode: O.none,
+      evaluationCount: 0,
+      latestVersion: O.none,
+      latestActivity: O.none,
+      feedItemsByDateDescending: [{
+        type: 'article-version-error',
+        server: frontMatter.server,
+      }],
+      userListManagement: O.none,
+      listedIn: [],
+      relatedArticles: O.none,
+      curationStatements: [],
+      reviewingGroups: [],
+    })),
+  );
 };
