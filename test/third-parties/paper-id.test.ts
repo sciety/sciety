@@ -5,6 +5,7 @@ import { v4 } from 'uuid';
 import { PaperId } from '../../src/third-parties';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryString } from '../helpers';
 
 describe('paper-id', () => {
   describe('when successfully decoding a UUID', () => {
@@ -54,9 +55,11 @@ describe('paper-id', () => {
     });
   });
 
-  describe('given neither a uuid nor a doi', () => {
-    describe('fromNonEmptyString', () => {
-      it.todo('returns on the left');
+  describe('when decoding a value that is neither a uuid nor a doi', () => {
+    const decoded = PaperId.paperIdCodec.decode(arbitraryString());
+
+    it('returns on the left', () => {
+      expect(E.isLeft(decoded)).toBe(true);
     });
   });
 });
