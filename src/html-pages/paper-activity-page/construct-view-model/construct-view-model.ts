@@ -46,6 +46,16 @@ const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (p
     );
   }
 
+  if (paperId === 'uuid:54844ee0-0cbd-40a6-8a57-56118412410c') {
+    return TE.right({
+      abstract: sanitise(toHtmlFragment('An abstract')),
+      authors: O.some(['Author']),
+      doi: new ArticleId('10.9999/1234'),
+      title: sanitise(toHtmlFragment('The specific title')),
+      server: 'microbiologyresearch',
+    });
+  }
+
   return TE.right({
     abstract: sanitise(toHtmlFragment('An abstract')),
     authors: O.some(['Author']),
