@@ -52,7 +52,7 @@ export const toArticleId = (paperId: PaperIdThatIsADoi): ArticleId => new Articl
 
 export const fromArticleId = (articleId: ArticleId): PaperIdThatIsADoi => `doi:${articleId.value}` as PaperIdThatIsADoi;
 
-const paperIdCodec = t.union([paperIdThatIsADoiCodec, paperIdThatIsAUuidCodec]);
+export const paperIdCodec = t.union([paperIdThatIsADoiCodec, paperIdThatIsAUuidCodec]);
 
 export type PaperId = t.TypeOf<typeof paperIdCodec>;
 

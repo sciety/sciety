@@ -1,18 +1,19 @@
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { NonEmptyString } from 'io-ts-types';
 import { v4 } from 'uuid';
 import * as O from 'fp-ts/Option';
 import { PaperId } from '../../src/third-parties';
-import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('paper-id', () => {
   describe('when a construction is followed by a destruction', () => {
-    const original = arbitraryString() as NonEmptyString;
+    const original = arbitraryArticleId().value;
     const result = pipe(
       original,
-      PaperId.fromNonEmptyString,
+      PaperId.paperIdCodec.decode,
+      E.getOrElseW(shouldNotBeCalled),
       O.fromPredicate(PaperId.isDoi),
       O.getOrElseW(shouldNotBeCalled),
       PaperId.getDoiPortion,
