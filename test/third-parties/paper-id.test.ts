@@ -2,7 +2,6 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { NonEmptyString } from 'io-ts-types';
 import { v4 } from 'uuid';
-import * as O from 'fp-ts/Option';
 import { PaperId } from '../../src/third-parties';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -31,9 +30,8 @@ describe('paper-id', () => {
       const result = pipe(
         input,
         PaperId.paperIdCodec.decode,
+        E.filterOrElseW(PaperId.isDoi, shouldNotBeCalled),
         E.getOrElseW(shouldNotBeCalled),
-        O.fromPredicate(PaperId.isDoi),
-        O.getOrElseW(shouldNotBeCalled),
         PaperId.getDoiPortion,
       );
 
