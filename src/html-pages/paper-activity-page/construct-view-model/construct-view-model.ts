@@ -1,5 +1,4 @@
 import * as T from 'fp-ts/Task';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
@@ -8,10 +7,11 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as O from 'fp-ts/Option';
 import { URL } from 'url';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
-import { FeedItem, ViewModel } from '../view-model';
+import { ViewModel } from '../view-model';
 import { userIdCodec } from '../../../types/user-id';
 import { constructListedIn } from './construct-listed-in';
 import { constructUserListManagement } from './construct-user-list-management';
@@ -23,6 +23,7 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { PaperExpressionLocator, PaperId } from '../../../third-parties';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
+import { ArticleServer } from '../../../types/article-server';
 
 export const paramsCodec = t.type({
   paperId: PaperId.paperIdCodec,
@@ -85,23 +86,27 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     );
   }
 
-  const hardcodedFeedItems: RNEA.ReadonlyNonEmptyArray<FeedItem> = [
+  type PaperExpression = {
+    version: number,
+    source: URL,
+    server: ArticleServer,
+    publishedAt: Date,
+  };
+
+  const hardcodedPaperExpressions: RNEA.ReadonlyNonEmptyArray<PaperExpression> = [
     {
-      type: 'article-version' as const,
       version: 3,
       source: new URL('https://doi.org/10.1099/acmi.0.000659.v3'),
       server: 'microbiologyresearch' as const,
       publishedAt: new Date('2023-10-05'),
     },
     {
-      type: 'article-version' as const,
       version: 2,
       source: new URL('https://doi.org/10.1099/acmi.0.000659.v2'),
       server: 'microbiologyresearch' as const,
       publishedAt: new Date('2023-09-07'),
     },
     {
-      type: 'article-version' as const,
       version: 1,
       source: new URL('https://doi.org/10.1099/acmi.0.000659.v1'),
       server: 'microbiologyresearch' as const,
@@ -125,7 +130,13 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         evaluationCount: 0,
         latestVersion: O.none,
         latestActivity: O.none,
-        feedItemsByDateDescending: hardcodedFeedItems,
+        feedItemsByDateDescending: pipe(
+          hardcodedPaperExpressions,
+          RNEA.map((expression) => ({
+            ...expression,
+            type: 'article-version',
+          })),
+        ),
         userListManagement: O.none,
         listedIn: [],
         relatedArticles: O.none,
