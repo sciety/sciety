@@ -7,6 +7,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as O from 'fp-ts/Option';
+import { URL } from 'url';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
@@ -86,8 +87,25 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
 
   const hardcodedFeedItems: RNEA.ReadonlyNonEmptyArray<FeedItem> = [
     {
-      type: 'article-version-error' as const,
+      type: 'article-version' as const,
+      version: 3,
+      source: new URL('https://doi.org/10.1099/acmi.0.000659.v3'),
       server: 'microbiologyresearch' as const,
+      publishedAt: new Date('2023-10-05'),
+    },
+    {
+      type: 'article-version' as const,
+      version: 2,
+      source: new URL('https://doi.org/10.1099/acmi.0.000659.v2'),
+      server: 'microbiologyresearch' as const,
+      publishedAt: new Date('2023-09-07'),
+    },
+    {
+      type: 'article-version' as const,
+      version: 1,
+      source: new URL('https://doi.org/10.1099/acmi.0.000659.v1'),
+      server: 'microbiologyresearch' as const,
+      publishedAt: new Date('2023-06-29'),
     },
   ];
 
