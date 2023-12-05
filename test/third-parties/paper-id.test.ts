@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { NonEmptyString } from 'io-ts-types';
 import { v4 } from 'uuid';
@@ -23,15 +24,19 @@ describe('paper-id', () => {
     });
   });
 
-  describe('given a doi', () => {
+  describe('when successfully decoding a DOI', () => {
     const input = arbitraryArticleId().value as NonEmptyString;
+    const decoded = pipe(
+      input,
+      PaperId.paperIdCodec.decode,
+      E.getOrElseW(shouldNotBeCalled),
+    );
 
-    describe('when decoded, followed by getDoiPortion', () => {
+    describe('getDoiPortion', () => {
       const result = pipe(
-        input,
-        PaperId.paperIdCodec.decode,
-        E.filterOrElseW(PaperId.isDoi, shouldNotBeCalled),
-        E.getOrElseW(shouldNotBeCalled),
+        decoded,
+        O.fromPredicate(PaperId.isDoi),
+        O.getOrElseW(shouldNotBeCalled),
         PaperId.getDoiPortion,
       );
 
