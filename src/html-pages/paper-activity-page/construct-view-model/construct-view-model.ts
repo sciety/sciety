@@ -1,4 +1,5 @@
 import * as T from 'fp-ts/Task';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
@@ -9,7 +10,7 @@ import * as O from 'fp-ts/Option';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
-import { ViewModel } from '../view-model';
+import { FeedItem, ViewModel } from '../view-model';
 import { userIdCodec } from '../../../types/user-id';
 import { constructListedIn } from './construct-listed-in';
 import { constructUserListManagement } from './construct-user-list-management';
@@ -83,6 +84,13 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     );
   }
 
+  const hardcodedFeedItems: RNEA.ReadonlyNonEmptyArray<FeedItem> = [
+    {
+      type: 'article-version-error' as const,
+      server: 'microbiologyresearch' as const,
+    },
+  ];
+
   if (params.paperId === 'uuid:54844ee0-0cbd-40a6-8a57-56118412410c') {
     return pipe(
       '10.1099/acmi.0.000659.v3',
@@ -99,10 +107,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         evaluationCount: 0,
         latestVersion: O.none,
         latestActivity: O.none,
-        feedItemsByDateDescending: [{
-          type: 'article-version-error',
-          server: frontMatter.server,
-        }],
+        feedItemsByDateDescending: hardcodedFeedItems,
         userListManagement: O.none,
         listedIn: [],
         relatedArticles: O.none,
