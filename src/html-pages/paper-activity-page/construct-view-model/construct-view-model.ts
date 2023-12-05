@@ -45,16 +45,14 @@ const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (p
       dependencies.fetchPaperExpressionFrontMatter,
     );
   }
-  if (PaperId.isUuid(paperId)) {
-    return TE.right({
-      abstract: sanitise(toHtmlFragment('An abstract')),
-      authors: O.some(['Author']),
-      doi: new ArticleId('10.9999/1234'),
-      title: sanitise(toHtmlFragment('The title')),
-      server: 'microbiologyresearch',
-    });
-  }
-  return TE.left(DE.notFound);
+
+  return TE.right({
+    abstract: sanitise(toHtmlFragment('An abstract')),
+    authors: O.some(['Author']),
+    doi: new ArticleId('10.9999/1234'),
+    title: sanitise(toHtmlFragment('The title')),
+    server: 'microbiologyresearch',
+  });
 };
 
 const constructRemainingViewModelForDoi = (
