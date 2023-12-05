@@ -19,9 +19,6 @@ import { constructCurationStatements } from '../../../shared-components/curation
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 import { PaperExpressionLocator, PaperId } from '../../../third-parties';
-import { sanitise } from '../../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { ArticleId } from '../../../types/article-id';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
 
@@ -54,13 +51,7 @@ const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (p
     );
   }
 
-  return TE.right({
-    abstract: sanitise(toHtmlFragment('An abstract')),
-    authors: O.some(['Author']),
-    doi: new ArticleId('10.9999/1234'),
-    title: sanitise(toHtmlFragment('The title')),
-    server: 'microbiologyresearch',
-  });
+  return TE.left(DE.notFound);
 };
 
 const constructRemainingViewModelForDoi = (
