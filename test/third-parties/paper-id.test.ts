@@ -32,6 +32,14 @@ describe('paper-id', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
+    it('isDoi detects that the paper id is a doi', () => {
+      expect(PaperId.isDoi(decoded)).toBe(true);
+    });
+
+    it('isUuid detects that the paper id is not a uuid', () => {
+      expect(PaperId.isUuid(decoded)).toBe(false);
+    });
+
     describe('getDoiPortion', () => {
       const result = pipe(
         decoded,
@@ -42,18 +50,6 @@ describe('paper-id', () => {
 
       it('results in the original value', () => {
         expect(result).toBe(input);
-      });
-    });
-
-    describe('fromNonEmptyString', () => {
-      const paperId = PaperId.fromNonEmptyString(input);
-
-      it('detects that the paper id is a doi', () => {
-        expect(PaperId.isDoi(paperId)).toBe(true);
-      });
-
-      it('detects that the paper id is not a uuid', () => {
-        expect(PaperId.isUuid(paperId)).toBe(false);
       });
     });
   });
