@@ -33,26 +33,12 @@ const toFullArticleUrl = (paperId: PaperId.PaperIdThatIsADoi) => `https://doi.or
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperId): ReturnType<Dependencies['fetchPaperExpressionFrontMatter']> => {
-  if (PaperId.isDoi(paperId)) {
-    return pipe(
-      paperId,
-      PaperId.getDoiPortion,
-      PaperExpressionLocator.fromDoi,
-      dependencies.fetchPaperExpressionFrontMatter,
-    );
-  }
-
-  if (paperId === 'uuid:54844ee0-0cbd-40a6-8a57-56118412410c') {
-    return pipe(
-      '10.1099/acmi.0.000659.v3',
-      PaperExpressionLocator.fromDoi,
-      dependencies.fetchPaperExpressionFrontMatter,
-    );
-  }
-
-  return TE.left(DE.notFound);
-};
+const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperIdThatIsADoi): ReturnType<Dependencies['fetchPaperExpressionFrontMatter']> => pipe(
+  paperId,
+  PaperId.getDoiPortion,
+  PaperExpressionLocator.fromDoi,
+  dependencies.fetchPaperExpressionFrontMatter,
+);
 
 const constructRemainingViewModelForDoi = (
   dependencies: Dependencies,
@@ -99,8 +85,9 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
 
   if (params.paperId === 'uuid:54844ee0-0cbd-40a6-8a57-56118412410c') {
     return pipe(
-      params.paperId,
-      getFrontMatterForMostRecentExpression(dependencies),
+      '10.1099/acmi.0.000659.v3',
+      PaperExpressionLocator.fromDoi,
+      dependencies.fetchPaperExpressionFrontMatter,
       TE.map((frontMatter) => ({
         doi: frontMatter.doi,
         title: frontMatter.title,
