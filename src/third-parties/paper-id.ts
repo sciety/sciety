@@ -28,13 +28,15 @@ type PaperIdThatIsAUuid = string & { readonly PaperIdThatIsAUuid: unique symbol 
 
 export const isDoi = (input: unknown): input is PaperIdThatIsADoi => typeof input === 'string' && input.startsWith('doi:');
 
+const doiRegex = /^(?:doi:)?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
+
 export const paperIdThatIsADoiCodec = new t.Type<PaperIdThatIsADoi, string, unknown>(
   'paperIdThatIsADoi',
   isDoi,
   (u, c) => pipe(
     t.string.validate(u, c),
     E.chain(flow(
-      O.fromPredicate(() => true),
+      O.fromPredicate((value) => doiRegex.test(value)),
       O.fold(
         () => t.failure(u, c),
         (id) => t.success(`doi:${id}` as PaperIdThatIsADoi),

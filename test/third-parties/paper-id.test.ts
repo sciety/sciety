@@ -15,11 +15,11 @@ describe('paper-id', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.failing('isDoi detects that the paper id is not a doi', () => {
+    it('isDoi detects that the paper id is not a doi', () => {
       expect(PaperId.isDoi(decoded)).toBe(false);
     });
 
-    it.failing('isUuid detects that the paper id is a uuid', () => {
+    it('isUuid detects that the paper id is a uuid', () => {
       expect(PaperId.isUuid(decoded)).toBe(true);
     });
   });
