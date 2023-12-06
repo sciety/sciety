@@ -31,8 +31,9 @@ describe('paper-id', () => {
     });
   });
 
-  describe('when successfully decoding a DOI', () => {
-    const input = arbitraryArticleId().value;
+  describe.each([
+    [arbitraryArticleId().value],
+  ])('when successfully decoding a DOI (%s)', (input) => {
     const decoded = pipe(
       input,
       PaperId.paperIdCodec.decode,
