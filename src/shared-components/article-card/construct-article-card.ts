@@ -31,6 +31,8 @@ const transformIntoCurationStatementViewModel = (
   quoteLanguageCode: curationStatement.statementLanguageCode,
 });
 
+const constructPaperActivityPageHref = (value: string) => `/articles/activity/${value}`;
+
 export const constructArticleCard = (
   ports: Dependencies,
 ) => (articleId: ArticleId): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
@@ -58,7 +60,7 @@ export const constructArticleCard = (
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, curationStatements }) => ({
       articleId: partial.articleId,
-      articleHref: `/articles/activity/${partial.articleId.value}`,
+      articleHref: constructPaperActivityPageHref(partial.articleId.value),
       title: partial.title,
       authors: partial.authors,
       latestVersionDate,
