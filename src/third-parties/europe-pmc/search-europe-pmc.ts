@@ -22,6 +22,7 @@ const europePmcPublisher = t.union(
     t.literal('medRxiv'),
     t.literal('Research Square'),
     t.literal('SciELO Preprints'),
+    t.literal('Access Microbiology'),
   ],
 );
 
@@ -69,6 +70,8 @@ const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServe
       return 'researchsquare';
     case 'SciELO Preprints':
       return 'scielopreprints';
+    case 'Access Microbiology':
+      return 'microbiologyresearch';
   }
 };
 
