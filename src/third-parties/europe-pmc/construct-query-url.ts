@@ -10,7 +10,7 @@ export const constructQueryUrl = (
 ): string => pipe(
   evaluatedOnly ? ' (LABS_PUBS:"2112")' : '',
   (evaluatedOnSciety) => new URLSearchParams({
-    query: `(${query}) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square" OR PUBLISHER:"SciELO Preprints")${evaluatedOnSciety} sort_date:y`,
+    query: `(${query}) (PUBLISHER:"bioRxiv" OR PUBLISHER:"medRxiv" OR PUBLISHER:"Research Square" OR PUBLISHER:"SciELO Preprints" OR PUBLISHER:"Access Microbiology")${evaluatedOnSciety} sort_date:y`,
     format: 'json',
     pageSize: pageSize.toString(),
     resultType: 'core',
