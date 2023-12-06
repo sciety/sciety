@@ -25,7 +25,9 @@ describe('paper-id', () => {
     });
 
     describe('encoding', () => {
-      it.todo('returns the original value');
+      it.failing('returns the original value', () => {
+        expect(PaperId.paperIdCodec.encode(decoded)).toBe(input);
+      });
     });
   });
 
@@ -46,7 +48,9 @@ describe('paper-id', () => {
     });
 
     describe('encoding', () => {
-      it.todo('returns the original value');
+      it.failing('returns the original value', () => {
+        expect(PaperId.paperIdCodec.encode(decoded)).toBe(input);
+      });
     });
 
     describe('getDoiPortion', () => {
