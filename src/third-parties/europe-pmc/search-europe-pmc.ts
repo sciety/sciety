@@ -71,7 +71,7 @@ const translatePublisherToServer = (publisher: EuropePmcPublisher): ArticleServe
     case 'SciELO Preprints':
       return 'scielopreprints';
     case 'Access Microbiology':
-      return 'microbiologyresearch';
+      return 'accessmicrobiology';
   }
 };
 

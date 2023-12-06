@@ -7,7 +7,7 @@ export const articleServerCodec = t.union(
     t.literal('researchsquare'),
     t.literal('scielopreprints'),
     t.literal('osf'),
-    t.literal('microbiologyresearch'),
+    t.literal('accessmicrobiology'),
   ],
 );
 
@@ -51,8 +51,8 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
     versionsSupported: false,
     domain: 'osf.io',
   },
-  microbiologyresearch: {
-    name: 'Microbiology Research',
+  accessmicrobiology: {
+    name: 'Access Microbiology',
     avatarUrl: 'https://raw.githubusercontent.com/sciety/group-static-files/main/access-microbiology.png',
     versionsSupported: false,
     domain: 'www.microbiologyresearch.org',
