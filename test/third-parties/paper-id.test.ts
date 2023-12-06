@@ -23,6 +23,10 @@ describe('paper-id', () => {
     it('isUuid detects that the paper id is a uuid', () => {
       expect(PaperId.isUuid(decoded)).toBe(true);
     });
+
+    describe('encoding', () => {
+      it.todo('returns the original value');
+    });
   });
 
   describe('when successfully decoding a DOI', () => {
@@ -39,6 +43,10 @@ describe('paper-id', () => {
 
     it('isUuid detects that the paper id is not a uuid', () => {
       expect(PaperId.isUuid(decoded)).toBe(false);
+    });
+
+    describe('encoding', () => {
+      it.todo('returns the original value');
     });
 
     describe('getDoiPortion', () => {
