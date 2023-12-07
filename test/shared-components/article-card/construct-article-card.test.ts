@@ -175,7 +175,7 @@ describe('construct-article-card', () => {
 
     it('returns an ArticleCardViewModel with the version information omitted', () => {
       expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-        latestVersionDate: O.none,
+        latestPublishedAt: O.none,
       })));
     });
   });

@@ -30,7 +30,7 @@ const renderListMembershipCount = (listMembershipCount: ViewModel['listMembershi
   ),
 );
 
-const renderPublicationDateOfMostRecentExpression = O.fold(
+const renderLatestPublicationDate = O.fold(
   constant(''),
   flow(
     templateDate,
@@ -50,6 +50,6 @@ const renderArticleLatestActivityDate = O.fold(
 
 export const renderMeta = (model: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="article-card__meta">
-    ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderPublicationDateOfMostRecentExpression(model.latestVersionDate)}${renderArticleLatestActivityDate(model.latestActivityAt)}
+    ${renderEvaluationCount(model.evaluationCount)}${renderListMembershipCount(model.listMembershipCount)}${renderLatestPublicationDate(model.latestPublishedAt)}${renderArticleLatestActivityDate(model.latestActivityAt)}
   </div>
 `);

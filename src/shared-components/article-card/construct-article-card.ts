@@ -63,7 +63,7 @@ export const constructArticleCard = (
       articleHref: constructPaperActivityPageHref(partial.articleId.value),
       title: partial.title,
       authors: partial.authors,
-      latestVersionDate,
+      latestPublishedAt: latestVersionDate,
       latestActivityAt: partial.articleActivity.latestActivityAt,
       evaluationCount: pipe(
         partial.articleActivity.evaluationCount === 0,

@@ -17,7 +17,7 @@ export type ViewModel = {
   articleHref: string,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
-  latestVersionDate: O.Option<Date>,
+  latestPublishedAt: O.Option<Date>,
   latestActivityAt: O.Option<Date>,
   evaluationCount: O.Option<number>,
   listMembershipCount: O.Option<number>,
