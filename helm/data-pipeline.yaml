@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: sciety--prod--data-pipeline
 spec:
-  schedule: "45 15 * * mon-fri"
+  schedule: "@hourly"
   jobTemplate:
     spec:
       template:
