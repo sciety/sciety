@@ -20,6 +20,16 @@ const crossrefRecordCodec = t.strict({
         URL: t.string,
       }),
     }),
+    relation: t.partial({
+      'has-version': t.array(t.strict({
+        'id-type': t.literal('doi'),
+        id: t.string,
+      })),
+      'is-version-of': t.array(t.strict({
+        'id-type': t.literal('doi'),
+        id: t.string,
+      })),
+    }),
   }),
 });
 
