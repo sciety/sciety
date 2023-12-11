@@ -1,10 +1,6 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
-import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -14,7 +10,7 @@ import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
 import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
-import { fetchCrossrefArticle } from './crossref';
+import { fetchAllPaperExpressionsFromCrossref, fetchCrossrefArticle } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
@@ -27,28 +23,6 @@ import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publish
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
 import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-crossref-article';
 import { PaperIdThatIsADoi, toArticleId } from './paper-id';
-
-const fetchAllPaperExpressionsFromCrossref = () => pipe(
-  [
-    {
-      version: 3,
-      publishedAt: new Date('2023-12-08'),
-      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3'),
-    },
-    {
-      version: 2,
-      publishedAt: new Date('2023-11-02'),
-      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2'),
-    },
-    {
-      version: 1,
-      publishedAt: new Date('2023-07-06'),
-      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v1'),
-    },
-  ],
-  RNEA.fromReadonlyArray,
-  T.of,
-);
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
