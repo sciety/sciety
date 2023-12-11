@@ -23,6 +23,12 @@ const crossrefRecordCodec = t.strict({
 
 type CrossrefRecord = t.TypeOf<typeof crossrefRecordCodec>;
 
+const fetchIndividualRecord = (response: unknown) => pipe(
+  response,
+  crossrefRecordCodec.decode,
+  TE.fromEither,
+);
+
 const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion => ({
   version: parseInt(crossrefExpression.message.DOI.substring(crossrefExpression.message.DOI.length - 1), 10),
   publishedAt: new Date(
@@ -76,8 +82,8 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
         },
       },
     },
-  ] as ReadonlyArray<CrossrefRecord>,
-  TE.traverseArray(TE.right),
+  ],
+  TE.traverseArray(fetchIndividualRecord),
   TO.fromTaskEither,
   TO.map(RA.map(toArticleVersion)),
   TO.chainOptionK(RNEA.fromReadonlyArray),
