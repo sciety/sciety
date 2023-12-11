@@ -21,7 +21,11 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
           posted: {
             'date-parts': [2023, 11, 2],
           },
-          resource: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2',
+          resource: {
+            primary: {
+              URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2',
+            },
+          },
         },
       },
       (crossrefExpression) => ({
@@ -31,7 +35,7 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
           crossrefExpression.message.posted['date-parts'][1] - 1,
           crossrefExpression.message.posted['date-parts'][2],
         ),
-        source: new URL(crossrefExpression.message.resource),
+        source: new URL(crossrefExpression.message.resource.primary.URL),
       }),
     ),
     {
