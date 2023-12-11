@@ -32,7 +32,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(toArticleId(paperId), server);
   }
   if (paperId === 'doi:10.1099/acmi.0.000667.v3') {
-    return fetchAllPaperExpressionsFromCrossref();
+    return fetchAllPaperExpressionsFromCrossref('10.1099/acmi.0.000667.v3');
   }
   return TO.none;
 };

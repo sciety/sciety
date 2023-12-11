@@ -5,7 +5,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleVersion } from '../../types/article-version';
 
-type FetchAllPaperExpressionsFromCrossref = () => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
+type FetchAllPaperExpressionsFromCrossref = (doi: string) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromCrossref = () => pipe(
   [
