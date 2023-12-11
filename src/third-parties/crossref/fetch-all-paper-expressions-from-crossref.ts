@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as t from 'io-ts';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
@@ -36,55 +37,47 @@ type FetchAllPaperExpressionsFromCrossref = (doi: string) => TO.TaskOption<RNEA.
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromCrossref = () => pipe(
   [
-    pipe(
-      {
-        message: {
-          DOI: '10.1099/acmi.0.000667.v3',
-          posted: {
-            'date-parts': [2023, 12, 8],
-          },
-          resource: {
-            primary: {
-              URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3',
-            },
+    {
+      message: {
+        DOI: '10.1099/acmi.0.000667.v3',
+        posted: {
+          'date-parts': [2023, 12, 8],
+        },
+        resource: {
+          primary: {
+            URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3',
           },
         },
       },
-      toArticleVersion,
-    ),
-    pipe(
-      {
-        message: {
-          DOI: '10.1099/acmi.0.000667.v2',
-          posted: {
-            'date-parts': [2023, 11, 2],
-          },
-          resource: {
-            primary: {
-              URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2',
-            },
+    },
+    {
+      message: {
+        DOI: '10.1099/acmi.0.000667.v2',
+        posted: {
+          'date-parts': [2023, 11, 2],
+        },
+        resource: {
+          primary: {
+            URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2',
           },
         },
       },
-      toArticleVersion,
-    ),
-    pipe(
-      {
-        message: {
-          DOI: '10.1099/acmi.0.000667.v1',
-          posted: {
-            'date-parts': [2023, 7, 6],
-          },
-          resource: {
-            primary: {
-              URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v1',
-            },
+    },
+    {
+      message: {
+        DOI: '10.1099/acmi.0.000667.v1',
+        posted: {
+          'date-parts': [2023, 7, 6],
+        },
+        resource: {
+          primary: {
+            URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v1',
           },
         },
       },
-      toArticleVersion,
-    ),
+    },
   ],
+  RA.map(toArticleVersion),
   RNEA.fromReadonlyArray,
   T.of,
 );
