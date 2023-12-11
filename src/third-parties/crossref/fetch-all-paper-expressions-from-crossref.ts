@@ -6,6 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleVersion } from '../../types/article-version';
+import { QueryExternalService } from '../query-external-service';
 
 const crossrefRecordCodec = t.strict({
   message: t.strict({
@@ -39,7 +40,8 @@ const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion =>
   source: new URL(crossrefExpression.message.resource.primary.URL),
 });
 
-type FetchAllPaperExpressionsFromCrossref = (doi: string) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
+type FetchAllPaperExpressionsFromCrossref = (queryCrossrefService: QueryExternalService, doi: string)
+=> TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromCrossref = () => pipe(
   [

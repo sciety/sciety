@@ -25,6 +25,7 @@ import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-cr
 import { PaperIdThatIsADoi, toArticleId } from './paper-id';
 
 const findVersionsForArticleDoiFromSupportedServers = (
+  queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
   logger: Logger,
 ) => (paperId: PaperIdThatIsADoi, server: ArticleServer) => {
@@ -32,7 +33,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(toArticleId(paperId), server);
   }
   if (paperId === 'doi:10.1099/acmi.0.000667.v3') {
-    return fetchAllPaperExpressionsFromCrossref('10.1099/acmi.0.000667.v3');
+    return fetchAllPaperExpressionsFromCrossref(queryCrossrefService, '10.1099/acmi.0.000667.v3');
   }
   return TO.none;
 };
@@ -93,7 +94,11 @@ export const instantiate = (
     }),
     fetchStaticFile: fetchStaticFile(logger),
     searchForArticles: searchEuropePmc(queryExternalService, logger),
-    findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(queryExternalService, logger),
+    findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(
+      queryCrossrefService,
+      queryExternalService,
+      logger,
+    ),
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
   };
 };
