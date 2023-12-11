@@ -36,11 +36,22 @@ type FetchAllPaperExpressionsFromCrossref = (doi: string) => TO.TaskOption<RNEA.
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromCrossref = () => pipe(
   [
-    {
-      version: 3,
-      publishedAt: new Date('2023-12-08'),
-      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3'),
-    },
+    pipe(
+      {
+        message: {
+          DOI: '10.1099/acmi.0.000667.v3',
+          posted: {
+            'date-parts': [2023, 12, 8],
+          },
+          resource: {
+            primary: {
+              URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3',
+            },
+          },
+        },
+      },
+      toArticleVersion,
+    ),
     pipe(
       {
         message: {
@@ -57,11 +68,22 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
       },
       toArticleVersion,
     ),
-    {
-      version: 1,
-      publishedAt: new Date('2023-07-06'),
-      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v1'),
-    },
+    pipe(
+      {
+        message: {
+          DOI: '10.1099/acmi.0.000667.v1',
+          posted: {
+            'date-parts': [2023, 7, 6],
+          },
+          resource: {
+            primary: {
+              URL: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v1',
+            },
+          },
+        },
+      },
+      toArticleVersion,
+    ),
   ],
   RNEA.fromReadonlyArray,
   T.of,
