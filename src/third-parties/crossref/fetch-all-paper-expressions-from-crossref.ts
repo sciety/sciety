@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as t from 'io-ts';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleVersion } from '../../types/article-version';
@@ -76,8 +76,9 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
         },
       },
     },
-  ],
-  RA.map(toArticleVersion),
-  RNEA.fromReadonlyArray,
-  T.of,
+  ] as ReadonlyArray<CrossrefRecord>,
+  TE.traverseArray(TE.right),
+  TO.fromTaskEither,
+  TO.map(RA.map(toArticleVersion)),
+  TO.chainOptionK(RNEA.fromReadonlyArray),
 );
