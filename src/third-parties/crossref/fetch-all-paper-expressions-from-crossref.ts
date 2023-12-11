@@ -55,16 +55,21 @@ const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion =>
   source: new URL(crossrefExpression.message.resource.primary.URL),
 });
 
-type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi: string)
-=> TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
-
-export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (queryCrossrefService) => pipe(
+const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (doi: string) => pipe(
   [
-    '10.1099/acmi.0.000667.v3',
+    doi,
     '10.1099/acmi.0.000667.v2',
     '10.1099/acmi.0.000667.v1',
   ],
   TE.traverseArray(fetchIndividualRecord(queryCrossrefService)),
+);
+
+type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi: string)
+=> TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
+
+export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (queryCrossrefService, doi) => pipe(
+  doi,
+  walkRelationGraph(queryCrossrefService),
   TO.fromTaskEither,
   TO.map(RA.map(toArticleVersion)),
   TO.chainOptionK(RNEA.fromReadonlyArray),
