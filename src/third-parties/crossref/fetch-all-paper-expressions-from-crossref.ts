@@ -1,9 +1,36 @@
 import { URL } from 'url';
+import * as t from 'io-ts';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleVersion } from '../../types/article-version';
+
+const crossrefRecordCodec = t.strict({
+  message: t.strict({
+    DOI: t.string,
+    posted: t.strict({
+      'date-parts': t.tuple([t.number, t.number, t.number]),
+    }),
+    resource: t.strict({
+      primary: t.strict({
+        URL: t.string,
+      }),
+    }),
+  }),
+});
+
+type CrossrefRecord = t.TypeOf<typeof crossrefRecordCodec>;
+
+const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion => ({
+  version: parseInt(crossrefExpression.message.DOI.substring(crossrefExpression.message.DOI.length - 1), 10),
+  publishedAt: new Date(
+    crossrefExpression.message.posted['date-parts'][0],
+    crossrefExpression.message.posted['date-parts'][1] - 1,
+    crossrefExpression.message.posted['date-parts'][2],
+  ),
+  source: new URL(crossrefExpression.message.resource.primary.URL),
+});
 
 type FetchAllPaperExpressionsFromCrossref = (doi: string) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
@@ -28,15 +55,7 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
           },
         },
       },
-      (crossrefExpression) => ({
-        version: parseInt(crossrefExpression.message.DOI.substring(crossrefExpression.message.DOI.length - 1), 10),
-        publishedAt: new Date(
-          crossrefExpression.message.posted['date-parts'][0],
-          crossrefExpression.message.posted['date-parts'][1] - 1,
-          crossrefExpression.message.posted['date-parts'][2],
-        ),
-        source: new URL(crossrefExpression.message.resource.primary.URL),
-      }),
+      toArticleVersion,
     ),
     {
       version: 1,
