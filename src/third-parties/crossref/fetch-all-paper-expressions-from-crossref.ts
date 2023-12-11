@@ -56,12 +56,20 @@ const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion =>
 });
 
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (doi: string) => pipe(
-  [
-    doi,
-    '10.1099/acmi.0.000667.v2',
-    '10.1099/acmi.0.000667.v1',
-  ],
-  TE.traverseArray(fetchIndividualRecord(queryCrossrefService)),
+  doi,
+  fetchIndividualRecord(queryCrossrefService),
+  TE.map((record) => [
+    record.message.DOI,
+    ...pipe(
+      record.message.relation['is-version-of'] ?? [],
+      RA.map((relation) => relation.id),
+    ),
+    ...pipe(
+      record.message.relation['has-version'] ?? [],
+      RA.map((relation) => relation.id),
+    ),
+  ]),
+  TE.chain(TE.traverseArray(fetchIndividualRecord(queryCrossrefService))),
 );
 
 type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi: string)
