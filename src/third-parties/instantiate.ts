@@ -1,6 +1,10 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/Option';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
+import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -30,6 +34,19 @@ const findVersionsForArticleDoiFromSupportedServers = (
 ) => (paperId: PaperIdThatIsADoi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(toArticleId(paperId), server);
+  }
+  if (paperId === 'doi:10.1099/acmi.0.000667.v3') {
+    return pipe(
+      [
+        {
+          version: 1,
+          publishedAt: new Date('2023-12-08'),
+          source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3'),
+        },
+      ],
+      RNEA.fromReadonlyArray,
+      T.of,
+    );
   }
   return TO.none;
 };
