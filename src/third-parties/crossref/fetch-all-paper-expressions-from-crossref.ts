@@ -14,11 +14,26 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
       publishedAt: new Date('2023-12-08'),
       source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3'),
     },
-    {
-      version: 2,
-      publishedAt: new Date('2023-11-02'),
-      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2'),
-    },
+    pipe(
+      {
+        message: {
+          version: 2,
+          posted: {
+            'date-parts': [2023, 11, 2],
+          },
+          resource: 'https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2',
+        },
+      },
+      (crossrefExpression) => ({
+        version: crossrefExpression.message.version,
+        publishedAt: new Date(
+          crossrefExpression.message.posted['date-parts'][0],
+          crossrefExpression.message.posted['date-parts'][1] - 1,
+          crossrefExpression.message.posted['date-parts'][2],
+        ),
+        source: new URL(crossrefExpression.message.resource),
+      }),
+    ),
     {
       version: 1,
       publishedAt: new Date('2023-07-06'),
