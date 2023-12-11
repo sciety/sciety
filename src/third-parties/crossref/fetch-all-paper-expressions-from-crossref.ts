@@ -17,7 +17,7 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
     pipe(
       {
         message: {
-          version: 2,
+          DOI: '10.1099/acmi.0.000667.v2',
           posted: {
             'date-parts': [2023, 11, 2],
           },
@@ -29,7 +29,7 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
         },
       },
       (crossrefExpression) => ({
-        version: crossrefExpression.message.version,
+        version: parseInt(crossrefExpression.message.DOI.substring(crossrefExpression.message.DOI.length - 1), 10),
         publishedAt: new Date(
           crossrefExpression.message.posted['date-parts'][0],
           crossrefExpression.message.posted['date-parts'][1] - 1,
