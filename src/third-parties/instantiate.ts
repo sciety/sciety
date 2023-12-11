@@ -28,6 +28,28 @@ import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-a
 import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-crossref-article';
 import { PaperIdThatIsADoi, toArticleId } from './paper-id';
 
+const fetchAllPaperExpressionsFromCrossref = () => pipe(
+  [
+    {
+      version: 3,
+      publishedAt: new Date('2023-12-08'),
+      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3'),
+    },
+    {
+      version: 2,
+      publishedAt: new Date('2023-11-02'),
+      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2'),
+    },
+    {
+      version: 1,
+      publishedAt: new Date('2023-07-06'),
+      source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v1'),
+    },
+  ],
+  RNEA.fromReadonlyArray,
+  T.of,
+);
+
 const findVersionsForArticleDoiFromSupportedServers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
@@ -36,27 +58,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(toArticleId(paperId), server);
   }
   if (paperId === 'doi:10.1099/acmi.0.000667.v3') {
-    return pipe(
-      [
-        {
-          version: 3,
-          publishedAt: new Date('2023-12-08'),
-          source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v3'),
-        },
-        {
-          version: 2,
-          publishedAt: new Date('2023-11-02'),
-          source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v2'),
-        },
-        {
-          version: 1,
-          publishedAt: new Date('2023-07-06'),
-          source: new URL('https://www.microbiologyresearch.org/content/journal/acmi/10.1099/acmi.0.000667.v1'),
-        },
-      ],
-      RNEA.fromReadonlyArray,
-      T.of,
-    );
+    return fetchAllPaperExpressionsFromCrossref();
   }
   return TO.none;
 };
