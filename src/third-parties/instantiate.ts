@@ -32,7 +32,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(PaperId.toArticleId(paperId), server);
   }
-  if (paperId === 'doi:10.21203/rs.3.rs-1828415/v2') {
+  if (server === 'accessmicrobiology') {
     return fetchAllPaperExpressionsFromCrossref(queryCrossrefService, PaperId.getDoiPortion(paperId));
   }
   return TO.none;
