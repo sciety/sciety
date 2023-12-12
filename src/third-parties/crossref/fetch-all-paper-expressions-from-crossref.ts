@@ -58,11 +58,11 @@ const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion =>
 const extractDoisOfRelatedExpressions = (record: CrossrefRecord) => [
   ...pipe(
     record.message.relation['is-version-of'] ?? [],
-    RA.map((relation) => relation.id),
+    RA.map((relation) => relation.id.toLowerCase()),
   ),
   ...pipe(
     record.message.relation['has-version'] ?? [],
-    RA.map((relation) => relation.id),
+    RA.map((relation) => relation.id.toLowerCase()),
   ),
 ];
 
@@ -79,7 +79,7 @@ const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryExter
     RA.reduce(
       state.collectedRecords,
       (collectedRecords, newlyFetchedRecord) => {
-        collectedRecords.set(newlyFetchedRecord.message.DOI, newlyFetchedRecord);
+        collectedRecords.set(newlyFetchedRecord.message.DOI.toLowerCase(), newlyFetchedRecord);
         return collectedRecords;
       },
     ),

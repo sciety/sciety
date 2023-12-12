@@ -142,7 +142,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
       expect(result.collectedRecords).toStrictEqual(initialRecords);
     });
 
-    it.failing('the queue is empty', () => {
+    it('the queue is empty', () => {
       expect(result.queue).toStrictEqual([]);
     });
   });
