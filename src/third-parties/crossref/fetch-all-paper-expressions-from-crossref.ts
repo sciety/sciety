@@ -3,7 +3,6 @@ import * as t from 'io-ts';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
-import * as E from 'fp-ts/Either';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleVersion } from '../../types/article-version';
@@ -22,7 +21,7 @@ const crossrefRecordCodec = t.strict({
     }),
     relation: t.partial({
       'has-version': t.array(t.strict({
-        'id-type': t.literal('doix'),
+        'id-type': t.literal('doi'),
         id: t.string,
       })),
       'is-version-of': t.array(t.strict({
@@ -41,7 +40,6 @@ const fetchIndividualRecord = (queryCrossrefService: QueryExternalService) => (d
   TE.chainEitherKW((response) => pipe(
     response,
     crossrefRecordCodec.decode,
-    E.mapLeft((e) => e),
   )),
 );
 
