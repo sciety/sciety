@@ -88,13 +88,15 @@ const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryExter
   )),
 );
 
+const enqueueAllRelatedDoisNotYetCollected = (state: State): ReadonlyArray<string> => pipe(
+  Array.from(state.collectedRecords.values()),
+  RA.chain(extractDoisOfRelatedExpressions),
+);
+
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
   state,
   fetchAllQueuedRecordsAndAddToCollector(queryCrossrefService),
-  TE.map((s) => pipe(
-    Array.from(s.collectedRecords.values()),
-    RA.chain(extractDoisOfRelatedExpressions),
-  )),
+  TE.map(enqueueAllRelatedDoisNotYetCollected),
   TE.chain(TE.traverseArray(fetchIndividualRecord(queryCrossrefService))),
 );
 
