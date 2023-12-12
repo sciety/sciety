@@ -55,19 +55,23 @@ const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion =>
   source: new URL(crossrefExpression.message.resource.primary.URL),
 });
 
+const extractDoisOfRelatedExpressions = (record: CrossrefRecord) => [
+  ...pipe(
+    record.message.relation['is-version-of'] ?? [],
+    RA.map((relation) => relation.id),
+  ),
+  ...pipe(
+    record.message.relation['has-version'] ?? [],
+    RA.map((relation) => relation.id),
+  ),
+];
+
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (doi: string) => pipe(
   doi,
   fetchIndividualRecord(queryCrossrefService),
   TE.map((record) => [
     record.message.DOI,
-    ...pipe(
-      record.message.relation['is-version-of'] ?? [],
-      RA.map((relation) => relation.id),
-    ),
-    ...pipe(
-      record.message.relation['has-version'] ?? [],
-      RA.map((relation) => relation.id),
-    ),
+    ...extractDoisOfRelatedExpressions(record),
   ]),
   TE.chain(TE.traverseArray(fetchIndividualRecord(queryCrossrefService))),
 );
