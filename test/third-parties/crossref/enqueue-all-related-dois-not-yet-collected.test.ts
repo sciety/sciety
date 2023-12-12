@@ -1,4 +1,4 @@
-import { enqueueAllRelatedDoisNotYetCollected } from '../../../src/third-parties/crossref/fetch-all-paper-expressions-from-crossref';
+import { CrossrefRecord, enqueueAllRelatedDoisNotYetCollected } from '../../../src/third-parties/crossref/fetch-all-paper-expressions-from-crossref';
 import { arbitraryString } from '../../helpers';
 
 describe('enqueue-all-related-dois-not-yet-collected', () => {
@@ -16,7 +16,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when there is one record with no relations', () => {
-    const initialRecords = new Map([
+    const initialRecords = new Map<string, CrossrefRecord>([
       ['10.21203/rs.3.rs-1828415/v2', {
         message: {
           DOI: '10.21203/rs.3.rs-1828415/v2',
@@ -44,7 +44,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when there are two records that are related to each other', () => {
-    const initialRecords = new Map([
+    const initialRecords = new Map<string, CrossrefRecord>([
       ['10.21203/rs.3.rs-1828415/v2', {
         message: {
           DOI: '10.21203/rs.3.rs-1828415/v2',
@@ -96,7 +96,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when the relation uses different case than the DOI', () => {
-    const initialRecords = new Map([
+    const initialRecords = new Map<string, CrossrefRecord>([
       ['10.21203/rs.3.rs-1828415/v2', {
         message: {
           DOI: '10.21203/rs.3.rs-1828415/v2',

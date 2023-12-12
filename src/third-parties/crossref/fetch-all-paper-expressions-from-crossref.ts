@@ -14,7 +14,7 @@ const crossrefRecordCodec = t.strict({
   message: t.strict({
     DOI: t.string,
     posted: t.strict({
-      'date-parts': t.readonlyArray(t.readonlyArray(t.number)),
+      'date-parts': t.readonlyArray(t.tuple([t.number, t.number, t.number])),
     }),
     resource: t.strict({
       primary: t.strict({
@@ -34,7 +34,7 @@ const crossrefRecordCodec = t.strict({
   }),
 });
 
-type CrossrefRecord = t.TypeOf<typeof crossrefRecordCodec>;
+export type CrossrefRecord = t.TypeOf<typeof crossrefRecordCodec>;
 
 type QueryCrossrefService = ReturnType<QueryExternalService>;
 
