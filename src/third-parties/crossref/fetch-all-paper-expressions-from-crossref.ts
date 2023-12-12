@@ -92,7 +92,7 @@ const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryExter
 
 const hasNotBeenCollected = (state: State) => (doi: string) => !state.collectedRecords.has(doi);
 
-const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pipe(
+export const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pipe(
   Array.from(state.collectedRecords.values()),
   RA.chain(extractDoisOfRelatedExpressions),
   RA.uniq(S.Eq),
