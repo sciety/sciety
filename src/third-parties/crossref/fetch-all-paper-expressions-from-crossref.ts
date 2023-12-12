@@ -22,7 +22,7 @@ const crossrefRecordCodec = t.strict({
     }),
     relation: t.partial({
       'has-version': t.array(t.strict({
-        'id-type': t.literal('doi'),
+        'id-type': t.literal('doix'),
         id: t.string,
       })),
       'is-version-of': t.array(t.strict({
@@ -66,8 +66,8 @@ const extractDoisOfRelatedExpressions = (record: CrossrefRecord) => [
   ),
 ];
 
-const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (doi: string) => pipe(
-  doi,
+const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (queue: ReadonlyArray<string>) => pipe(
+  queue[0],
   fetchIndividualRecord(queryCrossrefService),
   TE.map((record) => [
     record.message.DOI,
@@ -80,7 +80,7 @@ type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi
 => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (queryCrossrefService, doi) => pipe(
-  doi,
+  [doi],
   walkRelationGraph(queryCrossrefService),
   TO.fromTaskEither,
   TO.map(RA.map(toArticleVersion)),
