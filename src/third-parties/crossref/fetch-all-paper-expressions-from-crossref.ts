@@ -68,6 +68,7 @@ const extractDoisOfRelatedExpressions = (record: CrossrefRecord) => [
 
 type State = {
   queue: ReadonlyArray<string>,
+  collectedRecords: Map<string, CrossrefRecord>,
 };
 
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
@@ -86,6 +87,7 @@ type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (queryCrossrefService, doi) => pipe(
   {
     queue: [doi],
+    collectedRecords: new Map(),
   },
   walkRelationGraph(queryCrossrefService),
   TO.fromTaskEither,
