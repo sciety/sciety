@@ -66,8 +66,12 @@ const extractDoisOfRelatedExpressions = (record: CrossrefRecord) => [
   ),
 ];
 
-const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (queue: ReadonlyArray<string>) => pipe(
-  queue[0],
+type State = {
+  queue: ReadonlyArray<string>,
+};
+
+const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
+  state.queue[0],
   fetchIndividualRecord(queryCrossrefService),
   TE.map((record) => [
     record.message.DOI,
@@ -80,7 +84,9 @@ type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi
 => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (queryCrossrefService, doi) => pipe(
-  [doi],
+  {
+    queue: [doi],
+  },
   walkRelationGraph(queryCrossrefService),
   TO.fromTaskEither,
   TO.map(RA.map(toArticleVersion)),
