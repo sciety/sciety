@@ -22,18 +22,18 @@ import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cac
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
 import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-crossref-article';
-import { PaperIdThatIsADoi, toArticleId } from './paper-id';
+import * as PaperId from './paper-id';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
   logger: Logger,
-) => (paperId: PaperIdThatIsADoi, server: ArticleServer) => {
+) => (paperId: PaperId.PaperIdThatIsADoi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
-    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(toArticleId(paperId), server);
+    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(PaperId.toArticleId(paperId), server);
   }
-  if (paperId === 'doi:10.1099/acmi.0.000667.v3') {
-    return fetchAllPaperExpressionsFromCrossref(queryCrossrefService, '10.1099/acmi.0.000667.v3');
+  if (paperId === 'doi:10.21203/rs.3.rs-1828415/v2') {
+    return fetchAllPaperExpressionsFromCrossref(queryCrossrefService, PaperId.getDoiPortion(paperId));
   }
   return TO.none;
 };
