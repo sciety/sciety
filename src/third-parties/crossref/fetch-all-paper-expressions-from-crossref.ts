@@ -74,10 +74,14 @@ type State = {
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
   state.queue,
   TE.traverseArray(fetchIndividualRecord(queryCrossrefService)),
-  TE.map((records) => [
-    records[0].message.DOI,
-    ...extractDoisOfRelatedExpressions(records[0]),
-  ]),
+  TE.map(() => ({
+    queue: [],
+    collectedRecords: new Map(),
+  })),
+  TE.map((s) => pipe(
+    Array.from(s.collectedRecords.values()),
+    RA.chain(extractDoisOfRelatedExpressions),
+  )),
   TE.chain(TE.traverseArray(fetchIndividualRecord(queryCrossrefService))),
 );
 
