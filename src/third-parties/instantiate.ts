@@ -27,13 +27,21 @@ import * as PaperId from './paper-id';
 const findVersionsForArticleDoiFromSupportedServers = (
   queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
+  crossrefApiBearerToken: O.Option<string>,
   logger: Logger,
 ) => (paperId: PaperId.PaperIdThatIsADoi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(PaperId.toArticleId(paperId), server);
   }
   if (server === 'accessmicrobiology') {
-    return fetchAllPaperExpressionsFromCrossref(queryCrossrefService, PaperId.getDoiPortion(paperId));
+    const headers: Record<string, string> = { };
+    if (O.isSome(crossrefApiBearerToken)) {
+      headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
+    }
+    return fetchAllPaperExpressionsFromCrossref(
+      queryCrossrefService(undefined, headers),
+      PaperId.getDoiPortion(paperId),
+    );
   }
   return TO.none;
 };
@@ -97,6 +105,7 @@ export const instantiate = (
     findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(
       queryCrossrefService,
       queryExternalService,
+      crossrefApiBearerToken,
       logger,
     ),
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),

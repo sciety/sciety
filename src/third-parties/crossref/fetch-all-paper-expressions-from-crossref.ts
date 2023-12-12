@@ -36,9 +36,11 @@ const crossrefRecordCodec = t.strict({
 
 type CrossrefRecord = t.TypeOf<typeof crossrefRecordCodec>;
 
-const fetchIndividualRecord = (queryCrossrefService: QueryExternalService) => (doi: string) => pipe(
+type QueryCrossrefService = ReturnType<QueryExternalService>;
+
+const fetchIndividualRecord = (queryCrossrefService: QueryCrossrefService) => (doi: string) => pipe(
   `https://api.crossref.org/works/${doi}`,
-  queryCrossrefService(),
+  queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
     response,
     crossrefRecordCodec.decode,
@@ -71,7 +73,7 @@ type State = {
   collectedRecords: Map<string, CrossrefRecord>,
 };
 
-const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
+const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryCrossrefService) => (state: State) => pipe(
   state.queue,
   TE.traverseArray(fetchIndividualRecord(queryCrossrefService)),
   TE.map((newlyFetchedRecords) => pipe(
@@ -104,7 +106,7 @@ export const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pip
 );
 
 const walkRelationGraph = (
-  queryCrossrefService: QueryExternalService,
+  queryCrossrefService: QueryCrossrefService,
 ) => (
   state: State,
 ): TE.TaskEither<unknown, ReadonlyArray<CrossrefRecord>> => pipe(
@@ -122,7 +124,7 @@ const walkRelationGraph = (
   }),
 );
 
-type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi: string)
+type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, doi: string)
 => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (queryCrossrefService, doi) => pipe(
