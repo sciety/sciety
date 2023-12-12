@@ -91,18 +91,22 @@ const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryExter
 
 const hasNotBeenCollected = (state: State) => (doi: string) => !state.collectedRecords.has(doi);
 
-const enqueueAllRelatedDoisNotYetCollected = (state: State): ReadonlyArray<string> => pipe(
+const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pipe(
   Array.from(state.collectedRecords.values()),
   RA.chain(extractDoisOfRelatedExpressions),
   RA.uniq(S.Eq),
   RA.filter(hasNotBeenCollected(state)),
+  (dois) => ({
+    queue: dois,
+    collectedRecords: state.collectedRecords,
+  }),
 );
 
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
   state,
   fetchAllQueuedRecordsAndAddToCollector(queryCrossrefService),
   TE.map(enqueueAllRelatedDoisNotYetCollected),
-  TE.chain(TE.traverseArray(fetchIndividualRecord(queryCrossrefService))),
+  TE.chain((s) => TE.traverseArray(fetchIndividualRecord(queryCrossrefService))(s.queue)),
 );
 
 type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi: string)
