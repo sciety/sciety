@@ -102,11 +102,16 @@ const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pipe(
   }),
 );
 
+const recurseIfNecessary = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
+  state.queue,
+  TE.traverseArray(fetchIndividualRecord(queryCrossrefService)),
+);
+
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
   state,
   fetchAllQueuedRecordsAndAddToCollector(queryCrossrefService),
   TE.map(enqueueAllRelatedDoisNotYetCollected),
-  TE.chain((s) => TE.traverseArray(fetchIndividualRecord(queryCrossrefService))(s.queue)),
+  TE.chain(recurseIfNecessary(queryCrossrefService)),
 );
 
 type FetchAllPaperExpressions = (queryCrossrefService: QueryExternalService, doi: string)
