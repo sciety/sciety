@@ -74,10 +74,20 @@ type State = {
 const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
   state.queue,
   TE.traverseArray(fetchIndividualRecord(queryCrossrefService)),
-  TE.map(() => ({
-    queue: [],
-    collectedRecords: new Map(),
-  })),
+  TE.map((newlyFetchedRecords) => pipe(
+    newlyFetchedRecords,
+    RA.reduce(
+      state.collectedRecords,
+      (collectedRecords, newlyFetchedRecord) => {
+        collectedRecords.set(newlyFetchedRecord.message.DOI, newlyFetchedRecord);
+        return collectedRecords;
+      },
+    ),
+    (collectedRecords) => ({
+      queue: [],
+      collectedRecords,
+    }),
+  )),
 );
 
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
