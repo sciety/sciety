@@ -71,13 +71,18 @@ type State = {
   collectedRecords: Map<string, CrossrefRecord>,
 };
 
-const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
+const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
   state.queue,
   TE.traverseArray(fetchIndividualRecord(queryCrossrefService)),
   TE.map(() => ({
     queue: [],
     collectedRecords: new Map(),
   })),
+);
+
+const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
+  state,
+  fetchAllQueuedRecordsAndAddToCollector(queryCrossrefService),
   TE.map((s) => pipe(
     Array.from(s.collectedRecords.values()),
     RA.chain(extractDoisOfRelatedExpressions),
