@@ -8,6 +8,7 @@ import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleVersion } from '../../types/article-version';
 import { QueryExternalService } from '../query-external-service';
+import * as DE from '../../types/data-error';
 
 const crossrefRecordCodec = t.strict({
   message: t.strict({
@@ -113,6 +114,9 @@ const walkRelationGraph = (
   TE.chain((s) => {
     if (s.queue.length === 0) {
       return TE.right(Array.from(s.collectedRecords.values()));
+    }
+    if (s.collectedRecords.size > 20) {
+      return TE.left(DE.unavailable);
     }
     return walkRelationGraph(queryCrossrefService)(s);
   }),
