@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as t from 'io-ts';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as S from 'fp-ts/string';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -88,9 +89,13 @@ const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryExter
   )),
 );
 
+const hasNotBeenCollected = (state: State) => (doi: string) => !state.collectedRecords.has(doi);
+
 const enqueueAllRelatedDoisNotYetCollected = (state: State): ReadonlyArray<string> => pipe(
   Array.from(state.collectedRecords.values()),
   RA.chain(extractDoisOfRelatedExpressions),
+  RA.uniq(S.Eq),
+  RA.filter(hasNotBeenCollected(state)),
 );
 
 const walkRelationGraph = (queryCrossrefService: QueryExternalService) => (state: State) => pipe(
