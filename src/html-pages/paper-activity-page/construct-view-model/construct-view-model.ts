@@ -17,7 +17,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { PaperExpressionLocator, PaperId } from '../../../third-parties';
+import { PaperExpressionLocator } from '../../../third-parties';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
@@ -29,7 +29,7 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const toFullArticleUrl = (paperId: PaperId.PaperIdThatIsADoi) => `https://doi.org/${PaperId.getDoiPortion(paperId)}`;
+const toFullArticleUrl = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -42,10 +42,10 @@ const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (e
 const constructRemainingViewModelForDoi = (
   dependencies: Dependencies,
   params: Params,
-  paperId: PaperIdThatIsADoi,
+  expressionDoi: ExpressionDoi,
 ) => (frontMatter: PaperExpressionFrontMatter) => pipe(
   {
-    feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(paperId, frontMatter.server),
+    feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(`doi:${expressionDoi}` as PaperIdThatIsADoi, frontMatter.server),
     relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
     curationStatements: constructCurationStatements(dependencies, frontMatter.doi),
   },
@@ -56,7 +56,7 @@ const constructRemainingViewModelForDoi = (
     titleLanguageCode: detectLanguage(frontMatter.title),
     abstractLanguageCode: detectLanguage(frontMatter.abstract),
     userListManagement: constructUserListManagement(params.user, dependencies, frontMatter.doi),
-    fullArticleUrl: toFullArticleUrl(paperId),
+    fullArticleUrl: toFullArticleUrl(expressionDoi),
     feedItemsByDateDescending,
     ...feedSummary(feedItemsByDateDescending),
     listedIn: constructListedIn(dependencies)(frontMatter.doi),
@@ -76,5 +76,5 @@ const constructRemainingViewModelForDoi = (
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.expressionDoi,
   getFrontMatterForMostRecentExpression(dependencies),
-  TE.chainW(constructRemainingViewModelForDoi(dependencies, params, `doi:${params.expressionDoi}` as PaperIdThatIsADoi)),
+  TE.chainW(constructRemainingViewModelForDoi(dependencies, params, params.expressionDoi)),
 );
