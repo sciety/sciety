@@ -121,6 +121,7 @@ export const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pip
 const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
+  doi: string,
 ) => (
   state: State,
 ): TE.TaskEither<unknown, ReadonlyArray<CrossrefRecord>> => pipe(
@@ -134,11 +135,12 @@ const walkRelationGraph = (
     if (s.collectedRecords.size > 20) {
       logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
         collectedRecordsSize: s.collectedRecords.size,
+        startingDoi: doi,
       });
 
       return TE.left(DE.unavailable);
     }
-    return walkRelationGraph(queryCrossrefService, logger)(s);
+    return walkRelationGraph(queryCrossrefService, logger, doi)(s);
   }),
 );
 
@@ -154,7 +156,7 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (
     queue: [doi],
     collectedRecords: new Map(),
   },
-  walkRelationGraph(queryCrossrefService, logger),
+  walkRelationGraph(queryCrossrefService, logger, doi),
   TO.fromTaskEither,
   TO.map(RA.map(toArticleVersion)),
   TO.chainOptionK(RNEA.fromReadonlyArray),
