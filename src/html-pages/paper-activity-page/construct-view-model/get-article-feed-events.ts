@@ -13,7 +13,6 @@ import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../types/expression-doi';
 import { ArticleId } from '../../../types/article-id';
-import { PaperIdThatIsADoi } from '../../../third-parties/paper-id-that-is-a-doi';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -45,7 +44,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findVersionsForArticleDoi(`doi:${expressionDoi}` as PaperIdThatIsADoi, server),
+      dependencies.findVersionsForArticleDoi(expressionDoi, server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({

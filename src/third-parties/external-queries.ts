@@ -13,7 +13,7 @@ import { SearchResults } from '../shared-ports/search-for-articles';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { PaperExpressionLocator } from './paper-expression-locator';
-import { PaperIdThatIsADoi } from './paper-id';
+import { ExpressionDoi } from '../types/expression-doi';
 
 export type ArticleDetails = {
   abstract: SanitisedHtmlFragment,
@@ -49,7 +49,7 @@ type FetchReview = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evalua
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
 type FindVersionsForArticleDoi = (
-  paperId: PaperIdThatIsADoi,
+  expressionDoi: ExpressionDoi,
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 

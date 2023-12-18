@@ -22,16 +22,17 @@ import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cac
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
 import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-crossref-article';
-import * as PaperId from './paper-id';
+import { ExpressionDoi } from '../types/expression-doi';
+import { ArticleId } from '../types/article-id';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
   crossrefApiBearerToken: O.Option<string>,
   logger: Logger,
-) => (paperId: PaperId.PaperIdThatIsADoi, server: ArticleServer) => {
+) => (expressionDoi: ExpressionDoi, server: ArticleServer) => {
   if (server === 'biorxiv' || server === 'medrxiv') {
-    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(PaperId.toArticleId(paperId), server);
+    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(new ArticleId(expressionDoi), server);
   }
   if (server === 'accessmicrobiology' || process.env.EXPERIMENT_ENABLED === 'true') {
     const headers: Record<string, string> = { };
@@ -41,7 +42,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
     return fetchAllPaperExpressionsFromCrossref(
       queryCrossrefService(undefined, headers),
       logger,
-      PaperId.getDoiPortion(paperId),
+      expressionDoi,
     );
   }
   return TO.none;
