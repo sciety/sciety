@@ -49,6 +49,7 @@ export const constructArticleCard = (
       }),
       (articleDetails) => ({
         ...articleDetails,
+        expressionDoi: EDOI.fromValidatedString(articleDetails.articleId.value),
         articleActivity,
       }),
     ),
@@ -60,7 +61,7 @@ export const constructArticleCard = (
     },
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, curationStatements }) => ({
-      expressionDoi: EDOI.fromValidatedString(partial.articleId.value),
+      expressionDoi: partial.expressionDoi,
       articleHref: constructPaperActivityPageHref(partial.articleId.value),
       title: partial.title,
       authors: partial.authors,
