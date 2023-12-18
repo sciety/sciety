@@ -9,6 +9,7 @@ import { pipe } from 'fp-ts/function';
 import { ArticleVersion } from '../../types/article-version';
 import { QueryExternalService } from '../query-external-service';
 import * as DE from '../../types/data-error';
+import { Logger } from '../../shared-ports';
 
 const crossrefRecordCodec = t.strict({
   message: t.strict({
@@ -38,7 +39,8 @@ export type CrossrefRecord = t.TypeOf<typeof crossrefRecordCodec>;
 
 type QueryCrossrefService = ReturnType<QueryExternalService>;
 
-const fetchIndividualRecord = (queryCrossrefService: QueryCrossrefService) => (doi: string) => pipe(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const fetchIndividualRecord = (queryCrossrefService: QueryCrossrefService, logger: Logger) => (doi: string) => pipe(
   `https://api.crossref.org/works/${doi}`,
   queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
@@ -73,9 +75,12 @@ type State = {
   collectedRecords: Map<string, CrossrefRecord>,
 };
 
-const fetchAllQueuedRecordsAndAddToCollector = (queryCrossrefService: QueryCrossrefService) => (state: State) => pipe(
+const fetchAllQueuedRecordsAndAddToCollector = (
+  queryCrossrefService: QueryCrossrefService,
+  logger: Logger,
+) => (state: State) => pipe(
   state.queue,
-  TE.traverseArray(fetchIndividualRecord(queryCrossrefService)),
+  TE.traverseArray(fetchIndividualRecord(queryCrossrefService, logger)),
   TE.map((newlyFetchedRecords) => pipe(
     newlyFetchedRecords,
     RA.reduce(
@@ -107,11 +112,12 @@ export const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pip
 
 const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
+  logger: Logger,
 ) => (
   state: State,
 ): TE.TaskEither<unknown, ReadonlyArray<CrossrefRecord>> => pipe(
   state,
-  fetchAllQueuedRecordsAndAddToCollector(queryCrossrefService),
+  fetchAllQueuedRecordsAndAddToCollector(queryCrossrefService, logger),
   TE.map(enqueueAllRelatedDoisNotYetCollected),
   TE.chain((s) => {
     if (s.queue.length === 0) {
@@ -120,19 +126,23 @@ const walkRelationGraph = (
     if (s.collectedRecords.size > 20) {
       return TE.left(DE.unavailable);
     }
-    return walkRelationGraph(queryCrossrefService)(s);
+    return walkRelationGraph(queryCrossrefService, logger)(s);
   }),
 );
 
-type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, doi: string)
+type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
 
-export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (queryCrossrefService, doi) => pipe(
+export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (
+  queryCrossrefService,
+  logger,
+  doi,
+) => pipe(
   {
     queue: [doi],
     collectedRecords: new Map(),
   },
-  walkRelationGraph(queryCrossrefService),
+  walkRelationGraph(queryCrossrefService, logger),
   TO.fromTaskEither,
   TO.map(RA.map(toArticleVersion)),
   TO.chainOptionK(RNEA.fromReadonlyArray),

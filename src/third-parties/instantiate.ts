@@ -40,6 +40,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
     }
     return fetchAllPaperExpressionsFromCrossref(
       queryCrossrefService(undefined, headers),
+      logger,
       PaperId.getDoiPortion(paperId),
     );
   }
