@@ -93,7 +93,7 @@ describe('construct-view-model', () => {
     });
 
     it('all article cards are included in the view model', () => {
-      expect(result.articleCards).toStrictEqual(
+      expect(result.paperActivitySummaryCards).toStrictEqual(
         [
           expect.objectContaining({
             articleId,
@@ -121,7 +121,7 @@ describe('construct-view-model', () => {
     });
 
     it('no more than itemsPerPage article cards are included in the view model', () => {
-      expect(result.articleCards).toStrictEqual(
+      expect(result.paperActivitySummaryCards).toStrictEqual(
         [
           expect.objectContaining({
             articleId,
@@ -153,7 +153,7 @@ describe('construct-view-model', () => {
     });
 
     it('there are no article cards included in the view model', () => {
-      expect(result.articleCards).toStrictEqual([]);
+      expect(result.paperActivitySummaryCards).toStrictEqual([]);
     });
 
     it('the query is displayed', () => {

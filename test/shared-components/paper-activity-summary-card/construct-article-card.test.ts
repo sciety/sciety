@@ -6,17 +6,17 @@ import * as TO from 'fp-ts/TaskOption';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { dummyLogger } from '../../dummy-logger';
 import * as DE from '../../../src/types/data-error';
-import { constructArticleCard } from '../../../src/shared-components/article-card/construct-article-card';
+import { constructArticleCard } from '../../../src/shared-components/paper-activity-summary-card/construct-article-card';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
-import { ArticleCardViewModel } from '../../../src/shared-components/article-card';
-import { ArticleErrorCardViewModel } from '../../../src/shared-components/article-card/render-article-error-card';
+import { PaperActivitySummaryCardViewModel } from '../../../src/shared-components/paper-activity-summary-card';
+import { ArticleErrorCardViewModel } from '../../../src/shared-components/paper-activity-summary-card/render-article-error-card';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-article-card', () => {
   let framework: TestFramework;
-  let viewModel: E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>;
+  let viewModel: E.Either<ArticleErrorCardViewModel, PaperActivitySummaryCardViewModel>;
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -100,7 +100,7 @@ describe('construct-article-card', () => {
   describe('when an article appears in lists', () => {
     const articleId = arbitraryArticleId();
     const command = arbitraryCreateListCommand();
-    let successfulViewModel: ArticleCardViewModel;
+    let successfulViewModel: PaperActivitySummaryCardViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createList(command);
@@ -123,7 +123,7 @@ describe('construct-article-card', () => {
 
   describe('when an article does not appear in any list', () => {
     const articleId = arbitraryArticleId();
-    let successfulViewModel: ArticleCardViewModel;
+    let successfulViewModel: PaperActivitySummaryCardViewModel;
 
     beforeEach(async () => {
       successfulViewModel = await pipe(

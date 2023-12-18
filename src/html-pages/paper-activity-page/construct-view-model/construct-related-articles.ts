@@ -3,7 +3,7 @@ import * as TO from 'fp-ts/TaskOption';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { constructArticleCard } from '../../../shared-components/article-card';
+import { constructArticleCard } from '../../../shared-components/paper-activity-summary-card';
 import { ArticleId } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';

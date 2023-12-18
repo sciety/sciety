@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   ArticleErrorCardViewModel, renderArticleErrorCard,
-} from '../../../shared-components/article-card';
+} from '../../../shared-components/paper-activity-summary-card';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
 import {

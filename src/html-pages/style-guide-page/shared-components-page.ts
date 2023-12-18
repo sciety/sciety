@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { renderArticleCard } from '../../shared-components/article-card/render-article-card';
+import { renderArticleCard } from '../../shared-components/paper-activity-summary-card/render-article-card';
 import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
 import { ArticleId } from '../../types/article-id';
-import { renderArticleErrorCard } from '../../shared-components/article-card';
+import { renderArticleErrorCard } from '../../shared-components/paper-activity-summary-card';
 import * as LID from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import {

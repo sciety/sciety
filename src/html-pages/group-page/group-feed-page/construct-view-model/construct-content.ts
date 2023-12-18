@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { ViewModel } from '../view-model';
-import { constructArticleCard } from '../../../../shared-components/article-card';
+import { constructArticleCard } from '../../../../shared-components/paper-activity-summary-card';
 import { GroupId } from '../../../../types/group-id';
 import * as DE from '../../../../types/data-error';
 import { ArticleId } from '../../../../types/article-id';

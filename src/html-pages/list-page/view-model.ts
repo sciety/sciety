@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { PageOfItems, LegacyPaginationControlsViewModel } from '../../shared-components/pagination';
 import { ListId } from '../../types/list-id';
-import { ArticleErrorCardViewModel } from '../../shared-components/article-card';
+import { ArticleErrorCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
 } from '../../shared-components/article-card-with-controls-and-annotation';

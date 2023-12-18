@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { fetchArticleDetails } from '../../../src/shared-components/article-card/fetch-article-details';
+import { fetchArticleDetails } from '../../../src/shared-components/paper-activity-summary-card/fetch-article-details';
 import * as DE from '../../../src/types/data-error';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';

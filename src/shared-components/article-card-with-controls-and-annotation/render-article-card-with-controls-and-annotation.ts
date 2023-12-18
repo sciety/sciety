@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import { renderArticleCardContents } from '../article-card/render-article-card';
+import { renderArticleCardContents } from '../paper-activity-summary-card/render-article-card';
 import { ArticleId } from '../../types/article-id';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 import { safelyRenderUserInput } from '../safely-render-user-input';

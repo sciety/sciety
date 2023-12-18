@@ -1,4 +1,4 @@
-import { ConstructArticleCardViewModelDependencies } from '../../../shared-components/article-card';
+import { ConstructArticleCardViewModelDependencies } from '../../../shared-components/paper-activity-summary-card';
 import { Queries } from '../../../read-models';
 import { ConstructGroupLinkDependencies } from '../../../shared-components/group-link';
 import { ExternalQueries } from '../../../third-parties';

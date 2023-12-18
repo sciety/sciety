@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ArticleItem } from './data-types';
 import { ViewModel } from '../view-model';
-import { constructArticleCard } from '../../../shared-components/article-card';
+import { constructArticleCard } from '../../../shared-components/paper-activity-summary-card';
 import { Dependencies } from './dependencies';
 import { constructRelatedGroups } from './construct-related-groups';
 
@@ -24,14 +24,14 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
     RA.rights,
   ),
   T.map(
-    (articleCards) => ({
+    (paperActivitySummaryCards) => ({
       ...state,
       relatedGroups: pipe(
         state.itemsToDisplay,
         RA.map((itemToDisplay) => itemToDisplay.articleId),
         constructRelatedGroups(dependencies),
       ),
-      articleCards,
+      paperActivitySummaryCards,
       nextPageHref: pipe(
         {
           basePath: '',

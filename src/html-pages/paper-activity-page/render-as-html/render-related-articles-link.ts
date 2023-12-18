@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ArticleCardViewModel } from '../../../shared-components/article-card';
+import { PaperActivitySummaryCardViewModel } from '../../../shared-components/paper-activity-summary-card';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export const renderRelatedArticlesLink = (
-  relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
+  relatedArticles: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>,
 ): HtmlFragment => pipe(
   relatedArticles,
   O.match(

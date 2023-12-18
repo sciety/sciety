@@ -9,7 +9,7 @@ import { HtmlFragment } from '../../types/html-fragment';
 import * as EL from '../../types/evaluation-locator';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
-import { ArticleCardViewModel } from '../../shared-components/article-card';
+import { PaperActivitySummaryCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
 import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
 import { CurationStatementViewModel } from '../../shared-components/curation-statements';
@@ -72,7 +72,7 @@ export type ViewModel = {
   feedItemsByDateDescending: RNEA.ReadonlyNonEmptyArray<FeedItem>,
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string, listHref: string }>,
-  relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
+  relatedArticles: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>,
   curationStatements: ReadonlyArray<CurationStatementViewModel>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
 };
