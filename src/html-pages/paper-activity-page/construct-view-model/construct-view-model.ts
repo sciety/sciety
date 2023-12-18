@@ -19,7 +19,6 @@ import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 import { PaperExpressionLocator } from '../../../third-parties';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
-import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 
 export const paramsCodec = t.type({
@@ -45,7 +44,7 @@ const constructRemainingViewModelForDoi = (
   expressionDoi: ExpressionDoi,
 ) => (frontMatter: PaperExpressionFrontMatter) => pipe(
   {
-    feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(`doi:${expressionDoi}` as PaperIdThatIsADoi, frontMatter.server),
+    feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(expressionDoi, frontMatter.server),
     relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
     curationStatements: constructCurationStatements(dependencies, frontMatter.doi),
   },

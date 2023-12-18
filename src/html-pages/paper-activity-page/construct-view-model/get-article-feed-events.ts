@@ -11,7 +11,9 @@ import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
-import { PaperId } from '../../../third-parties';
+import { ExpressionDoi } from '../../../types/expression-doi';
+import { ArticleId } from '../../../types/article-id';
+import { PaperIdThatIsADoi } from '../../../third-parties/paper-id-that-is-a-doi';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -24,18 +26,17 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 );
 
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
-=> (paperId: PaperId.PaperIdThatIsADoi, server: ArticleServer)
+=> (expressionDoi: ExpressionDoi, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   dependencies,
 ) => (
-  paperId, server,
+  expressionDoi, server,
 ) => pipe(
   {
     evaluations: pipe(
-      paperId,
-      PaperId.toArticleId,
+      new ArticleId(expressionDoi),
       dependencies.getEvaluationsForArticle,
       T.of,
       T.map(RA.map((evaluation) => ({
@@ -44,7 +45,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findVersionsForArticleDoi(paperId, server),
+      dependencies.findVersionsForArticleDoi(`doi:${expressionDoi}` as PaperIdThatIsADoi, server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({
