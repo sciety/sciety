@@ -20,10 +20,6 @@ describe('paper-id', () => {
       expect(PaperId.isDoi(decoded)).toBe(true);
     });
 
-    it('isUuid detects that the paper id is not a uuid', () => {
-      expect(PaperId.isUuid(decoded)).toBe(false);
-    });
-
     describe('encoding', () => {
       it.failing('returns the original value', () => {
         expect(PaperId.paperIdCodec.encode(decoded)).toBe(input);
@@ -44,7 +40,7 @@ describe('paper-id', () => {
     });
   });
 
-  describe('when decoding a value that is neither a uuid nor a doi', () => {
+  describe('when decoding a value that is not a doi', () => {
     const decoded = PaperId.paperIdCodec.decode(arbitraryString());
 
     it('returns on the left', () => {
