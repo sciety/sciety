@@ -56,16 +56,15 @@ export const constructArticleCard = (
   ),
   TE.chainW((partial) => pipe(
     {
-      latestVersionDate: getLatestArticleVersionDate(ports)(articleId, partial.server),
       curationStatements: constructCurationStatements(ports, articleId),
     },
     sequenceS(T.ApplyPar),
-    T.map(({ latestVersionDate, curationStatements }) => ({
+    T.map(({ curationStatements }) => ({
       expressionDoi: partial.expressionDoi,
       paperActivityPageHref: constructPaperActivityPageHref(partial.expressionDoi),
       title: partial.title,
       authors: partial.authors,
-      latestPublishedAt: latestVersionDate,
+      latestPublishedAt: partial.latestVersionDate,
       latestActivityAt: partial.articleActivity.latestActivityAt,
       evaluationCount: pipe(
         partial.articleActivity.evaluationCount === 0,
