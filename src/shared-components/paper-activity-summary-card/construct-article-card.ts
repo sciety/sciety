@@ -18,11 +18,6 @@ import { constructReviewingGroups } from '../reviewing-groups';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-const getExpressionDetails = (ports: Dependencies) => fetchArticleDetails(
-  getLatestArticleVersionDate(ports),
-  ports.fetchArticle,
-);
-
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
 ): ViewModel['curationStatementsTeasers'][number] => ({
@@ -40,7 +35,7 @@ export const constructArticleCard = (
   ports.getActivityForDoi(articleId),
   (articleActivity) => pipe(
     articleActivity.articleId,
-    getExpressionDetails(ports),
+    fetchArticleDetails(getLatestArticleVersionDate(ports), ports.fetchArticle),
     TE.bimap(
       (error) => ({
         ...articleActivity,
