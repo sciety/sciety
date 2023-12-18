@@ -33,7 +33,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(PaperId.toArticleId(paperId), server);
   }
-  if (server === 'accessmicrobiology') {
+  if (server === 'accessmicrobiology' || process.env.EXPERIMENT_ENABLED === 'true') {
     const headers: Record<string, string> = { };
     if (O.isSome(crossrefApiBearerToken)) {
       headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
