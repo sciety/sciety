@@ -132,6 +132,10 @@ const walkRelationGraph = (
       return TE.right(Array.from(s.collectedRecords.values()));
     }
     if (s.collectedRecords.size > 20) {
+      logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
+        collectedRecordsSize: s.collectedRecords.size,
+      });
+
       return TE.left(DE.unavailable);
     }
     return walkRelationGraph(queryCrossrefService, logger)(s);
