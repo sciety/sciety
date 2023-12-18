@@ -10,6 +10,7 @@ import { ArticleId } from '../../types/article-id';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { getLatestArticleVersionDate } from './get-latest-article-version-date';
 import { fetchArticleDetails } from './fetch-article-details';
+import * as EDOI from '../../types/expression-doi';
 
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -59,7 +60,7 @@ export const constructArticleCard = (
     },
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, curationStatements }) => ({
-      expressionDoi: partial.articleId,
+      expressionDoi: EDOI.fromValidatedString(partial.articleId.value),
       articleHref: constructPaperActivityPageHref(partial.articleId.value),
       title: partial.title,
       authors: partial.authors,

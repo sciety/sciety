@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as EDOI from '../../types/expression-doi';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { renderArticleCard } from '../../shared-components/paper-activity-summary-card/render-article-card';
 import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
@@ -76,7 +77,7 @@ export const sharedComponentsPage: HtmlPage = {
       <h2 class="_style-guide-heading">Article summary</h2>
       <h3 class="_style-guide-heading">With curation statement</h3>
       ${renderArticleCard({
-    expressionDoi: new ArticleId('10.1101/foo'),
+    expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
     articleHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
@@ -96,7 +97,7 @@ export const sharedComponentsPage: HtmlPage = {
 
       <h3 class="_style-guide-heading">With reviewing groups</h3>
       ${renderArticleCard({
-    expressionDoi: new ArticleId('10.1101/foo'),
+    expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
     articleHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
@@ -121,7 +122,7 @@ export const sharedComponentsPage: HtmlPage = {
       ${renderArticleCardWithControlsAndAnnotation({
     annotation: O.none,
     articleCard: {
-      expressionDoi: new ArticleId('10.1101/foo'),
+      expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -147,7 +148,7 @@ export const sharedComponentsPage: HtmlPage = {
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     articleCard: {
-      expressionDoi: new ArticleId('10.1101/foo'),
+      expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -169,7 +170,7 @@ export const sharedComponentsPage: HtmlPage = {
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     articleCard: {
-      expressionDoi: new ArticleId('10.1101/foo'),
+      expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),

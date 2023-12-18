@@ -9,9 +9,9 @@ import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { constructContent } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/construct-content';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
-import { ArticleId } from '../../../../../src/types/article-id';
 import { ListId } from '../../../../../src/types/list-id';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { ExpressionDoi } from '../../../../../src/types/expression-doi';
 
 describe('construct-content', () => {
   let framework: TestFramework;
@@ -39,7 +39,7 @@ describe('construct-content', () => {
     TE.getOrElse(shouldNotBeCalled),
   )();
 
-  const getArticleIdsFromContent = (orderedArticleCards: OrderedArticleCards) => pipe(
+  const getExpressionDoisFromContent = (orderedArticleCards: OrderedArticleCards) => pipe(
     orderedArticleCards.articleCards,
     RA.rights,
     RA.map((card) => card.expressionDoi),
@@ -62,7 +62,7 @@ describe('construct-content', () => {
   describe('when the group\'s evaluated articles list contains two articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
-    let articleIds: ReadonlyArray<ArticleId>;
+    let expressionDois: ReadonlyArray<ExpressionDoi>;
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
@@ -70,12 +70,12 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
-      articleIds = getArticleIdsFromContent(orderedArticleCards);
+      expressionDois = getExpressionDoisFromContent(orderedArticleCards);
       nextPageHref = orderedArticleCards.forwardPageHref;
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(articleIds).toStrictEqual([article2, article1]);
+      expect(expressionDois).toStrictEqual([article2.value, article1.value]);
     });
 
     it('does not have a next page link', () => {
@@ -88,7 +88,7 @@ describe('construct-content', () => {
     const article2 = arbitraryArticleId();
     const article3 = arbitraryArticleId();
     const article4 = arbitraryArticleId();
-    let articleIds: ReadonlyArray<ArticleId>;
+    let expressionDois: ReadonlyArray<ExpressionDoi>;
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
@@ -98,12 +98,12 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article4, groupEvaluatedArticlesList);
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
-      articleIds = getArticleIdsFromContent(orderedArticleCards);
+      expressionDois = getExpressionDoisFromContent(orderedArticleCards);
       nextPageHref = orderedArticleCards.forwardPageHref;
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(articleIds).toStrictEqual([article4, article3, article2]);
+      expect(expressionDois).toStrictEqual([article4.value, article3.value, article2.value]);
     });
 
     it('does have a link to the next page', () => {

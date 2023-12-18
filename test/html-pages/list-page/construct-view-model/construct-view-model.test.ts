@@ -46,7 +46,7 @@ describe('construct-view-model', () => {
         articles: [
           E.right(expect.objectContaining({
             articleCard: expect.objectContaining({
-              expressionDoi: articleId,
+              expressionDoi: articleId.value,
             }),
           })),
         ],
@@ -91,10 +91,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ expressionDoi: article2 }),
+              articleCard: expect.objectContaining({ expressionDoi: article2.value }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ expressionDoi: article1 }),
+              articleCard: expect.objectContaining({ expressionDoi: article1.value }),
             })),
           ],
         }));
@@ -128,10 +128,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ expressionDoi: article1 }),
+              articleCard: expect.objectContaining({ expressionDoi: article1.value }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ expressionDoi: article2 }),
+              articleCard: expect.objectContaining({ expressionDoi: article2.value }),
             })),
           ],
         }));
@@ -166,10 +166,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ expressionDoi: article2 }),
+              articleCard: expect.objectContaining({ expressionDoi: article2.value }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ expressionDoi: article1 }),
+              articleCard: expect.objectContaining({ expressionDoi: article1.value }),
             })),
           ],
         }));
