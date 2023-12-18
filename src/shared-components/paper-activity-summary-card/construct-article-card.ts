@@ -11,14 +11,13 @@ import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { getLatestArticleVersionDate } from './get-latest-article-version-date';
 import { fetchArticleDetails } from './fetch-article-details';
 import * as EDOI from '../../types/expression-doi';
-
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 import { constructReviewingGroups } from '../reviewing-groups';
 import { Dependencies } from './dependencies';
 
-const getArticleDetails = (ports: Dependencies) => fetchArticleDetails(
+const getExpressionDetails = (ports: Dependencies) => fetchArticleDetails(
   getLatestArticleVersionDate(ports),
   ports.fetchArticle,
 );
@@ -40,16 +39,16 @@ export const constructArticleCard = (
   ports.getActivityForDoi(articleId),
   (articleActivity) => pipe(
     articleActivity.articleId,
-    getArticleDetails(ports),
+    getExpressionDetails(ports),
     TE.bimap(
       (error) => ({
         ...articleActivity,
         href: `/articles/${articleId.value}`,
         error,
       }),
-      (articleDetails) => ({
-        ...articleDetails,
-        expressionDoi: EDOI.fromValidatedString(articleDetails.articleId.value),
+      (expressionDetails) => ({
+        ...expressionDetails,
+        expressionDoi: EDOI.fromValidatedString(expressionDetails.articleId.value),
         articleActivity,
       }),
     ),
