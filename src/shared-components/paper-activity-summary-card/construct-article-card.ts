@@ -16,6 +16,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
 import { constructReviewingGroups } from '../reviewing-groups';
 import { Dependencies } from './dependencies';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 const getExpressionDetails = (ports: Dependencies) => fetchArticleDetails(
   getLatestArticleVersionDate(ports),
@@ -31,7 +32,7 @@ const transformIntoCurationStatementViewModel = (
   quoteLanguageCode: curationStatement.statementLanguageCode,
 });
 
-const constructPaperActivityPageHref = (value: string) => `/articles/activity/${value}`;
+const constructPaperActivityPageHref = (expressionDoi: ExpressionDoi) => `/articles/activity/${expressionDoi}`;
 
 export const constructArticleCard = (
   ports: Dependencies,
@@ -61,7 +62,7 @@ export const constructArticleCard = (
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, curationStatements }) => ({
       expressionDoi: partial.expressionDoi,
-      paperActivityPageHref: constructPaperActivityPageHref(partial.articleId.value),
+      paperActivityPageHref: constructPaperActivityPageHref(partial.expressionDoi),
       title: partial.title,
       authors: partial.authors,
       latestPublishedAt: latestVersionDate,
