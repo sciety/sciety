@@ -20,9 +20,10 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { PaperExpressionLocator, PaperId } from '../../../third-parties';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
+import { expressionDoiCodec } from '../../../types/expression-doi';
 
 export const paramsCodec = t.type({
-  expressionDoi: PaperId.paperIdCodec,
+  expressionDoi: expressionDoiCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
@@ -73,13 +74,8 @@ const constructRemainingViewModelForDoi = (
   })),
 );
 
-export const constructViewModel: ConstructViewModel = (dependencies) => (params) => {
-  if (PaperId.isDoi(params.expressionDoi)) {
-    return pipe(
-      params.expressionDoi,
-      getFrontMatterForMostRecentExpression(dependencies),
-      TE.chainW(constructRemainingViewModelForDoi(dependencies, params, params.expressionDoi)),
-    );
-  }
-  return TE.left(DE.notFound);
-};
+export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
+  `doi:${params.expressionDoi}` as PaperIdThatIsADoi,
+  getFrontMatterForMostRecentExpression(dependencies),
+  TE.chainW(constructRemainingViewModelForDoi(dependencies, params, `doi:${params.expressionDoi}` as PaperIdThatIsADoi)),
+);

@@ -12,14 +12,14 @@ import { LoggedInUserListManagement } from '../../../../src/html-pages/paper-act
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { PaperId } from '../../../../src/third-parties';
+import { expressionDoiCodec } from '../../../../src/types/expression-doi';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
   const doi = arbitraryArticleId();
   const paperId = pipe(
     doi.value,
-    PaperId.paperIdCodec.decode,
+    expressionDoiCodec.decode,
     E.getOrElseW(shouldNotBeCalled),
   );
 
