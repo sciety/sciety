@@ -76,7 +76,7 @@ export const sharedComponentsPage: HtmlPage = {
       <h2 class="_style-guide-heading">Article summary</h2>
       <h3 class="_style-guide-heading">With curation statement</h3>
       ${renderArticleCard({
-    articleId: new ArticleId('10.1101/foo'),
+    expressionDoi: new ArticleId('10.1101/foo'),
     articleHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
@@ -93,10 +93,10 @@ export const sharedComponentsPage: HtmlPage = {
     }],
     reviewingGroups: [],
   })}
-  
+
       <h3 class="_style-guide-heading">With reviewing groups</h3>
       ${renderArticleCard({
-    articleId: new ArticleId('10.1101/foo'),
+    expressionDoi: new ArticleId('10.1101/foo'),
     articleHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
@@ -121,7 +121,7 @@ export const sharedComponentsPage: HtmlPage = {
       ${renderArticleCardWithControlsAndAnnotation({
     annotation: O.none,
     articleCard: {
-      articleId: new ArticleId('10.1101/foo'),
+      expressionDoi: new ArticleId('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -147,7 +147,7 @@ export const sharedComponentsPage: HtmlPage = {
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     articleCard: {
-      articleId: new ArticleId('10.1101/foo'),
+      expressionDoi: new ArticleId('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -169,7 +169,7 @@ export const sharedComponentsPage: HtmlPage = {
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     articleCard: {
-      articleId: new ArticleId('10.1101/foo'),
+      expressionDoi: new ArticleId('10.1101/foo'),
       articleHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),

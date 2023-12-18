@@ -37,7 +37,7 @@ describe('construct-view-model', () => {
         constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
         T.map((viewModel) => viewModel.articles),
-        T.map(RA.map((article) => article.articleCard.articleId)),
+        T.map(RA.map((article) => article.articleCard.expressionDoi)),
       )();
     });
 

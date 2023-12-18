@@ -42,7 +42,7 @@ describe('construct-content', () => {
   const getArticleIdsFromContent = (orderedArticleCards: OrderedArticleCards) => pipe(
     orderedArticleCards.articleCards,
     RA.rights,
-    RA.map((card) => card.articleId),
+    RA.map((card) => card.expressionDoi),
   );
 
   beforeEach(async () => {

@@ -96,7 +96,7 @@ describe('construct-view-model', () => {
       expect(result.paperActivitySummaryCards).toStrictEqual(
         [
           expect.objectContaining({
-            articleId,
+            expressionDoi: articleId,
           }),
         ],
       );
@@ -124,7 +124,7 @@ describe('construct-view-model', () => {
       expect(result.paperActivitySummaryCards).toStrictEqual(
         [
           expect.objectContaining({
-            articleId,
+            expressionDoi: articleId,
           }),
         ],
       );

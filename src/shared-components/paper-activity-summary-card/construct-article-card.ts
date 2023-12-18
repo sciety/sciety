@@ -59,7 +59,7 @@ export const constructArticleCard = (
     },
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, curationStatements }) => ({
-      articleId: partial.articleId,
+      expressionDoi: partial.articleId,
       articleHref: constructPaperActivityPageHref(partial.articleId.value),
       title: partial.title,
       authors: partial.authors,
