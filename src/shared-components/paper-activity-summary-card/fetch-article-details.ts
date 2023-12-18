@@ -8,6 +8,8 @@ import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { ArticleId } from '../../types/article-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { ExpressionDoi } from '../../types/expression-doi';
+import * as EDOI from '../../types/expression-doi';
 
 type GetArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, {
   title: SanitisedHtmlFragment,
@@ -15,7 +17,7 @@ type GetArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, {
   server: ArticleServer,
 }>;
 
-type GetLatestArticleVersionDate = (articleDoi: ArticleId, server: ArticleServer) => TO.TaskOption<Date>;
+type GetLatestArticleVersionDate = (expressionDoi: ExpressionDoi, server: ArticleServer) => TO.TaskOption<Date>;
 
 type FetchArticleDetails = (
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
@@ -28,17 +30,20 @@ type FetchArticleDetails = (
   server: ArticleServer,
 }>;
 
-export const fetchArticleDetails: FetchArticleDetails = (getLatestArticleVersionDate, getArticle) => (doi) => pipe(
-  doi,
+export const fetchArticleDetails: FetchArticleDetails = (
+  getLatestArticleVersionDate,
+  getArticle,
+) => (articleId) => pipe(
+  articleId,
   getArticle,
   TE.chainW(({ authors, title, server }) => pipe(
-    getLatestArticleVersionDate(doi, server),
+    getLatestArticleVersionDate(EDOI.fromValidatedString(articleId.value), server),
     T.map((latestVersionDate) => ({
       latestVersionDate,
       authors,
       title,
       server,
-      articleId: doi,
+      articleId,
     })),
     TE.rightTask,
   )),
