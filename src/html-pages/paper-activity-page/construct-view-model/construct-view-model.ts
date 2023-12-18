@@ -26,7 +26,7 @@ import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
 import { ArticleServer } from '../../../types/article-server';
 
 export const paramsCodec = t.type({
-  paperId: PaperId.paperIdCodec,
+  expressionDoi: PaperId.paperIdCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
@@ -78,11 +78,11 @@ const constructRemainingViewModelForDoi = (
 );
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => {
-  if (PaperId.isDoi(params.paperId)) {
+  if (PaperId.isDoi(params.expressionDoi)) {
     return pipe(
-      params.paperId,
+      params.expressionDoi,
       getFrontMatterForMostRecentExpression(dependencies),
-      TE.chainW(constructRemainingViewModelForDoi(dependencies, params, params.paperId)),
+      TE.chainW(constructRemainingViewModelForDoi(dependencies, params, params.expressionDoi)),
     );
   }
 
@@ -118,7 +118,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     },
   ];
 
-  if (params.paperId === 'uuid:54844ee0-0cbd-40a6-8a57-56118412410c') {
+  if (params.expressionDoi === 'uuid:54844ee0-0cbd-40a6-8a57-56118412410c') {
     return pipe(
       hardcodedPaperExpressions[0].locator,
       dependencies.fetchPaperExpressionFrontMatter,
