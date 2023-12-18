@@ -1,9 +1,11 @@
 import { URL } from 'url';
+import { formatValidationErrors } from 'io-ts-reporters';
 import * as t from 'io-ts';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as S from 'fp-ts/string';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleVersion } from '../../types/article-version';
@@ -39,13 +41,19 @@ export type CrossrefRecord = t.TypeOf<typeof crossrefRecordCodec>;
 
 type QueryCrossrefService = ReturnType<QueryExternalService>;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const fetchIndividualRecord = (queryCrossrefService: QueryCrossrefService, logger: Logger) => (doi: string) => pipe(
   `https://api.crossref.org/works/${doi}`,
   queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
     response,
     crossrefRecordCodec.decode,
+    E.mapLeft((errors) => {
+      logger('error', 'fetchIndividualRecord crossref codec failed', {
+        doi,
+        errors: formatValidationErrors(errors),
+      });
+      return errors;
+    }),
   )),
 );
 
