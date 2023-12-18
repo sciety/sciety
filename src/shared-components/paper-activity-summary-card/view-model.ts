@@ -14,7 +14,7 @@ type CurationStatementTeaserViewModel = {
 
 export type ViewModel = {
   expressionDoi: ExpressionDoi,
-  articleHref: string,
+  paperActivityPageHref: string,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestPublishedAt: O.Option<Date>,

@@ -20,8 +20,8 @@ const renderEntries = (entries: ViewModel['articles']) => pipe(
         ${entry.articleCard.title}
       </div>
     </title>
-    <link rel="alternate" type="text/html" href="https://sciety.org${entry.articleCard.articleHref}"/>
-    <id>https://sciety.org${entry.articleCard.articleHref}</id>
+    <link rel="alternate" type="text/html" href="https://sciety.org${entry.articleCard.paperActivityPageHref}"/>
+    <id>https://sciety.org${entry.articleCard.paperActivityPageHref}</id>
     <updated>${renderUpdatedTagOfEntry(entry.articleCard.latestActivityAt)}</updated>
   </entry>
   `),

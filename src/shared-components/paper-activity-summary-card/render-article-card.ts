@@ -6,7 +6,7 @@ import { renderReviewingGroupsWithLink } from './render-reviewing-groups-with-li
 import { renderMeta } from './render-meta';
 
 export const renderArticleCardContents = (model: ViewModel): HtmlFragment => toHtmlFragment(`
-  <h3 class="article-card__title"><a href="${model.articleHref}">${model.title}</a></h3>
+  <h3 class="article-card__title"><a href="${model.paperActivityPageHref}">${model.title}</a></h3>
   ${renderAuthors(model.authors)}
   ${renderCurationStatements(model.curationStatementsTeasers)}
   ${renderReviewingGroupsWithLink(model.reviewingGroups)}

@@ -78,7 +78,7 @@ export const sharedComponentsPage: HtmlPage = {
       <h3 class="_style-guide-heading">With curation statement</h3>
       ${renderArticleCard({
     expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
-    articleHref: '/articles/foo',
+    paperActivityPageHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
     latestPublishedAt: O.some(new Date('2023-09-11')),
@@ -98,7 +98,7 @@ export const sharedComponentsPage: HtmlPage = {
       <h3 class="_style-guide-heading">With reviewing groups</h3>
       ${renderArticleCard({
     expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
-    articleHref: '/articles/foo',
+    paperActivityPageHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
     latestPublishedAt: O.some(new Date('2023-09-11')),
@@ -123,7 +123,7 @@ export const sharedComponentsPage: HtmlPage = {
     annotation: O.none,
     articleCard: {
       expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
-      articleHref: '/articles/foo',
+      paperActivityPageHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
       latestPublishedAt: O.some(new Date('2023-09-11')),
@@ -149,7 +149,7 @@ export const sharedComponentsPage: HtmlPage = {
     }),
     articleCard: {
       expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
-      articleHref: '/articles/foo',
+      paperActivityPageHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
       latestPublishedAt: O.some(new Date('2023-09-11')),
@@ -171,7 +171,7 @@ export const sharedComponentsPage: HtmlPage = {
     }),
     articleCard: {
       expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
-      articleHref: '/articles/foo',
+      paperActivityPageHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
       latestPublishedAt: O.some(new Date('2023-09-11')),

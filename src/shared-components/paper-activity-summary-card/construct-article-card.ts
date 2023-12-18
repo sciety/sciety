@@ -61,7 +61,7 @@ export const constructArticleCard = (
     sequenceS(T.ApplyPar),
     T.map(({ latestVersionDate, curationStatements }) => ({
       expressionDoi: partial.expressionDoi,
-      articleHref: constructPaperActivityPageHref(partial.articleId.value),
+      paperActivityPageHref: constructPaperActivityPageHref(partial.articleId.value),
       title: partial.title,
       authors: partial.authors,
       latestPublishedAt: latestVersionDate,
