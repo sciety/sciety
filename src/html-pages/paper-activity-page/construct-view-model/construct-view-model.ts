@@ -20,7 +20,7 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { PaperExpressionLocator, PaperId } from '../../../third-parties';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { PaperIdThatIsADoi } from '../../../third-parties/paper-id';
-import { expressionDoiCodec } from '../../../types/expression-doi';
+import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -33,9 +33,8 @@ const toFullArticleUrl = (paperId: PaperId.PaperIdThatIsADoi) => `https://doi.or
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (paperId: PaperId.PaperIdThatIsADoi): ReturnType<Dependencies['fetchPaperExpressionFrontMatter']> => pipe(
-  paperId,
-  PaperId.getDoiPortion,
+const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (expressionDoi: ExpressionDoi): ReturnType<Dependencies['fetchPaperExpressionFrontMatter']> => pipe(
+  expressionDoi,
   PaperExpressionLocator.fromDoi,
   dependencies.fetchPaperExpressionFrontMatter,
 );
@@ -75,7 +74,7 @@ const constructRemainingViewModelForDoi = (
 );
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  `doi:${params.expressionDoi}` as PaperIdThatIsADoi,
+  params.expressionDoi,
   getFrontMatterForMostRecentExpression(dependencies),
   TE.chainW(constructRemainingViewModelForDoi(dependencies, params, `doi:${params.expressionDoi}` as PaperIdThatIsADoi)),
 );
