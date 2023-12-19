@@ -13,7 +13,7 @@ type CurationStatementTeaserViewModel = {
 };
 
 export type ViewModel = {
-  expressionDoi: ExpressionDoi,
+  inputExpressionDoi: ExpressionDoi,
   paperActivityPageHref: string,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,

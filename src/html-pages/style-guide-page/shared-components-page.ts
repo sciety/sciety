@@ -77,7 +77,7 @@ export const sharedComponentsPage: HtmlPage = {
       <h2 class="_style-guide-heading">Article summary</h2>
       <h3 class="_style-guide-heading">With curation statement</h3>
       ${renderArticleCard({
-    expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
+    inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
     paperActivityPageHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
@@ -97,7 +97,7 @@ export const sharedComponentsPage: HtmlPage = {
 
       <h3 class="_style-guide-heading">With reviewing groups</h3>
       ${renderArticleCard({
-    expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
+    inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
     paperActivityPageHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
     authors: O.some(['Doctor Smith']),
@@ -122,7 +122,7 @@ export const sharedComponentsPage: HtmlPage = {
       ${renderArticleCardWithControlsAndAnnotation({
     annotation: O.none,
     articleCard: {
-      expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
+      inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
       paperActivityPageHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -148,7 +148,7 @@ export const sharedComponentsPage: HtmlPage = {
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     articleCard: {
-      expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
+      inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
       paperActivityPageHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),
@@ -170,7 +170,7 @@ export const sharedComponentsPage: HtmlPage = {
       authorAvatarPath: '/static/images/profile-dark.svg',
     }),
     articleCard: {
-      expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
+      inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
       paperActivityPageHref: '/articles/foo',
       title: sanitise(toHtmlFragment('Some title')),
       authors: O.some(['Doctor Smith']),

@@ -39,10 +39,10 @@ describe('construct-content', () => {
     TE.getOrElse(shouldNotBeCalled),
   )();
 
-  const getExpressionDoisFromContent = (orderedArticleCards: OrderedArticleCards) => pipe(
+  const getInputExpressionDoisFromContent = (orderedArticleCards: OrderedArticleCards) => pipe(
     orderedArticleCards.articleCards,
     RA.rights,
-    RA.map((card) => card.expressionDoi),
+    RA.map((card) => card.inputExpressionDoi),
   );
 
   beforeEach(async () => {
@@ -70,7 +70,7 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
-      expressionDois = getExpressionDoisFromContent(orderedArticleCards);
+      expressionDois = getInputExpressionDoisFromContent(orderedArticleCards);
       nextPageHref = orderedArticleCards.forwardPageHref;
     });
 
@@ -98,7 +98,7 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article4, groupEvaluatedArticlesList);
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
-      expressionDois = getExpressionDoisFromContent(orderedArticleCards);
+      expressionDois = getInputExpressionDoisFromContent(orderedArticleCards);
       nextPageHref = orderedArticleCards.forwardPageHref;
     });
 

@@ -20,7 +20,7 @@ describe('construct-view-model', () => {
   describe('when the list contains two articles', () => {
     const articleId1 = arbitraryArticleId();
     const articleId2 = arbitraryArticleId();
-    let orderedExpressionDois: ReadonlyArray<ExpressionDoi>;
+    let orderedInputExpressionDois: ReadonlyArray<ExpressionDoi>;
     const createList = async () => {
       const createUserAccountCommand = arbitraryCreateUserAccountCommand();
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
@@ -32,17 +32,17 @@ describe('construct-view-model', () => {
       const listId = await createList();
       await framework.commandHelpers.addArticleToList(articleId1, listId);
       await framework.commandHelpers.addArticleToList(articleId2, listId);
-      orderedExpressionDois = await pipe(
+      orderedInputExpressionDois = await pipe(
         { id: listId },
         constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
         T.map((viewModel) => viewModel.articles),
-        T.map(RA.map((article) => article.articleCard.expressionDoi)),
+        T.map(RA.map((article) => article.articleCard.inputExpressionDoi)),
       )();
     });
 
     it('sorts the articles in reverse order of being added to the list', () => {
-      expect(orderedExpressionDois).toStrictEqual([articleId2.value, articleId1.value]);
+      expect(orderedInputExpressionDois).toStrictEqual([articleId2.value, articleId1.value]);
     });
   });
 });
