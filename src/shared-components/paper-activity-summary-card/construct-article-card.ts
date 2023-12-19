@@ -5,7 +5,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
 import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements';
-import { ArticleId } from '../../types/article-id';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { fetchArticleDetails } from './fetch-article-details';
 import { sanitise } from '../../types/sanitised-html-fragment';
@@ -74,7 +73,7 @@ export const constructArticleCard = (
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),
       ),
-      reviewingGroups: constructReviewingGroups(ports, new ArticleId(inputExpressionDoi)),
+      reviewingGroups: constructReviewingGroups(ports, inputExpressionDoi),
     })),
     TE.rightTask,
   )),

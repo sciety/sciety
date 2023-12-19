@@ -68,7 +68,7 @@ const constructRemainingViewModelForDoi = (
         fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
       })),
     ),
-    reviewingGroups: constructReviewingGroups(dependencies, frontMatter.doi),
+    reviewingGroups: constructReviewingGroups(dependencies, expressionDoi),
   })),
 );
 

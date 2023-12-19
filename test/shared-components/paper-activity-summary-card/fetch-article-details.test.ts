@@ -8,15 +8,12 @@ import { fetchArticleDetails } from '../../../src/shared-components/paper-activi
 import * as DE from '../../../src/types/data-error';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryNumber, arbitraryUri } from '../../helpers';
-import * as EDOI from '../../../src/types/expression-doi';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
-
-const arbitraryExpressionDoi = () => EDOI.fromValidatedString(arbitraryArticleId().value);
 
 const getArticle = () => TE.right({
   ...arbitraryArticleDetails(),

@@ -5,9 +5,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { GroupLinkAsTextViewModel } from '../group-link/group-link-as-text-view-model';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { ArticleId } from '../../types/article-id';
 import { Queries } from '../../read-models';
 import { GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies } from '../group-link';
+import { ExpressionDoi } from '../../types/expression-doi';
+import { ArticleId } from '../../types/article-id';
 
 export type Dependencies = Queries
 & ConstructGroupLinkDependencies;
@@ -27,9 +28,9 @@ const unique = <A>(input: ReadonlyArray<A>) => [...new Set(input)];
 
 export const constructReviewingGroups = (
   dependencies: Dependencies,
-  articleId: ArticleId,
+  expressionDoi: ExpressionDoi,
 ): ReadonlyArray<GroupLinkWithLogoViewModel & GroupLinkAsTextViewModel> => pipe(
-  articleId,
+  new ArticleId(expressionDoi),
   dependencies.getEvaluationsForArticle,
   RA.filter(isNotCurationStatement),
   RA.sort(byPublishedAt),

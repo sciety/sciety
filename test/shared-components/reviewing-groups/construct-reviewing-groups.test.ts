@@ -6,13 +6,15 @@ import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-co
 import {
   arbitraryRecordEvaluationPublicationCommand,
 } from '../../write-side/commands/record-evaluation-publication-command.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import {
   constructReviewingGroups,
 } from '../../../src/shared-components/reviewing-groups/construct-reviewing-groups';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ArticleId } from '../../../src/types/article-id';
 
 describe('construct-reviewing-groups', () => {
-  const article = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
+  const article = new ArticleId(expressionDoi);
   let framework: TestFramework;
 
   beforeEach(() => {
@@ -21,7 +23,7 @@ describe('construct-reviewing-groups', () => {
 
   describe('which groups to include', () => {
     const getReviewingGroupNames = () => pipe(
-      constructReviewingGroups(framework.dependenciesForViews, article),
+      constructReviewingGroups(framework.dependenciesForViews, expressionDoi),
       RA.map((reviewingGroup) => reviewingGroup.groupName),
     );
 
