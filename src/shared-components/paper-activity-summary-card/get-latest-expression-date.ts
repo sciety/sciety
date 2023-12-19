@@ -7,11 +7,11 @@ import { ArticleServer } from '../../types/article-server';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { Dependencies } from './dependencies';
 
-type GetLatestArticleVersionDate = (
+type GetLatestExpressionDate = (
   dependencies: Dependencies,
 ) => (expressionDoi: ExpressionDoi, server: ArticleServer) => TO.TaskOption<Date>;
 
-export const getLatestArticleVersionDate: GetLatestArticleVersionDate = (
+export const getLatestExpressionDate: GetLatestExpressionDate = (
   dependencies,
 ) => (
   expressionDoi, server,

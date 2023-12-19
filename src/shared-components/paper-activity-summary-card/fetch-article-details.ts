@@ -9,7 +9,7 @@ import { ArticleId } from '../../types/article-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import * as EDOI from '../../types/expression-doi';
 import { Dependencies } from './dependencies';
-import { getLatestArticleVersionDate } from './get-latest-article-version-date';
+import { getLatestExpressionDate } from './get-latest-expression-date';
 
 type FetchArticleDetails = (
   dependencies: Dependencies,
@@ -27,7 +27,7 @@ export const fetchArticleDetails: FetchArticleDetails = (
   articleId,
   dependencies.fetchArticle,
   TE.chainW(({ authors, title, server }) => pipe(
-    getLatestArticleVersionDate(dependencies)(EDOI.fromValidatedString(articleId.value), server),
+    getLatestExpressionDate(dependencies)(EDOI.fromValidatedString(articleId.value), server),
     T.map((latestVersionDate) => ({
       latestVersionDate,
       authors,
