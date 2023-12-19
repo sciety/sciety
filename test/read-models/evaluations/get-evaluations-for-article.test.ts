@@ -12,6 +12,7 @@ import { ArticleId } from '../../../src/types/article-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryDate, arbitraryString } from '../../helpers';
+import * as EDOI from '../../../src/types/expression-doi';
 
 const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -19,7 +20,7 @@ const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) 
     RA.reduce(initialState(), handleEvent),
   );
   return pipe(
-    articleId,
+    EDOI.fromValidatedString(articleId.value),
     getEvaluationsForArticle(readmodel),
   );
 };

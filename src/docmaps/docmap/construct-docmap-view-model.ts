@@ -15,6 +15,7 @@ import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import * as EDOI from '../../types/expression-doi';
 
 export type DocmapViewModel = {
   articleId: ArticleId,
@@ -61,7 +62,7 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => 
   {
     articleId: TE.right(articleId),
     evaluations: pipe(
-      adapters.getEvaluationsForArticle(articleId),
+      adapters.getEvaluationsForArticle(EDOI.fromValidatedString(articleId.value)),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(adapters))),

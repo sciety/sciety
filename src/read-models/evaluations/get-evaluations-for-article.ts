@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import { identity, pipe } from 'fp-ts/function';
-import { ArticleId } from '../../types/article-id';
 import { ReadModel } from './handle-event';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { ExpressionDoi } from '../../types/expression-doi';
 
-type GetEvaluationsForArticle = (articleDoi: ArticleId) => ReadonlyArray<RecordedEvaluation>;
+type GetEvaluationsForArticle = (expressionDoi: ExpressionDoi) => ReadonlyArray<RecordedEvaluation>;
 
-export const getEvaluationsForArticle = (readmodel: ReadModel): GetEvaluationsForArticle => (articleId) => pipe(
-  readmodel.byArticleId.get(articleId.value),
+export const getEvaluationsForArticle = (readmodel: ReadModel): GetEvaluationsForArticle => (expressionDoi) => pipe(
+  readmodel.byArticleId.get(expressionDoi),
   O.fromNullable,
   O.match(
     () => [],

@@ -12,7 +12,6 @@ import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../types/expression-doi';
-import { ArticleId } from '../../../types/article-id';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -35,7 +34,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => pipe(
   {
     evaluations: pipe(
-      new ArticleId(expressionDoi),
+      expressionDoi,
       dependencies.getEvaluationsForArticle,
       T.of,
       T.map(RA.map((evaluation) => ({

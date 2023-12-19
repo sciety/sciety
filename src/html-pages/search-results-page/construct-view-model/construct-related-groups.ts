@@ -5,9 +5,11 @@ import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 import * as GID from '../../../types/group-id';
 import { constructGroupLink } from '../../../shared-components/group-link';
+import * as EDOI from '../../../types/expression-doi';
 
 export const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<ArticleId>): ViewModel['relatedGroups'] => pipe(
   articleIds,
+  RA.map((articleId) => EDOI.fromValidatedString(articleId.value)),
   RA.flatMap(dependencies.getEvaluationsForArticle),
   RA.map((recordedEvaluation) => recordedEvaluation.groupId),
   RA.uniq(GID.eq),

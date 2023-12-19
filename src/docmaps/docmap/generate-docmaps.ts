@@ -4,6 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import * as EDOI from '../../types/expression-doi';
 import { Docmap } from './docmap-type';
 import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
 import { renderDocmap } from './render-docmap';
@@ -14,7 +15,7 @@ import { Queries } from '../../read-models';
 export type Ports = DocmapPorts & Queries;
 
 const getEvaluatingGroupIds = (ports: Ports) => (doi: ArticleId) => pipe(
-  ports.getEvaluationsForArticle(doi),
+  ports.getEvaluationsForArticle(EDOI.fromValidatedString(doi.value)),
   T.of,
   T.map(flow(
     RA.filter(({ articleId }) => articleId.value === doi.value),

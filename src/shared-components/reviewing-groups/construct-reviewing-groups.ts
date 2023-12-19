@@ -8,7 +8,6 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { Queries } from '../../read-models';
 import { GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies } from '../group-link';
 import { ExpressionDoi } from '../../types/expression-doi';
-import { ArticleId } from '../../types/article-id';
 
 export type Dependencies = Queries
 & ConstructGroupLinkDependencies;
@@ -30,7 +29,7 @@ export const constructReviewingGroups = (
   dependencies: Dependencies,
   expressionDoi: ExpressionDoi,
 ): ReadonlyArray<GroupLinkWithLogoViewModel & GroupLinkAsTextViewModel> => pipe(
-  new ArticleId(expressionDoi),
+  expressionDoi,
   dependencies.getEvaluationsForArticle,
   RA.filter(isNotCurationStatement),
   RA.sort(byPublishedAt),
