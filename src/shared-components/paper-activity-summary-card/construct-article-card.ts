@@ -35,7 +35,7 @@ export const constructArticleCard = (
   ports.getActivityForDoi(articleId),
   (articleActivity) => pipe(
     articleActivity.articleId,
-    fetchArticleDetails(getLatestArticleVersionDate(ports), ports.fetchArticle, ports),
+    fetchArticleDetails(getLatestArticleVersionDate(ports), ports),
     TE.bimap(
       (error) => ({
         ...articleActivity,

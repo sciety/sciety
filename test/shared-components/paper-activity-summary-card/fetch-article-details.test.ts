@@ -33,7 +33,7 @@ describe('fetch-article-details', () => {
       const latestDate = new Date('2020-12-14');
       const articleDetails = await pipe(
         articleId,
-        fetchArticleDetails(() => TO.some(latestDate), getArticle, framework.dependenciesForViews),
+        fetchArticleDetails(() => TO.some(latestDate), framework.dependenciesForViews),
       )();
 
       expect(articleDetails).toStrictEqual(
@@ -48,7 +48,7 @@ describe('fetch-article-details', () => {
     it('returns an O.none for the latest version date when it fails', async () => {
       const articleDetails = await pipe(
         arbitraryArticleId(),
-        fetchArticleDetails(() => TO.none, getArticle, framework.dependenciesForViews),
+        fetchArticleDetails(() => TO.none, framework.dependenciesForViews),
       )();
 
       expect(articleDetails).toStrictEqual(
@@ -65,7 +65,6 @@ describe('fetch-article-details', () => {
     it('returns on the left when getArticle fails', async () => {
       const articleDetails = await fetchArticleDetails(
         () => TO.some(new Date()),
-        () => TE.left(DE.unavailable),
         {
           ...framework.dependenciesForViews,
           fetchArticle: () => TE.left(DE.unavailable),
@@ -82,7 +81,6 @@ describe('fetch-article-details', () => {
           articleId,
           fetchArticleDetails(
             () => TO.some(new Date()),
-            getArticle,
             {
               ...framework.dependenciesForViews,
               fetchArticle: getArticle,
@@ -108,7 +106,6 @@ describe('fetch-article-details', () => {
           articleId,
           fetchArticleDetails(
             () => TO.some(new Date()),
-            getArticle,
             {
               ...framework.dependenciesForViews,
               fetchArticle: getArticle,
