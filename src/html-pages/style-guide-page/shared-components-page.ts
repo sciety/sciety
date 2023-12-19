@@ -187,14 +187,14 @@ export const sharedComponentsPage: HtmlPage = {
       createAnnotationFormHref: O.none,
     }),
   })}
-  
+
       <h3 class="_style-guide-heading">With error</h3>
       ${renderArticleErrorCard({
     evaluationCount: 1,
     href: '/articles/foo',
     latestActivityAt: O.some(new Date('2023-09-10')),
     error: DE.notFound,
-    expressionDoi: new ArticleId('10.1101/foo'),
+    inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
   })}
 
     <h3 class="_style-guide-heading">Success banner</h3>

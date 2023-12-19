@@ -37,6 +37,7 @@ export const constructArticleCard = (
     TE.bimap(
       (error) => ({
         ...articleActivity,
+        inputExpressionDoi: EDOI.fromValidatedString(inputExpressionDoi.value),
         href: `/articles/${inputExpressionDoi.value}`,
         error,
       }),

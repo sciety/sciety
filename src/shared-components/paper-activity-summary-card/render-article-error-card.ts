@@ -2,15 +2,15 @@ import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { templateDate } from '../date';
 import * as DE from '../../types/data-error';
-import { ArticleId } from '../../types/article-id';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 export type ArticleErrorCardViewModel = {
   evaluationCount: number,
   href: string,
   latestActivityAt: O.Option<Date>,
   error: DE.DataError,
-  expressionDoi: ArticleId,
+  inputExpressionDoi: ExpressionDoi,
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
@@ -41,7 +41,7 @@ export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): Ht
       <a href="${viewModel.href}">
         <p class="article-card__error_message">
           ${renderErrorMessage(viewModel.error)}<br>
-          ${viewModel.expressionDoi.value}
+          ${viewModel.inputExpressionDoi}
         </p>
         <footer class="article-card__footer">
           <div class="article-card__meta">
