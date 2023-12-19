@@ -29,12 +29,12 @@ type FetchArticleDetails = (
 
 export const fetchArticleDetails: FetchArticleDetails = (
   getLatestArticleVersionDate,
-  getArticle,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getArticle,
   dependencies,
 ) => (articleId) => pipe(
   articleId,
-  getArticle,
+  dependencies.fetchArticle,
   TE.chainW(({ authors, title, server }) => pipe(
     getLatestArticleVersionDate(EDOI.fromValidatedString(articleId.value), server),
     T.map((latestVersionDate) => ({

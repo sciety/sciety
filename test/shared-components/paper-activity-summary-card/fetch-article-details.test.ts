@@ -66,7 +66,10 @@ describe('fetch-article-details', () => {
       const articleDetails = await fetchArticleDetails(
         () => TO.some(new Date()),
         () => TE.left(DE.unavailable),
-        framework.dependenciesForViews,
+        {
+          ...framework.dependenciesForViews,
+          fetchArticle: () => TE.left(DE.unavailable),
+        },
       )(arbitraryArticleId())();
 
       expect(articleDetails).toStrictEqual(E.left(DE.unavailable));
@@ -77,7 +80,14 @@ describe('fetch-article-details', () => {
         const articleId = arbitraryArticleId();
         const title = await pipe(
           articleId,
-          fetchArticleDetails(() => TO.some(new Date()), getArticle, framework.dependenciesForViews),
+          fetchArticleDetails(
+            () => TO.some(new Date()),
+            getArticle,
+            {
+              ...framework.dependenciesForViews,
+              fetchArticle: getArticle,
+            },
+          ),
           TE.map((article) => article.title),
         )();
         const expected = pipe(
@@ -96,7 +106,14 @@ describe('fetch-article-details', () => {
         const articleId = arbitraryArticleId();
         const authors = await pipe(
           articleId,
-          fetchArticleDetails(() => TO.some(new Date()), getArticle, framework.dependenciesForViews),
+          fetchArticleDetails(
+            () => TO.some(new Date()),
+            getArticle,
+            {
+              ...framework.dependenciesForViews,
+              fetchArticle: getArticle,
+            },
+          ),
           TE.map((article) => article.authors),
         )();
         const expected = pipe(
