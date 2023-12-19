@@ -20,6 +20,7 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { PaperExpressionLocator } from '../../../third-parties';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
+import { ArticleId } from '../../../types/article-id';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -46,7 +47,7 @@ const constructRemainingViewModel = (
     feedItemsByDateDescending: (
       getArticleFeedEventsByDateDescending(dependencies)(params.expressionDoi, frontMatter.server)
     ),
-    relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
+    relatedArticles: constructRelatedArticles(new ArticleId(params.expressionDoi), dependencies),
     curationStatements: constructCurationStatements(dependencies, params.expressionDoi),
   },
   sequenceS(T.ApplyPar),
@@ -55,11 +56,11 @@ const constructRemainingViewModel = (
     ...frontMatter,
     titleLanguageCode: detectLanguage(frontMatter.title),
     abstractLanguageCode: detectLanguage(frontMatter.abstract),
-    userListManagement: constructUserListManagement(params.user, dependencies, frontMatter.doi),
+    userListManagement: constructUserListManagement(params.user, dependencies, new ArticleId(params.expressionDoi)),
     fullArticleUrl: toFullArticleUrl(params.expressionDoi),
     feedItemsByDateDescending,
     ...feedSummary(feedItemsByDateDescending),
-    listedIn: constructListedIn(dependencies)(frontMatter.doi),
+    listedIn: constructListedIn(dependencies)(new ArticleId(params.expressionDoi)),
     relatedArticles,
     curationStatements: pipe(
       curationStatements,
