@@ -8,7 +8,6 @@ import * as B from 'fp-ts/boolean';
 import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements';
 import { ArticleId } from '../../types/article-id';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
-import { getLatestArticleVersionDate } from './get-latest-article-version-date';
 import { fetchArticleDetails } from './fetch-article-details';
 import * as EDOI from '../../types/expression-doi';
 import { sanitise } from '../../types/sanitised-html-fragment';
@@ -35,7 +34,7 @@ export const constructArticleCard = (
   ports.getActivityForDoi(articleId),
   (articleActivity) => pipe(
     articleActivity.articleId,
-    fetchArticleDetails(getLatestArticleVersionDate(ports), ports),
+    fetchArticleDetails(ports),
     TE.bimap(
       (error) => ({
         ...articleActivity,

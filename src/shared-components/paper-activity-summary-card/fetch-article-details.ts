@@ -1,22 +1,17 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { ArticleId } from '../../types/article-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { ExpressionDoi } from '../../types/expression-doi';
 import * as EDOI from '../../types/expression-doi';
 import { Dependencies } from './dependencies';
 import { getLatestArticleVersionDate } from './get-latest-article-version-date';
 
-type GetLatestArticleVersionDate = (expressionDoi: ExpressionDoi, server: ArticleServer) => TO.TaskOption<Date>;
-
 type FetchArticleDetails = (
-  getLatestArticleVersionDate: GetLatestArticleVersionDate,
   dependencies: Dependencies,
 ) => (doi: ArticleId) => TE.TaskEither<DE.DataError, {
   articleId: ArticleId,
@@ -27,7 +22,6 @@ type FetchArticleDetails = (
 }>;
 
 export const fetchArticleDetails: FetchArticleDetails = (
-  _unusedParam,
   dependencies,
 ) => (articleId) => pipe(
   articleId,

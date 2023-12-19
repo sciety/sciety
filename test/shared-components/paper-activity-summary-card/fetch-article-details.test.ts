@@ -35,7 +35,7 @@ describe('fetch-article-details', () => {
       const latestDate = new Date('2020-12-14');
       const articleDetails = await pipe(
         articleId,
-        fetchArticleDetails(() => TO.some(latestDate), {
+        fetchArticleDetails({
           ...framework.dependenciesForViews,
           findVersionsForArticleDoi: () => TO.some([{
             source: new URL(arbitraryUri()),
@@ -57,7 +57,7 @@ describe('fetch-article-details', () => {
     it('returns an O.none for the latest version date when it fails', async () => {
       const articleDetails = await pipe(
         arbitraryArticleId(),
-        fetchArticleDetails(() => TO.none, {
+        fetchArticleDetails({
           ...framework.dependenciesForViews,
           findVersionsForArticleDoi: () => TO.none,
         }),
@@ -76,7 +76,6 @@ describe('fetch-article-details', () => {
   describe('getArticle', () => {
     it('returns on the left when getArticle fails', async () => {
       const articleDetails = await fetchArticleDetails(
-        () => TO.some(new Date()),
         {
           ...framework.dependenciesForViews,
           fetchArticle: () => TE.left(DE.unavailable),
@@ -92,7 +91,6 @@ describe('fetch-article-details', () => {
         const title = await pipe(
           articleId,
           fetchArticleDetails(
-            () => TO.some(new Date()),
             {
               ...framework.dependenciesForViews,
               fetchArticle: getArticle,
@@ -117,7 +115,6 @@ describe('fetch-article-details', () => {
         const authors = await pipe(
           articleId,
           fetchArticleDetails(
-            () => TO.some(new Date()),
             {
               ...framework.dependenciesForViews,
               fetchArticle: getArticle,
