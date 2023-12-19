@@ -7,18 +7,18 @@ import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemoval
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event';
-import { getActivityForArticle } from '../../../src/read-models/article-activity/get-activity-for-article';
 import { arbitraryDate } from '../../helpers';
 import * as EDOI from '../../../src/types/expression-doi';
 import { ArticleId } from '../../../src/types/article-id';
+import { getActivityForExpressionDoi } from '../../../src/read-models/article-activity/get-activity-for-expression-doi';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => (articleId: ArticleId) => pipe(
   events,
   RA.reduce(initialState(), handleEvent),
-  getActivityForArticle,
+  getActivityForExpressionDoi,
 )(EDOI.fromValidatedString(articleId.value));
 
-describe('get-activity-for-article', () => {
+describe('get-activity-for-expression-doi', () => {
   const articleId = arbitraryArticleId();
 
   describe('when an article has never been added to a list', () => {

@@ -9,9 +9,11 @@ import { ArticleId } from '../../types/article-id';
 import { ReadModel } from './handle-event';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-type GetActivityForArticle = (expressionDoi: ExpressionDoi) => ArticleActivity;
+type GetActivityForExpressionDoi = (expressionDoi: ExpressionDoi) => ArticleActivity;
 
-export const getActivityForArticle = (readmodel: ReadModel): GetActivityForArticle => (expressionDoi) => pipe(
+export const getActivityForExpressionDoi = (
+  readmodel: ReadModel,
+): GetActivityForExpressionDoi => (expressionDoi) => pipe(
   readmodel,
   RM.lookup(S.Eq)(expressionDoi),
   O.match(
