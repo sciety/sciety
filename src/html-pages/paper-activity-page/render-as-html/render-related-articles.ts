@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { renderListItems } from '../../../shared-components/render-list-items';
-import { renderArticleCard } from '../../../shared-components/paper-activity-summary-card/render-article-card';
+import { renderAsHtml } from '../../../shared-components/paper-activity-summary-card/render-as-html';
 import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
@@ -12,7 +12,7 @@ export const renderRelatedArticles = (viewmodel: ViewModel): HtmlFragment => pip
     () => '',
     (relatedArticles) => pipe(
       relatedArticles,
-      RA.map(renderArticleCard),
+      RA.map(renderAsHtml),
       renderListItems,
       (listContent) => `
   <div id="relatedArticles">

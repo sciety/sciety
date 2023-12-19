@@ -1,10 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { renderArticleErrorCard } from '../../../../shared-components/paper-activity-summary-card/render-article-error-card';
+import { renderErrorAsHtml } from '../../../../shared-components/paper-activity-summary-card/render-error-as-html';
 import { renderListItems } from '../../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { renderArticleCard } from '../../../../shared-components/paper-activity-summary-card';
+import { renderPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
 import { ViewModel } from '../view-model';
 import { PaginationControlsViewModel, renderPaginationControls } from '../../../../shared-components/pagination';
 
@@ -38,8 +38,8 @@ export const renderListOfArticleCardsWithFallback: RenderListOfArticleCardsWithF
   return pipe(
     content.articleCards,
     RA.map(E.fold(
-      renderArticleErrorCard,
-      renderArticleCard,
+      renderErrorAsHtml,
+      renderPaperActivitySummaryCard,
     )),
     renderCards(content),
   );

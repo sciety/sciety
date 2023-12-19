@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
 import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements';
-import { ArticleErrorCardViewModel } from './render-article-error-card';
+import { ErrorViewModel } from './render-error-as-html';
 import { fetchArticleDetails } from './fetch-article-details';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -25,9 +25,9 @@ const transformIntoCurationStatementViewModel = (
 
 const constructPaperActivityPageHref = (expressionDoi: ExpressionDoi) => `/articles/activity/${expressionDoi}`;
 
-export const constructArticleCard = (
+export const constructViewModel = (
   ports: Dependencies,
-) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
+) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ErrorViewModel, ViewModel> => pipe(
   ports.getActivityForExpressionDoi(inputExpressionDoi),
   (expressionActivity) => pipe(
     inputExpressionDoi,

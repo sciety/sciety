@@ -12,7 +12,7 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from './static-content';
-import { renderArticleCard } from '../../../shared-components/paper-activity-summary-card';
+import { renderPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
 import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../../shared-components/pagination';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -50,7 +50,7 @@ const constructArticleViewModels = (dependencies: Dependencies) => flow(
 );
 
 const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
-  RNEA.map(renderArticleCard),
+  RNEA.map(renderPaperActivitySummaryCard),
   RNEA.map((card) => `<li class="my-feed__list_item">${card}</li>`),
   (cards) => `
     <p class="my-feed-page-numbers">

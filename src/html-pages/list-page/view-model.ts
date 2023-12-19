@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { PageOfItems, LegacyPaginationControlsViewModel } from '../../shared-components/pagination';
 import { ListId } from '../../types/list-id';
-import { ArticleErrorCardViewModel } from '../../shared-components/paper-activity-summary-card';
+import { PaperActivityErrorCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
 } from '../../shared-components/article-card-with-controls-and-annotation';
@@ -12,7 +12,7 @@ import { RawUserInput } from '../../read-models/annotations/handle-event';
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
 type ArticlesViewModel = ReadonlyArray<E.Either<
-ArticleErrorCardViewModel,
+PaperActivityErrorCardViewModel,
 ArticleCardWithControlsAndAnnotationViewModel
 >>;
 

@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../../types/expression-doi';
-import { PaperActivitySummaryCardViewModel, constructArticleCard } from '../../../shared-components/paper-activity-summary-card';
+import { PaperActivitySummaryCardViewModel, constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
 import { ExpressionActivity } from '../../../types/expression-activity';
 import { Dependencies } from './dependencies';
 
@@ -19,7 +19,7 @@ export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModel
   activities,
   RA.map((activity) => pipe(
     EDOI.fromValidatedString(activity.expressionDoi.value),
-    constructArticleCard(dependencies),
+    constructPaperActivitySummaryCard(dependencies),
     TO.fromTaskEither,
   )),
   T.sequenceArray,

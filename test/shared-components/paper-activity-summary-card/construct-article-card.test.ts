@@ -7,18 +7,18 @@ import * as EDOI from '../../../src/types/expression-doi';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { dummyLogger } from '../../dummy-logger';
 import * as DE from '../../../src/types/data-error';
-import { constructArticleCard } from '../../../src/shared-components/paper-activity-summary-card/construct-article-card';
+import { constructViewModel } from '../../../src/shared-components/paper-activity-summary-card/construct-view-model';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { PaperActivitySummaryCardViewModel } from '../../../src/shared-components/paper-activity-summary-card';
-import { ArticleErrorCardViewModel } from '../../../src/shared-components/paper-activity-summary-card/render-article-error-card';
+import { ErrorViewModel } from '../../../src/shared-components/paper-activity-summary-card/render-error-as-html';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { ArticleId } from '../../../src/types/article-id';
 
 describe('construct-article-card', () => {
   let framework: TestFramework;
-  let viewModel: E.Either<ArticleErrorCardViewModel, PaperActivitySummaryCardViewModel>;
+  let viewModel: E.Either<ErrorViewModel, PaperActivitySummaryCardViewModel>;
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -31,7 +31,7 @@ describe('construct-article-card', () => {
       beforeEach(async () => {
         viewModel = await pipe(
           inputExpressionDoi,
-          constructArticleCard({
+          constructViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
             logger: dummyLogger,
@@ -73,7 +73,7 @@ describe('construct-article-card', () => {
         await framework.commandHelpers.recordEvaluationPublication(command);
         viewModel = await pipe(
           inputExpressionDoi,
-          constructArticleCard({
+          constructViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
             logger: dummyLogger,
@@ -109,7 +109,7 @@ describe('construct-article-card', () => {
       await framework.commandHelpers.addArticleToList(new ArticleId(inputExpressionDoi), command.listId);
       successfulViewModel = await pipe(
         inputExpressionDoi,
-        constructArticleCard({
+        constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
           logger: dummyLogger,
@@ -130,7 +130,7 @@ describe('construct-article-card', () => {
     beforeEach(async () => {
       successfulViewModel = await pipe(
         inputExpressionDoi,
-        constructArticleCard({
+        constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
           logger: dummyLogger,
@@ -148,7 +148,7 @@ describe('construct-article-card', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         EDOI.fromValidatedString(arbitraryArticleId().value),
-        constructArticleCard({
+        constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
           fetchArticle: () => TE.left(DE.unavailable),
@@ -166,7 +166,7 @@ describe('construct-article-card', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         EDOI.fromValidatedString(arbitraryArticleId().value),
-        constructArticleCard({
+        constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
           findVersionsForArticleDoi: () => TO.none,

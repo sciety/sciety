@@ -15,7 +15,7 @@ export const renderArticleCardContents = (model: ViewModel): HtmlFragment => toH
   </footer>
 `);
 
-export const renderArticleCard = (model: ViewModel): HtmlFragment => toHtmlFragment(`
+export const renderAsHtml = (model: ViewModel): HtmlFragment => toHtmlFragment(`
   <section class="article-card">
     ${renderArticleCardContents(model)}
   </section>

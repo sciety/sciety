@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../../types/expression-doi';
 import { ArticleItem } from './data-types';
 import { ViewModel } from '../view-model';
-import { constructArticleCard } from '../../../shared-components/paper-activity-summary-card';
+import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
 import { Dependencies } from './dependencies';
 import { constructRelatedGroups } from './construct-related-groups';
 
@@ -20,7 +20,10 @@ type LimitedSet = {
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
-  T.traverseArray((item) => constructArticleCard(dependencies)(EDOI.fromValidatedString(item.articleId.value))),
+  T.traverseArray((item) => pipe(
+    EDOI.fromValidatedString(item.articleId.value),
+    constructPaperActivitySummaryCard(dependencies),
+  )),
   T.map(
     RA.rights,
   ),

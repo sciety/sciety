@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
-  ArticleErrorCardViewModel, renderArticleErrorCard,
+  PaperActivityErrorCardViewModel, renderPaperActivityErrorCard,
 } from '../../../shared-components/paper-activity-summary-card';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
@@ -12,7 +12,7 @@ import {
 
 type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<
-  ArticleErrorCardViewModel,
+  PaperActivityErrorCardViewModel,
   ArticleCardWithControlsAndAnnotationViewModel
   >>,
 ) => HtmlFragment;
@@ -20,7 +20,7 @@ type RenderArticlesList = (
 export const renderArticlesList: RenderArticlesList = (articles) => pipe(
   articles,
   RA.map(E.fold(
-    renderArticleErrorCard,
+    renderPaperActivityErrorCard,
     (articleCard) => renderArticleCardWithControlsAndAnnotation(articleCard),
   )),
   (listItems) => renderListItems(listItems),

@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { ViewModel } from '../view-model';
-import { constructArticleCard } from '../../../../shared-components/paper-activity-summary-card';
+import { constructPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
 import { GroupId } from '../../../../types/group-id';
 import * as DE from '../../../../types/data-error';
 import * as EDOI from '../../../../types/expression-doi';
@@ -29,7 +29,7 @@ const toOrderedArticleCards = (
   pageOfArticleIds: PageOfItems<string>,
 ) => pipe(
   pageOfArticleIds.items,
-  T.traverseArray((articleId) => constructArticleCard(dependencies)(EDOI.fromValidatedString(articleId))),
+  T.traverseArray((articleId) => constructPaperActivitySummaryCard(dependencies)(EDOI.fromValidatedString(articleId))),
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,

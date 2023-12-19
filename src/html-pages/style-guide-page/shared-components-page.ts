@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as EDOI from '../../types/expression-doi';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { renderArticleCard } from '../../shared-components/paper-activity-summary-card/render-article-card';
+import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html';
 import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
 import { ArticleId } from '../../types/article-id';
-import { renderArticleErrorCard } from '../../shared-components/paper-activity-summary-card';
+import { renderPaperActivityErrorCard } from '../../shared-components/paper-activity-summary-card';
 import * as LID from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import {
@@ -76,7 +76,7 @@ export const sharedComponentsPage: HtmlPage = {
   })}
       <h2 class="_style-guide-heading">Article summary</h2>
       <h3 class="_style-guide-heading">With curation statement</h3>
-      ${renderArticleCard({
+      ${renderAsHtml({
     inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
     paperActivityPageHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
@@ -96,7 +96,7 @@ export const sharedComponentsPage: HtmlPage = {
   })}
 
       <h3 class="_style-guide-heading">With reviewing groups</h3>
-      ${renderArticleCard({
+      ${renderAsHtml({
     inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
     paperActivityPageHref: '/articles/foo',
     title: sanitise(toHtmlFragment('Some title')),
@@ -189,7 +189,7 @@ export const sharedComponentsPage: HtmlPage = {
   })}
 
       <h3 class="_style-guide-heading">With error</h3>
-      ${renderArticleErrorCard({
+      ${renderPaperActivityErrorCard({
     evaluationCount: 1,
     href: '/articles/foo',
     latestActivityAt: O.some(new Date('2023-09-10')),

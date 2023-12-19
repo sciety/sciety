@@ -5,7 +5,7 @@ import * as DE from '../../types/data-error';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-export type ArticleErrorCardViewModel = {
+export type ErrorViewModel = {
   evaluationCount: number,
   href: string,
   latestActivityAt: O.Option<Date>,
@@ -35,7 +35,7 @@ const renderErrorMessage = DE.match({
   unavailable: () => 'We couldn\'t get details of this article at this time:',
 });
 
-export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): HtmlFragment => (
+export const renderErrorAsHtml = (viewModel: ErrorViewModel): HtmlFragment => (
   toHtmlFragment(`
     <article class="article-card">
       <a href="${viewModel.href}">

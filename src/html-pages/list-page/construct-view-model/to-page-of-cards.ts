@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleErrorCardViewModel } from '../../../shared-components/paper-activity-summary-card';
+import { PaperActivityErrorCardViewModel } from '../../../shared-components/paper-activity-summary-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
   constructArticleCardWithControlsAndAnnotation,
@@ -27,7 +27,7 @@ export const toPageOfCards = (
   TE.chainTaskK(T.traverseArray(
     E.foldW(
       TE.left,
-      TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel>,
+      TE.right<PaperActivityErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel>,
     ),
   )),
 );
