@@ -4,23 +4,19 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { flow, pipe } from 'fp-ts/function';
 import { ArticleServer } from '../../types/article-server';
-import { ExternalQueries } from '../../third-parties';
 import { ExpressionDoi } from '../../types/expression-doi';
-
-export type Ports = {
-  findVersionsForArticleDoi: ExternalQueries['findVersionsForArticleDoi'],
-};
+import { Dependencies } from './dependencies';
 
 type GetLatestArticleVersionDate = (
-  ports: Ports,
+  dependencies: Dependencies,
 ) => (expressionDoi: ExpressionDoi, server: ArticleServer) => TO.TaskOption<Date>;
 
 export const getLatestArticleVersionDate: GetLatestArticleVersionDate = (
-  ports,
+  dependencies,
 ) => (
   expressionDoi, server,
 ) => pipe(
-  ports.findVersionsForArticleDoi(expressionDoi, server),
+  dependencies.findVersionsForArticleDoi(expressionDoi, server),
   T.map(O.map(flow(
     RNEA.last,
     (version) => version.publishedAt,
