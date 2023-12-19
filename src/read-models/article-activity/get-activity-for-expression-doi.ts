@@ -4,12 +4,12 @@ import * as S from 'fp-ts/string';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as D from 'fp-ts/Date';
-import { ArticleActivity } from '../../types/article-activity';
+import { ExpressionActivity } from '../../types/expression-activity';
 import { ArticleId } from '../../types/article-id';
 import { ReadModel } from './handle-event';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-type GetActivityForExpressionDoi = (expressionDoi: ExpressionDoi) => ArticleActivity;
+type GetActivityForExpressionDoi = (expressionDoi: ExpressionDoi) => ExpressionActivity;
 
 export const getActivityForExpressionDoi = (
   readmodel: ReadModel,
@@ -18,13 +18,13 @@ export const getActivityForExpressionDoi = (
   RM.lookup(S.Eq)(expressionDoi),
   O.match(
     () => ({
-      articleId: new ArticleId(expressionDoi),
+      expressionDoi: new ArticleId(expressionDoi),
       latestActivityAt: O.none,
       evaluationCount: 0,
       listMembershipCount: 0,
     }),
     (act) => ({
-      articleId: act.articleId,
+      expressionDoi: act.articleId,
       latestActivityAt: pipe(
         act.evaluationStates,
         RA.map((evaluationState) => evaluationState.publishedAt),

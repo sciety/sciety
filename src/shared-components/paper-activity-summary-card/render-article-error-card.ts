@@ -10,7 +10,7 @@ export type ArticleErrorCardViewModel = {
   href: string,
   latestActivityAt: O.Option<Date>,
   error: DE.DataError,
-  articleId: ArticleId,
+  expressionDoi: ArticleId,
 };
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
@@ -41,7 +41,7 @@ export const renderArticleErrorCard = (viewModel: ArticleErrorCardViewModel): Ht
       <a href="${viewModel.href}">
         <p class="article-card__error_message">
           ${renderErrorMessage(viewModel.error)}<br>
-          ${viewModel.articleId.value}
+          ${viewModel.expressionDoi.value}
         </p>
         <footer class="article-card__footer">
           <div class="article-card__meta">

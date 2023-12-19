@@ -24,7 +24,7 @@ describe('get-activity-for-expression-doi', () => {
   describe('when an article has never been added to a list', () => {
     it('article has no activity', () => {
       expect(runQuery([])(articleId)).toStrictEqual({
-        articleId,
+        expressionDoi: articleId,
         latestActivityAt: O.none,
         evaluationCount: 0,
         listMembershipCount: 0,

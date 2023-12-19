@@ -5,7 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
-import { ArticleActivity } from '../../../types/article-activity';
+import { ExpressionActivity } from '../../../types/expression-activity';
 import { ArticleId } from '../../../types/article-id';
 import { GroupId } from '../../../types/group-id';
 
@@ -63,7 +63,7 @@ const addEventToActivities = (
 );
 
 const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{
-  articleId: ArticleId,
+  expressionDoi: ArticleId,
   mostRecentRecordedEvaluationByFollowedGroups: Date,
   latestArticleActivityDate: Date,
   evaluationCount: number,
@@ -77,14 +77,17 @@ const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{
 
 type FollowedGroupsActivities = (
   events: ReadonlyArray<DomainEvent>
-) => (groupIds: ReadonlyArray<GroupId>) => ReadonlyArray<ArticleActivity>;
+) => (groupIds: ReadonlyArray<GroupId>) => ReadonlyArray<ExpressionActivity>;
 
 export const followedGroupsActivities: FollowedGroupsActivities = (events) => (groupIds) => pipe(
   events,
   RA.filter(isEventOfType('EvaluationPublicationRecorded')),
   RA.reduce(new Map(), addEventToActivities(groupIds)),
   RM.filterMapWithIndex(flow(
-    (key, activityDetails) => O.some({ articleId: new ArticleId(key), ...activityDetails }),
+    (key, activityDetails) => O.some({
+      expressionDoi: new ArticleId(key),
+      ...activityDetails,
+    }),
     O.filter((activityDetails) => activityDetails.evaluatedByFollowedGroup),
   )),
   RM.values(byMostRecentRecordedEvaluationByFollowedGroups),

@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { ArticleId } from './article-id';
 
-export type ArticleActivity = {
-  articleId: ArticleId,
+export type ExpressionActivity = {
+  expressionDoi: ArticleId,
   latestActivityAt: O.Option<Date>,
   evaluationCount: number,
   listMembershipCount: number,

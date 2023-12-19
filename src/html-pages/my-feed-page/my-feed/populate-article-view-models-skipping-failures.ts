@@ -3,13 +3,13 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { PaperActivitySummaryCardViewModel, constructArticleCard } from '../../../shared-components/paper-activity-summary-card';
-import { ArticleActivity } from '../../../types/article-activity';
+import { ExpressionActivity } from '../../../types/expression-activity';
 import { Dependencies } from './dependencies';
 
 type PopulateArticleViewModelsSkippingFailures = (
   dependencies: Dependencies,
 ) => (
-  activities: ReadonlyArray<ArticleActivity>
+  activities: ReadonlyArray<ExpressionActivity>
 ) => T.Task<ReadonlyArray<PaperActivitySummaryCardViewModel>>;
 
 export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = (
@@ -17,7 +17,7 @@ export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModel
 ) => (activities) => pipe(
   activities,
   RA.map((activity) => pipe(
-    activity.articleId,
+    activity.expressionDoi,
     constructArticleCard(dependencies),
     TO.fromTaskEither,
   )),

@@ -194,7 +194,7 @@ export const sharedComponentsPage: HtmlPage = {
     href: '/articles/foo',
     latestActivityAt: O.some(new Date('2023-09-10')),
     error: DE.notFound,
-    articleId: new ArticleId('10.1101/foo'),
+    expressionDoi: new ArticleId('10.1101/foo'),
   })}
 
     <h3 class="_style-guide-heading">Success banner</h3>
