@@ -11,12 +11,14 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as EDOI from '../../types/expression-doi';
 import { ExternalQueries } from '../../third-parties';
+import { Dependencies } from './dependencies';
 
 type GetLatestArticleVersionDate = (expressionDoi: ExpressionDoi, server: ArticleServer) => TO.TaskOption<Date>;
 
 type FetchArticleDetails = (
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
   getArticle: ExternalQueries['fetchArticle'],
+  dependencies: Dependencies,
 ) => (doi: ArticleId) => TE.TaskEither<DE.DataError, {
   articleId: ArticleId,
   title: SanitisedHtmlFragment,
@@ -28,6 +30,8 @@ type FetchArticleDetails = (
 export const fetchArticleDetails: FetchArticleDetails = (
   getLatestArticleVersionDate,
   getArticle,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  dependencies,
 ) => (articleId) => pipe(
   articleId,
   getArticle,
