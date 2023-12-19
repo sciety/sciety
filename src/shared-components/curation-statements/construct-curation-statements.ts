@@ -17,6 +17,7 @@ import { Logger } from '../../shared-ports';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ViewModel } from './view-model';
 import { ExternalQueries } from '../../third-parties';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 export type Dependencies = Queries & ExternalQueries & {
   logger: Logger,
@@ -74,11 +75,11 @@ const onlyIncludeLatestCurationPerGroup = (
 
 type ConstructCurationStatements = (
   dependencies: Dependencies,
-  doi: ArticleId
+  expressionDoi: ExpressionDoi,
 ) => T.Task<ReadonlyArray<ViewModel>>;
 
-export const constructCurationStatements: ConstructCurationStatements = (dependencies, doi) => pipe(
-  doi,
+export const constructCurationStatements: ConstructCurationStatements = (dependencies, expressionDoi) => pipe(
+  new ArticleId(expressionDoi),
   dependencies.getEvaluationsForArticle,
   RA.filter((evaluation) => O.getEq(S.Eq).equals(evaluation.type, O.some('curation-statement'))),
   onlyIncludeLatestCurationPerGroup,

@@ -30,12 +30,12 @@ export const constructArticleCard = (
   ports: Dependencies,
 ) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
   ports.getActivityForExpressionDoi(inputExpressionDoi),
-  (articleActivity) => pipe(
+  (expressionActivity) => pipe(
     inputExpressionDoi,
     fetchArticleDetails(ports),
     TE.bimap(
       (error) => ({
-        ...articleActivity,
+        ...expressionActivity,
         inputExpressionDoi,
         href: `/articles/${inputExpressionDoi}`,
         error,
@@ -43,12 +43,12 @@ export const constructArticleCard = (
       (expressionDetails) => ({
         ...expressionDetails,
         inputExpressionDoi,
-        articleActivity,
+        articleActivity: expressionActivity,
       }),
     ),
   ),
   TE.chainW((partial) => pipe(
-    constructCurationStatements(ports, new ArticleId(inputExpressionDoi)),
+    constructCurationStatements(ports, inputExpressionDoi),
     T.map((curationStatements) => ({
       inputExpressionDoi: partial.inputExpressionDoi,
       paperActivityPageHref: constructPaperActivityPageHref(partial.inputExpressionDoi),

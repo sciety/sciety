@@ -46,7 +46,7 @@ const constructRemainingViewModelForDoi = (
   {
     feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(expressionDoi, frontMatter.server),
     relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
-    curationStatements: constructCurationStatements(dependencies, frontMatter.doi),
+    curationStatements: constructCurationStatements(dependencies, expressionDoi),
   },
   sequenceS(T.ApplyPar),
   TE.rightTask,

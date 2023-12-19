@@ -15,6 +15,7 @@ import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
+import * as EDOI from '../../../src/types/expression-doi';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;
@@ -33,7 +34,7 @@ describe('construct-curation-statements', () => {
   };
 
   const getCurationStatementLocators = async (dependencies: Dependencies) => pipe(
-    constructCurationStatements(dependencies, articleId),
+    constructCurationStatements(dependencies, EDOI.fromValidatedString(articleId.value)),
     T.map(RA.map((curationStatements) => curationStatements.evaluationLocator)),
   )();
 
