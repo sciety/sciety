@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
@@ -10,6 +11,7 @@ import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
 import { TestFramework, createTestFramework } from '../../framework';
+import { arbitraryNumber, arbitraryUri } from '../../helpers';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
 
@@ -33,7 +35,14 @@ describe('fetch-article-details', () => {
       const latestDate = new Date('2020-12-14');
       const articleDetails = await pipe(
         articleId,
-        fetchArticleDetails(() => TO.some(latestDate), framework.dependenciesForViews),
+        fetchArticleDetails(() => TO.some(latestDate), {
+          ...framework.dependenciesForViews,
+          findVersionsForArticleDoi: () => TO.some([{
+            source: new URL(arbitraryUri()),
+            publishedAt: latestDate,
+            version: arbitraryNumber(1, 2),
+          }]),
+        }),
       )();
 
       expect(articleDetails).toStrictEqual(
@@ -48,7 +57,10 @@ describe('fetch-article-details', () => {
     it('returns an O.none for the latest version date when it fails', async () => {
       const articleDetails = await pipe(
         arbitraryArticleId(),
-        fetchArticleDetails(() => TO.none, framework.dependenciesForViews),
+        fetchArticleDetails(() => TO.none, {
+          ...framework.dependenciesForViews,
+          findVersionsForArticleDoi: () => TO.none,
+        }),
       )();
 
       expect(articleDetails).toStrictEqual(

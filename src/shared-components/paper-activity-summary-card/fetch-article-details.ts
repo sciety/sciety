@@ -11,6 +11,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as EDOI from '../../types/expression-doi';
 import { Dependencies } from './dependencies';
+import { getLatestArticleVersionDate } from './get-latest-article-version-date';
 
 type GetLatestArticleVersionDate = (expressionDoi: ExpressionDoi, server: ArticleServer) => TO.TaskOption<Date>;
 
@@ -26,13 +27,13 @@ type FetchArticleDetails = (
 }>;
 
 export const fetchArticleDetails: FetchArticleDetails = (
-  getLatestArticleVersionDate,
+  _unusedParam,
   dependencies,
 ) => (articleId) => pipe(
   articleId,
   dependencies.fetchArticle,
   TE.chainW(({ authors, title, server }) => pipe(
-    getLatestArticleVersionDate(EDOI.fromValidatedString(articleId.value), server),
+    getLatestArticleVersionDate(dependencies)(EDOI.fromValidatedString(articleId.value), server),
     T.map((latestVersionDate) => ({
       latestVersionDate,
       authors,
