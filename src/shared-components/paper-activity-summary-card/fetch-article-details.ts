@@ -10,18 +10,13 @@ import { ArticleId } from '../../types/article-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as EDOI from '../../types/expression-doi';
-
-type GetArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, {
-  title: SanitisedHtmlFragment,
-  authors: ArticleAuthors,
-  server: ArticleServer,
-}>;
+import { ExternalQueries } from '../../third-parties';
 
 type GetLatestArticleVersionDate = (expressionDoi: ExpressionDoi, server: ArticleServer) => TO.TaskOption<Date>;
 
 type FetchArticleDetails = (
   getLatestArticleVersionDate: GetLatestArticleVersionDate,
-  getArticle: GetArticle,
+  getArticle: ExternalQueries['fetchArticle'],
 ) => (doi: ArticleId) => TE.TaskEither<DE.DataError, {
   articleId: ArticleId,
   title: SanitisedHtmlFragment,

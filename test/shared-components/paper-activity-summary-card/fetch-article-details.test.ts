@@ -8,10 +8,12 @@ import * as DE from '../../../src/types/data-error';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
 
 const getArticle = () => TE.right({
+  ...arbitraryArticleDetails(),
   title: sanitise(toHtmlFragment(titleText)),
   server: 'biorxiv' as const,
   authors: O.some(['Kasper C', 'Schlegel P', 'Ruiz-Ascacibar I', 'Stoll P', 'Bee G']),
