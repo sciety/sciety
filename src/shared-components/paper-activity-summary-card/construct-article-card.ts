@@ -1,4 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -49,11 +48,8 @@ export const constructArticleCard = (
     ),
   ),
   TE.chainW((partial) => pipe(
-    {
-      curationStatements: constructCurationStatements(ports, articleId),
-    },
-    sequenceS(T.ApplyPar),
-    T.map(({ curationStatements }) => ({
+    constructCurationStatements(ports, articleId),
+    T.map((curationStatements) => ({
       inputExpressionDoi: partial.inputExpressionDoi,
       paperActivityPageHref: constructPaperActivityPageHref(partial.inputExpressionDoi),
       title: partial.title,
