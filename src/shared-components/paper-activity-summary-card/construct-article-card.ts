@@ -31,7 +31,7 @@ export const constructArticleCard = (
 ) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
   ports.getActivityForExpressionDoi(inputExpressionDoi),
   (articleActivity) => pipe(
-    new ArticleId(inputExpressionDoi),
+    inputExpressionDoi,
     fetchArticleDetails(ports),
     TE.bimap(
       (error) => ({

@@ -12,8 +12,11 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryNumber, arbitraryUri } from '../../helpers';
+import * as EDOI from '../../../src/types/expression-doi';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
+
+const arbitraryExpressionDoi = () => EDOI.fromValidatedString(arbitraryArticleId().value);
 
 const getArticle = () => TE.right({
   ...arbitraryArticleDetails(),
@@ -31,10 +34,10 @@ describe('fetch-article-details', () => {
 
   describe('latest version date', () => {
     it('returns the latest version date for an article', async () => {
-      const articleId = arbitraryArticleId();
+      const expressionDoi = arbitraryExpressionDoi();
       const latestDate = new Date('2020-12-14');
       const articleDetails = await pipe(
-        articleId,
+        expressionDoi,
         fetchArticleDetails({
           ...framework.dependenciesForViews,
           findVersionsForArticleDoi: () => TO.some([{
@@ -56,7 +59,7 @@ describe('fetch-article-details', () => {
 
     it('returns an O.none for the latest version date when it fails', async () => {
       const articleDetails = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         fetchArticleDetails({
           ...framework.dependenciesForViews,
           findVersionsForArticleDoi: () => TO.none,
@@ -80,16 +83,16 @@ describe('fetch-article-details', () => {
           ...framework.dependenciesForViews,
           fetchArticle: () => TE.left(DE.unavailable),
         },
-      )(arbitraryArticleId())();
+      )(arbitraryExpressionDoi())();
 
       expect(articleDetails).toStrictEqual(E.left(DE.unavailable));
     });
 
     describe('title', () => {
       it('returns the title for an article', async () => {
-        const articleId = arbitraryArticleId();
+        const expressionDoi = arbitraryExpressionDoi();
         const title = await pipe(
-          articleId,
+          expressionDoi,
           fetchArticleDetails(
             {
               ...framework.dependenciesForViews,
@@ -111,9 +114,9 @@ describe('fetch-article-details', () => {
 
     describe('authors', () => {
       it('returns the authors for an article', async () => {
-        const articleId = arbitraryArticleId();
+        const expressionDoi = arbitraryExpressionDoi();
         const authors = await pipe(
-          articleId,
+          expressionDoi,
           fetchArticleDetails(
             {
               ...framework.dependenciesForViews,
