@@ -9,12 +9,14 @@ import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event';
 import { getActivityForArticle } from '../../../src/read-models/article-activity/get-activity-for-article';
 import { arbitraryDate } from '../../helpers';
+import * as EDOI from '../../../src/types/expression-doi';
+import { ArticleId } from '../../../src/types/article-id';
 
-const runQuery = (events: ReadonlyArray<DomainEvent>) => pipe(
+const runQuery = (events: ReadonlyArray<DomainEvent>) => (articleId: ArticleId) => pipe(
   events,
   RA.reduce(initialState(), handleEvent),
   getActivityForArticle,
-);
+)(EDOI.fromValidatedString(articleId.value));
 
 describe('get-activity-for-article', () => {
   const articleId = arbitraryArticleId();

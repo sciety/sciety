@@ -7,15 +7,16 @@ import * as D from 'fp-ts/Date';
 import { ArticleActivity } from '../../types/article-activity';
 import { ArticleId } from '../../types/article-id';
 import { ReadModel } from './handle-event';
+import { ExpressionDoi } from '../../types/expression-doi';
 
-type GetActivityForArticle = (articleId: ArticleId) => ArticleActivity;
+type GetActivityForArticle = (expressionDoi: ExpressionDoi) => ArticleActivity;
 
-export const getActivityForArticle = (readmodel: ReadModel): GetActivityForArticle => (articleId) => pipe(
+export const getActivityForArticle = (readmodel: ReadModel): GetActivityForArticle => (expressionDoi) => pipe(
   readmodel,
-  RM.lookup(S.Eq)(articleId.value),
+  RM.lookup(S.Eq)(expressionDoi),
   O.match(
     () => ({
-      articleId,
+      articleId: new ArticleId(expressionDoi),
       latestActivityAt: O.none,
       evaluationCount: 0,
       listMembershipCount: 0,

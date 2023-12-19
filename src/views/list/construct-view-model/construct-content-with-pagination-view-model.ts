@@ -6,6 +6,7 @@ import { ArticleId } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
+import * as EDOI from '../../../types/expression-doi';
 
 export const constructContentWithPaginationViewModel = (
   dependencies: Dependencies,
@@ -13,6 +14,7 @@ export const constructContentWithPaginationViewModel = (
 ) => (articleIds: ReadonlyArray<ArticleId>): T.Task<ViewModel['articles']> => pipe(
   articleIds,
   RA.takeLeft(20),
+  RA.map((articleId) => EDOI.fromValidatedString(articleId.value)),
   RA.map(dependencies.getActivityForExpressionDoi),
   toPageOfCards(dependencies, listId),
 );
