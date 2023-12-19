@@ -3,7 +3,7 @@ import { handleEvent, initialState } from './handle-event';
 
 export const articleActivity = {
   queries: {
-    getActivityForDoi: getActivityForArticle,
+    getActivityForExpressionDoi: getActivityForArticle,
   },
   initialState,
   handleEvent,

@@ -30,7 +30,7 @@ const constructPaperActivityPageHref = (expressionDoi: ExpressionDoi) => `/artic
 export const constructArticleCard = (
   ports: Dependencies,
 ) => (inputExpressionDoi: ArticleId): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
-  ports.getActivityForDoi(inputExpressionDoi),
+  ports.getActivityForExpressionDoi(inputExpressionDoi),
   (articleActivity) => pipe(
     articleActivity.articleId,
     fetchArticleDetails(ports),

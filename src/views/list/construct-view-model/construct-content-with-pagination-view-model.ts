@@ -13,6 +13,6 @@ export const constructContentWithPaginationViewModel = (
 ) => (articleIds: ReadonlyArray<ArticleId>): T.Task<ViewModel['articles']> => pipe(
   articleIds,
   RA.takeLeft(20),
-  RA.map(dependencies.getActivityForDoi),
+  RA.map(dependencies.getActivityForExpressionDoi),
   toPageOfCards(dependencies, listId),
 );
