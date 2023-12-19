@@ -64,7 +64,7 @@ const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion =>
     crossrefExpression.message.posted['date-parts'][0][1] - 1,
     crossrefExpression.message.posted['date-parts'][0][2],
   ),
-  source: new URL(crossrefExpression.message.resource.primary.URL),
+  publisherHtmlUrl: new URL(crossrefExpression.message.resource.primary.URL),
 });
 
 const extractDoisOfRelatedExpressions = (record: CrossrefRecord) => [

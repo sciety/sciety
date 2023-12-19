@@ -38,7 +38,7 @@ describe('fetch-article-details', () => {
         fetchArticleDetails({
           ...framework.dependenciesForViews,
           findVersionsForArticleDoi: () => TO.some([{
-            source: new URL(arbitraryUri()),
+            publisherHtmlUrl: new URL(arbitraryUri()),
             publishedAt: latestDate,
             version: arbitraryNumber(1, 2),
           }]),

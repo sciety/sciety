@@ -39,12 +39,12 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
-          source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
+          publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
           publishedAt: new Date('2020-01-02'),
           version: 2,
         });
         expect(events[1]).toStrictEqual({
-          source: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v1'),
+          publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v1'),
           publishedAt: new Date('2019-12-31'),
           version: 1,
         });
@@ -78,12 +78,12 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
-          source: new URL('https://www.medrxiv.org/content/10.1101/2020.09.02.278911v2'),
+          publisherHtmlUrl: new URL('https://www.medrxiv.org/content/10.1101/2020.09.02.278911v2'),
           publishedAt: new Date('2020-01-02'),
           version: 2,
         });
         expect(events[1]).toStrictEqual({
-          source: new URL('https://www.medrxiv.org/content/10.1101/2020.09.02.278911v1'),
+          publisherHtmlUrl: new URL('https://www.medrxiv.org/content/10.1101/2020.09.02.278911v1'),
           publishedAt: new Date('2019-12-31'),
           version: 1,
         });

@@ -1,7 +1,7 @@
 import { URL } from 'url';
 
 export type ArticleVersion = {
-  source: URL,
+  publisherHtmlUrl: URL,
   publishedAt: Date,
   version: number,
 };

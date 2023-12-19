@@ -25,7 +25,7 @@ type GetArticleVersionEventsFromBiorxiv = (
 const mapResponse = (doi: ArticleId, server: SupportedArticleServer) => flow(
   (response: ResponseWithVersions) => response.collection,
   RNEA.map(({ version, date }) => ({
-    source: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
+    publisherHtmlUrl: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
     publishedAt: date,
     version,
   })),

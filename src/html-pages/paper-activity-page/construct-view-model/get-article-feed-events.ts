@@ -49,6 +49,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
         RNEA.map((version) => ({
           type: 'article-version' as const,
           ...version,
+          source: version.publisherHtmlUrl,
         })),
       ),
     ),
