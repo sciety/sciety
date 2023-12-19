@@ -32,21 +32,22 @@ const toFullArticleUrl = (expressionDoi: ExpressionDoi) => `https://doi.org/${ex
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const getFrontMatterForMostRecentExpression = (dependencies: Dependencies) => (expressionDoi: ExpressionDoi): ReturnType<Dependencies['fetchPaperExpressionFrontMatter']> => pipe(
+const getFrontMatter = (dependencies: Dependencies) => (expressionDoi: ExpressionDoi): ReturnType<Dependencies['fetchPaperExpressionFrontMatter']> => pipe(
   expressionDoi,
   PaperExpressionLocator.fromDoi,
   dependencies.fetchPaperExpressionFrontMatter,
 );
 
-const constructRemainingViewModelForDoi = (
+const constructRemainingViewModel = (
   dependencies: Dependencies,
   params: Params,
-  expressionDoi: ExpressionDoi,
 ) => (frontMatter: PaperExpressionFrontMatter) => pipe(
   {
-    feedItemsByDateDescending: getArticleFeedEventsByDateDescending(dependencies)(expressionDoi, frontMatter.server),
+    feedItemsByDateDescending: (
+      getArticleFeedEventsByDateDescending(dependencies)(params.expressionDoi, frontMatter.server)
+    ),
     relatedArticles: constructRelatedArticles(frontMatter.doi, dependencies),
-    curationStatements: constructCurationStatements(dependencies, expressionDoi),
+    curationStatements: constructCurationStatements(dependencies, params.expressionDoi),
   },
   sequenceS(T.ApplyPar),
   TE.rightTask,
@@ -55,7 +56,7 @@ const constructRemainingViewModelForDoi = (
     titleLanguageCode: detectLanguage(frontMatter.title),
     abstractLanguageCode: detectLanguage(frontMatter.abstract),
     userListManagement: constructUserListManagement(params.user, dependencies, frontMatter.doi),
-    fullArticleUrl: toFullArticleUrl(expressionDoi),
+    fullArticleUrl: toFullArticleUrl(params.expressionDoi),
     feedItemsByDateDescending,
     ...feedSummary(feedItemsByDateDescending),
     listedIn: constructListedIn(dependencies)(frontMatter.doi),
@@ -68,12 +69,12 @@ const constructRemainingViewModelForDoi = (
         fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
       })),
     ),
-    reviewingGroups: constructReviewingGroups(dependencies, expressionDoi),
+    reviewingGroups: constructReviewingGroups(dependencies, params.expressionDoi),
   })),
 );
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.expressionDoi,
-  getFrontMatterForMostRecentExpression(dependencies),
-  TE.chainW(constructRemainingViewModelForDoi(dependencies, params, params.expressionDoi)),
+  getFrontMatter(dependencies),
+  TE.chainW(constructRemainingViewModel(dependencies, params)),
 );
