@@ -20,7 +20,6 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { PaperExpressionLocator } from '../../../third-parties';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
-import { ArticleId } from '../../../types/article-id';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -60,7 +59,7 @@ const constructRemainingViewModel = (
     fullArticleUrl: toFullArticleUrl(params.expressionDoi),
     feedItemsByDateDescending,
     ...feedSummary(feedItemsByDateDescending),
-    listedIn: constructListedIn(dependencies)(new ArticleId(params.expressionDoi)),
+    listedIn: constructListedIn(dependencies)(params.expressionDoi),
     relatedArticles,
     curationStatements: pipe(
       curationStatements,

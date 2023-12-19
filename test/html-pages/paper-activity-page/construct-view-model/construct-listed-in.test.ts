@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { constructListedIn } from '../../../../src/html-pages/paper-activity-page/construct-view-model/construct-listed-in';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryUserId } from '../../../types/user-id.helper';
@@ -9,10 +8,13 @@ import { ViewModel } from '../../../../src/html-pages/paper-activity-page/view-m
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { ArticleId } from '../../../../src/types/article-id';
 
 describe('construct-listed-in', () => {
   let framework: TestFramework;
-  const articleId = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
+  const articleId = new ArticleId(expressionDoi);
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -23,7 +25,7 @@ describe('construct-listed-in', () => {
 
     beforeEach(() => {
       listedIn = pipe(
-        articleId,
+        expressionDoi,
         constructListedIn(framework.dependenciesForViews),
       );
     });
@@ -43,7 +45,7 @@ describe('construct-listed-in', () => {
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(
-        articleId,
+        expressionDoi,
         constructListedIn(framework.dependenciesForViews),
       );
     });
@@ -78,7 +80,7 @@ describe('construct-listed-in', () => {
       await framework.commandHelpers.createList(createListCommand);
       await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
       listedIn = pipe(
-        articleId,
+        expressionDoi,
         constructListedIn(framework.dependenciesForViews),
       );
     });
@@ -100,7 +102,7 @@ describe('construct-listed-in', () => {
       list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       listedIn = pipe(
-        articleId,
+        expressionDoi,
         constructListedIn(framework.dependenciesForViews),
       );
     });
