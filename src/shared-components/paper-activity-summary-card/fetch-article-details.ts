@@ -14,7 +14,6 @@ import { ExpressionDoi } from '../../types/expression-doi';
 type FetchArticleDetails = (
   dependencies: Dependencies,
 ) => (expressionDoi: ExpressionDoi) => TE.TaskEither<DE.DataError, {
-  articleId: ArticleId,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   latestVersionDate: O.Option<Date>,
@@ -26,14 +25,13 @@ export const fetchArticleDetails: FetchArticleDetails = (
 ) => (expressionDoi) => pipe(
   new ArticleId(expressionDoi),
   dependencies.fetchArticle,
-  TE.chainW(({ authors, title, server }) => pipe(
-    getLatestExpressionDate(dependencies)(expressionDoi, server),
+  TE.chainW((expressionDetails) => pipe(
+    getLatestExpressionDate(dependencies)(expressionDoi, expressionDetails.server),
     T.map((latestVersionDate) => ({
       latestVersionDate,
-      authors,
-      title,
-      server,
-      articleId: new ArticleId(expressionDoi),
+      authors: expressionDetails.authors,
+      title: expressionDetails.title,
+      server: expressionDetails.server,
     })),
     TE.rightTask,
   )),
