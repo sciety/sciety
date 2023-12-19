@@ -8,7 +8,6 @@ import { CurationStatementViewModel, constructCurationStatements } from '../cura
 import { ArticleId } from '../../types/article-id';
 import { ArticleErrorCardViewModel } from './render-article-error-card';
 import { fetchArticleDetails } from './fetch-article-details';
-import * as EDOI from '../../types/expression-doi';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
@@ -29,27 +28,27 @@ const constructPaperActivityPageHref = (expressionDoi: ExpressionDoi) => `/artic
 
 export const constructArticleCard = (
   ports: Dependencies,
-) => (inputExpressionDoi: ArticleId): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
-  ports.getActivityForExpressionDoi(EDOI.fromValidatedString(inputExpressionDoi.value)),
+) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
+  ports.getActivityForExpressionDoi(inputExpressionDoi),
   (articleActivity) => pipe(
     articleActivity.expressionDoi,
     fetchArticleDetails(ports),
     TE.bimap(
       (error) => ({
         ...articleActivity,
-        inputExpressionDoi: EDOI.fromValidatedString(inputExpressionDoi.value),
-        href: `/articles/${inputExpressionDoi.value}`,
+        inputExpressionDoi,
+        href: `/articles/${inputExpressionDoi}`,
         error,
       }),
       (expressionDetails) => ({
         ...expressionDetails,
-        inputExpressionDoi: EDOI.fromValidatedString(inputExpressionDoi.value),
+        inputExpressionDoi,
         articleActivity,
       }),
     ),
   ),
   TE.chainW((partial) => pipe(
-    constructCurationStatements(ports, inputExpressionDoi),
+    constructCurationStatements(ports, new ArticleId(inputExpressionDoi)),
     T.map((curationStatements) => ({
       inputExpressionDoi: partial.inputExpressionDoi,
       paperActivityPageHref: constructPaperActivityPageHref(partial.inputExpressionDoi),
@@ -75,7 +74,7 @@ export const constructArticleCard = (
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),
       ),
-      reviewingGroups: constructReviewingGroups(ports, inputExpressionDoi),
+      reviewingGroups: constructReviewingGroups(ports, new ArticleId(inputExpressionDoi)),
     })),
     TE.rightTask,
   )),

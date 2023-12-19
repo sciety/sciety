@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as EDOI from '../../types/expression-doi';
 import { constructArticleCard } from '../paper-activity-summary-card/construct-article-card';
 import { ArticleErrorCardViewModel } from '../paper-activity-summary-card/render-article-error-card';
 import { ListId } from '../../types/list-id';
@@ -41,7 +42,7 @@ export const constructArticleCardWithControlsAndAnnotation = (
 ) => (
   articleId: ArticleId,
 ): TE.TaskEither<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
-  articleId,
+  EDOI.fromValidatedString(articleId.value),
   constructArticleCard(dependencies),
   TE.map(toArticleCardWithControlsAndAnnotationViewModel(dependencies, editCapability, listId, articleId)),
 );

@@ -7,7 +7,7 @@ import { ViewModel } from '../view-model';
 import { constructArticleCard } from '../../../../shared-components/paper-activity-summary-card';
 import { GroupId } from '../../../../types/group-id';
 import * as DE from '../../../../types/data-error';
-import { ArticleId } from '../../../../types/article-id';
+import * as EDOI from '../../../../types/expression-doi';
 import { Dependencies } from './dependencies';
 import { PageOfItems, paginate } from '../../../../shared-components/pagination';
 import { Group } from '../../../../types/group';
@@ -29,7 +29,7 @@ const toOrderedArticleCards = (
   pageOfArticleIds: PageOfItems<string>,
 ) => pipe(
   pageOfArticleIds.items,
-  T.traverseArray((articleId) => constructArticleCard(dependencies)(new ArticleId(articleId))),
+  T.traverseArray((articleId) => constructArticleCard(dependencies)(EDOI.fromValidatedString(articleId))),
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,
