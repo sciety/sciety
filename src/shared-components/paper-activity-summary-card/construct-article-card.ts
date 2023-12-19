@@ -29,26 +29,26 @@ const constructPaperActivityPageHref = (expressionDoi: ExpressionDoi) => `/artic
 
 export const constructArticleCard = (
   ports: Dependencies,
-) => (articleId: ArticleId): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
-  ports.getActivityForDoi(articleId),
+) => (inputExpressionDoi: ArticleId): TE.TaskEither<ArticleErrorCardViewModel, ViewModel> => pipe(
+  ports.getActivityForDoi(inputExpressionDoi),
   (articleActivity) => pipe(
     articleActivity.articleId,
     fetchArticleDetails(ports),
     TE.bimap(
       (error) => ({
         ...articleActivity,
-        href: `/articles/${articleId.value}`,
+        href: `/articles/${inputExpressionDoi.value}`,
         error,
       }),
       (expressionDetails) => ({
         ...expressionDetails,
-        inputExpressionDoi: EDOI.fromValidatedString(articleId.value),
+        inputExpressionDoi: EDOI.fromValidatedString(inputExpressionDoi.value),
         articleActivity,
       }),
     ),
   ),
   TE.chainW((partial) => pipe(
-    constructCurationStatements(ports, articleId),
+    constructCurationStatements(ports, inputExpressionDoi),
     T.map((curationStatements) => ({
       inputExpressionDoi: partial.inputExpressionDoi,
       paperActivityPageHref: constructPaperActivityPageHref(partial.inputExpressionDoi),
@@ -74,7 +74,7 @@ export const constructArticleCard = (
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),
       ),
-      reviewingGroups: constructReviewingGroups(ports, articleId),
+      reviewingGroups: constructReviewingGroups(ports, inputExpressionDoi),
     })),
     TE.rightTask,
   )),
