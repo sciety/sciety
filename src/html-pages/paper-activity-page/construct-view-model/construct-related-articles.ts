@@ -10,9 +10,11 @@ import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 
 export const constructRelatedArticles = (
-  doi: ArticleId, dependencies: Dependencies,
+  expressionDoi: EDOI.ExpressionDoi,
+  dependencies: Dependencies,
 ): T.Task<ViewModel['relatedArticles']> => pipe(
-  dependencies.fetchRelatedArticles(doi),
+  new ArticleId(expressionDoi),
+  dependencies.fetchRelatedArticles,
   TE.map(RA.takeLeft(3)),
   TE.chainW(TE.traverseArray((recommendedPaper) => pipe(
     EDOI.fromValidatedString(recommendedPaper.articleId.value),
