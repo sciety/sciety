@@ -28,7 +28,7 @@ export const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const toFullArticleUrl = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
+const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -56,7 +56,7 @@ const constructRemainingViewModel = (
     titleLanguageCode: detectLanguage(frontMatter.title),
     abstractLanguageCode: detectLanguage(frontMatter.abstract),
     userListManagement: constructUserListManagement(params.user, dependencies, params.expressionDoi),
-    fullArticleUrl: toFullArticleUrl(params.expressionDoi),
+    expressionFullTextHref: toExpressionFullTextHref(params.expressionDoi),
     feedItemsByDateDescending,
     ...feedSummary(feedItemsByDateDescending),
     listedIn: constructListedIn(dependencies)(params.expressionDoi),

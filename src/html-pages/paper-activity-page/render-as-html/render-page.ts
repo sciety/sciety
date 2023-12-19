@@ -15,7 +15,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
     <div class="sciety-grid-two-columns">
       <section class="article-actions">
         ${renderReviewingGroups(viewmodel.reviewingGroups)}
-        <a href="${viewmodel.fullArticleUrl}" class="full-article-button">Read the full article</a>
+        <a href="${viewmodel.expressionFullTextHref}" class="full-article-button">Read the full article</a>
         ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
         <div class="list-management">
           ${renderListedIn(viewmodel.listedIn)}
