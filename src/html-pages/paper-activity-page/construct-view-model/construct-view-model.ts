@@ -56,7 +56,7 @@ const constructRemainingViewModel = (
     ...frontMatter,
     titleLanguageCode: detectLanguage(frontMatter.title),
     abstractLanguageCode: detectLanguage(frontMatter.abstract),
-    userListManagement: constructUserListManagement(params.user, dependencies, new ArticleId(params.expressionDoi)),
+    userListManagement: constructUserListManagement(params.user, dependencies, params.expressionDoi),
     fullArticleUrl: toFullArticleUrl(params.expressionDoi),
     feedItemsByDateDescending,
     ...feedSummary(feedItemsByDateDescending),

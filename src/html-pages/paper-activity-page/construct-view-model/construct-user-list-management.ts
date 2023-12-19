@@ -5,15 +5,17 @@ import { ArticleId } from '../../../types/article-id';
 import { UserId } from '../../../types/user-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
-export const constructUserListManagement = (user: O.Option<{ id: UserId }>, dependencies: Dependencies, articleId: ArticleId): ViewModel['userListManagement'] => pipe(
+export const constructUserListManagement = (user: O.Option<{ id: UserId }>, dependencies: Dependencies, expressionDoi: ExpressionDoi): ViewModel['userListManagement'] => pipe(
   user,
   O.map(
-    ({ id }) => pipe(
-      dependencies.selectListContainingArticle(id)(articleId),
+    (u) => pipe(
+      new ArticleId(expressionDoi),
+      dependencies.selectListContainingArticle(u.id),
       O.foldW(
         () => E.left({
-          saveArticleHref: `/save-article?articleId=${articleId.value}`,
+          saveArticleHref: `/save-article?articleId=${expressionDoi}`,
         }),
         (list) => E.right({
           listId: list.id,
