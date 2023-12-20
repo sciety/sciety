@@ -17,7 +17,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
+import { ExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 
 export const paramsCodec = t.type({
@@ -34,7 +34,7 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 const constructRemainingViewModel = (
   dependencies: Dependencies,
   params: Params,
-) => (frontMatter: PaperExpressionFrontMatter) => pipe(
+) => (frontMatter: ExpressionFrontMatter) => pipe(
   {
     feedItemsByDateDescending: (
       getArticleFeedEventsByDateDescending(dependencies)(params.expressionDoi, frontMatter.server)

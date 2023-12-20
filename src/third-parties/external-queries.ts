@@ -13,25 +13,21 @@ import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { ExpressionDoi } from '../types/expression-doi';
 
-export type ArticleDetails = {
+export type ExpressionFrontMatter = {
   abstract: SanitisedHtmlFragment,
   authors: ArticleAuthors,
-  doi: ArticleId,
   title: SanitisedHtmlFragment,
   server: ArticleServer,
 };
 
-export type PaperExpressionFrontMatter = {
-  abstract: SanitisedHtmlFragment,
-  authors: ArticleAuthors,
-  title: SanitisedHtmlFragment,
-  server: ArticleServer,
+type FetchPaperExpressionFrontMatter = (expressionDoi: ExpressionDoi)
+=> TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
+
+export type ArticleDetails = ExpressionFrontMatter & {
+  doi: ArticleId,
 };
 
 type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
-
-type FetchPaperExpressionFrontMatter = (expressionDoi: ExpressionDoi)
-=> TE.TaskEither<DE.DataError, PaperExpressionFrontMatter>;
 
 type FetchRelatedPapers = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
