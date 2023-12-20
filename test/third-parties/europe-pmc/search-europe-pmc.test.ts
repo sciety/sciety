@@ -2,9 +2,10 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
-import { ArticleId } from '../../../src/types/article-id';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryWord } from '../../helpers';
+import { SearchResults } from '../../../src/shared-ports/search-for-articles';
+import * as EDOI from '../../../src/types/expression-doi';
 
 describe('search-europe-pmc', () => {
   it('converts Europe PMC search result into our view model', async () => {
@@ -28,11 +29,11 @@ describe('search-europe-pmc', () => {
       dummyLogger,
     )(2)('some query', O.none, false)();
 
-    const expected = E.right({
+    const expected: E.Either<never, SearchResults> = E.right({
       total: 3,
       items: [
-        new ArticleId('10.1111/1234'),
-        new ArticleId('10.1111/4321'),
+        EDOI.fromValidatedString('10.1111/1234'),
+        EDOI.fromValidatedString('10.1111/4321'),
       ],
       nextCursor: O.some(nextCursor),
     });

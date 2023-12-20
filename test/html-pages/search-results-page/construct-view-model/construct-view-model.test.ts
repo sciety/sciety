@@ -6,16 +6,17 @@ import { ViewModel } from '../../../../src/html-pages/search-results-page/view-m
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { ArticleId } from '../../../../src/types/article-id';
 import { ExternalQueries } from '../../../../src/third-parties';
+import { ExpressionDoi } from '../../../../src/types/expression-doi';
+import { SearchResults } from '../../../../src/shared-ports/search-for-articles';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 const searchForPaperExpressionsReturningResults = (
-  articleIds: ReadonlyArray<ArticleId>,
-  total: number,
-  nextCursor: O.Option<string>,
+  expressionDois: SearchResults['items'],
+  total: SearchResults['total'],
+  nextCursor: SearchResults['nextCursor'],
 ) => () => () => TE.right({
-  items: articleIds,
+  items: expressionDois,
   total,
   nextCursor,
 });
@@ -57,17 +58,17 @@ describe('construct-view-model', () => {
   )();
 
   const getViewModelForASinglePage = async (
-    articleIds: ReadonlyArray<ArticleId>,
+    expressionDois: ReadonlyArray<ExpressionDoi>,
   ) => getViewModel(
-    searchForPaperExpressionsReturningResults(articleIds, 1, O.none),
+    searchForPaperExpressionsReturningResults(expressionDois, 1, O.none),
   );
 
   const getViewModelWithAdditionalPages = async (
-    articleId: ArticleId,
+    expressionDoi: ExpressionDoi,
     cursorValue: string,
     itemsPerPage: number,
   ) => getViewModel(
-    searchForPaperExpressionsReturningResults([articleId], 2, O.some(cursorValue)),
+    searchForPaperExpressionsReturningResults([expressionDoi], 2, O.some(cursorValue)),
     itemsPerPage,
   );
 
@@ -76,17 +77,17 @@ describe('construct-view-model', () => {
   );
 
   describe('and there is only one page of results, with no evaluated articles', () => {
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
 
     beforeEach(async () => {
-      result = await getViewModelForASinglePage([articleId]);
+      result = await getViewModelForASinglePage([expressionDoi]);
     });
 
     it('all article cards are included in the view model', () => {
       expect(result.paperActivitySummaryCards).toStrictEqual(
         [
           expect.objectContaining({
-            inputExpressionDoi: articleId.value,
+            inputExpressionDoi: expressionDoi,
           }),
         ],
       );
@@ -102,19 +103,19 @@ describe('construct-view-model', () => {
   });
 
   describe('and there is more than one page of results, with no evaluated articles', () => {
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
     const itemsPerPage = 1;
     const cursorValue = arbitraryWord();
 
     beforeEach(async () => {
-      result = await getViewModelWithAdditionalPages(articleId, cursorValue, itemsPerPage);
+      result = await getViewModelWithAdditionalPages(expressionDoi, cursorValue, itemsPerPage);
     });
 
     it('no more than itemsPerPage article cards are included in the view model', () => {
       expect(result.paperActivitySummaryCards).toStrictEqual(
         [
           expect.objectContaining({
-            inputExpressionDoi: articleId.value,
+            inputExpressionDoi: expressionDoi,
           }),
         ],
       );

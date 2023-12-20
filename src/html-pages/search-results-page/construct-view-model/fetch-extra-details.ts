@@ -2,17 +2,16 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../types/expression-doi';
 import { ViewModel } from '../view-model';
 import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
 import { Dependencies } from './dependencies';
 import { constructRelatedGroups } from './construct-related-groups';
-import { ArticleId } from '../../../types/article-id';
+import { SearchResults } from '../../../shared-ports/search-for-articles';
 
 type LimitedSet = {
   query: string,
   evaluatedOnly: boolean,
-  itemsToDisplay: ReadonlyArray<ArticleId>,
+  itemsToDisplay: SearchResults['items'],
   nextCursor: O.Option<string>,
   pageNumber: number,
   numberOfPages: number,
@@ -21,7 +20,7 @@ type LimitedSet = {
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
   T.traverseArray((item) => pipe(
-    EDOI.fromValidatedString(item.value),
+    item,
     constructPaperActivitySummaryCard(dependencies),
   )),
   T.map(

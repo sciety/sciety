@@ -5,15 +5,15 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { articleIdCodec } from '../../types/article-id';
 import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
 import { constructQueryUrl } from './construct-query-url';
 import { QueryExternalService } from '../query-external-service';
 import { ExternalQueries } from '../external-queries';
+import { expressionDoiCodec } from '../../types/expression-doi';
 
 const itemFromJson = t.type({
-  doi: articleIdCodec,
+  doi: expressionDoiCodec,
 });
 
 const europePmcResponse = t.type({

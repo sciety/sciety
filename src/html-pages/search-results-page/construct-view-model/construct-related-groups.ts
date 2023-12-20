@@ -1,15 +1,13 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ArticleId } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 import * as GID from '../../../types/group-id';
 import { constructGroupLink } from '../../../shared-components/group-link';
 import * as EDOI from '../../../types/expression-doi';
 
-export const constructRelatedGroups = (dependencies: Dependencies) => (articleIds: ReadonlyArray<ArticleId>): ViewModel['relatedGroups'] => pipe(
-  articleIds,
-  RA.map((articleId) => EDOI.fromValidatedString(articleId.value)),
+export const constructRelatedGroups = (dependencies: Dependencies) => (expressionDois: ReadonlyArray<EDOI.ExpressionDoi>): ViewModel['relatedGroups'] => pipe(
+  expressionDois,
   RA.flatMap(dependencies.getEvaluationsForArticle),
   RA.map((recordedEvaluation) => recordedEvaluation.groupId),
   RA.uniq(GID.eq),
