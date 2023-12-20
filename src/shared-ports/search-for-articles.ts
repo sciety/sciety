@@ -1,12 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { ArticleId } from '../types/article-id';
 
-type SearchResult = {
-  articleId: ArticleId,
-};
-
 export type SearchResults = {
-  items: ReadonlyArray<SearchResult>,
+  items: ReadonlyArray<ArticleId>,
   total: number,
   nextCursor: O.Option<string>,
 };

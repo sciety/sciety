@@ -1,14 +1,12 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryWord } from '../../../helpers';
+import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { ArticleId } from '../../../../src/types/article-id';
 import { ExternalQueries } from '../../../../src/third-parties';
 
@@ -17,15 +15,7 @@ const searchForPaperExpressionsReturningResults = (
   total: number,
   nextCursor: O.Option<string>,
 ) => () => () => TE.right({
-  items: pipe(
-    articleIds,
-    RA.map((articleId) => ({
-      articleId,
-      server: arbitraryArticleServer(),
-      title: arbitrarySanitisedHtmlFragment(),
-      authors: O.none,
-    })),
-  ),
+  items: articleIds,
   total,
   nextCursor,
 });
