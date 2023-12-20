@@ -8,7 +8,6 @@ import * as DE from '../../../src/types/data-error';
 import { fetchRecommendedPapers } from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { RelatedArticle } from '../../../src/third-parties/external-queries';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];
@@ -47,7 +46,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [EDOI.fromValidatedString(supportedArticleId)];
+      const expected: ReadonlyArray<EDOI.ExpressionDoi> = [EDOI.fromValidatedString(supportedArticleId)];
 
       expect(result).toStrictEqual(expected);
     });
@@ -69,7 +68,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [EDOI.fromValidatedString(supportedBiorxivArticleId)];
+      const expected: ReadonlyArray<EDOI.ExpressionDoi> = [EDOI.fromValidatedString(supportedBiorxivArticleId)];
 
       expect(result).toStrictEqual(expected);
     });
@@ -97,7 +96,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [EDOI.fromValidatedString(supportedBiorxivArticleId)];
+      const expected: ReadonlyArray<EDOI.ExpressionDoi> = [EDOI.fromValidatedString(supportedBiorxivArticleId)];
 
       expect(result).toStrictEqual(expected);
     });
