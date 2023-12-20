@@ -5,16 +5,16 @@ import { handleEvent, initialState } from '../../../src/read-models/lists/handle
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
-import { selectAllListsContainingArticle } from '../../../src/read-models/lists/select-all-lists-containing-article';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { selectAllListsContainingExpression } from '../../../src/read-models/lists/select-all-lists-containing-expression';
 
-describe('select-all-lists-containing-article', () => {
+describe('select-all-lists-containing-expression', () => {
   describe('when the article is not in any list', () => {
     const readModel = initialState();
 
     it('returns an empty result', () => {
-      expect(selectAllListsContainingArticle(readModel)(arbitraryArticleId())).toStrictEqual([]);
+      expect(selectAllListsContainingExpression(readModel)(arbitraryArticleId())).toStrictEqual([]);
     });
   });
 
@@ -35,7 +35,7 @@ describe('select-all-lists-containing-article', () => {
     );
 
     it('returns one list', () => {
-      expect(selectAllListsContainingArticle(readModel)(articleId)).toStrictEqual([
+      expect(selectAllListsContainingExpression(readModel)(articleId)).toStrictEqual([
         expect.objectContaining({ id: list.id }),
       ]);
     });
@@ -66,7 +66,7 @@ describe('select-all-lists-containing-article', () => {
     );
 
     it('returns two lists', () => {
-      const result = selectAllListsContainingArticle(readModel)(articleId);
+      const result = selectAllListsContainingExpression(readModel)(articleId);
 
       expect(result).toHaveLength(2);
       expect(result).toContainEqual(expect.objectContaining({ id: userList.id }));
@@ -92,7 +92,7 @@ describe('select-all-lists-containing-article', () => {
     );
 
     it('returns an empty result', () => {
-      expect(selectAllListsContainingArticle(readModel)(articleId)).toStrictEqual([]);
+      expect(selectAllListsContainingExpression(readModel)(articleId)).toStrictEqual([]);
     });
   });
 });

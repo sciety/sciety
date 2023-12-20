@@ -39,7 +39,7 @@ const getListOwnerName = (dependencies: Dependencies) => (ownerId: ListOwnerId) 
 
 export const constructListedIn = (dependencies: Dependencies) => (expressionDoi: ExpressionDoi): ViewModel['listedIn'] => pipe(
   new ArticleId(expressionDoi),
-  dependencies.selectAllListsContainingArticle,
+  dependencies.selectAllListsContainingExpression,
   RA.map((list) => ({
     listId: list.id,
     listName: list.name,
