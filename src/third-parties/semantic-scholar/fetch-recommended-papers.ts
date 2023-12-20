@@ -10,6 +10,7 @@ import * as DE from '../../types/data-error';
 import { isSupportedArticle } from '../../types/article-server';
 import { QueryExternalService } from '../query-external-service';
 import { ExternalQueries } from '../external-queries';
+import * as EDOI from '../../types/expression-doi';
 
 const paperWithoutDoi = t.type({
   externalIds: t.type({
@@ -59,5 +60,5 @@ export const fetchRecommendedPapers = (
   ),
   TE.map(RA.filter((relatedArticle) => isValidDoi(relatedArticle))),
   TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle))),
-  TE.map(RA.map((item) => new ArticleId(item))),
+  TE.map(RA.map(EDOI.fromValidatedString)),
 );

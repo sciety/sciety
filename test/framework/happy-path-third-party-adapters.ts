@@ -8,10 +8,10 @@ import {
   arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri,
 } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
-import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitraryArticleServer } from '../types/article-server.helper';
 import { ExternalQueries } from '../../src/third-parties';
 import { ArticleId } from '../../src/types/article-id';
+import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 
 export type HappyPathThirdPartyAdapters = ExternalQueries;
 
@@ -30,7 +30,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     abstract: sanitise(toHtmlFragment(arbitraryString())),
     server: 'biorxiv' as ArticleServer,
   }),
-  fetchRelatedArticles: () => TE.right([arbitraryArticleId()]),
+  fetchRelatedArticles: () => TE.right([arbitraryExpressionDoi()]),
   fetchReview: () => TE.right({
     fullText: arbitrarySanitisedHtmlFragment(),
     url: new URL(arbitraryUri()),

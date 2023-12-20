@@ -1,13 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import * as EDOI from '../../../src/types/expression-doi';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
 import { fetchRecommendedPapers } from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { ArticleId } from '../../../src/types/article-id';
 import { RelatedArticle } from '../../../src/third-parties/external-queries';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
@@ -47,7 +47,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [new ArticleId(supportedArticleId)];
+      const expected: ReadonlyArray<RelatedArticle> = [EDOI.fromValidatedString(supportedArticleId)];
 
       expect(result).toStrictEqual(expected);
     });
@@ -69,7 +69,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [new ArticleId(supportedBiorxivArticleId)];
+      const expected: ReadonlyArray<RelatedArticle> = [EDOI.fromValidatedString(supportedBiorxivArticleId)];
 
       expect(result).toStrictEqual(expected);
     });
@@ -97,7 +97,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [new ArticleId(supportedBiorxivArticleId)];
+      const expected: ReadonlyArray<RelatedArticle> = [EDOI.fromValidatedString(supportedBiorxivArticleId)];
 
       expect(result).toStrictEqual(expected);
     });
