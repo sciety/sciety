@@ -19,28 +19,21 @@ type LimitedSet = {
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
-  T.traverseArray((item) => pipe(
-    item,
-    constructPaperActivitySummaryCard(dependencies),
-  )),
-  T.map(
-    RA.rights,
-  ),
-  T.map(
-    (paperActivitySummaryCards) => ({
-      ...state,
-      relatedGroups: pipe(
-        state.itemsToDisplay,
-        constructRelatedGroups(dependencies),
-      ),
-      paperActivitySummaryCards,
-      nextPageHref: pipe(
-        {
-          basePath: '',
-          pageNumber: state.pageNumber + 1,
-        },
-        ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
-      ),
-    }),
-  ),
+  T.traverseArray(constructPaperActivitySummaryCard(dependencies)),
+  T.map(RA.rights),
+  T.map((paperActivitySummaryCards) => ({
+    ...state,
+    relatedGroups: pipe(
+      state.itemsToDisplay,
+      constructRelatedGroups(dependencies),
+    ),
+    paperActivitySummaryCards,
+    nextPageHref: pipe(
+      {
+        basePath: '',
+        pageNumber: state.pageNumber + 1,
+      },
+      ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
+    ),
+  })),
 );
