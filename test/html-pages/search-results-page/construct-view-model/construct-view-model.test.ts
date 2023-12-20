@@ -8,8 +8,8 @@ import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { ExternalQueries } from '../../../../src/third-parties';
 import { ExpressionDoi } from '../../../../src/types/expression-doi';
-import { SearchResults } from '../../../../src/shared-ports/search-for-articles';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { SearchResults } from '../../../../src/third-parties/external-queries';
 
 const searchForPaperExpressionsReturningResults = (
   expressionDois: SearchResults['items'],

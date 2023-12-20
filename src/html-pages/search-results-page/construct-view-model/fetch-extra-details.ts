@@ -6,7 +6,7 @@ import { ViewModel } from '../view-model';
 import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
 import { Dependencies } from './dependencies';
 import { constructRelatedGroups } from './construct-related-groups';
-import { SearchResults } from '../../../shared-ports/search-for-articles';
+import { SearchResults } from '../../../third-parties/external-queries';
 
 type LimitedSet = {
   query: string,

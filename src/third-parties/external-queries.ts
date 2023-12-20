@@ -9,7 +9,6 @@ import { ArticleId } from '../types/article-id';
 import { Evaluation } from '../types/evaluation';
 import { EvaluationLocator } from '../types/evaluation-locator';
 import { SubjectArea } from '../types/subject-area';
-import { SearchResults } from '../shared-ports/search-for-articles';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { PaperExpressionLocator } from './paper-expression-locator';
@@ -48,6 +47,12 @@ type FindAllExpressionsOfPaper = (
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
 
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
+
+export type SearchResults = {
+  items: ReadonlyArray<ExpressionDoi>,
+  total: number,
+  nextCursor: O.Option<string>,
+};
 
 type SearchForPaperExpressions = (
   pageSize: number,

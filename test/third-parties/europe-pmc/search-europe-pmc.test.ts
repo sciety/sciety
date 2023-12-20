@@ -4,8 +4,8 @@ import * as O from 'fp-ts/Option';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryWord } from '../../helpers';
-import { SearchResults } from '../../../src/shared-ports/search-for-articles';
 import * as EDOI from '../../../src/types/expression-doi';
+import { SearchResults } from '../../../src/third-parties/external-queries';
 
 describe('search-europe-pmc', () => {
   it('converts Europe PMC search result into our view model', async () => {
