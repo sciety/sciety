@@ -8,19 +8,22 @@ import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { selectAllListsContainingExpression } from '../../../src/read-models/lists/select-all-lists-containing-expression';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ArticleId } from '../../../src/types/article-id';
 
 describe('select-all-lists-containing-expression', () => {
   describe('when the article is not in any list', () => {
     const readModel = initialState();
 
     it('returns an empty result', () => {
-      expect(selectAllListsContainingExpression(readModel)(arbitraryArticleId())).toStrictEqual([]);
+      expect(selectAllListsContainingExpression(readModel)(arbitraryExpressionDoi())).toStrictEqual([]);
     });
   });
 
   describe('when the article appears in one list', () => {
     const list = arbitraryList();
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
+    const articleId = new ArticleId(expressionDoi);
     const readModel = pipe(
       [
         constructEvent('ListCreated')({
@@ -35,7 +38,7 @@ describe('select-all-lists-containing-expression', () => {
     );
 
     it('returns one list', () => {
-      expect(selectAllListsContainingExpression(readModel)(articleId)).toStrictEqual([
+      expect(selectAllListsContainingExpression(readModel)(expressionDoi)).toStrictEqual([
         expect.objectContaining({ id: list.id }),
       ]);
     });
@@ -44,7 +47,8 @@ describe('select-all-lists-containing-expression', () => {
   describe('when the article appears in a user and a group list', () => {
     const userList = arbitraryList(LOID.fromUserId(arbitraryUserId()));
     const groupList = arbitraryList(LOID.fromGroupId(arbitraryGroupId()));
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
+    const articleId = new ArticleId(expressionDoi);
     const readModel = pipe(
       [
         constructEvent('ListCreated')({
@@ -66,7 +70,7 @@ describe('select-all-lists-containing-expression', () => {
     );
 
     it('returns two lists', () => {
-      const result = selectAllListsContainingExpression(readModel)(articleId);
+      const result = selectAllListsContainingExpression(readModel)(expressionDoi);
 
       expect(result).toHaveLength(2);
       expect(result).toContainEqual(expect.objectContaining({ id: userList.id }));
@@ -76,7 +80,7 @@ describe('select-all-lists-containing-expression', () => {
 
   describe('when only other articles appear in lists', () => {
     const list = arbitraryList();
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
     const anotherArticleId = arbitraryArticleId();
     const readModel = pipe(
       [
@@ -92,7 +96,7 @@ describe('select-all-lists-containing-expression', () => {
     );
 
     it('returns an empty result', () => {
-      expect(selectAllListsContainingExpression(readModel)(articleId)).toStrictEqual([]);
+      expect(selectAllListsContainingExpression(readModel)(expressionDoi)).toStrictEqual([]);
     });
   });
 });

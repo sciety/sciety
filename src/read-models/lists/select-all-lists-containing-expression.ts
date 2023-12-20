@@ -1,14 +1,14 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import { ArticleId } from '../../types/article-id';
 import { List } from '../../types/list';
+import { ExpressionDoi } from '../../types/expression-doi';
 
-type SelectAllListsContainingExpression = (articleId: ArticleId) => ReadonlyArray<List>;
+type SelectAllListsContainingExpression = (expressionDoi: ExpressionDoi) => ReadonlyArray<List>;
 
 export const selectAllListsContainingExpression = (
   readModel: ReadModel,
-): SelectAllListsContainingExpression => (articleId) => pipe(
+): SelectAllListsContainingExpression => (expressionDoi) => pipe(
   Object.values(readModel),
-  RA.filter((list) => list.articleIds.includes(articleId.value)),
+  RA.filter((list) => list.articleIds.includes(expressionDoi)),
 );
