@@ -8,7 +8,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import { ArticleVersion } from '../../types/article-version';
+import { PaperExpression } from '../../types/paper-expression';
 import { QueryExternalService } from '../query-external-service';
 import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
@@ -57,7 +57,7 @@ const fetchIndividualRecord = (queryCrossrefService: QueryCrossrefService, logge
   )),
 );
 
-const toArticleVersion = (crossrefExpression: CrossrefRecord): ArticleVersion => ({
+const toArticleVersion = (crossrefExpression: CrossrefRecord): PaperExpression => ({
   version: parseInt(crossrefExpression.message.DOI.substring(crossrefExpression.message.DOI.length - 1), 10),
   publishedAt: new Date(
     crossrefExpression.message.posted['date-parts'][0][0],
@@ -145,7 +145,7 @@ const walkRelationGraph = (
 );
 
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
-=> TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
+=> TO.TaskOption<RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (
   queryCrossrefService,

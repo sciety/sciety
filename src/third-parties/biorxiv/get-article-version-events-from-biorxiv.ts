@@ -8,7 +8,7 @@ import { SupportedArticleServer } from './article-server-with-version-informatio
 import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { ArticleId } from '../../types/article-id';
-import { ArticleVersion } from '../../types/article-version';
+import { PaperExpression } from '../../types/paper-expression';
 import { Logger } from '../../shared-ports';
 import { QueryExternalService } from '../query-external-service';
 
@@ -20,7 +20,7 @@ type Dependencies = {
 type GetArticleVersionEventsFromBiorxiv = (
   doi: ArticleId,
   server: SupportedArticleServer,
-) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>>;
+) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<PaperExpression>>>;
 
 const mapResponse = (doi: ArticleId, server: SupportedArticleServer) => flow(
   (response: ResponseWithVersions) => response.collection,

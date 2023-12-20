@@ -3,7 +3,7 @@ import * as TO from 'fp-ts/TaskOption';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as O from 'fp-ts/Option';
 import { ArticleServer } from '../types/article-server';
-import { ArticleVersion } from '../types/article-version';
+import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
 import { ArticleId } from '../types/article-id';
 import { Evaluation } from '../types/evaluation';
@@ -50,7 +50,7 @@ type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>
 type FindAllExpressionsOfPaper = (
   expressionDoi: ExpressionDoi,
   server: ArticleServer
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
+) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
 
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
 

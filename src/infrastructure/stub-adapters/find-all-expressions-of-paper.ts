@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { ArticleVersion } from '../../types/article-version';
+import { PaperExpression } from '../../types/paper-expression';
 import { ExternalQueries } from '../../third-parties';
 
 export const findAllExpressionsOfPaper: ExternalQueries['findAllExpressionsOfPaper'] = () => T.of(O.some([
@@ -16,4 +16,4 @@ export const findAllExpressionsOfPaper: ExternalQueries['findAllExpressionsOfPap
     publishedAt: new Date('1980'),
     version: 2,
   },
-] as RNEA.ReadonlyNonEmptyArray<ArticleVersion>));
+] as RNEA.ReadonlyNonEmptyArray<PaperExpression>));

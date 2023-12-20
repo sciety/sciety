@@ -1,6 +1,6 @@
 import { URL } from 'url';
 
-export type ArticleVersion = {
+export type PaperExpression = {
   publisherHtmlUrl: URL,
   publishedAt: Date,
   version: number,
