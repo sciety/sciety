@@ -47,9 +47,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [{
-        articleId: new ArticleId(supportedArticleId),
-      }];
+      const expected: ReadonlyArray<RelatedArticle> = [new ArticleId(supportedArticleId)];
 
       expect(result).toStrictEqual(expected);
     });
@@ -71,9 +69,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [expect.objectContaining({
-        articleId: new ArticleId(supportedBiorxivArticleId),
-      })];
+      const expected: ReadonlyArray<RelatedArticle> = [new ArticleId(supportedBiorxivArticleId)];
 
       expect(result).toStrictEqual(expected);
     });
@@ -101,9 +97,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<RelatedArticle> = [expect.objectContaining({
-        articleId: new ArticleId(supportedBiorxivArticleId),
-      })];
+      const expected: ReadonlyArray<RelatedArticle> = [new ArticleId(supportedBiorxivArticleId)];
 
       expect(result).toStrictEqual(expected);
     });

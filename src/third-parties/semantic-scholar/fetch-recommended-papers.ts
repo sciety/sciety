@@ -54,14 +54,10 @@ export const fetchRecommendedPapers = (
     (response) => pipe(
       response.recommendedPapers,
       RA.filter((recommendedPaper): recommendedPaper is PaperWithDoi => recommendedPaper.externalIds.DOI !== undefined),
-      RA.map((recommendedPaper) => ({
-        articleId: recommendedPaper.externalIds.DOI,
-      })),
+      RA.map((recommendedPaper) => recommendedPaper.externalIds.DOI),
     ),
   ),
-  TE.map(RA.filter((relatedArticle) => isValidDoi(relatedArticle.articleId))),
-  TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle.articleId))),
-  TE.map(RA.map((item) => ({
-    articleId: new ArticleId(item.articleId),
-  }))),
+  TE.map(RA.filter((relatedArticle) => isValidDoi(relatedArticle))),
+  TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle))),
+  TE.map(RA.map((item) => new ArticleId(item))),
 );

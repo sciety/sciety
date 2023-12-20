@@ -17,7 +17,7 @@ export const constructRelatedArticles = (
   dependencies.fetchRelatedArticles,
   TE.map(RA.takeLeft(3)),
   TE.chainW(TE.traverseArray((recommendedPaper) => pipe(
-    EDOI.fromValidatedString(recommendedPaper.articleId.value),
+    EDOI.fromValidatedString(recommendedPaper.value),
     constructPaperActivitySummaryCard(dependencies),
   ))),
   TO.fromTaskEither,

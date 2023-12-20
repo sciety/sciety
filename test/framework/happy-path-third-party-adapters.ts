@@ -30,13 +30,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     abstract: sanitise(toHtmlFragment(arbitraryString())),
     server: 'biorxiv' as ArticleServer,
   }),
-  fetchRelatedArticles: () => TE.right([
-    {
-      articleId: arbitraryArticleId(),
-      title: arbitrarySanitisedHtmlFragment(),
-      authors: O.some([arbitraryString()]),
-    },
-  ]),
+  fetchRelatedArticles: () => TE.right([arbitraryArticleId()]),
   fetchReview: () => TE.right({
     fullText: arbitrarySanitisedHtmlFragment(),
     url: new URL(arbitraryUri()),

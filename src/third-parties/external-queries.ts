@@ -35,9 +35,7 @@ type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetai
 type FetchPaperExpressionFrontMatter = (paperExpressionLocator: PaperExpressionLocator)
 => TE.TaskEither<DE.DataError, PaperExpressionFrontMatter>;
 
-export type RelatedArticle = {
-  articleId: ArticleId,
-};
+export type RelatedArticle = ArticleId;
 
 type FetchRelatedArticles = (doi: ArticleId) => TE.TaskEither<DE.DataError, ReadonlyArray<RelatedArticle>>;
 
