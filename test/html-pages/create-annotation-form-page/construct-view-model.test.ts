@@ -40,7 +40,7 @@ describe('construct-view-model', () => {
           userList.id,
           {
             ...framework.dependenciesForViews,
-            fetchPaperExpressionFrontMatter: () => TE.right({
+            fetchExpressionFrontMatter: () => TE.right({
               ...arbitraryArticleDetails(),
               title,
             }),
@@ -67,7 +67,7 @@ describe('construct-view-model', () => {
         userList.id,
         {
           ...framework.dependenciesForViews,
-          fetchPaperExpressionFrontMatter: () => TE.left(DE.notFound),
+          fetchExpressionFrontMatter: () => TE.left(DE.notFound),
         },
       )();
     });

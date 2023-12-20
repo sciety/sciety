@@ -20,7 +20,7 @@ export type ExpressionFrontMatter = {
   server: ArticleServer,
 };
 
-type FetchPaperExpressionFrontMatter = (expressionDoi: ExpressionDoi)
+type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
 
 export type ArticleDetails = ExpressionFrontMatter & {
@@ -52,7 +52,7 @@ type SearchForPaperExpressions = (
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>;
 
 export type ExternalQueries = {
-  fetchPaperExpressionFrontMatter: FetchPaperExpressionFrontMatter,
+  fetchExpressionFrontMatter: FetchExpressionFrontMatter,
   fetchRecommendedPapers: FetchRelatedPapers,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,

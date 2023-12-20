@@ -151,7 +151,7 @@ describe('construct-view-model', () => {
         constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
-          fetchPaperExpressionFrontMatter: () => TE.left(DE.unavailable),
+          fetchExpressionFrontMatter: () => TE.left(DE.unavailable),
           logger: dummyLogger,
         }),
       )();

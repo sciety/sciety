@@ -68,6 +68,6 @@ const constructRemainingViewModel = (
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.expressionDoi,
-  dependencies.fetchPaperExpressionFrontMatter,
+  dependencies.fetchExpressionFrontMatter,
   TE.chainW(constructRemainingViewModel(dependencies, params)),
 );

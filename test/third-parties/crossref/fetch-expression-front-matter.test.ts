@@ -6,9 +6,9 @@ import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { fetchPaperExpressionFrontMatterFromCrossref } from '../../../src/third-parties/crossref/fetch-paper-expression-front-matter-from-crossref';
+import { fetchExpressionFrontMatter } from '../../../src/third-parties/crossref/fetch-expression-front-matter';
 
-describe('fetch-paper-expression-front-matter-from-crossref', () => {
+describe('fetch-expression-front-matter', () => {
   const expressionDoi = arbitraryExpressionDoi();
 
   describe('the request fails', () => {
@@ -16,7 +16,7 @@ describe('fetch-paper-expression-front-matter-from-crossref', () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);
       const result = await pipe(
         expressionDoi,
-        fetchPaperExpressionFrontMatterFromCrossref(queryExternalService, dummyLogger, O.none),
+        fetchExpressionFrontMatter(queryExternalService, dummyLogger, O.none),
       )();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
@@ -28,7 +28,7 @@ describe('fetch-paper-expression-front-matter-from-crossref', () => {
       const queryExternalService = () => () => TE.right(arbitraryString());
       const result = await pipe(
         expressionDoi,
-        fetchPaperExpressionFrontMatterFromCrossref(queryExternalService, dummyLogger, O.none),
+        fetchExpressionFrontMatter(queryExternalService, dummyLogger, O.none),
       )();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
@@ -62,7 +62,7 @@ describe('fetch-paper-expression-front-matter-from-crossref', () => {
       `);
       const result = await pipe(
         expressionDoi,
-        fetchPaperExpressionFrontMatterFromCrossref(queryExternalService, dummyLogger, O.none),
+        fetchExpressionFrontMatter(queryExternalService, dummyLogger, O.none),
       )();
 
       expect(E.isRight(result)).toBe(true);

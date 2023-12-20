@@ -126,7 +126,7 @@ describe('my-feed acceptance', () => {
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluation);
         const dependencies = {
           ...defaultDependencies,
-          fetchPaperExpressionFrontMatter: () => TE.right({
+          fetchExpressionFrontMatter: () => TE.right({
             title: sanitise(toHtmlFragment('My article title')),
             authors: O.none,
             server: 'biorxiv' as const,
@@ -148,7 +148,7 @@ describe('my-feed acceptance', () => {
           await framework.commandHelpers.recordEvaluationPublication(recordEvaluation);
           const dependencies = {
             ...defaultDependencies,
-            fetchPaperExpressionFrontMatter: () => TE.left(DE.unavailable),
+            fetchExpressionFrontMatter: () => TE.left(DE.unavailable),
           };
           const html = await myFeed(dependencies)(createUserAccountCommand.userId, 20, 1)();
 

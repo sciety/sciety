@@ -18,7 +18,7 @@ export type Dependencies = Queries & ExternalQueries;
 
 const getArticleTitle = (dependencies: Dependencies, articleId: ArticleId) => pipe(
   EDOI.fromValidatedString(articleId.value),
-  dependencies.fetchPaperExpressionFrontMatter,
+  dependencies.fetchExpressionFrontMatter,
   TE.map((frontMatter) => frontMatter.title),
 );
 

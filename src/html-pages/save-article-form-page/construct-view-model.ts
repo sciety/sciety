@@ -17,7 +17,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     frontMatter: pipe(
       params.articleId.value,
       EDOI.fromValidatedString,
-      dependencies.fetchPaperExpressionFrontMatter,
+      dependencies.fetchExpressionFrontMatter,
     ),
     userLists: pipe(
       params.user,

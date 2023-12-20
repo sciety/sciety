@@ -23,7 +23,7 @@ import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publish
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
 import { ExpressionDoi } from '../types/expression-doi';
 import { ArticleId } from '../types/article-id';
-import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-paper-expression-front-matter-from-crossref';
+import { fetchExpressionFrontMatter } from './crossref/fetch-expression-front-matter';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryCrossrefService: QueryExternalService,
@@ -80,7 +80,7 @@ export const instantiate = (
   );
 
   return {
-    fetchPaperExpressionFrontMatter: fetchPaperExpressionFrontMatterFromCrossref(
+    fetchExpressionFrontMatter: fetchExpressionFrontMatter(
       queryCrossrefService,
       logger,
       crossrefApiBearerToken,

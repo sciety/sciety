@@ -78,7 +78,7 @@ describe('fetch-article-details', () => {
       const articleDetails = await fetchArticleDetails(
         {
           ...framework.dependenciesForViews,
-          fetchPaperExpressionFrontMatter: () => TE.left(DE.unavailable),
+          fetchExpressionFrontMatter: () => TE.left(DE.unavailable),
         },
       )(arbitraryExpressionDoi())();
 
@@ -93,7 +93,7 @@ describe('fetch-article-details', () => {
           fetchArticleDetails(
             {
               ...framework.dependenciesForViews,
-              fetchPaperExpressionFrontMatter: getArticle,
+              fetchExpressionFrontMatter: getArticle,
             },
           ),
           TE.map((article) => article.title),
@@ -117,7 +117,7 @@ describe('fetch-article-details', () => {
           fetchArticleDetails(
             {
               ...framework.dependenciesForViews,
-              fetchPaperExpressionFrontMatter: getArticle,
+              fetchExpressionFrontMatter: getArticle,
             },
           ),
           TE.map((article) => article.authors),

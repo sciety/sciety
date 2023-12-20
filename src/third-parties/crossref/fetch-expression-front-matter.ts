@@ -81,7 +81,7 @@ const fetchCrossrefArticle = (
   queryExternalService: QueryExternalService,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-) => (doi: ArticleId): ReturnType<ExternalQueries['fetchPaperExpressionFrontMatter']> => {
+) => (doi: ArticleId): ReturnType<ExternalQueries['fetchExpressionFrontMatter']> => {
   const url = `https://api.crossref.org/works/${doi.value}/transform`;
   const headers: Record<string, string> = {
     Accept: 'application/vnd.crossref.unixref+xml',
@@ -104,11 +104,11 @@ const fetchCrossrefArticle = (
   );
 };
 
-export const fetchPaperExpressionFrontMatterFromCrossref = (
+export const fetchExpressionFrontMatter = (
   queryExternalService: QueryExternalService,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-): ExternalQueries['fetchPaperExpressionFrontMatter'] => (expressionDoi) => pipe(
+): ExternalQueries['fetchExpressionFrontMatter'] => (expressionDoi) => pipe(
   new ArticleId(expressionDoi),
   fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
 );
