@@ -8,7 +8,7 @@ import * as EDOI from '../../../types/expression-doi';
 
 export const constructRelatedGroups = (dependencies: Dependencies) => (expressionDois: ReadonlyArray<EDOI.ExpressionDoi>): ViewModel['relatedGroups'] => pipe(
   expressionDois,
-  RA.flatMap(dependencies.getEvaluationsForArticle),
+  RA.flatMap(dependencies.getEvaluationsOfExpression),
   RA.map((recordedEvaluation) => recordedEvaluation.groupId),
   RA.uniq(GID.eq),
   RA.map(constructGroupLink(dependencies)),

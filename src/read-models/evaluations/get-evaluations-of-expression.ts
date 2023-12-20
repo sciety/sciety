@@ -4,9 +4,9 @@ import { ReadModel } from './handle-event';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-type GetEvaluationsForArticle = (expressionDoi: ExpressionDoi) => ReadonlyArray<RecordedEvaluation>;
+type GetEvaluationsOfExpression = (expressionDoi: ExpressionDoi) => ReadonlyArray<RecordedEvaluation>;
 
-export const getEvaluationsForArticle = (readmodel: ReadModel): GetEvaluationsForArticle => (expressionDoi) => pipe(
+export const getEvaluationsOfExpression = (readmodel: ReadModel): GetEvaluationsOfExpression => (expressionDoi) => pipe(
   readmodel.byArticleId.get(expressionDoi),
   O.fromNullable,
   O.match(

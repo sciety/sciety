@@ -30,7 +30,7 @@ export const constructReviewingGroups = (
   expressionDoi: ExpressionDoi,
 ): ReadonlyArray<GroupLinkWithLogoViewModel & GroupLinkAsTextViewModel> => pipe(
   expressionDoi,
-  dependencies.getEvaluationsForArticle,
+  dependencies.getEvaluationsOfExpression,
   RA.filter(isNotCurationStatement),
   RA.sort(byPublishedAt),
   RA.map((evaluation) => evaluation.groupId),

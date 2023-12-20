@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { getEvaluationsForArticle } from '../../../src/read-models/evaluations/get-evaluations-for-article';
+import { getEvaluationsOfExpression } from '../../../src/read-models/evaluations/get-evaluations-of-expression';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -21,7 +21,7 @@ const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) 
   );
   return pipe(
     EDOI.fromValidatedString(articleId.value),
-    getEvaluationsForArticle(readmodel),
+    getEvaluationsOfExpression(readmodel),
   );
 };
 
@@ -44,7 +44,7 @@ const evaluationRecordedWithType = (
   evaluationType,
 });
 
-describe('get-evaluations-for-article', () => {
+describe('get-evaluations-of-expression', () => {
   describe('when there is an arbitrary number of evaluations', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();

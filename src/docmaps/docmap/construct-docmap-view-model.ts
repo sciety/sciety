@@ -62,7 +62,7 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => 
   {
     articleId: TE.right(articleId),
     evaluations: pipe(
-      adapters.getEvaluationsForArticle(EDOI.fromValidatedString(articleId.value)),
+      adapters.getEvaluationsOfExpression(EDOI.fromValidatedString(articleId.value)),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(adapters))),
