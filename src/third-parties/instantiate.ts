@@ -10,7 +10,7 @@ import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
 import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
-import { fetchAllPaperExpressionsFromCrossref, fetchCrossrefArticle } from './crossref';
+import { fetchAllPaperExpressionsFromCrossref } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
@@ -21,9 +21,9 @@ import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-f
 import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
-import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-crossref-article';
 import { ExpressionDoi } from '../types/expression-doi';
 import { ArticleId } from '../types/article-id';
+import { fetchPaperExpressionFrontMatterFromCrossref } from './crossref/fetch-paper-expression-front-matter-from-crossref';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryCrossrefService: QueryExternalService,
@@ -80,7 +80,6 @@ export const instantiate = (
   );
 
   return {
-    fetchArticle: fetchCrossrefArticle(queryCrossrefService, logger, crossrefApiBearerToken),
     fetchPaperExpressionFrontMatter: fetchPaperExpressionFrontMatterFromCrossref(
       queryCrossrefService,
       logger,

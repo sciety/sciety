@@ -27,8 +27,6 @@ export type ArticleDetails = ExpressionFrontMatter & {
   doi: ArticleId,
 };
 
-type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
-
 type FetchRelatedPapers = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
 
@@ -54,7 +52,6 @@ type SearchForPaperExpressions = (
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>;
 
 export type ExternalQueries = {
-  fetchArticle: FetchArticle,
   fetchPaperExpressionFrontMatter: FetchPaperExpressionFrontMatter,
   fetchRecommendedPapers: FetchRelatedPapers,
   fetchReview: FetchReview,

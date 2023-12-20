@@ -16,13 +16,6 @@ import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 export type HappyPathThirdPartyAdapters = ExternalQueries;
 
 export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters => ({
-  fetchArticle: (doi) => TE.right({
-    doi,
-    authors: O.none,
-    title: sanitise(toHtmlFragment(arbitraryString())),
-    abstract: sanitise(toHtmlFragment(arbitraryString())),
-    server: 'biorxiv' as ArticleServer,
-  }),
   fetchPaperExpressionFrontMatter: (paperExpressionLocator) => TE.right({
     doi: new ArticleId(paperExpressionLocator),
     authors: O.none,

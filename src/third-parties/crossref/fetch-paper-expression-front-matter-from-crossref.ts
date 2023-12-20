@@ -77,11 +77,11 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   });
 };
 
-export const fetchCrossrefArticle = (
+const fetchCrossrefArticle = (
   queryExternalService: QueryExternalService,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-): ExternalQueries['fetchArticle'] => (doi) => {
+) => (doi: ArticleId): ReturnType<ExternalQueries['fetchPaperExpressionFrontMatter']> => {
   const url = `https://api.crossref.org/works/${doi.value}/transform`;
   const headers: Record<string, string> = {
     Accept: 'application/vnd.crossref.unixref+xml',

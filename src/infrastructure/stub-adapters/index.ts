@@ -1,5 +1,4 @@
 import { fetchStaticFile } from './fetch-static-file';
-import { localFetchArticleAdapter } from './local-fetch-article-adapter';
 import { searchForPaperExpressions } from './search-for-paper-expressions';
 import { fetchReview } from './fetch-review';
 import { fetchRecommendedPapers } from './fetch-recommended-papers';
@@ -7,7 +6,6 @@ import { localFetchPaperExpressionFrontMatter } from './local-fetch-paper-expres
 import { findAllExpressionsOfPaper } from './find-all-expressions-of-paper';
 
 export const stubAdapters = {
-  fetchArticle: localFetchArticleAdapter,
   fetchPaperExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
   fetchStaticFile,
   searchForPaperExpressions,

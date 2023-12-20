@@ -2,21 +2,21 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchCrossrefArticle } from '../../../src/third-parties/crossref/fetch-crossref-article';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { fetchPaperExpressionFrontMatterFromCrossref } from '../../../src/third-parties/crossref/fetch-paper-expression-front-matter-from-crossref';
 
-describe('fetch-crossref-article', () => {
-  const doi = arbitraryArticleId();
+describe('fetch-paper-expression-front-matter-from-crossref', () => {
+  const expressionDoi = arbitraryExpressionDoi();
 
   describe('the request fails', () => {
     it('returns an error result', async () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);
       const result = await pipe(
-        doi,
-        fetchCrossrefArticle(queryExternalService, dummyLogger, O.none),
+        expressionDoi,
+        fetchPaperExpressionFrontMatterFromCrossref(queryExternalService, dummyLogger, O.none),
       )();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
@@ -27,8 +27,8 @@ describe('fetch-crossref-article', () => {
     it('throws an error', async () => {
       const queryExternalService = () => () => TE.right(arbitraryString());
       const result = await pipe(
-        doi,
-        fetchCrossrefArticle(queryExternalService, dummyLogger, O.none),
+        expressionDoi,
+        fetchPaperExpressionFrontMatterFromCrossref(queryExternalService, dummyLogger, O.none),
       )();
 
       expect(result).toStrictEqual(E.left(DE.unavailable));
@@ -61,8 +61,8 @@ describe('fetch-crossref-article', () => {
         </doi_records>
       `);
       const result = await pipe(
-        doi,
-        fetchCrossrefArticle(queryExternalService, dummyLogger, O.none),
+        expressionDoi,
+        fetchPaperExpressionFrontMatterFromCrossref(queryExternalService, dummyLogger, O.none),
       )();
 
       expect(E.isRight(result)).toBe(true);
