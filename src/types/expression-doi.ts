@@ -11,6 +11,8 @@ export const isDoi = (input: unknown): input is ExpressionDoi => typeof input ==
 
 const doiRegex = /^10.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
 
+export const isValidDoi = (value: string): boolean => doiRegex.test(value);
+
 export const expressionDoiCodec = new t.Type<ExpressionDoi, string, unknown>(
   'expressionDoi',
   isDoi,
