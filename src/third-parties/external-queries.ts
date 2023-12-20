@@ -11,7 +11,6 @@ import { EvaluationLocator } from '../types/evaluation-locator';
 import { SubjectArea } from '../types/subject-area';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
-import { PaperExpressionLocator } from './paper-expression-locator';
 import { ExpressionDoi } from '../types/expression-doi';
 
 export type ArticleDetails = {
@@ -31,7 +30,7 @@ export type PaperExpressionFrontMatter = {
 
 type FetchArticle = (doi: ArticleId) => TE.TaskEither<DE.DataError, ArticleDetails>;
 
-type FetchPaperExpressionFrontMatter = (paperExpressionLocator: PaperExpressionLocator)
+type FetchPaperExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, PaperExpressionFrontMatter>;
 
 type FetchRelatedPapers = (expressionDoi: ExpressionDoi)

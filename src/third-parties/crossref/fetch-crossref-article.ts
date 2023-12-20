@@ -108,7 +108,7 @@ export const fetchPaperExpressionFrontMatterFromCrossref = (
   queryExternalService: QueryExternalService,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-): ExternalQueries['fetchPaperExpressionFrontMatter'] => (paperExpressionLocator) => pipe(
-  new ArticleId(paperExpressionLocator),
+): ExternalQueries['fetchPaperExpressionFrontMatter'] => (expressionDoi) => pipe(
+  new ArticleId(expressionDoi),
   fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
 );

@@ -17,7 +17,6 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { PaperExpressionLocator } from '../../../third-parties';
 import { PaperExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 
@@ -31,12 +30,6 @@ type Params = t.TypeOf<typeof paramsCodec>;
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
-
-const getFrontMatter = (dependencies: Dependencies) => (expressionDoi: ExpressionDoi): ReturnType<Dependencies['fetchPaperExpressionFrontMatter']> => pipe(
-  expressionDoi,
-  PaperExpressionLocator.fromDoi,
-  dependencies.fetchPaperExpressionFrontMatter,
-);
 
 const constructRemainingViewModel = (
   dependencies: Dependencies,
@@ -75,6 +68,6 @@ const constructRemainingViewModel = (
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.expressionDoi,
-  getFrontMatter(dependencies),
+  dependencies.fetchPaperExpressionFrontMatter,
   TE.chainW(constructRemainingViewModel(dependencies, params)),
 );
