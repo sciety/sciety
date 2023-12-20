@@ -17,13 +17,13 @@ export const constructViewModel = (
     params.evaluatedOnly,
   ],
   tupled(dependencies.searchForPaperExpressions(pageSize)),
-  TE.map((articles) => ({
+  TE.map((searchResults) => ({
     evaluatedOnly: params.evaluatedOnly,
-    itemsToDisplay: articles.items,
+    itemsToDisplay: searchResults.items,
     query: params.query,
-    nextCursor: articles.nextCursor,
+    nextCursor: searchResults.nextCursor,
     pageNumber: O.getOrElse(() => 1)(params.page),
-    numberOfPages: Math.ceil(articles.total / pageSize),
+    numberOfPages: Math.ceil(searchResults.total / pageSize),
   })),
   TE.chainTaskK(fetchExtraDetails(dependencies)),
 );
