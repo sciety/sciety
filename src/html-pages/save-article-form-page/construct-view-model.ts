@@ -8,12 +8,17 @@ import { Params } from './params';
 import { ViewModel } from './view-model';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
+import * as EDOI from '../../types/expression-doi';
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   {
-    article: dependencies.fetchArticle(params.articleId),
+    frontMatter: pipe(
+      params.articleId.value,
+      EDOI.fromValidatedString,
+      dependencies.fetchPaperExpressionFrontMatter,
+    ),
     userLists: pipe(
       params.user,
       O.map((user) => user.id),
@@ -28,7 +33,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   sequenceS(TE.ApplyPar),
   TE.map((partial) => ({
     article: {
-      name: partial.article.title,
+      name: partial.frontMatter.title,
       id: params.articleId,
     },
     userLists: partial.userLists,

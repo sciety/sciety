@@ -5,7 +5,6 @@ import { pipe } from 'fp-ts/function';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
-import { ArticleId } from '../../types/article-id';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { Dependencies } from './dependencies';
 import { getLatestExpressionDate } from './get-latest-expression-date';
@@ -23,8 +22,8 @@ type FetchArticleDetails = (
 export const fetchArticleDetails: FetchArticleDetails = (
   dependencies,
 ) => (expressionDoi) => pipe(
-  new ArticleId(expressionDoi),
-  dependencies.fetchArticle,
+  expressionDoi,
+  dependencies.fetchPaperExpressionFrontMatter,
   TE.chainW((expressionDetails) => pipe(
     getLatestExpressionDate(dependencies)(expressionDoi, expressionDetails.server),
     T.map((latestVersionDate) => ({

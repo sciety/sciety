@@ -16,7 +16,7 @@ import { arbitraryCreateListCommand } from '../../write-side/commands/create-lis
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { ArticleId } from '../../../src/types/article-id';
 
-describe('construct-article-card', () => {
+describe('construct-view-model', () => {
   let framework: TestFramework;
   let viewModel: E.Either<ErrorViewModel, PaperActivitySummaryCardViewModel>;
 
@@ -144,14 +144,14 @@ describe('construct-article-card', () => {
     });
   });
 
-  describe('when fetching the article fails', () => {
+  describe('when fetching the front matter fails', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         EDOI.fromValidatedString(arbitraryArticleId().value),
         constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
-          fetchArticle: () => TE.left(DE.unavailable),
+          fetchPaperExpressionFrontMatter: () => TE.left(DE.unavailable),
           logger: dummyLogger,
         }),
       )();

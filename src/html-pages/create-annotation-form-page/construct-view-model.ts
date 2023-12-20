@@ -12,13 +12,14 @@ import * as DE from '../../types/data-error';
 import { ArticleId } from '../../types/article-id';
 import { ListId } from '../../types/list-id';
 import { toHtmlFragment } from '../../types/html-fragment';
+import * as EDOI from '../../types/expression-doi';
 
 export type Dependencies = Queries & ExternalQueries;
 
 const getArticleTitle = (dependencies: Dependencies, articleId: ArticleId) => pipe(
-  articleId,
-  dependencies.fetchArticle,
-  TE.map((articleDetails) => articleDetails.title),
+  EDOI.fromValidatedString(articleId.value),
+  dependencies.fetchPaperExpressionFrontMatter,
+  TE.map((frontMatter) => frontMatter.title),
 );
 
 const getListName = (dependencies: Dependencies, listId: ListId) => pipe(
