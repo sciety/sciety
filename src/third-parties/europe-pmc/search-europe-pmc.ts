@@ -123,7 +123,7 @@ const getFromUrl = (queryExternalService: QueryExternalService, logger: Logger) 
 export const searchEuropePmc = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): ExternalQueries['searchForArticles'] => (pageSize) => (
+): ExternalQueries['searchForPaperExpressions'] => (pageSize) => (
   query,
   cursor,
   evaluatedOnly,

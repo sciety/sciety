@@ -6,7 +6,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { ExternalQueries } from '../../third-parties';
 
-export const searchEuropePmc: ExternalQueries['searchForArticles'] = () => () => TE.right({
+export const searchForPaperExpressions: ExternalQueries['searchForPaperExpressions'] = () => () => TE.right({
   items: [
     {
       articleId: new ArticleId('10.1101/2022.12.15.520598'),

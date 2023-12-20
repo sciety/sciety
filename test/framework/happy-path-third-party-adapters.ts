@@ -44,7 +44,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     },
   ]),
   getArticleSubjectArea: () => TE.right({ value: arbitraryString(), server: arbitraryArticleServer() }),
-  searchForArticles: () => () => TE.right({
+  searchForPaperExpressions: () => () => TE.right({
     items: [],
     total: 0,
     nextCursor: O.none,

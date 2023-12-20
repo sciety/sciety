@@ -12,7 +12,7 @@ import { arbitraryArticleServer } from '../../../types/article-server.helper';
 import { ArticleId } from '../../../../src/types/article-id';
 import { ExternalQueries } from '../../../../src/third-parties';
 
-const searchForArticlesReturningResults = (
+const searchForPaperExpressionsReturningResults = (
   articleIds: ReadonlyArray<ArticleId>,
   total: number,
   nextCursor: O.Option<string>,
@@ -30,7 +30,7 @@ const searchForArticlesReturningResults = (
   nextCursor,
 });
 
-const searchForArticlesReturningNoResults = () => () => TE.right({
+const searchForPaperExpressionsReturningNoResults = () => () => TE.right({
   items: [],
   total: 0,
   nextCursor: O.none,
@@ -52,14 +52,14 @@ describe('construct-view-model', () => {
   const page = O.none;
   const evaluatedOnly = false;
 
-  const getViewModel = async (searchForArticles: ExternalQueries['searchForArticles'], itemsPerPage: number = 1) => pipe(
+  const getViewModel = async (searchForPaperExpressions: ExternalQueries['searchForPaperExpressions'], itemsPerPage: number = 1) => pipe(
     {
       query, cursor, page, evaluatedOnly,
     },
     constructViewModel(
       {
         ...defaultDependencies,
-        searchForArticles,
+        searchForPaperExpressions,
       },
       itemsPerPage,
     ),
@@ -69,7 +69,7 @@ describe('construct-view-model', () => {
   const getViewModelForASinglePage = async (
     articleIds: ReadonlyArray<ArticleId>,
   ) => getViewModel(
-    searchForArticlesReturningResults(articleIds, 1, O.none),
+    searchForPaperExpressionsReturningResults(articleIds, 1, O.none),
   );
 
   const getViewModelWithAdditionalPages = async (
@@ -77,12 +77,12 @@ describe('construct-view-model', () => {
     cursorValue: string,
     itemsPerPage: number,
   ) => getViewModel(
-    searchForArticlesReturningResults([articleId], 2, O.some(cursorValue)),
+    searchForPaperExpressionsReturningResults([articleId], 2, O.some(cursorValue)),
     itemsPerPage,
   );
 
   const getViewModelForAPageWithNoResults = async () => getViewModel(
-    searchForArticlesReturningNoResults,
+    searchForPaperExpressionsReturningNoResults,
   );
 
   describe('and there is only one page of results, with no evaluated articles', () => {

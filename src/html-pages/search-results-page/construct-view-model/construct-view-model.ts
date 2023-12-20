@@ -16,7 +16,7 @@ export const constructViewModel = (
     params.cursor,
     params.evaluatedOnly,
   ],
-  tupled(dependencies.searchForArticles(pageSize)),
+  tupled(dependencies.searchForPaperExpressions(pageSize)),
   TE.map((articles) => ({
     evaluatedOnly: params.evaluatedOnly,
     itemsToDisplay: articles.items,

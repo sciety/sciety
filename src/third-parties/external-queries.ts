@@ -49,7 +49,7 @@ type FindAllExpressionsOfPaper = (
 
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
 
-type SearchForArticles = (
+type SearchForPaperExpressions = (
   pageSize: number,
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>;
 
@@ -61,5 +61,5 @@ export type ExternalQueries = {
   fetchStaticFile: FetchStaticFile,
   findAllExpressionsOfPaper: FindAllExpressionsOfPaper,
   getArticleSubjectArea: GetArticleSubjectArea,
-  searchForArticles: SearchForArticles,
+  searchForPaperExpressions: SearchForPaperExpressions,
 };

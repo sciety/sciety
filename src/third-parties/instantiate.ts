@@ -103,7 +103,7 @@ export const instantiate = (
       rapidreviews: fetchRapidReview(queryExternalService, logger),
     }),
     fetchStaticFile: fetchStaticFile(logger),
-    searchForArticles: searchEuropePmc(queryExternalService, logger),
+    searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
     findAllExpressionsOfPaper: findVersionsForArticleDoiFromSupportedServers(
       queryCrossrefService,
       queryExternalService,
