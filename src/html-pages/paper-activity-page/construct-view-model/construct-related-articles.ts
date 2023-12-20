@@ -5,7 +5,6 @@ import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as EDOI from '../../../types/expression-doi';
 import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
-import { ArticleId } from '../../../types/article-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 
@@ -13,7 +12,7 @@ export const constructRelatedArticles = (
   expressionDoi: EDOI.ExpressionDoi,
   dependencies: Dependencies,
 ): T.Task<ViewModel['relatedArticles']> => pipe(
-  new ArticleId(expressionDoi),
+  expressionDoi,
   dependencies.fetchRelatedArticles,
   TE.map(RA.takeLeft(3)),
   TE.chainW(TE.traverseArray(constructPaperActivitySummaryCard(dependencies))),

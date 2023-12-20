@@ -2,12 +2,12 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../../src/types/expression-doi';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
 import { fetchRecommendedPapers } from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];
@@ -42,7 +42,7 @@ describe('fetch-recommended-papers', () => {
         ],
       });
       const result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
@@ -64,7 +64,7 @@ describe('fetch-recommended-papers', () => {
         ],
       });
       const result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
@@ -92,7 +92,7 @@ describe('fetch-recommended-papers', () => {
         ],
       });
       const result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
@@ -106,7 +106,7 @@ describe('fetch-recommended-papers', () => {
     it('returns a left', async () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);
       const result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
       )();
 
@@ -118,7 +118,7 @@ describe('fetch-recommended-papers', () => {
     it('returns a left', async () => {
       const queryExternalService = () => () => TE.right(arbitraryString());
       const result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
       )();
 
@@ -147,7 +147,7 @@ describe('fetch-recommended-papers', () => {
 
     it('ignores such articles', async () => {
       const result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();

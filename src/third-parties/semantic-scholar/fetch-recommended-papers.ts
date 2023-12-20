@@ -4,7 +4,6 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { ArticleId } from '../../types/article-id';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { isSupportedArticle } from '../../types/article-server';
@@ -33,8 +32,8 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 export const fetchRecommendedPapers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): ExternalQueries['fetchRelatedArticles'] => (doi: ArticleId) => pipe(
-  `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`,
+): ExternalQueries['fetchRelatedArticles'] => (expressionDoi) => pipe(
+  `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds,authors,title`,
   queryExternalService(),
   TE.chainEitherKW(flow(
     semanticScholarRecommendedPapersResponseCodec.decode,
@@ -43,7 +42,7 @@ export const fetchRecommendedPapers = (
       (errors) => {
         logger('error', 'Failed to decode Semantic scholar response', {
           errors,
-          doi: doi.value,
+          expressionDoi,
         });
         return DE.unavailable;
       },
