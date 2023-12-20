@@ -1,10 +1,10 @@
 import { handleEvent, initialState } from './handle-event';
 import { lookupList } from './lookup-list';
-import { selectListContainingArticle } from './select-list-containing-article';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
 import { getNonEmptyUserLists } from './get-non-empty-user-lists';
 import { listsStatus } from './lists-status';
 import { selectAllListsContainingExpression } from './select-all-lists-containing-expression';
+import { selectListContainingExpression } from './select-list-containing-expression';
 
 export const lists = {
   queries: {
@@ -13,7 +13,7 @@ export const lists = {
     lookupList,
     selectAllListsContainingExpression,
     selectAllListsOwnedBy,
-    selectListContainingArticle,
+    selectListContainingExpression,
   },
   initialState,
   handleEvent,

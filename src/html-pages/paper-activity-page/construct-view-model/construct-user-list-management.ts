@@ -12,7 +12,7 @@ export const constructUserListManagement = (user: O.Option<{ id: UserId }>, depe
   O.map(
     (u) => pipe(
       new ArticleId(expressionDoi),
-      dependencies.selectListContainingArticle(u.id),
+      dependencies.selectListContainingExpression(u.id),
       O.foldW(
         () => E.left({
           saveArticleHref: `/save-article?articleId=${expressionDoi}`,

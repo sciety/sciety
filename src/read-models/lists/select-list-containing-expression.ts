@@ -8,11 +8,11 @@ import { UserId } from '../../types/user-id';
 import { ArticleId } from '../../types/article-id';
 import { List } from '../../types/list';
 
-type SelectListContainingArticle = (userId: UserId) => (articleId: ArticleId) => O.Option<List>;
+type SelectListContainingExpression = (userId: UserId) => (articleId: ArticleId) => O.Option<List>;
 
-export const selectListContainingArticle = (
+export const selectListContainingExpression = (
   readModel: ReadModel,
-): SelectListContainingArticle => (
+): SelectListContainingExpression => (
   userId,
 ) => (
   articleId,
