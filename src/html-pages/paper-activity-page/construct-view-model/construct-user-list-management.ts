@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ArticleId } from '../../../types/article-id';
 import { UserId } from '../../../types/user-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
@@ -11,7 +10,7 @@ export const constructUserListManagement = (user: O.Option<{ id: UserId }>, depe
   user,
   O.map(
     (u) => pipe(
-      new ArticleId(expressionDoi),
+      expressionDoi,
       dependencies.selectListContainingExpression(u.id),
       O.foldW(
         () => E.left({
