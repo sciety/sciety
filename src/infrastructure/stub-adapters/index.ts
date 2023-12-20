@@ -2,7 +2,7 @@ import { fetchStaticFile } from './fetch-static-file';
 import { localFetchArticleAdapter } from './local-fetch-article-adapter';
 import { searchEuropePmc } from './search-europe-pmc';
 import { fetchReview } from './fetch-review';
-import { fetchRelatedArticles } from './fetch-related-articles';
+import { fetchRecommendedPapers } from './fetch-recommended-papers';
 import { localFetchPaperExpressionFrontMatter } from './local-fetch-paper-expression-front-matter';
 import { findAllExpressionsOfPaper } from './find-all-expressions-of-paper';
 
@@ -13,5 +13,5 @@ export const stubAdapters = {
   searchForArticles: searchEuropePmc,
   findAllExpressionsOfPaper,
   fetchReview,
-  fetchRelatedArticles,
+  fetchRecommendedPapers,
 };

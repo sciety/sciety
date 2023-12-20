@@ -13,7 +13,7 @@ export const constructRelatedArticles = (
   dependencies: Dependencies,
 ): T.Task<ViewModel['relatedArticles']> => pipe(
   expressionDoi,
-  dependencies.fetchRelatedArticles,
+  dependencies.fetchRecommendedPapers,
   TE.map(RA.takeLeft(3)),
   TE.chainW(TE.traverseArray(constructPaperActivitySummaryCard(dependencies))),
   TO.fromTaskEither,

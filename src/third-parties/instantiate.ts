@@ -86,7 +86,7 @@ export const instantiate = (
       logger,
       crossrefApiBearerToken,
     ),
-    fetchRelatedArticles: fetchRecommendedPapers(queryExternalService, logger),
+    fetchRecommendedPapers: fetchRecommendedPapers(queryExternalService, logger),
     fetchReview: fetchReview({
       doi: fetchDoiEvaluationByPublisher(
         {

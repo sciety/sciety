@@ -7,4 +7,4 @@ const hardcodedResponse = [
   EDOI.fromValidatedString('10.1101/2023.03.21.533689'),
 ];
 
-export const fetchRelatedArticles: ExternalQueries['fetchRelatedArticles'] = () => TE.right(hardcodedResponse);
+export const fetchRecommendedPapers: ExternalQueries['fetchRecommendedPapers'] = () => TE.right(hardcodedResponse);

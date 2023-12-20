@@ -32,7 +32,7 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 export const fetchRecommendedPapers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): ExternalQueries['fetchRelatedArticles'] => (expressionDoi) => pipe(
+): ExternalQueries['fetchRecommendedPapers'] => (expressionDoi) => pipe(
   `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds,authors,title`,
   queryExternalService(),
   TE.chainEitherKW(flow(
