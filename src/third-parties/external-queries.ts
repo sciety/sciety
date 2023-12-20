@@ -47,7 +47,7 @@ type FetchReview = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evalua
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
-type FindVersionsForArticleDoi = (
+type FindAllExpressionsOfPaper = (
   expressionDoi: ExpressionDoi,
   server: ArticleServer
 ) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<ArticleVersion>>;
@@ -64,7 +64,7 @@ export type ExternalQueries = {
   fetchRelatedArticles: FetchRelatedArticles,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
-  findVersionsForArticleDoi: FindVersionsForArticleDoi,
+  findAllExpressionsOfPaper: FindAllExpressionsOfPaper,
   getArticleSubjectArea: GetArticleSubjectArea,
   searchForArticles: SearchForArticles,
 };

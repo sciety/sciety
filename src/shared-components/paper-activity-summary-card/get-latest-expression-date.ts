@@ -16,7 +16,7 @@ export const getLatestExpressionDate: GetLatestExpressionDate = (
 ) => (
   expressionDoi, server,
 ) => pipe(
-  dependencies.findVersionsForArticleDoi(expressionDoi, server),
+  dependencies.findAllExpressionsOfPaper(expressionDoi, server),
   T.map(O.map(flow(
     RNEA.last,
     (version) => version.publishedAt,

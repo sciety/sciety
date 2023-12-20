@@ -42,7 +42,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     url: new URL(arbitraryUri()),
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),
-  findVersionsForArticleDoi: () => TO.some([
+  findAllExpressionsOfPaper: () => TO.some([
     {
       publisherHtmlUrl: new URL(arbitraryUri()),
       publishedAt: arbitraryDate(),

@@ -104,7 +104,7 @@ export const instantiate = (
     }),
     fetchStaticFile: fetchStaticFile(logger),
     searchForArticles: searchEuropePmc(queryExternalService, logger),
-    findVersionsForArticleDoi: findVersionsForArticleDoiFromSupportedServers(
+    findAllExpressionsOfPaper: findVersionsForArticleDoiFromSupportedServers(
       queryCrossrefService,
       queryExternalService,
       crossrefApiBearerToken,

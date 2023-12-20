@@ -169,7 +169,7 @@ describe('construct-article-card', () => {
         constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
-          findVersionsForArticleDoi: () => TO.none,
+          findAllExpressionsOfPaper: () => TO.none,
           logger: dummyLogger,
         }),
       )();

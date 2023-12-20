@@ -5,7 +5,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { ArticleVersion } from '../../types/article-version';
 import { ExternalQueries } from '../../third-parties';
 
-export const findVersionsForArticleDoi: ExternalQueries['findVersionsForArticleDoi'] = () => T.of(O.some([
+export const findAllExpressionsOfPaper: ExternalQueries['findAllExpressionsOfPaper'] = () => T.of(O.some([
   {
     publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.08.20.504530v1'),
     publishedAt: new Date('1970'),

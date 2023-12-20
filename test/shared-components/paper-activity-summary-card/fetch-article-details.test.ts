@@ -37,7 +37,7 @@ describe('fetch-article-details', () => {
         expressionDoi,
         fetchArticleDetails({
           ...framework.dependenciesForViews,
-          findVersionsForArticleDoi: () => TO.some([{
+          findAllExpressionsOfPaper: () => TO.some([{
             publisherHtmlUrl: new URL(arbitraryUri()),
             publishedAt: latestDate,
             version: arbitraryNumber(1, 2),
@@ -59,7 +59,7 @@ describe('fetch-article-details', () => {
         arbitraryExpressionDoi(),
         fetchArticleDetails({
           ...framework.dependenciesForViews,
-          findVersionsForArticleDoi: () => TO.none,
+          findAllExpressionsOfPaper: () => TO.none,
         }),
       )();
 

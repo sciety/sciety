@@ -43,7 +43,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findVersionsForArticleDoi(expressionDoi, server),
+      dependencies.findAllExpressionsOfPaper(expressionDoi, server),
       TO.matchW(
         constant([]),
         RNEA.map((version) => ({
