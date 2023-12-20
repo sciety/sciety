@@ -1,1 +1,1 @@
-export { fetchAllPaperExpressionsFromCrossref } from './fetch-all-paper-expressions-from-crossref';
+export { fetchAllPaperExpressions } from './fetch-all-paper-expressions';

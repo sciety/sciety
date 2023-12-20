@@ -1,4 +1,4 @@
-import { CrossrefRecord, enqueueAllRelatedDoisNotYetCollected } from '../../../src/third-parties/crossref/fetch-all-paper-expressions-from-crossref';
+import { CrossrefRecord, enqueueAllRelatedDoisNotYetCollected } from '../../../src/third-parties/crossref/fetch-all-paper-expressions';
 import { arbitraryString } from '../../helpers';
 
 describe('enqueue-all-related-dois-not-yet-collected', () => {

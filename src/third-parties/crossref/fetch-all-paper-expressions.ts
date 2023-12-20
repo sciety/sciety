@@ -147,7 +147,7 @@ const walkRelationGraph = (
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
 
-export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressions = (
+export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   queryCrossrefService,
   logger,
   doi,

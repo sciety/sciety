@@ -10,7 +10,7 @@ import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
 import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
-import { fetchAllPaperExpressionsFromCrossref } from './crossref';
+import { fetchAllPaperExpressions } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
@@ -39,7 +39,7 @@ const findVersionsForArticleDoiFromSupportedServers = (
     if (O.isSome(crossrefApiBearerToken)) {
       headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
     }
-    return fetchAllPaperExpressionsFromCrossref(
+    return fetchAllPaperExpressions(
       queryCrossrefService(undefined, headers),
       logger,
       expressionDoi,
