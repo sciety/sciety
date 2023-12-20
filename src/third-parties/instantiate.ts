@@ -10,7 +10,7 @@ import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
 import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
-import { fetchAllPaperExpressions } from './crossref';
+import { fetchAllPaperExpressions, fetchExpressionFrontMatter } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
@@ -23,7 +23,6 @@ import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publish
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
 import { ExpressionDoi } from '../types/expression-doi';
 import { ArticleId } from '../types/article-id';
-import { fetchExpressionFrontMatter } from './crossref/fetch-expression-front-matter';
 
 const findVersionsForArticleDoiFromSupportedServers = (
   queryCrossrefService: QueryExternalService,
