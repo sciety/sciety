@@ -2,7 +2,6 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { RelatedArticles } from '../../../src/shared-ports/fetch-related-articles';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
@@ -10,6 +9,7 @@ import { fetchRecommendedPapers } from '../../../src/third-parties/semantic-scho
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { ArticleId } from '../../../src/types/article-id';
+import { RelatedArticle } from '../../../src/third-parties/external-queries';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];
@@ -48,7 +48,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: RelatedArticles = [{
+      const expected: ReadonlyArray<RelatedArticle> = [{
         articleId: new ArticleId(supportedArticleId),
         title: articleTitle,
         authors: O.some(articleAuthors),
@@ -74,7 +74,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: RelatedArticles = [expect.objectContaining({
+      const expected: ReadonlyArray<RelatedArticle> = [expect.objectContaining({
         articleId: new ArticleId(supportedBiorxivArticleId),
       })];
 
@@ -104,7 +104,7 @@ describe('fetch-recommended-papers', () => {
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
-      const expected: RelatedArticles = [expect.objectContaining({
+      const expected: ReadonlyArray<RelatedArticle> = [expect.objectContaining({
         articleId: new ArticleId(supportedBiorxivArticleId),
       })];
 

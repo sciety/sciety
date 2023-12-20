@@ -6,12 +6,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { ArticleId, doiRegex } from '../../types/article-id';
-import { Logger, FetchRelatedArticles } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { isSupportedArticle } from '../../types/article-server';
 import { QueryExternalService } from '../query-external-service';
+import { ExternalQueries } from '../external-queries';
 
 const paperWithoutDoi = t.type({
   externalIds: t.type({
@@ -40,7 +41,7 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 export const fetchRecommendedPapers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): FetchRelatedArticles => (doi: ArticleId) => pipe(
+): ExternalQueries['fetchRelatedArticles'] => (doi: ArticleId) => pipe(
   `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${doi.value}?fields=externalIds,authors,title`,
   queryExternalService(),
   TE.chainEitherKW(flow(
