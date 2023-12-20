@@ -4,12 +4,9 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import * as O from 'fp-ts/Option';
 import { ArticleId, doiRegex } from '../../types/article-id';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../types/html-fragment';
 import { isSupportedArticle } from '../../types/article-server';
 import { QueryExternalService } from '../query-external-service';
 import { ExternalQueries } from '../external-queries';
@@ -24,10 +21,6 @@ const paperWithDoi = t.type({
   externalIds: t.type({
     DOI: t.string,
   }),
-  title: t.string,
-  authors: t.array(t.type({
-    name: t.string,
-  })),
 });
 
 const semanticScholarRecommendedPapersResponseCodec = t.type({
@@ -63,19 +56,12 @@ export const fetchRecommendedPapers = (
       RA.filter((recommendedPaper): recommendedPaper is PaperWithDoi => recommendedPaper.externalIds.DOI !== undefined),
       RA.map((recommendedPaper) => ({
         articleId: recommendedPaper.externalIds.DOI,
-        title: sanitise(toHtmlFragment(recommendedPaper.title)),
-        authors: pipe(
-          recommendedPaper.authors,
-          RA.map((author) => author.name),
-          O.some,
-        ),
       })),
     ),
   ),
   TE.map(RA.filter((relatedArticle) => isValidDoi(relatedArticle.articleId))),
   TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle.articleId))),
   TE.map(RA.map((item) => ({
-    ...item,
     articleId: new ArticleId(item.articleId),
   }))),
 );

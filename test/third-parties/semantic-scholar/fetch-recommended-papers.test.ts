@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
@@ -50,8 +49,6 @@ describe('fetch-recommended-papers', () => {
       )();
       const expected: ReadonlyArray<RelatedArticle> = [{
         articleId: new ArticleId(supportedArticleId),
-        title: articleTitle,
-        authors: O.some(articleAuthors),
       }];
 
       expect(result).toStrictEqual(expected);

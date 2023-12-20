@@ -37,8 +37,6 @@ type FetchPaperExpressionFrontMatter = (paperExpressionLocator: PaperExpressionL
 
 export type RelatedArticle = {
   articleId: ArticleId,
-  title: SanitisedHtmlFragment,
-  authors: ArticleAuthors,
 };
 
 type FetchRelatedArticles = (doi: ArticleId) => TE.TaskEither<DE.DataError, ReadonlyArray<RelatedArticle>>;
