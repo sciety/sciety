@@ -12,14 +12,14 @@ import { PageOfItems } from '../../../shared-components/pagination';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
 import { ContentWithPaginationViewModel } from '../view-model';
-import { ArticleId } from '../../../types/article-id';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
 export const toPageOfCards = (
   dependencies: Dependencies,
   editCapability: boolean,
   listId: ListId,
 ) => (
-  pageOfArticles: PageOfItems<ArticleId>,
+  pageOfArticles: PageOfItems<ExpressionDoi>,
 ): TE.TaskEither<'no-articles-can-be-fetched', ContentWithPaginationViewModel['articles']> => pipe(
   pageOfArticles.items,
   T.traverseArray(constructArticleCardWithControlsAndAnnotation(dependencies, editCapability, listId)),

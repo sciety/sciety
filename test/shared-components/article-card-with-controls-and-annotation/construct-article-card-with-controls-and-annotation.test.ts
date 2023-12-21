@@ -4,9 +4,10 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { ArticleCardWithControlsAndAnnotationViewModel, constructArticleCardWithControlsAndAnnotation } from '../../../src/shared-components/article-card-with-controls-and-annotation';
 import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ArticleId } from '../../../src/types/article-id';
 
 const mustBeOnTheRight = E.getOrElseW((left: unknown) => {
   throw new Error(`Must be on the right. Left was: ${JSON.stringify(left, null, 2)}`);
@@ -24,7 +25,8 @@ describe('construct-article-card-with-controls-and-annotation', () => {
   });
 
   describe('given an article in a list', () => {
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
+    const articleId = new ArticleId(expressionDoi);
     const createListCommand = arbitraryCreateListCommand();
     const listId = createListCommand.listId;
 
@@ -39,7 +41,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
 
         beforeEach(async () => {
           formHref = await pipe(
-            articleId,
+            expressionDoi,
             constructArticleCardWithControlsAndAnnotation(framework.dependenciesForViews, true, listId),
             T.map(mustBeOnTheRight),
             T.map((viewModel) => viewModel.controls),
@@ -63,7 +65,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
             listId,
           });
           formHref = await pipe(
-            articleId,
+            expressionDoi,
             constructArticleCardWithControlsAndAnnotation(framework.dependenciesForViews, true, listId),
             T.map(mustBeOnTheRight),
             T.map((viewModel) => viewModel.controls),
@@ -83,7 +85,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
 
       beforeEach(async () => {
         controls = await pipe(
-          articleId,
+          expressionDoi,
           constructArticleCardWithControlsAndAnnotation(framework.dependenciesForViews, false, listId),
           T.map(mustBeOnTheRight),
           T.map((viewModel) => viewModel.controls),

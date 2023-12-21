@@ -5,7 +5,6 @@ import * as EDOI from '../../types/expression-doi';
 import { constructViewModel } from '../paper-activity-summary-card/construct-view-model';
 import { ErrorViewModel } from '../paper-activity-summary-card/render-error-as-html';
 import { ListId } from '../../types/list-id';
-import { ArticleId } from '../../types/article-id';
 import { ViewModel } from '../paper-activity-summary-card/view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
@@ -40,14 +39,14 @@ export const constructArticleCardWithControlsAndAnnotation = (
   editCapability: boolean,
   listId: ListId,
 ) => (
-  articleId: ArticleId,
+  expressionDoi: EDOI.ExpressionDoi,
 ): TE.TaskEither<ErrorViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
-  EDOI.fromValidatedString(articleId.value),
+  expressionDoi,
   constructViewModel(dependencies),
   TE.map(toArticleCardWithControlsAndAnnotationViewModel(
     dependencies,
     editCapability,
     listId,
-    EDOI.fromValidatedString(articleId.value),
+    expressionDoi,
   )),
 );

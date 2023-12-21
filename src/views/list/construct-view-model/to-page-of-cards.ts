@@ -8,6 +8,7 @@ import { ExpressionActivity } from '../../../types/expression-activity';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
+import * as EDOI from '../../../types/expression-doi';
 
 export const toPageOfCards = (
   dependencies: Dependencies,
@@ -16,7 +17,7 @@ export const toPageOfCards = (
   items: ReadonlyArray<ExpressionActivity>,
 ): T.Task<ViewModel['articles']> => pipe(
   items,
-  RA.map((item) => item.expressionDoi),
+  RA.map((item) => EDOI.fromValidatedString(item.expressionDoi.value)),
   T.traverseArray(constructArticleCardWithControlsAndAnnotation(dependencies, false, listId)),
   T.map(RA.rights),
 );

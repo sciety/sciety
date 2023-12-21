@@ -3,17 +3,18 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as EDOI from '../../../types/expression-doi';
 import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerInformation } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
 import { ListId } from '../../../types/list-id';
 import { UserId } from '../../../types/user-id';
 import * as DE from '../../../types/data-error';
-import { ArticleId } from '../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 import { Params } from './params';
 import { rawUserInput } from '../../../read-models/annotations/handle-event';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
@@ -32,10 +33,10 @@ const constructContentViewModel: ConstructContentViewModel = (
   articleIds, dependencies, params, editCapability, listId,
 ) => pipe(
   articleIds,
-  RA.map((articleId) => new ArticleId(articleId)),
+  RA.map(EDOI.fromValidatedString),
   TE.right,
   TE.chainW(
-    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, ArticleId>(
+    RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, ExpressionDoi>(
       () => TE.right('no-articles' as const),
       constructContentWithPaginationViewModel(dependencies, params.page, editCapability, listId),
     ),
