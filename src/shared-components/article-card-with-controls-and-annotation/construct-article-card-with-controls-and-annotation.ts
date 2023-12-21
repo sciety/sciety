@@ -19,17 +19,17 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   dependencies: Dependencies,
   editCapability: boolean,
   listId: ListId,
-  articleId: ArticleId,
+  expressionDoi: EDOI.ExpressionDoi,
 ) => (articleCard: ViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
-  constructAnnotation(dependencies)(listId, articleId),
+  constructAnnotation(dependencies)(listId, expressionDoi),
   (annotation) => ({
     articleCard,
     annotation,
     controls: editCapability ? O.some({
       listId,
-      articleId,
+      articleId: new ArticleId(expressionDoi),
       createAnnotationFormHref: O.isNone(annotation)
-        ? O.some(`/annotations/create-annotation-form?${inputFieldNames.articleId}=${articleId.value}&${inputFieldNames.listId}=${listId}`)
+        ? O.some(`/annotations/create-annotation-form?${inputFieldNames.articleId}=${expressionDoi}&${inputFieldNames.listId}=${listId}`)
         : O.none,
     }) : O.none,
   }),
@@ -44,5 +44,10 @@ export const constructArticleCardWithControlsAndAnnotation = (
 ): TE.TaskEither<ErrorViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
   EDOI.fromValidatedString(articleId.value),
   constructViewModel(dependencies),
-  TE.map(toArticleCardWithControlsAndAnnotationViewModel(dependencies, editCapability, listId, articleId)),
+  TE.map(toArticleCardWithControlsAndAnnotationViewModel(
+    dependencies,
+    editCapability,
+    listId,
+    EDOI.fromValidatedString(articleId.value),
+  )),
 );

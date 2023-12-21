@@ -7,7 +7,6 @@ import { TestFramework, createTestFramework } from '../../framework';
 import {
   constructAnnotation,
 } from '../../../src/shared-components/article-card-with-controls-and-annotation/construct-annotation';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
@@ -16,6 +15,8 @@ import { unknownAuthor } from '../../../src/shared-components/article-card-with-
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
 import { Annotation } from '../../../src/shared-components/article-card-with-controls-and-annotation/article-card-with-controls-and-annotation-view-model';
 import { rawUserInput } from '../../../src/read-models/annotations/handle-event';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ArticleId } from '../../../src/types/article-id';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
@@ -26,14 +27,15 @@ describe('construct-annotation', () => {
 
   describe('when there is no annotation', () => {
     it('returns none', () => {
-      const result = constructAnnotation(framework.dependenciesForViews)(arbitraryListId(), arbitraryArticleId());
+      const result = constructAnnotation(framework.dependenciesForViews)(arbitraryListId(), arbitraryExpressionDoi());
 
       expect(result).toStrictEqual(O.none);
     });
   });
 
   describe('when there is an annotation', () => {
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
+    const articleId = new ArticleId(expressionDoi);
     const content = arbitraryUnsafeUserInput();
     let result: Annotation;
 
@@ -54,7 +56,7 @@ describe('construct-annotation', () => {
           listId: createListCommand.listId,
         });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
+          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, expressionDoi),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
@@ -85,7 +87,7 @@ describe('construct-annotation', () => {
           listId: createListCommand.listId,
         });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
+          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, expressionDoi),
           O.getOrElseW(shouldNotBeCalled),
         );
       });
@@ -111,7 +113,7 @@ describe('construct-annotation', () => {
           listId: createListCommand.listId,
         });
         result = pipe(
-          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, articleId),
+          constructAnnotation(framework.dependenciesForViews)(createListCommand.listId, expressionDoi),
           O.getOrElseW(shouldNotBeCalled),
         );
       });

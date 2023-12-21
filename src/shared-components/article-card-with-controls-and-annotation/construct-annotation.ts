@@ -7,6 +7,7 @@ import { Queries } from '../../read-models';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 const getGroupName = (dependencies: Queries, groupId: GroupId) => pipe(
   groupId,
@@ -60,8 +61,8 @@ const getAnnotationAuthorAvatarPath = (dependencies: Queries, listId: ListId) =>
   }),
 );
 
-export const constructAnnotation = (dependencies: Queries) => (listId: ListId, articleId: ArticleId): ArticleCardWithControlsAndAnnotationViewModel['annotation'] => pipe(
-  dependencies.getAnnotationContent(listId, articleId),
+export const constructAnnotation = (dependencies: Queries) => (listId: ListId, expressionDoi: ExpressionDoi): ArticleCardWithControlsAndAnnotationViewModel['annotation'] => pipe(
+  dependencies.getAnnotationContent(listId, new ArticleId(expressionDoi)),
   O.map((content) => ({
     content,
     author: pipe(
