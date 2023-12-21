@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { renderArticleCardContents } from '../paper-activity-summary-card/render-as-html';
-import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
+import { ViewModel } from './view-model';
 import { safelyRenderUserInput } from '../safely-render-user-input';
 import { ExpressionDoi } from '../../types/expression-doi';
 
@@ -26,7 +26,7 @@ const renderLinkToAnnotationForm = (href: O.Option<string>) => pipe(
   ),
 );
 
-const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel) => pipe(
+const renderControls = (viewModel: ViewModel) => pipe(
   viewModel.controls,
   O.match(
     () => toHtmlFragment(''),
@@ -39,7 +39,7 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
   ),
 );
 
-const renderAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel['annotation']) => pipe(
+const renderAnnotation = (viewModel: ViewModel['annotation']) => pipe(
   viewModel,
   O.match(
     () => '',
@@ -55,7 +55,7 @@ const renderAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewMod
   ),
 );
 
-export const renderArticleCardWithControlsAndAnnotation = (viewModel: ArticleCardWithControlsAndAnnotationViewModel): HtmlFragment => toHtmlFragment(`
+export const renderArticleCardWithControlsAndAnnotation = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-card article-card--with-annotation">
     <div class="article-card-content">
       ${renderArticleCardContents(viewModel.articleCard)}

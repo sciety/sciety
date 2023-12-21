@@ -5,10 +5,10 @@ import * as EDOI from '../../types/expression-doi';
 import { constructViewModel as defaultVariantConstructViewModel } from '../paper-activity-summary-card/construct-view-model';
 import { ErrorViewModel } from '../paper-activity-summary-card/render-error-as-html';
 import { ListId } from '../../types/list-id';
-import { ViewModel } from '../paper-activity-summary-card/view-model';
+import { ViewModel as DefaultVariantViewModel } from '../paper-activity-summary-card/view-model';
 import { Queries } from '../../read-models';
 import { constructAnnotation } from './construct-annotation';
-import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
+import { ViewModel } from './view-model';
 import { inputFieldNames } from '../../standards';
 import { ConstructPaperActivitySummaryCardViewModelDependencies } from '../paper-activity-summary-card';
 
@@ -19,7 +19,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
   editCapability: boolean,
   listId: ListId,
   expressionDoi: EDOI.ExpressionDoi,
-) => (articleCard: ViewModel): ArticleCardWithControlsAndAnnotationViewModel => pipe(
+) => (articleCard: DefaultVariantViewModel): ViewModel => pipe(
   constructAnnotation(dependencies)(listId, expressionDoi),
   (annotation) => ({
     articleCard,
@@ -40,7 +40,7 @@ export const constructViewModel = (
   listId: ListId,
 ) => (
   expressionDoi: EDOI.ExpressionDoi,
-): TE.TaskEither<ErrorViewModel, ArticleCardWithControlsAndAnnotationViewModel> => pipe(
+): TE.TaskEither<ErrorViewModel, ViewModel> => pipe(
   expressionDoi,
   defaultVariantConstructViewModel(dependencies),
   TE.map(toArticleCardWithControlsAndAnnotationViewModel(

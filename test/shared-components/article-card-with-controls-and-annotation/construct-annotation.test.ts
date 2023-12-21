@@ -13,7 +13,7 @@ import { arbitraryCreateListCommand } from '../../write-side/commands/create-lis
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-content';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
-import { Annotation } from '../../../src/shared-components/article-card-with-controls-and-annotation/article-card-with-controls-and-annotation-view-model';
+import { Annotation } from '../../../src/shared-components/article-card-with-controls-and-annotation/view-model';
 import { rawUserInput } from '../../../src/read-models/annotations/handle-event';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';

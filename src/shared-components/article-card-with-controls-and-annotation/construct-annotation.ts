@@ -4,7 +4,7 @@ import { missingAvatarFallback, unknownAuthor } from './static-content';
 import { ListId } from '../../types/list-id';
 import { ArticleId } from '../../types/article-id';
 import { Queries } from '../../read-models';
-import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
+import { ViewModel } from './view-model';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 import { ExpressionDoi } from '../../types/expression-doi';
@@ -61,7 +61,7 @@ const getAnnotationAuthorAvatarPath = (dependencies: Queries, listId: ListId) =>
   }),
 );
 
-export const constructAnnotation = (dependencies: Queries) => (listId: ListId, expressionDoi: ExpressionDoi): ArticleCardWithControlsAndAnnotationViewModel['annotation'] => pipe(
+export const constructAnnotation = (dependencies: Queries) => (listId: ListId, expressionDoi: ExpressionDoi): ViewModel['annotation'] => pipe(
   dependencies.getAnnotationContent(listId, new ArticleId(expressionDoi)),
   O.map((content) => ({
     content,
