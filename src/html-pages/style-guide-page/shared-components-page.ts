@@ -5,7 +5,6 @@ import { renderAsHtml } from '../../shared-components/paper-activity-summary-car
 import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
-import { ArticleId } from '../../types/article-id';
 import { renderPaperActivityErrorCard } from '../../shared-components/paper-activity-summary-card';
 import * as LID from '../../types/list-id';
 import * as DE from '../../types/data-error';
@@ -135,7 +134,7 @@ export const sharedComponentsPage: HtmlPage = {
     },
     controls: O.some({
       listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
-      articleId: new ArticleId('10.1101/foo'),
+      expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
       createAnnotationFormHref: O.some('#'),
     }),
   })}
@@ -182,7 +181,7 @@ export const sharedComponentsPage: HtmlPage = {
       reviewingGroups: [],
     },
     controls: O.some({
-      articleId: new ArticleId('10.1101/foo'),
+      expressionDoi: EDOI.fromValidatedString('10.1101/foo'),
       listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
       createAnnotationFormHref: O.none,
     }),

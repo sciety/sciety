@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
-import { ArticleId } from '../../types/article-id';
 import { ListId } from '../../types/list-id';
 import { ViewModel } from '../paper-activity-summary-card/view-model';
 import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 export type Annotation = {
   author: string,
@@ -15,7 +15,7 @@ export type ArticleCardWithControlsAndAnnotationViewModel = {
   annotation: O.Option<Annotation>,
   controls: O.Option<{
     listId: ListId,
-    articleId: ArticleId,
+    expressionDoi: ExpressionDoi,
     createAnnotationFormHref: O.Option<string>,
   }>,
 };

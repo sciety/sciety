@@ -4,23 +4,19 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { renderArticleCardContents } from '../paper-activity-summary-card/render-as-html';
-import { ArticleId } from '../../types/article-id';
 import { ArticleCardWithControlsAndAnnotationViewModel } from './article-card-with-controls-and-annotation-view-model';
 import { safelyRenderUserInput } from '../safely-render-user-input';
+import { ExpressionDoi } from '../../types/expression-doi';
 
-const renderRemoveArticleForm = (articleId: ArticleId, listId: ListId) => pipe(
-  articleId.value,
-  (id) => `
-      <form method="post" action="/forms/remove-article-from-list">
-        <input type="hidden" name="articleid" value="${id}">
-        <input type="hidden" name="listid" value="${listId}">
-        <button aria-label="Remove this article from the list" class="saved-articles-control--remove">
-        Remove article
-        </button>
-      </form>
-  `,
-  toHtmlFragment,
-);
+const renderRemoveArticleForm = (expressionDoi: ExpressionDoi, listId: ListId) => toHtmlFragment(`
+  <form method="post" action="/forms/remove-article-from-list">
+    <input type="hidden" name="articleid" value="${expressionDoi}">
+    <input type="hidden" name="listid" value="${listId}">
+    <button aria-label="Remove this article from the list" class="saved-articles-control--remove">
+    Remove article
+    </button>
+  </form>
+`);
 
 const renderLinkToAnnotationForm = (href: O.Option<string>) => pipe(
   href,
@@ -37,7 +33,7 @@ const renderControls = (viewModel: ArticleCardWithControlsAndAnnotationViewModel
     (controls) => `
     <div class="article-card__controls">
       ${renderLinkToAnnotationForm(controls.createAnnotationFormHref)}
-      ${renderRemoveArticleForm(controls.articleId, controls.listId)}
+      ${renderRemoveArticleForm(controls.expressionDoi, controls.listId)}
     </div>
     `,
   ),

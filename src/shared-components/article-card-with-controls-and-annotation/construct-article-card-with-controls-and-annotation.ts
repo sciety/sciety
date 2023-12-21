@@ -27,7 +27,7 @@ const toArticleCardWithControlsAndAnnotationViewModel = (
     annotation,
     controls: editCapability ? O.some({
       listId,
-      articleId: new ArticleId(expressionDoi),
+      expressionDoi,
       createAnnotationFormHref: O.isNone(annotation)
         ? O.some(`/annotations/create-annotation-form?${inputFieldNames.articleId}=${expressionDoi}&${inputFieldNames.listId}=${listId}`)
         : O.none,
