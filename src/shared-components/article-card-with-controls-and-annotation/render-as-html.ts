@@ -55,7 +55,7 @@ const renderAnnotation = (viewModel: ViewModel['annotation']) => pipe(
   ),
 );
 
-export const renderArticleCardWithControlsAndAnnotation = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
+export const renderAsHtml = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <article class="article-card article-card--with-annotation">
     <div class="article-card-content">
       ${renderArticleCardContents(viewModel.articleCard)}
