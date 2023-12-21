@@ -4,10 +4,10 @@ import { ViewModel } from '../view-model';
 import { Dependencies } from '../dependencies';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment } from '../../../types/html-fragment';
-import { ArticleId } from '../../../types/article-id';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
 export type CurationStatement = {
-  articleId: ArticleId,
+  expressionDoi: ExpressionDoi,
   groupId: GroupId,
   quote: HtmlFragment,
   articleTitle: HtmlFragment,
@@ -26,6 +26,6 @@ export const constructCurationTeaser = (dependencies: Dependencies) => (curation
   (caption) => ({
     ...curationStatement,
     caption,
-    articleHref: `/articles/${curationStatement.articleId.value}`,
+    articleHref: `/articles/${curationStatement.expressionDoi}`,
   }),
 );
