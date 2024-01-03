@@ -31,6 +31,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
   fetchStaticFile: () => TE.right('lorem ipsum'),
   findAllExpressionsOfPaper: () => TO.some([
     {
+      expressionDoi: arbitraryExpressionDoi(),
       publisherHtmlUrl: new URL(arbitraryUri()),
       publishedAt: arbitraryDate(),
       version: 1,

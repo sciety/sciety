@@ -4,6 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import * as EDOI from '../../types/expression-doi';
 import { SupportedArticleServer } from './article-server-with-version-information';
 import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
@@ -25,6 +26,7 @@ type GetArticleVersionEventsFromBiorxiv = (
 const mapResponse = (doi: ArticleId, server: SupportedArticleServer) => flow(
   (response: ResponseWithVersions) => response.collection,
   RNEA.map(({ version, date }) => ({
+    expressionDoi: EDOI.fromValidatedString(doi.value),
     publisherHtmlUrl: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
     publishedAt: date,
     version,

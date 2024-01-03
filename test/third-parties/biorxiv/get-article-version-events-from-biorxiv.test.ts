@@ -9,12 +9,14 @@ import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as DE from '../../../src/types/data-error';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 describe('get-article-version-events-from-biorxiv', () => {
   describe('when biorxiv is available', () => {
     describe('when the server is biorxiv', () => {
       it('returns an article-version event for each article version', async () => {
-        const doi = new ArticleId('10.1101/2020.09.02.278911');
+        const expressionDoi = arbitraryExpressionDoi();
+        const doi = new ArticleId(expressionDoi);
         const queryExternalService = () => () => TE.right({
           collection: [
             {
@@ -39,12 +41,14 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
-          publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v2'),
+          expressionDoi,
+          publisherHtmlUrl: new URL(`https://www.biorxiv.org/content/${expressionDoi}v2`),
           publishedAt: new Date('2020-01-02'),
           version: 2,
         });
         expect(events[1]).toStrictEqual({
-          publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2020.09.02.278911v1'),
+          expressionDoi,
+          publisherHtmlUrl: new URL(`https://www.biorxiv.org/content/${expressionDoi}v1`),
           publishedAt: new Date('2019-12-31'),
           version: 1,
         });
@@ -53,7 +57,8 @@ describe('get-article-version-events-from-biorxiv', () => {
 
     describe('when the server is medrxiv', () => {
       it('returns an article-version event for each article version', async () => {
-        const doi = new ArticleId('10.1101/2020.09.02.278911');
+        const expressionDoi = arbitraryExpressionDoi();
+        const doi = new ArticleId(expressionDoi);
         const queryExternalService = () => () => TE.right({
           collection: [
             {
@@ -78,12 +83,14 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
-          publisherHtmlUrl: new URL('https://www.medrxiv.org/content/10.1101/2020.09.02.278911v2'),
+          expressionDoi,
+          publisherHtmlUrl: new URL(`https://www.medrxiv.org/content/${expressionDoi}v2`),
           publishedAt: new Date('2020-01-02'),
           version: 2,
         });
         expect(events[1]).toStrictEqual({
-          publisherHtmlUrl: new URL('https://www.medrxiv.org/content/10.1101/2020.09.02.278911v1'),
+          expressionDoi,
+          publisherHtmlUrl: new URL(`https://www.medrxiv.org/content/${expressionDoi}v1`),
           publishedAt: new Date('2019-12-31'),
           version: 1,
         });

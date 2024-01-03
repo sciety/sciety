@@ -38,6 +38,7 @@ describe('fetch-article-details', () => {
         fetchArticleDetails({
           ...framework.dependenciesForViews,
           findAllExpressionsOfPaper: () => TO.some([{
+            expressionDoi,
             publisherHtmlUrl: new URL(arbitraryUri()),
             publishedAt: latestDate,
             version: arbitraryNumber(1, 2),
