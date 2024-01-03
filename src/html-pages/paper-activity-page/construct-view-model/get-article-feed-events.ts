@@ -1,11 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import * as TO from 'fp-ts/TaskOption';
+import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
-import { sequenceS } from 'fp-ts/Apply';
 import { ArticleVersionEvent, FeedEvent, getFeedEventsContent } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
@@ -40,25 +39,23 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   expressionDoi, server,
 ) => pipe(
   dependencies.findAllExpressionsOfPaper(expressionDoi, server),
-  (expressionsOfPaper) => ({
+  T.map((expressionsOfPaper) => ({
     evaluations: pipe(
       [expressionDoi],
       dependencies.getEvaluationsOfMultipleExpressions,
-      T.of,
-      T.map(RA.map((evaluation) => ({
+      RA.map((evaluation) => ({
         ...evaluation,
         type: 'evaluation' as const,
-      }))),
+      })),
     ),
     versions: pipe(
       expressionsOfPaper,
-      TO.matchW(
+      O.matchW(
         constant([]),
         RNEA.map(toArticleVersionEvent),
       ),
     ),
-  }),
-  sequenceS(T.ApplyPar),
+  })),
   T.map((feeds) => [...feeds.evaluations, ...feeds.versions]),
   T.map(RA.sort(byDateDescending)),
   T.chain(getFeedEventsContent(dependencies, server)),
