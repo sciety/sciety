@@ -4,12 +4,14 @@ import { ReadModel } from './handle-event';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-type GetEvaluationsOfMultipleExpressions = (expressionDoi: ExpressionDoi) => ReadonlyArray<RecordedEvaluation>;
+type GetEvaluationsOfMultipleExpressions = (
+  expressionDois: ReadonlyArray<ExpressionDoi>
+) => ReadonlyArray<RecordedEvaluation>;
 
 export const getEvaluationsOfMultipleExpressions = (
   readmodel: ReadModel,
-): GetEvaluationsOfMultipleExpressions => (expressionDoi) => pipe(
-  readmodel.byArticleId.get(expressionDoi),
+): GetEvaluationsOfMultipleExpressions => (expressionDois) => pipe(
+  readmodel.byArticleId.get(expressionDois[0]),
   O.fromNullable,
   O.match(
     () => [],
