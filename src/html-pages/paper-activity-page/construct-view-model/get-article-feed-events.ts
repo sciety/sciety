@@ -39,7 +39,8 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => (
   expressionDoi, server,
 ) => pipe(
-  {
+  dependencies.findAllExpressionsOfPaper(expressionDoi, server),
+  (expressionsOfPaper) => ({
     evaluations: pipe(
       [expressionDoi],
       dependencies.getEvaluationsOfMultipleExpressions,
@@ -50,13 +51,13 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       }))),
     ),
     versions: pipe(
-      dependencies.findAllExpressionsOfPaper(expressionDoi, server),
+      expressionsOfPaper,
       TO.matchW(
         constant([]),
         RNEA.map(toArticleVersionEvent),
       ),
     ),
-  },
+  }),
   sequenceS(T.ApplyPar),
   T.map((feeds) => [...feeds.evaluations, ...feeds.versions]),
   T.map(RA.sort(byDateDescending)),
