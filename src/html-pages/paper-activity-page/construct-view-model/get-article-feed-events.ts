@@ -44,7 +44,10 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       expressionsOfPaper,
       O.match(
         () => [expressionDoi],
-        () => [expressionDoi],
+        (foundExpressions) => pipe(
+          foundExpressions,
+          RA.map((expression) => expression.expressionDoi),
+        ),
       ),
       dependencies.getEvaluationsOfMultipleExpressions,
       RA.map((evaluation) => ({
