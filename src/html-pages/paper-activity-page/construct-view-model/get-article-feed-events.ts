@@ -6,12 +6,13 @@ import { constant, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { sequenceS } from 'fp-ts/Apply';
-import { FeedEvent, getFeedEventsContent } from './get-feed-events-content';
+import { ArticleVersionEvent, FeedEvent, getFeedEventsContent } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../types/expression-doi';
+import { PaperExpression } from '../../../types/paper-expression';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -26,6 +27,12 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
 => (expressionDoi: ExpressionDoi, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
+
+const toArticleVersionEvent = (paperExpression: PaperExpression): ArticleVersionEvent => ({
+  type: 'article-version' as const,
+  ...paperExpression,
+  source: paperExpression.publisherHtmlUrl,
+});
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   dependencies,
@@ -46,11 +53,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       dependencies.findAllExpressionsOfPaper(expressionDoi, server),
       TO.matchW(
         constant([]),
-        RNEA.map((version) => ({
-          type: 'article-version' as const,
-          ...version,
-          source: version.publisherHtmlUrl,
-        })),
+        RNEA.map(toArticleVersionEvent),
       ),
     ),
   },

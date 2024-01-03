@@ -6,7 +6,7 @@ import { FeedItem } from '../view-model';
 import { EvaluationEvent, evaluationToFeedItem } from './evaluation-to-feed-item';
 import { Dependencies } from './dependencies';
 
-type ArticleVersionEvent = {
+export type ArticleVersionEvent = {
   type: 'article-version',
   source: URL,
   publishedAt: Date,
