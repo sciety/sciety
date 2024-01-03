@@ -1,5 +1,5 @@
-import * as O from 'fp-ts/Option';
-import { identity, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { ReadModel } from './handle-event';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ExpressionDoi } from '../../types/expression-doi';
@@ -11,10 +11,6 @@ type GetEvaluationsOfMultipleExpressions = (
 export const getEvaluationsOfMultipleExpressions = (
   readmodel: ReadModel,
 ): GetEvaluationsOfMultipleExpressions => (expressionDois) => pipe(
-  readmodel.byArticleId.get(expressionDois[0]),
-  O.fromNullable,
-  O.match(
-    () => [],
-    identity,
-  ),
+  expressionDois,
+  RA.flatMap((expressionDoi) => readmodel.byArticleId.get(expressionDoi) ?? []),
 );
