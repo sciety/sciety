@@ -41,7 +41,11 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   dependencies.findAllExpressionsOfPaper(expressionDoi, server),
   T.map((expressionsOfPaper) => ({
     evaluations: pipe(
-      [expressionDoi],
+      expressionsOfPaper,
+      O.match(
+        () => [expressionDoi],
+        () => [expressionDoi],
+      ),
       dependencies.getEvaluationsOfMultipleExpressions,
       RA.map((evaluation) => ({
         ...evaluation,
