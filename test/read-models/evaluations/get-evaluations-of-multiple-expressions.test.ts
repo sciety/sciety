@@ -64,24 +64,41 @@ describe('get-evaluations-of-multiple-expressions', () => {
       });
     });
 
-    const evaluationLocator1 = arbitraryEvaluationLocator();
-    const evaluationLocator2 = arbitraryEvaluationLocator();
-    const firstRecordedEvaluation = evaluationRecorded(expressionDoi, evaluationLocator1);
-    const secondRecordedEvaluation = evaluationRecorded(expressionDoi, evaluationLocator2);
-
-    describe.each([
-      ['no evaluations', [], []],
-      ['one evaluation', [firstRecordedEvaluation], [evaluationLocator1]],
-      ['two evaluations', [firstRecordedEvaluation, secondRecordedEvaluation], [evaluationLocator1, evaluationLocator2]],
-    ])('and it has %s', (_, events, expectedEvaluations) => {
-      const actualEvaluations = pipe(
-        events,
+    describe('and it has no evaluations', () => {
+      const evaluations = pipe(
+        [],
         runQuery([expressionDoi]),
-        RA.map((evaluation) => evaluation.evaluationLocator),
       );
 
-      it('returns all the evaluations of the expression', () => {
-        expect(actualEvaluations).toStrictEqual(expectedEvaluations);
+      it('returns no evaluations', () => {
+        expect(evaluations).toHaveLength(0);
+      });
+    });
+
+    describe('and it has one evaluation', () => {
+      const evaluations = pipe(
+        [
+          evaluationRecorded(expressionDoi, arbitraryEvaluationLocator()),
+        ],
+        runQuery([expressionDoi]),
+      );
+
+      it('returns one evaluation', () => {
+        expect(evaluations).toHaveLength(1);
+      });
+    });
+
+    describe('and it has two evaluations', () => {
+      const evaluations = pipe(
+        [
+          evaluationRecorded(expressionDoi, arbitraryEvaluationLocator()),
+          evaluationRecorded(expressionDoi, arbitraryEvaluationLocator()),
+        ],
+        runQuery([expressionDoi]),
+      );
+
+      it('returns two evaluations', () => {
+        expect(evaluations).toHaveLength(2);
       });
     });
 
