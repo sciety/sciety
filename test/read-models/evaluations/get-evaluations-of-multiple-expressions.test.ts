@@ -45,7 +45,7 @@ const evaluationRecordedWithType = (
 });
 
 describe('get-evaluations-of-multiple-expressions', () => {
-  describe('when only one expression is passed in', () => {
+  describe('when only one expression doi is passed in', () => {
     describe('when there is an arbitrary number of evaluations', () => {
       const article1 = arbitraryArticleId();
       const article2 = arbitraryArticleId();
@@ -250,7 +250,15 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
   });
 
-  describe('when multiple expressions are passed in', () => {
-    it.todo('tbd');
+  describe('when two different expression dois are passed in', () => {
+    describe('and each expression has one evaluation recorded against it', () => {
+      it.todo('returns two evaluations');
+    });
+  });
+
+  describe('when two identical expression dois are passed in', () => {
+    describe('and the expression has one evaluation recorded against it', () => {
+      it.todo('returns one evaluation');
+    });
   });
 });
