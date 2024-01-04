@@ -44,7 +44,12 @@ export type CrossrefIndividualWorkResponse = t.TypeOf<typeof crossrefIndividualW
 
 type QueryCrossrefService = ReturnType<QueryExternalService>;
 
-const fetchIndividualWork = (queryCrossrefService: QueryCrossrefService, logger: Logger) => (doi: string) => pipe(
+const fetchIndividualWork = (
+  queryCrossrefService: QueryCrossrefService,
+  logger: Logger,
+) => (
+  doi: string,
+): TE.TaskEither<DE.DataError | t.Errors, CrossrefIndividualWorkResponse> => pipe(
   `https://api.crossref.org/works/${doi}`,
   queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
