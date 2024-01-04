@@ -14,42 +14,44 @@ import { QueryExternalService } from '../query-external-service';
 import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
 
-const crossrefRecordCodec = t.strict({
-  message: t.strict({
-    DOI: t.string,
-    posted: t.strict({
-      'date-parts': t.readonlyArray(t.tuple([t.number, t.number, t.number])),
+const crossrefWorkCodec = t.strict({
+  DOI: t.string,
+  posted: t.strict({
+    'date-parts': t.readonlyArray(t.tuple([t.number, t.number, t.number])),
+  }),
+  resource: t.strict({
+    primary: t.strict({
+      URL: t.string,
     }),
-    resource: t.strict({
-      primary: t.strict({
-        URL: t.string,
-      }),
-    }),
-    relation: t.partial({
-      'has-version': t.array(t.strict({
-        'id-type': t.literal('doi'),
-        id: t.string,
-      })),
-      'is-version-of': t.array(t.strict({
-        'id-type': t.literal('doi'),
-        id: t.string,
-      })),
-    }),
+  }),
+  relation: t.partial({
+    'has-version': t.array(t.strict({
+      'id-type': t.literal('doi'),
+      id: t.string,
+    })),
+    'is-version-of': t.array(t.strict({
+      'id-type': t.literal('doi'),
+      id: t.string,
+    })),
   }),
 });
 
-export type CrossrefRecord = t.TypeOf<typeof crossrefRecordCodec>;
+const crossrefIndividualWorkResponseCodec = t.strict({
+  message: crossrefWorkCodec,
+});
+
+export type CrossrefIndividualWorkResponse = t.TypeOf<typeof crossrefIndividualWorkResponseCodec>;
 
 type QueryCrossrefService = ReturnType<QueryExternalService>;
 
-const fetchIndividualRecord = (queryCrossrefService: QueryCrossrefService, logger: Logger) => (doi: string) => pipe(
+const fetchIndividualWork = (queryCrossrefService: QueryCrossrefService, logger: Logger) => (doi: string) => pipe(
   `https://api.crossref.org/works/${doi}`,
   queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
     response,
-    crossrefRecordCodec.decode,
+    crossrefIndividualWorkResponseCodec.decode,
     E.mapLeft((errors) => {
-      logger('error', 'fetchIndividualRecord crossref codec failed', {
+      logger('error', 'fetchIndividualWork crossref codec failed', {
         doi,
         errors: formatValidationErrors(errors),
       });
@@ -58,7 +60,7 @@ const fetchIndividualRecord = (queryCrossrefService: QueryCrossrefService, logge
   )),
 );
 
-const toArticleVersion = (crossrefExpression: CrossrefRecord): PaperExpression => ({
+const toArticleVersion = (crossrefExpression: CrossrefIndividualWorkResponse): PaperExpression => ({
   expressionDoi: EDOI.fromValidatedString(crossrefExpression.message.DOI),
   version: parseInt(crossrefExpression.message.DOI.substring(crossrefExpression.message.DOI.length - 1), 10),
   publishedAt: new Date(
@@ -69,54 +71,54 @@ const toArticleVersion = (crossrefExpression: CrossrefRecord): PaperExpression =
   publisherHtmlUrl: new URL(crossrefExpression.message.resource.primary.URL),
 });
 
-const extractDoisOfRelatedExpressions = (record: CrossrefRecord) => [
+const extractDoisOfRelatedExpressions = (response: CrossrefIndividualWorkResponse) => [
   ...pipe(
-    record.message.relation['is-version-of'] ?? [],
+    response.message.relation['is-version-of'] ?? [],
     RA.map((relation) => relation.id.toLowerCase()),
   ),
   ...pipe(
-    record.message.relation['has-version'] ?? [],
+    response.message.relation['has-version'] ?? [],
     RA.map((relation) => relation.id.toLowerCase()),
   ),
 ];
 
 type State = {
   queue: ReadonlyArray<string>,
-  collectedRecords: Map<string, CrossrefRecord>,
+  collectedWorks: Map<string, CrossrefIndividualWorkResponse>,
 };
 
-const fetchAllQueuedRecordsAndAddToCollector = (
+const fetchAllQueuedWorksAndAddToCollector = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
 ) => (state: State) => pipe(
   state.queue,
-  TE.traverseArray(fetchIndividualRecord(queryCrossrefService, logger)),
-  TE.map((newlyFetchedRecords) => pipe(
-    newlyFetchedRecords,
+  TE.traverseArray(fetchIndividualWork(queryCrossrefService, logger)),
+  TE.map((newlyFetchedWorks) => pipe(
+    newlyFetchedWorks,
     RA.reduce(
-      state.collectedRecords,
-      (collectedRecords, newlyFetchedRecord) => {
-        collectedRecords.set(newlyFetchedRecord.message.DOI.toLowerCase(), newlyFetchedRecord);
-        return collectedRecords;
+      state.collectedWorks,
+      (collectedWorks, newlyFetchedWork) => {
+        collectedWorks.set(newlyFetchedWork.message.DOI.toLowerCase(), newlyFetchedWork);
+        return collectedWorks;
       },
     ),
-    (collectedRecords) => ({
+    (collectedWorks) => ({
       queue: [],
-      collectedRecords,
+      collectedWorks,
     }),
   )),
 );
 
-const hasNotBeenCollected = (state: State) => (doi: string) => !state.collectedRecords.has(doi);
+const hasNotBeenCollected = (state: State) => (doi: string) => !state.collectedWorks.has(doi);
 
 export const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pipe(
-  Array.from(state.collectedRecords.values()),
+  Array.from(state.collectedWorks.values()),
   RA.chain(extractDoisOfRelatedExpressions),
   RA.uniq(S.Eq),
   RA.filter(hasNotBeenCollected(state)),
   (dois) => ({
     queue: dois,
-    collectedRecords: state.collectedRecords,
+    collectedWorks: state.collectedWorks,
   }),
 );
 
@@ -126,17 +128,17 @@ const walkRelationGraph = (
   doi: string,
 ) => (
   state: State,
-): TE.TaskEither<unknown, ReadonlyArray<CrossrefRecord>> => pipe(
+): TE.TaskEither<unknown, ReadonlyArray<CrossrefIndividualWorkResponse>> => pipe(
   state,
-  fetchAllQueuedRecordsAndAddToCollector(queryCrossrefService, logger),
+  fetchAllQueuedWorksAndAddToCollector(queryCrossrefService, logger),
   TE.map(enqueueAllRelatedDoisNotYetCollected),
   TE.chain((s) => {
     if (s.queue.length === 0) {
-      return TE.right(Array.from(s.collectedRecords.values()));
+      return TE.right(Array.from(s.collectedWorks.values()));
     }
-    if (s.collectedRecords.size > 20) {
+    if (s.collectedWorks.size > 20) {
       logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
-        collectedRecordsSize: s.collectedRecords.size,
+        collectedWorksSize: s.collectedWorks.size,
         startingDoi: doi,
       });
 
@@ -156,7 +158,7 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
 ) => pipe(
   {
     queue: [doi],
-    collectedRecords: new Map(),
+    collectedWorks: new Map(),
   },
   walkRelationGraph(queryCrossrefService, logger, doi),
   TO.fromTaskEither,

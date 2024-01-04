@@ -1,13 +1,13 @@
-import { CrossrefRecord, enqueueAllRelatedDoisNotYetCollected } from '../../../src/third-parties/crossref/fetch-all-paper-expressions';
+import { CrossrefIndividualWorkResponse, enqueueAllRelatedDoisNotYetCollected } from '../../../src/third-parties/crossref/fetch-all-paper-expressions';
 import { arbitraryString } from '../../helpers';
 
 describe('enqueue-all-related-dois-not-yet-collected', () => {
   describe('when there no records', () => {
     const initialRecords = new Map();
-    const result = enqueueAllRelatedDoisNotYetCollected({ collectedRecords: initialRecords, queue: [] });
+    const result = enqueueAllRelatedDoisNotYetCollected({ collectedWorks: initialRecords, queue: [] });
 
     it('the collected records are unchanged', () => {
-      expect(result.collectedRecords).toStrictEqual(initialRecords);
+      expect(result.collectedWorks).toStrictEqual(initialRecords);
     });
 
     it('the queue is empty', () => {
@@ -16,7 +16,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when there is one record with no relations', () => {
-    const initialRecords = new Map<string, CrossrefRecord>([
+    const initialRecords = new Map<string, CrossrefIndividualWorkResponse>([
       ['10.21203/rs.3.rs-1828415/v2', {
         message: {
           DOI: '10.21203/rs.3.rs-1828415/v2',
@@ -32,10 +32,10 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         },
       }],
     ]);
-    const result = enqueueAllRelatedDoisNotYetCollected({ collectedRecords: initialRecords, queue: [] });
+    const result = enqueueAllRelatedDoisNotYetCollected({ collectedWorks: initialRecords, queue: [] });
 
     it('the collected records are unchanged', () => {
-      expect(result.collectedRecords).toStrictEqual(initialRecords);
+      expect(result.collectedWorks).toStrictEqual(initialRecords);
     });
 
     it('the queue is empty', () => {
@@ -44,7 +44,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when there are two records that are related to each other', () => {
-    const initialRecords = new Map<string, CrossrefRecord>([
+    const initialRecords = new Map<string, CrossrefIndividualWorkResponse>([
       ['10.21203/rs.3.rs-1828415/v2', {
         message: {
           DOI: '10.21203/rs.3.rs-1828415/v2',
@@ -84,10 +84,10 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         },
       }],
     ]);
-    const result = enqueueAllRelatedDoisNotYetCollected({ collectedRecords: initialRecords, queue: [] });
+    const result = enqueueAllRelatedDoisNotYetCollected({ collectedWorks: initialRecords, queue: [] });
 
     it('the collected records are unchanged', () => {
-      expect(result.collectedRecords).toStrictEqual(initialRecords);
+      expect(result.collectedWorks).toStrictEqual(initialRecords);
     });
 
     it('the queue is empty', () => {
@@ -96,7 +96,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when the relation uses different case than the DOI', () => {
-    const initialRecords = new Map<string, CrossrefRecord>([
+    const initialRecords = new Map<string, CrossrefIndividualWorkResponse>([
       ['10.21203/rs.3.rs-1828415/v2', {
         message: {
           DOI: '10.21203/rs.3.rs-1828415/v2',
@@ -136,10 +136,10 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         },
       }],
     ]);
-    const result = enqueueAllRelatedDoisNotYetCollected({ collectedRecords: initialRecords, queue: [] });
+    const result = enqueueAllRelatedDoisNotYetCollected({ collectedWorks: initialRecords, queue: [] });
 
     it('the collected records are unchanged', () => {
-      expect(result.collectedRecords).toStrictEqual(initialRecords);
+      expect(result.collectedWorks).toStrictEqual(initialRecords);
     });
 
     it('the queue is empty', () => {
