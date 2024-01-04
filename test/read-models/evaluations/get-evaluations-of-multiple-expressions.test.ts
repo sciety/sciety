@@ -14,13 +14,14 @@ import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import * as EDOI from '../../../src/types/expression-doi';
 
-const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) => {
+const runQuery = (articleIds: ReadonlyArray<ArticleId>) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
     events,
     RA.reduce(initialState(), handleEvent),
   );
   return pipe(
-    [EDOI.fromValidatedString(articleId.value)],
+    articleIds,
+    RA.map((articleId) => EDOI.fromValidatedString(articleId.value)),
     getEvaluationsOfMultipleExpressions(readmodel),
   );
 };
@@ -64,7 +65,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
             evaluationRecorded(article2, evaluationLocator2),
             evaluationRecorded(article1, evaluationLocator3),
           ],
-          runQuery(articleDoi),
+          runQuery([articleDoi]),
           RA.map((evaluation) => evaluation.evaluationLocator),
         );
 
@@ -80,7 +81,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
           evaluationRecorded(articleId, evaluationLocator),
           constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
         ],
-        runQuery(articleId),
+        runQuery([articleId]),
         RA.map((evaluation) => evaluation.evaluationLocator),
       );
 
@@ -100,7 +101,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
             evaluationLocator,
           },
         ],
-        runQuery(articleId),
+        runQuery([articleId]),
         RA.map((evaluation) => evaluation.evaluationLocator),
       );
 
@@ -127,7 +128,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
             evaluationLocator,
           }),
         ],
-        runQuery(articleId),
+        runQuery([articleId]),
       );
 
       it('contains the right type', () => {
@@ -152,7 +153,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
               inputType as unknown as EvaluationType,
             ),
           ],
-          runQuery(articleId),
+          runQuery([articleId]),
         );
 
         it('the type is returned correctly', () => {
@@ -188,7 +189,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
               date: dateOfUpdate,
             }),
           ],
-          runQuery(articleId),
+          runQuery([articleId]),
         );
 
         it('updates the evaluation type', () => {
@@ -220,7 +221,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
             date: dateOfUpdate,
           },
         ],
-        runQuery(articleId),
+        runQuery([articleId]),
       );
 
       it('updates evaluation authors', () => {
@@ -240,7 +241,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
           evaluationRecorded(articleId, evaluationLocator),
           evaluationRecorded(articleId, evaluationLocator),
         ],
-        runQuery(articleId),
+        runQuery([articleId]),
         RA.map((evaluation) => evaluation.evaluationLocator),
       );
 
@@ -252,7 +253,19 @@ describe('get-evaluations-of-multiple-expressions', () => {
 
   describe('when two different expression dois are passed in', () => {
     describe('and each expression has one evaluation recorded against it', () => {
-      it.todo('returns two evaluations');
+      const articleId1 = arbitraryArticleId();
+      const articleId2 = arbitraryArticleId();
+      const evaluations = pipe(
+        [
+          evaluationRecorded(articleId1, arbitraryEvaluationLocator()),
+          evaluationRecorded(articleId2, arbitraryEvaluationLocator()),
+        ],
+        runQuery([articleId1, articleId2]),
+      );
+
+      it('returns two evaluations', () => {
+        expect(evaluations).toHaveLength(2);
+      });
     });
   });
 
