@@ -56,24 +56,24 @@ const evaluationRecordedWithType = (
 describe('get-evaluations-of-multiple-expressions', () => {
   describe('when only one expression doi is passed in', () => {
     describe('when there is an arbitrary number of evaluations', () => {
-      const article1 = arbitraryArticleId();
-      const article2 = arbitraryArticleId();
+      const expressionDoi1 = arbitraryExpressionDoi();
+      const expressionDoi2 = arbitraryExpressionDoi();
       const evaluationLocator1 = arbitraryEvaluationLocator();
       const evaluationLocator2 = arbitraryEvaluationLocator();
       const evaluationLocator3 = arbitraryEvaluationLocator();
 
       it.each([
-        ['two evaluations', article1, [evaluationLocator1, evaluationLocator3]],
-        ['one evaluation', article2, [evaluationLocator2]],
-        ['no evaluations', arbitraryArticleId(), []],
-      ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
+        ['two evaluations', expressionDoi1, [evaluationLocator1, evaluationLocator3]],
+        ['one evaluation', expressionDoi2, [evaluationLocator2]],
+        ['no evaluations', arbitraryExpressionDoi(), []],
+      ])('finds the correct evaluations when the article has %s', async (_, selectedExpressionDoi, expectedEvaluations) => {
         const actualEvaluations = pipe(
           [
-            evaluationRecorded(article1, evaluationLocator1),
-            evaluationRecorded(article2, evaluationLocator2),
-            evaluationRecorded(article1, evaluationLocator3),
+            evaluationRecorded(expressionDoi1, evaluationLocator1),
+            evaluationRecorded(expressionDoi2, evaluationLocator2),
+            evaluationRecorded(expressionDoi1, evaluationLocator3),
           ],
-          runQuery([EDOI.fromValidatedString(articleDoi.value)]),
+          runQuery([selectedExpressionDoi]),
           RA.map((evaluation) => evaluation.evaluationLocator),
         );
 
