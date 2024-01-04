@@ -271,7 +271,17 @@ describe('get-evaluations-of-multiple-expressions', () => {
 
   describe('when two identical expression dois are passed in', () => {
     describe('and the expression has one evaluation recorded against it', () => {
-      it.todo('returns one evaluation');
+      const articleId = arbitraryArticleId();
+      const evaluations = pipe(
+        [
+          evaluationRecorded(articleId, arbitraryEvaluationLocator()),
+        ],
+        runQuery([articleId, articleId]),
+      );
+
+      it('returns one evaluation', () => {
+        expect(evaluations).toHaveLength(1);
+      });
     });
   });
 });
