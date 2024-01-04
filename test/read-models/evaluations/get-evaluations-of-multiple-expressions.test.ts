@@ -44,6 +44,8 @@ const evaluationRecordedWithType = (
 
 describe('get-evaluations-of-multiple-expressions', () => {
   describe('when only one expression doi is passed in', () => {
+    const expressionDoi = arbitraryExpressionDoi();
+
     describe('and it has some evaluations', () => {
       const expressionDoi1 = arbitraryExpressionDoi();
       const evaluationLocator1 = arbitraryEvaluationLocator();
@@ -62,42 +64,28 @@ describe('get-evaluations-of-multiple-expressions', () => {
       });
     });
 
+    const evaluationLocator1 = arbitraryEvaluationLocator();
+    const evaluationLocator2 = arbitraryEvaluationLocator();
+    const firstRecordedEvaluation = evaluationRecorded(expressionDoi, evaluationLocator1);
+    const secondRecordedEvaluation = evaluationRecorded(expressionDoi, evaluationLocator2);
+
     describe.each([
-      ['no evaluations'],
-      ['one evaluation'],
-      ['two evaluations'],
-    ])('and it has %s', () => {
-      it.todo('returns all the evaluations of the expression');
-    });
+      ['no evaluations', [], []],
+      ['one evaluation', [firstRecordedEvaluation], [evaluationLocator1]],
+      ['two evaluations', [firstRecordedEvaluation, secondRecordedEvaluation], [evaluationLocator1, evaluationLocator2]],
+    ])('and it has %s', (_, events, expectedEvaluations) => {
+      const actualEvaluations = pipe(
+        events,
+        runQuery([expressionDoi]),
+        RA.map((evaluation) => evaluation.evaluationLocator),
+      );
 
-    describe('when there is an arbitrary number of evaluations', () => {
-      const expressionDoi1 = arbitraryExpressionDoi();
-      const expressionDoi2 = arbitraryExpressionDoi();
-      const evaluationLocator1 = arbitraryEvaluationLocator();
-      const evaluationLocator2 = arbitraryEvaluationLocator();
-      const evaluationLocator3 = arbitraryEvaluationLocator();
-
-      it.each([
-        ['two evaluations', expressionDoi1, [evaluationLocator1, evaluationLocator3]],
-        ['one evaluation', expressionDoi2, [evaluationLocator2]],
-        ['no evaluations', arbitraryExpressionDoi(), []],
-      ])('finds the correct evaluations when the article has %s', async (_, selectedExpressionDoi, expectedEvaluations) => {
-        const actualEvaluations = pipe(
-          [
-            evaluationRecorded(expressionDoi1, evaluationLocator1),
-            evaluationRecorded(expressionDoi2, evaluationLocator2),
-            evaluationRecorded(expressionDoi1, evaluationLocator3),
-          ],
-          runQuery([selectedExpressionDoi]),
-          RA.map((evaluation) => evaluation.evaluationLocator),
-        );
-
+      it('returns all the evaluations of the expression', () => {
         expect(actualEvaluations).toStrictEqual(expectedEvaluations);
       });
     });
 
     describe('when an evaluation has been recorded and then erased', () => {
-      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const actualEvaluations = pipe(
         [
@@ -114,7 +102,6 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when an evaluation publication and its removal have been recorded', () => {
-      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const actualEvaluations = pipe(
         [
@@ -134,7 +121,6 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
-      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const groupId = arbitraryGroupId();
       const result = pipe(
@@ -160,8 +146,6 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when an evaluation is recorded', () => {
-      const expressionDoi = arbitraryExpressionDoi();
-
       describe.each([
         ['curation-statement', O.some('curation-statement')],
         ['review', O.some('review')],
@@ -190,7 +174,6 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when an evaluation is updated later', () => {
-      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
 
       describe.each([
@@ -227,7 +210,6 @@ describe('get-evaluations-of-multiple-expressions', () => {
 
     describe('when the authors of the evaluation are updated', () => {
       const dateOfUpdate = arbitraryDate();
-      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const authors = [arbitraryString(), arbitraryString()];
       const result = pipe(
@@ -257,7 +239,6 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when the evaluation has been recorded multiple times', () => {
-      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const actualEvaluations = pipe(
         [
