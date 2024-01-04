@@ -41,12 +41,12 @@ const evaluationRecorded = (
 };
 
 const evaluationRecordedWithType = (
-  articleId: ArticleId,
+  expressionDoi: ExpressionDoi,
   evaluationLocator: EvaluationLocator,
   evaluationType: EvaluationType,
 ) => ({
   ...arbitraryEvaluationPublicationRecordedEvent(),
-  articleId,
+  articleId: new ArticleId(expressionDoi),
   evaluationLocator,
   evaluationType,
 });
@@ -154,7 +154,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
         const result = pipe(
           [
             evaluationRecordedWithType(
-              new ArticleId(expressionDoi),
+              expressionDoi,
               arbitraryEvaluationLocator(),
               inputType as unknown as EvaluationType,
             ),
@@ -184,7 +184,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
         const result = pipe(
           [
             evaluationRecordedWithType(
-              new ArticleId(expressionDoi),
+              expressionDoi,
               evaluationLocator,
               initialType as unknown as EvaluationType,
             ),
