@@ -264,13 +264,16 @@ describe('get-evaluations-of-multiple-expressions', () => {
   });
 
   describe('when two different expression dois are passed in', () => {
+    const expressionDoi1 = arbitraryExpressionDoi();
+    const expressionDoi2 = arbitraryExpressionDoi();
+
     describe('and each expression has one evaluation recorded against it', () => {
-      const articleId1 = arbitraryArticleId();
-      const articleId2 = arbitraryArticleId();
+      const articleId1 = new ArticleId(expressionDoi1);
+      const articleId2 = new ArticleId(expressionDoi2);
       const evaluations = pipe(
         [
-          evaluationRecorded(articleId1, arbitraryEvaluationLocator()),
-          evaluationRecorded(articleId2, arbitraryEvaluationLocator()),
+          evaluationRecorded(expressionDoi1, arbitraryEvaluationLocator()),
+          evaluationRecorded(expressionDoi2, arbitraryEvaluationLocator()),
         ],
         runQuery([articleId1, articleId2]),
       );
