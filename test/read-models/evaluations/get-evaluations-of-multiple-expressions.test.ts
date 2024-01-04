@@ -23,22 +23,13 @@ const runQuery = (expressionDois: ReadonlyArray<ExpressionDoi>) => (events: Read
 };
 
 const evaluationRecorded = (
-  articleIdOrExpressionDoi: ArticleId | ExpressionDoi,
+  expressionDoi: ExpressionDoi,
   evaluationLocator: EvaluationLocator,
-) => {
-  if (articleIdOrExpressionDoi instanceof ArticleId) {
-    return {
-      ...arbitraryEvaluationPublicationRecordedEvent(),
-      articleId: articleIdOrExpressionDoi,
-      evaluationLocator,
-    };
-  }
-  return {
-    ...arbitraryEvaluationPublicationRecordedEvent(),
-    articleId: new ArticleId(articleIdOrExpressionDoi),
-    evaluationLocator,
-  };
-};
+) => ({
+  ...arbitraryEvaluationPublicationRecordedEvent(),
+  articleId: new ArticleId(expressionDoi),
+  evaluationLocator,
+});
 
 const evaluationRecordedWithType = (
   expressionDoi: ExpressionDoi,
