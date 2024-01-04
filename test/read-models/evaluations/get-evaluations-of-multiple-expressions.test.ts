@@ -45,7 +45,21 @@ const evaluationRecordedWithType = (
 describe('get-evaluations-of-multiple-expressions', () => {
   describe('when only one expression doi is passed in', () => {
     describe('and it has some evaluations', () => {
-      it.todo('returns all evaluations for only that expression');
+      const expressionDoi1 = arbitraryExpressionDoi();
+      const evaluationLocator1 = arbitraryEvaluationLocator();
+
+      const evaluationLocators = pipe(
+        [
+          evaluationRecorded(expressionDoi1, evaluationLocator1),
+          evaluationRecorded(arbitraryExpressionDoi(), arbitraryEvaluationLocator()),
+        ],
+        runQuery([expressionDoi1]),
+        RA.map((evaluation) => evaluation.evaluationLocator),
+      );
+
+      it('returns all evaluations for only that expression', () => {
+        expect(evaluationLocators).toStrictEqual([evaluationLocator1]);
+      });
     });
 
     describe.each([
