@@ -44,6 +44,18 @@ const evaluationRecordedWithType = (
 
 describe('get-evaluations-of-multiple-expressions', () => {
   describe('when only one expression doi is passed in', () => {
+    describe('and it has some evaluations', () => {
+      it.todo('returns all evaluations for only that expression');
+    });
+
+    describe.each([
+      ['no evaluations'],
+      ['one evaluation'],
+      ['two evaluations'],
+    ])('and it has %s', () => {
+      it.todo('returns all the evaluations of the expression');
+    });
+
     describe('when there is an arbitrary number of evaluations', () => {
       const expressionDoi1 = arbitraryExpressionDoi();
       const expressionDoi2 = arbitraryExpressionDoi();
