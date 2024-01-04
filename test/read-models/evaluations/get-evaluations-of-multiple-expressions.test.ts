@@ -13,6 +13,8 @@ import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import * as EDOI from '../../../src/types/expression-doi';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
 
 const runQuery = (articleIds: ReadonlyArray<ArticleId>) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -26,13 +28,23 @@ const runQuery = (articleIds: ReadonlyArray<ArticleId>) => (events: ReadonlyArra
   );
 };
 
-const evaluationRecorded = (articleId: ArticleId, evaluationLocator: EvaluationLocator) => (
-  {
-    ...arbitraryEvaluationPublicationRecordedEvent(),
-    articleId,
-    evaluationLocator,
+const evaluationRecorded = (
+  articleIdOrExpressionDoi: ArticleId | ExpressionDoi,
+  evaluationLocator: EvaluationLocator,
+) => {
+  if (articleIdOrExpressionDoi instanceof ArticleId) {
+    return {
+      ...arbitraryEvaluationPublicationRecordedEvent(),
+      articleId: articleIdOrExpressionDoi,
+      evaluationLocator,
+    };
   }
-);
+  return {
+    ...arbitraryEvaluationPublicationRecordedEvent(),
+    articleId: new ArticleId(articleIdOrExpressionDoi),
+    evaluationLocator,
+  };
+};
 
 const evaluationRecordedWithType = (
   articleId: ArticleId,
@@ -270,11 +282,13 @@ describe('get-evaluations-of-multiple-expressions', () => {
   });
 
   describe('when two identical expression dois are passed in', () => {
+    const expressionDoi = arbitraryExpressionDoi();
+
     describe('and the expression has one evaluation recorded against it', () => {
-      const articleId = arbitraryArticleId();
+      const articleId = new ArticleId(expressionDoi);
       const evaluations = pipe(
         [
-          evaluationRecorded(articleId, arbitraryEvaluationLocator()),
+          evaluationRecorded(expressionDoi, arbitraryEvaluationLocator()),
         ],
         runQuery([articleId, articleId]),
       );
