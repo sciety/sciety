@@ -1,10 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { getEvaluationsOfMultipleExpressions } from '../../../src/read-models/evaluations/get-evaluations-of-multiple-expressions';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
@@ -12,9 +13,6 @@ import { ArticleId } from '../../../src/types/article-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryDate, arbitraryString } from '../../helpers';
-import * as EDOI from '../../../src/types/expression-doi';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ExpressionDoi } from '../../../src/types/expression-doi';
 
 const runQuery = (expressionDois: ReadonlyArray<ExpressionDoi>) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -82,14 +80,14 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when an evaluation has been recorded and then erased', () => {
-      const articleId = arbitraryArticleId();
+      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const actualEvaluations = pipe(
         [
-          evaluationRecorded(articleId, evaluationLocator),
+          evaluationRecorded(expressionDoi, evaluationLocator),
           constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
         ],
-        runQuery([EDOI.fromValidatedString((articleId.value))]),
+        runQuery([expressionDoi]),
         RA.map((evaluation) => evaluation.evaluationLocator),
       );
 
@@ -99,17 +97,17 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when an evaluation publication and its removal have been recorded', () => {
-      const articleId = arbitraryArticleId();
+      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const actualEvaluations = pipe(
         [
-          evaluationRecorded(articleId, evaluationLocator),
+          evaluationRecorded(expressionDoi, evaluationLocator),
           {
             ...arbitraryEvaluationRemovalRecordedEvent(),
             evaluationLocator,
           },
         ],
-        runQuery([EDOI.fromValidatedString(articleId.value)]),
+        runQuery([expressionDoi]),
         RA.map((evaluation) => evaluation.evaluationLocator),
       );
 
@@ -119,7 +117,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
-      const articleId = arbitraryArticleId();
+      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const groupId = arbitraryGroupId();
       const result = pipe(
@@ -127,7 +125,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
           {
             ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId,
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             evaluationLocator,
           },
           constructEvent('EvaluationUpdated')({
@@ -136,7 +134,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
             evaluationLocator,
           }),
         ],
-        runQuery([EDOI.fromValidatedString(articleId.value)]),
+        runQuery([expressionDoi]),
       );
 
       it('contains the right type', () => {
@@ -145,7 +143,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when an evaluation is recorded', () => {
-      const articleId = arbitraryArticleId();
+      const expressionDoi = arbitraryExpressionDoi();
 
       describe.each([
         ['curation-statement', O.some('curation-statement')],
@@ -156,12 +154,12 @@ describe('get-evaluations-of-multiple-expressions', () => {
         const result = pipe(
           [
             evaluationRecordedWithType(
-              articleId,
+              new ArticleId(expressionDoi),
               arbitraryEvaluationLocator(),
               inputType as unknown as EvaluationType,
             ),
           ],
-          runQuery([EDOI.fromValidatedString(articleId.value)]),
+          runQuery([expressionDoi]),
         );
 
         it('the type is returned correctly', () => {
@@ -175,7 +173,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when an evaluation is updated later', () => {
-      const articleId = arbitraryArticleId();
+      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
 
       describe.each([
@@ -186,7 +184,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
         const result = pipe(
           [
             evaluationRecordedWithType(
-              articleId,
+              new ArticleId(expressionDoi),
               evaluationLocator,
               initialType as unknown as EvaluationType,
             ),
@@ -197,7 +195,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
               date: dateOfUpdate,
             }),
           ],
-          runQuery([EDOI.fromValidatedString(articleId.value)]),
+          runQuery([expressionDoi]),
         );
 
         it('updates the evaluation type', () => {
@@ -212,7 +210,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
 
     describe('when the authors of the evaluation are updated', () => {
       const dateOfUpdate = arbitraryDate();
-      const articleId = arbitraryArticleId();
+      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const authors = [arbitraryString(), arbitraryString()];
       const result = pipe(
@@ -220,7 +218,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
           {
             ...arbitraryEvaluationPublicationRecordedEvent(),
             evaluationLocator,
-            articleId,
+            articleId: new ArticleId(expressionDoi),
           },
           {
             ...arbitraryEvaluationUpdatedEvent(),
@@ -229,7 +227,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
             date: dateOfUpdate,
           },
         ],
-        runQuery([EDOI.fromValidatedString(articleId.value)]),
+        runQuery([expressionDoi]),
       );
 
       it('updates evaluation authors', () => {
@@ -242,14 +240,14 @@ describe('get-evaluations-of-multiple-expressions', () => {
     });
 
     describe('when the evaluation has been recorded multiple times', () => {
-      const articleId = arbitraryArticleId();
+      const expressionDoi = arbitraryExpressionDoi();
       const evaluationLocator = arbitraryEvaluationLocator();
       const actualEvaluations = pipe(
         [
-          evaluationRecorded(articleId, evaluationLocator),
-          evaluationRecorded(articleId, evaluationLocator),
+          evaluationRecorded(expressionDoi, evaluationLocator),
+          evaluationRecorded(expressionDoi, evaluationLocator),
         ],
-        runQuery([EDOI.fromValidatedString(articleId.value)]),
+        runQuery([expressionDoi]),
         RA.map((evaluation) => evaluation.evaluationLocator),
       );
 
