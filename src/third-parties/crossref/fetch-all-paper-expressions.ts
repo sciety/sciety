@@ -95,7 +95,6 @@ type State = {
 
 const fetchWorksThatPointToIndividualWorks = (
   queryCrossrefService: QueryCrossrefService,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   logger: Logger,
 ) => (
   queue: ReadonlyArray<string>,
@@ -105,7 +104,10 @@ const fetchWorksThatPointToIndividualWorks = (
     `https://api.crossref.org/works?filter=relation.object:${doi},type:posted-content`,
     queryCrossrefService,
   )),
-  () => TE.right([]),
+  TE.map((responses) => pipe(
+    logger('debug', 'Response from Crossref works API', { responses }),
+    () => [],
+  )),
 );
 
 const fetchAllQueuedWorksAndAddToCollector = (
