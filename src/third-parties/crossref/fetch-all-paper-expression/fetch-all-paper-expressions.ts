@@ -8,11 +8,12 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../types/expression-doi';
-import { PaperExpression } from '../../types/paper-expression';
-import { QueryExternalService } from '../query-external-service';
-import * as DE from '../../types/data-error';
-import { Logger } from '../../shared-ports';
+import * as EDOI from '../../../types/expression-doi';
+import { PaperExpression } from '../../../types/paper-expression';
+import { QueryExternalService } from '../../query-external-service';
+import * as DE from '../../../types/data-error';
+import { Logger } from '../../../shared-ports';
+import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
 
 const logCodecFailure = (logger: Logger, doi: string, source: string) => (errors: t.Errors) => {
   logger('error', `${source} crossref codec failed`, {
@@ -21,30 +22,6 @@ const logCodecFailure = (logger: Logger, doi: string, source: string) => (errors
   });
   return errors;
 };
-
-const crossrefWorkCodec = t.strict({
-  DOI: t.string,
-  posted: t.strict({
-    'date-parts': t.readonlyArray(t.tuple([t.number, t.number, t.number])),
-  }),
-  resource: t.strict({
-    primary: t.strict({
-      URL: t.string,
-    }),
-  }),
-  relation: t.partial({
-    'has-version': t.readonlyArray(t.strict({
-      'id-type': t.literal('doi'),
-      id: t.string,
-    })),
-    'is-version-of': t.readonlyArray(t.strict({
-      'id-type': t.literal('doi'),
-      id: t.string,
-    })),
-  }),
-});
-
-export type CrossrefWork = t.TypeOf<typeof crossrefWorkCodec>;
 
 const crossrefIndividualWorkResponseCodec = t.strict({
   message: crossrefWorkCodec,

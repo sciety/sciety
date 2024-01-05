@@ -1,4 +1,5 @@
-import { CrossrefWork, enqueueAllRelatedDoisNotYetCollected } from '../../../src/third-parties/crossref/fetch-all-paper-expressions';
+import { CrossrefWork } from '../../../src/third-parties/crossref/fetch-all-paper-expression/crossref-work';
+import { enqueueAllRelatedDoisNotYetCollected } from '../../../src/third-parties/crossref/fetch-all-paper-expression/fetch-all-paper-expressions';
 import { arbitraryString } from '../../helpers';
 
 describe('enqueue-all-related-dois-not-yet-collected', () => {
