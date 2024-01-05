@@ -94,14 +94,19 @@ type State = {
 };
 
 const fetchWorksThatPointToIndividualWorks = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   queryCrossrefService: QueryCrossrefService,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   logger: Logger,
 ) => (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   queue: ReadonlyArray<string>,
-): TE.TaskEither<DE.DataError | t.Errors, ReadonlyArray<CrossrefWork>> => TE.right([]);
+): TE.TaskEither<DE.DataError | t.Errors, ReadonlyArray<CrossrefWork>> => pipe(
+  queue,
+  TE.traverseArray((doi) => pipe(
+    `https://api.crossref.org/works?filter=relation.object:${doi},type:posted-content`,
+    queryCrossrefService,
+  )),
+  () => TE.right([]),
+);
 
 const fetchAllQueuedWorksAndAddToCollector = (
   queryCrossrefService: QueryCrossrefService,
