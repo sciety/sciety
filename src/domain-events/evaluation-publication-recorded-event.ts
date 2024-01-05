@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { expressionDoiCodec } from '../types/expression-doi';
 import { articleIdCodec } from '../types/article-id';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
@@ -19,13 +20,25 @@ export const evaluationRecordedEventCodec = t.type({
   evaluationType: evaluationTypeCodec,
 });
 
-export const evaluationPublicationRecordedEventCodec = t.type({
+export const evaluationPublicationRecordedEventV1Codec = t.type({
   id: EventIdFromString,
   type: t.literal('EvaluationPublicationRecorded'),
   date: tt.DateFromISOString,
   groupId: GroupIdFromString,
   evaluationLocator: evaluationLocatorCodec,
   articleId: articleIdCodec,
+  publishedAt: tt.DateFromISOString,
+  authors: evaluationAuthorsCodec,
+  evaluationType: evaluationTypeCodec,
+});
+
+export const evaluationPublicationRecordedEventV2Codec = t.type({
+  id: EventIdFromString,
+  type: t.literal('EvaluationPublicationRecorded'),
+  date: tt.DateFromISOString,
+  groupId: GroupIdFromString,
+  evaluationLocator: evaluationLocatorCodec,
+  expressionDoi: expressionDoiCodec,
   publishedAt: tt.DateFromISOString,
   authors: evaluationAuthorsCodec,
   evaluationType: evaluationTypeCodec,
