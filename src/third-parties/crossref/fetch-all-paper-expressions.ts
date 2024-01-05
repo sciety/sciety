@@ -36,14 +36,11 @@ const crossrefWorkCodec = t.strict({
   }),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type CrossrefWork = t.TypeOf<typeof crossrefWorkCodec>;
+export type CrossrefWork = t.TypeOf<typeof crossrefWorkCodec>;
 
 const crossrefIndividualWorkResponseCodec = t.strict({
   message: crossrefWorkCodec,
 });
-
-export type CrossrefIndividualWorkResponse = t.TypeOf<typeof crossrefIndividualWorkResponseCodec>;
 
 type QueryCrossrefService = ReturnType<QueryExternalService>;
 
@@ -69,31 +66,31 @@ const fetchIndividualWork = (
   )),
 );
 
-const toArticleVersion = (crossrefExpression: CrossrefIndividualWorkResponse): PaperExpression => ({
-  expressionDoi: EDOI.fromValidatedString(crossrefExpression.message.DOI),
-  version: parseInt(crossrefExpression.message.DOI.substring(crossrefExpression.message.DOI.length - 1), 10),
+const toArticleVersion = (crossrefExpression: CrossrefWork): PaperExpression => ({
+  expressionDoi: EDOI.fromValidatedString(crossrefExpression.DOI),
+  version: parseInt(crossrefExpression.DOI.substring(crossrefExpression.DOI.length - 1), 10),
   publishedAt: new Date(
-    crossrefExpression.message.posted['date-parts'][0][0],
-    crossrefExpression.message.posted['date-parts'][0][1] - 1,
-    crossrefExpression.message.posted['date-parts'][0][2],
+    crossrefExpression.posted['date-parts'][0][0],
+    crossrefExpression.posted['date-parts'][0][1] - 1,
+    crossrefExpression.posted['date-parts'][0][2],
   ),
-  publisherHtmlUrl: new URL(crossrefExpression.message.resource.primary.URL),
+  publisherHtmlUrl: new URL(crossrefExpression.resource.primary.URL),
 });
 
-const extractDoisOfRelatedExpressions = (response: CrossrefIndividualWorkResponse) => [
+const extractDoisOfRelatedExpressions = (work: CrossrefWork) => [
   ...pipe(
-    response.message.relation['is-version-of'] ?? [],
+    work.relation['is-version-of'] ?? [],
     RA.map((relation) => relation.id.toLowerCase()),
   ),
   ...pipe(
-    response.message.relation['has-version'] ?? [],
+    work.relation['has-version'] ?? [],
     RA.map((relation) => relation.id.toLowerCase()),
   ),
 ];
 
 type State = {
   queue: ReadonlyArray<string>,
-  collectedWorks: Map<string, CrossrefIndividualWorkResponse>,
+  collectedWorks: Map<string, CrossrefWork>,
 };
 
 const fetchAllQueuedWorksAndAddToCollector = (
@@ -107,7 +104,7 @@ const fetchAllQueuedWorksAndAddToCollector = (
     RA.reduce(
       state.collectedWorks,
       (collectedWorks, newlyFetchedWork) => {
-        collectedWorks.set(newlyFetchedWork.DOI.toLowerCase(), { message: newlyFetchedWork });
+        collectedWorks.set(newlyFetchedWork.DOI.toLowerCase(), newlyFetchedWork);
         return collectedWorks;
       },
     ),
@@ -137,7 +134,7 @@ const walkRelationGraph = (
   doi: string,
 ) => (
   state: State,
-): TE.TaskEither<unknown, ReadonlyArray<CrossrefIndividualWorkResponse>> => pipe(
+): TE.TaskEither<unknown, ReadonlyArray<CrossrefWork>> => pipe(
   state,
   fetchAllQueuedWorksAndAddToCollector(queryCrossrefService, logger),
   TE.map(enqueueAllRelatedDoisNotYetCollected),
