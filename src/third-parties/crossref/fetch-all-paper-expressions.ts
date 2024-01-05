@@ -14,6 +14,14 @@ import { QueryExternalService } from '../query-external-service';
 import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
 
+const logCodecFailure = (logger: Logger, doi: string, source: string) => (errors: t.Errors) => {
+  logger('error', `${source} crossref codec failed`, {
+    doi,
+    errors: formatValidationErrors(errors),
+  });
+  return errors;
+};
+
 const crossrefWorkCodec = t.strict({
   DOI: t.string,
   posted: t.strict({
@@ -55,13 +63,7 @@ const fetchIndividualWork = (
   TE.chainEitherKW((response) => pipe(
     response,
     crossrefIndividualWorkResponseCodec.decode,
-    E.mapLeft((errors) => {
-      logger('error', 'fetchIndividualWork crossref codec failed', {
-        doi,
-        errors: formatValidationErrors(errors),
-      });
-      return errors;
-    }),
+    E.mapLeft(logCodecFailure(logger, doi, 'fetchIndividualWork')),
     E.map((decodedResponse) => decodedResponse.message),
   )),
 );
@@ -112,13 +114,7 @@ const fetchWorksThatPointToIndividualWorks = (
     TE.chainEitherKW((response) => pipe(
       response,
       crossrefMultipleWorksResponseCodec.decode,
-      E.mapLeft((errors) => {
-        logger('error', 'fetchWorksThatPointToIndividualWorks crossref codec failed', {
-          doi,
-          errors: formatValidationErrors(errors),
-        });
-        return errors;
-      }),
+      E.mapLeft(logCodecFailure(logger, doi, 'fetchWorksThatPointToIndividualWorks')),
     )),
   )),
   TE.map((responses) => pipe(
