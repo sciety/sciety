@@ -14,6 +14,7 @@ import { QueryExternalService } from '../../query-external-service';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
 import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
+import { State } from './state';
 
 const logCodecFailure = (logger: Logger, doi: string, source: string) => (errors: t.Errors) => {
   logger('error', `${source} crossref codec failed`, {
@@ -66,11 +67,6 @@ const extractDoisOfRelatedExpressions = (work: CrossrefWork) => [
     RA.map((relation) => relation.id.toLowerCase()),
   ),
 ];
-
-type State = {
-  queue: ReadonlyArray<string>,
-  collectedWorks: Map<string, CrossrefWork>,
-};
 
 const crossrefMultipleWorksResponseCodec = t.strict({
   message: t.strict({
