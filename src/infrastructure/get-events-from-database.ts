@@ -36,10 +36,12 @@ const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): Domai
     });
   }
   if (event.type === 'EvaluationPublicationRecorded') {
-    return {
-      ...event,
-      expressionDoi: EDOI.fromValidatedString(event.articleId.value),
-    };
+    if ('articleId' in event) {
+      return {
+        ...event,
+        expressionDoi: EDOI.fromValidatedString(event.articleId.value),
+      };
+    }
   }
   if (event.type === 'CurationStatementRecorded') {
     return {
