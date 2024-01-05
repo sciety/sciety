@@ -25,11 +25,11 @@ const crossrefWorkCodec = t.strict({
     }),
   }),
   relation: t.partial({
-    'has-version': t.array(t.strict({
+    'has-version': t.readonlyArray(t.strict({
       'id-type': t.literal('doi'),
       id: t.string,
     })),
-    'is-version-of': t.array(t.strict({
+    'is-version-of': t.readonlyArray(t.strict({
       'id-type': t.literal('doi'),
       id: t.string,
     })),
