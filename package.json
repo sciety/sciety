@@ -92,7 +92,7 @@
     "ts-jest": "^29.1.1",
     "ts-node-dev": "^2.0.0",
     "ts-unused-exports": "^10.0.1",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "build": "run-p --aggregate-output --continue-on-error --print-label --silent build:**",
