@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import { formatValidationErrors } from 'io-ts-reporters';
 import * as t from 'io-ts';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as S from 'fp-ts/string';
@@ -15,14 +14,7 @@ import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
 import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
 import { State } from './state';
-
-const logCodecFailure = (logger: Logger, doi: string, source: string) => (errors: t.Errors) => {
-  logger('error', `${source} crossref codec failed`, {
-    doi,
-    errors: formatValidationErrors(errors),
-  });
-  return errors;
-};
+import { logCodecFailure } from './log-codec-failure';
 
 const crossrefIndividualWorkResponseCodec = t.strict({
   message: crossrefWorkCodec,
