@@ -93,6 +93,8 @@ type State = {
   collectedWorks: Map<string, CrossrefWork>,
 };
 
+const fetchWorksThatPointToIndividualWorks = () => TE.right([]);
+
 const fetchAllQueuedWorksAndAddToCollector = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
@@ -100,7 +102,7 @@ const fetchAllQueuedWorksAndAddToCollector = (
   state.queue,
   TE.traverseArray(fetchIndividualWork(queryCrossrefService, logger)),
   TE.chainW((individualWorks) => pipe(
-    TE.right([]),
+    fetchWorksThatPointToIndividualWorks(),
     TE.map((worksThatPointToIndividualWorks) => [...individualWorks, ...worksThatPointToIndividualWorks]),
   )),
   TE.map((newlyFetchedWorks) => pipe(
