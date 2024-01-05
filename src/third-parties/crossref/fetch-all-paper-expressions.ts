@@ -93,7 +93,15 @@ type State = {
   collectedWorks: Map<string, CrossrefWork>,
 };
 
-const fetchWorksThatPointToIndividualWorks = () => TE.right([]);
+const fetchWorksThatPointToIndividualWorks = (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  queryCrossrefService: QueryCrossrefService,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  logger: Logger,
+) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  queue: ReadonlyArray<string>,
+): TE.TaskEither<DE.DataError | t.Errors, ReadonlyArray<CrossrefWork>> => TE.right([]);
 
 const fetchAllQueuedWorksAndAddToCollector = (
   queryCrossrefService: QueryCrossrefService,
@@ -102,7 +110,8 @@ const fetchAllQueuedWorksAndAddToCollector = (
   state.queue,
   TE.traverseArray(fetchIndividualWork(queryCrossrefService, logger)),
   TE.chainW((individualWorks) => pipe(
-    fetchWorksThatPointToIndividualWorks(),
+    state.queue,
+    fetchWorksThatPointToIndividualWorks(queryCrossrefService, logger),
     TE.map((worksThatPointToIndividualWorks) => [...individualWorks, ...worksThatPointToIndividualWorks]),
   )),
   TE.map((newlyFetchedWorks) => pipe(
