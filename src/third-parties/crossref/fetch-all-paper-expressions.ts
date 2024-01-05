@@ -66,15 +66,15 @@ const fetchIndividualWork = (
   )),
 );
 
-const toArticleVersion = (crossrefExpression: CrossrefWork): PaperExpression => ({
-  expressionDoi: EDOI.fromValidatedString(crossrefExpression.DOI),
-  version: parseInt(crossrefExpression.DOI.substring(crossrefExpression.DOI.length - 1), 10),
+const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
+  expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
+  version: parseInt(crossrefWork.DOI.substring(crossrefWork.DOI.length - 1), 10),
   publishedAt: new Date(
-    crossrefExpression.posted['date-parts'][0][0],
-    crossrefExpression.posted['date-parts'][0][1] - 1,
-    crossrefExpression.posted['date-parts'][0][2],
+    crossrefWork.posted['date-parts'][0][0],
+    crossrefWork.posted['date-parts'][0][1] - 1,
+    crossrefWork.posted['date-parts'][0][2],
   ),
-  publisherHtmlUrl: new URL(crossrefExpression.resource.primary.URL),
+  publisherHtmlUrl: new URL(crossrefWork.resource.primary.URL),
 });
 
 const extractDoisOfRelatedExpressions = (work: CrossrefWork) => [
@@ -209,6 +209,6 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   },
   walkRelationGraph(queryCrossrefService, logger, doi),
   TO.fromTaskEither,
-  TO.map(RA.map(toArticleVersion)),
+  TO.map(RA.map(toPaperExpression)),
   TO.chainOptionK(RNEA.fromReadonlyArray),
 );
