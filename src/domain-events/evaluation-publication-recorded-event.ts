@@ -38,7 +38,6 @@ export const evaluationPublicationRecordedEventV2Codec = t.type({
   date: tt.DateFromISOString,
   groupId: GroupIdFromString,
   evaluationLocator: evaluationLocatorCodec,
-  articleId: articleIdCodec,
   expressionDoi: expressionDoiCodec,
   publishedAt: tt.DateFromISOString,
   authors: evaluationAuthorsCodec,

@@ -53,13 +53,13 @@ const addEventToActivities = (
   activities: Map<string, ArticleActivityDetails>,
   event: EventOfType<'EvaluationPublicationRecorded'>,
 ) => pipe(
-  activities.get(event.articleId.value),
+  activities.get(event.expressionDoi),
   O.fromNullable,
   O.fold(
     () => eventToActivityDetails(event, groupIds),
     (existingActivityDetails) => mergeActivities(existingActivityDetails, eventToActivityDetails(event, groupIds)),
   ),
-  (activity) => activities.set(event.articleId.value, activity),
+  (activity) => activities.set(event.expressionDoi, activity),
 );
 
 const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{

@@ -5,6 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { ArticleId } from '../../types/article-id';
 
 type RecordedEvaluationsForArticle = Array<RecordedEvaluation>;
 
@@ -71,10 +72,10 @@ const removeFromAllIndexes = (evaluationLocator: EvaluationLocator, readmodel: R
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
+    const evaluationsForThisArticle = readmodel.byArticleId.get(event.expressionDoi) ?? [];
     if (!hasAlreadyBeenRecorded(event.evaluationLocator, evaluationsForThisArticle)) {
       const recordedEvaluation: RecordedEvaluation = {
-        articleId: event.articleId,
+        articleId: new ArticleId(event.expressionDoi),
         evaluationLocator: event.evaluationLocator,
         groupId: event.groupId,
         recordedAt: event.date,

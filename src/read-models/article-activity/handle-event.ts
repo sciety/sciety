@@ -63,18 +63,18 @@ const handleArticleAddedToListEvent = (readmodel: ReadModel, event: EventOfType<
 
 const handleEvaluationPublicationRecordedEvent = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
   pipe(
-    readmodel.get(event.articleId.value),
+    readmodel.get(event.expressionDoi),
     O.fromNullable,
     O.fold(
-      () => readmodel.set(event.articleId.value, {
-        articleId: event.articleId,
+      () => readmodel.set(event.expressionDoi, {
+        articleId: new ArticleId(event.expressionDoi),
         evaluationStates: [{
           evaluationLocator: event.evaluationLocator,
           publishedAt: event.publishedAt,
         }],
         lists: new Set(),
       }),
-      (entry) => readmodel.set(event.articleId.value, {
+      (entry) => readmodel.set(event.expressionDoi, {
         ...entry,
         evaluationStates: addToEvaluationStates(entry.evaluationStates, event),
       }),

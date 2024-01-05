@@ -20,7 +20,6 @@ const createEvaluationPublicationRecordedEvent = (command: RecordEvaluationPubli
   'EvaluationPublicationRecorded',
 )({
   groupId: command.groupId,
-  articleId: command.articleId,
   expressionDoi: EDOI.fromValidatedString(command.articleId.value),
   evaluationLocator: command.evaluationLocator,
   authors: command.authors,
