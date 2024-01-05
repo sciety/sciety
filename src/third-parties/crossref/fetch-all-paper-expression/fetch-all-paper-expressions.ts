@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as S from 'fp-ts/string';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -14,6 +13,7 @@ import { State } from './state';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { fetchIndividualWork } from './fetch-individual-work';
 import { QueryExternalService } from '../../query-external-service';
+import { enqueueAllRelatedDoisNotYetCollected } from './enqueue-all-related-dois-not-yet-collected';
 
 type QueryCrossrefService = ReturnType<QueryExternalService>;
 
@@ -27,17 +27,6 @@ const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
   ),
   publisherHtmlUrl: new URL(crossrefWork.resource.primary.URL),
 });
-
-const extractDoisOfRelatedExpressions = (work: CrossrefWork) => [
-  ...pipe(
-    work.relation['is-version-of'] ?? [],
-    RA.map((relation) => relation.id.toLowerCase()),
-  ),
-  ...pipe(
-    work.relation['has-version'] ?? [],
-    RA.map((relation) => relation.id.toLowerCase()),
-  ),
-];
 
 const fetchAllQueuedWorksAndAddToCollector = (
   queryCrossrefService: QueryCrossrefService,
@@ -64,19 +53,6 @@ const fetchAllQueuedWorksAndAddToCollector = (
       collectedWorks,
     }),
   )),
-);
-
-const hasNotBeenCollected = (state: State) => (doi: string) => !state.collectedWorks.has(doi);
-
-export const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pipe(
-  Array.from(state.collectedWorks.values()),
-  RA.chain(extractDoisOfRelatedExpressions),
-  RA.uniq(S.Eq),
-  RA.filter(hasNotBeenCollected(state)),
-  (dois) => ({
-    queue: dois,
-    collectedWorks: state.collectedWorks,
-  }),
 );
 
 const walkRelationGraph = (
