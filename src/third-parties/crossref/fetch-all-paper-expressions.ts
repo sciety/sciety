@@ -99,6 +99,10 @@ const fetchAllQueuedWorksAndAddToCollector = (
 ) => (state: State) => pipe(
   state.queue,
   TE.traverseArray(fetchIndividualWork(queryCrossrefService, logger)),
+  TE.chainW((individualWorks) => pipe(
+    TE.right([]),
+    TE.map((worksThatPointToIndividualWorks) => [...individualWorks, ...worksThatPointToIndividualWorks]),
+  )),
   TE.map((newlyFetchedWorks) => pipe(
     newlyFetchedWorks,
     RA.reduce(
