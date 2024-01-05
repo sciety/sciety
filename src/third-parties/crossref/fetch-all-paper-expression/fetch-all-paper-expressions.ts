@@ -12,10 +12,8 @@ import { CrossrefWork } from './crossref-work';
 import { State } from './state';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { fetchIndividualWork } from './fetch-individual-work';
-import { QueryExternalService } from '../../query-external-service';
 import { enqueueAllRelatedDoisNotYetCollected } from './enqueue-all-related-dois-not-yet-collected';
-
-type QueryCrossrefService = ReturnType<QueryExternalService>;
+import { QueryCrossrefService } from './query-crossref-service';
 
 const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),

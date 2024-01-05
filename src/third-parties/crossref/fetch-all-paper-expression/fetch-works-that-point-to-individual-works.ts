@@ -7,15 +7,13 @@ import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
 import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import { logCodecFailure } from './log-codec-failure';
-import { QueryExternalService } from '../../query-external-service';
+import { QueryCrossrefService } from './query-crossref-service';
 
 const crossrefMultipleWorksResponseCodec = t.strict({
   message: t.strict({
     items: t.readonlyArray(crossrefWorkCodec),
   }),
 });
-
-type QueryCrossrefService = ReturnType<QueryExternalService>;
 
 export const fetchWorksThatPointToIndividualWorks = (
   queryCrossrefService: QueryCrossrefService,
