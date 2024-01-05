@@ -2,6 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import * as EDOI from '../../../types/expression-doi';
 import { evaluationResourceError } from './evaluation-resource-error';
 import { RecordEvaluationPublicationCommand } from '../../commands';
 import {
@@ -20,6 +21,7 @@ const createEvaluationPublicationRecordedEvent = (command: RecordEvaluationPubli
 )({
   groupId: command.groupId,
   articleId: command.articleId,
+  expressionDoi: EDOI.fromValidatedString(command.articleId.value),
   evaluationLocator: command.evaluationLocator,
   authors: command.authors,
   publishedAt: command.publishedAt,

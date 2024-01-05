@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { formatValidationErrors } from 'io-ts-reporters';
+import * as EDOI from '../types/expression-doi';
 import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
 import { Logger } from './logger';
 import {
@@ -29,9 +30,15 @@ const waitForTableToExist = async (pool: Pool, logger: Logger) => {
 
 const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): DomainEvent => {
   if (event.type === 'EvaluationRecorded') {
-    return {
+    return upgradeLegacyEventIfNecessary({
       ...event,
       type: 'EvaluationPublicationRecorded' as const,
+    });
+  }
+  if (event.type === 'EvaluationPublicationRecorded') {
+    return {
+      ...event,
+      expressionDoi: EDOI.fromValidatedString(event.articleId.value),
     };
   }
   if (event.type === 'CurationStatementRecorded') {

@@ -48,6 +48,7 @@ const legacyDomainEventCodec = t.union([
   evaluationRecordedEventCodec,
   curationStatementRecordedEventCodec,
   annotationCreatedEventCodec,
+  evaluationPublicationRecordedEventV1Codec,
 ], 'type');
 
 export const domainEventCodec = t.union([
@@ -55,7 +56,6 @@ export const domainEventCodec = t.union([
   articleInListAnnotatedEventCodec,
   articleRemovedFromListEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
-  evaluationPublicationRecordedEventV1Codec,
   evaluationPublicationRecordedEventV2Codec,
   evaluationRemovalRecordedEventCodec,
   evaluationUpdatedEventCodec,
