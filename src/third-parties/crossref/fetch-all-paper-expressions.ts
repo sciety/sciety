@@ -93,6 +93,12 @@ type State = {
   collectedWorks: Map<string, CrossrefWork>,
 };
 
+const crossrefMultipleWorksResponseCodec = t.strict({
+  message: t.strict({
+    items: t.readonlyArray(crossrefWorkCodec),
+  }),
+});
+
 const fetchWorksThatPointToIndividualWorks = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
@@ -103,6 +109,17 @@ const fetchWorksThatPointToIndividualWorks = (
   TE.traverseArray((doi) => pipe(
     `https://api.crossref.org/works?filter=relation.object:${doi},type:posted-content`,
     queryCrossrefService,
+    TE.chainEitherKW((response) => pipe(
+      response,
+      crossrefMultipleWorksResponseCodec.decode,
+      E.mapLeft((errors) => {
+        logger('error', 'fetchWorksThatPointToIndividualWorks crossref codec failed', {
+          doi,
+          errors: formatValidationErrors(errors),
+        });
+        return errors;
+      }),
+    )),
   )),
   TE.map((responses) => pipe(
     logger('debug', 'Response from Crossref works API', { responses }),
