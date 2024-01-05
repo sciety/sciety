@@ -36,6 +36,9 @@ const crossrefWorkCodec = t.strict({
   }),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type CrossrefWork = t.TypeOf<typeof crossrefWorkCodec>;
+
 const crossrefIndividualWorkResponseCodec = t.strict({
   message: crossrefWorkCodec,
 });
