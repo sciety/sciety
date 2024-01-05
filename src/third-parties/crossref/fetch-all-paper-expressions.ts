@@ -121,10 +121,6 @@ const fetchWorksThatPointToIndividualWorks = (
       }),
     )),
   )),
-  TE.map((responses) => {
-    logger('debug', 'Response from Crossref works API', { responses });
-    return responses;
-  }),
   TE.map((responses) => pipe(
     responses,
     // eslint-disable-next-line fp-ts/prefer-chain
