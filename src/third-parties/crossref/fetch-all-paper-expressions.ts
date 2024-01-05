@@ -52,7 +52,7 @@ const fetchIndividualWork = (
   logger: Logger,
 ) => (
   doi: string,
-): TE.TaskEither<DE.DataError | t.Errors, CrossrefIndividualWorkResponse> => pipe(
+): TE.TaskEither<DE.DataError | t.Errors, CrossrefWork> => pipe(
   `https://api.crossref.org/works/${doi}`,
   queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
@@ -65,6 +65,7 @@ const fetchIndividualWork = (
       });
       return errors;
     }),
+    E.map((decodedResponse) => decodedResponse.message),
   )),
 );
 
@@ -106,7 +107,7 @@ const fetchAllQueuedWorksAndAddToCollector = (
     RA.reduce(
       state.collectedWorks,
       (collectedWorks, newlyFetchedWork) => {
-        collectedWorks.set(newlyFetchedWork.message.DOI.toLowerCase(), newlyFetchedWork);
+        collectedWorks.set(newlyFetchedWork.DOI.toLowerCase(), { message: newlyFetchedWork });
         return collectedWorks;
       },
     ),
