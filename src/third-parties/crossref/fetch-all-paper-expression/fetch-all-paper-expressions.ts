@@ -1,43 +1,21 @@
 import { URL } from 'url';
-import * as t from 'io-ts';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as S from 'fp-ts/string';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
-import * as E from 'fp-ts/Either';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../../types/expression-doi';
 import { PaperExpression } from '../../../types/paper-expression';
-import { QueryExternalService } from '../../query-external-service';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
-import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
+import { CrossrefWork } from './crossref-work';
 import { State } from './state';
-import { logCodecFailure } from './log-codec-failure';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
-
-const crossrefIndividualWorkResponseCodec = t.strict({
-  message: crossrefWorkCodec,
-});
+import { fetchIndividualWork } from './fetch-individual-work';
+import { QueryExternalService } from '../../query-external-service';
 
 type QueryCrossrefService = ReturnType<QueryExternalService>;
-
-const fetchIndividualWork = (
-  queryCrossrefService: QueryCrossrefService,
-  logger: Logger,
-) => (
-  doi: string,
-): TE.TaskEither<DE.DataError | t.Errors, CrossrefWork> => pipe(
-  `https://api.crossref.org/works/${doi}`,
-  queryCrossrefService,
-  TE.chainEitherKW((response) => pipe(
-    response,
-    crossrefIndividualWorkResponseCodec.decode,
-    E.mapLeft(logCodecFailure(logger, doi, 'fetchIndividualWork')),
-    E.map((decodedResponse) => decodedResponse.message),
-  )),
-);
 
 const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
