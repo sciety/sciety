@@ -44,11 +44,13 @@ describe('get-article-version-events-from-biorxiv', () => {
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.biorxiv.org/content/${expressionDoi}v2`),
           publishedAt: new Date('2020-01-02'),
+          server: 'biorxiv',
         });
         expect(events[1]).toStrictEqual({
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.biorxiv.org/content/${expressionDoi}v1`),
           publishedAt: new Date('2019-12-31'),
+          server: 'biorxiv',
         });
       });
     });
@@ -84,11 +86,13 @@ describe('get-article-version-events-from-biorxiv', () => {
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.medrxiv.org/content/${expressionDoi}v2`),
           publishedAt: new Date('2020-01-02'),
+          server: 'medrxiv',
         });
         expect(events[1]).toStrictEqual({
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.medrxiv.org/content/${expressionDoi}v1`),
           publishedAt: new Date('2019-12-31'),
+          server: 'medrxiv',
         });
       });
     });

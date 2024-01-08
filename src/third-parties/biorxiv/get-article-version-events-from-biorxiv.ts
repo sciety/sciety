@@ -23,12 +23,13 @@ type GetArticleVersionEventsFromBiorxiv = (
   server: SupportedArticleServer,
 ) => T.Task<O.Option<RNEA.ReadonlyNonEmptyArray<PaperExpression>>>;
 
-const mapResponse = (doi: ArticleId, server: SupportedArticleServer) => flow(
+const mapResponse = (expressionsDoi: ArticleId, expressionsServer: SupportedArticleServer) => flow(
   (response: ResponseWithVersions) => response.collection,
   RNEA.map(({ version, date }) => ({
-    expressionDoi: EDOI.fromValidatedString(doi.value),
-    publisherHtmlUrl: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
+    expressionDoi: EDOI.fromValidatedString(expressionsDoi.value),
+    publisherHtmlUrl: new URL(`https://www.${expressionsServer}.org/content/${expressionsDoi.value}v${version}`),
     publishedAt: date,
+    server: expressionsServer,
   })),
 );
 
