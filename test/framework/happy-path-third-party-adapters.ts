@@ -35,6 +35,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
       publisherHtmlUrl: new URL(arbitraryUri()),
       publishedAt: arbitraryDate(),
       version: 1,
+      server: O.some(arbitraryArticleServer()),
     },
   ]),
   getArticleSubjectArea: () => TE.right({ value: arbitraryString(), server: arbitraryArticleServer() }),

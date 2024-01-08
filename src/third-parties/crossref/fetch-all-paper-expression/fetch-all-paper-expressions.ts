@@ -1,5 +1,6 @@
 import { URL } from 'url';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
@@ -23,6 +24,7 @@ const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
     crossrefWork.posted['date-parts'][0][2],
   ),
   publisherHtmlUrl: new URL(crossrefWork.resource.primary.URL),
+  server: O.none,
 });
 
 const fetchAllQueuedWorksAndAddToCollector = (

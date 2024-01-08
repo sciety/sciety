@@ -12,6 +12,7 @@ import { arbitraryArticleDetails } from '../../third-parties/external-queries.he
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryNumber, arbitraryUri } from '../../helpers';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { arbitraryArticleServer } from '../../types/article-server.helper';
 
 const titleText = 'Accuracy of predicting chemical body composition of growing pigs using dual-energy X-ray absorptiometry';
 
@@ -42,6 +43,7 @@ describe('fetch-article-details', () => {
             publisherHtmlUrl: new URL(arbitraryUri()),
             publishedAt: latestDate,
             version: arbitraryNumber(1, 2),
+            server: O.some(arbitraryArticleServer()),
           }]),
         }),
       )();

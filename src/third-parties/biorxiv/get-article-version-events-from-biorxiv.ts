@@ -29,7 +29,7 @@ const mapResponse = (expressionsDoi: ArticleId, expressionsServer: SupportedArti
     expressionDoi: EDOI.fromValidatedString(expressionsDoi.value),
     publisherHtmlUrl: new URL(`https://www.${expressionsServer}.org/content/${expressionsDoi.value}v${version}`),
     publishedAt: date,
-    server: expressionsServer,
+    server: O.some(expressionsServer),
   })),
 );
 
