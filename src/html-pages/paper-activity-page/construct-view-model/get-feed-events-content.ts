@@ -7,18 +7,18 @@ import { EvaluationEvent, evaluationToFeedItem } from './evaluation-to-feed-item
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../types/expression-doi';
 
-export type ArticleVersionEvent = {
-  type: 'article-version',
+export type PaperExpressionEvent = {
+  type: 'paper-expression',
   source: URL,
   publishedAt: Date,
   doi: ExpressionDoi,
 };
 
-export type FeedEvent = EvaluationEvent | ArticleVersionEvent;
+export type FeedEvent = EvaluationEvent | PaperExpressionEvent;
 
 const articleVersionToFeedItem = (
   server: ArticleServer,
-  feedEvent: ArticleVersionEvent,
+  feedEvent: PaperExpressionEvent,
 ) => (
   T.of({ ...feedEvent, server })
 );
@@ -30,7 +30,7 @@ type GetFeedEventsContent = (dependencies: Dependencies, server: ArticleServer)
 export const getFeedEventsContent: GetFeedEventsContent = (dependencies, server) => (feedEvents) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
-      case 'article-version':
+      case 'paper-expression':
         return articleVersionToFeedItem(server, feedEvent);
       case 'evaluation':
         return evaluationToFeedItem(dependencies, feedEvent);

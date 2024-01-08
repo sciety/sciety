@@ -12,7 +12,7 @@ type HandleArticleVersionErrors = (server: ArticleServer)
 export const handleArticleVersionErrors: HandleArticleVersionErrors = (server) => (items) => pipe(
   items,
   E.fromPredicate(
-    RA.some((feedItem) => feedItem.type === 'article-version'),
+    RA.some((feedItem) => feedItem.type === 'paper-expression'),
     (array) => RA.snoc(array, { type: 'article-version-error', server }),
   ),
   E.toUnion,

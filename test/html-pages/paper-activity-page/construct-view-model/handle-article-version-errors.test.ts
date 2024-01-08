@@ -8,7 +8,7 @@ describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {
     const inputItems: ReadonlyArray<FeedItem> = [
       {
-        type: 'article-version',
+        type: 'paper-expression',
         publishedAt: new Date(),
         source: new URL('https://example.com'),
         server: 'biorxiv',

@@ -26,8 +26,8 @@ export type EvaluationFeedItem = {
   fullTextLanguageCode: O.Option<LanguageCode>,
 };
 
-export type ArticleVersionFeedItem = {
-  type: 'article-version',
+export type PaperExpressionFeedItem = {
+  type: 'paper-expression',
   source: URL,
   publishedAt: Date,
   server: ArticleServer,
@@ -41,7 +41,7 @@ type ArticleVersionErrorFeedItem = {
 
 export type FeedItem =
   | EvaluationFeedItem
-  | ArticleVersionFeedItem
+  | PaperExpressionFeedItem
   | ArticleVersionErrorFeedItem;
 
 type ListSummary = {

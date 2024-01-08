@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
-import { ArticleVersionEvent, FeedEvent, getFeedEventsContent } from './get-feed-events-content';
+import { PaperExpressionEvent, FeedEvent, getFeedEventsContent } from './get-feed-events-content';
 import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
@@ -27,8 +27,8 @@ type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
 => (expressionDoi: ExpressionDoi, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
-const toArticleVersionEvent = (paperExpression: PaperExpression): ArticleVersionEvent => ({
-  type: 'article-version' as const,
+const toArticleVersionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
+  type: 'paper-expression' as const,
   ...paperExpression,
   source: paperExpression.publisherHtmlUrl,
   doi: paperExpression.expressionDoi,

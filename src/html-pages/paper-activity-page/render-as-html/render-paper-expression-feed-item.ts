@@ -1,11 +1,11 @@
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ArticleVersionFeedItem } from '../view-model';
+import { PaperExpressionFeedItem } from '../view-model';
 import { articleServers } from '../../../types/article-server';
 
-type RenderArticleVersionFeedItem = (feedItem: ArticleVersionFeedItem) => HtmlFragment;
+type RenderPaperExpressionFeedItem = (feedItem: PaperExpressionFeedItem) => HtmlFragment;
 
-export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedItem) => toHtmlFragment(`
+export const renderPaperExpressionFeedItem: RenderPaperExpressionFeedItem = (feedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
       <img class="activity-feed__item__avatar" src="${articleServers[feedItem.server].avatarUrl}" alt="">

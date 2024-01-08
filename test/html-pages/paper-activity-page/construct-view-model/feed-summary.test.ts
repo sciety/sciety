@@ -4,11 +4,11 @@ import { pipe } from 'fp-ts/function';
 import { feedSummary } from '../../../../src/html-pages/paper-activity-page/construct-view-model/feed-summary';
 import { arbitraryDate, arbitraryUri } from '../../../helpers';
 import * as RFI from '../evaluation-feed-item.helper';
-import { ArticleVersionFeedItem } from '../../../../src/html-pages/paper-activity-page/view-model';
+import { PaperExpressionFeedItem } from '../../../../src/html-pages/paper-activity-page/view-model';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
-const arbitraryArticleVersionFeedItem = (publishedAt: Date = arbitraryDate()): ArticleVersionFeedItem => ({
-  type: 'article-version' as const,
+const arbitraryPaperExpressionFeedItem = (publishedAt: Date = arbitraryDate()): PaperExpressionFeedItem => ({
+  type: 'paper-expression' as const,
   source: new URL(arbitraryUri()),
   publishedAt,
   server: 'biorxiv' as const,
@@ -27,7 +27,7 @@ describe('article-meta-tag-content', () => {
 
   it('ignores non-evaluation feed items', () => {
     const result = feedSummary([
-      arbitraryArticleVersionFeedItem(),
+      arbitraryPaperExpressionFeedItem(),
     ]);
 
     expect(result.evaluationCount).toBe(0);
@@ -36,8 +36,8 @@ describe('article-meta-tag-content', () => {
   it('returns a latest version', () => {
     const date = arbitraryDate();
     const result = feedSummary([
-      arbitraryArticleVersionFeedItem(date),
-      arbitraryArticleVersionFeedItem(new Date('01-01-1970')),
+      arbitraryPaperExpressionFeedItem(date),
+      arbitraryPaperExpressionFeedItem(new Date('01-01-1970')),
     ]);
 
     expect(result.latestVersion).toStrictEqual(O.some(date));
