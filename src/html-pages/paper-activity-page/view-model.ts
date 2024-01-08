@@ -30,7 +30,6 @@ export type ArticleVersionFeedItem = {
   type: 'article-version',
   source: URL,
   publishedAt: Date,
-  version: number,
   server: ArticleServer,
   doi: ExpressionDoi,
 };

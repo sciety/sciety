@@ -5,5 +5,4 @@ export type PaperExpression = {
   expressionDoi: ExpressionDoi,
   publisherHtmlUrl: URL,
   publishedAt: Date,
-  version: number,
 };

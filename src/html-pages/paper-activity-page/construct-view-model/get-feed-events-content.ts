@@ -11,7 +11,6 @@ export type ArticleVersionEvent = {
   type: 'article-version',
   source: URL,
   publishedAt: Date,
-  version: number,
   doi: ExpressionDoi,
 };
 

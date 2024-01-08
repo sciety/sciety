@@ -9,7 +9,6 @@ describe('handle-article-version-errors', () => {
     const inputItems: ReadonlyArray<FeedItem> = [
       {
         type: 'article-version',
-        version: 1,
         publishedAt: new Date(),
         source: new URL('https://example.com'),
         server: 'biorxiv',

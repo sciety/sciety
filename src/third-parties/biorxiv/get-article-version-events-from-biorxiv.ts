@@ -29,7 +29,6 @@ const mapResponse = (doi: ArticleId, server: SupportedArticleServer) => flow(
     expressionDoi: EDOI.fromValidatedString(doi.value),
     publisherHtmlUrl: new URL(`https://www.${server}.org/content/${doi.value}v${version}`),
     publishedAt: date,
-    version,
   })),
 );
 

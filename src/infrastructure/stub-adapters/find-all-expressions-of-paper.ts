@@ -10,12 +10,10 @@ export const findAllExpressionsOfPaper: ExternalQueries['findAllExpressionsOfPap
     expressionDoi,
     publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.08.20.504530v1'),
     publishedAt: new Date('1970'),
-    version: 1,
   },
   {
     expressionDoi,
     publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.08.20.504530v2'),
     publishedAt: new Date('1980'),
-    version: 2,
   },
 ] as RNEA.ReadonlyNonEmptyArray<PaperExpression>));

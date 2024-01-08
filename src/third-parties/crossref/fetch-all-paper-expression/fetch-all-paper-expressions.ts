@@ -17,7 +17,6 @@ import { QueryCrossrefService } from './query-crossref-service';
 
 const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
-  version: parseInt(crossrefWork.DOI.substring(crossrefWork.DOI.length - 1), 10),
   publishedAt: new Date(
     crossrefWork.posted['date-parts'][0][0],
     crossrefWork.posted['date-parts'][0][1] - 1,
