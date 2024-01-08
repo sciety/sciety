@@ -31,6 +31,7 @@ const toArticleVersionEvent = (paperExpression: PaperExpression): ArticleVersion
   type: 'article-version' as const,
   ...paperExpression,
   source: paperExpression.publisherHtmlUrl,
+  doi: paperExpression.expressionDoi,
 });
 
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (

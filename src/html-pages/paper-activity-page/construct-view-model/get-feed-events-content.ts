@@ -5,12 +5,14 @@ import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
 import { EvaluationEvent, evaluationToFeedItem } from './evaluation-to-feed-item';
 import { Dependencies } from './dependencies';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
 export type ArticleVersionEvent = {
   type: 'article-version',
   source: URL,
   publishedAt: Date,
   version: number,
+  doi: ExpressionDoi,
 };
 
 export type FeedEvent = EvaluationEvent | ArticleVersionEvent;

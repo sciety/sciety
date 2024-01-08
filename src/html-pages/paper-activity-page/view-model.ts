@@ -12,6 +12,7 @@ import { PaperActivitySummaryCardViewModel } from '../../shared-components/paper
 import { LanguageCode } from '../../shared-components/lang-attribute';
 import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
 import { CurationStatementViewModel } from '../../shared-components/curation-statements';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 export type EvaluationFeedItem = {
   type: 'evaluation',
@@ -31,6 +32,7 @@ export type ArticleVersionFeedItem = {
   publishedAt: Date,
   version: number,
   server: ArticleServer,
+  doi: ExpressionDoi,
 };
 
 type ArticleVersionErrorFeedItem = {

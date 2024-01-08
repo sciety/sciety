@@ -4,13 +4,16 @@ import { pipe } from 'fp-ts/function';
 import { feedSummary } from '../../../../src/html-pages/paper-activity-page/construct-view-model/feed-summary';
 import { arbitraryDate, arbitraryNumber, arbitraryUri } from '../../../helpers';
 import * as RFI from '../evaluation-feed-item.helper';
+import { ArticleVersionFeedItem } from '../../../../src/html-pages/paper-activity-page/view-model';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
-const arbitraryArticleVersionFeedItem = (publishedAt: Date = arbitraryDate()) => ({
+const arbitraryArticleVersionFeedItem = (publishedAt: Date = arbitraryDate()): ArticleVersionFeedItem => ({
   type: 'article-version' as const,
   source: new URL(arbitraryUri()),
   publishedAt,
   version: arbitraryNumber(1, 10),
   server: 'biorxiv' as const,
+  doi: arbitraryExpressionDoi(),
 });
 
 describe('article-meta-tag-content', () => {

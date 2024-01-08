@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { handleArticleVersionErrors } from '../../../../src/html-pages/paper-activity-page/construct-view-model/handle-article-version-errors';
 import { FeedItem } from '../../../../src/html-pages/paper-activity-page/view-model';
 import * as RFI from '../evaluation-feed-item.helper';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 describe('handle-article-version-errors', () => {
   describe('there are article version events', () => {
@@ -12,6 +13,7 @@ describe('handle-article-version-errors', () => {
         publishedAt: new Date(),
         source: new URL('https://example.com'),
         server: 'biorxiv',
+        doi: arbitraryExpressionDoi(),
       },
     ];
     const feedItems = handleArticleVersionErrors('biorxiv')(inputItems);

@@ -12,7 +12,7 @@ export const renderArticleVersionFeedItem: RenderArticleVersionFeedItem = (feedI
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <a href="${feedItem.source.toString()}">
-            Version ${feedItem.version} published on ${articleServers[feedItem.server].name}
+            Version published to ${feedItem.doi} on ${articleServers[feedItem.server].name}
           </a>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
