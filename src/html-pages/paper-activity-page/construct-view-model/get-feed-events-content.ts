@@ -16,7 +16,7 @@ export type PaperExpressionEvent = {
 
 export type FeedEvent = EvaluationEvent | PaperExpressionEvent;
 
-const articleVersionToFeedItem = (
+const paperExpressionToFeedItem = (
   server: ArticleServer,
   feedEvent: PaperExpressionEvent,
 ) => (
@@ -31,7 +31,7 @@ export const getFeedEventsContent: GetFeedEventsContent = (dependencies, server)
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
       case 'paper-expression':
-        return articleVersionToFeedItem(server, feedEvent);
+        return paperExpressionToFeedItem(server, feedEvent);
       case 'evaluation':
         return evaluationToFeedItem(dependencies, feedEvent);
     }

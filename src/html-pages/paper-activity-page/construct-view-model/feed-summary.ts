@@ -15,7 +15,7 @@ export const feedSummary = (feedItems: ReadonlyArray<FeedItem>): FeedSummary => 
     feedItems,
     RA.filter((item): item is PaperExpressionFeedItem => item.type === 'paper-expression'),
     RA.lookup(0),
-    O.map((articleVersionFeedItem) => articleVersionFeedItem.publishedAt),
+    O.map((paperExpressionFeedItem) => paperExpressionFeedItem.publishedAt),
   ),
   latestActivity: pipe(
     feedItems,

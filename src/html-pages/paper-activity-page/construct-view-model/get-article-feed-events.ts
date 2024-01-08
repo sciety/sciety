@@ -27,7 +27,7 @@ type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
 => (expressionDoi: ExpressionDoi, server: ArticleServer)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
-const toArticleVersionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
+const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
   type: 'paper-expression' as const,
   ...paperExpression,
   source: paperExpression.publisherHtmlUrl,
@@ -56,15 +56,15 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
         type: 'evaluation' as const,
       })),
     ),
-    versions: pipe(
+    expressions: pipe(
       expressionsOfPaper,
       O.matchW(
         constant([]),
-        RNEA.map(toArticleVersionEvent),
+        RNEA.map(toPaperExpressionEvent),
       ),
     ),
   })),
-  T.map((feeds) => [...feeds.evaluations, ...feeds.versions]),
+  T.map((feeds) => [...feeds.evaluations, ...feeds.expressions]),
   T.map(RA.sort(byDateDescending)),
   T.chain(getFeedEventsContent(dependencies, server)),
   T.map(handleArticleVersionErrors(server)),
