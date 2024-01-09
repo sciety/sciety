@@ -14,8 +14,8 @@ import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
 import { CurationStatementViewModel } from '../../shared-components/curation-statements';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-export type EvaluationFeedItem = {
-  type: 'evaluation',
+export type EvaluationPublishedFeedItem = {
+  type: 'evaluation-published',
   id: EL.EvaluationLocator,
   sourceHref: O.Option<URL>,
   publishedAt: Date,
@@ -26,8 +26,8 @@ export type EvaluationFeedItem = {
   fullTextLanguageCode: O.Option<LanguageCode>,
 };
 
-export type PaperExpressionFeedItem = {
-  type: 'paper-expression',
+export type ExpressionPublishedFeedItem = {
+  type: 'expression-published',
   source: URL,
   publishedAt: Date,
   server: O.Option<ArticleServer>,
@@ -40,8 +40,8 @@ type ArticleVersionErrorFeedItem = {
 };
 
 export type FeedItem =
-  | EvaluationFeedItem
-  | PaperExpressionFeedItem
+  | EvaluationPublishedFeedItem
+  | ExpressionPublishedFeedItem
   | ArticleVersionErrorFeedItem;
 
 type ListSummary = {

@@ -2,10 +2,10 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { PaperExpressionFeedItem } from '../view-model';
+import { ExpressionPublishedFeedItem } from '../view-model';
 import { articleServers } from '../../../types/article-server';
 
-const renderServerAvatar = (server: PaperExpressionFeedItem['server']) => pipe(
+const renderServerAvatar = (server: ExpressionPublishedFeedItem['server']) => pipe(
   server,
   O.match(
     () => '',
@@ -13,7 +13,7 @@ const renderServerAvatar = (server: PaperExpressionFeedItem['server']) => pipe(
   ),
 );
 
-const onServer = (server: PaperExpressionFeedItem['server']) => pipe(
+const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
   server,
   O.match(
     () => '',
@@ -21,7 +21,7 @@ const onServer = (server: PaperExpressionFeedItem['server']) => pipe(
   ),
 );
 
-type RenderPaperExpressionFeedItem = (feedItem: PaperExpressionFeedItem) => HtmlFragment;
+type RenderPaperExpressionFeedItem = (feedItem: ExpressionPublishedFeedItem) => HtmlFragment;
 
 export const renderPaperExpressionFeedItem: RenderPaperExpressionFeedItem = (feedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">

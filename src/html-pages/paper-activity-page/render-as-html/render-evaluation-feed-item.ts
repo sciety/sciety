@@ -6,14 +6,14 @@ import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import * as EL from '../../../types/evaluation-locator';
-import { EvaluationFeedItem } from '../view-model';
+import { EvaluationPublishedFeedItem } from '../view-model';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
-const avatar = (review: EvaluationFeedItem) => toHtmlFragment(`
+const avatar = (review: EvaluationPublishedFeedItem) => toHtmlFragment(`
   <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">
 `);
 
-const eventMetadata = (review: EvaluationFeedItem) => toHtmlFragment(`
+const eventMetadata = (review: EvaluationPublishedFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
       <a href="${review.groupHref}">
@@ -25,7 +25,7 @@ const eventMetadata = (review: EvaluationFeedItem) => toHtmlFragment(`
 `);
 
 const appendSourceLink = flow(
-  (review: EvaluationFeedItem) => review.sourceHref,
+  (review: EvaluationPublishedFeedItem) => review.sourceHref,
   O.map(flow(
     (source) => `
       <div data-read-original-source>
@@ -38,7 +38,7 @@ const appendSourceLink = flow(
   )),
 );
 
-const renderWithText = (teaserChars: number, review: EvaluationFeedItem, fullText: string) => {
+const renderWithText = (teaserChars: number, review: EvaluationPublishedFeedItem, fullText: string) => {
   const teaserText = clip(fullText, teaserChars, { html: true });
   const fulltextAndSourceLink = `
     <div${renderLangAttribute(review.fullTextLanguageCode)}>${fullText}</div>
@@ -75,13 +75,16 @@ const renderWithText = (teaserChars: number, review: EvaluationFeedItem, fullTex
   `;
 };
 
-const renderSourceLinkWhenFulltextMissing = (review: EvaluationFeedItem) => pipe(
+const renderSourceLinkWhenFulltextMissing = (review: EvaluationPublishedFeedItem) => pipe(
   review,
   appendSourceLink,
   O.getOrElse(constant(missingFullTextAndSourceLink)),
 );
 
-export const renderEvaluationFeedItem = (feedItem: EvaluationFeedItem, teaserChars: number): HtmlFragment => pipe(
+export const renderEvaluationFeedItem = (
+  feedItem: EvaluationPublishedFeedItem,
+  teaserChars: number,
+): HtmlFragment => pipe(
   feedItem.fullText,
   O.fold(
     () => `

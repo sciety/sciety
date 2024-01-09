@@ -9,7 +9,7 @@ import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../types/expression-doi';
 
 export type PaperExpressionEvent = {
-  type: 'paper-expression',
+  type: 'expression-published',
   source: URL,
   publishedAt: Date,
   doi: ExpressionDoi,
@@ -31,9 +31,9 @@ type GetFeedEventsContent = (dependencies: Dependencies, server: ArticleServer)
 export const getFeedEventsContent: GetFeedEventsContent = (dependencies, server) => (feedEvents) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
-      case 'paper-expression':
+      case 'expression-published':
         return paperExpressionToFeedItem(server, feedEvent);
-      case 'evaluation':
+      case 'evaluation-published':
         return evaluationToFeedItem(dependencies, feedEvent);
     }
   };

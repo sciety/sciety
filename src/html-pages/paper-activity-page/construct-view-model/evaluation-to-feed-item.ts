@@ -7,12 +7,12 @@ import * as EL from '../../../types/evaluation-locator';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { GroupId } from '../../../types/group-id';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
-import { EvaluationFeedItem } from '../view-model';
+import { EvaluationPublishedFeedItem } from '../view-model';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { Dependencies } from './dependencies';
 
 export type EvaluationEvent = {
-  type: 'evaluation',
+  type: 'evaluation-published',
   groupId: GroupId,
   evaluationLocator: EvaluationLocator,
   publishedAt: Date,
@@ -21,7 +21,7 @@ export type EvaluationEvent = {
 export const evaluationToFeedItem = (
   dependencies: Dependencies,
   feedEvent: EvaluationEvent,
-): T.Task<EvaluationFeedItem> => pipe(
+): T.Task<EvaluationPublishedFeedItem> => pipe(
   {
     groupDetails: pipe(
       dependencies.getGroup(feedEvent.groupId),
@@ -61,7 +61,7 @@ export const evaluationToFeedItem = (
   T.map(({
     groupDetails, review,
   }) => ({
-    type: 'evaluation' as const,
+    type: 'evaluation-published' as const,
     id: feedEvent.evaluationLocator,
     sourceHref: review.url,
     publishedAt: feedEvent.publishedAt,

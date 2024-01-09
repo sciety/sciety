@@ -9,7 +9,7 @@ import { FeedItem } from '../view-model';
 
 const renderFeedItem = (feedItem: FeedItem) => {
   switch (feedItem.type) {
-    case 'paper-expression':
+    case 'expression-published':
       return renderPaperExpressionFeedItem(feedItem);
     case 'article-version-error':
       return renderVersionErrorFeedItem(feedItem.server);
