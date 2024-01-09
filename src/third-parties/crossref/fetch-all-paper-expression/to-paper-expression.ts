@@ -1,12 +1,22 @@
 import { URL } from 'url';
+import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
-import * as EDOI from '../../../types/expression-doi';
-import { PaperExpression } from '../../../types/paper-expression';
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
 import { CrossrefWork } from './crossref-work';
-import { ArticleServer } from '../../../types/article-server';
+import { PaperExpression } from '../../../types/paper-expression';
+import * as EDOI from '../../../types/expression-doi';
+import { ArticleServer, articleServers } from '../../../types/article-server';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const identifyExpressionServer = (url: string): O.Option<ArticleServer> => O.none;
+export const identifyExpressionServer = (url: string): O.Option<ArticleServer> => pipe(
+  articleServers,
+  R.filter((info) => url.includes(`://${info.domain}`)),
+  R.keys,
+  A.match(
+    () => O.none,
+    (keys) => O.some(keys[0] as ArticleServer),
+  ),
+);
 
 export const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
