@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as TO from 'fp-ts/TaskOption';
 import { createClient } from 'redis';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
@@ -33,18 +32,15 @@ const findVersionsForArticleDoiFromSupportedServers = (
   if (server === 'biorxiv' || server === 'medrxiv') {
     return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(new ArticleId(expressionDoi), server);
   }
-  if (server === 'accessmicrobiology' || process.env.EXPERIMENT_ENABLED === 'true') {
-    const headers: Record<string, string> = { };
-    if (O.isSome(crossrefApiBearerToken)) {
-      headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
-    }
-    return fetchAllPaperExpressions(
-      queryCrossrefService(undefined, headers),
-      logger,
-      expressionDoi,
-    );
+  const headers: Record<string, string> = { };
+  if (O.isSome(crossrefApiBearerToken)) {
+    headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
   }
-  return TO.none;
+  return fetchAllPaperExpressions(
+    queryCrossrefService(undefined, headers),
+    logger,
+    expressionDoi,
+  );
 };
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
