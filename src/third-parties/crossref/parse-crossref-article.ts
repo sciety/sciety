@@ -6,7 +6,7 @@ import { ArticleId } from '../../types/article-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { Logger } from '../../shared-ports';
-import { identifyExpressionServer } from './fetch-all-paper-expression/to-paper-expression';
+import { identifyExpressionServer } from './fetch-all-paper-expression/identify-expression-server';
 
 const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)
