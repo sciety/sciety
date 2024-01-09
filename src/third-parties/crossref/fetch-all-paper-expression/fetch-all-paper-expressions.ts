@@ -1,8 +1,9 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { identity, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
@@ -67,8 +68,15 @@ const walkRelationGraph = (
   }),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const logWhenExpressionServerIsUnsupported = (logger: Logger) => identity;
+const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: PaperExpression) => {
+  if (O.isNone(expression.server)) {
+    logger('warn', 'Paper expression server not known', {
+      expressionDoi: expression.expressionDoi,
+      publisherHtmlUrl: expression.publisherHtmlUrl,
+    });
+  }
+  return expression;
+};
 
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
