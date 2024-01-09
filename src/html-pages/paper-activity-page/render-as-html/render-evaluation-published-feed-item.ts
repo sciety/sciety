@@ -81,7 +81,7 @@ const renderSourceLinkWhenFulltextMissing = (review: EvaluationPublishedFeedItem
   O.getOrElse(constant(missingFullTextAndSourceLink)),
 );
 
-export const renderEvaluationFeedItem = (
+export const renderEvaluationPublishedFeedItem = (
   feedItem: EvaluationPublishedFeedItem,
   teaserChars: number,
 ): HtmlFragment => pipe(

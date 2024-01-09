@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { renderEvaluationFeedItem } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-evaluation-feed-item';
+import { renderEvaluationPublishedFeedItem } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-evaluation-published-feed-item';
 import { missingFullTextAndSourceLink } from '../../../../src/html-pages/paper-activity-page/render-as-html/static-messages';
 import { evaluationLocatorCodec } from '../../../../src/types/evaluation-locator';
 import { arbitraryNumber, arbitraryWord } from '../../../helpers';
@@ -16,7 +16,7 @@ describe('render-evaluation-feed-item', () => {
       RFI.withFullText(fullText),
     );
     const rendered: DocumentFragment = pipe(
-      renderEvaluationFeedItem(item, teaserLength),
+      renderEvaluationPublishedFeedItem(item, teaserLength),
       JSDOM.fragment,
     );
     const fullTextWrapper = rendered.querySelector('[data-full-text]');
@@ -43,7 +43,7 @@ describe('render-evaluation-feed-item', () => {
       RFI.withSource(source),
     );
     const rendered: DocumentFragment = pipe(
-      renderEvaluationFeedItem(item, 200),
+      renderEvaluationPublishedFeedItem(item, 200),
       JSDOM.fragment,
     );
     const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
@@ -76,7 +76,7 @@ describe('render-evaluation-feed-item', () => {
 
       beforeEach(() => {
         rendered = pipe(
-          renderEvaluationFeedItem(item, 6),
+          renderEvaluationPublishedFeedItem(item, 6),
           JSDOM.fragment,
         );
       });
@@ -104,7 +104,7 @@ describe('render-evaluation-feed-item', () => {
 
       beforeEach(() => {
         rendered = pipe(
-          renderEvaluationFeedItem(item, arbitraryNumber(6, 10)),
+          renderEvaluationPublishedFeedItem(item, arbitraryNumber(6, 10)),
           JSDOM.fragment,
         );
       });

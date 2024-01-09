@@ -21,9 +21,9 @@ const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
   ),
 );
 
-type RenderPaperExpressionFeedItem = (feedItem: ExpressionPublishedFeedItem) => HtmlFragment;
+type RenderExpressionPublishedFeedItem = (feedItem: ExpressionPublishedFeedItem) => HtmlFragment;
 
-export const renderPaperExpressionFeedItem: RenderPaperExpressionFeedItem = (feedItem) => toHtmlFragment(`
+export const renderExpressionPublishedFeedItem: RenderExpressionPublishedFeedItem = (feedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
       ${renderServerAvatar(feedItem.server)}

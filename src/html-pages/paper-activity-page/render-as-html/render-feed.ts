@@ -1,20 +1,20 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { flow } from 'fp-ts/function';
 import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
-import { renderPaperExpressionFeedItem } from './render-paper-expression-feed-item';
-import { renderEvaluationFeedItem } from './render-evaluation-feed-item';
 import { renderListItems } from '../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { FeedItem } from '../view-model';
+import { renderExpressionPublishedFeedItem } from './render-expression-published-feed-item';
+import { renderEvaluationPublishedFeedItem } from './render-evaluation-published-feed-item';
 
 const renderFeedItem = (feedItem: FeedItem) => {
   switch (feedItem.type) {
     case 'expression-published':
-      return renderPaperExpressionFeedItem(feedItem);
+      return renderExpressionPublishedFeedItem(feedItem);
     case 'article-version-error':
       return renderVersionErrorFeedItem(feedItem.server);
     default:
-      return renderEvaluationFeedItem(feedItem, 850);
+      return renderEvaluationPublishedFeedItem(feedItem, 850);
   }
 };
 
