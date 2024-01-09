@@ -26,8 +26,8 @@ type RenderPaperExpressionFeedItem = (feedItem: PaperExpressionFeedItem) => Html
 export const renderPaperExpressionFeedItem: RenderPaperExpressionFeedItem = (feedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
+      ${renderServerAvatar(O.some(feedItem.server))}
       <div class="activity-feed__item__meta">
-        ${renderServerAvatar(O.some(feedItem.server))}
         <div class="activity-feed__item__title">
           <a href="${feedItem.source.toString()}">
             Version published to ${feedItem.doi}${onServer(O.some(feedItem.server))}
