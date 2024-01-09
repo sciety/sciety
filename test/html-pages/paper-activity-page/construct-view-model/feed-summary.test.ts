@@ -11,7 +11,7 @@ const arbitraryPaperExpressionFeedItem = (publishedAt: Date = arbitraryDate()): 
   type: 'paper-expression' as const,
   source: new URL(arbitraryUri()),
   publishedAt,
-  server: 'biorxiv' as const,
+  server: O.some('biorxiv' as const),
   doi: arbitraryExpressionDoi(),
 });
 

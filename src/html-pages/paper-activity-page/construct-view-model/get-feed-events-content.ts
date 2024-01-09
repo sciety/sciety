@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../../../types/article-server';
@@ -20,7 +21,7 @@ const paperExpressionToFeedItem = (
   server: ArticleServer,
   feedEvent: PaperExpressionEvent,
 ) => (
-  T.of({ ...feedEvent, server })
+  T.of({ ...feedEvent, server: O.some(server) })
 );
 
 type GetFeedEventsContent = (dependencies: Dependencies, server: ArticleServer)

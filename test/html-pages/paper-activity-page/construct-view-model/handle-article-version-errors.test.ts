@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/Option';
 import { handleArticleVersionErrors } from '../../../../src/html-pages/paper-activity-page/construct-view-model/handle-article-version-errors';
 import { FeedItem } from '../../../../src/html-pages/paper-activity-page/view-model';
 import * as RFI from '../evaluation-feed-item.helper';
@@ -11,7 +12,7 @@ describe('handle-article-version-errors', () => {
         type: 'paper-expression',
         publishedAt: new Date(),
         source: new URL('https://example.com'),
-        server: 'biorxiv',
+        server: O.some('biorxiv'),
         doi: arbitraryExpressionDoi(),
       },
     ];

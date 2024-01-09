@@ -30,7 +30,7 @@ export type PaperExpressionFeedItem = {
   type: 'paper-expression',
   source: URL,
   publishedAt: Date,
-  server: ArticleServer,
+  server: O.Option<ArticleServer>,
   doi: ExpressionDoi,
 };
 
