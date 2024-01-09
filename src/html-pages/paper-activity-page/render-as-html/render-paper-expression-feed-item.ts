@@ -13,6 +13,14 @@ const renderServerAvatar = (server: O.Option<PaperExpressionFeedItem['server']>)
   ),
 );
 
+const onServer = (server: O.Option<PaperExpressionFeedItem['server']>) => pipe(
+  server,
+  O.match(
+    () => '',
+    (serverKey) => ` on ${articleServers[serverKey].name}`,
+  ),
+);
+
 type RenderPaperExpressionFeedItem = (feedItem: PaperExpressionFeedItem) => HtmlFragment;
 
 export const renderPaperExpressionFeedItem: RenderPaperExpressionFeedItem = (feedItem) => toHtmlFragment(`
@@ -22,7 +30,7 @@ export const renderPaperExpressionFeedItem: RenderPaperExpressionFeedItem = (fee
         ${renderServerAvatar(O.some(feedItem.server))}
         <div class="activity-feed__item__title">
           <a href="${feedItem.source.toString()}">
-            Version published to ${feedItem.doi} on ${articleServers[feedItem.server].name}
+            Version published to ${feedItem.doi}${onServer(O.some(feedItem.server))}
           </a>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
