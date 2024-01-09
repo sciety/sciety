@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
@@ -67,6 +67,9 @@ const walkRelationGraph = (
   }),
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const logWhenExpressionServerIsUnsupported = (logger: Logger) => identity;
+
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
 
@@ -82,5 +85,6 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   walkRelationGraph(queryCrossrefService, logger, doi),
   TO.fromTaskEither,
   TO.map(RA.map(toPaperExpression)),
+  TO.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
   TO.chainOptionK(RNEA.fromReadonlyArray),
 );
