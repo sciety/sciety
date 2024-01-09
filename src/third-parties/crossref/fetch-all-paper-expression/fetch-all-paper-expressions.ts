@@ -9,6 +9,7 @@ import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
 import { CrossrefWork } from './crossref-work';
 import { State } from './state';
+import { getAdditionalMedrxivOrBiorxivExpressions } from './get-additional-medrxiv-or-biorxiv-expressions';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { fetchIndividualWork } from './fetch-individual-work';
 import { enqueueAllRelatedDoisNotYetCollected } from './enqueue-all-related-dois-not-yet-collected';
@@ -91,8 +92,10 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
     collectedWorks: new Map(),
   },
   walkRelationGraph(queryCrossrefService, logger, doi),
+  TE.map(RA.map(toPaperExpression)),
+  TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
+  TE.chainW(TE.traverseArray(getAdditionalMedrxivOrBiorxivExpressions)),
+  TE.map(RA.flatten),
   TO.fromTaskEither,
-  TO.map(RA.map(toPaperExpression)),
-  TO.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
   TO.chainOptionK(RNEA.fromReadonlyArray),
 );
