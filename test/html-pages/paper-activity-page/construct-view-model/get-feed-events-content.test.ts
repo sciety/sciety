@@ -38,7 +38,7 @@ describe('get-feed-events-content', () => {
         getAllEvents: framework.getAllEvents,
         logger: dummyLogger,
       };
-      const viewModel = await getFeedEventsContent(dependencies, 'biorxiv')(feedEvents)();
+      const viewModel = await getFeedEventsContent(dependencies)(feedEvents)();
 
       expect(viewModel).toHaveLength(2);
     });

@@ -13,26 +13,20 @@ export type PaperExpressionEvent = {
   source: URL,
   publishedAt: Date,
   doi: ExpressionDoi,
+  server: O.Option<ArticleServer>,
 };
 
 export type FeedEvent = EvaluationEvent | PaperExpressionEvent;
 
-const paperExpressionToFeedItem = (
-  server: ArticleServer,
-  feedEvent: PaperExpressionEvent,
-) => (
-  T.of({ ...feedEvent, server: O.some(server) })
-);
-
-type GetFeedEventsContent = (dependencies: Dependencies, server: ArticleServer)
+type GetFeedEventsContent = (dependencies: Dependencies)
 => (feedEvents: ReadonlyArray<FeedEvent>)
 => T.Task<ReadonlyArray<FeedItem>>;
 
-export const getFeedEventsContent: GetFeedEventsContent = (dependencies, server) => (feedEvents) => {
+export const getFeedEventsContent: GetFeedEventsContent = (dependencies) => (feedEvents) => {
   const toFeedItem = (feedEvent: FeedEvent): T.Task<FeedItem> => {
     switch (feedEvent.type) {
       case 'expression-published':
-        return paperExpressionToFeedItem(server, feedEvent);
+        return T.of(feedEvent);
       case 'evaluation-published':
         return evaluationToFeedItem(dependencies, feedEvent);
     }

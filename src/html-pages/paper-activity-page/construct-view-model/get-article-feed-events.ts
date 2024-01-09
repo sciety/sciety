@@ -66,6 +66,6 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   })),
   T.map((feeds) => [...feeds.evaluations, ...feeds.expressions]),
   T.map(RA.sort(byDateDescending)),
-  T.chain(getFeedEventsContent(dependencies, server)),
+  T.chain(getFeedEventsContent(dependencies)),
   T.map(handleArticleVersionErrors(server)),
 );
