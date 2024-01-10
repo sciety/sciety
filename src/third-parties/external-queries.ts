@@ -1,5 +1,4 @@
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as O from 'fp-ts/Option';
 import { ArticleServer } from '../types/article-server';
@@ -37,7 +36,7 @@ type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>
 type FindAllExpressionsOfPaper = (
   expressionDoi: ExpressionDoi,
   server: ArticleServer
-) => TO.TaskOption<RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
+) => TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
 
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
 

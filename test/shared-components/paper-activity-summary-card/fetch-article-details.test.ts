@@ -2,7 +2,6 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { fetchArticleDetails } from '../../../src/shared-components/paper-activity-summary-card/fetch-article-details';
 import * as DE from '../../../src/types/data-error';
@@ -38,7 +37,7 @@ describe('fetch-article-details', () => {
         expressionDoi,
         fetchArticleDetails({
           ...framework.dependenciesForViews,
-          findAllExpressionsOfPaper: () => TO.some([{
+          findAllExpressionsOfPaper: () => TE.right([{
             expressionDoi,
             publisherHtmlUrl: new URL(arbitraryUri()),
             publishedAt: latestDate,
@@ -62,7 +61,7 @@ describe('fetch-article-details', () => {
         arbitraryExpressionDoi(),
         fetchArticleDetails({
           ...framework.dependenciesForViews,
-          findAllExpressionsOfPaper: () => TO.none,
+          findAllExpressionsOfPaper: () => TE.left(DE.notFound),
         }),
       )();
 

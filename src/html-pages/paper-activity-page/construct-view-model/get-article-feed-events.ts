@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import { constant, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
@@ -43,7 +43,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   T.map((expressionsOfPaper) => ({
     evaluations: pipe(
       expressionsOfPaper,
-      O.match(
+      E.match(
         () => [expressionDoi],
         (foundExpressions) => pipe(
           foundExpressions,
@@ -58,7 +58,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
     ),
     expressions: pipe(
       expressionsOfPaper,
-      O.matchW(
+      E.matchW(
         constant([]),
         RNEA.map(toPaperExpressionEvent),
       ),

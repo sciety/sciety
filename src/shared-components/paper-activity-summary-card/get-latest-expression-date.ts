@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
@@ -17,8 +18,9 @@ export const getLatestExpressionDate: GetLatestExpressionDate = (
   expressionDoi, server,
 ) => pipe(
   dependencies.findAllExpressionsOfPaper(expressionDoi, server),
-  T.map(O.map(flow(
+  T.map(E.map(flow(
     RNEA.last,
     (version) => version.publishedAt,
   ))),
+  T.map(O.fromEither),
 );

@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import * as O from 'fp-ts/Option';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../src/types/html-fragment';
@@ -29,7 +28,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     url: new URL(arbitraryUri()),
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),
-  findAllExpressionsOfPaper: () => TO.some([
+  findAllExpressionsOfPaper: () => TE.right([
     {
       expressionDoi: arbitraryExpressionDoi(),
       publisherHtmlUrl: new URL(arbitraryUri()),

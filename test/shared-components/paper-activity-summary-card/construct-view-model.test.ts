@@ -2,7 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as TO from 'fp-ts/TaskOption';
 import * as EDOI from '../../../src/types/expression-doi';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { dummyLogger } from '../../dummy-logger';
@@ -169,7 +168,7 @@ describe('construct-view-model', () => {
         constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
-          findAllExpressionsOfPaper: () => TO.none,
+          findAllExpressionsOfPaper: () => TE.left(DE.notFound),
           logger: dummyLogger,
         }),
       )();
