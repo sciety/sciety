@@ -60,7 +60,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       expressionsOfPaper,
       E.matchW(
         constant([]),
-        RNEA.map(toPaperExpressionEvent),
+        RA.map(toPaperExpressionEvent),
       ),
     ),
   })),

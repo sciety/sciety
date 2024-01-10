@@ -1,9 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
+import * as DE from '../../types/data-error';
 import { ArticleServer } from '../../types/article-server';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { Dependencies } from './dependencies';
@@ -18,9 +19,14 @@ export const getLatestExpressionDate: GetLatestExpressionDate = (
   expressionDoi, server,
 ) => pipe(
   dependencies.findAllExpressionsOfPaper(expressionDoi, server),
-  T.map(E.map(flow(
-    RNEA.last,
-    (version) => version.publishedAt,
-  ))),
-  T.map(O.fromEither),
+  T.map(
+    E.chainOptionKW(
+      () => DE.notFound,
+    )((allExpressions) => pipe(
+      allExpressions,
+      RA.last,
+      O.map((version) => version.publishedAt),
+    )),
+  ),
+  TO.fromTaskEither,
 );
