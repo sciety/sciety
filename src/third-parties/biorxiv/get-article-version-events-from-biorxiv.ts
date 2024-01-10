@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
@@ -21,11 +21,11 @@ type Dependencies = {
 type GetArticleVersionEventsFromBiorxiv = (
   doi: ArticleId,
   server: SupportedArticleServer,
-) => TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
+) => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 const mapResponse = (expressionsDoi: ArticleId, expressionsServer: SupportedArticleServer) => flow(
   (response: ResponseWithVersions) => response.collection,
-  RNEA.map(({ version, date }) => ({
+  RA.map(({ version, date }) => ({
     expressionDoi: EDOI.fromValidatedString(expressionsDoi.value),
     publisherHtmlUrl: new URL(`https://www.${expressionsServer}.org/content/${expressionsDoi.value}v${version}`),
     publishedAt: date,
