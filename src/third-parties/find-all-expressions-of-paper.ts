@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
@@ -31,7 +32,14 @@ export const findAllExpressionsOfPaper = (
             new ArticleId(expressionDoi),
             server,
           ),
-          TE.map((expressionsFromBiorxiv) => expressionsFromBiorxiv),
+          TE.map((expressionsFromBiorxiv) => [
+            expressionsFromBiorxiv,
+            pipe(
+              expressionsFromCrossref,
+              RA.filter((paperExpression) => paperExpression.expressionDoi !== expressionDoi),
+            ),
+          ]),
+          TE.map(RA.flatten),
         )
         : TE.right(expressionsFromCrossref),
     )),
