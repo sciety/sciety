@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
@@ -36,7 +37,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         const events = await pipe(
           getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(doi, 'biorxiv'),
-          T.map(O.getOrElseW(() => [])),
+          T.map(E.getOrElseW(() => [])),
         )();
 
         expect(events).toHaveLength(2);
@@ -78,7 +79,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         const events = await pipe(
           getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(doi, 'medrxiv'),
-          T.map(O.getOrElseW(() => [])),
+          T.map(E.getOrElseW(() => [])),
         )();
 
         expect(events).toHaveLength(2);
@@ -99,28 +100,28 @@ describe('get-article-version-events-from-biorxiv', () => {
   });
 
   describe('when biorxiv is unavailable', () => {
-    it('returns a none', async () => {
+    it('returns a left', async () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);
 
       const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(new ArticleId('10.1101/2020.09.02.278911'), 'biorxiv')();
 
-      expect(events).toStrictEqual(O.none);
+      expect(E.isLeft(events)).toBe(true);
     });
   });
 
   describe('when biorxiv returns a corrupted response', () => {
     describe('where the fields are missing', () => {
-      it('returns a none', async () => {
+      it('returns a left', async () => {
         const queryExternalService = () => () => TE.right({});
 
         const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(new ArticleId('10.1101/2020.09.02.278911'), 'biorxiv')();
 
-        expect(events).toStrictEqual(O.none);
+        expect(E.isLeft(events)).toBe(true);
       });
     });
 
     describe('where the date is corrupt', () => {
-      it('returns a none', async () => {
+      it('returns a left', async () => {
         const queryExternalService = () => () => TE.right({
           collection: [
             {
@@ -134,12 +135,12 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryArticleId(), 'biorxiv')();
 
-        expect(events).toStrictEqual(O.none);
+        expect(E.isLeft(events)).toBe(true);
       });
     });
 
     describe('where the version is not a number', () => {
-      it('returns a none', async () => {
+      it('returns a left', async () => {
         const queryExternalService = () => () => TE.right({
           collection: [
             {
@@ -153,7 +154,7 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(new ArticleId('10.1101/2020.09.02.278911'), 'biorxiv')();
 
-        expect(events).toStrictEqual(O.none);
+        expect(E.isLeft(events)).toBe(true);
       });
     });
   });

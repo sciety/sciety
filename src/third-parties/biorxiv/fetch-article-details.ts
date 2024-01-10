@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
+import * as DE from '../../types/data-error';
 import { SupportedArticleServer } from './article-server-with-version-information';
 import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
@@ -23,7 +24,7 @@ type FetchArticleDetails = ({
   queryExternalService,
   logger,
 }: Dependencies, doi: ArticleId, server: SupportedArticleServer)
-=> TE.TaskEither<void, ResponseWithVersions>;
+=> TE.TaskEither<DE.DataError, ResponseWithVersions>;
 
 export const fetchArticleDetails: FetchArticleDetails = ({ queryExternalService, logger }, doi, server) => pipe(
   constructUrl(doi, server),
@@ -34,9 +35,10 @@ export const fetchArticleDetails: FetchArticleDetails = ({ queryExternalService,
       errors: formatValidationErrors(errors).join('\n'),
       url: constructUrl(doi, server),
     })),
+    E.mapLeft(() => DE.unavailable),
   )),
   TE.filterOrElseW(responseWithVersions.is, () => {
     logger('warn', 'No versions found on biorxiv/medrxiv', { doi, server });
+    return DE.notFound;
   }),
-  TE.mapLeft(() => undefined),
 );
