@@ -36,27 +36,29 @@ const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
     : TE.right(expressionsFromCrossref),
 );
 
+const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
+  const headers: Record<string, string> = { };
+  if (O.isSome(bearerToken)) {
+    headers['Crossref-Plus-API-Token'] = `Bearer ${bearerToken.value}`;
+  }
+  return headers;
+};
+
 export const findAllExpressionsOfPaper = (
   queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
   crossrefApiBearerToken: O.Option<string>,
   logger: Logger,
-): ExternalQueries['findAllExpressionsOfPaper'] => (expressionDoi, server) => {
-  const headers: Record<string, string> = { };
-  if (O.isSome(crossrefApiBearerToken)) {
-    headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
-  }
-  return pipe(
-    fetchAllPaperExpressionsFromCrossref(
-      queryCrossrefService(undefined, headers),
-      logger,
-      expressionDoi,
-    ),
-    TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-      queryExternalService,
-      logger,
-      server,
-      expressionDoi,
-    )),
-  );
-};
+): ExternalQueries['findAllExpressionsOfPaper'] => (expressionDoi, server) => pipe(
+  fetchAllPaperExpressionsFromCrossref(
+    queryCrossrefService(undefined, setupCrossrefHeaders(crossrefApiBearerToken)),
+    logger,
+    expressionDoi,
+  ),
+  TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
+    queryExternalService,
+    logger,
+    server,
+    expressionDoi,
+  )),
+);
