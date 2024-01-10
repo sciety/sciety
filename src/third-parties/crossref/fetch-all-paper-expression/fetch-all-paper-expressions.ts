@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as DE from '../../../types/data-error';
@@ -49,7 +48,7 @@ const walkRelationGraph = (
   doi: string,
 ) => (
   state: State,
-): TE.TaskEither<unknown, ReadonlyArray<CrossrefWork>> => pipe(
+): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => pipe(
   state,
   fetchAllQueuedWorksAndAddToCollector(queryCrossrefService, logger),
   TE.map(enqueueAllRelatedDoisNotYetCollected),
@@ -80,7 +79,7 @@ const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: Pa
 };
 
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
-=> TO.TaskOption<RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
+=> TE.TaskEither<DE.DataError, RNEA.ReadonlyNonEmptyArray<PaperExpression>>;
 
 export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   queryCrossrefService,
@@ -96,6 +95,5 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
   TE.chainW(TE.traverseArray(getAdditionalMedrxivOrBiorxivExpressions)),
   TE.map(RA.flatten),
-  TO.fromTaskEither,
-  TO.chainOptionK(RNEA.fromReadonlyArray),
+  TE.chainOptionKW(() => DE.notFound)(RNEA.fromReadonlyArray),
 );

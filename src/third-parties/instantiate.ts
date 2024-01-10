@@ -1,5 +1,7 @@
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
 import { createClient } from 'redis';
+import { pipe } from 'fp-ts/function';
 import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
@@ -36,10 +38,13 @@ const findVersionsForArticleDoiFromSupportedServers = (
   if (O.isSome(crossrefApiBearerToken)) {
     headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
   }
-  return fetchAllPaperExpressions(
-    queryCrossrefService(undefined, headers),
-    logger,
-    expressionDoi,
+  return pipe(
+    fetchAllPaperExpressions(
+      queryCrossrefService(undefined, headers),
+      logger,
+      expressionDoi,
+    ),
+    T.map(O.fromEither),
   );
 };
 

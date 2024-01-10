@@ -20,7 +20,7 @@ export const fetchWorksThatPointToIndividualWorks = (
   logger: Logger,
 ) => (
   queue: ReadonlyArray<string>,
-): TE.TaskEither<DE.DataError | t.Errors, ReadonlyArray<CrossrefWork>> => pipe(
+): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => pipe(
   queue,
   TE.traverseArray((doi) => pipe(
     `https://api.crossref.org/works?filter=relation.object:${doi},type:posted-content`,
@@ -29,6 +29,7 @@ export const fetchWorksThatPointToIndividualWorks = (
       response,
       crossrefMultipleWorksResponseCodec.decode,
       E.mapLeft(logCodecFailure(logger, doi, 'fetchWorksThatPointToIndividualWorks')),
+      E.mapLeft(() => DE.unavailable),
     )),
   )),
   TE.map((responses) => pipe(

@@ -17,13 +17,14 @@ export const fetchIndividualWork = (
   logger: Logger,
 ) => (
   doi: string,
-): TE.TaskEither<DE.DataError | t.Errors, CrossrefWork> => pipe(
+): TE.TaskEither<DE.DataError, CrossrefWork> => pipe(
   `https://api.crossref.org/works/${doi}`,
   queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
     response,
     crossrefIndividualWorkResponseCodec.decode,
     E.mapLeft(logCodecFailure(logger, doi, 'fetchIndividualWork')),
+    E.mapLeft(() => DE.unavailable),
     E.map((decodedResponse) => decodedResponse.message),
   )),
 );
