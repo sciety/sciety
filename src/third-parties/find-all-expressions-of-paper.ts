@@ -24,15 +24,16 @@ export const findAllExpressionsOfPaper = (
       logger,
       expressionDoi,
     ),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     TE.chain((expressionsFromCrossref) => pipe(
       (server === 'biorxiv' || server === 'medrxiv')
-        ? getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(
-          new ArticleId(expressionDoi),
-          server,
+        ? pipe(
+          getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(
+            new ArticleId(expressionDoi),
+            server,
+          ),
+          TE.map((expressionsFromBiorxiv) => expressionsFromBiorxiv),
         )
-        : TE.right([]),
-      TE.map((expressionsFromBiorxiv) => expressionsFromBiorxiv),
+        : TE.right(expressionsFromCrossref),
     )),
   );
 };
