@@ -17,7 +17,7 @@ import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-f
 import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
-import { findVersionsForArticleDoiFromSupportedServers } from './find-versions-for-article-doi-from-supported-servers';
+import { findAllExpressionsOfPaper } from './find-all-expressions-of-paper';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
@@ -74,7 +74,7 @@ export const instantiate = (
     }),
     fetchStaticFile: fetchStaticFile(logger),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
-    findAllExpressionsOfPaper: findVersionsForArticleDoiFromSupportedServers(
+    findAllExpressionsOfPaper: findAllExpressionsOfPaper(
       queryCrossrefService,
       queryExternalService,
       crossrefApiBearerToken,

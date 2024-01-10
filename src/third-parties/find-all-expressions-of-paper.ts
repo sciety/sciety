@@ -8,7 +8,7 @@ import { Logger } from '../shared-ports';
 import { ArticleId } from '../types/article-id';
 import { ExternalQueries } from './external-queries';
 
-export const findVersionsForArticleDoiFromSupportedServers = (
+export const findAllExpressionsOfPaper = (
   queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
   crossrefApiBearerToken: O.Option<string>,
