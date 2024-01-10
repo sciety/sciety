@@ -1,52 +1,23 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { createClient } from 'redis';
-import { pipe } from 'fp-ts/function';
-import { ArticleServer } from '../types/article-server';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
 import { fetchReview } from './fetch-review';
 import { fetchHypothesisAnnotation } from './hypothesis/fetch-hypothesis-annotation';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
-import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
-import { fetchAllPaperExpressions, fetchExpressionFrontMatter } from './crossref';
+import { fetchExpressionFrontMatter } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
-import { QueryExternalService } from './query-external-service';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
 import { crossrefResponseBodyCachePredicate } from './crossref-response-body-cache-predicate';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
-import { ExpressionDoi } from '../types/expression-doi';
-import { ArticleId } from '../types/article-id';
-
-const findVersionsForArticleDoiFromSupportedServers = (
-  queryCrossrefService: QueryExternalService,
-  queryExternalService: QueryExternalService,
-  crossrefApiBearerToken: O.Option<string>,
-  logger: Logger,
-) => (expressionDoi: ExpressionDoi, server: ArticleServer) => {
-  if (server === 'biorxiv' || server === 'medrxiv') {
-    return getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(new ArticleId(expressionDoi), server);
-  }
-  const headers: Record<string, string> = { };
-  if (O.isSome(crossrefApiBearerToken)) {
-    headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
-  }
-  return pipe(
-    fetchAllPaperExpressions(
-      queryCrossrefService(undefined, headers),
-      logger,
-      expressionDoi,
-    ),
-    T.map(O.fromEither),
-  );
-};
+import { findVersionsForArticleDoiFromSupportedServers } from './find-versions-for-article-doi-from-supported-servers';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
