@@ -8,6 +8,33 @@ import { QueryExternalService } from './query-external-service';
 import { Logger } from '../shared-ports';
 import { ArticleId } from '../types/article-id';
 import { ExternalQueries } from './external-queries';
+import { ArticleServer } from '../types/article-server';
+import { ExpressionDoi } from '../types/expression-doi';
+import { PaperExpression } from '../types/paper-expression';
+
+const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+  server: ArticleServer,
+  expressionDoi: ExpressionDoi,
+) => (expressionsFromCrossref: ReadonlyArray<PaperExpression>) => pipe(
+  (server === 'biorxiv' || server === 'medrxiv')
+    ? pipe(
+      getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(
+        new ArticleId(expressionDoi),
+        server,
+      ),
+      TE.map((expressionsFromBiorxiv) => [
+        expressionsFromBiorxiv,
+        pipe(
+          expressionsFromCrossref,
+          RA.filter((paperExpression) => paperExpression.expressionDoi !== expressionDoi),
+        ),
+      ]),
+      TE.map(RA.flatten),
+    )
+    : TE.right(expressionsFromCrossref),
+);
 
 export const findAllExpressionsOfPaper = (
   queryCrossrefService: QueryExternalService,
@@ -25,23 +52,11 @@ export const findAllExpressionsOfPaper = (
       logger,
       expressionDoi,
     ),
-    TE.chain((expressionsFromCrossref) => pipe(
-      (server === 'biorxiv' || server === 'medrxiv')
-        ? pipe(
-          getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(
-            new ArticleId(expressionDoi),
-            server,
-          ),
-          TE.map((expressionsFromBiorxiv) => [
-            expressionsFromBiorxiv,
-            pipe(
-              expressionsFromCrossref,
-              RA.filter((paperExpression) => paperExpression.expressionDoi !== expressionDoi),
-            ),
-          ]),
-          TE.map(RA.flatten),
-        )
-        : TE.right(expressionsFromCrossref),
+    TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
+      queryExternalService,
+      logger,
+      server,
+      expressionDoi,
     )),
   );
 };
