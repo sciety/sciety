@@ -1,11 +1,9 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import * as t from 'io-ts';
 import { flow, pipe } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
-import { formatValidationErrors } from 'io-ts-reporters';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { Logger } from '../../shared-ports';
@@ -16,6 +14,7 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 import { HypothesisAnnotation, hypothesisAnnotation } from './HypothesisAnnotation';
 import * as DE from '../../types/data-error';
 import { QueryExternalService } from '../query-external-service';
+import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
@@ -46,37 +45,6 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   logger('debug', 'Retrieved evaluation', { ...evaluation, fullText: '[text]' });
   return evaluation;
 };
-
-const logCodecFailure = (
-  logger: Logger,
-  invokingFunction: string,
-  codec: string,
-  payload: Record<string, unknown> = {},
-) => (errors: t.Errors): t.Errors => {
-  const formattedErrors = formatValidationErrors(errors);
-  logger('error', 'Codec failure', {
-    invokingFunction,
-    codec,
-    errors: formattedErrors,
-    ...payload,
-  });
-  return errors;
-};
-
-type DecodeAndLogFailures = <P>(
-  logger: Logger,
-  codec: t.Decoder<unknown, P>,
-  invokingFunction: string,
-  payload?: Record<string, unknown>,
-)
-=> (input: unknown)
-=> E.Either<t.Errors, P>;
-
-const decodeAndLogFailures: DecodeAndLogFailures = (logger, codec, invokingFunction, payload = {}) => (input) => pipe(
-  input,
-  codec.decode,
-  E.mapLeft(logCodecFailure(logger, invokingFunction, codec.name, payload)),
-);
 
 export const fetchHypothesisAnnotation = (
   queryExternalService: QueryExternalService,
