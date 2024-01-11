@@ -53,7 +53,7 @@ export const fetchHypothesisAnnotation = (
   `https://api.hypothes.is/api/annotations/${key}`,
   queryExternalService(),
   TE.chainEitherKW(flow(
-    decodeAndLogFailures(logger, hypothesisAnnotation, 'fetchHypothesisAnnotation', { key }),
+    decodeAndLogFailures(logger, hypothesisAnnotation, { key }),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.map(toReview(logger)),

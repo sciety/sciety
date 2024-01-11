@@ -30,7 +30,7 @@ export const fetchArticleDetails: FetchArticleDetails = ({ queryExternalService,
   constructUrl(doi, server),
   queryExternalService(),
   TE.chainEitherKW(flow(
-    decodeAndLogFailures(logger, biorxivDetailsApiResponse, 'fetchArticleDetails', { url: constructUrl(doi, server) }),
+    decodeAndLogFailures(logger, biorxivDetailsApiResponse, { url: constructUrl(doi, server) }),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.filterOrElseW(responseWithVersions.is, () => {

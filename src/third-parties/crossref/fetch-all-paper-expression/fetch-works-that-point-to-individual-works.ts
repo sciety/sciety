@@ -27,7 +27,7 @@ export const fetchWorksThatPointToIndividualWorks = (
     queryCrossrefService,
     TE.chainEitherKW((response) => pipe(
       response,
-      decodeAndLogFailures(logger, crossrefMultipleWorksResponseCodec, 'fetchWorksThatPointToIndividualWorks', { doi }),
+      decodeAndLogFailures(logger, crossrefMultipleWorksResponseCodec, { doi }),
       E.mapLeft(() => DE.unavailable),
     )),
   )),

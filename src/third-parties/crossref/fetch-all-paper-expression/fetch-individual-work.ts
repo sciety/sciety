@@ -22,7 +22,7 @@ export const fetchIndividualWork = (
   queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
     response,
-    decodeAndLogFailures(logger, crossrefIndividualWorkResponseCodec, 'fetchIndividualWork', { doi }),
+    decodeAndLogFailures(logger, crossrefIndividualWorkResponseCodec, { doi }),
     E.mapLeft(() => DE.unavailable),
     E.map((decodedResponse) => decodedResponse.message),
   )),
