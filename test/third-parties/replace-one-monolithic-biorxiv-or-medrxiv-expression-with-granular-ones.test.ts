@@ -9,27 +9,23 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 import { PaperExpression } from '../../src/types/paper-expression';
 import { arbitraryPaperExpression } from '../types/paper-expression.helper';
 
+const granularExpressionMatching = (expression: PaperExpression) => ({
+  ...arbitraryPaperExpression(),
+  expressionDoi: expression.expressionDoi,
+  server: expression.server,
+});
+
 describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-ones', () => {
   describe('given a monolithic expression encapsulating three expressions', () => {
-    const serverWithMonolithicExpressions = 'biorxiv';
+    const serverWithMonolithicExpressions = 'biorxiv' as const;
     const monolithicExpression: PaperExpression = {
       ...arbitraryPaperExpression(),
       server: O.some(serverWithMonolithicExpressions),
     };
     const getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv = () => TE.right([
-      {
-        ...arbitraryPaperExpression(),
-        expressionDoi: monolithicExpression.expressionDoi,
-        server: O.some(serverWithMonolithicExpressions),
-      }, {
-        ...arbitraryPaperExpression(),
-        expressionDoi: monolithicExpression.expressionDoi,
-        server: O.some(serverWithMonolithicExpressions),
-      }, {
-        ...arbitraryPaperExpression(),
-        expressionDoi: monolithicExpression.expressionDoi,
-        server: O.some(serverWithMonolithicExpressions),
-      },
+      granularExpressionMatching(monolithicExpression),
+      granularExpressionMatching(monolithicExpression),
+      granularExpressionMatching(monolithicExpression),
     ]);
 
     let expressions: ReadonlyArray<PaperExpression>;
