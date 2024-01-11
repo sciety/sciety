@@ -5,12 +5,12 @@ import { pipe } from 'fp-ts/function';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
 import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
-import { logCodecFailure } from './log-codec-failure';
 import { QueryCrossrefService } from './query-crossref-service';
+import { decodeAndLogFailures } from '../../decode-and-log-failures';
 
 const crossrefIndividualWorkResponseCodec = t.strict({
   message: crossrefWorkCodec,
-});
+}, 'crossrefIndividualWorksResponseCodec');
 
 export const fetchIndividualWork = (
   queryCrossrefService: QueryCrossrefService,
@@ -22,8 +22,7 @@ export const fetchIndividualWork = (
   queryCrossrefService,
   TE.chainEitherKW((response) => pipe(
     response,
-    crossrefIndividualWorkResponseCodec.decode,
-    E.mapLeft(logCodecFailure(logger, doi, 'fetchIndividualWork')),
+    decodeAndLogFailures(logger, crossrefIndividualWorkResponseCodec, 'fetchIndividualWork', { doi }),
     E.mapLeft(() => DE.unavailable),
     E.map((decodedResponse) => decodedResponse.message),
   )),

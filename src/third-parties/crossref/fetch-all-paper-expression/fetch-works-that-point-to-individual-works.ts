@@ -6,14 +6,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
 import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
-import { logCodecFailure } from './log-codec-failure';
 import { QueryCrossrefService } from './query-crossref-service';
+import { decodeAndLogFailures } from '../../decode-and-log-failures';
 
 const crossrefMultipleWorksResponseCodec = t.strict({
   message: t.strict({
     items: t.readonlyArray(crossrefWorkCodec),
   }),
-});
+}, 'crossrefMultipleWorksResponseCodec');
 
 export const fetchWorksThatPointToIndividualWorks = (
   queryCrossrefService: QueryCrossrefService,
@@ -27,8 +27,7 @@ export const fetchWorksThatPointToIndividualWorks = (
     queryCrossrefService,
     TE.chainEitherKW((response) => pipe(
       response,
-      crossrefMultipleWorksResponseCodec.decode,
-      E.mapLeft(logCodecFailure(logger, doi, 'fetchWorksThatPointToIndividualWorks')),
+      decodeAndLogFailures(logger, crossrefMultipleWorksResponseCodec, 'fetchWorksThatPointToIndividualWorks', { doi }),
       E.mapLeft(() => DE.unavailable),
     )),
   )),
