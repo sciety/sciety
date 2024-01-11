@@ -6,15 +6,15 @@ import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
 import { fetchAllPaperExpressions as fetchAllPaperExpressionsFromCrossref } from './crossref';
 import { QueryExternalService } from './query-external-service';
 import { Logger } from '../shared-ports';
-import { ArticleId } from '../types/article-id';
 import { ExternalQueries } from './external-queries';
 import { ArticleServer } from '../types/article-server';
 import { ExpressionDoi } from '../types/expression-doi';
 import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
 import { SupportedArticleServer } from './biorxiv/article-server-with-version-information';
+import { ArticleId } from '../types/article-id';
 
-type GetExpressionsFromBiorxiv = (articleId: ArticleId, server: SupportedArticleServer)
+type GetExpressionsFromBiorxiv = (expressionDoi: ExpressionDoi, server: SupportedArticleServer)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
@@ -24,10 +24,7 @@ const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
 ) => (expressionsFromCrossref: ReadonlyArray<PaperExpression>) => pipe(
   (server === 'biorxiv' || server === 'medrxiv')
     ? pipe(
-      getExpressionsFromBiorxiv(
-        new ArticleId(expressionDoi),
-        server,
-      ),
+      getExpressionsFromBiorxiv(expressionDoi, server),
       TE.map((expressionsFromBiorxiv) => [
         expressionsFromBiorxiv,
         pipe(
@@ -48,6 +45,14 @@ const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   return headers;
 };
 
+const getExpressionsFromDoi = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+) => (
+  expressionDoi: ExpressionDoi,
+  server: SupportedArticleServer,
+) => getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(new ArticleId(expressionDoi), server);
+
 export const findAllExpressionsOfPaper = (
   queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
@@ -60,7 +65,7 @@ export const findAllExpressionsOfPaper = (
     expressionDoi,
   ),
   TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-    getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
+    getExpressionsFromDoi(queryExternalService, logger),
     server,
     expressionDoi,
   )),
