@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { formatValidationErrors } from 'io-ts-reporters';
 import * as DE from '../../types/data-error';
 import { SupportedArticleServer } from './article-server-with-version-information';
 import {
@@ -10,6 +9,7 @@ import {
 import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
 import { Logger } from '../../shared-ports';
+import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,
@@ -30,11 +30,7 @@ export const fetchArticleDetails: FetchArticleDetails = ({ queryExternalService,
   constructUrl(doi, server),
   queryExternalService(),
   TE.chainEitherKW(flow(
-    biorxivDetailsApiResponse.decode,
-    E.mapLeft((errors) => logger('error', 'Failed to parse biorxiv response', {
-      errors: formatValidationErrors(errors).join('\n'),
-      url: constructUrl(doi, server),
-    })),
+    decodeAndLogFailures(logger, biorxivDetailsApiResponse, 'fetchArticleDetails', { url: constructUrl(doi, server) }),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.filterOrElseW(responseWithVersions.is, () => {
