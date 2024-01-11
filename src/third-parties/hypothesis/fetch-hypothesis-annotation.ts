@@ -63,14 +63,14 @@ const logCodecFailure = (
   return errors;
 };
 
-type DecodeAndLogFailures = <P>(logger: Logger, codec: t.Decoder<unknown, P>)
+type DecodeAndLogFailures = <P>(logger: Logger, codec: t.Decoder<unknown, P>, invokingFunction: string)
 => (input: unknown)
 => E.Either<t.Errors, P>;
 
-const decodeAndLogFailures: DecodeAndLogFailures = (logger, codec) => (input) => pipe(
+const decodeAndLogFailures: DecodeAndLogFailures = (logger, codec, invokingFunction) => (input) => pipe(
   input,
   codec.decode,
-  E.mapLeft(logCodecFailure(logger, 'fetchHypothesisAnnotation', codec.name)),
+  E.mapLeft(logCodecFailure(logger, invokingFunction, codec.name)),
 );
 
 export const fetchHypothesisAnnotation = (
@@ -80,7 +80,7 @@ export const fetchHypothesisAnnotation = (
   `https://api.hypothes.is/api/annotations/${key}`,
   queryExternalService(),
   TE.chainEitherKW(flow(
-    decodeAndLogFailures(logger, hypothesisAnnotation),
+    decodeAndLogFailures(logger, hypothesisAnnotation, 'fetchHypothesisAnnotation'),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.map(toReview(logger)),
