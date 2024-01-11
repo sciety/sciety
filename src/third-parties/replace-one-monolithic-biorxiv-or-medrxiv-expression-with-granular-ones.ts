@@ -7,7 +7,7 @@ import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
 import { SupportedArticleServer } from './biorxiv/article-server-with-version-information';
 
-type GetExpressionsFromBiorxiv = (expressionDoi: ExpressionDoi, server: SupportedArticleServer)
+export type GetExpressionsFromBiorxiv = (expressionDoi: ExpressionDoi, server: SupportedArticleServer)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
