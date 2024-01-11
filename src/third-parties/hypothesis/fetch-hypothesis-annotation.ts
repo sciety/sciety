@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import * as t from 'io-ts';
 import { flow, pipe } from 'fp-ts/function';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
@@ -46,6 +47,20 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
   return evaluation;
 };
 
+const logCodecFailure = (
+  logger: Logger,
+  invokingFunction: string,
+  payload: Record<string, unknown> = {},
+) => (errors: t.Errors): t.Errors => {
+  const formattedErrors = formatValidationErrors(errors);
+  logger('error', 'Codec failure', {
+    invokingFunction,
+    errors: formattedErrors,
+    ...payload,
+  });
+  return errors;
+};
+
 export const fetchHypothesisAnnotation = (
   queryExternalService: QueryExternalService,
   logger: Logger,
@@ -54,11 +69,8 @@ export const fetchHypothesisAnnotation = (
   queryExternalService(),
   TE.chainEitherKW(flow(
     hypothesisAnnotation.decode,
-    E.mapLeft(formatValidationErrors),
-    E.mapLeft((errors) => {
-      logger('error', 'Invalid response from hypothes.is', { key, errors });
-      return DE.unavailable;
-    }),
+    E.mapLeft(logCodecFailure(logger, 'fetchHypothesisAnnotation')),
+    E.mapLeft(() => DE.unavailable),
   )),
   TE.map(toReview(logger)),
 );
