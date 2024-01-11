@@ -22,6 +22,6 @@ export const hypothesisAnnotation = t.type({
       ])),
     ]),
   })),
-});
+}, 'hypothesisAnnotation');
 
 export type HypothesisAnnotation = t.TypeOf<typeof hypothesisAnnotation>;

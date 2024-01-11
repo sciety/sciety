@@ -71,7 +71,7 @@ export const fetchHypothesisAnnotation = (
   queryExternalService(),
   TE.chainEitherKW(flow(
     hypothesisAnnotation.decode,
-    E.mapLeft(logCodecFailure(logger, 'fetchHypothesisAnnotation', 'hypothesisAnnotation')),
+    E.mapLeft(logCodecFailure(logger, 'fetchHypothesisAnnotation', hypothesisAnnotation.name)),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.map(toReview(logger)),
