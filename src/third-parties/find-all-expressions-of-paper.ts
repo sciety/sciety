@@ -12,7 +12,6 @@ import { ExpressionDoi } from '../types/expression-doi';
 import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
 import { SupportedArticleServer } from './biorxiv/article-server-with-version-information';
-import { ArticleId } from '../types/article-id';
 
 type GetExpressionsFromBiorxiv = (expressionDoi: ExpressionDoi, server: SupportedArticleServer)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
@@ -45,14 +44,6 @@ const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   return headers;
 };
 
-const getExpressionsFromDoi = (
-  queryExternalService: QueryExternalService,
-  logger: Logger,
-) => (
-  expressionDoi: ExpressionDoi,
-  server: SupportedArticleServer,
-) => getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(new ArticleId(expressionDoi), server);
-
 export const findAllExpressionsOfPaper = (
   queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
@@ -65,7 +56,7 @@ export const findAllExpressionsOfPaper = (
     expressionDoi,
   ),
   TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-    getExpressionsFromDoi(queryExternalService, logger),
+    getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
     server,
     expressionDoi,
   )),
