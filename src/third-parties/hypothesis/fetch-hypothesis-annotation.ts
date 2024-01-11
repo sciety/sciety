@@ -63,6 +63,11 @@ const logCodecFailure = (
   return errors;
 };
 
+const decodeAndLogFailures = (logger: Logger) => flow(
+  hypothesisAnnotation.decode,
+  E.mapLeft(logCodecFailure(logger, 'fetchHypothesisAnnotation', hypothesisAnnotation.name)),
+);
+
 export const fetchHypothesisAnnotation = (
   queryExternalService: QueryExternalService,
   logger: Logger,
@@ -70,8 +75,7 @@ export const fetchHypothesisAnnotation = (
   `https://api.hypothes.is/api/annotations/${key}`,
   queryExternalService(),
   TE.chainEitherKW(flow(
-    hypothesisAnnotation.decode,
-    E.mapLeft(logCodecFailure(logger, 'fetchHypothesisAnnotation', hypothesisAnnotation.name)),
+    decodeAndLogFailures(logger),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.map(toReview(logger)),
