@@ -11,16 +11,20 @@ import { ExternalQueries } from './external-queries';
 import { ArticleServer } from '../types/article-server';
 import { ExpressionDoi } from '../types/expression-doi';
 import { PaperExpression } from '../types/paper-expression';
+import * as DE from '../types/data-error';
+import { SupportedArticleServer } from './biorxiv/article-server-with-version-information';
+
+type GetExpressionsFromBiorxiv = (articleId: ArticleId, server: SupportedArticleServer)
+=> TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
-  queryExternalService: QueryExternalService,
-  logger: Logger,
+  getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
   server: ArticleServer,
   expressionDoi: ExpressionDoi,
 ) => (expressionsFromCrossref: ReadonlyArray<PaperExpression>) => pipe(
   (server === 'biorxiv' || server === 'medrxiv')
     ? pipe(
-      getArticleVersionEventsFromBiorxiv({ queryExternalService, logger })(
+      getExpressionsFromBiorxiv(
         new ArticleId(expressionDoi),
         server,
       ),
@@ -56,8 +60,7 @@ export const findAllExpressionsOfPaper = (
     expressionDoi,
   ),
   TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-    queryExternalService,
-    logger,
+    getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
     server,
     expressionDoi,
   )),
