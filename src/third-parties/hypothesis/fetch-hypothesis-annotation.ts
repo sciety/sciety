@@ -50,11 +50,13 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
 const logCodecFailure = (
   logger: Logger,
   invokingFunction: string,
+  codec: string,
   payload: Record<string, unknown> = {},
 ) => (errors: t.Errors): t.Errors => {
   const formattedErrors = formatValidationErrors(errors);
   logger('error', 'Codec failure', {
     invokingFunction,
+    codec,
     errors: formattedErrors,
     ...payload,
   });
@@ -69,7 +71,7 @@ export const fetchHypothesisAnnotation = (
   queryExternalService(),
   TE.chainEitherKW(flow(
     hypothesisAnnotation.decode,
-    E.mapLeft(logCodecFailure(logger, 'fetchHypothesisAnnotation')),
+    E.mapLeft(logCodecFailure(logger, 'fetchHypothesisAnnotation', 'hypothesisAnnotation')),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.map(toReview(logger)),
