@@ -8,6 +8,7 @@ import {
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { PaperExpression } from '../../src/types/paper-expression';
 import { arbitraryPaperExpression } from '../types/paper-expression.helper';
+import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),
@@ -16,8 +17,27 @@ const granularExpressionMatching = (expression: PaperExpression) => ({
 });
 
 describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-ones', () => {
+  const serverWithMonolithicExpressions = 'biorxiv' as const;
+
   describe('given no expressions', () => {
-    it.todo('makes no changes');
+    const getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv = () => TE.right([]);
+    let expressions: ReadonlyArray<PaperExpression>;
+
+    beforeEach(async () => {
+      expressions = await pipe(
+        [],
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
+          getExpressionsFromBiorxiv,
+          serverWithMonolithicExpressions,
+          arbitraryExpressionDoi(),
+        ),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('makes no changes', () => {
+      expect(expressions).toHaveLength(0);
+    });
   });
 
   describe('given one expression that is not on biorxiv or medrxiv', () => {
@@ -29,7 +49,6 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
   });
 
   describe('given a monolithic biorxiv expression encapsulating three expressions', () => {
-    const serverWithMonolithicExpressions = 'biorxiv' as const;
     const monolithicExpression: PaperExpression = {
       ...arbitraryPaperExpression(),
       server: O.some(serverWithMonolithicExpressions),
