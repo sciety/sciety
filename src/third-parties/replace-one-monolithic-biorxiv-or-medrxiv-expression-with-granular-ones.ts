@@ -24,6 +24,22 @@ const toRelevantExpression = (expression: PaperExpression): O.Option<PaperExpres
   })),
 );
 
+const replaceFirstRelevantExpression = (
+  getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
+  expressionDoi: ExpressionDoi,
+  expressionsFromCrossref: ReadonlyArray<PaperExpression>,
+) => (relevantExpressions: ReadonlyArray<PaperExpressionFromRelevantServer>) => pipe(
+  getExpressionsFromBiorxiv(expressionDoi, relevantExpressions[0].server),
+  TE.map((expressionsFromBiorxiv) => [
+    expressionsFromBiorxiv,
+    pipe(
+      expressionsFromCrossref,
+      RA.filter((paperExpression) => paperExpression.expressionDoi !== expressionDoi),
+    ),
+  ]),
+  TE.map(RA.flatten),
+);
+
 export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
   getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
   expressionDoi: ExpressionDoi,
@@ -34,16 +50,6 @@ export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
   RA.filterMap(toRelevantExpression),
   RA.match(
     () => TE.right(expressionsFromCrossref),
-    (relevantExpressions) => pipe(
-      getExpressionsFromBiorxiv(expressionDoi, relevantExpressions[0].server),
-      TE.map((expressionsFromBiorxiv) => [
-        expressionsFromBiorxiv,
-        pipe(
-          expressionsFromCrossref,
-          RA.filter((paperExpression) => paperExpression.expressionDoi !== expressionDoi),
-        ),
-      ]),
-      TE.map(RA.flatten),
-    ),
+    replaceFirstRelevantExpression(getExpressionsFromBiorxiv, expressionDoi, expressionsFromCrossref),
   ),
 );
