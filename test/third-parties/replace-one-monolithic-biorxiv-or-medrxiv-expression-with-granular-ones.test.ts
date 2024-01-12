@@ -16,7 +16,19 @@ const granularExpressionMatching = (expression: PaperExpression) => ({
 });
 
 describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-ones', () => {
-  describe('given a monolithic expression encapsulating three expressions', () => {
+  describe('given no expressions', () => {
+    it.todo('makes no changes');
+  });
+
+  describe('given one expression that is not on biorxiv or medrxiv', () => {
+    it.todo('makes no changes');
+  });
+
+  describe('given multiple expressions that are not on biorxiv or medrxiv', () => {
+    it.todo('makes no changes');
+  });
+
+  describe('given a monolithic biorxiv expression encapsulating three expressions', () => {
     const serverWithMonolithicExpressions = 'biorxiv' as const;
     const monolithicExpression: PaperExpression = {
       ...arbitraryPaperExpression(),
