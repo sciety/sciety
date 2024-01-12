@@ -101,7 +101,7 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
     });
   });
 
-  describe('given a monolithic biorxiv expression encapsulating three expressions', () => {
+  describe('given a monolithic biorxiv expression encapsulating multiple expressions', () => {
     const monolithicExpression: PaperExpression = {
       ...arbitraryPaperExpression(),
       server: O.some(serverWithMonolithicExpressions),
@@ -129,5 +129,9 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
     it('replaces the monolithic expression', () => {
       expect(expressions).toHaveLength(3);
     });
+  });
+
+  describe('given a monolithic biorxiv expression encapsulating multiple expressions as well as multiple expressions not on biorxiv or medrxiv', () => {
+    it.todo('replaces only the monolithic expression');
   });
 });
