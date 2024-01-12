@@ -41,7 +41,32 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
   });
 
   describe('given one expression that is not on biorxiv or medrxiv', () => {
-    it.todo('makes no changes');
+    const arbitraryNonBiorxivOrMedrxivServer = () => 'researchsquare' as const;
+    const nonBiorxivOrMedrxivServer = arbitraryNonBiorxivOrMedrxivServer();
+    const inputExpressions = [
+      {
+        ...arbitraryPaperExpression(),
+        server: O.some(nonBiorxivOrMedrxivServer),
+      },
+    ];
+
+    let expressions: ReadonlyArray<PaperExpression>;
+
+    beforeEach(async () => {
+      expressions = await pipe(
+        inputExpressions,
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
+          shouldNotBeCalled,
+          nonBiorxivOrMedrxivServer,
+          inputExpressions[0].expressionDoi,
+        ),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('makes no changes', () => {
+      expect(expressions).toStrictEqual(inputExpressions);
+    });
   });
 
   describe('given multiple expressions that are not on biorxiv or medrxiv', () => {
