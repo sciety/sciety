@@ -10,6 +10,8 @@ import { PaperExpression } from '../../src/types/paper-expression';
 import { arbitraryPaperExpression } from '../types/paper-expression.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryColdSpringHarborServer } from './biorxiv/cold-spring-harbor-server.helper';
+import { arbitraryNumber } from '../helpers';
+import { ArticleServer } from '../../src/types/article-server';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),
@@ -17,7 +19,7 @@ const granularExpressionMatching = (expression: PaperExpression) => ({
   server: expression.server,
 });
 
-const arbitraryIrrelevantServer = () => 'researchsquare' as const;
+const arbitraryIrrelevantServer = (): ArticleServer => ['researchsquare' as const, 'scielopreprints' as const][arbitraryNumber(0, 1)];
 
 const arbitraryExpressionFromIrrelevantServer = () => ({
   ...arbitraryPaperExpression(),
