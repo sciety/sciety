@@ -36,7 +36,12 @@ const replaceFirstRelevantExpression = (
   getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
   expressionsFromCrossref: ReadonlyArray<PaperExpression>,
 ) => (relevantExpressions: ReadonlyArray<PaperExpressionFromRelevantServer>) => pipe(
-  getExpressionsFromBiorxiv(relevantExpressions[0].expressionDoi, relevantExpressions[0].server),
+  relevantExpressions,
+  TE.traverseArray((relevantExpression) => getExpressionsFromBiorxiv(
+    relevantExpression.expressionDoi,
+    relevantExpression.server,
+  )),
+  TE.map(RA.flatten),
   TE.map((expressionsFromBiorxiv) => [
     expressionsFromBiorxiv,
     unaffectedExpressions(expressionsFromCrossref, relevantExpressions[0].expressionDoi),
