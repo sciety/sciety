@@ -25,7 +25,7 @@ export const fetchArticleDetails: FetchArticleDetails = (
   expressionDoi,
   dependencies.fetchExpressionFrontMatter,
   TE.chainW((expressionDetails) => pipe(
-    getLatestExpressionDate(dependencies)(expressionDoi, expressionDetails.server),
+    getLatestExpressionDate(dependencies)(expressionDoi),
     T.map((latestVersionDate) => ({
       latestVersionDate,
       authors: expressionDetails.authors,

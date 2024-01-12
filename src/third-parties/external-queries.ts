@@ -34,7 +34,6 @@ type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>
 
 type FindAllExpressionsOfPaper = (
   expressionDoi: ExpressionDoi,
-  server: ArticleServer
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;

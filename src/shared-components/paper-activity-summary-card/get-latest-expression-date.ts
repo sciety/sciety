@@ -5,20 +5,19 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
-import { ArticleServer } from '../../types/article-server';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { Dependencies } from './dependencies';
 
 type GetLatestExpressionDate = (
   dependencies: Dependencies,
-) => (expressionDoi: ExpressionDoi, server: ArticleServer) => TO.TaskOption<Date>;
+) => (expressionDoi: ExpressionDoi) => TO.TaskOption<Date>;
 
 export const getLatestExpressionDate: GetLatestExpressionDate = (
   dependencies,
 ) => (
-  expressionDoi, server,
+  expressionDoi,
 ) => pipe(
-  dependencies.findAllExpressionsOfPaper(expressionDoi, server),
+  dependencies.findAllExpressionsOfPaper(expressionDoi),
   T.map(
     E.chainOptionKW(
       () => DE.notFound,

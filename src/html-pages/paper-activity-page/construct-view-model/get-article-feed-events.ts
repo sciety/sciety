@@ -39,7 +39,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => (
   expressionDoi, server,
 ) => pipe(
-  dependencies.findAllExpressionsOfPaper(expressionDoi, server),
+  dependencies.findAllExpressionsOfPaper(expressionDoi),
   T.map((expressionsOfPaper) => ({
     evaluations: pipe(
       expressionsOfPaper,
