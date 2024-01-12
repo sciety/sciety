@@ -8,6 +8,8 @@ import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
 import { SupportedArticleServer } from './biorxiv/article-server-with-version-information';
 
+type PaperExpressionFromRelevantServer = PaperExpression & { server: O.Some<SupportedArticleServer> };
+
 export type GetExpressionsFromBiorxiv = (expressionDoi: ExpressionDoi, server: SupportedArticleServer)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
@@ -20,7 +22,7 @@ export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
 ): TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>> => {
   const relevantExpressions = pipe(
     expressionsFromCrossref,
-    RA.filter((expression) => O.isSome(expression.server) && (expression.server.value === 'biorxiv' || expression.server.value === 'medrxiv')),
+    RA.filter((expression): expression is PaperExpressionFromRelevantServer => O.isSome(expression.server) && (expression.server.value === 'biorxiv' || expression.server.value === 'medrxiv')),
   );
 
   if (relevantExpressions.length === 0) {
@@ -29,7 +31,7 @@ export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
 
   if (server === 'biorxiv' || server === 'medrxiv') {
     return pipe(
-      getExpressionsFromBiorxiv(expressionDoi, server),
+      getExpressionsFromBiorxiv(expressionDoi, relevantExpressions[0].server.value),
       TE.map((expressionsFromBiorxiv) => [
         expressionsFromBiorxiv,
         pipe(
