@@ -16,9 +16,9 @@ export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
   expressionDoi: ExpressionDoi,
 ) => (
   expressionsFromCrossref: ReadonlyArray<PaperExpression>,
-): TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>> => pipe(
-  (server === 'biorxiv' || server === 'medrxiv')
-    ? pipe(
+): TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>> => {
+  if (server === 'biorxiv' || server === 'medrxiv') {
+    return pipe(
       getExpressionsFromBiorxiv(expressionDoi, server),
       TE.map((expressionsFromBiorxiv) => [
         expressionsFromBiorxiv,
@@ -28,6 +28,7 @@ export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
         ),
       ]),
       TE.map(RA.flatten),
-    )
-    : TE.right(expressionsFromCrossref),
-);
+    );
+  }
+  return TE.right(expressionsFromCrossref);
+};
