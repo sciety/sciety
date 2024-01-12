@@ -29,6 +29,5 @@ export const findAllExpressionsOfPaper = (
   ),
   TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
     getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
-    expressionDoi,
   )),
 );

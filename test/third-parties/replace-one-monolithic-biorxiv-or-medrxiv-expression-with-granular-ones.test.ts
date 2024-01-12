@@ -8,7 +8,6 @@ import {
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { PaperExpression } from '../../src/types/paper-expression';
 import { arbitraryPaperExpression } from '../types/paper-expression.helper';
-import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),
@@ -36,10 +35,7 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
     beforeEach(async () => {
       expressions = await pipe(
         [],
-        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-          shouldNotBeCalled,
-          arbitraryExpressionDoi(),
-        ),
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -55,10 +51,7 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
     beforeEach(async () => {
       expressions = await pipe(
         inputExpressions,
-        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-          shouldNotBeCalled,
-          inputExpressions[0].expressionDoi,
-        ),
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -77,10 +70,7 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
     beforeEach(async () => {
       expressions = await pipe(
         inputExpressions,
-        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-          shouldNotBeCalled,
-          inputExpressions[0].expressionDoi,
-        ),
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -100,10 +90,7 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
     beforeEach(async () => {
       expressions = await pipe(
         [monolithicExpression],
-        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-          getExpressionsFromBiorxiv,
-          monolithicExpression.expressionDoi,
-        ),
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(getExpressionsFromBiorxiv),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -130,10 +117,7 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
           monolithicExpression,
           ...expressionsFromIrrelevantServer,
         ],
-        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-          getExpressionsFromBiorxiv,
-          monolithicExpression.expressionDoi,
-        ),
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(getExpressionsFromBiorxiv),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
