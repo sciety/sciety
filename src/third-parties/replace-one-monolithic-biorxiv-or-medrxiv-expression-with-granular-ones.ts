@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { ExpressionDoi } from '../types/expression-doi';
 import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
-import { SupportedArticleServer } from './biorxiv/article-server-with-version-information';
+import { SupportedArticleServer, isSupportedArticleServer } from './biorxiv/article-server-with-version-information';
 
 type PaperExpressionFromRelevantServer = {
   expressionDoi: ExpressionDoi,
@@ -15,13 +15,14 @@ type PaperExpressionFromRelevantServer = {
 export type GetExpressionsFromBiorxiv = (expressionDoi: ExpressionDoi, server: SupportedArticleServer)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
-const toRelevantExpression = (expression: PaperExpression): O.Option<PaperExpressionFromRelevantServer> => {
-  if (O.isSome(expression.server) && (expression.server.value === 'biorxiv' || expression.server.value === 'medrxiv')) {
-    return O.some({ expressionDoi: expression.expressionDoi, server: expression.server.value });
-  }
-
-  return O.none;
-};
+const toRelevantExpression = (expression: PaperExpression): O.Option<PaperExpressionFromRelevantServer> => pipe(
+  expression.server,
+  O.filter(isSupportedArticleServer),
+  O.map((server) => ({
+    expressionDoi: expression.expressionDoi,
+    server,
+  })),
+);
 
 export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
   getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
