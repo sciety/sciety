@@ -29,25 +29,21 @@ export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
   expressionDoi: ExpressionDoi,
 ) => (
   expressionsFromCrossref: ReadonlyArray<PaperExpression>,
-): TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>> => {
-  const relevantExpressions = pipe(
-    expressionsFromCrossref,
-    RA.filterMap(toRelevantExpression),
-  );
-
-  if (relevantExpressions.length === 0) {
-    return TE.right(expressionsFromCrossref);
-  }
-
-  return pipe(
-    getExpressionsFromBiorxiv(expressionDoi, relevantExpressions[0].server),
-    TE.map((expressionsFromBiorxiv) => [
-      expressionsFromBiorxiv,
-      pipe(
-        expressionsFromCrossref,
-        RA.filter((paperExpression) => paperExpression.expressionDoi !== expressionDoi),
-      ),
-    ]),
-    TE.map(RA.flatten),
-  );
-};
+): TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>> => pipe(
+  expressionsFromCrossref,
+  RA.filterMap(toRelevantExpression),
+  RA.match(
+    () => TE.right(expressionsFromCrossref),
+    (relevantExpressions) => pipe(
+      getExpressionsFromBiorxiv(expressionDoi, relevantExpressions[0].server),
+      TE.map((expressionsFromBiorxiv) => [
+        expressionsFromBiorxiv,
+        pipe(
+          expressionsFromCrossref,
+          RA.filter((paperExpression) => paperExpression.expressionDoi !== expressionDoi),
+        ),
+      ]),
+      TE.map(RA.flatten),
+    ),
+  ),
+);
