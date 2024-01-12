@@ -20,6 +20,10 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
   const relevantServer = 'biorxiv' as const;
   const arbitraryIrrelevantServer = () => 'researchsquare' as const;
   const irrelevantServer = arbitraryIrrelevantServer();
+  const monolithicExpression: PaperExpression = {
+    ...arbitraryPaperExpression(),
+    server: O.some(relevantServer),
+  };
 
   describe.skip('given no expressions', () => {
     let expressions: ReadonlyArray<PaperExpression>;
@@ -100,10 +104,6 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
   });
 
   describe('given a monolithic expression from a relevant server', () => {
-    const monolithicExpression: PaperExpression = {
-      ...arbitraryPaperExpression(),
-      server: O.some(relevantServer),
-    };
     const getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv = () => TE.right([
       granularExpressionMatching(monolithicExpression),
       granularExpressionMatching(monolithicExpression),
@@ -130,6 +130,43 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
   });
 
   describe('given a monolithic expression from a relevant server as well as multiple expressions from irrelevant servers', () => {
-    it.todo('replaces only the monolithic expression with the granular expressions');
+    const expressionsFromIrrelevantServer = [{
+      ...arbitraryPaperExpression(),
+      server: O.some(arbitraryIrrelevantServer()),
+    },
+    {
+      ...arbitraryPaperExpression(),
+      server: O.some(arbitraryIrrelevantServer()),
+    },
+    ];
+    const granularExpressions = [
+      granularExpressionMatching(monolithicExpression),
+      granularExpressionMatching(monolithicExpression),
+    ];
+    const getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv = () => TE.right(granularExpressions);
+    let expressions: ReadonlyArray<PaperExpression>;
+
+    beforeEach(async () => {
+      expressions = await pipe(
+        [
+          monolithicExpression,
+          ...expressionsFromIrrelevantServer,
+        ],
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
+          getExpressionsFromBiorxiv,
+          relevantServer,
+          monolithicExpression.expressionDoi,
+        ),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('replaces only the monolithic expression with the granular expressions', () => {
+      expect(expressions).toContain(expressionsFromIrrelevantServer[0]);
+      expect(expressions).toContain(expressionsFromIrrelevantServer[1]);
+      expect(expressions).not.toContain(monolithicExpression);
+      expect(expressions).toContain(granularExpressions[0]);
+      expect(expressions).toContain(granularExpressions[1]);
+    });
   });
 });
