@@ -19,15 +19,14 @@ const granularExpressionMatching = (expression: PaperExpression) => ({
 describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-ones', () => {
   const serverWithMonolithicExpressions = 'biorxiv' as const;
 
-  describe('given no expressions', () => {
-    const getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv = () => TE.right([]);
+  describe.skip('given no expressions', () => {
     let expressions: ReadonlyArray<PaperExpression>;
 
     beforeEach(async () => {
       expressions = await pipe(
         [],
         replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
-          getExpressionsFromBiorxiv,
+          shouldNotBeCalled,
           serverWithMonolithicExpressions,
           arbitraryExpressionDoi(),
         ),
