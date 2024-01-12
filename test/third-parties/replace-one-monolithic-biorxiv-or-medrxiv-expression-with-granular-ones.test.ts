@@ -16,18 +16,24 @@ const granularExpressionMatching = (expression: PaperExpression) => ({
   server: expression.server,
 });
 
+const arbitraryIrrelevantServer = () => 'researchsquare' as const;
+
+const arbitraryExpressionFromIrrelevantServer = () => ({
+  ...arbitraryPaperExpression(),
+  server: O.some(arbitraryIrrelevantServer()),
+});
+
 describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-ones', () => {
   const relevantServer = 'biorxiv' as const;
-  const arbitraryIrrelevantServer = () => 'researchsquare' as const;
   const irrelevantServer = arbitraryIrrelevantServer();
   const monolithicExpression: PaperExpression = {
     ...arbitraryPaperExpression(),
     server: O.some(relevantServer),
   };
 
-  describe.skip('given no expressions', () => {
-    let expressions: ReadonlyArray<PaperExpression>;
+  let expressions: ReadonlyArray<PaperExpression>;
 
+  describe.skip('given no expressions', () => {
     beforeEach(async () => {
       expressions = await pipe(
         [],
@@ -46,14 +52,7 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
   });
 
   describe('given one expression from an irrelevant server', () => {
-    const inputExpressions = [
-      {
-        ...arbitraryPaperExpression(),
-        server: O.some(irrelevantServer),
-      },
-    ];
-
-    let expressions: ReadonlyArray<PaperExpression>;
+    const inputExpressions = [arbitraryExpressionFromIrrelevantServer()];
 
     beforeEach(async () => {
       expressions = await pipe(
@@ -74,17 +73,9 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
 
   describe('given multiple expressions that are from an irrelevant server', () => {
     const inputExpressions = [
-      {
-        ...arbitraryPaperExpression(),
-        server: O.some(irrelevantServer),
-      },
-      {
-        ...arbitraryPaperExpression(),
-        server: O.some(irrelevantServer),
-      },
+      arbitraryExpressionFromIrrelevantServer(),
+      arbitraryExpressionFromIrrelevantServer(),
     ];
-
-    let expressions: ReadonlyArray<PaperExpression>;
 
     beforeEach(async () => {
       expressions = await pipe(
@@ -110,8 +101,6 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
       granularExpressionMatching(monolithicExpression),
     ]);
 
-    let expressions: ReadonlyArray<PaperExpression>;
-
     beforeEach(async () => {
       expressions = await pipe(
         [monolithicExpression],
@@ -130,21 +119,15 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
   });
 
   describe('given a monolithic expression from a relevant server as well as multiple expressions from irrelevant servers', () => {
-    const expressionsFromIrrelevantServer = [{
-      ...arbitraryPaperExpression(),
-      server: O.some(arbitraryIrrelevantServer()),
-    },
-    {
-      ...arbitraryPaperExpression(),
-      server: O.some(arbitraryIrrelevantServer()),
-    },
+    const expressionsFromIrrelevantServer = [
+      arbitraryExpressionFromIrrelevantServer(),
+      arbitraryExpressionFromIrrelevantServer(),
     ];
     const granularExpressions = [
       granularExpressionMatching(monolithicExpression),
       granularExpressionMatching(monolithicExpression),
     ];
     const getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv = () => TE.right(granularExpressions);
-    let expressions: ReadonlyArray<PaperExpression>;
 
     beforeEach(async () => {
       expressions = await pipe(
@@ -162,11 +145,13 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
     });
 
     it('replaces only the monolithic expression with the granular expressions', () => {
-      expect(expressions).toContain(expressionsFromIrrelevantServer[0]);
-      expect(expressions).toContain(expressionsFromIrrelevantServer[1]);
       expect(expressions).not.toContain(monolithicExpression);
-      expect(expressions).toContain(granularExpressions[0]);
-      expect(expressions).toContain(granularExpressions[1]);
+      expect(expressions).toStrictEqual(expect.arrayContaining(
+        [
+          ...expressionsFromIrrelevantServer,
+          ...granularExpressions,
+        ],
+      ));
     });
   });
 });
