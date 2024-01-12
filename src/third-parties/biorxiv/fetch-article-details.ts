@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
-import { SupportedArticleServer } from './article-server-with-version-information';
+import { ColdSpringHarborServer } from './cold-spring-harbor-server';
 import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
 } from './biorxiv-details-api-response';
@@ -16,14 +16,14 @@ type Dependencies = {
   logger: Logger,
 };
 
-const constructUrl = (doi: ArticleId, server: SupportedArticleServer) => (
+const constructUrl = (doi: ArticleId, server: ColdSpringHarborServer) => (
   `https://api.biorxiv.org/details/${server}/${doi.value}`
 );
 
 type FetchArticleDetails = ({
   queryExternalService,
   logger,
-}: Dependencies, doi: ArticleId, server: SupportedArticleServer)
+}: Dependencies, doi: ArticleId, server: ColdSpringHarborServer)
 => TE.TaskEither<DE.DataError, ResponseWithVersions>;
 
 export const fetchArticleDetails: FetchArticleDetails = ({ queryExternalService, logger }, doi, server) => pipe(

@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
 import * as EDOI from '../../types/expression-doi';
-import { SupportedArticleServer } from './article-server-with-version-information';
+import { ColdSpringHarborServer } from './cold-spring-harbor-server';
 import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { ArticleId } from '../../types/article-id';
@@ -20,10 +20,10 @@ type Dependencies = {
 
 type GetArticleVersionEventsFromBiorxiv = (
   doi: EDOI.ExpressionDoi,
-  server: SupportedArticleServer,
+  server: ColdSpringHarborServer,
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
-const mapResponse = (expressionsDoi: EDOI.ExpressionDoi, expressionsServer: SupportedArticleServer) => flow(
+const mapResponse = (expressionsDoi: EDOI.ExpressionDoi, expressionsServer: ColdSpringHarborServer) => flow(
   (response: ResponseWithVersions) => response.collection,
   RA.map(({ version, date }) => ({
     expressionDoi: expressionsDoi,

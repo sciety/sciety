@@ -5,19 +5,19 @@ import { pipe } from 'fp-ts/function';
 import { ExpressionDoi } from '../types/expression-doi';
 import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
-import { SupportedArticleServer, isSupportedArticleServer } from './biorxiv/article-server-with-version-information';
+import { ColdSpringHarborServer, isColdSpringHarborServer } from './biorxiv/cold-spring-harbor-server';
 
 type PaperExpressionFromRelevantServer = {
   expressionDoi: ExpressionDoi,
-  server: SupportedArticleServer,
+  server: ColdSpringHarborServer,
 };
 
-export type GetExpressionsFromBiorxiv = (expressionDoi: ExpressionDoi, server: SupportedArticleServer)
+export type GetExpressionsFromBiorxiv = (expressionDoi: ExpressionDoi, server: ColdSpringHarborServer)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 const toRelevantExpression = (expression: PaperExpression): O.Option<PaperExpressionFromRelevantServer> => pipe(
   expression.server,
-  O.filter(isSupportedArticleServer),
+  O.filter(isColdSpringHarborServer),
   O.map((server) => ({
     expressionDoi: expression.expressionDoi,
     server,
