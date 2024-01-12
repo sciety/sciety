@@ -135,7 +135,7 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
       )();
     });
 
-    it.failing('replaces it with the granular expressions', () => {
+    it('replaces it with the granular expressions', () => {
       expect(expressions).toHaveLength(5);
     });
   });

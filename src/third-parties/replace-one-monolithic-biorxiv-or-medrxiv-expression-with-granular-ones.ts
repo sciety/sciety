@@ -26,11 +26,17 @@ const toRelevantExpression = (expression: PaperExpression): O.Option<PaperExpres
 
 const unaffectedExpressions = (
   expressionsFromCrossref: ReadonlyArray<PaperExpression>,
-  affectedExpressionDoi: ExpressionDoi,
-) => pipe(
-  expressionsFromCrossref,
-  RA.filter((paperExpression) => paperExpression.expressionDoi !== affectedExpressionDoi),
-);
+  affectedExpressions: ReadonlyArray<PaperExpressionFromRelevantServer>,
+) => {
+  const affectedExpressionDois = pipe(
+    affectedExpressions,
+    RA.map((expression) => expression.expressionDoi),
+  );
+  return pipe(
+    expressionsFromCrossref,
+    RA.filter((paperExpression) => !affectedExpressionDois.includes(paperExpression.expressionDoi)),
+  );
+};
 
 const replaceFirstRelevantExpression = (
   getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
@@ -44,7 +50,7 @@ const replaceFirstRelevantExpression = (
   TE.map(RA.flatten),
   TE.map((expressionsFromBiorxiv) => [
     expressionsFromBiorxiv,
-    unaffectedExpressions(expressionsFromCrossref, relevantExpressions[0].expressionDoi),
+    unaffectedExpressions(expressionsFromCrossref, relevantExpressions),
   ]),
   TE.map(RA.flatten),
 );
