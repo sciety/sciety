@@ -38,7 +38,7 @@ const unaffectedExpressions = (
   );
 };
 
-const replaceFirstRelevantExpression = (
+const replaceRelevantExpressions = (
   getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
   expressionsFromCrossref: ReadonlyArray<PaperExpression>,
 ) => (relevantExpressions: ReadonlyArray<PaperExpressionFromRelevantServer>) => pipe(
@@ -55,7 +55,7 @@ const replaceFirstRelevantExpression = (
   TE.map(RA.flatten),
 );
 
-export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
+export const expandMonolithicBiorxivOrMedrxivExpressions = (
   getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
 ) => (
   expressionsFromCrossref: ReadonlyArray<PaperExpression>,
@@ -64,6 +64,6 @@ export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
   RA.filterMap(toRelevantExpression),
   RA.match(
     () => TE.right(expressionsFromCrossref),
-    replaceFirstRelevantExpression(getExpressionsFromBiorxiv, expressionsFromCrossref),
+    replaceRelevantExpressions(getExpressionsFromBiorxiv, expressionsFromCrossref),
   ),
 );

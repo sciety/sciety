@@ -6,7 +6,7 @@ import { fetchAllPaperExpressions as fetchAllPaperExpressionsFromCrossref } from
 import { QueryExternalService } from './query-external-service';
 import { Logger } from '../shared-ports';
 import { ExternalQueries } from './external-queries';
-import { replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes } from './replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-ones';
+import { expandMonolithicBiorxivOrMedrxivExpressions } from './expand-monolithic-biorxiv-or-medrxiv-expressions';
 
 const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   const headers: Record<string, string> = { };
@@ -27,7 +27,7 @@ export const findAllExpressionsOfPaper = (
     logger,
     expressionDoi,
   ),
-  TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
+  TE.chain(expandMonolithicBiorxivOrMedrxivExpressions(
     getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
   )),
 );
