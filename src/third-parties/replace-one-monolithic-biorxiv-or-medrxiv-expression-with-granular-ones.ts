@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -17,6 +18,15 @@ export const replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes = (
 ) => (
   expressionsFromCrossref: ReadonlyArray<PaperExpression>,
 ): TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>> => {
+  const relevantExpressions = pipe(
+    expressionsFromCrossref,
+    RA.filter((expression) => O.isSome(expression.server) && (expression.server.value === 'biorxiv' || expression.server.value === 'medrxiv')),
+  );
+
+  if (relevantExpressions.length === 0) {
+    return TE.right(expressionsFromCrossref);
+  }
+
   if (server === 'biorxiv' || server === 'medrxiv') {
     return pipe(
       getExpressionsFromBiorxiv(expressionDoi, server),
