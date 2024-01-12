@@ -8,6 +8,7 @@ import {
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { PaperExpression } from '../../src/types/paper-expression';
 import { arbitraryPaperExpression } from '../types/paper-expression.helper';
+import { arbitraryDataError } from '../types/data-error.helper';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),
@@ -97,6 +98,45 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
 
     it('replaces it with the granular expressions', () => {
       expect(expressions).toHaveLength(3);
+    });
+  });
+
+  describe('given two monolithic expressions from a relevant server', () => {
+    const monolithicExpression1: PaperExpression = {
+      ...arbitraryPaperExpression(),
+      server: O.some(relevantServer),
+    };
+    const monolithicExpression2: PaperExpression = {
+      ...arbitraryPaperExpression(),
+      server: O.some(relevantServer),
+    };
+    const getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv = (expressionDoi) => {
+      if (expressionDoi === monolithicExpression1.expressionDoi) {
+        return TE.right([
+          granularExpressionMatching(monolithicExpression1),
+          granularExpressionMatching(monolithicExpression1),
+          granularExpressionMatching(monolithicExpression1),
+        ]);
+      }
+      if (expressionDoi === monolithicExpression2.expressionDoi) {
+        return TE.right([
+          granularExpressionMatching(monolithicExpression2),
+          granularExpressionMatching(monolithicExpression2),
+        ]);
+      }
+      return TE.left(arbitraryDataError());
+    };
+
+    beforeEach(async () => {
+      expressions = await pipe(
+        [monolithicExpression1, monolithicExpression2],
+        replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(getExpressionsFromBiorxiv),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.failing('replaces it with the granular expressions', () => {
+      expect(expressions).toHaveLength(5);
     });
   });
 
