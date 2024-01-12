@@ -21,7 +21,7 @@ export const findAllExpressionsOfPaper = (
   queryExternalService: QueryExternalService,
   crossrefApiBearerToken: O.Option<string>,
   logger: Logger,
-): ExternalQueries['findAllExpressionsOfPaper'] => (expressionDoi, server) => pipe(
+): ExternalQueries['findAllExpressionsOfPaper'] => (expressionDoi) => pipe(
   fetchAllPaperExpressionsFromCrossref(
     queryCrossrefService(undefined, setupCrossrefHeaders(crossrefApiBearerToken)),
     logger,
@@ -29,7 +29,6 @@ export const findAllExpressionsOfPaper = (
   ),
   TE.chain(replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
     getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
-    server,
     expressionDoi,
   )),
 );

@@ -25,7 +25,6 @@ const arbitraryExpressionFromIrrelevantServer = () => ({
 
 describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-ones', () => {
   const relevantServer = 'biorxiv' as const;
-  const irrelevantServer = arbitraryIrrelevantServer();
   const monolithicExpression: PaperExpression = {
     ...arbitraryPaperExpression(),
     server: O.some(relevantServer),
@@ -39,7 +38,6 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
         [],
         replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
           shouldNotBeCalled,
-          relevantServer,
           arbitraryExpressionDoi(),
         ),
         TE.getOrElse(shouldNotBeCalled),
@@ -59,7 +57,6 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
         inputExpressions,
         replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
           shouldNotBeCalled,
-          irrelevantServer,
           inputExpressions[0].expressionDoi,
         ),
         TE.getOrElse(shouldNotBeCalled),
@@ -82,7 +79,6 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
         inputExpressions,
         replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
           shouldNotBeCalled,
-          irrelevantServer,
           inputExpressions[0].expressionDoi,
         ),
         TE.getOrElse(shouldNotBeCalled),
@@ -106,7 +102,6 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
         [monolithicExpression],
         replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
           getExpressionsFromBiorxiv,
-          relevantServer,
           monolithicExpression.expressionDoi,
         ),
         TE.getOrElse(shouldNotBeCalled),
@@ -137,7 +132,6 @@ describe('replace-one-monolithic-biorxiv-or-medrxiv-expression-with-granular-one
         ],
         replaceOneMonolithicBiorxivOrMedrxivExpressionWithGranularOnes(
           getExpressionsFromBiorxiv,
-          relevantServer,
           monolithicExpression.expressionDoi,
         ),
         TE.getOrElse(shouldNotBeCalled),
