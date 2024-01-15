@@ -1,8 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
-import * as E from 'fp-ts/Either';
-import { constant, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { PaperExpressionEvent, FeedEvent, getFeedEventsContent } from './get-feed-events-content';
@@ -38,19 +37,12 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   dependencies,
 ) => (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  expressionDoi, server, _foundExpressions,
+  expressionDoi, server, foundExpressions,
 ) => pipe(
-  dependencies.findAllExpressionsOfPaper(expressionDoi),
-  T.map((expressionsOfPaper) => ({
+  ({
     evaluations: pipe(
-      expressionsOfPaper,
-      E.match(
-        () => [expressionDoi],
-        (foundExpressions) => pipe(
-          foundExpressions,
-          RA.map((expression) => expression.expressionDoi),
-        ),
-      ),
+      foundExpressions,
+      RA.map((expression) => expression.expressionDoi),
       dependencies.getEvaluationsOfMultipleExpressions,
       RA.map((evaluation) => ({
         ...evaluation,
@@ -58,15 +50,12 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       })),
     ),
     expressions: pipe(
-      expressionsOfPaper,
-      E.matchW(
-        constant([]),
-        RA.map(toPaperExpressionEvent),
-      ),
+      foundExpressions,
+      RA.map(toPaperExpressionEvent),
     ),
-  })),
-  T.map((feeds) => [...feeds.evaluations, ...feeds.expressions]),
-  T.map(RA.sort(byDateDescending)),
-  T.chain(getFeedEventsContent(dependencies)),
+  }),
+  (feeds) => [...feeds.evaluations, ...feeds.expressions],
+  RA.sort(byDateDescending),
+  getFeedEventsContent(dependencies),
   T.map(handleArticleVersionErrors(server)),
 );
