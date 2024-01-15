@@ -76,6 +76,8 @@ const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: Pa
   return expression;
 };
 
+const isWorkTypePostedContent = () => true;
+
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
@@ -89,6 +91,7 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
     collectedWorks: new Map(),
   },
   walkRelationGraph(queryCrossrefService, logger, doi),
+  TE.map(RA.filter(isWorkTypePostedContent)),
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
 );
