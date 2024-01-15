@@ -6,7 +6,6 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { StatusCodes } from 'http-status-codes';
 import { TestFramework, createTestFramework } from '../../framework';
-import { ArticleId } from '../../../src/types/article-id';
 import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { supportedGroups } from '../../../src/docmaps/supported-groups';
@@ -26,13 +25,13 @@ describe('construct-view-model', () => {
     publisheraccount: O.none,
   };
   let framework: TestFramework;
-  let docmapArticleIds: ReadonlyArray<ArticleId>;
+  let docmapArticleIds: ReadonlyArray<string>;
 
   const getDocmapsArticleIds = async (params: Params) => pipe(
     params,
     constructViewModel(framework.dependenciesForViews),
     TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
-    T.map(RA.map((docmap) => docmap.articleId)),
+    T.map(RA.map((docmap) => docmap.articleId.value)),
   )();
 
   beforeEach(() => {
@@ -77,8 +76,8 @@ describe('construct-view-model', () => {
 
       it('returns a docmap for every evaluated article', () => {
         expect(docmapArticleIds).toHaveLength(2);
-        expect(docmapArticleIds).toContain(articleId1);
-        expect(docmapArticleIds).toContain(articleId2);
+        expect(docmapArticleIds).toContain(articleId1.value);
+        expect(docmapArticleIds).toContain(articleId2.value);
       });
     });
 
@@ -108,7 +107,7 @@ describe('construct-view-model', () => {
       });
 
       it('returns a docmap for every group', () => {
-        expect(docmapArticleIds).toStrictEqual([articleId, articleId]);
+        expect(docmapArticleIds).toStrictEqual([articleId.value, articleId.value]);
       });
     });
 
@@ -144,8 +143,8 @@ describe('construct-view-model', () => {
       });
 
       it('returns a docmap for every combination of group and evaluated article', () => {
-        expect(docmapArticleIds).toContain(articleId1);
-        expect(docmapArticleIds).toContain(articleId2);
+        expect(docmapArticleIds).toContain(articleId1.value);
+        expect(docmapArticleIds).toContain(articleId2.value);
         expect(docmapArticleIds).toHaveLength(3);
       });
     });
@@ -224,8 +223,8 @@ describe('construct-view-model', () => {
 
       it('returns all docmaps', () => {
         expect(docmapArticleIds).toHaveLength(2);
-        expect(docmapArticleIds).toContain(articleId1);
-        expect(docmapArticleIds).toContain(articleId2);
+        expect(docmapArticleIds).toContain(articleId1.value);
+        expect(docmapArticleIds).toContain(articleId2.value);
       });
     });
 
@@ -260,7 +259,7 @@ describe('construct-view-model', () => {
       });
 
       it('only returns docmaps by the corresponding group', () => {
-        expect(docmapArticleIds).toStrictEqual([articleId]);
+        expect(docmapArticleIds).toStrictEqual([articleId.value]);
       });
     });
 
@@ -292,7 +291,7 @@ describe('construct-view-model', () => {
         });
 
         it('returns the docmap whose updated property is after the specified date', () => {
-          expect(docmapArticleIds).toStrictEqual([relevantArticleId]);
+          expect(docmapArticleIds).toStrictEqual([relevantArticleId.value]);
         });
       });
 
@@ -325,7 +324,7 @@ describe('construct-view-model', () => {
         });
 
         it('returns that docmap', () => {
-          expect(docmapArticleIds).toStrictEqual([relevantArticleId]);
+          expect(docmapArticleIds).toStrictEqual([relevantArticleId.value]);
         });
       });
     });
