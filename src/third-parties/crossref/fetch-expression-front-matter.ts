@@ -13,7 +13,6 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
-import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ExternalQueries } from '../external-queries';
@@ -47,7 +46,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
       return E.left(DE.unavailable);
     }
 
-    abstract = getAbstract(doc, new ArticleId(expressionDoi), logger);
+    abstract = getAbstract(doc, expressionDoi, logger);
     if (O.isNone(abstract)) {
       logger('warn', 'Did not find abstract', { expressionDoi });
     }

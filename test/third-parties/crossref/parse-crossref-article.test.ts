@@ -5,7 +5,7 @@ import {
 } from '../../../src/third-parties/crossref/parse-crossref-article';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryUri } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -26,7 +26,7 @@ describe('parse-crossref-article', () => {
       throw msg;
     },
   });
-  const doi = arbitraryArticleId();
+  const doi = arbitraryExpressionDoi();
 
   describe('parsing the abstract', () => {
     it('extracts the abstract text from the XML response', async () => {
