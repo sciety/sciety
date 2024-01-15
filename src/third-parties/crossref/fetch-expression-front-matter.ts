@@ -1,5 +1,4 @@
 import { DOMParser } from '@xmldom/xmldom';
-import { formatValidationErrors } from 'io-ts-reporters';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
@@ -17,6 +16,7 @@ import { QueryExternalService } from '../query-external-service';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ExternalQueries } from '../external-queries';
 import { ExpressionDoi } from '../../types/expression-doi';
+import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, expressionDoi: ExpressionDoi) => {
   if (response.length === 0) {
@@ -76,42 +76,33 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   });
 };
 
-const fetchCrossrefArticle = (
-  queryExternalService: QueryExternalService,
-  logger: Logger,
-  crossrefApiBearerToken: O.Option<string>,
-) => (expressionDoi: ExpressionDoi): ReturnType<ExternalQueries['fetchExpressionFrontMatter']> => {
-  const url = `https://api.crossref.org/works/${expressionDoi}/transform`;
+const crossrefWorksTransformEndpoint = (expressionDoi: ExpressionDoi): string => `https://api.crossref.org/works/${expressionDoi}/transform`;
+
+const crossrefHeaders = (crossrefApiBearerToken: O.Option<string>) => {
   const headers: Record<string, string> = {
     Accept: 'application/vnd.crossref.unixref+xml',
   };
   if (O.isSome(crossrefApiBearerToken)) {
     headers['Crossref-Plus-API-Token'] = `Bearer ${crossrefApiBearerToken.value}`;
   }
-  return pipe(
-    url,
-    queryExternalService('warn', headers),
-    TE.chainEitherKW(flow(
-      t.string.decode,
-      E.mapLeft(formatValidationErrors),
-      E.mapLeft((errors) => {
-        logger('error', 'Crossref response is not a string', { errors, expressionDoi });
-        return DE.unavailable;
-      }),
-    )),
-    TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(
-      response,
-      logger,
-      expressionDoi,
-    )),
-  );
+  return headers;
 };
 
 export const fetchExpressionFrontMatter = (
   queryExternalService: QueryExternalService,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-): ExternalQueries['fetchExpressionFrontMatter'] => (expressionDoi) => pipe(
+) => (expressionDoi: ExpressionDoi): ReturnType<ExternalQueries['fetchExpressionFrontMatter']> => pipe(
   expressionDoi,
-  fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
+  crossrefWorksTransformEndpoint,
+  queryExternalService('warn', crossrefHeaders(crossrefApiBearerToken)),
+  TE.chainEitherKW(flow(
+    decodeAndLogFailures(logger, t.string, { expressionDoi }),
+    E.mapLeft(() => DE.unavailable),
+  )),
+  TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(
+    response,
+    logger,
+    expressionDoi,
+  )),
 );
