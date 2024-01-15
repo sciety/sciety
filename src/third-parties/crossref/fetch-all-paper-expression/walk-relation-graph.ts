@@ -43,22 +43,21 @@ export const walkRelationGraph = (
   doi: string,
 ) => (
   state: State,
-): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => pipe(
-  state,
-  fetchAllQueuedWorksAndAddToCollector(queryCrossrefService, logger),
-  TE.map(enqueueAllRelatedDoisNotYetCollected),
-  TE.chain((s) => {
-    if (s.queue.length === 0) {
-      return TE.right(Array.from(s.collectedWorks.values()));
-    }
-    if (s.collectedWorks.size > 20) {
-      logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
-        collectedWorksSize: s.collectedWorks.size,
-        startingDoi: doi,
-      });
+): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => {
+  if (state.collectedWorks.size > 20) {
+    logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
+      collectedWorksSize: state.collectedWorks.size,
+      startingDoi: doi,
+    });
+  }
+  if (state.queue.length === 0 || state.collectedWorks.size > 20) {
+    return TE.right(Array.from(state.collectedWorks.values()));
+  }
 
-      return TE.left(DE.unavailable);
-    }
-    return walkRelationGraph(queryCrossrefService, logger, doi)(s);
-  }),
-);
+  return pipe(
+    state,
+    fetchAllQueuedWorksAndAddToCollector(queryCrossrefService, logger),
+    TE.map(enqueueAllRelatedDoisNotYetCollected),
+    TE.chain(walkRelationGraph(queryCrossrefService, logger, doi)),
+  );
+};
