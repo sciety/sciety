@@ -9,13 +9,14 @@ import {
   constructCurationStatements,
 } from '../../../src/shared-components/curation-statements/construct-curation-statements';
 import * as DE from '../../../src/types/data-error';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
-import * as EDOI from '../../../src/types/expression-doi';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ArticleId } from '../../../src/types/article-id';
+import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;
@@ -24,17 +25,17 @@ describe('construct-curation-statements', () => {
     framework = createTestFramework();
   });
 
-  const articleId = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
   const addGroupA = arbitraryAddGroupCommand();
-  const recordCurationStatementByGroupA = {
+  const recordCurationStatementByGroupA: RecordEvaluationPublicationCommand = {
     ...arbitraryRecordEvaluationPublicationCommand(),
     groupId: addGroupA.groupId,
-    articleId,
+    articleId: new ArticleId(expressionDoi),
     evaluationType: 'curation-statement' as const,
   };
 
   const getCurationStatementLocators = async (dependencies: Dependencies) => pipe(
-    [EDOI.fromValidatedString(articleId.value)],
+    [expressionDoi],
     constructCurationStatements(dependencies),
     T.map(RA.map((curationStatements) => curationStatements.evaluationLocator)),
   )();
@@ -42,9 +43,9 @@ describe('construct-curation-statements', () => {
   let curationStatementLocators: ReadonlyArray<EvaluationLocator>;
 
   describe('when there are multiple curation statements but only one of the groups exists', () => {
-    const evaluation2Command = {
+    const evaluation2Command: RecordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
-      articleId,
+      articleId: new ArticleId(expressionDoi),
       evaluationType: 'curation-statement' as const,
     };
 
@@ -78,11 +79,11 @@ describe('construct-curation-statements', () => {
   describe('when one curation statement can be retrieved and one cannot', () => {
     const addGroupB = arbitraryAddGroupCommand();
     const retrievableEvaluationLocator = arbitraryEvaluationLocator();
-    const recordRetrievableCurationStatementByGroupB = {
+    const recordRetrievableCurationStatementByGroupB: RecordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator: retrievableEvaluationLocator,
       groupId: addGroupB.groupId,
-      articleId,
+      articleId: new ArticleId(expressionDoi),
       evaluationType: 'curation-statement' as const,
     };
 
