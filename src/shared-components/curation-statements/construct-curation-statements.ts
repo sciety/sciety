@@ -75,10 +75,11 @@ const onlyIncludeLatestCurationPerGroup = (
 
 type ConstructCurationStatements = (
   dependencies: Dependencies,
+) => (
   expressionDois: ReadonlyArray<ExpressionDoi>,
 ) => T.Task<ReadonlyArray<ViewModel>>;
 
-export const constructCurationStatements: ConstructCurationStatements = (dependencies, expressionDois) => pipe(
+export const constructCurationStatements: ConstructCurationStatements = (dependencies) => (expressionDois) => pipe(
   expressionDois,
   dependencies.getEvaluationsOfMultipleExpressions,
   RA.filter((evaluation) => O.getEq(S.Eq).equals(evaluation.type, O.some('curation-statement'))),

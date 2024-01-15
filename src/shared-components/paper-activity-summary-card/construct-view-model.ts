@@ -47,7 +47,8 @@ export const constructViewModel = (
     ),
   ),
   TE.chainW((partial) => pipe(
-    constructCurationStatements(ports, [inputExpressionDoi]),
+    [inputExpressionDoi],
+    constructCurationStatements(ports),
     T.map((curationStatements) => ({
       inputExpressionDoi: partial.inputExpressionDoi,
       paperActivityPageHref: constructPaperActivityPageHref(partial.inputExpressionDoi),
