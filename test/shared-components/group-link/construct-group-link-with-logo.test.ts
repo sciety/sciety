@@ -6,13 +6,13 @@ import {
   arbitraryRecordEvaluationPublicationCommand,
 } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { constructGroupLink } from '../../../src/shared-components/group-link';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('construct-group-link-with-logo', () => {
-  const article = arbitraryArticleId();
+  const articleId = arbitraryArticleId();
   const addGroupCommand = arbitraryAddGroupCommand();
   const linkToTheGroupsPage = `/groups/${addGroupCommand.slug}`;
   let result: GroupLinkWithLogoViewModel;
@@ -23,7 +23,7 @@ describe('construct-group-link-with-logo', () => {
     await framework.commandHelpers.addGroup(addGroupCommand);
     await framework.commandHelpers.recordEvaluationPublication({
       ...arbitraryRecordEvaluationPublicationCommand(),
-      articleId: article,
+      articleId: toExpressionDoi(articleId),
       groupId: addGroupCommand.groupId,
       evaluationType: undefined,
     });

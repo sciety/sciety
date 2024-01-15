@@ -6,7 +6,7 @@ import { constructGroupCard } from '../../../src/shared-components/group-card';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { AddGroupCommand } from '../../../src/write-side/commands';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -108,13 +108,13 @@ describe('construct-group-card', () => {
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId,
+          articleId: toExpressionDoi(articleId),
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId,
+          articleId: toExpressionDoi(articleId),
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',
         });

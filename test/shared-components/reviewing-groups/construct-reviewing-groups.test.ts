@@ -14,7 +14,7 @@ import { ArticleId } from '../../../src/types/article-id';
 
 describe('construct-reviewing-groups', () => {
   const expressionDoi = arbitraryExpressionDoi();
-  const article = new ArticleId(expressionDoi);
+  const articleId = new ArticleId(expressionDoi);
   let framework: TestFramework;
 
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('construct-reviewing-groups', () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: 'review',
         });
@@ -63,13 +63,13 @@ describe('construct-reviewing-groups', () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: 'review',
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: 'review',
         });
@@ -98,13 +98,13 @@ describe('construct-reviewing-groups', () => {
         await framework.commandHelpers.addGroup(addGroup2Command);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroup1Command.groupId,
           evaluationType: 'review',
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroup2Command.groupId,
           evaluationType: 'review',
         });
@@ -133,7 +133,7 @@ describe('construct-reviewing-groups', () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',
         });
@@ -156,13 +156,13 @@ describe('construct-reviewing-groups', () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: undefined,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',
         });
@@ -185,7 +185,7 @@ describe('construct-reviewing-groups', () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: article,
+          articleId,
           groupId: addGroupCommand.groupId,
           evaluationType: undefined,
         });
