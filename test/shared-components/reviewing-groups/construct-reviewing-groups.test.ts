@@ -10,11 +10,10 @@ import {
   constructReviewingGroups,
 } from '../../../src/shared-components/reviewing-groups/construct-reviewing-groups';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
 
 describe('construct-reviewing-groups', () => {
   const expressionDoi = arbitraryExpressionDoi();
-  const articleId = new ArticleId(expressionDoi);
+  const articleId = expressionDoi;
   let framework: TestFramework;
 
   beforeEach(() => {

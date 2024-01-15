@@ -95,12 +95,12 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId,
+          articleId: toExpressionDoi(articleId),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId,
+          articleId: toExpressionDoi(articleId),
           groupId: groupId2,
         });
         docmapArticleIds = await getDocmapsArticleIds(defaultParams);
@@ -245,7 +245,7 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId,
+          articleId: toExpressionDoi(articleId),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({

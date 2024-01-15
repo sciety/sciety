@@ -65,7 +65,7 @@ describe('construct-view-model', () => {
       const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
       const command = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: new ArticleId(inputExpressionDoi),
+        articleId: inputExpressionDoi,
       };
 
       beforeEach(async () => {

@@ -36,7 +36,7 @@ describe('ensure-evaluations-are-listed', () => {
     });
 
     it('adds the article to the appropriate list', () => {
-      expect(listedArticleIds).toContain(recordEvaluationPublicationCommand.articleId.value);
+      expect(listedArticleIds).toContain(recordEvaluationPublicationCommand.articleId);
     });
   });
 });

@@ -9,6 +9,7 @@ import * as A from '../enact';
 import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
 import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
+import { ArticleId } from '../../../../src/types/article-id';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
@@ -26,7 +27,7 @@ describe('lifecycle', () => {
         expect(outcome).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
-          articleId: mostRecentCommand.articleId,
+          articleId: new ArticleId(mostRecentCommand.articleId),
           evaluationLocator: mostRecentCommand.evaluationLocator,
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,
@@ -173,7 +174,7 @@ describe('lifecycle', () => {
         expect(outcome).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
-          articleId: mostRecentCommand.articleId,
+          articleId: new ArticleId(mostRecentCommand.articleId),
           evaluationLocator,
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,

@@ -15,7 +15,6 @@ import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
 
 describe('construct-curation-statements', () => {
@@ -30,7 +29,7 @@ describe('construct-curation-statements', () => {
   const recordCurationStatementByGroupA: RecordEvaluationPublicationCommand = {
     ...arbitraryRecordEvaluationPublicationCommand(),
     groupId: addGroupA.groupId,
-    articleId: new ArticleId(expressionDoi),
+    articleId: expressionDoi,
     evaluationType: 'curation-statement' as const,
   };
 
@@ -45,7 +44,7 @@ describe('construct-curation-statements', () => {
   describe('when there are multiple curation statements but only one of the groups exists', () => {
     const evaluation2Command: RecordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
-      articleId: new ArticleId(expressionDoi),
+      articleId: expressionDoi,
       evaluationType: 'curation-statement' as const,
     };
 
@@ -83,7 +82,7 @@ describe('construct-curation-statements', () => {
       ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator: retrievableEvaluationLocator,
       groupId: addGroupB.groupId,
-      articleId: new ArticleId(expressionDoi),
+      articleId: expressionDoi,
       evaluationType: 'curation-statement' as const,
     };
 
