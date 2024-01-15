@@ -79,8 +79,8 @@ type ConstructCurationStatements = (
 ) => T.Task<ReadonlyArray<ViewModel>>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, expressionDoi) => pipe(
-  expressionDoi,
-  dependencies.getEvaluationsOfExpression,
+  [expressionDoi],
+  dependencies.getEvaluationsOfMultipleExpressions,
   RA.filter((evaluation) => O.getEq(S.Eq).equals(evaluation.type, O.some('curation-statement'))),
   onlyIncludeLatestCurationPerGroup,
   RA.map(addGroupInformation(dependencies)),
