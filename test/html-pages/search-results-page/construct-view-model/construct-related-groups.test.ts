@@ -9,6 +9,7 @@ import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group
 import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
 import { ExpressionDoi } from '../../../../src/types/expression-doi';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { toExpressionDoi } from '../../../types/article-id.helper';
 
 const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 
@@ -47,12 +48,12 @@ describe('construct-related-groups', () => {
       await framework.commandHelpers.addGroup(addGroup2Command);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId,
+        articleId: toExpressionDoi(articleId),
         groupId: addGroup1Command.groupId,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId,
+        articleId: toExpressionDoi(articleId),
         groupId: addGroup2Command.groupId,
       });
       groupNames = findNamesOfRelatedGroups([expressionDoi]);
@@ -75,12 +76,12 @@ describe('construct-related-groups', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: articleId1,
+        articleId: toExpressionDoi(articleId1),
         groupId: addGroupCommand.groupId,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: articleId2,
+        articleId: toExpressionDoi(articleId2),
         groupId: addGroupCommand.groupId,
       });
       groupNames = findNamesOfRelatedGroups([expressionDoi1, expressionDoi2]);
@@ -101,12 +102,12 @@ describe('construct-related-groups', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId,
+        articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId,
+        articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
       });
       groupNames = findNamesOfRelatedGroups([expressionDoi]);
