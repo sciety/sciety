@@ -19,6 +19,7 @@ import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 import { ExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
+import { PaperExpression } from '../../../types/paper-expression';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -31,13 +32,15 @@ const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
+const foundExpressions: ReadonlyArray<PaperExpression> = [];
+
 const constructRemainingViewModel = (
   dependencies: Dependencies,
   params: Params,
 ) => (frontMatter: ExpressionFrontMatter) => pipe(
   {
     feedItemsByDateDescending: (
-      getArticleFeedEventsByDateDescending(dependencies)(params.expressionDoi, frontMatter.server)
+      getArticleFeedEventsByDateDescending(dependencies)(params.expressionDoi, frontMatter.server, foundExpressions)
     ),
     relatedArticles: constructRelatedArticles(params.expressionDoi, dependencies),
     curationStatements: constructCurationStatements(dependencies, params.expressionDoi),

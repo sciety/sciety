@@ -24,7 +24,7 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 );
 
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
-=> (expressionDoi: ExpressionDoi, server: ArticleServer)
+=> (expressionDoi: ExpressionDoi, server: ArticleServer, foundExpressions: ReadonlyArray<PaperExpression>)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
@@ -37,7 +37,8 @@ const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressi
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   dependencies,
 ) => (
-  expressionDoi, server,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  expressionDoi, server, _foundExpressions,
 ) => pipe(
   dependencies.findAllExpressionsOfPaper(expressionDoi),
   T.map((expressionsOfPaper) => ({
