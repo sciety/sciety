@@ -19,9 +19,9 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { ExternalQueries } from '../external-queries';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: ArticleId) => {
+const parseResponseAndConstructDomainObject = (response: string, logger: Logger, expressionDoi: ExpressionDoi) => {
   if (response.length === 0) {
-    logger('error', 'Empty response from Crossref', { doi, response });
+    logger('error', 'Empty response from Crossref', { doi: expressionDoi, response });
     return E.left(DE.unavailable);
   }
   const parser = new DOMParser({
@@ -39,25 +39,25 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     server = getServer(doc);
 
     if (O.isNone(authors)) {
-      logger('warn', 'Unable to find authors', { doi, response });
+      logger('warn', 'Unable to find authors', { expressionDoi, response });
     }
 
     if (O.isNone(server)) {
-      logger('warn', 'Unable to find server', { doi, response });
+      logger('warn', 'Unable to find server', { expressionDoi, response });
       return E.left(DE.unavailable);
     }
 
-    abstract = getAbstract(doc, doi, logger);
+    abstract = getAbstract(doc, new ArticleId(expressionDoi), logger);
     if (O.isNone(abstract)) {
-      logger('warn', 'Did not find abstract', { doi });
+      logger('warn', 'Did not find abstract', { expressionDoi });
     }
 
     title = getTitle(doc);
     if (O.isNone(title)) {
-      logger('warn', 'Did not find title', { doi });
+      logger('warn', 'Did not find title', { expressionDoi });
     }
   } catch (error: unknown) {
-    logger('error', 'Unable to parse document', { doi, response, error });
+    logger('error', 'Unable to parse document', { expressionDoi, response, error });
     // - what happens if the title cannot be parsed (e.g. it's missing from the XML)?
     // - what happens if the abstract cannot be parsed (e.g. it has unforeseen tags)?
     return E.left(DE.unavailable);
@@ -65,7 +65,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   return E.right({
     abstract: pipe(
       abstract,
-      O.getOrElse(() => sanitise(toHtmlFragment(`No abstract for ${doi.value} available`))),
+      O.getOrElse(() => sanitise(toHtmlFragment(`No abstract for ${expressionDoi} available`))),
     ),
     title: pipe(
       title,
@@ -74,7 +74,6 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     ),
     authors,
     server: server.value,
-    doi,
   });
 };
 
@@ -104,7 +103,7 @@ const fetchCrossrefArticle = (
     TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(
       response,
       logger,
-      new ArticleId(expressionDoi),
+      expressionDoi,
     )),
   );
 };
