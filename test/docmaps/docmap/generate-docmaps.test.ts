@@ -10,7 +10,7 @@ import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
 import { arbitraryNcrcId } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
@@ -95,7 +95,7 @@ describe('generate-docmaps', () => {
       const command = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
       };
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(command);
@@ -123,12 +123,12 @@ describe('generate-docmaps', () => {
       const recordEvaluation1 = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup1.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
       };
       const recordEvaluation2 = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup2.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
       };
       await framework.commandHelpers.addGroup(addGroup1);
       await framework.commandHelpers.addGroup(addGroup2);
@@ -161,12 +161,12 @@ describe('generate-docmaps', () => {
       const recordEvaluation1 = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup1.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
       };
       const recordEvaluation2 = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup2.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
       };
       await framework.commandHelpers.addGroup(addGroup1);
       await framework.commandHelpers.addGroup(addGroup2);
@@ -198,12 +198,12 @@ describe('generate-docmaps', () => {
       const recordEvaluation1 = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
       };
       const recordEvaluation2 = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
       };
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation1);
@@ -232,12 +232,12 @@ describe('generate-docmaps', () => {
       const recordGoodEvaluation = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
       };
       const recordBadEvaluation = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId,
+        articleId: toExpressionDoi(articleId),
         evaluationLocator: failingReviewId,
       };
       await framework.commandHelpers.addGroup(addGroupCommand);

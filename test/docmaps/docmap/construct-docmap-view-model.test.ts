@@ -8,7 +8,7 @@ import * as DE from '../../../src/types/data-error';
 import { inferredSourceUrl } from '../../../src/types/evaluation-locator';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator, arbitraryNcrcId, arbitraryReviewDoi } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
@@ -45,7 +45,7 @@ describe('construct-docmap-view-model', () => {
     describe('when there is an evaluation by the selected group', () => {
       const recordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId,
+        articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
       };
 
@@ -74,13 +74,13 @@ describe('construct-docmap-view-model', () => {
       const laterDate = new Date('2000-01-01');
       const command1 = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId,
+        articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
         issuedAt: earlierDate,
       };
       const command2 = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId,
+        articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
         issuedAt: laterDate,
       };
@@ -146,7 +146,7 @@ describe('construct-docmap-view-model', () => {
       const command = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         evaluationLocator,
-        articleId,
+        articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
         issuedAt: evaluationPublicationRecordedDate,
       };
@@ -183,7 +183,7 @@ describe('construct-docmap-view-model', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
-          articleId,
+          articleId: toExpressionDoi(articleId),
         };
         const ports: Ports = {
           ...defaultAdapters,
@@ -214,7 +214,7 @@ describe('construct-docmap-view-model', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
-          articleId,
+          articleId: toExpressionDoi(articleId),
         };
         const ports: Ports = {
           ...defaultAdapters,
@@ -249,14 +249,14 @@ describe('construct-docmap-view-model', () => {
         const addOtherGroup = arbitraryAddGroupCommand();
         const recordEvaluationByThisGroup = {
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId,
+          articleId: toExpressionDoi(articleId),
           groupId: selectedGroupId,
         };
         await framework.commandHelpers.addGroup(addOtherGroup);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addOtherGroup.groupId,
-          articleId,
+          articleId: toExpressionDoi(articleId),
         });
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationByThisGroup);
 
