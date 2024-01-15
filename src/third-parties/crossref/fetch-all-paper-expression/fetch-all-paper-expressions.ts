@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
-import { CrossrefWork } from './crossref-work';
+import { CrossrefWork, CrossrefWorkPostedContent } from './crossref-work';
 import { State } from './state';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { fetchIndividualWork } from './fetch-individual-work';
@@ -76,7 +76,7 @@ const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: Pa
   return expression;
 };
 
-const isWorkTypePostedContent = () => true;
+const isWorkTypePostedContent = (crossrefWork: CrossrefWork): crossrefWork is CrossrefWorkPostedContent => crossrefWork.type === 'posted-content';
 
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;

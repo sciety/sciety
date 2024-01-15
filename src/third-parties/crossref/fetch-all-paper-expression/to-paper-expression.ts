@@ -1,10 +1,10 @@
 import { URL } from 'url';
-import { CrossrefWork } from './crossref-work';
+import { CrossrefWorkPostedContent } from './crossref-work';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as EDOI from '../../../types/expression-doi';
 import { identifyExpressionServer } from './identify-expression-server';
 
-export const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
+export const toPaperExpression = (crossrefWork: CrossrefWorkPostedContent): PaperExpression => ({
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
   publishedAt: new Date(
     crossrefWork.posted['date-parts'][0][0],
