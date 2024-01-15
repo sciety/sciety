@@ -7,7 +7,7 @@ import * as E from 'fp-ts/Either';
 import { StatusCodes } from 'http-status-codes';
 import { TestFramework, createTestFramework } from '../../framework';
 import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { supportedGroups } from '../../../src/docmaps/supported-groups';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
@@ -64,12 +64,12 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId1,
+          articleId: toExpressionDoi(articleId1),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId2,
+          articleId: toExpressionDoi(articleId2),
           groupId: groupId1,
         });
         docmapArticleIds = await getDocmapsArticleIds(defaultParams);
@@ -127,17 +127,17 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId1,
+          articleId: toExpressionDoi(articleId1),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId1,
+          articleId: toExpressionDoi(articleId1),
           groupId: groupId2,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId2,
+          articleId: toExpressionDoi(articleId2),
           groupId: groupId2,
         });
         docmapArticleIds = await getDocmapsArticleIds(defaultParams);
@@ -211,12 +211,12 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId1,
+          articleId: toExpressionDoi(articleId1),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: articleId2,
+          articleId: toExpressionDoi(articleId2),
           groupId: groupId2,
         });
         docmapArticleIds = await getDocmapsArticleIds(defaultParams);
@@ -281,7 +281,7 @@ describe('construct-view-model', () => {
           });
           await framework.commandHelpers.recordEvaluationPublication({
             ...arbitraryRecordEvaluationPublicationCommand(),
-            articleId: relevantArticleId,
+            articleId: toExpressionDoi(relevantArticleId),
             issuedAt: new Date('2000-01-01'),
             groupId,
           });
@@ -308,7 +308,7 @@ describe('construct-view-model', () => {
           });
           await framework.commandHelpers.recordEvaluationPublication({
             ...arbitraryRecordEvaluationPublicationCommand(),
-            articleId: relevantArticleId,
+            articleId: toExpressionDoi(relevantArticleId),
             evaluationLocator,
             issuedAt: new Date('1980-01-01'),
             groupId,
