@@ -9,7 +9,6 @@ import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
-import { ExpressionDoi } from '../../../types/expression-doi';
 import { PaperExpression } from '../../../types/paper-expression';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
@@ -23,7 +22,7 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 );
 
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
-=> (expressionDoi: ExpressionDoi, server: ArticleServer, foundExpressions: ReadonlyArray<PaperExpression>)
+=> (server: ArticleServer, foundExpressions: ReadonlyArray<PaperExpression>)
 => T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
 
 const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
@@ -36,8 +35,7 @@ const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressi
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   dependencies,
 ) => (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  expressionDoi, server, foundExpressions,
+  server, foundExpressions,
 ) => pipe(
   ({
     evaluations: pipe(
