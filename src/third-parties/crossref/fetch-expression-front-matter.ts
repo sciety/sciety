@@ -17,6 +17,7 @@ import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ExternalQueries } from '../external-queries';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 const parseResponseAndConstructDomainObject = (response: string, logger: Logger, doi: ArticleId) => {
   if (response.length === 0) {
@@ -81,8 +82,8 @@ const fetchCrossrefArticle = (
   queryExternalService: QueryExternalService,
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
-) => (doi: ArticleId): ReturnType<ExternalQueries['fetchExpressionFrontMatter']> => {
-  const url = `https://api.crossref.org/works/${doi.value}/transform`;
+) => (expressionDoi: ExpressionDoi): ReturnType<ExternalQueries['fetchExpressionFrontMatter']> => {
+  const url = `https://api.crossref.org/works/${expressionDoi}/transform`;
   const headers: Record<string, string> = {
     Accept: 'application/vnd.crossref.unixref+xml',
   };
@@ -96,11 +97,15 @@ const fetchCrossrefArticle = (
       t.string.decode,
       E.mapLeft(formatValidationErrors),
       E.mapLeft((errors) => {
-        logger('error', 'Crossref response is not a string', { errors, doi: doi.value });
+        logger('error', 'Crossref response is not a string', { errors, expressionDoi });
         return DE.unavailable;
       }),
     )),
-    TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(response, logger, doi)),
+    TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(
+      response,
+      logger,
+      new ArticleId(expressionDoi),
+    )),
   );
 };
 
@@ -109,6 +114,6 @@ export const fetchExpressionFrontMatter = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
 ): ExternalQueries['fetchExpressionFrontMatter'] => (expressionDoi) => pipe(
-  new ArticleId(expressionDoi),
+  expressionDoi,
   fetchCrossrefArticle(queryExternalService, logger, crossrefApiBearerToken),
 );
