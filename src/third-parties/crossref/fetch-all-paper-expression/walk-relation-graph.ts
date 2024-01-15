@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { sequenceS } from 'fp-ts/Apply';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
 import { CrossrefWork } from './crossref-work';
@@ -10,31 +11,26 @@ import { fetchIndividualWork } from './fetch-individual-work';
 import { enqueueAllRelatedDoisNotYetCollected } from './enqueue-all-related-dois-not-yet-collected';
 import { QueryCrossrefService } from './query-crossref-service';
 
+const update = (collectedWorks: State['collectedWorks'], newlyFetchedWork: CrossrefWork) => {
+  collectedWorks.set(newlyFetchedWork.DOI.toLowerCase(), newlyFetchedWork);
+  return collectedWorks;
+};
+
 const fetchAllQueuedWorksAndAddToCollector = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
 ) => (state: State) => pipe(
-  state.queue,
-  TE.traverseArray(fetchIndividualWork(queryCrossrefService, logger)),
-  TE.chainW((individualWorks) => pipe(
-    state.queue,
-    fetchWorksThatPointToIndividualWorks(queryCrossrefService, logger),
-    TE.map((worksThatPointToIndividualWorks) => [...individualWorks, ...worksThatPointToIndividualWorks]),
-  )),
-  TE.map((newlyFetchedWorks) => pipe(
-    newlyFetchedWorks,
-    RA.reduce(
-      state.collectedWorks,
-      (collectedWorks, newlyFetchedWork) => {
-        collectedWorks.set(newlyFetchedWork.DOI.toLowerCase(), newlyFetchedWork);
-        return collectedWorks;
-      },
-    ),
-    (collectedWorks) => ({
-      queue: [],
-      collectedWorks,
-    }),
-  )),
+  {
+    individualWorks: TE.traverseArray(fetchIndividualWork(queryCrossrefService, logger))(state.queue),
+    worksThatPointToIndividualWorks: fetchWorksThatPointToIndividualWorks(queryCrossrefService, logger)(state.queue),
+  },
+  sequenceS(TE.ApplyPar),
+  TE.map((fetched) => [...fetched.individualWorks, ...fetched.worksThatPointToIndividualWorks]),
+  TE.map(RA.reduce(state.collectedWorks, update)),
+  TE.map((collectedWorks) => ({
+    queue: [],
+    collectedWorks,
+  })),
 );
 
 export const walkRelationGraph = (
