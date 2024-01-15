@@ -49,7 +49,8 @@ const constructRemainingViewModel = (
       ),
       relatedArticles: constructRelatedArticles(params.expressionDoi, dependencies),
       curationStatements: pipe(
-        [params.expressionDoi],
+        foundExpressions,
+        RA.map((expression) => expression.expressionDoi),
         constructCurationStatements(dependencies),
       ),
     },
