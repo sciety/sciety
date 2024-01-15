@@ -15,6 +15,7 @@ import { arbitraryNcrcId } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
@@ -92,7 +93,7 @@ describe('generate-docmaps', () => {
         ...arbitraryAddGroupCommand(),
         groupId: ncrcGroupId,
       };
-      const command = {
+      const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
         articleId: toExpressionDoi(articleId),
@@ -120,12 +121,12 @@ describe('generate-docmaps', () => {
         groupId: ncrcGroupId,
       };
       const addGroup2 = arbitraryAddGroupCommand();
-      const recordEvaluation1 = {
+      const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup1.groupId,
         articleId: toExpressionDoi(articleId),
       };
-      const recordEvaluation2 = {
+      const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup2.groupId,
         articleId: toExpressionDoi(articleId),
@@ -158,12 +159,12 @@ describe('generate-docmaps', () => {
         ...arbitraryAddGroupCommand(),
         groupId: rapidReviewsGroupId,
       };
-      const recordEvaluation1 = {
+      const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup1.groupId,
         articleId: toExpressionDoi(articleId),
       };
-      const recordEvaluation2 = {
+      const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup2.groupId,
         articleId: toExpressionDoi(articleId),
@@ -195,12 +196,12 @@ describe('generate-docmaps', () => {
         ...arbitraryAddGroupCommand(),
         groupId: ncrcGroupId,
       };
-      const recordEvaluation1 = {
+      const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
         articleId: toExpressionDoi(articleId),
       };
-      const recordEvaluation2 = {
+      const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
         articleId: toExpressionDoi(articleId),
@@ -229,12 +230,12 @@ describe('generate-docmaps', () => {
         groupId: ncrcGroupId,
       };
       const failingReviewId = arbitraryNcrcId();
-      const recordGoodEvaluation = {
+      const recordGoodEvaluation: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
         articleId: toExpressionDoi(articleId),
       };
-      const recordBadEvaluation = {
+      const recordBadEvaluation: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
         articleId: toExpressionDoi(articleId),

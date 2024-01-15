@@ -15,6 +15,7 @@ import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryUpdateEvaluationCommand } from '../../write-side/commands/update-evaluation-command.helper';
+import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
 
 const selectedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();
@@ -43,7 +44,7 @@ describe('construct-docmap-view-model', () => {
     });
 
     describe('when there is an evaluation by the selected group', () => {
-      const recordEvaluationPublicationCommand = {
+      const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
@@ -72,13 +73,13 @@ describe('construct-docmap-view-model', () => {
     describe('when there are multiple evaluations recorded for the selected group', () => {
       const earlierDate = new Date('1980-01-01');
       const laterDate = new Date('2000-01-01');
-      const command1 = {
+      const command1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
         issuedAt: earlierDate,
       };
-      const command2 = {
+      const command2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: toExpressionDoi(articleId),
         groupId: addGroupCommand.groupId,
@@ -143,7 +144,7 @@ describe('construct-docmap-view-model', () => {
       const evaluationUpdatedDate = new Date('2000-01-01');
       const evaluationLocator = arbitraryEvaluationLocator();
 
-      const command = {
+      const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         evaluationLocator,
         articleId: toExpressionDoi(articleId),
@@ -179,7 +180,7 @@ describe('construct-docmap-view-model', () => {
       );
 
       beforeEach(async () => {
-        const recordEvaluationPublicationCommand = {
+        const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
@@ -210,7 +211,7 @@ describe('construct-docmap-view-model', () => {
       const sourceUrl = new URL(arbitraryUri());
 
       beforeEach(async () => {
-        const recordEvaluationPublicationCommand = {
+        const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
@@ -247,7 +248,7 @@ describe('construct-docmap-view-model', () => {
     describe('when there are evaluations by other groups', () => {
       it('only uses the evaluation by the selected group', async () => {
         const addOtherGroup = arbitraryAddGroupCommand();
-        const recordEvaluationByThisGroup = {
+        const recordEvaluationByThisGroup: RecordEvaluationPublicationCommand = {
           ...arbitraryRecordEvaluationPublicationCommand(),
           articleId: toExpressionDoi(articleId),
           groupId: selectedGroupId,

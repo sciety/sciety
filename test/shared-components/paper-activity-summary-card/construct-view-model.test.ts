@@ -14,6 +14,7 @@ import { ErrorViewModel } from '../../../src/shared-components/paper-activity-su
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { ArticleId } from '../../../src/types/article-id';
+import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -63,7 +64,7 @@ describe('construct-view-model', () => {
 
     describe('when an article has been evaluated', () => {
       const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
-      const command = {
+      const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: inputExpressionDoi,
       };
