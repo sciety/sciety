@@ -34,7 +34,7 @@ describe('construct-curation-statements', () => {
   };
 
   const getCurationStatementLocators = async (dependencies: Dependencies) => pipe(
-    constructCurationStatements(dependencies, EDOI.fromValidatedString(articleId.value)),
+    constructCurationStatements(dependencies, [EDOI.fromValidatedString(articleId.value)]),
     T.map(RA.map((curationStatements) => curationStatements.evaluationLocator)),
   )();
 

@@ -48,7 +48,7 @@ const constructRemainingViewModel = (
         getArticleFeedEventsByDateDescending(dependencies)(frontMatter.server, foundExpressions)
       ),
       relatedArticles: constructRelatedArticles(params.expressionDoi, dependencies),
-      curationStatements: constructCurationStatements(dependencies, params.expressionDoi),
+      curationStatements: constructCurationStatements(dependencies, [params.expressionDoi]),
     },
     sequenceS(T.ApplyPar),
   )),
