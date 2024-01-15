@@ -36,6 +36,12 @@ const constructRemainingViewModel = (
   params: Params,
 ) => (frontMatter: ExpressionFrontMatter) => pipe(
   dependencies.findAllExpressionsOfPaper(params.expressionDoi),
+  TE.map((foundExpressions) => {
+    if (foundExpressions.length === 0) {
+      dependencies.logger('error', 'findAllExpressionsOfPaper returned an empty array', { params });
+    }
+    return foundExpressions;
+  }),
   TE.chainTaskK((foundExpressions) => pipe(
     {
       feedItemsByDateDescending: (
