@@ -1,6 +1,7 @@
 import * as t from 'io-ts';
 
 export const crossrefWorkCodec = t.strict({
+  type: t.string,
   DOI: t.string,
   posted: t.strict({
     'date-parts': t.readonlyArray(t.tuple([t.number, t.number, t.number])),

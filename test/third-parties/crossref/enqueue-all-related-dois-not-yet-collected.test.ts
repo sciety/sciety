@@ -21,7 +21,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   describe('when there is one record with no relations', () => {
     const initialRecords = new Map<string, CrossrefWork>([
       ['10.21203/rs.3.rs-1828415/v2', {
-
+        type: 'posted-content',
         DOI: '10.21203/rs.3.rs-1828415/v2',
         posted: {
           'date-parts': [[2023, 12, 7]],
@@ -48,6 +48,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   describe('when there are two records that are related to each other', () => {
     const initialRecords = new Map<string, CrossrefWork>([
       ['10.21203/rs.3.rs-1828415/v2', {
+        type: 'posted-content',
         DOI: '10.21203/rs.3.rs-1828415/v2',
         posted: {
           'date-parts': [[2023, 12, 7]],
@@ -65,6 +66,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         },
       }],
       ['10.21203/rs.3.rs-1828415/v1', {
+        type: 'posted-content',
         DOI: '10.21203/rs.3.rs-1828415/v1',
         posted: {
           'date-parts': [[2023, 12, 7]],
@@ -96,6 +98,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   describe('when the relation uses different case than the DOI', () => {
     const initialRecords = new Map<string, CrossrefWork>([
       ['10.21203/rs.3.rs-1828415/v2', {
+        type: 'posted-content',
         DOI: '10.21203/rs.3.rs-1828415/v2',
         posted: {
           'date-parts': [[2023, 12, 7]],
@@ -113,6 +116,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         },
       }],
       ['10.21203/rs.3.rs-1828415/v1', {
+        type: 'posted-content',
         DOI: '10.21203/rs.3.rs-1828415/v1',
         posted: {
           'date-parts': [[2023, 12, 7]],
