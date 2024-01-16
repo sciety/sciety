@@ -67,6 +67,7 @@ import { statusGroups } from '../views/status-groups';
 import { referencePage, sharedComponentsPage, indexPage } from '../html-pages/style-guide-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
+import { markdownPreviewPage } from '../html-pages/markdown-preview-page';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -99,6 +100,10 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     '/about',
     pageHandler(adapters, () => aboutPage({})),
+  );
+  router.get(
+    '/markdown-preview',
+    pageHandler(adapters, () => markdownPreviewPage({})),
   );
 
   router.get(
