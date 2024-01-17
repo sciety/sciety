@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { PaperExpression } from '../../../types/paper-expression';
@@ -23,9 +24,9 @@ const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: Pa
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
-const isAtleastOneCrossrefWorkPostedContent = (
+const failIfNoCrossrefWorksArePostedContent = (
   crossrefWorks: ReadonlyArray<CrossrefWork>,
-): ReadonlyArray<CrossrefWork> => crossrefWorks;
+): E.Either<DE.DataError, ReadonlyArray<CrossrefWork>> => E.right(crossrefWorks);
 
 export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   queryCrossrefService,
@@ -37,7 +38,7 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
     collectedWorks: new Map(),
   },
   walkRelationGraph(queryCrossrefService, logger, doi),
-  TE.map(isAtleastOneCrossrefWorkPostedContent),
+  TE.chainEitherK(failIfNoCrossrefWorksArePostedContent),
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
 );
