@@ -46,10 +46,10 @@ const postedContentCodec = t.strict({
   }),
 });
 
-export type CrossrefWorkPostedContent = t.TypeOf<typeof postedContentCodec>;
+type CrossrefWorkPostedContent = t.TypeOf<typeof postedContentCodec>;
 
 export const isCrossrefWorkPostedContent = (crossrefWork: CrossrefWork): crossrefWork is CrossrefWorkPostedContent => crossrefWork.type === 'posted-content';
 
-export const crossrefWorkCodec = t.union([postedContentCodec, journalArticleCodec], 'type');
+export const crossrefWorkCodec = t.union([postedContentCodec, journalArticleCodec]);
 
 export type CrossrefWork = t.TypeOf<typeof crossrefWorkCodec>;

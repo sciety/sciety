@@ -5,7 +5,6 @@ import { pipe } from 'fp-ts/function';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
-import { isCrossrefWorkPostedContent } from './crossref-work';
 import { QueryCrossrefService } from './query-crossref-service';
 import { toPaperExpression } from './to-paper-expression';
 import { walkRelationGraph } from './walk-relation-graph';
@@ -33,7 +32,6 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
     collectedWorks: new Map(),
   },
   walkRelationGraph(queryCrossrefService, logger, doi),
-  TE.map(RA.filter(isCrossrefWorkPostedContent)),
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
 );
