@@ -8,6 +8,7 @@ export const articleServerCodec = t.union(
     t.literal('scielopreprints'),
     t.literal('osf'),
     t.literal('accessmicrobiology'),
+    t.literal('elife'),
   ],
 );
 
@@ -56,6 +57,12 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
     avatarUrl: 'https://raw.githubusercontent.com/sciety/group-static-files/main/access-microbiology.png',
     versionsSupported: false,
     domain: 'www.microbiologyresearch.org',
+  },
+  elife: {
+    name: 'eLife',
+    avatarUrl: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
+    versionsSupported: false,
+    domain: 'elifesciences.org',
   },
 };
 
