@@ -60,7 +60,7 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
   },
   elife: {
     name: 'eLife',
-    avatarUrl: '/static/groups/elife--b560187e-f2fb-4ff9-a861-a204f3fc0fb0.png',
+    avatarUrl: '/static/images/elife.png',
     versionsSupported: false,
     domain: 'elifesciences.org',
   },
