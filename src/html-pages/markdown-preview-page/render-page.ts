@@ -13,7 +13,9 @@ export const renderPage = (): HtmlFragment => toHtmlFragment(
   </form>
   <h2>How it appears on Sciety</h2>
   <hr>
-  <div class="activity-feed__item__body"></div>
+  <div id="rendered" class="activity-feed__item__body"></div>
   <hr>
+
+  <script src="/static/markdown-preview.js"></script>
 `,
 );
