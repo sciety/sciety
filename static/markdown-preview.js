@@ -1,8 +1,13 @@
-(function(doc) {
-  const markdown = doc.querySelector('#markdown')
-  const rendered = doc.querySelector('#rendered')
+const convertMarkdownToHtml = (md) =>
+  new remarkable.Remarkable({ html: true }).render(md);
 
-  markdown.addEventListener('keyup', () => {
-    rendered.innerHTML = markdown.value
-  })
-}(window.document));
+(function (doc) {
+  const markdown = doc.querySelector("#markdown");
+  const rendered = doc.querySelector("#rendered");
+
+  rendered.innerHTML = convertMarkdownToHtml(markdown.value);
+
+  markdown.addEventListener("keyup", () => {
+    rendered.innerHTML = convertMarkdownToHtml(markdown.value);
+  });
+})(window.document);

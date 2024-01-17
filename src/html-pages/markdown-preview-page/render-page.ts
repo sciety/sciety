@@ -12,10 +12,12 @@ export const renderPage = (): HtmlFragment => toHtmlFragment(
     <textarea id="markdown" rows=10></textarea>
   </form>
   <h2>How it appears on Sciety</h2>
-  <hr>
-  <div id="rendered" class="activity-feed__item__body"></div>
-  <hr>
+  <div>
+    <hr style="margin-bottom: 2rem">
+    <div id="rendered" class="activity-feed__item__body"></div>
+  </div>
 
-  <script src="/static/markdown-preview.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/2.0.1/remarkable.min.js"></script>
+  <script type="module" src="/static/markdown-preview.js"></script>
 `,
 );
