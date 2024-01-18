@@ -1,5 +1,16 @@
 import * as t from 'io-ts';
 
+const relationCodec = t.partial({
+  'has-version': t.readonlyArray(t.strict({
+    'id-type': t.literal('doi'),
+    id: t.string,
+  })),
+  'is-version-of': t.readonlyArray(t.strict({
+    'id-type': t.literal('doi'),
+    id: t.string,
+  })),
+});
+
 const journalArticleCodec = t.strict({
   type: t.literal('journal-article'),
   DOI: t.string,
@@ -11,16 +22,7 @@ const journalArticleCodec = t.strict({
       URL: t.string,
     }),
   }),
-  relation: t.partial({
-    'has-version': t.readonlyArray(t.strict({
-      'id-type': t.literal('doi'),
-      id: t.string,
-    })),
-    'is-version-of': t.readonlyArray(t.strict({
-      'id-type': t.literal('doi'),
-      id: t.string,
-    })),
-  }),
+  relation: relationCodec,
 });
 
 const postedContentCodec = t.strict({
@@ -34,16 +36,7 @@ const postedContentCodec = t.strict({
       URL: t.string,
     }),
   }),
-  relation: t.partial({
-    'has-version': t.readonlyArray(t.strict({
-      'id-type': t.literal('doi'),
-      id: t.string,
-    })),
-    'is-version-of': t.readonlyArray(t.strict({
-      'id-type': t.literal('doi'),
-      id: t.string,
-    })),
-  }),
+  relation: relationCodec,
 });
 
 type CrossrefWorkPostedContent = t.TypeOf<typeof postedContentCodec>;
