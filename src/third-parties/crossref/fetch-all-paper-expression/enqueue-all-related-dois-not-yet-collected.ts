@@ -4,23 +4,6 @@ import * as S from 'fp-ts/string';
 import { State } from './state';
 import { CrossrefWork } from './crossref-work';
 
-const extendRelatedExpressions = (work: CrossrefWork) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return [
-      ...pipe(
-        work.relation['is-preprint-of'] ?? [],
-        RA.map((relation) => relation.id.toLowerCase()),
-      ),
-      ...pipe(
-        work.relation['has-preprint'] ?? [],
-        RA.map((relation) => relation.id.toLowerCase()),
-      ),
-    ];
-  }
-
-  return [];
-};
-
 const extractDoisOfRelatedExpressions = (work: CrossrefWork) => [
   ...pipe(
     work.relation['is-version-of'] ?? [],
@@ -30,7 +13,14 @@ const extractDoisOfRelatedExpressions = (work: CrossrefWork) => [
     work.relation['has-version'] ?? [],
     RA.map((relation) => relation.id.toLowerCase()),
   ),
-  ...extendRelatedExpressions(work),
+  ...pipe(
+    work.relation['is-preprint-of'] ?? [],
+    RA.map((relation) => relation.id.toLowerCase()),
+  ),
+  ...pipe(
+    work.relation['has-preprint'] ?? [],
+    RA.map((relation) => relation.id.toLowerCase()),
+  ),
 ];
 
 const hasNotBeenCollected = (state: State) => (doi: string) => !state.collectedWorks.has(doi);
