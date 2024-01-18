@@ -19,7 +19,7 @@ const relationCodec = t.partial({
   })),
 });
 
-export const journalArticleCodec = t.strict({
+const journalArticleCodec = t.strict({
   type: t.literal('journal-article'),
   DOI: t.string,
   published: t.strict({
