@@ -5,7 +5,7 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { Logger } from '../../shared-ports';
-import { identifyExpressionServer } from './fetch-all-paper-expression/identify-expression-server';
+import { identifyExpressionServer } from './fetch-all-paper-expressions/identify-expression-server';
 import { ExpressionDoi } from '../../types/expression-doi';
 
 const getElement = (ancestor: Document | Element, qualifiedName: string) => (

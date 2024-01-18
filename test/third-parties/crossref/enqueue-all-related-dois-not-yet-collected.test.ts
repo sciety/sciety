@@ -1,8 +1,8 @@
-import { CrossrefWork } from '../../../src/third-parties/crossref/fetch-all-paper-expression/crossref-work';
+import { CrossrefWork } from '../../../src/third-parties/crossref/fetch-all-paper-expressions/crossref-work';
 import { arbitraryString } from '../../helpers';
 import {
   enqueueAllRelatedDoisNotYetCollected,
-} from '../../../src/third-parties/crossref/fetch-all-paper-expression/enqueue-all-related-dois-not-yet-collected';
+} from '../../../src/third-parties/crossref/fetch-all-paper-expressions/enqueue-all-related-dois-not-yet-collected';
 
 describe('enqueue-all-related-dois-not-yet-collected', () => {
   describe('when there no records', () => {

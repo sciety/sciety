@@ -1,9 +1,9 @@
 import {
   hasAtLeastOneWorkAsPostedContent,
-} from '../../../../src/third-parties/crossref/fetch-all-paper-expression/fetch-all-paper-expressions';
+} from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/fetch-all-paper-expressions';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryNumber, arbitraryUri } from '../../../helpers';
-import { CrossrefWork } from '../../../../src/third-parties/crossref/fetch-all-paper-expression/crossref-work';
+import { CrossrefWork } from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/crossref-work';
 
 const arbitraryPostedContent = (): CrossrefWork => ({
   type: 'posted-content',
