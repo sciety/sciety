@@ -23,7 +23,7 @@ const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: Pa
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
-const hasAtLeastOneWorkAsPostedContent = (
+export const hasAtLeastOneWorkAsPostedContent = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   crossrefWorks: ReadonlyArray<CrossrefWork>,
 ): boolean => true;
