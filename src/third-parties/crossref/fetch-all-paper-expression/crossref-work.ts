@@ -9,6 +9,14 @@ const relationCodec = t.partial({
     'id-type': t.literal('doi'),
     id: t.string,
   })),
+  'has-preprint': t.readonlyArray(t.strict({
+    'id-type': t.literal('doi'),
+    id: t.string,
+  })),
+  'is-preprint-of': t.readonlyArray(t.strict({
+    'id-type': t.literal('doi'),
+    id: t.string,
+  })),
 });
 
 const journalArticleCodec = t.strict({
