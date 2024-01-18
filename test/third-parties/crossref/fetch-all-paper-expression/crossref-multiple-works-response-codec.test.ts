@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import {formatValidationErrors} from 'io-ts-reporters';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { crossrefMultipleWorksResponseCodec } from '../../../../src/third-parties/crossref/fetch-all-paper-expression/fetch-works-that-point-to-individual-works';
 
 describe('crossrefMultipleWorksResponseCodec', () => {
