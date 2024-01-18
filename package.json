@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@swc/cli": "^0.1.63",
-    "@swc/core": "^1.3.103",
+    "@swc/core": "^1.3.104",
     "@types/express-serve-static-core": "^4.17.41",
     "@types/jest": "^29.5.11",
     "@types/jsdom": "^21.1.5",
