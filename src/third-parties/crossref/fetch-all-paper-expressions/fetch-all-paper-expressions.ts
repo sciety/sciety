@@ -42,7 +42,10 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   walkRelationGraph(queryCrossrefService, logger, doi),
   TE.filterOrElseW(
     hasAtLeastOneWorkAsPostedContent,
-    () => DE.notFound,
+    () => {
+      logger('info', 'No Crossref posted-content works found', { doi });
+      return DE.notFound;
+    },
   ),
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
