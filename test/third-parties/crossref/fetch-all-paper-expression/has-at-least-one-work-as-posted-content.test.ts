@@ -58,6 +58,15 @@ describe('has-at-least-one-work-as-posted-content', () => {
   });
 
   describe('when none of the expressions in this set have a type of "posted-content"', () => {
-    it.todo('returns false');
+    const result = hasAtLeastOneWorkAsPostedContent(
+      [
+        arbitraryJournalArticle(),
+        arbitraryJournalArticle(),
+      ],
+    );
+
+    it.failing('returns false', () => {
+      expect(result).toBe(false);
+    });
   });
 });
