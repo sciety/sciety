@@ -65,7 +65,7 @@ describe('has-at-least-one-work-as-posted-content', () => {
       ],
     );
 
-    it.failing('returns false', () => {
+    it('returns false', () => {
       expect(result).toBe(false);
     });
   });

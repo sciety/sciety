@@ -24,9 +24,11 @@ type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, log
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 export const hasAtLeastOneWorkAsPostedContent = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   crossrefWorks: ReadonlyArray<CrossrefWork>,
-): boolean => true;
+): boolean => pipe(
+  crossrefWorks,
+  RA.some((crossrefWork) => crossrefWork.type === 'posted-content'),
+);
 
 export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   queryCrossrefService,
