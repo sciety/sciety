@@ -15,6 +15,10 @@ const crossrefMultipleWorksResponseCodec = t.strict({
   }),
 }, 'crossrefMultipleWorksResponseCodec');
 
+const workTypes = 'type:posted-content,type:journal-article';
+
+const relationships = 'relation.type:has-version,relation.type:is-version-of,relation.type:has-preprint,relation.type:is-preprint-of';
+
 export const fetchWorksThatPointToIndividualWorks = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
@@ -23,7 +27,7 @@ export const fetchWorksThatPointToIndividualWorks = (
 ): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => pipe(
   queue,
   TE.traverseArray((doi) => pipe(
-    `https://api.crossref.org/works?filter=relation.object:${doi},type:posted-content,type:journal-article,relation.type:has-version,relation.type:is-version-of,relation.type:has-preprint,relation.type:is-preprint-of`,
+    `https://api.crossref.org/works?filter=relation.object:${doi},${workTypes},${relationships}`,
     queryCrossrefService,
     TE.chainEitherKW((response) => pipe(
       response,
