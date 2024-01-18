@@ -23,7 +23,7 @@ export const fetchWorksThatPointToIndividualWorks = (
 ): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => pipe(
   queue,
   TE.traverseArray((doi) => pipe(
-    `https://api.crossref.org/works?filter=relation.object:${doi},type:posted-content,type:journal-article`,
+    `https://api.crossref.org/works?filter=relation.object:${doi},type:posted-content,type:journal-article,relation.type:has-version,relation.type:is-version-of,relation.type:has-preprint,relation.type:is-preprint-of`,
     queryCrossrefService,
     TE.chainEitherKW((response) => pipe(
       response,
