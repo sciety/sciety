@@ -9,7 +9,7 @@ import * as DE from '../../../types/data-error';
 import { QueryCrossrefService } from './query-crossref-service';
 import { decodeAndLogFailures } from '../../decode-and-log-failures';
 
-const crossrefMultipleWorksResponseCodec = t.strict({
+export const crossrefMultipleWorksResponseCodec = t.strict({
   message: t.strict({
     items: t.readonlyArray(crossrefWorkCodec),
   }),
