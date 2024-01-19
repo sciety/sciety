@@ -31,8 +31,8 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
 const constructServiceUrl = (expressionDoi: EDOI.ExpressionDoi): string => (
   process.env.EXPERIMENT_ENABLED === 'true'
-    ? `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds,authors,title`
-    : `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds,authors,title`
+    ? `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`
+    : `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`
 );
 
 export const fetchRecommendedPapers = (
