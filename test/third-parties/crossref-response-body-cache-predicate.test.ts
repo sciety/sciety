@@ -19,5 +19,13 @@ describe('crossref-response-body-cache-predicate', () => {
         expect(result).toBe(false);
       });
     });
+
+    describe('when the body contains an exception', () => {
+      const result = crossrefResponseBodyCachePredicate(dummyLogger)('unexpected DoiDBrecord.get issue: null\n(org.crossref.common.exceptions.IORuntimeException occured 1/18/24 11:18 AM)', arbitraryUri());
+
+      it.failing('does not cache', () => {
+        expect(result).toBe(false);
+      });
+    });
   });
 });
