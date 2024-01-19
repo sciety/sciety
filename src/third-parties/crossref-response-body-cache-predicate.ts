@@ -18,6 +18,10 @@ export const crossrefResponseBodyCachePredicate = (
       return true;
     }
   }
-  logger('debug', 'Response from Crossref is valid, caching', { responseBody, url });
-  return true;
+  if (typeof responseBody === 'object') {
+    logger('debug', 'Response from Crossref looks like a javascript object, caching', { responseBody, url });
+    return true;
+  }
+  logger('warn', 'Response from Crossref is unrecognised, not caching', { responseBody, url });
+  return false;
 };
