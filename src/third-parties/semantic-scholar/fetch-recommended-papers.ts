@@ -29,17 +29,11 @@ const semanticScholarRecommendedPapersResponseCodec = t.type({
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
-const constructServiceUrl = (expressionDoi: EDOI.ExpressionDoi): string => (
-  process.env.EXPERIMENT_ENABLED === 'true'
-    ? `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`
-    : `https://api.semanticscholar.org/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`
-);
-
 export const fetchRecommendedPapers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
 ): ExternalQueries['fetchRecommendedPapers'] => (expressionDoi) => pipe(
-  constructServiceUrl(expressionDoi),
+  `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`,
   queryExternalService(),
   TE.chainEitherKW(flow(
     semanticScholarRecommendedPapersResponseCodec.decode,
