@@ -5,11 +5,10 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import {
-  getAbstract, getAuthors, getServer, getTitle,
+  getAbstract, getAuthors, getTitle,
 } from './parse-crossref-article';
 import { Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
-import { ArticleServer } from '../../types/article-server';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
@@ -30,20 +29,13 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   });
   let abstract: O.Option<SanitisedHtmlFragment>;
   let authors: ArticleAuthors;
-  let server: O.Option<ArticleServer>;
   let title: O.Option<SanitisedHtmlFragment>;
   try {
     const doc = parser.parseFromString(response, 'text/xml');
     authors = getAuthors(doc);
-    server = getServer(doc);
 
     if (O.isNone(authors)) {
       logger('warn', 'Unable to find authors', { expressionDoi, response });
-    }
-
-    if (O.isNone(server)) {
-      logger('warn', 'Unable to find server', { expressionDoi, response });
-      return E.left(DE.unavailable);
     }
 
     abstract = getAbstract(doc, expressionDoi, logger);
@@ -72,7 +64,6 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
       O.getOrElse(() => sanitise(toHtmlFragment('Unknown title'))),
     ),
     authors,
-    server: server.value,
   });
 };
 

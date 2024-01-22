@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../helpers';
-import { arbitraryArticleServer } from '../types/article-server.helper';
 import { ArticleDetails } from '../../src/types/article-details';
 
 export const arbitraryArticleDetails = (): ArticleDetails => ({
@@ -9,5 +8,4 @@ export const arbitraryArticleDetails = (): ArticleDetails => ({
   authors: O.some([arbitraryString()]),
   doi: arbitraryArticleId(),
   title: arbitrarySanitisedHtmlFragment(),
-  server: arbitraryArticleServer(),
 });

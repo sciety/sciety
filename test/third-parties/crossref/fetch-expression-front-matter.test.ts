@@ -23,18 +23,6 @@ describe('fetch-expression-front-matter', () => {
     });
   });
 
-  describe('when crossref returns an invalid XML document', () => {
-    it('throws an error', async () => {
-      const queryExternalService = () => () => TE.right(arbitraryString());
-      const result = await pipe(
-        expressionDoi,
-        fetchExpressionFrontMatter(queryExternalService, dummyLogger, O.none),
-      )();
-
-      expect(result).toStrictEqual(E.left(DE.unavailable));
-    });
-  });
-
   describe('when crossref returns no usable authors', () => {
     it('returns a Right', async () => {
       const queryExternalService = () => () => TE.right(`
