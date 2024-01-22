@@ -8,11 +8,12 @@ import { constructViewModel } from '../../../../src/html-pages/paper-activity-pa
 import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
 import { createTestFramework, TestFramework } from '../../../framework';
-import { LoggedInUserListManagement } from '../../../../src/html-pages/paper-activity-page/view-model';
+import { LoggedInUserListManagement, ViewModel } from '../../../../src/html-pages/paper-activity-page/view-model';
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { expressionDoiCodec } from '../../../../src/types/expression-doi';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -25,6 +26,27 @@ describe('construct-view-model', () => {
 
   beforeEach(() => {
     framework = createTestFramework();
+  });
+
+  describe('when no paper expressions can be found', () => {
+    let viewModel: E.Either<unknown, ViewModel>;
+
+    beforeEach(async () => {
+      viewModel = await pipe(
+        {
+          expressionDoi: arbitraryExpressionDoi(),
+          user: O.none,
+        },
+        constructViewModel({
+          ...framework.dependenciesForViews,
+          findAllExpressionsOfPaper: () => TE.right([]),
+        }),
+      )();
+    });
+
+    it.failing('returns on the left', () => {
+      expect(E.isLeft(viewModel)).toBe(true);
+    });
   });
 
   describe('when the user is logged in', () => {
