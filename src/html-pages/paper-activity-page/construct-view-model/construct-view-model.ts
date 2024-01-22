@@ -38,14 +38,11 @@ const constructRemainingViewModel = (
   dependencies.findAllExpressionsOfPaper(params.expressionDoi),
   TE.filterOrElseW(
     (expressions) => expressions.length > 0,
-    () => DE.notFound,
-  ),
-  TE.map((foundExpressions) => {
-    if (foundExpressions.length === 0) {
+    () => {
       dependencies.logger('error', 'findAllExpressionsOfPaper returned an empty array', { params });
-    }
-    return foundExpressions;
-  }),
+      return DE.notFound;
+    },
+  ),
   TE.chainTaskK((foundExpressions) => pipe(
     {
       feedItemsByDateDescending: (
