@@ -1,30 +1,17 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { ArticleServer } from '../types/article-server';
 import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
 import { ArticleId } from '../types/article-id';
 import { Evaluation } from '../types/evaluation';
 import { EvaluationLocator } from '../types/evaluation-locator';
 import { SubjectArea } from '../types/subject-area';
-import { ArticleAuthors } from '../types/article-authors';
-import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { ExpressionDoi } from '../types/expression-doi';
 import { SearchResults } from '../types/search-results';
-
-type ExpressionFrontMatter = {
-  abstract: SanitisedHtmlFragment,
-  authors: ArticleAuthors,
-  title: SanitisedHtmlFragment,
-  server: ArticleServer,
-};
+import { ExpressionFrontMatter } from '../types/expression-front-matter';
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
-
-export type ArticleDetails = ExpressionFrontMatter & {
-  doi: ArticleId,
-};
 
 type FetchRelatedPapers = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;

@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { arbitraryArticleId } from '../types/article-id.helper';
-import { ArticleDetails } from '../../src/third-parties/external-queries';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../helpers';
 import { arbitraryArticleServer } from '../types/article-server.helper';
+import { ArticleDetails } from '../../src/types/article-details';
 
 export const arbitraryArticleDetails = (): ArticleDetails => ({
   abstract: arbitrarySanitisedHtmlFragment(),
