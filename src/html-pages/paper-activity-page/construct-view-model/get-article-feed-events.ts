@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { PaperExpressionEvent, FeedEvent, getFeedEventsContent } from './get-feed-events-content';
-import { handleArticleVersionErrors } from './handle-article-version-errors';
 import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
@@ -54,5 +53,4 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   (feeds) => [...feeds.evaluations, ...feeds.expressions],
   RA.sort(byDateDescending),
   getFeedEventsContent(dependencies),
-  T.map(handleArticleVersionErrors(server)),
 );

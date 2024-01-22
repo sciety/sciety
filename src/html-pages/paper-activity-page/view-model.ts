@@ -33,15 +33,9 @@ export type ExpressionPublishedFeedItem = {
   doi: ExpressionDoi,
 };
 
-type ArticleVersionErrorFeedItem = {
-  type: 'article-version-error',
-  server: ArticleServer,
-};
-
 export type FeedItem =
   | EvaluationPublishedFeedItem
-  | ExpressionPublishedFeedItem
-  | ArticleVersionErrorFeedItem;
+  | ExpressionPublishedFeedItem;
 
 type ListSummary = {
   listName: string,

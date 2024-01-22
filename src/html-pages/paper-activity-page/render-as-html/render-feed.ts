@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { renderListItems } from '../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { FeedItem } from '../view-model';
@@ -11,9 +10,7 @@ const renderFeedItem = (feedItem: FeedItem) => {
   switch (feedItem.type) {
     case 'expression-published':
       return renderExpressionPublishedFeedItem(feedItem);
-    case 'article-version-error':
-      return renderVersionErrorFeedItem(feedItem.server);
-    default:
+    case 'evaluation-published':
       return renderEvaluationPublishedFeedItem(feedItem, 850);
   }
 };
