@@ -10,6 +10,7 @@ import { SubjectArea } from '../types/subject-area';
 import { ArticleAuthors } from '../types/article-authors';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { ExpressionDoi } from '../types/expression-doi';
+import { SearchResults } from '../types/search-results';
 
 export type ExpressionFrontMatter = {
   abstract: SanitisedHtmlFragment,
@@ -37,12 +38,6 @@ type FindAllExpressionsOfPaper = (
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
-
-export type SearchResults = {
-  items: ReadonlyArray<ExpressionDoi>,
-  total: number,
-  nextCursor: O.Option<string>,
-};
 
 type SearchForPaperExpressions = (
   pageSize: number,

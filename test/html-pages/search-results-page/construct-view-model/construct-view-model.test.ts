@@ -9,7 +9,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { ExternalQueries } from '../../../../src/third-parties';
 import { ExpressionDoi } from '../../../../src/types/expression-doi';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { SearchResults } from '../../../../src/third-parties/external-queries';
+import { SearchResults } from '../../../../src/types/search-results';
 
 const searchForPaperExpressionsReturningResults = (
   expressionDois: SearchResults['items'],
