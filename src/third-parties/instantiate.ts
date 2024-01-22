@@ -10,7 +10,7 @@ import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-ca
 import { fetchExpressionFrontMatter } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
-import { fetchRecommendedPapers } from './semantic-scholar/fetch-recommended-papers';
+import { fetchRecommendedPapers } from './sciety-labs';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';

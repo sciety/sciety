@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../../src/types/expression-doi';
 import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
-import { fetchRecommendedPapers } from '../../../src/third-parties/semantic-scholar/fetch-recommended-papers';
+import { fetchRecommendedPapers } from '../../../src/third-parties/sciety-labs/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
@@ -102,7 +102,7 @@ describe('fetch-recommended-papers', () => {
     });
   });
 
-  describe('when we cannot access Semantic Scholar', () => {
+  describe('when we cannot access the third-party', () => {
     it('returns a left', async () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);
       const result = await pipe(

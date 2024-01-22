@@ -23,7 +23,7 @@ const paperWithDoi = t.type({
   }),
 });
 
-const semanticScholarRecommendedPapersResponseCodec = t.type({
+const scietyLabsRecommendedPapersResponseCodec = t.type({
   recommendedPapers: t.array(t.union([paperWithDoi, paperWithoutDoi])),
 });
 
@@ -36,11 +36,11 @@ export const fetchRecommendedPapers = (
   `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`,
   queryExternalService(),
   TE.chainEitherKW(flow(
-    semanticScholarRecommendedPapersResponseCodec.decode,
+    scietyLabsRecommendedPapersResponseCodec.decode,
     E.mapLeft(formatValidationErrors),
     E.mapLeft(
       (errors) => {
-        logger('error', 'Failed to decode Semantic scholar response', {
+        logger('error', 'Failed to decode Sciety Labs response', {
           errors,
           expressionDoi,
         });
