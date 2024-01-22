@@ -189,9 +189,7 @@ export const sharedComponentsPage: HtmlPage = {
 
       <h3 class="_style-guide-heading">With error</h3>
       ${renderPaperActivityErrorCard({
-    evaluationCount: 1,
     href: '/articles/foo',
-    latestActivityAt: O.some(new Date('2023-09-10')),
     error: DE.notFound,
     inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
   })}

@@ -34,7 +34,6 @@ export const constructViewModel = (
     fetchArticleDetails(ports),
     TE.bimap(
       (error) => ({
-        ...expressionActivity,
         inputExpressionDoi,
         href: `/articles/${inputExpressionDoi}`,
         error,
