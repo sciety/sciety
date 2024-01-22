@@ -29,11 +29,9 @@ const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const constructRemainingViewModel = (
-  dependencies: Dependencies,
-  params: Params,
-) => () => pipe(
-  dependencies.findAllExpressionsOfPaper(params.expressionDoi),
+export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
+  params.expressionDoi,
+  dependencies.findAllExpressionsOfPaper,
   TE.filterOrElseW(
     (expressions) => expressions.length > 0,
     () => {
@@ -81,10 +79,4 @@ const constructRemainingViewModel = (
     ),
     reviewingGroups: constructReviewingGroups(dependencies, params.expressionDoi),
   })),
-);
-
-export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  params.expressionDoi,
-  dependencies.fetchExpressionFrontMatter,
-  TE.chainW(constructRemainingViewModel(dependencies, params)),
 );
