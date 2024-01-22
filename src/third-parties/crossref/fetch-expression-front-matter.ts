@@ -10,9 +10,8 @@ import {
 import { Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
-import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
-import { toHtmlFragment } from '../../types/html-fragment';
 import { ExternalQueries } from '../external-queries';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
@@ -42,7 +41,8 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
 
     title = getTitle(doc);
     if (O.isNone(title)) {
-      logger('warn', 'Did not find title', { expressionDoi });
+      logger('error', 'Did not find title', { expressionDoi });
+      return E.left(DE.unavailable);
     }
   } catch (error: unknown) {
     logger('error', 'Unable to parse document', { expressionDoi, response, error });
@@ -52,11 +52,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
   }
   return E.right({
     abstract,
-    title: pipe(
-      title,
-      // TODO: the decision as to what to display on error should live with the rendering component
-      O.getOrElse(() => sanitise(toHtmlFragment('Unknown title'))),
-    ),
+    title: title.value,
     authors,
   });
 };
