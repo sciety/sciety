@@ -130,7 +130,7 @@ describe('my-feed acceptance', () => {
             title: sanitise(toHtmlFragment('My article title')),
             authors: O.none,
             server: 'biorxiv' as const,
-            abstract: arbitrarySanitisedHtmlFragment(),
+            abstract: O.some(arbitrarySanitisedHtmlFragment()),
           }),
         };
         const html = await myFeed(dependencies)(createUserAccountCommand.userId, 20, 1)();

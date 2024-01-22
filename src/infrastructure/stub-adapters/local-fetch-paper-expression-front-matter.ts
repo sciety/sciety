@@ -6,7 +6,7 @@ import { ExternalQueries } from '../../third-parties';
 import { ArticleId } from '../../types/article-id';
 
 export const localFetchPaperExpressionFrontMatter: ExternalQueries['fetchExpressionFrontMatter'] = (paperExpressionLocator) => TE.right({
-  abstract: sanitise(toHtmlFragment(`
+  abstract: O.some(sanitise(toHtmlFragment(`
     <p>
       Exact mechanisms of heat shock induced lifespan extension, while documented across species, are still not well understood. Here we put forth evidence that fully functional peroxisomes are required for the activation of the canonical heat shock response and heat-induced hormesis in
       <i>C. elegans</i>
@@ -20,7 +20,7 @@ export const localFetchPaperExpressionFrontMatter: ExternalQueries['fetchExpress
       <i>Δctl-2</i>
       mutant. Involvement of peroxisomes in the cell-wide response to transient heat shock reported here gives new insight into the role of organelle communication in the organisms stress response.
     </p>
-  `)),
+  `))),
   authors: O.some([
     'Marina Musa',
     'Ira Milosevic',

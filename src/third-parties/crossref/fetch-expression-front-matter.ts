@@ -39,9 +39,6 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     }
 
     abstract = getAbstract(doc, expressionDoi, logger);
-    if (O.isNone(abstract)) {
-      logger('warn', 'Did not find abstract', { expressionDoi });
-    }
 
     title = getTitle(doc);
     if (O.isNone(title)) {
@@ -54,10 +51,7 @@ const parseResponseAndConstructDomainObject = (response: string, logger: Logger,
     return E.left(DE.unavailable);
   }
   return E.right({
-    abstract: pipe(
-      abstract,
-      O.getOrElse(() => sanitise(toHtmlFragment(`No abstract for ${expressionDoi} available`))),
-    ),
+    abstract,
     title: pipe(
       title,
       // TODO: the decision as to what to display on error should live with the rendering component

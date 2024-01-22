@@ -6,6 +6,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
+import * as O from 'fp-ts/Option';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
@@ -20,6 +21,8 @@ import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 import { PaperExpression } from '../../../types/paper-expression';
+import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
+import { toHtmlFragment } from '../../../types/html-fragment';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -33,6 +36,20 @@ const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.
 const byDateAscending: Ord.Ord<PaperExpression> = pipe(
   D.Ord,
   Ord.contramap((expression) => expression.publishedAt),
+);
+
+const constructAbstract = (abstract: ExpressionFrontMatter['abstract']) => pipe(
+  abstract,
+  O.matchW(
+    () => ({
+      abstract: toHtmlFragment('No abstract available'),
+      abstractLanguageCode: O.none,
+    }),
+    (a) => ({
+      abstract: a,
+      abstractLanguageCode: detectLanguage(a),
+    }),
+  ),
 );
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
@@ -77,7 +94,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.map((partial) => ({
     ...partial.frontMatter,
     titleLanguageCode: detectLanguage(partial.frontMatter.title),
-    abstractLanguageCode: detectLanguage(partial.frontMatter.abstract),
+    ...constructAbstract(partial.frontMatter.abstract),
     userListManagement: constructUserListManagement(params.user, dependencies, params.expressionDoi),
     expressionFullTextHref: toExpressionFullTextHref(params.expressionDoi),
     feedItemsByDateDescending: partial.feedItemsByDateDescending,

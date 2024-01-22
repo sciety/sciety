@@ -19,7 +19,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     doi: new ArticleId(paperExpressionLocator),
     authors: O.none,
     title: sanitise(toHtmlFragment(arbitraryString())),
-    abstract: sanitise(toHtmlFragment(arbitraryString())),
+    abstract: O.some(sanitise(toHtmlFragment(arbitraryString()))),
     server: 'biorxiv' as ArticleServer,
   }),
   fetchRecommendedPapers: () => TE.right([arbitraryExpressionDoi()]),
