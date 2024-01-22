@@ -1,5 +1,4 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
@@ -23,7 +22,7 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
 => (server: ArticleServer, foundExpressions: ReadonlyArray<PaperExpression>)
-=> T.Task<RNEA.ReadonlyNonEmptyArray<FeedItem>>;
+=> T.Task<ReadonlyArray<FeedItem>>;
 
 const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
   type: 'expression-published' as const,

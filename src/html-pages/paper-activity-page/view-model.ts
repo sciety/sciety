@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as E from 'fp-ts/Either';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
@@ -68,7 +67,7 @@ export type ViewModel = {
   evaluationCount: number,
   latestVersion: O.Option<Date>,
   latestActivity: O.Option<Date>,
-  feedItemsByDateDescending: RNEA.ReadonlyNonEmptyArray<FeedItem>,
+  feedItemsByDateDescending: ReadonlyArray<FeedItem>,
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string, listHref: string }>,
   relatedArticles: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>,
