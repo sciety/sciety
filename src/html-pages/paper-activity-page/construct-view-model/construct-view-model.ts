@@ -4,6 +4,8 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import * as D from 'fp-ts/Date';
+import * as Ord from 'fp-ts/Ord';
 import { feedSummary } from './feed-summary';
 import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
 import * as DE from '../../../types/data-error';
@@ -17,6 +19,7 @@ import { constructCurationStatements } from '../../../shared-components/curation
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
+import { PaperExpression } from '../../../types/paper-expression';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -26,6 +29,11 @@ export const paramsCodec = t.type({
 type Params = t.TypeOf<typeof paramsCodec>;
 
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
+
+const byDateAscending: Ord.Ord<PaperExpression> = pipe(
+  D.Ord,
+  Ord.contramap((expression) => expression.publishedAt),
+);
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -41,7 +49,14 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   ),
   TE.chain((foundExpressions) => pipe(
     {
-      frontMatter: dependencies.fetchExpressionFrontMatter(params.expressionDoi),
+      frontMatter: pipe(
+        foundExpressions,
+        RA.sort(byDateAscending),
+        RA.last,
+        TE.fromOption(() => DE.unavailable),
+        TE.map((expression) => expression.expressionDoi),
+        TE.chain(dependencies.fetchExpressionFrontMatter),
+      ),
       feedItemsByDateDescending: pipe(
         getArticleFeedEventsByDateDescending(dependencies)(foundExpressions),
         TE.rightTask,
