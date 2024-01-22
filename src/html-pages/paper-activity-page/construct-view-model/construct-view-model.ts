@@ -36,6 +36,10 @@ const constructRemainingViewModel = (
   params: Params,
 ) => (frontMatter: ExpressionFrontMatter) => pipe(
   dependencies.findAllExpressionsOfPaper(params.expressionDoi),
+  TE.filterOrElseW(
+    (expressions) => expressions.length > 0,
+    () => DE.notFound,
+  ),
   TE.map((foundExpressions) => {
     if (foundExpressions.length === 0) {
       dependencies.logger('error', 'findAllExpressionsOfPaper returned an empty array', { params });
