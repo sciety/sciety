@@ -55,7 +55,13 @@ export const fetchRecommendedPapers = (
       RA.map((recommendedPaper) => recommendedPaper.externalIds.DOI),
     ),
   ),
-  TE.map(RA.filter((relatedArticle) => EDOI.isValidDoi(relatedArticle))),
+  TE.map(RA.filter((recommendedDoi) => {
+    const isValid = EDOI.isValidDoi(recommendedDoi);
+    if (!isValid) {
+      logger('debug', 'fetchRecommendedPapers discarded a recommendation as corrupt', { recommendedDoi, expressionDoi });
+    }
+    return isValid;
+  })),
   TE.map(RA.filter((recommendedDoi) => {
     const isSupported = isSupportedArticle(recommendedDoi);
     if (!isSupported) {
