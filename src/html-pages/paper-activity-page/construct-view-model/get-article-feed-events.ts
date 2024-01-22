@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { PaperExpressionEvent, FeedEvent, getFeedEventsContent } from './get-feed-events-content';
-import { ArticleServer } from '../../../types/article-server';
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 import { PaperExpression } from '../../../types/paper-expression';
@@ -20,7 +19,7 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
 );
 
 type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
-=> (server: ArticleServer, foundExpressions: ReadonlyArray<PaperExpression>)
+=> (foundExpressions: ReadonlyArray<PaperExpression>)
 => T.Task<ReadonlyArray<FeedItem>>;
 
 const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
@@ -33,7 +32,7 @@ const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressi
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   dependencies,
 ) => (
-  server, foundExpressions,
+  foundExpressions,
 ) => pipe(
   ({
     evaluations: pipe(

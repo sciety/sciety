@@ -46,7 +46,7 @@ const constructRemainingViewModel = (
   TE.chainTaskK((foundExpressions) => pipe(
     {
       feedItemsByDateDescending: (
-        getArticleFeedEventsByDateDescending(dependencies)(frontMatter.server, foundExpressions)
+        getArticleFeedEventsByDateDescending(dependencies)(foundExpressions)
       ),
       relatedArticles: constructRelatedArticles(params.expressionDoi, dependencies),
       curationStatements: pipe(
