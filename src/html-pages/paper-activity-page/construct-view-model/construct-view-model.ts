@@ -1,4 +1,3 @@
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
@@ -17,7 +16,6 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../shared-components/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
-import { ExpressionFrontMatter } from '../../../third-parties/external-queries';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 
 export const paramsCodec = t.type({
@@ -34,7 +32,7 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 const constructRemainingViewModel = (
   dependencies: Dependencies,
   params: Params,
-) => (frontMatter: ExpressionFrontMatter) => pipe(
+) => () => pipe(
   dependencies.findAllExpressionsOfPaper(params.expressionDoi),
   TE.filterOrElseW(
     (expressions) => expressions.length > 0,
@@ -43,32 +41,38 @@ const constructRemainingViewModel = (
       return DE.notFound;
     },
   ),
-  TE.chainTaskK((foundExpressions) => pipe(
+  TE.chain((foundExpressions) => pipe(
     {
-      feedItemsByDateDescending: (
-        getArticleFeedEventsByDateDescending(dependencies)(foundExpressions)
+      frontMatter: dependencies.fetchExpressionFrontMatter(params.expressionDoi),
+      feedItemsByDateDescending: pipe(
+        getArticleFeedEventsByDateDescending(dependencies)(foundExpressions),
+        TE.rightTask,
       ),
-      relatedArticles: constructRelatedArticles(params.expressionDoi, dependencies),
+      relatedArticles: pipe(
+        constructRelatedArticles(params.expressionDoi, dependencies),
+        TE.rightTask,
+      ),
       curationStatements: pipe(
         foundExpressions,
         RA.map((expression) => expression.expressionDoi),
         constructCurationStatements(dependencies),
+        TE.rightTask,
       ),
     },
-    sequenceS(T.ApplyPar),
+    sequenceS(TE.ApplyPar),
   )),
-  TE.map(({ curationStatements, feedItemsByDateDescending, relatedArticles }) => ({
-    ...frontMatter,
-    titleLanguageCode: detectLanguage(frontMatter.title),
-    abstractLanguageCode: detectLanguage(frontMatter.abstract),
+  TE.map((partial) => ({
+    ...partial.frontMatter,
+    titleLanguageCode: detectLanguage(partial.frontMatter.title),
+    abstractLanguageCode: detectLanguage(partial.frontMatter.abstract),
     userListManagement: constructUserListManagement(params.user, dependencies, params.expressionDoi),
     expressionFullTextHref: toExpressionFullTextHref(params.expressionDoi),
-    feedItemsByDateDescending,
-    ...feedSummary(feedItemsByDateDescending),
+    feedItemsByDateDescending: partial.feedItemsByDateDescending,
+    ...feedSummary(partial.feedItemsByDateDescending),
     listedIn: constructListedIn(dependencies)(params.expressionDoi),
-    relatedArticles,
+    relatedArticles: partial.relatedArticles,
     curationStatements: pipe(
-      curationStatements,
+      partial.curationStatements,
       RA.map((curationStatementWithGroupAndContent) => ({
         ...curationStatementWithGroupAndContent,
         fullText: curationStatementWithGroupAndContent.statement,

@@ -12,7 +12,7 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { ExpressionDoi } from '../types/expression-doi';
 import { SearchResults } from '../types/search-results';
 
-export type ExpressionFrontMatter = {
+type ExpressionFrontMatter = {
   abstract: SanitisedHtmlFragment,
   authors: ArticleAuthors,
   title: SanitisedHtmlFragment,
