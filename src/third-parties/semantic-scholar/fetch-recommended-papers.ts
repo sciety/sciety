@@ -56,6 +56,12 @@ export const fetchRecommendedPapers = (
     ),
   ),
   TE.map(RA.filter((relatedArticle) => EDOI.isValidDoi(relatedArticle))),
-  TE.map(RA.filter((relatedArticle) => isSupportedArticle(relatedArticle))),
+  TE.map(RA.filter((recommendedDoi) => {
+    const isSupported = isSupportedArticle(recommendedDoi);
+    if (!isSupported) {
+      logger('debug', 'fetchRecommendedPapers discarded a recommendation as unsupported', { recommendedDoi, expressionDoi });
+    }
+    return isSupported;
+  })),
   TE.map(RA.map(EDOI.fromValidatedString)),
 );
