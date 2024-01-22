@@ -13,6 +13,7 @@ import { ViewModel } from './view-model';
 import { constructReviewingGroups } from '../reviewing-groups';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../types/expression-doi';
+import * as DE from '../../types/data-error';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
@@ -25,6 +26,12 @@ const transformIntoCurationStatementViewModel = (
 
 const constructPaperActivityPageHref = (expressionDoi: ExpressionDoi) => `/articles/activity/${expressionDoi}`;
 
+const toErrorViewModel = (inputExpressionDoi: ExpressionDoi) => (error: DE.DataError) => ({
+  inputExpressionDoi,
+  href: `/articles/${inputExpressionDoi}`,
+  error,
+});
+
 export const constructViewModel = (
   ports: Dependencies,
 ) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ErrorViewModel, ViewModel> => pipe(
@@ -32,12 +39,7 @@ export const constructViewModel = (
   (expressionActivity) => pipe(
     inputExpressionDoi,
     fetchArticleDetails(ports),
-    TE.bimap(
-      (error) => ({
-        inputExpressionDoi,
-        href: `/articles/${inputExpressionDoi}`,
-        error,
-      }),
+    TE.map(
       (expressionDetails) => ({
         ...expressionDetails,
         inputExpressionDoi,
@@ -45,6 +47,7 @@ export const constructViewModel = (
       }),
     ),
   ),
+  TE.mapLeft(toErrorViewModel(inputExpressionDoi)),
   TE.chainW((partial) => pipe(
     [inputExpressionDoi],
     constructCurationStatements(ports),
