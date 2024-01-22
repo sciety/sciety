@@ -1,5 +1,5 @@
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { flow } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { renderVersionErrorFeedItem } from './render-article-version-error-feed-item';
 import { renderListItems } from '../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
@@ -18,11 +18,12 @@ const renderFeedItem = (feedItem: FeedItem) => {
   }
 };
 
-type RenderFeed = (feedItems: RNEA.ReadonlyNonEmptyArray<FeedItem>) => HtmlFragment;
-
-export const renderFeed: RenderFeed = flow(
-  RNEA.map(renderFeedItem),
-  (items) => `
+export const renderFeed = (feedItems: ReadonlyArray<FeedItem>): HtmlFragment => pipe(
+  feedItems,
+  RA.map(renderFeedItem),
+  RA.match(
+    () => '',
+    (items) => `
     <section class="activity-feed">
       <h2 class="activity-feed__header">Article activity feed</h2>
       <ol role="list" class="activity-feed__list">
@@ -30,5 +31,6 @@ export const renderFeed: RenderFeed = flow(
       </ol>
     </section>
   `,
+  ),
   toHtmlFragment,
 );
