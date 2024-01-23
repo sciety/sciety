@@ -8,6 +8,7 @@ import { Logger } from '../shared-ports';
 import { ExternalQueries } from './external-queries';
 import { expandMonolithicBiorxivOrMedrxivExpressions } from './expand-monolithic-biorxiv-or-medrxiv-expressions';
 import * as PES from '../types/paper-expressions';
+import * as DE from '../types/data-error';
 
 const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   const headers: Record<string, string> = { };
@@ -32,4 +33,11 @@ export const findAllExpressionsOfPaper = (
     getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
   )),
   TE.map(PES.fromExpressions),
+  TE.filterOrElseW(
+    (paperExpressions) => paperExpressions.expressions.length > 0,
+    () => {
+      logger('error', 'findAllExpressionsOfPaper returned an empty array', { expressionDoi });
+      return DE.notFound;
+    },
+  ),
 );
