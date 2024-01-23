@@ -8,7 +8,7 @@ import { SubjectArea } from '../types/subject-area';
 import { ExpressionDoi } from '../types/expression-doi';
 import { SearchResults } from '../types/search-results';
 import { ExpressionFrontMatter } from '../types/expression-front-matter';
-import { PaperExpressions } from '../types/paper-expressions';
+import { PublishingHistory } from '../types/publishing-history';
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
@@ -22,7 +22,7 @@ type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>
 
 type FindAllExpressionsOfPaper = (
   expressionDoi: ExpressionDoi,
-) => TE.TaskEither<DE.DataError, PaperExpressions>;
+) => TE.TaskEither<DE.DataError, PublishingHistory>;
 
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
 

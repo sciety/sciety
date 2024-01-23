@@ -20,7 +20,7 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import * as P from '../../../types/paper-expressions';
+import * as PH from '../../../types/publishing-history';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -53,7 +53,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.chain((paper) => pipe(
     {
       frontMatter: pipe(
-        P.getLatestExpression(paper),
+        PH.getLatestExpression(paper),
         TE.fromOption(() => DE.unavailable),
         TE.map((expression) => expression.expressionDoi),
         TE.chain(dependencies.fetchExpressionFrontMatter),
@@ -63,13 +63,13 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         TE.rightTask,
       ),
       relatedArticles: pipe(
-        P.getLatestPreprintExpression(paper),
+        PH.getLatestPreprintExpression(paper),
         TE.fromOption(() => DE.unavailable),
         TE.map((expression) => expression.expressionDoi),
         TE.chainTaskK((expressionDoi) => constructRelatedArticles(expressionDoi, dependencies)),
       ),
       curationStatements: pipe(
-        P.getAllExpressionDois(paper),
+        PH.getAllExpressionDois(paper),
         constructCurationStatements(dependencies),
         TE.rightTask,
       ),

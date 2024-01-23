@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as PES from '../../../src/types/paper-expressions';
+import * as PH from '../../../src/types/publishing-history';
 import { fetchArticleDetails } from '../../../src/shared-components/paper-activity-summary-card/fetch-article-details';
 import * as DE from '../../../src/types/data-error';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
@@ -48,7 +48,7 @@ describe('fetch-article-details', () => {
                 server: O.some(arbitraryArticleServer()),
               },
             ],
-            PES.fromExpressions,
+            PH.fromExpressions,
             TE.right,
           ),
         }),

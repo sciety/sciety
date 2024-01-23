@@ -12,7 +12,7 @@ import { arbitraryArticleServer } from '../types/article-server.helper';
 import { ExternalQueries } from '../../src/third-parties';
 import { ArticleId } from '../../src/types/article-id';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
-import * as PES from '../../src/types/paper-expressions';
+import * as PH from '../../src/types/publishing-history';
 
 export type HappyPathThirdPartyAdapters = ExternalQueries;
 
@@ -40,7 +40,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
         server: O.some(arbitraryArticleServer()),
       },
     ],
-    PES.fromExpressions,
+    PH.fromExpressions,
     TE.right,
   ),
   getArticleSubjectArea: () => TE.right({ value: arbitraryString(), server: arbitraryArticleServer() }),

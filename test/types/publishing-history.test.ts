@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as PES from '../../src/types/paper-expressions';
+import * as PH from '../../src/types/publishing-history';
 import { arbitraryPaperExpression } from './paper-expression.helper';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { PaperExpression } from '../../src/types/paper-expression';
 
-describe('paper-expressions', () => {
+describe('publishing-history', () => {
   const earlierExpression: PaperExpression = {
     ...arbitraryPaperExpression(),
     publishedAt: new Date('1999-09-09'),
@@ -20,18 +20,18 @@ describe('paper-expressions', () => {
     expressionType: 'journal-article',
     publishedAt: new Date('2024-01-23'),
   };
-  const paperExpressions = {
-    expressions: [
+  const publishingHistory: PH.PublishingHistory = PH.fromExpressions(
+    [
       latestExpression,
       latestPreprintExpression,
       earlierExpression,
     ],
-  };
+  );
 
   describe('getLatestExpression', () => {
     const result = pipe(
-      paperExpressions,
-      PES.getLatestExpression,
+      publishingHistory,
+      PH.getLatestExpression,
       O.getOrElseW(shouldNotBeCalled),
     );
 
@@ -41,7 +41,7 @@ describe('paper-expressions', () => {
   });
 
   describe('getAllExpressionDois', () => {
-    const result = PES.getAllExpressionDois(paperExpressions);
+    const result = PH.getAllExpressionDois(publishingHistory);
 
     it('returns all the paper\'s expression DOIs', () => {
       expect(result).toHaveLength(3);
@@ -52,8 +52,8 @@ describe('paper-expressions', () => {
 
   describe('getLatestPreprintExpression', () => {
     const result = pipe(
-      paperExpressions,
-      PES.getLatestPreprintExpression,
+      publishingHistory,
+      PH.getLatestPreprintExpression,
       O.getOrElseW(shouldNotBeCalled),
     );
 

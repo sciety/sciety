@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ExternalQueries } from '../../third-parties';
-import * as PES from '../../types/paper-expressions';
+import * as PH from '../../types/publishing-history';
 import { PaperExpression } from '../../types/paper-expression';
 
 export const findAllExpressionsOfPaper: ExternalQueries['findAllExpressionsOfPaper'] = (expressionDoi) => pipe(
@@ -23,6 +23,6 @@ export const findAllExpressionsOfPaper: ExternalQueries['findAllExpressionsOfPap
       server: O.some('biorxiv'),
     } satisfies PaperExpression,
   ],
-  PES.fromExpressions,
+  PH.fromExpressions,
   TE.right,
 );
