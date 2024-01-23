@@ -71,8 +71,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         TE.rightTask,
       ),
       relatedArticles: pipe(
-        constructRelatedArticles(params.expressionDoi, dependencies),
-        TE.rightTask,
+        P.getLatestPreprintExpression(paper),
+        TE.fromOption(() => DE.unavailable),
+        TE.map((expression) => expression.expressionDoi),
+        TE.chainTaskK((expressionDoi) => constructRelatedArticles(expressionDoi, dependencies)),
       ),
       curationStatements: pipe(
         P.getAllExpressionDois(paper),
