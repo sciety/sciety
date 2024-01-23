@@ -27,12 +27,12 @@ const hasAtLeastOneWorkAsPostedContent = (
   RA.some((paperExpression) => paperExpression.expressionType === 'preprint'),
 );
 
-export const findAllExpressionsOfPaper = (
+export const fetchPublishingHistory = (
   queryCrossrefService: QueryExternalService,
   queryExternalService: QueryExternalService,
   crossrefApiBearerToken: O.Option<string>,
   logger: Logger,
-): ExternalQueries['findAllExpressionsOfPaper'] => (expressionDoi) => pipe(
+): ExternalQueries['fetchPublishingHistory'] => (expressionDoi) => pipe(
   fetchAllPaperExpressionsFromCrossref(
     queryCrossrefService(undefined, setupCrossrefHeaders(crossrefApiBearerToken)),
     logger,

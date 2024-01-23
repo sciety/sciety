@@ -17,7 +17,7 @@ export const getLatestExpressionDate: GetLatestExpressionDate = (
 ) => (
   expressionDoi,
 ) => pipe(
-  dependencies.findAllExpressionsOfPaper(expressionDoi),
+  dependencies.fetchPublishingHistory(expressionDoi),
   T.map(
     E.chainOptionKW(
       () => DE.notFound,

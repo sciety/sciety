@@ -39,7 +39,7 @@ describe('construct-view-model', () => {
         },
         constructViewModel({
           ...framework.dependenciesForViews,
-          findAllExpressionsOfPaper: () => TE.right({ expressions: [] }),
+          fetchPublishingHistory: () => TE.right({ expressions: [] }),
         }),
       )();
     });

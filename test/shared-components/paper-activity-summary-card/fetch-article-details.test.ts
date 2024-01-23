@@ -38,7 +38,7 @@ describe('fetch-article-details', () => {
         expressionDoi,
         fetchArticleDetails({
           ...framework.dependenciesForViews,
-          findAllExpressionsOfPaper: () => pipe(
+          fetchPublishingHistory: () => pipe(
             [
               {
                 expressionType: 'preprint',
@@ -68,7 +68,7 @@ describe('fetch-article-details', () => {
         arbitraryExpressionDoi(),
         fetchArticleDetails({
           ...framework.dependenciesForViews,
-          findAllExpressionsOfPaper: () => TE.left(DE.notFound),
+          fetchPublishingHistory: () => TE.left(DE.notFound),
         }),
       )();
 

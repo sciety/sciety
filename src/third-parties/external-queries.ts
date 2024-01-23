@@ -20,7 +20,7 @@ type FetchReview = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evalua
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
-type FindAllExpressionsOfPaper = (
+type FetchPublishingHistory = (
   expressionDoi: ExpressionDoi,
 ) => TE.TaskEither<DE.DataError, PublishingHistory>;
 
@@ -35,7 +35,7 @@ export type ExternalQueries = {
   fetchRecommendedPapers: FetchRelatedPapers,
   fetchReview: FetchReview,
   fetchStaticFile: FetchStaticFile,
-  findAllExpressionsOfPaper: FindAllExpressionsOfPaper,
+  fetchPublishingHistory: FetchPublishingHistory,
   getArticleSubjectArea: GetArticleSubjectArea,
   searchForPaperExpressions: SearchForPaperExpressions,
 };

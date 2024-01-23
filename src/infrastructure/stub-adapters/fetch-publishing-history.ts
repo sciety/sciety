@@ -6,7 +6,7 @@ import { ExternalQueries } from '../../third-parties';
 import * as PH from '../../types/publishing-history';
 import { PaperExpression } from '../../types/paper-expression';
 
-export const findAllExpressionsOfPaper: ExternalQueries['findAllExpressionsOfPaper'] = (expressionDoi) => pipe(
+export const fetchPublishingHistory: ExternalQueries['fetchPublishingHistory'] = (expressionDoi) => pipe(
   [
     {
       expressionType: 'preprint',

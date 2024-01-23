@@ -169,7 +169,7 @@ describe('construct-view-model', () => {
         constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
-          findAllExpressionsOfPaper: () => TE.left(DE.notFound),
+          fetchPublishingHistory: () => TE.left(DE.notFound),
           logger: dummyLogger,
         }),
       )();

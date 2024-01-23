@@ -49,7 +49,7 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.expressionDoi,
-  dependencies.findAllExpressionsOfPaper,
+  dependencies.fetchPublishingHistory,
   TE.chain((paper) => pipe(
     {
       frontMatter: pipe(

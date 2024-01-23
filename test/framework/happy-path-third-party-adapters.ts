@@ -30,7 +30,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     url: new URL(arbitraryUri()),
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),
-  findAllExpressionsOfPaper: () => pipe(
+  fetchPublishingHistory: () => pipe(
     [
       {
         expressionType: 'preprint',
