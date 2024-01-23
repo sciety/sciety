@@ -18,3 +18,5 @@ export const getAllExpressionDois = (paper: Paper): ReadonlyArray<ExpressionDoi>
   paper.expressions,
   RA.map((expression) => expression.expressionDoi),
 );
+
+export const getLatestPreprintExpression = (paper: Paper): PE.PaperExpression => paper.expressions[0];

@@ -3,19 +3,27 @@ import { pipe } from 'fp-ts/function';
 import * as P from '../../src/types/paper';
 import { arbitraryPaperExpression } from './paper-expression.helper';
 import { shouldNotBeCalled } from '../should-not-be-called';
+import { PaperExpression } from '../../src/types/paper-expression';
 
 describe('paper', () => {
-  const latestExpression = {
-    ...arbitraryPaperExpression(),
-    publishedAt: new Date('2024-01-23'),
-  };
-  const earlierExpression = {
+  const earlierExpression: PaperExpression = {
     ...arbitraryPaperExpression(),
     publishedAt: new Date('1999-09-09'),
+  };
+  const latestPreprintExpression: PaperExpression = {
+    ...arbitraryPaperExpression(),
+    expressionType: 'preprint',
+    publishedAt: new Date('2015-11-12'),
+  };
+  const latestExpression: PaperExpression = {
+    ...arbitraryPaperExpression(),
+    expressionType: 'journal-article',
+    publishedAt: new Date('2024-01-23'),
   };
   const paper = {
     expressions: [
       latestExpression,
+      latestPreprintExpression,
       earlierExpression,
     ],
   };
@@ -36,9 +44,17 @@ describe('paper', () => {
     const result = P.getAllExpressionDois(paper);
 
     it('returns all the paper\'s expression DOIs', () => {
-      expect(result).toHaveLength(2);
+      expect(result).toHaveLength(3);
       expect(result).toContain(latestExpression.expressionDoi);
       expect(result).toContain(earlierExpression.expressionDoi);
+    });
+  });
+
+  describe('getLatestPreprintExpression', () => {
+    const result = P.getLatestPreprintExpression(paper);
+
+    it.failing('returns the latest expression that is a preprint', () => {
+      expect(result).toStrictEqual(latestPreprintExpression);
     });
   });
 });
