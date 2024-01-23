@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as PE from './paper-expression';
 import { ExpressionDoi } from './expression-doi';
+import { PaperExpression } from './paper-expression';
 
 export type PaperExpressions = {
   expressions: ReadonlyArray<PE.PaperExpression>,
@@ -25,3 +26,7 @@ export const getLatestPreprintExpression = (paperExpressions: PaperExpressions):
   RA.sort(PE.byDateAscending),
   RA.last,
 );
+
+export const fromExpressions = (expressions: ReadonlyArray<PaperExpression>): PaperExpressions => ({
+  expressions,
+});
