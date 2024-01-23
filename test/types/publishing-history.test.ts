@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as PH from '../../src/types/publishing-history';
 import { arbitraryPaperExpression } from './paper-expression.helper';
@@ -20,12 +21,14 @@ describe('publishing-history', () => {
     expressionType: 'journal-article',
     publishedAt: new Date('2024-01-23'),
   };
-  const publishingHistory: PH.PublishingHistory = PH.fromExpressions(
+  const publishingHistory: PH.PublishingHistory = pipe(
     [
       latestExpression,
       latestPreprintExpression,
       earlierExpression,
     ],
+    PH.fromExpressions,
+    E.getOrElseW(shouldNotBeCalled),
   );
 
   describe('getLatestExpression', () => {

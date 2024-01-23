@@ -48,7 +48,8 @@ export const fetchPublishingHistory = (
       return DE.notFound;
     },
   ),
-  TE.map(PH.fromExpressions),
+  TE.chainEitherK(PH.fromExpressions),
+  TE.mapLeft(() => DE.notFound),
   TE.filterOrElseW(
     (paperExpressions) => paperExpressions.expressions.length > 0,
     () => {

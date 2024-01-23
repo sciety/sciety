@@ -1,7 +1,9 @@
 import { URL } from 'url';
-import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import * as DE from '../../types/data-error';
 import { ExternalQueries } from '../../third-parties';
 import * as PH from '../../types/publishing-history';
 import { PaperExpression } from '../../types/paper-expression';
@@ -24,5 +26,6 @@ export const fetchPublishingHistory: ExternalQueries['fetchPublishingHistory'] =
     } satisfies PaperExpression,
   ],
   PH.fromExpressions,
-  TE.right,
+  E.mapLeft(() => DE.notFound),
+  T.of,
 );

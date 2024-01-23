@@ -1,6 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as E from 'fp-ts/Either';
 import * as PE from './paper-expression';
 import { ExpressionDoi } from './expression-doi';
 
@@ -30,6 +31,8 @@ export const getLatestPreprintExpression = (history: PublishingHistory): O.Optio
   RA.last,
 );
 
-export const fromExpressions = (expressions: ReadonlyArray<PE.PaperExpression>): PublishingHistory => ({
+export const fromExpressions = (
+  expressions: ReadonlyArray<PE.PaperExpression>,
+): E.Either<string, PublishingHistory> => E.right({
   expressions,
 });
