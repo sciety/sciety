@@ -21,6 +21,7 @@ import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import * as PE from '../../../types/paper-expression';
+import { PaperExpression } from '../../../types/paper-expression';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -45,6 +46,21 @@ const constructAbstract = (abstract: ExpressionFrontMatter['abstract']) => pipe(
   ),
 );
 
+type Paper = {
+  expressions: ReadonlyArray<PaperExpression>,
+};
+
+const getLatestExpression = (paper: Paper) => pipe(
+  paper.expressions,
+  RA.sort(PE.byDateAscending),
+  RA.last,
+);
+
+const getAllExpressionDois = (paper: Paper) => pipe(
+  paper.expressions,
+  RA.map((expression) => expression.expressionDoi),
+);
+
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
@@ -57,18 +73,17 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       return DE.notFound;
     },
   ),
-  TE.chain((foundExpressions) => pipe(
+  TE.map((expressions) => ({ expressions })),
+  TE.chain((paper) => pipe(
     {
       frontMatter: pipe(
-        foundExpressions,
-        RA.sort(PE.byDateAscending),
-        RA.last,
+        getLatestExpression(paper),
         TE.fromOption(() => DE.unavailable),
         TE.map((expression) => expression.expressionDoi),
         TE.chain(dependencies.fetchExpressionFrontMatter),
       ),
       feedItemsByDateDescending: pipe(
-        getArticleFeedEventsByDateDescending(dependencies)(foundExpressions),
+        getArticleFeedEventsByDateDescending(dependencies)(paper.expressions),
         TE.rightTask,
       ),
       relatedArticles: pipe(
@@ -76,8 +91,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         TE.rightTask,
       ),
       curationStatements: pipe(
-        foundExpressions,
-        RA.map((expression) => expression.expressionDoi),
+        getAllExpressionDois(paper),
         constructCurationStatements(dependencies),
         TE.rightTask,
       ),
