@@ -33,6 +33,12 @@ describe('paper', () => {
   });
 
   describe('getAllExpressionDois', () => {
-    it.todo('returns all the paper\'s expression DOIs');
+    const result = P.getAllExpressionDois(paper);
+
+    it('returns all the paper\'s expression DOIs', () => {
+      expect(result).toHaveLength(2);
+      expect(result).toContain(latestExpression.expressionDoi);
+      expect(result).toContain(earlierExpression.expressionDoi);
+    });
   });
 });
