@@ -27,6 +27,24 @@ describe('determine-publication-date', () => {
   });
 
   describe('when the date does not specify a day', () => {
-    it.todo('returns a date matching the first of the given month');
+    it.failing('returns a date matching the first of the given month', () => {
+      const expectedDate = new Date(2020, 11, 1);
+      const work: CrossrefWork = {
+        type: 'posted-content' as const,
+        DOI: arbitraryExpressionDoi(),
+        resource: {
+          primary: {
+            URL: arbitraryUri(),
+          },
+        },
+        posted: {
+          'date-parts': [[expectedDate.getFullYear(), expectedDate.getMonth() + 1, 27]],
+        },
+        relation: { },
+      };
+      const date = determinePublicationDate(work);
+
+      expect(date).toStrictEqual(expectedDate);
+    });
   });
 });
