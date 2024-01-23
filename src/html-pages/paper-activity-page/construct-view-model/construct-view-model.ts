@@ -20,7 +20,7 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import * as P from '../../../types/paper';
+import * as P from '../../../types/paper-expressions';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,

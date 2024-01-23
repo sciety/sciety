@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as P from '../../src/types/paper';
+import * as P from '../../src/types/paper-expressions';
 import { arbitraryPaperExpression } from './paper-expression.helper';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { PaperExpression } from '../../src/types/paper-expression';
