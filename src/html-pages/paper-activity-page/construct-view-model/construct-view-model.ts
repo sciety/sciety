@@ -50,26 +50,26 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.expressionDoi,
   dependencies.fetchPublishingHistory,
-  TE.chain((paper) => pipe(
+  TE.chain((history) => pipe(
     {
       frontMatter: pipe(
-        PH.getLatestExpression(paper),
+        PH.getLatestExpression(history),
         TE.fromOption(() => DE.unavailable),
         TE.map((expression) => expression.expressionDoi),
         TE.chain(dependencies.fetchExpressionFrontMatter),
       ),
       feedItemsByDateDescending: pipe(
-        getArticleFeedEventsByDateDescending(dependencies)(paper.expressions),
+        getArticleFeedEventsByDateDescending(dependencies)(history.expressions),
         TE.rightTask,
       ),
       relatedArticles: pipe(
-        PH.getLatestPreprintExpression(paper),
+        PH.getLatestPreprintExpression(history),
         TE.fromOption(() => DE.unavailable),
         TE.map((expression) => expression.expressionDoi),
         TE.chainTaskK((expressionDoi) => constructRelatedArticles(expressionDoi, dependencies)),
       ),
       curationStatements: pipe(
-        PH.getAllExpressionDois(paper),
+        PH.getAllExpressionDois(history),
         constructCurationStatements(dependencies),
         TE.rightTask,
       ),

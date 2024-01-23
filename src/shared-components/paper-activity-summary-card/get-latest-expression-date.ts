@@ -1,12 +1,8 @@
-import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../types/data-error';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { Dependencies } from './dependencies';
+import * as PH from '../../types/publishing-history';
 
 type GetLatestExpressionDate = (
   dependencies: Dependencies,
@@ -17,15 +13,9 @@ export const getLatestExpressionDate: GetLatestExpressionDate = (
 ) => (
   expressionDoi,
 ) => pipe(
-  dependencies.fetchPublishingHistory(expressionDoi),
-  T.map(
-    E.chainOptionKW(
-      () => DE.notFound,
-    )((allExpressions) => pipe(
-      allExpressions.expressions,
-      RA.last,
-      O.map((version) => version.publishedAt),
-    )),
-  ),
+  expressionDoi,
+  dependencies.fetchPublishingHistory,
   TO.fromTaskEither,
+  TO.chainOptionK(PH.getLatestExpression),
+  TO.map((version) => version.publishedAt),
 );
