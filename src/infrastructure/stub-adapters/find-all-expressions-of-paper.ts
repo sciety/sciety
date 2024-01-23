@@ -8,12 +8,14 @@ import { ExternalQueries } from '../../third-parties';
 
 export const findAllExpressionsOfPaper: ExternalQueries['findAllExpressionsOfPaper'] = (expressionDoi) => T.of(E.right([
   {
+    expressionType: 'preprint',
     expressionDoi,
     publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.08.20.504530v1'),
     publishedAt: new Date('1970'),
     server: O.some('biorxiv'),
   },
   {
+    expressionType: 'preprint',
     expressionDoi,
     publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.08.20.504530v2'),
     publishedAt: new Date('1980'),

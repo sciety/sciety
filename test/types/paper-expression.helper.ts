@@ -6,6 +6,7 @@ import { arbitraryExpressionDoi } from './expression-doi.helper';
 import { arbitraryArticleServer } from './article-server.helper';
 
 export const arbitraryPaperExpression = (): PaperExpression => ({
+  expressionType: 'preprint',
   expressionDoi: arbitraryExpressionDoi(),
   publisherHtmlUrl: new URL(arbitraryUri()),
   publishedAt: arbitraryDate(),

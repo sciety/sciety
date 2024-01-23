@@ -38,6 +38,7 @@ describe('fetch-article-details', () => {
         fetchArticleDetails({
           ...framework.dependenciesForViews,
           findAllExpressionsOfPaper: () => TE.right([{
+            expressionType: 'preprint',
             expressionDoi,
             publisherHtmlUrl: new URL(arbitraryUri()),
             publishedAt: latestDate,

@@ -39,12 +39,14 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
+          expressionType: 'preprint',
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.biorxiv.org/content/${expressionDoi}v2`),
           publishedAt: new Date('2020-01-02'),
           server: O.some('biorxiv'),
         });
         expect(events[1]).toStrictEqual({
+          expressionType: 'preprint',
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.biorxiv.org/content/${expressionDoi}v1`),
           publishedAt: new Date('2019-12-31'),
@@ -80,12 +82,14 @@ describe('get-article-version-events-from-biorxiv', () => {
 
         expect(events).toHaveLength(2);
         expect(events[0]).toStrictEqual({
+          expressionType: 'preprint',
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.medrxiv.org/content/${expressionDoi}v2`),
           publishedAt: new Date('2020-01-02'),
           server: O.some('medrxiv'),
         });
         expect(events[1]).toStrictEqual({
+          expressionType: 'preprint',
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.medrxiv.org/content/${expressionDoi}v1`),
           publishedAt: new Date('2019-12-31'),

@@ -26,6 +26,7 @@ type GetArticleVersionEventsFromBiorxiv = (
 const mapResponse = (expressionsDoi: EDOI.ExpressionDoi, expressionsServer: ColdSpringHarborServer) => flow(
   (response: ResponseWithVersions) => response.collection,
   RA.map(({ version, date }) => ({
+    expressionType: 'preprint' as const,
     expressionDoi: expressionsDoi,
     publisherHtmlUrl: new URL(`https://www.${expressionsServer}.org/content/${expressionsDoi}v${version}`),
     publishedAt: date,

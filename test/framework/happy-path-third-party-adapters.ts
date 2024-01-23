@@ -30,6 +30,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
   fetchStaticFile: () => TE.right('lorem ipsum'),
   findAllExpressionsOfPaper: () => TE.right([
     {
+      expressionType: 'preprint',
       expressionDoi: arbitraryExpressionDoi(),
       publisherHtmlUrl: new URL(arbitraryUri()),
       publishedAt: arbitraryDate(),

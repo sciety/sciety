@@ -7,6 +7,7 @@ import { ExpressionDoi } from './expression-doi';
 import { ArticleServer } from './article-server';
 
 export type PaperExpression = {
+  expressionType: 'preprint' | 'journal-article',
   expressionDoi: ExpressionDoi,
   publisherHtmlUrl: URL,
   publishedAt: Date,
