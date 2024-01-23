@@ -59,7 +59,8 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         TE.chain(dependencies.fetchExpressionFrontMatter),
       ),
       feedItemsByDateDescending: pipe(
-        getArticleFeedEventsByDateDescending(dependencies)(history.expressions),
+        history,
+        getArticleFeedEventsByDateDescending(dependencies),
         TE.rightTask,
       ),
       relatedArticles: pipe(

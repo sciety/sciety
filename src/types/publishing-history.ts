@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as PE from './paper-expression';
 import { ExpressionDoi } from './expression-doi';
-import { PaperExpression } from './paper-expression';
 
 export type PublishingHistory = {
   expressions: ReadonlyArray<PE.PaperExpression>,
@@ -13,6 +12,10 @@ export const getLatestExpression = (history: PublishingHistory): O.Option<PE.Pap
   history.expressions,
   RA.sort(PE.byDateAscending),
   RA.last,
+);
+
+export const getAllExpressions = (history: PublishingHistory): ReadonlyArray<PE.PaperExpression> => (
+  history.expressions
 );
 
 export const getAllExpressionDois = (history: PublishingHistory): ReadonlyArray<ExpressionDoi> => pipe(
@@ -27,6 +30,6 @@ export const getLatestPreprintExpression = (history: PublishingHistory): O.Optio
   RA.last,
 );
 
-export const fromExpressions = (expressions: ReadonlyArray<PaperExpression>): PublishingHistory => ({
+export const fromExpressions = (expressions: ReadonlyArray<PE.PaperExpression>): PublishingHistory => ({
   expressions,
 });

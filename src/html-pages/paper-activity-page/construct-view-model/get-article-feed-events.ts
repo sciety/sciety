@@ -7,6 +7,7 @@ import { PaperExpressionEvent, FeedEvent, getFeedEventsContent } from './get-fee
 import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 import { PaperExpression } from '../../../types/paper-expression';
+import * as PH from '../../../types/publishing-history';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -18,10 +19,6 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
   Ord.reverse,
 );
 
-type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
-=> (foundExpressions: ReadonlyArray<PaperExpression>)
-=> T.Task<ReadonlyArray<FeedItem>>;
-
 const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
   type: 'expression-published' as const,
   ...paperExpression,
@@ -29,15 +26,19 @@ const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressi
   doi: paperExpression.expressionDoi,
 });
 
+type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
+=> (history: PH.PublishingHistory)
+=> T.Task<ReadonlyArray<FeedItem>>;
+
 export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
   dependencies,
 ) => (
-  foundExpressions,
+  history,
 ) => pipe(
   ({
     evaluations: pipe(
-      foundExpressions,
-      RA.map((expression) => expression.expressionDoi),
+      history,
+      PH.getAllExpressionDois,
       dependencies.getEvaluationsOfMultipleExpressions,
       RA.map((evaluation) => ({
         ...evaluation,
@@ -45,7 +46,8 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
       })),
     ),
     expressions: pipe(
-      foundExpressions,
+      history,
+      PH.getAllExpressions,
       RA.map(toPaperExpressionEvent),
     ),
   }),
