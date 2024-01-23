@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
@@ -9,6 +10,7 @@ import { ExternalQueries } from './external-queries';
 import { expandMonolithicBiorxivOrMedrxivExpressions } from './expand-monolithic-biorxiv-or-medrxiv-expressions';
 import * as PES from '../types/paper-expressions';
 import * as DE from '../types/data-error';
+import { PaperExpression } from '../types/paper-expression';
 
 const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   const headers: Record<string, string> = { };
@@ -17,6 +19,13 @@ const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   }
   return headers;
 };
+
+const hasAtLeastOneWorkAsPostedContent = (
+  paperExpressions: ReadonlyArray<PaperExpression>,
+): boolean => pipe(
+  paperExpressions,
+  RA.some((paperExpression) => paperExpression.expressionType === 'preprint'),
+);
 
 export const findAllExpressionsOfPaper = (
   queryCrossrefService: QueryExternalService,
@@ -32,6 +41,13 @@ export const findAllExpressionsOfPaper = (
   TE.chain(expandMonolithicBiorxivOrMedrxivExpressions(
     getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
   )),
+  TE.filterOrElseW(
+    hasAtLeastOneWorkAsPostedContent,
+    () => {
+      logger('info', 'No Crossref posted-content works found', { expressionDoi });
+      return DE.notFound;
+    },
+  ),
   TE.map(PES.fromExpressions),
   TE.filterOrElseW(
     (paperExpressions) => paperExpressions.expressions.length > 0,

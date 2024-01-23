@@ -8,7 +8,6 @@ import { Logger } from '../../../shared-ports';
 import { QueryCrossrefService } from './query-crossref-service';
 import { toPaperExpression } from './to-paper-expression';
 import { walkRelationGraph } from './walk-relation-graph';
-import { CrossrefWork } from './crossref-work';
 
 const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: PaperExpression) => {
   if (O.isNone(expression.server)) {
@@ -23,13 +22,6 @@ const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: Pa
 type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
-export const hasAtLeastOneWorkAsPostedContent = (
-  crossrefWorks: ReadonlyArray<CrossrefWork>,
-): boolean => pipe(
-  crossrefWorks,
-  RA.some((crossrefWork) => crossrefWork.type === 'posted-content'),
-);
-
 export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   queryCrossrefService,
   logger,
@@ -40,13 +32,6 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
     collectedWorks: new Map(),
   },
   walkRelationGraph(queryCrossrefService, logger, doi),
-  TE.filterOrElseW(
-    hasAtLeastOneWorkAsPostedContent,
-    () => {
-      logger('info', 'No Crossref posted-content works found', { doi });
-      return DE.notFound;
-    },
-  ),
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
 );
