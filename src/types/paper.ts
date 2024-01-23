@@ -19,4 +19,9 @@ export const getAllExpressionDois = (paper: Paper): ReadonlyArray<ExpressionDoi>
   RA.map((expression) => expression.expressionDoi),
 );
 
-export const getLatestPreprintExpression = (paper: Paper): PE.PaperExpression => paper.expressions[0];
+export const getLatestPreprintExpression = (paper: Paper): O.Option<PE.PaperExpression> => pipe(
+  paper.expressions,
+  RA.filter((expression) => expression.expressionType === 'preprint'),
+  RA.sort(PE.byDateAscending),
+  RA.last,
+);

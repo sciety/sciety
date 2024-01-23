@@ -51,9 +51,13 @@ describe('paper', () => {
   });
 
   describe('getLatestPreprintExpression', () => {
-    const result = P.getLatestPreprintExpression(paper);
+    const result = pipe(
+      paper,
+      P.getLatestPreprintExpression,
+      O.getOrElseW(shouldNotBeCalled),
+    );
 
-    it.failing('returns the latest expression that is a preprint', () => {
+    it('returns the latest expression that is a preprint', () => {
       expect(result).toStrictEqual(latestPreprintExpression);
     });
   });
