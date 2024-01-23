@@ -20,8 +20,7 @@ import { constructReviewingGroups } from '../../../shared-components/reviewing-g
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import * as PE from '../../../types/paper-expression';
-import { PaperExpression } from '../../../types/paper-expression';
+import * as P from '../../../types/paper';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -46,21 +45,6 @@ const constructAbstract = (abstract: ExpressionFrontMatter['abstract']) => pipe(
   ),
 );
 
-type Paper = {
-  expressions: ReadonlyArray<PaperExpression>,
-};
-
-const getLatestExpression = (paper: Paper) => pipe(
-  paper.expressions,
-  RA.sort(PE.byDateAscending),
-  RA.last,
-);
-
-const getAllExpressionDois = (paper: Paper) => pipe(
-  paper.expressions,
-  RA.map((expression) => expression.expressionDoi),
-);
-
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
@@ -77,7 +61,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.chain((paper) => pipe(
     {
       frontMatter: pipe(
-        getLatestExpression(paper),
+        P.getLatestExpression(paper),
         TE.fromOption(() => DE.unavailable),
         TE.map((expression) => expression.expressionDoi),
         TE.chain(dependencies.fetchExpressionFrontMatter),
@@ -91,7 +75,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         TE.rightTask,
       ),
       curationStatements: pipe(
-        getAllExpressionDois(paper),
+        P.getAllExpressionDois(paper),
         constructCurationStatements(dependencies),
         TE.rightTask,
       ),
