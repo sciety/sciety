@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import {
@@ -11,6 +12,7 @@ import { arbitraryArticleServer } from '../types/article-server.helper';
 import { ExternalQueries } from '../../src/third-parties';
 import { ArticleId } from '../../src/types/article-id';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
+import * as PES from '../../src/types/paper-expressions';
 
 export type HappyPathThirdPartyAdapters = ExternalQueries;
 
@@ -28,18 +30,19 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     url: new URL(arbitraryUri()),
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),
-  findAllExpressionsOfPaper: () => TE.right({
-    expressions: [
+  findAllExpressionsOfPaper: () => pipe(
+    [
       {
         expressionType: 'preprint',
         expressionDoi: arbitraryExpressionDoi(),
         publisherHtmlUrl: new URL(arbitraryUri()),
         publishedAt: arbitraryDate(),
-        version: 1,
         server: O.some(arbitraryArticleServer()),
       },
     ],
-  }),
+    PES.fromExpressions,
+    TE.right,
+  ),
   getArticleSubjectArea: () => TE.right({ value: arbitraryString(), server: arbitraryArticleServer() }),
   searchForPaperExpressions: () => () => TE.right({
     items: [],
