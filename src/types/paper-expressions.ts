@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as PE from './paper-expression';
 import { ExpressionDoi } from './expression-doi';
 
-type PaperExpressions = {
+export type PaperExpressions = {
   expressions: ReadonlyArray<PE.PaperExpression>,
 };
 

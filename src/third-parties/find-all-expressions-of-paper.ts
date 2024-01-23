@@ -30,4 +30,5 @@ export const findAllExpressionsOfPaper = (
   TE.chain(expandMonolithicBiorxivOrMedrxivExpressions(
     getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
   )),
+  TE.map((expressions) => ({ expressions })),
 );

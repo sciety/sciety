@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { PaperExpression } from '../types/paper-expression';
 import * as DE from '../types/data-error';
 import { ArticleId } from '../types/article-id';
 import { Evaluation } from '../types/evaluation';
@@ -9,6 +8,7 @@ import { SubjectArea } from '../types/subject-area';
 import { ExpressionDoi } from '../types/expression-doi';
 import { SearchResults } from '../types/search-results';
 import { ExpressionFrontMatter } from '../types/expression-front-matter';
+import { PaperExpressions } from '../types/paper-expressions';
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
@@ -22,7 +22,7 @@ type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>
 
 type FindAllExpressionsOfPaper = (
   expressionDoi: ExpressionDoi,
-) => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
+) => TE.TaskEither<DE.DataError, PaperExpressions>;
 
 type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
 

@@ -51,13 +51,12 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   params.expressionDoi,
   dependencies.findAllExpressionsOfPaper,
   TE.filterOrElseW(
-    (expressions) => expressions.length > 0,
+    (paperExpressions) => paperExpressions.expressions.length > 0,
     () => {
       dependencies.logger('error', 'findAllExpressionsOfPaper returned an empty array', { params });
       return DE.notFound;
     },
   ),
-  TE.map((expressions) => ({ expressions })),
   TE.chain((paper) => pipe(
     {
       frontMatter: pipe(

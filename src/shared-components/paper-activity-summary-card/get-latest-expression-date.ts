@@ -22,7 +22,7 @@ export const getLatestExpressionDate: GetLatestExpressionDate = (
     E.chainOptionKW(
       () => DE.notFound,
     )((allExpressions) => pipe(
-      allExpressions,
+      allExpressions.expressions,
       RA.last,
       O.map((version) => version.publishedAt),
     )),

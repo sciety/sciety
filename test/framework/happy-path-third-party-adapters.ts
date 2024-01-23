@@ -28,16 +28,18 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     url: new URL(arbitraryUri()),
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),
-  findAllExpressionsOfPaper: () => TE.right([
-    {
-      expressionType: 'preprint',
-      expressionDoi: arbitraryExpressionDoi(),
-      publisherHtmlUrl: new URL(arbitraryUri()),
-      publishedAt: arbitraryDate(),
-      version: 1,
-      server: O.some(arbitraryArticleServer()),
-    },
-  ]),
+  findAllExpressionsOfPaper: () => TE.right({
+    expressions: [
+      {
+        expressionType: 'preprint',
+        expressionDoi: arbitraryExpressionDoi(),
+        publisherHtmlUrl: new URL(arbitraryUri()),
+        publishedAt: arbitraryDate(),
+        version: 1,
+        server: O.some(arbitraryArticleServer()),
+      },
+    ],
+  }),
   getArticleSubjectArea: () => TE.right({ value: arbitraryString(), server: arbitraryArticleServer() }),
   searchForPaperExpressions: () => () => TE.right({
     items: [],

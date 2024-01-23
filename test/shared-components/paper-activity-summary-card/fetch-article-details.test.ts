@@ -37,14 +37,18 @@ describe('fetch-article-details', () => {
         expressionDoi,
         fetchArticleDetails({
           ...framework.dependenciesForViews,
-          findAllExpressionsOfPaper: () => TE.right([{
-            expressionType: 'preprint',
-            expressionDoi,
-            publisherHtmlUrl: new URL(arbitraryUri()),
-            publishedAt: latestDate,
-            version: arbitraryNumber(1, 2),
-            server: O.some(arbitraryArticleServer()),
-          }]),
+          findAllExpressionsOfPaper: () => TE.right({
+            expressions: [
+              {
+                expressionType: 'preprint',
+                expressionDoi,
+                publisherHtmlUrl: new URL(arbitraryUri()),
+                publishedAt: latestDate,
+                version: arbitraryNumber(1, 2),
+                server: O.some(arbitraryArticleServer()),
+              },
+            ],
+          }),
         }),
       )();
 
