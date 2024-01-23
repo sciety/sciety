@@ -3,13 +3,14 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as PES from '../../../src/types/paper-expressions';
 import { fetchArticleDetails } from '../../../src/shared-components/paper-activity-summary-card/fetch-article-details';
 import * as DE from '../../../src/types/data-error';
 import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { sanitise } from '../../../src/types/sanitised-html-fragment';
 import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
 import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryNumber, arbitraryUri } from '../../helpers';
+import { arbitraryUri } from '../../helpers';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryArticleServer } from '../../types/article-server.helper';
 
@@ -37,18 +38,19 @@ describe('fetch-article-details', () => {
         expressionDoi,
         fetchArticleDetails({
           ...framework.dependenciesForViews,
-          findAllExpressionsOfPaper: () => TE.right({
-            expressions: [
+          findAllExpressionsOfPaper: () => pipe(
+            [
               {
                 expressionType: 'preprint',
                 expressionDoi,
                 publisherHtmlUrl: new URL(arbitraryUri()),
                 publishedAt: latestDate,
-                version: arbitraryNumber(1, 2),
                 server: O.some(arbitraryArticleServer()),
               },
             ],
-          }),
+            PES.fromExpressions,
+            TE.right,
+          ),
         }),
       )();
 
