@@ -15,7 +15,10 @@ const relationshipsCodec = t.partial({
 });
 
 const datePartsCodec = t.strict({
-  'date-parts': t.readonlyArray(t.tuple([t.number, t.number, t.number])),
+  'date-parts': t.readonlyArray(t.union([
+    t.tuple([t.number, t.number, t.number]),
+    t.tuple([t.number, t.number]),
+  ])),
 });
 
 const resourceCodec = t.strict({

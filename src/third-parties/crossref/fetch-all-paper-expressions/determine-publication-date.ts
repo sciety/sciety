@@ -1,16 +1,12 @@
 import { CrossrefWork, isCrossrefWorkPostedContent } from './crossref-work';
 
 export const determinePublicationDate = (crossrefWork: CrossrefWork): Date => {
-  if (isCrossrefWorkPostedContent(crossrefWork)) {
-    return new Date(
-      crossrefWork.posted['date-parts'][0][0],
-      crossrefWork.posted['date-parts'][0][1] - 1,
-      crossrefWork.posted['date-parts'][0][2],
-    );
-  }
+  const dateParts = isCrossrefWorkPostedContent(crossrefWork)
+    ? crossrefWork.posted['date-parts'][0]
+    : crossrefWork.published['date-parts'][0];
   return new Date(
-    crossrefWork.published['date-parts'][0][0],
-    crossrefWork.published['date-parts'][0][1] - 1,
-    crossrefWork.published['date-parts'][0][2],
+    dateParts[0],
+    dateParts[1] - 1,
+    dateParts[2] ?? 1,
   );
 };
