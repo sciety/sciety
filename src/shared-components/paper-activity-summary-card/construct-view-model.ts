@@ -14,6 +14,7 @@ import { constructReviewingGroups } from '../reviewing-groups';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as DE from '../../types/data-error';
+import * as PH from '../../types/publishing-history';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
@@ -37,15 +38,15 @@ export const constructViewModel = (
 ) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ErrorViewModel, ViewModel> => pipe(
   inputExpressionDoi,
   ports.fetchPublishingHistory,
-  TE.map(() => ports.getActivityForExpressionDoi(inputExpressionDoi)),
-  TE.chain((expressionActivity) => pipe(
+  TE.chain((publishingHistory) => pipe(
     inputExpressionDoi,
     fetchArticleDetails(ports),
     TE.map(
       (expressionDetails) => ({
         ...expressionDetails,
         inputExpressionDoi,
-        articleActivity: expressionActivity,
+        articleActivity: ports.getActivityForExpressionDoi(inputExpressionDoi),
+        publishingHistory,
       }),
     ),
   )),
@@ -55,7 +56,12 @@ export const constructViewModel = (
     constructCurationStatements(ports),
     T.map((curationStatements) => ({
       inputExpressionDoi: partial.inputExpressionDoi,
-      paperActivityPageHref: constructPaperActivityPageHref(partial.inputExpressionDoi),
+      paperActivityPageHref: pipe(
+        partial.publishingHistory,
+        PH.getLatestExpression,
+        (expression) => expression.expressionDoi,
+        constructPaperActivityPageHref,
+      ),
       title: partial.title,
       authors: partial.authors,
       latestPublishedAt: partial.latestVersionDate,
