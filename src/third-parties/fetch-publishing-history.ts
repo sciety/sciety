@@ -20,7 +20,7 @@ const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   return headers;
 };
 
-const hasAtLeastOneWorkAsPostedContent = (
+const hasAtLeastOnePreprintExpression = (
   paperExpressions: ReadonlyArray<PaperExpression>,
 ): boolean => pipe(
   paperExpressions,
@@ -42,9 +42,9 @@ export const fetchPublishingHistory = (
     getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
   )),
   TE.filterOrElseW(
-    hasAtLeastOneWorkAsPostedContent,
+    hasAtLeastOnePreprintExpression,
     () => {
-      logger('info', 'No Crossref posted-content works found', { expressionDoi });
+      logger('info', 'No preprints found in the publishing history', { expressionDoi });
       return DE.notFound;
     },
   ),
