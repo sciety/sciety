@@ -1,13 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
-import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { Dependencies } from './dependencies';
 import * as PH from '../../types/publishing-history';
+import * as DE from '../../types/data-error';
 
 type GetLatestExpressionDate = (
   dependencies: Dependencies,
-) => (expressionDoi: ExpressionDoi) => TO.TaskOption<Date>;
+) => (expressionDoi: ExpressionDoi) => TE.TaskEither<DE.DataError, Date>;
 
 export const getLatestExpressionDate: GetLatestExpressionDate = (
   dependencies,
@@ -18,5 +18,4 @@ export const getLatestExpressionDate: GetLatestExpressionDate = (
   dependencies.fetchPublishingHistory,
   TE.map(PH.getLatestExpression),
   TE.map((version) => version.publishedAt),
-  TO.fromTaskEither,
 );

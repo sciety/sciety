@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
@@ -24,6 +25,7 @@ export const fetchArticleDetails: FetchArticleDetails = (
   dependencies.fetchExpressionFrontMatter,
   TE.chainW((expressionFrontMatter) => pipe(
     getLatestExpressionDate(dependencies)(expressionDoi),
+    TO.fromTaskEither,
     T.map((latestVersionDate) => ({
       latestVersionDate,
       authors: expressionFrontMatter.authors,
