@@ -10,6 +10,7 @@ import { ExternalQueries } from './external-queries';
 import { expandMonolithicBiorxivOrMedrxivExpressions } from './expand-monolithic-biorxiv-or-medrxiv-expressions';
 import * as PH from '../types/publishing-history';
 import * as DE from '../types/data-error';
+import { ExpressionDoi } from '../types/expression-doi';
 
 const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   const headers: Record<string, string> = { };
@@ -17,6 +18,23 @@ const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
     headers['Crossref-Plus-API-Token'] = `Bearer ${bearerToken.value}`;
   }
   return headers;
+};
+
+const logFailuresToGeneratePublishingHistory = (
+  logger: Logger,
+  expressionDoi: ExpressionDoi,
+) => (
+  publishingHistoryFailure: PH.PublishingHistoryFailure,
+): DE.DataError => {
+  switch (publishingHistoryFailure) {
+    case 'empty-publishing-history':
+      logger('error', 'Publishing history is empty', { expressionDoi });
+      break;
+    case 'no-preprints-in-publishing-history':
+      logger('info', 'No preprints found in the publishing history', { expressionDoi });
+      break;
+  }
+  return DE.notFound;
 };
 
 export const fetchPublishingHistory = (
@@ -36,16 +54,6 @@ export const fetchPublishingHistory = (
   TE.chainEitherKW((expressions) => pipe(
     expressions,
     PH.fromExpressions,
-    E.mapLeft((publishingHistoryFailure) => {
-      switch (publishingHistoryFailure) {
-        case 'empty-publishing-history':
-          logger('error', 'Publishing history is empty', { expressionDoi });
-          break;
-        case 'no-preprints-in-publishing-history':
-          logger('info', 'No preprints found in the publishing history', { expressionDoi });
-          break;
-      }
-      return DE.notFound;
-    }),
+    E.mapLeft(logFailuresToGeneratePublishingHistory(logger, expressionDoi)),
   )),
 );

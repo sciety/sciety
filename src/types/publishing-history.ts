@@ -40,7 +40,7 @@ const hasAtLeastOnePreprintExpression = (
   RA.some((paperExpression) => paperExpression.expressionType === 'preprint'),
 );
 
-type PublishingHistoryFailure = 'empty-publishing-history' | 'no-preprints-in-publishing-history';
+export type PublishingHistoryFailure = 'empty-publishing-history' | 'no-preprints-in-publishing-history';
 
 export const fromExpressions = (
   candidateExpressions: ReadonlyArray<PE.PaperExpression>,
