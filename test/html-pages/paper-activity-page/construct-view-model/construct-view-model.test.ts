@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel } from '../../../../src/html-pages/paper-activity-page/construct-view-model';
+import * as DE from '../../../../src/types/data-error';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/types/list';
 import { createTestFramework, TestFramework } from '../../../framework';
@@ -39,7 +40,7 @@ describe('construct-view-model', () => {
         },
         constructViewModel({
           ...framework.dependenciesForViews,
-          fetchPublishingHistory: () => TE.right({ expressions: [] }),
+          fetchPublishingHistory: () => TE.left(DE.notFound),
         }),
       )();
     });

@@ -8,7 +8,7 @@ import { ExpressionDoi } from './expression-doi';
 import { PaperExpression } from './paper-expression';
 
 export type PublishingHistory = {
-  expressions: ReadonlyArray<PE.PaperExpression>,
+  expressions: RNEA.ReadonlyNonEmptyArray<PE.PaperExpression>,
 };
 
 export const getLatestExpression = (history: PublishingHistory): O.Option<PE.PaperExpression> => pipe(
@@ -34,7 +34,7 @@ export const getLatestPreprintExpression = (history: PublishingHistory): O.Optio
 );
 
 const hasAtLeastOnePreprintExpression = (
-  paperExpressions: ReadonlyArray<PaperExpression>,
+  paperExpressions: RNEA.ReadonlyNonEmptyArray<PaperExpression>,
 ): boolean => pipe(
   paperExpressions,
   RA.some((paperExpression) => paperExpression.expressionType === 'preprint'),
