@@ -1,3 +1,4 @@
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { ExpressionDoi } from '../../types/expression-doi';
@@ -15,7 +16,7 @@ export const getLatestExpressionDate: GetLatestExpressionDate = (
 ) => pipe(
   expressionDoi,
   dependencies.fetchPublishingHistory,
+  TE.map(PH.getLatestExpression),
+  TE.map((version) => version.publishedAt),
   TO.fromTaskEither,
-  TO.chainOptionK(PH.getLatestExpression),
-  TO.map((version) => version.publishedAt),
 );

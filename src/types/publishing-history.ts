@@ -11,10 +11,10 @@ export type PublishingHistory = {
   expressions: RNEA.ReadonlyNonEmptyArray<PE.PaperExpression>,
 };
 
-export const getLatestExpression = (history: PublishingHistory): O.Option<PE.PaperExpression> => pipe(
+export const getLatestExpression = (history: PublishingHistory): PE.PaperExpression => pipe(
   history.expressions,
-  RA.sort(PE.byDateAscending),
-  RA.last,
+  RNEA.sort(PE.byDateAscending),
+  RNEA.last,
 );
 
 export const getAllExpressions = (history: PublishingHistory): ReadonlyArray<PE.PaperExpression> => (

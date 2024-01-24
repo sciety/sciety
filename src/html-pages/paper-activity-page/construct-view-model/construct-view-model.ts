@@ -54,9 +54,8 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     {
       frontMatter: pipe(
         PH.getLatestExpression(history),
-        TE.fromOption(() => DE.unavailable),
-        TE.map((expression) => expression.expressionDoi),
-        TE.chain(dependencies.fetchExpressionFrontMatter),
+        (expression) => expression.expressionDoi,
+        dependencies.fetchExpressionFrontMatter,
       ),
       feedItemsByDateDescending: pipe(
         history,

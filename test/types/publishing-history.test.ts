@@ -35,7 +35,6 @@ describe('publishing-history', () => {
     const result = pipe(
       publishingHistory,
       PH.getLatestExpression,
-      O.getOrElseW(shouldNotBeCalled),
     );
 
     it('returns the latest expression', () => {
