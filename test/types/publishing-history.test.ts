@@ -79,8 +79,23 @@ describe('publishing-history', () => {
   });
 
   describe('given only non-preprint expressions are provided', () => {
+    const providedExpressions: ReadonlyArray<PaperExpression> = [
+      {
+        ...arbitraryPaperExpression(),
+        expressionType: 'journal-article',
+      },
+      {
+        ...arbitraryPaperExpression(),
+        expressionType: 'journal-article',
+      },
+    ];
+
     describe('when constructed', () => {
-      it.todo('returns on the left with "no-preprints-in-publishing-history"');
+      const result = PH.fromExpressions(providedExpressions);
+
+      it('returns on the left with "no-preprints-in-publishing-history"', () => {
+        expect(result).toStrictEqual(E.left('no-preprints-in-publishing-history'));
+      });
     });
   });
 });
