@@ -35,8 +35,10 @@ const toErrorViewModel = (inputExpressionDoi: ExpressionDoi) => (error: DE.DataE
 export const constructViewModel = (
   ports: Dependencies,
 ) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ErrorViewModel, ViewModel> => pipe(
-  ports.getActivityForExpressionDoi(inputExpressionDoi),
-  (expressionActivity) => pipe(
+  inputExpressionDoi,
+  ports.fetchPublishingHistory,
+  TE.map(() => ports.getActivityForExpressionDoi(inputExpressionDoi)),
+  TE.chain((expressionActivity) => pipe(
     inputExpressionDoi,
     fetchArticleDetails(ports),
     TE.map(
@@ -46,7 +48,7 @@ export const constructViewModel = (
         articleActivity: expressionActivity,
       }),
     ),
-  ),
+  )),
   TE.mapLeft(toErrorViewModel(inputExpressionDoi)),
   TE.chainW((partial) => pipe(
     [inputExpressionDoi],

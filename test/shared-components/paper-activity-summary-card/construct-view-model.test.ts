@@ -157,12 +157,12 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it('returns an ArticleErrorCardViewModel', () => {
+    it('returns an ErrorViewModel', () => {
       expect(E.isLeft(viewModel)).toBe(true);
     });
   });
 
-  describe('when fetching the version information fails', () => {
+  describe('when fetching the publishing history fails', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         EDOI.fromValidatedString(arbitraryArticleId().value),
@@ -175,10 +175,8 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it('returns an ArticleCardViewModel with the version information omitted', () => {
-      expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-        latestPublishedAt: O.none,
-      })));
+    it('returns an ErrorViewModel', () => {
+      expect(E.isLeft(viewModel)).toBe(true);
     });
   });
 });
