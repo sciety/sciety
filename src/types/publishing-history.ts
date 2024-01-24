@@ -5,7 +5,6 @@ import * as E from 'fp-ts/Either';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as PE from './paper-expression';
 import { ExpressionDoi } from './expression-doi';
-import { PaperExpression } from './paper-expression';
 
 export type PublishingHistory = {
   expressions: RNEA.ReadonlyNonEmptyArray<PE.PaperExpression>,
@@ -33,13 +32,6 @@ export const getLatestPreprintExpression = (history: PublishingHistory): O.Optio
   RA.last,
 );
 
-const hasAtLeastOnePreprintExpression = (
-  paperExpressions: RNEA.ReadonlyNonEmptyArray<PaperExpression>,
-): boolean => pipe(
-  paperExpressions,
-  RA.some((paperExpression) => paperExpression.expressionType === 'preprint'),
-);
-
 export type PublishingHistoryFailure = 'empty-publishing-history' | 'no-preprints-in-publishing-history';
 
 export const fromExpressions = (
@@ -48,9 +40,13 @@ export const fromExpressions = (
   candidateExpressions,
   RNEA.fromReadonlyArray,
   E.fromOption(() => 'empty-publishing-history' as const),
-  E.filterOrElseW(
-    hasAtLeastOnePreprintExpression,
-    () => 'no-preprints-in-publishing-history' as const,
-  ),
-  E.map((expressions) => ({ expressions })),
+  E.chainW((expressions) => pipe(
+    expressions,
+    RNEA.filter((expression) => expression.expressionType === 'preprint'),
+    O.map((preprintExpressions) => ({
+      expressions,
+      preprintExpressions,
+    })),
+    E.fromOption(() => 'no-preprints-in-publishing-history' as const),
+  )),
 );
