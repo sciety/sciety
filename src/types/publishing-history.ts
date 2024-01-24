@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as PE from './paper-expression';
 import { ExpressionDoi } from './expression-doi';
 
@@ -31,8 +32,13 @@ export const getLatestPreprintExpression = (history: PublishingHistory): O.Optio
   RA.last,
 );
 
+type PublishingHistoryFailure = 'empty-publishing-history';
+
 export const fromExpressions = (
-  expressions: ReadonlyArray<PE.PaperExpression>,
-): E.Either<string, PublishingHistory> => E.right({
-  expressions,
-});
+  candidateExpressions: ReadonlyArray<PE.PaperExpression>,
+): E.Either<PublishingHistoryFailure, PublishingHistory> => pipe(
+  candidateExpressions,
+  RNEA.fromReadonlyArray,
+  E.fromOption(() => 'empty-publishing-history' as const),
+  E.map((expressions) => ({ expressions })),
+);
