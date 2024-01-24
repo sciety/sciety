@@ -48,5 +48,4 @@ export const fetchPublishingHistory = (
       return DE.notFound;
     }),
   )),
-  TE.mapLeft(() => DE.notFound),
 );
