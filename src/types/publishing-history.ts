@@ -8,6 +8,7 @@ import { ExpressionDoi } from './expression-doi';
 
 export type PublishingHistory = {
   expressions: RNEA.ReadonlyNonEmptyArray<PE.PaperExpression>,
+  preprintExpressions: RNEA.ReadonlyNonEmptyArray<PE.PaperExpression>,
 };
 
 export const getLatestExpression = (history: PublishingHistory): PE.PaperExpression => pipe(
@@ -25,11 +26,10 @@ export const getAllExpressionDois = (history: PublishingHistory): ReadonlyArray<
   RA.map((expression) => expression.expressionDoi),
 );
 
-export const getLatestPreprintExpression = (history: PublishingHistory): O.Option<PE.PaperExpression> => pipe(
-  history.expressions,
-  RA.filter((expression) => expression.expressionType === 'preprint'),
-  RA.sort(PE.byDateAscending),
-  RA.last,
+export const getLatestPreprintExpression = (history: PublishingHistory): PE.PaperExpression => pipe(
+  history.preprintExpressions,
+  RNEA.sort(PE.byDateAscending),
+  RNEA.last,
 );
 
 export type PublishingHistoryFailure = 'empty-publishing-history' | 'no-preprints-in-publishing-history';

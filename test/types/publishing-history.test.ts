@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as PH from '../../src/types/publishing-history';
@@ -57,7 +56,6 @@ describe('publishing-history', () => {
       const result = pipe(
         publishingHistory,
         PH.getLatestPreprintExpression,
-        O.getOrElseW(shouldNotBeCalled),
       );
 
       it('returns the latest expression that is a preprint', () => {
