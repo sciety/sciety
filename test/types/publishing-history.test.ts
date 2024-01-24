@@ -67,8 +67,14 @@ describe('publishing-history', () => {
   });
 
   describe('given no expressions are provided', () => {
+    const providedExpressions: ReadonlyArray<PaperExpression> = [];
+
     describe('when constructed', () => {
-      it.todo('returns on the left with "empty-publishing-history"');
+      const result = PH.fromExpressions(providedExpressions);
+
+      it('returns on the left with "empty-publishing-history"', () => {
+        expect(result).toStrictEqual(E.left('empty-publishing-history'));
+      });
     });
   });
 
