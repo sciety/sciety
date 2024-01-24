@@ -56,6 +56,10 @@ export const fetchPublishingHistory = (
       switch (publishingHistoryFailure) {
         case 'empty-publishing-history':
           logger('error', 'Publishing history is empty', { expressionDoi });
+          break;
+        case 'no-preprints-in-publishing-history':
+          logger('info', 'No preprints found in the publishing history', { expressionDoi });
+          break;
       }
       return DE.notFound;
     }),
