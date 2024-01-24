@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -48,13 +49,16 @@ export const fetchPublishingHistory = (
       return DE.notFound;
     },
   ),
-  TE.chainEitherKW(PH.fromExpressions),
-  TE.mapLeft(() => DE.notFound),
-  TE.filterOrElseW(
-    (paperExpressions) => paperExpressions.expressions.length > 0,
-    () => {
-      logger('error', 'findAllExpressionsOfPaper returned an empty array', { expressionDoi });
+  TE.chainEitherKW((expressions) => pipe(
+    expressions,
+    PH.fromExpressions,
+    E.mapLeft((publishingHistoryFailure) => {
+      switch (publishingHistoryFailure) {
+        case 'empty-publishing-history':
+          logger('error', 'Publishing history is empty', { expressionDoi });
+      }
       return DE.notFound;
-    },
-  ),
+    }),
+  )),
+  TE.mapLeft(() => DE.notFound),
 );
