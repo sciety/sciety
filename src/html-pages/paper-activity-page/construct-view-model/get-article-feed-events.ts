@@ -40,10 +40,6 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   ({
     evaluations: pipe(
       constructEvaluationHistory(dependencies, history),
-      RA.map((evaluation) => ({
-        ...evaluation,
-        type: 'evaluation-published' as const,
-      })),
       T.traverseArray((evaluation) => evaluationToFeedItem(dependencies, evaluation)),
     ),
     expressions: pipe(
