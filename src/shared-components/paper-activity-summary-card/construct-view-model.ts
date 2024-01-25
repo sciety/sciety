@@ -47,6 +47,7 @@ export const constructViewModel = (
       expressionFrontMatter,
       articleActivity: dependencies.getActivityForExpressionDoi(inputExpressionDoi),
       publishingHistory,
+      evaluationHistory: constructEvaluationHistory(dependencies, publishingHistory),
     })),
   )),
   TE.mapLeft(toErrorViewModel(inputExpressionDoi)),
@@ -70,13 +71,13 @@ export const constructViewModel = (
         O.some,
       ),
       latestActivityAt: pipe(
-        constructEvaluationHistory(dependencies, partial.publishingHistory),
+        partial.evaluationHistory,
         RA.map((evaluation) => evaluation.publishedAt),
         RA.sort(D.Ord),
         RA.last,
       ),
       evaluationCount: pipe(
-        constructEvaluationHistory(dependencies, partial.publishingHistory),
+        partial.evaluationHistory,
         RA.match(
           () => O.none,
           (evaluations) => O.some(evaluations.length),
