@@ -14,6 +14,7 @@ import * as DE from '../../types/data-error';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as PH from '../../types/publishing-history';
+import { constructFrontMatter } from '../../read-side/construct-front-matter';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
@@ -38,8 +39,7 @@ export const constructViewModel = (
   inputExpressionDoi,
   dependencies.fetchPublishingHistory,
   TE.chain((publishingHistory) => pipe(
-    inputExpressionDoi,
-    dependencies.fetchExpressionFrontMatter,
+    constructFrontMatter(dependencies, publishingHistory),
     TE.map((expressionFrontMatter) => ({
       inputExpressionDoi,
       expressionFrontMatter,
