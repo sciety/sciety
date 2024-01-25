@@ -6,7 +6,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as O from 'fp-ts/Option';
 import { feedSummary } from './feed-summary';
-import { getArticleFeedEventsByDateDescending } from './get-article-feed-events';
+import { getFeedItemsByDateDescending } from './get-feed-items-by-date-descending';
 import * as DE from '../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { userIdCodec } from '../../../types/user-id';
@@ -56,7 +56,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       frontMatter: constructFrontMatter(dependencies, history),
       feedItemsByDateDescending: pipe(
         history,
-        getArticleFeedEventsByDateDescending(dependencies),
+        getFeedItemsByDateDescending(dependencies),
         TE.rightTask,
       ),
       relatedArticles: pipe(

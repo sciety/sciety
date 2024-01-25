@@ -9,7 +9,7 @@ import { Dependencies } from './dependencies';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as PH from '../../../types/publishing-history';
 import { constructEvaluationHistory } from '../../../read-side/construct-evaluation-history';
-import { evaluationToFeedItem } from './evaluation-to-feed-item';
+import { toEvaluationPublishedFeedItem } from './to-evaluation-published-feed-item';
 
 const byDate: Ord.Ord<FeedItem> = pipe(
   D.Ord,
@@ -21,18 +21,18 @@ const byDateDescending: Ord.Ord<FeedItem> = pipe(
   Ord.reverse,
 );
 
-const toPaperExpressionEvent = (paperExpression: PaperExpression): ExpressionPublishedFeedItem => ({
+const toExpressionPublishedFeedItem = (paperExpression: PaperExpression): ExpressionPublishedFeedItem => ({
   type: 'expression-published' as const,
   ...paperExpression,
   source: paperExpression.publisherHtmlUrl,
   doi: paperExpression.expressionDoi,
 });
 
-type GetArticleFeedEventsByDateDescending = (dependencies: Dependencies)
+type GetFeedItemsByDateDescending = (dependencies: Dependencies)
 => (history: PH.PublishingHistory)
 => T.Task<ReadonlyArray<FeedItem>>;
 
-export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDescending = (
+export const getFeedItemsByDateDescending: GetFeedItemsByDateDescending = (
   dependencies,
 ) => (
   history,
@@ -40,16 +40,16 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
   ({
     evaluations: pipe(
       constructEvaluationHistory(dependencies, history),
-      T.traverseArray((evaluation) => evaluationToFeedItem(dependencies, evaluation)),
+      T.traverseArray(toEvaluationPublishedFeedItem(dependencies)),
     ),
     expressions: pipe(
       history,
       PH.getAllExpressions,
-      RA.map(toPaperExpressionEvent),
+      RA.map(toExpressionPublishedFeedItem),
       T.of,
     ),
   }),
   sequenceS(T.ApplyPar),
-  T.map((feeds) => [...feeds.evaluations, ...feeds.expressions]),
+  T.map((items) => [...items.evaluations, ...items.expressions]),
   T.map(RA.sort(byDateDescending)),
 );

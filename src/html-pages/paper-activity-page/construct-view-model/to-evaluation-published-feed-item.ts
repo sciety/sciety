@@ -10,8 +10,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { Dependencies } from './dependencies';
 import { RecordedEvaluation } from '../../../types/recorded-evaluation';
 
-export const evaluationToFeedItem = (
-  dependencies: Dependencies,
+export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
   evaluation: RecordedEvaluation,
 ): T.Task<EvaluationPublishedFeedItem> => pipe(
   {
