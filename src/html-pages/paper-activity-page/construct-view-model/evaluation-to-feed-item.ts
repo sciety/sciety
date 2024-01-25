@@ -11,7 +11,7 @@ import { EvaluationPublishedFeedItem } from '../view-model';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { Dependencies } from './dependencies';
 
-export type EvaluationEvent = {
+type EvaluationEvent = {
   type: 'evaluation-published',
   groupId: GroupId,
   evaluationLocator: EvaluationLocator,
