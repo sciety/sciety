@@ -1,3 +1,4 @@
+import * as D from 'fp-ts/Date';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
@@ -68,7 +69,12 @@ export const constructViewModel = (
         (expression) => expression.publishedAt,
         O.some,
       ),
-      latestActivityAt: partial.articleActivity.latestActivityAt,
+      latestActivityAt: pipe(
+        constructEvaluationHistory(dependencies, partial.publishingHistory),
+        RA.map((evaluation) => evaluation.publishedAt),
+        RA.sort(D.Ord),
+        RA.last,
+      ),
       evaluationCount: pipe(
         constructEvaluationHistory(dependencies, partial.publishingHistory),
         RA.match(
