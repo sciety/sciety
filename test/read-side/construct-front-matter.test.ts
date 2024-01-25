@@ -21,47 +21,98 @@ describe('construct-front-matter', () => {
   });
 
   describe('given a publishing history of multiple expressions', () => {
-    const latestExpressionDoi = arbitraryExpressionDoi();
-    const latestExpressionFrontMatter: ExpressionFrontMatter = {
-      abstract: O.some(arbitrarySanitisedHtmlFragment()),
-      title: arbitrarySanitisedHtmlFragment(),
-      authors: O.none,
-    };
-    let frontMatter: ExpressionFrontMatter;
-
-    beforeEach(async () => {
-      const history = pipe(
-        [
-          {
-            ...arbitraryPaperExpression(),
-            publishedAt: new Date(1999, 5, 17),
-          },
-          {
-            ...arbitraryPaperExpression(),
-            expressionDoi: latestExpressionDoi,
-            publishedAt: new Date(2022, 5, 17),
-          },
-        ],
-        PH.fromExpressions,
-        E.getOrElseW(shouldNotBeCalled),
-      );
-      const dependencies = {
-        ...framework.dependenciesForViews,
-        fetchExpressionFrontMatter: (expressionDoi: ExpressionDoi) => {
-          if (expressionDoi === latestExpressionDoi) {
-            return TE.right(latestExpressionFrontMatter);
-          }
-          return TE.left(DE.notFound);
-        },
+    describe('when the latest expression is a preprint', () => {
+      const latestExpressionDoi = arbitraryExpressionDoi();
+      const latestExpressionFrontMatter: ExpressionFrontMatter = {
+        abstract: O.some(arbitrarySanitisedHtmlFragment()),
+        title: arbitrarySanitisedHtmlFragment(),
+        authors: O.none,
       };
-      frontMatter = await pipe(
-        constructFrontMatter(dependencies, history),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      let frontMatter: ExpressionFrontMatter;
+
+      beforeEach(async () => {
+        const history = pipe(
+          [
+            {
+              ...arbitraryPaperExpression(),
+              expressionType: 'preprint',
+              publishedAt: new Date(1999, 5, 17),
+            },
+            {
+              ...arbitraryPaperExpression(),
+              expressionDoi: latestExpressionDoi,
+              expressionType: 'preprint',
+              publishedAt: new Date(2022, 5, 17),
+            },
+          ],
+          PH.fromExpressions,
+          E.getOrElseW(shouldNotBeCalled),
+        );
+        const dependencies = {
+          ...framework.dependenciesForViews,
+          fetchExpressionFrontMatter: (expressionDoi: ExpressionDoi) => {
+            if (expressionDoi === latestExpressionDoi) {
+              return TE.right(latestExpressionFrontMatter);
+            }
+            return TE.left(DE.notFound);
+          },
+        };
+        frontMatter = await pipe(
+          constructFrontMatter(dependencies, history),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('constructs the front matter for the latest expression', () => {
+        expect(frontMatter).toStrictEqual(latestExpressionFrontMatter);
+      });
     });
 
-    it('constructs the front matter for the latest expression', () => {
-      expect(frontMatter).toStrictEqual(latestExpressionFrontMatter);
+    describe('when the latest expression is a journal article', () => {
+      const latestExpressionDoi = arbitraryExpressionDoi();
+      const latestExpressionFrontMatter: ExpressionFrontMatter = {
+        abstract: O.some(arbitrarySanitisedHtmlFragment()),
+        title: arbitrarySanitisedHtmlFragment(),
+        authors: O.none,
+      };
+      let frontMatter: ExpressionFrontMatter;
+
+      beforeEach(async () => {
+        const history = pipe(
+          [
+            {
+              ...arbitraryPaperExpression(),
+              expressionType: 'preprint',
+              publishedAt: new Date(1999, 5, 17),
+            },
+            {
+              ...arbitraryPaperExpression(),
+              expressionDoi: latestExpressionDoi,
+              expressionType: 'journal-article',
+              publishedAt: new Date(2022, 5, 17),
+            },
+          ],
+          PH.fromExpressions,
+          E.getOrElseW(shouldNotBeCalled),
+        );
+        const dependencies = {
+          ...framework.dependenciesForViews,
+          fetchExpressionFrontMatter: (expressionDoi: ExpressionDoi) => {
+            if (expressionDoi === latestExpressionDoi) {
+              return TE.right(latestExpressionFrontMatter);
+            }
+            return TE.left(DE.notFound);
+          },
+        };
+        frontMatter = await pipe(
+          constructFrontMatter(dependencies, history),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('constructs the front matter for the latest expression', () => {
+        expect(frontMatter).toStrictEqual(latestExpressionFrontMatter);
+      });
     });
   });
 });
