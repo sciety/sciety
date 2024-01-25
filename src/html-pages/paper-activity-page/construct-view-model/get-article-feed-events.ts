@@ -8,6 +8,7 @@ import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as PH from '../../../types/publishing-history';
+import { constructEvaluationHistory } from '../../../read-side/construct-evaluation-history';
 
 const byDate: Ord.Ord<FeedEvent> = pipe(
   D.Ord,
@@ -37,9 +38,7 @@ export const getArticleFeedEventsByDateDescending: GetArticleFeedEventsByDateDes
 ) => pipe(
   ({
     evaluations: pipe(
-      history,
-      PH.getAllExpressionDois,
-      dependencies.getEvaluationsOfMultipleExpressions,
+      constructEvaluationHistory(dependencies, history),
       RA.map((evaluation) => ({
         ...evaluation,
         type: 'evaluation-published' as const,
