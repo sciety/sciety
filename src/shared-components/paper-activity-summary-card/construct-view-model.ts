@@ -15,6 +15,7 @@ import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as PH from '../../types/publishing-history';
 import { constructFrontMatter } from '../../read-side/construct-front-matter';
+import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatementViewModel,
@@ -69,10 +70,10 @@ export const constructViewModel = (
       ),
       latestActivityAt: partial.articleActivity.latestActivityAt,
       evaluationCount: pipe(
-        partial.articleActivity.evaluationCount === 0,
-        B.fold(
-          () => O.some(partial.articleActivity.evaluationCount),
+        constructEvaluationHistory(dependencies, partial.publishingHistory),
+        RA.match(
           () => O.none,
+          (evaluations) => O.some(evaluations.length),
         ),
       ),
       listMembershipCount: pipe(

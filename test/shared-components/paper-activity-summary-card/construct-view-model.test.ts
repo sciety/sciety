@@ -98,6 +98,17 @@ describe('construct-view-model', () => {
           constructViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
+            fetchPublishingHistory: () => pipe(
+              [
+                {
+                  ...arbitraryPaperExpression(),
+                  expressionDoi: inputExpressionDoi,
+                },
+              ],
+              PH.fromExpressions,
+              T.of,
+              TE.mapLeft(shouldNotBeCalled),
+            ),
             logger: dummyLogger,
           }),
         )();
