@@ -186,3 +186,45 @@ jobs:
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: auto-merge all updates to @typescript-eslint
+        if: startsWith(steps.metadata.outputs.dependency-names, '@typescript-eslint')
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: auto-merge all updates to eslint
+        if: startsWith(steps.metadata.outputs.dependency-names, 'eslint')
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: auto-merge all updates to @swc
+        if: startsWith(steps.metadata.outputs.dependency-names, '@swc')
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: auto-merge all updates to dependency-cruiser
+        if: startsWith(steps.metadata.outputs.dependency-names, 'dependency-cruiser')
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: auto-merge minor and patch updates to sass
+        if: startsWith(steps.metadata.outputs.dependency-names, 'sass') && steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: auto-merge patch updates to backstop
+        if: startsWith(steps.metadata.outputs.dependency-names, 'sass') && steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
