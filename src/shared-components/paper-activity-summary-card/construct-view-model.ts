@@ -68,7 +68,6 @@ export const constructViewModel = (
         partial.publishingHistory,
         PH.getLatestExpression,
         (expression) => expression.publishedAt,
-        O.some,
       ),
       latestActivityAt: pipe(
         partial.evaluationHistory,

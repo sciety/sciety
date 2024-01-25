@@ -30,13 +30,10 @@ const renderListMembershipCount = (listMembershipCount: ViewModel['listMembershi
   ),
 );
 
-const renderLatestPublicationDate = O.fold(
-  constant(''),
-  flow(
-    templateDate,
-    (date) => `Latest version ${date}`,
-    wrapInSpan,
-  ),
+const renderLatestPublicationDate = flow(
+  templateDate,
+  (date) => `Latest version ${date}`,
+  wrapInSpan,
 );
 
 const renderArticleLatestActivityDate = O.fold(
