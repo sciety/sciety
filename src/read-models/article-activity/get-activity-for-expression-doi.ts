@@ -20,7 +20,6 @@ export const getActivityForExpressionDoi = (
     () => ({
       expressionDoi: new ArticleId(expressionDoi),
       latestActivityAt: O.none,
-      evaluationCount: 0,
       listMembershipCount: 0,
     }),
     (act) => ({
@@ -31,7 +30,6 @@ export const getActivityForExpressionDoi = (
         RA.sort(D.Ord),
         RA.last,
       ),
-      evaluationCount: act.evaluationStates.length,
       listMembershipCount: act.lists.size,
     }),
   ),

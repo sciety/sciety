@@ -4,6 +4,5 @@ import { ArticleId } from './article-id';
 export type ExpressionActivity = {
   expressionDoi: ArticleId,
   latestActivityAt: O.Option<Date>,
-  evaluationCount: number,
   listMembershipCount: number,
 };

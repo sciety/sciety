@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event';
@@ -26,7 +26,6 @@ describe('get-activity-for-expression-doi', () => {
       expect(runQuery([])(articleId)).toStrictEqual({
         expressionDoi: articleId,
         latestActivityAt: O.none,
-        evaluationCount: 0,
         listMembershipCount: 0,
       });
     });
@@ -41,33 +40,6 @@ describe('get-activity-for-expression-doi', () => {
 
     it('has a listMemberShipCount of 0', () => {
       expect(runQuery(events)(articleId).listMembershipCount).toBe(0);
-    });
-  });
-
-  describe('when an article has had an evaluation recorded and erased', () => {
-    const evaluationRecordedEvent = arbitraryEvaluationPublicationRecordedEvent();
-    const events = [
-      evaluationRecordedEvent,
-      constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationRecordedEvent.evaluationLocator }),
-    ];
-
-    it('has an evaluationCount of 0', () => {
-      expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
-    });
-  });
-
-  describe('when an article has had an evaluation publication and its removal recorded', () => {
-    const evaluationRecordedEvent = arbitraryEvaluationPublicationRecordedEvent();
-    const events = [
-      evaluationRecordedEvent,
-      {
-        ...arbitraryEvaluationRemovalRecordedEvent(),
-        evaluationLocator: evaluationRecordedEvent.evaluationLocator,
-      },
-    ];
-
-    it('has an evaluationCount of 0', () => {
-      expect(runQuery(events)(evaluationRecordedEvent.articleId).evaluationCount).toBe(0);
     });
   });
 
@@ -86,12 +58,6 @@ describe('get-activity-for-expression-doi', () => {
         publishedAt: laterPublishedAt,
       },
     ];
-
-    it('has an evaluationCount of 2', () => {
-      expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
-        evaluationCount: 2,
-      }));
-    });
 
     it('has latestActivityAt set to the most recent publication date', () => {
       expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
@@ -115,12 +81,6 @@ describe('get-activity-for-expression-doi', () => {
         publishedAt: earlierPublishedAt,
       },
     ];
-
-    it('has an evaluationCount of 2', () => {
-      expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
-        evaluationCount: 2,
-      }));
-    });
 
     it('has latestActivityAt set to the most recent publication date', () => {
       expect(runQuery(events)(articleId)).toStrictEqual(expect.objectContaining({
@@ -148,10 +108,6 @@ describe('get-activity-for-expression-doi', () => {
       constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
     ];
 
-    it('has an evaluationCount of 1', () => {
-      expect(runQuery(events)(articleId).evaluationCount).toBe(1);
-    });
-
     it('has latestActivity set to the previous publication date', () => {
       expect(runQuery(events)(articleId).latestActivityAt).toStrictEqual(O.some(earlierPublishedAt));
     });
@@ -163,10 +119,6 @@ describe('get-activity-for-expression-doi', () => {
       event,
       event,
     ];
-
-    it('has an evaluationCount of 1', () => {
-      expect(runQuery(events)(event.articleId).evaluationCount).toBe(1);
-    });
 
     it('has latestActivity set to the first recorded publication date', () => {
       expect(runQuery(events)(event.articleId).latestActivityAt).toStrictEqual(O.some(event.publishedAt));
@@ -207,10 +159,6 @@ describe('get-activity-for-expression-doi', () => {
 
       it('has a listMemberShipCount of 1', () => {
         expect(runQuery(events)(evaluationRecorded.articleId).listMembershipCount).toBe(1);
-      });
-
-      it('has an evaluationCount of 1', () => {
-        expect(runQuery(events)(evaluationRecorded.articleId).evaluationCount).toBe(1);
       });
     });
   });
