@@ -65,8 +65,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         TE.rightTask,
       ),
       curationStatements: pipe(
-        PH.getAllExpressionDois(history),
-        constructCurationStatements(dependencies),
+        constructCurationStatements(dependencies, history),
         TE.rightTask,
       ),
     },

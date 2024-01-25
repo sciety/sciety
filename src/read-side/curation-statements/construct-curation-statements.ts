@@ -16,8 +16,8 @@ import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ExternalQueries } from '../../third-parties';
-import { ExpressionDoi } from '../../types/expression-doi';
 import { CurationStatement } from './curation-statement';
+import * as PH from '../../types/publishing-history';
 
 export type Dependencies = Queries & ExternalQueries & {
   logger: Logger,
@@ -75,12 +75,11 @@ const onlyIncludeLatestCurationPerGroup = (
 
 type ConstructCurationStatements = (
   dependencies: Dependencies,
-) => (
-  expressionDois: ReadonlyArray<ExpressionDoi>,
+  history: PH.PublishingHistory,
 ) => T.Task<ReadonlyArray<CurationStatement>>;
 
-export const constructCurationStatements: ConstructCurationStatements = (dependencies) => (expressionDois) => pipe(
-  expressionDois,
+export const constructCurationStatements: ConstructCurationStatements = (dependencies, history) => pipe(
+  PH.getAllExpressionDois(history),
   dependencies.getEvaluationsOfMultipleExpressions,
   RA.filter((evaluation) => O.getEq(S.Eq).equals(evaluation.type, O.some('curation-statement'))),
   onlyIncludeLatestCurationPerGroup,

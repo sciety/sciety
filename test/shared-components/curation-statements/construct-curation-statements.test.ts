@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
@@ -16,6 +17,9 @@ import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/co
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
+import * as PH from '../../../src/types/publishing-history';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;
@@ -33,9 +37,18 @@ describe('construct-curation-statements', () => {
     evaluationType: 'curation-statement' as const,
   };
 
+  const publishingHistory = pipe(
+    [
+      {
+        ...arbitraryPaperExpression(),
+        expressionDoi,
+      },
+    ],
+    PH.fromExpressions,
+    E.getOrElseW(shouldNotBeCalled),
+  );
   const getCurationStatementLocators = async (dependencies: Dependencies) => pipe(
-    [expressionDoi],
-    constructCurationStatements(dependencies),
+    constructCurationStatements(dependencies, publishingHistory),
     T.map(RA.map((curationStatements) => curationStatements.evaluationLocator)),
   )();
 
