@@ -10,26 +10,26 @@ import * as S from 'fp-ts/string';
 import * as Eq from 'fp-ts/Eq';
 import * as GID from '../../types/group-id';
 import { ArticleId } from '../../types/article-id';
-import { detectLanguage } from '../lang-attribute';
+import { detectLanguage } from '../../shared-components/lang-attribute';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { ViewModel } from './view-model';
 import { ExternalQueries } from '../../third-parties';
 import { ExpressionDoi } from '../../types/expression-doi';
+import { CurationStatement } from './curation-statement';
 
 export type Dependencies = Queries & ExternalQueries & {
   logger: Logger,
 };
 
-type CurationStatement = {
+type PartialCurationStatement = {
   articleId: ArticleId,
   evaluationLocator: EvaluationLocator,
   groupId: GID.GroupId,
 };
 
-const addGroupInformation = (dependencies: Dependencies) => (statement: CurationStatement) => pipe(
+const addGroupInformation = (dependencies: Dependencies) => (statement: PartialCurationStatement) => pipe(
   statement.groupId,
   dependencies.getGroup,
   E.fromOption(() => {
@@ -43,7 +43,7 @@ const addGroupInformation = (dependencies: Dependencies) => (statement: Curation
   })),
 );
 
-type Partial = Omit<ViewModel, 'statementLanguageCode' | 'statement'>;
+type Partial = Omit<CurationStatement, 'statementLanguageCode' | 'statement'>;
 
 const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => pipe(
   partial.evaluationLocator,
@@ -77,7 +77,7 @@ type ConstructCurationStatements = (
   dependencies: Dependencies,
 ) => (
   expressionDois: ReadonlyArray<ExpressionDoi>,
-) => T.Task<ReadonlyArray<ViewModel>>;
+) => T.Task<ReadonlyArray<CurationStatement>>;
 
 export const constructCurationStatements: ConstructCurationStatements = (dependencies) => (expressionDois) => pipe(
   expressionDois,

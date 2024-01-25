@@ -14,7 +14,7 @@ import { constructListedIn } from './construct-listed-in';
 import { constructUserListManagement } from './construct-user-list-management';
 import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
-import { constructCurationStatements } from '../../../shared-components/curation-statements';
+import { constructCurationStatements } from '../../../read-side/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';

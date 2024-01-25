@@ -7,7 +7,7 @@ import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-co
 import { createTestFramework, TestFramework } from '../../framework';
 import {
   constructCurationStatements,
-} from '../../../src/shared-components/curation-statements/construct-curation-statements';
+} from '../../../src/read-side/curation-statements/construct-curation-statements';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';

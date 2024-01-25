@@ -10,7 +10,7 @@ import { ListId } from '../../types/list-id';
 import { PaperActivitySummaryCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
 import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
-import { CurationStatementViewModel } from '../../shared-components/curation-statements';
+import { CurationStatement } from '../../read-side/curation-statements';
 import { ExpressionDoi } from '../../types/expression-doi';
 
 export type EvaluationPublishedFeedItem = {
@@ -66,6 +66,6 @@ export type ViewModel = {
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string, listHref: string }>,
   relatedArticles: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>,
-  curationStatements: ReadonlyArray<CurationStatementViewModel>,
+  curationStatements: ReadonlyArray<CurationStatement>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
 };

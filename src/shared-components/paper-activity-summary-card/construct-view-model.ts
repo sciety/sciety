@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import * as B from 'fp-ts/boolean';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CurationStatementViewModel, constructCurationStatements } from '../curation-statements';
+import { CurationStatement, constructCurationStatements } from '../../read-side/curation-statements';
 import { ErrorViewModel } from './render-error-as-html';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -19,7 +19,7 @@ import { constructFrontMatter } from '../../read-side/construct-front-matter';
 import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
 
 const transformIntoCurationStatementViewModel = (
-  curationStatement: CurationStatementViewModel,
+  curationStatement: CurationStatement,
 ): ViewModel['curationStatementsTeasers'][number] => ({
   groupPageHref: curationStatement.groupPageHref,
   groupName: curationStatement.groupName,
