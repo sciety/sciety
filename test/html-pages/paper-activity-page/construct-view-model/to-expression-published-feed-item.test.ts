@@ -15,7 +15,7 @@ describe('to-expression-published-feed-item', () => {
     };
     const item = toExpressionPublishedFeedItem(expression);
 
-    it.failing('publishedTo contains the server name', () => {
+    it('publishedTo contains the server name', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
