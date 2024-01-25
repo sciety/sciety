@@ -3,8 +3,8 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
-import { PaperExpressionEvent, FeedEvent, getFeedEventsContent } from './get-feed-events-content';
-import { FeedItem } from '../view-model';
+import { FeedEvent, getFeedEventsContent } from './get-feed-events-content';
+import { ExpressionPublishedFeedItem, FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as PH from '../../../types/publishing-history';
@@ -20,7 +20,7 @@ const byDateDescending: Ord.Ord<FeedEvent> = pipe(
   Ord.reverse,
 );
 
-const toPaperExpressionEvent = (paperExpression: PaperExpression): PaperExpressionEvent => ({
+const toPaperExpressionEvent = (paperExpression: PaperExpression): ExpressionPublishedFeedItem => ({
   type: 'expression-published' as const,
   ...paperExpression,
   source: paperExpression.publisherHtmlUrl,

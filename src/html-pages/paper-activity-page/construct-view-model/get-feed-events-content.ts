@@ -1,22 +1,10 @@
-import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { ArticleServer } from '../../../types/article-server';
-import { FeedItem } from '../view-model';
+import { ExpressionPublishedFeedItem, FeedItem } from '../view-model';
 import { EvaluationEvent, evaluationToFeedItem } from './evaluation-to-feed-item';
 import { Dependencies } from './dependencies';
-import { ExpressionDoi } from '../../../types/expression-doi';
 
-export type PaperExpressionEvent = {
-  type: 'expression-published',
-  source: URL,
-  publishedAt: Date,
-  doi: ExpressionDoi,
-  server: O.Option<ArticleServer>,
-};
-
-export type FeedEvent = EvaluationEvent | PaperExpressionEvent;
+export type FeedEvent = EvaluationEvent | ExpressionPublishedFeedItem;
 
 type GetFeedEventsContent = (dependencies: Dependencies)
 => (feedEvents: ReadonlyArray<FeedEvent>)
