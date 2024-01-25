@@ -41,23 +41,11 @@ export const constructViewModel = (
     inputExpressionDoi,
     dependencies.fetchExpressionFrontMatter,
     TE.map((expressionFrontMatter) => ({
-      latestVersionDate: pipe(
-        publishingHistory,
-        PH.getLatestExpression,
-        (expression) => expression.publishedAt,
-      ),
-      authors: expressionFrontMatter.authors,
-      title: expressionFrontMatter.title,
+      inputExpressionDoi,
+      expressionFrontMatter,
+      articleActivity: dependencies.getActivityForExpressionDoi(inputExpressionDoi),
+      publishingHistory,
     })),
-    TE.map(
-      (expressionDetails) => ({
-        ...expressionDetails,
-        latestVersionDate: O.some(expressionDetails.latestVersionDate),
-        inputExpressionDoi,
-        articleActivity: dependencies.getActivityForExpressionDoi(inputExpressionDoi),
-        publishingHistory,
-      }),
-    ),
   )),
   TE.mapLeft(toErrorViewModel(inputExpressionDoi)),
   TE.chainW((partial) => pipe(
@@ -71,9 +59,14 @@ export const constructViewModel = (
         (expression) => expression.expressionDoi,
         constructPaperActivityPageHref,
       ),
-      title: partial.title,
-      authors: partial.authors,
-      latestPublishedAt: partial.latestVersionDate,
+      title: partial.expressionFrontMatter.title,
+      authors: partial.expressionFrontMatter.authors,
+      latestPublishedAt: pipe(
+        partial.publishingHistory,
+        PH.getLatestExpression,
+        (expression) => expression.publishedAt,
+        O.some,
+      ),
       latestActivityAt: partial.articleActivity.latestActivityAt,
       evaluationCount: pipe(
         partial.articleActivity.evaluationCount === 0,
