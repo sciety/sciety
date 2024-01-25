@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
@@ -15,6 +16,9 @@ import { arbitraryCreateListCommand } from '../../write-side/commands/create-lis
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { ArticleId } from '../../../src/types/article-id';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import * as PH from '../../../src/types/publishing-history';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -26,7 +30,8 @@ describe('construct-view-model', () => {
 
   describe('when all information is fetched successfully', () => {
     describe('when an article has not been evaluated', () => {
-      const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
+      const inputExpressionDoi = arbitraryExpressionDoi();
+      const latestExpressionDoi = arbitraryExpressionDoi();
 
       beforeEach(async () => {
         viewModel = await pipe(
@@ -34,6 +39,23 @@ describe('construct-view-model', () => {
           constructViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
+            fetchPublishingHistory: () => pipe(
+              [
+                {
+                  ...arbitraryPaperExpression(),
+                  expressionDoi: inputExpressionDoi,
+                  publishedAt: new Date(2020, 5, 3),
+                },
+                {
+                  ...arbitraryPaperExpression(),
+                  expressionDoi: latestExpressionDoi,
+                  publishedAt: new Date(2022, 5, 3),
+                },
+              ],
+              PH.fromExpressions,
+              T.of,
+              TE.mapLeft(shouldNotBeCalled),
+            ),
             logger: dummyLogger,
           }),
         )();
@@ -55,9 +77,9 @@ describe('construct-view-model', () => {
         })));
       });
 
-      it.skip('the article card links to the article page', () => {
+      it('the article card links to the article page', () => {
         expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          paperActivityPageHref: `/articles/activity/${inputExpressionDoi}`,
+          paperActivityPageHref: `/articles/activity/${latestExpressionDoi}`,
         })));
       });
     });
