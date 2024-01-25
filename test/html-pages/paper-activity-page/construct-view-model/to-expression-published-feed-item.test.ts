@@ -24,7 +24,7 @@ describe('to-expression-published-feed-item', () => {
     };
     const item = toExpressionPublishedFeedItem(expression);
 
-    it.failing('publishedTo contains the DOI of the expression', () => {
+    it('publishedTo contains the DOI of the expression', () => {
       expect(item.publishedTo).toContain(expression.expressionDoi);
     });
   });
