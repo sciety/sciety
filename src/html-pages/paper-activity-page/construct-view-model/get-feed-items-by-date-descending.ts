@@ -21,11 +21,15 @@ const byDateDescending: Ord.Ord<FeedItem> = pipe(
   Ord.reverse,
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const buildPublishedTo = (paperExpression: PaperExpression) => '';
+
 const toExpressionPublishedFeedItem = (paperExpression: PaperExpression): ExpressionPublishedFeedItem => ({
   type: 'expression-published' as const,
   ...paperExpression,
   source: paperExpression.publisherHtmlUrl,
   doi: paperExpression.expressionDoi,
+  publishedTo: buildPublishedTo(paperExpression),
 });
 
 type GetFeedItemsByDateDescending = (dependencies: Dependencies)

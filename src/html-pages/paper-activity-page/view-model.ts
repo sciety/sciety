@@ -31,6 +31,7 @@ export type ExpressionPublishedFeedItem = {
   publishedAt: Date,
   server: O.Option<ArticleServer>,
   doi: ExpressionDoi,
+  publishedTo: string,
 };
 
 export type FeedItem =
