@@ -21,6 +21,7 @@ import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import * as PH from '../../../types/publishing-history';
+import { constructFrontMatter } from '../../../read-side/construct-front-matter';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -52,11 +53,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   dependencies.fetchPublishingHistory,
   TE.chain((history) => pipe(
     {
-      frontMatter: pipe(
-        PH.getLatestExpression(history),
-        (expression) => expression.expressionDoi,
-        dependencies.fetchExpressionFrontMatter,
-      ),
+      frontMatter: constructFrontMatter(dependencies, history),
       feedItemsByDateDescending: pipe(
         history,
         getArticleFeedEventsByDateDescending(dependencies),
