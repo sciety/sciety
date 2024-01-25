@@ -44,6 +44,7 @@ export const constructViewModel = (
     TE.map(
       (expressionDetails) => ({
         ...expressionDetails,
+        latestVersionDate: O.some(expressionDetails.latestVersionDate),
         inputExpressionDoi,
         articleActivity: ports.getActivityForExpressionDoi(inputExpressionDoi),
         publishingHistory,

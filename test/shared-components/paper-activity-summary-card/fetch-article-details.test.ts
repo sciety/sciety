@@ -59,7 +59,7 @@ describe('fetch-article-details', () => {
       expect(articleDetails).toStrictEqual(
         E.right(
           expect.objectContaining({
-            latestVersionDate: O.some(latestDate),
+            latestVersionDate: latestDate,
           }),
         ),
       );
