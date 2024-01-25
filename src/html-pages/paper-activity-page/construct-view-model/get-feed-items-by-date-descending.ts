@@ -4,12 +4,12 @@ import { pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { sequenceS } from 'fp-ts/Apply';
-import { ExpressionPublishedFeedItem, FeedItem } from '../view-model';
+import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
-import { PaperExpression } from '../../../types/paper-expression';
 import * as PH from '../../../types/publishing-history';
 import { constructEvaluationHistory } from '../../../read-side/construct-evaluation-history';
 import { toEvaluationPublishedFeedItem } from './to-evaluation-published-feed-item';
+import { toExpressionPublishedFeedItem } from './to-expression-published-feed-item';
 
 const byDate: Ord.Ord<FeedItem> = pipe(
   D.Ord,
@@ -20,17 +20,6 @@ const byDateDescending: Ord.Ord<FeedItem> = pipe(
   byDate,
   Ord.reverse,
 );
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const buildPublishedTo = (paperExpression: PaperExpression) => '';
-
-const toExpressionPublishedFeedItem = (paperExpression: PaperExpression): ExpressionPublishedFeedItem => ({
-  type: 'expression-published' as const,
-  ...paperExpression,
-  source: paperExpression.publisherHtmlUrl,
-  doi: paperExpression.expressionDoi,
-  publishedTo: buildPublishedTo(paperExpression),
-});
 
 type GetFeedItemsByDateDescending = (dependencies: Dependencies)
 => (history: PH.PublishingHistory)
