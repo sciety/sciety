@@ -40,7 +40,7 @@ export const constructViewModel = (
   ports.fetchPublishingHistory,
   TE.chain((publishingHistory) => pipe(
     inputExpressionDoi,
-    fetchArticleDetails(ports),
+    fetchArticleDetails(ports, publishingHistory),
     TE.map(
       (expressionDetails) => ({
         ...expressionDetails,
