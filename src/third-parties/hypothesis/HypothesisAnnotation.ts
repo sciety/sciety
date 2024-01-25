@@ -13,6 +13,9 @@ export const hypothesisAnnotation = t.type({
           type: t.literal('RangeSelector'),
         }),
         t.type({
+          type: t.literal('PageSelector'),
+        }),
+        t.type({
           type: t.literal('TextPositionSelector'),
         }),
         t.type({
