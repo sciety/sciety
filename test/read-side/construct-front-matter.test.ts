@@ -12,24 +12,35 @@ import { arbitraryPaperExpression } from '../types/paper-expression.helper';
 import { ExpressionDoi } from '../../src/types/expression-doi';
 import * as DE from '../../src/types/data-error';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
+import { ExternalQueries } from '../../src/third-parties';
 
 describe('construct-front-matter', () => {
+  const latestExpressionDoi = arbitraryExpressionDoi();
+  const latestExpressionFrontMatter: ExpressionFrontMatter = {
+    abstract: O.some(arbitrarySanitisedHtmlFragment()),
+    title: arbitrarySanitisedHtmlFragment(),
+    authors: O.none,
+  };
   let framework: TestFramework;
+  let dependencies: ExternalQueries;
 
   beforeEach(() => {
     framework = createTestFramework();
+    dependencies = {
+      ...framework.dependenciesForViews,
+      fetchExpressionFrontMatter: (expressionDoi: ExpressionDoi) => {
+        if (expressionDoi === latestExpressionDoi) {
+          return TE.right(latestExpressionFrontMatter);
+        }
+        return TE.left(DE.notFound);
+      },
+    };
   });
 
   describe('given a publishing history of multiple expressions', () => {
-    describe('when the latest expression is a preprint', () => {
-      const latestExpressionDoi = arbitraryExpressionDoi();
-      const latestExpressionFrontMatter: ExpressionFrontMatter = {
-        abstract: O.some(arbitrarySanitisedHtmlFragment()),
-        title: arbitrarySanitisedHtmlFragment(),
-        authors: O.none,
-      };
-      let frontMatter: ExpressionFrontMatter;
+    let frontMatter: ExpressionFrontMatter;
 
+    describe('when the latest expression is a preprint', () => {
       beforeEach(async () => {
         const history = pipe(
           [
@@ -48,15 +59,6 @@ describe('construct-front-matter', () => {
           PH.fromExpressions,
           E.getOrElseW(shouldNotBeCalled),
         );
-        const dependencies = {
-          ...framework.dependenciesForViews,
-          fetchExpressionFrontMatter: (expressionDoi: ExpressionDoi) => {
-            if (expressionDoi === latestExpressionDoi) {
-              return TE.right(latestExpressionFrontMatter);
-            }
-            return TE.left(DE.notFound);
-          },
-        };
         frontMatter = await pipe(
           constructFrontMatter(dependencies, history),
           TE.getOrElse(shouldNotBeCalled),
@@ -69,14 +71,6 @@ describe('construct-front-matter', () => {
     });
 
     describe('when the latest expression is a journal article', () => {
-      const latestExpressionDoi = arbitraryExpressionDoi();
-      const latestExpressionFrontMatter: ExpressionFrontMatter = {
-        abstract: O.some(arbitrarySanitisedHtmlFragment()),
-        title: arbitrarySanitisedHtmlFragment(),
-        authors: O.none,
-      };
-      let frontMatter: ExpressionFrontMatter;
-
       beforeEach(async () => {
         const history = pipe(
           [
@@ -95,15 +89,6 @@ describe('construct-front-matter', () => {
           PH.fromExpressions,
           E.getOrElseW(shouldNotBeCalled),
         );
-        const dependencies = {
-          ...framework.dependenciesForViews,
-          fetchExpressionFrontMatter: (expressionDoi: ExpressionDoi) => {
-            if (expressionDoi === latestExpressionDoi) {
-              return TE.right(latestExpressionFrontMatter);
-            }
-            return TE.left(DE.notFound);
-          },
-        };
         frontMatter = await pipe(
           constructFrontMatter(dependencies, history),
           TE.getOrElse(shouldNotBeCalled),
