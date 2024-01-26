@@ -92,7 +92,11 @@ export const constructViewModel = (
         curationStatements,
         RA.map(transformIntoCurationStatementViewModel),
       ),
-      reviewingGroups: constructReviewingGroups(dependencies, [inputExpressionDoi]),
+      reviewingGroups: pipe(
+        partial.publishingHistory,
+        PH.getAllExpressionDois,
+        (expressionDois) => constructReviewingGroups(dependencies, expressionDois),
+      ),
     })),
     TE.rightTask,
   )),
