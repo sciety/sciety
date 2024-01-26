@@ -11,6 +11,7 @@ import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-
 import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
 import * as PH from '../../../src/types/publishing-history';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { QueryExternalService } from '../../../src/third-parties/query-external-service';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];
@@ -32,36 +33,38 @@ const arbitraryRecommendedPaper = (articleId: string) => ({
 
 describe('fetch-recommended-papers', () => {
   describe('given a publishing history containing only preprints', () => {
-    it('uses the latest preprint expression\'s doi to query the third party', async () => {
-      const foo = jest.fn(() => TE.right({
-        recommendedPapers: [],
-      }));
-      const queryExternalService = () => foo;
-      const latestPreprintExpressionDoi = arbitraryExpressionDoi();
-      const publishingHistory = pipe(
-        [
-          {
-            ...arbitraryPaperExpression(),
-            expressionType: 'preprint',
-            publishedAt: new Date('2000-01-01'),
-          },
-          {
-            ...arbitraryPaperExpression(),
-            expressionDoi: latestPreprintExpressionDoi,
-            expressionType: 'preprint',
-            publishedAt: new Date('2020-01-01'),
-          },
-        ],
-        PH.fromExpressions,
-        E.getOrElseW(shouldNotBeCalled),
-      );
+    const latestPreprintExpressionDoi = arbitraryExpressionDoi();
+    const publishingHistory = pipe(
+      [
+        {
+          ...arbitraryPaperExpression(),
+          expressionType: 'preprint',
+          publishedAt: new Date('2000-01-01'),
+        },
+        {
+          ...arbitraryPaperExpression(),
+          expressionDoi: latestPreprintExpressionDoi,
+          expressionType: 'preprint',
+          publishedAt: new Date('2020-01-01'),
+        },
+      ],
+      PH.fromExpressions,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+    let spy: ReturnType<QueryExternalService>;
+
+    beforeEach(async () => {
+      spy = jest.fn(() => TE.right({ recommendedPapers: [] }));
+      const queryExternalService = () => spy;
       await pipe(
         publishingHistory,
         fetchRecommendedPapers(queryExternalService, dummyLogger),
         TE.getOrElseW(shouldNotBeCalled),
       )();
+    });
 
-      expect(foo).toHaveBeenCalledWith(expect.stringContaining(latestPreprintExpressionDoi));
+    it('uses the latest preprint expression\'s doi to query the third party', async () => {
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining(latestPreprintExpressionDoi));
     });
   });
 
