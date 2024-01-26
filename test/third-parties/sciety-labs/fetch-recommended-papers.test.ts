@@ -28,6 +28,14 @@ const arbitraryRecommendedPaper = (articleId: string) => ({
 });
 
 describe('fetch-recommended-papers', () => {
+  describe('given a publishing history containing only preprints', () => {
+    it.todo('uses the latest preprint expression\'s doi to query the third party');
+  });
+
+  describe('given a publishing history whose latest expression is a journal article', () => {
+    it.todo('uses the latest preprint expression\'s doi to query the third party');
+  });
+
   describe.each([
     ['biorxiv or medrxiv', '10.1101/2023.01.15.524119'],
     ['biorxiv or medrxiv', '10.1101/452326'],
