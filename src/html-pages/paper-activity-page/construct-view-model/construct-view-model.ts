@@ -51,21 +51,21 @@ type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.expressionDoi,
   dependencies.fetchPublishingHistory,
-  TE.chain((history) => pipe(
+  TE.chain((publishingHistory) => pipe(
     {
-      frontMatter: constructFrontMatter(dependencies, history),
+      frontMatter: constructFrontMatter(dependencies, publishingHistory),
       feedItemsByDateDescending: pipe(
-        history,
+        publishingHistory,
         getFeedItemsByDateDescending(dependencies),
         TE.rightTask,
       ),
       relatedArticles: pipe(
-        PH.getLatestPreprintExpression(history),
+        PH.getLatestPreprintExpression(publishingHistory),
         (expression) => constructRelatedArticles(expression.expressionDoi, dependencies),
         TE.rightTask,
       ),
       curationStatements: pipe(
-        constructCurationStatements(dependencies, history),
+        constructCurationStatements(dependencies, publishingHistory),
         TE.rightTask,
       ),
     },
