@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { arbitraryString } from '../../helpers';
 import { createTestFramework, TestFramework } from '../../framework';
@@ -11,20 +10,10 @@ import {
   constructReviewingGroups,
 } from '../../../src/shared-components/reviewing-groups/construct-reviewing-groups';
 import * as PH from '../../../src/types/publishing-history';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 
 describe('construct-reviewing-groups', () => {
-  const publishingHistory = pipe(
-    [
-      {
-        ...arbitraryPaperExpression(),
-        expressionType: 'preprint',
-      },
-    ],
-    PH.fromExpressions,
-    E.getOrElseW(shouldNotBeCalled),
-  );
+  const publishingHistory = arbitraryPublishingHistoryOnlyPreprints();
   const expressionDoi = PH.getLatestExpression(publishingHistory).expressionDoi;
   const articleId = expressionDoi;
   let framework: TestFramework;

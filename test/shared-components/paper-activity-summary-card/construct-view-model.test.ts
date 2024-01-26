@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
@@ -18,7 +17,7 @@ import { ArticleId } from '../../../src/types/article-id';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import * as PH from '../../../src/types/publishing-history';
-import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -31,7 +30,8 @@ describe('construct-view-model', () => {
   describe('when all information is fetched successfully', () => {
     describe('when an article has not been evaluated', () => {
       const inputExpressionDoi = arbitraryExpressionDoi();
-      const latestExpressionDoi = arbitraryExpressionDoi();
+      const publishingHistory = arbitraryPublishingHistoryOnlyPreprints(inputExpressionDoi);
+      const latestExpressionDoi = PH.getLatestExpression(publishingHistory).expressionDoi;
 
       beforeEach(async () => {
         viewModel = await pipe(
@@ -39,23 +39,7 @@ describe('construct-view-model', () => {
           constructViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
-            fetchPublishingHistory: () => pipe(
-              [
-                {
-                  ...arbitraryPaperExpression(),
-                  expressionDoi: inputExpressionDoi,
-                  publishedAt: new Date(2020, 5, 3),
-                },
-                {
-                  ...arbitraryPaperExpression(),
-                  expressionDoi: latestExpressionDoi,
-                  publishedAt: new Date(2022, 5, 3),
-                },
-              ],
-              PH.fromExpressions,
-              T.of,
-              TE.mapLeft(shouldNotBeCalled),
-            ),
+            fetchPublishingHistory: () => TE.right(publishingHistory),
             logger: dummyLogger,
           }),
         )();
@@ -98,17 +82,7 @@ describe('construct-view-model', () => {
           constructViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
-            fetchPublishingHistory: () => pipe(
-              [
-                {
-                  ...arbitraryPaperExpression(),
-                  expressionDoi: inputExpressionDoi,
-                },
-              ],
-              PH.fromExpressions,
-              T.of,
-              TE.mapLeft(shouldNotBeCalled),
-            ),
+            fetchPublishingHistory: () => TE.right(arbitraryPublishingHistoryOnlyPreprints(inputExpressionDoi)),
             logger: dummyLogger,
           }),
         )();
