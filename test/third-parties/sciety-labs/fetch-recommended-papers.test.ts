@@ -8,6 +8,9 @@ import { fetchRecommendedPapers } from '../../../src/third-parties/sciety-labs/f
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
+import * as PH from '../../../src/types/publishing-history';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];
@@ -29,7 +32,37 @@ const arbitraryRecommendedPaper = (articleId: string) => ({
 
 describe('fetch-recommended-papers', () => {
   describe('given a publishing history containing only preprints', () => {
-    it.todo('uses the latest preprint expression\'s doi to query the third party');
+    it('uses the latest preprint expression\'s doi to query the third party', async () => {
+      const foo = jest.fn(() => TE.right({
+        recommendedPapers: [],
+      }));
+      const queryExternalService = () => foo;
+      const latestPreprintExpressionDoi = arbitraryExpressionDoi();
+      const publishingHistory = pipe(
+        [
+          {
+            ...arbitraryPaperExpression(),
+            expressionType: 'preprint',
+            publishedAt: new Date('2000-01-01'),
+          },
+          {
+            ...arbitraryPaperExpression(),
+            expressionDoi: latestPreprintExpressionDoi,
+            expressionType: 'preprint',
+            publishedAt: new Date('2020-01-01'),
+          },
+        ],
+        PH.fromExpressions,
+        E.getOrElseW(shouldNotBeCalled),
+      );
+      await pipe(
+        publishingHistory,
+        fetchRecommendedPapers(queryExternalService, dummyLogger),
+        TE.getOrElseW(shouldNotBeCalled),
+      )();
+
+      expect(foo).toHaveBeenCalledWith(expect.stringContaining(latestPreprintExpressionDoi));
+    });
   });
 
   describe('given a publishing history whose latest expression is a journal article', () => {
