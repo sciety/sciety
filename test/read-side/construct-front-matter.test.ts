@@ -60,7 +60,8 @@ describe('construct-front-matter', () => {
           E.getOrElseW(shouldNotBeCalled),
         );
         frontMatter = await pipe(
-          constructFrontMatter(dependencies, history),
+          history,
+          constructFrontMatter(dependencies),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -90,7 +91,8 @@ describe('construct-front-matter', () => {
           E.getOrElseW(shouldNotBeCalled),
         );
         frontMatter = await pipe(
-          constructFrontMatter(dependencies, history),
+          history,
+          constructFrontMatter(dependencies),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });

@@ -7,6 +7,7 @@ import { ExternalQueries } from '../third-parties';
 
 export const constructFrontMatter = (
   dependencies: ExternalQueries,
+) => (
   history: PH.PublishingHistory,
 ): TE.TaskEither<DE.DataError, ExpressionFrontMatter> => pipe(
   PH.getLatestExpression(history),

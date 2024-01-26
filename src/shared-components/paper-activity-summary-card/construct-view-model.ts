@@ -40,7 +40,8 @@ export const constructViewModel = (
   inputExpressionDoi,
   dependencies.fetchPublishingHistory,
   TE.chain((publishingHistory) => pipe(
-    constructFrontMatter(dependencies, publishingHistory),
+    publishingHistory,
+    constructFrontMatter(dependencies),
     TE.map((expressionFrontMatter) => ({
       inputExpressionDoi,
       expressionFrontMatter,

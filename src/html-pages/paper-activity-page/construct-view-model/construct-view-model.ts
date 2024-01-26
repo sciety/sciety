@@ -52,7 +52,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   dependencies.fetchPublishingHistory,
   TE.chain((publishingHistory) => pipe(
     {
-      frontMatter: constructFrontMatter(dependencies, publishingHistory),
+      frontMatter: pipe(
+        publishingHistory,
+        constructFrontMatter(dependencies),
+      ),
       feedItemsByDateDescending: pipe(
         publishingHistory,
         getFeedItemsByDateDescending(dependencies),
