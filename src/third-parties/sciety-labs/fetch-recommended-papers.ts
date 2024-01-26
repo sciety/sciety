@@ -8,6 +8,7 @@ import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { isSupportedArticle } from '../../types/article-server';
 import { QueryExternalService } from '../query-external-service';
+import * as PH from '../../types/publishing-history';
 import { ExternalQueries } from '../external-queries';
 import * as EDOI from '../../types/expression-doi';
 
@@ -32,8 +33,14 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 export const fetchRecommendedPapers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): ExternalQueries['fetchRecommendedPapers'] => (expressionDoi) => {
-  const url = `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`;
+): ExternalQueries['fetchRecommendedPapers'] => (history) => {
+  const url = pipe(
+    history,
+    PH.getLatestPreprintExpression,
+    (expression) => expression.expressionDoi,
+    (expressionDoi) => `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`,
+  );
+
   return pipe(
     url,
     queryExternalService(),

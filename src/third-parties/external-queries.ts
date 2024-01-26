@@ -13,7 +13,7 @@ import { PublishingHistory } from '../types/publishing-history';
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
 
-type FetchRelatedPapers = (expressionDoi: ExpressionDoi)
+type FetchRelatedPapers = (history: PublishingHistory)
 => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
 
 type FetchReview = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;

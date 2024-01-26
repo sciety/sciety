@@ -13,8 +13,6 @@ export const constructRelatedArticles = (
   dependencies: Dependencies,
 ): T.Task<ViewModel['relatedArticles']> => pipe(
   history,
-  PH.getLatestPreprintExpression,
-  (expression) => expression.expressionDoi,
   dependencies.fetchRecommendedPapers,
   TE.mapLeft((error) => {
     dependencies.logger('warn', 'Construct related articles has failed', { error, expressionDoi: history });
