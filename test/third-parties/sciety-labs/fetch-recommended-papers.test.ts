@@ -31,26 +31,51 @@ const arbitraryRecommendedPaper = (articleId: string) => ({
   ],
 });
 
+const historyWithPreprintAsLatestExpression = (latestPreprintExpressionDoi: EDOI.ExpressionDoi) => pipe(
+  [
+    {
+      ...arbitraryPaperExpression(),
+      expressionType: 'preprint',
+      publishedAt: new Date('2000-01-01'),
+    },
+    {
+      ...arbitraryPaperExpression(),
+      expressionDoi: latestPreprintExpressionDoi,
+      expressionType: 'preprint',
+      publishedAt: new Date('2020-01-01'),
+    },
+  ],
+  PH.fromExpressions,
+  E.getOrElseW(shouldNotBeCalled),
+);
+
+const historyWithJournalArticleAsLatestExpression = (latestPreprintExpressionDoi: EDOI.ExpressionDoi) => pipe(
+  [
+    {
+      ...arbitraryPaperExpression(),
+      expressionType: 'preprint',
+      publishedAt: new Date('2000-01-01'),
+    },
+    {
+      ...arbitraryPaperExpression(),
+      expressionDoi: latestPreprintExpressionDoi,
+      expressionType: 'preprint',
+      publishedAt: new Date('2020-01-01'),
+    },
+    {
+      ...arbitraryPaperExpression(),
+      expressionType: 'journal-article',
+      publishedAt: new Date('2030-01-01'),
+    },
+  ],
+  PH.fromExpressions,
+  E.getOrElseW(shouldNotBeCalled),
+);
+
 describe('fetch-recommended-papers', () => {
-  describe('given a publishing history containing only preprints', () => {
+  describe('given a publishing history whose latest expression is a preprint', () => {
     const latestPreprintExpressionDoi = arbitraryExpressionDoi();
-    const publishingHistory = pipe(
-      [
-        {
-          ...arbitraryPaperExpression(),
-          expressionType: 'preprint',
-          publishedAt: new Date('2000-01-01'),
-        },
-        {
-          ...arbitraryPaperExpression(),
-          expressionDoi: latestPreprintExpressionDoi,
-          expressionType: 'preprint',
-          publishedAt: new Date('2020-01-01'),
-        },
-      ],
-      PH.fromExpressions,
-      E.getOrElseW(shouldNotBeCalled),
-    );
+    const publishingHistory = historyWithPreprintAsLatestExpression(latestPreprintExpressionDoi);
     let spy: ReturnType<QueryExternalService>;
 
     beforeEach(async () => {
@@ -70,28 +95,7 @@ describe('fetch-recommended-papers', () => {
 
   describe('given a publishing history whose latest expression is a journal article', () => {
     const latestPreprintExpressionDoi = arbitraryExpressionDoi();
-    const publishingHistory = pipe(
-      [
-        {
-          ...arbitraryPaperExpression(),
-          expressionType: 'preprint',
-          publishedAt: new Date('2000-01-01'),
-        },
-        {
-          ...arbitraryPaperExpression(),
-          expressionDoi: latestPreprintExpressionDoi,
-          expressionType: 'preprint',
-          publishedAt: new Date('2020-01-01'),
-        },
-        {
-          ...arbitraryPaperExpression(),
-          expressionType: 'journal-article',
-          publishedAt: new Date('2030-01-01'),
-        },
-      ],
-      PH.fromExpressions,
-      E.getOrElseW(shouldNotBeCalled),
-    );
+    const publishingHistory = historyWithJournalArticleAsLatestExpression(latestPreprintExpressionDoi);
     let spy: ReturnType<QueryExternalService>;
 
     beforeEach(async () => {
