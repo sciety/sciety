@@ -69,7 +69,44 @@ describe('fetch-recommended-papers', () => {
   });
 
   describe('given a publishing history whose latest expression is a journal article', () => {
-    it.todo('uses the latest preprint expression\'s doi to query the third party');
+    const latestPreprintExpressionDoi = arbitraryExpressionDoi();
+    const publishingHistory = pipe(
+      [
+        {
+          ...arbitraryPaperExpression(),
+          expressionType: 'preprint',
+          publishedAt: new Date('2000-01-01'),
+        },
+        {
+          ...arbitraryPaperExpression(),
+          expressionDoi: latestPreprintExpressionDoi,
+          expressionType: 'preprint',
+          publishedAt: new Date('2020-01-01'),
+        },
+        {
+          ...arbitraryPaperExpression(),
+          expressionType: 'journal-article',
+          publishedAt: new Date('2030-01-01'),
+        },
+      ],
+      PH.fromExpressions,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+    let spy: ReturnType<QueryExternalService>;
+
+    beforeEach(async () => {
+      spy = jest.fn(() => TE.right({ recommendedPapers: [] }));
+      const queryExternalService = () => spy;
+      await pipe(
+        publishingHistory,
+        fetchRecommendedPapers(queryExternalService, dummyLogger),
+        TE.getOrElseW(shouldNotBeCalled),
+      )();
+    });
+
+    it('uses the latest preprint expression\'s doi to query the third party', () => {
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining(latestPreprintExpressionDoi));
+    });
   });
 
   describe.each([
