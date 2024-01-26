@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { arbitraryString } from '../../helpers';
 import { createTestFramework, TestFramework } from '../../framework';
@@ -9,10 +10,22 @@ import {
 import {
   constructReviewingGroups,
 } from '../../../src/shared-components/reviewing-groups/construct-reviewing-groups';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import * as PH from '../../../src/types/publishing-history';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
 
 describe('construct-reviewing-groups', () => {
-  const expressionDoi = arbitraryExpressionDoi();
+  const publishingHistory = pipe(
+    [
+      {
+        ...arbitraryPaperExpression(),
+        expressionType: 'preprint',
+      },
+    ],
+    PH.fromExpressions,
+    E.getOrElseW(shouldNotBeCalled),
+  );
+  const expressionDoi = PH.getLatestExpression(publishingHistory).expressionDoi;
   const articleId = expressionDoi;
   let framework: TestFramework;
 
@@ -22,7 +35,7 @@ describe('construct-reviewing-groups', () => {
 
   describe('which groups to include', () => {
     const getReviewingGroupNames = () => pipe(
-      constructReviewingGroups(framework.dependenciesForViews, [expressionDoi]),
+      constructReviewingGroups(framework.dependenciesForViews, publishingHistory),
       RA.map((reviewingGroup) => reviewingGroup.groupName),
     );
 

@@ -7,7 +7,7 @@ import { GroupLinkAsTextViewModel } from '../group-link/group-link-as-text-view-
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { Queries } from '../../read-models';
 import { GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies } from '../group-link';
-import { ExpressionDoi } from '../../types/expression-doi';
+import * as PH from '../../types/publishing-history';
 
 export type Dependencies = Queries
 & ConstructGroupLinkDependencies;
@@ -27,9 +27,10 @@ const unique = <A>(input: ReadonlyArray<A>) => [...new Set(input)];
 
 export const constructReviewingGroups = (
   dependencies: Dependencies,
-  expressionDois: ReadonlyArray<ExpressionDoi>,
+  publishingHistory: PH.PublishingHistory,
 ): ReadonlyArray<GroupLinkWithLogoViewModel & GroupLinkAsTextViewModel> => pipe(
-  expressionDois,
+  publishingHistory,
+  PH.getAllExpressionDois,
   dependencies.getEvaluationsOfMultipleExpressions,
   RA.filter(isNotCurationStatement),
   RA.sort(byPublishedAt),

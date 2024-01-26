@@ -90,10 +90,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
       })),
     ),
-    reviewingGroups: pipe(
-      partial.publishingHistory,
-      PH.getAllExpressionDois,
-      (expressionDois) => constructReviewingGroups(dependencies, expressionDois),
-    ),
+    reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
   })),
 );
