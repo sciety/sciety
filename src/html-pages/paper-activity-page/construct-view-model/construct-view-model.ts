@@ -68,6 +68,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         constructCurationStatements(dependencies, publishingHistory),
         TE.rightTask,
       ),
+      publishingHistory: TE.right(publishingHistory),
     },
     sequenceS(TE.ApplyPar),
   )),
@@ -89,6 +90,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
       })),
     ),
-    reviewingGroups: constructReviewingGroups(dependencies, [params.expressionDoi]),
+    reviewingGroups: pipe(
+      partial.publishingHistory,
+      PH.getAllExpressionDois,
+      (expressionDois) => constructReviewingGroups(dependencies, expressionDois),
+    ),
   })),
 );
