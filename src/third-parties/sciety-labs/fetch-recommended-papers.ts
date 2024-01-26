@@ -32,42 +32,47 @@ type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 export const fetchRecommendedPapers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): ExternalQueries['fetchRecommendedPapers'] => (expressionDoi) => pipe(
-  `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`,
-  queryExternalService(),
-  TE.chainEitherKW(flow(
-    scietyLabsRecommendedPapersResponseCodec.decode,
-    E.mapLeft(formatValidationErrors),
-    E.mapLeft(
-      (errors) => {
-        logger('error', 'Failed to decode Sciety Labs response', {
-          errors,
-          expressionDoi,
-        });
-        return DE.unavailable;
-      },
+): ExternalQueries['fetchRecommendedPapers'] => (expressionDoi) => {
+  const url = `https://labs.sciety.org/api/like/s2/recommendations/v1/papers/forpaper/DOI:${expressionDoi}?fields=externalIds`;
+  return pipe(
+    url,
+    queryExternalService(),
+    TE.chainEitherKW(flow(
+      scietyLabsRecommendedPapersResponseCodec.decode,
+      E.mapLeft(formatValidationErrors),
+      E.mapLeft(
+        (errors) => {
+          logger('error', 'Failed to decode Sciety Labs response', {
+            errors,
+            url,
+          });
+          return DE.unavailable;
+        },
+      ),
+    )),
+    TE.map(
+      (response) => pipe(
+        response.recommendedPapers,
+        RA.filter(
+          (recommendedPaper): recommendedPaper is PaperWithDoi => recommendedPaper.externalIds.DOI !== undefined,
+        ),
+        RA.map((recommendedPaper) => recommendedPaper.externalIds.DOI),
+      ),
     ),
-  )),
-  TE.map(
-    (response) => pipe(
-      response.recommendedPapers,
-      RA.filter((recommendedPaper): recommendedPaper is PaperWithDoi => recommendedPaper.externalIds.DOI !== undefined),
-      RA.map((recommendedPaper) => recommendedPaper.externalIds.DOI),
-    ),
-  ),
-  TE.map(RA.filter((recommendedDoi) => {
-    const isValid = EDOI.isValidDoi(recommendedDoi);
-    if (!isValid) {
-      logger('debug', 'fetchRecommendedPapers discarded a recommendation as corrupt', { recommendedDoi, expressionDoi });
-    }
-    return isValid;
-  })),
-  TE.map(RA.filter((recommendedDoi) => {
-    const isSupported = isSupportedArticle(recommendedDoi);
-    if (!isSupported) {
-      logger('debug', 'fetchRecommendedPapers discarded a recommendation as unsupported', { recommendedDoi, expressionDoi });
-    }
-    return isSupported;
-  })),
-  TE.map(RA.map(EDOI.fromValidatedString)),
-);
+    TE.map(RA.filter((recommendedDoi) => {
+      const isValid = EDOI.isValidDoi(recommendedDoi);
+      if (!isValid) {
+        logger('debug', 'fetchRecommendedPapers discarded a recommendation as corrupt', { recommendedDoi, url });
+      }
+      return isValid;
+    })),
+    TE.map(RA.filter((recommendedDoi) => {
+      const isSupported = isSupportedArticle(recommendedDoi);
+      if (!isSupported) {
+        logger('debug', 'fetchRecommendedPapers discarded a recommendation as unsupported', { recommendedDoi, url });
+      }
+      return isSupported;
+    })),
+    TE.map(RA.map(EDOI.fromValidatedString)),
+  );
+};
