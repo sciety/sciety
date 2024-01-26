@@ -20,7 +20,6 @@ import { constructReviewingGroups } from '../../../read-side/reviewing-groups';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import * as PH from '../../../types/publishing-history';
 import { constructFrontMatter } from '../../../read-side/construct-front-matter';
 
 export const paramsCodec = t.type({
@@ -60,8 +59,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         TE.rightTask,
       ),
       relatedArticles: pipe(
-        PH.getLatestPreprintExpression(publishingHistory),
-        (expression) => constructRelatedArticles(expression.expressionDoi, dependencies),
+        constructRelatedArticles(publishingHistory, dependencies),
         TE.rightTask,
       ),
       curationStatements: pipe(
