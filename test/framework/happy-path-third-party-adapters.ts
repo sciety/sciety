@@ -27,7 +27,12 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     abstract: O.some(sanitise(toHtmlFragment(arbitraryString()))),
     server: 'biorxiv' as ArticleServer,
   }),
-  fetchRecommendedPapers: () => TE.right([arbitraryExpressionDoi()]),
+  fetchRecommendedPapers: () => TE.right([
+    arbitraryExpressionDoi(),
+    arbitraryExpressionDoi(),
+    arbitraryExpressionDoi(),
+    arbitraryExpressionDoi(),
+  ]),
   fetchReview: () => TE.right({
     fullText: arbitrarySanitisedHtmlFragment(),
     url: new URL(arbitraryUri()),
