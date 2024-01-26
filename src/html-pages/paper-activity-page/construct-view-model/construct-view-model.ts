@@ -16,7 +16,7 @@ import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../read-side/curation-statements';
 import { Dependencies } from './dependencies';
-import { constructReviewingGroups } from '../../../shared-components/reviewing-groups';
+import { constructReviewingGroups } from '../../../read-side/reviewing-groups';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';

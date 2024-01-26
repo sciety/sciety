@@ -8,7 +8,7 @@ import {
 } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import {
   constructReviewingGroups,
-} from '../../../src/shared-components/reviewing-groups/construct-reviewing-groups';
+} from '../../../src/read-side/reviewing-groups/construct-reviewing-groups';
 import * as PH from '../../../src/types/publishing-history';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 

@@ -10,7 +10,7 @@ import { ErrorViewModel } from './render-error-as-html';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ViewModel } from './view-model';
-import { constructReviewingGroups } from '../reviewing-groups';
+import { constructReviewingGroups } from '../../read-side/reviewing-groups';
 import * as DE from '../../types/data-error';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../types/expression-doi';
