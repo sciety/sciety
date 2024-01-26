@@ -27,10 +27,10 @@ const unique = <A>(input: ReadonlyArray<A>) => [...new Set(input)];
 
 export const constructReviewingGroups = (
   dependencies: Dependencies,
-  expressionDoi: ExpressionDoi,
+  expressionDois: ReadonlyArray<ExpressionDoi>,
 ): ReadonlyArray<GroupLinkWithLogoViewModel & GroupLinkAsTextViewModel> => pipe(
-  expressionDoi,
-  dependencies.getEvaluationsOfExpression,
+  expressionDois,
+  dependencies.getEvaluationsOfMultipleExpressions,
   RA.filter(isNotCurationStatement),
   RA.sort(byPublishedAt),
   RA.map((evaluation) => evaluation.groupId),

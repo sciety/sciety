@@ -22,7 +22,7 @@ describe('construct-reviewing-groups', () => {
 
   describe('which groups to include', () => {
     const getReviewingGroupNames = () => pipe(
-      constructReviewingGroups(framework.dependenciesForViews, expressionDoi),
+      constructReviewingGroups(framework.dependenciesForViews, [expressionDoi]),
       RA.map((reviewingGroup) => reviewingGroup.groupName),
     );
 

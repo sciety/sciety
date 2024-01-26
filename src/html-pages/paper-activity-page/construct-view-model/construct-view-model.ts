@@ -89,6 +89,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         fullTextLanguageCode: curationStatementWithGroupAndContent.statementLanguageCode,
       })),
     ),
-    reviewingGroups: constructReviewingGroups(dependencies, params.expressionDoi),
+    reviewingGroups: constructReviewingGroups(dependencies, [params.expressionDoi]),
   })),
 );
