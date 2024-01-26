@@ -2,7 +2,6 @@ import * as D from 'fp-ts/Date';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import * as B from 'fp-ts/boolean';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { CurationStatement, constructCurationStatements } from '../../read-side/curation-statements';
@@ -45,13 +44,11 @@ export const constructViewModel = (
     TE.map((expressionFrontMatter) => ({
       inputExpressionDoi,
       expressionFrontMatter,
-      articleActivity: dependencies.getActivityForExpressionDoi(inputExpressionDoi),
       publishingHistory,
       evaluationHistory: constructEvaluationHistory(dependencies, publishingHistory),
     })),
   )),
-  TE.mapLeft(toErrorViewModel(inputExpressionDoi)),
-  TE.chainW((partial) => pipe(
+  TE.chainTaskK((partial) => pipe(
     constructCurationStatements(dependencies, partial.publishingHistory),
     T.map((curationStatements) => ({
       inputExpressionDoi: partial.inputExpressionDoi,
@@ -82,11 +79,11 @@ export const constructViewModel = (
         ),
       ),
       listMembershipCount: pipe(
-        partial.articleActivity.listMembershipCount === 0,
-        B.fold(
-          () => O.some(partial.articleActivity.listMembershipCount),
-          () => O.none,
-        ),
+        partial.inputExpressionDoi,
+        dependencies.getActivityForExpressionDoi,
+        (articleActivity) => (articleActivity.listMembershipCount === 0
+          ? O.none
+          : O.some(articleActivity.listMembershipCount)),
       ),
       curationStatementsTeasers: pipe(
         curationStatements,
@@ -95,6 +92,6 @@ export const constructViewModel = (
       reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
 
     })),
-    TE.rightTask,
   )),
+  TE.mapLeft(toErrorViewModel(inputExpressionDoi)),
 );
