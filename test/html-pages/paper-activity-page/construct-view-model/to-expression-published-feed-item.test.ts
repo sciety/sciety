@@ -21,7 +21,9 @@ describe('to-expression-published-feed-item', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    it.todo('publishedTo contains the DOI of the expression');
+    it('publishedTo contains the DOI of the expression', () => {
+      expect(item.publishedTo).toContain(paperExpression.expressionDoi);
+    });
   });
 
   describe('given a paper expression from a known server, that is a ColdSpringHarborServer', () => {
