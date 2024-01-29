@@ -9,9 +9,9 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 import { PaperExpression } from '../../src/types/paper-expression';
 import { arbitraryPaperExpression } from '../types/paper-expression.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
-import { arbitraryColdSpringHarborServer } from './biorxiv/cold-spring-harbor-server.helper';
 import { arbitraryNumber } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
+import { arbitraryColdSpringHarborArticleServer } from '../types/article-server.helper';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),
@@ -29,7 +29,7 @@ const arbitraryExpressionFromIrrelevantServer = () => ({
 describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
   const monolithicExpression: PaperExpression = {
     ...arbitraryPaperExpression(),
-    server: O.some(arbitraryColdSpringHarborServer()),
+    server: O.some(arbitraryColdSpringHarborArticleServer()),
   };
 
   let expressions: ReadonlyArray<PaperExpression>;
@@ -106,11 +106,11 @@ describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
   describe('given two monolithic expressions from a relevant server', () => {
     const monolithicExpression1: PaperExpression = {
       ...arbitraryPaperExpression(),
-      server: O.some(arbitraryColdSpringHarborServer()),
+      server: O.some(arbitraryColdSpringHarborArticleServer()),
     };
     const monolithicExpression2: PaperExpression = {
       ...arbitraryPaperExpression(),
-      server: O.some(arbitraryColdSpringHarborServer()),
+      server: O.some(arbitraryColdSpringHarborArticleServer()),
     };
     const getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv = (expressionDoi) => {
       if (expressionDoi === monolithicExpression1.expressionDoi) {
