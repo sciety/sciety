@@ -4,11 +4,11 @@ import {
   toExpressionPublishedFeedItem,
 } from '../../../../src/html-pages/paper-activity-page/construct-view-model/to-expression-published-feed-item';
 import { articleServers } from '../../../../src/types/article-server';
-import { arbitraryArticleServer } from '../../../types/article-server.helper';
+import { arbitraryColdSpringHarborArticleServer, arbitraryNonColdSpringHarborArticleServer } from '../../../types/article-server.helper';
 
 describe('to-expression-published-feed-item', () => {
-  describe.skip('given a paper expression from a known server, that is not a ColdSpringHarborServer', () => {
-    const server = arbitraryArticleServer();
+  describe('given a paper expression from a known server, that is not a ColdSpringHarborServer', () => {
+    const server = arbitraryNonColdSpringHarborArticleServer();
     const paperExpression = arbitraryPaperExpression();
     const expression = {
       ...paperExpression,
@@ -27,8 +27,8 @@ describe('to-expression-published-feed-item', () => {
     });
   });
 
-  describe.skip('given a paper expression from a known server, that is a ColdSpringHarborServer', () => {
-    const server = arbitraryArticleServer();
+  describe('given a paper expression from a known server, that is a ColdSpringHarborServer', () => {
+    const server = arbitraryColdSpringHarborArticleServer();
     const paperExpression = arbitraryPaperExpression();
     const expression = {
       ...paperExpression,

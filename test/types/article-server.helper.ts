@@ -11,3 +11,20 @@ export const arbitraryArticleServer = (): ArticleServer => {
   ];
   return articleServers[arbitraryNumber(0, articleServers.length - 1)];
 };
+
+export const arbitraryColdSpringHarborArticleServer = (): ArticleServer => {
+  const articleServers: ReadonlyArray<ArticleServer> = [
+    'biorxiv',
+    'medrxiv',
+  ];
+  return articleServers[arbitraryNumber(0, articleServers.length - 1)];
+};
+
+export const arbitraryNonColdSpringHarborArticleServer = (): ArticleServer => {
+  const articleServers: ReadonlyArray<ArticleServer> = [
+    'researchsquare',
+    'scielopreprints',
+    'osf',
+  ];
+  return articleServers[arbitraryNumber(0, articleServers.length - 1)];
+};
