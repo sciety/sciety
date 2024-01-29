@@ -16,23 +16,22 @@ describe('find-all-lists-containing-paper', () => {
     framework = createTestFramework();
   });
 
-  describe('when the paper is not in any list', () => {
-    let listedIn: ReadonlyArray<List>;
+  let result: ReadonlyArray<List>;
 
+  describe('when the paper is not in any list', () => {
     beforeEach(() => {
-      listedIn = pipe(
+      result = pipe(
         expressionDoi,
         findAllListsContainingPaper(framework.dependenciesForViews),
       );
     });
 
     it('returns empty', () => {
-      expect(listedIn).toStrictEqual([]);
+      expect(result).toStrictEqual([]);
     });
   });
 
   describe('when the paper is in a list', () => {
-    let listedIn: ReadonlyArray<List>;
     const createUserAccountCommand = arbitraryCreateUserAccountCommand();
     let list: List;
 
@@ -40,14 +39,18 @@ describe('find-all-lists-containing-paper', () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
-      listedIn = pipe(
+      result = pipe(
         expressionDoi,
         findAllListsContainingPaper(framework.dependenciesForViews),
       );
     });
 
     it('returns the list id', () => {
-      expect(listedIn).toStrictEqual([list]);
+      expect(result).toStrictEqual([list]);
     });
+  });
+
+  describe('when two different expressions of the paper are in two different lists', () => {
+    it.todo('returns both lists');
   });
 });
