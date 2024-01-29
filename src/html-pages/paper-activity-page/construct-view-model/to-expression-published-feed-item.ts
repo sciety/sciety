@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import { PaperExpression } from '../../../types/paper-expression';
 import { ExpressionPublishedFeedItem } from '../view-model';
 import { articleServers } from '../../../types/article-server';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
 const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
   server,
@@ -12,7 +13,9 @@ const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
   ),
 );
 
-const buildPublishedTo = (paperExpression: PaperExpression) => `${paperExpression.expressionDoi}${onServer(paperExpression.server)}`;
+const buildPublishedToLocation = (expressionDoi: ExpressionDoi) => expressionDoi;
+
+const buildPublishedTo = (paperExpression: PaperExpression) => `${buildPublishedToLocation(paperExpression.expressionDoi)}${onServer(paperExpression.server)}`;
 
 export const toExpressionPublishedFeedItem = (paperExpression: PaperExpression): ExpressionPublishedFeedItem => ({
   type: 'expression-published' as const,

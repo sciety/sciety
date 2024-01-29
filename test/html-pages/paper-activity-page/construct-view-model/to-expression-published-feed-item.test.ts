@@ -29,9 +29,8 @@ describe('to-expression-published-feed-item', () => {
 
   describe('given a paper expression from a known server, that is a ColdSpringHarborServer', () => {
     const server = arbitraryColdSpringHarborArticleServer();
-    const paperExpression = arbitraryPaperExpression();
     const expression = {
-      ...paperExpression,
+      ...arbitraryPaperExpression(),
       publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2023.07.25.550600v2'),
       server: O.some(server),
     };
@@ -42,7 +41,7 @@ describe('to-expression-published-feed-item', () => {
     });
 
     it.failing('publishedTo contains the path for the expression\'s url on that server', () => {
-      expect(item.publishedTo).toContain(paperExpression.expressionDoi);
+      expect(item.publishedTo).toContain(expression.expressionDoi);
 
       expect(item.publishedTo).toContain('v2');
     });
