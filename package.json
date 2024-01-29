@@ -9,7 +9,7 @@
     "@koa/router": "^12.0.1",
     "@types/passport-local": "^1.0.38",
     "@xmldom/xmldom": "^0.8.10",
-    "axios": "^1.6.6",
+    "axios": "^1.6.7",
     "axios-cache-interceptor": "^1.5.1",
     "axios-retry": "4.0.0",
     "cls-rtracer": "^2.6.3",
