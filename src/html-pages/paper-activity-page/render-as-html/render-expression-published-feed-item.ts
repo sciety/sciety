@@ -13,14 +13,6 @@ const renderServerAvatar = (server: ExpressionPublishedFeedItem['server']) => pi
   ),
 );
 
-const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
-  server,
-  O.match(
-    () => '',
-    (serverKey) => ` on ${articleServers[serverKey].name}`,
-  ),
-);
-
 type RenderExpressionPublishedFeedItem = (feedItem: ExpressionPublishedFeedItem) => HtmlFragment;
 
 export const renderExpressionPublishedFeedItem: RenderExpressionPublishedFeedItem = (feedItem) => toHtmlFragment(`
@@ -30,7 +22,7 @@ export const renderExpressionPublishedFeedItem: RenderExpressionPublishedFeedIte
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <a href="${feedItem.source.toString()}">
-            Version published to ${feedItem.doi}${onServer(feedItem.server)}
+            Version published to ${feedItem.publishedTo}
           </a>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}

@@ -21,7 +21,7 @@ const buildPublishedToLocation = (expression: PaperExpression) => pipe(
     isColdSpringHarborServer,
     B.fold(
       () => `${expression.expressionDoi}`,
-      () => `${expression.expressionDoi}`,
+      () => `${expression.publisherHtmlUrl.toString().replace(/^http.*content\//, '')}`,
     ),
   )),
   O.getOrElse(() => `${expression.expressionDoi}`),
