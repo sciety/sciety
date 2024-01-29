@@ -83,7 +83,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     feedItemsByDateDescending: partial.feedItemsByDateDescending,
     ...feedSummary(partial.feedItemsByDateDescending),
     listedIn: pipe(
-      params.expressionDoi,
+      partial.publishingHistory,
       findAllListsContainingPaper(dependencies),
       RA.map(constructContainingList(dependencies)),
     ),

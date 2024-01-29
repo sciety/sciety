@@ -6,6 +6,7 @@ import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { ArticleId } from '../../../../src/types/article-id';
 import { findAllListsContainingPaper } from '../../../../src/html-pages/paper-activity-page/construct-view-model/find-all-lists-containing-paper';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../../types/publishing-history.helper';
 
 describe('find-all-lists-containing-paper', () => {
   let framework: TestFramework;
@@ -21,7 +22,7 @@ describe('find-all-lists-containing-paper', () => {
   describe('when the paper is not in any list', () => {
     beforeEach(() => {
       result = pipe(
-        expressionDoi,
+        arbitraryPublishingHistoryOnlyPreprints(expressionDoi),
         findAllListsContainingPaper(framework.dependenciesForViews),
       );
     });
@@ -40,7 +41,7 @@ describe('find-all-lists-containing-paper', () => {
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.addArticleToList(articleId, list.id);
       result = pipe(
-        expressionDoi,
+        arbitraryPublishingHistoryOnlyPreprints(expressionDoi),
         findAllListsContainingPaper(framework.dependenciesForViews),
       );
     });
