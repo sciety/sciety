@@ -5,6 +5,7 @@ import { ListOwnerId } from '../../../types/list-owner-id';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../types/expression-doi';
+import { findAllListsContainingPaper } from './find-all-lists-containing-paper';
 
 const getListOwnerName = (dependencies: Dependencies) => (ownerId: ListOwnerId) => {
   switch (ownerId.tag) {
@@ -38,7 +39,7 @@ const getListOwnerName = (dependencies: Dependencies) => (ownerId: ListOwnerId) 
 
 export const constructListedIn = (dependencies: Dependencies) => (expressionDoi: ExpressionDoi): ViewModel['listedIn'] => pipe(
   expressionDoi,
-  dependencies.selectAllListsContainingExpression,
+  findAllListsContainingPaper(dependencies),
   RA.map((list) => ({
     listId: list.id,
     listName: list.name,
