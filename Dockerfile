@@ -61,7 +61,7 @@ FROM dev AS build-fast
 ENV NODE_ENV=production
 
 COPY .swcrc ./
-RUN npx swc src -d build/src
+RUN npx swc src --out-dir build
 RUN npm run build:css
 
 
