@@ -1,3 +1,4 @@
+import { ColdSpringHarborServer } from '../../src/third-parties/biorxiv/cold-spring-harbor-server';
 import { ArticleServer } from '../../src/types/article-server';
 import { arbitraryNumber } from '../helpers';
 
@@ -12,8 +13,8 @@ export const arbitraryArticleServer = (): ArticleServer => {
   return articleServers[arbitraryNumber(0, articleServers.length - 1)];
 };
 
-export const arbitraryColdSpringHarborArticleServer = (): ArticleServer => {
-  const articleServers: ReadonlyArray<ArticleServer> = [
+export const arbitraryColdSpringHarborArticleServer = (): ColdSpringHarborServer => {
+  const articleServers: ReadonlyArray<ColdSpringHarborServer> = [
     'biorxiv',
     'medrxiv',
   ];
