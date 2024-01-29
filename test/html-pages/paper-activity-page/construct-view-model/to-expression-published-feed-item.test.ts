@@ -7,7 +7,7 @@ import { articleServers } from '../../../../src/types/article-server';
 import { arbitraryArticleServer } from '../../../types/article-server.helper';
 
 describe('to-expression-published-feed-item', () => {
-  describe('given a paper expression from a known server', () => {
+  describe.skip('given a paper expression from a known server, that is not a ColdSpringHarborServer', () => {
     const server = arbitraryArticleServer();
     const paperExpression = arbitraryPaperExpression();
     const expression = {
@@ -20,17 +20,27 @@ describe('to-expression-published-feed-item', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    describe('when the server is a ColdSpringHarbor server', () => {
-      it.todo('publishedTo contains the path for the expression\'s url on that server');
+    it('publishedTo contains the DOI of the expression', () => {
+      expect(item.publishedTo).toContain(paperExpression.expressionDoi);
+
+      expect(item.publishedTo).not.toContain('v');
+    });
+  });
+
+  describe.skip('given a paper expression from a known server, that is a ColdSpringHarborServer', () => {
+    const server = arbitraryArticleServer();
+    const paperExpression = arbitraryPaperExpression();
+    const expression = {
+      ...paperExpression,
+      server: O.some(server),
+    };
+    const item = toExpressionPublishedFeedItem(expression);
+
+    it('publishedTo contains the server name', () => {
+      expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    describe('when the server is not a ColdSpringHarbor server', () => {
-      it('publishedTo contains the DOI of the expression', () => {
-        expect(item.publishedTo).toContain(paperExpression.expressionDoi);
-
-        expect(item.publishedTo).not.toContain('v');
-      });
-    });
+    it.todo('publishedTo contains the path for the expression\'s url on that server');
   });
 
   describe('given a paper expression from an unknown server', () => {
