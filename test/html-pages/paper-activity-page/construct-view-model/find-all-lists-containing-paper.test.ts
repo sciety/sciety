@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
@@ -7,6 +8,9 @@ import { findAllListsContainingPaper } from '../../../../src/html-pages/paper-ac
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../../types/publishing-history.helper';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { ListId } from '../../../../src/types/list-id';
+import * as PH from '../../../../src/types/publishing-history';
+import { arbitraryPaperExpression } from '../../../types/paper-expression.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('find-all-lists-containing-paper', () => {
   let framework: TestFramework;
@@ -52,6 +56,40 @@ describe('find-all-lists-containing-paper', () => {
   });
 
   describe('when two different expressions of the paper are in two different lists', () => {
-    it.todo('returns both lists');
+    const createList1 = arbitraryCreateListCommand();
+    const createList2 = arbitraryCreateListCommand();
+    const expressionDoi2 = arbitraryExpressionDoi();
+    const publishingHistory: PH.PublishingHistory = pipe(
+      [
+        {
+          ...arbitraryPaperExpression(),
+          expressionDoi,
+        },
+        {
+          ...arbitraryPaperExpression(),
+          expressionDoi: expressionDoi2,
+        },
+      ],
+      PH.fromExpressions,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createList(createList1);
+      await framework.commandHelpers.createList(createList2);
+      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), createList1.listId);
+      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), createList2.listId);
+      result = pipe(
+        publishingHistory,
+        findAllListsContainingPaper(framework.dependenciesForViews),
+        RA.map((list) => list.id),
+      );
+    });
+
+    it.failing('returns both lists', () => {
+      expect(result).toHaveLength(2);
+      expect(result).toContain(createList1.listId);
+      expect(result).toContain(createList2.listId);
+    });
   });
 });
