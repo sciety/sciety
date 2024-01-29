@@ -9,8 +9,9 @@ import { arbitraryArticleServer } from '../../../types/article-server.helper';
 describe('to-expression-published-feed-item', () => {
   describe('given a paper expression from a known server', () => {
     const server = arbitraryArticleServer();
+    const paperExpression = arbitraryPaperExpression();
     const expression = {
-      ...arbitraryPaperExpression(),
+      ...paperExpression,
       server: O.some(server),
     };
     const item = toExpressionPublishedFeedItem(expression);
@@ -19,12 +20,16 @@ describe('to-expression-published-feed-item', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    describe('when the server is a ColdSpringHabor server', () => {
+    describe('when the server is a ColdSpringHarbor server', () => {
       it.todo('publishedTo contains the path for the expression\'s url on that server');
     });
 
-    describe('when the server is not a ColdSpringHabor server', () => {
-      it.todo('publishedTo contains the DOI of the expression');
+    describe('when the server is not a ColdSpringHarbor server', () => {
+      it('publishedTo contains the DOI of the expression', () => {
+        expect(item.publishedTo).toContain(paperExpression.expressionDoi);
+
+        expect(item.publishedTo).not.toContain('v');
+      });
     });
   });
 
