@@ -21,11 +21,19 @@ export const arbitraryColdSpringHarborArticleServer = (): ColdSpringHarborServer
   return articleServers[arbitraryNumber(0, articleServers.length - 1)];
 };
 
-export const arbitraryNonColdSpringHarborArticleServer = (): ArticleServer => {
-  const articleServers: ReadonlyArray<ArticleServer> = [
+type NonColdSpringHarborArticleServer = 'researchsquare'
+| 'scielopreprints'
+| 'osf'
+| 'accessmicrobiology'
+| 'elife';
+
+export const arbitraryNonColdSpringHarborArticleServer = (): NonColdSpringHarborArticleServer => {
+  const articleServers: ReadonlyArray<NonColdSpringHarborArticleServer> = [
     'researchsquare',
     'scielopreprints',
     'osf',
+    'accessmicrobiology',
+    'elife',
   ];
   return articleServers[arbitraryNumber(0, articleServers.length - 1)];
 };
