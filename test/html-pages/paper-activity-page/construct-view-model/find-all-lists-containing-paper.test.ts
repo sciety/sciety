@@ -92,4 +92,39 @@ describe('find-all-lists-containing-paper', () => {
       expect(result).toContain(createList2.listId);
     });
   });
+
+  describe('when two different expressions of the paper are in the same list', () => {
+    const createList1 = arbitraryCreateListCommand();
+    const expressionDoi2 = arbitraryExpressionDoi();
+    const publishingHistory: PH.PublishingHistory = pipe(
+      [
+        {
+          ...arbitraryPaperExpression(),
+          expressionDoi,
+        },
+        {
+          ...arbitraryPaperExpression(),
+          expressionDoi: expressionDoi2,
+        },
+      ],
+      PH.fromExpressions,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createList(createList1);
+      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), createList1.listId);
+      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), createList1.listId);
+      result = pipe(
+        publishingHistory,
+        findAllListsContainingPaper(framework.dependenciesForViews),
+        RA.map((list) => list.id),
+      );
+    });
+
+    it.failing('returns the list only once', () => {
+      expect(result).toHaveLength(1);
+      expect(result).toContain(createList1.listId);
+    });
+  });
 });
