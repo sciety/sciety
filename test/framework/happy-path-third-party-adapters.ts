@@ -38,11 +38,11 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     url: new URL(arbitraryUri()),
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),
-  fetchPublishingHistory: () => pipe(
+  fetchPublishingHistory: (expressionDoi) => pipe(
     [
       {
         expressionType: 'preprint',
-        expressionDoi: arbitraryExpressionDoi(),
+        expressionDoi,
         publisherHtmlUrl: new URL(arbitraryUri()),
         publishedAt: arbitraryDate(),
         server: O.some(arbitraryArticleServer()),
