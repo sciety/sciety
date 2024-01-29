@@ -86,7 +86,7 @@ describe('find-all-lists-containing-paper', () => {
       );
     });
 
-    it.failing('returns both lists', () => {
+    it('returns both lists', () => {
       expect(result).toHaveLength(2);
       expect(result).toContain(createList1.listId);
       expect(result).toContain(createList2.listId);

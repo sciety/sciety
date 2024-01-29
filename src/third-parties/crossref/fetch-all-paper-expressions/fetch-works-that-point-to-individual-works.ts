@@ -37,7 +37,6 @@ export const fetchWorksThatPointToIndividualWorks = (
   )),
   TE.map((responses) => pipe(
     responses,
-    // eslint-disable-next-line fp-ts/prefer-chain
     RA.map((response) => response.message.items),
     RA.flatten,
   )),
