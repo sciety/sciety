@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { TestFramework, createTestFramework } from '../../../framework';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { List } from '../../../../src/types/list';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { ArticleId } from '../../../../src/types/article-id';
 import { findAllListsContainingPaper } from '../../../../src/html-pages/paper-activity-page/construct-view-model/find-all-lists-containing-paper';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../../types/publishing-history.helper';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
+import { ListId } from '../../../../src/types/list-id';
 
 describe('find-all-lists-containing-paper', () => {
   let framework: TestFramework;
@@ -17,13 +17,14 @@ describe('find-all-lists-containing-paper', () => {
     framework = createTestFramework();
   });
 
-  let result: ReadonlyArray<List>;
+  let result: ReadonlyArray<ListId>;
 
   describe('when the paper is not in any list', () => {
     beforeEach(() => {
       result = pipe(
         arbitraryPublishingHistoryOnlyPreprints(expressionDoi),
         findAllListsContainingPaper(framework.dependenciesForViews),
+        RA.map((list) => list.id),
       );
     });
 
@@ -33,21 +34,20 @@ describe('find-all-lists-containing-paper', () => {
   });
 
   describe('when the paper is in a list', () => {
-    const createUserAccountCommand = arbitraryCreateUserAccountCommand();
-    let list: List;
+    const createList = arbitraryCreateListCommand();
 
     beforeEach(async () => {
-      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
-      list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      await framework.commandHelpers.createList(createList);
+      await framework.commandHelpers.addArticleToList(articleId, createList.listId);
       result = pipe(
         arbitraryPublishingHistoryOnlyPreprints(expressionDoi),
         findAllListsContainingPaper(framework.dependenciesForViews),
+        RA.map((list) => list.id),
       );
     });
 
     it('returns the list id', () => {
-      expect(result).toStrictEqual([list]);
+      expect(result).toStrictEqual([createList.listId]);
     });
   });
 
