@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
 import * as EDOI from '../../types/expression-doi';
-import { ColdSpringHarborServer } from './cold-spring-harbor-server';
+import { ColdSpringHarborServer } from '../../types/cold-spring-harbor-server';
 import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { ArticleId } from '../../types/article-id';

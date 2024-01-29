@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import { PaperExpression } from '../../../types/paper-expression';
 import { ExpressionPublishedFeedItem } from '../view-model';
 import { articleServers } from '../../../types/article-server';
-import { isColdSpringHarborServer } from '../../../third-parties/biorxiv/cold-spring-harbor-server';
+import { isColdSpringHarborServer } from '../../../types/cold-spring-harbor-server';
 
 const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
   server,

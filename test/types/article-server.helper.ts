@@ -1,4 +1,4 @@
-import { ColdSpringHarborServer } from '../../src/third-parties/biorxiv/cold-spring-harbor-server';
+import { ColdSpringHarborServer } from '../../src/types/cold-spring-harbor-server';
 import { ArticleServer } from '../../src/types/article-server';
 import { arbitraryNumber } from '../helpers';
 
