@@ -1,16 +1,16 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { ArticleId } from '../../../../src/types/article-id';
-import { findAllListsContainingPaper } from '../../../../src/html-pages/paper-activity-page/construct-view-model/find-all-lists-containing-paper';
-import { arbitraryPublishingHistoryOnlyPreprints } from '../../../types/publishing-history.helper';
-import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
-import { ListId } from '../../../../src/types/list-id';
-import * as PH from '../../../../src/types/publishing-history';
-import { arbitraryPaperExpression } from '../../../types/paper-expression.helper';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
+import * as PH from '../../src/types/publishing-history';
+import { findAllListsContainingPaper } from '../../src/read-side/find-all-lists-containing-paper';
+import { ArticleId } from '../../src/types/article-id';
+import { ListId } from '../../src/types/list-id';
+import { TestFramework, createTestFramework } from '../framework';
+import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
+import { arbitraryPaperExpression } from '../types/paper-expression.helper';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../types/publishing-history.helper';
+import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper';
 
 describe('find-all-lists-containing-paper', () => {
   let framework: TestFramework;

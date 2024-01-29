@@ -21,7 +21,7 @@ import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructFrontMatter } from '../../../read-side/construct-front-matter';
 import { constructContainingList } from './construct-containing-list';
-import { findAllListsContainingPaper } from './find-all-lists-containing-paper';
+import { findAllListsContainingPaper } from '../../../read-side/find-all-lists-containing-paper';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
