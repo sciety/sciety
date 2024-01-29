@@ -16,6 +16,7 @@ import { ExpressionDoi } from '../../types/expression-doi';
 import * as PH from '../../types/publishing-history';
 import { constructFrontMatter } from '../../read-side/construct-front-matter';
 import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
+import { findAllListsContainingPaper } from '../../read-side/find-all-lists-containing-paper';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatement,
@@ -80,11 +81,12 @@ export const constructViewModel = (
         ),
       ),
       listMembershipCount: pipe(
-        partial.inputExpressionDoi,
-        dependencies.getActivityForExpressionDoi,
-        (articleActivity) => (articleActivity.listMembershipCount === 0
-          ? O.none
-          : O.some(articleActivity.listMembershipCount)),
+        partial.publishingHistory,
+        findAllListsContainingPaper(dependencies),
+        RA.match(
+          () => O.none,
+          (lists) => O.some(lists.length),
+        ),
       ),
       curationStatementsTeasers: pipe(
         curationStatements,
