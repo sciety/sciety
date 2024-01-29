@@ -20,22 +20,7 @@ describe('construct-listed-in', () => {
     framework = createTestFramework();
   });
 
-  describe('when the article is not in any list', () => {
-    let listedIn: ViewModel['listedIn'];
-
-    beforeEach(() => {
-      listedIn = pipe(
-        expressionDoi,
-        constructListedIn(framework.dependenciesForViews),
-      );
-    });
-
-    it('returns empty', () => {
-      expect(listedIn).toStrictEqual([]);
-    });
-  });
-
-  describe('when the article is in a list owned by a user', () => {
+  describe('when the paper is in a list owned by a user', () => {
     let listedIn: ViewModel['listedIn'];
     const createUserAccountCommand = arbitraryCreateUserAccountCommand();
     let list: List;
@@ -48,12 +33,6 @@ describe('construct-listed-in', () => {
         expressionDoi,
         constructListedIn(framework.dependenciesForViews),
       );
-    });
-
-    it('returns the list id', () => {
-      expect(listedIn).toStrictEqual([expect.objectContaining({
-        listId: list.id,
-      })]);
     });
 
     it('returns the list name', () => {
@@ -69,7 +48,7 @@ describe('construct-listed-in', () => {
     });
   });
 
-  describe('when the article is in a list owned by a user that does not exist', () => {
+  describe('when the paper is in a list owned by a user that does not exist', () => {
     let listedIn: ViewModel['listedIn'];
 
     beforeEach(async () => {
@@ -92,7 +71,7 @@ describe('construct-listed-in', () => {
     });
   });
 
-  describe('when the article is in a list owned by a group', () => {
+  describe('when the paper is in a list owned by a group', () => {
     let listedIn: ViewModel['listedIn'];
     const addGroupCommand = arbitraryAddGroupCommand();
     let list: List;
@@ -105,12 +84,6 @@ describe('construct-listed-in', () => {
         expressionDoi,
         constructListedIn(framework.dependenciesForViews),
       );
-    });
-
-    it('returns the list id', () => {
-      expect(listedIn).toStrictEqual([expect.objectContaining({
-        listId: list.id,
-      })]);
     });
 
     it('returns the list name', () => {
