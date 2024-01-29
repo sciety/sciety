@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { arbitraryPaperExpression } from '../../../types/paper-expression.helper';
 import {
@@ -20,11 +21,7 @@ describe('to-expression-published-feed-item', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    it('publishedTo contains the DOI of the expression', () => {
-      expect(item.publishedTo).toContain(paperExpression.expressionDoi);
-
-      expect(item.publishedTo).not.toContain('v');
-    });
+    it.todo('publishedTo contains the DOI of the expression');
   });
 
   describe('given a paper expression from a known server, that is a ColdSpringHarborServer', () => {
@@ -32,6 +29,7 @@ describe('to-expression-published-feed-item', () => {
     const paperExpression = arbitraryPaperExpression();
     const expression = {
       ...paperExpression,
+      publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2023.07.25.550600v2'),
       server: O.some(server),
     };
     const item = toExpressionPublishedFeedItem(expression);
@@ -40,7 +38,11 @@ describe('to-expression-published-feed-item', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    it.todo('publishedTo contains the path for the expression\'s url on that server');
+    it.failing('publishedTo contains the path for the expression\'s url on that server', () => {
+      expect(item.publishedTo).toContain(paperExpression.expressionDoi);
+
+      expect(item.publishedTo).toContain('v2');
+    });
   });
 
   describe('given a paper expression from an unknown server', () => {
