@@ -11,7 +11,6 @@ import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-feed-page/construct-view-model/dependencies';
 import { ListId } from '../../../../../src/types/list-id';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
-import { ExpressionDoi } from '../../../../../src/types/expression-doi';
 
 describe('construct-content', () => {
   let framework: TestFramework;
@@ -39,10 +38,10 @@ describe('construct-content', () => {
     TE.getOrElse(shouldNotBeCalled),
   )();
 
-  const getInputExpressionDoisFromContent = (orderedArticleCards: OrderedArticleCards) => pipe(
+  const getPaperActivityHrefs = (orderedArticleCards: OrderedArticleCards) => pipe(
     orderedArticleCards.articleCards,
     RA.rights,
-    RA.map((card) => card.inputExpressionDoi),
+    RA.map((card) => card.paperActivityPageHref),
   );
 
   beforeEach(async () => {
@@ -62,7 +61,7 @@ describe('construct-content', () => {
   describe('when the group\'s evaluated articles list contains two articles', () => {
     const article1 = arbitraryArticleId();
     const article2 = arbitraryArticleId();
-    let expressionDois: ReadonlyArray<ExpressionDoi>;
+    let paperActivityHrefs: ReadonlyArray<string>;
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
@@ -70,12 +69,13 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
-      expressionDois = getInputExpressionDoisFromContent(orderedArticleCards);
+      paperActivityHrefs = getPaperActivityHrefs(orderedArticleCards);
       nextPageHref = orderedArticleCards.forwardPageHref;
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(expressionDois).toStrictEqual([article2.value, article1.value]);
+      expect(paperActivityHrefs[0]).toContain(article2.value);
+      expect(paperActivityHrefs[1]).toContain(article1.value);
     });
 
     it('does not have a next page link', () => {
@@ -88,7 +88,7 @@ describe('construct-content', () => {
     const article2 = arbitraryArticleId();
     const article3 = arbitraryArticleId();
     const article4 = arbitraryArticleId();
-    let expressionDois: ReadonlyArray<ExpressionDoi>;
+    let paperActivityHrefs: ReadonlyArray<string>;
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
@@ -98,12 +98,14 @@ describe('construct-content', () => {
       await framework.commandHelpers.addArticleToList(article4, groupEvaluatedArticlesList);
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
-      expressionDois = getInputExpressionDoisFromContent(orderedArticleCards);
+      paperActivityHrefs = getPaperActivityHrefs(orderedArticleCards);
       nextPageHref = orderedArticleCards.forwardPageHref;
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(expressionDois).toStrictEqual([article4.value, article3.value, article2.value]);
+      expect(paperActivityHrefs[0]).toContain(article4.value);
+      expect(paperActivityHrefs[1]).toContain(article3.value);
+      expect(paperActivityHrefs[2]).toContain(article2.value);
     });
 
     it('does have a link to the next page', () => {
