@@ -10,7 +10,6 @@ import { getFeedItemsByDateDescending } from './get-feed-items-by-date-descendin
 import * as DE from '../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { userIdCodec } from '../../../types/user-id';
-import { constructListedIn } from './construct-listed-in';
 import { constructUserListManagement } from './construct-user-list-management';
 import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
@@ -21,6 +20,8 @@ import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructFrontMatter } from '../../../read-side/construct-front-matter';
+import { constructContainingList } from './construct-containing-list';
+import { findAllListsContainingPaper } from './find-all-lists-containing-paper';
 
 export const paramsCodec = t.type({
   expressionDoi: expressionDoiCodec,
@@ -81,7 +82,11 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     expressionFullTextHref: toExpressionFullTextHref(params.expressionDoi),
     feedItemsByDateDescending: partial.feedItemsByDateDescending,
     ...feedSummary(partial.feedItemsByDateDescending),
-    listedIn: constructListedIn(dependencies)(params.expressionDoi),
+    listedIn: pipe(
+      params.expressionDoi,
+      findAllListsContainingPaper(dependencies),
+      RA.map(constructContainingList(dependencies)),
+    ),
     relatedArticles: partial.relatedArticles,
     curationStatements: pipe(
       partial.curationStatements,
