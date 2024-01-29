@@ -122,7 +122,7 @@ describe('find-all-lists-containing-paper', () => {
       );
     });
 
-    it.failing('returns the list only once', () => {
+    it('returns the list only once', () => {
       expect(result).toHaveLength(1);
       expect(result).toContain(createList1.listId);
     });
