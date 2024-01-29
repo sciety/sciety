@@ -16,7 +16,6 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 describe('construct-containing-list', () => {
   let framework: TestFramework;
   const expressionDoi = arbitraryExpressionDoi();
-  const articleId = new ArticleId(expressionDoi);
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -59,7 +58,7 @@ describe('construct-containing-list', () => {
         framework.queries.lookupList,
         O.getOrElseW(shouldNotBeCalled),
       );
-      await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), createListCommand.listId);
       result = pipe(
         list,
         constructContainingList(framework.dependenciesForViews),
@@ -78,7 +77,7 @@ describe('construct-containing-list', () => {
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
-      await framework.commandHelpers.addArticleToList(articleId, list.id);
+      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), list.id);
       result = pipe(
         list,
         constructContainingList(framework.dependenciesForViews),
