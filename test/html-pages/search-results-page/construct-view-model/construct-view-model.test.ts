@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
@@ -78,19 +79,19 @@ describe('construct-view-model', () => {
 
   describe('and there is only one page of results, with no evaluated articles', () => {
     const expressionDoi = arbitraryExpressionDoi();
+    let cardHrefs: ReadonlyArray<string>;
 
     beforeEach(async () => {
       result = await getViewModelForASinglePage([expressionDoi]);
+      cardHrefs = pipe(
+        result.paperActivitySummaryCards,
+        RA.map((card) => card.paperActivityPageHref),
+      );
     });
 
     it('all article cards are included in the view model', () => {
-      expect(result.paperActivitySummaryCards).toStrictEqual(
-        [
-          expect.objectContaining({
-            paperActivityPageHref: expect.stringContaining(expressionDoi),
-          }),
-        ],
-      );
+      expect(cardHrefs).toHaveLength(1);
+      expect(cardHrefs[0]).toContain(expressionDoi);
     });
 
     it('the query is displayed', () => {
