@@ -18,7 +18,7 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when a user saves an article that is not in any list', () => {
+  describe('when a user saves a paper that is not in any list', () => {
     let viewModel: ViewModel;
     let createUserAccountCommand: CreateUserAccountCommand;
     const articleId = arbitraryArticleId();
@@ -41,7 +41,7 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it('the article details are included in the page content', () => {
+    it('the paper\'s details are included in the page content', () => {
       expect(viewModel.content).toStrictEqual(expect.objectContaining({
         articles: [
           E.right(expect.objectContaining({
@@ -53,7 +53,7 @@ describe('construct-view-model', () => {
       }));
     });
 
-    it('displays a link to related articles', () => {
+    it('displays a link to related papers', () => {
       expect(viewModel.relatedArticlesLink).toStrictEqual(O.some(expect.anything()));
     });
   });
@@ -66,7 +66,7 @@ describe('construct-view-model', () => {
       return list.id;
     };
 
-    describe('when the list contains two articles', () => {
+    describe('when the list contains two papers', () => {
       let viewModel: ViewModel;
       const article1 = arbitraryArticleId();
       const article2 = arbitraryArticleId();
@@ -87,7 +87,7 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it('sorts the articles in reverse order of being added to the list', () => {
+      it('sorts the papers in reverse order of being added to the list', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
@@ -101,7 +101,7 @@ describe('construct-view-model', () => {
       });
     });
 
-    describe('when the list contains an article that has been removed and re-added', () => {
+    describe('when the list contains a paper that has been removed and re-added', () => {
       let viewModel: ViewModel;
       const article1 = arbitraryArticleId();
       const article2 = arbitraryArticleId();
@@ -124,7 +124,7 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it('sorts the articles in reverse order of being added to the list', () => {
+      it('sorts the papers in reverse order of being added to the list', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
@@ -138,7 +138,7 @@ describe('construct-view-model', () => {
       });
     });
 
-    describe('when an article has been removed from the list', () => {
+    describe('when a paper has been removed from the list', () => {
       let viewModel: ViewModel;
       const article1 = arbitraryArticleId();
       const article2 = arbitraryArticleId();
@@ -162,7 +162,7 @@ describe('construct-view-model', () => {
         )();
       });
 
-      it('sorts the remaining articles in reverse order of being added to the list', () => {
+      it('sorts the remaining papers in reverse order of being added to the list', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
