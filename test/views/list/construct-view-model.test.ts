@@ -8,7 +8,6 @@ import { createTestFramework, TestFramework } from '../../framework';
 import * as LOID from '../../../src/types/list-owner-id';
 import { constructViewModel } from '../../../src/views/list/construct-view-model';
 import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
-import { ExpressionDoi } from '../../../src/types/expression-doi';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -17,10 +16,10 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when the list contains two articles', () => {
+  describe('when the list contains two papers', () => {
     const articleId1 = arbitraryArticleId();
     const articleId2 = arbitraryArticleId();
-    let orderedInputExpressionDois: ReadonlyArray<ExpressionDoi>;
+    let orderedHrefs: ReadonlyArray<string>;
     const createList = async () => {
       const createUserAccountCommand = arbitraryCreateUserAccountCommand();
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
@@ -32,17 +31,19 @@ describe('construct-view-model', () => {
       const listId = await createList();
       await framework.commandHelpers.addArticleToList(articleId1, listId);
       await framework.commandHelpers.addArticleToList(articleId2, listId);
-      orderedInputExpressionDois = await pipe(
+      orderedHrefs = await pipe(
         { id: listId },
         constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
         T.map((viewModel) => viewModel.articles),
-        T.map(RA.map((article) => article.articleCard.inputExpressionDoi)),
+        T.map(RA.map((article) => article.articleCard.paperActivityPageHref)),
       )();
     });
 
-    it('sorts the articles in reverse order of being added to the list', () => {
-      expect(orderedInputExpressionDois).toStrictEqual([articleId2.value, articleId1.value]);
+    it('sorts the papers in reverse order of being added to the list', () => {
+      expect(orderedHrefs).toHaveLength(2);
+      expect(orderedHrefs[0]).toContain(articleId2.value);
+      expect(orderedHrefs[1]).toContain(articleId1.value);
     });
   });
 });
