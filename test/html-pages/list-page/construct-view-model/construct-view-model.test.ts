@@ -46,7 +46,7 @@ describe('construct-view-model', () => {
         articles: [
           E.right(expect.objectContaining({
             articleCard: expect.objectContaining({
-              inputExpressionDoi: articleId.value,
+              paperActivityPageHref: expect.stringContaining(articleId.value),
             }),
           })),
         ],
@@ -91,10 +91,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ inputExpressionDoi: article2.value }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article2.value) }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ inputExpressionDoi: article1.value }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article1.value) }),
             })),
           ],
         }));
@@ -128,10 +128,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ inputExpressionDoi: article1.value }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article1.value) }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ inputExpressionDoi: article2.value }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article2.value) }),
             })),
           ],
         }));
@@ -166,10 +166,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ inputExpressionDoi: article2.value }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article2.value) }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ inputExpressionDoi: article1.value }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article1.value) }),
             })),
           ],
         }));
