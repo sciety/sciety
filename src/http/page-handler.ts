@@ -2,7 +2,6 @@ import { Middleware } from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { URL } from 'url';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
@@ -17,14 +16,19 @@ import { toHtmlFragment } from '../types/html-fragment';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import { HtmlPage } from '../html-pages/html-page';
 
-export const failIfRedirect = (result: ConstructPageResult): E.Either<ErrorPageBodyViewModel, HtmlPage> => {
-  if (result instanceof URL) {
+export const failIfRedirect = (
+  constructPageResult: E.Either<ErrorPageBodyViewModel, ConstructPageResult>,
+): E.Either<ErrorPageBodyViewModel, HtmlPage> => {
+  if (E.isLeft(constructPageResult)) {
+    return constructPageResult;
+  }
+  if (constructPageResult.right instanceof URL) {
     return E.left({
       type: DE.unavailable,
       message: toHtmlFragment('Not implemented yet.'),
     });
   }
-  return E.right(result);
+  return E.right(constructPageResult.right);
 };
 
 export const pageHandler = (
@@ -52,7 +56,7 @@ export const pageHandler = (
       ),
     ),
     handler,
-    TE.chainEitherKW(failIfRedirect),
+    T.map(failIfRedirect),
     T.map(constructHtmlResponse(
       getLoggedInScietyUser(adapters, context),
       pageLayout,
