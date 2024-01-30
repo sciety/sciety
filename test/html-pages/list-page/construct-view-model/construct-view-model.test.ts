@@ -31,8 +31,9 @@ describe('construct-view-model', () => {
   });
 
   describe('when a user saves a paper that is not in any list', () => {
-    let viewModel: ViewModel;
     const expressionDoi = arbitraryExpressionDoi();
+    let viewModel: ViewModel;
+    let result: ReadonlyArray<string>;
 
     beforeEach(async () => {
       const createUserAccountCommand = arbitraryCreateUserAccountCommand();
@@ -50,18 +51,12 @@ describe('construct-view-model', () => {
         constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
+      result = toPaperHrefs(viewModel);
     });
 
     it('the paper\'s details are included in the page content', () => {
-      expect(viewModel.content).toStrictEqual(expect.objectContaining({
-        articles: [
-          E.right(expect.objectContaining({
-            articleCard: expect.objectContaining({
-              paperActivityPageHref: expect.stringContaining(expressionDoi),
-            }),
-          })),
-        ],
-      }));
+      expect(result).toHaveLength(1);
+      expect(result[0]).toContain(expressionDoi);
     });
 
     it('displays a link to related papers', () => {
@@ -80,13 +75,13 @@ describe('construct-view-model', () => {
     describe('when the list contains two papers', () => {
       const expressionDoi1 = arbitraryExpressionDoi();
       const expressionDoi2 = arbitraryExpressionDoi();
-      let viewModel: ViewModel;
+      let result: ReadonlyArray<string>;
 
       beforeEach(async () => {
         const listId = await createList();
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
-        viewModel = await pipe(
+        result = await pipe(
           {
             page: 1,
             id: listId,
@@ -95,20 +90,14 @@ describe('construct-view-model', () => {
           },
           constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(shouldNotBeCalled),
+          T.map(toPaperHrefs),
         )();
       });
 
       it('sorts the papers in reverse order of being added to the list', () => {
-        expect(viewModel.content).toStrictEqual(expect.objectContaining({
-          articles: [
-            E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi2) }),
-            })),
-            E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi1) }),
-            })),
-          ],
-        }));
+        expect(result).toHaveLength(2);
+        expect(result[0]).toContain(expressionDoi2);
+        expect(result[1]).toContain(expressionDoi1);
       });
     });
 
