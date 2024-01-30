@@ -23,6 +23,10 @@ export type ContentWithPaginationViewModel = LegacyPaginationControlsViewModel &
 
 type Content = Message | ContentWithPaginationViewModel;
 
+export const hasContentWithPagination = (content: Content): content is ContentWithPaginationViewModel => (
+  content !== 'no-articles' && content !== 'no-articles-can-be-fetched'
+);
+
 export type ViewModel = {
   name: string,
   description: RawUserInput,

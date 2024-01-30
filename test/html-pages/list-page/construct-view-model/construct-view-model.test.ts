@@ -1,9 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { ViewModel } from '../../../../src/html-pages/list-page/view-model';
+import { hasContentWithPagination, ViewModel } from '../../../../src/html-pages/list-page/view-model';
 import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
 import { createTestFramework, TestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
@@ -142,6 +143,7 @@ describe('construct-view-model', () => {
       const expressionDoi2 = arbitraryExpressionDoi();
       const expressionDoi3 = arbitraryExpressionDoi();
       let viewModel: ViewModel;
+      let result: ReadonlyArray<string>;
 
       beforeEach(async () => {
         const listId = await createList();
@@ -159,19 +161,21 @@ describe('construct-view-model', () => {
           constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(shouldNotBeCalled),
         )();
+        result = pipe(
+          viewModel.content,
+          O.some,
+          O.filter(hasContentWithPagination),
+          O.getOrElseW(shouldNotBeCalled),
+          (content) => content.articles,
+          RA.map(E.getOrElseW(shouldNotBeCalled)),
+          RA.map((model) => model.articleCard.paperActivityPageHref),
+        );
       });
 
       it('sorts the remaining papers in reverse order of being added to the list', () => {
-        expect(viewModel.content).toStrictEqual(expect.objectContaining({
-          articles: [
-            E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi2) }),
-            })),
-            E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi1) }),
-            })),
-          ],
-        }));
+        expect(result).toHaveLength(2);
+        expect(result[0]).toContain(expressionDoi2);
+        expect(result[1]).toContain(expressionDoi1);
       });
     });
   });
