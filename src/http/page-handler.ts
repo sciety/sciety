@@ -4,31 +4,54 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { URL } from 'url';
+import { ParameterizedContext } from 'koa';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 import { ConstructPage, ConstructPageResult } from '../html-pages/construct-page';
 import { PageLayout } from '../html-pages/page-layout';
-import { constructHtmlResponse } from '../html-pages/construct-html-response';
+import { constructHtmlResponse, HtmlResponse } from '../html-pages/construct-html-response';
 import { sendHtmlResponse } from './send-html-response';
 import { detectClientClassification } from './detect-client-classification';
 import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
-import { HtmlPage } from '../html-pages/html-page';
 
-export const failIfRedirect = (
+const failIfRedirect = (
+  adapters: GetLoggedInScietyUserPorts,
+  pageLayout: PageLayout,
+  context: ParameterizedContext,
+) => (
   constructPageResult: E.Either<ErrorPageBodyViewModel, ConstructPageResult>,
-): E.Either<ErrorPageBodyViewModel, HtmlPage> => {
+): HtmlResponse => {
   if (E.isLeft(constructPageResult)) {
-    return constructPageResult;
+    return pipe(
+      constructPageResult,
+      constructHtmlResponse(
+        getLoggedInScietyUser(adapters, context),
+        pageLayout,
+        detectClientClassification(context),
+      ),
+    );
   }
   if (constructPageResult.right instanceof URL) {
-    return E.left({
+    return pipe(E.left({
       type: DE.unavailable,
       message: toHtmlFragment('Not implemented yet.'),
-    });
+    }),
+    constructHtmlResponse(
+      getLoggedInScietyUser(adapters, context),
+      pageLayout,
+      detectClientClassification(context),
+    ));
   }
-  return E.right(constructPageResult.right);
+  return pipe(
+    E.right(constructPageResult.right),
+    constructHtmlResponse(
+      getLoggedInScietyUser(adapters, context),
+      pageLayout,
+      detectClientClassification(context),
+    ),
+  );
 };
 
 export const pageHandler = (
@@ -56,12 +79,7 @@ export const pageHandler = (
       ),
     ),
     handler,
-    T.map(failIfRedirect),
-    T.map(constructHtmlResponse(
-      getLoggedInScietyUser(adapters, context),
-      pageLayout,
-      detectClientClassification(context),
-    )),
+    T.map(failIfRedirect(adapters, pageLayout, context)),
   )();
 
   sendHtmlResponse(response, context);

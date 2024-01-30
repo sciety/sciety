@@ -1,11 +1,14 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { ConstructPage } from '../html-pages/construct-page';
 import { getHttpStatusCode } from './get-http-status-code';
-import { failIfRedirect } from './page-handler';
+import { HtmlPage } from '../html-pages/html-page';
+import { ErrorPageBodyViewModel } from '../types/render-page-error';
+
+type ConstructPage = (
+  params: Record<string, unknown>,
+) => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
 export const htmlFragmentHandler = (
   handler: ConstructPage,
@@ -13,7 +16,6 @@ export const htmlFragmentHandler = (
   const response = await pipe(
     context.params,
     handler,
-    T.map(failIfRedirect),
     TE.match(
       (error) => ({
         fragment: error.message,
