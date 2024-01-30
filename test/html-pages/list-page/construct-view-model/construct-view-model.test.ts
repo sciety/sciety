@@ -102,9 +102,10 @@ describe('construct-view-model', () => {
     });
 
     describe('when the list contains a paper that has been removed and re-added', () => {
-      let viewModel: ViewModel;
       const expressionDoi1 = arbitraryExpressionDoi();
       const expressionDoi2 = arbitraryExpressionDoi();
+      let viewModel: ViewModel;
+      let result: ReadonlyArray<string>;
 
       beforeEach(async () => {
         const listId = await createList();
@@ -122,19 +123,21 @@ describe('construct-view-model', () => {
           constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(shouldNotBeCalled),
         )();
+        result = pipe(
+          viewModel.content,
+          O.some,
+          O.filter(hasContentWithPagination),
+          O.getOrElseW(shouldNotBeCalled),
+          (content) => content.articles,
+          RA.map(E.getOrElseW(shouldNotBeCalled)),
+          RA.map((model) => model.articleCard.paperActivityPageHref),
+        );
       });
 
       it('sorts the papers in reverse order of being added to the list', () => {
-        expect(viewModel.content).toStrictEqual(expect.objectContaining({
-          articles: [
-            E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi1) }),
-            })),
-            E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi2) }),
-            })),
-          ],
-        }));
+        expect(result).toHaveLength(2);
+        expect(result[0]).toContain(expressionDoi1);
+        expect(result[1]).toContain(expressionDoi2);
       });
     });
 
