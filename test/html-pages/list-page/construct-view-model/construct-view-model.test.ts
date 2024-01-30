@@ -2,14 +2,14 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { ViewModel } from '../../../../src/html-pages/list-page/view-model';
 import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
 import { createTestFramework, TestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { ArticleId } from '../../../../src/types/article-id';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -20,15 +20,14 @@ describe('construct-view-model', () => {
 
   describe('when a user saves a paper that is not in any list', () => {
     let viewModel: ViewModel;
-    let createUserAccountCommand: CreateUserAccountCommand;
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
 
     beforeEach(async () => {
-      createUserAccountCommand = arbitraryCreateUserAccountCommand();
+      const createUserAccountCommand = arbitraryCreateUserAccountCommand();
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       const listId = list.id;
-      await framework.commandHelpers.addArticleToList(articleId, listId);
+      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), listId);
       viewModel = await pipe(
         {
           page: 1,
@@ -46,7 +45,7 @@ describe('construct-view-model', () => {
         articles: [
           E.right(expect.objectContaining({
             articleCard: expect.objectContaining({
-              paperActivityPageHref: expect.stringContaining(articleId.value),
+              paperActivityPageHref: expect.stringContaining(expressionDoi),
             }),
           })),
         ],
@@ -67,14 +66,14 @@ describe('construct-view-model', () => {
     };
 
     describe('when the list contains two papers', () => {
+      const expressionDoi1 = arbitraryExpressionDoi();
+      const expressionDoi2 = arbitraryExpressionDoi();
       let viewModel: ViewModel;
-      const article1 = arbitraryArticleId();
-      const article2 = arbitraryArticleId();
 
       beforeEach(async () => {
         const listId = await createList();
-        await framework.commandHelpers.addArticleToList(article1, listId);
-        await framework.commandHelpers.addArticleToList(article2, listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
         viewModel = await pipe(
           {
             page: 1,
@@ -91,10 +90,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article2.value) }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi2) }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article1.value) }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi1) }),
             })),
           ],
         }));
@@ -103,15 +102,15 @@ describe('construct-view-model', () => {
 
     describe('when the list contains a paper that has been removed and re-added', () => {
       let viewModel: ViewModel;
-      const article1 = arbitraryArticleId();
-      const article2 = arbitraryArticleId();
+      const expressionDoi1 = arbitraryExpressionDoi();
+      const expressionDoi2 = arbitraryExpressionDoi();
 
       beforeEach(async () => {
         const listId = await createList();
-        await framework.commandHelpers.addArticleToList(article1, listId);
-        await framework.commandHelpers.addArticleToList(article2, listId);
-        await framework.commandHelpers.removeArticleFromList(article1, listId);
-        await framework.commandHelpers.addArticleToList(article1, listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
+        await framework.commandHelpers.removeArticleFromList(new ArticleId(expressionDoi1), listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
         viewModel = await pipe(
           {
             page: 1,
@@ -128,10 +127,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article1.value) }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi1) }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article2.value) }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi2) }),
             })),
           ],
         }));
@@ -139,17 +138,17 @@ describe('construct-view-model', () => {
     });
 
     describe('when a paper has been removed from the list', () => {
+      const expressionDoi1 = arbitraryExpressionDoi();
+      const expressionDoi2 = arbitraryExpressionDoi();
+      const expressionDoi3 = arbitraryExpressionDoi();
       let viewModel: ViewModel;
-      const article1 = arbitraryArticleId();
-      const article2 = arbitraryArticleId();
-      const article3 = arbitraryArticleId();
 
       beforeEach(async () => {
         const listId = await createList();
-        await framework.commandHelpers.addArticleToList(article1, listId);
-        await framework.commandHelpers.addArticleToList(article2, listId);
-        await framework.commandHelpers.addArticleToList(article3, listId);
-        await framework.commandHelpers.removeArticleFromList(article3, listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi3), listId);
+        await framework.commandHelpers.removeArticleFromList(new ArticleId(expressionDoi3), listId);
         viewModel = await pipe(
           {
             page: 1,
@@ -166,10 +165,10 @@ describe('construct-view-model', () => {
         expect(viewModel.content).toStrictEqual(expect.objectContaining({
           articles: [
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article2.value) }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi2) }),
             })),
             E.right(expect.objectContaining({
-              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(article1.value) }),
+              articleCard: expect.objectContaining({ paperActivityPageHref: expect.stringContaining(expressionDoi1) }),
             })),
           ],
         }));
