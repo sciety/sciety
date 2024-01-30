@@ -3,7 +3,6 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { LanguageCode } from '../lang-attribute';
 import { GroupLinkAsTextViewModel } from '../group-link';
-import { ExpressionDoi } from '../../types/expression-doi';
 
 type CurationStatementTeaserViewModel = {
   groupPageHref: string,
@@ -13,7 +12,6 @@ type CurationStatementTeaserViewModel = {
 };
 
 export type ViewModel = {
-  inputExpressionDoi: ExpressionDoi,
   paperActivityPageHref: string,
   title: SanitisedHtmlFragment,
   authors: ArticleAuthors,

@@ -87,7 +87,7 @@ describe('construct-view-model', () => {
       expect(result.paperActivitySummaryCards).toStrictEqual(
         [
           expect.objectContaining({
-            inputExpressionDoi: expressionDoi,
+            paperActivityPageHref: expect.stringContaining(expressionDoi),
           }),
         ],
       );
@@ -112,13 +112,7 @@ describe('construct-view-model', () => {
     });
 
     it('no more than itemsPerPage article cards are included in the view model', () => {
-      expect(result.paperActivitySummaryCards).toStrictEqual(
-        [
-          expect.objectContaining({
-            inputExpressionDoi: expressionDoi,
-          }),
-        ],
-      );
+      expect(result.paperActivitySummaryCards).toHaveLength(1);
     });
 
     it('the query is displayed', () => {

@@ -44,7 +44,6 @@ export const constructViewModel = (
     publishingHistory,
     constructFrontMatter(dependencies),
     TE.map((expressionFrontMatter) => ({
-      inputExpressionDoi,
       expressionFrontMatter,
       publishingHistory,
       evaluationHistory: constructEvaluationHistory(dependencies, publishingHistory),
@@ -53,7 +52,6 @@ export const constructViewModel = (
   TE.chainTaskK((partial) => pipe(
     constructCurationStatements(dependencies, partial.publishingHistory),
     T.map((curationStatements) => ({
-      inputExpressionDoi: partial.inputExpressionDoi,
       paperActivityPageHref: pipe(
         partial.publishingHistory,
         PH.getLatestExpression,
