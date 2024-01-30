@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { hasContentWithPagination, ViewModel } from '../../../../src/html-pages/list-page/view-model';
@@ -11,6 +12,16 @@ import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { ArticleId } from '../../../../src/types/article-id';
+
+const toPaperHrefs = (viewModel: ViewModel) => pipe(
+  viewModel.content,
+  O.some,
+  O.filter(hasContentWithPagination),
+  O.getOrElseW(shouldNotBeCalled),
+  (content) => content.articles,
+  RA.map(E.getOrElseW(shouldNotBeCalled)),
+  RA.map((model) => model.articleCard.paperActivityPageHref),
+);
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -104,7 +115,6 @@ describe('construct-view-model', () => {
     describe('when the list contains a paper that has been removed and re-added', () => {
       const expressionDoi1 = arbitraryExpressionDoi();
       const expressionDoi2 = arbitraryExpressionDoi();
-      let viewModel: ViewModel;
       let result: ReadonlyArray<string>;
 
       beforeEach(async () => {
@@ -113,7 +123,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
         await framework.commandHelpers.removeArticleFromList(new ArticleId(expressionDoi1), listId);
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
-        viewModel = await pipe(
+        result = await pipe(
           {
             page: 1,
             id: listId,
@@ -122,16 +132,8 @@ describe('construct-view-model', () => {
           },
           constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(shouldNotBeCalled),
+          T.map(toPaperHrefs),
         )();
-        result = pipe(
-          viewModel.content,
-          O.some,
-          O.filter(hasContentWithPagination),
-          O.getOrElseW(shouldNotBeCalled),
-          (content) => content.articles,
-          RA.map(E.getOrElseW(shouldNotBeCalled)),
-          RA.map((model) => model.articleCard.paperActivityPageHref),
-        );
       });
 
       it('sorts the papers in reverse order of being added to the list', () => {
@@ -145,7 +147,6 @@ describe('construct-view-model', () => {
       const expressionDoi1 = arbitraryExpressionDoi();
       const expressionDoi2 = arbitraryExpressionDoi();
       const expressionDoi3 = arbitraryExpressionDoi();
-      let viewModel: ViewModel;
       let result: ReadonlyArray<string>;
 
       beforeEach(async () => {
@@ -154,7 +155,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi3), listId);
         await framework.commandHelpers.removeArticleFromList(new ArticleId(expressionDoi3), listId);
-        viewModel = await pipe(
+        result = await pipe(
           {
             page: 1,
             id: listId,
@@ -163,16 +164,8 @@ describe('construct-view-model', () => {
           },
           constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(shouldNotBeCalled),
+          T.map(toPaperHrefs),
         )();
-        result = pipe(
-          viewModel.content,
-          O.some,
-          O.filter(hasContentWithPagination),
-          O.getOrElseW(shouldNotBeCalled),
-          (content) => content.articles,
-          RA.map(E.getOrElseW(shouldNotBeCalled)),
-          RA.map((model) => model.articleCard.paperActivityPageHref),
-        );
       });
 
       it('sorts the remaining papers in reverse order of being added to the list', () => {
