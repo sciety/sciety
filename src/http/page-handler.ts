@@ -57,19 +57,12 @@ export const pageHandler = (
   ((
   ): void => {
     if (E.isLeft(input)) {
-      return pipe(
-        input,
-        constructAndSendHtmlResponse(adapters, pageLayout, context),
-      );
-    }
-    if (input.right.tag === 'redirect-target') {
+      constructAndSendHtmlResponse(adapters, pageLayout, context)(input);
+    } else if (input.right.tag === 'redirect-target') {
       sendRedirect(context, input.right);
-      return;
+    } else {
+      constructAndSendHtmlResponse(adapters, pageLayout, context)(E.right(input.right));
     }
-    return pipe(
-      E.right(input.right),
-      constructAndSendHtmlResponse(adapters, pageLayout, context),
-    );
   })();
 
   await next();
