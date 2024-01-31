@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { HtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../html-page';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName } from '../../http/form-submission-handlers/save-article-handler';
 import { ViewModel } from './view-model';
@@ -45,7 +45,7 @@ const renderDependingOnUserListCount = (userLists: ViewModel['userLists'], artic
   `;
 };
 
-export const renderAsHtml = (viewModel: ViewModel): HtmlPage => ({
+export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.pageHeading,
   content: toHtmlFragment(`
   <header class="page-header">

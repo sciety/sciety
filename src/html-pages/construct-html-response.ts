@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { ClientClassification } from '../shared-components/head';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
-import { HtmlPage } from './html-page';
+import { HtmlPage, toHtmlPage } from './html-page';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import { UserDetails } from '../types/user-details';
 import { PageLayout } from './page-layout';
@@ -19,7 +19,7 @@ const toErrorResponse = (
   error: ErrorPageBodyViewModel,
 ): HtmlResponse => pipe(
   renderOopsMessage(error.message),
-  (content) => ({
+  (content) => toHtmlPage({
     title: 'Error',
     content,
   }),

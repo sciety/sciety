@@ -5,7 +5,7 @@ import { renderGroups } from './render-groups';
 import { renderGroupCard } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage, NotHtml } from '../html-page';
+import { HtmlPage, NotHtml, toHtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
@@ -23,7 +23,7 @@ export const groupsPage = (dependencies: Dependencies): GroupsPage => pipe(
   TE.map(renderGroups),
   TE.bimap(
     renderErrorPage,
-    (content) => ({
+    (content) => toHtmlPage({
       title: 'Groups',
       content,
       openGraph: {

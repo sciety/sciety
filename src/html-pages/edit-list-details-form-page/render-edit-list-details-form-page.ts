@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
-import { HtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../html-page';
 import { inputFieldNames } from '../../standards';
 
 export type ViewModel = {
@@ -14,7 +14,7 @@ export type ViewModel = {
   pageHeading: string,
 };
 
-export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage => (
+export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage => toHtmlPage(
   {
     title: viewModel.pageHeading,
     content: toHtmlFragment(`
@@ -38,4 +38,5 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
   <button type="submit">Save</button><a href="${viewModel.listHref}" class="edit-list-details-form__cancel">Cancel</a>
 </form>
 `),
-  });
+  },
+);

@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { HtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { renderPage } from './render-page';
 import { Dependencies, constructViewModel } from './construct-view-model';
@@ -22,7 +22,7 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = (
   ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies, unrecoverableError),
   TE.bimap(
     toErrorPage,
-    (viewModel) => ({
+    (viewModel) => toHtmlPage({
       title: viewModel.pageHeading,
       content: renderPage(viewModel),
     }),

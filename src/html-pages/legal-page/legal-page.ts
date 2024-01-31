@@ -1,7 +1,7 @@
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../html-page';
 
-export const legalPage: HtmlPage = {
+export const legalPage: HtmlPage = toHtmlPage({
   title: 'Legal information',
   content: toHtmlFragment(`
     <header class="page-header">
@@ -139,4 +139,4 @@ export const legalPage: HtmlPage = {
       </address>
     </div>
   `),
-};
+});

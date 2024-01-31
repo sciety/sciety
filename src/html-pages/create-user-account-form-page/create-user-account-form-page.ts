@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../html-page';
 import { SanitisedUserInput } from '../../types/sanitised-user-input';
 import { Params } from './params';
 
@@ -33,7 +33,7 @@ export const renderFormPage = (
 ) => (params: Params): HtmlPage => pipe(
   params.errorSummary,
   renderErrorSummary,
-  (errorSummary) => ({
+  (errorSummary) => toHtmlPage({
     title: 'Sign up',
     content: toHtmlFragment(`
       <div class="create-user-account-form-wrapper">
