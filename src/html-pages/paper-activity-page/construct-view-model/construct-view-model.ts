@@ -28,7 +28,7 @@ export const paramsCodec = t.type({
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
-type Params = t.TypeOf<typeof paramsCodec>;
+export type Params = t.TypeOf<typeof paramsCodec>;
 
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 
