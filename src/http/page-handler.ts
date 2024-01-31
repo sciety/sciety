@@ -54,16 +54,13 @@ export const pageHandler = (
     ),
     handler,
   )();
-  ((
-  ): void => {
-    if (E.isLeft(input)) {
-      constructAndSendHtmlResponse(adapters, pageLayout, context)(input);
-    } else if (input.right.tag === 'redirect-target') {
-      sendRedirect(context, input.right);
-    } else {
-      constructAndSendHtmlResponse(adapters, pageLayout, context)(E.right(input.right));
-    }
-  })();
+  if (E.isLeft(input)) {
+    constructAndSendHtmlResponse(adapters, pageLayout, context)(input);
+  } else if (input.right.tag === 'redirect-target') {
+    sendRedirect(context, input.right);
+  } else {
+    constructAndSendHtmlResponse(adapters, pageLayout, context)(E.right(input.right));
+  }
 
   await next();
 };
