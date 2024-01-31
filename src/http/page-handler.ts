@@ -12,6 +12,7 @@ import { constructHtmlResponse } from '../html-pages/construct-html-response';
 import { sendHtmlResponse } from './send-html-response';
 import { detectClientClassification } from './detect-client-classification';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
+import { sendRedirect } from './send-redirect';
 
 const failIfRedirect = (
   adapters: GetLoggedInScietyUserPorts,
@@ -32,7 +33,7 @@ const failIfRedirect = (
     );
   }
   if (typeof constructPageResult.right === 'string') {
-    context.redirect(constructPageResult.right);
+    sendRedirect(context, constructPageResult.right);
     return;
   }
   return pipe(
