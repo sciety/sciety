@@ -12,7 +12,6 @@ import { PageLayout } from '../html-pages/page-layout';
 import { constructHtmlResponse, HtmlResponse } from '../html-pages/construct-html-response';
 import { sendHtmlResponse } from './send-html-response';
 import { detectClientClassification } from './detect-client-classification';
-import * as DE from '../types/data-error';
 import { toHtmlFragment } from '../types/html-fragment';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
 
@@ -34,9 +33,9 @@ const failIfRedirect = (
     );
   }
   if (constructPageResult.right instanceof URL) {
-    return pipe(E.left({
-      type: DE.unavailable,
-      message: toHtmlFragment('Not implemented yet.'),
+    return pipe(E.right({
+      title: '',
+      content: toHtmlFragment(`<a href="${constructPageResult.right.toString()}">Click me!</a>`),
     }),
     constructHtmlResponse(
       getLoggedInScietyUser(adapters, context),
