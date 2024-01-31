@@ -3,7 +3,6 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { URL } from 'url';
 import { ParameterizedContext } from 'koa';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
@@ -32,10 +31,10 @@ const failIfRedirect = (
       ),
     );
   }
-  if (constructPageResult.right instanceof URL) {
+  if (typeof constructPageResult.right === 'string') {
     return pipe(E.right({
       title: '',
-      content: toHtmlFragment(`<a href="${constructPageResult.right.toString()}">Click me!</a>`),
+      content: toHtmlFragment(`<a href="${constructPageResult.right}">Click me!</a>`),
     }),
     constructHtmlResponse(
       getLoggedInScietyUser(adapters, context),

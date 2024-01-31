@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { URL } from 'url';
 import * as DE from '../../types/data-error';
 import { constructViewModel, paramsCodec } from './construct-view-model';
 import { renderAsHtml, toErrorPage } from './render-as-html';
@@ -22,7 +21,7 @@ const decideWhetherToRedirectOrDisplayAPage = (
 ): TE.TaskEither<DE.DataError, ConstructPageResult> => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     if (decodedParams.expressionDoi === '10.1101/2023.01.02.522517') {
-      return TE.right(new URL('https://staging.sciety.org/articles/activity/10.7554/elife.86176'));
+      return TE.right('/articles/activity/10.7554/elife.86176');
     }
   }
   return pipe(
