@@ -1,8 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import { HtmlPage } from './html-page';
-
-export type RedirectTarget = string;
+import { RedirectTarget } from './redirect-target';
 
 export type ConstructPageResult = HtmlPage | RedirectTarget;
 
