@@ -32,7 +32,7 @@ const failIfRedirect = (
       sendHtmlResponse(context),
     );
   }
-  if (typeof constructPageResult.right === 'string') {
+  if (constructPageResult.right.tag === 'redirect-target') {
     sendRedirect(context, constructPageResult.right);
     return;
   }

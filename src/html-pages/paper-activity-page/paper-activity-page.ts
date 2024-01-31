@@ -7,6 +7,7 @@ import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
 import { Params } from './construct-view-model/construct-view-model';
+import { toRedirectTarget } from '../redirect-target';
 
 const displayAPage = (dependencies: Dependencies) => (decodedParams: Params) => pipe(
   decodedParams,
@@ -21,7 +22,7 @@ const decideWhetherToRedirectOrDisplayAPage = (
 ): TE.TaskEither<DE.DataError, ConstructPageResult> => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     if (decodedParams.expressionDoi === '10.1101/2023.01.02.522517') {
-      return TE.right('/articles/activity/10.7554/elife.86176');
+      return TE.right(toRedirectTarget('/articles/activity/10.7554/elife.86176'));
     }
   }
   return pipe(
