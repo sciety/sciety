@@ -1,7 +1,6 @@
 import { Middleware } from '@koa/router';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
@@ -57,7 +56,7 @@ export const pageHandler = (
   handler: ConstructPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {
-  await pipe(
+  const input = await pipe(
     {
       ...context.params,
       ...context.query,
@@ -77,8 +76,8 @@ export const pageHandler = (
       ),
     ),
     handler,
-    T.map(failIfRedirect(adapters, pageLayout, context)),
   )();
+  failIfRedirect(adapters, pageLayout, context)(input);
 
   await next();
 };
