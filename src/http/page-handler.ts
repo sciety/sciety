@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
-import { ConstructPage, ConstructPageResult } from '../html-pages/construct-page';
+import { ConstructPage } from '../html-pages/construct-page';
 import { PageLayout } from '../html-pages/page-layout';
 import { constructHtmlResponse } from '../html-pages/construct-html-response';
 import { sendHtmlResponse } from './send-html-response';
@@ -27,29 +27,6 @@ const constructAndSendHtmlResponse = (
   ),
   sendHtmlResponse(context),
 );
-
-const failIfRedirect = (
-  adapters: GetLoggedInScietyUserPorts,
-  pageLayout: PageLayout,
-  context: ParameterizedContext,
-) => (
-  constructPageResult: E.Either<ErrorPageBodyViewModel, ConstructPageResult>,
-): void => {
-  if (E.isLeft(constructPageResult)) {
-    return pipe(
-      constructPageResult,
-      constructAndSendHtmlResponse(adapters, pageLayout, context),
-    );
-  }
-  if (constructPageResult.right.tag === 'redirect-target') {
-    sendRedirect(context, constructPageResult.right);
-    return;
-  }
-  return pipe(
-    E.right(constructPageResult.right),
-    constructAndSendHtmlResponse(adapters, pageLayout, context),
-  );
-};
 
 export const pageHandler = (
   adapters: GetLoggedInScietyUserPorts,
@@ -77,7 +54,23 @@ export const pageHandler = (
     ),
     handler,
   )();
-  failIfRedirect(adapters, pageLayout, context)(input);
+  ((
+  ): void => {
+    if (E.isLeft(input)) {
+      return pipe(
+        input,
+        constructAndSendHtmlResponse(adapters, pageLayout, context),
+      );
+    }
+    if (input.right.tag === 'redirect-target') {
+      sendRedirect(context, input.right);
+      return;
+    }
+    return pipe(
+      E.right(input.right),
+      constructAndSendHtmlResponse(adapters, pageLayout, context),
+    );
+  })();
 
   await next();
 };
