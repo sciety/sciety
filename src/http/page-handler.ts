@@ -15,6 +15,20 @@ import { ErrorPageBodyViewModel } from '../types/render-page-error';
 import { sendRedirect } from './send-redirect';
 import { HtmlPage } from '../html-pages/html-page';
 
+const constructAndSendHtmlResponse = (
+  adapters: GetLoggedInScietyUserPorts,
+  pageLayout: PageLayout,
+  context: ParameterizedContext,
+) => (input: E.Either<ErrorPageBodyViewModel, HtmlPage>) => pipe(
+  input,
+  constructHtmlResponse(
+    getLoggedInScietyUser(adapters, context),
+    pageLayout,
+    detectClientClassification(context),
+  ),
+  sendHtmlResponse(context),
+);
+
 const failIfRedirect = (
   adapters: GetLoggedInScietyUserPorts,
   pageLayout: PageLayout,
@@ -22,19 +36,10 @@ const failIfRedirect = (
 ) => (
   constructPageResult: E.Either<ErrorPageBodyViewModel, ConstructPageResult>,
 ): void => {
-  const constructAndSendHtmlResponse = (input: E.Either<ErrorPageBodyViewModel, HtmlPage>) => pipe(
-    input,
-    constructHtmlResponse(
-      getLoggedInScietyUser(adapters, context),
-      pageLayout,
-      detectClientClassification(context),
-    ),
-    sendHtmlResponse(context),
-  );
   if (E.isLeft(constructPageResult)) {
     return pipe(
       constructPageResult,
-      constructAndSendHtmlResponse,
+      constructAndSendHtmlResponse(adapters, pageLayout, context),
     );
   }
   if (constructPageResult.right.tag === 'redirect-target') {
@@ -43,7 +48,7 @@ const failIfRedirect = (
   }
   return pipe(
     E.right(constructPageResult.right),
-    constructAndSendHtmlResponse,
+    constructAndSendHtmlResponse(adapters, pageLayout, context),
   );
 };
 
