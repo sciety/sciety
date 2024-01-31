@@ -11,7 +11,6 @@ import { PageLayout } from '../html-pages/page-layout';
 import { constructHtmlResponse } from '../html-pages/construct-html-response';
 import { sendHtmlResponse } from './send-html-response';
 import { detectClientClassification } from './detect-client-classification';
-import { toHtmlFragment } from '../types/html-fragment';
 import { ErrorPageBodyViewModel } from '../types/render-page-error';
 
 const failIfRedirect = (
@@ -33,18 +32,8 @@ const failIfRedirect = (
     );
   }
   if (typeof constructPageResult.right === 'string') {
-    return pipe(
-      E.right({
-        title: '',
-        content: toHtmlFragment(`<a href="${constructPageResult.right}">Click me!</a>`),
-      }),
-      constructHtmlResponse(
-        getLoggedInScietyUser(adapters, context),
-        pageLayout,
-        detectClientClassification(context),
-      ),
-      sendHtmlResponse(context),
-    );
+    context.redirect(constructPageResult.right);
+    return;
   }
   return pipe(
     E.right(constructPageResult.right),
