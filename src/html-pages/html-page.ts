@@ -14,3 +14,8 @@ export type HtmlPageHead = {
 export type HtmlPage = HtmlPageHead & {
   content: HtmlFragment,
 };
+
+export const toHtmlPage = (partial: Omit<HtmlPage, 'tag'>): HtmlPage => ({
+  ...partial,
+  // tag: 'html-page',
+});

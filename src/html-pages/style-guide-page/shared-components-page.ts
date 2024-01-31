@@ -4,7 +4,7 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html';
 import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../html-page';
 import { renderPaperActivityErrorCard } from '../../shared-components/paper-activity-summary-card';
 import * as LID from '../../types/list-id';
 import * as DE from '../../types/data-error';
@@ -14,7 +14,7 @@ import {
 import { successBanner } from '../../shared-components/success-banner/success-banner';
 import { rawUserInput } from '../../read-models/annotations/handle-event';
 
-export const sharedComponentsPage: HtmlPage = {
+export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',
   content: toHtmlFragment(`
 <style>
@@ -193,4 +193,4 @@ export const sharedComponentsPage: HtmlPage = {
       ${successBanner('You done good.')}
     </div>
   `),
-};
+});
