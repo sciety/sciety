@@ -10,7 +10,7 @@ import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { Queries } from '../../read-models';
 import { UserId } from '../../types/user-id';
-import { HtmlPage } from '../../html-pages/html-page';
+import { HtmlPage, toHtmlPage } from '../../html-pages/html-page';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { annotateArticleInListCommandCodec } from '../../write-side/commands';
 import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-annotation-form-page';
@@ -35,7 +35,7 @@ const isUserAllowedToCreateAnnotation = (userId: UserId, listOwnerId: UserId | G
 
 type Params = t.TypeOf<typeof paramsCodec>;
 
-const prependErrorToTitleForAccessibility = (formPage: HtmlPage) => ({
+const prependErrorToTitleForAccessibility = (formPage: HtmlPage) => toHtmlPage({
   title: `Error: ${formPage.title}`,
   content: formPage.content,
 });

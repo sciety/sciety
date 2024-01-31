@@ -1,7 +1,7 @@
 import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../html-page';
 
-export const referencePage: HtmlPage = {
+export const referencePage: HtmlPage = toHtmlPage({
   title: 'Reference',
   content: toHtmlFragment(`
 <style>
@@ -78,4 +78,4 @@ export const referencePage: HtmlPage = {
       </div>
     </div>
   `),
-};
+});
