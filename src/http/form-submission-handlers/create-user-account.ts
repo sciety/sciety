@@ -32,7 +32,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
             detectClientClassification(context),
           ),
         );
-        sendHtmlResponse(htmlResponse, context);
+        sendHtmlResponse(context)(htmlResponse);
       },
       () => redirectToAuthenticationDestination(context),
     ),

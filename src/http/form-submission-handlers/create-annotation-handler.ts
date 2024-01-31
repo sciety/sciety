@@ -112,5 +112,5 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
     { listId: command.right.listId, articleId: command.right.articleId },
     loggedInUser,
   )();
-  sendHtmlResponse(htmlResponse, context);
+  sendHtmlResponse(context)(htmlResponse);
 };

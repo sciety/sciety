@@ -8,7 +8,7 @@ import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
 import { ConstructPage, ConstructPageResult } from '../html-pages/construct-page';
 import { PageLayout } from '../html-pages/page-layout';
-import { constructHtmlResponse, HtmlResponse } from '../html-pages/construct-html-response';
+import { constructHtmlResponse } from '../html-pages/construct-html-response';
 import { sendHtmlResponse } from './send-html-response';
 import { detectClientClassification } from './detect-client-classification';
 import { toHtmlFragment } from '../types/html-fragment';
@@ -20,7 +20,7 @@ const failIfRedirect = (
   context: ParameterizedContext,
 ) => (
   constructPageResult: E.Either<ErrorPageBodyViewModel, ConstructPageResult>,
-): HtmlResponse => {
+): void => {
   if (E.isLeft(constructPageResult)) {
     return pipe(
       constructPageResult,
@@ -29,18 +29,22 @@ const failIfRedirect = (
         pageLayout,
         detectClientClassification(context),
       ),
+      sendHtmlResponse(context),
     );
   }
   if (typeof constructPageResult.right === 'string') {
-    return pipe(E.right({
-      title: '',
-      content: toHtmlFragment(`<a href="${constructPageResult.right}">Click me!</a>`),
-    }),
-    constructHtmlResponse(
-      getLoggedInScietyUser(adapters, context),
-      pageLayout,
-      detectClientClassification(context),
-    ));
+    return pipe(
+      E.right({
+        title: '',
+        content: toHtmlFragment(`<a href="${constructPageResult.right}">Click me!</a>`),
+      }),
+      constructHtmlResponse(
+        getLoggedInScietyUser(adapters, context),
+        pageLayout,
+        detectClientClassification(context),
+      ),
+      sendHtmlResponse(context),
+    );
   }
   return pipe(
     E.right(constructPageResult.right),
@@ -49,6 +53,7 @@ const failIfRedirect = (
       pageLayout,
       detectClientClassification(context),
     ),
+    sendHtmlResponse(context),
   );
 };
 
@@ -57,7 +62,7 @@ export const pageHandler = (
   handler: ConstructPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {
-  const response = await pipe(
+  await pipe(
     {
       ...context.params,
       ...context.query,
@@ -79,8 +84,6 @@ export const pageHandler = (
     handler,
     T.map(failIfRedirect(adapters, pageLayout, context)),
   )();
-
-  sendHtmlResponse(response, context);
 
   await next();
 };
