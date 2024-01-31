@@ -6,6 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
+import * as EDOI from '../types/expression-doi';
 import { loadStaticFile } from './load-static-file';
 import { ownedBy } from './owned-by-api';
 import { pageHandler } from './page-handler';
@@ -67,7 +68,7 @@ import { statusGroups } from '../views/status-groups';
 import { referencePage, sharedComponentsPage, indexPage } from '../html-pages/style-guide-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
-import { paperActivityPagePathSpecification } from '../standards';
+import { paperActivityPagePathSpecification, paperActivityPageRedirectPath } from '../standards';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -173,7 +174,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     `/articles/:expressionDoi(${doesNotBeginWithActivity})`,
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(`/articles/activity/${context.params.expressionDoi}`);
+      context.redirect(paperActivityPageRedirectPath(EDOI.fromValidatedString(context.params.expressionDoi)));
 
       await next();
     },
