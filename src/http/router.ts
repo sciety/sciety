@@ -67,6 +67,7 @@ import { statusGroups } from '../views/status-groups';
 import { referencePage, sharedComponentsPage, indexPage } from '../html-pages/style-guide-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
+import { paperActivityPagePathSpecification } from '../standards';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -178,10 +179,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     },
   );
 
-  const isAllowedToContainSlashes = '.+';
-
   router.get(
-    `/articles/activity/:expressionDoi(${isAllowedToContainSlashes})`,
+    paperActivityPagePathSpecification,
     pageHandler(adapters, paperActivityPage(adapters), fullWidthPageLayout),
   );
 

@@ -1,2 +1,2 @@
 export * as inputFieldNames from './input-field-names';
-export { paperActivityPageRedirectPath } from './paper-activity-page-redirect-path';
+export { paperActivityPageRedirectPath, paperActivityPagePathSpecification } from './paper-activity-page-redirect-path';
