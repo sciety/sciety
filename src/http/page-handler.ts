@@ -54,12 +54,17 @@ export const pageHandler = (
     ),
     handler,
   )();
-  if (E.isLeft(input)) {
-    constructAndSendHtmlResponse(adapters, pageLayout, context)(input);
-  } else if (input.right.tag === 'redirect-target') {
-    sendRedirect(context, input.right);
+  if (E.isRight(input)) {
+    switch (input.right.tag) {
+      case 'html-page':
+        constructAndSendHtmlResponse(adapters, pageLayout, context)(E.right(input.right));
+        break;
+      case 'redirect-target':
+        sendRedirect(context, input.right);
+        break;
+    }
   } else {
-    constructAndSendHtmlResponse(adapters, pageLayout, context)(E.right(input.right));
+    constructAndSendHtmlResponse(adapters, pageLayout, context)(input);
   }
 
   await next();
