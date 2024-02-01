@@ -31,7 +31,7 @@ describe('construct-view-model', () => {
   describe('when all information is fetched successfully', () => {
     describe('when an article has not been evaluated', () => {
       const inputExpressionDoi = arbitraryExpressionDoi();
-      const publishingHistory = arbitraryPublishingHistoryOnlyPreprints(inputExpressionDoi);
+      const publishingHistory = arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: inputExpressionDoi });
       const latestExpressionDoi = PH.getLatestExpression(publishingHistory).expressionDoi;
 
       beforeEach(async () => {
@@ -83,7 +83,9 @@ describe('construct-view-model', () => {
           constructViewModel({
             ...framework.queries,
             ...framework.happyPathThirdParties,
-            fetchPublishingHistory: () => TE.right(arbitraryPublishingHistoryOnlyPreprints(inputExpressionDoi)),
+            fetchPublishingHistory: () => TE.right(
+              arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: inputExpressionDoi }),
+            ),
             logger: dummyLogger,
           }),
         )();

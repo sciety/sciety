@@ -26,7 +26,7 @@ describe('find-all-lists-containing-paper', () => {
   describe('when the paper is not in any list', () => {
     beforeEach(() => {
       result = pipe(
-        arbitraryPublishingHistoryOnlyPreprints(expressionDoi),
+        arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: expressionDoi }),
         findAllListsContainingPaper(framework.dependenciesForViews),
         RA.map((list) => list.id),
       );
@@ -44,7 +44,7 @@ describe('find-all-lists-containing-paper', () => {
       await framework.commandHelpers.createList(createList);
       await framework.commandHelpers.addArticleToList(articleId, createList.listId);
       result = pipe(
-        arbitraryPublishingHistoryOnlyPreprints(expressionDoi),
+        arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: expressionDoi }),
         findAllListsContainingPaper(framework.dependenciesForViews),
         RA.map((list) => list.id),
       );
