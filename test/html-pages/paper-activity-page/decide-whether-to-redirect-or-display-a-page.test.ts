@@ -7,18 +7,28 @@ import { TestFramework, createTestFramework } from '../../framework';
 import { ConstructPageResult } from '../../../src/html-pages/construct-page';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
+import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
+
+const getDecision = async (expressionDoi: ExpressionDoi, dependencies: Dependencies) => pipe(
+  {
+    user: O.none,
+    expressionDoi,
+  },
+  decideWhetherToRedirectOrDisplayAPage(dependencies),
+  TE.getOrElse(shouldNotBeCalled),
+)();
 
 describe('decide-whether-to-redirect-or-display-a-page', () => {
+  const expressionDoi = arbitraryExpressionDoi();
   let framework: TestFramework;
+  let result: ConstructPageResult;
 
   beforeEach(() => {
     framework = createTestFramework();
   });
 
   describe('when the expressionDoi is the latest for the paper', () => {
-    const expressionDoi = arbitraryExpressionDoi();
-    let result: ConstructPageResult;
-
     beforeEach(async () => {
       const dependencies = {
         ...framework.dependenciesForViews,
@@ -26,14 +36,7 @@ describe('decide-whether-to-redirect-or-display-a-page', () => {
           arbitraryPublishingHistoryOnlyPreprints({ latestExpressionDoi: expressionDoi }),
         ),
       };
-      result = await pipe(
-        {
-          user: O.none,
-          expressionDoi,
-        },
-        decideWhetherToRedirectOrDisplayAPage(dependencies),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      result = await getDecision(expressionDoi, dependencies);
     });
 
     it('displays the page', () => {
@@ -42,6 +45,18 @@ describe('decide-whether-to-redirect-or-display-a-page', () => {
   });
 
   describe('when the expressionDoi is not the latest for the paper', () => {
-    it.todo('redirects');
+    beforeEach(async () => {
+      const dependencies = {
+        ...framework.dependenciesForViews,
+        fetchPublishingHistory: () => TE.right(
+          arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: expressionDoi }),
+        ),
+      };
+      result = await getDecision(expressionDoi, dependencies);
+    });
+
+    it.failing('redirects', () => {
+      expect(result.tag).toBe('redirect-target');
+    });
   });
 });
