@@ -8,9 +8,9 @@ import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
 import { Params } from './construct-view-model/construct-view-model';
 import { toRedirectTarget } from '../redirect-target';
-import * as EDOI from '../../types/expression-doi';
 import { paperActivityPagePath } from '../../standards';
 import { ExpressionDoi } from '../../types/expression-doi';
+import * as PH from '../../types/publishing-history';
 
 const displayAPage = (dependencies: Dependencies) => (decodedParams: Params) => pipe(
   decodedParams,
@@ -18,8 +18,15 @@ const displayAPage = (dependencies: Dependencies) => (decodedParams: Params) => 
   TE.map(renderAsHtml),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const identifyLatestExpressionDoiOfTheSamePaper = (expressionDoi: ExpressionDoi) => EDOI.fromValidatedString('10.7554/elife.86176');
+const identifyLatestExpressionDoiOfTheSamePaper = (
+  dependencies: Dependencies,
+) => (
+  expressionDoi: ExpressionDoi,
+) => pipe(
+  expressionDoi,
+  dependencies.fetchPublishingHistory,
+  TE.map((publishingHistory) => PH.getLatestExpression(publishingHistory).expressionDoi),
+);
 
 const decideWhetherToRedirectOrDisplayAPage = (
   dependencies: Dependencies,
@@ -28,8 +35,12 @@ const decideWhetherToRedirectOrDisplayAPage = (
 ): TE.TaskEither<DE.DataError, ConstructPageResult> => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     if (decodedParams.expressionDoi === '10.1101/2023.01.02.522517') {
-      const latestExpressionDoi = identifyLatestExpressionDoiOfTheSamePaper(decodedParams.expressionDoi);
-      return TE.right(toRedirectTarget(paperActivityPagePath(latestExpressionDoi)));
+      return pipe(
+        decodedParams.expressionDoi,
+        identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+        TE.map(paperActivityPagePath),
+        TE.map(toRedirectTarget),
+      );
     }
   }
   return pipe(
