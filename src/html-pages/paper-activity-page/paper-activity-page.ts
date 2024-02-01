@@ -10,12 +10,16 @@ import { Params } from './construct-view-model/construct-view-model';
 import { toRedirectTarget } from '../redirect-target';
 import * as EDOI from '../../types/expression-doi';
 import { paperActivityPagePath } from '../../standards';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 const displayAPage = (dependencies: Dependencies) => (decodedParams: Params) => pipe(
   decodedParams,
   constructViewModel(dependencies),
   TE.map(renderAsHtml),
 );
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const identifyLatestExpressionDoiOfTheSamePaper = (expressionDoi: ExpressionDoi) => EDOI.fromValidatedString('10.7554/elife.86176');
 
 const decideWhetherToRedirectOrDisplayAPage = (
   dependencies: Dependencies,
@@ -24,7 +28,8 @@ const decideWhetherToRedirectOrDisplayAPage = (
 ): TE.TaskEither<DE.DataError, ConstructPageResult> => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     if (decodedParams.expressionDoi === '10.1101/2023.01.02.522517') {
-      return TE.right(toRedirectTarget(paperActivityPagePath(EDOI.fromValidatedString('10.7554/elife.86176'))));
+      const latestExpressionDoi = identifyLatestExpressionDoiOfTheSamePaper(decodedParams.expressionDoi);
+      return TE.right(toRedirectTarget(paperActivityPagePath(latestExpressionDoi)));
     }
   }
   return pipe(
