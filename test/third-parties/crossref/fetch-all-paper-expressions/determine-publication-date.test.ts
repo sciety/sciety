@@ -5,45 +5,45 @@ import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 describe('determine-publication-date', () => {
   describe('when the date specifies a year, a month and a day', () => {
-    it('returns that date', () => {
-      const expectedDate = new Date('2020-12-19');
-      const work: CrossrefWork = {
-        type: 'posted-content' as const,
-        DOI: arbitraryExpressionDoi(),
-        resource: {
-          primary: {
-            URL: arbitraryUri(),
-          },
+    const expectedDate = new Date('2020-12-19');
+    const work: CrossrefWork = {
+      type: 'posted-content' as const,
+      DOI: arbitraryExpressionDoi(),
+      resource: {
+        primary: {
+          URL: arbitraryUri(),
         },
-        posted: {
-          'date-parts': [[expectedDate.getFullYear(), expectedDate.getMonth() + 1, expectedDate.getDate()]],
-        },
-        relation: { },
-      };
-      const date = determinePublicationDate(work);
+      },
+      posted: {
+        'date-parts': [[expectedDate.getFullYear(), expectedDate.getMonth() + 1, expectedDate.getDate()]],
+      },
+      relation: { },
+    };
+    const date = determinePublicationDate(work);
 
+    it('returns that date', () => {
       expect(date).toStrictEqual(expectedDate);
     });
   });
 
   describe('when the date specifies only a year and a month', () => {
-    it('returns a date matching the first day of the given month', () => {
-      const expectedDate = new Date('2020-12-01');
-      const work: CrossrefWork = {
-        type: 'posted-content' as const,
-        DOI: arbitraryExpressionDoi(),
-        resource: {
-          primary: {
-            URL: arbitraryUri(),
-          },
+    const expectedDate = new Date('2020-12-01');
+    const work: CrossrefWork = {
+      type: 'posted-content' as const,
+      DOI: arbitraryExpressionDoi(),
+      resource: {
+        primary: {
+          URL: arbitraryUri(),
         },
-        posted: {
-          'date-parts': [[expectedDate.getFullYear(), expectedDate.getMonth() + 1]],
-        },
-        relation: { },
-      };
-      const date = determinePublicationDate(work);
+      },
+      posted: {
+        'date-parts': [[expectedDate.getFullYear(), expectedDate.getMonth() + 1]],
+      },
+      relation: { },
+    };
+    const date = determinePublicationDate(work);
 
+    it('returns a date matching the first day of the given month', () => {
       expect(date).toStrictEqual(expectedDate);
     });
   });
