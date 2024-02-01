@@ -4,15 +4,21 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+      time: "07:00"
+      timezone: "Europe/London"
     open-pull-requests-limit: 25
     rebase-strategy: "disabled"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
+      time: "07:00"
+      timezone: "Europe/London"
     open-pull-requests-limit: 25
     rebase-strategy: "disabled"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      time: "07:00"
+      timezone: "Europe/London"
