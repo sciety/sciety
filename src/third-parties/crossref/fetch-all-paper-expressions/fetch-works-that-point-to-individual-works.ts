@@ -15,11 +15,11 @@ const crossrefMultipleWorksResponseCodec = t.strict({
   }),
 }, 'crossrefMultipleWorksResponseCodec');
 
-const workTypes = 'type:posted-content,type:journal-article';
-
-const relationships = 'relation.type:has-version,relation.type:is-version-of,relation.type:has-preprint,relation.type:is-preprint-of';
-
-const constructUrl = (doi: string) => `https://api.crossref.org/works?filter=relation.object:${doi},${workTypes},${relationships}`;
+const constructUrl = (doi: string) => {
+  const workTypes = 'type:posted-content,type:journal-article';
+  const relationships = 'relation.type:has-version,relation.type:is-version-of,relation.type:has-preprint,relation.type:is-preprint-of';
+  return `https://api.crossref.org/works?filter=relation.object:${doi},${workTypes},${relationships}`;
+};
 
 export const fetchWorksThatPointToIndividualWorks = (
   queryCrossrefService: QueryCrossrefService,
