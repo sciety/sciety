@@ -6,7 +6,7 @@ import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 describe('determine-publication-date', () => {
   describe('when the date specifies a year, a month and a day', () => {
     it('returns that date', () => {
-      const expectedDate = new Date(2020, 11, 19);
+      const expectedDate = new Date('2020-12-19');
       const work: CrossrefWork = {
         type: 'posted-content' as const,
         DOI: arbitraryExpressionDoi(),
@@ -28,7 +28,7 @@ describe('determine-publication-date', () => {
 
   describe('when the date specifies only a year and a month', () => {
     it('returns a date matching the first day of the given month', () => {
-      const expectedDate = new Date(2020, 11, 1);
+      const expectedDate = new Date('2020-12-01');
       const work: CrossrefWork = {
         type: 'posted-content' as const,
         DOI: arbitraryExpressionDoi(),
@@ -49,7 +49,7 @@ describe('determine-publication-date', () => {
   });
 
   describe('when the date specifies only a year', () => {
-    const expectedDate = new Date(2020, 0, 1);
+    const expectedDate = new Date('2020-01-01');
     const work: CrossrefWork = {
       type: 'posted-content' as const,
       DOI: arbitraryExpressionDoi(),

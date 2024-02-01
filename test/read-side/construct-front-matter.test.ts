@@ -47,13 +47,13 @@ describe('construct-front-matter', () => {
             {
               ...arbitraryPaperExpression(),
               expressionType: 'preprint',
-              publishedAt: new Date(1999, 5, 17),
+              publishedAt: new Date('1999-06-17'),
             },
             {
               ...arbitraryPaperExpression(),
               expressionDoi: latestExpressionDoi,
               expressionType: 'preprint',
-              publishedAt: new Date(2022, 5, 17),
+              publishedAt: new Date('2022-06-17'),
             },
           ],
           PH.fromExpressions,
@@ -78,13 +78,13 @@ describe('construct-front-matter', () => {
             {
               ...arbitraryPaperExpression(),
               expressionType: 'preprint',
-              publishedAt: new Date(1999, 5, 17),
+              publishedAt: new Date('1999-06-17'),
             },
             {
               ...arbitraryPaperExpression(),
               expressionDoi: latestExpressionDoi,
               expressionType: 'journal-article',
-              publishedAt: new Date(2022, 5, 17),
+              publishedAt: new Date('2022-06-17'),
             },
           ],
           PH.fromExpressions,
