@@ -20,7 +20,11 @@ const identifyLatestExpressionDoiOfTheSamePaper = (
   TE.map((publishingHistory) => PH.getLatestExpression(publishingHistory).expressionDoi),
 );
 
-const displayAPage = (dependencies: Dependencies) => (decodedParams: Params) => pipe(
+const displayAPage = (
+  dependencies: Dependencies,
+) => (
+  decodedParams: Params,
+): TE.TaskEither<DE.DataError, ConstructPageResult> => pipe(
   decodedParams,
   constructViewModel(dependencies),
   TE.map(renderAsHtml),
@@ -36,8 +40,20 @@ export const decideWhetherToRedirectOrDisplayAPage = (
       return pipe(
         decodedParams.expressionDoi,
         identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-        TE.map(paperActivityPagePath),
-        TE.map(toRedirectTarget),
+        TE.chain((latestExpressionDoi) => {
+          if (latestExpressionDoi !== decodedParams.expressionDoi) {
+            return pipe(
+              latestExpressionDoi,
+              paperActivityPagePath,
+              toRedirectTarget,
+              TE.right,
+            );
+          }
+          return pipe(
+            decodedParams,
+            displayAPage(dependencies),
+          );
+        }),
       );
     }
   }
