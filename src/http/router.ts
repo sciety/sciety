@@ -68,7 +68,7 @@ import { statusGroups } from '../views/status-groups';
 import { referencePage, sharedComponentsPage, indexPage } from '../html-pages/style-guide-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
-import { paperActivityPagePathSpecification, paperActivityPageRedirectPath } from '../standards';
+import { paperActivityPagePath, paperActivityPagePathSpecification } from '../standards';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -174,7 +174,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     `/articles/:expressionDoi(${doesNotBeginWithActivity})`,
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(paperActivityPageRedirectPath(EDOI.fromValidatedString(context.params.expressionDoi)));
+      context.redirect(paperActivityPagePath(EDOI.fromValidatedString(context.params.expressionDoi)));
 
       await next();
     },

@@ -2,7 +2,7 @@ import { ExpressionDoi } from '../types/expression-doi';
 
 const basePath = '/articles/activity/';
 
-export const paperActivityPageRedirectPath = (expressionDoi: ExpressionDoi): string => `${basePath}${expressionDoi}`;
+export const paperActivityPagePath = (expressionDoi: ExpressionDoi): string => `${basePath}${expressionDoi}`;
 
 const isAllowedToContainSlashes = '.+';
 

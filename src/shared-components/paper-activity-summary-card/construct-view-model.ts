@@ -17,7 +17,7 @@ import * as PH from '../../types/publishing-history';
 import { constructFrontMatter } from '../../read-side/construct-front-matter';
 import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
 import { findAllListsContainingPaper } from '../../read-side/find-all-lists-containing-paper';
-import { paperActivityPageRedirectPath } from '../../standards';
+import { paperActivityPagePath } from '../../standards';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatement,
@@ -55,7 +55,7 @@ export const constructViewModel = (
         partial.publishingHistory,
         PH.getLatestExpression,
         (expression) => expression.expressionDoi,
-        paperActivityPageRedirectPath,
+        paperActivityPagePath,
       ),
       title: partial.expressionFrontMatter.title,
       authors: partial.expressionFrontMatter.authors,
