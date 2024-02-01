@@ -6,6 +6,7 @@ import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { ConstructPageResult } from '../../../src/html-pages/construct-page';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 
 describe('decide-whether-to-redirect-or-display-a-page', () => {
   let framework: TestFramework;
@@ -19,17 +20,23 @@ describe('decide-whether-to-redirect-or-display-a-page', () => {
     let result: ConstructPageResult;
 
     beforeEach(async () => {
+      const dependencies = {
+        ...framework.dependenciesForViews,
+        fetchPublishingHistory: () => TE.right(
+          arbitraryPublishingHistoryOnlyPreprints({ latestExpressionDoi: expressionDoi }),
+        ),
+      };
       result = await pipe(
         {
           user: O.none,
           expressionDoi,
         },
-        decideWhetherToRedirectOrDisplayAPage(framework.dependenciesForViews),
+        decideWhetherToRedirectOrDisplayAPage(dependencies),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
 
-    it.skip('displays the page', () => {
+    it('displays the page', () => {
       expect(result.tag).toBe('html-page');
     });
   });

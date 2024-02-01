@@ -7,11 +7,17 @@ import { arbitraryPaperExpression } from './paper-expression.helper';
 import { ExpressionDoi } from '../../src/types/expression-doi';
 import { arbitraryExpressionDoi } from './expression-doi.helper';
 
-type ArbitraryPublishingHistoryOnlyPreprints = (overrides?: { earliestExpressionDoi?: ExpressionDoi })
+type ArbitraryPublishingHistoryOnlyPreprints = (overrides?: {
+  earliestExpressionDoi?: ExpressionDoi,
+  latestExpressionDoi?: ExpressionDoi,
+})
 => PH.PublishingHistory;
 
 export const arbitraryPublishingHistoryOnlyPreprints: ArbitraryPublishingHistoryOnlyPreprints = (
-  overrides = { earliestExpressionDoi: arbitraryExpressionDoi() },
+  overrides = {
+    earliestExpressionDoi: arbitraryExpressionDoi(),
+    latestExpressionDoi: arbitraryExpressionDoi(),
+  },
 ) => pipe(
   [
     {
@@ -23,6 +29,7 @@ export const arbitraryPublishingHistoryOnlyPreprints: ArbitraryPublishingHistory
     {
       ...arbitraryPaperExpression(),
       expressionType: 'preprint',
+      expressionDoi: overrides.latestExpressionDoi ?? arbitraryExpressionDoi(),
       publishedAt: new Date('2020-01-01'),
     },
   ],
