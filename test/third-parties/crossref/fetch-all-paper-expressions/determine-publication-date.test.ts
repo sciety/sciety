@@ -4,8 +4,8 @@ import { arbitraryUri } from '../../../helpers';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 describe('determine-publication-date', () => {
-  describe('when the date specifies a day', () => {
-    it('returns a date matching the given day', () => {
+  describe('when the date specifies a year, a month and a day', () => {
+    it('returns that date', () => {
       const expectedDate = new Date(2020, 11, 19);
       const work: CrossrefWork = {
         type: 'posted-content' as const,
@@ -26,8 +26,8 @@ describe('determine-publication-date', () => {
     });
   });
 
-  describe('when the date does not specify a day', () => {
-    it('returns a date matching the first of the given month', () => {
+  describe('when the date specifies only a year and a month', () => {
+    it('returns a date matching the first day of the given month', () => {
       const expectedDate = new Date(2020, 11, 1);
       const work: CrossrefWork = {
         type: 'posted-content' as const,
@@ -46,5 +46,9 @@ describe('determine-publication-date', () => {
 
       expect(date).toStrictEqual(expectedDate);
     });
+  });
+
+  describe('when the date specifies only a year', () => {
+    it.todo('returns a date matching the first day of the given year');
   });
 });
