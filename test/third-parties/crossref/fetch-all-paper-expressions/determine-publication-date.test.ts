@@ -49,6 +49,24 @@ describe('determine-publication-date', () => {
   });
 
   describe('when the date specifies only a year', () => {
-    it.todo('returns a date matching the first day of the given year');
+    const expectedDate = new Date(2020, 0, 1);
+    const work: CrossrefWork = {
+      type: 'posted-content' as const,
+      DOI: arbitraryExpressionDoi(),
+      resource: {
+        primary: {
+          URL: arbitraryUri(),
+        },
+      },
+      posted: {
+        'date-parts': [[expectedDate.getFullYear()]],
+      },
+      relation: { },
+    };
+    const date = determinePublicationDate(work);
+
+    it('returns a date matching the first day of the given year', () => {
+      expect(date).toStrictEqual(expectedDate);
+    });
   });
 });

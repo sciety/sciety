@@ -18,6 +18,7 @@ const datePartsCodec = t.strict({
   'date-parts': t.readonlyArray(t.union([
     t.tuple([t.number, t.number, t.number]),
     t.tuple([t.number, t.number]),
+    t.tuple([t.number]),
   ])),
 });
 

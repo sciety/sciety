@@ -6,7 +6,7 @@ export const determinePublicationDate = (crossrefWork: CrossrefWork): Date => {
     : crossrefWork.published['date-parts'][0];
   return new Date(
     dateParts[0],
-    dateParts[1] - 1,
+    dateParts[1] ? dateParts[1] - 1 : 0,
     dateParts[2] ?? 1,
   );
 };
