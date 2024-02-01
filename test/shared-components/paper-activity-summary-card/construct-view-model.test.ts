@@ -18,6 +18,7 @@ import { RecordEvaluationPublicationCommand } from '../../../src/write-side/comm
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import * as PH from '../../../src/types/publishing-history';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
+import { paperActivityPagePath } from '../../../src/standards';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -63,7 +64,7 @@ describe('construct-view-model', () => {
 
       it('the article card links to the article page', () => {
         expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          paperActivityPageHref: `/articles/activity/${latestExpressionDoi}`,
+          paperActivityPageHref: paperActivityPagePath(latestExpressionDoi),
         })));
       });
     });
