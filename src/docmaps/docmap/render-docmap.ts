@@ -6,10 +6,10 @@ import { Evaluation } from './evaluation';
 import { DocmapViewModel } from './construct-docmap-view-model';
 import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
-import { ArticleId } from '../../types/article-id';
 import * as EL from '../../types/evaluation-locator';
+import * as EDOI from '../../types/expression-doi';
 
-const createAction = (articleId: ArticleId) => (evaluation: Evaluation) => ({
+const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluation) => ({
   participants: pipe(
     evaluation.authors,
     RA.match(
@@ -28,7 +28,7 @@ const createAction = (articleId: ArticleId) => (evaluation: Evaluation) => ({
         },
         {
           type: 'web-page',
-          url: `https://sciety.org/articles/activity/${articleId.value}#${EL.serialize(evaluation.evaluationLocator)}`,
+          url: `https://sciety.org/articles/activity/${expressionDoi}#${EL.serialize(evaluation.evaluationLocator)}`,
         },
         {
           type: 'web-content',
@@ -65,7 +65,7 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
       }],
       actions: pipe(
         viewModel.evaluations,
-        RA.map(createAction(viewModel.articleId)),
+        RA.map(createAction(EDOI.fromValidatedString(viewModel.articleId.value))),
       ),
     },
   },
