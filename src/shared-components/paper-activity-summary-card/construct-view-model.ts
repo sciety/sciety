@@ -17,6 +17,7 @@ import * as PH from '../../types/publishing-history';
 import { constructFrontMatter } from '../../read-side/construct-front-matter';
 import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
 import { findAllListsContainingPaper } from '../../read-side/find-all-lists-containing-paper';
+import { paperActivityPageRedirectPath } from '../../standards';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatement,
@@ -26,8 +27,6 @@ const transformIntoCurationStatementViewModel = (
   quote: sanitise(toHtmlFragment(curationStatement.statement)),
   quoteLanguageCode: curationStatement.statementLanguageCode,
 });
-
-const constructPaperActivityPageHref = (expressionDoi: ExpressionDoi) => `/articles/activity/${expressionDoi}`;
 
 const toErrorViewModel = (inputExpressionDoi: ExpressionDoi) => (error: DE.DataError) => ({
   inputExpressionDoi,
@@ -56,7 +55,7 @@ export const constructViewModel = (
         partial.publishingHistory,
         PH.getLatestExpression,
         (expression) => expression.expressionDoi,
-        constructPaperActivityPageHref,
+        paperActivityPageRedirectPath,
       ),
       title: partial.expressionFrontMatter.title,
       authors: partial.expressionFrontMatter.authors,
