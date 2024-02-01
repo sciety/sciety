@@ -55,7 +55,7 @@ describe('decide-whether-to-redirect-or-display-a-page', () => {
       result = await getDecision(expressionDoi, dependencies);
     });
 
-    it.failing('redirects', () => {
+    it('redirects', () => {
       expect(result.tag).toBe('redirect-target');
     });
   });
