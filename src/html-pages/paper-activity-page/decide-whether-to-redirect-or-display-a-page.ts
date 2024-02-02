@@ -16,16 +16,16 @@ const logWhenDuplicateExpressionDatesFound = (
   dependencies: Dependencies,
   expressionDoi: ExpressionDoi,
 ) => (history: PH.PublishingHistory) => {
-  pipe(
+  const uniqueDates = pipe(
     history.expressions,
     RA.map((expression) => expression.publishedAt),
     RA.uniq(D.Eq),
-    (uniqueDates) => {
-      if (uniqueDates.length !== history.expressions.length) {
-        dependencies.logger('debug', 'Expressions with duplicate dates found for a publishing history', { expressionDoi });
-      }
-    },
   );
+
+  if (uniqueDates.length !== history.expressions.length) {
+    dependencies.logger('debug', 'Expressions with duplicate dates found for a publishing history', { expressionDoi });
+  }
+
   return history;
 };
 
