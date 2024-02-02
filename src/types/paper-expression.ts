@@ -15,7 +15,7 @@ export type PaperExpression = {
   server: O.Option<ArticleServer>,
 };
 
-const byDateAscending: Ord.Ord<PaperExpression> = pipe(
+const byPublishedAtDateAscending: Ord.Ord<PaperExpression> = pipe(
   D.Ord,
   Ord.contramap((expression) => expression.publishedAt),
 );
@@ -31,7 +31,7 @@ const byPublisherHtmlUrlAlphabetically: Ord.Ord<PaperExpression> = pipe(
 );
 
 export const publishedAtWithUnambiguousCriteria = [
-  byDateAscending,
+  byPublishedAtDateAscending,
   byExpressionDoiAlphabetically,
   byPublisherHtmlUrlAlphabetically,
 ];
