@@ -1,9 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
+import { URL } from 'url';
 import * as PH from '../../src/types/publishing-history';
 import { arbitraryPaperExpression } from './paper-expression.helper';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { PaperExpression } from '../../src/types/paper-expression';
+import * as EDOI from '../../src/types/expression-doi';
 
 describe('publishing-history', () => {
   describe('given both preprint and journal article expressions', () => {
@@ -65,7 +68,26 @@ describe('publishing-history', () => {
   });
 
   describe('given only two preprint expressions published on the same date', () => {
-    it.todo('ambiguous');
+    describe('getLatestPreprintExpression', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const paperExpression1: PaperExpression = {
+        expressionType: 'journal-article',
+        expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184.4'),
+        publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
+        publishedAt: new Date('2024-01-17'),
+        server: O.some('elife'),
+      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const paperExpression2: PaperExpression = {
+        expressionType: 'journal-article',
+        expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184'),
+        publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
+        publishedAt: new Date('2024-01-17'),
+        server: O.some('elife'),
+      };
+
+      it.todo('ambiguous');
+    });
   });
 
   describe('given no expressions are provided', () => {
