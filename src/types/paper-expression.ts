@@ -24,3 +24,8 @@ export const byExpressionDoiAlphabetically: Ord.Ord<PaperExpression> = pipe(
   S.Ord,
   Ord.contramap((expression) => expression.expressionDoi),
 );
+
+export const byPublisherHtmlUrlAlphabetically: Ord.Ord<PaperExpression> = pipe(
+  S.Ord,
+  Ord.contramap((expression) => expression.publisherHtmlUrl.toString()),
+);

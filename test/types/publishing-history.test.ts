@@ -142,7 +142,7 @@ describe('publishing-history', () => {
         PH.getLatestExpression,
       );
 
-      it.failing('returns the last expression based on alphabetical sorting of their URLs', () => {
+      it('returns the last expression based on alphabetical sorting of their URLs', () => {
         expect(result).toStrictEqual(paperExpression2);
       });
     });
