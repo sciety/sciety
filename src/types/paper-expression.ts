@@ -1,5 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as D from 'fp-ts/Date';
+import * as S from 'fp-ts/string';
 import * as Ord from 'fp-ts/Ord';
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
@@ -17,4 +18,9 @@ export type PaperExpression = {
 export const byDateAscending: Ord.Ord<PaperExpression> = pipe(
   D.Ord,
   Ord.contramap((expression) => expression.publishedAt),
+);
+
+export const byExpressionDoiAlphabetically: Ord.Ord<PaperExpression> = pipe(
+  S.Ord,
+  Ord.contramap((expression) => expression.expressionDoi),
 );

@@ -13,7 +13,7 @@ export type PublishingHistory = {
 
 export const getLatestExpression = (history: PublishingHistory): PE.PaperExpression => pipe(
   history.expressions,
-  RNEA.sort(PE.byDateAscending),
+  RNEA.sortBy([PE.byDateAscending, PE.byExpressionDoiAlphabetically]),
   RNEA.last,
 );
 

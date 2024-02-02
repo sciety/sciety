@@ -104,7 +104,7 @@ describe('publishing-history', () => {
         PH.getLatestExpression,
       );
 
-      it.failing('returns the last expression based on alphabetical sorting of expression dois', () => {
+      it('returns the last expression based on alphabetical sorting of expression dois', () => {
         expect(result).toStrictEqual(paperExpression2);
       });
     });
