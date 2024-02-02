@@ -49,29 +49,21 @@ export const decideWhetherToRedirectOrDisplayAPage = (
   dependencies: Dependencies,
 ) => (
   decodedParams: Params,
-): TE.TaskEither<DE.DataError, ConstructPageResult> => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
+): TE.TaskEither<DE.DataError, ConstructPageResult> => pipe(
+  decodedParams.expressionDoi,
+  identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+  TE.chain((latestExpressionDoi) => {
+    if (latestExpressionDoi !== decodedParams.expressionDoi) {
+      return pipe(
+        latestExpressionDoi,
+        paperActivityPagePath,
+        toRedirectTarget,
+        TE.right,
+      );
+    }
     return pipe(
-      decodedParams.expressionDoi,
-      identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-      TE.chain((latestExpressionDoi) => {
-        if (latestExpressionDoi !== decodedParams.expressionDoi) {
-          return pipe(
-            latestExpressionDoi,
-            paperActivityPagePath,
-            toRedirectTarget,
-            TE.right,
-          );
-        }
-        return pipe(
-          decodedParams,
-          displayAPage(dependencies),
-        );
-      }),
+      decodedParams,
+      displayAPage(dependencies),
     );
-  }
-  return pipe(
-    decodedParams,
-    displayAPage(dependencies),
-  );
-};
+  }),
+);
