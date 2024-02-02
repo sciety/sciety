@@ -64,6 +64,10 @@ describe('publishing-history', () => {
     });
   });
 
+  describe('given only two preprint expressions published on the same date', () => {
+    it.todo('ambiguous');
+  });
+
   describe('given no expressions are provided', () => {
     const providedExpressions: ReadonlyArray<PaperExpression> = [];
 
