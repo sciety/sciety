@@ -146,6 +146,17 @@ describe('publishing-history', () => {
         expect(result).toStrictEqual(paperExpression2);
       });
     });
+
+    describe('getLatestPreprintExpression', () => {
+      const result = pipe(
+        publishingHistory,
+        PH.getLatestPreprintExpression,
+      );
+
+      it('returns the last expression based on alphabetical sorting of their URLs', () => {
+        expect(result).toStrictEqual(paperExpression2);
+      });
+    });
   });
 
   describe('given no expressions are provided', () => {
