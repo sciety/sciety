@@ -15,7 +15,7 @@ export type PaperExpression = {
   server: O.Option<ArticleServer>,
 };
 
-export const byDateAscending: Ord.Ord<PaperExpression> = pipe(
+const byDateAscending: Ord.Ord<PaperExpression> = pipe(
   D.Ord,
   Ord.contramap((expression) => expression.publishedAt),
 );

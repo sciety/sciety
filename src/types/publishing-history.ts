@@ -29,7 +29,7 @@ export const getAllExpressionDois = (history: PublishingHistory): ReadonlyArray<
 
 export const getLatestPreprintExpression = (history: PublishingHistory): PE.PaperExpression => pipe(
   history.preprintExpressions,
-  RNEA.sort(PE.byDateAscending),
+  RNEA.sortBy(publishedAtWithUnambiguousCriteria),
   RNEA.last,
 );
 
