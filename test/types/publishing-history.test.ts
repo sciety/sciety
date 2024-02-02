@@ -67,7 +67,7 @@ describe('publishing-history', () => {
     });
   });
 
-  describe('given only two preprint expressions published on the same date', () => {
+  describe('given a journal-article expression published on eLife and its version-less alias', () => {
     describe('getLatestPreprintExpression', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const paperExpression1: PaperExpression = {
@@ -84,6 +84,29 @@ describe('publishing-history', () => {
         publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
         publishedAt: new Date('2024-01-17'),
         server: O.some('elife'),
+      };
+
+      it.todo('ambiguous');
+    });
+  });
+
+  describe('given two preprint expressions published on bioRxiv on the same date', () => {
+    describe('getLatestPreprintExpression', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const paperExpression1: PaperExpression = {
+        expressionType: 'preprint',
+        expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
+        publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v1'),
+        publishedAt: new Date('2024-01-17'),
+        server: O.some('biorxiv'),
+      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const paperExpression2: PaperExpression = {
+        expressionType: 'preprint',
+        expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
+        publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v2'),
+        publishedAt: new Date('2024-01-17'),
+        server: O.some('biorxiv'),
       };
 
       it.todo('ambiguous');
