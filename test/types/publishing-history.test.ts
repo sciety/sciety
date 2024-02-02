@@ -86,7 +86,7 @@ describe('publishing-history', () => {
         server: O.some('elife'),
       };
 
-      it.todo('ambiguous');
+      it.todo('returns the last expression based on alphabetical sorting of expression dois');
     });
   });
 
@@ -109,7 +109,7 @@ describe('publishing-history', () => {
         server: O.some('biorxiv'),
       };
 
-      it.todo('ambiguous');
+      it.todo('returns the last expression based on alphabetical sorting of their URLs');
     });
   });
 
