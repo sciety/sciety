@@ -68,11 +68,11 @@ describe('publishing-history', () => {
   });
 
   describe('given a journal-article expression published on eLife and its version-less alias', () => {
-    describe('getLatestPreprintExpression', () => {
+    describe('getLatestExpression', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const paperExpression1: PaperExpression = {
         expressionType: 'journal-article',
-        expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184.4'),
+        expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184'),
         publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
         publishedAt: new Date('2024-01-17'),
         server: O.some('elife'),
@@ -80,18 +80,39 @@ describe('publishing-history', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const paperExpression2: PaperExpression = {
         expressionType: 'journal-article',
-        expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184'),
+        expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184.4'),
         publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
         publishedAt: new Date('2024-01-17'),
         server: O.some('elife'),
       };
 
-      it.todo('returns the last expression based on alphabetical sorting of expression dois');
+      const publishingHistory: PH.PublishingHistory = pipe(
+        [
+          paperExpression2,
+          {
+            ...arbitraryPaperExpression(),
+            expressionType: 'preprint',
+            publishedAt: new Date('2024-01-16'),
+          },
+          paperExpression1,
+        ],
+        PH.fromExpressions,
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
+      const result = pipe(
+        publishingHistory,
+        PH.getLatestExpression,
+      );
+
+      it.failing('returns the last expression based on alphabetical sorting of expression dois', () => {
+        expect(result).toStrictEqual(paperExpression2);
+      });
     });
   });
 
   describe('given two preprint expressions published on bioRxiv on the same date', () => {
-    describe('getLatestPreprintExpression', () => {
+    describe('getLatestExpression', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const paperExpression1: PaperExpression = {
         expressionType: 'preprint',
