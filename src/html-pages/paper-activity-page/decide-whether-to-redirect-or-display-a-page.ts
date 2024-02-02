@@ -12,6 +12,23 @@ import { ExpressionDoi } from '../../types/expression-doi';
 import * as PH from '../../types/publishing-history';
 import { renderAsHtml } from './render-as-html';
 
+const logWhenDuplicateExpressionDatesFound = (
+  dependencies: Dependencies,
+  expressionDoi: ExpressionDoi,
+) => (history: PH.PublishingHistory) => {
+  pipe(
+    history.expressions,
+    RA.map((expression) => expression.publishedAt),
+    RA.uniq(D.Eq),
+    (uniqueDates) => {
+      if (uniqueDates.length !== history.expressions.length) {
+        dependencies.logger('debug', 'Expressions with duplicate dates found for a publishing history', { expressionDoi });
+      }
+    },
+  );
+  return history;
+};
+
 const identifyLatestExpressionDoiOfTheSamePaper = (
   dependencies: Dependencies,
 ) => (
@@ -19,19 +36,7 @@ const identifyLatestExpressionDoiOfTheSamePaper = (
 ) => pipe(
   expressionDoi,
   dependencies.fetchPublishingHistory,
-  TE.map((history: PH.PublishingHistory) => {
-    pipe(
-      history.expressions,
-      RA.map((expression) => expression.publishedAt),
-      RA.uniq(D.Eq),
-      (uniqueDates) => {
-        if (uniqueDates.length !== history.expressions.length) {
-          dependencies.logger('debug', 'Expressions with duplicate dates found for a publishing history', { expressionDoi });
-        }
-      },
-    );
-    return history;
-  }),
+  TE.map(logWhenDuplicateExpressionDatesFound(dependencies, expressionDoi)),
   TE.map((publishingHistory) => PH.getLatestExpression(publishingHistory).expressionDoi),
 );
 
