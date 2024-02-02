@@ -68,38 +68,37 @@ describe('publishing-history', () => {
   });
 
   describe('given a journal-article expression published on eLife and its version-less alias', () => {
+    const paperExpression1: PaperExpression = {
+      expressionType: 'journal-article',
+      expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184'),
+      publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
+      publishedAt: new Date('2024-01-17'),
+      server: O.some('elife'),
+    };
+
+    const paperExpression2: PaperExpression = {
+      expressionType: 'journal-article',
+      expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184.4'),
+      publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
+      publishedAt: new Date('2024-01-17'),
+      server: O.some('elife'),
+    };
+
+    const publishingHistory: PH.PublishingHistory = pipe(
+      [
+        paperExpression2,
+        {
+          ...arbitraryPaperExpression(),
+          expressionType: 'preprint',
+          publishedAt: new Date('2024-01-16'),
+        },
+        paperExpression1,
+      ],
+      PH.fromExpressions,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
     describe('getLatestExpression', () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const paperExpression1: PaperExpression = {
-        expressionType: 'journal-article',
-        expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184'),
-        publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
-        publishedAt: new Date('2024-01-17'),
-        server: O.some('elife'),
-      };
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const paperExpression2: PaperExpression = {
-        expressionType: 'journal-article',
-        expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184.4'),
-        publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
-        publishedAt: new Date('2024-01-17'),
-        server: O.some('elife'),
-      };
-
-      const publishingHistory: PH.PublishingHistory = pipe(
-        [
-          paperExpression2,
-          {
-            ...arbitraryPaperExpression(),
-            expressionType: 'preprint',
-            publishedAt: new Date('2024-01-16'),
-          },
-          paperExpression1,
-        ],
-        PH.fromExpressions,
-        E.getOrElseW(shouldNotBeCalled),
-      );
-
       const result = pipe(
         publishingHistory,
         PH.getLatestExpression,
@@ -112,25 +111,40 @@ describe('publishing-history', () => {
   });
 
   describe('given two preprint expressions published on bioRxiv on the same date', () => {
-    describe('getLatestExpression', () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const paperExpression1: PaperExpression = {
-        expressionType: 'preprint',
-        expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
-        publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v1'),
-        publishedAt: new Date('2024-01-17'),
-        server: O.some('biorxiv'),
-      };
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const paperExpression2: PaperExpression = {
-        expressionType: 'preprint',
-        expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
-        publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v2'),
-        publishedAt: new Date('2024-01-17'),
-        server: O.some('biorxiv'),
-      };
+    const paperExpression1: PaperExpression = {
+      expressionType: 'preprint',
+      expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
+      publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v1'),
+      publishedAt: new Date('2024-01-17'),
+      server: O.some('biorxiv'),
+    };
 
-      it.todo('returns the last expression based on alphabetical sorting of their URLs');
+    const paperExpression2: PaperExpression = {
+      expressionType: 'preprint',
+      expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
+      publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v2'),
+      publishedAt: new Date('2024-01-17'),
+      server: O.some('biorxiv'),
+    };
+
+    const publishingHistory: PH.PublishingHistory = pipe(
+      [
+        paperExpression2,
+        paperExpression1,
+      ],
+      PH.fromExpressions,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    describe('getLatestExpression', () => {
+      const result = pipe(
+        publishingHistory,
+        PH.getLatestExpression,
+      );
+
+      it.failing('returns the last expression based on alphabetical sorting of their URLs', () => {
+        expect(result).toStrictEqual(paperExpression2);
+      });
     });
   });
 
