@@ -5,6 +5,7 @@ import * as E from 'fp-ts/Either';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as PE from './paper-expression';
 import { ExpressionDoi } from './expression-doi';
+import { publishedAtWithUnambiguousCriteria } from './paper-expression';
 
 export type PublishingHistory = {
   expressions: RNEA.ReadonlyNonEmptyArray<PE.PaperExpression>,
@@ -13,7 +14,7 @@ export type PublishingHistory = {
 
 export const getLatestExpression = (history: PublishingHistory): PE.PaperExpression => pipe(
   history.expressions,
-  RNEA.sortBy([PE.byDateAscending, PE.byExpressionDoiAlphabetically, PE.byPublisherHtmlUrlAlphabetically]),
+  RNEA.sortBy(publishedAtWithUnambiguousCriteria),
   RNEA.last,
 );
 

@@ -20,12 +20,18 @@ export const byDateAscending: Ord.Ord<PaperExpression> = pipe(
   Ord.contramap((expression) => expression.publishedAt),
 );
 
-export const byExpressionDoiAlphabetically: Ord.Ord<PaperExpression> = pipe(
+const byExpressionDoiAlphabetically: Ord.Ord<PaperExpression> = pipe(
   S.Ord,
   Ord.contramap((expression) => expression.expressionDoi),
 );
 
-export const byPublisherHtmlUrlAlphabetically: Ord.Ord<PaperExpression> = pipe(
+const byPublisherHtmlUrlAlphabetically: Ord.Ord<PaperExpression> = pipe(
   S.Ord,
   Ord.contramap((expression) => expression.publisherHtmlUrl.toString()),
 );
+
+export const publishedAtWithUnambiguousCriteria = [
+  byDateAscending,
+  byExpressionDoiAlphabetically,
+  byPublisherHtmlUrlAlphabetically,
+];
