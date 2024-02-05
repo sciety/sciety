@@ -4,10 +4,11 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
+import { toExpressionDoi, ArticleId } from '../../../types/article-id';
 import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
 import { ExpressionActivity } from '../../../types/expression-activity';
-import { ArticleId } from '../../../types/article-id';
 import { GroupId } from '../../../types/group-id';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
 type ArticleActivityDetails = {
   mostRecentRecordedEvaluationByFollowedGroups: Date,
@@ -50,16 +51,16 @@ const mergeActivities = (
 const addEventToActivities = (
   groupIds: ReadonlyArray<GroupId>,
 ) => (
-  activities: Map<string, ArticleActivityDetails>,
+  activities: Map<ExpressionDoi, ArticleActivityDetails>,
   event: EventOfType<'EvaluationPublicationRecorded'>,
 ) => pipe(
-  activities.get(event.articleId.value),
+  activities.get(toExpressionDoi(event.articleId)),
   O.fromNullable,
   O.fold(
     () => eventToActivityDetails(event, groupIds),
     (existingActivityDetails) => mergeActivities(existingActivityDetails, eventToActivityDetails(event, groupIds)),
   ),
-  (activity) => activities.set(event.articleId.value, activity),
+  (activity) => activities.set(toExpressionDoi(event.articleId), activity),
 );
 
 const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{
