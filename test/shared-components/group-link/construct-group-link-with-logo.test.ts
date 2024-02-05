@@ -6,10 +6,11 @@ import {
   arbitraryRecordEvaluationPublicationCommand,
 } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
-import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { createTestFramework, TestFramework } from '../../framework';
 import { constructGroupLink } from '../../../src/shared-components/group-link';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { toExpressionDoi } from '../../../src/types/article-id';
 
 describe('construct-group-link-with-logo', () => {
   const articleId = arbitraryArticleId();

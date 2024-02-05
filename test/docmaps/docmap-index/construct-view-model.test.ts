@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { StatusCodes } from 'http-status-codes';
 import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { supportedGroups } from '../../../src/docmaps/supported-groups';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
@@ -18,6 +18,7 @@ import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import * as ER from '../../../src/docmaps/docmap-index/error-response';
 import { DocmapIndexViewModel } from '../../../src/docmaps/docmap-index/view-model';
+import { toExpressionDoi } from '../../../src/types/article-id';
 
 describe('construct-view-model', () => {
   const defaultParams: Params = {

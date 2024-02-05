@@ -3,13 +3,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { ArticleId } from '../../../../src/types/article-id';
+import { ArticleId, toExpressionDoi } from '../../../../src/types/article-id';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
 import { ExpressionDoi } from '../../../../src/types/expression-doi';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { toExpressionDoi } from '../../../types/article-id.helper';
 
 const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 

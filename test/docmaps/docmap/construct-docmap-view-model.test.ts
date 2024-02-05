@@ -8,7 +8,7 @@ import * as DE from '../../../src/types/data-error';
 import { inferredSourceUrl } from '../../../src/types/evaluation-locator';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator, arbitraryNcrcId, arbitraryReviewDoi } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
@@ -16,6 +16,7 @@ import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-co
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryUpdateEvaluationCommand } from '../../write-side/commands/update-evaluation-command.helper';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
+import { toExpressionDoi } from '../../../src/types/article-id';
 
 const selectedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();

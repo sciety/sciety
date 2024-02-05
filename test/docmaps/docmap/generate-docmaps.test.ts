@@ -10,12 +10,13 @@ import * as DE from '../../../src/types/data-error';
 import * as GID from '../../../src/types/group-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId, toExpressionDoi } from '../../types/article-id.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryNcrcId } from '../../types/evaluation-locator.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
+import { toExpressionDoi } from '../../../src/types/article-id';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
