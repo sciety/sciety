@@ -6,12 +6,13 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { toExpressionDoi } from '../../types/article-id';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 type RecordedEvaluationsForArticle = Array<RecordedEvaluation>;
 
 export type ReadModel = {
   byEvaluationLocator: Map<EvaluationLocator, RecordedEvaluation>,
-  byArticleId: Map<string, RecordedEvaluationsForArticle>,
+  byArticleId: Map<ExpressionDoi, RecordedEvaluationsForArticle>,
   byGroupId: Map<string, Map<string, RecordedEvaluation>>,
 };
 
@@ -30,9 +31,9 @@ const hasAlreadyBeenRecorded = (
 );
 
 const addToIndexByArticle = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {
-  const evaluationsForThisArticle = readmodel.byArticleId.get(recordedEvaluation.articleId.value) ?? [];
+  const evaluationsForThisArticle = readmodel.byArticleId.get(recordedEvaluation.expressionDoi) ?? [];
   evaluationsForThisArticle.push(recordedEvaluation);
-  readmodel.byArticleId.set(recordedEvaluation.articleId.value, evaluationsForThisArticle);
+  readmodel.byArticleId.set(recordedEvaluation.expressionDoi, evaluationsForThisArticle);
 };
 
 const removeFromIndexByArticle = (evaluationLocator: EvaluationLocator, readmodel: ReadModel) => {
@@ -72,7 +73,7 @@ const removeFromAllIndexes = (evaluationLocator: EvaluationLocator, readmodel: R
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    const evaluationsForThisArticle = readmodel.byArticleId.get(event.articleId.value) ?? [];
+    const evaluationsForThisArticle = readmodel.byArticleId.get(toExpressionDoi(event.articleId)) ?? [];
     if (!hasAlreadyBeenRecorded(event.evaluationLocator, evaluationsForThisArticle)) {
       const recordedEvaluation: RecordedEvaluation = {
         articleId: event.articleId,
