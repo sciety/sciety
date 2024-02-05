@@ -9,7 +9,6 @@ import { arbitraryEvaluationType } from './evaluation-type.helper';
 export const arbitraryRecordedEvaluation = (): RecordedEvaluation => {
   const articleId = arbitraryArticleId();
   return {
-    articleId,
     expressionDoi: toExpressionDoi(articleId),
     groupId: arbitraryGroupId(),
     evaluationLocator: arbitraryEvaluationLocator(),

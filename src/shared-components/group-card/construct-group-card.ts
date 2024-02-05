@@ -27,7 +27,7 @@ const calculateCuratedArticlesCount = (groupId: GroupId, dependencies: Dependenc
   groupId,
   dependencies.getEvaluationsByGroup,
   RA.filter(isCurationStatement),
-  RA.map((curationStatement) => curationStatement.articleId.value),
+  RA.map((curationStatement) => curationStatement.expressionDoi),
   RA.uniq(S.Eq),
   RA.size,
 );

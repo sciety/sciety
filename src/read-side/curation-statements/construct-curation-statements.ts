@@ -9,7 +9,6 @@ import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
 import * as Eq from 'fp-ts/Eq';
 import * as GID from '../../types/group-id';
-import { ArticleId } from '../../types/article-id';
 import { detectLanguage } from '../../shared-components/lang-attribute';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
@@ -24,7 +23,6 @@ export type Dependencies = Queries & ExternalQueries & {
 };
 
 type PartialCurationStatement = {
-  articleId: ArticleId,
   evaluationLocator: EvaluationLocator,
   groupId: GID.GroupId,
 };

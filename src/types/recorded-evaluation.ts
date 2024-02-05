@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import { ArticleId } from './article-id';
 import { GroupId } from './group-id';
 import { EvaluationLocator } from './evaluation-locator';
 import { ExpressionDoi } from './expression-doi';
@@ -14,7 +13,6 @@ export const evaluationTypes = <const> [
 export type EvaluationType = typeof evaluationTypes[number];
 
 export type RecordedEvaluation = {
-  articleId: ArticleId,
   expressionDoi: ExpressionDoi,
   evaluationLocator: EvaluationLocator,
   groupId: GroupId,

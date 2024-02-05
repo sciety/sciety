@@ -19,7 +19,7 @@ const getEvaluatingGroupIds = (ports: Ports) => (doi: ArticleId) => pipe(
   ports.getEvaluationsOfExpression(EDOI.fromValidatedString(doi.value)),
   T.of,
   T.map(flow(
-    RA.filter(({ articleId }) => articleId.value === doi.value),
+    RA.filter(({ expressionDoi }) => expressionDoi === doi.value),
     RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
     RA.map(({ groupId }) => groupId),
     (groupIds) => [...new Set(groupIds)],

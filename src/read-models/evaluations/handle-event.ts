@@ -76,7 +76,6 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     const evaluationsForThisExpression = readmodel.byExpressionDoi.get(toExpressionDoi(event.articleId)) ?? [];
     if (!hasAlreadyBeenRecorded(event.evaluationLocator, evaluationsForThisExpression)) {
       const recordedEvaluation: RecordedEvaluation = {
-        articleId: event.articleId,
         expressionDoi: toExpressionDoi(event.articleId),
         evaluationLocator: event.evaluationLocator,
         groupId: event.groupId,
