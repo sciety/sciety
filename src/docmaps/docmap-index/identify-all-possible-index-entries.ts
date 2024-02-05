@@ -7,14 +7,14 @@ import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as ER from './error-response';
 import * as DE from '../../types/data-error';
-import * as AID from '../../types/article-id';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
 import { publisherAccountId } from '../docmap/publisher-account-id';
 import { Dependencies } from './dependencies';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 export type DocmapIndexEntryModel = {
-  articleId: AID.ArticleId,
+  expressionDoi: ExpressionDoi,
   groupId: GID.GroupId,
   updated: Date,
   publisherAccountId: string,
@@ -27,7 +27,7 @@ const byDate: Ord.Ord<DocmapIndexEntryModel> = pipe(
 );
 
 const eqEntry: Eq.Eq<DocmapIndexEntryModel> = Eq.struct({
-  articleId: AID.eqArticleId,
+  expressionDoi: S.Eq,
   groupId: S.Eq,
 });
 
@@ -49,7 +49,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
       return DE.notFound;
     }),
     E.map((group) => ({
-      articleId: evaluation.articleId,
+      expressionDoi: evaluation.expressionDoi,
       groupId: evaluation.groupId,
       updated: evaluation.updatedAt,
       publisherAccountId: publisherAccountId(group),
