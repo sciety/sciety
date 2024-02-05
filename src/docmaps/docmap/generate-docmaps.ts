@@ -4,12 +4,11 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { toExpressionDoi } from '../../../test/types/article-id.helper';
 import * as EDOI from '../../types/expression-doi';
 import { Docmap } from './docmap-type';
 import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
 import { renderDocmap } from './render-docmap';
-import { articleIdCodec, ArticleId } from '../../types/article-id';
+import { articleIdCodec, ArticleId, toExpressionDoi } from '../../types/article-id';
 import { supportedGroups } from '../supported-groups';
 import { Queries } from '../../read-models';
 
