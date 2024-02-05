@@ -4,6 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import { toExpressionDoi } from '../../../test/types/article-id.helper';
 import * as EDOI from '../../types/expression-doi';
 import { Docmap } from './docmap-type';
 import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
@@ -34,7 +35,10 @@ const getDocmapViewModels = (ports: Ports) => (articleId: ArticleId) => pipe(
   articleId,
   getEvaluatingGroupIds(ports),
   TE.rightTask,
-  TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(ports)({ articleId, groupId }))),
+  TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(ports)({
+    expressionDoi: toExpressionDoi(articleId),
+    groupId,
+  }))),
   TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
 );
 

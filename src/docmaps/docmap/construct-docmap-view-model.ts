@@ -7,7 +7,6 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
-import { toExpressionDoi, ArticleId } from '../../types/article-id';
 import { Evaluation } from './evaluation';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
@@ -25,7 +24,7 @@ export type DocmapViewModel = {
 };
 
 type DocmapIdentifier = {
-  articleId: ArticleId,
+  expressionDoi: EDOI.ExpressionDoi,
   groupId: GroupId,
 };
 
@@ -58,11 +57,11 @@ type ConstructDocmapViewModel = (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapViewModel>;
 
-export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => ({ articleId, groupId }) => pipe(
+export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => ({ expressionDoi, groupId }) => pipe(
   {
-    expressionDoi: TE.right(toExpressionDoi(articleId)),
+    expressionDoi: TE.right(expressionDoi),
     evaluations: pipe(
-      adapters.getEvaluationsOfExpression(EDOI.fromValidatedString(articleId.value)),
+      adapters.getEvaluationsOfExpression(expressionDoi),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === groupId)),
       TE.chainW(TE.traverseArray(extendWithSourceUrl(adapters))),

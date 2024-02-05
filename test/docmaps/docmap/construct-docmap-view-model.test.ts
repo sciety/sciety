@@ -19,6 +19,7 @@ import { RecordEvaluationPublicationCommand } from '../../../src/write-side/comm
 
 const selectedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();
+const expressionDoi = toExpressionDoi(articleId);
 
 describe('construct-docmap-view-model', () => {
   let framework: TestFramework;
@@ -44,7 +45,6 @@ describe('construct-docmap-view-model', () => {
     });
 
     describe('when there is an evaluation by the selected group', () => {
-      const expressionDoi = toExpressionDoi(articleId);
       const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         articleId: expressionDoi,
@@ -54,7 +54,7 @@ describe('construct-docmap-view-model', () => {
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         viewModel = await pipe(
-          { articleId, groupId: addGroupCommand.groupId },
+          { expressionDoi, groupId: addGroupCommand.groupId },
           constructDocmapViewModel(defaultAdapters),
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
         )();
@@ -76,13 +76,13 @@ describe('construct-docmap-view-model', () => {
       const laterDate = new Date('2000-01-01');
       const command1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId),
+        articleId: expressionDoi,
         groupId: addGroupCommand.groupId,
         issuedAt: earlierDate,
       };
       const command2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId),
+        articleId: expressionDoi,
         groupId: addGroupCommand.groupId,
         issuedAt: laterDate,
       };
@@ -95,7 +95,7 @@ describe('construct-docmap-view-model', () => {
       describe('and they have never been updated', () => {
         beforeEach(async () => {
           viewModel = await pipe(
-            constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
+            constructDocmapViewModel(defaultAdapters)({ expressionDoi, groupId: addGroupCommand.groupId }),
             TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
           )();
         });
@@ -125,7 +125,7 @@ describe('construct-docmap-view-model', () => {
             issuedAt: laterUpdateDate,
           });
           viewModel = await pipe(
-            constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
+            constructDocmapViewModel(defaultAdapters)({ expressionDoi, groupId: addGroupCommand.groupId }),
             TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
           )();
         });
@@ -148,7 +148,7 @@ describe('construct-docmap-view-model', () => {
       const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         evaluationLocator,
-        articleId: toExpressionDoi(articleId),
+        articleId: expressionDoi,
         groupId: addGroupCommand.groupId,
         issuedAt: evaluationPublicationRecordedDate,
       };
@@ -163,7 +163,7 @@ describe('construct-docmap-view-model', () => {
         await framework.commandHelpers.recordEvaluationPublication(command);
         await framework.commandHelpers.updateEvaluation(updateEvaluationCommand);
         viewModel = await pipe(
-          constructDocmapViewModel(defaultAdapters)({ articleId, groupId: addGroupCommand.groupId }),
+          constructDocmapViewModel(defaultAdapters)({ expressionDoi, groupId: addGroupCommand.groupId }),
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
         )();
       });
@@ -185,7 +185,7 @@ describe('construct-docmap-view-model', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
-          articleId: toExpressionDoi(articleId),
+          articleId: expressionDoi,
         };
         const ports: Ports = {
           ...defaultAdapters,
@@ -193,7 +193,7 @@ describe('construct-docmap-view-model', () => {
         };
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         viewModel = await pipe(
-          constructDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
+          constructDocmapViewModel(ports)({ expressionDoi, groupId: addGroupCommand.groupId }),
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
         )();
       });
@@ -216,7 +216,7 @@ describe('construct-docmap-view-model', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
-          articleId: toExpressionDoi(articleId),
+          articleId: expressionDoi,
         };
         const ports: Ports = {
           ...defaultAdapters,
@@ -224,7 +224,7 @@ describe('construct-docmap-view-model', () => {
         };
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         viewModel = await pipe(
-          constructDocmapViewModel(ports)({ articleId, groupId: addGroupCommand.groupId }),
+          constructDocmapViewModel(ports)({ expressionDoi, groupId: addGroupCommand.groupId }),
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
         )();
       });
@@ -240,7 +240,10 @@ describe('construct-docmap-view-model', () => {
 
     describe('when there are no evaluations by the selected group', () => {
       it('returns an E.left of not-found', async () => {
-        const result = await constructDocmapViewModel(defaultAdapters)({ articleId, groupId: selectedGroupId })();
+        const result = await constructDocmapViewModel(defaultAdapters)({
+          expressionDoi,
+          groupId: selectedGroupId,
+        })();
 
         expect(result).toStrictEqual(E.left('not-found'));
       });
@@ -251,20 +254,20 @@ describe('construct-docmap-view-model', () => {
         const addOtherGroup = arbitraryAddGroupCommand();
         const recordEvaluationByThisGroup: RecordEvaluationPublicationCommand = {
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId),
+          articleId: expressionDoi,
           groupId: selectedGroupId,
         };
         await framework.commandHelpers.addGroup(addOtherGroup);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addOtherGroup.groupId,
-          articleId: toExpressionDoi(articleId),
+          articleId: expressionDoi,
         });
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationByThisGroup);
 
         viewModel = await pipe(
           {
-            articleId,
+            expressionDoi,
             groupId: selectedGroupId,
           },
           constructDocmapViewModel(defaultAdapters),
@@ -286,7 +289,7 @@ describe('construct-docmap-view-model', () => {
     beforeEach(async () => {
       result = await pipe(
         {
-          articleId,
+          expressionDoi,
           groupId: selectedGroupId,
         },
         constructDocmapViewModel(defaultAdapters),
