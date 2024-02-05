@@ -4,6 +4,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as EDOI from './expression-doi';
 
 const doiRegex = /^(?:doi:)?(10\.[0-9]{4,}(?:\.[1-9][0-9]*)*\/(?:[^%"#?\s])+)$/;
 
@@ -26,6 +27,8 @@ export const isArticleId = (value: unknown): value is ArticleId => value instanc
 export const fromString = (value: string): O.Option<ArticleId> => O.tryCatch(() => new ArticleId(value));
 
 export const toString = (value: ArticleId): string => `doi:${value.value}`;
+
+export const toExpressionDoi = (value: ArticleId): EDOI.ExpressionDoi => EDOI.fromValidatedString(value.value);
 
 export const hasPrefix = (prefix: string) => (doi: ArticleId): boolean => doi.value.startsWith(`${prefix}/`);
 
