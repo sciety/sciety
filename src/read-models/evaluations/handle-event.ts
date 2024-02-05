@@ -5,6 +5,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { toExpressionDoi } from '../../types/article-id';
 
 type RecordedEvaluationsForArticle = Array<RecordedEvaluation>;
 
@@ -75,6 +76,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (!hasAlreadyBeenRecorded(event.evaluationLocator, evaluationsForThisArticle)) {
       const recordedEvaluation: RecordedEvaluation = {
         articleId: event.articleId,
+        expressionDoi: toExpressionDoi(event.articleId),
         evaluationLocator: event.evaluationLocator,
         groupId: event.groupId,
         recordedAt: event.date,
