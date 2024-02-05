@@ -12,6 +12,7 @@ type CurationTeaser = {
 };
 
 export type ViewModel = {
+  pageHeading: string,
   groups: O.Option<ReadonlyArray<GroupLinkWithLogoViewModel>>,
   curationTeasers: ReadonlyArray<CurationTeaser>,
 };

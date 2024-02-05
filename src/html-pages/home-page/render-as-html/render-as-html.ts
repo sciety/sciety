@@ -7,7 +7,7 @@ export const renderAsHtml = (viewmodel: ViewModel): HtmlPage => pipe(
   viewmodel,
   renderHomepage,
   (content) => toHtmlPage({
-    title: 'Sciety: the home of public preprint evaluation',
+    title: `Sciety: ${viewmodel.pageHeading}`,
     content,
   }),
 );
