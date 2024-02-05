@@ -9,7 +9,7 @@ import { renderValueStatements } from './render-value-statements';
 
 export const renderHomepage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="home-page">
-    ${renderHero}
+    ${renderHero(viewModel)}
     ${renderValueStatements}
     ${pipe(
     viewModel.groups,
