@@ -19,7 +19,7 @@ const constructGroups = (dependencies: Dependencies, groupsToHighlight: GroupsTo
 );
 
 export const constructViewModel = (dependencies: Dependencies, groupsToHighlight: GroupsToHighlight): ViewModel => ({
-  pageHeading: 'The home of public preprint evaluation',
+  pageHeading: 'The home of preprint curation',
   groups: constructGroups(dependencies, groupsToHighlight),
   curationTeasers: constructCurationTeasers(dependencies),
 });
