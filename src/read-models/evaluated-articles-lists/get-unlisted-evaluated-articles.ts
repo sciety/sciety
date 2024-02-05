@@ -30,12 +30,12 @@ type MissingArticle = {
 };
 
 const toMissingArticleObjects = (
-  articleId: string,
+  expressionDoi: string,
   listIds: ReadonlyArray<ListId>,
 ): ReadonlyArray<MissingArticle> => pipe(
   listIds,
   RA.map((listId) => ({
-    articleId: new ArticleId(articleId),
+    articleId: new ArticleId(expressionDoi),
     listId,
   })),
 );

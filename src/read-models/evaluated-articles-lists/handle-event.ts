@@ -4,6 +4,8 @@ import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 import * as Gid from '../../types/group-id';
 import * as Lid from '../../types/list-id';
+import { ExpressionDoi } from '../../types/expression-doi';
+import { toExpressionDoi } from '../../types/article-id';
 
 const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2')]: Lid.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
@@ -38,7 +40,7 @@ export type ArticleState = {
 };
 
 export type ReadModel = {
-  articles: Map<string, ArticleState>,
+  articles: Map<ExpressionDoi, ArticleState>,
   groups: Map<string, ListId>,
 };
 
@@ -49,11 +51,11 @@ export const initialState = (): ReadModel => ({
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ArticleAddedToList')(event)) {
-    const a = readmodel.articles.get(event.articleId.value);
+    const a = readmodel.articles.get(toExpressionDoi(event.articleId));
     if (a !== undefined) {
       a.listedIn.push(event.listId);
     } else {
-      readmodel.articles.set(event.articleId.value, {
+      readmodel.articles.set(toExpressionDoi(event.articleId), {
         listedIn: [event.listId],
         evaluatedBy: [],
       });
@@ -63,11 +65,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel.groups.set(event.groupId, event.listId);
   }
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    const a = readmodel.articles.get(event.articleId.value);
+    const a = readmodel.articles.get(toExpressionDoi(event.articleId));
     if (a !== undefined) {
       a.evaluatedBy.push(event.groupId);
     } else {
-      readmodel.articles.set(event.articleId.value, {
+      readmodel.articles.set(toExpressionDoi(event.articleId), {
         listedIn: [],
         evaluatedBy: [event.groupId],
       });
