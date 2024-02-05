@@ -27,11 +27,11 @@ describe('construct-view-model', () => {
   let framework: TestFramework;
   let docmapArticleIds: ReadonlyArray<string>;
 
-  const getDocmapsArticleIds = async (params: Params) => pipe(
+  const getDocmapsExpressionDois = async (params: Params) => pipe(
     params,
     constructViewModel(framework.dependenciesForViews),
     TE.getOrElse(framework.abortTest('constructDocmapIndexViewModel')),
-    T.map(RA.map((docmap) => docmap.articleId.value)),
+    T.map(RA.map((docmap) => docmap.expressionDoi)),
   )();
 
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('construct-view-model', () => {
 
   describe('when there are no docmaps', () => {
     beforeEach(async () => {
-      docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+      docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
     });
 
     it('returns an empty list', () => {
@@ -71,7 +71,7 @@ describe('construct-view-model', () => {
           articleId: toExpressionDoi(articleId2),
           groupId: groupId1,
         });
-        docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+        docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
       });
 
       it('returns a docmap for every evaluated article', () => {
@@ -103,7 +103,7 @@ describe('construct-view-model', () => {
           articleId: toExpressionDoi(articleId),
           groupId: groupId2,
         });
-        docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+        docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
       });
 
       it('returns a docmap for every group', () => {
@@ -139,7 +139,7 @@ describe('construct-view-model', () => {
           articleId: toExpressionDoi(articleId2),
           groupId: groupId2,
         });
-        docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+        docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
       });
 
       it('returns a docmap for every combination of group and evaluated article', () => {
@@ -162,7 +162,7 @@ describe('construct-view-model', () => {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId,
       });
-      docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+      docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
     });
 
     it('excludes articles evaluated by the unsupported group', () => {
@@ -218,7 +218,7 @@ describe('construct-view-model', () => {
           articleId: toExpressionDoi(articleId2),
           groupId: groupId2,
         });
-        docmapArticleIds = await getDocmapsArticleIds(defaultParams);
+        docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
       });
 
       it('returns all docmaps', () => {
@@ -252,7 +252,7 @@ describe('construct-view-model', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: groupId2,
         });
-        docmapArticleIds = await getDocmapsArticleIds({
+        docmapArticleIds = await getDocmapsExpressionDois({
           ...defaultParams,
           publisheraccount: O.some(publisherAccountId(addGroup1Command)),
         });
@@ -284,7 +284,7 @@ describe('construct-view-model', () => {
             issuedAt: new Date('2000-01-01'),
             groupId,
           });
-          docmapArticleIds = await getDocmapsArticleIds({
+          docmapArticleIds = await getDocmapsExpressionDois({
             ...defaultParams,
             updatedAfter: O.some(new Date('1990-01-01')),
           });
@@ -317,7 +317,7 @@ describe('construct-view-model', () => {
             authors: [arbitraryString()],
             issuedAt: new Date('2000-01-01'),
           });
-          docmapArticleIds = await getDocmapsArticleIds({
+          docmapArticleIds = await getDocmapsExpressionDois({
             ...defaultParams,
             updatedAfter: O.some(new Date('1990-01-01')),
           });

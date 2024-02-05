@@ -42,7 +42,7 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluat
 
 export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   '@context': 'https://w3id.org/docmaps/context.jsonld',
-  id: `https://sciety.org/docmaps/v1/articles/${viewModel.articleId.value}/${viewModel.group.slug}.docmap.json`,
+  id: `https://sciety.org/docmaps/v1/articles/${viewModel.expressionDoi}/${viewModel.group.slug}.docmap.json`,
   type: 'docmap',
   created: RNEA.head(viewModel.evaluations).recordedAt.toISOString(),
   updated: viewModel.updatedAt.toISOString(),
@@ -61,12 +61,12 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
     '_:b0': {
       assertions: [],
       inputs: [{
-        doi: viewModel.articleId.value,
-        url: `https://doi.org/${viewModel.articleId.value}`,
+        doi: viewModel.expressionDoi,
+        url: `https://doi.org/${viewModel.expressionDoi}`,
       }],
       actions: pipe(
         viewModel.evaluations,
-        RA.map(createAction(EDOI.fromValidatedString(viewModel.articleId.value))),
+        RA.map(createAction(viewModel.expressionDoi)),
       ),
     },
   },

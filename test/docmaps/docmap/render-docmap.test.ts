@@ -5,11 +5,11 @@ import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { renderDocmap } from '../../../src/docmaps/docmap/render-docmap';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
-const articleId = arbitraryArticleId();
+const expressionDoi = arbitraryExpressionDoi();
 
 describe('render-docmap', () => {
   describe('docmap meta data', () => {
@@ -17,7 +17,7 @@ describe('render-docmap', () => {
     const laterEvaluationRecordedDate = new Date('2000');
     const group = arbitraryGroup();
     const result = renderDocmap({
-      articleId,
+      expressionDoi,
       group,
       evaluations: [
         {
@@ -40,7 +40,7 @@ describe('render-docmap', () => {
 
     describe('the docmap id', () => {
       const anotherDocmap = renderDocmap({
-        articleId,
+        expressionDoi,
         group,
         evaluations: [
           {
@@ -59,7 +59,7 @@ describe('render-docmap', () => {
       });
 
       it('includes the article id', () => {
-        expect(result.id).toContain(articleId.value);
+        expect(result.id).toContain(expressionDoi);
       });
 
       it('includes the group slug', () => {
@@ -113,7 +113,7 @@ describe('render-docmap', () => {
       },
     ];
     const result = renderDocmap({
-      articleId,
+      expressionDoi,
       group: arbitraryGroup(),
       evaluations,
       updatedAt: new Date(),
@@ -135,8 +135,8 @@ describe('render-docmap', () => {
           expect(theStep.inputs).toStrictEqual([
             expect.objectContaining(
               {
-                doi: articleId.value,
-                url: expect.stringContaining(articleId.value),
+                doi: expressionDoi,
+                url: expect.stringContaining(expressionDoi),
               },
             )]);
         });
@@ -168,13 +168,13 @@ describe('render-docmap', () => {
             expect(outputOfAction0.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
-                url: `https://sciety.org/articles/activity/${articleId.value}#${earlierEvaluationLocator}`,
+                url: `https://sciety.org/articles/activity/${expressionDoi}#${earlierEvaluationLocator}`,
               }]),
             );
             expect(outputOfAction1.content).toStrictEqual(
               expect.arrayContaining([{
                 type: 'web-page',
-                url: `https://sciety.org/articles/activity/${articleId.value}#${laterEvaluationLocator}`,
+                url: `https://sciety.org/articles/activity/${expressionDoi}#${laterEvaluationLocator}`,
               }]),
             );
           });

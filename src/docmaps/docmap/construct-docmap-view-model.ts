@@ -7,9 +7,9 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
+import { toExpressionDoi, ArticleId } from '../../types/article-id';
 import { Evaluation } from './evaluation';
 import * as DE from '../../types/data-error';
-import { ArticleId } from '../../types/article-id';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
 import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
@@ -18,7 +18,7 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import * as EDOI from '../../types/expression-doi';
 
 export type DocmapViewModel = {
-  articleId: ArticleId,
+  expressionDoi: EDOI.ExpressionDoi,
   group: Group,
   evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation>,
   updatedAt: Date,
@@ -28,12 +28,6 @@ type DocmapIdentifier = {
   articleId: ArticleId,
   groupId: GroupId,
 };
-
-type ConstructDocmapViewModel = (
-  adapters: Ports
-) => (
-  docmapIdentifier: DocmapIdentifier
-) => TE.TaskEither<DE.DataError, DocmapViewModel>;
 
 export type Ports = Queries & {
   fetchReview: (reviewId: EvaluationLocator) => TE.TaskEither<DE.DataError, { url: URL }>,
@@ -58,9 +52,15 @@ const extendWithSourceUrl = (adapters: Ports) => (evaluation: RecordedEvaluation
   ),
 );
 
+type ConstructDocmapViewModel = (
+  adapters: Ports
+) => (
+  docmapIdentifier: DocmapIdentifier
+) => TE.TaskEither<DE.DataError, DocmapViewModel>;
+
 export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => ({ articleId, groupId }) => pipe(
   {
-    articleId: TE.right(articleId),
+    expressionDoi: TE.right(toExpressionDoi(articleId)),
     evaluations: pipe(
       adapters.getEvaluationsOfExpression(EDOI.fromValidatedString(articleId.value)),
       TE.right,

@@ -44,9 +44,10 @@ describe('construct-docmap-view-model', () => {
     });
 
     describe('when there is an evaluation by the selected group', () => {
+      const expressionDoi = toExpressionDoi(articleId);
       const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId),
+        articleId: expressionDoi,
         groupId: addGroupCommand.groupId,
       };
 
@@ -60,7 +61,7 @@ describe('construct-docmap-view-model', () => {
       });
 
       it('includes the article id', async () => {
-        expect(viewModel).toStrictEqual(expect.objectContaining({ articleId }));
+        expect(viewModel.expressionDoi).toStrictEqual(expressionDoi);
       });
 
       it('includes the group', async () => {
