@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
-import { HtmlPage, toHtmlPage } from '../html-page';
-import { renderHomepage } from './render-as-html/render-home-page';
+import { HtmlPage } from '../html-page';
 import { constructViewModel, GroupsToHighlight } from './construct-view-model/construct-view-model';
 import * as GID from '../../types/group-id';
 import { Dependencies } from './dependencies';
+import { renderAsHtml } from './render-as-html/render-as-html';
 
 const groupsToHighlight: GroupsToHighlight = [
   {
@@ -34,9 +34,5 @@ const groupsToHighlight: GroupsToHighlight = [
 
 export const homePage = (dependencies: Dependencies): HtmlPage => pipe(
   constructViewModel(dependencies, groupsToHighlight),
-  renderHomepage,
-  (content) => toHtmlPage({
-    title: 'Sciety: the home of public preprint evaluation',
-    content,
-  }),
+  renderAsHtml,
 );
