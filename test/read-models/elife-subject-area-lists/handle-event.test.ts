@@ -13,11 +13,14 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 import { arbitraryDate } from '../../helpers';
+import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 describe('handle-event', () => {
   describe('the state machine of a single article', () => {
     let currentState: ReadModel;
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
+    const articleId = new ArticleId(expressionDoi);
     const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
     const subjectArea = arbitrarySubjectArea();
 
@@ -29,11 +32,11 @@ describe('handle-event', () => {
       const readModel = handleEvent(currentState, event);
 
       if (typeof nextStateOrNextStateName === 'string') {
-        expect(readModel[articleId.value].name).toStrictEqual(nextStateOrNextStateName);
+        expect(readModel[expressionDoi].name).toStrictEqual(nextStateOrNextStateName);
       } else if (typeof nextStateOrNextStateName === 'object') {
-        expect(readModel[articleId.value]).toStrictEqual(nextStateOrNextStateName);
+        expect(readModel[expressionDoi]).toStrictEqual(nextStateOrNextStateName);
       } else {
-        expect(readModel[articleId.value]).toBeUndefined();
+        expect(readModel[expressionDoi]).toBeUndefined();
       }
     };
 
