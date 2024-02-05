@@ -29,7 +29,7 @@ const findEvaluationsOfType: FindEvaluationsOfType = (soughtType, evaluationType
 );
 
 export const evaluationsStatus = (readmodel: ReadModel) => (): Json => pipe(
-  readmodel.byArticleId,
+  readmodel.byExpressionDoi,
   RM.values(RA.getOrd(byDate)),
   RA.flatten,
   RA.map((evaluation) => evaluation.type),

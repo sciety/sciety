@@ -18,6 +18,6 @@ export const getEvaluationsOfMultipleExpressions = (
   readmodel: ReadModel,
 ): GetEvaluationsOfMultipleExpressions => (expressionDois) => pipe(
   expressionDois,
-  RA.flatMap((expressionDoi) => readmodel.byArticleId.get(expressionDoi) ?? []),
+  RA.flatMap((expressionDoi) => readmodel.byExpressionDoi.get(expressionDoi) ?? []),
   RA.uniq(eqEntry),
 );

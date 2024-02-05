@@ -7,7 +7,7 @@ import { ExpressionDoi } from '../../types/expression-doi';
 type GetEvaluationsOfExpression = (expressionDoi: ExpressionDoi) => ReadonlyArray<RecordedEvaluation>;
 
 export const getEvaluationsOfExpression = (readmodel: ReadModel): GetEvaluationsOfExpression => (expressionDoi) => pipe(
-  readmodel.byArticleId.get(expressionDoi),
+  readmodel.byExpressionDoi.get(expressionDoi),
   O.fromNullable,
   O.match(
     () => [],

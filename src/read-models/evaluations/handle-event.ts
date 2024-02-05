@@ -8,36 +8,36 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { toExpressionDoi } from '../../types/article-id';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-type RecordedEvaluationsForArticle = Array<RecordedEvaluation>;
+type RecordedEvaluationsForExpression = Array<RecordedEvaluation>;
 
 export type ReadModel = {
   byEvaluationLocator: Map<EvaluationLocator, RecordedEvaluation>,
-  byArticleId: Map<ExpressionDoi, RecordedEvaluationsForArticle>,
+  byExpressionDoi: Map<ExpressionDoi, RecordedEvaluationsForExpression>,
   byGroupId: Map<string, Map<string, RecordedEvaluation>>,
 };
 
 export const initialState = (): ReadModel => ({
   byEvaluationLocator: new Map(),
-  byArticleId: new Map(),
+  byExpressionDoi: new Map(),
   byGroupId: new Map(),
 });
 
 const hasAlreadyBeenRecorded = (
   evaluationLocator: EvaluationLocator,
-  existingEvaluations: RecordedEvaluationsForArticle,
+  existingEvaluations: RecordedEvaluationsForExpression,
 ) => pipe(
   existingEvaluations,
   RA.some((existingEvaluation) => existingEvaluation.evaluationLocator === evaluationLocator),
 );
 
-const addToIndexByArticle = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {
-  const evaluationsForThisArticle = readmodel.byArticleId.get(recordedEvaluation.expressionDoi) ?? [];
-  evaluationsForThisArticle.push(recordedEvaluation);
-  readmodel.byArticleId.set(recordedEvaluation.expressionDoi, evaluationsForThisArticle);
+const addToIndexByExpressionDoi = (recordedEvaluation: RecordedEvaluation, readmodel: ReadModel) => {
+  const evaluationsForThisExpression = readmodel.byExpressionDoi.get(recordedEvaluation.expressionDoi) ?? [];
+  evaluationsForThisExpression.push(recordedEvaluation);
+  readmodel.byExpressionDoi.set(recordedEvaluation.expressionDoi, evaluationsForThisExpression);
 };
 
-const removeFromIndexByArticle = (evaluationLocator: EvaluationLocator, readmodel: ReadModel) => {
-  readmodel.byArticleId.forEach((state) => {
+const removeFromIndexByExpressionDoi = (evaluationLocator: EvaluationLocator, readmodel: ReadModel) => {
+  readmodel.byExpressionDoi.forEach((state) => {
     const i = state.findIndex((evaluation) => evaluation.evaluationLocator === evaluationLocator);
     if (i > -1) {
       state.splice(i, 1);
@@ -67,14 +67,14 @@ const removeFromIndexByEvaluationLocator = (evaluationLocator: EvaluationLocator
 
 const removeFromAllIndexes = (evaluationLocator: EvaluationLocator, readmodel: ReadModel) => {
   removeFromIndexByEvaluationLocator(evaluationLocator, readmodel);
-  removeFromIndexByArticle(evaluationLocator, readmodel);
+  removeFromIndexByExpressionDoi(evaluationLocator, readmodel);
   removeFromIndexByGroup(evaluationLocator, readmodel);
 };
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    const evaluationsForThisArticle = readmodel.byArticleId.get(toExpressionDoi(event.articleId)) ?? [];
-    if (!hasAlreadyBeenRecorded(event.evaluationLocator, evaluationsForThisArticle)) {
+    const evaluationsForThisExpression = readmodel.byExpressionDoi.get(toExpressionDoi(event.articleId)) ?? [];
+    if (!hasAlreadyBeenRecorded(event.evaluationLocator, evaluationsForThisExpression)) {
       const recordedEvaluation: RecordedEvaluation = {
         articleId: event.articleId,
         expressionDoi: toExpressionDoi(event.articleId),
@@ -87,7 +87,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         type: O.fromNullable(event.evaluationType),
       };
       addToIndexByEvaluationLocator(recordedEvaluation, readmodel);
-      addToIndexByArticle(recordedEvaluation, readmodel);
+      addToIndexByExpressionDoi(recordedEvaluation, readmodel);
       addToIndexByGroup(recordedEvaluation, readmodel);
     }
   }

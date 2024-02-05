@@ -7,7 +7,7 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 type GetEvaluationsWithNoType = () => ReadonlyArray<RecordedEvaluation>;
 
 export const getEvaluationsWithNoType = (readmodel: ReadModel): GetEvaluationsWithNoType => () => pipe(
-  Object.fromEntries(readmodel.byArticleId),
+  Object.fromEntries(readmodel.byExpressionDoi),
   Object.values,
   (values) => values as ReadonlyArray<ReadonlyArray<RecordedEvaluation>>,
   RA.flatten,
