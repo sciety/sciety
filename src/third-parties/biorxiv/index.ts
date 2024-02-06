@@ -1,3 +1,1 @@
-export {
-  getArticleVersionEventsFromBiorxiv,
-} from './get-article-version-events-from-biorxiv';
+export { getPaperExpressionsFromBiorxiv } from './get-paper-expressions-from-biorxiv';

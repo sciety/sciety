@@ -4,13 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { getArticleVersionEventsFromBiorxiv } from '../../../src/third-parties/biorxiv';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { getPaperExpressionsFromBiorxiv } from '../../../src/third-parties/biorxiv/get-paper-expressions-from-biorxiv';
 
-describe('get-article-version-events-from-biorxiv', () => {
+describe('get-paper-expressions-from-biorxiv', () => {
   describe('when biorxiv is available', () => {
     describe('when the server is biorxiv', () => {
       it.failing('returns an article-version event for each article version', async () => {
@@ -33,7 +33,7 @@ describe('get-article-version-events-from-biorxiv', () => {
         });
 
         const events = await pipe(
-          getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(expressionDoi, 'biorxiv'),
+          getPaperExpressionsFromBiorxiv({ queryExternalService, logger: dummyLogger })(expressionDoi, 'biorxiv'),
           T.map(E.getOrElseW(() => [])),
         )();
 
@@ -76,7 +76,7 @@ describe('get-article-version-events-from-biorxiv', () => {
         });
 
         const events = await pipe(
-          getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(expressionDoi, 'medrxiv'),
+          getPaperExpressionsFromBiorxiv({ queryExternalService, logger: dummyLogger })(expressionDoi, 'medrxiv'),
           T.map(E.getOrElseW(() => [])),
         )();
 
@@ -103,7 +103,7 @@ describe('get-article-version-events-from-biorxiv', () => {
     it('returns a left', async () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);
 
-      const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
+      const events = await getPaperExpressionsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
 
       expect(E.isLeft(events)).toBe(true);
     });
@@ -114,7 +114,7 @@ describe('get-article-version-events-from-biorxiv', () => {
       it('returns a left', async () => {
         const queryExternalService = () => () => TE.right({});
 
-        const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
+        const events = await getPaperExpressionsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
 
         expect(E.isLeft(events)).toBe(true);
       });
@@ -133,7 +133,7 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         });
 
-        const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
+        const events = await getPaperExpressionsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
 
         expect(E.isLeft(events)).toBe(true);
       });
@@ -152,7 +152,7 @@ describe('get-article-version-events-from-biorxiv', () => {
           ],
         });
 
-        const events = await getArticleVersionEventsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
+        const events = await getPaperExpressionsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
 
         expect(E.isLeft(events)).toBe(true);
       });

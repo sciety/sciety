@@ -18,11 +18,6 @@ type Dependencies = {
   logger: Logger,
 };
 
-type GetArticleVersionEventsFromBiorxiv = (
-  doi: EDOI.ExpressionDoi,
-  server: ColdSpringHarborServer,
-) => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
-
 const mapResponse = (expressionsDoi: EDOI.ExpressionDoi, expressionsServer: ColdSpringHarborServer) => flow(
   (response: ResponseWithVersions) => response.collection,
   RA.map(({ version, date }) => ({
@@ -35,9 +30,14 @@ const mapResponse = (expressionsDoi: EDOI.ExpressionDoi, expressionsServer: Cold
   })),
 );
 
-export const getArticleVersionEventsFromBiorxiv = (
+type GetPaperExpressionsFromBiorxiv = (
+  doi: EDOI.ExpressionDoi,
+  server: ColdSpringHarborServer,
+) => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
+
+export const getPaperExpressionsFromBiorxiv = (
   deps: Dependencies,
-): GetArticleVersionEventsFromBiorxiv => (doi, server) => pipe(
+): GetPaperExpressionsFromBiorxiv => (doi, server) => pipe(
   fetchArticleDetails(deps, new ArticleId(doi), server),
   TE.map(mapResponse(doi, server)),
 );
