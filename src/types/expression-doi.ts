@@ -36,6 +36,7 @@ export const canonicalExpressionDoiCodec = new t.Type<ExpressionDoi, string, unk
     t.string.validate(u, c),
     E.chain(flow(
       O.fromPredicate((value) => doiRegex.test(value)),
+      O.map((value) => value.toLowerCase()),
       O.fold(
         () => t.failure(u, c),
         (id) => t.success(id as ExpressionDoi),

@@ -37,7 +37,7 @@ describe('expression-doi', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.failing('decodes to a canonical (lowercase) value', () => {
+    it('decodes to a canonical (lowercase) value', () => {
       expect(decoded).toBe('10.1234/abcd');
     });
   });
