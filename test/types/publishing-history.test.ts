@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import { URL } from 'url';
 import * as PH from '../../src/types/publishing-history';
 import { arbitraryPaperExpression } from './paper-expression.helper';
@@ -108,23 +107,19 @@ describe('publishing-history', () => {
     });
   });
 
-  describe('given two preprint expressions published on bioRxiv on the same date', () => {
+  describe('given two expressions with the same doi that have been published on the same date and have different publisherHtmlUrl', () => {
     const paperExpression1: PaperExpression = {
-      expressionType: 'preprint',
+      ...arbitraryPaperExpression(),
       expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
       publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v1'),
       publishedAt: new Date('2024-01-17'),
-      publishedTo: '10.1101/2022.06.22.497259v1',
-      server: O.some('biorxiv'),
     };
 
     const paperExpression2: PaperExpression = {
-      expressionType: 'preprint',
+      ...arbitraryPaperExpression(),
       expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
       publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v2'),
       publishedAt: new Date('2024-01-17'),
-      publishedTo: '10.1101/2022.06.22.497259v2',
-      server: O.some('biorxiv'),
     };
 
     const publishingHistory: PH.PublishingHistory = pipe(
