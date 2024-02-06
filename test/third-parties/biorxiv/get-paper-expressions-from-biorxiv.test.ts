@@ -43,6 +43,7 @@ describe('get-paper-expressions-from-biorxiv', () => {
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.biorxiv.org/content/${expressionDoi}v2`),
           publishedAt: new Date('2020-01-02'),
+          publishedTo: `${expressionDoi}v2`,
           server: O.some('biorxiv'),
         });
         expect(events[1]).toStrictEqual({
@@ -50,6 +51,7 @@ describe('get-paper-expressions-from-biorxiv', () => {
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.biorxiv.org/content/${expressionDoi}v1`),
           publishedAt: new Date('2019-12-31'),
+          publishedTo: `${expressionDoi}v1`,
           server: O.some('biorxiv'),
         });
       });
@@ -86,6 +88,7 @@ describe('get-paper-expressions-from-biorxiv', () => {
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.medrxiv.org/content/${expressionDoi}v2`),
           publishedAt: new Date('2020-01-02'),
+          publishedTo: `${expressionDoi}v2`,
           server: O.some('medrxiv'),
         });
         expect(events[1]).toStrictEqual({
@@ -93,6 +96,7 @@ describe('get-paper-expressions-from-biorxiv', () => {
           expressionDoi,
           publisherHtmlUrl: new URL(`https://www.medrxiv.org/content/${expressionDoi}v1`),
           publishedAt: new Date('2019-12-31'),
+          publishedTo: `${expressionDoi}v1`,
           server: O.some('medrxiv'),
         });
       });
