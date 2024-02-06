@@ -1,13 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { arbitraryArticleId } from './article-id.helper';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryString } from '../helpers';
 import { expressionDoiCodec } from '../../src/types/expression-doi';
 
 describe('expression-doi', () => {
   describe.each([
-    [arbitraryArticleId().value],
+    ['10.1111/123456'],
   ])('when successfully decoding a DOI (%s)', (input) => {
     const decoded = pipe(
       input,
