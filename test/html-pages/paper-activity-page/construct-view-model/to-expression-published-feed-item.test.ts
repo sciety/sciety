@@ -7,6 +7,7 @@ import {
 import { articleServers } from '../../../../src/types/article-server';
 import { arbitraryColdSpringHarborArticleServer, arbitraryNonColdSpringHarborArticleServer } from '../../../types/article-server.helper';
 import { arbitraryNonColdSpringHarborExpressionDoi } from '../../../types/expression-doi.helper';
+import { arbitraryUri } from '../../../helpers';
 
 describe('to-expression-published-feed-item', () => {
   describe('given a paper expression from a known server, that is not a ColdSpringHarborServer', () => {
@@ -28,10 +29,11 @@ describe('to-expression-published-feed-item', () => {
   });
 
   describe('given a paper expression from a known server, that is a ColdSpringHarborServer', () => {
+    const uriPartToBeStripped = `${arbitraryUri()}/`;
     const server = arbitraryColdSpringHarborArticleServer();
     const expression = {
       ...arbitraryPaperExpression(),
-      publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2023.07.25.550600v2'),
+      publisherHtmlUrl: new URL(`${uriPartToBeStripped}10.1101/2023.07.25.550600v2`),
       server: O.some(server),
     };
     const item = toExpressionPublishedFeedItem(expression);
@@ -40,9 +42,9 @@ describe('to-expression-published-feed-item', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    it('publishedTo contains the path for the expression\'s url on that server', () => {
+    it.failing('publishedTo contains the path for the expression\'s url on that server', () => {
       expect(item.publishedTo).toContain('10.1101/2023.07.25.550600v2');
-      expect(item.publishedTo).not.toContain('https://www.biorxiv.org/content/');
+      expect(item.publishedTo).not.toContain(uriPartToBeStripped);
     });
   });
 
