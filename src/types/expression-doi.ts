@@ -28,3 +28,19 @@ export const expressionDoiCodec = new t.Type<ExpressionDoi, string, unknown>(
   ),
   (a) => a.toString(),
 );
+
+export const canonicalExpressionDoiCodec = new t.Type<ExpressionDoi, string, unknown>(
+  'canonicalExpressionDoiCodec',
+  isDoi,
+  (u, c) => pipe(
+    t.string.validate(u, c),
+    E.chain(flow(
+      O.fromPredicate((value) => doiRegex.test(value)),
+      O.fold(
+        () => t.failure(u, c),
+        (id) => t.success(id as ExpressionDoi),
+      ),
+    )),
+  ),
+  (a) => a.toString(),
+);

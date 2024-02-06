@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryString } from '../helpers';
-import { expressionDoiCodec } from '../../src/types/expression-doi';
+import { canonicalExpressionDoiCodec, expressionDoiCodec } from '../../src/types/expression-doi';
 
 describe('expression-doi', () => {
   describe.each([
@@ -26,6 +26,19 @@ describe('expression-doi', () => {
 
     it('returns on the left', () => {
       expect(E.isLeft(decoded)).toBe(true);
+    });
+  });
+
+  describe('when the input contains uppercase letters', () => {
+    const input = '10.1234/AbCd';
+    const decoded = pipe(
+      input,
+      canonicalExpressionDoiCodec.decode,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    it.failing('decodes to a canonical (lowercase) value', () => {
+      expect(decoded).toBe('10.1234/abcd');
     });
   });
 });
