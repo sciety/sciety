@@ -42,7 +42,7 @@ describe('to-expression-published-feed-item', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    it.failing('publishedTo contains the path for the expression\'s url on that server', () => {
+    it('publishedTo contains the path for the expression\'s url on that server', () => {
       expect(item.publishedTo).toContain('10.1101/2023.07.25.550600v2');
       expect(item.publishedTo).not.toContain(uriPartToBeStripped);
     });
