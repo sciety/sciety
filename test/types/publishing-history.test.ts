@@ -67,23 +67,19 @@ describe('publishing-history', () => {
     });
   });
 
-  describe('given a journal-article expression published on eLife and its version-less alias', () => {
+  describe('given two expressions that have been published on the same date and have the same publisherHtmlUrl', () => {
     const paperExpression1: PaperExpression = {
-      expressionType: 'journal-article',
+      ...arbitraryPaperExpression(),
       expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184'),
       publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
       publishedAt: new Date('2024-01-17'),
-      publishedTo: '10.7554/elife.90184',
-      server: O.some('elife'),
     };
 
     const paperExpression2: PaperExpression = {
-      expressionType: 'journal-article',
+      ...arbitraryPaperExpression(),
       expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184.4'),
       publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
       publishedAt: new Date('2024-01-17'),
-      publishedTo: '10.7554/elife.90184.4',
-      server: O.some('elife'),
     };
 
     const publishingHistory: PH.PublishingHistory = pipe(
