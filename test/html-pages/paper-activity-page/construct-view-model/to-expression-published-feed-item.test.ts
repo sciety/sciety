@@ -1,20 +1,16 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { arbitraryPaperExpression } from '../../../types/paper-expression.helper';
 import {
   toExpressionPublishedFeedItem,
 } from '../../../../src/html-pages/paper-activity-page/construct-view-model/to-expression-published-feed-item';
 import { articleServers } from '../../../../src/types/article-server';
-import { arbitraryColdSpringHarborArticleServer, arbitraryNonColdSpringHarborArticleServer } from '../../../types/article-server.helper';
-import { arbitraryNonColdSpringHarborExpressionDoi } from '../../../types/expression-doi.helper';
-import { arbitraryUri } from '../../../helpers';
+import { arbitraryArticleServer } from '../../../types/article-server.helper';
 
 describe('to-expression-published-feed-item', () => {
-  describe('given a paper expression from a known server, that is not a ColdSpringHarborServer', () => {
-    const server = arbitraryNonColdSpringHarborArticleServer();
+  describe('given a paper expression from a known server', () => {
+    const server = arbitraryArticleServer();
     const expression = {
       ...arbitraryPaperExpression(),
-      expressionDoi: arbitraryNonColdSpringHarborExpressionDoi(),
       server: O.some(server),
     };
     const item = toExpressionPublishedFeedItem(expression);
@@ -23,28 +19,8 @@ describe('to-expression-published-feed-item', () => {
       expect(item.publishedTo).toContain(articleServers[server].name);
     });
 
-    it('publishedTo contains the DOI of the expression', () => {
-      expect(item.publishedTo).toContain(expression.expressionDoi);
-    });
-  });
-
-  describe('given a paper expression from a known server, that is a ColdSpringHarborServer', () => {
-    const uriPartToBeStripped = `${arbitraryUri()}/`;
-    const server = arbitraryColdSpringHarborArticleServer();
-    const expression = {
-      ...arbitraryPaperExpression(),
-      publisherHtmlUrl: new URL(`${uriPartToBeStripped}10.1101/2023.07.25.550600v2`),
-      server: O.some(server),
-    };
-    const item = toExpressionPublishedFeedItem(expression);
-
-    it('publishedTo contains the server name', () => {
-      expect(item.publishedTo).toContain(articleServers[server].name);
-    });
-
-    it('publishedTo contains the path for the expression\'s url on that server', () => {
-      expect(item.publishedTo).toContain('10.1101/2023.07.25.550600v2');
-      expect(item.publishedTo).not.toContain(uriPartToBeStripped);
+    it('publishedTo contains the publishedTo of the expression', () => {
+      expect(item.publishedTo).toContain(expression.publishedTo);
     });
   });
 
@@ -55,8 +31,8 @@ describe('to-expression-published-feed-item', () => {
     };
     const item = toExpressionPublishedFeedItem(expression);
 
-    it('publishedTo contains the DOI of the expression', () => {
-      expect(item.publishedTo).toContain(expression.expressionDoi);
+    it('publishedTo does not mention the server', () => {
+      expect(item.publishedTo).toStrictEqual(expression.publishedTo);
     });
   });
 });
