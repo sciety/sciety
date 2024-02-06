@@ -16,7 +16,7 @@ import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../read-side/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../read-side/reviewing-groups';
-import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
+import { canonicalExpressionDoiCodec, ExpressionDoi } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructFrontMatter } from '../../../read-side/construct-front-matter';
@@ -24,7 +24,7 @@ import { constructContainingList } from './construct-containing-list';
 import { findAllListsContainingPaper } from '../../../read-side/find-all-lists-containing-paper';
 
 export const paramsCodec = t.type({
-  expressionDoi: expressionDoiCodec,
+  expressionDoi: canonicalExpressionDoiCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
