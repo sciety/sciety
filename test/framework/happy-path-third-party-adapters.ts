@@ -8,7 +8,7 @@ import * as DE from '../../src/types/data-error';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../src/types/html-fragment';
 import {
-  arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri,
+  arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
 import { arbitraryArticleServer } from '../types/article-server.helper';
@@ -45,6 +45,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
         expressionDoi,
         publisherHtmlUrl: new URL(arbitraryUri()),
         publishedAt: arbitraryDate(),
+        publishedTo: arbitraryWord(),
         server: O.some(arbitraryArticleServer()),
       },
     ],

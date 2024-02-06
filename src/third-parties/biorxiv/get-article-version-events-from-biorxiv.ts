@@ -30,6 +30,7 @@ const mapResponse = (expressionsDoi: EDOI.ExpressionDoi, expressionsServer: Cold
     expressionDoi: expressionsDoi,
     publisherHtmlUrl: new URL(`https://www.${expressionsServer}.org/content/${expressionsDoi}v${version}`),
     publishedAt: date,
+    publishedTo: '',
     server: O.some(expressionsServer),
   })),
 );

@@ -18,6 +18,7 @@ export const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression =
   expressionType: determineExpressionType(crossrefWork.type),
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
   publishedAt: determinePublicationDate(crossrefWork),
+  publishedTo: '',
   publisherHtmlUrl: new URL(crossrefWork.resource.primary.URL),
   server: identifyExpressionServer(crossrefWork.resource.primary.URL),
 });

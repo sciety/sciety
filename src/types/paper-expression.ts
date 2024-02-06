@@ -12,6 +12,7 @@ export type PaperExpression = {
   expressionDoi: ExpressionDoi,
   publisherHtmlUrl: URL,
   publishedAt: Date,
+  publishedTo: string,
   server: O.Option<ArticleServer>,
 };
 

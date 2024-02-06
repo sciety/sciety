@@ -73,6 +73,7 @@ describe('publishing-history', () => {
       expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184'),
       publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
       publishedAt: new Date('2024-01-17'),
+      publishedTo: '10.7554/elife.90184',
       server: O.some('elife'),
     };
 
@@ -81,6 +82,7 @@ describe('publishing-history', () => {
       expressionDoi: EDOI.fromValidatedString('10.7554/elife.90184.4'),
       publisherHtmlUrl: new URL('https://elifesciences.org/articles/90184'),
       publishedAt: new Date('2024-01-17'),
+      publishedTo: '10.7554/elife.90184.4',
       server: O.some('elife'),
     };
 
@@ -116,6 +118,7 @@ describe('publishing-history', () => {
       expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
       publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v1'),
       publishedAt: new Date('2024-01-17'),
+      publishedTo: '10.1101/2022.06.22.497259v1',
       server: O.some('biorxiv'),
     };
 
@@ -124,6 +127,7 @@ describe('publishing-history', () => {
       expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),
       publisherHtmlUrl: new URL('https://www.biorxiv.org/content/10.1101/2022.06.22.497259v2'),
       publishedAt: new Date('2024-01-17'),
+      publishedTo: '10.1101/2022.06.22.497259v2',
       server: O.some('biorxiv'),
     };
 
