@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { getArticleVersionEventsFromBiorxiv } from './biorxiv';
 import { fetchAllPaperExpressions as fetchAllPaperExpressionsFromCrossref } from './crossref';
@@ -48,8 +49,12 @@ export const fetchPublishingHistory = (
     logger,
     expressionDoi,
   ),
-  TE.chain(expandMonolithicBiorxivOrMedrxivExpressions(
-    getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
+  TE.chainTaskK((paperExpressions) => pipe(
+    paperExpressions,
+    expandMonolithicBiorxivOrMedrxivExpressions(
+      getArticleVersionEventsFromBiorxiv({ queryExternalService, logger }),
+    ),
+    TE.getOrElse(() => T.of(paperExpressions)),
   )),
   TE.chainEitherKW((expressions) => pipe(
     expressions,
