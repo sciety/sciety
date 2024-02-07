@@ -5,6 +5,14 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ExpressionPublishedFeedItem } from '../view-model';
 import { articleServers } from '../../../types/article-server';
 
+const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
+  server,
+  O.match(
+    () => '',
+    (serverKey) => ` on ${articleServers[serverKey].name}`,
+  ),
+);
+
 const renderServerAvatar = (server: ExpressionPublishedFeedItem['server']) => pipe(
   server,
   O.match(
@@ -22,7 +30,7 @@ export const renderExpressionPublishedFeedItem: RenderExpressionPublishedFeedIte
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <a href="${feedItem.source.toString()}">
-            Version published to ${feedItem.publishedTo}
+            Version published to ${`${feedItem.publishedTo}${onServer(feedItem.server)}`}
           </a>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
