@@ -12,6 +12,7 @@ import { displayAPage, identifyLatestExpressionDoiOfTheSamePaper } from './decid
 import { paperActivityPagePath } from '../../standards';
 import { toRedirectTarget } from '../redirect-target';
 import { CanonicalParams } from './construct-view-model/construct-view-model';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 const inputParamsCodec = t.type({
   expressionDoi: t.string,
@@ -35,6 +36,13 @@ type CombinedParams = CanonicalParams & {
   inputExpressionDoi: string,
 };
 
+const redirectTo = (expressionDoi: ExpressionDoi) => pipe(
+  expressionDoi,
+  paperActivityPagePath,
+  toRedirectTarget,
+  TE.right,
+);
+
 const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedParams: CombinedParams) => {
   if (combinedDecodedParams.inputExpressionDoi === combinedDecodedParams.expressionDoi) {
     return pipe(
@@ -42,12 +50,7 @@ const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedP
       identifyLatestExpressionDoiOfTheSamePaper(dependencies),
       TE.chain((latestExpressionDoi) => {
         if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
-          return pipe(
-            latestExpressionDoi,
-            paperActivityPagePath,
-            toRedirectTarget,
-            TE.right,
-          );
+          return redirectTo(latestExpressionDoi);
         }
         return pipe(
           combinedDecodedParams,
@@ -57,12 +60,7 @@ const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedP
       TE.mapLeft(toErrorPage),
     );
   }
-  return pipe(
-    combinedDecodedParams.expressionDoi,
-    paperActivityPagePath,
-    toRedirectTarget,
-    TE.right,
-  );
+  return redirectTo(combinedDecodedParams.expressionDoi);
 };
 
 type PaperActivityPage = (dependencies: Dependencies)
