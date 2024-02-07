@@ -17,7 +17,7 @@ const getDecision = async (expressionDoi: ExpressionDoi, dependencies: Dependenc
   TE.getOrElse(shouldNotBeCalled),
 )();
 
-describe('decide-whether-to-redirect-or-display-a-page', () => {
+describe('paper-activity-page', () => {
   const expressionDoi = arbitraryExpressionDoi();
   let framework: TestFramework;
   let result: ConstructPageResult;
@@ -53,8 +53,12 @@ describe('decide-whether-to-redirect-or-display-a-page', () => {
       result = await getDecision(expressionDoi, dependencies);
     });
 
-    it('redirects', () => {
+    it('redirects to the paper activity page for the latest expression doi', () => {
       expect(result.tag).toBe('redirect-target');
     });
+  });
+
+  describe('when the expressionDoi is not expressed in its canonical form', () => {
+    it.todo('redirects to the paper activity page for the canonical doi');
   });
 });
