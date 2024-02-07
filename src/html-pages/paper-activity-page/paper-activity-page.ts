@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import * as DE from '../../types/data-error';
 import { canonicalParamsCodec } from './construct-view-model';
 import { toErrorPage } from './render-as-html';
@@ -11,6 +12,10 @@ import { decideWhetherToRedirectOrDisplayAPage } from './decide-whether-to-redir
 const decodingAndCanonicalization = (params: unknown) => pipe(
   params,
   canonicalParamsCodec.decode,
+  E.map((canonicalParams) => ({
+    ...canonicalParams,
+    inputExpressionDoi: '',
+  })),
 );
 
 type PaperActivityPage = (dependencies: Dependencies)
