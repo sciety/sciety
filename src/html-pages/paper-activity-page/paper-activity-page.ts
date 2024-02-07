@@ -4,14 +4,14 @@ import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
 import * as DE from '../../types/data-error';
 import { canonicalParamsCodec } from './construct-view-model';
-import { toErrorPage } from './render-as-html';
+import { toErrorPage, renderAsHtml } from './render-as-html';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
-import { displayAPage, identifyLatestExpressionDoiOfTheSamePaper } from './decide-whether-to-redirect-or-display-a-page';
+import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
 import { paperActivityPagePath } from '../../standards';
 import { toRedirectTarget } from '../redirect-target';
-import { CanonicalParams } from './construct-view-model/construct-view-model';
+import { CanonicalParams, constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi } from '../../types/expression-doi';
 
 const inputParamsCodec = t.type({
@@ -43,11 +43,23 @@ const redirectTo = (expressionDoi: ExpressionDoi) => pipe(
   TE.right,
 );
 
+const displayAPage = (
+  dependencies: Dependencies,
+) => (
+  decodedParams: CanonicalParams,
+): TE.TaskEither<ErrorPageBodyViewModel, ConstructPageResult> => pipe(
+  decodedParams,
+  constructViewModel(dependencies),
+  TE.map(renderAsHtml),
+  TE.mapLeft(toErrorPage),
+);
+
 const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedParams: CombinedParams) => {
   if (combinedDecodedParams.inputExpressionDoi === combinedDecodedParams.expressionDoi) {
     return pipe(
       combinedDecodedParams.expressionDoi,
       identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+      TE.mapLeft(toErrorPage),
       TE.chain((latestExpressionDoi) => {
         if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
           return redirectTo(latestExpressionDoi);
@@ -57,7 +69,6 @@ const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedP
           displayAPage(dependencies),
         );
       }),
-      TE.mapLeft(toErrorPage),
     );
   }
   return redirectTo(combinedDecodedParams.expressionDoi);
