@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as DE from '../../types/data-error';
-import { ColdSpringHarborServer } from '../../types/cold-spring-harbor-server';
+import { ColdSpringHarborServer } from '../cold-spring-harbor-server';
 import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
 } from './biorxiv-details-api-response';

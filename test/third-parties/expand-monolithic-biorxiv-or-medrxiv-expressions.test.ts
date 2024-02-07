@@ -11,7 +11,7 @@ import { arbitraryPaperExpression } from '../types/paper-expression.helper';
 import { arbitraryDataError } from '../types/data-error.helper';
 import { arbitraryNumber } from '../helpers';
 import { ArticleServer } from '../../src/types/article-server';
-import { arbitraryColdSpringHarborArticleServer } from '../types/article-server.helper';
+import { arbitraryColdSpringHarborArticleServer } from './cold-spring-harbor-article-server.helper';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),
