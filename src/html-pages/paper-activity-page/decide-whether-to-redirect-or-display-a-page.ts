@@ -5,7 +5,7 @@ import * as D from 'fp-ts/Date';
 import * as DE from '../../types/data-error';
 import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
-import { Params, constructViewModel } from './construct-view-model/construct-view-model';
+import { CanonicalParams, constructViewModel } from './construct-view-model/construct-view-model';
 import { toRedirectTarget } from '../redirect-target';
 import { paperActivityPagePath } from '../../standards';
 import { ExpressionDoi } from '../../types/expression-doi';
@@ -43,7 +43,7 @@ const identifyLatestExpressionDoiOfTheSamePaper = (
 const displayAPage = (
   dependencies: Dependencies,
 ) => (
-  decodedParams: Params,
+  decodedParams: CanonicalParams,
 ): TE.TaskEither<DE.DataError, ConstructPageResult> => pipe(
   decodedParams,
   constructViewModel(dependencies),
@@ -53,7 +53,7 @@ const displayAPage = (
 export const decideWhetherToRedirectOrDisplayAPage = (
   dependencies: Dependencies,
 ) => (
-  decodedParams: Params,
+  decodedParams: CanonicalParams,
 ): TE.TaskEither<DE.DataError, ConstructPageResult> => pipe(
   decodedParams.expressionDoi,
   identifyLatestExpressionDoiOfTheSamePaper(dependencies),

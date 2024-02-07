@@ -23,12 +23,12 @@ import { constructFrontMatter } from '../../../read-side/construct-front-matter'
 import { constructContainingList } from './construct-containing-list';
 import { findAllListsContainingPaper } from '../../../read-side/find-all-lists-containing-paper';
 
-export const paramsCodec = t.type({
+export const canonicalParamsCodec = t.type({
   expressionDoi: canonicalExpressionDoiCodec,
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
-export type Params = t.TypeOf<typeof paramsCodec>;
+export type CanonicalParams = t.TypeOf<typeof canonicalParamsCodec>;
 
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 
@@ -46,7 +46,11 @@ const constructAbstract = (abstract: ExpressionFrontMatter['abstract']) => pipe(
   ),
 );
 
-type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel = (
+  dependencies: Dependencies
+) => (
+  params: CanonicalParams
+) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   params.expressionDoi,
