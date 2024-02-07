@@ -20,13 +20,15 @@ const inputParamsCodec = t.type({
 const decodingAndCanonicalization = (params: unknown) => pipe(
   params,
   canonicalParamsCodec.decode,
-  E.map((canonicalParams) => ({
-    ...canonicalParams,
-    inputExpressionDoi: pipe(
-      params,
-      inputParamsCodec.decode,
-    ),
-  })),
+  E.chain((canonicalParams) => pipe(
+    params,
+    inputParamsCodec.decode,
+    E.map((decodedInputParams) => decodedInputParams.expressionDoi),
+    E.map((inputExpressionDoi) => ({
+      ...canonicalParams,
+      inputExpressionDoi,
+    })),
+  )),
 );
 
 type PaperActivityPage = (dependencies: Dependencies)
