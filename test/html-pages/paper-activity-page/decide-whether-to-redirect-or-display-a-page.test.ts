@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { decideWhetherToRedirectOrDisplayAPage } from '../../../src/html-pages/paper-activity-page/decide-whether-to-redirect-or-display-a-page';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { ConstructPageResult } from '../../../src/html-pages/construct-page';
@@ -9,6 +8,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
+import { decideWhetherToRedirectOrDisplayAPage } from '../../../src/html-pages/paper-activity-page/paper-activity-page';
 
 const getDecision = async (expressionDoi: ExpressionDoi, dependencies: Dependencies) => pipe(
   {

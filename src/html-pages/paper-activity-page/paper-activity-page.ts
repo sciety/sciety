@@ -8,9 +8,10 @@ import { toErrorPage } from './render-as-html';
 import { ErrorPageBodyViewModel } from '../../types/render-page-error';
 import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
-import { decideWhetherToRedirectOrDisplayAPage } from './decide-whether-to-redirect-or-display-a-page';
+import { displayAPage, identifyLatestExpressionDoiOfTheSamePaper } from './decide-whether-to-redirect-or-display-a-page';
 import { paperActivityPagePath } from '../../standards';
 import { toRedirectTarget } from '../redirect-target';
+import { CanonicalParams } from './construct-view-model/construct-view-model';
 
 const inputParamsCodec = t.type({
   expressionDoi: t.string,
@@ -28,6 +29,29 @@ const decodeCombinedParams = (params: unknown) => pipe(
       inputExpressionDoi,
     })),
   )),
+);
+
+export const decideWhetherToRedirectOrDisplayAPage = (
+  dependencies: Dependencies,
+) => (
+  decodedParams: CanonicalParams,
+): TE.TaskEither<DE.DataError, ConstructPageResult> => pipe(
+  decodedParams.expressionDoi,
+  identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+  TE.chain((latestExpressionDoi) => {
+    if (latestExpressionDoi !== decodedParams.expressionDoi) {
+      return pipe(
+        latestExpressionDoi,
+        paperActivityPagePath,
+        toRedirectTarget,
+        TE.right,
+      );
+    }
+    return pipe(
+      decodedParams,
+      displayAPage(dependencies),
+    );
+  }),
 );
 
 type PaperActivityPage = (dependencies: Dependencies)

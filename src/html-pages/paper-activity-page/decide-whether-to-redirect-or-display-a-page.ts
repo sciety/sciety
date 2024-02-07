@@ -6,8 +6,6 @@ import * as DE from '../../types/data-error';
 import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
 import { CanonicalParams, constructViewModel } from './construct-view-model/construct-view-model';
-import { toRedirectTarget } from '../redirect-target';
-import { paperActivityPagePath } from '../../standards';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as PH from '../../types/publishing-history';
 import { renderAsHtml } from './render-as-html';
@@ -29,18 +27,18 @@ const logWhenDuplicateExpressionDatesFound = (
   return history;
 };
 
-const identifyLatestExpressionDoiOfTheSamePaper = (
+export const identifyLatestExpressionDoiOfTheSamePaper = (
   dependencies: Dependencies,
 ) => (
   expressionDoi: ExpressionDoi,
-) => pipe(
+): TE.TaskEither<DE.DataError, ExpressionDoi> => pipe(
   expressionDoi,
   dependencies.fetchPublishingHistory,
   TE.map(logWhenDuplicateExpressionDatesFound(dependencies, expressionDoi)),
   TE.map((publishingHistory) => PH.getLatestExpression(publishingHistory).expressionDoi),
 );
 
-const displayAPage = (
+export const displayAPage = (
   dependencies: Dependencies,
 ) => (
   decodedParams: CanonicalParams,
@@ -48,27 +46,4 @@ const displayAPage = (
   decodedParams,
   constructViewModel(dependencies),
   TE.map(renderAsHtml),
-);
-
-export const decideWhetherToRedirectOrDisplayAPage = (
-  dependencies: Dependencies,
-) => (
-  decodedParams: CanonicalParams,
-): TE.TaskEither<DE.DataError, ConstructPageResult> => pipe(
-  decodedParams.expressionDoi,
-  identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-  TE.chain((latestExpressionDoi) => {
-    if (latestExpressionDoi !== decodedParams.expressionDoi) {
-      return pipe(
-        latestExpressionDoi,
-        paperActivityPagePath,
-        toRedirectTarget,
-        TE.right,
-      );
-    }
-    return pipe(
-      decodedParams,
-      displayAPage(dependencies),
-    );
-  }),
 );
