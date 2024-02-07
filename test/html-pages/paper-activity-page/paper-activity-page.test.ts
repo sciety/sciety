@@ -78,7 +78,10 @@ describe('paper-activity-page', () => {
     });
 
     it('redirects to the paper activity page for the canonical doi', () => {
-      expect(result.tag).toBe('redirect-target');
+      expect(result).toStrictEqual({
+        tag: 'redirect-target',
+        target: paperActivityPagePath(expressionDoiContainingLetters),
+      });
     });
   });
 });
