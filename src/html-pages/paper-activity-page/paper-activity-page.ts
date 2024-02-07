@@ -37,6 +37,7 @@ type PaperActivityPage = (dependencies: Dependencies)
 export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
   params,
   decodeCombinedParams,
+  (foo) => foo,
   TE.fromEither,
   TE.mapLeft(() => DE.notFound),
   TE.mapLeft(toErrorPage),

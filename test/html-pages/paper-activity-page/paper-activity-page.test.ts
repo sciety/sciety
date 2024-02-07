@@ -58,8 +58,8 @@ describe('paper-activity-page', () => {
     });
   });
 
-  describe.skip('when the expressionDoi is not expressed in its canonical form', () => {
-    const expressionDoiContainingLetters = EDOI.fromValidatedString('10.234/scielopreprints.567');
+  describe('when the expressionDoi is not expressed in its canonical form', () => {
+    const expressionDoiContainingLetters = EDOI.fromValidatedString('10.1234/scielopreprints.567');
 
     beforeEach(async () => {
       const dependencies = {
