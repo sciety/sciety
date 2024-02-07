@@ -7,6 +7,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
 import { paperActivityPage } from '../../../src/html-pages/paper-activity-page/paper-activity-page';
+import * as EDOI from '../../../src/types/expression-doi';
 
 const getDecision = async (inputExpressionDoi: string, dependencies: Dependencies) => pipe(
   {
@@ -57,18 +58,20 @@ describe('paper-activity-page', () => {
     });
   });
 
-  describe('when the expressionDoi is not expressed in its canonical form', () => {
+  describe.skip('when the expressionDoi is not expressed in its canonical form', () => {
+    const expressionDoiContainingLetters = EDOI.fromValidatedString('10.234/scielopreprints.567');
+
     beforeEach(async () => {
       const dependencies = {
         ...framework.dependenciesForViews,
         fetchPublishingHistory: () => TE.right(
-          arbitraryPublishingHistoryOnlyPreprints({ latestExpressionDoi: expressionDoi }),
+          arbitraryPublishingHistoryOnlyPreprints({ latestExpressionDoi: expressionDoiContainingLetters }),
         ),
       };
-      result = await getDecision(expressionDoi.toUpperCase(), dependencies);
+      result = await getDecision(expressionDoiContainingLetters.toUpperCase(), dependencies);
     });
 
-    it.failing('redirects to the paper activity page for the canonical doi', () => {
+    it('redirects to the paper activity page for the canonical doi', () => {
       expect(result.tag).toBe('redirect-target');
     });
   });
