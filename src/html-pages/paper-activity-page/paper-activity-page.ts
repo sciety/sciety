@@ -11,7 +11,6 @@ import { ConstructPageResult } from '../construct-page';
 import { displayAPage, identifyLatestExpressionDoiOfTheSamePaper } from './decide-whether-to-redirect-or-display-a-page';
 import { paperActivityPagePath } from '../../standards';
 import { toRedirectTarget } from '../redirect-target';
-import { CanonicalParams } from './construct-view-model/construct-view-model';
 
 const inputParamsCodec = t.type({
   expressionDoi: t.string,
@@ -31,29 +30,6 @@ const decodeCombinedParams = (params: unknown) => pipe(
   )),
 );
 
-export const decideWhetherToRedirectOrDisplayAPage = (
-  dependencies: Dependencies,
-) => (
-  decodedParams: CanonicalParams,
-): TE.TaskEither<DE.DataError, ConstructPageResult> => pipe(
-  decodedParams.expressionDoi,
-  identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-  TE.chain((latestExpressionDoi) => {
-    if (latestExpressionDoi !== decodedParams.expressionDoi) {
-      return pipe(
-        latestExpressionDoi,
-        paperActivityPagePath,
-        toRedirectTarget,
-        TE.right,
-      );
-    }
-    return pipe(
-      decodedParams,
-      displayAPage(dependencies),
-    );
-  }),
-);
-
 type PaperActivityPage = (dependencies: Dependencies)
 => (params: unknown)
 => TE.TaskEither<ErrorPageBodyViewModel, ConstructPageResult>;
@@ -67,8 +43,22 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
   TE.chain((combinedDecodedParams) => {
     if (combinedDecodedParams.inputExpressionDoi === combinedDecodedParams.expressionDoi) {
       return pipe(
-        combinedDecodedParams,
-        decideWhetherToRedirectOrDisplayAPage(dependencies),
+        combinedDecodedParams.expressionDoi,
+        identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+        TE.chain((latestExpressionDoi) => {
+          if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
+            return pipe(
+              latestExpressionDoi,
+              paperActivityPagePath,
+              toRedirectTarget,
+              TE.right,
+            );
+          }
+          return pipe(
+            combinedDecodedParams,
+            displayAPage(dependencies),
+          );
+        }),
         TE.mapLeft(toErrorPage),
       );
     }
