@@ -8,6 +8,7 @@ import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
 import { paperActivityPage } from '../../../src/html-pages/paper-activity-page/paper-activity-page';
 import * as EDOI from '../../../src/types/expression-doi';
+import { paperActivityPagePath } from '../../../src/standards';
 
 const getDecision = async (inputExpressionDoi: string, dependencies: Dependencies) => pipe(
   {
@@ -43,18 +44,23 @@ describe('paper-activity-page', () => {
   });
 
   describe('when the expressionDoi is not the latest for the paper', () => {
+    const latestExpressionDoi = arbitraryExpressionDoi();
+
     beforeEach(async () => {
       const dependencies = {
         ...framework.dependenciesForViews,
         fetchPublishingHistory: () => TE.right(
-          arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: expressionDoi }),
+          arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: expressionDoi, latestExpressionDoi }),
         ),
       };
       result = await getDecision(expressionDoi, dependencies);
     });
 
     it('redirects to the paper activity page for the latest expression doi', () => {
-      expect(result.tag).toBe('redirect-target');
+      expect(result).toStrictEqual({
+        tag: 'redirect-target',
+        target: paperActivityPagePath(latestExpressionDoi),
+      });
     });
   });
 
