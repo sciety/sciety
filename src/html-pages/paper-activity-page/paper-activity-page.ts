@@ -11,6 +11,8 @@ import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
 import { decideWhetherToRedirectOrDisplayAPage } from './decide-whether-to-redirect-or-display-a-page';
 import { userIdCodec } from '../../types/user-id';
+import { paperActivityPagePath } from '../../standards';
+import { toRedirectTarget } from '../redirect-target';
 
 const inputParamsCodec = t.type({
   expressionDoi: t.string,
@@ -50,9 +52,10 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
       );
     }
     return pipe(
-      combinedDecodedParams,
-      decideWhetherToRedirectOrDisplayAPage(dependencies),
-      TE.mapLeft(toErrorPage),
+      combinedDecodedParams.expressionDoi,
+      paperActivityPagePath,
+      toRedirectTarget,
+      TE.right,
     );
   }),
 );
