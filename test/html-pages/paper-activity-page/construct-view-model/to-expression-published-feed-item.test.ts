@@ -14,8 +14,8 @@ describe('to-expression-published-feed-item', () => {
     };
     const item = toExpressionPublishedFeedItem(expression);
 
-    it('publishedTo contains the publishedTo of the expression', () => {
-      expect(item.publishedTo).toContain(expression.publishedTo);
+    it('publishedTo is the publishedTo of the expression', () => {
+      expect(item.publishedTo).toStrictEqual(expression.publishedTo);
     });
   });
 
@@ -26,7 +26,7 @@ describe('to-expression-published-feed-item', () => {
     };
     const item = toExpressionPublishedFeedItem(expression);
 
-    it('publishedTo does not mention the server', () => {
+    it('publishedTo is the publishedTo of the expression', () => {
       expect(item.publishedTo).toStrictEqual(expression.publishedTo);
     });
   });
