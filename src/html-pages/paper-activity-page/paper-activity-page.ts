@@ -17,7 +17,7 @@ const inputParamsCodec = t.type({
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
-const decodingAndCanonicalization = (params: unknown) => pipe(
+const decodeCombinedParams = (params: unknown) => pipe(
   params,
   canonicalParamsCodec.decode,
   E.chain((canonicalParams) => pipe(
@@ -37,9 +37,22 @@ type PaperActivityPage = (dependencies: Dependencies)
 
 export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
   params,
-  decodingAndCanonicalization,
+  decodeCombinedParams,
   TE.fromEither,
   TE.mapLeft(() => DE.notFound),
-  TE.chain(decideWhetherToRedirectOrDisplayAPage(dependencies)),
   TE.mapLeft(toErrorPage),
+  TE.chain((combinedDecodedParams) => {
+    if (combinedDecodedParams.inputExpressionDoi === combinedDecodedParams.expressionDoi) {
+      return pipe(
+        combinedDecodedParams,
+        decideWhetherToRedirectOrDisplayAPage(dependencies),
+        TE.mapLeft(toErrorPage),
+      );
+    }
+    return pipe(
+      combinedDecodedParams,
+      decideWhetherToRedirectOrDisplayAPage(dependencies),
+      TE.mapLeft(toErrorPage),
+    );
+  }),
 );
