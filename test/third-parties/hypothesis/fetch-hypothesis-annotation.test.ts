@@ -7,6 +7,7 @@ import { toHtmlFragment } from '../../../src/types/html-fragment';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryWord } from '../../helpers';
 import { HypothesisAnnotation } from '../../../src/third-parties/hypothesis/HypothesisAnnotation';
+import { arbitraryDataError } from '../../types/data-error.helper';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
@@ -53,7 +54,17 @@ describe('fetch-hypothesis-annotation', () => {
   });
 
   describe('when queryExternalService fails', () => {
-    it.todo('returns the unmodified left');
+    let result: unknown;
+    const originalError = arbitraryDataError();
+    const queryExternalService = () => () => TE.left(originalError);
+
+    beforeEach(async () => {
+      result = await fetchHypothesisAnnotation(queryExternalService, dummyLogger)(key)();
+    });
+
+    it('returns the unmodified error', () => {
+      expect(result).toStrictEqual(E.left(originalError));
+    });
   });
 });
 
