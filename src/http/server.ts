@@ -85,7 +85,7 @@ export const createApplicationServer = (
         stack: error.stack,
       };
     }
-    logger('error', 'Unhandled Error', payload);
+    logger('error', 'Unhandled exception within koa middleware handling', payload);
   });
 
   const server = createServer(app.callback());
