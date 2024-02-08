@@ -6,7 +6,7 @@ import { renderGroupCard } from '../../shared-components/group-card';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, NotHtml, toHtmlPage } from '../html-page';
-import { ErrorPageBodyViewModel } from '../../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
 

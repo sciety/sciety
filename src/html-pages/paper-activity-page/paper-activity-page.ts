@@ -5,7 +5,7 @@ import * as t from 'io-ts';
 import * as DE from '../../types/data-error';
 import { canonicalParamsCodec } from './construct-view-model';
 import { toErrorPage, renderAsHtml } from './render-as-html';
-import { ErrorPageBodyViewModel } from '../../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';

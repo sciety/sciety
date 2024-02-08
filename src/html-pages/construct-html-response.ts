@@ -5,7 +5,7 @@ import { ClientClassification } from '../shared-components/head';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import * as DE from '../types/data-error';
 import { HtmlPage, toHtmlPage } from './html-page';
-import { ErrorPageBodyViewModel } from '../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 import { UserDetails } from '../types/user-details';
 import { PageLayout } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';

@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { renderErrorPage, renderAsHtml } from './render-as-html';
 import { HtmlPage } from '../../html-page';
-import { ErrorPageBodyViewModel } from '../../../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { constructViewModel, Params } from './construct-view-model';
 import { Queries } from '../../../read-models';
 

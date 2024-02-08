@@ -8,7 +8,7 @@ import { listIdCodec, ListId } from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
-import { ErrorPageBodyViewModel } from '../../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 
 export const editListDetailsFormPageParamsCodec = t.type({
   id: listIdCodec,

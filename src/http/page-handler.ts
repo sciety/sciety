@@ -10,7 +10,7 @@ import { PageLayout } from '../html-pages/page-layout';
 import { constructHtmlResponse } from '../html-pages/construct-html-response';
 import { sendHtmlResponse } from './send-html-response';
 import { detectClientClassification } from './detect-client-classification';
-import { ErrorPageBodyViewModel } from '../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 import { sendRedirect } from './send-redirect';
 import { HtmlPage } from '../html-pages/html-page';
 

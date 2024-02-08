@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { getHttpStatusCode } from './get-http-status-code';
 import { HtmlPage } from '../html-pages/html-page';
-import { ErrorPageBodyViewModel } from '../types/render-page-error';
+import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 
 type ConstructPage = (
   params: Record<string, unknown>,
