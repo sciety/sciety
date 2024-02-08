@@ -52,7 +52,9 @@ describe('fetch-hypothesis-annotation', () => {
     })));
   });
 
-  it.todo('test the 404 response when hypothesis group has removed an annotation');
+  describe('when queryExternalService fails', () => {
+    it.todo('returns the unmodified left');
+  });
 });
 
 describe('insertSelectedText', () => {
