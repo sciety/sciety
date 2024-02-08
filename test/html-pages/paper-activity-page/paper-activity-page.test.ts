@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { ConstructPageResult } from '../../../src/html-pages/construct-page';
@@ -9,6 +10,7 @@ import { Dependencies } from '../../../src/html-pages/paper-activity-page/constr
 import { paperActivityPage } from '../../../src/html-pages/paper-activity-page/paper-activity-page';
 import * as EDOI from '../../../src/types/expression-doi';
 import { paperActivityPagePath } from '../../../src/standards';
+import { toRedirectTarget } from '../../../src/html-pages/redirect-target';
 
 const getDecision = async (inputExpressionDoi: string, dependencies: Dependencies) => pipe(
   {
@@ -66,6 +68,7 @@ describe('paper-activity-page', () => {
 
   describe('when the expressionDoi is not expressed in its canonical form', () => {
     const expressionDoiContainingLetters = EDOI.fromValidatedString('10.1234/scielopreprints.567');
+    let output: unknown;
 
     beforeEach(async () => {
       const dependencies = {
@@ -74,14 +77,18 @@ describe('paper-activity-page', () => {
           arbitraryPublishingHistoryOnlyPreprints({ latestExpressionDoi: expressionDoiContainingLetters }),
         ),
       };
-      result = await getDecision(expressionDoiContainingLetters.toUpperCase(), dependencies);
+      output = await pipe(
+        {
+          expressionDoi: expressionDoiContainingLetters.toUpperCase(),
+        },
+        paperActivityPage(dependencies),
+      )();
     });
 
     it('redirects to the paper activity page for the canonical doi', () => {
-      expect(result).toStrictEqual({
-        tag: 'redirect-target',
-        target: paperActivityPagePath(expressionDoiContainingLetters),
-      });
+      expect(output).toStrictEqual(E.left(toRedirectTarget(
+        paperActivityPagePath(expressionDoiContainingLetters),
+      )));
     });
   });
 });

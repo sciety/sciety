@@ -10,7 +10,7 @@ import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPageResult } from '../construct-page';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
 import { paperActivityPagePath } from '../../standards';
-import { toRedirectTarget } from '../redirect-target';
+import { RedirectTarget, toRedirectTarget } from '../redirect-target';
 import { CanonicalParams, constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 
@@ -83,7 +83,7 @@ const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedP
 
 type PaperActivityPage = (dependencies: Dependencies)
 => (params: unknown)
-=> TE.TaskEither<ErrorPageBodyViewModel, ConstructPageResult>;
+=> TE.TaskEither<ErrorPageBodyViewModel | RedirectTarget, ConstructPageResult>;
 
 export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
   params,
@@ -91,5 +91,11 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
   TE.fromEither,
   TE.mapLeft(() => DE.notFound),
   TE.mapLeft(toErrorPage),
-  TE.chain(redirectOrDisplayAPage(dependencies)),
+  TE.chainW((combinedParams) => {
+    if (!isCanonicalExpressionDoi(combinedParams.inputExpressionDoi)) {
+      return TE.left(redirectTo(combinedParams.expressionDoi));
+    }
+    return TE.right(combinedParams);
+  }),
+  TE.chainW(redirectOrDisplayAPage(dependencies)),
 );
