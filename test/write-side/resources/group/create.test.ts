@@ -83,18 +83,13 @@ describe('create', () => {
         });
       });
 
-      describe('and the other group\'s name has previously been updated', () => {
+      describe('and the other group\'s name collides due to a previous update', () => {
         const name = arbitraryString();
         const result = pipe(
           [
             constructEvent('GroupJoined')({
+              ...otherGroup,
               groupId: otherGroup.id,
-              name: otherGroup.name,
-              avatarPath: otherGroup.avatarPath,
-              descriptionPath: otherGroup.descriptionPath,
-              shortDescription: otherGroup.shortDescription,
-              homepage: otherGroup.homepage,
-              slug: otherGroup.slug,
             }),
             constructEvent('GroupDetailsUpdated')({
               groupId: otherGroup.id,
