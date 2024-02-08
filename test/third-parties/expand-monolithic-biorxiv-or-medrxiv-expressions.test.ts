@@ -34,7 +34,7 @@ describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
 
   let expressions: ReadonlyArray<PaperExpression>;
 
-  describe.skip('given no expressions', () => {
+  describe('given no expressions', () => {
     beforeEach(async () => {
       expressions = await pipe(
         [],
