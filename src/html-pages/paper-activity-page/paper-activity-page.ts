@@ -12,7 +12,7 @@ import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-exp
 import { paperActivityPagePath } from '../../standards';
 import { toRedirectTarget } from '../redirect-target';
 import { CanonicalParams, constructViewModel } from './construct-view-model/construct-view-model';
-import { ExpressionDoi } from '../../types/expression-doi';
+import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 
 const inputParamsCodec = t.type({
   expressionDoi: t.string,
@@ -54,7 +54,18 @@ const displayAPage = (
   TE.mapLeft(toErrorPage),
 );
 
+const isCanonicalExpressionDoi = (input: string) => {
+  const canonicalForm = canonicalExpressionDoiCodec.decode(input);
+  if (E.isLeft(canonicalForm)) {
+    return false;
+  }
+  return canonicalForm.right === input;
+};
+
 const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedParams: CombinedParams) => {
+  if (!isCanonicalExpressionDoi(combinedDecodedParams.inputExpressionDoi)) {
+    return redirectTo(combinedDecodedParams.expressionDoi);
+  }
   if (combinedDecodedParams.inputExpressionDoi === combinedDecodedParams.expressionDoi) {
     return pipe(
       combinedDecodedParams.expressionDoi,
