@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { CandidateUserHandle } from '../../../../../src/types/candidate-user-handle';
@@ -60,13 +61,20 @@ describe('construct-view-model', () => {
       });
 
       it.failing('returns them in order of most recently followed first', async () => {
-        expect(viewmodel).toStrictEqual(expect.objectContaining({
-          followedGroups: O.some([
-            expect.objectContaining({ id: addGroup3.groupId }),
-            expect.objectContaining({ id: addGroup2.groupId }),
-            expect.objectContaining({ id: addGroup1.groupId }),
-          ]),
-        }));
+        if (O.isNone(viewmodel.followedGroups)) {
+          throw new Error('None received, should have been Some');
+        }
+
+        const groupIds = pipe(
+          viewmodel.followedGroups.value,
+          RA.map((group) => group.id),
+        );
+
+        expect(groupIds).toStrictEqual([
+          addGroup3.groupId,
+          addGroup2.groupId,
+          addGroup1.groupId,
+        ]);
       });
     });
   });
