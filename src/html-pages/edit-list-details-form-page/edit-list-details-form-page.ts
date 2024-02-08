@@ -8,17 +8,17 @@ import { listIdCodec, ListId } from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
-import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
+import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 
 export const editListDetailsFormPageParamsCodec = t.type({
   id: listIdCodec,
 });
 
-const renderNoSuchListError = (): ErrorPageBodyViewModel => (
+const renderNoSuchListError = (): ErrorPageBodyViewModel => toErrorPageBodyViewModel(
   {
     type: DE.notFound,
     message: toHtmlFragment('The list that you are trying to edit does not exist.'),
-  }
+  },
 );
 
 export const editListDetailsFormPage = (dependencies: Dependencies) => (
