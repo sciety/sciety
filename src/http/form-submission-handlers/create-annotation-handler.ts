@@ -24,6 +24,7 @@ import { GroupId } from '../../types/group-id';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 import { detectClientClassification } from '../detect-client-classification';
 import { inputFieldNames } from '../../standards';
+import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 
 type Dependencies = Queries &
 GetLoggedInScietyUserPorts &
@@ -49,9 +50,9 @@ const redisplayFormPage = (
   createAnnotationFormPage(dependencies)(params, 'article-not-in-list'),
   TE.map(prependErrorToTitleForAccessibility),
   TE.mapLeft(
-    (renderPageError) => ({
-      type: renderPageError.type,
-      message: toHtmlFragment(`Something went wrong when you submitted your annotation. ${renderPageError.message}`),
+    (errorPageBodyViewModel) => toErrorPageBodyViewModel({
+      type: errorPageBodyViewModel.type,
+      message: toHtmlFragment(`Something went wrong when you submitted your annotation. ${errorPageBodyViewModel.message}`),
     }),
   ),
   T.map(constructHtmlResponse(user, standardPageLayout, detectClientClassification(context))),
