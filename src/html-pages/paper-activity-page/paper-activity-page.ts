@@ -7,10 +7,10 @@ import { canonicalParamsCodec } from './construct-view-model';
 import { toErrorPage, renderAsHtml } from './render-as-html';
 import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
-import { ConstructPageResult } from '../construct-page';
+import { ConstructPage, ConstructPageResult } from '../construct-page';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
 import { paperActivityPagePath } from '../../standards';
-import { RedirectTarget, toRedirectTarget } from '../redirect-target';
+import { toRedirectTarget } from '../redirect-target';
 import { CanonicalParams, constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 
@@ -61,29 +61,22 @@ const isCanonicalExpressionDoi = (input: string) => {
   return canonicalForm.right === input;
 };
 
-const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedParams: CombinedParams) => {
-  if (!isCanonicalExpressionDoi(combinedDecodedParams.inputExpressionDoi)) {
-    return TE.right(redirectTo(combinedDecodedParams.expressionDoi));
-  }
-  return pipe(
-    combinedDecodedParams.expressionDoi,
-    identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-    TE.mapLeft(toErrorPage),
-    TE.chain((latestExpressionDoi) => {
-      if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
-        return TE.right(redirectTo(latestExpressionDoi));
-      }
-      return pipe(
-        combinedDecodedParams,
-        displayAPage(dependencies),
-      );
-    }),
-  );
-};
+const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedParams: CombinedParams) => pipe(
+  combinedDecodedParams.expressionDoi,
+  identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+  TE.mapLeft(toErrorPage),
+  TE.chain((latestExpressionDoi) => {
+    if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
+      return TE.right(redirectTo(latestExpressionDoi));
+    }
+    return pipe(
+      combinedDecodedParams,
+      displayAPage(dependencies),
+    );
+  }),
+);
 
-type PaperActivityPage = (dependencies: Dependencies)
-=> (params: unknown)
-=> TE.TaskEither<ErrorPageBodyViewModel | RedirectTarget, ConstructPageResult>;
+type PaperActivityPage = (dependencies: Dependencies) => ConstructPage;
 
 export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
   params,
