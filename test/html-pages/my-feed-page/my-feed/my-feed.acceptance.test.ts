@@ -111,12 +111,6 @@ describe('my-feed acceptance', () => {
         expect(itemCount).toStrictEqual(pageSize);
       });
 
-      it.todo('displays the articles in order of latest activity in descending order');
-
-      it.todo('latest activity is based off of activity by any group');
-
-      it.todo('each article is only displayed once');
-
       it('displayed articles have to have been evaluated by a followed group', async () => {
         const recordEvaluation = {
           ...arbitraryRecordEvaluationPublicationCommand(),
