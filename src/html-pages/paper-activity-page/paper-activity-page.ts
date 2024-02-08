@@ -66,23 +66,20 @@ const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedP
   if (!isCanonicalExpressionDoi(combinedDecodedParams.inputExpressionDoi)) {
     return redirectTo(combinedDecodedParams.expressionDoi);
   }
-  if (combinedDecodedParams.inputExpressionDoi === combinedDecodedParams.expressionDoi) {
-    return pipe(
-      combinedDecodedParams.expressionDoi,
-      identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-      TE.mapLeft(toErrorPage),
-      TE.chain((latestExpressionDoi) => {
-        if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
-          return redirectTo(latestExpressionDoi);
-        }
-        return pipe(
-          combinedDecodedParams,
-          displayAPage(dependencies),
-        );
-      }),
-    );
-  }
-  return redirectTo(combinedDecodedParams.expressionDoi);
+  return pipe(
+    combinedDecodedParams.expressionDoi,
+    identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+    TE.mapLeft(toErrorPage),
+    TE.chain((latestExpressionDoi) => {
+      if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
+        return redirectTo(latestExpressionDoi);
+      }
+      return pipe(
+        combinedDecodedParams,
+        displayAPage(dependencies),
+      );
+    }),
+  );
 };
 
 type PaperActivityPage = (dependencies: Dependencies)
