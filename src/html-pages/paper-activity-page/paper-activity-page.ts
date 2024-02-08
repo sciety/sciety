@@ -84,11 +84,9 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
   TE.fromEither,
   TE.mapLeft(() => DE.notFound),
   TE.mapLeft(toErrorPage),
-  TE.chainW((combinedParams) => {
-    if (!isCanonicalExpressionDoi(combinedParams.inputExpressionDoi)) {
-      return TE.left(redirectTo(combinedParams.expressionDoi));
-    }
-    return TE.right(combinedParams);
-  }),
+  TE.filterOrElseW(
+    (combinedParams) => isCanonicalExpressionDoi(combinedParams.inputExpressionDoi),
+    (combinedParams) => redirectTo(combinedParams.expressionDoi),
+  ),
   TE.chainW(redirectOrDisplayAPage(dependencies)),
 );
