@@ -40,7 +40,6 @@ const redirectTo = (expressionDoi: ExpressionDoi) => pipe(
   expressionDoi,
   paperActivityPagePath,
   toRedirectTarget,
-  TE.right,
 );
 
 const displayAPage = (
@@ -64,7 +63,7 @@ const isCanonicalExpressionDoi = (input: string) => {
 
 const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedParams: CombinedParams) => {
   if (!isCanonicalExpressionDoi(combinedDecodedParams.inputExpressionDoi)) {
-    return redirectTo(combinedDecodedParams.expressionDoi);
+    return TE.right(redirectTo(combinedDecodedParams.expressionDoi));
   }
   return pipe(
     combinedDecodedParams.expressionDoi,
@@ -72,7 +71,7 @@ const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedP
     TE.mapLeft(toErrorPage),
     TE.chain((latestExpressionDoi) => {
       if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
-        return redirectTo(latestExpressionDoi);
+        return TE.right(redirectTo(latestExpressionDoi));
       }
       return pipe(
         combinedDecodedParams,
