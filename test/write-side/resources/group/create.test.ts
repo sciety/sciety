@@ -139,8 +139,31 @@ describe('create', () => {
         });
       });
 
-      describe('and the other group\'s slug has previously been updated', () => {
-        it.todo('fails with no events raised');
+      describe('and the other group\'s slug collides due to a previous update', () => {
+        const slug = arbitraryWord();
+        const result = pipe(
+          [
+            constructEvent('GroupJoined')({
+              ...otherGroup,
+              groupId: otherGroup.id,
+            }),
+            constructEvent('GroupDetailsUpdated')({
+              groupId: otherGroup.id,
+              name: undefined,
+              avatarPath: undefined,
+              descriptionPath: undefined,
+              shortDescription: undefined,
+              homepage: undefined,
+              largeLogoPath: undefined,
+              slug,
+            }),
+          ],
+          create({ ...addGroupCommand, slug }),
+        );
+
+        it('fails with no events raised', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
       });
     });
   });
