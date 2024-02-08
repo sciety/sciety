@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-pages/html-page';
-import { ErrorPageBodyViewModel } from '../types/render-page-error';
+import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../types/render-page-error';
 import { Params } from './params';
 import { ExternalQueries } from '../third-parties';
 
@@ -16,7 +16,7 @@ export const evaluationContent = (adapters: Ports) => (params: Params): Evaluati
   params.reviewid,
   adapters.fetchReview,
   TE.bimap(
-    (error) => ({
+    (error) => toErrorPageBodyViewModel({
       type: error,
       message: toHtmlFragment('Could not fetch evaluation'),
     }),

@@ -6,7 +6,7 @@ import * as tt from 'io-ts-types';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
-import { ErrorPageBodyViewModel } from '../../types/render-page-error';
+import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../types/render-page-error';
 
 type ActionFailedPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
@@ -30,8 +30,8 @@ const generateErrorMessage = (errorType: O.Option<string>) => pipe(
 );
 
 export const actionFailedPage = (params: Params): ActionFailedPage => TE.left(
-  {
+  toErrorPageBodyViewModel({
     type: DE.unavailable,
     message: generateErrorMessage(params.errorType),
-  },
+  }),
 );
