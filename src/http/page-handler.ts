@@ -63,8 +63,10 @@ export const pageHandler = (
         sendRedirect(context, input.right);
         break;
     }
-  } else {
-    constructAndSendHtmlResponse(adapters, pageLayout, context)(input);
+  } else if (input.left.tag === 'error-page-body-view-model') {
+    constructAndSendHtmlResponse(adapters, pageLayout, context)(E.left(input.left));
+  } else if (input.left.tag === 'redirect-target') {
+    sendRedirect(context, input.left);
   }
 
   await next();

@@ -7,4 +7,4 @@ export type ConstructPageResult = HtmlPage | RedirectTarget;
 
 export type ConstructPage = (
   params: Record<string, unknown>,
-) => TE.TaskEither<ErrorPageBodyViewModel, ConstructPageResult>;
+) => TE.TaskEither<ErrorPageBodyViewModel | RedirectTarget, ConstructPageResult>;
