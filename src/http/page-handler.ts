@@ -55,14 +55,7 @@ export const pageHandler = (
     handler,
   )();
   if (E.isRight(input)) {
-    switch (input.right.tag) {
-      case 'html-page':
-        constructAndSendHtmlResponse(adapters, pageLayout, context)(E.right(input.right));
-        break;
-      case 'redirect-target':
-        sendRedirect(context, input.right);
-        break;
-    }
+    constructAndSendHtmlResponse(adapters, pageLayout, context)(E.right(input.right));
   } else {
     switch (input.left.tag) {
       case 'error-page-body-view-model':
