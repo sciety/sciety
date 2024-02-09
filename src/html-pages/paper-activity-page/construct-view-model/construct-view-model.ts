@@ -9,14 +9,14 @@ import { feedSummary } from './feed-summary';
 import { getFeedItemsByDateDescending } from './get-feed-items-by-date-descending';
 import * as DE from '../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { userIdCodec } from '../../../types/user-id';
+import { UserId, userIdCodec } from '../../../types/user-id';
 import { constructUserListManagement } from './construct-user-list-management';
 import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../read-side/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../read-side/reviewing-groups';
-import { canonicalExpressionDoiCodec, ExpressionDoi } from '../../../types/expression-doi';
+import { CanonicalExpressionDoi, canonicalExpressionDoiCodec, ExpressionDoi } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructFrontMatter } from '../../../read-side/construct-front-matter';
@@ -28,7 +28,10 @@ export const canonicalParamsCodec = t.type({
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
-type CanonicalParams = t.TypeOf<typeof canonicalParamsCodec>;
+type CanonicalParams = {
+  expressionDoi: CanonicalExpressionDoi,
+  user: O.Option<{ id: UserId }>,
+};
 
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 

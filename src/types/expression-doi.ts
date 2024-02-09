@@ -45,3 +45,5 @@ export const canonicalExpressionDoiCodec = new t.Type<ExpressionDoi, string, unk
   ),
   (a) => a.toString(),
 );
+
+export type CanonicalExpressionDoi = t.TypeOf<typeof canonicalExpressionDoiCodec>;
