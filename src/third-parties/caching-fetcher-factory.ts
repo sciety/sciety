@@ -72,9 +72,10 @@ const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => 
 
 const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
   async find(key, cacheRequestConfig) {
-    return client
+    const storageValue = await client
       .get(`axios-cache-${key}`)
       .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
+    return storageValue;
   },
 
   async set(key, value) {
