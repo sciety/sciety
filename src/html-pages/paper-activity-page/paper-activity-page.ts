@@ -10,7 +10,7 @@ import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPage, ConstructPageResult } from '../construct-page';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
 import { paperActivityPagePath } from '../../standards';
-import { toRedirectTarget } from '../redirect-target';
+import { RedirectTarget, toRedirectTarget } from '../redirect-target';
 import { CanonicalParams, constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 
@@ -46,7 +46,7 @@ const displayAPage = (
   dependencies: Dependencies,
 ) => (
   decodedParams: CanonicalParams,
-): TE.TaskEither<ErrorPageBodyViewModel, ConstructPageResult> => pipe(
+): TE.TaskEither<ErrorPageBodyViewModel | RedirectTarget, ConstructPageResult> => pipe(
   decodedParams,
   constructViewModel(dependencies),
   TE.map(renderAsHtml),
@@ -67,7 +67,7 @@ const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedP
   TE.mapLeft(toErrorPage),
   TE.chain((latestExpressionDoi) => {
     if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
-      return TE.right(redirectTo(latestExpressionDoi));
+      return TE.left(redirectTo(latestExpressionDoi));
     }
     return pipe(
       combinedDecodedParams,

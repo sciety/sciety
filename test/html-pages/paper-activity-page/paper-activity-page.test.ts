@@ -47,6 +47,7 @@ describe('paper-activity-page', () => {
 
   describe('when the expressionDoi is not the latest for the paper', () => {
     const latestExpressionDoi = arbitraryExpressionDoi();
+    let output: unknown;
 
     beforeEach(async () => {
       const dependencies = {
@@ -55,14 +56,18 @@ describe('paper-activity-page', () => {
           arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: expressionDoi, latestExpressionDoi }),
         ),
       };
-      result = await getDecision(expressionDoi, dependencies);
+      output = await pipe(
+        {
+          expressionDoi,
+        },
+        paperActivityPage(dependencies),
+      )();
     });
 
     it('redirects to the paper activity page for the latest expression doi', () => {
-      expect(result).toStrictEqual({
-        tag: 'redirect-target',
-        target: paperActivityPagePath(latestExpressionDoi),
-      });
+      expect(output).toStrictEqual(E.left(toRedirectTarget(
+        paperActivityPagePath(latestExpressionDoi),
+      )));
     });
   });
 
