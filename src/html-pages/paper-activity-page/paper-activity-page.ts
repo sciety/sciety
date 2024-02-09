@@ -2,8 +2,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import * as DE from '../../types/data-error';
-import { canonicalParamsCodec } from './construct-view-model';
 import { toErrorPage, renderAsHtml } from './render-as-html';
 import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPage } from '../construct-page';
@@ -12,6 +12,12 @@ import { paperActivityPagePath } from '../../standards';
 import { toRedirectTarget } from '../redirect-target';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
+import { userIdCodec } from '../../types/user-id';
+
+const canonicalParamsCodec = t.type({
+  expressionDoi: canonicalExpressionDoiCodec,
+  user: tt.optionFromNullable(t.type({ id: userIdCodec })),
+});
 
 const inputParamsCodec = t.type({
   expressionDoi: t.string,

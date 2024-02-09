@@ -2,36 +2,24 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as O from 'fp-ts/Option';
 import { feedSummary } from './feed-summary';
 import { getFeedItemsByDateDescending } from './get-feed-items-by-date-descending';
 import * as DE from '../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { UserId, userIdCodec } from '../../../types/user-id';
+import { UserId } from '../../../types/user-id';
 import { constructUserListManagement } from './construct-user-list-management';
 import { constructRelatedArticles } from './construct-related-articles';
 import { detectLanguage } from '../../../shared-components/lang-attribute';
 import { constructCurationStatements } from '../../../read-side/curation-statements';
 import { Dependencies } from './dependencies';
 import { constructReviewingGroups } from '../../../read-side/reviewing-groups';
-import { CanonicalExpressionDoi, canonicalExpressionDoiCodec, ExpressionDoi } from '../../../types/expression-doi';
+import { CanonicalExpressionDoi, ExpressionDoi } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructFrontMatter } from '../../../read-side/construct-front-matter';
 import { constructContainingList } from './construct-containing-list';
 import { findAllListsContainingPaper } from '../../../read-side/find-all-lists-containing-paper';
-
-export const canonicalParamsCodec = t.type({
-  expressionDoi: canonicalExpressionDoiCodec,
-  user: tt.optionFromNullable(t.type({ id: userIdCodec })),
-});
-
-type CanonicalParams = {
-  expressionDoi: CanonicalExpressionDoi,
-  user: O.Option<{ id: UserId }>,
-};
 
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 
@@ -49,10 +37,15 @@ const constructAbstract = (abstract: ExpressionFrontMatter['abstract']) => pipe(
   ),
 );
 
+type Params = {
+  expressionDoi: CanonicalExpressionDoi,
+  user: O.Option<{ id: UserId }>,
+};
+
 type ConstructViewModel = (
   dependencies: Dependencies
 ) => (
-  params: CanonicalParams
+  params: Params
 ) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(

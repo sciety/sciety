@@ -1,1 +1,1 @@
-export { constructViewModel, canonicalParamsCodec } from './construct-view-model';
+export { constructViewModel } from './construct-view-model';
