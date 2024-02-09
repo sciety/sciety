@@ -63,6 +63,18 @@ const isRequestedExpressionDoiTheLatest = (
   input: { latestExpressionDoi: ExpressionDoi, expressionDoi: ExpressionDoi },
 ) => input.latestExpressionDoi === input.expressionDoi;
 
+const extendWithLatestExpressionDoi = (
+  dependencies: Dependencies,
+) => <A extends { expressionDoi: ExpressionDoi }>(input: A) => pipe(
+  input.expressionDoi,
+  identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+  TE.mapLeft(toErrorPage),
+  TE.map((latestExpressionDoi) => ({
+    ...input,
+    latestExpressionDoi,
+  })),
+);
+
 type PaperActivityPage = (dependencies: Dependencies) => ConstructPage;
 
 export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
@@ -75,15 +87,7 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
     isCanonicalExpressionDoi,
     (combinedParams) => redirectTo(combinedParams.expressionDoi),
   ),
-  TE.chainW((partial) => pipe(
-    partial.expressionDoi,
-    identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-    TE.mapLeft(toErrorPage),
-    TE.map((latestExpressionDoi) => ({
-      ...partial,
-      latestExpressionDoi,
-    })),
-  )),
+  TE.chainW(extendWithLatestExpressionDoi(dependencies)),
   TE.filterOrElseW(
     isRequestedExpressionDoiTheLatest,
     (combinedDecodedParams) => redirectTo(combinedDecodedParams.latestExpressionDoi),
