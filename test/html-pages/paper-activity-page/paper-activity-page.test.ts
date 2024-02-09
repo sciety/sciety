@@ -3,7 +3,6 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { TestFramework, createTestFramework } from '../../framework';
-import { ConstructPageResult } from '../../../src/html-pages/construct-page';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
@@ -11,6 +10,7 @@ import { paperActivityPage } from '../../../src/html-pages/paper-activity-page/p
 import * as EDOI from '../../../src/types/expression-doi';
 import { paperActivityPagePath } from '../../../src/standards';
 import { toRedirectTarget } from '../../../src/html-pages/redirect-target';
+import { HtmlPage } from '../../../src/html-pages/html-page';
 
 const getDecision = async (inputExpressionDoi: string, dependencies: Dependencies) => pipe(
   {
@@ -23,7 +23,7 @@ const getDecision = async (inputExpressionDoi: string, dependencies: Dependencie
 describe('paper-activity-page', () => {
   const expressionDoi = arbitraryExpressionDoi();
   let framework: TestFramework;
-  let result: ConstructPageResult;
+  let result: HtmlPage;
 
   beforeEach(() => {
     framework = createTestFramework();
