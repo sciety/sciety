@@ -70,11 +70,16 @@ export type ResponseBodyCachePredicate = (responseBody: unknown, url: string) =>
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
-const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
+const redisStorage = (
+  logger: Logger,
+) => (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
   async find(key, cacheRequestConfig) {
     const storageValue = await client
       .get(`axios-cache-${key}`)
       .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
+    if (storageValue !== undefined) {
+      logger('debug', 'Found key in the cache', { key });
+    }
     return storageValue;
   },
 
@@ -89,13 +94,13 @@ const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseco
   },
 });
 
-const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions) => {
+const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger: Logger) => {
   let cacheOptions: CacheOptions;
   switch (cachingFetcherOptions.tag) {
     case 'redis':
       cacheOptions = {
         headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
-        storage: redisStorage(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds),
+        storage: redisStorage(logger)(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds),
       };
       break;
     case 'local-memory':
@@ -126,7 +131,7 @@ export const createCachingFetcher = (
   logger: Logger,
   cachingFetcherOptions: CachingFetcherOptions,
 ): QueryExternalService => {
-  const cachedAxios = createCacheAdapter(cachingFetcherOptions);
+  const cachedAxios = createCacheAdapter(cachingFetcherOptions, logger);
   const get = cachedGetter(cachedAxios, logger, cachingFetcherOptions.responseBodyCachePredicate ?? (() => true));
   return (
     notFoundLogLevel: LevelName = 'warn',
