@@ -57,6 +57,10 @@ const isCanonicalExpressionDoi = (input: string) => {
   return canonicalForm.right === input;
 };
 
+const isRequestedExpressionDoiTheLatest = (
+  input: { latestExpressionDoi: ExpressionDoi, expressionDoi: ExpressionDoi },
+) => input.latestExpressionDoi === input.expressionDoi;
+
 type PaperActivityPage = (dependencies: Dependencies) => ConstructPage;
 
 export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
@@ -79,7 +83,7 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
     })),
   )),
   TE.filterOrElseW(
-    (combinedDecodedParams) => combinedDecodedParams.latestExpressionDoi === combinedDecodedParams.expressionDoi,
+    isRequestedExpressionDoiTheLatest,
     (combinedDecodedParams) => redirectTo(combinedDecodedParams.latestExpressionDoi),
   ),
   TE.chainW(displayAPage(dependencies)),
