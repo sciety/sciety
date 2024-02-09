@@ -71,7 +71,7 @@ export type ResponseBodyCachePredicate = (responseBody: unknown, url: string) =>
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
 const redisStorage = (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
-  async find(key) {
+  async find(key, cacheRequestConfig) {
     return client
       .get(`axios-cache-${key}`)
       .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
