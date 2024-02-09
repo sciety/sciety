@@ -82,14 +82,5 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
     (combinedDecodedParams) => combinedDecodedParams.latestExpressionDoi === combinedDecodedParams.expressionDoi,
     (combinedDecodedParams) => redirectTo(combinedDecodedParams.latestExpressionDoi),
   ),
-  TE.chainW((combinedDecodedParams) => pipe(
-    combinedDecodedParams.expressionDoi,
-    identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-    TE.mapLeft(toErrorPage),
-    TE.filterOrElseW(
-      (latestExpressionDoi) => latestExpressionDoi === combinedDecodedParams.expressionDoi,
-      redirectTo,
-    ),
-    TE.chain(() => displayAPage(dependencies)(combinedDecodedParams)),
-  )),
+  TE.chainW(displayAPage(dependencies)),
 );
