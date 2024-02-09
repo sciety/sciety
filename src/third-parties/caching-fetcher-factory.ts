@@ -83,7 +83,7 @@ const redisStorage = (
     return storageValue;
   },
 
-  async set(key, value) {
+  async set(key, value, cacheRequestConfig) {
     await client.set(`axios-cache-${key}`, JSON.stringify(value), {
       PX: maxAgeInMilliseconds,
     });
