@@ -32,10 +32,6 @@ const decodeCombinedParams = (params: unknown) => pipe(
   )),
 );
 
-type CombinedParams = CanonicalParams & {
-  inputExpressionDoi: string,
-};
-
 const redirectTo = (expressionDoi: ExpressionDoi) => pipe(
   expressionDoi,
   paperActivityPagePath,
@@ -61,17 +57,6 @@ const isCanonicalExpressionDoi = (input: string) => {
   return canonicalForm.right === input;
 };
 
-const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedParams: CombinedParams) => pipe(
-  combinedDecodedParams.expressionDoi,
-  identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-  TE.mapLeft(toErrorPage),
-  TE.filterOrElseW(
-    (latestExpressionDoi) => latestExpressionDoi === combinedDecodedParams.expressionDoi,
-    redirectTo,
-  ),
-  TE.chain(() => displayAPage(dependencies)(combinedDecodedParams)),
-);
-
 type PaperActivityPage = (dependencies: Dependencies) => ConstructPage;
 
 export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
@@ -84,5 +69,14 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
     (combinedParams) => isCanonicalExpressionDoi(combinedParams.inputExpressionDoi),
     (combinedParams) => redirectTo(combinedParams.expressionDoi),
   ),
-  TE.chainW(redirectOrDisplayAPage(dependencies)),
+  TE.chainW((combinedDecodedParams) => pipe(
+    combinedDecodedParams.expressionDoi,
+    identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+    TE.mapLeft(toErrorPage),
+    TE.filterOrElseW(
+      (latestExpressionDoi) => latestExpressionDoi === combinedDecodedParams.expressionDoi,
+      redirectTo,
+    ),
+    TE.chain(() => displayAPage(dependencies)(combinedDecodedParams)),
+  )),
 );
