@@ -28,7 +28,7 @@ export const canonicalParamsCodec = t.type({
   user: tt.optionFromNullable(t.type({ id: userIdCodec })),
 });
 
-export type CanonicalParams = t.TypeOf<typeof canonicalParamsCodec>;
+type CanonicalParams = t.TypeOf<typeof canonicalParamsCodec>;
 
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 

@@ -1,17 +1,16 @@
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { pipe, flow } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
 import * as DE from '../../types/data-error';
 import { canonicalParamsCodec } from './construct-view-model';
 import { toErrorPage, renderAsHtml } from './render-as-html';
-import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
-import { ConstructPage, ConstructPageResult } from '../construct-page';
+import { ConstructPage } from '../construct-page';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
 import { paperActivityPagePath } from '../../standards';
-import { RedirectTarget, toRedirectTarget } from '../redirect-target';
-import { CanonicalParams, constructViewModel } from './construct-view-model/construct-view-model';
+import { toRedirectTarget } from '../redirect-target';
+import { constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 
 const inputParamsCodec = t.type({
@@ -36,17 +35,6 @@ const redirectTo = (expressionDoi: ExpressionDoi) => pipe(
   expressionDoi,
   paperActivityPagePath,
   toRedirectTarget,
-);
-
-const displayAPage = (
-  dependencies: Dependencies,
-) => (
-  decodedParams: CanonicalParams,
-): TE.TaskEither<ErrorPageBodyViewModel | RedirectTarget, ConstructPageResult> => pipe(
-  decodedParams,
-  constructViewModel(dependencies),
-  TE.map(renderAsHtml),
-  TE.mapLeft(toErrorPage),
 );
 
 const isCanonicalExpressionDoi = (
@@ -92,5 +80,9 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
     isRequestedExpressionDoiTheLatest,
     (combinedDecodedParams) => redirectTo(combinedDecodedParams.latestExpressionDoi),
   ),
-  TE.chainW(displayAPage(dependencies)),
+  TE.chainW(flow(
+    constructViewModel(dependencies),
+    TE.mapLeft(toErrorPage),
+  )),
+  TE.map(renderAsHtml),
 );
