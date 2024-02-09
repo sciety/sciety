@@ -69,6 +69,15 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
     (combinedParams) => isCanonicalExpressionDoi(combinedParams.inputExpressionDoi),
     (combinedParams) => redirectTo(combinedParams.expressionDoi),
   ),
+  TE.chainW((partial) => pipe(
+    partial.expressionDoi,
+    identifyLatestExpressionDoiOfTheSamePaper(dependencies),
+    TE.mapLeft(toErrorPage),
+    TE.map((latestExpressionDoi) => ({
+      ...partial,
+      latestExpressionDoi,
+    })),
+  )),
   TE.chainW((combinedDecodedParams) => pipe(
     combinedDecodedParams.expressionDoi,
     identifyLatestExpressionDoiOfTheSamePaper(dependencies),
