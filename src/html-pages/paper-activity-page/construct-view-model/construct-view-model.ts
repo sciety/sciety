@@ -38,7 +38,7 @@ const constructAbstract = (abstract: ExpressionFrontMatter['abstract']) => pipe(
 );
 
 type Params = {
-  expressionDoi: CanonicalExpressionDoi,
+  latestExpressionDoi: CanonicalExpressionDoi,
   user: O.Option<{ id: UserId }>,
 };
 
@@ -49,7 +49,7 @@ type ConstructViewModel = (
 ) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
-  params.expressionDoi,
+  params.latestExpressionDoi,
   dependencies.fetchPublishingHistory,
   TE.chain((publishingHistory) => pipe(
     {
@@ -78,8 +78,8 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     ...partial.frontMatter,
     titleLanguageCode: detectLanguage(partial.frontMatter.title),
     ...constructAbstract(partial.frontMatter.abstract),
-    userListManagement: constructUserListManagement(params.user, dependencies, params.expressionDoi),
-    expressionFullTextHref: toExpressionFullTextHref(params.expressionDoi),
+    userListManagement: constructUserListManagement(params.user, dependencies, params.latestExpressionDoi),
+    expressionFullTextHref: toExpressionFullTextHref(params.latestExpressionDoi),
     feedItemsByDateDescending: partial.feedItemsByDateDescending,
     ...feedSummary(partial.feedItemsByDateDescending),
     listedIn: pipe(

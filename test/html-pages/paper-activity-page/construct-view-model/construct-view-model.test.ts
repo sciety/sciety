@@ -35,7 +35,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       viewModel = await pipe(
         {
-          expressionDoi: arbitraryExpressionDoi(),
+          latestExpressionDoi: arbitraryExpressionDoi(),
           user: O.none,
         },
         constructViewModel({
@@ -70,7 +70,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.createList(createListCommand);
         viewModel = await pipe(
           {
-            expressionDoi: paperId,
+            latestExpressionDoi: paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -96,7 +96,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(doi, list.id);
         viewModel = await pipe(
           {
-            expressionDoi: paperId,
+            latestExpressionDoi: paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -132,7 +132,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(doi, createListCommand.listId);
         viewModel = await pipe(
           {
-            expressionDoi: paperId,
+            latestExpressionDoi: paperId,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
