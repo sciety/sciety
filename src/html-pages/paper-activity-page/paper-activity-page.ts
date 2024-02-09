@@ -65,15 +65,11 @@ const redirectOrDisplayAPage = (dependencies: Dependencies) => (combinedDecodedP
   combinedDecodedParams.expressionDoi,
   identifyLatestExpressionDoiOfTheSamePaper(dependencies),
   TE.mapLeft(toErrorPage),
-  TE.chain((latestExpressionDoi) => {
-    if (latestExpressionDoi !== combinedDecodedParams.expressionDoi) {
-      return TE.left(redirectTo(latestExpressionDoi));
-    }
-    return pipe(
-      combinedDecodedParams,
-      displayAPage(dependencies),
-    );
-  }),
+  TE.filterOrElseW(
+    (latestExpressionDoi) => latestExpressionDoi === combinedDecodedParams.expressionDoi,
+    redirectTo,
+  ),
+  TE.chain(() => displayAPage(dependencies)(combinedDecodedParams)),
 );
 
 type PaperActivityPage = (dependencies: Dependencies) => ConstructPage;
