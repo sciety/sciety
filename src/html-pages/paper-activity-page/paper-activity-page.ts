@@ -49,12 +49,14 @@ const displayAPage = (
   TE.mapLeft(toErrorPage),
 );
 
-const isCanonicalExpressionDoi = (input: string) => {
-  const canonicalForm = canonicalExpressionDoiCodec.decode(input);
+const isCanonicalExpressionDoi = (
+  input: { inputExpressionDoi: string, expressionDoi: ExpressionDoi },
+) => {
+  const canonicalForm = canonicalExpressionDoiCodec.decode(input.inputExpressionDoi);
   if (E.isLeft(canonicalForm)) {
     return false;
   }
-  return canonicalForm.right === input;
+  return canonicalForm.right === input.inputExpressionDoi;
 };
 
 const isRequestedExpressionDoiTheLatest = (
@@ -70,7 +72,7 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
   TE.mapLeft(() => DE.notFound),
   TE.mapLeft(toErrorPage),
   TE.filterOrElseW(
-    (combinedParams) => isCanonicalExpressionDoi(combinedParams.inputExpressionDoi),
+    isCanonicalExpressionDoi,
     (combinedParams) => redirectTo(combinedParams.expressionDoi),
   ),
   TE.chainW((partial) => pipe(
