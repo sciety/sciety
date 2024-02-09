@@ -9,15 +9,14 @@ import {
   CacheAxiosResponse,
   CacheOptions,
   HeaderInterpreter,
-  StorageValue,
   buildMemoryStorage,
-  buildStorage,
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
 import { QueryExternalService } from './query-external-service';
+import { redisStorage } from './redis-storage';
 
 const shouldCacheAccordingToStatusCode = (status: number) => [
   200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
@@ -70,37 +69,13 @@ export type ResponseBodyCachePredicate = (responseBody: unknown, url: string) =>
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
-const redisStorage = (
-  logger: Logger,
-) => (client: ReturnType<typeof createClient>, maxAgeInMilliseconds: number) => buildStorage({
-  async find(key, cacheRequestConfig) {
-    const storageValue = await client
-      .get(`axios-cache-${key}`)
-      .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
-    if (storageValue !== undefined) {
-      logger('debug', 'Found key in the cache', { key });
-    }
-    return storageValue;
-  },
-
-  async set(key, value, cacheRequestConfig) {
-    await client.set(`axios-cache-${key}`, JSON.stringify(value), {
-      PX: maxAgeInMilliseconds,
-    });
-  },
-
-  async remove(key) {
-    await client.del(`axios-cache-${key}`);
-  },
-});
-
 const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger: Logger) => {
   let cacheOptions: CacheOptions;
   switch (cachingFetcherOptions.tag) {
     case 'redis':
       cacheOptions = {
         headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
-        storage: redisStorage(logger)(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds),
+        storage: redisStorage(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds, logger),
       };
       break;
     case 'local-memory':
