@@ -78,6 +78,10 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
       latestExpressionDoi,
     })),
   )),
+  TE.filterOrElseW(
+    (combinedDecodedParams) => combinedDecodedParams.latestExpressionDoi === combinedDecodedParams.expressionDoi,
+    (combinedDecodedParams) => redirectTo(combinedDecodedParams.latestExpressionDoi),
+  ),
   TE.chainW((combinedDecodedParams) => pipe(
     combinedDecodedParams.expressionDoi,
     identifyLatestExpressionDoiOfTheSamePaper(dependencies),
