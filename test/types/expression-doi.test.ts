@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryString } from '../helpers';
 import { canonicalExpressionDoiCodec, expressionDoiCodec } from '../../src/types/expression-doi';
+import { arbitraryExpressionDoi } from './expression-doi.helper';
 
 describe('expression-doi', () => {
   describe.each([
@@ -18,6 +19,14 @@ describe('expression-doi', () => {
       it('returns the original value', () => {
         expect(expressionDoiCodec.encode(decoded)).toBe(input);
       });
+    });
+  });
+
+  describe('given a value prefixed with `doi:`', () => {
+    const expressionDoi = arbitraryExpressionDoi();
+
+    it.failing('decodes the value successfully', () => {
+      expect(expressionDoiCodec.decode(`doi:${expressionDoi}`)).toStrictEqual(E.right(expressionDoi));
     });
   });
 
