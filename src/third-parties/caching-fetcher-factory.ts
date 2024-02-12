@@ -89,7 +89,11 @@ const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     cacheOptions.generateKey = (input) => {
       const headersHash = createHash('md5').update(JSON.stringify(input.headers)).digest('hex');
-      return `${input.url} ${headersHash}` ?? 'not-reachable-cache-key';
+      if (input.url === undefined) {
+        logger('error', 'Unable to generate a cache key', { input });
+        return 'not-reachable-cache-key';
+      }
+      return `${input.url} ${headersHash}`;
     };
   }
   return setupCache(
