@@ -37,7 +37,6 @@ export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<
   await pipe(
     adapters.getOneArticleIdInEvaluatedState(),
     TE.fromOption(() => 'no work to do'),
-    TE.map((articleId) => EDOI.fromValidatedString(articleId.value)),
     TE.chainW(buildRecordSubjectAreaCommand(adapters)),
     TE.chainW((command) => pipe(
       command,

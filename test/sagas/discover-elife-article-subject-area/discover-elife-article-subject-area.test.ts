@@ -2,11 +2,12 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryDataError } from '../../types/data-error.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 import { Ports, discoverElifeArticleSubjectArea } from '../../../src/sagas/discover-elife-article-subject-area/discover-elife-article-subject-area';
 import { TestFramework, createTestFramework } from '../../framework';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ArticleId } from '../../../src/types/article-id';
 
 describe('discover-elife-article-subject-area', () => {
   let framework: TestFramework;
@@ -17,7 +18,7 @@ describe('discover-elife-article-subject-area', () => {
   });
 
   describe('when there is work to do', () => {
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
 
     describe('when the subject area can be retrieved', () => {
       const subjectArea = arbitrarySubjectArea();
@@ -27,7 +28,7 @@ describe('discover-elife-article-subject-area', () => {
           adapters = {
             ...framework.happyPathThirdParties,
             getArticleSubjectArea: () => TE.right(subjectArea),
-            getOneArticleIdInEvaluatedState: () => O.some(articleId),
+            getOneArticleIdInEvaluatedState: () => O.some(expressionDoi),
             recordSubjectArea: jest.fn(() => TE.right('events-created' as const)),
             logger: dummyLogger,
           };
@@ -35,7 +36,10 @@ describe('discover-elife-article-subject-area', () => {
         });
 
         it('records the subject area via a command', () => {
-          expect(adapters.recordSubjectArea).toHaveBeenCalledWith({ articleId, subjectArea });
+          expect(adapters.recordSubjectArea).toHaveBeenCalledWith({
+            articleId: new ArticleId(expressionDoi),
+            subjectArea,
+          });
         });
       });
     });
@@ -45,7 +49,7 @@ describe('discover-elife-article-subject-area', () => {
         adapters = {
           ...framework.happyPathThirdParties,
           getArticleSubjectArea: () => TE.left(arbitraryDataError()),
-          getOneArticleIdInEvaluatedState: () => O.some(articleId),
+          getOneArticleIdInEvaluatedState: () => O.some(expressionDoi),
           recordSubjectArea: jest.fn(() => TE.right('no-events-created' as const)),
           logger: dummyLogger,
         };
