@@ -13,6 +13,8 @@ const doiRegex = /^10.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
 
 export const isValidDoi = (value: string): boolean => doiRegex.test(value);
 
+export const hasPrefix = (prefix: string) => (doi: ExpressionDoi): boolean => doi.startsWith(`${prefix}/`);
+
 export const expressionDoiCodec = new t.Type<ExpressionDoi, string, unknown>(
   'expressionDoi',
   isDoi,

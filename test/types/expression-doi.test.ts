@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryString } from '../helpers';
-import { canonicalExpressionDoiCodec, expressionDoiCodec } from '../../src/types/expression-doi';
+import { canonicalExpressionDoiCodec, expressionDoiCodec, hasPrefix } from '../../src/types/expression-doi';
 import { arbitraryExpressionDoi } from './expression-doi.helper';
 
 describe('expression-doi', () => {
@@ -49,6 +49,23 @@ describe('expression-doi', () => {
 
     it('decodes to a canonical (lowercase) value', () => {
       expect(decoded).toBe('10.1234/abcd');
+    });
+  });
+
+  describe('hasPrefix', () => {
+    const input = '10.5281/zenodo.3678326';
+    const expressionDoi = pipe(
+      input,
+      canonicalExpressionDoiCodec.decode,
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    it('returns true if the prefix matches', () => {
+      expect(hasPrefix('10.5281')(expressionDoi)).toBe(true);
+    });
+
+    it('returns false if the prefix does not match', () => {
+      expect(hasPrefix('10.5282')(expressionDoi)).toBe(false);
     });
   });
 });
