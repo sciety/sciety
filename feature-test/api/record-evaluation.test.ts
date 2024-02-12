@@ -19,7 +19,7 @@ describe('record an evaluation', () => {
   afterEach(screenshotTeardown);
 
   describe('when a new evaluation is successfully recorded', () => {
-    const articleId = '10.1101/2021.07.23.453070';
+    const expressionDoi = '10.1101/2021.07.23.453070';
     const evaluationLocator = RI.serialize(arbitraryEvaluationLocator());
     const groupId = arbitraryGroupId();
 
@@ -35,7 +35,7 @@ describe('record an evaluation', () => {
       });
       await callApi('api/record-evaluation-publication', {
         evaluationLocator,
-        articleId,
+        expressionDoi,
         groupId,
         publishedAt: arbitraryDate(),
         authors: [arbitraryString(), arbitraryString()],
@@ -43,7 +43,7 @@ describe('record an evaluation', () => {
     });
 
     it('displays the evaluation', async () => {
-      await goto(`localhost:8080/articles/${articleId}`);
+      await goto(`localhost:8080/articles/${expressionDoi}`);
       const evaluationIsDisplayed = await $(`[id="${evaluationLocator}"]`).exists();
 
       expect(evaluationIsDisplayed).toBe(true);
