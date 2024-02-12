@@ -15,13 +15,6 @@ describe('article-id', () => {
     )).toBe('10.5281/zenodo.3678326');
   });
 
-  it('has a prefix', () => {
-    const articleId = new ArticleId('10.5281/zenodo.3678326');
-
-    expect(AID.hasPrefix('10.5281')(articleId)).toBe(true);
-    expect(AID.hasPrefix('10.5282')(articleId)).toBe(false);
-  });
-
   describe('toString()', () => {
     const articleId = arbitraryArticleId();
 

@@ -7,13 +7,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
-import * as AID from '../../types/article-id';
 import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { QueryExternalService } from '../query-external-service';
 import { ExternalQueries } from '../external-queries';
+import * as EDOI from '../../types/expression-doi';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,
@@ -33,8 +33,9 @@ const mapResponse = flow(
 );
 
 export const getBiorxivOrMedrxivCategory = (dependencies: Dependencies): ExternalQueries['getArticleSubjectArea'] => (articleId) => pipe(
-  articleId,
-  AID.hasPrefix('10.1101'),
+  articleId.value,
+  EDOI.fromValidatedString,
+  EDOI.hasPrefix('10.1101'),
   B.match(
     () => E.left(DE.unavailable),
     () => E.right([
