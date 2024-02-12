@@ -6,6 +6,8 @@ import { Logger } from '../shared-ports';
 
 const encode = (value: NotEmptyStorageValue) => JSON.stringify(value);
 
+const decode = (value: string) => JSON.parse(value) as StorageValue;
+
 export const redisStorage = (
   client: ReturnType<typeof createClient>,
   maxAgeInMilliseconds: number,
@@ -15,7 +17,7 @@ export const redisStorage = (
   async find(key, cacheRequestConfig) {
     const storageValue = await client
       .get(`axios-cache-${key}`)
-      .then((result) => (result ? (JSON.parse(result) as StorageValue) : undefined));
+      .then((result) => (result ? decode(result) : undefined));
     if (storageValue !== undefined) {
       logger('debug', 'Found key in the cache', { key });
     }
