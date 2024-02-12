@@ -1,6 +1,10 @@
-import { AxiosStorage, StorageValue, buildStorage } from 'axios-cache-interceptor';
+import {
+  AxiosStorage, StorageValue, buildStorage, NotEmptyStorageValue,
+} from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import { Logger } from '../shared-ports';
+
+const encode = (value: NotEmptyStorageValue) => JSON.stringify(value);
 
 export const redisStorage = (
   client: ReturnType<typeof createClient>,
@@ -20,7 +24,7 @@ export const redisStorage = (
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async set(key, value, cacheRequestConfig) {
-    await client.set(`axios-cache-${key}`, JSON.stringify(value), {
+    await client.set(`axios-cache-${key}`, encode(value), {
       PX: maxAgeInMilliseconds,
     });
   },
