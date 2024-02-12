@@ -3,12 +3,17 @@ import {
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { Logger } from '../shared-ports';
 
 const encode = (value: NotEmptyStorageValue) => JSON.stringify(value);
 
-const decode = (value: string) => E.right(JSON.parse(value) as StorageValue);
+const decode = (value: string) => pipe(
+  E.tryCatch(
+    () => JSON.parse(value) as StorageValue,
+    identity,
+  ),
+);
 
 export const redisStorage = (
   client: ReturnType<typeof createClient>,
