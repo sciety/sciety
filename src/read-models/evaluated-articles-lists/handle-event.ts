@@ -65,11 +65,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel.groups.set(event.groupId, event.listId);
   }
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    const a = readmodel.articles.get(toExpressionDoi(event.articleId));
+    const a = readmodel.articles.get(event.articleId);
     if (a !== undefined) {
       a.evaluatedBy.push(event.groupId);
     } else {
-      readmodel.articles.set(toExpressionDoi(event.articleId), {
+      readmodel.articles.set(event.articleId, {
         listedIn: [],
         evaluatedBy: [event.groupId],
       });

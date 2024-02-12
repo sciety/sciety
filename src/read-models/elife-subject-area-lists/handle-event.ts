@@ -32,7 +32,7 @@ export const isStateWithSubjectArea = (state: ArticleState):
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    const expressionDoi = AID.toExpressionDoi(event.articleId);
+    const expressionDoi = event.articleId;
     if (EDOI.hasPrefix(biorxivAndMedrxivPublisherDoiPrefix)(expressionDoi)) {
       if (event.groupId === elifeGroupId) {
         const transitions = {

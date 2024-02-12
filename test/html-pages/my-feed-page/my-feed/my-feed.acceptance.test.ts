@@ -17,6 +17,7 @@ import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
+import { RecordEvaluationPublicationCommand } from '../../../../src/write-side/commands';
 
 describe('my-feed acceptance', () => {
   let framework: TestFramework;
@@ -134,7 +135,7 @@ describe('my-feed acceptance', () => {
 
       describe('when details of all articles cannot be fetched', () => {
         it('display only an error message', async () => {
-          const recordEvaluation = {
+          const recordEvaluation: RecordEvaluationPublicationCommand = {
             ...arbitraryRecordEvaluationPublicationCommand(),
             groupId: addGroupCommand.groupId,
           };

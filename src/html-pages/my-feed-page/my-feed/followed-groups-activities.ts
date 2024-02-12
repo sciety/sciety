@@ -4,7 +4,7 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
-import { toExpressionDoi, ArticleId } from '../../../types/article-id';
+import { ArticleId } from '../../../types/article-id';
 import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
 import { ExpressionActivity } from '../../../types/expression-activity';
 import { GroupId } from '../../../types/group-id';
@@ -54,13 +54,13 @@ const addEventToActivities = (
   activities: Map<ExpressionDoi, ArticleActivityDetails>,
   event: EventOfType<'EvaluationPublicationRecorded'>,
 ) => pipe(
-  activities.get(toExpressionDoi(event.articleId)),
+  activities.get(event.articleId),
   O.fromNullable,
   O.fold(
     () => eventToActivityDetails(event, groupIds),
     (existingActivityDetails) => mergeActivities(existingActivityDetails, eventToActivityDetails(event, groupIds)),
   ),
-  (activity) => activities.set(toExpressionDoi(event.articleId), activity),
+  (activity) => activities.set(event.articleId, activity),
 );
 
 const byMostRecentRecordedEvaluationByFollowedGroups: Ord.Ord<{
