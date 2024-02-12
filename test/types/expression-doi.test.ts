@@ -25,7 +25,7 @@ describe('expression-doi', () => {
   describe('given a value prefixed with `doi:`', () => {
     const expressionDoi = arbitraryExpressionDoi();
 
-    it.failing('decodes the value successfully', () => {
+    it('decodes the value successfully', () => {
       expect(expressionDoiCodec.decode(`doi:${expressionDoi}`)).toStrictEqual(E.right(expressionDoi));
     });
   });

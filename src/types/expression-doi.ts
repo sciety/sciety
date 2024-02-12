@@ -18,6 +18,7 @@ export const expressionDoiCodec = new t.Type<ExpressionDoi, string, unknown>(
   isDoi,
   (u, c) => pipe(
     t.string.validate(u, c),
+    E.map((value) => value.replace(/^doi:/, '')),
     E.chain(flow(
       O.fromPredicate((value) => doiRegex.test(value)),
       O.fold(
