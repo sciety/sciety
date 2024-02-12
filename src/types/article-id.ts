@@ -35,13 +35,6 @@ export const toExpressionDoi = (value: ArticleId | EDOI.ExpressionDoi): EDOI.Exp
   return value;
 };
 
-export const toArticleId = (value: ArticleId | EDOI.ExpressionDoi): ArticleId => {
-  if (value instanceof ArticleId) {
-    return value;
-  }
-  return new ArticleId(value);
-};
-
 export const eqArticleId: Eq.Eq<ArticleId> = pipe(
   S.Eq,
   Eq.contramap((articleId) => articleId.value),
