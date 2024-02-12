@@ -1,7 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import * as DE from '../types/data-error';
-import { ArticleId } from '../types/article-id';
 import { Evaluation } from '../types/evaluation';
 import { EvaluationLocator } from '../types/evaluation-locator';
 import { SubjectArea } from '../types/subject-area';
@@ -24,7 +23,7 @@ type FetchPublishingHistory = (
   expressionDoi: ExpressionDoi,
 ) => TE.TaskEither<DE.DataError, PublishingHistory>;
 
-type GetArticleSubjectArea = (articleId: ArticleId) => TE.TaskEither<DE.DataError, SubjectArea>;
+type GetArticleSubjectArea = (expressionDoi: ExpressionDoi) => TE.TaskEither<DE.DataError, SubjectArea>;
 
 type SearchForPaperExpressions = (
   pageSize: number,

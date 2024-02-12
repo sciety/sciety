@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as EDOI from '../../../src/types/expression-doi';
 import { getBiorxivOrMedrxivCategory } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import * as DE from '../../../src/types/data-error';
 import { SubjectArea } from '../../../src/types/subject-area';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on biorxiv', () => {
@@ -30,7 +30,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         getBiorxivOrMedrxivCategory(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -64,7 +64,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         getBiorxivOrMedrxivCategory(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -87,7 +87,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
     let result: E.Either<DE.DataError, SubjectArea>;
 
     beforeEach(async () => {
-      result = await getBiorxivOrMedrxivCategory(ports)(arbitraryArticleId())();
+      result = await getBiorxivOrMedrxivCategory(ports)(arbitraryExpressionDoi())();
     });
 
     it('returns a left', () => {
@@ -114,7 +114,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         getBiorxivOrMedrxivCategory(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -151,7 +151,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        arbitraryArticleId(),
+        arbitraryExpressionDoi(),
         getBiorxivOrMedrxivCategory(ports),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -170,7 +170,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
     let result: E.Either<DE.DataError, SubjectArea>;
 
     beforeEach(async () => {
-      result = await getBiorxivOrMedrxivCategory(ports)(arbitraryArticleId())();
+      result = await getBiorxivOrMedrxivCategory(ports)(arbitraryExpressionDoi())();
     });
 
     it('returns a left', () => {
@@ -179,7 +179,7 @@ describe('get-biorxiv-or-medrxiv-category', () => {
   });
 
   describe('when the article doi has a prefix that is not supported', () => {
-    const researchSquareArticleDoi = new ArticleId('10.21203/rs.3.rs-2197876/v1');
+    const researchSquareArticleDoi = EDOI.fromValidatedString('10.21203/rs.3.rs-2197876/v1');
     const logger = jest.fn(dummyLogger);
     const ports = {
       queryExternalService: shouldNotBeCalled,

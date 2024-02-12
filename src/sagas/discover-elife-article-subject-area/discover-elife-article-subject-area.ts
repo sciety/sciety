@@ -1,31 +1,32 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as EDOI from '../../types/expression-doi';
 import {
   Logger, RecordSubjectArea,
 } from '../../shared-ports';
-import { ArticleId } from '../../types/article-id';
 import { Queries } from '../../read-models';
 import { ExternalQueries } from '../../third-parties';
+import { ArticleId } from '../../types/article-id';
 
 export type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & ExternalQueries & {
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
 };
 
-const buildRecordSubjectAreaCommand = (adapters: Ports) => (articleId: ArticleId) => pipe(
-  articleId,
+const buildRecordSubjectAreaCommand = (adapters: Ports) => (expressionDoi: EDOI.ExpressionDoi) => pipe(
+  expressionDoi,
   adapters.getArticleSubjectArea,
   TE.bimap(
     (error) => {
       adapters.logger(
         'warn',
         'discoverElifeArticleSubjectArea: failed to get article subject area',
-        { articleId, error },
+        { expressionDoi, error },
       );
       return error;
     },
     (subjectArea) => ({
-      articleId,
+      articleId: new ArticleId(expressionDoi),
       subjectArea,
     }),
   ),
@@ -36,6 +37,7 @@ export const discoverElifeArticleSubjectArea = async (adapters: Ports): Promise<
   await pipe(
     adapters.getOneArticleIdInEvaluatedState(),
     TE.fromOption(() => 'no work to do'),
+    TE.map((articleId) => EDOI.fromValidatedString(articleId.value)),
     TE.chainW(buildRecordSubjectAreaCommand(adapters)),
     TE.chainW((command) => pipe(
       command,

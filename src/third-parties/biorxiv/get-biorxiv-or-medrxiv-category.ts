@@ -14,6 +14,7 @@ import * as DE from '../../types/data-error';
 import { QueryExternalService } from '../query-external-service';
 import { ExternalQueries } from '../external-queries';
 import * as EDOI from '../../types/expression-doi';
+import { ArticleId } from '../../types/article-id';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,
@@ -32,9 +33,8 @@ const mapResponse = flow(
   ({ category, server }) => ({ value: category, server }),
 );
 
-export const getBiorxivOrMedrxivCategory = (dependencies: Dependencies): ExternalQueries['getArticleSubjectArea'] => (articleId) => pipe(
-  articleId.value,
-  EDOI.fromValidatedString,
+export const getBiorxivOrMedrxivCategory = (dependencies: Dependencies): ExternalQueries['getArticleSubjectArea'] => (expressionDoi) => pipe(
+  expressionDoi,
   EDOI.hasPrefix('10.1101'),
   B.match(
     () => E.left(DE.unavailable),
@@ -44,7 +44,7 @@ export const getBiorxivOrMedrxivCategory = (dependencies: Dependencies): Externa
     ]),
   ),
   T.of,
-  TE.chainTaskK(T.traverseArray((server) => fetchArticleDetails(dependencies, articleId, server))),
+  TE.chainTaskK(T.traverseArray((server) => fetchArticleDetails(dependencies, new ArticleId(expressionDoi), server))),
   TE.map(RA.rights),
   TE.chainOptionK(() => DE.unavailable)(RA.head),
   TE.map(mapResponse),
