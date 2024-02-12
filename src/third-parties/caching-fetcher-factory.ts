@@ -86,7 +86,7 @@ const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger
       break;
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-  //  cacheOptions.generateKey = (input) => 'foo';
+    cacheOptions.generateKey = (input) => input.url ?? 'not-reachable-cache-key';
   }
   return setupCache(
     Axios.create(),
