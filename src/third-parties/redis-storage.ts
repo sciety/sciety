@@ -29,6 +29,10 @@ export const redisStorage = (
     logger('debug', 'Found key in the cache', { key });
     return pipe(
       decode(result),
+      E.mapLeft((error) => {
+        logger('error', 'Decoding cached storage value failed', { error });
+        return error;
+      }),
       E.getOrElseW(() => undefined),
     );
   },
