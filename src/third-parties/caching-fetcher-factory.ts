@@ -12,6 +12,7 @@ import {
   buildMemoryStorage,
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
+import { createHash } from 'crypto';
 import { logAndTransformToDataError } from './log-and-transform-to-data-error';
 import { Logger } from '../shared-ports';
 import { LevelName } from '../infrastructure/logger';
@@ -86,7 +87,10 @@ const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger
       break;
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    cacheOptions.generateKey = (input) => input.url ?? 'not-reachable-cache-key';
+    cacheOptions.generateKey = (input) => {
+      const headersHash = createHash('md5').update(JSON.stringify(input.headers)).digest('hex');
+      return `${input.url} ${headersHash}` ?? 'not-reachable-cache-key';
+    };
   }
   return setupCache(
     Axios.create(),
