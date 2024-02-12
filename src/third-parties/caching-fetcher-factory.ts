@@ -85,6 +85,9 @@ const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger
       };
       break;
   }
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+  //  cacheOptions.generateKey = (input) => 'foo';
+  }
   return setupCache(
     Axios.create(),
     cacheOptions,
