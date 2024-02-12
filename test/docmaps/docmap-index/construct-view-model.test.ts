@@ -64,12 +64,12 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId1),
+          expressionDoi: toExpressionDoi(articleId1),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId2),
+          expressionDoi: toExpressionDoi(articleId2),
           groupId: groupId1,
         });
         docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
@@ -96,12 +96,12 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId),
+          expressionDoi: toExpressionDoi(articleId),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId),
+          expressionDoi: toExpressionDoi(articleId),
           groupId: groupId2,
         });
         docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
@@ -127,17 +127,17 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId1),
+          expressionDoi: toExpressionDoi(articleId1),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId1),
+          expressionDoi: toExpressionDoi(articleId1),
           groupId: groupId2,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId2),
+          expressionDoi: toExpressionDoi(articleId2),
           groupId: groupId2,
         });
         docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
@@ -211,12 +211,12 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId1),
+          expressionDoi: toExpressionDoi(articleId1),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId2),
+          expressionDoi: toExpressionDoi(articleId2),
           groupId: groupId2,
         });
         docmapArticleIds = await getDocmapsExpressionDois(defaultParams);
@@ -246,7 +246,7 @@ describe('construct-view-model', () => {
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId),
+          expressionDoi: toExpressionDoi(articleId),
           groupId: groupId1,
         });
         await framework.commandHelpers.recordEvaluationPublication({
@@ -281,7 +281,7 @@ describe('construct-view-model', () => {
           });
           await framework.commandHelpers.recordEvaluationPublication({
             ...arbitraryRecordEvaluationPublicationCommand(),
-            articleId: toExpressionDoi(relevantArticleId),
+            expressionDoi: toExpressionDoi(relevantArticleId),
             issuedAt: new Date('2000-01-01'),
             groupId,
           });
@@ -308,7 +308,7 @@ describe('construct-view-model', () => {
           });
           await framework.commandHelpers.recordEvaluationPublication({
             ...arbitraryRecordEvaluationPublicationCommand(),
-            articleId: toExpressionDoi(relevantArticleId),
+            expressionDoi: toExpressionDoi(relevantArticleId),
             evaluationLocator,
             issuedAt: new Date('1980-01-01'),
             groupId,

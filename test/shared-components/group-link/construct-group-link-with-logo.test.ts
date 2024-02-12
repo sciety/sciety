@@ -24,7 +24,7 @@ describe('construct-group-link-with-logo', () => {
     await framework.commandHelpers.addGroup(addGroupCommand);
     await framework.commandHelpers.recordEvaluationPublication({
       ...arbitraryRecordEvaluationPublicationCommand(),
-      articleId: toExpressionDoi(articleId),
+      expressionDoi: toExpressionDoi(articleId),
       groupId: addGroupCommand.groupId,
       evaluationType: undefined,
     });

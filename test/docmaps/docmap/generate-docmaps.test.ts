@@ -97,7 +97,7 @@ describe('generate-docmaps', () => {
       const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
       };
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(command);
@@ -125,12 +125,12 @@ describe('generate-docmaps', () => {
       const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup1.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
       };
       const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup2.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
       };
       await framework.commandHelpers.addGroup(addGroup1);
       await framework.commandHelpers.addGroup(addGroup2);
@@ -163,12 +163,12 @@ describe('generate-docmaps', () => {
       const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup1.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
       };
       const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup2.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
       };
       await framework.commandHelpers.addGroup(addGroup1);
       await framework.commandHelpers.addGroup(addGroup2);
@@ -200,12 +200,12 @@ describe('generate-docmaps', () => {
       const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
       };
       const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
       };
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation1);
@@ -234,12 +234,12 @@ describe('generate-docmaps', () => {
       const recordGoodEvaluation: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
       };
       const recordBadEvaluation: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        articleId: toExpressionDoi(articleId),
+        expressionDoi: toExpressionDoi(articleId),
         evaluationLocator: failingReviewId,
       };
       await framework.commandHelpers.addGroup(addGroupCommand);

@@ -27,7 +27,7 @@ describe('lifecycle', () => {
         expect(outcome).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
-          articleId: new ArticleId(mostRecentCommand.articleId),
+          articleId: new ArticleId(mostRecentCommand.expressionDoi),
           evaluationLocator: mostRecentCommand.evaluationLocator,
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,
@@ -174,7 +174,7 @@ describe('lifecycle', () => {
         expect(outcome).toStrictEqual(E.right([expect.objectContaining({
           type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
-          articleId: new ArticleId(mostRecentCommand.articleId),
+          articleId: new ArticleId(mostRecentCommand.expressionDoi),
           evaluationLocator,
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,

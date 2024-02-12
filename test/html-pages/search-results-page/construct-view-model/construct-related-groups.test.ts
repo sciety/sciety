@@ -3,7 +3,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { ArticleId, toExpressionDoi } from '../../../../src/types/article-id';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
@@ -37,7 +36,6 @@ describe('construct-related-groups', () => {
 
   describe('when the results consist of one article evaluated once by two different groups', () => {
     const expressionDoi = arbitraryExpressionDoi();
-    const articleId = new ArticleId(expressionDoi);
     let groupNames: ReadonlyArray<string>;
     const addGroup1Command = arbitraryAddGroupCommand();
     const addGroup2Command = arbitraryAddGroupCommand();
@@ -47,12 +45,12 @@ describe('construct-related-groups', () => {
       await framework.commandHelpers.addGroup(addGroup2Command);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId),
+        expressionDoi,
         groupId: addGroup1Command.groupId,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId),
+        expressionDoi,
         groupId: addGroup2Command.groupId,
       });
       groupNames = findNamesOfRelatedGroups([expressionDoi]);
@@ -66,8 +64,6 @@ describe('construct-related-groups', () => {
   describe('when the results consist of two articles that have been evaluated once by the same group', () => {
     const expressionDoi1 = arbitraryExpressionDoi();
     const expressionDoi2 = arbitraryExpressionDoi();
-    const articleId1 = new ArticleId(expressionDoi1);
-    const articleId2 = new ArticleId(expressionDoi2);
     let groupNames: ReadonlyArray<string>;
     const addGroupCommand = arbitraryAddGroupCommand();
 
@@ -75,12 +71,12 @@ describe('construct-related-groups', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId1),
+        expressionDoi: expressionDoi1,
         groupId: addGroupCommand.groupId,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId2),
+        expressionDoi: expressionDoi2,
         groupId: addGroupCommand.groupId,
       });
       groupNames = findNamesOfRelatedGroups([expressionDoi1, expressionDoi2]);
@@ -93,7 +89,6 @@ describe('construct-related-groups', () => {
 
   describe('when the results consist of an article that has been evaluated twice by the same group', () => {
     const expressionDoi = arbitraryExpressionDoi();
-    const articleId = new ArticleId(expressionDoi);
     let groupNames: ReadonlyArray<string>;
     const addGroupCommand = arbitraryAddGroupCommand();
 
@@ -101,12 +96,12 @@ describe('construct-related-groups', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId),
+        expressionDoi,
         groupId: addGroupCommand.groupId,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: toExpressionDoi(articleId),
+        expressionDoi,
         groupId: addGroupCommand.groupId,
       });
       groupNames = findNamesOfRelatedGroups([expressionDoi]);

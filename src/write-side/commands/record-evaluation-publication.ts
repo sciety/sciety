@@ -10,7 +10,7 @@ const requiredFields = t.strict({
   groupId: GroupIdFromString,
   publishedAt: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
-  articleId: expressionDoiCodec,
+  expressionDoi: expressionDoiCodec,
   authors: evaluationAuthorsCodec,
 });
 

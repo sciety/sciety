@@ -73,7 +73,7 @@ describe('construct-view-model', () => {
       const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
       const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: inputExpressionDoi,
+        expressionDoi: inputExpressionDoi,
       };
 
       beforeEach(async () => {

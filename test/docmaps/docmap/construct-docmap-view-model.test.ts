@@ -48,7 +48,7 @@ describe('construct-docmap-view-model', () => {
     describe('when there is an evaluation by the selected group', () => {
       const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: expressionDoi,
+        expressionDoi,
         groupId: addGroupCommand.groupId,
       };
 
@@ -77,13 +77,13 @@ describe('construct-docmap-view-model', () => {
       const laterDate = new Date('2000-01-01');
       const command1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: expressionDoi,
+        expressionDoi,
         groupId: addGroupCommand.groupId,
         issuedAt: earlierDate,
       };
       const command2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
-        articleId: expressionDoi,
+        expressionDoi,
         groupId: addGroupCommand.groupId,
         issuedAt: laterDate,
       };
@@ -149,7 +149,7 @@ describe('construct-docmap-view-model', () => {
       const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         evaluationLocator,
-        articleId: expressionDoi,
+        expressionDoi,
         groupId: addGroupCommand.groupId,
         issuedAt: evaluationPublicationRecordedDate,
       };
@@ -186,7 +186,7 @@ describe('construct-docmap-view-model', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
-          articleId: expressionDoi,
+          expressionDoi,
         };
         const ports: Ports = {
           ...defaultAdapters,
@@ -217,7 +217,7 @@ describe('construct-docmap-view-model', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
           evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
-          articleId: expressionDoi,
+          expressionDoi,
         };
         const ports: Ports = {
           ...defaultAdapters,
@@ -255,14 +255,14 @@ describe('construct-docmap-view-model', () => {
         const addOtherGroup = arbitraryAddGroupCommand();
         const recordEvaluationByThisGroup: RecordEvaluationPublicationCommand = {
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: expressionDoi,
+          expressionDoi,
           groupId: selectedGroupId,
         };
         await framework.commandHelpers.addGroup(addOtherGroup);
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addOtherGroup.groupId,
-          articleId: expressionDoi,
+          expressionDoi,
         });
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationByThisGroup);
 

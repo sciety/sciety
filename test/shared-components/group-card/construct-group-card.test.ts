@@ -109,13 +109,13 @@ describe('construct-group-card', () => {
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId),
+          expressionDoi: toExpressionDoi(articleId),
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',
         });
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
-          articleId: toExpressionDoi(articleId),
+          expressionDoi: toExpressionDoi(articleId),
           groupId: addGroupCommand.groupId,
           evaluationType: 'curation-statement',
         });

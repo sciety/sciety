@@ -53,7 +53,7 @@ const reportSkippedItems = (group: GroupIngestionConfiguration) => (feedData: Fe
 
 type EvaluationCommand = {
   groupId: string,
-  articleId: string,
+  expressionDoi: string,
   evaluationLocator: string,
   publishedAt: Date,
   authors: ReadonlyArray<string>,
@@ -103,7 +103,7 @@ const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (fe
   feedData.evaluations,
   RA.map((evaluation) => ({
     groupId: group.id,
-    articleId: evaluation.articleDoi,
+    expressionDoi: evaluation.articleDoi,
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.date,
     authors: evaluation.authors,

@@ -33,7 +33,7 @@ describe('construct-curation-statements', () => {
   const recordCurationStatementByGroupA: RecordEvaluationPublicationCommand = {
     ...arbitraryRecordEvaluationPublicationCommand(),
     groupId: addGroupA.groupId,
-    articleId: expressionDoi,
+    expressionDoi,
     evaluationType: 'curation-statement' as const,
   };
 
@@ -57,7 +57,7 @@ describe('construct-curation-statements', () => {
   describe('when there are multiple curation statements but only one of the groups exists', () => {
     const evaluation2Command: RecordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
-      articleId: expressionDoi,
+      expressionDoi,
       evaluationType: 'curation-statement' as const,
     };
 
@@ -95,7 +95,7 @@ describe('construct-curation-statements', () => {
       ...arbitraryRecordEvaluationPublicationCommand(),
       evaluationLocator: retrievableEvaluationLocator,
       groupId: addGroupB.groupId,
-      articleId: expressionDoi,
+      expressionDoi,
       evaluationType: 'curation-statement' as const,
     };
 
