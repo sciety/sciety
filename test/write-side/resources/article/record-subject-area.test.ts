@@ -3,21 +3,22 @@ import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
 import { recordSubjectArea } from '../../../../src/write-side/resources/article';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { toArticleId } from '../../../../src/types/article-id';
 
 describe('execute-command', () => {
-  const articleId = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
   const subjectArea = arbitrarySubjectArea();
   const command = {
-    articleId,
+    articleId: toArticleId(expressionDoi),
     subjectArea,
   };
 
   describe('given no events for the given article id', () => {
     const result = pipe(
-      [constructEvent('SubjectAreaRecorded')({ articleId: arbitraryArticleId(), subjectArea: arbitrarySubjectArea() })],
+      [constructEvent('SubjectAreaRecorded')({ articleId: toArticleId(arbitraryExpressionDoi()), subjectArea: arbitrarySubjectArea() })],
       recordSubjectArea(command),
       E.getOrElseW(shouldNotBeCalled),
     );
@@ -30,7 +31,7 @@ describe('execute-command', () => {
 
     it('raises an event, containing the article id from the command', () => {
       expect(result).toStrictEqual([expect.objectContaining(
-        { articleId },
+        { articleId: toArticleId(expressionDoi) },
       )]);
     });
 
@@ -46,7 +47,7 @@ describe('execute-command', () => {
       [
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          articleId,
+          articleId: toArticleId(expressionDoi),
         },
       ],
       recordSubjectArea(command),
@@ -63,7 +64,7 @@ describe('execute-command', () => {
   describe('the same subject area was recorded', () => {
     const result = pipe(
       [
-        constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
+        constructEvent('SubjectAreaRecorded')({ articleId: toArticleId(expressionDoi), subjectArea }),
       ],
       recordSubjectArea(command),
       E.getOrElseW(shouldNotBeCalled),
@@ -77,7 +78,7 @@ describe('execute-command', () => {
   describe('a different subject area was recorded for the article', () => {
     const result = pipe(
       [
-        constructEvent('SubjectAreaRecorded')({ articleId, subjectArea: arbitrarySubjectArea() }),
+        constructEvent('SubjectAreaRecorded')({ articleId: toArticleId(expressionDoi), subjectArea: arbitrarySubjectArea() }),
       ],
       recordSubjectArea(command),
     );

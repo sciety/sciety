@@ -35,6 +35,13 @@ export const toExpressionDoi = (value: ArticleId | EDOI.ExpressionDoi): EDOI.Exp
   return value;
 };
 
+export const toArticleId = (value: ArticleId | EDOI.ExpressionDoi): ArticleId => {
+  if (value instanceof ArticleId) {
+    return value;
+  }
+  return new ArticleId(value);
+};
+
 export const hasPrefix = (prefix: string) => (doi: ArticleId): boolean => doi.value.startsWith(`${prefix}/`);
 
 export const eqArticleId: Eq.Eq<ArticleId> = pipe(
