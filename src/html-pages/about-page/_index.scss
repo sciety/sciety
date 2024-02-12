@@ -1,7 +1,7 @@
 @use "../../sass/button";
 @use "../../sass/list";
 @use "../../sass/functions";
-@use "../../sass/settings";
+@use "../../sass-utilities";
 
 .about-page-figure {
   margin-top: 0;
@@ -36,7 +36,7 @@
   li {
     padding-top: functions.px-to-rem(32px);
     padding-bottom: functions.px-to-rem(32px);
-    border-bottom: settings.$colour-furniture solid 1px;
+    border-bottom: sass-utilities.$colour-furniture solid 1px;
 
     a {
       display: flex;
@@ -44,7 +44,7 @@
       align-items: center;
 
       font-weight: bold;
-      color: settings.$colour-text-primary;
+      color: sass-utilities.$colour-text-primary;
     }
 
     a::after {
