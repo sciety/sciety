@@ -5,7 +5,7 @@ import * as t from 'io-ts';
 
 export type ExpressionDoi = string & { readonly ExpressionDoi: unique symbol };
 
-export const fromValidatedString = (value: string): ExpressionDoi => value as ExpressionDoi;
+export const fromValidatedString = (value: string): ExpressionDoi => value.toLowerCase() as ExpressionDoi;
 
 export const isDoi = (input: unknown): input is ExpressionDoi => typeof input === 'string';
 
