@@ -27,6 +27,7 @@ describe('expression-doi', () => {
 
     it('decodes the value successfully', () => {
       expect(expressionDoiCodec.decode(`doi:${expressionDoi}`)).toStrictEqual(E.right(expressionDoi));
+      expect(canonicalExpressionDoiCodec.decode(`doi:${expressionDoi}`)).toStrictEqual(E.right(expressionDoi));
     });
   });
 
