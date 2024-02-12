@@ -14,7 +14,6 @@ export { EditListDetails } from './edit-list-details';
 export { Logger } from './logger';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
-export { GetArticleSubjectArea } from './get-article-subject-area';
 export { RecordSubjectArea } from './record-subject-area';
 
 export type SharedPorts = ExternalQueries & {

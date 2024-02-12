@@ -10,9 +10,10 @@ import * as N from 'fp-ts/number';
 import * as AID from '../../types/article-id';
 import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
-import { GetArticleSubjectArea, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { QueryExternalService } from '../query-external-service';
+import { ExternalQueries } from '../external-queries';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,
@@ -31,7 +32,7 @@ const mapResponse = flow(
   ({ category, server }) => ({ value: category, server }),
 );
 
-export const getBiorxivOrMedrxivCategory = (dependencies: Dependencies): GetArticleSubjectArea => (articleId) => pipe(
+export const getBiorxivOrMedrxivCategory = (dependencies: Dependencies): ExternalQueries['getArticleSubjectArea'] => (articleId) => pipe(
   articleId,
   AID.hasPrefix('10.1101'),
   B.match(
