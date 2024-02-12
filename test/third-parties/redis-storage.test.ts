@@ -2,12 +2,11 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { StorageValue } from 'axios-cache-interceptor';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryString } from '../helpers';
 import { decode, encode } from '../../src/third-parties/redis-storage';
 
 describe('redis-storage', () => {
-  describe.skip('when successfully decoding a storage value', () => {
-    const value = arbitraryString();
+  describe('when successfully decoding a storage value', () => {
+    const value = '{}';
     let decoded: StorageValue;
 
     beforeEach(() => {
