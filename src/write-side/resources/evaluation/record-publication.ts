@@ -8,7 +8,6 @@ import {
   DomainEvent, constructEvent, isEventOfType, EventOfType,
 } from '../../../domain-events';
 import { ResourceAction } from '../resource-action';
-import { ArticleId } from '../../../types/article-id';
 
 type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 
@@ -20,7 +19,7 @@ const createEvaluationPublicationRecordedEvent = (command: RecordEvaluationPubli
   'EvaluationPublicationRecorded',
 )({
   groupId: command.groupId,
-  articleId: new ArticleId(command.expressionDoi),
+  articleId: command.expressionDoi,
   evaluationLocator: command.evaluationLocator,
   authors: command.authors,
   publishedAt: command.publishedAt,

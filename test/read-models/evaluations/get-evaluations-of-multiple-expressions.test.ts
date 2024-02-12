@@ -9,7 +9,6 @@ import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdated
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
-import { ArticleId } from '../../../src/types/article-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryDate, arbitraryString } from '../../helpers';
@@ -27,7 +26,7 @@ const evaluationRecorded = (
   evaluationLocator: EvaluationLocator,
 ) => ({
   ...arbitraryEvaluationPublicationRecordedEvent(),
-  articleId: new ArticleId(expressionDoi),
+  articleId: expressionDoi,
   evaluationLocator,
 });
 
@@ -37,7 +36,7 @@ const evaluationRecordedWithType = (
   evaluationType: EvaluationType,
 ) => ({
   ...arbitraryEvaluationPublicationRecordedEvent(),
-  articleId: new ArticleId(expressionDoi),
+  articleId: expressionDoi,
   evaluationLocator,
   evaluationType,
 });
@@ -145,7 +144,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
           {
             ...arbitraryEvaluationPublicationRecordedEvent(),
             groupId,
-            articleId: new ArticleId(expressionDoi),
+            articleId: expressionDoi,
             evaluationLocator,
           },
           constructEvent('EvaluationUpdated')({
@@ -234,7 +233,7 @@ describe('get-evaluations-of-multiple-expressions', () => {
           {
             ...arbitraryEvaluationPublicationRecordedEvent(),
             evaluationLocator,
-            articleId: new ArticleId(expressionDoi),
+            articleId: expressionDoi,
           },
           {
             ...arbitraryEvaluationUpdatedEvent(),

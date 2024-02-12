@@ -1,19 +1,21 @@
 import { performance } from 'perf_hooks';
 import * as O from 'fp-ts/Option';
 import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryGroupId, groupIdFromString } from '../../../types/group-id.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper';
+import { DomainEvent } from '../../../../src/domain-events';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { ArticleId } from '../../../../src/types/article-id';
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
     const groupId = '4eebcec9-a4bb-44e1-bde3-2ae11e65daaa';
     const latestEvaluationPublishedDate = new Date('2020-12-15T00:00:00.000Z');
-    const events = [
+    const events: ReadonlyArray<DomainEvent> = [
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
-        articleId,
+        articleId: expressionDoi,
         publishedAt: latestEvaluationPublishedDate,
         groupId: groupIdFromString(groupId),
       },
@@ -24,7 +26,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          expressionDoi: articleId,
+          expressionDoi: new ArticleId(expressionDoi),
         }),
       ]);
     });
@@ -70,19 +72,19 @@ describe('followed-groups-activities', () => {
 
   describe('when only a single group has evaluated an article more than once', () => {
     const groupId = arbitraryGroupId();
-    const articleId = arbitraryArticleId();
+    const expressionDoi = arbitraryExpressionDoi();
     const latestEvaluationPublishedDate = new Date('2020-01-01');
-    const events = [
+    const events: ReadonlyArray<DomainEvent> = [
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
-        articleId,
+        articleId: expressionDoi,
         publishedAt: new Date('1980-01-01'),
       },
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
-        articleId,
+        articleId: expressionDoi,
         publishedAt: latestEvaluationPublishedDate,
       },
     ];
@@ -92,7 +94,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          expressionDoi: articleId,
+          expressionDoi: new ArticleId(expressionDoi),
         }),
       ]);
     });
@@ -121,30 +123,30 @@ describe('followed-groups-activities', () => {
   describe('when multiple groups have evaluated an article', () => {
     const groupId = arbitraryGroupId();
     const otherGroupId = arbitraryGroupId();
-    const articleId = arbitraryArticleId();
-    const events = [
+    const expressionDoi = arbitraryExpressionDoi();
+    const events: ReadonlyArray<DomainEvent> = [
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
-        articleId,
+        articleId: expressionDoi,
         publishedAt: new Date('2020-10-14T00:00:00.000Z'),
       },
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId: otherGroupId,
-        articleId,
+        articleId: expressionDoi,
         publishedAt: new Date('2021-03-10T00:00:00.000Z'),
       },
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId: otherGroupId,
-        articleId,
+        articleId: expressionDoi,
         publishedAt: new Date('2021-03-10T00:00:00.000Z'),
       },
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId: otherGroupId,
-        articleId,
+        articleId: expressionDoi,
         publishedAt: new Date('2021-03-10T00:00:00.000Z'),
       },
     ];
@@ -154,7 +156,7 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          expressionDoi: articleId,
+          expressionDoi: new ArticleId(expressionDoi),
           evaluationCount: 4,
         }),
       ]);
@@ -175,11 +177,11 @@ describe('followed-groups-activities', () => {
     const groupId = arbitraryGroupId();
 
     it('returns the article with the most recently recorded evaluation first', () => {
-      const earlierArticle = arbitraryArticleId();
-      const laterArticle = arbitraryArticleId();
+      const earlierArticle = arbitraryExpressionDoi();
+      const laterArticle = arbitraryExpressionDoi();
       const earlierDate = new Date('2019-09-06T00:00:00.000Z');
       const laterDate = new Date('2019-12-05T00:00:00.000Z');
-      const events = [
+      const events: ReadonlyArray<DomainEvent> = [
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId,
@@ -197,10 +199,10 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          expressionDoi: laterArticle,
+          expressionDoi: new ArticleId(laterArticle),
         }),
         expect.objectContaining({
-          expressionDoi: earlierArticle,
+          expressionDoi: new ArticleId(earlierArticle),
         }),
       ]);
     });
@@ -210,9 +212,9 @@ describe('followed-groups-activities', () => {
     it('orders by the most recently recorded evaluation by a followed group', () => {
       const followedGroupId = arbitraryGroupId();
       const notFollowedGroupId = arbitraryGroupId();
-      const articleA = arbitraryArticleId();
-      const articleB = arbitraryArticleId();
-      const events = [
+      const articleA = arbitraryExpressionDoi();
+      const articleB = arbitraryExpressionDoi();
+      const events: ReadonlyArray<DomainEvent> = [
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: followedGroupId,
@@ -237,10 +239,10 @@ describe('followed-groups-activities', () => {
 
       expect(activities).toStrictEqual([
         expect.objectContaining({
-          expressionDoi: articleA,
+          expressionDoi: new ArticleId(articleA),
         }),
         expect.objectContaining({
-          expressionDoi: articleB,
+          expressionDoi: new ArticleId(articleB),
         }),
       ]);
     });

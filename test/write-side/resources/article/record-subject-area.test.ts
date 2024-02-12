@@ -47,7 +47,7 @@ describe('execute-command', () => {
       [
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          articleId: toArticleId(expressionDoi),
+          articleId: expressionDoi,
         },
       ],
       recordSubjectArea(command),

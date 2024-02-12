@@ -5,7 +5,6 @@ import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
 import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
 import { getEvaluationsWithNoType } from '../../../src/read-models/evaluations/get-evaluations-with-no-type';
-import { ArticleId } from '../../../src/types/article-id';
 
 describe('get-evaluations-with-no-type', () => {
   describe('when some evaluations have no type', () => {
@@ -19,7 +18,7 @@ describe('get-evaluations-with-no-type', () => {
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: evaluation1.groupId,
-          articleId: new ArticleId(evaluation1.expressionDoi),
+          articleId: evaluation1.expressionDoi,
           evaluationLocator: evaluation1.evaluationLocator,
           authors: evaluation1.authors,
           publishedAt: evaluation1.publishedAt,
@@ -29,7 +28,7 @@ describe('get-evaluations-with-no-type', () => {
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
           groupId: evaluation2.groupId,
-          articleId: new ArticleId(evaluation2.expressionDoi),
+          articleId: evaluation2.expressionDoi,
           evaluationLocator: evaluation2.evaluationLocator,
           authors: evaluation2.authors,
           publishedAt: evaluation2.publishedAt,

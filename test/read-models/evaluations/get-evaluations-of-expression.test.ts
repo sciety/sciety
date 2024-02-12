@@ -4,37 +4,36 @@ import { pipe } from 'fp-ts/function';
 import { getEvaluationsOfExpression } from '../../../src/read-models/evaluations/get-evaluations-of-expression';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
-import { ArticleId } from '../../../src/types/article-id';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import * as EDOI from '../../../src/types/expression-doi';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
-const runQuery = (articleId: ArticleId) => (events: ReadonlyArray<DomainEvent>) => {
+const runQuery = (expressionDoi: EDOI.ExpressionDoi) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
     events,
     RA.reduce(initialState(), handleEvent),
   );
   return pipe(
-    EDOI.fromValidatedString(articleId.value),
+    expressionDoi,
     getEvaluationsOfExpression(readmodel),
   );
 };
 
-const evaluationRecorded = (articleId: ArticleId, evaluationLocator: EvaluationLocator) => (
+const evaluationRecorded = (expressionDoi: EDOI.ExpressionDoi, evaluationLocator: EvaluationLocator) => (
   {
     ...arbitraryEvaluationPublicationRecordedEvent(),
-    articleId,
+    articleId: expressionDoi,
     evaluationLocator,
   }
 );
 
 const evaluationRecordedWithType = (
-  articleId: ArticleId,
+  articleId: EDOI.ExpressionDoi,
   evaluationLocator: EvaluationLocator,
   evaluationType: EvaluationType,
 ) => ({
@@ -46,8 +45,8 @@ const evaluationRecordedWithType = (
 
 describe('get-evaluations-of-expression', () => {
   describe('when there is an arbitrary number of evaluations', () => {
-    const article1 = arbitraryArticleId();
-    const article2 = arbitraryArticleId();
+    const article1 = arbitraryExpressionDoi();
+    const article2 = arbitraryExpressionDoi();
     const evaluationLocator1 = arbitraryEvaluationLocator();
     const evaluationLocator2 = arbitraryEvaluationLocator();
     const evaluationLocator3 = arbitraryEvaluationLocator();
@@ -55,7 +54,7 @@ describe('get-evaluations-of-expression', () => {
     it.each([
       ['two evaluations', article1, [evaluationLocator1, evaluationLocator3]],
       ['one evaluation', article2, [evaluationLocator2]],
-      ['no evaluations', arbitraryArticleId(), []],
+      ['no evaluations', arbitraryExpressionDoi(), []],
     ])('finds the correct evaluations when the article has %s', async (_, articleDoi, expectedEvaluations) => {
       const actualEvaluations = pipe(
         [
@@ -72,7 +71,7 @@ describe('get-evaluations-of-expression', () => {
   });
 
   describe('when an evaluation has been recorded and then erased', () => {
-    const articleId = arbitraryArticleId();
+    const articleId = arbitraryExpressionDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
     const actualEvaluations = pipe(
       [
@@ -89,7 +88,7 @@ describe('get-evaluations-of-expression', () => {
   });
 
   describe('when an evaluation publication and its removal have been recorded', () => {
-    const articleId = arbitraryArticleId();
+    const articleId = arbitraryExpressionDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
     const actualEvaluations = pipe(
       [
@@ -109,7 +108,7 @@ describe('get-evaluations-of-expression', () => {
   });
 
   describe('when the evaluation was recorded without a type, and a curation statement was recorded later', () => {
-    const articleId = arbitraryArticleId();
+    const articleId = arbitraryExpressionDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
     const groupId = arbitraryGroupId();
     const result = pipe(
@@ -135,7 +134,7 @@ describe('get-evaluations-of-expression', () => {
   });
 
   describe('when an evaluation is recorded', () => {
-    const articleId = arbitraryArticleId();
+    const articleId = arbitraryExpressionDoi();
 
     describe.each([
       ['curation-statement', O.some('curation-statement')],
@@ -165,7 +164,7 @@ describe('get-evaluations-of-expression', () => {
   });
 
   describe('when an evaluation is updated later', () => {
-    const articleId = arbitraryArticleId();
+    const articleId = arbitraryExpressionDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
 
     describe.each([
@@ -202,7 +201,7 @@ describe('get-evaluations-of-expression', () => {
 
   describe('when the authors of the evaluation are updated', () => {
     const dateOfUpdate = arbitraryDate();
-    const articleId = arbitraryArticleId();
+    const articleId = arbitraryExpressionDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
     const authors = [arbitraryString(), arbitraryString()];
     const result = pipe(
@@ -232,7 +231,7 @@ describe('get-evaluations-of-expression', () => {
   });
 
   describe('when the evaluation has been recorded multiple times', () => {
-    const articleId = arbitraryArticleId();
+    const articleId = arbitraryExpressionDoi();
     const evaluationLocator = arbitraryEvaluationLocator();
     const actualEvaluations = pipe(
       [

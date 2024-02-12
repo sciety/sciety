@@ -8,7 +8,6 @@ import {
 import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/read-models/elife-subject-area-lists/data';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import * as LID from '../../../src/types/list-id';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
@@ -20,7 +19,6 @@ describe('handle-event', () => {
   describe('the state machine of a single article', () => {
     let currentState: ReadModel;
     const expressionDoi = arbitraryExpressionDoi();
-    const articleId = new ArticleId(expressionDoi);
     const elifeListId = LID.fromValidatedString(elifeSubjectAreaListIds.epidemiologyListId);
     const subjectArea = arbitrarySubjectArea();
 
@@ -50,7 +48,7 @@ describe('handle-event', () => {
           'EvaluationRecorded (eLife) -> evaluated',
           constructEvent('EvaluationPublicationRecorded')({
             groupId: elifeGroupId,
-            articleId,
+            articleId: expressionDoi,
             evaluationLocator: arbitraryEvaluationLocator(),
             authors: [],
             publishedAt: arbitraryDate(),
@@ -62,7 +60,7 @@ describe('handle-event', () => {
           'EvaluationRecorded (not eLife) -> unknown',
           constructEvent('EvaluationPublicationRecorded')({
             groupId: arbitraryGroupId(),
-            articleId: arbitraryArticleId(),
+            articleId: arbitraryExpressionDoi(),
             evaluationLocator: arbitraryEvaluationLocator(),
             authors: [],
             publishedAt: arbitraryDate(),
@@ -72,12 +70,12 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> subject-area-known',
-          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
+          constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(expressionDoi), subjectArea }),
           { name: 'subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
-          constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId: elifeListId }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -87,7 +85,7 @@ describe('handle-event', () => {
       beforeEach(() => {
         currentState = pipe(
           [
-            constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
+            constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(expressionDoi), subjectArea }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -96,14 +94,14 @@ describe('handle-event', () => {
       it.each([
         [
           'SubjectAreaRecorded -> subject-area-known',
-          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
+          constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(expressionDoi), subjectArea }),
           { name: 'subject-area-known' as const, subjectArea },
         ],
         [
           'EvaluationRecorded -> evaluated-and-subject-area-known',
           constructEvent('EvaluationPublicationRecorded')({
             groupId: elifeGroupId,
-            articleId,
+            articleId: expressionDoi,
             evaluationLocator: arbitraryEvaluationLocator(),
             authors: [],
             publishedAt: arbitraryDate(),
@@ -113,7 +111,7 @@ describe('handle-event', () => {
         ],
         [
           'ArticleAddedToList -> listed',
-          constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId: elifeListId }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -125,7 +123,7 @@ describe('handle-event', () => {
           [
             constructEvent('EvaluationPublicationRecorded')({
               groupId: elifeGroupId,
-              articleId,
+              articleId: expressionDoi,
               evaluationLocator: arbitraryEvaluationLocator(),
               authors: [],
               publishedAt: arbitraryDate(),
@@ -141,7 +139,7 @@ describe('handle-event', () => {
           'EvaluationRecorded -> evaluated',
           constructEvent('EvaluationPublicationRecorded')({
             groupId: elifeGroupId,
-            articleId,
+            articleId: expressionDoi,
             evaluationLocator: arbitraryEvaluationLocator(),
             authors: [],
             publishedAt: arbitraryDate(),
@@ -151,12 +149,12 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-subject-area-known',
-          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
+          constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(expressionDoi), subjectArea }),
           { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
-          constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId: elifeListId }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -168,13 +166,13 @@ describe('handle-event', () => {
           [
             constructEvent('EvaluationPublicationRecorded')({
               groupId: elifeGroupId,
-              articleId,
+              articleId: expressionDoi,
               evaluationLocator: arbitraryEvaluationLocator(),
               authors: [],
               publishedAt: arbitraryDate(),
               evaluationType: undefined,
             }),
-            constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
+            constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(expressionDoi), subjectArea }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -185,7 +183,7 @@ describe('handle-event', () => {
           'EvaluationRecorded -> evaluated-and-subject-area-known',
           constructEvent('EvaluationPublicationRecorded')({
             groupId: elifeGroupId,
-            articleId,
+            articleId: expressionDoi,
             evaluationLocator: arbitraryEvaluationLocator(),
             authors: [],
             publishedAt: arbitraryDate(),
@@ -195,12 +193,12 @@ describe('handle-event', () => {
         ],
         [
           'SubjectAreaRecorded -> evaluated-and-subject-area-known',
-          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
+          constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(expressionDoi), subjectArea }),
           { name: 'evaluated-and-subject-area-known' as const, subjectArea },
         ],
         [
           'ArticleAddedToList -> listed',
-          constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId: elifeListId }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -212,13 +210,13 @@ describe('handle-event', () => {
           [
             constructEvent('EvaluationPublicationRecorded')({
               groupId: elifeGroupId,
-              articleId,
+              articleId: expressionDoi,
               evaluationLocator: arbitraryEvaluationLocator(),
               authors: [],
               publishedAt: arbitraryDate(),
               evaluationType: undefined,
             }),
-            constructEvent('ArticleAddedToList')({ articleId, listId: elifeListId }),
+            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId: elifeListId }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
@@ -231,7 +229,7 @@ describe('handle-event', () => {
           'EvaluationRecorded -> listed',
           constructEvent('EvaluationPublicationRecorded')({
             groupId: elifeGroupId,
-            articleId,
+            articleId: expressionDoi,
             evaluationLocator: arbitraryEvaluationLocator(),
             authors: [],
             publishedAt: arbitraryDate(),
@@ -241,12 +239,12 @@ describe('handle-event', () => {
         ],
         [
           'ArticleAddedToList -> listed',
-          constructEvent('ArticleAddedToList')({ articleId, listId: anotherElifeListId }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId: anotherElifeListId }),
           'listed' as const,
         ],
         [
           'SubjectAreaRecorded -> listed',
-          constructEvent('SubjectAreaRecorded')({ articleId, subjectArea }),
+          constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(expressionDoi), subjectArea }),
           'listed' as const,
         ],
       ])('%s', testNextStateTransition);
@@ -256,13 +254,13 @@ describe('handle-event', () => {
   describe('interactions between different articles', () => {
     describe('when there are multiple evaluations by eLife on articles that have not been added to an eLife subject area list', () => {
       it('considers the articles as evaluated', () => {
-        const articleId = arbitraryArticleId();
-        const articleId2 = arbitraryArticleId();
+        const expressionDoi = arbitraryExpressionDoi();
+        const expressionDoi2 = arbitraryExpressionDoi();
         const readModel = pipe(
           [
             constructEvent('EvaluationPublicationRecorded')({
               groupId: elifeGroupId,
-              articleId,
+              articleId: expressionDoi,
               evaluationLocator: arbitraryEvaluationLocator(),
               authors: [],
               publishedAt: arbitraryDate(),
@@ -270,7 +268,7 @@ describe('handle-event', () => {
             }),
             constructEvent('EvaluationPublicationRecorded')({
               groupId: elifeGroupId,
-              articleId: articleId2,
+              articleId: expressionDoi2,
               evaluationLocator: arbitraryEvaluationLocator(),
               authors: [],
               publishedAt: arbitraryDate(),
@@ -281,8 +279,8 @@ describe('handle-event', () => {
         );
 
         expect(readModel).toStrictEqual({
-          [articleId.value]: { name: 'evaluated' },
-          [articleId2.value]: { name: 'evaluated' },
+          [expressionDoi]: { name: 'evaluated' },
+          [expressionDoi2]: { name: 'evaluated' },
         });
       });
     });

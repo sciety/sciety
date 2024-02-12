@@ -9,7 +9,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -364,7 +364,7 @@ describe('get-activity-for-group', () => {
     describe('when an evaluation\'s publication has been recorded twice', () => {
       const eventProperties = {
         groupId: group.id,
-        articleId: arbitraryArticleId(),
+        articleId: arbitraryExpressionDoi(),
         evaluationLocator: arbitraryEvaluationLocator(),
         authors: [arbitraryString()],
         publishedAt: arbitraryDate(),

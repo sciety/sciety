@@ -7,16 +7,17 @@ import {
 import { getOneArticleReadyToBeListed } from '../../../src/read-models/elife-subject-area-lists/get-one-article-ready-to-be-listed';
 import { constructEvent } from '../../../src/domain-events';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 import { arbitraryDate } from '../../helpers';
 import { getCorrespondingListId } from '../../../src/read-models/elife-subject-area-lists/get-corresponding-list-id';
 import { elifeGroupId } from '../../../src/read-models/elife-subject-area-lists/data';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ArticleId } from '../../../src/types/article-id';
 
 describe('get-one-article-ready-to-be-listed', () => {
   describe('given a bunch of events', () => {
-    const articleIdA = arbitraryArticleId();
+    const articleIdA = arbitraryExpressionDoi();
     const knownSubjectAreaValue = 'neuroscience';
     const subjectArea = arbitrarySubjectArea(knownSubjectAreaValue);
     const listId = O.getOrElseW(shouldNotBeCalled)(getCorrespondingListId(subjectArea));
@@ -31,14 +32,14 @@ describe('get-one-article-ready-to-be-listed', () => {
           publishedAt: arbitraryDate(),
           evaluationType: undefined,
         }),
-        constructEvent('SubjectAreaRecorded')({ articleId: articleIdA, subjectArea }),
+        constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(articleIdA), subjectArea }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
     it('returns one article', () => {
       expect(getOneArticleReadyToBeListed(readModel)()).toStrictEqual(O.some({
-        articleId: articleIdA,
+        articleId: new ArticleId(articleIdA),
         listId,
       }));
     });
