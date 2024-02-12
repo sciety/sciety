@@ -1,4 +1,4 @@
-@use 'settings';
+@use '../sass-utilities';
 
 $size--in-site-header: 25px;
 $size--small: 36px;
@@ -6,6 +6,6 @@ $size--medium: 48px;
 $size--large: 73px; // size of profile images returned by twitter
 
 @mixin border() {
-  border-radius: settings.$border-radius;
-  border: 3px settings.$colour-furniture solid;
+  border-radius: sass-utilities.$border-radius;
+  border: 3px sass-utilities.$colour-furniture solid;
 }
