@@ -28,7 +28,12 @@ export const fromString = (value: string): O.Option<ArticleId> => O.tryCatch(() 
 
 export const toString = (value: ArticleId): string => `doi:${value.value}`;
 
-export const toExpressionDoi = (value: ArticleId): EDOI.ExpressionDoi => EDOI.fromValidatedString(value.value);
+export const toExpressionDoi = (value: ArticleId | EDOI.ExpressionDoi): EDOI.ExpressionDoi => {
+  if (value instanceof ArticleId) {
+    return EDOI.fromValidatedString(value.value);
+  }
+  return value;
+};
 
 export const hasPrefix = (prefix: string) => (doi: ArticleId): boolean => doi.value.startsWith(`${prefix}/`);
 
