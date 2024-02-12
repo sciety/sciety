@@ -26,7 +26,6 @@ export const redisStorage = (
     if (!result) {
       return undefined;
     }
-    logger('debug', 'Found key in the cache', { key });
     return pipe(
       decode(result),
       E.mapLeft((error) => {
@@ -39,12 +38,14 @@ export const redisStorage = (
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async set(key, value, cacheRequestConfig) {
+    logger('debug', 'Setting key in the cache', { key });
     await client.set(`axios-cache-${key}`, encode(value), {
       PX: maxAgeInMilliseconds,
     });
   },
 
   async remove(key) {
+    logger('debug', 'Removing key from the cache', { key });
     await client.del(`axios-cache-${key}`);
   },
 });
