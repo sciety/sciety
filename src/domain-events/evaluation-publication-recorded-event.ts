@@ -7,9 +7,8 @@ import { evaluationTypeCodec } from './types/evaluation-type';
 import { evaluationAuthorsCodec } from './types/evaluation-authors';
 import { canonicalExpressionDoiCodec } from '../types/expression-doi';
 
-export const evaluationRecordedEventCodec = t.type({
+const commonFields = {
   id: EventIdFromString,
-  type: t.literal('EvaluationRecorded'),
   date: tt.DateFromISOString,
   groupId: GroupIdFromString,
   evaluationLocator: evaluationLocatorCodec,
@@ -17,16 +16,14 @@ export const evaluationRecordedEventCodec = t.type({
   publishedAt: tt.DateFromISOString,
   authors: evaluationAuthorsCodec,
   evaluationType: evaluationTypeCodec,
+};
+
+export const evaluationRecordedEventCodec = t.type({
+  type: t.literal('EvaluationRecorded'),
+  ...commonFields,
 });
 
 export const evaluationPublicationRecordedEventCodec = t.type({
-  id: EventIdFromString,
   type: t.literal('EvaluationPublicationRecorded'),
-  date: tt.DateFromISOString,
-  groupId: GroupIdFromString,
-  evaluationLocator: evaluationLocatorCodec,
-  articleId: canonicalExpressionDoiCodec,
-  publishedAt: tt.DateFromISOString,
-  authors: evaluationAuthorsCodec,
-  evaluationType: evaluationTypeCodec,
+  ...commonFields,
 });
