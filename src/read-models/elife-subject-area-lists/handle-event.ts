@@ -4,6 +4,7 @@ import { biorxivAndMedrxivPublisherDoiPrefix, elifeGroupId, elifeSubjectAreaList
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { SubjectArea } from '../../types/subject-area';
 import * as AID from '../../types/article-id';
+import * as EDOI from '../../types/expression-doi';
 import { ExpressionDoi } from '../../types/expression-doi';
 
 type ArticleStateWithSubjectArea =
@@ -31,19 +32,19 @@ export const isStateWithSubjectArea = (state: ArticleState):
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    if (AID.hasPrefix(biorxivAndMedrxivPublisherDoiPrefix)(event.articleId)) {
+    const expressionDoi = AID.toExpressionDoi(event.articleId);
+    if (EDOI.hasPrefix(biorxivAndMedrxivPublisherDoiPrefix)(expressionDoi)) {
       if (event.groupId === elifeGroupId) {
-        const key = AID.toExpressionDoi(event.articleId);
         const transitions = {
           'initial': 'evaluated' as const,
           'evaluated': 'evaluated' as const,
           'listed': 'listed' as const,
         };
-        const currentState = readmodel[key];
+        const currentState = readmodel[expressionDoi];
         if (isStateWithSubjectArea(currentState)) {
-          readmodel[key] = { name: 'evaluated-and-subject-area-known', subjectArea: currentState.subjectArea };
+          readmodel[expressionDoi] = { name: 'evaluated-and-subject-area-known', subjectArea: currentState.subjectArea };
         } else {
-          readmodel[key] = { name: transitions[currentState ? currentState.name : 'initial'] };
+          readmodel[expressionDoi] = { name: transitions[currentState ? currentState.name : 'initial'] };
         }
       }
     }
