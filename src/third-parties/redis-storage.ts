@@ -1,14 +1,14 @@
 import {
-  AxiosStorage, StorageValue, buildStorage, NotEmptyStorageValue,
+  AxiosStorage, StorageValue, buildStorage,
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
 import { Logger } from '../shared-ports';
 
-const encode = (value: NotEmptyStorageValue) => JSON.stringify(value);
+export const encode = (value: StorageValue): string => JSON.stringify(value);
 
-const decode = (value: string) => pipe(
+export const decode = (value: string): E.Either<unknown, StorageValue> => pipe(
   E.tryCatch(
     () => JSON.parse(value) as StorageValue,
     identity,
