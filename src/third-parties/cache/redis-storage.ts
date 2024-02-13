@@ -21,15 +21,15 @@ export const redisStorage = (
   logger: Logger,
 ): AxiosStorage => buildStorage({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async find(key, cacheRequestConfig) {
-    const result = await client.get(`sciety-cache-${key}`);
+  async find(requestKey, cacheRequestConfig) {
+    const result = await client.get(`sciety-cache-${requestKey}`);
     if (!result) {
       return undefined;
     }
     return pipe(
       decode(result),
       E.mapLeft((error) => {
-        logger('error', 'Decoding cached storage value failed', { error });
+        logger('error', 'Decoding cached value failed', { requestKey, error });
         return error;
       }),
       E.getOrElseW(() => undefined),
@@ -37,15 +37,15 @@ export const redisStorage = (
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async set(key, value, cacheRequestConfig) {
-    logger('debug', 'Setting key in the cache', { key });
-    await client.set(`sciety-cache-${key}`, encode(value), {
+  async set(requestKey, value, cacheRequestConfig) {
+    logger('debug', 'Storing third party data in the cache', { requestKey });
+    await client.set(`sciety-cache-${requestKey}`, encode(value), {
       PX: maxAgeInMilliseconds,
     });
   },
 
-  async remove(key) {
-    logger('debug', 'Removing key from the cache', { key });
-    await client.del(`sciety-cache-${key}`);
+  async remove(requestKey) {
+    logger('debug', 'Removing third party data from the cache', { requestKey });
+    await client.del(`sciety-cache-${requestKey}`);
   },
 });
