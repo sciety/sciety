@@ -9,6 +9,9 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { ArticleId } from '../../../src/types/article-id';
 
 describe('lookup-list', () => {
   const listId = arbitraryListId();
@@ -89,8 +92,32 @@ describe('lookup-list', () => {
       });
     });
 
-    describe('and an article has been removed', () => {
-      it.todo('returns only the remaining papers');
+    describe('and an paper has been removed', () => {
+      const expressionDoi1 = arbitraryExpressionDoi();
+      const expressionDoi2 = arbitraryExpressionDoi();
+      const readModel = pipe(
+        [
+          {
+            ...arbitraryListCreatedEvent(),
+            listId,
+          },
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi1), listId }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi2), listId }),
+          constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi2), listId }),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+      const result = pipe(
+        listId,
+        lookupList(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+        (list) => list.entries,
+        RA.map((entry) => entry.expressionDoi),
+      );
+
+      it.failing('returns only the remaining papers', () => {
+        expect(result).toStrictEqual([expressionDoi1]);
+      });
     });
 
     describe('and is empty', () => {
