@@ -5,10 +5,16 @@ import { ExpressionDoi } from '../../types/expression-doi';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 
+type ListEntry = {
+  expressionDoi: ExpressionDoi,
+  listVersion: number,
+};
+
 type ListState = {
   id: ListId,
   ownerId: ListOwnerId,
   expressionDois: Array<ExpressionDoi>,
+  entries: ReadonlyArray<ListEntry>,
   updatedAt: Date,
   name: string,
   description: string,
@@ -23,6 +29,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       id: event.listId,
       ownerId: event.ownerId,
       expressionDois: [],
+      entries: [],
       updatedAt: event.date,
       name: event.name,
       description: event.description,
