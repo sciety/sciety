@@ -23,8 +23,13 @@ const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   O.map(({ id }) => id),
 );
 
+const listEntriesByMostRecentlyAdded: Ord.Ord<List['entries'][number]> = pipe(
+  N.Ord,
+  Ord.reverse,
+  Ord.contramap((entry) => entry.addedAtListVersion),
+);
+
 type ConstructContentViewModel = (
-  articleIds: ReadonlyArray<string>,
   dependencies: Dependencies,
   params: Params,
   editCapability: boolean,
@@ -32,14 +37,8 @@ type ConstructContentViewModel = (
   entries: List['entries'],
 ) => TE.TaskEither<DE.DataError, ViewModel['content']>;
 
-const listEntriesByMostRecentlyAdded: Ord.Ord<List['entries'][number]> = pipe(
-  N.Ord,
-  Ord.reverse,
-  Ord.contramap((entry) => entry.addedAtListVersion),
-);
-
 const constructContentViewModel: ConstructContentViewModel = (
-  articleIds, dependencies, params, editCapability, listId, entries,
+  dependencies, params, editCapability, listId, entries,
 ) => pipe(
   entries,
   RA.sort(listEntriesByMostRecentlyAdded),
@@ -92,7 +91,6 @@ export const constructViewModel = (
   TE.fromOption(() => DE.notFound),
   TE.chain((partialPageViewModel) => pipe(
     constructContentViewModel(
-      partialPageViewModel.articleIds,
       dependencies,
       params,
       partialPageViewModel.editCapability,
