@@ -51,7 +51,7 @@ describe('lookup-list', () => {
         })));
       });
 
-      it.failing('returns the added papers as list entries', () => {
+      it('returns the added papers as list entries', () => {
         const result = pipe(
           listId,
           lookupList(readModel),
