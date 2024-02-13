@@ -115,7 +115,7 @@ describe('lookup-list', () => {
         RA.map((entry) => entry.expressionDoi),
       );
 
-      it.failing('returns only the remaining papers', () => {
+      it('returns only the remaining papers', () => {
         expect(result).toStrictEqual([expressionDoi1]);
       });
     });

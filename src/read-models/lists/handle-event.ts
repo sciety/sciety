@@ -50,6 +50,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel[event.listId].expressionDois = readmodel[event.listId].expressionDois.filter(
       (id) => id !== toExpressionDoi(event.articleId),
     );
+    readmodel[event.listId].entries = readmodel[event.listId].entries.filter(
+      (entry) => entry.expressionDoi !== toExpressionDoi(event.articleId),
+    );
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ListNameEdited')(event)) {
     readmodel[event.listId].name = event.name;
