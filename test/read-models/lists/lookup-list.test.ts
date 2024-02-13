@@ -64,7 +64,29 @@ describe('lookup-list', () => {
         expect(result).toContain(articleId2.value);
       });
 
-      it.todo('returns list versions that reflect the order in which the papers were added');
+      it.failing('returns list versions that reflect the order in which the papers were added', () => {
+        const firstVersion = pipe(
+          listId,
+          lookupList(readModel),
+          O.getOrElseW(shouldNotBeCalled),
+          (list) => list.entries,
+          RA.findFirst((entry) => entry.expressionDoi === articleId1.value),
+          O.getOrElseW(shouldNotBeCalled),
+          (entry) => entry.listVersion,
+        );
+
+        const secondVersion = pipe(
+          listId,
+          lookupList(readModel),
+          O.getOrElseW(shouldNotBeCalled),
+          (list) => list.entries,
+          RA.findFirst((entry) => entry.expressionDoi === articleId2.value),
+          O.getOrElseW(shouldNotBeCalled),
+          (entry) => entry.listVersion,
+        );
+
+        expect(secondVersion).toBeGreaterThan(firstVersion);
+      });
     });
 
     describe('and is empty', () => {
