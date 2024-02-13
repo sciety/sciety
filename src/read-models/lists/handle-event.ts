@@ -1,12 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent, isEventOfType } from '../../domain-events';
+import { toExpressionDoi } from '../../types/article-id';
+import { ExpressionDoi } from '../../types/expression-doi';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 
 type ListState = {
   id: ListId,
   ownerId: ListOwnerId,
-  articleIds: Array<string>,
+  articleIds: Array<ExpressionDoi>,
   updatedAt: Date,
   name: string,
   description: string,
@@ -26,7 +28,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       description: event.description,
     };
   } else if (isEventOfType('ArticleAddedToList')(event)) {
-    readmodel[event.listId].articleIds.push(event.articleId.value);
+    readmodel[event.listId].articleIds.push(toExpressionDoi(event.articleId));
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     readmodel[event.listId].articleIds = readmodel[event.listId].articleIds.filter(
