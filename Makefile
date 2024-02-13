@@ -301,4 +301,5 @@ connect-to-cache-dev:
 
 count-old-cache-keys:
 	kubectl run --namespace default redis-client-$$(date +%s) --tty -i --rm --image redis -- \
-		bash -c "redis-cli -h sciety--prod--cache KEYS 'axios-cache-*' | tail -n 10"
+		bash -c "redis-cli -h sciety--prod--cache KEYS 'axios-cache-*'" \
+		| tail -n 10
