@@ -15,6 +15,7 @@ import { ViewModel } from '../view-model';
 import { Params } from './params';
 import { rawUserInput } from '../../../read-models/annotations/handle-event';
 import { ExpressionDoi } from '../../../types/expression-doi';
+import { List } from '../../../types/list';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
@@ -27,12 +28,14 @@ type ConstructContentViewModel = (
   params: Params,
   editCapability: boolean,
   listId: ListId,
+  entries: List['entries'],
 ) => TE.TaskEither<DE.DataError, ViewModel['content']>;
 
 const constructContentViewModel: ConstructContentViewModel = (
-  articleIds, dependencies, params, editCapability, listId,
+  articleIds, dependencies, params, editCapability, listId, entries,
 ) => pipe(
-  articleIds,
+  entries,
+  () => articleIds,
   RA.map(EDOI.fromValidatedString),
   TE.right,
   TE.chainW(
@@ -87,6 +90,7 @@ export const constructViewModel = (
       params,
       partialPageViewModel.editCapability,
       partialPageViewModel.listId,
+      partialPageViewModel.entries,
     ),
     TE.map((content) => ({
       content,
