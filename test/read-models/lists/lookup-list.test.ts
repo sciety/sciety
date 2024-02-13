@@ -72,7 +72,7 @@ describe('lookup-list', () => {
           (list) => list.entries,
           RA.findFirst((entry) => entry.expressionDoi === articleId1.value),
           O.getOrElseW(shouldNotBeCalled),
-          (entry) => entry.listVersion,
+          (entry) => entry.addedAtListVersion,
         );
 
         const secondVersion = pipe(
@@ -82,7 +82,7 @@ describe('lookup-list', () => {
           (list) => list.entries,
           RA.findFirst((entry) => entry.expressionDoi === articleId2.value),
           O.getOrElseW(shouldNotBeCalled),
-          (entry) => entry.listVersion,
+          (entry) => entry.addedAtListVersion,
         );
 
         expect(secondVersion).toBeGreaterThan(firstVersion);

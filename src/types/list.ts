@@ -12,7 +12,7 @@ export const Eq: EQ.Eq<List> = pipe(
 
 type ListEntry = {
   expressionDoi: ExpressionDoi,
-  listVersion: number,
+  addedAtListVersion: number,
 };
 
 export type List = {

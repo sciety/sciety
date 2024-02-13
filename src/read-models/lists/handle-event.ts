@@ -7,7 +7,7 @@ import { ListOwnerId } from '../../types/list-owner-id';
 
 type ListEntry = {
   expressionDoi: ExpressionDoi,
-  listVersion: number,
+  addedAtListVersion: number,
 };
 
 type ListState = {
@@ -18,7 +18,9 @@ type ListState = {
   updatedAt: Date,
   name: string,
   description: string,
+  version: number,
 };
+
 export type ReadModel = Record<ListId, ListState>;
 
 export const initialState = (): ReadModel => ({});
@@ -33,13 +35,14 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       updatedAt: event.date,
       name: event.name,
       description: event.description,
+      version: 0,
     };
   } else if (isEventOfType('ArticleAddedToList')(event)) {
     const expressionDoi = toExpressionDoi(event.articleId);
     readmodel[event.listId].expressionDois.push(expressionDoi);
     readmodel[event.listId].entries.push({
       expressionDoi,
-      listVersion: 1,
+      addedAtListVersion: 1,
     });
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
