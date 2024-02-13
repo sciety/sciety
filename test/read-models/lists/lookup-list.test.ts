@@ -8,6 +8,7 @@ import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('lookup-list', () => {
   const listId = arbitraryListId();
@@ -50,7 +51,18 @@ describe('lookup-list', () => {
         })));
       });
 
-      it.todo('returns the added papers as list entries');
+      it.failing('returns the added papers as list entries', () => {
+        const result = pipe(
+          listId,
+          lookupList(readModel),
+          O.getOrElseW(shouldNotBeCalled),
+          (list) => list.entries,
+          RA.map((entry) => entry.expressionDoi),
+        );
+
+        expect(result).toContain(articleId1.value);
+        expect(result).toContain(articleId2.value);
+      });
 
       it.todo('returns list versions that reflect the order in which the papers were added');
     });
