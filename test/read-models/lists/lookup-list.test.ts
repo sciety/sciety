@@ -49,6 +49,10 @@ describe('lookup-list', () => {
           articleIds: [articleId2.value, articleId1.value],
         })));
       });
+
+      it.todo('returns the added papers as list entries');
+
+      it.todo('returns list versions that reflect the order in which the papers were added');
     });
 
     describe('and is empty', () => {
