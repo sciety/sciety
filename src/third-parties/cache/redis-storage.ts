@@ -15,6 +15,8 @@ export const decode = (value: string): E.Either<unknown, StorageValue> => pipe(
   ),
 );
 
+const constructRedisKey = (requestKey: string) => `sciety-cache-${requestKey}`;
+
 export const redisStorage = (
   client: ReturnType<typeof createClient>,
   maxAgeInMilliseconds: number,
@@ -22,7 +24,7 @@ export const redisStorage = (
 ): AxiosStorage => buildStorage({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async find(requestKey, cacheRequestConfig) {
-    const redisKey = `sciety-cache-${requestKey}`;
+    const redisKey = constructRedisKey(requestKey);
     const result = await client.get(redisKey);
     if (!result) {
       return undefined;
@@ -39,7 +41,7 @@ export const redisStorage = (
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async set(requestKey, value, cacheRequestConfig) {
-    const redisKey = `sciety-cache-${requestKey}`;
+    const redisKey = constructRedisKey(requestKey);
     logger('debug', 'Storing third party data in the cache', { requestKey, redisKey });
     await client.set(redisKey, encode(value), {
       PX: maxAgeInMilliseconds,
@@ -47,7 +49,7 @@ export const redisStorage = (
   },
 
   async remove(requestKey) {
-    const redisKey = `sciety-cache-${requestKey}`;
+    const redisKey = constructRedisKey(requestKey);
     logger('debug', 'Removing third party data from the cache', { requestKey, redisKey });
     await client.del(redisKey);
   },
