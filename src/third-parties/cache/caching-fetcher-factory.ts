@@ -7,6 +7,7 @@ import {
   CacheOptions,
   HeaderInterpreter,
   buildMemoryStorage,
+  CacheRequestConfig,
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import { createHash } from 'crypto';
@@ -28,17 +29,19 @@ const selectCacheStorage = (options: CachingFetcherOptions, logger: Logger) => {
   }
 };
 
+const generateUrlBasedKey = (logger: Logger) => (input: CacheRequestConfig<unknown, unknown>) => {
+  const headersHash = createHash('md5').update(JSON.stringify(input.headers)).digest('hex');
+  if (input.url === undefined) {
+    logger('error', 'Unable to generate a cache key', { input });
+    return 'not-reachable-cache-key';
+  }
+  return `${input.url} ${headersHash}`;
+};
+
 const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger: Logger) => {
   const cacheOptions: CacheOptions = {
     headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
-    generateKey: (input) => {
-      const headersHash = createHash('md5').update(JSON.stringify(input.headers)).digest('hex');
-      if (input.url === undefined) {
-        logger('error', 'Unable to generate a cache key', { input });
-        return 'not-reachable-cache-key';
-      }
-      return `${input.url} ${headersHash}`;
-    },
+    generateKey: generateUrlBasedKey(logger),
     storage: selectCacheStorage(cachingFetcherOptions, logger),
   };
   return setupCache(Axios.create(), cacheOptions);
