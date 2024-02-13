@@ -24,6 +24,7 @@ export const selectListContainingExpression = (
   RA.map((list) => ({
     ...list,
     articleIds: list.expressionDois,
+    entries: [],
   })),
   RA.head,
 );

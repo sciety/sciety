@@ -14,5 +14,6 @@ export const lookupList = (readModel: ReadModel): LookupList => (listId: ListId)
   O.map((list) => ({
     ...list,
     articleIds: A.reverse(list.expressionDois),
+    entries: [],
   })),
 );
