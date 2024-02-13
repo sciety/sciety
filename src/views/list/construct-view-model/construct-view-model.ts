@@ -11,7 +11,7 @@ import { ArticleId } from '../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 import { Params } from './params';
-import { listEntriesByMostRecentlyAdded } from '../../../html-pages/list-page/construct-view-model/construct-view-model';
+import { toExpressionDoisByMostRecentlyAdded } from '../../../types/list';
 
 export const constructViewModel = (
   dependencies: Dependencies,
@@ -33,8 +33,7 @@ export const constructViewModel = (
   TE.fromOption(() => DE.notFound),
   TE.chainTaskK((partialPageViewModel) => pipe(
     partialPageViewModel.entries,
-    RA.sort(listEntriesByMostRecentlyAdded),
-    RA.map((entry) => entry.expressionDoi),
+    toExpressionDoisByMostRecentlyAdded,
     RA.map((articleId) => new ArticleId(articleId)),
     constructContentWithPaginationViewModel(dependencies, partialPageViewModel.listId),
     T.map(

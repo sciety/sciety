@@ -1,6 +1,4 @@
 import { URL } from 'url';
-import * as N from 'fp-ts/number';
-import * as Ord from 'fp-ts/Ord';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -16,17 +14,11 @@ import { ViewModel } from '../view-model';
 import { Params } from './params';
 import { rawUserInput } from '../../../read-models/annotations/handle-event';
 import { ExpressionDoi } from '../../../types/expression-doi';
-import { List } from '../../../types/list';
+import { List, toExpressionDoisByMostRecentlyAdded } from '../../../types/list';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
   O.map(({ id }) => id),
-);
-
-export const listEntriesByMostRecentlyAdded: Ord.Ord<List['entries'][number]> = pipe(
-  N.Ord,
-  Ord.reverse,
-  Ord.contramap((entry) => entry.addedAtListVersion),
 );
 
 type ConstructContentViewModel = (
@@ -41,8 +33,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   dependencies, params, editCapability, listId, entries,
 ) => pipe(
   entries,
-  RA.sort(listEntriesByMostRecentlyAdded),
-  RA.map((entry) => entry.expressionDoi),
+  toExpressionDoisByMostRecentlyAdded,
   TE.right,
   TE.chainW(
     RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, ExpressionDoi>(
