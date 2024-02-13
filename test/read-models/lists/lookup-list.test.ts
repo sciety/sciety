@@ -64,7 +64,7 @@ describe('lookup-list', () => {
         expect(result).toContain(articleId2.value);
       });
 
-      it.failing('returns list versions that reflect the order in which the papers were added', () => {
+      it('returns list versions that reflect the order in which the papers were added', () => {
         const firstVersion = pipe(
           listId,
           lookupList(readModel),

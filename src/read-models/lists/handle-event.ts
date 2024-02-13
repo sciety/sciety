@@ -40,9 +40,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isEventOfType('ArticleAddedToList')(event)) {
     const expressionDoi = toExpressionDoi(event.articleId);
     readmodel[event.listId].expressionDois.push(expressionDoi);
+    readmodel[event.listId].version += 1;
     readmodel[event.listId].entries.push({
       expressionDoi,
-      addedAtListVersion: 1,
+      addedAtListVersion: readmodel[event.listId].version,
     });
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
