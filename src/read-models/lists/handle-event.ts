@@ -32,7 +32,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     readmodel[event.listId].articleIds = readmodel[event.listId].articleIds.filter(
-      (id) => id !== event.articleId.value,
+      (id) => id !== toExpressionDoi(event.articleId),
     );
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ListNameEdited')(event)) {
