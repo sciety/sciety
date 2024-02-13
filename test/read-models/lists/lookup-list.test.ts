@@ -89,6 +89,10 @@ describe('lookup-list', () => {
       });
     });
 
+    describe('and an article has been removed', () => {
+      it.todo('returns only the remaining papers');
+    });
+
     describe('and is empty', () => {
       const name = arbitraryString();
       const description = arbitraryString();
