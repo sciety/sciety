@@ -1,4 +1,4 @@
-import { crossrefResponseBodyCachePredicate } from '../../src/third-parties/crossref-response-body-cache-predicate';
+import { crossrefResponseBodyCachePredicate } from '../../src/third-parties/crossref/crossref-response-body-cache-predicate';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryUri } from '../helpers';
 

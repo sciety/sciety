@@ -13,10 +13,10 @@ import {
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import { createHash } from 'crypto';
-import { logAndTransformToDataError } from './log-and-transform-to-data-error';
-import { Logger } from '../shared-ports';
-import { LevelName } from '../infrastructure/logger';
-import { QueryExternalService } from './query-external-service';
+import { logAndTransformToDataError } from '../log-and-transform-to-data-error';
+import { Logger } from '../../shared-ports';
+import { LevelName } from '../../infrastructure/logger';
+import { QueryExternalService } from '../query-external-service';
 import { redisStorage } from './redis-storage';
 
 const shouldCacheAccordingToStatusCode = (status: number) => [

@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { StorageValue } from 'axios-cache-interceptor';
 import { shouldNotBeCalled } from '../should-not-be-called';
-import { decode, encode } from '../../src/third-parties/redis-storage';
+import { decode, encode } from '../../src/third-parties/cache/redis-storage';
 
 describe('redis-storage', () => {
   describe('when successfully decoding a storage value', () => {
