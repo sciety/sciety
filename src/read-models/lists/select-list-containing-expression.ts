@@ -8,6 +8,12 @@ import { UserId } from '../../types/user-id';
 import { List } from '../../types/list';
 import { ExpressionDoi } from '../../types/expression-doi';
 
+const isListContaining = (expressionDoi: ExpressionDoi) => (list: List) => pipe(
+  list.entries,
+  RA.map((entry) => entry.expressionDoi),
+  (listOfExpressionDois) => listOfExpressionDois.includes(expressionDoi),
+);
+
 type SelectListContainingExpression = (userId: UserId) => (expressionDoi: ExpressionDoi) => O.Option<List>;
 
 export const selectListContainingExpression = (
@@ -19,7 +25,7 @@ export const selectListContainingExpression = (
 ) => pipe(
   readModel,
   R.filter((listState) => LOID.eqListOwnerId.equals(listState.ownerId, LOID.fromUserId(userId))),
-  R.filter((listState) => listState.expressionDois.includes(expressionDoi)),
+  R.filter(isListContaining(expressionDoi)),
   (result) => Object.values(result),
   RA.head,
 );
