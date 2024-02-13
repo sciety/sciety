@@ -57,7 +57,7 @@ export const constructListCardViewModelWithAvatar = (
   getOwnerAvatarUrl(dependencies),
   (ownerAvatarUrl) => ({
     listId: list.id,
-    articleCount: list.articleIds.length,
+    articleCount: list.entries.length,
     updatedAt: O.some(list.updatedAt),
     title: list.name,
     description: rawUserInput(list.description),

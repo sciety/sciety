@@ -21,7 +21,7 @@ export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) =
   sortByDefaultListOrdering,
   RA.map((list) => ({
     listId: list.id,
-    articleCount: list.articleIds.length,
+    articleCount: list.entries.length,
     title: list.name,
     updatedAt: list.updatedAt,
     listHref: `/lists/${list.id}`,

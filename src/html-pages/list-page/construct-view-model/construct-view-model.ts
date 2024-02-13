@@ -59,9 +59,9 @@ export const constructViewModel = (
     listId: list.id,
     description: rawUserInput(list.description),
     basePath: `/lists/${list.id}`,
-    articleCount: list.articleIds.length,
+    articleCount: list.entries.length,
     listOwnerId: list.ownerId,
-    relatedArticlesLink: list.articleIds.length > 0
+    relatedArticlesLink: list.entries.length > 0
       ? O.some(`https://labs.sciety.org/lists/by-id/${list.id}/article-recommendations?from-sciety=true`)
       : O.none,
     editCapability: userHasEditCapability(getLoggedInUserIdFromParam(params.user), list.ownerId),
