@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { List } from '../../types/list';
+import { List } from '../../read-models/lists/list';
 import { ListCardViewModel } from './render-list-card';
 import { rawUserInput } from '../../read-models/annotations/handle-event';
 

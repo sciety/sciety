@@ -5,7 +5,7 @@ import { CandidateUserHandle } from '../../../../../src/types/candidate-user-han
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import * as LOID from '../../../../../src/types/list-owner-id';
-import { List } from '../../../../../src/types/list';
+import { List } from '../../../../../src/read-models/lists/list';
 import { constructViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/view-model';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';

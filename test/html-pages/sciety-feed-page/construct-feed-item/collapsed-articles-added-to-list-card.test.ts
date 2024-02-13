@@ -7,7 +7,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { createTestFramework, TestFramework } from '../../../framework';
-import { List } from '../../../../src/types/list';
+import { List } from '../../../../src/read-models/lists/list';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';

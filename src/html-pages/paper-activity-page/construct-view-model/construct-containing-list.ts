@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { Dependencies } from './dependencies';
-import { List } from '../../../types/list';
+import { List } from '../../../read-models/lists/list';
 import { ViewModel } from '../view-model';
 import { ListOwnerId } from '../../../types/list-owner-id';
 

@@ -14,7 +14,7 @@ import { ViewModel } from '../view-model';
 import { Params } from './params';
 import { rawUserInput } from '../../../read-models/annotations/handle-event';
 import { ExpressionDoi } from '../../../types/expression-doi';
-import { List, toExpressionDoisByMostRecentlyAdded } from '../../../types/list';
+import { List, toExpressionDoisByMostRecentlyAdded } from '../../../read-models/lists/list';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,

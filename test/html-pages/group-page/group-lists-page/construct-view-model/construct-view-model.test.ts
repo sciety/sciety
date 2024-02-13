@@ -6,7 +6,7 @@ import * as LOID from '../../../../../src/types/list-owner-id';
 import { ViewModel } from '../../../../../src/html-pages/group-page/group-lists-page/view-model';
 import { constructViewModel } from '../../../../../src/html-pages/group-page/group-lists-page/construct-view-model/construct-view-model';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { List } from '../../../../../src/types/list';
+import { List } from '../../../../../src/read-models/lists/list';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';

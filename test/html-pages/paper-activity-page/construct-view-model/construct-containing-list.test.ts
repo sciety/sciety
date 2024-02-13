@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-import { List } from '../../../../src/types/list';
+import { List } from '../../../../src/read-models/lists/list';
 import { ViewModel } from '../../../../src/html-pages/paper-activity-page/view-model';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';

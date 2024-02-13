@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import { ReadModel } from './handle-event';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
-import { List } from '../../types/list';
+import { List } from './list';
 import { ExpressionDoi } from '../../types/expression-doi';
 
 const isListContaining = (expressionDoi: ExpressionDoi) => (list: List) => pipe(

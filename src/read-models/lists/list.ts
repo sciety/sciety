@@ -4,9 +4,9 @@ import * as Ord from 'fp-ts/Ord';
 import * as S from 'fp-ts/string';
 import * as EQ from 'fp-ts/Eq';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ListId } from './list-id';
-import { ListOwnerId } from './list-owner-id';
-import { ExpressionDoi } from './expression-doi';
+import { ListId } from '../../types/list-id';
+import { ListOwnerId } from '../../types/list-owner-id';
+import { ExpressionDoi } from '../../types/expression-doi';
 
 export const Eq: EQ.Eq<List> = pipe(
   S.Eq,

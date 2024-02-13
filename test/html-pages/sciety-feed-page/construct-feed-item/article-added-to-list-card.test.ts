@@ -5,7 +5,7 @@ import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-p
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { createTestFramework, TestFramework } from '../../../framework';
-import { List } from '../../../../src/types/list';
+import { List } from '../../../../src/read-models/lists/list';
 import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { constructEvent } from '../../../../src/domain-events';

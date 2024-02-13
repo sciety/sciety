@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
-import { List } from '../../../types/list';
+import { List } from '../../../read-models/lists/list';
 import { Dependencies } from './dependencies';
 
 type ListWithAddedOwnershipInformation = {

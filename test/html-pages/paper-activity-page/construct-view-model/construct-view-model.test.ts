@@ -6,7 +6,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel } from '../../../../src/html-pages/paper-activity-page/construct-view-model';
 import * as DE from '../../../../src/types/data-error';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { List } from '../../../../src/types/list';
+import { List } from '../../../../src/read-models/lists/list';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { LoggedInUserListManagement, ViewModel } from '../../../../src/html-pages/paper-activity-page/view-model';
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/write-side/commands';

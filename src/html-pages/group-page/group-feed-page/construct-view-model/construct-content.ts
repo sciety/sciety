@@ -11,7 +11,7 @@ import * as EDOI from '../../../../types/expression-doi';
 import { Dependencies } from './dependencies';
 import { PageOfItems, paginate } from '../../../../shared-components/pagination';
 import { Group } from '../../../../types/group';
-import { toExpressionDoisByMostRecentlyAdded } from '../../../../types/list';
+import { toExpressionDoisByMostRecentlyAdded } from '../../../../read-models/lists/list';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,
