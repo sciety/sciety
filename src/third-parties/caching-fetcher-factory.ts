@@ -70,34 +70,29 @@ export type ResponseBodyCachePredicate = (responseBody: unknown, url: string) =>
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 
-const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger: Logger) => {
-  let cacheOptions: CacheOptions;
-  switch (cachingFetcherOptions.tag) {
+const selectCacheStorage = (options: CachingFetcherOptions, logger: Logger) => {
+  switch (options.tag) {
     case 'redis':
-      cacheOptions = {
-        headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
-        storage: redisStorage(cachingFetcherOptions.client, cachingFetcherOptions.maxAgeInMilliseconds, logger),
-      };
-      break;
+      return redisStorage(options.client, options.maxAgeInMilliseconds, logger);
     case 'local-memory':
-      cacheOptions = {
-        headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
-        storage: buildMemoryStorage(),
-      };
-      break;
+      return buildMemoryStorage();
   }
-  cacheOptions.generateKey = (input) => {
-    const headersHash = createHash('md5').update(JSON.stringify(input.headers)).digest('hex');
-    if (input.url === undefined) {
-      logger('error', 'Unable to generate a cache key', { input });
-      return 'not-reachable-cache-key';
-    }
-    return `${input.url} ${headersHash}`;
+};
+
+const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger: Logger) => {
+  const cacheOptions: CacheOptions = {
+    headerInterpreter: headerInterpreterWithFixedMaxAge(cachingFetcherOptions.maxAgeInMilliseconds),
+    generateKey: (input) => {
+      const headersHash = createHash('md5').update(JSON.stringify(input.headers)).digest('hex');
+      if (input.url === undefined) {
+        logger('error', 'Unable to generate a cache key', { input });
+        return 'not-reachable-cache-key';
+      }
+      return `${input.url} ${headersHash}`;
+    },
+    storage: selectCacheStorage(cachingFetcherOptions, logger),
   };
-  return setupCache(
-    Axios.create(),
-    cacheOptions,
-  );
+  return setupCache(Axios.create(), cacheOptions);
 };
 
 export type CachingFetcherOptions = {
