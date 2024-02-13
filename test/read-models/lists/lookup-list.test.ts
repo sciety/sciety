@@ -48,12 +48,6 @@ describe('lookup-list', () => {
         })));
       });
 
-      it('returns the articleIds, sorted by date added, descending', () => {
-        expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
-          articleIds: [articleId2.value, articleId1.value],
-        })));
-      });
-
       it('returns the added papers as list entries', () => {
         const result = pipe(
           listId,

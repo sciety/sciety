@@ -1,4 +1,3 @@
-import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
@@ -13,6 +12,6 @@ export const lookupList = (readModel: ReadModel): LookupList => (listId: ListId)
   R.lookup(listId),
   O.map((list) => ({
     ...list,
-    articleIds: A.reverse(list.expressionDois),
+    articleIds: list.expressionDois,
   })),
 );
