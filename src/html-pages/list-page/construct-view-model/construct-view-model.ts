@@ -1,9 +1,10 @@
 import { URL } from 'url';
+import * as N from 'fp-ts/number';
+import * as Ord from 'fp-ts/Ord';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../types/expression-doi';
 import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerInformation } from './get-owner-information';
 import { userHasEditCapability } from './user-has-edit-capability';
@@ -31,12 +32,18 @@ type ConstructContentViewModel = (
   entries: List['entries'],
 ) => TE.TaskEither<DE.DataError, ViewModel['content']>;
 
+const listEntriesByMostRecentlyAdded: Ord.Ord<List['entries'][number]> = pipe(
+  N.Ord,
+  Ord.reverse,
+  Ord.contramap((entry) => entry.addedAtListVersion),
+);
+
 const constructContentViewModel: ConstructContentViewModel = (
   articleIds, dependencies, params, editCapability, listId, entries,
 ) => pipe(
   entries,
-  () => articleIds,
-  RA.map(EDOI.fromValidatedString),
+  RA.sort(listEntriesByMostRecentlyAdded),
+  RA.map((entry) => entry.expressionDoi),
   TE.right,
   TE.chainW(
     RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, ExpressionDoi>(
