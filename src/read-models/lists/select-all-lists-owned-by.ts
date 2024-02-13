@@ -14,6 +14,5 @@ export const selectAllListsOwnedBy = (
   RA.map((list) => ({
     ...list,
     articleIds: list.expressionDois,
-    entries: [],
   })),
 );

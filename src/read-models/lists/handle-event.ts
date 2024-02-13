@@ -14,7 +14,7 @@ type ListState = {
   id: ListId,
   ownerId: ListOwnerId,
   expressionDois: Array<ExpressionDoi>,
-  entries: ReadonlyArray<ListEntry>,
+  entries: Array<ListEntry>,
   updatedAt: Date,
   name: string,
   description: string,
@@ -35,7 +35,12 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       description: event.description,
     };
   } else if (isEventOfType('ArticleAddedToList')(event)) {
-    readmodel[event.listId].expressionDois.push(toExpressionDoi(event.articleId));
+    const expressionDoi = toExpressionDoi(event.articleId);
+    readmodel[event.listId].expressionDois.push(expressionDoi);
+    readmodel[event.listId].entries.push({
+      expressionDoi,
+      listVersion: 1,
+    });
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     readmodel[event.listId].expressionDois = readmodel[event.listId].expressionDois.filter(

@@ -15,6 +15,5 @@ export const getNonEmptyUserLists = (
   RA.map((list) => ({
     ...list,
     articleIds: list.expressionDois,
-    entries: [],
   })),
 );
