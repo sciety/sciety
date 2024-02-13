@@ -86,16 +86,14 @@ const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger
       };
       break;
   }
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    cacheOptions.generateKey = (input) => {
-      const headersHash = createHash('md5').update(JSON.stringify(input.headers)).digest('hex');
-      if (input.url === undefined) {
-        logger('error', 'Unable to generate a cache key', { input });
-        return 'not-reachable-cache-key';
-      }
-      return `${input.url} ${headersHash}`;
-    };
-  }
+  cacheOptions.generateKey = (input) => {
+    const headersHash = createHash('md5').update(JSON.stringify(input.headers)).digest('hex');
+    if (input.url === undefined) {
+      logger('error', 'Unable to generate a cache key', { input });
+      return 'not-reachable-cache-key';
+    }
+    return `${input.url} ${headersHash}`;
+  };
   return setupCache(
     Axios.create(),
     cacheOptions,
