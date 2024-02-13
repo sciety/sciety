@@ -11,8 +11,4 @@ export const selectAllListsOwnedBy = (
 ): SelectAllListsOwnedBy => (listOwnerId) => pipe(
   Object.values(readModel),
   RA.filter((list) => LOID.eqListOwnerId.equals(list.ownerId, listOwnerId)),
-  RA.map((list) => ({
-    ...list,
-    articleIds: list.expressionDois,
-  })),
 );

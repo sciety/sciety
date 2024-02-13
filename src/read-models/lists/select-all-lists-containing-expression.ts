@@ -11,8 +11,4 @@ export const selectAllListsContainingExpression = (
 ): SelectAllListsContainingExpression => (expressionDoi) => pipe(
   Object.values(readModel),
   RA.filter((list) => list.expressionDois.includes(expressionDoi)),
-  RA.map((list) => ({
-    ...list,
-    articleIds: list.expressionDois,
-  })),
 );

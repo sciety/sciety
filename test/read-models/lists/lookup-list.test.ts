@@ -129,9 +129,9 @@ describe('lookup-list', () => {
         RA.reduce(initialState(), handleEvent),
       );
 
-      it('returns articleIds as empty', () => {
+      it('returns entries as empty', () => {
         expect(lookupList(readModel)(listId)).toStrictEqual(O.some(expect.objectContaining({
-          articleIds: [],
+          entries: [],
         })));
       });
 

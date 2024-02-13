@@ -12,8 +12,4 @@ export const getNonEmptyUserLists = (
   Object.values(readModel),
   RA.filter((list) => !isGroupId(list.ownerId)),
   RA.filter((list) => list.expressionDois.length > 0),
-  RA.map((list) => ({
-    ...list,
-    articleIds: list.expressionDois,
-  })),
 );

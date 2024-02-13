@@ -10,8 +10,4 @@ type LookupList = (listId: ListId) => O.Option<List>;
 export const lookupList = (readModel: ReadModel): LookupList => (listId: ListId) => pipe(
   readModel,
   R.lookup(listId),
-  O.map((list) => ({
-    ...list,
-    articleIds: list.expressionDois,
-  })),
 );
