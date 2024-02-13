@@ -19,7 +19,11 @@ export const selectListContainingExpression = (
 ) => pipe(
   readModel,
   R.filter((listState) => LOID.eqListOwnerId.equals(listState.ownerId, LOID.fromUserId(userId))),
-  R.filter((listState) => listState.articleIds.includes(expressionDoi)),
+  R.filter((listState) => listState.expressionDois.includes(expressionDoi)),
   (result) => Object.values(result),
+  RA.map((list) => ({
+    ...list,
+    articleIds: list.expressionDois,
+  })),
   RA.head,
 );

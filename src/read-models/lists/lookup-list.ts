@@ -13,6 +13,6 @@ export const lookupList = (readModel: ReadModel): LookupList => (listId: ListId)
   R.lookup(listId),
   O.map((list) => ({
     ...list,
-    articleIds: A.reverse(list.articleIds),
+    articleIds: A.reverse(list.expressionDois),
   })),
 );
