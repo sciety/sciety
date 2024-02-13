@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { scietyFeedPage } from '../../../src/html-pages/sciety-feed-page/sciety-feed-page';
@@ -10,6 +11,7 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
+import { constructViewModel } from '../../../src/html-pages/sciety-feed-page/construct-view-model';
 
 describe('sciety-feed-page', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
@@ -61,7 +63,7 @@ describe('sciety-feed-page', () => {
     expect(itemCount).toBe(3);
   });
 
-  it('does not render uninteresting events', async () => {
+  it('does not display uninteresting events', async () => {
     const articleId = arbitraryArticleId();
     const createListCommand = arbitraryCreateListCommand();
     const userId = arbitraryUserId();
@@ -70,10 +72,15 @@ describe('sciety-feed-page', () => {
     await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
     await framework.commandHelpers.removeArticleFromList(articleId, createListCommand.listId);
     await framework.commandHelpers.unfollowGroup(userId, addGroupCommand.groupId);
-    const renderedPage = await renderPage(10);
-    const html = JSDOM.fragment(renderedPage);
-    const itemCount = Array.from(html.querySelectorAll('.sciety-feed-card')).length;
+    const viewModel = await pipe(
+      { page: 1 },
+      constructViewModel({
+        ...framework.dependenciesForViews,
+        getAllEvents: framework.getAllEvents,
+      }, 10),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
 
-    expect(itemCount).toBe(1);
+    expect(viewModel.cards).toHaveLength(1);
   });
 });
