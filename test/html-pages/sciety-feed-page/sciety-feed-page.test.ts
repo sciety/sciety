@@ -2,7 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { JSDOM } from 'jsdom';
 import { scietyFeedPage } from '../../../src/html-pages/sciety-feed-page/sciety-feed-page';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -51,16 +50,21 @@ describe('sciety-feed-page', () => {
     expect(renderedPage).toContain('followed a group');
   });
 
-  it('renders at most a page of cards at a time', async () => {
+  it('displays at most a page of cards at a time', async () => {
     await framework.commandHelpers.addGroup(addGroupCommand);
     await framework.commandHelpers.followGroup(arbitraryUserId(), addGroupCommand.groupId);
     await framework.commandHelpers.followGroup(arbitraryUserId(), addGroupCommand.groupId);
     await framework.commandHelpers.followGroup(arbitraryUserId(), addGroupCommand.groupId);
-    const renderedPage = await renderPage(3);
-    const html = JSDOM.fragment(renderedPage);
-    const itemCount = Array.from(html.querySelectorAll('.sciety-feed-card')).length;
+    const viewModel = await pipe(
+      { page: 1 },
+      constructViewModel({
+        ...framework.dependenciesForViews,
+        getAllEvents: framework.getAllEvents,
+      }, 2),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
 
-    expect(itemCount).toBe(3);
+    expect(viewModel.cards).toHaveLength(2);
   });
 
   it('does not display uninteresting events', async () => {
