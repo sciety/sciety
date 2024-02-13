@@ -22,7 +22,7 @@ export const redisStorage = (
 ): AxiosStorage => buildStorage({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async find(key, cacheRequestConfig) {
-    const result = await client.get(`axios-cache-${key}`);
+    const result = await client.get(`sciety-cache-${key}`);
     if (!result) {
       return undefined;
     }
@@ -39,13 +39,13 @@ export const redisStorage = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async set(key, value, cacheRequestConfig) {
     logger('debug', 'Setting key in the cache', { key });
-    await client.set(`axios-cache-${key}`, encode(value), {
+    await client.set(`sciety-cache-${key}`, encode(value), {
       PX: maxAgeInMilliseconds,
     });
   },
 
   async remove(key) {
     logger('debug', 'Removing key from the cache', { key });
-    await client.del(`axios-cache-${key}`);
+    await client.del(`sciety-cache-${key}`);
   },
 });
