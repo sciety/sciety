@@ -19,6 +19,7 @@ export const lookupList = (readModel: ReadModel): LookupList => (listId: ListId)
       list.expressionDois,
       RA.map((expressionDoi) => ({
         expressionDoi,
+        listVersion: 1,
       })),
     ),
   })),
