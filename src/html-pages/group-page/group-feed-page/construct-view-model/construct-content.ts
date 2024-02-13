@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { ViewModel } from '../view-model';
 import { constructPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
 import { GroupId } from '../../../../types/group-id';
@@ -11,12 +12,17 @@ import * as EDOI from '../../../../types/expression-doi';
 import { Dependencies } from './dependencies';
 import { PageOfItems, paginate } from '../../../../shared-components/pagination';
 import { Group } from '../../../../types/group';
+import { listEntriesByMostRecentlyAdded } from '../../../list-page/construct-view-model/construct-view-model';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,
   dependencies.getEvaluatedArticlesListIdForGroup,
   O.chain((listId) => dependencies.lookupList(listId)),
-  O.map((list) => list.articleIds),
+  O.map((list) => pipe(
+    list.entries,
+    RA.sort(listEntriesByMostRecentlyAdded),
+    RA.map((entry) => entry.expressionDoi),
+  )),
   E.fromOption(() => DE.notFound),
 );
 

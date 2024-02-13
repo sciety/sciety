@@ -23,7 +23,7 @@ const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   O.map(({ id }) => id),
 );
 
-const listEntriesByMostRecentlyAdded: Ord.Ord<List['entries'][number]> = pipe(
+export const listEntriesByMostRecentlyAdded: Ord.Ord<List['entries'][number]> = pipe(
   N.Ord,
   Ord.reverse,
   Ord.contramap((entry) => entry.addedAtListVersion),
