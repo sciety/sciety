@@ -2,7 +2,6 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { constructViewModel } from '../../../../src/html-pages/paper-activity-page/construct-view-model';
 import * as DE from '../../../../src/types/data-error';
@@ -13,17 +12,12 @@ import { LoggedInUserListManagement, ViewModel } from '../../../../src/html-page
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { expressionDoiCodec } from '../../../../src/types/expression-doi';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { ArticleId } from '../../../../src/types/article-id';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  const doi = arbitraryArticleId();
-  const paperId = pipe(
-    doi.value,
-    expressionDoiCodec.decode,
-    E.getOrElseW(shouldNotBeCalled),
-  );
+  const expressionDoi = arbitraryExpressionDoi();
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -70,7 +64,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.createList(createListCommand);
         viewModel = await pipe(
           {
-            latestExpressionDoi: paperId,
+            latestExpressionDoi: expressionDoi,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -93,10 +87,10 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-        await framework.commandHelpers.addArticleToList(doi, list.id);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), list.id);
         viewModel = await pipe(
           {
-            latestExpressionDoi: paperId,
+            latestExpressionDoi: expressionDoi,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
@@ -129,10 +123,10 @@ describe('construct-view-model', () => {
           ownerId: LOID.fromUserId(createUserAccountCommand.userId),
         };
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList(doi, createListCommand.listId);
+        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), createListCommand.listId);
         viewModel = await pipe(
           {
-            latestExpressionDoi: paperId,
+            latestExpressionDoi: expressionDoi,
             user: O.some({ id: createUserAccountCommand.userId }),
           },
           constructViewModel(framework.dependenciesForViews),
