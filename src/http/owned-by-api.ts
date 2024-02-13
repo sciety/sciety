@@ -6,11 +6,14 @@ import { Middleware } from 'koa';
 import { ownedByQueryCodec } from '../types/codecs/owned-by-query-codec';
 import * as LOID from '../types/list-owner-id';
 import { Queries } from '../read-models';
-import { List } from '../types/list';
+import { List, toExpressionDoisByMostRecentlyAdded } from '../types/list';
 
 const constructResponseModel = (lists: ReadonlyArray<List>) => pipe(
   lists,
-  RA.map((list) => ({ ...list, articleIds: [...list.articleIds] })),
+  RA.map((list) => ({
+    ...list,
+    articleIds: [...toExpressionDoisByMostRecentlyAdded(list.entries)],
+  })),
 );
 
 export const ownedBy = (queries: Queries): Middleware => async ({ params, response }, next) => {

@@ -22,7 +22,6 @@ export type List = {
   id: ListId,
   name: string,
   description: string,
-  articleIds: ReadonlyArray<string>,
   entries: ReadonlyArray<ListEntry>,
   updatedAt: Date,
   ownerId: ListOwnerId,
