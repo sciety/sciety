@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as D from 'fp-ts/Date';
 import * as N from 'fp-ts/number';
 import * as Ord from 'fp-ts/Ord';
 import * as S from 'fp-ts/string';
@@ -7,6 +8,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 import { ExpressionDoi } from '../../types/expression-doi';
+
+export const byUpdatedAt: Ord.Ord<List> = pipe(
+  D.Ord,
+  Ord.contramap((list) => list.updatedAt),
+);
 
 export const eqList: EQ.Eq<List> = pipe(
   S.Eq,

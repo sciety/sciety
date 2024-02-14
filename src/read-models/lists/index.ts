@@ -18,4 +18,6 @@ export const lists = {
   initialState,
   handleEvent,
 };
-export { eqList, List, toExpressionDoisByMostRecentlyAdded } from './list';
+export {
+  byUpdatedAt, eqList, List, toExpressionDoisByMostRecentlyAdded,
+} from './list';
