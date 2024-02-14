@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { TestFramework, createTestFramework } from '../../framework/create-test-framework';
 import { constructViewModel } from '../../../src/html-pages/edit-list-details-form-page/construct-view-model';
@@ -42,17 +42,21 @@ describe('construct-view-model', () => {
 
   describe('when the list does not exist', () => {
     const listId = arbitraryListId();
-    let result: E.Either<'no-such-list', ViewModel>;
+    let result: 'no-such-list';
 
     beforeEach(() => {
       result = pipe(
         listId,
         constructViewModel(framework.dependenciesForViews),
+        E.match(
+          identity,
+          shouldNotBeCalled,
+        ),
       );
     });
 
-    it('returns on left', () => {
-      expect(result).toStrictEqual(E.left('no-such-list'));
+    it('fails with an appropriate message', () => {
+      expect(result).toBe('no-such-list');
     });
   });
 });
