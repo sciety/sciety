@@ -11,7 +11,7 @@ import { ArticleId } from '../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 import { Params } from './params';
-import { toExpressionDoisByMostRecentlyAdded } from '../../../read-models/lists/list';
+import { toExpressionDoisByMostRecentlyAdded } from '../../../read-models/lists';
 
 export const constructViewModel = (
   dependencies: Dependencies,
