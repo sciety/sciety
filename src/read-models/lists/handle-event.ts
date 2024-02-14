@@ -3,20 +3,18 @@ import { DomainEvent, isEventOfType } from '../../domain-events';
 import { toExpressionDoi } from '../../types/article-id';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { ListId } from '../../types/list-id';
-import { ListOwnerId } from '../../types/list-owner-id';
+import { List } from './list';
 
 type ListEntry = {
   expressionDoi: ExpressionDoi,
   addedAtListVersion: number,
 };
 
-type ListState = {
-  id: ListId,
-  ownerId: ListOwnerId,
+type ListState = Pick<
+List,
+'id' | 'ownerId' | 'updatedAt' | 'name' | 'description'
+> & {
   entries: Array<ListEntry>,
-  updatedAt: Date,
-  name: string,
-  description: string,
   version: number,
 };
 
