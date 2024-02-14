@@ -12,6 +12,8 @@ List,
   version: number,
 };
 
+const incrementListVersion = (readModel: ReadModel, listId: ListId) => { readModel[listId].version += 1; };
+
 export type ReadModel = Record<ListId, ListState>;
 
 export const initialState = (): ReadModel => ({});
@@ -29,25 +31,25 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     };
   } else if (isEventOfType('ArticleAddedToList')(event)) {
     const expressionDoi = toExpressionDoi(event.articleId);
-    readmodel[event.listId].version += 1;
+    incrementListVersion(readmodel, event.listId);
     readmodel[event.listId].entries.push({
       expressionDoi,
       addedAtListVersion: readmodel[event.listId].version,
     });
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
+    incrementListVersion(readmodel, event.listId);
     readmodel[event.listId].entries = readmodel[event.listId].entries.filter(
       (entry) => entry.expressionDoi !== toExpressionDoi(event.articleId),
     );
-    readmodel[event.listId].version += 1;
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ListNameEdited')(event)) {
+    incrementListVersion(readmodel, event.listId);
     readmodel[event.listId].name = event.name;
-    readmodel[event.listId].version += 1;
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ListDescriptionEdited')(event)) {
+    incrementListVersion(readmodel, event.listId);
     readmodel[event.listId].description = event.description;
-    readmodel[event.listId].version += 1;
     readmodel[event.listId].updatedAt = event.date;
   }
   return readmodel;
