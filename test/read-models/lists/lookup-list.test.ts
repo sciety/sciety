@@ -14,12 +14,20 @@ import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-eve
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
 import { ListId } from '../../../src/types/list-id';
+import { List } from '../../../src/read-models/lists/list';
 
 const getListEntries = (listId: ListId, readModel: ReadModel) => pipe(
   listId,
   lookupList(readModel),
   O.getOrElseW(shouldNotBeCalled),
   (list) => list.entries,
+);
+
+const getVersion = (expressionDoi: EDOI.ExpressionDoi) => (entries: List['entries']) => pipe(
+  entries,
+  RA.findFirst((entry) => entry.expressionDoi === expressionDoi),
+  O.getOrElseW(shouldNotBeCalled),
+  (entry) => entry.addedAtListVersion,
 );
 
 describe('lookup-list', () => {
@@ -72,16 +80,12 @@ describe('lookup-list', () => {
       it('returns list versions that reflect the order in which the papers were added', () => {
         const firstVersion = pipe(
           getListEntries(listId, readModel),
-          RA.findFirst((entry) => entry.expressionDoi === expressionDoi1),
-          O.getOrElseW(shouldNotBeCalled),
-          (entry) => entry.addedAtListVersion,
+          getVersion(expressionDoi1),
         );
 
         const secondVersion = pipe(
           getListEntries(listId, readModel),
-          RA.findFirst((entry) => entry.expressionDoi === expressionDoi2),
-          O.getOrElseW(shouldNotBeCalled),
-          (entry) => entry.addedAtListVersion,
+          getVersion(expressionDoi2),
         );
 
         expect(secondVersion).toBeGreaterThan(firstVersion);
