@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
+import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { lookupList } from '../../../src/read-models/lists/lookup-list';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -12,6 +12,14 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
+import { ListId } from '../../../src/types/list-id';
+
+const getListEntries = (listId: ListId, readModel: ReadModel) => pipe(
+  listId,
+  lookupList(readModel),
+  O.getOrElseW(shouldNotBeCalled),
+  (list) => list.entries,
+);
 
 describe('lookup-list', () => {
   const listId = arbitraryListId();
@@ -50,10 +58,7 @@ describe('lookup-list', () => {
 
       it('returns the added papers as list entries', () => {
         const result = pipe(
-          listId,
-          lookupList(readModel),
-          O.getOrElseW(shouldNotBeCalled),
-          (list) => list.entries,
+          getListEntries(listId, readModel),
           RA.map((entry) => entry.expressionDoi),
         );
 
@@ -63,20 +68,14 @@ describe('lookup-list', () => {
 
       it('returns list versions that reflect the order in which the papers were added', () => {
         const firstVersion = pipe(
-          listId,
-          lookupList(readModel),
-          O.getOrElseW(shouldNotBeCalled),
-          (list) => list.entries,
+          getListEntries(listId, readModel),
           RA.findFirst((entry) => entry.expressionDoi === articleId1.value),
           O.getOrElseW(shouldNotBeCalled),
           (entry) => entry.addedAtListVersion,
         );
 
         const secondVersion = pipe(
-          listId,
-          lookupList(readModel),
-          O.getOrElseW(shouldNotBeCalled),
-          (list) => list.entries,
+          getListEntries(listId, readModel),
           RA.findFirst((entry) => entry.expressionDoi === articleId2.value),
           O.getOrElseW(shouldNotBeCalled),
           (entry) => entry.addedAtListVersion,
@@ -102,10 +101,7 @@ describe('lookup-list', () => {
         RA.reduce(initialState(), handleEvent),
       );
       const result = pipe(
-        listId,
-        lookupList(readModel),
-        O.getOrElseW(shouldNotBeCalled),
-        (list) => list.entries,
+        getListEntries(listId, readModel),
         RA.map((entry) => entry.expressionDoi),
       );
 
