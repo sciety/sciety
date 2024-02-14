@@ -14,7 +14,7 @@ import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-eve
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
 import { ListId } from '../../../src/types/list-id';
-import { List } from '../../../src/read-models/lists/list';
+import { List } from '../../../src/read-models/lists';
 
 const runQuery = (listId: ListId, readModel: ReadModel) => pipe(
   listId,

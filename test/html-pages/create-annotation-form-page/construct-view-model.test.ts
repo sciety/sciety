@@ -10,7 +10,7 @@ import { ViewModel } from '../../../src/html-pages/create-annotation-form-page/v
 import { arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
 import * as LOID from '../../../src/types/list-owner-id';
-import { List } from '../../../src/read-models/lists/list';
+import { List } from '../../../src/read-models/lists';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
 
