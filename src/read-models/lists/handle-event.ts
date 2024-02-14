@@ -1,14 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { toExpressionDoi } from '../../types/article-id';
-import { ExpressionDoi } from '../../types/expression-doi';
 import { ListId } from '../../types/list-id';
-import { List } from './list';
-
-type ListEntry = {
-  expressionDoi: ExpressionDoi,
-  addedAtListVersion: number,
-};
+import { List, ListEntry } from './list';
 
 type ListState = Pick<
 List,

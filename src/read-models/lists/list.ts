@@ -13,7 +13,7 @@ export const Eq: EQ.Eq<List> = pipe(
   EQ.contramap((list) => list.id),
 );
 
-type ListEntry = {
+export type ListEntry = {
   expressionDoi: ExpressionDoi,
   addedAtListVersion: number,
 };
