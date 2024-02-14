@@ -39,12 +39,15 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel[event.listId].entries = readmodel[event.listId].entries.filter(
       (entry) => entry.expressionDoi !== toExpressionDoi(event.articleId),
     );
+    readmodel[event.listId].version += 1;
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ListNameEdited')(event)) {
     readmodel[event.listId].name = event.name;
+    readmodel[event.listId].version += 1;
     readmodel[event.listId].updatedAt = event.date;
   } else if (isEventOfType('ListDescriptionEdited')(event)) {
     readmodel[event.listId].description = event.description;
+    readmodel[event.listId].version += 1;
     readmodel[event.listId].updatedAt = event.date;
   }
   return readmodel;
