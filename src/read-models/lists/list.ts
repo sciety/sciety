@@ -8,7 +8,7 @@ import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 import { ExpressionDoi } from '../../types/expression-doi';
 
-export const Eq: EQ.Eq<List> = pipe(
+export const eqList: EQ.Eq<List> = pipe(
   S.Eq,
   EQ.contramap((list) => list.id),
 );
