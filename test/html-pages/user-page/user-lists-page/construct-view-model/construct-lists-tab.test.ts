@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { arbitraryList } from '../../../../types/list-helper';
+import { arbitraryList } from '../../../../read-models/lists/list-helper';
 import { constructListsTab } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model/construct-lists-tab';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
 

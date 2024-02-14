@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { getNonEmptyUserLists } from '../../../src/read-models/lists/get-non-empty-user-lists';
-import { arbitraryList } from '../../types/list-helper';
+import { arbitraryList } from './list-helper';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';

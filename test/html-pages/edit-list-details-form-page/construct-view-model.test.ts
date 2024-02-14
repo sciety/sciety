@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../src/html-pages/edit-list-details-form-page/construct-view-model';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryList } from '../../types/list-helper';
+import { arbitraryList } from '../../read-models/lists/list-helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 
 describe('construct-view-model', () => {

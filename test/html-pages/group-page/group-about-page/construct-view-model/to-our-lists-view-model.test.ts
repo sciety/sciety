@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { toOurListsViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/to-our-lists-view-model';
 import { arbitraryString } from '../../../../helpers';
 import { arbitraryGroup } from '../../../../types/group.helper';
-import { arbitraryList } from '../../../../types/list-helper';
+import { arbitraryList } from '../../../../read-models/lists/list-helper';
 
 describe('to-our-lists-view-model', () => {
   const groupSlug = arbitraryGroup().slug;
