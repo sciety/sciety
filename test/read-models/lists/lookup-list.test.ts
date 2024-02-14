@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import * as EDOI from '../../../src/types/expression-doi';
 import { constructEvent } from '../../../src/domain-events';
 import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { lookupList } from '../../../src/read-models/lists/lookup-list';
@@ -29,7 +30,9 @@ describe('lookup-list', () => {
       const name = arbitraryString();
       const description = arbitraryString();
       const articleId1 = arbitraryArticleId();
+      const expressionDoi1 = EDOI.fromValidatedString(articleId1.value);
       const articleId2 = arbitraryArticleId();
+      const expressionDoi2 = EDOI.fromValidatedString(articleId2.value);
       const readModel = pipe(
         [
           constructEvent('ListCreated')({
@@ -62,21 +65,21 @@ describe('lookup-list', () => {
           RA.map((entry) => entry.expressionDoi),
         );
 
-        expect(result).toContain(articleId1.value);
-        expect(result).toContain(articleId2.value);
+        expect(result).toContain(expressionDoi1);
+        expect(result).toContain(expressionDoi2);
       });
 
       it('returns list versions that reflect the order in which the papers were added', () => {
         const firstVersion = pipe(
           getListEntries(listId, readModel),
-          RA.findFirst((entry) => entry.expressionDoi === articleId1.value),
+          RA.findFirst((entry) => entry.expressionDoi === expressionDoi1),
           O.getOrElseW(shouldNotBeCalled),
           (entry) => entry.addedAtListVersion,
         );
 
         const secondVersion = pipe(
           getListEntries(listId, readModel),
-          RA.findFirst((entry) => entry.expressionDoi === articleId2.value),
+          RA.findFirst((entry) => entry.expressionDoi === expressionDoi2),
           O.getOrElseW(shouldNotBeCalled),
           (entry) => entry.addedAtListVersion,
         );
