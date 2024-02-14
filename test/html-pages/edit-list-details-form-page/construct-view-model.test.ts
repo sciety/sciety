@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { TestFramework, createTestFramework } from '../../framework/create-test-framework';
@@ -43,13 +42,14 @@ describe('construct-view-model', () => {
 
   describe('when the list does not exist', () => {
     const listId = arbitraryListId();
-    const adapters = {
-      lookupList: () => O.none,
-    };
-    const result = pipe(
-      listId,
-      constructViewModel(adapters),
-    );
+    let result: E.Either<'no-such-list', ViewModel>;
+
+    beforeEach(() => {
+      result = pipe(
+        listId,
+        constructViewModel(framework.dependenciesForViews),
+      );
+    });
 
     it('returns on left', () => {
       expect(result).toStrictEqual(E.left('no-such-list'));
