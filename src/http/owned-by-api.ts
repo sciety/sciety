@@ -6,7 +6,8 @@ import { Middleware } from 'koa';
 import { ownedByQueryCodec } from '../types/codecs/owned-by-query-codec';
 import * as LOID from '../types/list-owner-id';
 import { Queries } from '../read-models';
-import { List, toExpressionDoisByMostRecentlyAdded } from '../read-models/lists/list';
+import { toExpressionDoisByMostRecentlyAdded } from '../read-models/lists/list';
+import { List } from '../read-models/lists';
 
 const constructResponseModel = (lists: ReadonlyArray<List>) => pipe(
   lists,

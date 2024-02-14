@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { List } from '../../../../read-models/lists/list';
+import { List } from '../../../../read-models/lists';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
 import { ViewModel } from '../view-model';
 
