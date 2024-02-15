@@ -54,7 +54,7 @@ describe('crossref-response-body-cache-predicate', () => {
         arbitraryUri(),
       );
 
-      it.failing('decides not to cache', () => {
+      it('decides not to cache', () => {
         expect(result).toBe(false);
       });
     });
