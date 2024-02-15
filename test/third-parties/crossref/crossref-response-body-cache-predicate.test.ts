@@ -39,6 +39,26 @@ describe('crossref-response-body-cache-predicate', () => {
       });
     });
 
+    describe('when the body is an XML response with an error object', () => {
+      const result = crossrefResponseBodyCachePredicate(dummyLogger)(
+        `
+          <?xml version="1.0" encoding="UTF-8"?>
+          <doi_records>
+            <doi_record>
+              <crossref>
+                <error>doi:10.7554/elife.90296.1</error>
+              </crossref>
+            </doi_record>
+          </doi_records>
+        `,
+        arbitraryUri(),
+      );
+
+      it.failing('decides not to cache', () => {
+        expect(result).toBe(false);
+      });
+    });
+
     describe('when the body is an empty string', () => {
       const result = crossrefResponseBodyCachePredicate(dummyLogger)('', arbitraryUri());
 
