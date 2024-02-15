@@ -146,6 +146,23 @@ Example queries:
 - [production-error-logs]
 - [production-ingress-logs]
 
+### Looking at the cache
+
+Create a container from which you can connect to the production cache:
+```
+make connect-to-cache
+```
+
+From there, start the redis CLI with:
+```
+redis-cli -h sciety--prod--cache
+```
+
+List the keys with:
+```
+KEYS *
+```
+
 ### Local exploratory testing with copy of production DB
 
 <details>
