@@ -14,7 +14,7 @@
     "axios-retry": "4.0.0",
     "cls-rtracer": "^2.6.3",
     "escape-goat": "^3.0.0",
-    "fast-xml-parser": "^4.3.3",
+    "fast-xml-parser": "^4.3.4",
     "fp-ts": "^2.16.2",
     "googleapis-common": "^7.0.1",
     "http-status-codes": "^2.3.0",
