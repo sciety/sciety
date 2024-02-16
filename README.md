@@ -197,6 +197,10 @@ curl -v -H "Authorization: Bearer $AUTH_BEARER_TOKEN" -X POST https://sciety.org
 curl -v -H "Authorization: Bearer secret" -X POST http://localhost:8080/api/add-group -H "Content-type: application/json" -d '{"groupId": "1480d2dd-463f-4834-8e81-d89c8ae2b86f", "avatarPath": "https://raw.githubusercontent.com/sciety/group-static-files/main/example-group.png", "descriptionPath": "life-science-editors--1480d2dd-463f-4834-8e81-d89c8ae2b86f.md", "homepage": "https://www.lifescienceeditors.com", "name": "Life Science Editors", "shortDescription": "Life Science Editors is a group of former journal editors and grant specialists who are passionate about helping scientists and science reach their full potential.", "slug": "life-science-editors"}'
 ```
 
+#### Group large logos
+
+Aim for a horizontal logo of 600px width. Refer to the [group page sass](src/html-pages/group-page/common-components/_index.scss).
+
 License
 -------
 
