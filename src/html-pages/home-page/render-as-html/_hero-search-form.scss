@@ -1,6 +1,6 @@
 @use 'sass:math';
 
-@use '../../../sass/settings';
+@use '../../../sass-utilities' as utilities;
 @use '../../../sass/functions';
 @use '../../../sass/breakpoints';
 @use '../../../sass/button';
@@ -9,7 +9,7 @@ $_input-height: 48px;
 $_search-icon-size: functions.px-to-rem(24px);
 $_search-input-width: 320px;
 $_search-button-width: 76px;
-$_search-button-width-with-separation: $_search-button-width + settings.$default-form-element-separation;
+$_search-button-width-with-separation: $_search-button-width + utilities.$default-form-element-separation;
 $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-width-with-separation;
 
 .home-page-hero-search-form__visible_interactive_elements {
@@ -53,18 +53,18 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
 
 .home-page-hero-search-form__text {
   height: functions.px-to-rem($_input-height);
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
+  border: utilities.$border-width solid utilities.$colour-furniture;
+  border-radius: utilities.$border-radius;
   padding-top: functions.px-to-rem(17px);
   padding-bottom: functions.px-to-rem(17px);
   padding-left: functions.px-to-rem(46px);
-  padding-right: functions.px-to-rem(settings.$default-form-gutter);
-  color: settings.$colour-text-primary;
+  padding-right: functions.px-to-rem(utilities.$default-form-gutter);
+  color: utilities.$colour-text-primary;
   margin-bottom: functions.px-to-rem(10px);
   width: functions.px-to-rem($_search-input-width);
 
   @include breakpoints.not-narrow() {
-    margin-right: functions.px-to-rem(settings.$default-form-element-separation);
+    margin-right: functions.px-to-rem(utilities.$default-form-element-separation);
     margin-bottom: 0;
   }
 }
@@ -75,6 +75,6 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
   max-width: functions.px-to-rem($_search-button-width);
 
   @include breakpoints.not-narrow() {
-    height: functions.px-to-rem($_input-height - (2 * settings.$border-width));
+    height: functions.px-to-rem($_input-height - (2 * utilities.$border-width));
   }
 }

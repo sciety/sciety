@@ -1,20 +1,20 @@
-@use '../../sass/settings';
+@use '../../sass-utilities' as utilities;
 @use '../../sass/typography';
 @use '../../sass/functions';
 
 .success-banner {
-  border: settings.$border-width-wide solid settings.$colour-success;
+  border: utilities.$border-width-wide solid utilities.$colour-success;
   margin-bottom: functions.px-to-rem(48px);
 
   p {
-    padding: functions.px-to-rem(settings.$default-form-gutter);
+    padding: functions.px-to-rem(utilities.$default-form-gutter);
   }
 }
 
 .success-banner__heading {
-  padding: functions.px-to-rem(settings.$default-form-gutter);
-  background-color: settings.$colour-success;
-  color: settings.$colour-white;
+  padding: functions.px-to-rem(utilities.$default-form-gutter);
+  background-color: utilities.$colour-success;
+  color: utilities.$colour-white;
 
   h2 {
     @include typography.heading-3();

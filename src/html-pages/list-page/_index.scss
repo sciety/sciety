@@ -1,7 +1,7 @@
 @use '../../sass/breakpoints';
 @use '../../sass/card';
 @use '../../sass/layout';
-@use '../../sass/settings';
+@use '../../sass-utilities' as utilities;
 @use '../../sass/typography';
 @use '../../sass/page-header';
 @use '../../sass/avatar';
@@ -46,7 +46,7 @@ $_edit-details-icon-offset: 8px;
 .list-page-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: functions.px-to-rem(settings.$click-target-separation);
+  gap: functions.px-to-rem(utilities.$click-target-separation);
   margin-bottom: functions.px-to-rem(32px);
 }
 

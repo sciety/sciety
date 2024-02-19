@@ -1,5 +1,5 @@
 @use '../../../sass/breakpoints';
-@use '../../../sass/settings';
+@use '../../../sass-utilities' as utilities;
 @use '../../../sass/functions';
 @use '../../../sass/typography';
 @use '../../../sass/layout';
@@ -17,8 +17,8 @@
 }
 
 @mixin _apply-page-gutter-as-padding() {
-  padding-left: settings.$default-gutter;
-  padding-right: settings.$default-gutter;
+  padding-left: utilities.$default-gutter;
+  padding-right: utilities.$default-gutter;
 
   @include breakpoints.not-narrow() {
     padding-left: 0;
@@ -30,19 +30,19 @@
   @include layout.allow-edge-to-edge-content-when-narrow();
   @include _apply-page-gutter-as-padding();
   padding-bottom: local-settings.$component-vertical-spacing;
-  background-color: settings.$colour-background-grey;
-  margin-top: calc(-1 * settings.$border-width);
+  background-color: utilities.$colour-background-grey;
+  margin-top: calc(-1 * utilities.$border-width);
 }
 
 .page-header.page-header--article {
   margin-top: 0;
   margin-bottom: local-settings.$component-vertical-spacing;
-  max-width: functions.px-to-rem(settings.$max-site-width);
+  max-width: functions.px-to-rem(utilities.$max-site-width);
 
   @include breakpoints.not-narrow {
     margin: 0 auto;
-    padding-left: functions.px-to-rem(settings.$default-gutter);
-    padding-right: functions.px-to-rem(settings.$default-gutter);
+    padding-left: functions.px-to-rem(utilities.$default-gutter);
+    padding-right: functions.px-to-rem(utilities.$default-gutter);
   }
 }
 
@@ -77,7 +77,7 @@
 }
 
 .curation-statement {
-  border-top: 1px solid settings.$colour-furniture;
+  border-top: 1px solid utilities.$colour-furniture;
   padding-top: 3rem;
   margin-bottom: 3rem;
 

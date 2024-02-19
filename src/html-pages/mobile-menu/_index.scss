@@ -1,6 +1,6 @@
 @use 'sass:math';
 
-@use '../../sass/settings';
+@use '../../sass-utilities' as utilities;
 @use '../../sass/functions';
 @use '../../sass/button';
 @use '../../sass/typography';
@@ -37,17 +37,17 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   @include typography.button();
   display: inline-block;
   align-items: center;
-  border-radius: settings.$border-radius;
+  border-radius: utilities.$border-radius;
   margin-bottom: functions.px-to-rem(32px);
   font-weight: bold;
 
   &:link,
   &:visited {
-    color: settings.$colour-white;
+    color: utilities.$colour-white;
 
     &:hover,
     &:active {
-      color: settings.$colour-accent-hover-on-dark-background;
+      color: utilities.$colour-accent-hover-on-dark-background;
     }
   }
 }
@@ -58,7 +58,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 
 .mobile-menu__user_avatar {
   @include avatar.border();
-  background-color: settings.$colour-white;
+  background-color: utilities.$colour-white;
   width: functions.px-to-rem(avatar.$size--small);
   height: auto;
   display: inline-block;
@@ -71,17 +71,17 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 
 .mobile-menu__link_secondary_button {
   @include typography.button();
-  border-radius: settings.$border-radius;
-  border: settings.$border-width solid settings.$colour-furniture;
-  padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
+  border-radius: utilities.$border-radius;
+  border: utilities.$border-width solid utilities.$colour-furniture;
+  padding: functions.px-to-rem(8px) functions.px-to-rem(12px - utilities.$border-width);
 
   &:link,
   &:visited {
-    color: settings.$colour-white;
+    color: utilities.$colour-white;
 
     @include states.link() {
-      background-color: settings.$colour-furniture;
-      color: settings.$colour-brand;
+      background-color: utilities.$colour-furniture;
+      color: utilities.$colour-brand;
       ;
     }
   }

@@ -4,7 +4,7 @@
 @use '../../../sass/functions';
 @use '../../../sass/layout';
 @use '../../../sass/list';
-@use '../../../sass/settings';
+@use '../../../sass-utilities' as utilities;
 @use '../../../sass/states';
 @use '../../../sass/typography';
 
@@ -45,7 +45,7 @@
 }
 
 .activity-feed__item__date {
-  color: settings.$colour-text-secondary;
+  color: utilities.$colour-text-secondary;
 }
 
 .activity-feed__item__title,
@@ -59,7 +59,7 @@ p.activity-feed__item__title {
   cursor: pointer;
   padding: 0;
   border: 0;
-  color: settings.$colour-accent;
+  color: utilities.$colour-accent;
   margin-bottom: 1rem;
 
   @include states.link {
@@ -79,7 +79,7 @@ p.activity-feed__item__title {
   margin-right: functions.px-to-rem(24px);
 
   h3 {
-    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-px: 24px);
+    @include typography.sizing($font-size: utilities.$base-font-measure, $line-height-in-px: 24px);
     font-weight: bold;
   }
 

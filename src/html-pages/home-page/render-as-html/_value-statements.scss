@@ -1,5 +1,5 @@
 @use '../../../sass/functions';
-@use '../../../sass/settings';
+@use '../../../sass-utilities' as utilities;
 @use '../../../sass/breakpoints';
 @use '../../../sass/typography';
 @use 'common';
@@ -7,16 +7,16 @@
 $_value-statements-max-width: functions.px-to-rem(996px);
 
 .home-page-value-statements-wrapper {
-  color: settings.$colour-white;
-  background-color: settings.$colour-value-statement-background;
+  color: utilities.$colour-white;
+  background-color: utilities.$colour-value-statement-background;
   padding-top: common.$section-vertical-separation;
   padding-bottom: common.$section-vertical-separation;
   margin-bottom: common.$section-vertical-separation;
 }
 
 .home-page-value-statements {
-  padding-left: functions.px-to-rem(settings.$default-gutter);
-  padding-right: functions.px-to-rem(settings.$default-gutter);
+  padding-left: functions.px-to-rem(utilities.$default-gutter);
+  padding-right: functions.px-to-rem(utilities.$default-gutter);
   margin-left: auto;
   margin-right: auto;
   max-width: $_value-statements-max-width;

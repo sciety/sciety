@@ -1,4 +1,4 @@
-@use '../../../sass/settings';
+@use '../../../sass-utilities' as utilities;
 @use '../../../sass/functions';
 @use '../../../sass/breakpoints';
 @use '../../../sass/layout';
@@ -7,10 +7,10 @@
   margin-bottom: 1.5rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  background-color: settings.$colour-white;
+  background-color: utilities.$colour-white;
 
   @include breakpoints.not-narrow {
-    border-radius: settings.$border-radius;
+    border-radius: utilities.$border-radius;
   }
 }
 
@@ -19,8 +19,8 @@
   grid-template-columns: 1fr 1fr;
   row-gap: functions.px-to-rem(6px);
   font-size: functions.px-to-rem(14px);
-  border-top: 1px solid settings.$colour-furniture;
-  border-bottom: 1px solid settings.$colour-furniture;
+  border-top: 1px solid utilities.$colour-furniture;
+  border-bottom: 1px solid utilities.$colour-furniture;
   padding: functions.px-to-rem(12px) 0;
   margin-bottom: 1.5rem;
 

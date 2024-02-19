@@ -1,4 +1,4 @@
-@use '../../sass/settings';
+@use '../../sass-utilities' as utilities;
 @use '../../sass/functions';
 @use '../../sass/button';
 
@@ -12,6 +12,6 @@
 }
 
 .pagination-controls__page_count {
-  margin-left: settings.$default-gutter;
-  margin-right: settings.$default-gutter;
+  margin-left: utilities.$default-gutter;
+  margin-right: utilities.$default-gutter;
 }

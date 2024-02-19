@@ -1,5 +1,5 @@
 @use 'sass:math';
-@use '../../sass/settings';
+@use '../../sass-utilities' as utilities;
 @use '../../sass/functions';
 @use '../../sass/layout';
 
@@ -34,22 +34,22 @@
 .tab__link {
   &:link,
   &:visited {
-    color: settings.$colour-accent;
+    color: utilities.$colour-accent;
 
     &:hover,
     &:active {
-      color: settings.$colour-accent-hover;
+      color: utilities.$colour-accent-hover;
     }
   }
 
   @include breakpoints.not-narrow() {
     &:link,
     &:visited {
-      color: settings.$colour-text-primary;
+      color: utilities.$colour-text-primary;
 
       &:hover,
       &:active {
-        color: settings.$colour-accent-hover;
+        color: utilities.$colour-accent-hover;
       }
     }
   }
@@ -57,6 +57,6 @@
 
 .tab--active {
   @include breakpoints.not-narrow() {
-    border-bottom: 2px solid settings.$colour-accent;
+    border-bottom: 2px solid utilities.$colour-accent;
   }
 }

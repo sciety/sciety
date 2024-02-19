@@ -1,7 +1,7 @@
 @use 'sass:math';
 
 @use '../../../sass/functions';
-@use '../../../sass/settings';
+@use '../../../sass-utilities' as utilities;
 @use '../../../sass/button';
 @use '../../../sass/breakpoints';
 
