@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
-import { CrossrefWork } from './crossref-work';
+import { CrossrefWork, isSupportedCrossrefWork } from './crossref-work';
 import { State } from './state';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { fetchIndividualWork } from './fetch-individual-work';
@@ -33,6 +33,11 @@ const fetchAllQueuedWorksAndAddToCollector = (
   })),
 );
 
+const onlySupportedCrossrefWorks = (collectedWorks: State['collectedWorks']) => pipe(
+  Array.from(collectedWorks.values()),
+  RA.filter(isSupportedCrossrefWork),
+);
+
 export const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
@@ -47,7 +52,11 @@ export const walkRelationGraph = (
     });
   }
   if (state.queue.length === 0 || state.collectedWorks.size > 20) {
-    return TE.right(Array.from(state.collectedWorks.values()));
+    return pipe(
+      state.collectedWorks,
+      onlySupportedCrossrefWorks,
+      TE.right,
+    );
   }
 
   return pipe(

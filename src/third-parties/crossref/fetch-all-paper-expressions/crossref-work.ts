@@ -51,3 +51,5 @@ export const isCrossrefWorkPostedContent = (crossrefWork: CrossrefWork): crossre
 export const crossrefWorkCodec = t.union([postedContentCodec, journalArticleCodec]);
 
 export type CrossrefWork = t.TypeOf<typeof crossrefWorkCodec>;
+
+export const isSupportedCrossrefWork = (crossrefWork: CrossrefWork): crossrefWork is CrossrefWork => true;
