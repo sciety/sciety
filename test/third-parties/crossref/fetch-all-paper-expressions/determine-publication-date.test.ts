@@ -1,4 +1,6 @@
-import { CrossrefWork } from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/crossref-work';
+import {
+  SupportedCrossrefWork,
+} from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/crossref-work';
 import { determinePublicationDate } from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/determine-publication-date';
 import { arbitraryUri } from '../../../helpers';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
@@ -6,7 +8,7 @@ import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 describe('determine-publication-date', () => {
   describe('when the date specifies a year, a month and a day', () => {
     const expectedDate = new Date('2020-12-19');
-    const work: CrossrefWork = {
+    const work: SupportedCrossrefWork = {
       type: 'posted-content' as const,
       DOI: arbitraryExpressionDoi(),
       resource: {
@@ -28,7 +30,7 @@ describe('determine-publication-date', () => {
 
   describe('when the date specifies only a year and a month', () => {
     const expectedDate = new Date('2020-12-01');
-    const work: CrossrefWork = {
+    const work: SupportedCrossrefWork = {
       type: 'posted-content' as const,
       DOI: arbitraryExpressionDoi(),
       resource: {
@@ -50,7 +52,7 @@ describe('determine-publication-date', () => {
 
   describe('when the date specifies only a year', () => {
     const expectedDate = new Date('2020-01-01');
-    const work: CrossrefWork = {
+    const work: SupportedCrossrefWork = {
       type: 'posted-content' as const,
       DOI: arbitraryExpressionDoi(),
       resource: {

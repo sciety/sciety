@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
-import { CrossrefWork, isSupportedCrossrefWork } from './crossref-work';
+import { CrossrefWork, isSupportedCrossrefWork, SupportedCrossrefWork } from './crossref-work';
 import { State } from './state';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { fetchIndividualWork } from './fetch-individual-work';
@@ -44,7 +44,7 @@ export const walkRelationGraph = (
   doi: string,
 ) => (
   state: State,
-): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => {
+): TE.TaskEither<DE.DataError, ReadonlyArray<SupportedCrossrefWork>> => {
   if (state.collectedWorks.size > 20) {
     logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
       collectedWorksSize: state.collectedWorks.size,

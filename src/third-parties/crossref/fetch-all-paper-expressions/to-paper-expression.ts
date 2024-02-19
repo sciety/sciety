@@ -1,11 +1,11 @@
 import { URL } from 'url';
-import { CrossrefWork } from './crossref-work';
+import { SupportedCrossrefWork } from './crossref-work';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as EDOI from '../../../types/expression-doi';
 import { identifyExpressionServer } from './identify-expression-server';
 import { determinePublicationDate } from './determine-publication-date';
 
-const determineExpressionType = (crossrefWorkType: CrossrefWork['type']): PaperExpression['expressionType'] => {
+const determineExpressionType = (crossrefWorkType: SupportedCrossrefWork['type']): PaperExpression['expressionType'] => {
   switch (crossrefWorkType) {
     case 'posted-content':
       return 'preprint';
@@ -14,7 +14,7 @@ const determineExpressionType = (crossrefWorkType: CrossrefWork['type']): PaperE
   }
 };
 
-export const toPaperExpression = (crossrefWork: CrossrefWork): PaperExpression => ({
+export const toPaperExpression = (crossrefWork: SupportedCrossrefWork): PaperExpression => ({
   expressionType: determineExpressionType(crossrefWork.type),
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
   publishedAt: determinePublicationDate(crossrefWork),

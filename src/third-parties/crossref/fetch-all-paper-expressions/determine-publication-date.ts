@@ -1,6 +1,6 @@
-import { CrossrefWork, isCrossrefWorkPostedContent } from './crossref-work';
+import { isCrossrefWorkPostedContent, SupportedCrossrefWork } from './crossref-work';
 
-export const determinePublicationDate = (crossrefWork: CrossrefWork): Date => {
+export const determinePublicationDate = (crossrefWork: SupportedCrossrefWork): Date => {
   const dateParts = isCrossrefWorkPostedContent(crossrefWork)
     ? crossrefWork.posted['date-parts'][0]
     : crossrefWork.published['date-parts'][0];
