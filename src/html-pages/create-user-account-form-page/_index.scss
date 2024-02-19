@@ -2,12 +2,12 @@
 @use '../../sass/button';
 @use '../../sass/card';
 @use '../../sass/functions';
-@use '../../sass/settings';
+@use '../../sass-utilities';
 @use '../../sass/layout';
 
 .create-user-account-form-page__container {
   @include layout.page-container();
-  background-color: settings.$colour-background-grey;
+  background-color: sass-utilities.$colour-background-grey;
 }
 
 .create-user-account-form-page__main {
@@ -29,38 +29,38 @@
 .create-user-account-form__label {
   display: block;
   font-weight: bold;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+  margin-bottom: functions.px-to-rem(sass-utilities.$default-form-gutter);
 }
 
 .create-user-account-form__input {
   display: block;
-  margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
-  padding: functions.px-to-rem(settings.$default-form-gutter);
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
+  margin-bottom: functions.px-to-rem(sass-utilities.$default-form-vertical-spacing);
+  padding: functions.px-to-rem(sass-utilities.$default-form-gutter);
+  border: sass-utilities.$border-width solid sass-utilities.$colour-furniture;
+  border-radius: sass-utilities.$border-radius;
   width: 100%;
 }
 
 .create-user-account-form__submit {
   @include button.primary();
-  margin-right: functions.px-to-rem(settings.$default-form-element-separation);
+  margin-right: functions.px-to-rem(sass-utilities.$default-form-element-separation);
 }
 
 .create-user-account-form__handle {
   display: flex;
   align-items: center;
-  margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
+  margin-bottom: functions.px-to-rem(sass-utilities.$default-form-vertical-spacing);
 
   .create-user-account-form__handle-url {
-    background-color: settings.$colour-form-addon-background;
-    padding: functions.px-to-rem(settings.$default-form-gutter);
-    border-top: settings.$border-width solid settings.$colour-furniture;
-    border-left: settings.$border-width solid settings.$colour-furniture;
-    border-bottom: settings.$border-width solid settings.$colour-furniture;
-    border-top-left-radius: settings.$border-radius;
-    border-bottom-left-radius: settings.$border-radius;
+    background-color: sass-utilities.$colour-form-addon-background;
+    padding: functions.px-to-rem(sass-utilities.$default-form-gutter);
+    border-top: sass-utilities.$border-width solid sass-utilities.$colour-furniture;
+    border-left: sass-utilities.$border-width solid sass-utilities.$colour-furniture;
+    border-bottom: sass-utilities.$border-width solid sass-utilities.$colour-furniture;
+    border-top-left-radius: sass-utilities.$border-radius;
+    border-bottom-left-radius: sass-utilities.$border-radius;
     line-height: normal;
-    color: settings.$colour-text-secondary;
+    color: sass-utilities.$colour-text-secondary;
   }
 
   .create-user-account-form__input {
