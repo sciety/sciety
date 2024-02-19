@@ -45,7 +45,7 @@ const postedContentCodec = t.strict({
 });
 
 const unsupportedCrossrefWorkCodec = t.strict({
-  type: t.literal('component'),
+  type: t.string,
   DOI: t.string,
   relation: relationshipsCodec,
 });
