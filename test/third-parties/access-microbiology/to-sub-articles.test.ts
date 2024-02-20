@@ -43,7 +43,7 @@ describe('to-sub-articles', () => {
       );
     });
 
-    it.failing('returns an empty array', () => {
+    it('returns an empty array', () => {
       expect(result).toHaveLength(0);
     });
   });
