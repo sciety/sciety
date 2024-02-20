@@ -22,6 +22,8 @@ const datePartsCodec = t.strict({
   ])),
 });
 
+export type CrossrefDate = t.TypeOf<typeof datePartsCodec>;
+
 const resourceCodec = t.strict({
   primary: t.strict({
     URL: t.string,
