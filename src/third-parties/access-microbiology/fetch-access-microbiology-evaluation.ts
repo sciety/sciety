@@ -39,23 +39,23 @@ export const fetchAccessMicrobiologyEvaluation = (logger: Logger): EvaluationFet
   if (key === '10.1099/acmi.0.000530.v1.3') {
     return pipe(
       parseXml(accessMicrobiologyXmlResponse000530),
-      E.map((response) => builder.build(response.article['sub-article'][2].body).toString() as string),
-      E.map((text) => ({
+      TE.fromEither,
+      TE.map((response) => builder.build(response.article['sub-article'][2].body).toString() as string),
+      TE.map((text) => ({
         url: new URL(`https://doi.org/${key}`),
         fullText: sanitise(toHtmlFragment(text)),
       })),
-      TE.fromEither,
     );
   }
   if (key === '10.1099/acmi.0.000569.v1.4') {
     return pipe(
       parseXml(accessMicrobiologyXmlResponse000569),
-      E.map((response) => builder.build(response.article['sub-article'][3].body).toString() as string),
-      E.map((text) => ({
+      TE.fromEither,
+      TE.map((response) => builder.build(response.article['sub-article'][3].body).toString() as string),
+      TE.map((text) => ({
         url: new URL(`https://doi.org/${key}`),
         fullText: sanitise(toHtmlFragment(text)),
       })),
-      TE.fromEither,
     );
   }
   return TE.left(DE.unavailable);
