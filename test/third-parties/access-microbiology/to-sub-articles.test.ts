@@ -12,7 +12,7 @@ describe('to-sub-articles', () => {
     });
   });
 
-  describe.skip('given a string input that cannot be parsed', () => {
+  describe('given a string input that cannot be parsed', () => {
     let result: ReturnType<typeof toSubArticles>;
 
     beforeEach(() => {
