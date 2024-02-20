@@ -11,6 +11,7 @@ import { EvaluationFetcher } from '../evaluation-fetcher';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
+import { Evaluation } from '../../types/evaluation';
 
 const parser = new XMLParser({});
 const builder = new XMLBuilder();
@@ -28,6 +29,8 @@ const xmlCodec = t.strict({
   }),
 });
 
+type AcmiJats = t.TypeOf<typeof xmlCodec>;
+
 const parseXmlAsAJavascriptObject = (accessMicrobiologyXmlResponse: string) => pipe(
   parser.parse(accessMicrobiologyXmlResponse),
   xmlCodec.decode,
@@ -39,6 +42,12 @@ const decodeResponse = (logger: Logger) => (response: unknown) => pipe(
   decodeAndLogFailures(logger, t.string),
   E.mapLeft(() => DE.unavailable),
   E.chain(parseXmlAsAJavascriptObject),
+);
+
+const getEvaluationFullText = (response: AcmiJats): Evaluation['fullText'] => pipe(
+  builder.build(response.article['sub-article'][3].body).toString() as string,
+  toHtmlFragment,
+  sanitise,
 );
 
 export const fetchAccessMicrobiologyEvaluation = (
@@ -63,10 +72,10 @@ export const fetchAccessMicrobiologyEvaluation = (
       'https://www.microbiologyresearch.org/docserver/fulltext/acmi/10.1099/acmi.0.000569.v1/acmi.0.000569.v1.xml',
       queryExternalService(),
       TE.chainEitherKW(decodeResponse(logger)),
-      TE.map((response) => builder.build(response.article['sub-article'][3].body).toString() as string),
-      TE.map((text) => ({
+      TE.map(getEvaluationFullText),
+      TE.map((fullText) => ({
         url: new URL(`https://doi.org/${key}`),
-        fullText: sanitise(toHtmlFragment(text)),
+        fullText,
       })),
     );
   }
