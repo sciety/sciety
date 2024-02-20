@@ -67,12 +67,6 @@ const unsupportedCrossrefWorkCodec = t.strict({
   relation: relationshipsCodec,
 });
 
-const supportedCrossrefWorkCodec = t.union([postedContentCodec, journalArticleCodec]);
-
-export type SupportedCrossrefWork = t.TypeOf<typeof supportedCrossrefWorkCodec>;
-
-export const isSupportedCrossrefWork = (crossrefWork: CrossrefWork): crossrefWork is SupportedCrossrefWork => crossrefWork.type === 'journal-article' || crossrefWork.type === 'posted-content';
-
 export const crossrefWorkCodec = t.union([postedContentCodec, journalArticleCodec, unsupportedCrossrefWorkCodec]);
 
 export type CrossrefWork = t.TypeOf<typeof crossrefWorkCodec>;

@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
-import { CrossrefWork, isSupportedCrossrefWork, SupportedCrossrefWork } from './crossref-work';
+import { CrossrefWork } from './crossref-work';
 import { State } from './state';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { fetchIndividualWork } from './fetch-individual-work';
@@ -33,18 +33,13 @@ const fetchAllQueuedWorksAndAddToCollector = (
   })),
 );
 
-const onlySupportedCrossrefWorks = (collectedWorks: State['collectedWorks']) => pipe(
-  Array.from(collectedWorks.values()),
-  RA.filter(isSupportedCrossrefWork),
-);
-
 export const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
   doi: string,
 ) => (
   state: State,
-): TE.TaskEither<DE.DataError, ReadonlyArray<SupportedCrossrefWork>> => {
+): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => {
   if (state.collectedWorks.size > 20) {
     logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
       collectedWorksSize: state.collectedWorks.size,
@@ -52,11 +47,7 @@ export const walkRelationGraph = (
     });
   }
   if (state.queue.length === 0 || state.collectedWorks.size > 20) {
-    return pipe(
-      state.collectedWorks,
-      onlySupportedCrossrefWorks,
-      TE.right,
-    );
+    return TE.right(Array.from(state.collectedWorks.values()));
   }
 
   return pipe(
