@@ -8,4 +8,4 @@ type SubArticle = {
 };
 
 // ts-unused-exports:disable-next-line
-export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyArray<SubArticle>> => E.right([]);
+export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyArray<SubArticle>> => E.left(undefined);
