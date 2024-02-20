@@ -52,7 +52,7 @@ export const fetchAccessMicrobiologyEvaluation = (
       'https://www.microbiologyresearch.org/docserver/fulltext/acmi/10.1099/acmi.0.000569.v1/acmi.0.000569.v1.xml',
       queryExternalService(),
       TE.chainEitherKW(decodeResponse(logger)),
-      TE.map(getEvaluationFullText),
+      TE.map(getEvaluationFullText(key)),
       TE.map((fullText) => ({
         url: new URL(`https://doi.org/${key}`),
         fullText,
