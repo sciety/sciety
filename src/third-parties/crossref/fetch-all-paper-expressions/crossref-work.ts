@@ -1,4 +1,5 @@
 import * as t from 'io-ts';
+import * as crossrefDate from './date-stamp';
 
 const relationCodec = t.strict({
   'id-type': t.literal('doi'),
@@ -14,16 +15,6 @@ const relationshipsCodec = t.partial({
   'is-preprint-of': relationsCodec,
 });
 
-const datePartsCodec = t.strict({
-  'date-parts': t.readonlyArray(t.union([
-    t.tuple([t.number, t.number, t.number]),
-    t.tuple([t.number, t.number]),
-    t.tuple([t.number]),
-  ])),
-});
-
-export type CrossrefDate = t.TypeOf<typeof datePartsCodec>;
-
 const resourceCodec = t.strict({
   primary: t.strict({
     URL: t.string,
@@ -33,7 +24,7 @@ const resourceCodec = t.strict({
 const journalArticleCodec = t.strict({
   type: t.literal('journal-article'),
   DOI: t.string,
-  published: datePartsCodec,
+  published: crossrefDate.codec,
   resource: resourceCodec,
   relation: relationshipsCodec,
 });
@@ -41,7 +32,7 @@ const journalArticleCodec = t.strict({
 const postedContentCodec = t.strict({
   type: t.literal('posted-content'),
   DOI: t.string,
-  posted: datePartsCodec,
+  posted: crossrefDate.codec,
   resource: resourceCodec,
   relation: relationshipsCodec,
 });

@@ -4,7 +4,7 @@ import { isCrossrefWorkPostedContent, SupportedCrossrefWork } from './crossref-w
 import { PaperExpression } from '../../../types/paper-expression';
 import * as EDOI from '../../../types/expression-doi';
 import { identifyExpressionServer } from './identify-expression-server';
-import { determinePublicationDate } from './determine-publication-date';
+import * as crossrefDate from './date-stamp';
 
 const determineExpressionType = (crossrefWorkType: SupportedCrossrefWork['type']): PaperExpression['expressionType'] => {
   switch (crossrefWorkType) {
@@ -19,8 +19,8 @@ export const toPaperExpression = (crossrefWork: SupportedCrossrefWork): E.Either
   expressionType: determineExpressionType(crossrefWork.type),
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
   publishedAt: isCrossrefWorkPostedContent(crossrefWork)
-    ? determinePublicationDate(crossrefWork.posted)
-    : determinePublicationDate(crossrefWork.published),
+    ? crossrefDate.toDate(crossrefWork.posted)
+    : crossrefDate.toDate(crossrefWork.published),
   publishedTo: crossrefWork.DOI,
   publisherHtmlUrl: new URL(crossrefWork.resource.primary.URL),
   server: identifyExpressionServer(crossrefWork.resource.primary.URL),
