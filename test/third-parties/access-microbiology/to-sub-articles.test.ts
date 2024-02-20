@@ -12,6 +12,14 @@ describe('to-sub-articles', () => {
     });
   });
 
+  describe('given a string input that is not valid XML', () => {
+    const result = toSubArticles('<an-unclosed-tag>');
+
+    it.failing('fails', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
+  });
+
   describe.skip('given an input containing a single sub-article with a body containing a single paragraph', () => {
     let result: ReadonlyArray<SubArticle>;
 
