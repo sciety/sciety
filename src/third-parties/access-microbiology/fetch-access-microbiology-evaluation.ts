@@ -2,15 +2,15 @@ import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import * as t from 'io-ts';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { decodeAndLogFailures } from '../decode-and-log-failures';
 import { accessMicrobiologyXmlResponse000569 } from './acmi.0.000569.v1';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { EvaluationFetcher } from '../evaluation-fetcher';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { accessMicrobiologyXmlResponse000530 } from './acmi.0.000530.v1';
 import { QueryExternalService } from '../query-external-service';
 
 const parser = new XMLParser({});
@@ -42,8 +42,13 @@ export const fetchAccessMicrobiologyEvaluation = (
   logger('debug', 'calling fetchAccessMicrobiology', { key });
   if (key === '10.1099/acmi.0.000530.v1.3') {
     return pipe(
-      parseXml(accessMicrobiologyXmlResponse000530),
-      TE.fromEither,
+      'https://www.microbiologyresearch.org/docserver/fulltext/acmi/10.1099/acmi.0.000530.v1/acmi.0.000530.v1.xml',
+      queryExternalService(),
+      TE.chainEitherKW(flow(
+        decodeAndLogFailures(logger, t.string),
+        E.mapLeft(() => DE.unavailable),
+      )),
+      TE.chainEitherKW(parseXml),
       TE.map((response) => builder.build(response.article['sub-article'][2].body).toString() as string),
       TE.map((text) => ({
         url: new URL(`https://doi.org/${key}`),
