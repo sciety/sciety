@@ -27,7 +27,23 @@ describe('to-paper-expression', () => {
   });
 
   describe('when the Crossref work is of type journal-article', () => {
-    it.todo('returns an expression of type journal-article');
+    const crossrefWork: SupportedCrossrefWork = {
+      type: 'journal-article',
+      DOI: arbitraryString(),
+      published: { 'date-parts': [[2021, 10, 3]] },
+      resource: { primary: { URL: arbitraryUri() } },
+      relation: { },
+    };
+    const expressionType = pipe(
+      crossrefWork,
+      toPaperExpression,
+      E.getOrElseW(shouldNotBeCalled),
+      (expression) => expression.expressionType,
+    );
+
+    it('returns an expression of type journal-article', () => {
+      expect(expressionType).toBe('journal-article');
+    });
   });
 
   describe('when the Crossref work is of type component', () => {
