@@ -5,7 +5,6 @@ import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
-import { accessMicrobiologyXmlResponse000569 } from './acmi.0.000569.v1';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { EvaluationFetcher } from '../evaluation-fetcher';
@@ -61,8 +60,9 @@ export const fetchAccessMicrobiologyEvaluation = (
   }
   if (key === '10.1099/acmi.0.000569.v1.4') {
     return pipe(
-      parseXmlAsAJavascriptObject(accessMicrobiologyXmlResponse000569),
-      TE.fromEither,
+      'https://www.microbiologyresearch.org/docserver/fulltext/acmi/10.1099/acmi.0.000569.v1/acmi.0.000569.v1.xml',
+      queryExternalService(),
+      TE.chainEitherKW(decodeResponse(logger)),
       TE.map((response) => builder.build(response.article['sub-article'][3].body).toString() as string),
       TE.map((text) => ({
         url: new URL(`https://doi.org/${key}`),
