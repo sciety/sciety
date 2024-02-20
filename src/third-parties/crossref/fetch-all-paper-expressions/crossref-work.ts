@@ -39,34 +39,35 @@ const postedContentCodec = t.strict({
   relation: relationshipsCodec,
 });
 
-type Other = 'other';
+type OtherWorkType = 'other';
 
-const isOther = (input: unknown): input is Other => typeof input === 'string' && input !== 'posted-content' && input !== 'journal-article';
+const isOtherWorkType = (input: unknown): input is OtherWorkType => (
+  typeof input === 'string'
+  && input !== 'posted-content'
+  && input !== 'journal-article'
+);
 
-const otherTypeCodec = new t.Type<Other, string, unknown>(
+const otherTypeCodec = new t.Type<OtherWorkType, string, unknown>(
   'other Crossref type',
-  isOther,
+  isOtherWorkType,
   (u, c) => pipe(
     t.string.validate(u, c),
-    E.filterOrElseW(
-      (input) => input !== 'posted-content' && input !== 'journal-article',
-      () => 'Unrecognised type',
-    ),
+    E.filterOrElseW(isOtherWorkType, () => 'Should be unreachable'),
     E.map(() => 'other'),
     E.fold(
       () => t.failure(u, c),
-      (val) => t.success(val as Other),
+      (val) => t.success(val as OtherWorkType),
     ),
   ),
   (a) => a.toString(),
 );
 
-const unsupportedCrossrefWorkCodec = t.strict({
+const otherCrossrefWorkCodec = t.strict({
   type: otherTypeCodec,
   DOI: t.string,
   relation: relationshipsCodec,
 });
 
-export const crossrefWorkCodec = t.union([postedContentCodec, journalArticleCodec, unsupportedCrossrefWorkCodec]);
+export const crossrefWorkCodec = t.union([postedContentCodec, journalArticleCodec, otherCrossrefWorkCodec]);
 
 export type CrossrefWork = t.TypeOf<typeof crossrefWorkCodec>;
