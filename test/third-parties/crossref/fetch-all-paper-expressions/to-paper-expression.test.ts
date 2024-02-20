@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { SupportedCrossrefWork } from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/crossref-work';
+import { CrossrefWork, SupportedCrossrefWork } from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/crossref-work';
 import { toPaperExpression } from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/to-paper-expression';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -47,6 +47,17 @@ describe('to-paper-expression', () => {
   });
 
   describe('when the Crossref work is of type component', () => {
-    it.todo('rejects the work');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const crossrefWork: CrossrefWork = {
+      type: 'component',
+      DOI: arbitraryString(),
+      relation: { },
+    };
+    // const result = toPaperExpression(crossrefWork);
+    const result = E.left('incomplete-test');
+
+    it('rejects the work', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });
