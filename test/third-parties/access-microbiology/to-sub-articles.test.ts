@@ -1,5 +1,7 @@
 import * as E from 'fp-ts/Either';
-import { toSubArticles } from '../../../src/third-parties/access-microbiology/to-sub-articles';
+import { pipe } from 'fp-ts/function';
+import { SubArticle, toSubArticles } from '../../../src/third-parties/access-microbiology/to-sub-articles';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('to-sub-articles', () => {
   describe('given an input that is not a string', () => {
@@ -11,7 +13,19 @@ describe('to-sub-articles', () => {
   });
 
   describe('given an input containing a single sub-article with a body containing a single paragraph', () => {
-    it.todo('returns one sub-article');
+    let result: ReadonlyArray<SubArticle>;
+
+    beforeEach(() => {
+      result = pipe(
+        '',
+        toSubArticles,
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it.skip('returns one sub-article', () => {
+      expect(result).toHaveLength(1);
+    });
 
     it.todo('returns the subArticleId');
 

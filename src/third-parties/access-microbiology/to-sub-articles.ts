@@ -2,7 +2,7 @@
 import * as E from 'fp-ts/Either';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
-type SubArticle = {
+export type SubArticle = {
   subArticleId: string,
   body: SanitisedHtmlFragment,
 };
