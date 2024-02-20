@@ -4,7 +4,7 @@
     "lib": [
       "es2020"
     ],
-    "module": "commonjs",
+    "module": "node16",
     "outDir": "build",
     "pretty": true,
     "strict": true,
