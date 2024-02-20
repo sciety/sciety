@@ -11,29 +11,15 @@ import { EvaluationFetcher } from '../evaluation-fetcher';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
-import { Evaluation } from '../../types/evaluation';
+import { getEvaluationFullText } from './get-evaluation-full-text';
+import { acmiJatsCodec } from './acmi-jats';
 
 const parser = new XMLParser({});
 const builder = new XMLBuilder();
 
-const xmlCodec = t.strict({
-  article: t.strict({
-    'sub-article': t.readonlyArray(
-      t.strict({
-        'front-stub': t.strict({
-          'article-id': t.string,
-        }),
-        body: t.unknown,
-      }),
-    ),
-  }),
-});
-
-type AcmiJats = t.TypeOf<typeof xmlCodec>;
-
 const parseXmlAsAJavascriptObject = (accessMicrobiologyXmlResponse: string) => pipe(
   parser.parse(accessMicrobiologyXmlResponse),
-  xmlCodec.decode,
+  acmiJatsCodec.decode,
   E.mapLeft(() => DE.unavailable),
 );
 
@@ -42,12 +28,6 @@ const decodeResponse = (logger: Logger) => (response: unknown) => pipe(
   decodeAndLogFailures(logger, t.string),
   E.mapLeft(() => DE.unavailable),
   E.chain(parseXmlAsAJavascriptObject),
-);
-
-const getEvaluationFullText = (response: AcmiJats): Evaluation['fullText'] => pipe(
-  builder.build(response.article['sub-article'][3].body).toString() as string,
-  toHtmlFragment,
-  sanitise,
 );
 
 export const fetchAccessMicrobiologyEvaluation = (
