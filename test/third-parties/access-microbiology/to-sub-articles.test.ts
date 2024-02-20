@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { SubArticle, toSubArticles } from '../../../src/third-parties/access-microbiology/to-sub-articles';
 import { abortTest } from '../../framework/abort-test';
+import { arbitraryWord } from '../../helpers';
 
 describe('to-sub-articles', () => {
   describe('given an input that is not a string', () => {
@@ -49,6 +50,7 @@ describe('to-sub-articles', () => {
   });
 
   describe('given an input containing a single sub-article with a body containing a single paragraph', () => {
+    const subArticleId = arbitraryWord();
     let result: ReadonlyArray<SubArticle>;
 
     beforeEach(() => {
@@ -57,7 +59,7 @@ describe('to-sub-articles', () => {
           <article>
             <sub-article>
               <front-stub>
-                <article-id>10.1099/acmi.0.000569.v1.1</article-id>
+                <article-id>${subArticleId}</article-id>
               </front-stub>
               <body>
                 <p></p>
@@ -74,7 +76,9 @@ describe('to-sub-articles', () => {
       expect(result).toHaveLength(1);
     });
 
-    it.todo('returns the subArticleId');
+    it.failing('returns the subArticleId', () => {
+      expect(result[0].subArticleId).toStrictEqual(subArticleId);
+    });
 
     it.todo('returns the body unchanged');
   });
