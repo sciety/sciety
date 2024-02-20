@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import { SupportedCrossrefWork } from './crossref-work';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as EDOI from '../../../types/expression-doi';
@@ -14,7 +15,7 @@ const determineExpressionType = (crossrefWorkType: SupportedCrossrefWork['type']
   }
 };
 
-export const toPaperExpression = (crossrefWork: SupportedCrossrefWork): PaperExpression => ({
+export const toPaperExpression = (crossrefWork: SupportedCrossrefWork): E.Either<unknown, PaperExpression> => E.right({
   expressionType: determineExpressionType(crossrefWork.type),
   expressionDoi: EDOI.fromValidatedString(crossrefWork.DOI),
   publishedAt: determinePublicationDate(crossrefWork),

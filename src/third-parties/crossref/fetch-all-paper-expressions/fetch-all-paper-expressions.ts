@@ -33,5 +33,6 @@ export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
   },
   walkRelationGraph(queryCrossrefService, logger, doi),
   TE.map(RA.map(toPaperExpression)),
+  TE.map(RA.rights),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
 );
