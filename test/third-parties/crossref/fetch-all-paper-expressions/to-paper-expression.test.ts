@@ -46,10 +46,10 @@ describe('to-paper-expression', () => {
     });
   });
 
-  describe('when the Crossref work is of type component', () => {
+  describe('when the Crossref work is of unknown type', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const crossrefWork: CrossrefWork = {
-      type: 'component',
+      type: 'other',
       DOI: arbitraryString(),
       relation: { },
     };
