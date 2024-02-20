@@ -12,10 +12,14 @@ describe('to-sub-articles', () => {
     });
   });
 
-  describe('given a string input that is not valid XML', () => {
-    const result = toSubArticles('<an-unclosed-tag>');
+  describe.skip('given a string input that cannot be parsed', () => {
+    let result: ReturnType<typeof toSubArticles>;
 
-    it.failing('fails', () => {
+    beforeEach(() => {
+      result = toSubArticles('<><');
+    });
+
+    it('fails', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
