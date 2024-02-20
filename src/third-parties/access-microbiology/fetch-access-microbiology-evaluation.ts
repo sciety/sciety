@@ -11,6 +11,7 @@ import { EvaluationFetcher } from '../evaluation-fetcher';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { accessMicrobiologyXmlResponse000530 } from './acmi.0.000530.v1';
+import { QueryExternalService } from '../query-external-service';
 
 const parser = new XMLParser({});
 const builder = new XMLBuilder();
@@ -34,7 +35,10 @@ const parseXml = (accessMicrobiologyXmlResponse: string) => pipe(
   E.mapLeft(() => DE.unavailable),
 );
 
-export const fetchAccessMicrobiologyEvaluation = (logger: Logger): EvaluationFetcher => (key: string) => {
+export const fetchAccessMicrobiologyEvaluation = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+): EvaluationFetcher => (key: string) => {
   logger('debug', 'calling fetchAccessMicrobiology', { key });
   if (key === '10.1099/acmi.0.000530.v1.3') {
     return pipe(
