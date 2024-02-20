@@ -7,7 +7,9 @@ import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-frag
 import { toHtmlFragment } from '../../types/html-fragment';
 import { acmiJatsCodec } from './acmi-jats';
 
-const parser = new XMLParser({});
+const parser = new XMLParser({
+  isArray: (tagName) => tagName === 'sub-article',
+});
 
 export type SubArticle = {
   subArticleId: string,
