@@ -30,12 +30,10 @@ describe('to-sub-articles', () => {
     beforeEach(() => {
       result = pipe(
         `
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.1 20151215//EN" "JATS-archivearticle1.dtd">
-          <article dtd-version="1.1" article-type="case-report" xml:lang="EN" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML" specific-use="pre-print">
-            <sub-article article-type="review-tool-report" id="report.acmi.0.000569.v1.1">
+          <article>
+            <sub-article>
               <front-stub>
-                <article-id pub-id-type="doi">10.1099/acmi.0.000569.v1.1</article-id>
+                <article-id>10.1099/acmi.0.000569.v1.1</article-id>
               </front-stub>
             </sub-article>
           </article>
@@ -50,12 +48,23 @@ describe('to-sub-articles', () => {
     });
   });
 
-  describe.skip('given an input containing a single sub-article with a body containing a single paragraph', () => {
+  describe('given an input containing a single sub-article with a body containing a single paragraph', () => {
     let result: ReadonlyArray<SubArticle>;
 
     beforeEach(() => {
       result = pipe(
-        '',
+        `
+          <article>
+            <sub-article>
+              <front-stub>
+                <article-id>10.1099/acmi.0.000569.v1.1</article-id>
+              </front-stub>
+              <body>
+                <p></p>
+              </body>
+            </sub-article>
+          </article>
+        `,
         toSubArticles,
         E.getOrElseW(shouldNotBeCalled),
       );
