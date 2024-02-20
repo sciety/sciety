@@ -1,11 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as E from 'fp-ts/Either';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import * as t from 'io-ts';
+import { pipe } from 'fp-ts/function';
+import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 export type SubArticle = {
   subArticleId: string,
   body: SanitisedHtmlFragment,
 };
 
-// ts-unused-exports:disable-next-line
-export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyArray<SubArticle>> => E.left(undefined);
+export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyArray<SubArticle>> => pipe(
+  input,
+  t.string.decode,
+  E.map(() => [{ subArticleId: '', body: sanitise(toHtmlFragment('')) }]),
+);

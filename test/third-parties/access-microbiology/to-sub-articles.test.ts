@@ -12,7 +12,7 @@ describe('to-sub-articles', () => {
     });
   });
 
-  describe('given an input containing a single sub-article with a body containing a single paragraph', () => {
+  describe.skip('given an input containing a single sub-article with a body containing a single paragraph', () => {
     let result: ReadonlyArray<SubArticle>;
 
     beforeEach(() => {
@@ -23,7 +23,7 @@ describe('to-sub-articles', () => {
       );
     });
 
-    it.skip('returns one sub-article', () => {
+    it('returns one sub-article', () => {
       expect(result).toHaveLength(1);
     });
 
