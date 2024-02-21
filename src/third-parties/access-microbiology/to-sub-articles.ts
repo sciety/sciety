@@ -19,7 +19,11 @@ const parseXmlDocument = (s: string) => E.tryCatch(
 
 const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subArticle.body !== undefined;
 
-export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyMap<string, SanitisedHtmlFragment>> => pipe(
+type AcmiEvaluationDoi = string & { readonly AcmiEvaluationDoi: unique symbol };
+
+export const toSubArticles = (
+  input: unknown,
+): E.Either<unknown, ReadonlyMap<AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
   input,
   t.string.decode,
   E.chainW(parseXmlDocument),
@@ -30,11 +34,11 @@ export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyMap<str
   E.map((acmiJats) => acmiJats.article['sub-article']),
   E.map(RA.filter(hasBody)),
   E.map(RA.match(
-    () => new Map<string, SanitisedHtmlFragment>(),
-    () => (new Map<string, SanitisedHtmlFragment>(
+    () => new Map<AcmiEvaluationDoi, SanitisedHtmlFragment>(),
+    () => (new Map<AcmiEvaluationDoi, SanitisedHtmlFragment>(
       [
         [
-          '',
+          '' as AcmiEvaluationDoi,
           sanitise(toHtmlFragment('')),
         ],
       ],
