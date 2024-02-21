@@ -81,7 +81,7 @@ describe('to-full-texts-of-evaluations', () => {
       expect(result.has(subArticleId)).toBe(true);
     });
 
-    it('returns the body unchanged', () => {
+    it('uses a value generated from the <body> unchanged', () => {
       expect(result.get(subArticleId)).toBe('<p>The paragraph text.</p>');
     });
   });
