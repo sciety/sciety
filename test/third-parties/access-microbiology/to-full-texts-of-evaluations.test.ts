@@ -87,6 +87,37 @@ describe('to-full-texts-of-evaluations', () => {
   });
 
   describe('given an input containing two sub-articles with bodies', () => {
-    it.todo('returns a map with two elements');
+    let result: ReadonlyMap<string, SanitisedHtmlFragment>;
+
+    beforeEach(() => {
+      result = pipe(
+        `
+          <article>
+            <sub-article>
+              <front-stub>
+                <article-id>${arbitraryWord()}</article-id>
+              </front-stub>
+              <body>
+                <p>First sub-article's paragraph text.</p>
+              </body>
+            </sub-article>
+            <sub-article>
+              <front-stub>
+                <article-id>${arbitraryWord()}</article-id>
+              </front-stub>
+              <body>
+                <p>Second sub-article's paragraph text.</p>
+              </body>
+            </sub-article>
+          </article>
+        `,
+        toFullTextsOfEvaluations,
+        E.getOrElseW(abortTest('returned on the left')),
+      );
+    });
+
+    it.failing('returns a map with two elements', () => {
+      expect(result.size).toBe(2);
+    });
   });
 });
