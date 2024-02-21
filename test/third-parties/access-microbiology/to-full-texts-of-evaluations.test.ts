@@ -77,7 +77,7 @@ describe('to-full-texts-of-evaluations', () => {
       expect(result.size).toBe(1);
     });
 
-    it.failing('returns the body addressable by the <article-id> of its <sub-article>', () => {
+    it('returns the body addressable by the <article-id> of its <sub-article>', () => {
       expect(result.has(subArticleId)).toBe(true);
     });
 

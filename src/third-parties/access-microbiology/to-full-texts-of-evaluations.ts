@@ -35,10 +35,10 @@ export const toFullTextsOfEvaluations = (
   E.map(RA.filter(hasBody)),
   E.map(RA.match(
     () => new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(),
-    () => (new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(
+    (subArticlesWithABody) => (new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(
       [
         [
-          AED.fromValidatedString(''),
+          AED.fromValidatedString(subArticlesWithABody[0]['front-stub']['article-id']),
           sanitise(toHtmlFragment('')),
         ],
       ],
