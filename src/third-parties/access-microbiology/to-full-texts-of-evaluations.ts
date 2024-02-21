@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { XMLParser } from 'fast-xml-parser';
+import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
@@ -13,6 +13,7 @@ import * as DE from '../../types/data-error';
 const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',
 });
+const builder = new XMLBuilder();
 
 const parseXmlDocument = (s: string) => E.tryCatch(
   () => parser.parse(s) as unknown,
@@ -39,7 +40,7 @@ export const toFullTextsOfEvaluations = (
       [
         [
           AED.fromValidatedString(subArticlesWithABody[0]['front-stub']['article-id']),
-          sanitise(toHtmlFragment('')),
+          sanitise(toHtmlFragment(builder.build(subArticlesWithABody[0].body).toString())),
         ],
       ],
     )),
