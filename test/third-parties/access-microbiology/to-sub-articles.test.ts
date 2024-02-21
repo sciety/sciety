@@ -26,7 +26,7 @@ describe('to-sub-articles', () => {
   });
 
   describe('given an input containing a single sub-article without a body', () => {
-    let result: ReadonlyArray<SubArticle>;
+    let result: ReadonlyMap<string, SubArticle>;
 
     beforeEach(() => {
       result = pipe(
@@ -44,14 +44,14 @@ describe('to-sub-articles', () => {
       );
     });
 
-    it('returns an empty array', () => {
-      expect(result).toHaveLength(0);
+    it('returns an empty map', () => {
+      expect(result.size).toBe(0);
     });
   });
 
   describe('given an input containing a single sub-article with a body containing a single paragraph', () => {
     const subArticleId = arbitraryWord();
-    let result: ReadonlyArray<SubArticle>;
+    let result: ReadonlyMap<string, SubArticle>;
 
     beforeEach(() => {
       result = pipe(
@@ -73,12 +73,10 @@ describe('to-sub-articles', () => {
     });
 
     it('returns one sub-article', () => {
-      expect(result).toHaveLength(1);
+      expect(result.size).toBe(1);
     });
 
-    it.failing('returns the subArticleId', () => {
-      expect(result[0].subArticleId).toStrictEqual(subArticleId);
-    });
+    it.todo('returns the body addressable by the <article-id> of its <sub-article>');
 
     it.todo('returns the body unchanged');
   });

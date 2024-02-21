@@ -24,7 +24,7 @@ const parseXmlDocument = (s: string) => E.tryCatch(
 
 const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subArticle.body !== undefined;
 
-export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyArray<SubArticle>> => pipe(
+export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyMap<string, SubArticle>> => pipe(
   input,
   t.string.decode,
   E.chainW(parseXmlDocument),
@@ -34,5 +34,15 @@ export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyArray<S
   )),
   E.map((acmiJats) => acmiJats.article['sub-article']),
   E.map(RA.filter(hasBody)),
-  E.map(RA.map(() => ({ subArticleId: '', body: sanitise(toHtmlFragment('')) }))),
+  E.map(RA.match(
+    () => new Map(),
+    () => (new Map(
+      [
+        [
+          '',
+          { subArticleId: '', body: sanitise(toHtmlFragment('')) },
+        ],
+      ],
+    )),
+  )),
 );
