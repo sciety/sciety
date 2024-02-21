@@ -11,7 +11,6 @@ import { EvaluationFetcher } from '../evaluation-fetcher';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
-import { getEvaluationFullText } from './get-evaluation-full-text';
 import { acmiJatsCodec } from './acmi-jats';
 
 const parser = new XMLParser({});
@@ -52,7 +51,11 @@ export const fetchAccessMicrobiologyEvaluation = (
       'https://www.microbiologyresearch.org/docserver/fulltext/acmi/10.1099/acmi.0.000569.v1/acmi.0.000569.v1.xml',
       queryExternalService(),
       TE.chainEitherKW(decodeResponse(logger)),
-      TE.map(getEvaluationFullText(key)),
+      TE.map((decodedResponse) => pipe(
+        builder.build(decodedResponse.article['sub-article'][3].body).toString() as string,
+        toHtmlFragment,
+        sanitise,
+      )),
       TE.map((fullText) => ({
         url: new URL(`https://doi.org/${key}`),
         fullText,
