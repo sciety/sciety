@@ -7,6 +7,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { AcmiJats, acmiJatsCodec } from './acmi-jats';
+import * as AED from './acmi-evaluation-doi';
 
 const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',
@@ -19,11 +20,9 @@ const parseXmlDocument = (s: string) => E.tryCatch(
 
 const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subArticle.body !== undefined;
 
-type AcmiEvaluationDoi = string & { readonly AcmiEvaluationDoi: unique symbol };
-
 export const toSubArticles = (
   input: unknown,
-): E.Either<unknown, ReadonlyMap<AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
+): E.Either<unknown, ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
   input,
   t.string.decode,
   E.chainW(parseXmlDocument),
@@ -34,11 +33,11 @@ export const toSubArticles = (
   E.map((acmiJats) => acmiJats.article['sub-article']),
   E.map(RA.filter(hasBody)),
   E.map(RA.match(
-    () => new Map<AcmiEvaluationDoi, SanitisedHtmlFragment>(),
-    () => (new Map<AcmiEvaluationDoi, SanitisedHtmlFragment>(
+    () => new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(),
+    () => (new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(
       [
         [
-          '' as AcmiEvaluationDoi,
+          AED.fromValidatedString(''),
           sanitise(toHtmlFragment('')),
         ],
       ],
