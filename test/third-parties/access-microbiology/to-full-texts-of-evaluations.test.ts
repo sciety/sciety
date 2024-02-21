@@ -73,11 +73,13 @@ describe('to-full-texts-of-evaluations', () => {
       );
     });
 
-    it('returns one sub-article', () => {
+    it('returns a map with one element', () => {
       expect(result.size).toBe(1);
     });
 
-    it.todo('returns the body addressable by the <article-id> of its <sub-article>');
+    it.failing('returns the body addressable by the <article-id> of its <sub-article>', () => {
+      expect(result.has(subArticleId)).toBe(true);
+    });
 
     it.todo('returns the body unchanged');
   });
