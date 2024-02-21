@@ -8,6 +8,7 @@ import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-frag
 import { toHtmlFragment } from '../../types/html-fragment';
 import { AcmiJats, acmiJatsCodec } from './acmi-jats';
 import * as AED from './acmi-evaluation-doi';
+import * as DE from '../../types/data-error';
 
 const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',
@@ -22,7 +23,7 @@ const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subA
 
 export const toFullTextsOfEvaluations = (
   input: unknown,
-): E.Either<unknown, ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
+): E.Either<DE.DataError, ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
   input,
   t.string.decode,
   E.chainW(parseXmlDocument),
@@ -43,4 +44,5 @@ export const toFullTextsOfEvaluations = (
       ],
     )),
   )),
+  E.mapLeft(() => DE.unavailable),
 );
