@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { SubArticle, toSubArticles } from '../../../src/third-parties/access-microbiology/to-sub-articles';
+import { toSubArticles } from '../../../src/third-parties/access-microbiology/to-sub-articles';
 import { abortTest } from '../../framework/abort-test';
 import { arbitraryWord } from '../../helpers';
+import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
 
 describe('to-sub-articles', () => {
   describe('given an input that is not a string', () => {
@@ -26,7 +27,7 @@ describe('to-sub-articles', () => {
   });
 
   describe('given an input containing a single sub-article without a body', () => {
-    let result: ReadonlyMap<string, SubArticle>;
+    let result: ReadonlyMap<string, SanitisedHtmlFragment>;
 
     beforeEach(() => {
       result = pipe(
@@ -51,7 +52,7 @@ describe('to-sub-articles', () => {
 
   describe('given an input containing a single sub-article with a body containing a single paragraph', () => {
     const subArticleId = arbitraryWord();
-    let result: ReadonlyMap<string, SubArticle>;
+    let result: ReadonlyMap<string, SanitisedHtmlFragment>;
 
     beforeEach(() => {
       result = pipe(

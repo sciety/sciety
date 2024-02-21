@@ -12,11 +12,6 @@ const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',
 });
 
-export type SubArticle = {
-  subArticleId: string,
-  body: SanitisedHtmlFragment,
-};
-
 const parseXmlDocument = (s: string) => E.tryCatch(
   () => parser.parse(s) as unknown,
   identity,
@@ -24,7 +19,7 @@ const parseXmlDocument = (s: string) => E.tryCatch(
 
 const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subArticle.body !== undefined;
 
-export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyMap<string, SubArticle>> => pipe(
+export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyMap<string, SanitisedHtmlFragment>> => pipe(
   input,
   t.string.decode,
   E.chainW(parseXmlDocument),
@@ -35,12 +30,12 @@ export const toSubArticles = (input: unknown): E.Either<unknown, ReadonlyMap<str
   E.map((acmiJats) => acmiJats.article['sub-article']),
   E.map(RA.filter(hasBody)),
   E.map(RA.match(
-    () => new Map(),
-    () => (new Map(
+    () => new Map<string, SanitisedHtmlFragment>(),
+    () => (new Map<string, SanitisedHtmlFragment>(
       [
         [
           '',
-          { subArticleId: '', body: sanitise(toHtmlFragment('')) },
+          sanitise(toHtmlFragment('')),
         ],
       ],
     )),
