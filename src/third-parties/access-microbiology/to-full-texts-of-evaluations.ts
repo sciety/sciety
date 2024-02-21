@@ -20,7 +20,7 @@ const parseXmlDocument = (s: string) => E.tryCatch(
 
 const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subArticle.body !== undefined;
 
-export const toSubArticles = (
+export const toFullTextsOfEvaluations = (
   input: unknown,
 ): E.Either<unknown, ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
   input,

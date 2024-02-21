@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { toSubArticles } from '../../../src/third-parties/access-microbiology/to-sub-articles';
+import { toFullTextsOfEvaluations } from '../../../src/third-parties/access-microbiology/to-full-texts-of-evaluations';
 import { abortTest } from '../../framework/abort-test';
 import { arbitraryWord } from '../../helpers';
 import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
 
-describe('to-sub-articles', () => {
+describe('to-full-texts-of-evaluations', () => {
   describe('given an input that is not a string', () => {
-    const result = toSubArticles(undefined);
+    const result = toFullTextsOfEvaluations(undefined);
 
     it('fails', () => {
       expect(E.isLeft(result)).toBe(true);
@@ -15,10 +15,10 @@ describe('to-sub-articles', () => {
   });
 
   describe('given a string input that cannot be parsed', () => {
-    let result: ReturnType<typeof toSubArticles>;
+    let result: ReturnType<typeof toFullTextsOfEvaluations>;
 
     beforeEach(() => {
-      result = toSubArticles('<><');
+      result = toFullTextsOfEvaluations('<><');
     });
 
     it('fails', () => {
@@ -40,7 +40,7 @@ describe('to-sub-articles', () => {
             </sub-article>
           </article>
         `,
-        toSubArticles,
+        toFullTextsOfEvaluations,
         E.getOrElseW(abortTest('returned on the left')),
       );
     });
@@ -68,7 +68,7 @@ describe('to-sub-articles', () => {
             </sub-article>
           </article>
         `,
-        toSubArticles,
+        toFullTextsOfEvaluations,
         E.getOrElseW(abortTest('returned on the left')),
       );
     });
