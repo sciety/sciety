@@ -63,7 +63,7 @@ describe('to-full-texts-of-evaluations', () => {
                 <article-id>${subArticleId}</article-id>
               </front-stub>
               <body>
-                <p></p>
+                <p>The paragraph text.</p>
               </body>
             </sub-article>
           </article>
@@ -81,6 +81,8 @@ describe('to-full-texts-of-evaluations', () => {
       expect(result.has(subArticleId)).toBe(true);
     });
 
-    it.todo('returns the body unchanged');
+    it.failing('returns the body unchanged', () => {
+      expect(result.get(subArticleId)).toBe('<p>The paragraph text.</p>');
+    });
   });
 });
