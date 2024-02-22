@@ -1,5 +1,5 @@
 export {
   Config, createLogger,
-} from './logger';
+} from './create-logger';
 export { LevelName, Payload, Logger } from './types';
 export { replaceError } from './replace-error';
