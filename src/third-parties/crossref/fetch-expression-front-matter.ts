@@ -18,7 +18,7 @@ import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 const parseResponseAndConstructDomainObject = (document: string, logger: Logger, expressionDoi: ExpressionDoi) => {
   if (document.length === 0) {
-    logger('error', 'Empty response from Crossref', { doi: expressionDoi, document });
+    logger('error', 'crossref/fetch-expression-front-matter: Empty document', { doi: expressionDoi, document });
     return E.left(DE.unavailable);
   }
   const parser = new DOMParser({
@@ -34,18 +34,18 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
     authors = getAuthors(parsedXml);
 
     if (O.isNone(authors)) {
-      logger('warn', 'Unable to find authors', { expressionDoi, document });
+      logger('warn', 'crossref/fetch-expression-front-matter: Unable to find authors', { expressionDoi, document });
     }
 
     abstract = getAbstract(parsedXml);
 
     title = getTitle(parsedXml);
     if (O.isNone(title)) {
-      logger('error', 'Did not find title', { expressionDoi, document });
+      logger('error', 'crossref/fetch-expression-front-matter: Unable to find title', { expressionDoi, document });
       return E.left(DE.unavailable);
     }
   } catch (error: unknown) {
-    logger('error', 'Unable to parse document', { expressionDoi, document, error });
+    logger('error', 'crossref/fetch-expression-front-matter: Unable to parse document', { expressionDoi, document, error });
     // - what happens if the title cannot be parsed (e.g. it's missing from the XML)?
     // - what happens if the abstract cannot be parsed (e.g. it has unforeseen tags)?
     return E.left(DE.unavailable);
