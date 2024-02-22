@@ -24,6 +24,7 @@ export const calculateAuthenticationDestination = (
 ): string => pipe(
   referer,
   O.fromNullable,
+  O.filter((candidateUrl) => candidateUrl !== ''),
   O.chain(toValidUrl(logger)),
   O.filter(isHostedBy(applicationHostname)),
   O.map(urlToString),
