@@ -15,7 +15,7 @@ type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 type FetchRelatedPapers = (history: PublishingHistory)
 => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
 
-type FetchReview = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
+type FetchEvaluation = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
@@ -32,7 +32,7 @@ type SearchForPaperExpressions = (
 export type ExternalQueries = {
   fetchExpressionFrontMatter: FetchExpressionFrontMatter,
   fetchRecommendedPapers: FetchRelatedPapers,
-  fetchEvaluation: FetchReview,
+  fetchEvaluation: FetchEvaluation,
   fetchStaticFile: FetchStaticFile,
   fetchPublishingHistory: FetchPublishingHistory,
   getArticleSubjectArea: GetArticleSubjectArea,
