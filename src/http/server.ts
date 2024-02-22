@@ -84,6 +84,10 @@ export const createApplicationServer = (
         message: error.message,
         stack: error.stack,
       };
+      if (error.message === 'read ECONNRESET') {
+        logger('warn', 'Koa encountered an ECONNRESET', payload);
+        return;
+      }
     }
     logger('error', 'Unhandled exception within koa middleware handling', payload);
   });
