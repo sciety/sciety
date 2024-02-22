@@ -22,6 +22,11 @@ const parseXmlDocument = (s: string) => E.tryCatch(
 
 const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subArticle.body !== undefined;
 
+const toMapEntry = (subArticleWithABody: AcmiJats['article']['sub-article'][number]): [AED.AcmiEvaluationDoi, SanitisedHtmlFragment] => [
+  AED.fromValidatedString(subArticleWithABody['front-stub']['article-id']),
+  sanitise(toHtmlFragment(builder.build(subArticleWithABody.body).toString())),
+];
+
 export const toFullTextsOfEvaluations = (
   input: unknown,
 ): E.Either<DE.DataError, ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
@@ -38,10 +43,7 @@ export const toFullTextsOfEvaluations = (
     () => new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(),
     (subArticlesWithABody) => (new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(
       [
-        [
-          AED.fromValidatedString(subArticlesWithABody[0]['front-stub']['article-id']),
-          sanitise(toHtmlFragment(builder.build(subArticlesWithABody[0].body).toString())),
-        ],
+        toMapEntry(subArticlesWithABody[0]),
       ],
     )),
   )),
