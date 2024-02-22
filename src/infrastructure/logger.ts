@@ -50,7 +50,15 @@ export const replaceError = (_key: string, value: unknown): unknown => {
   return value;
 };
 
-const interpretAxiosStatus = (error: AxiosError<unknown, unknown>) => (error.response?.status ? error.response?.status : 'status-code-not-available');
+const interpretAxiosStatus = (error: AxiosError<unknown, unknown>) => {
+  if (error.response?.status) {
+    return error.response.status;
+  }
+  if (error.message.includes('timeout')) {
+    return 'timeout';
+  }
+  return 'status-code-not-available';
+};
 
 const filterAxiosGarbageInPayload = (payload: Payload) => {
   if (payload.error && axios.isAxiosError(payload.error)) {
