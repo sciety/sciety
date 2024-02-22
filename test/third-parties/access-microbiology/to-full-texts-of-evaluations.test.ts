@@ -116,7 +116,7 @@ describe('to-full-texts-of-evaluations', () => {
       );
     });
 
-    it.failing('returns a map with two elements', () => {
+    it('returns a map with two elements', () => {
       expect(result.size).toBe(2);
     });
   });

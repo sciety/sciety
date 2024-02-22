@@ -39,13 +39,10 @@ export const toFullTextsOfEvaluations = (
   )),
   E.map((acmiJats) => acmiJats.article['sub-article']),
   E.map(RA.filter(hasBody)),
+  E.map(RA.map(toMapEntry)),
   E.map(RA.match(
     () => new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(),
-    (subArticlesWithABody) => (new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(
-      [
-        toMapEntry(subArticlesWithABody[0]),
-      ],
-    )),
+    (mapEntries) => (new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(mapEntries)),
   )),
   E.mapLeft(() => DE.unavailable),
 );
