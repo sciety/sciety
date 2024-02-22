@@ -40,9 +40,6 @@ export const deriveFullTextsOfEvaluations = (
   E.map((acmiJats) => acmiJats.article['sub-article']),
   E.map(RA.filter(hasBody)),
   E.map(RA.map(toMapEntry)),
-  E.map(RA.match(
-    () => new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(),
-    (mapEntries) => (new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(mapEntries)),
-  )),
+  E.map((mapEntries) => new Map(mapEntries)),
   E.mapLeft(() => DE.unavailable),
 );
