@@ -91,7 +91,7 @@ please follow <a href="https://scicrunch.org/ASWG/about/References">this link</a
 </div>
 `;
 
-export const fetchReview: ExternalQueries['fetchEvaluation'] = () => TE.right({
+export const fetchEvaluation: ExternalQueries['fetchEvaluation'] = () => TE.right({
   url: new URL('http://example.com'),
   fullText: pipe(
     htmlFullText,

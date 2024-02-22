@@ -6,7 +6,7 @@ import * as EL from '../types/evaluation-locator';
 import { EvaluationFetcher } from './evaluation-fetcher';
 import { ExternalQueries } from './external-queries';
 
-export const fetchReview = (fetchers: Record<string, EvaluationFetcher>): ExternalQueries['fetchEvaluation'] => (id) => pipe(
+export const fetchEvaluation = (fetchers: Record<string, EvaluationFetcher>): ExternalQueries['fetchEvaluation'] => (id) => pipe(
   fetchers,
   R.lookup(EL.service(id)),
   TE.fromOption(() => DE.notFound),

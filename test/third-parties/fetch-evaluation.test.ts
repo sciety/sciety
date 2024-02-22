@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchReview } from '../../src/third-parties/fetch-review';
+import { fetchEvaluation } from '../../src/third-parties/fetch-evaluation';
 import * as DE from '../../src/types/data-error';
 import * as RI from '../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
@@ -11,7 +11,7 @@ import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
 import { Evaluation } from '../../src/types/evaluation';
 
-describe('fetch-review', () => {
+describe('fetch-evaluation', () => {
   describe('when a service is supported', () => {
     it('returns the fetched evaluation', async () => {
       const reviewId = arbitraryEvaluationLocator();
@@ -23,7 +23,7 @@ describe('fetch-review', () => {
         [RI.service(reviewId)]: () => TE.right(evaluation),
       };
 
-      const result = await fetchReview(fetchers)(reviewId)();
+      const result = await fetchEvaluation(fetchers)(reviewId)();
 
       expect(result).toStrictEqual(E.right(evaluation));
     });
@@ -36,7 +36,7 @@ describe('fetch-review', () => {
       const id = arbitraryEvaluationLocator();
       const result = await pipe(
         id,
-        fetchReview(fetchers),
+        fetchEvaluation(fetchers),
         T.map(flow(
           E.matchW(
             identity,

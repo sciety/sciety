@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { createClient } from 'redis';
 import { fetchNcrcReview } from './ncrc/fetch-ncrc-review';
 import { fetchRapidReview } from './rapid-reviews/fetch-rapid-review';
-import { fetchReview } from './fetch-review';
+import { fetchEvaluation } from './fetch-evaluation';
 import { fetchHypothesisAnnotation } from './hypothesis/fetch-hypothesis-annotation';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchZenodoRecord } from './zenodo/fetch-zenodo-record';
@@ -56,7 +56,7 @@ export const instantiate = (
       crossrefApiBearerToken,
     ),
     fetchRecommendedPapers: fetchRecommendedPapers(queryExternalService, logger),
-    fetchEvaluation: fetchReview({
+    fetchEvaluation: fetchEvaluation({
       doi: fetchDoiEvaluationByPublisher(
         {
           // eslint-disable-next-line quote-props

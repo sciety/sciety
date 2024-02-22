@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { fetchStaticFile } from './fetch-static-file';
 import { searchForPaperExpressions } from './search-for-paper-expressions';
-import { fetchReview } from './fetch-review';
+import { fetchEvaluation } from './fetch-evaluation';
 import { fetchRecommendedPapers } from './fetch-recommended-papers';
 import { localFetchPaperExpressionFrontMatter } from './local-fetch-paper-expression-front-matter';
 import { fetchPublishingHistory } from './fetch-publishing-history';
@@ -12,7 +12,7 @@ export const stubAdapters: ExternalQueries = {
   fetchStaticFile,
   searchForPaperExpressions,
   fetchPublishingHistory,
-  fetchEvaluation: fetchReview,
+  fetchEvaluation,
   fetchRecommendedPapers,
   getArticleSubjectArea: () => TE.right({
     value: 'Biology',
