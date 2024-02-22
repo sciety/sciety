@@ -25,9 +25,17 @@ const parseXmlDocument = (s: string) => E.tryCatch(
 
 const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subArticle.body !== undefined;
 
+const translateBodyToHtml = (body: string | undefined) => pipe(
+  body,
+  (s) => s ?? '',
+  (s) => s.trim(),
+  toHtmlFragment,
+  sanitise,
+);
+
 const toMapEntry = (subArticleWithABody: AcmiJats['article']['sub-article'][number]): [AED.AcmiEvaluationDoi, SanitisedHtmlFragment] => [
   AED.fromValidatedString(subArticleWithABody['front-stub']['article-id']),
-  sanitise(toHtmlFragment((subArticleWithABody.body ?? '').trim())),
+  translateBodyToHtml(subArticleWithABody.body),
 ];
 
 export const lookupFullText = (
