@@ -82,7 +82,7 @@ describe('derive-full-texts-of-evaluations', () => {
       expect(result.has(subArticleId)).toBe(true);
     });
 
-    it.skip('produces a value generated from the <body> unchanged', () => {
+    it('produces a value generated from the <body> unchanged', () => {
       expect(result.get(subArticleId)).toBe('<p>The paragraph text.</p>');
     });
   });

@@ -27,7 +27,7 @@ const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subA
 
 const toMapEntry = (subArticleWithABody: AcmiJats['article']['sub-article'][number]): [AED.AcmiEvaluationDoi, SanitisedHtmlFragment] => [
   AED.fromValidatedString(subArticleWithABody['front-stub']['article-id']),
-  sanitise(toHtmlFragment(subArticleWithABody.body ?? '')),
+  sanitise(toHtmlFragment((subArticleWithABody.body ?? '').trim())),
 ];
 
 export const lookupFullText = (
