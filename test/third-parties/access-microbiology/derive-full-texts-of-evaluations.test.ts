@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { toFullTextsOfEvaluations } from '../../../src/third-parties/access-microbiology/to-full-texts-of-evaluations';
+import { deriveFullTextsOfEvaluations } from '../../../src/third-parties/access-microbiology/derive-full-texts-of-evaluations';
 import { abortTest } from '../../framework/abort-test';
 import { arbitraryWord } from '../../helpers';
 import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
 
-describe('to-full-texts-of-evaluations', () => {
+describe('derive-full-texts-of-evaluations', () => {
   describe('given an input that is not a string', () => {
-    const result = toFullTextsOfEvaluations(undefined);
+    const result = deriveFullTextsOfEvaluations(undefined);
 
     it('fails', () => {
       expect(E.isLeft(result)).toBe(true);
@@ -15,10 +15,10 @@ describe('to-full-texts-of-evaluations', () => {
   });
 
   describe('given a string input that cannot be parsed', () => {
-    let result: ReturnType<typeof toFullTextsOfEvaluations>;
+    let result: ReturnType<typeof deriveFullTextsOfEvaluations>;
 
     beforeEach(() => {
-      result = toFullTextsOfEvaluations('<><');
+      result = deriveFullTextsOfEvaluations('<><');
     });
 
     it('fails', () => {
@@ -40,7 +40,7 @@ describe('to-full-texts-of-evaluations', () => {
             </sub-article>
           </article>
         `,
-        toFullTextsOfEvaluations,
+        deriveFullTextsOfEvaluations,
         E.getOrElseW(abortTest('returned on the left')),
       );
     });
@@ -68,7 +68,7 @@ describe('to-full-texts-of-evaluations', () => {
             </sub-article>
           </article>
         `,
-        toFullTextsOfEvaluations,
+        deriveFullTextsOfEvaluations,
         E.getOrElseW(abortTest('returned on the left')),
       );
     });
@@ -111,7 +111,7 @@ describe('to-full-texts-of-evaluations', () => {
             </sub-article>
           </article>
         `,
-        toFullTextsOfEvaluations,
+        deriveFullTextsOfEvaluations,
         E.getOrElseW(abortTest('returned on the left')),
       );
     });

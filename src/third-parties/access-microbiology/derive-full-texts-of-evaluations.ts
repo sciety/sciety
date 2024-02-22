@@ -27,7 +27,7 @@ const toMapEntry = (subArticleWithABody: AcmiJats['article']['sub-article'][numb
   sanitise(toHtmlFragment(builder.build(subArticleWithABody.body).toString())),
 ];
 
-export const toFullTextsOfEvaluations = (
+export const deriveFullTextsOfEvaluations = (
   input: unknown,
 ): E.Either<DE.DataError, ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
   input,
