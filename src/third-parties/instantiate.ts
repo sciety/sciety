@@ -56,7 +56,7 @@ export const instantiate = (
       crossrefApiBearerToken,
     ),
     fetchRecommendedPapers: fetchRecommendedPapers(queryExternalService, logger),
-    fetchReview: fetchReview({
+    fetchEvaluation: fetchReview({
       doi: fetchDoiEvaluationByPublisher(
         {
           // eslint-disable-next-line quote-props

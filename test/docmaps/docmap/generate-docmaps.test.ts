@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import { arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
 import { Ports } from '../../../src/docmaps/docmap/generate-docmaps';
 import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
@@ -248,10 +249,10 @@ describe('generate-docmaps', () => {
       response = await pipe(
         generateDocmaps({
           ...defaultAdapters,
-          fetchReview: (id: EvaluationLocator) => (
+          fetchEvaluation: (id: EvaluationLocator) => (
             id === failingReviewId
               ? TE.left(DE.notFound)
-              : TE.right({ url: new URL(`https://reviews.example.com/${id}`) })
+              : TE.right({ fullText: arbitrarySanitisedHtmlFragment(), url: new URL(`https://reviews.example.com/${id}`) })
           ),
         })(articleId.value),
       )();

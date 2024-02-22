@@ -8,13 +8,9 @@ import { ExternalQueries } from '../third-parties';
 
 type EvaluationContent = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
-type Ports = {
-  fetchReview: ExternalQueries['fetchReview'],
-};
-
-export const evaluationContent = (adapters: Ports) => (params: Params): EvaluationContent => pipe(
+export const evaluationContent = (dependencies: ExternalQueries) => (params: Params): EvaluationContent => pipe(
   params.reviewid,
-  adapters.fetchReview,
+  dependencies.fetchEvaluation,
   TE.bimap(
     (error) => toErrorPageBodyViewModel({
       type: error,

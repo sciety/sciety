@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { DocmapViewModel, constructDocmapViewModel, Ports } from '../../../src/docmaps/docmap/construct-docmap-view-model';
 import * as DE from '../../../src/types/data-error';
 import { inferredSourceUrl } from '../../../src/types/evaluation-locator';
-import { arbitraryUri } from '../../helpers';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -190,7 +190,7 @@ describe('construct-docmap-view-model', () => {
         };
         const ports: Ports = {
           ...defaultAdapters,
-          fetchReview: shouldNotBeCalled,
+          fetchEvaluation: shouldNotBeCalled,
         };
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         viewModel = await pipe(
@@ -221,7 +221,7 @@ describe('construct-docmap-view-model', () => {
         };
         const ports: Ports = {
           ...defaultAdapters,
-          fetchReview: () => TE.right({ url: sourceUrl }),
+          fetchEvaluation: () => TE.right({ fullText: arbitrarySanitisedHtmlFragment(), url: sourceUrl }),
         };
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         viewModel = await pipe(

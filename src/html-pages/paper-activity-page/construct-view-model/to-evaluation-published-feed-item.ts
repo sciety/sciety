@@ -32,7 +32,7 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
     ),
     review: pipe(
       evaluation.evaluationLocator,
-      dependencies.fetchReview,
+      dependencies.fetchEvaluation,
       TE.match(
         () => ({
           url: EL.inferredSourceUrl(evaluation.evaluationLocator),

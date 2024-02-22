@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -11,10 +10,11 @@ import { Evaluation } from './evaluation';
 import * as DE from '../../types/data-error';
 import { Group } from '../../types/group';
 import { GroupId } from '../../types/group-id';
-import { inferredSourceUrl, EvaluationLocator } from '../../types/evaluation-locator';
+import { inferredSourceUrl } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import * as EDOI from '../../types/expression-doi';
+import { ExternalQueries } from '../../third-parties';
 
 export type DocmapViewModel = {
   expressionDoi: EDOI.ExpressionDoi,
@@ -28,9 +28,7 @@ type DocmapIdentifier = {
   groupId: GroupId,
 };
 
-export type Ports = Queries & {
-  fetchReview: (reviewId: EvaluationLocator) => TE.TaskEither<DE.DataError, { url: URL }>,
-};
+export type Ports = Queries & ExternalQueries;
 
 const extendWithSourceUrl = (adapters: Ports) => (evaluation: RecordedEvaluation) => pipe(
   evaluation.evaluationLocator,
@@ -38,7 +36,7 @@ const extendWithSourceUrl = (adapters: Ports) => (evaluation: RecordedEvaluation
   O.fold(
     () => pipe(
       evaluation.evaluationLocator,
-      adapters.fetchReview,
+      adapters.fetchEvaluation,
       TE.map((fetchedReview) => ({
         ...evaluation,
         sourceUrl: fetchedReview.url,

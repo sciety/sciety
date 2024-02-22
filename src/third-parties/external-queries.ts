@@ -32,7 +32,7 @@ type SearchForPaperExpressions = (
 export type ExternalQueries = {
   fetchExpressionFrontMatter: FetchExpressionFrontMatter,
   fetchRecommendedPapers: FetchRelatedPapers,
-  fetchReview: FetchReview,
+  fetchEvaluation: FetchReview,
   fetchStaticFile: FetchStaticFile,
   fetchPublishingHistory: FetchPublishingHistory,
   getArticleSubjectArea: GetArticleSubjectArea,

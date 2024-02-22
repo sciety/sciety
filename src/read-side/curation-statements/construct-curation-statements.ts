@@ -45,7 +45,7 @@ type Partial = Omit<CurationStatement, 'statementLanguageCode' | 'statement'>;
 
 const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => pipe(
   partial.evaluationLocator,
-  dependencies.fetchReview,
+  dependencies.fetchEvaluation,
   TE.map((review) => ({
     ...partial,
     statement: review.fullText,

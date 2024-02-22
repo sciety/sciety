@@ -12,7 +12,7 @@ export const stubAdapters: ExternalQueries = {
   fetchStaticFile,
   searchForPaperExpressions,
   fetchPublishingHistory,
-  fetchReview,
+  fetchEvaluation: fetchReview,
   fetchRecommendedPapers,
   getArticleSubjectArea: () => TE.right({
     value: 'Biology',
