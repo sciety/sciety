@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import rTracer from 'cls-rtracer';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
@@ -50,13 +50,15 @@ export const replaceError = (_key: string, value: unknown): unknown => {
   return value;
 };
 
+const interpretAxiosStatus = (error: AxiosError<unknown, unknown>) => (error.response?.status ? error.response?.status : 'status-code-not-available');
+
 const filterAxiosGarbageInPayload = (payload: Payload) => {
   if (payload.error && axios.isAxiosError(payload.error)) {
     return ({
       ...payload,
       error: {
         url: payload.error.config ? payload.error.config.url : 'url-not-available',
-        status: payload.error.response?.status ? payload.error.response?.status : 'status-code-not-available',
+        status: interpretAxiosStatus(payload.error),
         name: payload.error.name,
         message: payload.error.message,
       },
