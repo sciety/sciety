@@ -3,7 +3,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { fetchAccessMicrobiologyEvaluation } from '../../../src/third-parties/access-microbiology/fetch-access-microbiology-evaluation';
 import { QueryExternalService } from '../../../src/third-parties/query-external-service';
 import { Evaluation } from '../../../src/types/evaluation';
-import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString, arbitraryWord } from '../../helpers';
 import { abortTest } from '../../framework/abort-test';
 
@@ -28,7 +27,7 @@ describe('fetch-access-microbiology-evaluation', () => {
     beforeEach(async () => {
       result = await pipe(
         key,
-        fetchAccessMicrobiologyEvaluation(queryExternalService, dummyLogger),
+        fetchAccessMicrobiologyEvaluation(queryExternalService),
         TE.getOrElse(abortTest('returned on the left')),
       )();
     });

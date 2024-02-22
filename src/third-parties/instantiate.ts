@@ -62,7 +62,7 @@ export const instantiate = (
           // eslint-disable-next-line quote-props
           '10.5281': fetchZenodoRecord(queryExternalService, logger),
           // eslint-disable-next-line quote-props
-          '10.1099': fetchAccessMicrobiologyEvaluation(queryExternalService, logger),
+          '10.1099': fetchAccessMicrobiologyEvaluation(queryExternalService),
         },
         logger,
       ),
