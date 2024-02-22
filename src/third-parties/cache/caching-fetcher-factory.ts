@@ -34,7 +34,7 @@ const createCacheAdapter = (cachingFetcherOptions: CachingFetcherOptions, logger
     generateKey: generateUrlBasedKey(logger),
     storage: selectCacheStorage(cachingFetcherOptions, logger),
   };
-  return setupCache(Axios.create(), cacheOptions);
+  return setupCache(Axios.create({ transitional: { clarifyTimeoutError: true } }), cacheOptions);
 };
 
 export type CachingFetcherOptions = {

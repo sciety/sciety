@@ -54,7 +54,7 @@ const interpretAxiosStatus = (error: AxiosError<unknown, unknown>) => {
   if (error.response?.status) {
     return error.response.status;
   }
-  if (error.message.includes('timeout')) {
+  if (error.code === 'ETIMEDOUT') {
     return 'timeout';
   }
   return 'status-code-not-available';
