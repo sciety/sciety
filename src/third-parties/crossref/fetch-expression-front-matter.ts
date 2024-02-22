@@ -31,13 +31,16 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
   let title: O.Option<SanitisedHtmlFragment>;
   try {
     const parsedXml = parser.parseFromString(document, 'text/xml');
-    authors = getAuthors(parsedXml);
 
+    authors = getAuthors(parsedXml);
     if (O.isNone(authors)) {
       logger('warn', 'crossref/fetch-expression-front-matter: Unable to find authors', { expressionDoi, document });
     }
 
     abstract = getAbstract(parsedXml);
+    if (O.isNone(abstract)) {
+      logger('warn', 'crossref/fetch-expression-front-matter: Unable to find abstract', { expressionDoi, document });
+    }
 
     title = getTitle(parsedXml);
     if (O.isNone(title)) {
@@ -46,8 +49,6 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
     }
   } catch (error: unknown) {
     logger('error', 'crossref/fetch-expression-front-matter: Unable to parse document', { expressionDoi, document, error });
-    // - what happens if the title cannot be parsed (e.g. it's missing from the XML)?
-    // - what happens if the abstract cannot be parsed (e.g. it has unforeseen tags)?
     return E.left(DE.unavailable);
   }
   return E.right({
