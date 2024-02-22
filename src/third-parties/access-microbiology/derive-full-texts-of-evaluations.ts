@@ -1,4 +1,6 @@
 import * as E from 'fp-ts/Either';
+import * as S from 'fp-ts/string';
+import * as RM from 'fp-ts/ReadonlyMap';
 import * as t from 'io-ts';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
@@ -27,9 +29,21 @@ const toMapEntry = (subArticleWithABody: AcmiJats['article']['sub-article'][numb
   sanitise(toHtmlFragment(builder.build(subArticleWithABody.body).toString())),
 ];
 
+export const lookupFullText = (
+  key: string,
+) => (
+  map: FullTextsOfEvaluations,
+): E.Either<DE.DataError, SanitisedHtmlFragment> => pipe(
+  map,
+  RM.lookup(S.Eq)(key),
+  E.fromOption(() => DE.notFound),
+);
+
+type FullTextsOfEvaluations = ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>;
+
 export const deriveFullTextsOfEvaluations = (
   input: unknown,
-): E.Either<DE.DataError, ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>> => pipe(
+): E.Either<DE.DataError, FullTextsOfEvaluations> => pipe(
   input,
   t.string.decode,
   E.chainW(parseXmlDocument),

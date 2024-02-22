@@ -2,12 +2,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as RM from 'fp-ts/ReadonlyMap';
-import * as S from 'fp-ts/string';
 import * as DE from '../../types/data-error';
 import { EvaluationFetcher } from '../evaluation-fetcher';
 import { QueryExternalService } from '../query-external-service';
-import { deriveFullTextsOfEvaluations } from './derive-full-texts-of-evaluations';
+import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations';
 
 const toJatsXmlUrlOfPublisher = (key: string) => {
   if (key === '10.1099/acmi.0.000530.v1.3') {
@@ -27,7 +25,7 @@ export const fetchAccessMicrobiologyEvaluation = (
   TE.fromOption(() => DE.unavailable),
   TE.chain(queryExternalService()),
   TE.chainEitherK(deriveFullTextsOfEvaluations),
-  TE.chainOptionKW(() => DE.notFound)(RM.lookup(S.Eq)(key)),
+  TE.chainEitherKW(lookupFullText(key)),
   TE.map((fullText) => ({
     url: new URL(`https://doi.org/${key}`),
     fullText,
