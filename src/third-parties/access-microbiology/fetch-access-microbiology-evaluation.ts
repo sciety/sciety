@@ -9,10 +9,11 @@ import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import { EvaluationFetcher } from '../evaluation-fetcher';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
+import { sanitise } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
-import { AcmiJats, acmiJatsCodec } from './acmi-jats';
+import { acmiJatsCodec } from './acmi-jats';
 import * as AED from './acmi-evaluation-doi';
+import { toFullTextsOfEvaluations } from './to-full-texts-of-evaluations';
 
 const parser = new XMLParser({});
 const builder = new XMLBuilder();
@@ -28,22 +29,6 @@ const decodeResponse = (logger: Logger) => (response: unknown) => pipe(
   decodeAndLogFailures(logger, t.string),
   E.mapLeft(() => DE.unavailable),
   E.chain(parseXmlAsAJavascriptObject),
-);
-
-const fullTextsOfEvaluations = (
-  decodedResponse: AcmiJats,
-): ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment> => pipe(
-  builder.build(decodedResponse.article['sub-article'][3].body).toString() as string,
-  toHtmlFragment,
-  sanitise,
-  (fullText) => (new Map<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>(
-    [
-      [
-        AED.fromValidatedString('10.1099/acmi.0.000569.v1.4'),
-        fullText,
-      ],
-    ],
-  )),
 );
 
 export const fetchAccessMicrobiologyEvaluation = (
@@ -67,8 +52,7 @@ export const fetchAccessMicrobiologyEvaluation = (
     return pipe(
       'https://www.microbiologyresearch.org/docserver/fulltext/acmi/10.1099/acmi.0.000569.v1/acmi.0.000569.v1.xml',
       queryExternalService(),
-      TE.chainEitherKW(decodeResponse(logger)),
-      TE.map(fullTextsOfEvaluations),
+      TE.chainEitherK(toFullTextsOfEvaluations),
       TE.chainEitherKW((fullTexts) => pipe(
         fullTexts.get(AED.fromValidatedString(key)),
         (fullText) => (fullText !== undefined ? E.right(fullText) : E.left(DE.notFound)),
