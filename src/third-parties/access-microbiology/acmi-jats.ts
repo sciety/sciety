@@ -7,7 +7,7 @@ export const acmiJatsCodec = t.strict({
         'front-stub': t.strict({
           'article-id': t.string,
         }),
-        body: t.unknown,
+        body: t.union([t.string, t.undefined]),
       }),
     ),
   }),

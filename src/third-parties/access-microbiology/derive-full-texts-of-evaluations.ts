@@ -3,7 +3,7 @@ import * as S from 'fp-ts/string';
 import * as RM from 'fp-ts/ReadonlyMap';
 import * as t from 'io-ts';
 import { identity, pipe } from 'fp-ts/function';
-import { XMLBuilder, XMLParser } from 'fast-xml-parser';
+import { XMLParser } from 'fast-xml-parser';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -15,8 +15,8 @@ import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',
+  stopNodes: ['article.sub-article.body'],
 });
-const builder = new XMLBuilder();
 
 const parseXmlDocument = (s: string) => E.tryCatch(
   () => parser.parse(s) as unknown,
@@ -27,7 +27,7 @@ const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subA
 
 const toMapEntry = (subArticleWithABody: AcmiJats['article']['sub-article'][number]): [AED.AcmiEvaluationDoi, SanitisedHtmlFragment] => [
   AED.fromValidatedString(subArticleWithABody['front-stub']['article-id']),
-  sanitise(toHtmlFragment(builder.build(subArticleWithABody.body).toString())),
+  sanitise(toHtmlFragment(subArticleWithABody.body ?? '')),
 ];
 
 export const lookupFullText = (
