@@ -4,26 +4,37 @@ import { fetchAccessMicrobiologyEvaluation } from '../../../src/third-parties/ac
 import { QueryExternalService } from '../../../src/third-parties/query-external-service';
 import { Evaluation } from '../../../src/types/evaluation';
 import { dummyLogger } from '../../dummy-logger';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryHtmlFragment, arbitraryString } from '../../helpers';
+import { arbitraryString, arbitraryWord } from '../../helpers';
+import { abortTest } from '../../framework/abort-test';
 
 describe('fetch-access-microbiology-evaluation', () => {
   describe.skip('given an XML containing the relevant sub-article', () => {
-    const queryExternalService: QueryExternalService = () => () => TE.right('');
-    const key = arbitraryString();
-    const body = arbitraryHtmlFragment();
+    const key = arbitraryWord();
+    const text = arbitraryString();
+    const queryExternalService: QueryExternalService = () => () => TE.right(`
+      <article>
+        <sub-article>
+          <front-stub>
+            <article-id>${key}</article-id>
+          </front-stub>
+          <body>
+            <p>${text}</p>
+          </body>
+        </sub-article>
+      </article>
+    `);
     let result: Evaluation;
 
     beforeEach(async () => {
       result = await pipe(
         key,
         fetchAccessMicrobiologyEvaluation(queryExternalService, dummyLogger),
-        TE.getOrElse(shouldNotBeCalled),
+        TE.getOrElse(abortTest('returned on the left')),
       )();
     });
 
-    it('return a full text', () => {
-      expect(result.fullText).toStrictEqual(body);
+    it.failing('return a full text', () => {
+      expect(result.fullText).toBe(`<p>${text}</p>`);
     });
 
     it.todo('return a url');
