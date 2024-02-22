@@ -42,13 +42,15 @@ export const lookupFullText = (
 
 type FullTextsOfEvaluations = ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>;
 
+const accessMicrobiologyXmlResponseCodec = t.string;
+
 export const deriveFullTextsOfEvaluations = (
   logger: Logger,
 ) => (
   input: unknown,
 ): E.Either<DE.DataError, FullTextsOfEvaluations> => pipe(
   input,
-  t.string.decode,
+  decodeAndLogFailures(logger, accessMicrobiologyXmlResponseCodec, { codec: 'accessMicrobiologyXmlResponseCodec' }),
   E.chainW(parseXmlDocument),
   E.chainW(decodeAndLogFailures(logger, acmiJatsCodec)),
   E.map((acmiJats) => acmiJats.article['sub-article']),
