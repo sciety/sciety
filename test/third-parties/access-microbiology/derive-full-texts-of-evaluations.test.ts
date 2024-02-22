@@ -4,10 +4,11 @@ import { deriveFullTextsOfEvaluations } from '../../../src/third-parties/access-
 import { abortTest } from '../../framework/abort-test';
 import { arbitraryWord } from '../../helpers';
 import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
+import { dummyLogger } from '../../dummy-logger';
 
 describe('derive-full-texts-of-evaluations', () => {
   describe('given an input that is not a string', () => {
-    const result = deriveFullTextsOfEvaluations(undefined);
+    const result = deriveFullTextsOfEvaluations(dummyLogger)(undefined);
 
     it('fails', () => {
       expect(E.isLeft(result)).toBe(true);
@@ -15,10 +16,10 @@ describe('derive-full-texts-of-evaluations', () => {
   });
 
   describe('given a string input that cannot be parsed', () => {
-    let result: ReturnType<typeof deriveFullTextsOfEvaluations>;
+    let result: ReturnType<ReturnType<typeof deriveFullTextsOfEvaluations>>;
 
     beforeEach(() => {
-      result = deriveFullTextsOfEvaluations('<><');
+      result = deriveFullTextsOfEvaluations(dummyLogger)('<><');
     });
 
     it('fails', () => {
@@ -40,7 +41,7 @@ describe('derive-full-texts-of-evaluations', () => {
             </sub-article>
           </article>
         `,
-        deriveFullTextsOfEvaluations,
+        deriveFullTextsOfEvaluations(dummyLogger),
         E.getOrElseW(abortTest('returned on the left')),
       );
     });
@@ -68,7 +69,7 @@ describe('derive-full-texts-of-evaluations', () => {
             </sub-article>
           </article>
         `,
-        deriveFullTextsOfEvaluations,
+        deriveFullTextsOfEvaluations(dummyLogger),
         E.getOrElseW(abortTest('returned on the left')),
       );
     });
@@ -111,7 +112,7 @@ describe('derive-full-texts-of-evaluations', () => {
             </sub-article>
           </article>
         `,
-        deriveFullTextsOfEvaluations,
+        deriveFullTextsOfEvaluations(dummyLogger),
         E.getOrElseW(abortTest('returned on the left')),
       );
     });

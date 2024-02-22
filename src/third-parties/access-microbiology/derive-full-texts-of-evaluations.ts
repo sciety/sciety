@@ -2,15 +2,16 @@ import * as E from 'fp-ts/Either';
 import * as S from 'fp-ts/string';
 import * as RM from 'fp-ts/ReadonlyMap';
 import * as t from 'io-ts';
-import { flow, identity, pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
-import { formatValidationErrors } from 'io-ts-reporters';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { AcmiJats, acmiJatsCodec } from './acmi-jats';
 import * as AED from './acmi-evaluation-doi';
 import * as DE from '../../types/data-error';
+import { Logger } from '../../shared-ports';
+import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',
@@ -42,15 +43,14 @@ export const lookupFullText = (
 type FullTextsOfEvaluations = ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>;
 
 export const deriveFullTextsOfEvaluations = (
+  logger: Logger,
+) => (
   input: unknown,
 ): E.Either<DE.DataError, FullTextsOfEvaluations> => pipe(
   input,
   t.string.decode,
   E.chainW(parseXmlDocument),
-  E.chainW(flow(
-    acmiJatsCodec.decode,
-    E.mapLeft(formatValidationErrors),
-  )),
+  E.chainW(decodeAndLogFailures(logger, acmiJatsCodec)),
   E.map((acmiJats) => acmiJats.article['sub-article']),
   E.map(RA.filter(hasBody)),
   E.map(RA.map(toMapEntry)),

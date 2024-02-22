@@ -5,6 +5,7 @@ import { QueryExternalService } from '../../../src/third-parties/query-external-
 import { Evaluation } from '../../../src/types/evaluation';
 import { arbitraryString, arbitraryWord } from '../../helpers';
 import { abortTest } from '../../framework/abort-test';
+import { dummyLogger } from '../../dummy-logger';
 
 describe('fetch-access-microbiology-evaluation', () => {
   describe.skip('given an XML containing the relevant sub-article', () => {
@@ -27,7 +28,7 @@ describe('fetch-access-microbiology-evaluation', () => {
     beforeEach(async () => {
       result = await pipe(
         key,
-        fetchAccessMicrobiologyEvaluation(queryExternalService),
+        fetchAccessMicrobiologyEvaluation(queryExternalService, dummyLogger),
         TE.getOrElse(abortTest('returned on the left')),
       )();
     });

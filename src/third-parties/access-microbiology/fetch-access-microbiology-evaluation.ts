@@ -6,6 +6,7 @@ import * as DE from '../../types/data-error';
 import { EvaluationFetcher } from '../evaluation-fetcher';
 import { QueryExternalService } from '../query-external-service';
 import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations';
+import { Logger } from '../../shared-ports';
 
 const toJatsXmlUrlOfPublisher = (key: string) => {
   if (key === '10.1099/acmi.0.000530.v1.3') {
@@ -19,12 +20,13 @@ const toJatsXmlUrlOfPublisher = (key: string) => {
 
 export const fetchAccessMicrobiologyEvaluation = (
   queryExternalService: QueryExternalService,
+  logger: Logger,
 ): EvaluationFetcher => (key: string) => pipe(
   key,
   toJatsXmlUrlOfPublisher,
   TE.fromOption(() => DE.unavailable),
   TE.chain(queryExternalService()),
-  TE.chainEitherK(deriveFullTextsOfEvaluations),
+  TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
   TE.chainEitherKW(lookupFullText(key)),
   TE.map((fullText) => ({
     url: new URL(`https://doi.org/${key}`),

@@ -11,6 +11,6 @@ export const acmiJatsCodec = t.strict({
       }),
     ),
   }),
-});
+}, 'acmiJatsCodec');
 
 export type AcmiJats = t.TypeOf<typeof acmiJatsCodec>;
