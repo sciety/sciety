@@ -4,9 +4,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { Logger } from '../../shared-ports';
 import { identifyExpressionServer } from './fetch-all-paper-expressions/identify-expression-server';
-import { ExpressionDoi } from '../../types/expression-doi';
 
 const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)
@@ -14,16 +12,12 @@ const getElement = (ancestor: Document | Element, qualifiedName: string) => (
 
 export const getAbstract = (
   doc: Document,
-  expressionDoi: ExpressionDoi,
-  logger: Logger,
 ): O.Option<SanitisedHtmlFragment> => {
   const abstractElement = getElement(doc, 'abstract');
 
   if (typeof abstractElement?.textContent !== 'string') {
     return O.none;
   }
-
-  logger('debug', 'Found abstract', { expressionDoi, abstract: abstractElement.textContent });
 
   const titleElement = getElement(abstractElement, 'title');
   if (titleElement) {

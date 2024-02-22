@@ -3,9 +3,7 @@ import * as O from 'fp-ts/Option';
 import {
   getAbstract, getAuthors, getServer, getTitle,
 } from '../../../src/third-parties/crossref/parse-crossref-article';
-import { dummyLogger } from '../../dummy-logger';
 import { arbitraryUri } from '../../helpers';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -26,7 +24,6 @@ describe('parse-crossref-article', () => {
       throw msg;
     },
   });
-  const doi = arbitraryExpressionDoi();
 
   describe('parsing the abstract', () => {
     it('extracts the abstract text from the XML response', async () => {
@@ -35,7 +32,7 @@ describe('parse-crossref-article', () => {
           Some random nonsense.
         </abstract>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('Some random nonsense.')));
     });
@@ -46,7 +43,7 @@ describe('parse-crossref-article', () => {
           Some random nonsense.
         </abstract>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<abstract>')));
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</abstract>')));
@@ -59,7 +56,7 @@ describe('parse-crossref-article', () => {
           Some random nonsense.
         </abstract>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('Abstract')));
     });
@@ -75,7 +72,7 @@ describe('parse-crossref-article', () => {
           </sec>
         </abstract>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<h3>should be an h3</h3>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<h3>should also be an h3</h3>')));
@@ -96,7 +93,7 @@ describe('parse-crossref-article', () => {
           </p>
         </abstract>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<i>Cannabis sativa</i>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<i>in vivo</i>')));
@@ -115,7 +112,7 @@ describe('parse-crossref-article', () => {
           </list>
         </abstract>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<ul>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('</ul>')));
@@ -131,7 +128,7 @@ describe('parse-crossref-article', () => {
           </sec>
         </abstract>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<section>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('</section>')));
@@ -151,7 +148,7 @@ describe('parse-crossref-article', () => {
           </sec>
         </abstract>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(expect.not.stringContaining('Graphical abstract'));
     });
@@ -167,7 +164,7 @@ describe('parse-crossref-article', () => {
         </abstract>`);
 
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<section>')));
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</section>')));
@@ -182,7 +179,7 @@ describe('parse-crossref-article', () => {
         </abstract>`);
 
       const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc, doi, dummyLogger);
+      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<section>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('Lorem ipsum')));

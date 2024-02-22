@@ -37,7 +37,7 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
       logger('warn', 'Unable to find authors', { expressionDoi, document });
     }
 
-    abstract = getAbstract(parsedXml, expressionDoi, logger);
+    abstract = getAbstract(parsedXml);
 
     title = getTitle(parsedXml);
     if (O.isNone(title)) {
