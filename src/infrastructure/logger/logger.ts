@@ -1,19 +1,9 @@
-import axios, { AxiosError } from 'axios';
 import rTracer from 'cls-rtracer';
 import * as O from 'fp-ts/Option';
-import { constant, flow, pipe } from 'fp-ts/function';
-import { serializeError } from 'serialize-error';
-
-enum Level {
-  error,
-  warn,
-  info,
-  debug,
-}
-
-export type LevelName = keyof typeof Level;
-
-export type Payload = Record<string, unknown>;
+import { constant, pipe } from 'fp-ts/function';
+import { jsonSerializer } from './json-serializer';
+import { Serializer } from './serializer';
+import { Level, LevelName, Payload } from './types';
 
 export type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
 
@@ -30,61 +20,6 @@ const rTracerLogger = (logger: Logger): Logger => {
     logger(level, message, withRequestId(payload))
   );
 };
-
-type Entry = {
-  timestamp: Date,
-  level: LevelName,
-  message: string,
-  payload: Payload,
-};
-
-type Serializer = (entry: Entry) => string;
-
-export const replaceError = (_key: string, value: unknown): unknown => {
-  if (_key === 'Authorization' || _key === 'Crossref-Plus-API-Token') {
-    return '--redacted--';
-  }
-  if (value instanceof Error) {
-    return serializeError(value);
-  }
-  return value;
-};
-
-const interpretAxiosStatus = (error: AxiosError<unknown, unknown>) => {
-  if (error.response?.status) {
-    return error.response.status;
-  }
-  if (error.code === 'ETIMEDOUT') {
-    return 'timeout';
-  }
-  return 'status-code-not-available';
-};
-
-const filterAxiosGarbageInPayload = (payload: Payload) => {
-  if (payload.error && axios.isAxiosError(payload.error)) {
-    return ({
-      ...payload,
-      error: {
-        url: payload.error.config ? payload.error.config.url : 'url-not-available',
-        status: interpretAxiosStatus(payload.error),
-        name: payload.error.name,
-        message: payload.error.message,
-      },
-    });
-  }
-
-  return payload;
-};
-
-const jsonSerializer = (prettyPrint = false): Serializer => flow(
-  (entry) => ({
-    ...entry,
-    payload: filterAxiosGarbageInPayload(entry.payload),
-  }),
-  (entry) => (
-    JSON.stringify(entry, replaceError, prettyPrint ? 2 : undefined)
-  ),
-);
 
 const streamLogger = (
   stream: NodeJS.WritableStream,
