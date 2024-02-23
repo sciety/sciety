@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { toJatsXmlUrlOfPublisher } from '../../../src/third-parties/access-microbiology/to-jats-xml-url-of-publisher';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryWord } from '../../helpers';
 
 describe('to-jats-xml-url-of-publisher', () => {
   describe.each([
@@ -32,7 +33,15 @@ describe('to-jats-xml-url-of-publisher', () => {
     );
 
     it.failing('returns an inferred url', () => {
-      expect(inferredUrl).toBe(O.some(url));
+      expect(inferredUrl).toStrictEqual(O.some(url));
+    });
+  });
+
+  describe('given a string that does not represent an ACMI evaluation DOI', () => {
+    const result = toJatsXmlUrlOfPublisher(arbitraryWord());
+
+    it('returns an O.none', () => {
+      expect(result).toStrictEqual(O.none);
     });
   });
 });
