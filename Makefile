@@ -12,7 +12,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod
+.PHONY: backstop* build clean* dev eslint-fix find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -58,6 +58,13 @@ lint-eslint:
 lint-fix: export TARGET = dev
 lint-fix: build unused-sass
 	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix -e STYLELINT=--fix app npm run lint
+
+eslint-fix: node_modules
+	npx eslint src test feature-test \
+		--ext .js,.ts \
+		--cache --cache-location $(LINT_CACHE) \
+		--color --max-warnings 0 \
+		--fix
 
 lint-sass: export TARGET = dev
 lint-sass: build unused-sass
