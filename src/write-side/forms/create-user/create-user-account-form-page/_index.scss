@@ -6,17 +6,34 @@
 @use '../../../../sass/layout';
 
 .error-summary {
-  border: settings.$border-width solid settings.$colour-alert;
+  border: 3px solid settings.$colour-alert;
   padding: functions.px-to-rem(settings.$default-form-gutter);
   margin-bottom: functions.px-to-rem(48px);
 
-  p {
+  a:link {
     color: settings.$colour-alert;
+    text-decoration: underline;
+  }
+
+  a:link,
+  a:visited {
+    color: settings.$colour-alert;
+
+    &:hover,
+    &:active {
+      color: settings.$colour-alert;
+      text-decoration-thickness: 3px;
+    }
   }
 
   ul {
-    color: settings.$colour-alert;
     margin-top: 0;
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
   }
 }
 
@@ -84,5 +101,4 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
-
 }

@@ -10,22 +10,18 @@ import { HtmlPage } from '../../../../types/html-page';
 
 const renderErrorSummary = (recovery: ViewModel['validationRecovery']) => pipe(
   recovery,
+  O.map(R.map((r) => r.error)),
+  O.map(R.compact),
   O.map(R.toArray),
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  O.map(RA.map(([k, v]) => v.error)),
-  O.map(RA.compact),
-  O.map(RA.map((error) => `<li>${error}</li>`)),
+  O.map(RA.map(([key, error]) => `<li><a href="#${key}">${error}</a></li>`)),
   O.map(RA.match(
     () => '',
     (errors) => `
     <div role='alert' class='error-summary'>
-      <h3>Something went wrong</h3>
-      <p>
-      Please check the following:
-      </p>
-        <ul>
-        ${errors.join('\n')}
-        </ul>
+      <h3>There is a problem</h3>
+      <ul>
+      ${errors.join('\n')}
+      </ul>
     </div>
     `,
   )),
