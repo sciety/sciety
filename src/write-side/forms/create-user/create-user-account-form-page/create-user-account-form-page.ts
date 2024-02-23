@@ -1,30 +1,35 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import { ViewModel } from './view-model';
 import { ConstructPage } from '../../../../html-pages/construct-page';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage } from '../../../../types/html-page';
 
-const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
-  errorSummary,
-  O.match(
+const renderErrorSummary = (recovery: ViewModel['validationRecovery']) => pipe(
+  recovery,
+  O.map(R.toArray),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  O.map(RA.map(([k, v]) => v.error)),
+  O.map(RA.compact),
+  O.map(RA.map((error) => `<li>${error}</li>`)),
+  O.map(RA.match(
     () => '',
-    () => `
+    (errors) => `
     <div role='alert' class='error-summary'>
       <h3>Something went wrong</h3>
       <p>
       Please check the following:
       </p>
         <ul>
-        <li>Your full name and handle must not contain any of &quot;,&lt;,&gt;</li>
-        <li>Your full name must be 1-30 characters long</li>
-        <li>Your handle must be 4-15 characters long</li>
-        <li>Your handle must not be in use by anyone else</li>
+        ${errors.join('\n')}
         </ul>
     </div>
     `,
-  ),
+  )),
+  O.getOrElse(() => ''),
 );
 
 const renderFullNameInput = (recovery: ViewModel['validationRecovery']) => {
