@@ -25,6 +25,16 @@ $_microcopy-colour: settings.$colour-text-secondary;
   @include form-with-borders-and-white-background();
 }
 
+.standard-form__error {
+  border-left: 3px solid settings.$colour-alert;
+  padding-left: 6px;
+
+  p {
+    color: settings.$colour-alert;
+    margin-bottom: 0.5rem;
+  }
+}
+
 @mixin section {
   margin-bottom: functions.px-to-rem(48px);
 }

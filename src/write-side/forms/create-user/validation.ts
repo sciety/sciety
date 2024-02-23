@@ -34,7 +34,7 @@ const determineErrorMessage = (fullName: string) => {
   if (fullName.length === 0) {
     return O.some('Enter your full name');
   }
-  if (emptyRegex.exec(fullName)) {
+  if (!emptyRegex.exec(fullName)) {
     return O.some('Full name must not contain any of these chacters: "<>');
   }
   if (fullName.length > 30) {
