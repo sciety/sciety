@@ -56,6 +56,7 @@ export const head = (
 
   ${googleTagManager(userId)}
   ${fathom()}
+  <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
 `,
   renderHeadTag(dynamicHeadViewModel.clientClassification),
   toHtmlFragment,
