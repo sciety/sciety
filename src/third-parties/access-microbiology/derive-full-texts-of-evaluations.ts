@@ -27,11 +27,16 @@ type SubArticleWithBody = Required<SubArticle>;
 
 const hasBody = (subArticle: SubArticle): subArticle is SubArticleWithBody => subArticle.body !== undefined;
 
+const translateBoldToB = (input: string) => pipe(
+  input,
+  (s) => s.replaceAll('<bold>', '<b>'),
+  (s) => s.replaceAll('</bold>', '</b>'),
+);
+
 const translateBodyToHtml = (body: string) => pipe(
   body,
   (s) => s.trim(),
-  (s) => s.replaceAll('<bold>', '<b>'),
-  (s) => s.replaceAll('</bold>', '</b>'),
+  translateBoldToB,
   toHtmlFragment,
   sanitise,
 );
