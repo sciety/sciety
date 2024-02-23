@@ -20,9 +20,14 @@ export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment 
     </h1>
     <p>A group on Sciety represents a team of scientists who evaluate and curate preprint research articles.</p>
     <p>Select a group to follow their work.</p>
-    <label for="filterGroups">Search:</label>
-    <input type="text" id="filterGroups"
-      _="on keyup
+    <label for="filterGroups" style="display: none">Search:</label>
+    <input type="text" id="filterGroups" style="display: none"
+      _="
+        init
+          show me
+          show previous <label/>
+          set my value to ''
+        on keyup
         if the event's key is 'Escape'
           set my value to ''
           trigger keyup
