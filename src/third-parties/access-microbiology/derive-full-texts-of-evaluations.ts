@@ -23,11 +23,12 @@ const parseXmlDocument = (s: string) => E.tryCatch(
   identity,
 );
 
-const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]) => subArticle.body !== undefined;
+type SubArticleWithBody = Required<AcmiJats['article']['sub-article'][number]>;
 
-const translateBodyToHtml = (body: string | undefined) => pipe(
+const hasBody = (subArticle: AcmiJats['article']['sub-article'][number]): subArticle is SubArticleWithBody => subArticle.body !== undefined;
+
+const translateBodyToHtml = (body: string) => pipe(
   body,
-  (s) => s ?? '',
   (s) => s.trim(),
   (s) => s.replaceAll('<bold>', '<b>'),
   (s) => s.replaceAll('</bold>', '</b>'),
@@ -35,7 +36,7 @@ const translateBodyToHtml = (body: string | undefined) => pipe(
   sanitise,
 );
 
-const toMapEntry = (subArticleWithABody: AcmiJats['article']['sub-article'][number]): [AED.AcmiEvaluationDoi, SanitisedHtmlFragment] => [
+const toMapEntry = (subArticleWithABody: SubArticleWithBody): [AED.AcmiEvaluationDoi, SanitisedHtmlFragment] => [
   AED.fromValidatedString(subArticleWithABody['front-stub']['article-id']),
   translateBodyToHtml(subArticleWithABody.body),
 ];
