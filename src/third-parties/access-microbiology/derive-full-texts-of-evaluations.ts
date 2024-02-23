@@ -29,6 +29,8 @@ const translateBodyToHtml = (body: string | undefined) => pipe(
   body,
   (s) => s ?? '',
   (s) => s.trim(),
+  (s) => s.replaceAll('<bold>', '<b>'),
+  (s) => s.replaceAll('</bold>', '</b>'),
   toHtmlFragment,
   sanitise,
 );

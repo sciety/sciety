@@ -110,7 +110,7 @@ describe('derive-full-texts-of-evaluations', () => {
       );
     });
 
-    it.failing('produces a value containing <b> HTML tags', () => {
+    it('produces a value containing <b> HTML tags', () => {
       expect(result.get(subArticleId)).toBe('<p>The paragraph <b>text</b>.</p>');
     });
   });
