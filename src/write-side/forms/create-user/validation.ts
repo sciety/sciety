@@ -30,7 +30,7 @@ export type CreateUserAccountForm = t.TypeOf<typeof createUserAccountFormCodec>;
 
 export const formFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props);
 
-const determineErrorMessage = (fullName: string) => {
+const determineFullNameErrorMessage = (fullName: string) => {
   if (fullName.length === 0) {
     return O.some('Enter your full name');
   }
@@ -41,6 +41,19 @@ const determineErrorMessage = (fullName: string) => {
     return O.some('Full name must be 30 characters or less');
   }
   return O.some('Your full name is invalid but we do not know why');
+};
+
+const determineHandleErrorMessage = (handle: string) => {
+  if (handle.length === 0) {
+    return O.some('Enter a handle');
+  }
+  if (!emptyRegex.exec(handle)) {
+    return O.some('Your handle must not contain any of these chacters: "<>');
+  }
+  if (handle.length < 4 || handle.length > 15) {
+    return O.some('Your handle must be 4-15 characters long');
+  }
+  return O.some('Your handle is invalid but we do not know why');
 };
 
 type FormFields = t.TypeOf<typeof formFieldsCodec>;
@@ -54,13 +67,20 @@ export const constructValidationRecovery = (
       input.fullName,
       createUserAccountFormCodec.props.fullName.decode,
       E.match(
-        () => determineErrorMessage(input.fullName),
+        () => determineFullNameErrorMessage(input.fullName),
         () => O.none,
       ),
     ),
   },
   handle: {
     userInput: input.handle,
-    error: O.none,
+    error: pipe(
+      input.handle,
+      createUserAccountFormCodec.props.handle.decode,
+      E.match(
+        () => determineHandleErrorMessage(input.handle),
+        () => O.none,
+      ),
+    ),
   },
 });
