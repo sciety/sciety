@@ -52,17 +52,32 @@ const renderFullNameInput = (recovery: ViewModel['validationRecovery']) => {
   );
 };
 
-const renderHandleInput = (recovery: ViewModel['validationRecovery']) => pipe(
-  recovery,
-  O.map((r) => r.handle.userInput),
-  O.getOrElse(() => ''),
-  (value) => `
+const renderHandleInput = (recovery: ViewModel['validationRecovery']) => {
+  const inputWithLegend = pipe(
+    recovery,
+    O.map((r) => r.handle.userInput),
+    O.getOrElse(() => ''),
+    (value) => `
         <label for="handle" class="create-user-account-form__label">Create a handle</label>
         <div class='create-user-account-form__handle'>
           <span class='create-user-account-form__handle-url'>sciety.org/users/</span><input type="text" id="handle" name="handle" placeholder="ajeff18" class="create-user-account-form__input" value="${value}">
         </div>
   `,
-);
+  );
+  return pipe(
+    recovery,
+    O.chain((r) => r.handle.error),
+    O.match(
+      () => inputWithLegend,
+      (message) => `
+        <div class="standard-form__error">
+          <p><span class="visually-hidden">Error: </span>${message}</p>
+          ${inputWithLegend}
+        </div>
+      `,
+    ),
+  );
+};
 
 const pageHeader = 'Sign up';
 
