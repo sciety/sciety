@@ -17,4 +17,8 @@ export const acmiJatsCodec = t.strict({
   }),
 }, 'acmiJatsCodec');
 
-export type SubArticle = t.TypeOf<typeof subArticleCodec>;
+type SubArticle = t.TypeOf<typeof subArticleCodec>;
+
+export type SubArticleWithBody = Required<SubArticle>;
+
+export const hasBody = (subArticle: SubArticle): subArticle is SubArticleWithBody => subArticle.body !== undefined;

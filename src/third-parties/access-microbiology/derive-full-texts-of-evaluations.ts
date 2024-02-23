@@ -7,7 +7,7 @@ import { XMLParser } from 'fast-xml-parser';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { SubArticle, acmiJatsCodec } from './acmi-jats';
+import { acmiJatsCodec, hasBody, SubArticleWithBody } from './acmi-jats';
 import * as AED from './acmi-evaluation-doi';
 import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
@@ -22,10 +22,6 @@ const parseXmlDocument = (s: string) => E.tryCatch(
   () => parser.parse(s) as unknown,
   identity,
 );
-
-type SubArticleWithBody = Required<SubArticle>;
-
-const hasBody = (subArticle: SubArticle): subArticle is SubArticleWithBody => subArticle.body !== undefined;
 
 const translateBoldToB = (input: string) => pipe(
   input,
