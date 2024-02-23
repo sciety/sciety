@@ -1,6 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { toJatsXmlUrlOfPublisher } from '../../../src/third-parties/access-microbiology/to-jats-xml-url-of-publisher';
+import * as AED from '../../../src/third-parties/access-microbiology/acmi-evaluation-doi';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryWord } from '../../helpers';
 
@@ -14,6 +15,7 @@ describe('to-jats-xml-url-of-publisher', () => {
     beforeEach(() => {
       inferredUrl = pipe(
         acmiEvaluationDoi,
+        AED.fromValidatedString,
         toJatsXmlUrlOfPublisher,
         O.getOrElseW(shouldNotBeCalled),
       );
@@ -29,6 +31,7 @@ describe('to-jats-xml-url-of-publisher', () => {
   ])('given an ACMI evaluation DOI: %s', (acmiEvaluationDoi, url) => {
     const inferredUrl = pipe(
       acmiEvaluationDoi,
+      AED.fromValidatedString,
       toJatsXmlUrlOfPublisher,
     );
 
@@ -38,7 +41,7 @@ describe('to-jats-xml-url-of-publisher', () => {
   });
 
   describe('given a string that does not represent an ACMI evaluation DOI', () => {
-    const result = toJatsXmlUrlOfPublisher(arbitraryWord());
+    const result = toJatsXmlUrlOfPublisher(AED.fromValidatedString(arbitraryWord()));
 
     it('returns an O.none', () => {
       expect(result).toStrictEqual(O.none);
