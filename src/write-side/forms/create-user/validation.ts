@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import * as R from 'fp-ts/Record';
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
@@ -29,6 +30,9 @@ export type CreateUserAccountForm = t.TypeOf<typeof createUserAccountFormCodec>;
 
 export const formFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props);
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const determineErrorMessage = (fullName: string) => O.none;
+
 type FormFields = t.TypeOf<typeof formFieldsCodec>;
 
 export const constructValidationRecovery = (
@@ -36,7 +40,14 @@ export const constructValidationRecovery = (
 ): O.Option<ValidationRecovery<CreateUserAccountForm>> => O.some({
   fullName: {
     userInput: input.fullName,
-    error: O.none,
+    error: pipe(
+      input.fullName,
+      createUserAccountFormCodec.props.fullName.decode,
+      E.match(
+        () => determineErrorMessage(input.fullName),
+        () => O.none,
+      ),
+    ),
   },
   handle: {
     userInput: input.handle,
