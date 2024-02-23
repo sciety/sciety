@@ -28,7 +28,7 @@ describe('acmi-evaluation-doi', () => {
     describe('when attempting to decode a value that does not represent a valid ACMI evaluation DOI', () => {
       const result = acmiEvaluationDoiCodec.decode(arbitraryWord());
 
-      it.failing('returns on the left', () => {
+      it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
