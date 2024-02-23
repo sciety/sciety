@@ -1,22 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import * as DE from '../../types/data-error';
 import { EvaluationFetcher } from '../evaluation-fetcher';
 import { QueryExternalService } from '../query-external-service';
 import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations';
 import { Logger } from '../../shared-ports';
-
-const toJatsXmlUrlOfPublisher = (key: string) => {
-  if (key === '10.1099/acmi.0.000530.v1.3') {
-    return O.some('https://www.microbiologyresearch.org/docserver/fulltext/acmi/10.1099/acmi.0.000530.v1/acmi.0.000530.v1.xml');
-  }
-  if (key === '10.1099/acmi.0.000569.v1.4') {
-    return O.some('https://www.microbiologyresearch.org/docserver/fulltext/acmi/10.1099/acmi.0.000569.v1/acmi.0.000569.v1.xml');
-  }
-  return O.none;
-};
+import { toJatsXmlUrlOfPublisher } from './to-jats-xml-url-of-publisher';
 
 export const fetchAccessMicrobiologyEvaluation = (
   queryExternalService: QueryExternalService,
