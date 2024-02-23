@@ -25,8 +25,11 @@ describe('acmi-evaluation-doi', () => {
       });
     });
 
-    describe('when attempting to decode a value that does not represent a valid ACMI evaluation DOI', () => {
-      const result = acmiEvaluationDoiCodec.decode(arbitraryWord());
+    describe.each([
+      [arbitraryWord()],
+      // ['10.1101/339747'],
+    ])('when attempting to decode a value that does not represent a valid ACMI evaluation DOI (%s)', (input) => {
+      const result = acmiEvaluationDoiCodec.decode(input);
 
       it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
