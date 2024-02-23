@@ -4,6 +4,7 @@ import { abortTest } from '../../framework/abort-test';
 import {
   acmiEvaluationDoiCodec,
 } from '../../../src/third-parties/access-microbiology/acmi-evaluation-doi';
+import { arbitraryWord } from '../../helpers';
 
 describe('acmi-evaluation-doi', () => {
   describe('acmiEvaluationDoiCodec', () => {
@@ -25,7 +26,11 @@ describe('acmi-evaluation-doi', () => {
     });
 
     describe('when attempting to decode a value that does not represent a valid ACMI evaluation DOI', () => {
-      it.todo('returns on the left');
+      const result = acmiEvaluationDoiCodec.decode(arbitraryWord());
+
+      it.failing('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
     });
   });
 });
