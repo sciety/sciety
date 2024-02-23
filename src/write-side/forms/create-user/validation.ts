@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as R from 'fp-ts/Record';
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
-import { userGeneratedInputCodec } from '../../../types/user-generated-input';
+import { emptyRegex, userGeneratedInputCodec } from '../../../types/user-generated-input';
 import { userHandleCodec } from '../../../types/user-handle';
 
 export type ValidationRecovery<T extends Record<string, unknown>> = {
@@ -30,8 +30,18 @@ export type CreateUserAccountForm = t.TypeOf<typeof createUserAccountFormCodec>;
 
 export const formFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props);
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const determineErrorMessage = (fullName: string) => O.none;
+const determineErrorMessage = (fullName: string) => {
+  if (fullName.length === 0) {
+    return O.some('Enter your full name');
+  }
+  if (emptyRegex.exec(fullName)) {
+    return O.some('Full name must not contain any of these chacters: "<>');
+  }
+  if (fullName.length > 30) {
+    return O.some('Full name must be 30 characters or less');
+  }
+  return O.some('Your full name is invalid but we do not know why');
+};
 
 type FormFields = t.TypeOf<typeof formFieldsCodec>;
 

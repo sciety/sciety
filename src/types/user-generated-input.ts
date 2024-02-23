@@ -3,7 +3,7 @@ import * as t from 'io-ts';
 import * as B from 'fp-ts/boolean';
 
 const notEmptyRegex = /^[^<>"]+$/;
-const emptyRegex = /^[^<>"]*$/;
+export const emptyRegex = /^[^<>"]*$/;
 
 type UserGeneratedInputBrand = {
   readonly UserGeneratedInput: unique symbol,
