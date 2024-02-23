@@ -27,7 +27,7 @@ describe('acmi-evaluation-doi', () => {
 
     describe.each([
       [arbitraryWord()],
-      // ['10.1101/339747'],
+      ['10.1101/339747'],
     ])('when attempting to decode a value that does not represent a valid ACMI evaluation DOI (%s)', (input) => {
       const result = acmiEvaluationDoiCodec.decode(input);
 

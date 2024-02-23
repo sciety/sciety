@@ -7,7 +7,7 @@ export type AcmiEvaluationDoi = string & { readonly AcmiEvaluationDoi: unique sy
 
 export const fromValidatedString = (value: string): AcmiEvaluationDoi => value as AcmiEvaluationDoi;
 
-const doiRegex = /^10.+\/.+$/i;
+const doiRegex = /^10\.1099\/.+$/i;
 
 export const acmiEvaluationDoiCodec = new t.Type<AcmiEvaluationDoi, string, unknown>(
   'acmiEvaluationDoiCodec',
