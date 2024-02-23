@@ -21,4 +21,6 @@ type SubArticle = t.TypeOf<typeof subArticleCodec>;
 
 export type SubArticleWithBody = Required<SubArticle>;
 
-export const hasBody = (subArticle: SubArticle): subArticle is SubArticleWithBody => subArticle.body !== undefined;
+export const isSubArticleWithBody = (
+  subArticle: SubArticle,
+): subArticle is SubArticleWithBody => subArticle.body !== undefined;

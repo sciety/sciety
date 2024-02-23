@@ -7,7 +7,7 @@ import { XMLParser } from 'fast-xml-parser';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { acmiJatsCodec, hasBody, SubArticleWithBody } from './acmi-jats';
+import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-jats';
 import * as AED from './acmi-evaluation-doi';
 import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
@@ -66,7 +66,7 @@ export const deriveFullTextsOfEvaluations = (
   E.chainW(parseXmlDocument),
   E.chainW(decodeAndLogFailures(logger, acmiJatsCodec)),
   E.map((acmiJats) => acmiJats.article['sub-article']),
-  E.map(RA.filter(hasBody)),
+  E.map(RA.filter(isSubArticleWithBody)),
   E.map(RA.map(toMapEntry)),
   E.map((mapEntries) => new Map(mapEntries)),
   E.mapLeft(() => DE.unavailable),
