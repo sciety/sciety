@@ -1,6 +1,6 @@
 import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
-import { CollectedPorts } from '../../infrastructure';
+import { CollectedPorts } from '../../collected-ports';
 import { requireLoggedInUser } from '../require-logged-in-user';
 import { followHandler } from './follow-handler';
 import { unfollowHandler } from './unfollow-handler';

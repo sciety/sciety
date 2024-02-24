@@ -1,5 +1,5 @@
 import { addArticleToElifeSubjectAreaList } from './add-article-to-elife-subject-area-list';
-import { CollectedPorts } from '../infrastructure';
+import { CollectedPorts } from '../collected-ports';
 import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed';
 import { discoverElifeArticleSubjectArea } from './discover-elife-article-subject-area';
 

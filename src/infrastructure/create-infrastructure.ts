@@ -5,7 +5,7 @@ import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { persistEvents } from './persist-events';
-import { CollectedPorts } from './collected-ports';
+import { CollectedPorts } from '../collected-ports';
 import { commitEvents } from './commit-events';
 import { dispatcher } from '../read-models';
 import { getEventsFromDatabase } from './get-events-from-database';

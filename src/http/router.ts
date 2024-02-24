@@ -40,7 +40,7 @@ import * as GFEP from '../html-pages/group-page/group-feed-page';
 import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout } from '../html-pages/home-page';
 import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page';
-import { CollectedPorts } from '../infrastructure';
+import { CollectedPorts } from '../collected-ports';
 import { legalPage } from '../html-pages/legal-page';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
 

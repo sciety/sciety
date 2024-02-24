@@ -10,10 +10,11 @@ import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import {
-  CollectedPorts, createInfrastructure, Logger, replaceError,
+  createInfrastructure, Logger, replaceError,
 } from './infrastructure';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { startSagas } from './sagas';
+import { CollectedPorts } from './collected-ports';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
