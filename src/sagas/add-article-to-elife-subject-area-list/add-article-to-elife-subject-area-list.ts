@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { Queries } from '../../read-models';
 import { CommandHandlers } from '../../write-side/command-handlers';
 

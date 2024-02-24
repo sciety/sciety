@@ -10,7 +10,7 @@ import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
 import { ArticleId } from '../../types/article-id';
 import { PaperExpression } from '../../types/paper-expression';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { QueryExternalService } from '../query-external-service';
 
 type Dependencies = {

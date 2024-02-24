@@ -6,7 +6,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
 import * as DE from '../../types/data-error';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { constructQueryUrl } from './construct-query-url';
 import { QueryExternalService } from '../query-external-service';
 import { ExternalQueries } from '../external-queries';

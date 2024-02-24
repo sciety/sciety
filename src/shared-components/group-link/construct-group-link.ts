@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as GID from '../../types/group-id';
 import { Queries } from '../../read-models';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 import { GroupLinkAsTextViewModel } from './group-link-as-text-view-model';
 

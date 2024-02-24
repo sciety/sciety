@@ -6,7 +6,7 @@ import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { EvaluationFetcher } from '../evaluation-fetcher';
 import { Evaluation } from '../../types/evaluation';
 import { toHtmlFragment } from '../../types/html-fragment';

@@ -12,7 +12,7 @@ import { userHandleCodec } from '../../types/user-handle';
 import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { CommandResult } from '../../types/command-result';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';

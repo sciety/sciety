@@ -7,7 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import {
   getAbstract, getAuthors, getTitle,
 } from './parse-crossref-article';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';

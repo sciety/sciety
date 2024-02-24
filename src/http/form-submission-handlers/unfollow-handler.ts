@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { unfollowCommandHandler } from '../../write-side/command-handlers';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 

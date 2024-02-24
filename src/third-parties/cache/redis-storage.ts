@@ -4,7 +4,7 @@ import {
 import { createClient } from 'redis';
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 
 export const encode = (value: StorageValue): string => JSON.stringify(value);
 

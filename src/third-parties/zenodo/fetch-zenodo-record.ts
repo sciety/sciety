@@ -11,7 +11,7 @@ import { htmlFragmentCodec } from '../../types/html-fragment';
 import { Evaluation } from '../../types/evaluation';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 

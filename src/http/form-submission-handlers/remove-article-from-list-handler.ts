@@ -7,7 +7,7 @@ import { Middleware } from 'koa';
 import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 

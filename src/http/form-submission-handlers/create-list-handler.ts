@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { Payload } from '../../infrastructure/logger';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
 import { CreateListCommand } from '../../write-side/commands';
 import * as LID from '../../types/list-id';

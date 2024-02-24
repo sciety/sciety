@@ -6,7 +6,7 @@ import { sequenceS } from 'fp-ts/Apply';
 import { checkUserOwnsList } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { Payload } from '../../infrastructure/logger';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
 import { validateCommandShape } from './validate-command-shape';
 import { CommandHandlers } from '../../write-side/command-handlers';

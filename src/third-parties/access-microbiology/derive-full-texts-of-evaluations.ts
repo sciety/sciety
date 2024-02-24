@@ -10,7 +10,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-jats';
 import * as AED from './acmi-evaluation-doi';
 import * as DE from '../../types/data-error';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 const parser = new XMLParser({

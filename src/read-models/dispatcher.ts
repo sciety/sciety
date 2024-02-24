@@ -14,7 +14,7 @@ import { lists } from './lists';
 import { users } from './users';
 import { elifeSubjectAreaLists } from './elife-subject-area-lists';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 

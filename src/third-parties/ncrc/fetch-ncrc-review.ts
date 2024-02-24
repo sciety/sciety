@@ -10,7 +10,7 @@ import { EvaluationFetcher } from '../evaluation-fetcher';
 import { sheetId } from './sheet-id';
 import * as DE from '../../types/data-error';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 
 // https://github.com/gcanti/io-ts/issues/431
 type TupleFn = <TCodecs extends readonly [t.Mixed, ...Array<t.Mixed>]>(

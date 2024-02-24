@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as S from 'fp-ts/string';
 import { EvaluationFetcher } from './evaluation-fetcher';
 import * as DE from '../types/data-error';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure';
 
 const deriveDoiPrefixFrom = (key: string) => pipe(
   key,

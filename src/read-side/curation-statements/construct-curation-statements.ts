@@ -12,7 +12,7 @@ import * as GID from '../../types/group-id';
 import { detectLanguage } from '../../shared-components/lang-attribute';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { Queries } from '../../read-models';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ExternalQueries } from '../../third-parties';
 import { CurationStatement } from './curation-statement';

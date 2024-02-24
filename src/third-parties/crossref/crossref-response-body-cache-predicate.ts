@@ -1,4 +1,4 @@
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { ResponseBodyCachePredicate } from '../cache';
 
 export const crossrefResponseBodyCachePredicate = (

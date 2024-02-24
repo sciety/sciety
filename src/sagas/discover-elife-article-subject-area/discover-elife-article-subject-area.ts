@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../types/expression-doi';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import { Queries } from '../../read-models';
 import { ExternalQueries } from '../../third-parties';
 import { ArticleId } from '../../types/article-id';

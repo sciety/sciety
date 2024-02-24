@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { getPaperExpressionsFromBiorxiv } from './biorxiv';
 import { fetchAllPaperExpressions as fetchAllPaperExpressionsFromCrossref } from './crossref';
 import { QueryExternalService } from './query-external-service';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure';
 import { ExternalQueries } from './external-queries';
 import { expandMonolithicBiorxivOrMedrxivExpressions } from './expand-monolithic-biorxiv-or-medrxiv-expressions';
 import * as PH from '../types/publishing-history';

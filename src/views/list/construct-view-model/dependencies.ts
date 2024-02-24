@@ -1,9 +1,5 @@
 import { Queries } from '../../../read-models';
-import {
-  Logger,
-} from '../../../shared-ports';
+import { Logger } from '../../../infrastructure';
 import { ExternalQueries } from '../../../third-parties';
 
-export type Dependencies = Queries & ExternalQueries & {
-  logger: Logger,
-};
+export type Dependencies = Queries & ExternalQueries & { logger: Logger };

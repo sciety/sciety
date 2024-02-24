@@ -4,7 +4,7 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure';
 import * as DE from '../../types/data-error';
 import { isSupportedArticle } from '../../types/article-server';
 import { QueryExternalService } from '../query-external-service';

@@ -12,7 +12,7 @@ import { searchEuropePmc } from './europe-pmc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRecommendedPapers } from './sciety-labs';
 import { ExternalQueries } from './external-queries';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
