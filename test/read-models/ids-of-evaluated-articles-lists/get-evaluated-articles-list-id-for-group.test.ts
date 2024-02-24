@@ -1,16 +1,16 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
+import { constructEvent } from '../../../src/domain-events/index.js';
 import {
   handleEvent,
   initialState,
-} from '../../../src/read-models/ids-of-evaluated-articles-lists/handle-event';
-import { getEvaluatedArticlesListIdForGroup } from '../../../src/read-models/ids-of-evaluated-articles-lists/get-evaluated-articles-list-id-for-group';
-import * as Gid from '../../../src/types/group-id';
-import * as Lid from '../../../src/types/list-id';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
+} from '../../../src/read-models/ids-of-evaluated-articles-lists/handle-event.js';
+import { getEvaluatedArticlesListIdForGroup } from '../../../src/read-models/ids-of-evaluated-articles-lists/get-evaluated-articles-list-id-for-group.js';
+import * as Gid from '../../../src/types/group-id.js';
+import * as Lid from '../../../src/types/list-id.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
 
 describe('get-evaluated-articles-list-id-for-group', () => {
   describe('given a group Id for which the information is hard coded', () => {

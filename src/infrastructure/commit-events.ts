@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import * as L from './logger';
-import { DomainEvent } from '../domain-events';
-import { CommandResult } from '../types/command-result';
-import { CommitEvents } from '../shared-ports';
-import { ErrorMessage } from '../types/error-message';
+import * as L from './logger/index.js';
+import { DomainEvent } from '../domain-events/index.js';
+import { CommandResult } from '../types/command-result.js';
+import { CommitEvents } from '../shared-ports/index.js';
+import { ErrorMessage } from '../types/error-message.js';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,

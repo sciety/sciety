@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { CreateListCommand } from '../../commands';
-import { constructEvent, DomainEvent, isEventOfType } from '../../../domain-events';
-import { ResourceAction } from '../resource-action';
+import { CreateListCommand } from '../../commands/index.js';
+import { constructEvent, DomainEvent, isEventOfType } from '../../../domain-events/index.js';
+import { ResourceAction } from '../resource-action.js';
 
 const getListIdsInUse = (events: ReadonlyArray<DomainEvent>) => pipe(
   events,

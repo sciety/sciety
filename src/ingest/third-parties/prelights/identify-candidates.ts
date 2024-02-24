@@ -5,7 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { Prelight } from './extract-prelights';
+import { Prelight } from './extract-prelights.js';
 
 const itemCodec = t.type({
   pubDate: tt.DateFromISOString,

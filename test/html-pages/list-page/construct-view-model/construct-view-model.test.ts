@@ -4,14 +4,14 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { hasContentWithPagination, ViewModel } from '../../../../src/html-pages/list-page/view-model';
-import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
-import { createTestFramework, TestFramework } from '../../../framework';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { ArticleId } from '../../../../src/types/article-id';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { hasContentWithPagination, ViewModel } from '../../../../src/html-pages/list-page/view-model.js';
+import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model.js';
+import { createTestFramework, TestFramework } from '../../../framework/index.js';
+import * as LOID from '../../../../src/types/list-owner-id.js';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper.js';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper.js';
+import { ArticleId } from '../../../../src/types/article-id.js';
 
 const toPaperHrefs = (viewModel: ViewModel) => pipe(
   viewModel.content,

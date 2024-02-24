@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { List } from '../../read-models/lists';
-import { ListCardViewModel } from './render-list-card';
-import { Logger } from '../../infrastructure';
-import { Queries } from '../../read-models';
-import { rawUserInput } from '../../read-models/annotations/handle-event';
+import { List } from '../../read-models/lists/index.js';
+import { ListCardViewModel } from './render-list-card.js';
+import { Logger } from '../../infrastructure/index.js';
+import { Queries } from '../../read-models/index.js';
+import { rawUserInput } from '../../read-models/annotations/handle-event.js';
 
 export type Dependencies = Queries & {
   logger: Logger,

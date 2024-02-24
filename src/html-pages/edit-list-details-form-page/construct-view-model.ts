@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from './render-edit-list-details-form-page';
-import { listDescriptionMaxLength, listNameMaxLength } from '../../write-side/commands/edit-list-details';
-import { ListId } from '../../types/list-id';
-import { Queries } from '../../read-models';
+import { ViewModel } from './render-edit-list-details-form-page.js';
+import { listDescriptionMaxLength, listNameMaxLength } from '../../write-side/commands/edit-list-details.js';
+import { ListId } from '../../types/list-id.js';
+import { Queries } from '../../read-models/index.js';
 
 export type Dependencies = {
   lookupList: Queries['lookupList'],

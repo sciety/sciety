@@ -3,18 +3,18 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
-import { getOwnerInformation } from './get-owner-information';
-import { userHasEditCapability } from './user-has-edit-capability';
-import { ListId } from '../../../types/list-id';
-import { UserId } from '../../../types/user-id';
-import * as DE from '../../../types/data-error';
-import { Dependencies } from './dependencies';
-import { ViewModel } from '../view-model';
-import { Params } from './params';
-import { rawUserInput } from '../../../read-models/annotations/handle-event';
-import { ExpressionDoi } from '../../../types/expression-doi';
-import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists';
+import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model.js';
+import { getOwnerInformation } from './get-owner-information.js';
+import { userHasEditCapability } from './user-has-edit-capability.js';
+import { ListId } from '../../../types/list-id.js';
+import { UserId } from '../../../types/user-id.js';
+import * as DE from '../../../types/data-error.js';
+import { Dependencies } from './dependencies.js';
+import { ViewModel } from '../view-model.js';
+import { Params } from './params.js';
+import { rawUserInput } from '../../../read-models/annotations/handle-event.js';
+import { ExpressionDoi } from '../../../types/expression-doi.js';
+import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists/index.js';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,

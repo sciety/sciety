@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
-import { ExternalQueries } from '../../third-parties';
-import * as EDOI from '../../types/expression-doi';
+import { ExternalQueries } from '../../third-parties/index.js';
+import * as EDOI from '../../types/expression-doi.js';
 
 const hardcodedResponse = [
   EDOI.fromValidatedString('10.1101/2023.03.24.534097'),

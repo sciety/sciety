@@ -6,14 +6,14 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { DomainEvent } from './domain-events';
-import { createRouter } from './http/router';
-import { createApplicationServer } from './http/server';
-import { Logger, replaceError } from './infrastructure';
-import { environmentVariablesCodec } from './http/environment-variables-codec';
-import { startSagas } from './sagas';
-import { CollectedPorts } from './collected-ports';
-import { createCollectedPorts } from './create-collected-ports';
+import { DomainEvent } from './domain-events/index.js';
+import { createRouter } from './http/router.js';
+import { createApplicationServer } from './http/server.js';
+import { Logger, replaceError } from './infrastructure/index.js';
+import { environmentVariablesCodec } from './http/environment-variables-codec.js';
+import { startSagas } from './sagas/index.js';
+import { CollectedPorts } from './collected-ports.js';
+import { createCollectedPorts } from './create-collected-ports.js';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {

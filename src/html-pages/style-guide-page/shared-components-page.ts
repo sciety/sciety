@@ -1,18 +1,18 @@
 import * as O from 'fp-ts/Option';
-import * as EDOI from '../../types/expression-doi';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html';
-import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage, toHtmlPage } from '../html-page';
-import { renderPaperActivityErrorCard } from '../../shared-components/paper-activity-summary-card';
-import * as LID from '../../types/list-id';
-import * as DE from '../../types/data-error';
+import * as EDOI from '../../types/expression-doi.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html.js';
+import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { HtmlPage, toHtmlPage } from '../html-page.js';
+import { renderPaperActivityErrorCard } from '../../shared-components/paper-activity-summary-card/index.js';
+import * as LID from '../../types/list-id.js';
+import * as DE from '../../types/data-error.js';
 import {
   renderArticleCardWithControlsAndAnnotation,
-} from '../../shared-components/article-card-with-controls-and-annotation';
-import { successBanner } from '../../shared-components/success-banner/success-banner';
-import { rawUserInput } from '../../read-models/annotations/handle-event';
+} from '../../shared-components/article-card-with-controls-and-annotation/index.js';
+import { successBanner } from '../../shared-components/success-banner/success-banner.js';
+import { rawUserInput } from '../../read-models/annotations/handle-event.js';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',

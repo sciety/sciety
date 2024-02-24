@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as S from 'fp-ts/string';
-import { State } from './state';
-import { CrossrefWork } from './crossref-work';
+import { State } from './state.js';
+import { CrossrefWork } from './crossref-work.js';
 
 type RelationType = 'is-version-of' | 'has-version' | 'is-preprint-of' | 'has-preprint';
 

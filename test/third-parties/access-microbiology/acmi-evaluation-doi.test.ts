@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { abortTest } from '../../framework/abort-test';
+import { abortTest } from '../../framework/abort-test.js';
 import {
   acmiEvaluationDoiCodec,
-} from '../../../src/third-parties/access-microbiology/acmi-evaluation-doi';
-import { arbitraryWord } from '../../helpers';
+} from '../../../src/third-parties/access-microbiology/acmi-evaluation-doi.js';
+import { arbitraryWord } from '../../helpers.js';
 
 describe('acmi-evaluation-doi', () => {
   describe('acmiEvaluationDoiCodec', () => {

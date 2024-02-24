@@ -4,18 +4,18 @@ import * as O from 'fp-ts/Option';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../src/types/data-error';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../src/types/html-fragment';
+import * as DE from '../../src/types/data-error.js';
+import { sanitise } from '../../src/types/sanitised-html-fragment.js';
+import { toHtmlFragment } from '../../src/types/html-fragment.js';
 import {
   arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
-} from '../helpers';
-import { ArticleServer } from '../../src/types/article-server';
-import { arbitraryArticleServer } from '../types/article-server.helper';
-import { ExternalQueries } from '../../src/third-parties';
-import { ArticleId } from '../../src/types/article-id';
-import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
-import * as PH from '../../src/types/publishing-history';
+} from '../helpers.js';
+import { ArticleServer } from '../../src/types/article-server.js';
+import { arbitraryArticleServer } from '../types/article-server.helper.js';
+import { ExternalQueries } from '../../src/third-parties/index.js';
+import { ArticleId } from '../../src/types/article-id.js';
+import { arbitraryExpressionDoi } from '../types/expression-doi.helper.js';
+import * as PH from '../../src/types/publishing-history.js';
 
 export type HappyPathThirdPartyAdapters = ExternalQueries;
 

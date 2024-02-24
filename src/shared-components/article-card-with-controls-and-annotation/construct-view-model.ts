@@ -1,16 +1,16 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../types/expression-doi';
-import { constructViewModel as defaultVariantConstructViewModel } from '../paper-activity-summary-card/construct-view-model';
-import { ErrorViewModel } from '../paper-activity-summary-card/render-error-as-html';
-import { ListId } from '../../types/list-id';
-import { ViewModel as DefaultVariantViewModel } from '../paper-activity-summary-card/view-model';
-import { Queries } from '../../read-models';
-import { constructAnnotation } from './construct-annotation';
-import { ViewModel } from './view-model';
-import { inputFieldNames } from '../../standards';
-import { ConstructPaperActivitySummaryCardViewModelDependencies } from '../paper-activity-summary-card';
+import * as EDOI from '../../types/expression-doi.js';
+import { constructViewModel as defaultVariantConstructViewModel } from '../paper-activity-summary-card/construct-view-model.js';
+import { ErrorViewModel } from '../paper-activity-summary-card/render-error-as-html.js';
+import { ListId } from '../../types/list-id.js';
+import { ViewModel as DefaultVariantViewModel } from '../paper-activity-summary-card/view-model.js';
+import { Queries } from '../../read-models/index.js';
+import { constructAnnotation } from './construct-annotation.js';
+import { ViewModel } from './view-model.js';
+import { inputFieldNames } from '../../standards/index.js';
+import { ConstructPaperActivitySummaryCardViewModelDependencies } from '../paper-activity-summary-card/index.js';
 
 type Dependencies = ConstructPaperActivitySummaryCardViewModelDependencies & Queries;
 

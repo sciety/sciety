@@ -4,13 +4,13 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { Logger } from '../../infrastructure';
-import * as DE from '../../types/data-error';
-import { isSupportedArticle } from '../../types/article-server';
-import { QueryExternalService } from '../query-external-service';
-import * as PH from '../../types/publishing-history';
-import { ExternalQueries } from '../external-queries';
-import * as EDOI from '../../types/expression-doi';
+import { Logger } from '../../infrastructure/index.js';
+import * as DE from '../../types/data-error.js';
+import { isSupportedArticle } from '../../types/article-server.js';
+import { QueryExternalService } from '../query-external-service.js';
+import * as PH from '../../types/publishing-history.js';
+import { ExternalQueries } from '../external-queries.js';
+import * as EDOI from '../../types/expression-doi.js';
 
 const paperWithoutDoi = t.type({
   externalIds: t.type({

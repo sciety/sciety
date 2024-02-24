@@ -1,1 +1,1 @@
-export { paperActivityPage } from './paper-activity-page';
+export { paperActivityPage } from './paper-activity-page.js';

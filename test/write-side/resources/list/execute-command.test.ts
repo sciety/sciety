@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
-import { executeCommand } from '../../../../src/write-side/resources/list/execute-command';
-import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model';
-import { arbitraryString } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
-import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
+import { constructEvent } from '../../../../src/domain-events/index.js';
+import { executeCommand } from '../../../../src/write-side/resources/list/execute-command.js';
+import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model.js';
+import { arbitraryString } from '../../../helpers.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { arbitraryListId } from '../../../types/list-id.helper.js';
+import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper.js';
+import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper.js';
 
 describe('execute-command', () => {
   const listId = arbitraryListId();

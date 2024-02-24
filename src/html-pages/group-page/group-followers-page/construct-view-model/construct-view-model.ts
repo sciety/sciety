@@ -2,16 +2,16 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { renderLegacyPaginationControls } from '../../../../shared-components/pagination';
-import { paginate } from './paginate';
-import { augmentWithUserDetails } from './augment-with-user-details';
-import * as DE from '../../../../types/data-error';
-import { ViewModel } from '../view-model';
-import { findFollowers } from './find-followers';
-import { constructTabsViewModel } from '../../common-components/tabs-view-model';
-import { GroupId } from '../../../../types/group-id';
-import { Dependencies } from './dependencies';
-import { Params } from './params';
+import { renderLegacyPaginationControls } from '../../../../shared-components/pagination/index.js';
+import { paginate } from './paginate.js';
+import { augmentWithUserDetails } from './augment-with-user-details.js';
+import * as DE from '../../../../types/data-error.js';
+import { ViewModel } from '../view-model.js';
+import { findFollowers } from './find-followers.js';
+import { constructTabsViewModel } from '../../common-components/tabs-view-model.js';
+import { GroupId } from '../../../../types/group-id.js';
+import { Dependencies } from './dependencies.js';
+import { Params } from './params.js';
 
 const pageSize = 10;
 

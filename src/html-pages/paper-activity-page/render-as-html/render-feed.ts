@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { renderListItems } from '../../../shared-components/render-list-items';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { FeedItem } from '../view-model';
-import { renderExpressionPublishedFeedItem } from './render-expression-published-feed-item';
-import { renderEvaluationPublishedFeedItem } from './render-evaluation-published-feed-item';
+import { renderListItems } from '../../../shared-components/render-list-items.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { FeedItem } from '../view-model.js';
+import { renderExpressionPublishedFeedItem } from './render-expression-published-feed-item.js';
+import { renderEvaluationPublishedFeedItem } from './render-evaluation-published-feed-item.js';
 
 const renderFeedItem = (feedItem: FeedItem) => {
   switch (feedItem.type) {

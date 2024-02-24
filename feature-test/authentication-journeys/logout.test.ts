@@ -1,11 +1,11 @@
 import {
   click, currentURL, goto, openBrowser,
 } from 'taiko';
-import { createUserAccountAndLogIn } from '../helpers/create-user-account-and-log-in.helper';
-import { screenshotTeardown } from '../utilities';
-import { arbitraryUserId } from '../../test/types/user-id.helper';
-import { arbitraryArticleId } from '../../test/types/article-id.helper';
-import { isLoggedOut } from '../helpers/is-logged-out';
+import { createUserAccountAndLogIn } from '../helpers/create-user-account-and-log-in.helper.js';
+import { screenshotTeardown } from '../utilities.js';
+import { arbitraryUserId } from '../../test/types/user-id.helper.js';
+import { arbitraryArticleId } from '../../test/types/article-id.helper.js';
+import { isLoggedOut } from '../helpers/is-logged-out.js';
 
 describe('logout', () => {
   beforeEach(async () => {

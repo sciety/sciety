@@ -1,5 +1,5 @@
-import { UserHandle } from './user-handle';
-import { UserId } from './user-id';
+import { UserHandle } from './user-handle.js';
+import { UserId } from './user-id.js';
 
 export type UserDetails = {
   avatarUrl: string,

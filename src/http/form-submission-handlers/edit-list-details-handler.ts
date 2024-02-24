@@ -3,14 +3,14 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
-import { checkUserOwnsList } from './check-user-owns-list';
-import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
-import { Payload } from '../../infrastructure/logger';
-import { Logger } from '../../infrastructure';
-import { getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
-import { validateCommandShape } from './validate-command-shape';
-import { CommandHandlers } from '../../write-side/command-handlers';
-import { Queries } from '../../read-models';
+import { checkUserOwnsList } from './check-user-owns-list.js';
+import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details.js';
+import { Payload } from '../../infrastructure/logger/index.js';
+import { Logger } from '../../infrastructure/index.js';
+import { getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users.js';
+import { validateCommandShape } from './validate-command-shape.js';
+import { CommandHandlers } from '../../write-side/command-handlers/index.js';
+import { Queries } from '../../read-models/index.js';
 
 type Ports = Queries & CommandHandlers & { logger: Logger };
 

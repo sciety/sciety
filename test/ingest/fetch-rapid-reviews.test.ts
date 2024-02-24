@@ -2,11 +2,11 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchRapidReviews } from '../../src/ingest/fetch-rapid-reviews';
-import { FeedData } from '../../src/ingest/types/feed-data';
-import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryArticleId } from '../types/article-id.helper';
+import { fetchRapidReviews } from '../../src/ingest/fetch-rapid-reviews.js';
+import { FeedData } from '../../src/ingest/types/feed-data.js';
+import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { arbitraryArticleId } from '../types/article-id.helper.js';
 
 const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
   {

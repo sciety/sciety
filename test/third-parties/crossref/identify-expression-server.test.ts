@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { identifyExpressionServer } from '../../../src/third-parties/crossref/fetch-all-paper-expressions/identify-expression-server';
-import { arbitraryUri } from '../../helpers';
+import { identifyExpressionServer } from '../../../src/third-parties/crossref/fetch-all-paper-expressions/identify-expression-server.js';
+import { arbitraryUri } from '../../helpers.js';
 
 describe('identify expression server', () => {
   it.each([

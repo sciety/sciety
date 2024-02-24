@@ -1,17 +1,17 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../src/types/expression-doi';
-import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
-import * as DE from '../../../src/types/data-error';
-import { fetchRecommendedPapers } from '../../../src/third-parties/sciety-labs/fetch-recommended-papers';
-import { dummyLogger } from '../../dummy-logger';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
-import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
-import * as PH from '../../../src/types/publishing-history';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { QueryExternalService } from '../../../src/third-parties/query-external-service';
+import * as EDOI from '../../../src/types/expression-doi.js';
+import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers.js';
+import * as DE from '../../../src/types/data-error.js';
+import { fetchRecommendedPapers } from '../../../src/third-parties/sciety-labs/fetch-recommended-papers.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper.js';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper.js';
+import * as PH from '../../../src/types/publishing-history.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
+import { QueryExternalService } from '../../../src/third-parties/query-external-service.js';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];

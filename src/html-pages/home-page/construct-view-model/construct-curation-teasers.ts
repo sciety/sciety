@@ -1,11 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import * as GID from '../../../types/group-id';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { Dependencies } from '../dependencies';
-import { CurationStatement, constructCurationTeaser } from './construct-curation-teaser';
-import * as EDOI from '../../../types/expression-doi';
+import { ViewModel } from '../view-model.js';
+import * as GID from '../../../types/group-id.js';
+import { toHtmlFragment } from '../../../types/html-fragment.js';
+import { Dependencies } from '../dependencies.js';
+import { CurationStatement, constructCurationTeaser } from './construct-curation-teaser.js';
+import * as EDOI from '../../../types/expression-doi.js';
 
 const curationTeaser1: CurationStatement = {
   expressionDoi: EDOI.fromValidatedString('10.1101/2022.06.22.497259'),

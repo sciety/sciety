@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchData } from '../../fetch-data';
+import { fetchData } from '../../fetch-data.js';
 
 export type CrossrefItem = {
   DOI: string,

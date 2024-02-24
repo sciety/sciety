@@ -4,8 +4,8 @@ import * as S from 'fp-ts/string';
 import * as Ord from 'fp-ts/Ord';
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
-import { ExpressionDoi } from './expression-doi';
-import { ArticleServer } from './article-server';
+import { ExpressionDoi } from './expression-doi.js';
+import { ArticleServer } from './article-server.js';
 
 export type PaperExpression = {
   expressionType: 'preprint' | 'journal-article',

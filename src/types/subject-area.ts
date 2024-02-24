@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { ArticleServer, articleServerCodec } from './article-server';
+import { ArticleServer, articleServerCodec } from './article-server.js';
 
 export type SubjectArea = {
   value: string,

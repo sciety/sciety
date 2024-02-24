@@ -2,10 +2,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as D from 'fp-ts/Date';
-import * as DE from '../../types/data-error';
-import { Dependencies } from './construct-view-model/dependencies';
-import { ExpressionDoi } from '../../types/expression-doi';
-import * as PH from '../../types/publishing-history';
+import * as DE from '../../types/data-error.js';
+import { Dependencies } from './construct-view-model/dependencies.js';
+import { ExpressionDoi } from '../../types/expression-doi.js';
+import * as PH from '../../types/publishing-history.js';
 
 const logWhenDuplicateExpressionDatesFound = (
   dependencies: Dependencies,

@@ -1,1 +1,1 @@
-export { constructViewModel, Params } from './construct-view-model';
+export { constructViewModel, Params } from './construct-view-model.js';

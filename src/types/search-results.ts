@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { ExpressionDoi } from './expression-doi';
+import { ExpressionDoi } from './expression-doi.js';
 
 export type SearchResults = {
   items: ReadonlyArray<ExpressionDoi>,

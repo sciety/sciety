@@ -1,10 +1,10 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { EventOfType } from '../../../domain-events';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { ScietyFeedCard } from '../view-model';
-import { Dependencies } from './dependencies';
+import { EventOfType } from '../../../domain-events/index.js';
+import { toHtmlFragment } from '../../../types/html-fragment.js';
+import { ScietyFeedCard } from '../view-model.js';
+import { Dependencies } from './dependencies.js';
 
 type UserFollowedAGroupCard = (
   dependencies: Dependencies

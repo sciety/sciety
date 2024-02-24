@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { GroupId } from './group-id';
-import { EvaluationLocator } from './evaluation-locator';
-import { ExpressionDoi } from './expression-doi';
+import { GroupId } from './group-id.js';
+import { EvaluationLocator } from './evaluation-locator.js';
+import { ExpressionDoi } from './expression-doi.js';
 
 export const evaluationTypes = <const> [
   'review',

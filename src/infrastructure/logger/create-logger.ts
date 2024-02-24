@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { jsonSerializer } from './json-serializer';
-import { Logger } from './types';
-import { rTracerLogger } from './r-tracer-logger';
-import { streamLogger } from './stream-logger';
+import { jsonSerializer } from './json-serializer.js';
+import { Logger } from './types.js';
+import { rTracerLogger } from './r-tracer-logger.js';
+import { streamLogger } from './stream-logger.js';
 
 export type Config = {
   prettyLog: boolean,

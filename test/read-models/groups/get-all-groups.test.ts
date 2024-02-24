@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
-import { arbitraryGroup } from '../../types/group.helper';
-import { getAllGroups } from '../../../src/read-models/groups/get-all-groups';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event.js';
+import { arbitraryGroup } from '../../types/group.helper.js';
+import { getAllGroups } from '../../../src/read-models/groups/get-all-groups.js';
 
 describe('get-all-groups', () => {
   const group1 = arbitraryGroup();

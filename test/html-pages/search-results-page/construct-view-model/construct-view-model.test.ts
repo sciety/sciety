@@ -2,15 +2,15 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
-import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryString, arbitraryWord } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { ExternalQueries } from '../../../../src/third-parties';
-import { ExpressionDoi } from '../../../../src/types/expression-doi';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { SearchResults } from '../../../../src/types/search-results';
+import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model.js';
+import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model.js';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { arbitraryString, arbitraryWord } from '../../../helpers.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { ExternalQueries } from '../../../../src/third-parties/index.js';
+import { ExpressionDoi } from '../../../../src/types/expression-doi.js';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper.js';
+import { SearchResults } from '../../../../src/types/search-results.js';
 
 const searchForPaperExpressionsReturningResults = (
   expressionDois: SearchResults['items'],

@@ -1,13 +1,13 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { renderTabs } from '../../../../shared-components/tabs';
-import { HtmlFragment } from '../../../../types/html-fragment';
-import { ViewModel } from '../view-model';
-import { tabList } from './tab-list';
-import { followingNothing, informationUnavailable } from './static-messages';
-import { renderGroupCard } from '../../../../shared-components/group-card';
-import { renderFollowList } from './render-follow-list';
+import { renderTabs } from '../../../../shared-components/tabs/index.js';
+import { HtmlFragment } from '../../../../types/html-fragment.js';
+import { ViewModel } from '../view-model.js';
+import { tabList } from './tab-list.js';
+import { followingNothing, informationUnavailable } from './static-messages.js';
+import { renderGroupCard } from '../../../../shared-components/group-card/index.js';
+import { renderFollowList } from './render-follow-list.js';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.userDetails.handle, viewmodel.listCount, viewmodel.groupIds.length),

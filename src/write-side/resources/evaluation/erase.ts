@@ -4,10 +4,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   DomainEvent, isEventOfType, constructEvent, EventOfType,
-} from '../../../domain-events';
-import { EraseEvaluationCommand } from '../../commands';
-import { ResourceAction } from '../resource-action';
-import { evaluationResourceError } from './evaluation-resource-error';
+} from '../../../domain-events/index.js';
+import { EraseEvaluationCommand } from '../../commands/index.js';
+import { ResourceAction } from '../resource-action.js';
+import { evaluationResourceError } from './evaluation-resource-error.js';
 
 type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 

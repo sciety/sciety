@@ -1,4 +1,4 @@
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment.js';
 
 const textFormatOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',

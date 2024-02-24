@@ -5,9 +5,9 @@ import {
   DomainEvent,
   EventOfType,
   isEventOfType,
-} from '../../../domain-events';
-import { UserId } from '../../../types/user-id';
-import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
+} from '../../../domain-events/index.js';
+import { UserId } from '../../../types/user-id.js';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message.js';
 
 type RelevantEvent = EventOfType<'UserCreatedAccount'> | EventOfType<'UserDetailsUpdated'>;
 

@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import * as GID from '../../../types/group-id';
-import { Dependencies } from '../dependencies';
-import { constructCurationTeasers } from './construct-curation-teasers';
-import { constructGroupLink } from '../../../shared-components/group-link';
+import { ViewModel } from '../view-model.js';
+import * as GID from '../../../types/group-id.js';
+import { Dependencies } from '../dependencies.js';
+import { constructCurationTeasers } from './construct-curation-teasers.js';
+import { constructGroupLink } from '../../../shared-components/group-link/index.js';
 
 export type GroupsToHighlight = ReadonlyArray<{
   groupId: GID.GroupId,

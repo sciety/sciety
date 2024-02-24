@@ -1,21 +1,21 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { CreateListCommand } from '../../src/write-side/commands/create-list';
-import { ReadAndWriteSides } from './create-read-and-write-sides';
-import { UserId } from '../../src/types/user-id';
-import { GroupId } from '../../src/types/group-id';
-import { ListId } from '../../src/types/list-id';
-import { ArticleId } from '../../src/types/article-id';
-import { abortTest } from './abort-test';
-import { CommandHandler, GenericCommand } from '../../src/write-side/command-handlers/command-handler';
-import { CommandResult } from '../../src/types/command-result';
+import { CreateListCommand } from '../../src/write-side/commands/create-list.js';
+import { ReadAndWriteSides } from './create-read-and-write-sides.js';
+import { UserId } from '../../src/types/user-id.js';
+import { GroupId } from '../../src/types/group-id.js';
+import { ListId } from '../../src/types/list-id.js';
+import { ArticleId } from '../../src/types/article-id.js';
+import { abortTest } from './abort-test.js';
+import { CommandHandler, GenericCommand } from '../../src/write-side/command-handlers/command-handler.js';
+import { CommandResult } from '../../src/types/command-result.js';
 import {
   AddGroupCommand,
   AnnotateArticleInListCommand,
   CreateUserAccountCommand,
   RecordEvaluationPublicationCommand,
   UpdateEvaluationCommand,
-} from '../../src/write-side/commands';
+} from '../../src/write-side/commands/index.js';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,

@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
-import { Queries } from '../read-models';
-import * as PH from '../types/publishing-history';
-import { RecordedEvaluation } from '../types/recorded-evaluation';
+import { Queries } from '../read-models/index.js';
+import * as PH from '../types/publishing-history.js';
+import { RecordedEvaluation } from '../types/recorded-evaluation.js';
 
 export const constructEvaluationHistory = (
   dependencies: Queries,

@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { UpdateUserDetailsCommand } from '../commands';
-import { CommandHandler } from './command-handler';
-import * as userResource from '../resources/user';
-import { DependenciesForCommands } from '../dependencies-for-commands';
+import { UpdateUserDetailsCommand } from '../commands/index.js';
+import { CommandHandler } from './command-handler.js';
+import * as userResource from '../resources/user/index.js';
+import { DependenciesForCommands } from '../dependencies-for-commands.js';
 
 type UpdateUserDetailsCommandHandler = (
   dependencies: DependenciesForCommands

@@ -4,22 +4,22 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { createTestFramework, TestFramework } from '../../framework';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper.js';
+import { createTestFramework, TestFramework } from '../../framework/index.js';
 import {
   constructCurationStatements,
-} from '../../../src/read-side/curation-statements/construct-curation-statements';
-import * as DE from '../../../src/types/data-error';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { EvaluationLocator } from '../../../src/types/evaluation-locator';
-import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
-import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
-import * as PH from '../../../src/types/publishing-history';
-import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
-import { shouldNotBeCalled } from '../../should-not-be-called';
+} from '../../../src/read-side/curation-statements/construct-curation-statements.js';
+import * as DE from '../../../src/types/data-error.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { EvaluationLocator } from '../../../src/types/evaluation-locator.js';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper.js';
+import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
+import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/index.js';
+import * as PH from '../../../src/types/publishing-history.js';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
 
 describe('construct-curation-statements', () => {
   let framework: TestFramework;

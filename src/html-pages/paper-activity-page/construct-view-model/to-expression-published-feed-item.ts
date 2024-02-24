@@ -1,5 +1,5 @@
-import { PaperExpression } from '../../../types/paper-expression';
-import { ExpressionPublishedFeedItem } from '../view-model';
+import { PaperExpression } from '../../../types/paper-expression.js';
+import { ExpressionPublishedFeedItem } from '../view-model.js';
 
 export const toExpressionPublishedFeedItem = (paperExpression: PaperExpression): ExpressionPublishedFeedItem => ({
   type: 'expression-published' as const,

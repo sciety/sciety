@@ -3,16 +3,16 @@ import { pipe, flow } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as DE from '../../types/data-error';
-import { toErrorPage, renderAsHtml } from './render-as-html';
-import { Dependencies } from './construct-view-model/dependencies';
-import { ConstructPage } from '../construct-page';
-import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
-import { paperActivityPagePath } from '../../standards';
-import { toRedirectTarget } from '../redirect-target';
-import { constructViewModel } from './construct-view-model/construct-view-model';
-import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
-import { userIdCodec } from '../../types/user-id';
+import * as DE from '../../types/data-error.js';
+import { toErrorPage, renderAsHtml } from './render-as-html/index.js';
+import { Dependencies } from './construct-view-model/dependencies.js';
+import { ConstructPage } from '../construct-page.js';
+import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper.js';
+import { paperActivityPagePath } from '../../standards/index.js';
+import { toRedirectTarget } from '../redirect-target.js';
+import { constructViewModel } from './construct-view-model/construct-view-model.js';
+import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi.js';
+import { userIdCodec } from '../../types/user-id.js';
 
 const canonicalParamsCodec = t.type({
   expressionDoi: canonicalExpressionDoiCodec,

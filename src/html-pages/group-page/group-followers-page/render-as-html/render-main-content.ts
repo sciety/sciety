@@ -1,11 +1,11 @@
 import { htmlEscape } from 'escape-goat';
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { renderTabs } from '../../../../shared-components/tabs';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { ViewModel, UserCardViewModel } from '../view-model';
-import { tabList } from '../../common-components/tab-list';
-import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
+import { renderTabs } from '../../../../shared-components/tabs/index.js';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment.js';
+import { ViewModel, UserCardViewModel } from '../view-model.js';
+import { tabList } from '../../common-components/tab-list.js';
+import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor.js';
 
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="user-card">

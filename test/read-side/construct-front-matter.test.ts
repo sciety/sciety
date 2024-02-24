@@ -2,17 +2,17 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { constructFrontMatter } from '../../src/read-side/construct-front-matter';
-import { ExpressionFrontMatter } from '../../src/types/expression-front-matter';
-import * as PH from '../../src/types/publishing-history';
-import { createTestFramework, TestFramework } from '../framework';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitrarySanitisedHtmlFragment } from '../helpers';
-import { arbitraryPaperExpression } from '../types/paper-expression.helper';
-import { ExpressionDoi } from '../../src/types/expression-doi';
-import * as DE from '../../src/types/data-error';
-import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
-import { ExternalQueries } from '../../src/third-parties';
+import { constructFrontMatter } from '../../src/read-side/construct-front-matter.js';
+import { ExpressionFrontMatter } from '../../src/types/expression-front-matter.js';
+import * as PH from '../../src/types/publishing-history.js';
+import { createTestFramework, TestFramework } from '../framework/index.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { arbitrarySanitisedHtmlFragment } from '../helpers.js';
+import { arbitraryPaperExpression } from '../types/paper-expression.helper.js';
+import { ExpressionDoi } from '../../src/types/expression-doi.js';
+import * as DE from '../../src/types/data-error.js';
+import { arbitraryExpressionDoi } from '../types/expression-doi.helper.js';
+import { ExternalQueries } from '../../src/third-parties/index.js';
 
 describe('construct-front-matter', () => {
   const latestExpressionDoi = arbitraryExpressionDoi();

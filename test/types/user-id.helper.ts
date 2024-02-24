@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { UserId, userIdCodec } from '../../src/types/user-id';
-import { arbitraryNumber, arbitraryWord } from '../helpers';
-import { abortTest } from '../framework/abort-test';
+import { UserId, userIdCodec } from '../../src/types/user-id.js';
+import { arbitraryNumber, arbitraryWord } from '../helpers.js';
+import { abortTest } from '../framework/abort-test.js';
 
 const prefixes = ['auth0|', 'twitter|', ''];
 

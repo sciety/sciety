@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { GroupId } from '../../types/group-id';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { GroupId } from '../../types/group-id.js';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment.js';
 
 export type GroupCardViewModel = {
   id: GroupId,

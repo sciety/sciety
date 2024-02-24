@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
-import { arbitraryPaperExpression } from '../../../types/paper-expression.helper';
+import { arbitraryPaperExpression } from '../../../types/paper-expression.helper.js';
 import {
   toExpressionPublishedFeedItem,
-} from '../../../../src/html-pages/paper-activity-page/construct-view-model/to-expression-published-feed-item';
-import { arbitraryArticleServer } from '../../../types/article-server.helper';
+} from '../../../../src/html-pages/paper-activity-page/construct-view-model/to-expression-published-feed-item.js';
+import { arbitraryArticleServer } from '../../../types/article-server.helper.js';
 
 describe('to-expression-published-feed-item', () => {
   describe('given a paper expression from a known server', () => {

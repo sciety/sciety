@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
-import { sanitisedUserInputCodec } from '../../src/types/sanitised-user-input';
-import { arbitraryWord } from '../helpers';
+import { sanitisedUserInputCodec } from '../../src/types/sanitised-user-input.js';
+import { arbitraryWord } from '../helpers.js';
 
 describe('sanitised-user-input', () => {
   it('fails when supplied with script tag', () => {

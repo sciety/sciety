@@ -1,17 +1,17 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { createTestFramework, TestFramework } from '../../../framework';
-import { List } from '../../../../src/read-models/lists';
-import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { constructEvent } from '../../../../src/domain-events';
-import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
-import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import * as LOID from '../../../../src/types/list-owner-id.js';
+import { createTestFramework, TestFramework } from '../../../framework/index.js';
+import { List } from '../../../../src/read-models/lists/index.js';
+import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model.js';
+import { arbitraryUserId } from '../../../types/user-id.helper.js';
+import { constructEvent } from '../../../../src/domain-events/index.js';
+import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/index.js';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper.js';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper.js';
 
 describe('article-added-to-list-card', () => {
   let framework: TestFramework;

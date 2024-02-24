@@ -1,18 +1,18 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { constructViewModel } from '../../../src/html-pages/create-annotation-form-page/construct-view-model';
-import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import * as DE from '../../../src/types/data-error';
-import { ViewModel } from '../../../src/html-pages/create-annotation-form-page/view-model';
-import { arbitrarySanitisedHtmlFragment } from '../../helpers';
-import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
-import * as LOID from '../../../src/types/list-owner-id';
-import { List } from '../../../src/read-models/lists';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { constructViewModel } from '../../../src/html-pages/create-annotation-form-page/construct-view-model.js';
+import { TestFramework, createTestFramework } from '../../framework/index.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import * as DE from '../../../src/types/data-error.js';
+import { ViewModel } from '../../../src/html-pages/create-annotation-form-page/view-model.js';
+import { arbitrarySanitisedHtmlFragment } from '../../helpers.js';
+import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper.js';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { List } from '../../../src/read-models/lists/index.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
+import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper.js';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

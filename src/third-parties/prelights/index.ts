@@ -1,1 +1,1 @@
-export { fetchPrelightsHighlight } from './fetch-prelights-highlight';
+export { fetchPrelightsHighlight } from './fetch-prelights-highlight.js';

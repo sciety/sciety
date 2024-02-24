@@ -1,7 +1,7 @@
-import { handleEvent, initialState } from './handle-event';
-import { lookupUserByHandle } from './lookup-user-by-handle';
-import { lookupUser } from './lookup-user';
-import { currentStatus } from './current-status';
+import { handleEvent, initialState } from './handle-event.js';
+import { lookupUserByHandle } from './lookup-user-by-handle.js';
+import { lookupUser } from './lookup-user.js';
+import { currentStatus } from './current-status.js';
 
 export const users = {
   queries: {

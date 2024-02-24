@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { renderListItems } from '../../../shared-components/render-list-items';
-import { renderAsHtml } from '../../../shared-components/paper-activity-summary-card/render-as-html';
-import { ViewModel } from '../view-model';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { renderListItems } from '../../../shared-components/render-list-items.js';
+import { renderAsHtml } from '../../../shared-components/paper-activity-summary-card/render-as-html.js';
+import { ViewModel } from '../view-model.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
 
 export const renderRelatedArticles = (viewmodel: ViewModel): HtmlFragment => pipe(
   viewmodel.relatedArticles,

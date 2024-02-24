@@ -5,13 +5,13 @@ import * as t from 'io-ts';
 import { identity, pipe } from 'fp-ts/function';
 import { XMLParser } from 'fast-xml-parser';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-jats';
-import * as AED from './acmi-evaluation-doi';
-import * as DE from '../../types/data-error';
-import { Logger } from '../../infrastructure';
-import { decodeAndLogFailures } from '../decode-and-log-failures';
+import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-jats.js';
+import * as AED from './acmi-evaluation-doi.js';
+import * as DE from '../../types/data-error.js';
+import { Logger } from '../../infrastructure/index.js';
+import { decodeAndLogFailures } from '../decode-and-log-failures.js';
 
 const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',

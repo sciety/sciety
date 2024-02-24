@@ -4,7 +4,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
 import {
   DoiFromLinkConfig, ServerData, isSupported, doiFromLinkConfig,
-} from './doi-from-link-config';
+} from './doi-from-link-config.js';
 
 const isPrefixOfASupportedServer = (allServerData: DoiFromLinkConfig, prefix: string) => pipe(
   allServerData,

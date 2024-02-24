@@ -4,20 +4,20 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CurationStatement, constructCurationStatements } from '../../read-side/curation-statements';
-import { ErrorViewModel } from './render-error-as-html';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { ViewModel } from './view-model';
-import { constructReviewingGroups } from '../../read-side/reviewing-groups';
-import * as DE from '../../types/data-error';
-import { Dependencies } from './dependencies';
-import { ExpressionDoi } from '../../types/expression-doi';
-import * as PH from '../../types/publishing-history';
-import { constructFrontMatter } from '../../read-side/construct-front-matter';
-import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
-import { findAllListsContainingPaper } from '../../read-side/find-all-lists-containing-paper';
-import { paperActivityPagePath } from '../../standards';
+import { CurationStatement, constructCurationStatements } from '../../read-side/curation-statements/index.js';
+import { ErrorViewModel } from './render-error-as-html.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { ViewModel } from './view-model.js';
+import { constructReviewingGroups } from '../../read-side/reviewing-groups/index.js';
+import * as DE from '../../types/data-error.js';
+import { Dependencies } from './dependencies.js';
+import { ExpressionDoi } from '../../types/expression-doi.js';
+import * as PH from '../../types/publishing-history.js';
+import { constructFrontMatter } from '../../read-side/construct-front-matter.js';
+import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history.js';
+import { findAllListsContainingPaper } from '../../read-side/find-all-lists-containing-paper.js';
+import { paperActivityPagePath } from '../../standards/index.js';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatement,

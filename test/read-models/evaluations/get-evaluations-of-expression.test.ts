@@ -1,17 +1,17 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { getEvaluationsOfExpression } from '../../../src/read-models/evaluations/get-evaluations-of-expression';
-import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
-import { EvaluationLocator } from '../../../src/types/evaluation-locator';
-import { EvaluationType } from '../../../src/types/recorded-evaluation';
-import { arbitraryDate, arbitraryString } from '../../helpers';
-import * as EDOI from '../../../src/types/expression-doi';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { getEvaluationsOfExpression } from '../../../src/read-models/evaluations/get-evaluations-of-expression.js';
+import { constructEvent, DomainEvent } from '../../../src/domain-events/index.js';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper.js';
+import { arbitraryGroupId } from '../../types/group-id.helper.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event.js';
+import { EvaluationLocator } from '../../../src/types/evaluation-locator.js';
+import { EvaluationType } from '../../../src/types/recorded-evaluation.js';
+import { arbitraryDate, arbitraryString } from '../../helpers.js';
+import * as EDOI from '../../../src/types/expression-doi.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
 
 const runQuery = (expressionDoi: EDOI.ExpressionDoi) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(

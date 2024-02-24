@@ -3,15 +3,15 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
-import { ViewModel } from '../view-model';
-import { constructPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
-import { GroupId } from '../../../../types/group-id';
-import * as DE from '../../../../types/data-error';
-import * as EDOI from '../../../../types/expression-doi';
-import { Dependencies } from './dependencies';
-import { PageOfItems, paginate } from '../../../../shared-components/pagination';
-import { Group } from '../../../../types/group';
-import { toExpressionDoisByMostRecentlyAdded } from '../../../../read-models/lists';
+import { ViewModel } from '../view-model.js';
+import { constructPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card/index.js';
+import { GroupId } from '../../../../types/group-id.js';
+import * as DE from '../../../../types/data-error.js';
+import * as EDOI from '../../../../types/expression-doi.js';
+import { Dependencies } from './dependencies.js';
+import { PageOfItems, paginate } from '../../../../shared-components/pagination/index.js';
+import { Group } from '../../../../types/group.js';
+import { toExpressionDoisByMostRecentlyAdded } from '../../../../read-models/lists/index.js';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,

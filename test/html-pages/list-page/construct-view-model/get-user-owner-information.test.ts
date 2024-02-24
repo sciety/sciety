@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation } from '../../../../src/html-pages/list-page/construct-view-model/get-user-owner-information';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { getUserOwnerInformation } from '../../../../src/html-pages/list-page/construct-view-model/get-user-owner-information.js';
+import { arbitraryUserId } from '../../../types/user-id.helper.js';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper.js';
 
 describe('get-user-owner-information', () => {
   let framework: TestFramework;

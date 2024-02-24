@@ -2,10 +2,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { getCorrespondingListId } from './get-corresponding-list-id';
-import { isStateWithSubjectArea, ReadModel } from './handle-event';
-import { ArticleId, fromString as doiFromString } from '../../types/article-id';
-import { ListId } from '../../types/list-id';
+import { getCorrespondingListId } from './get-corresponding-list-id.js';
+import { isStateWithSubjectArea, ReadModel } from './handle-event.js';
+import { ArticleId, fromString as doiFromString } from '../../types/article-id.js';
+import { ListId } from '../../types/list-id.js';
 
 type ArticleWithSubjectArea = { articleId: ArticleId, listId: ListId };
 

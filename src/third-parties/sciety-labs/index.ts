@@ -1,1 +1,1 @@
-export { fetchRecommendedPapers } from './fetch-recommended-papers';
+export { fetchRecommendedPapers } from './fetch-recommended-papers.js';

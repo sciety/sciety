@@ -1,2 +1,2 @@
-export { searchResultsPage } from './search-results-page';
-export { paramsCodec } from './construct-view-model/params';
+export { searchResultsPage } from './search-results-page.js';
+export { paramsCodec } from './construct-view-model/params.js';

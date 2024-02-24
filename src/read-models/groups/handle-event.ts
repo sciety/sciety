@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
-import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
-import { Group } from '../../types/group';
-import * as GID from '../../types/group-id';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events/index.js';
+import { Group } from '../../types/group.js';
+import * as GID from '../../types/group-id.js';
 
 export type ReadModel = Record<GID.GroupId, Group>;
 

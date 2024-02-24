@@ -1,3 +1,3 @@
-import { QueryExternalService } from '../../query-external-service';
+import { QueryExternalService } from '../../query-external-service.js';
 
 export type QueryCrossrefService = ReturnType<QueryExternalService>;

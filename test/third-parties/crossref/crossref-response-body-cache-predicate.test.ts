@@ -1,6 +1,6 @@
-import { crossrefResponseBodyCachePredicate } from '../../../src/third-parties/crossref/crossref-response-body-cache-predicate';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryUri } from '../../helpers';
+import { crossrefResponseBodyCachePredicate } from '../../../src/third-parties/crossref/crossref-response-body-cache-predicate.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { arbitraryUri } from '../../helpers.js';
 
 describe('crossref-response-body-cache-predicate', () => {
   describe('given a 200 response from Crossref', () => {

@@ -1,8 +1,8 @@
 import { flow, pipe } from 'fp-ts/function';
-import { renderArticlesList } from './render-articles-list';
-import { LegacyPaginationControlsViewModel, renderLegacyPaginationControls } from '../../../shared-components/pagination';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ContentWithPaginationViewModel } from '../view-model';
+import { renderArticlesList } from './render-articles-list.js';
+import { LegacyPaginationControlsViewModel, renderLegacyPaginationControls } from '../../../shared-components/pagination/index.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ContentWithPaginationViewModel } from '../view-model.js';
 
 const addPaginationControls = (paginationControlsViewModel: LegacyPaginationControlsViewModel) => flow(
   (pageOfContent: HtmlFragment) => `

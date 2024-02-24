@@ -4,14 +4,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
-import { getOwnerName } from './get-owner-name';
-import * as DE from '../../../types/data-error';
-import { ArticleId } from '../../../types/article-id';
-import { Dependencies } from './dependencies';
-import { ViewModel } from '../view-model';
-import { Params } from './params';
-import { toExpressionDoisByMostRecentlyAdded } from '../../../read-models/lists';
+import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model.js';
+import { getOwnerName } from './get-owner-name.js';
+import * as DE from '../../../types/data-error.js';
+import { ArticleId } from '../../../types/article-id.js';
+import { Dependencies } from './dependencies.js';
+import { ViewModel } from '../view-model.js';
+import { Params } from './params.js';
+import { toExpressionDoisByMostRecentlyAdded } from '../../../read-models/lists/index.js';
 
 export const constructViewModel = (
   dependencies: Dependencies,

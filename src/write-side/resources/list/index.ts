@@ -1,5 +1,5 @@
-export { update } from './update';
-export { create } from './create';
-export { addArticle } from './add-article';
-export { removeArticle } from './remove-article';
-export { annotate } from './annotate';
+export { update } from './update.js';
+export { create } from './create.js';
+export { addArticle } from './add-article.js';
+export { removeArticle } from './remove-article.js';
+export { annotate } from './annotate.js';

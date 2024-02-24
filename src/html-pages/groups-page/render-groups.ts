@@ -1,7 +1,7 @@
-import { renderListItems } from '../../shared-components/render-list-items';
-import { supplementaryCard } from '../../shared-components/supplementary-card';
-import { supplementaryInfo } from '../../shared-components/supplementary-info';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { renderListItems } from '../../shared-components/render-list-items.js';
+import { supplementaryCard } from '../../shared-components/supplementary-card.js';
+import { supplementaryInfo } from '../../shared-components/supplementary-info.js';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
 
 const supplementaryItems = [
   supplementaryCard(

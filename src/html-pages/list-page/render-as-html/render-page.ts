@@ -1,8 +1,8 @@
-import { renderHeader } from './render-header';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { noArticlesCanBeFetchedMessage, noArticlesMessageForOwner, noArticlesMessageForReader } from './static-messages';
-import { ViewModel } from '../view-model';
-import { renderContentWithPagination } from './render-content-with-pagination';
+import { renderHeader } from './render-header.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { noArticlesCanBeFetchedMessage, noArticlesMessageForOwner, noArticlesMessageForReader } from './static-messages.js';
+import { ViewModel } from '../view-model.js';
+import { renderContentWithPagination } from './render-content-with-pagination.js';
 
 const renderListOrMessage = (viewModel: ViewModel) => {
   switch (viewModel.content) {

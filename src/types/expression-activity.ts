@@ -1,4 +1,4 @@
-import { ArticleId } from './article-id';
+import { ArticleId } from './article-id.js';
 
 export type ExpressionActivity = {
   expressionDoi: ArticleId,

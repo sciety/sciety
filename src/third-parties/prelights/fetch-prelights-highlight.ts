@@ -6,12 +6,12 @@ import { flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { QueryExternalService } from '../query-external-service';
-import { EvaluationFetcher } from '../evaluation-fetcher';
-import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { Logger } from '../../infrastructure';
+import { QueryExternalService } from '../query-external-service.js';
+import { EvaluationFetcher } from '../evaluation-fetcher.js';
+import * as DE from '../../types/data-error.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { Logger } from '../../infrastructure/index.js';
 
 export const fetchPrelightsHighlight = (
   queryExternalService: QueryExternalService,

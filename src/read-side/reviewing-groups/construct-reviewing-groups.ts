@@ -5,10 +5,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import {
   GroupLinkAsTextViewModel, GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies,
-} from '../../shared-components/group-link';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { Queries } from '../../read-models';
-import * as PH from '../../types/publishing-history';
+} from '../../shared-components/group-link/index.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
+import { Queries } from '../../read-models/index.js';
+import * as PH from '../../types/publishing-history.js';
 
 export type Dependencies = Queries
 & ConstructGroupLinkDependencies;

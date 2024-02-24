@@ -1,1 +1,1 @@
-export { getPaperExpressionsFromBiorxiv } from './get-paper-expressions-from-biorxiv';
+export { getPaperExpressionsFromBiorxiv } from './get-paper-expressions-from-biorxiv.js';

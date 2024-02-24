@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
-import { recordSubjectArea } from '../../../../src/write-side/resources/article';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { ArticleId } from '../../../../src/types/article-id';
+import { constructEvent } from '../../../../src/domain-events/index.js';
+import { recordSubjectArea } from '../../../../src/write-side/resources/article/index.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { arbitrarySubjectArea } from '../../../types/subject-area.helper.js';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper.js';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper.js';
+import { ArticleId } from '../../../../src/types/article-id.js';
 
 describe('execute-command', () => {
   const expressionDoi = arbitraryExpressionDoi();

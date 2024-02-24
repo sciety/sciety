@@ -2,8 +2,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as RM from 'fp-ts/ReadonlyMap';
-import { Activity, ReadModel } from './handle-event';
-import { GroupId } from '../../types/group-id';
+import { Activity, ReadModel } from './handle-event.js';
+import { GroupId } from '../../types/group-id.js';
 
 const calculateLatestActivityDate = (activity: Activity) => {
   let latest = null;

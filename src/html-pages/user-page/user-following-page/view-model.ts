@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { GroupCardViewModel } from '../../../shared-components/group-card';
-import { GroupId } from '../../../types/group-id';
-import { UserDetails } from '../../../types/user-details';
+import { GroupCardViewModel } from '../../../shared-components/group-card/index.js';
+import { GroupId } from '../../../types/group-id.js';
+import { UserDetails } from '../../../types/user-details.js';
 
 export type ViewModel = {
   userDetails: UserDetails,

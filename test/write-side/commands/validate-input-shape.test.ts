@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
-import { validateInputShape } from '../../../src/write-side/commands/validate-input-shape';
-import { arbitraryNumber, arbitraryString } from '../../helpers';
+import { validateInputShape } from '../../../src/write-side/commands/validate-input-shape.js';
+import { arbitraryNumber, arbitraryString } from '../../helpers.js';
 
 describe('validate-input-shape', () => {
   const fakeFieldName = arbitraryNumber(1, 100);

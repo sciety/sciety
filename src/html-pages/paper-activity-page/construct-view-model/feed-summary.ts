@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ExpressionPublishedFeedItem, FeedItem, EvaluationPublishedFeedItem } from '../view-model';
+import { ExpressionPublishedFeedItem, FeedItem, EvaluationPublishedFeedItem } from '../view-model.js';
 
 type FeedSummary = {
   evaluationCount: number,

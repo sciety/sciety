@@ -2,9 +2,9 @@ import * as fs from 'fs';
 import path from 'path';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../types/data-error';
-import { Logger } from '../infrastructure';
-import { ExternalQueries } from './external-queries';
+import * as DE from '../types/data-error.js';
+import { Logger } from '../infrastructure/index.js';
+import { ExternalQueries } from './external-queries.js';
 
 export const fetchStaticFile = (logger: Logger): ExternalQueries['fetchStaticFile'] => (filename) => pipe(
   path.resolve(__dirname, '..', '..', 'static', filename),

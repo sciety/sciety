@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { ExternalQueries } from '../../third-parties';
-import { ArticleId } from '../../types/article-id';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { ExternalQueries } from '../../third-parties/index.js';
+import { ArticleId } from '../../types/article-id.js';
 
 export const localFetchPaperExpressionFrontMatter: ExternalQueries['fetchExpressionFrontMatter'] = (paperExpressionLocator) => TE.right({
   abstract: O.some(sanitise(toHtmlFragment(`

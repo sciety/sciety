@@ -1,10 +1,10 @@
-import { handleEvent, initialState } from './handle-event';
-import { lookupList } from './lookup-list';
-import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
-import { getNonEmptyUserLists } from './get-non-empty-user-lists';
-import { listsStatus } from './lists-status';
-import { selectAllListsContainingExpression } from './select-all-lists-containing-expression';
-import { selectListContainingExpression } from './select-list-containing-expression';
+import { handleEvent, initialState } from './handle-event.js';
+import { lookupList } from './lookup-list.js';
+import { selectAllListsOwnedBy } from './select-all-lists-owned-by.js';
+import { getNonEmptyUserLists } from './get-non-empty-user-lists.js';
+import { listsStatus } from './lists-status.js';
+import { selectAllListsContainingExpression } from './select-all-lists-containing-expression.js';
+import { selectListContainingExpression } from './select-list-containing-expression.js';
 
 export const lists = {
   queries: {
@@ -20,4 +20,4 @@ export const lists = {
 };
 export {
   byUpdatedAt, eqList, List, toExpressionDoisByMostRecentlyAdded,
-} from './list';
+} from './list.js';

@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-resource-events.helper';
-import * as evaluationResource from '../../../../src/write-side/resources/evaluation';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import { UpdateEvaluationCommand } from '../../../../src/write-side/commands';
-import { EvaluationType } from '../../../../src/types/recorded-evaluation';
-import { arbitraryDate, arbitraryString } from '../../../helpers';
+import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper.js';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-resource-events.helper.js';
+import * as evaluationResource from '../../../../src/write-side/resources/evaluation/index.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper.js';
+import { UpdateEvaluationCommand } from '../../../../src/write-side/commands/index.js';
+import { EvaluationType } from '../../../../src/types/recorded-evaluation.js';
+import { arbitraryDate, arbitraryString } from '../../../helpers.js';
 
 const expectEvent = (fields: Record<string, unknown>) => ({
   id: expect.any(String),

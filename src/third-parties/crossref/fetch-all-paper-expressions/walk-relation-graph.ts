@@ -2,14 +2,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
-import * as DE from '../../../types/data-error';
-import { Logger } from '../../../infrastructure';
-import { CrossrefWork } from './crossref-work';
-import { State } from './state';
-import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
-import { fetchIndividualWork } from './fetch-individual-work';
-import { enqueueAllRelatedDoisNotYetCollected } from './enqueue-all-related-dois-not-yet-collected';
-import { QueryCrossrefService } from './query-crossref-service';
+import * as DE from '../../../types/data-error.js';
+import { Logger } from '../../../infrastructure/index.js';
+import { CrossrefWork } from './crossref-work.js';
+import { State } from './state.js';
+import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works.js';
+import { fetchIndividualWork } from './fetch-individual-work.js';
+import { enqueueAllRelatedDoisNotYetCollected } from './enqueue-all-related-dois-not-yet-collected.js';
+import { QueryCrossrefService } from './query-crossref-service.js';
 
 const update = (collectedWorks: State['collectedWorks'], newlyFetchedWork: CrossrefWork) => {
   collectedWorks.set(newlyFetchedWork.DOI.toLowerCase(), newlyFetchedWork);

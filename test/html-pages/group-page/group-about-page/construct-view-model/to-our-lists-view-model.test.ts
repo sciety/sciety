@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { toOurListsViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/to-our-lists-view-model';
-import { arbitraryString } from '../../../../helpers';
-import { arbitraryGroup } from '../../../../types/group.helper';
-import { arbitraryList } from '../../../../read-models/lists/list-helper';
+import { toOurListsViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model/to-our-lists-view-model.js';
+import { arbitraryString } from '../../../../helpers.js';
+import { arbitraryGroup } from '../../../../types/group.helper.js';
+import { arbitraryList } from '../../../../read-models/lists/list-helper.js';
 
 describe('to-our-lists-view-model', () => {
   const groupSlug = arbitraryGroup().slug;

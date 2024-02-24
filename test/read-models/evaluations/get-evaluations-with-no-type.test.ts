@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
-import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper';
-import { getEvaluationsWithNoType } from '../../../src/read-models/evaluations/get-evaluations-with-no-type';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper.js';
+import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event.js';
+import { arbitraryRecordedEvaluation } from '../../types/recorded-evaluation.helper.js';
+import { getEvaluationsWithNoType } from '../../../src/read-models/evaluations/get-evaluations-with-no-type.js';
 
 describe('get-evaluations-with-no-type', () => {
   describe('when some evaluations have no type', () => {

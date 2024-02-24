@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as EventId from '../event-id';
+import * as EventId from '../event-id.js';
 
 export const EventIdFromString = new t.Type(
   'EventIdFromString',

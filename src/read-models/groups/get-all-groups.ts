@@ -1,5 +1,5 @@
-import { ReadModel } from './handle-event';
-import { Group } from '../../types/group';
+import { ReadModel } from './handle-event.js';
+import { Group } from '../../types/group.js';
 
 type GetAllGroups = () => ReadonlyArray<Group>;
 

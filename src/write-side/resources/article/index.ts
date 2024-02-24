@@ -1,1 +1,1 @@
-export { recordSubjectArea } from './record-subject-area';
+export { recordSubjectArea } from './record-subject-area.js';

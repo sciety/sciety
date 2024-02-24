@@ -2,11 +2,11 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
-import { Dependencies } from './dependencies';
-import { constructRelatedGroups } from './construct-related-groups';
-import { SearchResults } from '../../../types/search-results';
+import { ViewModel } from '../view-model.js';
+import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card/index.js';
+import { Dependencies } from './dependencies.js';
+import { constructRelatedGroups } from './construct-related-groups.js';
+import { SearchResults } from '../../../types/search-results.js';
 
 type LimitedSet = {
   query: string,

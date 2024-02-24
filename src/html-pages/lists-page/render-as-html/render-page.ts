@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { renderListCard } from '../../../shared-components/list-card';
-import { renderListItems } from '../../../shared-components/render-list-items';
+import { ViewModel } from '../view-model.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { renderListCard } from '../../../shared-components/list-card/index.js';
+import { renderListItems } from '../../../shared-components/render-list-items.js';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel,

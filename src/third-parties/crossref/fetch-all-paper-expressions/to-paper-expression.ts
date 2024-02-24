@@ -1,10 +1,10 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import { CrossrefWork } from './crossref-work';
-import { PaperExpression } from '../../../types/paper-expression';
-import * as EDOI from '../../../types/expression-doi';
-import { identifyExpressionServer } from './identify-expression-server';
-import * as crossrefDate from './date-stamp';
+import { CrossrefWork } from './crossref-work.js';
+import { PaperExpression } from '../../../types/paper-expression.js';
+import * as EDOI from '../../../types/expression-doi.js';
+import { identifyExpressionServer } from './identify-expression-server.js';
+import * as crossrefDate from './date-stamp.js';
 
 export const toPaperExpression = (crossrefWork: CrossrefWork): E.Either<unknown, PaperExpression> => {
   switch (crossrefWork.type) {

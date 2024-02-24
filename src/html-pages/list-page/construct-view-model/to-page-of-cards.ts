@@ -3,16 +3,16 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { PaperActivityErrorCardViewModel } from '../../../shared-components/paper-activity-summary-card';
+import { PaperActivityErrorCardViewModel } from '../../../shared-components/paper-activity-summary-card/index.js';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
   constructArticleCardWithControlsAndAnnotation,
-} from '../../../shared-components/article-card-with-controls-and-annotation';
-import { PageOfItems } from '../../../shared-components/pagination';
-import { ListId } from '../../../types/list-id';
-import { Dependencies } from './dependencies';
-import { ContentWithPaginationViewModel } from '../view-model';
-import { ExpressionDoi } from '../../../types/expression-doi';
+} from '../../../shared-components/article-card-with-controls-and-annotation/index.js';
+import { PageOfItems } from '../../../shared-components/pagination/index.js';
+import { ListId } from '../../../types/list-id.js';
+import { Dependencies } from './dependencies.js';
+import { ContentWithPaginationViewModel } from '../view-model.js';
+import { ExpressionDoi } from '../../../types/expression-doi.js';
 
 export const toPageOfCards = (
   dependencies: Dependencies,

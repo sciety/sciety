@@ -1,10 +1,10 @@
 import { XMLSerializer } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleAuthors } from '../../types/article-authors';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { identifyExpressionServer } from './fetch-all-paper-expressions/identify-expression-server';
+import { ArticleAuthors } from '../../types/article-authors.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment.js';
+import { identifyExpressionServer } from './fetch-all-paper-expressions/identify-expression-server.js';
 
 const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)

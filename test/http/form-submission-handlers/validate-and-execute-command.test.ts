@@ -2,15 +2,15 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { ParameterizedContext } from 'koa';
-import { validateAndExecuteCommand, Dependencies } from '../../../src/http/form-submission-handlers/validate-and-execute-command';
-import { arbitraryUserDetails } from '../../types/user-details.helper';
-import { arbitrarySanitisedUserInput } from '../../types/sanitised-user-input.helper';
-import { arbitraryUserHandle } from '../../types/user-handle.helper';
-import { SanitisedUserInput } from '../../../src/types/sanitised-user-input';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { dummyLogger } from '../../dummy-logger';
+import { validateAndExecuteCommand, Dependencies } from '../../../src/http/form-submission-handlers/validate-and-execute-command.js';
+import { arbitraryUserDetails } from '../../types/user-details.helper.js';
+import { arbitrarySanitisedUserInput } from '../../types/sanitised-user-input.helper.js';
+import { arbitraryUserHandle } from '../../types/user-handle.helper.js';
+import { SanitisedUserInput } from '../../../src/types/sanitised-user-input.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
+import { dummyLogger } from '../../dummy-logger.js';
 
 const defaultDependencies: Dependencies = {
   commitEvents: shouldNotBeCalled,

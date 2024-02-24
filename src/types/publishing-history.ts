@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import * as PE from './paper-expression';
-import { ExpressionDoi } from './expression-doi';
-import { publishedAtWithUnambiguousCriteria } from './paper-expression';
+import * as PE from './paper-expression.js';
+import { ExpressionDoi } from './expression-doi.js';
+import { publishedAtWithUnambiguousCriteria } from './paper-expression.js';
 
 export type PublishingHistory = {
   expressions: RNEA.ReadonlyNonEmptyArray<PE.PaperExpression>,

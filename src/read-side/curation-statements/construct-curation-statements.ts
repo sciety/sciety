@@ -8,15 +8,15 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
 import * as Eq from 'fp-ts/Eq';
-import * as GID from '../../types/group-id';
-import { detectLanguage } from '../../shared-components/lang-attribute';
-import { EvaluationLocator } from '../../types/evaluation-locator';
-import { Queries } from '../../read-models';
-import { Logger } from '../../infrastructure';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { ExternalQueries } from '../../third-parties';
-import { CurationStatement } from './curation-statement';
-import * as PH from '../../types/publishing-history';
+import * as GID from '../../types/group-id.js';
+import { detectLanguage } from '../../shared-components/lang-attribute/index.js';
+import { EvaluationLocator } from '../../types/evaluation-locator.js';
+import { Queries } from '../../read-models/index.js';
+import { Logger } from '../../infrastructure/index.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
+import { ExternalQueries } from '../../third-parties/index.js';
+import { CurationStatement } from './curation-statement.js';
+import * as PH from '../../types/publishing-history.js';
 
 export type Dependencies = Queries & ExternalQueries & {
   logger: Logger,

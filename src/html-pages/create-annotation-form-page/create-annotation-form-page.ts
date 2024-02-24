@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { HtmlPage, toHtmlPage } from '../html-page';
-import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
-import { renderPage } from './render-page';
-import { Dependencies, constructViewModel } from './construct-view-model';
-import { toErrorPage } from './to-error-page';
-import { UnrecoverableError } from './view-model';
-import { Params } from './params';
+import { HtmlPage, toHtmlPage } from '../html-page.js';
+import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model.js';
+import { renderPage } from './render-page.js';
+import { Dependencies, constructViewModel } from './construct-view-model.js';
+import { toErrorPage } from './to-error-page.js';
+import { UnrecoverableError } from './view-model.js';
+import { Params } from './params.js';
 
 type CreateAnnotationFormPage = (dependencies: Dependencies)
 => (params: Params, unrecoverableError?: UnrecoverableError)

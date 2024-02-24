@@ -2,17 +2,17 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ViewModel as UserListsPage } from '../../src/html-pages/user-page/user-lists-page/view-model';
-import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/user-lists-page/construct-view-model';
-import * as LOID from '../../src/types/list-owner-id';
-import { constructViewModel as constructGroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/construct-view-model/construct-view-model';
-import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
-import { createTestFramework, TestFramework } from '../framework';
-import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../write-side/commands/create-user-account-command.helper';
-import { arbitraryAddGroupCommand } from '../write-side/commands/add-group-command.helper';
+import { ViewModel as UserListsPage } from '../../src/html-pages/user-page/user-lists-page/view-model.js';
+import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/user-lists-page/construct-view-model/index.js';
+import * as LOID from '../../src/types/list-owner-id.js';
+import { constructViewModel as constructGroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/construct-view-model/construct-view-model.js';
+import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { CandidateUserHandle } from '../../src/types/candidate-user-handle.js';
+import { createTestFramework, TestFramework } from '../framework/index.js';
+import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper.js';
+import { arbitraryCreateUserAccountCommand } from '../write-side/commands/create-user-account-command.helper.js';
+import { arbitraryAddGroupCommand } from '../write-side/commands/add-group-command.helper.js';
 
 describe('create user list', () => {
   let framework: TestFramework;

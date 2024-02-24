@@ -4,12 +4,12 @@ import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
-import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
-import { Logger } from '../../infrastructure';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands/index.js';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list.js';
+import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers/index.js';
+import { Logger } from '../../infrastructure/index.js';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users.js';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands.js';
 
 type Ports = DependenciesForCommands & CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,

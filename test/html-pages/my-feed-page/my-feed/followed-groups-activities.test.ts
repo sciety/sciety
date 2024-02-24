@@ -1,11 +1,11 @@
 import { performance } from 'perf_hooks';
 import * as O from 'fp-ts/Option';
-import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities';
-import { arbitraryGroupId, groupIdFromString } from '../../../types/group-id.helper';
-import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper';
-import { DomainEvent } from '../../../../src/domain-events';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { ArticleId } from '../../../../src/types/article-id';
+import { followedGroupsActivities } from '../../../../src/html-pages/my-feed-page/my-feed/followed-groups-activities.js';
+import { arbitraryGroupId, groupIdFromString } from '../../../types/group-id.helper.js';
+import { arbitraryEvaluationPublicationRecordedEvent } from '../../../domain-events/evaluation-resource-events.helper.js';
+import { DomainEvent } from '../../../../src/domain-events/index.js';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper.js';
+import { ArticleId } from '../../../../src/types/article-id.js';
 
 describe('followed-groups-activities', () => {
   describe('when only a single group has evaluated an article once', () => {

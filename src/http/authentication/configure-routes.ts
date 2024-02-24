@@ -11,14 +11,14 @@ import {
   signUpAuth0,
   completeAuthenticationJourney,
   stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0, Config as LoginMiddlewaresConfig,
-} from './login-middlewares';
-import { catchErrors } from '../catch-errors';
-import { createUserAccount } from '../form-submission-handlers/create-user-account';
-import { pageHandler } from '../page-handler';
-import { createPageFromParams } from '../create-page-from-params';
-import { saveAuthenticationDestination } from '../authentication-destination';
-import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../html-pages/create-user-account-form-page';
-import { CollectedPorts } from '../../collected-ports';
+} from './login-middlewares.js';
+import { catchErrors } from '../catch-errors.js';
+import { createUserAccount } from '../form-submission-handlers/create-user-account.js';
+import { pageHandler } from '../page-handler.js';
+import { createPageFromParams } from '../create-page-from-params.js';
+import { saveAuthenticationDestination } from '../authentication-destination/index.js';
+import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../html-pages/create-user-account-form-page/index.js';
+import { CollectedPorts } from '../../collected-ports.js';
 
 export type Config = LoginMiddlewaresConfig;
 

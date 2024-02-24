@@ -1,20 +1,20 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../src/types/expression-doi';
-import { constructEvent } from '../../../src/domain-events';
-import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import { lookupList } from '../../../src/read-models/lists/lookup-list';
-import { arbitraryDate, arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
-import { ListId } from '../../../src/types/list-id';
-import { List } from '../../../src/read-models/lists';
+import * as EDOI from '../../../src/types/expression-doi.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event.js';
+import { lookupList } from '../../../src/read-models/lists/lookup-list.js';
+import { arbitraryDate, arbitraryString } from '../../helpers.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
+import { ArticleId } from '../../../src/types/article-id.js';
+import { ListId } from '../../../src/types/list-id.js';
+import { List } from '../../../src/read-models/lists/index.js';
 
 const runQuery = (listId: ListId, readModel: ReadModel) => pipe(
   listId,

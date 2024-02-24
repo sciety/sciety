@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
-import { ExpressionDoi } from '../../../../src/types/expression-doi';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model.js';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper.js';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper.js';
+import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups.js';
+import { ExpressionDoi } from '../../../../src/types/expression-doi.js';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper.js';
 
 const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 

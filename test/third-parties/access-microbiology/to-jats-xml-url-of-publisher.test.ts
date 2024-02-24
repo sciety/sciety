@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { toJatsXmlUrlOfPublisher } from '../../../src/third-parties/access-microbiology/to-jats-xml-url-of-publisher';
-import * as AED from '../../../src/third-parties/access-microbiology/acmi-evaluation-doi';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryWord } from '../../helpers';
+import { toJatsXmlUrlOfPublisher } from '../../../src/third-parties/access-microbiology/to-jats-xml-url-of-publisher.js';
+import * as AED from '../../../src/third-parties/access-microbiology/acmi-evaluation-doi.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryWord } from '../../helpers.js';
 
 describe('to-jats-xml-url-of-publisher', () => {
   describe.each([

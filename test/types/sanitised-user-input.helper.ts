@@ -1,8 +1,8 @@
 import * as PR from 'io-ts/PathReporter';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { SanitisedUserInput, sanitisedUserInputCodec } from '../../src/types/sanitised-user-input';
-import { arbitraryWord } from '../helpers';
+import { SanitisedUserInput, sanitisedUserInputCodec } from '../../src/types/sanitised-user-input.js';
+import { arbitraryWord } from '../helpers.js';
 
 export const arbitrarySanitisedUserInput = (): SanitisedUserInput => pipe(
   arbitraryWord(12),

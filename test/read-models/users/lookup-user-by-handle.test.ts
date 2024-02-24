@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { arbitraryCandidateUserHandle, candidateUserHandleFromString } from '../../types/candidate-user-handle.helper';
-import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/users/handle-event';
-import { lookupUserByHandle } from '../../../src/read-models/users/lookup-user-by-handle';
-import { arbitraryUserDetails } from '../../types/user-details.helper';
+import { arbitraryCandidateUserHandle, candidateUserHandleFromString } from '../../types/candidate-user-handle.helper.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { handleEvent, initialState } from '../../../src/read-models/users/handle-event.js';
+import { lookupUserByHandle } from '../../../src/read-models/users/lookup-user-by-handle.js';
+import { arbitraryUserDetails } from '../../types/user-details.helper.js';
 
 describe('lookup-user-by-handle', () => {
   const user = arbitraryUserDetails();

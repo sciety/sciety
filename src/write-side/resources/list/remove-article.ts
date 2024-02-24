@@ -2,13 +2,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { constructEvent } from '../../../domain-events';
-import { ListWriteModel } from './list-write-model';
-import { ArticleId } from '../../../types/article-id';
-import { ListId } from '../../../types/list-id';
-import { getListWriteModel } from './get-list-write-model';
-import { RemoveArticleFromListCommand } from '../../commands';
-import { ResourceAction } from '../resource-action';
+import { constructEvent } from '../../../domain-events/index.js';
+import { ListWriteModel } from './list-write-model.js';
+import { ArticleId } from '../../../types/article-id.js';
+import { ListId } from '../../../types/list-id.js';
+import { getListWriteModel } from './get-list-write-model.js';
+import { RemoveArticleFromListCommand } from '../../commands/index.js';
+import { ResourceAction } from '../resource-action.js';
 
 type Command = {
   articleId: ArticleId,

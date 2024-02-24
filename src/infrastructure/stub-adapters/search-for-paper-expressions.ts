@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { ExternalQueries } from '../../third-parties';
-import * as EDOI from '../../types/expression-doi';
+import { ExternalQueries } from '../../third-parties/index.js';
+import * as EDOI from '../../types/expression-doi.js';
 
 export const searchForPaperExpressions: ExternalQueries['searchForPaperExpressions'] = () => () => TE.right({
   items: [

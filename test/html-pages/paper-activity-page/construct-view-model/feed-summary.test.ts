@@ -1,11 +1,11 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { feedSummary } from '../../../../src/html-pages/paper-activity-page/construct-view-model/feed-summary';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
-import * as RFI from '../evaluation-feed-item.helper';
-import { ExpressionPublishedFeedItem } from '../../../../src/html-pages/paper-activity-page/view-model';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { feedSummary } from '../../../../src/html-pages/paper-activity-page/construct-view-model/feed-summary.js';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers.js';
+import * as RFI from '../evaluation-feed-item.helper.js';
+import { ExpressionPublishedFeedItem } from '../../../../src/html-pages/paper-activity-page/view-model.js';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper.js';
 
 const arbitraryPaperExpressionFeedItem = (publishedAt: Date = arbitraryDate()): ExpressionPublishedFeedItem => ({
   type: 'expression-published' as const,

@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Logger } from '../../infrastructure';
-import { Queries } from '../../read-models';
-import { CommandHandlers } from '../../write-side/command-handlers';
+import { Logger } from '../../infrastructure/index.js';
+import { Queries } from '../../read-models/index.js';
+import { CommandHandlers } from '../../write-side/command-handlers/index.js';
 
 type Ports = Pick<Queries, 'getOneArticleReadyToBeListed'>
 & Pick<CommandHandlers, 'addArticleToList'>

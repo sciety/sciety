@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
-import { renderFollowToggle } from '../../../../../src/html-pages/group-page/common-components/render-follow-toggle';
-import { arbitraryGroupId } from '../../../../types/group-id.helper';
+import { renderFollowToggle } from '../../../../../src/html-pages/group-page/common-components/render-follow-toggle.js';
+import { arbitraryGroupId } from '../../../../types/group-id.helper.js';
 
 describe('render-follow-toggle', () => {
   describe('when the group is currently followed', () => {

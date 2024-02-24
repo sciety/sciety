@@ -1,16 +1,16 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as PH from '../../src/types/publishing-history';
-import { findAllListsContainingPaper } from '../../src/read-side/find-all-lists-containing-paper';
-import { ArticleId } from '../../src/types/article-id';
-import { ListId } from '../../src/types/list-id';
-import { TestFramework, createTestFramework } from '../framework';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
-import { arbitraryPaperExpression } from '../types/paper-expression.helper';
-import { arbitraryPublishingHistoryOnlyPreprints } from '../types/publishing-history.helper';
-import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper';
+import * as PH from '../../src/types/publishing-history.js';
+import { findAllListsContainingPaper } from '../../src/read-side/find-all-lists-containing-paper.js';
+import { ArticleId } from '../../src/types/article-id.js';
+import { ListId } from '../../src/types/list-id.js';
+import { TestFramework, createTestFramework } from '../framework/index.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { arbitraryExpressionDoi } from '../types/expression-doi.helper.js';
+import { arbitraryPaperExpression } from '../types/paper-expression.helper.js';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../types/publishing-history.helper.js';
+import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper.js';
 
 describe('find-all-lists-containing-paper', () => {
   let framework: TestFramework;

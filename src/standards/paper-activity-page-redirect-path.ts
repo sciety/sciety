@@ -1,4 +1,4 @@
-import { ExpressionDoi } from '../types/expression-doi';
+import { ExpressionDoi } from '../types/expression-doi.js';
 
 const basePath = '/articles/activity/';
 

@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as crossrefDate from './date-stamp';
+import * as crossrefDate from './date-stamp.js';
 
 const relationCodec = t.strict({
   'id-type': t.literal('doi'),

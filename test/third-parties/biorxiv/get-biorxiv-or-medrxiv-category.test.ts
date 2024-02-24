@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../src/types/expression-doi';
-import { getBiorxivOrMedrxivCategory } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
-import * as DE from '../../../src/types/data-error';
-import { SubjectArea } from '../../../src/types/subject-area';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryDate } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import * as EDOI from '../../../src/types/expression-doi.js';
+import { getBiorxivOrMedrxivCategory } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-category.js';
+import * as DE from '../../../src/types/data-error.js';
+import { SubjectArea } from '../../../src/types/subject-area.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { arbitraryDate } from '../../helpers.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
 
 describe('get-biorxiv-or-medrxiv-category', () => {
   describe('when the subject area is available on biorxiv', () => {

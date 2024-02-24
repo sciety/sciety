@@ -1,5 +1,5 @@
-import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
-import { arbitraryGroup } from '../../types/group.helper';
+import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id.js';
+import { arbitraryGroup } from '../../types/group.helper.js';
 
 describe('publisher-account-id', () => {
   const group = arbitraryGroup();

@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { DomainEvent } from '../domain-events';
+import { DomainEvent } from '../domain-events/index.js';
 
 export class InitialisedReadModel<S, Q > {
   private state: S;

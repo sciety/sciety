@@ -2,12 +2,12 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { fetchHypothesisAnnotation, insertSelectedText } from '../../../src/third-parties/hypothesis/fetch-hypothesis-annotation';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryWord } from '../../helpers';
-import { HypothesisAnnotation } from '../../../src/third-parties/hypothesis/HypothesisAnnotation';
-import { arbitraryDataError } from '../../types/data-error.helper';
+import { fetchHypothesisAnnotation, insertSelectedText } from '../../../src/third-parties/hypothesis/fetch-hypothesis-annotation.js';
+import { toHtmlFragment } from '../../../src/types/html-fragment.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { arbitraryWord } from '../../helpers.js';
+import { HypothesisAnnotation } from '../../../src/third-parties/hypothesis/HypothesisAnnotation.js';
+import { arbitraryDataError } from '../../types/data-error.helper.js';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();

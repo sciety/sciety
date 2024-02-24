@@ -1,5 +1,5 @@
-import { getActivityForGroup } from './get-activity-for-group';
-import { handleEvent, initialState } from './handle-event';
+import { getActivityForGroup } from './get-activity-for-group.js';
+import { handleEvent, initialState } from './handle-event.js';
 
 export const groupActivity = {
   queries: {

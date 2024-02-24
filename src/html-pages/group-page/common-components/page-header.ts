@@ -1,9 +1,9 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Group } from '../../../types/group';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { renderFollowToggle } from './render-follow-toggle';
+import { Group } from '../../../types/group.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { renderFollowToggle } from './render-follow-toggle.js';
 
 export type PageHeaderViewModel = {
   group: Group,

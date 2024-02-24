@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
-import { renderEvaluationPublishedFeedItem } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-evaluation-published-feed-item';
-import { missingFullTextAndSourceLink } from '../../../../src/html-pages/paper-activity-page/render-as-html/static-messages';
-import { evaluationLocatorCodec } from '../../../../src/types/evaluation-locator';
-import { arbitraryNumber, arbitraryWord } from '../../../helpers';
-import * as RFI from '../evaluation-feed-item.helper';
+import { renderEvaluationPublishedFeedItem } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-evaluation-published-feed-item.js';
+import { missingFullTextAndSourceLink } from '../../../../src/html-pages/paper-activity-page/render-as-html/static-messages.js';
+import { evaluationLocatorCodec } from '../../../../src/types/evaluation-locator.js';
+import { arbitraryNumber, arbitraryWord } from '../../../helpers.js';
+import * as RFI from '../evaluation-feed-item.helper.js';
 
 describe('render-evaluation-feed-item', () => {
   const fullText = arbitraryWord(100);

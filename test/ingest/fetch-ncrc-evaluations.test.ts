@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchNcrcEvaluations } from '../../src/ingest/fetch-ncrc-evaluations';
-import { arbitraryDate } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryArticleId } from '../types/article-id.helper';
+import { fetchNcrcEvaluations } from '../../src/ingest/fetch-ncrc-evaluations.js';
+import { arbitraryDate } from '../helpers.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { arbitraryArticleId } from '../types/article-id.helper.js';
 
 const arbitraryGoogleSheetsResponse = {
   config: {},

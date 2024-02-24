@@ -6,15 +6,15 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
-import { Evaluation } from './evaluation';
-import * as DE from '../../types/data-error';
-import { Group } from '../../types/group';
-import { GroupId } from '../../types/group-id';
-import { inferredSourceUrl } from '../../types/evaluation-locator';
-import { Queries } from '../../read-models';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import * as EDOI from '../../types/expression-doi';
-import { ExternalQueries } from '../../third-parties';
+import { Evaluation } from './evaluation.js';
+import * as DE from '../../types/data-error.js';
+import { Group } from '../../types/group.js';
+import { GroupId } from '../../types/group-id.js';
+import { inferredSourceUrl } from '../../types/evaluation-locator.js';
+import { Queries } from '../../read-models/index.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
+import * as EDOI from '../../types/expression-doi.js';
+import { ExternalQueries } from '../../third-parties/index.js';
 
 export type DocmapViewModel = {
   expressionDoi: EDOI.ExpressionDoi,

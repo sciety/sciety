@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
-import { arbitraryDate, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryArticleId } from '../types/article-id.helper';
-import * as AID from '../../src/types/article-id';
+import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations.js';
+import { arbitraryDate, arbitraryWord } from '../helpers.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { arbitraryArticleId } from '../types/article-id.helper.js';
+import * as AID from '../../src/types/article-id.js';
 
 describe('fetch-prereview-evaluations', () => {
   describe('when the reponse includes no preprints', () => {

@@ -5,11 +5,11 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as GID from '../../src/types/group-id';
-import * as UID from '../../src/types/user-id';
-import * as LOID from '../../src/types/list-owner-id';
-import { ListId } from '../../src/types/list-id';
-import { listCodec } from '../../src/types/codecs/owned-by-query-codec';
+import * as GID from '../../src/types/group-id.js';
+import * as UID from '../../src/types/user-id.js';
+import * as LOID from '../../src/types/list-owner-id.js';
+import { ListId } from '../../src/types/list-id.js';
+import { listCodec } from '../../src/types/codecs/owned-by-query-codec.js';
 
 const responseCodec = t.type({
   data: t.type({

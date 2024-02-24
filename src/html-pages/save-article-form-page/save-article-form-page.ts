@@ -2,14 +2,14 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { renderAsHtml } from './render-as-html';
-import { constructViewModel } from './construct-view-model';
-import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { paramsCodec } from './params';
-import { Dependencies } from './dependencies';
-import { ConstructPage } from '../construct-page';
-import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
+import { renderAsHtml } from './render-as-html.js';
+import { constructViewModel } from './construct-view-model.js';
+import * as DE from '../../types/data-error.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { paramsCodec } from './params.js';
+import { Dependencies } from './dependencies.js';
+import { ConstructPage } from '../construct-page.js';
+import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model.js';
 
 export const saveArticleFormPage = (
   dependencies: Dependencies,

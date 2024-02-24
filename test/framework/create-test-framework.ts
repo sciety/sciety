@@ -1,10 +1,10 @@
-import { createReadAndWriteSides, ReadAndWriteSides } from './create-read-and-write-sides';
-import { CommandHelpers, createCommandHelpers } from './create-command-helpers';
-import { createHappyPathThirdPartyAdapters, HappyPathThirdPartyAdapters } from './happy-path-third-party-adapters';
-import { AbortTest, abortTest } from './abort-test';
-import { Logger } from '../../src/infrastructure';
-import { Queries } from '../../src/read-models';
-import { dummyLogger } from '../dummy-logger';
+import { createReadAndWriteSides, ReadAndWriteSides } from './create-read-and-write-sides.js';
+import { CommandHelpers, createCommandHelpers } from './create-command-helpers.js';
+import { createHappyPathThirdPartyAdapters, HappyPathThirdPartyAdapters } from './happy-path-third-party-adapters.js';
+import { AbortTest, abortTest } from './abort-test.js';
+import { Logger } from '../../src/infrastructure/index.js';
+import { Queries } from '../../src/read-models/index.js';
+import { dummyLogger } from '../dummy-logger.js';
 
 export type TestFramework = ReadAndWriteSides & {
   abortTest: AbortTest,

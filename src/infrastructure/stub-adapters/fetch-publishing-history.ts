@@ -3,10 +3,10 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
-import * as DE from '../../types/data-error';
-import { ExternalQueries } from '../../third-parties';
-import * as PH from '../../types/publishing-history';
-import { PaperExpression } from '../../types/paper-expression';
+import * as DE from '../../types/data-error.js';
+import { ExternalQueries } from '../../third-parties/index.js';
+import * as PH from '../../types/publishing-history.js';
+import { PaperExpression } from '../../types/paper-expression.js';
 
 export const fetchPublishingHistory: ExternalQueries['fetchPublishingHistory'] = (expressionDoi) => pipe(
   [

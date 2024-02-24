@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { renderGroupLinkWithLogo } from '../../../shared-components/group-link';
-import { renderListItems } from '../../../shared-components/render-list-items';
+import { ViewModel } from '../view-model.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { renderGroupLinkWithLogo } from '../../../shared-components/group-link/index.js';
+import { renderListItems } from '../../../shared-components/render-list-items.js';
 
 export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): HtmlFragment => (relatedGroups.tag === 'some-related-groups'
   ? pipe(

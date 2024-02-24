@@ -1,5 +1,5 @@
-import { toHtmlFragment } from '../../src/types/html-fragment';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
+import { toHtmlFragment } from '../../src/types/html-fragment.js';
+import { sanitise } from '../../src/types/sanitised-html-fragment.js';
 
 describe('sanitise', () => {
   it('cleans up mismatched HTML tags', () => {

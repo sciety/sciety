@@ -2,8 +2,8 @@ import { DOMParser } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import {
   getAbstract, getAuthors, getServer, getTitle,
-} from '../../../src/third-parties/crossref/parse-crossref-article';
-import { arbitraryUri } from '../../helpers';
+} from '../../../src/third-parties/crossref/parse-crossref-article.js';
+import { arbitraryUri } from '../../helpers.js';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>

@@ -5,12 +5,12 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import * as DE from '../../types/data-error';
-import { Logger } from '../../infrastructure';
-import { constructQueryUrl } from './construct-query-url';
-import { QueryExternalService } from '../query-external-service';
-import { ExternalQueries } from '../external-queries';
-import { expressionDoiCodec } from '../../types/expression-doi';
+import * as DE from '../../types/data-error.js';
+import { Logger } from '../../infrastructure/index.js';
+import { constructQueryUrl } from './construct-query-url.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { ExternalQueries } from '../external-queries.js';
+import { expressionDoiCodec } from '../../types/expression-doi.js';
 
 const itemFromJson = t.type({
   doi: expressionDoiCodec,

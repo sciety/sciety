@@ -2,9 +2,9 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as Eq from 'fp-ts/Eq';
 import * as S from 'fp-ts/string';
-import { ReadModel } from './handle-event';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { ExpressionDoi } from '../../types/expression-doi';
+import { ReadModel } from './handle-event.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
+import { ExpressionDoi } from '../../types/expression-doi.js';
 
 const eqEntry: Eq.Eq<RecordedEvaluation> = Eq.struct({
   evaluationLocator: S.Eq,

@@ -6,15 +6,15 @@ import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import {
   getAbstract, getAuthors, getTitle,
-} from './parse-crossref-article';
-import { Logger } from '../../infrastructure';
-import { ArticleAuthors } from '../../types/article-authors';
-import * as DE from '../../types/data-error';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { QueryExternalService } from '../query-external-service';
-import { ExternalQueries } from '../external-queries';
-import { ExpressionDoi } from '../../types/expression-doi';
-import { decodeAndLogFailures } from '../decode-and-log-failures';
+} from './parse-crossref-article.js';
+import { Logger } from '../../infrastructure/index.js';
+import { ArticleAuthors } from '../../types/article-authors.js';
+import * as DE from '../../types/data-error.js';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { ExternalQueries } from '../external-queries.js';
+import { ExpressionDoi } from '../../types/expression-doi.js';
+import { decodeAndLogFailures } from '../decode-and-log-failures.js';
 
 const parseResponseAndConstructDomainObject = (document: string, logger: Logger, expressionDoi: ExpressionDoi) => {
   if (document.length === 0) {

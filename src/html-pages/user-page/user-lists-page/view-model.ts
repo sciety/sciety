@@ -1,6 +1,6 @@
-import { ListCardViewModel } from '../../../shared-components/list-card';
-import { GroupId } from '../../../types/group-id';
-import { UserDetails } from '../../../types/user-details';
+import { ListCardViewModel } from '../../../shared-components/list-card/index.js';
+import { GroupId } from '../../../types/group-id.js';
+import { UserDetails } from '../../../types/user-details.js';
 
 export type ListsTab = {
   ownedLists: ReadonlyArray<ListCardViewModel>,

@@ -8,9 +8,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import axiosRetry, { exponentialDelay } from 'axios-retry';
-import { fetchData, FetchData } from './fetch-data';
-import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
-import { FeedData } from './types/feed-data';
+import { fetchData, FetchData } from './fetch-data.js';
+import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet.js';
+import { FeedData } from './types/feed-data.js';
 
 type Adapters = {
   fetchData: FetchData,

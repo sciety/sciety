@@ -1,2 +1,2 @@
-export { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory';
-export { ResponseBodyCachePredicate } from './cached-getter';
+export { CachingFetcherOptions, createCachingFetcher } from './caching-fetcher-factory.js';
+export { ResponseBodyCachePredicate } from './cached-getter.js';

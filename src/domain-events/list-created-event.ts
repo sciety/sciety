@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { listIdCodec } from '../types/list-id';
-import * as LOID from '../types/list-owner-id';
+import { EventIdFromString } from '../types/codecs/EventIdFromString.js';
+import { listIdCodec } from '../types/list-id.js';
+import * as LOID from '../types/list-owner-id.js';
 
 export const listCreatedEventCodec = t.type({
   id: EventIdFromString,

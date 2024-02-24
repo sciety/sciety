@@ -10,6 +10,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:fp-ts/all',
+    'plugin:require-extensions/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -20,6 +21,7 @@ module.exports = {
     'node',
     'no-loops',
     'unused-imports',
+    'require-extensions',
   ],
   root: true,
   rules: {

@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as GID from '../../types/group-id';
-import { Queries } from '../../read-models';
-import { Logger } from '../../infrastructure';
-import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
-import { GroupLinkAsTextViewModel } from './group-link-as-text-view-model';
+import * as GID from '../../types/group-id.js';
+import { Queries } from '../../read-models/index.js';
+import { Logger } from '../../infrastructure/index.js';
+import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model.js';
+import { GroupLinkAsTextViewModel } from './group-link-as-text-view-model.js';
 
 export type ConstructGroupLinkDependencies = Queries & { logger: Logger };
 

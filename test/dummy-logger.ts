@@ -1,4 +1,4 @@
-import * as L from '../src/infrastructure/logger';
+import * as L from '../src/infrastructure/logger/index.js';
 
 const loggerStub: L.Logger = (process.env.TEST_DEBUG === 'true') ? (
   L.createLogger({

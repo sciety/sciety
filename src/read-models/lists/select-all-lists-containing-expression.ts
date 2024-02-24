@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
-import { List } from './list';
-import { ExpressionDoi } from '../../types/expression-doi';
+import { ReadModel } from './handle-event.js';
+import { List } from './list.js';
+import { ExpressionDoi } from '../../types/expression-doi.js';
 
 const isListContaining = (expressionDoi: ExpressionDoi) => (list: List) => pipe(
   list.entries,

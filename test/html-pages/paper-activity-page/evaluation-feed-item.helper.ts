@@ -1,11 +1,11 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { EvaluationPublishedFeedItem } from '../../../src/html-pages/paper-activity-page/view-model';
-import { toHtmlFragment } from '../../../src/types/html-fragment';
-import { sanitise } from '../../../src/types/sanitised-html-fragment';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { EvaluationPublishedFeedItem } from '../../../src/html-pages/paper-activity-page/view-model.js';
+import { toHtmlFragment } from '../../../src/types/html-fragment.js';
+import { sanitise } from '../../../src/types/sanitised-html-fragment.js';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
 
 export const arbitrary = (): EvaluationPublishedFeedItem => ({
   type: 'evaluation-published',

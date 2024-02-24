@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { renderListItems } from '../../../shared-components/render-list-items';
-import { renderLegacyPaginationControls } from '../../../shared-components/pagination';
-import { supplementaryCard } from '../../../shared-components/supplementary-card';
-import { supplementaryInfo } from '../../../shared-components/supplementary-info';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ViewModel } from '../view-model';
-import { renderScietyFeedCard } from './render-sciety-feed-card';
+import { renderListItems } from '../../../shared-components/render-list-items.js';
+import { renderLegacyPaginationControls } from '../../../shared-components/pagination/index.js';
+import { supplementaryCard } from '../../../shared-components/supplementary-card.js';
+import { supplementaryInfo } from '../../../shared-components/supplementary-info.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ViewModel } from '../view-model.js';
+import { renderScietyFeedCard } from './render-sciety-feed-card.js';
 
 const supplementaryItems = [
   supplementaryCard(

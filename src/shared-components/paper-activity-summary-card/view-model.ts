@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
-import { ArticleAuthors } from '../../types/article-authors';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { LanguageCode } from '../lang-attribute';
-import { GroupLinkAsTextViewModel } from '../group-link';
+import { ArticleAuthors } from '../../types/article-authors.js';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment.js';
+import { LanguageCode } from '../lang-attribute/index.js';
+import { GroupLinkAsTextViewModel } from '../group-link/index.js';
 
 type CurationStatementTeaserViewModel = {
   groupPageHref: string,

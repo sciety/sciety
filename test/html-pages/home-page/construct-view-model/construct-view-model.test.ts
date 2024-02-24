@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { constructViewModel } from '../../../../src/html-pages/home-page/construct-view-model/construct-view-model';
-import { ViewModel } from '../../../../src/html-pages/home-page/view-model';
-import { arbitraryString } from '../../../helpers';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import { constructViewModel } from '../../../../src/html-pages/home-page/construct-view-model/construct-view-model.js';
+import { ViewModel } from '../../../../src/html-pages/home-page/view-model.js';
+import { arbitraryString } from '../../../helpers.js';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper.js';
+import { arbitraryGroupId } from '../../../types/group-id.helper.js';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

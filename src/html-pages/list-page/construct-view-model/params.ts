@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { listIdCodec } from '../../../types/list-id';
-import { userIdCodec } from '../../../types/user-id';
-import { inputFieldNames } from '../../../standards';
+import { listIdCodec } from '../../../types/list-id.js';
+import { userIdCodec } from '../../../types/user-id.js';
+import { inputFieldNames } from '../../../standards/index.js';
 
 export const paramsCodec = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),

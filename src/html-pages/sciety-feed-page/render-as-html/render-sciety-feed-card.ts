@@ -1,8 +1,8 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
-import { templateDate } from '../../../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ScietyFeedCard } from '../view-model';
+import { templateDate } from '../../../shared-components/date.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ScietyFeedCard } from '../view-model.js';
 
 export const renderScietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment => pipe(
   viewModel.details,

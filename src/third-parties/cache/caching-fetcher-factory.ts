@@ -9,13 +9,13 @@ import {
   buildMemoryStorage,
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
-import { logAndTransformToDataError } from '../log-and-transform-to-data-error';
-import { Logger } from '../../infrastructure';
-import { LevelName } from '../../infrastructure/logger';
-import { QueryExternalService } from '../query-external-service';
-import { redisStorage } from './redis-storage';
-import { cachedGetter, ResponseBodyCachePredicate } from './cached-getter';
-import { generateUrlBasedKey } from './generate-url-based-key';
+import { logAndTransformToDataError } from '../log-and-transform-to-data-error.js';
+import { Logger } from '../../infrastructure/index.js';
+import { LevelName } from '../../infrastructure/logger/index.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { redisStorage } from './redis-storage.js';
+import { cachedGetter, ResponseBodyCachePredicate } from './cached-getter.js';
+import { generateUrlBasedKey } from './generate-url-based-key.js';
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 

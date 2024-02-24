@@ -2,13 +2,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { createTestFramework, TestFramework } from '../../framework';
-import * as LOID from '../../../src/types/list-owner-id';
-import { constructViewModel } from '../../../src/views/list/construct-view-model';
-import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { createTestFramework, TestFramework } from '../../framework/index.js';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { constructViewModel } from '../../../src/views/list/construct-view-model/index.js';
+import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
+import { ArticleId } from '../../../src/types/article-id.js';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

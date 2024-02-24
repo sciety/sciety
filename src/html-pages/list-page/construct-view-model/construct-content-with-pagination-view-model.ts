@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { toPageOfCards } from './to-page-of-cards';
-import { paginate } from '../../../shared-components/pagination';
-import * as DE from '../../../types/data-error';
-import { ContentWithPaginationViewModel } from '../view-model';
-import { ListId } from '../../../types/list-id';
-import { Dependencies } from './dependencies';
-import { ExpressionDoi } from '../../../types/expression-doi';
+import { toPageOfCards } from './to-page-of-cards.js';
+import { paginate } from '../../../shared-components/pagination/index.js';
+import * as DE from '../../../types/data-error.js';
+import { ContentWithPaginationViewModel } from '../view-model.js';
+import { ListId } from '../../../types/list-id.js';
+import { Dependencies } from './dependencies.js';
+import { ExpressionDoi } from '../../../types/expression-doi.js';
 
 const constructPaginationControlsViewModel = (nextPageNumber: O.Option<number>, basePath: string) => ({
   nextPageHref: pipe(

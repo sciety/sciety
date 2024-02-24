@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { Group } from '../../../types/group';
-import * as LOID from '../../../types/list-owner-id';
-import { Queries } from '../../../read-models';
+import { Group } from '../../../types/group.js';
+import * as LOID from '../../../types/list-owner-id.js';
+import { Queries } from '../../../read-models/index.js';
 
 export type TabsViewModel = {
   groupSlug: string,

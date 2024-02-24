@@ -1,5 +1,5 @@
-import * as DE from './data-error';
-import { HtmlFragment } from './html-fragment';
+import * as DE from './data-error.js';
+import { HtmlFragment } from './html-fragment.js';
 
 export type ErrorPageBodyViewModel = {
   tag: 'error-page-body-view-model',

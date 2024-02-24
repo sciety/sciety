@@ -1,27 +1,27 @@
 import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as listResource from '../../src/write-side/resources/list';
-import { dispatcher, Queries } from '../../src/read-models';
-import * as groupResource from '../../src/write-side/resources/group';
-import * as evaluationResource from '../../src/write-side/resources/evaluation';
-import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
-import { followCommandHandler } from '../../src/write-side/command-handlers/follow-command-handler';
+import * as listResource from '../../src/write-side/resources/list/index.js';
+import { dispatcher, Queries } from '../../src/read-models/index.js';
+import * as groupResource from '../../src/write-side/resources/group/index.js';
+import * as evaluationResource from '../../src/write-side/resources/evaluation/index.js';
+import { GetAllEvents, CommitEvents } from '../../src/shared-ports/index.js';
+import { followCommandHandler } from '../../src/write-side/command-handlers/follow-command-handler.js';
 import {
   updateUserDetailsCommandHandler,
   recordEvaluationPublicationCommandHandler,
   createListCommandHandler,
   removeArticleFromListCommandHandler,
   createUserAccountCommandHandler,
-} from '../../src/write-side/command-handlers';
-import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler';
-import { CommandHandler } from '../../src/write-side/command-handlers/command-handler';
+} from '../../src/write-side/command-handlers/index.js';
+import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler.js';
+import { CommandHandler } from '../../src/write-side/command-handlers/command-handler.js';
 import {
   AddGroupCommand, AnnotateArticleInListCommand, UpdateEvaluationCommand, UpdateGroupDetailsCommand,
-} from '../../src/write-side/commands';
-import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
-import { createInMemoryEventStore } from './create-in-memory-event-store';
-import { dummyLogger } from '../dummy-logger';
+} from '../../src/write-side/commands/index.js';
+import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler.js';
+import { createInMemoryEventStore } from './create-in-memory-event-store.js';
+import { dummyLogger } from '../dummy-logger.js';
 
 type EventStore = {
   getAllEvents: GetAllEvents,

@@ -1,13 +1,13 @@
-import { renderFeed } from './render-feed';
-import { renderUserListManagement } from './render-user-list-management';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ViewModel } from '../view-model';
-import { renderListedIn } from './render-listed-in';
-import { renderRelatedArticles } from './render-related-articles';
-import { renderLangAttribute } from '../../../shared-components/lang-attribute';
-import { renderHeader } from './render-header';
-import { renderRelatedArticlesLink } from './render-related-articles-link';
-import { renderReviewingGroups } from './render-reviewing-groups';
+import { renderFeed } from './render-feed.js';
+import { renderUserListManagement } from './render-user-list-management.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ViewModel } from '../view-model.js';
+import { renderListedIn } from './render-listed-in.js';
+import { renderRelatedArticles } from './render-related-articles.js';
+import { renderLangAttribute } from '../../../shared-components/lang-attribute/index.js';
+import { renderHeader } from './render-header.js';
+import { renderRelatedArticlesLink } from './render-related-articles-link.js';
+import { renderReviewingGroups } from './render-reviewing-groups.js';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <div class="article-page-wrapper">

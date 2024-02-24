@@ -1,4 +1,4 @@
-import { Group } from '../../types/group';
+import { Group } from '../../types/group.js';
 
 type ObjectWithGroupSlug = Pick<Group, 'slug'>;
 

@@ -1,7 +1,7 @@
-import { arbitraryUserId } from './user-id.helper';
-import { UserDetails } from '../../src/types/user-details';
-import { arbitraryString, arbitraryUri } from '../helpers';
-import { arbitraryUserHandle } from './user-handle.helper';
+import { arbitraryUserId } from './user-id.helper.js';
+import { UserDetails } from '../../src/types/user-details.js';
+import { arbitraryString, arbitraryUri } from '../helpers.js';
+import { arbitraryUserHandle } from './user-handle.helper.js';
 
 export const arbitraryUserDetails = (): UserDetails => ({
   id: arbitraryUserId(),

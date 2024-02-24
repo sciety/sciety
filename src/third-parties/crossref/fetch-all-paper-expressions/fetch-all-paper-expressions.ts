@@ -2,12 +2,12 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { PaperExpression } from '../../../types/paper-expression';
-import * as DE from '../../../types/data-error';
-import { Logger } from '../../../infrastructure';
-import { QueryCrossrefService } from './query-crossref-service';
-import { toPaperExpression } from './to-paper-expression';
-import { walkRelationGraph } from './walk-relation-graph';
+import { PaperExpression } from '../../../types/paper-expression.js';
+import * as DE from '../../../types/data-error.js';
+import { Logger } from '../../../infrastructure/index.js';
+import { QueryCrossrefService } from './query-crossref-service.js';
+import { toPaperExpression } from './to-paper-expression.js';
+import { walkRelationGraph } from './walk-relation-graph.js';
 
 const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: PaperExpression) => {
   if (O.isNone(expression.server)) {

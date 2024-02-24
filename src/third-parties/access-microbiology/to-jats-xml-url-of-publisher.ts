@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { AcmiEvaluationDoi } from './acmi-evaluation-doi';
+import { AcmiEvaluationDoi } from './acmi-evaluation-doi.js';
 
 export const toJatsXmlUrlOfPublisher = (key: AcmiEvaluationDoi): O.Option<string> => {
   if (key === '10.1099/acmi.0.000530.v1.3') {

@@ -6,9 +6,9 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { FetchData } from './fetch-data';
-import { FetchEvaluations } from './update-all';
-import * as AID from '../types/article-id';
+import { FetchData } from './fetch-data.js';
+import { FetchEvaluations } from './update-all.js';
+import * as AID from '../types/article-id.js';
 
 type Ports = {
   fetchData: FetchData,

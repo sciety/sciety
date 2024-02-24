@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { ExternalQueries } from '../../third-parties';
+import { ExternalQueries } from '../../third-parties/index.js';
 
 export const fetchStaticFile: ExternalQueries['fetchStaticFile'] = () => TE.right(`
 <div lang="pt">

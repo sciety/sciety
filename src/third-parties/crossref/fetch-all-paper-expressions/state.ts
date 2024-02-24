@@ -1,4 +1,4 @@
-import { CrossrefWork } from './crossref-work';
+import { CrossrefWork } from './crossref-work.js';
 
 export type State = {
   queue: ReadonlyArray<string>,

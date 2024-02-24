@@ -1,1 +1,1 @@
-export { Logger, replaceError } from './logger';
+export { Logger, replaceError } from './logger/index.js';

@@ -2,10 +2,10 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
-import { listIdCodec } from '../../../types/list-id';
-import { Queries } from '../../../read-models';
-import { ViewModel } from '../view-model';
-import * as DE from '../../../types/data-error';
+import { listIdCodec } from '../../../types/list-id.js';
+import { Queries } from '../../../read-models/index.js';
+import { ViewModel } from '../view-model.js';
+import * as DE from '../../../types/data-error.js';
 
 const codec = t.strict({
   listId: listIdCodec,

@@ -4,15 +4,15 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
-import { Queries } from '../../read-models';
-import { ExternalQueries } from '../../third-parties';
-import { ViewModel, UnrecoverableError } from './view-model';
-import { DataError } from '../../types/data-error';
-import * as DE from '../../types/data-error';
-import { ArticleId } from '../../types/article-id';
-import { ListId } from '../../types/list-id';
-import { toHtmlFragment } from '../../types/html-fragment';
-import * as EDOI from '../../types/expression-doi';
+import { Queries } from '../../read-models/index.js';
+import { ExternalQueries } from '../../third-parties/index.js';
+import { ViewModel, UnrecoverableError } from './view-model.js';
+import { DataError } from '../../types/data-error.js';
+import * as DE from '../../types/data-error.js';
+import { ArticleId } from '../../types/article-id.js';
+import { ListId } from '../../types/list-id.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import * as EDOI from '../../types/expression-doi.js';
 
 export type Dependencies = Queries & ExternalQueries;
 

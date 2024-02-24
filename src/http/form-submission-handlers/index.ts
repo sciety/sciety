@@ -1,1 +1,1 @@
-export { configureRoutes } from './configure-routes';
+export { configureRoutes } from './configure-routes.js';

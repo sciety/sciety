@@ -1,6 +1,6 @@
-import { GetAllEvents } from '../../../shared-ports';
-import { Queries } from '../../../read-models';
-import { Logger } from '../../../infrastructure';
+import { GetAllEvents } from '../../../shared-ports/index.js';
+import { Queries } from '../../../read-models/index.js';
+import { Logger } from '../../../infrastructure/index.js';
 
 export type Dependencies = Queries & {
   getAllEvents: GetAllEvents,

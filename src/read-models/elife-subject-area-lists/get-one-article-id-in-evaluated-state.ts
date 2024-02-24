@@ -2,8 +2,8 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
-import * as EDOI from '../../types/expression-doi';
+import { ReadModel } from './handle-event.js';
+import * as EDOI from '../../types/expression-doi.js';
 
 type GetOneArticleIdInEvaluatedState = () => O.Option<EDOI.ExpressionDoi>;
 

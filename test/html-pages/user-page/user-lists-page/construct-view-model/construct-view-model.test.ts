@@ -1,16 +1,16 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CandidateUserHandle } from '../../../../../src/types/candidate-user-handle';
-import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { TestFramework, createTestFramework } from '../../../../framework';
-import * as LOID from '../../../../../src/types/list-owner-id';
-import { List } from '../../../../../src/read-models/lists';
-import { constructViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model';
-import { ViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/view-model';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
-import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
+import { CandidateUserHandle } from '../../../../../src/types/candidate-user-handle.js';
+import { shouldNotBeCalled } from '../../../../should-not-be-called.js';
+import { TestFramework, createTestFramework } from '../../../../framework/index.js';
+import * as LOID from '../../../../../src/types/list-owner-id.js';
+import { List } from '../../../../../src/read-models/lists/index.js';
+import { constructViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model/index.js';
+import { ViewModel } from '../../../../../src/html-pages/user-page/user-lists-page/view-model.js';
+import { arbitraryArticleId } from '../../../../types/article-id.helper.js';
+import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper.js';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper.js';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

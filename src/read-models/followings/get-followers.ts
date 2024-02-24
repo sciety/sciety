@@ -1,9 +1,9 @@
 import * as R from 'fp-ts/Record';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
-import { GroupId } from '../../types/group-id';
-import { UserId } from '../../types/user-id';
+import { ReadModel } from './handle-event.js';
+import { GroupId } from '../../types/group-id.js';
+import { UserId } from '../../types/user-id.js';
 
 type GetFollowers = (groupId: GroupId) => ReadonlyArray<UserId>;
 

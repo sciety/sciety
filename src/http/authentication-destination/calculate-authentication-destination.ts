@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { Logger } from '../../infrastructure';
+import { Logger } from '../../infrastructure/index.js';
 
 export const defaultDestination = '/';
 

@@ -1,5 +1,5 @@
-import { ColdSpringHarborServer } from '../../src/third-parties/cold-spring-harbor-server';
-import { arbitraryNumber } from '../helpers';
+import { ColdSpringHarborServer } from '../../src/third-parties/cold-spring-harbor-server.js';
+import { arbitraryNumber } from '../helpers.js';
 
 export const arbitraryColdSpringHarborArticleServer = (): ColdSpringHarborServer => {
   const articleServers: ReadonlyArray<ColdSpringHarborServer> = [

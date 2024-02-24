@@ -2,8 +2,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { groupIngestionConfigurations } from './group-ingestion-configurations';
-import { GroupIngestionConfiguration, updateAll } from './update-all';
+import { groupIngestionConfigurations } from './group-ingestion-configurations.js';
+import { GroupIngestionConfiguration, updateAll } from './update-all.js';
 
 const shouldUpdate = (group: GroupIngestionConfiguration) => {
   const pattern = process.env.INGEST_ONLY;

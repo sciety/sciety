@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, isEventOfType } from '../../domain-events';
-import { UserDetails } from '../../types/user-details';
-import { UserId } from '../../types/user-id';
+import { DomainEvent, isEventOfType } from '../../domain-events/index.js';
+import { UserDetails } from '../../types/user-details.js';
+import { UserId } from '../../types/user-id.js';
 
 export type ReadModel = Record<UserId, UserDetails>;
 

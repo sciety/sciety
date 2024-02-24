@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { ReadModel } from './handle-event';
-import { CandidateUserHandle } from '../../types/candidate-user-handle';
-import { UserDetails } from '../../types/user-details';
+import { ReadModel } from './handle-event.js';
+import { CandidateUserHandle } from '../../types/candidate-user-handle.js';
+import { UserDetails } from '../../types/user-details.js';
 
 type LookupUserByHandle = (handle: CandidateUserHandle) => O.Option<UserDetails>;
 

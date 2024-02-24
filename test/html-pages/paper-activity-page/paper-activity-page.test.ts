@@ -1,16 +1,16 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { TestFramework, createTestFramework } from '../../framework';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
-import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
-import { paperActivityPage } from '../../../src/html-pages/paper-activity-page/paper-activity-page';
-import * as EDOI from '../../../src/types/expression-doi';
-import { paperActivityPagePath } from '../../../src/standards';
-import { toRedirectTarget } from '../../../src/html-pages/redirect-target';
-import { HtmlPage } from '../../../src/html-pages/html-page';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
+import { TestFramework, createTestFramework } from '../../framework/index.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper.js';
+import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies.js';
+import { paperActivityPage } from '../../../src/html-pages/paper-activity-page/paper-activity-page.js';
+import * as EDOI from '../../../src/types/expression-doi.js';
+import { paperActivityPagePath } from '../../../src/standards/index.js';
+import { toRedirectTarget } from '../../../src/html-pages/redirect-target.js';
+import { HtmlPage } from '../../../src/html-pages/html-page.js';
 
 const getDecision = async (inputExpressionDoi: string, dependencies: Dependencies) => pipe(
   {

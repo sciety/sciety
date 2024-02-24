@@ -2,11 +2,11 @@ import * as t from 'io-ts';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../../types/data-error';
-import { Logger } from '../../../infrastructure';
-import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
-import { QueryCrossrefService } from './query-crossref-service';
-import { decodeAndLogFailures } from '../../decode-and-log-failures';
+import * as DE from '../../../types/data-error.js';
+import { Logger } from '../../../infrastructure/index.js';
+import { CrossrefWork, crossrefWorkCodec } from './crossref-work.js';
+import { QueryCrossrefService } from './query-crossref-service.js';
+import { decodeAndLogFailures } from '../../decode-and-log-failures.js';
 
 const crossrefIndividualWorkResponseCodec = t.strict({
   message: crossrefWorkCodec,

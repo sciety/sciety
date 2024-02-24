@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
-import { articleIdCodec } from '../../types/article-id';
-import { listIdCodec } from '../../types/list-id';
-import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
+import { articleIdCodec } from '../../types/article-id.js';
+import { listIdCodec } from '../../types/list-id.js';
+import { unsafeUserInputCodec } from '../../types/unsafe-user-input.js';
 
 export const addArticleToListCommandCodec = t.intersection([
   t.strict({

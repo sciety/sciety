@@ -1,4 +1,4 @@
-import { LevelName, Payload } from './types';
+import { LevelName, Payload } from './types.js';
 
 type Entry = {
   timestamp: Date,

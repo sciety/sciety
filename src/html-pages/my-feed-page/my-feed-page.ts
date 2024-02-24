@@ -5,12 +5,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { myFeed, Dependencies } from './my-feed';
-import { renderPage } from './render-page';
-import { renderPageHeader } from './render-page-header';
-import { userIdCodec } from '../../types/user-id';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
+import { myFeed, Dependencies } from './my-feed/index.js';
+import { renderPage } from './render-page.js';
+import { renderPageHeader } from './render-page-header.js';
+import { userIdCodec } from '../../types/user-id.js';
+import { toHtmlFragment } from '../../types/html-fragment.js';
+import { HtmlPage } from '../html-page.js';
 
 export const myFeedParams = t.type({
   page: tt.withFallback(tt.NumberFromString, 1),

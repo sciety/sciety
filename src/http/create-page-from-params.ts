@@ -2,10 +2,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
-import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../types/error-page-body-view-model';
-import { HtmlPage } from '../html-pages/html-page';
-import * as DE from '../types/data-error';
-import { toHtmlFragment } from '../types/html-fragment';
+import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../types/error-page-body-view-model.js';
+import { HtmlPage } from '../html-pages/html-page.js';
+import * as DE from '../types/data-error.js';
+import { toHtmlFragment } from '../types/html-fragment.js';
 
 const toNotFound = () => toErrorPageBodyViewModel({
   type: DE.notFound,

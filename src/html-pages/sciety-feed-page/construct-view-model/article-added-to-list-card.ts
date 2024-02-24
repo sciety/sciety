@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { addListOwnershipInformation } from './add-list-ownership-information';
-import { ScietyFeedCard } from '../view-model';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { EventOfType } from '../../../domain-events';
-import { Dependencies } from './dependencies';
+import { addListOwnershipInformation } from './add-list-ownership-information.js';
+import { ScietyFeedCard } from '../view-model.js';
+import { toHtmlFragment } from '../../../types/html-fragment.js';
+import { EventOfType } from '../../../domain-events/index.js';
+import { Dependencies } from './dependencies.js';
 
 type ArticleAddedToListCard = (
   dependencies: Dependencies,

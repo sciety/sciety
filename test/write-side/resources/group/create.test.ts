@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { create } from '../../../../src/write-side/resources/group/create';
-import { constructEvent, EventOfType } from '../../../../src/domain-events';
-import { arbitraryString, arbitraryWord } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryGroup } from '../../../types/group.helper';
+import { create } from '../../../../src/write-side/resources/group/create.js';
+import { constructEvent, EventOfType } from '../../../../src/domain-events/index.js';
+import { arbitraryString, arbitraryWord } from '../../../helpers.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { arbitraryGroupId } from '../../../types/group-id.helper.js';
+import * as LOID from '../../../../src/types/list-owner-id.js';
+import { arbitraryGroup } from '../../../types/group.helper.js';
 
 describe('create', () => {
   const newGroup = arbitraryGroup();

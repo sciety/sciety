@@ -1,2 +1,2 @@
-export { evaluationContent } from './evaluation-content';
-export { paramsCodec } from './params';
+export { evaluationContent } from './evaluation-content.js';
+export { paramsCodec } from './params.js';

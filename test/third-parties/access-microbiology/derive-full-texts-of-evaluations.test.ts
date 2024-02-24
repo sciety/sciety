@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { deriveFullTextsOfEvaluations } from '../../../src/third-parties/access-microbiology/derive-full-texts-of-evaluations';
-import { abortTest } from '../../framework/abort-test';
-import { arbitraryWord } from '../../helpers';
-import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
-import { dummyLogger } from '../../dummy-logger';
+import { deriveFullTextsOfEvaluations } from '../../../src/third-parties/access-microbiology/derive-full-texts-of-evaluations.js';
+import { abortTest } from '../../framework/abort-test.js';
+import { arbitraryWord } from '../../helpers.js';
+import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment.js';
+import { dummyLogger } from '../../dummy-logger.js';
 
 describe('derive-full-texts-of-evaluations', () => {
   describe('given an input that is not a string', () => {

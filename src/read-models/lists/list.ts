@@ -5,9 +5,9 @@ import * as Ord from 'fp-ts/Ord';
 import * as S from 'fp-ts/string';
 import * as EQ from 'fp-ts/Eq';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ListId } from '../../types/list-id';
-import { ListOwnerId } from '../../types/list-owner-id';
-import { ExpressionDoi } from '../../types/expression-doi';
+import { ListId } from '../../types/list-id.js';
+import { ListOwnerId } from '../../types/list-owner-id.js';
+import { ExpressionDoi } from '../../types/expression-doi.js';
 
 export const byUpdatedAt: Ord.Ord<List> = pipe(
   D.Ord,

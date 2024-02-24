@@ -1,14 +1,14 @@
 /* eslint-disable jest/no-commented-out-tests */
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { UpdateGroupDetailsCommand } from '../../../../src/write-side/commands/update-group-details';
-import * as groupResource from '../../../../src/write-side/resources/group';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
-import { DomainEvent, constructEvent } from '../../../../src/domain-events';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
-import { GroupId } from '../../../../src/types/group-id';
+import { UpdateGroupDetailsCommand } from '../../../../src/write-side/commands/update-group-details.js';
+import * as groupResource from '../../../../src/write-side/resources/group/index.js';
+import { shouldNotBeCalled } from '../../../should-not-be-called.js';
+import { arbitraryString, arbitraryUri } from '../../../helpers.js';
+import { DomainEvent, constructEvent } from '../../../../src/domain-events/index.js';
+import { arbitraryGroupId } from '../../../types/group-id.helper.js';
+import { arbitraryDescriptionPath } from '../../../types/description-path.helper.js';
+import { GroupId } from '../../../../src/types/group-id.js';
 
 const expectEvent = (fields: Record<string, unknown>) => ({
   id: expect.any(String),

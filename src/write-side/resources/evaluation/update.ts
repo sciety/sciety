@@ -4,13 +4,13 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import {
   EventOfType, constructEvent, DomainEvent, isEventOfType,
-} from '../../../domain-events';
-import { ResourceAction } from '../resource-action';
-import { UpdateEvaluationCommand } from '../../commands';
-import { EvaluationLocator } from '../../../types/evaluation-locator';
-import { evaluationResourceError } from './evaluation-resource-error';
-import { EvaluationType } from '../../../types/recorded-evaluation';
-import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
+} from '../../../domain-events/index.js';
+import { ResourceAction } from '../resource-action.js';
+import { UpdateEvaluationCommand } from '../../commands/index.js';
+import { EvaluationLocator } from '../../../types/evaluation-locator.js';
+import { evaluationResourceError } from './evaluation-resource-error.js';
+import { EvaluationType } from '../../../types/recorded-evaluation.js';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message.js';
 
 type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 

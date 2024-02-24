@@ -1,15 +1,15 @@
 import * as O from 'fp-ts/Option';
-import { TestFramework, createTestFramework } from '../../../framework';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { List } from '../../../../src/read-models/lists';
-import { constructViewModel } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
-import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { dummyLogger } from '../../../dummy-logger';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model-with-avatar';
-import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { TestFramework, createTestFramework } from '../../../framework/index.js';
+import * as LOID from '../../../../src/types/list-owner-id.js';
+import { List } from '../../../../src/read-models/lists/index.js';
+import { constructViewModel } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model.js';
+import { ViewModel } from '../../../../src/html-pages/lists-page/view-model.js';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { dummyLogger } from '../../../dummy-logger.js';
+import { arbitraryUserId } from '../../../types/user-id.helper.js';
+import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model-with-avatar.js';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper.js';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper.js';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

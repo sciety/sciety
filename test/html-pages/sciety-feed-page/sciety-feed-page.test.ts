@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { constructViewModel } from '../../../src/html-pages/sciety-feed-page/construct-view-model';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryArticleId } from '../../types/article-id.helper.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
+import { TestFramework, createTestFramework } from '../../framework/index.js';
+import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper.js';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper.js';
+import { constructViewModel } from '../../../src/html-pages/sciety-feed-page/construct-view-model/index.js';
 
 describe('sciety-feed-page', () => {
   const addGroupCommand = arbitraryAddGroupCommand();

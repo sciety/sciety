@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { userIdCodec } from '../types/user-id';
-import { userHandleCodec } from '../types/user-handle';
+import { EventIdFromString } from '../types/codecs/EventIdFromString.js';
+import { userIdCodec } from '../types/user-id.js';
+import { userHandleCodec } from '../types/user-handle.js';
 
 export const userCreatedAccountEventCodec = t.type({
   id: EventIdFromString,

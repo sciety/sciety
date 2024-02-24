@@ -1,4 +1,4 @@
-import { UnsafeUserInput } from '../../../types/unsafe-user-input';
+import { UnsafeUserInput } from '../../../types/unsafe-user-input.js';
 
 export const isAnnotationLengthValid = (
   annotationContent: UnsafeUserInput,

@@ -1,2 +1,2 @@
-export { ExternalQueries } from './external-queries';
-export { instantiate } from './instantiate';
+export { ExternalQueries } from './external-queries.js';
+export { instantiate } from './instantiate.js';

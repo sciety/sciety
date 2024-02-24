@@ -1,14 +1,14 @@
 import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
-import { CollectedPorts } from '../../collected-ports';
-import { requireLoggedInUser } from '../require-logged-in-user';
-import { followHandler } from './follow-handler';
-import { unfollowHandler } from './unfollow-handler';
-import { saveArticleHandler } from './save-article-handler';
-import { removeArticleFromListHandler } from './remove-article-from-list-handler';
-import { editListDetailsHandler } from './edit-list-details-handler';
-import { createListHandler } from './create-list-handler';
-import { createAnnotationHandler } from './create-annotation-handler';
+import { CollectedPorts } from '../../collected-ports.js';
+import { requireLoggedInUser } from '../require-logged-in-user.js';
+import { followHandler } from './follow-handler.js';
+import { unfollowHandler } from './unfollow-handler.js';
+import { saveArticleHandler } from './save-article-handler.js';
+import { removeArticleFromListHandler } from './remove-article-from-list-handler.js';
+import { editListDetailsHandler } from './edit-list-details-handler.js';
+import { createListHandler } from './create-list-handler.js';
+import { createAnnotationHandler } from './create-annotation-handler.js';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
   router.post(

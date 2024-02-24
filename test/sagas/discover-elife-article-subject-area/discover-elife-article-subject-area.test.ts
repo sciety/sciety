@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { dummyLogger } from '../../dummy-logger';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDataError } from '../../types/data-error.helper';
-import { arbitrarySubjectArea } from '../../types/subject-area.helper';
-import { Ports, discoverElifeArticleSubjectArea } from '../../../src/sagas/discover-elife-article-subject-area/discover-elife-article-subject-area';
-import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
+import { dummyLogger } from '../../dummy-logger.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryDataError } from '../../types/data-error.helper.js';
+import { arbitrarySubjectArea } from '../../types/subject-area.helper.js';
+import { Ports, discoverElifeArticleSubjectArea } from '../../../src/sagas/discover-elife-article-subject-area/discover-elife-article-subject-area.js';
+import { TestFramework, createTestFramework } from '../../framework/index.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
+import { ArticleId } from '../../../src/types/article-id.js';
 
 describe('discover-elife-article-subject-area', () => {
   let framework: TestFramework;

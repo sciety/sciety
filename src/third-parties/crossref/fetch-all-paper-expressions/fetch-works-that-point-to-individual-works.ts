@@ -3,11 +3,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
-import { Logger } from '../../../infrastructure';
-import * as DE from '../../../types/data-error';
-import { QueryCrossrefService } from './query-crossref-service';
-import { decodeAndLogFailures } from '../../decode-and-log-failures';
+import { CrossrefWork, crossrefWorkCodec } from './crossref-work.js';
+import { Logger } from '../../../infrastructure/index.js';
+import * as DE from '../../../types/data-error.js';
+import { QueryCrossrefService } from './query-crossref-service.js';
+import { decodeAndLogFailures } from '../../decode-and-log-failures.js';
 
 const crossrefMultipleWorksResponseCodec = t.strict({
   message: t.strict({

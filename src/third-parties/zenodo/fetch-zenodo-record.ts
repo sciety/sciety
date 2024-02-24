@@ -6,12 +6,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import * as DE from '../../types/data-error';
-import { htmlFragmentCodec } from '../../types/html-fragment';
-import { Evaluation } from '../../types/evaluation';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { QueryExternalService } from '../query-external-service';
-import { Logger } from '../../infrastructure';
+import * as DE from '../../types/data-error.js';
+import { htmlFragmentCodec } from '../../types/html-fragment.js';
+import { Evaluation } from '../../types/evaluation.js';
+import { sanitise } from '../../types/sanitised-html-fragment.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { Logger } from '../../infrastructure/index.js';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 

@@ -1,5 +1,5 @@
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ViewModel } from '../view-model';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ViewModel } from '../view-model.js';
 
 const renderSearchForm = () => `
   <form class="home-page-hero-search-form" action="/search" method="get">

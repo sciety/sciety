@@ -4,12 +4,12 @@ import { pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { sequenceS } from 'fp-ts/Apply';
-import { FeedItem } from '../view-model';
-import { Dependencies } from './dependencies';
-import * as PH from '../../../types/publishing-history';
-import { constructEvaluationHistory } from '../../../read-side/construct-evaluation-history';
-import { toEvaluationPublishedFeedItem } from './to-evaluation-published-feed-item';
-import { toExpressionPublishedFeedItem } from './to-expression-published-feed-item';
+import { FeedItem } from '../view-model.js';
+import { Dependencies } from './dependencies.js';
+import * as PH from '../../../types/publishing-history.js';
+import { constructEvaluationHistory } from '../../../read-side/construct-evaluation-history.js';
+import { toEvaluationPublishedFeedItem } from './to-evaluation-published-feed-item.js';
+import { toExpressionPublishedFeedItem } from './to-expression-published-feed-item.js';
 
 const byDate: Ord.Ord<FeedItem> = pipe(
   D.Ord,

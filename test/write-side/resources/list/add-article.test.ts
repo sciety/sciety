@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { constructEvent } from '../../../../src/domain-events';
-import { addArticle } from '../../../../src/write-side/resources/list/add-article';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
-import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
-import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
+import { constructEvent } from '../../../../src/domain-events/index.js';
+import { addArticle } from '../../../../src/write-side/resources/list/add-article.js';
+import { arbitraryArticleId } from '../../../types/article-id.helper.js';
+import { arbitraryListId } from '../../../types/list-id.helper.js';
+import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper.js';
+import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input.js';
+import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper.js';
 
 describe('add-article', () => {
   const listId = arbitraryListId();

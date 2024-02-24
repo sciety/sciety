@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { URL } from 'url';
-import * as PH from '../../src/types/publishing-history';
-import { arbitraryPaperExpression } from './paper-expression.helper';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { PaperExpression } from '../../src/types/paper-expression';
-import * as EDOI from '../../src/types/expression-doi';
+import * as PH from '../../src/types/publishing-history.js';
+import { arbitraryPaperExpression } from './paper-expression.helper.js';
+import { shouldNotBeCalled } from '../should-not-be-called.js';
+import { PaperExpression } from '../../src/types/paper-expression.js';
+import * as EDOI from '../../src/types/expression-doi.js';
 
 describe('publishing-history', () => {
   describe('given both preprint and journal article expressions', () => {

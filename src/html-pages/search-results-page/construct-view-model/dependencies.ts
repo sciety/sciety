@@ -1,7 +1,7 @@
-import { ConstructPaperActivitySummaryCardViewModelDependencies } from '../../../shared-components/paper-activity-summary-card';
-import { Queries } from '../../../read-models';
-import { ConstructGroupLinkDependencies } from '../../../shared-components/group-link';
-import { ExternalQueries } from '../../../third-parties';
+import { ConstructPaperActivitySummaryCardViewModelDependencies } from '../../../shared-components/paper-activity-summary-card/index.js';
+import { Queries } from '../../../read-models/index.js';
+import { ConstructGroupLinkDependencies } from '../../../shared-components/group-link/index.js';
+import { ExternalQueries } from '../../../third-parties/index.js';
 
 export type Dependencies = Queries
 & ExternalQueries

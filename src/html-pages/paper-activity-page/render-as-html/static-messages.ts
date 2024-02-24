@@ -1,4 +1,4 @@
-import { toHtmlFragment } from '../../../types/html-fragment';
+import { toHtmlFragment } from '../../../types/html-fragment.js';
 
 const retryLater = toHtmlFragment('Please try refreshing this page, or try again later.');
 

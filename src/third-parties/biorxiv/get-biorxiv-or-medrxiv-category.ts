@@ -7,14 +7,14 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as N from 'fp-ts/number';
-import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response';
-import { fetchArticleDetails } from './fetch-article-details';
-import { Logger } from '../../infrastructure';
-import * as DE from '../../types/data-error';
-import { QueryExternalService } from '../query-external-service';
-import { ExternalQueries } from '../external-queries';
-import * as EDOI from '../../types/expression-doi';
-import { ArticleId } from '../../types/article-id';
+import { ResponseWithVersions, BiorxivArticleVersion } from './biorxiv-details-api-response.js';
+import { fetchArticleDetails } from './fetch-article-details.js';
+import { Logger } from '../../infrastructure/index.js';
+import * as DE from '../../types/data-error.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { ExternalQueries } from '../external-queries.js';
+import * as EDOI from '../../types/expression-doi.js';
+import { ArticleId } from '../../types/article-id.js';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,

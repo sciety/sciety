@@ -3,13 +3,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import {
   handleEvent, initialState,
-} from '../../../src/read-models/elife-subject-area-lists/handle-event';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryDate } from '../../helpers';
-import { getOneArticleIdInEvaluatedState } from '../../../src/read-models/elife-subject-area-lists/get-one-article-id-in-evaluated-state';
-import { elifeGroupId } from '../../../src/read-models/elife-subject-area-lists/data';
-import * as EDOI from '../../../src/types/expression-doi';
+} from '../../../src/read-models/elife-subject-area-lists/handle-event.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper.js';
+import { arbitraryDate } from '../../helpers.js';
+import { getOneArticleIdInEvaluatedState } from '../../../src/read-models/elife-subject-area-lists/get-one-article-id-in-evaluated-state.js';
+import { elifeGroupId } from '../../../src/read-models/elife-subject-area-lists/data.js';
+import * as EDOI from '../../../src/types/expression-doi.js';
 
 describe('get-one-article-id-in-evaluated-state', () => {
   describe('given a biorxiv article that has been evaluated by eLife', () => {

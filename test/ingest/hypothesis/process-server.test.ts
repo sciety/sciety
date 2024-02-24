@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { processServer } from '../../../src/ingest/third-parties/hypothesis/process-server';
-import { arbitraryDate, arbitraryWord } from '../../helpers';
+import { processServer } from '../../../src/ingest/third-parties/hypothesis/process-server.js';
+import { arbitraryDate, arbitraryWord } from '../../helpers.js';
 
 const arbitraryAnnotation = () => ({
   id: arbitraryWord(),

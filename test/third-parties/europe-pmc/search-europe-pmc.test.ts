@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryNumber, arbitraryWord } from '../../helpers';
-import * as EDOI from '../../../src/types/expression-doi';
-import { SearchResults } from '../../../src/types/search-results';
+import { searchEuropePmc } from '../../../src/third-parties/europe-pmc/index.js';
+import { dummyLogger } from '../../dummy-logger.js';
+import { arbitraryNumber, arbitraryWord } from '../../helpers.js';
+import * as EDOI from '../../../src/types/expression-doi.js';
+import { SearchResults } from '../../../src/types/search-results.js';
 
 describe('search-europe-pmc', () => {
   it('converts Europe PMC search result into our view model', async () => {

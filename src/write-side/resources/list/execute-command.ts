@@ -1,6 +1,6 @@
-import { EditListDetailsCommand } from '../../commands';
-import { DomainEvent, constructEvent } from '../../../domain-events';
-import { ListWriteModel } from './list-write-model';
+import { EditListDetailsCommand } from '../../commands/index.js';
+import { DomainEvent, constructEvent } from '../../../domain-events/index.js';
+import { ListWriteModel } from './list-write-model.js';
 
 type ExecuteCommand = (command: EditListDetailsCommand)
 => (listResource: ListWriteModel)

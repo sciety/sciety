@@ -1,5 +1,5 @@
-import { Logger } from '../../infrastructure';
-import { ResponseBodyCachePredicate } from '../cache';
+import { Logger } from '../../infrastructure/index.js';
+import { ResponseBodyCachePredicate } from '../cache/index.js';
 
 export const crossrefResponseBodyCachePredicate = (
   logger: Logger,

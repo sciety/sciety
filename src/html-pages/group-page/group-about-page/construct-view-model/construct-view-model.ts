@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
-import * as LOID from '../../../../types/list-owner-id';
-import * as DE from '../../../../types/data-error';
-import { ViewModel } from '../view-model';
-import { constructTabsViewModel } from '../../common-components/tabs-view-model';
-import { toOurListsViewModel } from './to-our-lists-view-model';
-import { Dependencies } from './dependencies';
-import { Params } from './params';
+import * as LOID from '../../../../types/list-owner-id.js';
+import * as DE from '../../../../types/data-error.js';
+import { ViewModel } from '../view-model.js';
+import { constructTabsViewModel } from '../../common-components/tabs-view-model.js';
+import { toOurListsViewModel } from './to-our-lists-view-model.js';
+import { Dependencies } from './dependencies.js';
+import { Params } from './params.js';
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 

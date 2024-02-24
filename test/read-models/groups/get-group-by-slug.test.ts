@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
-import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
-import { getGroupBySlug } from '../../../src/read-models/groups/get-group-by-slug';
-import { arbitraryGroup } from '../../types/group.helper';
+import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper.js';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event.js';
+import { getGroupBySlug } from '../../../src/read-models/groups/get-group-by-slug.js';
+import { arbitraryGroup } from '../../types/group.helper.js';
 
 const group = arbitraryGroup();
 

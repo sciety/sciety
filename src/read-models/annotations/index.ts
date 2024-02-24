@@ -1,6 +1,6 @@
-import { annotationsStatus } from './annotations-status';
-import { getAnnotationContent } from './get-annotation-content';
-import { handleEvent, initialState } from './handle-event';
+import { annotationsStatus } from './annotations-status.js';
+import { getAnnotationContent } from './get-annotation-content.js';
+import { handleEvent, initialState } from './handle-event.js';
 
 export const annotations = {
   queries: {

@@ -1,15 +1,15 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as DE from '../../types/data-error';
-import { ColdSpringHarborServer } from '../cold-spring-harbor-server';
+import * as DE from '../../types/data-error.js';
+import { ColdSpringHarborServer } from '../cold-spring-harbor-server.js';
 import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
-} from './biorxiv-details-api-response';
-import { ArticleId } from '../../types/article-id';
-import { QueryExternalService } from '../query-external-service';
-import { Logger } from '../../infrastructure';
-import { decodeAndLogFailures } from '../decode-and-log-failures';
+} from './biorxiv-details-api-response.js';
+import { ArticleId } from '../../types/article-id.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { Logger } from '../../infrastructure/index.js';
+import { decodeAndLogFailures } from '../decode-and-log-failures.js';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,

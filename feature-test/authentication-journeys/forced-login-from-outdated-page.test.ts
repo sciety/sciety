@@ -1,10 +1,10 @@
 import {
   click, currentURL, goto, openBrowser, openTab, switchTo,
 } from 'taiko';
-import { screenshotTeardown } from '../utilities';
-import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
-import * as api from '../helpers/api-helpers';
-import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
+import { screenshotTeardown } from '../utilities.js';
+import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id.js';
+import * as api from '../helpers/api-helpers.js';
+import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper.js';
 
 describe('forced-login-from-outdated-page', () => {
   const createUserAccountCommand = arbitraryCreateUserAccountCommand();

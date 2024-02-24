@@ -5,8 +5,8 @@ import { pipe } from 'fp-ts/function';
 import { Json } from 'fp-ts/Json';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
-import { ReadModel } from './handle-event';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { ReadModel } from './handle-event.js';
+import { RecordedEvaluation } from '../../types/recorded-evaluation.js';
 
 const byDate: Ord.Ord<RecordedEvaluation> = pipe(
   D.Ord,

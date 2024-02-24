@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import {
   arbitraryNumber, arbitraryDate, arbitraryString, arbitraryWord,
-} from '../../helpers';
-import { convertHypothesisAnnotationToEvaluation } from '../../../src/ingest/third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
+} from '../../helpers.js';
+import { convertHypothesisAnnotationToEvaluation } from '../../../src/ingest/third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation.js';
 
 describe('convert-hypothesis-annotation-to-evaluation', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';

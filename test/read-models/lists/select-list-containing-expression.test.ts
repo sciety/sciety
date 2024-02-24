@@ -1,15 +1,15 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryString } from '../../helpers';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { selectListContainingExpression } from '../../../src/read-models/lists/select-list-containing-expression';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
+import { constructEvent } from '../../../src/domain-events/index.js';
+import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event.js';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { arbitraryString } from '../../helpers.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
+import { arbitraryUserId } from '../../types/user-id.helper.js';
+import { selectListContainingExpression } from '../../../src/read-models/lists/select-list-containing-expression.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
+import { ArticleId } from '../../../src/types/article-id.js';
 
 describe('select-list-containing-article', () => {
   const expressionDoi = arbitraryExpressionDoi();

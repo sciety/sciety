@@ -2,10 +2,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ExpressionDoi } from '../types/expression-doi';
-import { PaperExpression } from '../types/paper-expression';
-import * as DE from '../types/data-error';
-import { ColdSpringHarborServer, isColdSpringHarborServer } from './cold-spring-harbor-server';
+import { ExpressionDoi } from '../types/expression-doi.js';
+import { PaperExpression } from '../types/paper-expression.js';
+import * as DE from '../types/data-error.js';
+import { ColdSpringHarborServer, isColdSpringHarborServer } from './cold-spring-harbor-server.js';
 
 type PaperExpressionFromRelevantServer = {
   expressionDoi: ExpressionDoi,

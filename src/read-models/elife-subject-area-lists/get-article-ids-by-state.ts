@@ -1,6 +1,6 @@
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { ArticleStateName, ReadModel } from './handle-event';
+import { ArticleStateName, ReadModel } from './handle-event.js';
 
 type ArticleIdsByState = Record<string, ReadonlyArray<string>>;
 

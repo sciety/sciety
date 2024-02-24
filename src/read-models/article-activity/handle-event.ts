@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ListId } from '../../types/list-id';
-import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
-import { ArticleId } from '../../types/article-id';
+import { ListId } from '../../types/list-id.js';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events/index.js';
+import { ArticleId } from '../../types/article-id.js';
 
 type ArticleState = {
   articleId: ArticleId,

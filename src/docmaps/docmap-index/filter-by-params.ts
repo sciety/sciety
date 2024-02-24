@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as PR from 'io-ts/PathReporter';
-import * as ER from './error-response';
-import { DocmapIndexEntryModel } from './identify-all-possible-index-entries';
-import { Params, paramsCodec } from './params';
+import * as ER from './error-response.js';
+import { DocmapIndexEntryModel } from './identify-all-possible-index-entries.js';
+import { Params, paramsCodec } from './params.js';
 
 const filterByPublisherAccount = (
   requestedPublisherAccountId: O.Option<string>,

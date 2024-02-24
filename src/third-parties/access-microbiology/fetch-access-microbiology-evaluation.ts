@@ -2,13 +2,13 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../types/data-error';
-import { EvaluationFetcher } from '../evaluation-fetcher';
-import { QueryExternalService } from '../query-external-service';
-import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations';
-import { Logger } from '../../infrastructure';
-import { toJatsXmlUrlOfPublisher } from './to-jats-xml-url-of-publisher';
-import { acmiEvaluationDoiCodec } from './acmi-evaluation-doi';
+import * as DE from '../../types/data-error.js';
+import { EvaluationFetcher } from '../evaluation-fetcher.js';
+import { QueryExternalService } from '../query-external-service.js';
+import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations.js';
+import { Logger } from '../../infrastructure/index.js';
+import { toJatsXmlUrlOfPublisher } from './to-jats-xml-url-of-publisher.js';
+import { acmiEvaluationDoiCodec } from './acmi-evaluation-doi.js';
 
 export const fetchAccessMicrobiologyEvaluation = (
   queryExternalService: QueryExternalService,

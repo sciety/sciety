@@ -1,5 +1,5 @@
-import { getActivityForExpressionDoi } from './get-activity-for-expression-doi';
-import { handleEvent, initialState } from './handle-event';
+import { getActivityForExpressionDoi } from './get-activity-for-expression-doi.js';
+import { handleEvent, initialState } from './handle-event.js';
 
 export const articleActivity = {
   queries: {

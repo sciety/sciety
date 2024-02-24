@@ -5,13 +5,13 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import {
   Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
-} from '../authentication-and-logging-in-of-sciety-users';
-import { createUserAccountFormPageLayout, renderFormPage } from '../../html-pages/create-user-account-form-page';
-import { constructHtmlResponse } from '../../html-pages/construct-html-response';
-import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
-import { redirectToAuthenticationDestination } from '../authentication-destination';
-import { sendHtmlResponse } from '../send-html-response';
-import { detectClientClassification } from '../detect-client-classification';
+} from '../authentication-and-logging-in-of-sciety-users.js';
+import { createUserAccountFormPageLayout, renderFormPage } from '../../html-pages/create-user-account-form-page/index.js';
+import { constructHtmlResponse } from '../../html-pages/construct-html-response.js';
+import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command.js';
+import { redirectToAuthenticationDestination } from '../authentication-destination/index.js';
+import { sendHtmlResponse } from '../send-html-response.js';
+import { detectClientClassification } from '../detect-client-classification.js';
 
 type Dependencies = GetLoggedInScietyUserPorts & ValidateAndExecuteCommandPorts;
 

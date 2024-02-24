@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { constructListCardViewModelWithAvatar, ConstructListCardViewModelWithAvatarDependencies } from '../../../shared-components/list-card';
-import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
-import { Queries } from '../../../read-models';
-import { ViewModel } from '../view-model';
+import { constructListCardViewModelWithAvatar, ConstructListCardViewModelWithAvatarDependencies } from '../../../shared-components/list-card/index.js';
+import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering.js';
+import { Queries } from '../../../read-models/index.js';
+import { ViewModel } from '../view-model.js';
 
 export type Dependencies = Queries & ConstructListCardViewModelWithAvatarDependencies;
 

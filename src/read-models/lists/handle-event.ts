@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent, isEventOfType } from '../../domain-events';
-import { toExpressionDoi } from '../../types/article-id';
-import { ListId } from '../../types/list-id';
-import { List, ListEntry } from './list';
+import { DomainEvent, isEventOfType } from '../../domain-events/index.js';
+import { toExpressionDoi } from '../../types/article-id.js';
+import { ListId } from '../../types/list-id.js';
+import { List, ListEntry } from './list.js';
 
 type ListState = Pick<
 List,

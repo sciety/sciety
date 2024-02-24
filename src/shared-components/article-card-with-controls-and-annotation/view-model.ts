@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
-import { ListId } from '../../types/list-id';
-import { ViewModel as DefaultVariantViewModel } from '../paper-activity-summary-card/view-model';
-import { RawUserInput } from '../../read-models/annotations/handle-event';
-import { ExpressionDoi } from '../../types/expression-doi';
+import { ListId } from '../../types/list-id.js';
+import { ViewModel as DefaultVariantViewModel } from '../paper-activity-summary-card/view-model.js';
+import { RawUserInput } from '../../read-models/annotations/handle-event.js';
+import { ExpressionDoi } from '../../types/expression-doi.js';
 
 export type Annotation = {
   author: string,

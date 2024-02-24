@@ -1,4 +1,4 @@
-import * as t from './helpers';
+import * as t from './helpers.js';
 
 describe('arbitraryWord', () => {
   it('has the correct length', () => {

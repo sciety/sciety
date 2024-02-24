@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { renderCountWithDescriptor } from '../render-count-with-descriptor';
-import { renderLangAttribute } from '../lang-attribute';
-import { ViewModel } from './view-model';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor.js';
+import { renderLangAttribute } from '../lang-attribute/index.js';
+import { ViewModel } from './view-model.js';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment.js';
 
 export const renderCurationStatements = (curationStatementsTeasers: ViewModel['curationStatementsTeasers']): HtmlFragment => {
   if (curationStatementsTeasers.length === 0) {

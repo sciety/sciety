@@ -1,6 +1,6 @@
-import { Logger } from '../../infrastructure';
-import { Queries } from '../../read-models';
-import { ConstructGroupLinkDependencies } from '../../shared-components/group-link';
+import { Logger } from '../../infrastructure/index.js';
+import { Queries } from '../../read-models/index.js';
+import { ConstructGroupLinkDependencies } from '../../shared-components/group-link/index.js';
 
 export type Dependencies = Queries & ConstructGroupLinkDependencies & {
   logger: Logger,

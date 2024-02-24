@@ -3,15 +3,15 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as DE from '../../types/data-error';
-import * as EDOI from '../../types/expression-doi';
-import { ColdSpringHarborServer } from '../cold-spring-harbor-server';
-import { ResponseWithVersions } from './biorxiv-details-api-response';
-import { fetchArticleDetails } from './fetch-article-details';
-import { ArticleId } from '../../types/article-id';
-import { PaperExpression } from '../../types/paper-expression';
-import { Logger } from '../../infrastructure';
-import { QueryExternalService } from '../query-external-service';
+import * as DE from '../../types/data-error.js';
+import * as EDOI from '../../types/expression-doi.js';
+import { ColdSpringHarborServer } from '../cold-spring-harbor-server.js';
+import { ResponseWithVersions } from './biorxiv-details-api-response.js';
+import { fetchArticleDetails } from './fetch-article-details.js';
+import { ArticleId } from '../../types/article-id.js';
+import { PaperExpression } from '../../types/paper-expression.js';
+import { Logger } from '../../infrastructure/index.js';
+import { QueryExternalService } from '../query-external-service.js';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,

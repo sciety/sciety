@@ -2,8 +2,8 @@ import path from 'path';
 import { Middleware } from '@koa/router';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
-import { Logger } from '../infrastructure';
-import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from './send-default-error-html-response';
+import { Logger } from '../infrastructure/index.js';
+import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from './send-default-error-html-response.js';
 
 type KoaSendError = {
   status: number,

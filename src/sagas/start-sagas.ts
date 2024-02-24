@@ -1,7 +1,7 @@
-import { addArticleToElifeSubjectAreaList } from './add-article-to-elife-subject-area-list';
-import { CollectedPorts } from '../collected-ports';
-import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed';
-import { discoverElifeArticleSubjectArea } from './discover-elife-article-subject-area';
+import { addArticleToElifeSubjectAreaList } from './add-article-to-elife-subject-area-list/index.js';
+import { CollectedPorts } from '../collected-ports.js';
+import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed/index.js';
+import { discoverElifeArticleSubjectArea } from './discover-elife-article-subject-area/index.js';
 
 export const startSagas = (ports: CollectedPorts) => async (): Promise<void> => {
   ports.logger('info', 'Starting sagas');

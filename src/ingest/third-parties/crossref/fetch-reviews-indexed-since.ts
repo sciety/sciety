@@ -4,7 +4,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import { FetchData } from '../../fetch-data';
+import { FetchData } from '../../fetch-data.js';
 
 const crossrefReviewFromJson = t.type({
   URL: t.string,

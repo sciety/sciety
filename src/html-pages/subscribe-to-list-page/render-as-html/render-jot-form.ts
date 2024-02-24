@@ -1,5 +1,5 @@
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ListId } from '../../../types/list-id';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ListId } from '../../../types/list-id.js';
 
 export const renderJotForm = (listId: ListId): HtmlFragment => toHtmlFragment(`<iframe
 id="JotFormIFrame-232072517707050"

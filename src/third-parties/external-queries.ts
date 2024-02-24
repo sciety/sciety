@@ -1,13 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import * as DE from '../types/data-error';
-import { Evaluation } from '../types/evaluation';
-import { EvaluationLocator } from '../types/evaluation-locator';
-import { SubjectArea } from '../types/subject-area';
-import { ExpressionDoi } from '../types/expression-doi';
-import { SearchResults } from '../types/search-results';
-import { ExpressionFrontMatter } from '../types/expression-front-matter';
-import { PublishingHistory } from '../types/publishing-history';
+import * as DE from '../types/data-error.js';
+import { Evaluation } from '../types/evaluation.js';
+import { EvaluationLocator } from '../types/evaluation-locator.js';
+import { SubjectArea } from '../types/subject-area.js';
+import { ExpressionDoi } from '../types/expression-doi.js';
+import { SearchResults } from '../types/search-results.js';
+import { ExpressionFrontMatter } from '../types/expression-front-matter.js';
+import { PublishingHistory } from '../types/publishing-history.js';
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;

@@ -1,4 +1,4 @@
-import { ArticleServer } from '../types/article-server';
+import { ArticleServer } from '../types/article-server.js';
 
 export type ColdSpringHarborServer = 'biorxiv' | 'medrxiv';
 

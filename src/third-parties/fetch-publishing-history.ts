@@ -3,15 +3,15 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { getPaperExpressionsFromBiorxiv } from './biorxiv';
-import { fetchAllPaperExpressions as fetchAllPaperExpressionsFromCrossref } from './crossref';
-import { QueryExternalService } from './query-external-service';
-import { Logger } from '../infrastructure';
-import { ExternalQueries } from './external-queries';
-import { expandMonolithicBiorxivOrMedrxivExpressions } from './expand-monolithic-biorxiv-or-medrxiv-expressions';
-import * as PH from '../types/publishing-history';
-import * as DE from '../types/data-error';
-import { ExpressionDoi } from '../types/expression-doi';
+import { getPaperExpressionsFromBiorxiv } from './biorxiv/index.js';
+import { fetchAllPaperExpressions as fetchAllPaperExpressionsFromCrossref } from './crossref/index.js';
+import { QueryExternalService } from './query-external-service.js';
+import { Logger } from '../infrastructure/index.js';
+import { ExternalQueries } from './external-queries.js';
+import { expandMonolithicBiorxivOrMedrxivExpressions } from './expand-monolithic-biorxiv-or-medrxiv-expressions.js';
+import * as PH from '../types/publishing-history.js';
+import * as DE from '../types/data-error.js';
+import { ExpressionDoi } from '../types/expression-doi.js';
 
 const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   const headers: Record<string, string> = { };

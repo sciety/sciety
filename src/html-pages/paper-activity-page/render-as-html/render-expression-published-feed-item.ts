@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { templateDate } from '../../../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { ExpressionPublishedFeedItem } from '../view-model';
-import { articleServers } from '../../../types/article-server';
+import { templateDate } from '../../../shared-components/date.js';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment.js';
+import { ExpressionPublishedFeedItem } from '../view-model.js';
+import { articleServers } from '../../../types/article-server.js';
 
 const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
   server,

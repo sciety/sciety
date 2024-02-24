@@ -1,1 +1,1 @@
-export { redirectToAuthenticationDestination, saveAuthenticationDestination } from './authentication-destination';
+export { redirectToAuthenticationDestination, saveAuthenticationDestination } from './authentication-destination.js';

@@ -1,22 +1,22 @@
 import * as O from 'fp-ts/Option';
 
 import { pipe } from 'fp-ts/function';
-import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
-import { TestFramework, createTestFramework } from '../../framework';
+import * as LOID from '../../../src/types/list-owner-id.js';
+import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper.js';
+import { TestFramework, createTestFramework } from '../../framework/index.js';
 import {
   constructAnnotation,
-} from '../../../src/shared-components/article-card-with-controls-and-annotation/construct-annotation';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-content';
-import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
-import { Annotation } from '../../../src/shared-components/article-card-with-controls-and-annotation/view-model';
-import { rawUserInput } from '../../../src/read-models/annotations/handle-event';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
+} from '../../../src/shared-components/article-card-with-controls-and-annotation/construct-annotation.js';
+import { arbitraryListId } from '../../types/list-id.helper.js';
+import { shouldNotBeCalled } from '../../should-not-be-called.js';
+import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper.js';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper.js';
+import { unknownAuthor } from '../../../src/shared-components/article-card-with-controls-and-annotation/static-content.js';
+import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper.js';
+import { Annotation } from '../../../src/shared-components/article-card-with-controls-and-annotation/view-model.js';
+import { rawUserInput } from '../../../src/read-models/annotations/handle-event.js';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper.js';
+import { ArticleId } from '../../../src/types/article-id.js';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;

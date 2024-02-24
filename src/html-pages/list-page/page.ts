@@ -1,10 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { HtmlPage } from '../html-page';
-import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
-import { renderErrorPage } from './render-as-html/render-error-page';
-import { renderAsHtml } from './render-as-html/render-as-html';
-import { constructViewModel, Params, Dependencies } from './construct-view-model';
+import { HtmlPage } from '../html-page.js';
+import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model.js';
+import { renderErrorPage } from './render-as-html/render-error-page.js';
+import { renderAsHtml } from './render-as-html/render-as-html.js';
+import { constructViewModel, Params, Dependencies } from './construct-view-model/index.js';
 
 export const page = (
   dependencies: Dependencies,

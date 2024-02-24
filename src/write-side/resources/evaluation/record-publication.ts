@@ -2,12 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { evaluationResourceError } from './evaluation-resource-error';
-import { RecordEvaluationPublicationCommand } from '../../commands';
+import { evaluationResourceError } from './evaluation-resource-error.js';
+import { RecordEvaluationPublicationCommand } from '../../commands/index.js';
 import {
   DomainEvent, constructEvent, isEventOfType, EventOfType,
-} from '../../../domain-events';
-import { ResourceAction } from '../resource-action';
+} from '../../../domain-events/index.js';
+import { ResourceAction } from '../resource-action.js';
 
 type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 
