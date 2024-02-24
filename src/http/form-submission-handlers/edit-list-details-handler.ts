@@ -3,17 +3,16 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { sequenceS } from 'fp-ts/Apply';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
+import { checkUserOwnsList } from './check-user-owns-list';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { Payload } from '../../infrastructure/logger';
-import { EditListDetails, Logger } from '../../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { Logger } from '../../shared-ports';
+import { getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
 import { validateCommandShape } from './validate-command-shape';
+import { CommandHandlers } from '../../write-side/command-handlers';
+import { Queries } from '../../read-models';
 
-type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
-  editListDetails: EditListDetails,
-  logger: Logger,
-};
+type Ports = Queries & CommandHandlers & { logger: Logger };
 
 const handleCommand = (adapters: Ports) => (command: EditListDetailsCommand) => pipe(
   command,
