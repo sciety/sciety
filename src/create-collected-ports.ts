@@ -4,25 +4,25 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { persistEvents } from './persist-events';
-import { CollectedPorts } from '../collected-ports';
-import { commitEvents } from './commit-events';
-import { dispatcher } from '../read-models';
-import { getEventsFromDatabase } from './get-events-from-database';
+import { persistEvents } from './infrastructure/persist-events';
+import { CollectedPorts } from './collected-ports';
+import { commitEvents } from './infrastructure/commit-events';
+import { dispatcher } from './read-models';
+import { getEventsFromDatabase } from './infrastructure/get-events-from-database';
 import {
   createLogger, Logger, Config as LoggerConfig,
-} from './logger';
-import { stubAdapters } from './stub-adapters';
-import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
-import { sort as sortEvents } from '../domain-events';
+} from './infrastructure/logger';
+import { stubAdapters } from './infrastructure/stub-adapters';
+import { addArticleToListCommandHandler } from './write-side/command-handlers/add-article-to-list-command-handler';
+import { sort as sortEvents } from './domain-events';
 import {
   editListDetailsCommandHandler,
   createListCommandHandler,
   recordSubjectAreaCommandHandler,
   removeArticleFromListCommandHandler,
-} from '../write-side/command-handlers';
-import { instantiate } from '../third-parties';
-import { createRedisClient } from './create-redis-client';
+} from './write-side/command-handlers';
+import { instantiate } from './third-parties';
+import { createRedisClient } from './infrastructure/create-redis-client';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -43,7 +43,7 @@ const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryC
   identity,
 );
 
-export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
+export const createCollectedPorts = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
     logger: createLogger(dependencies),

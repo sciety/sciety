@@ -9,12 +9,11 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { DomainEvent } from './domain-events';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
-import {
-  createInfrastructure, Logger, replaceError,
-} from './infrastructure';
+import { Logger, replaceError } from './infrastructure';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { startSagas } from './sagas';
 import { CollectedPorts } from './collected-ports';
+import { createCollectedPorts } from './create-collected-ports';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -50,7 +49,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
 };
 
 void pipe(
-  createInfrastructure({
+  createCollectedPorts({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
     minimumLogLevel: process.env.LOG_LEVEL ?? 'debug',
     prettyLog: !!process.env.PRETTY_LOG,
