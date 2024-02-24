@@ -7,7 +7,7 @@ import { GroupId } from '../../src/types/group-id';
 import { ListId } from '../../src/types/list-id';
 import { ArticleId } from '../../src/types/article-id';
 import { abortTest } from './abort-test';
-import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
+import { CommandHandler, GenericCommand } from '../../src/write-side/command-handlers/command-handler';
 import { CommandResult } from '../../src/types/command-result';
 import {
   AddGroupCommand,

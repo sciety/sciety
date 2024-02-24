@@ -15,7 +15,7 @@ import {
   createUserAccountCommandHandler,
 } from '../../src/write-side/command-handlers';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler';
-import { CommandHandler } from '../../src/types/command-handler';
+import { CommandHandler } from '../../src/write-side/command-handlers/command-handler';
 import {
   AddGroupCommand, AnnotateArticleInListCommand, UpdateEvaluationCommand, UpdateGroupDetailsCommand,
 } from '../../src/write-side/commands';

@@ -8,7 +8,7 @@ import { isFollowing } from '../../http/form-submission-handlers/is-following';
 import { constructEvent } from '../../domain-events';
 import { FollowCommand } from '../commands';
 import { DependenciesForCommands } from '../dependencies-for-commands';
-import { CommandHandler } from '../../types/command-handler';
+import { CommandHandler } from './command-handler';
 
 type FollowCommandHandler = (
   dependencies: DependenciesForCommands

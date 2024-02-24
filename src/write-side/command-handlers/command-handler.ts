@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
-import { CommandResult } from './command-result';
-import { ErrorMessage } from './error-message';
+import { CommandResult } from '../../types/command-result';
+import { ErrorMessage } from '../../types/error-message';
 
 export type GenericCommand = { [key: string]: unknown };
 

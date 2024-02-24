@@ -5,7 +5,7 @@ import { isFollowing } from '../../http/form-submission-handlers/is-following';
 import { constructEvent } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
-import { CommandHandler } from '../../types/command-handler';
+import { CommandHandler } from './command-handler';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type UnfollowCommand = {

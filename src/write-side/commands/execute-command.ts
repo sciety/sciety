@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { GenericCommand } from '../../types/command-handler';
+import { GenericCommand } from '../command-handlers/command-handler';
 import { ResourceAction } from '../resources/resource-action';
 import { validateInputShape } from './validate-input-shape';
 import { ErrorMessage } from '../../types/error-message';

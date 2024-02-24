@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { addArticle } from '../resources/list';
 import { AddArticleToListCommand } from '../commands';
-import { CommandHandler } from '../../types/command-handler';
+import { CommandHandler } from './command-handler';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type AddArticleToListCommandHandler = (

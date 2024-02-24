@@ -5,7 +5,7 @@ import * as t from 'io-ts';
 import { StatusCodes } from 'http-status-codes';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
-import { GenericCommand } from '../types/command-handler';
+import { GenericCommand } from '../write-side/command-handlers/command-handler';
 import { CollectedPorts } from '../infrastructure';
 import { ResourceAction } from '../write-side/resources/resource-action';
 import { executeCommand } from '../write-side/commands';

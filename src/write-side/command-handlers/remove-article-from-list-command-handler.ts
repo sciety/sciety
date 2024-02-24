@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import { removeArticle } from '../resources/list/remove-article';
 import { RemoveArticleFromListCommand } from '../commands';
-import { CommandHandler } from '../../types/command-handler';
+import { CommandHandler } from './command-handler';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type RemoveArticleFromListCommandHandler = (
