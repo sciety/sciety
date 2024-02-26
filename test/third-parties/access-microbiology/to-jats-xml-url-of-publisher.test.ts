@@ -43,11 +43,11 @@ describe('to-jats-xml-url-of-publisher', () => {
 
   describe.each([
     [arbitraryWord()],
-    // ['10.1099/acmi.0.000569.v1.'],
+    ['10.1099/acmi.0.000569.v1.'],
     ['10.1099/acmi.0.000569.'],
     ['10.1099/acmi.0'],
     [`10.1099/${arbitraryWord()}`],
-    // ['10.1234/acmi.0.000569.v1.9999'],
+    ['10.1234/acmi.0.000569.v1.9999'],
   ])('given a string %s that does not represent an ACMI evaluation DOI', (input) => {
     const result = toJatsXmlUrlOfPublisher(AED.fromValidatedString(input));
 
