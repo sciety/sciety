@@ -8,26 +8,32 @@ import { QueryExternalService } from '../query-external-service';
 import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations';
 import { Logger } from '../../shared-ports';
 import { toJatsXmlUrlOfPublisher } from './to-jats-xml-url-of-publisher';
-import { acmiEvaluationDoiCodec } from './acmi-evaluation-doi';
+import * as AED from './acmi-evaluation-doi';
+
+const fetchEvaluationFromPublisherJatsXmlEndpoint = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+) => (acmiEvaluationDoi: AED.AcmiEvaluationDoi) => pipe(
+  acmiEvaluationDoi,
+  toJatsXmlUrlOfPublisher,
+  TE.fromOption(() => DE.unavailable),
+  TE.chain(queryExternalService()),
+  TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
+  TE.chainEitherKW(lookupFullText(acmiEvaluationDoi)),
+  TE.map((fullText) => ({
+    url: new URL(`https://doi.org/${acmiEvaluationDoi}`),
+    fullText,
+  })),
+
+);
 
 export const fetchAccessMicrobiologyEvaluation = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): EvaluationFetcher => (key: string) => {
-  const acmiEvaluationDoi = acmiEvaluationDoiCodec.decode(key);
-  if (E.isLeft(acmiEvaluationDoi)) {
-    return TE.left(DE.unavailable);
-  }
-  return pipe(
-    acmiEvaluationDoi,
-    E.chainOptionK(() => DE.unavailable)(toJatsXmlUrlOfPublisher),
-    TE.fromEither,
-    TE.chain(queryExternalService()),
-    TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
-    TE.chainEitherKW(lookupFullText(acmiEvaluationDoi.right)),
-    TE.map((fullText) => ({
-      url: new URL(`https://doi.org/${acmiEvaluationDoi.right}`),
-      fullText,
-    })),
-  );
-};
+): EvaluationFetcher => (key: string) => pipe(
+  key,
+  AED.acmiEvaluationDoiCodec.decode,
+  E.mapLeft(() => DE.unavailable),
+  TE.fromEither,
+  TE.chain(fetchEvaluationFromPublisherJatsXmlEndpoint(queryExternalService, logger)),
+);
