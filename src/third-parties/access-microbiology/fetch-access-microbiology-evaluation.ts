@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
@@ -36,8 +35,6 @@ export const fetchAccessMicrobiologyEvaluation = (
   logger: Logger,
 ): EvaluationFetcher => (key: string) => pipe(
   key,
-  AED.acmiEvaluationDoiCodec.decode,
-  E.mapLeft(() => DE.unavailable),
-  TE.fromEither,
-  TE.chain(fetchEvaluationFromPublisherJatsXmlEndpoint(queryExternalService, logger)),
+  AED.fromValidatedString,
+  fetchEvaluationFromPublisherJatsXmlEndpoint(queryExternalService, logger),
 );
