@@ -13,17 +13,21 @@ import { acmiEvaluationDoiCodec } from './acmi-evaluation-doi';
 export const fetchAccessMicrobiologyEvaluation = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): EvaluationFetcher => (key: string) => pipe(
-  key,
-  acmiEvaluationDoiCodec.decode,
-  E.mapLeft(() => DE.unavailable),
-  E.chainOptionK(() => DE.unavailable)(toJatsXmlUrlOfPublisher),
-  TE.fromEither,
-  TE.chain(queryExternalService()),
-  TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
-  TE.chainEitherKW(lookupFullText(key)),
-  TE.map((fullText) => ({
-    url: new URL(`https://doi.org/${key}`),
-    fullText,
-  })),
-);
+): EvaluationFetcher => (key: string) => {
+  const decodedAcmiEvaluationDoi = acmiEvaluationDoiCodec.decode(key);
+  if (E.isLeft(decodedAcmiEvaluationDoi)) {
+    return TE.left(DE.unavailable);
+  }
+  return pipe(
+    decodedAcmiEvaluationDoi,
+    E.chainOptionK(() => DE.unavailable)(toJatsXmlUrlOfPublisher),
+    TE.fromEither,
+    TE.chain(queryExternalService()),
+    TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
+    TE.chainEitherKW(lookupFullText(decodedAcmiEvaluationDoi.right)),
+    TE.map((fullText) => ({
+      url: new URL(`https://doi.org/${key}`),
+      fullText,
+    })),
+  );
+};

@@ -43,7 +43,7 @@ const toMapEntry = (subArticleWithABody: SubArticleWithBody): [AED.AcmiEvaluatio
 ];
 
 export const lookupFullText = (
-  key: string,
+  key: AED.AcmiEvaluationDoi,
 ) => (
   map: FullTextsOfEvaluations,
 ): E.Either<DE.DataError, SanitisedHtmlFragment> => pipe(
