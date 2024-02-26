@@ -35,7 +35,7 @@ describe('to-jats-xml-url-of-publisher', () => {
       toJatsXmlUrlOfPublisher,
     );
 
-    it.failing('returns an inferred url', () => {
+    it('returns an inferred url', () => {
       expect(inferredUrl).toStrictEqual(O.some(url));
     });
   });
