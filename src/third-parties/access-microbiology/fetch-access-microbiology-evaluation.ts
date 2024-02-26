@@ -14,19 +14,19 @@ export const fetchAccessMicrobiologyEvaluation = (
   queryExternalService: QueryExternalService,
   logger: Logger,
 ): EvaluationFetcher => (key: string) => {
-  const decodedAcmiEvaluationDoi = acmiEvaluationDoiCodec.decode(key);
-  if (E.isLeft(decodedAcmiEvaluationDoi)) {
+  const acmiEvaluationDoi = acmiEvaluationDoiCodec.decode(key);
+  if (E.isLeft(acmiEvaluationDoi)) {
     return TE.left(DE.unavailable);
   }
   return pipe(
-    decodedAcmiEvaluationDoi,
+    acmiEvaluationDoi,
     E.chainOptionK(() => DE.unavailable)(toJatsXmlUrlOfPublisher),
     TE.fromEither,
     TE.chain(queryExternalService()),
     TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
-    TE.chainEitherKW(lookupFullText(decodedAcmiEvaluationDoi.right)),
+    TE.chainEitherKW(lookupFullText(acmiEvaluationDoi.right)),
     TE.map((fullText) => ({
-      url: new URL(`https://doi.org/${key}`),
+      url: new URL(`https://doi.org/${acmiEvaluationDoi.right}`),
       fullText,
     })),
   );
