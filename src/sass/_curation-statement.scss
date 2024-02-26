@@ -1,4 +1,4 @@
-@use 'settings';
+@use '../sass-utilities' as utilities;
 @use 'functions';
 
 @mixin quote(
@@ -13,8 +13,8 @@ $close-quotation-bottom-offset: 0,
   &::before,
   &::after {
     position: absolute;
-    color: settings.$colour-accent;
-    font-family: settings.$font-serif;
+    color: utilities.$colour-accent;
+    font-family: utilities.$font-serif;
     font-size: functions.px-to-rem($quotation-mark-font-size);
     line-height: 1;
   }

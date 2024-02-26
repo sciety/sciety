@@ -1,4 +1,4 @@
-@use 'settings';
+@use '../sass-utilities' as utilities;
 @use 'functions';
 @use 'form';
 @use 'states';
@@ -9,12 +9,12 @@ html {
 }
 
 body {
-  font-family: settings.$font-family;
-  font-size: settings.$base-font-measure;
+  font-family: utilities.$font-family;
+  font-size: utilities.$base-font-measure;
   line-height: 1.5;
   margin: 0;
-  color: settings.$colour-text-primary;
-  background-color: settings.$colour-white;
+  color: utilities.$colour-text-primary;
+  background-color: utilities.$colour-white;
 }
 
 p {
@@ -72,7 +72,7 @@ h6 {
 }
 
 blockquote {
-  border-left: functions.px-to-rem(8px) solid settings.$colour-furniture;
+  border-left: functions.px-to-rem(8px) solid utilities.$colour-furniture;
   margin-left: functions.px-to-rem(24px);
   padding-left: functions.px-to-rem(16px);
 }
@@ -95,11 +95,11 @@ a:link {
 
 a:link,
 a:visited {
-  color: settings.$colour-accent;
+  color: utilities.$colour-accent;
 
   &:hover,
   &:active {
-    color: settings.$colour-accent-hover;
+    color: utilities.$colour-accent-hover;
   }
 }
 
@@ -126,9 +126,9 @@ button {
 }
 
 fieldset {
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
-  margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
+  border: utilities.$border-width solid utilities.$colour-furniture;
+  border-radius: utilities.$border-radius;
+  margin-bottom: functions.px-to-rem(utilities.$default-form-vertical-spacing);
 }
 
 legend {
@@ -181,8 +181,8 @@ p:last-child {
 }
 
 table {
-  border-top: settings.$border-width solid settings.$colour-furniture;
-  border-bottom: settings.$border-width solid settings.$colour-furniture;
+  border-top: utilities.$border-width solid utilities.$colour-furniture;
+  border-bottom: utilities.$border-width solid utilities.$colour-furniture;
   margin-bottom: functions.px-to-rem(24px);
 }
 

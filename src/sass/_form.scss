@@ -1,25 +1,25 @@
 @use "functions";
-@use "settings";
+@use "../sass-utilities" as utilities;
 @use "typography";
 @use "button";
 @use "breakpoints";
 
-$_microcopy-colour: settings.$colour-text-secondary;
+$_microcopy-colour: utilities.$colour-text-secondary;
 $_label-font-size: functions.px-to-rem(20px);
 
 @mixin form-with-borders-and-white-background {
-  background-color: settings.$colour-white;
+  background-color: utilities.$colour-white;
   padding: functions.px-to-rem(16px)
-    functions.px-to-rem(settings.$default-gutter);
+    functions.px-to-rem(utilities.$default-gutter);
 
-  border: settings.$border-width solid settings.$colour-furniture;
+  border: utilities.$border-width solid utilities.$colour-furniture;
   border-left-width: 0;
   border-right-width: 0;
 
   @include breakpoints.not-narrow {
-    border-radius: settings.$border-radius;
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
+    border-radius: utilities.$border-radius;
+    border-left-width: utilities.$border-width;
+    border-right-width: utilities.$border-width;
   }
 }
 
@@ -27,16 +27,16 @@ $_label-font-size: functions.px-to-rem(20px);
   display: block;
   font-weight: bold;
   font-size: $_label-font-size;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+  margin-bottom: functions.px-to-rem(utilities.$default-form-gutter);
 }
 
 @mixin field {
   display: block;
   width: 100%;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
-  padding: functions.px-to-rem(settings.$default-form-gutter);
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
+  margin-bottom: functions.px-to-rem(utilities.$default-form-gutter);
+  padding: functions.px-to-rem(utilities.$default-form-gutter);
+  border: utilities.$border-width solid utilities.$colour-furniture;
+  border-radius: utilities.$border-radius;
 }
 
 @mixin cancel-button {
@@ -44,16 +44,16 @@ $_label-font-size: functions.px-to-rem(20px);
 }
 
 .error-summary {
-  border: settings.$border-width solid settings.$colour-alert;
-  padding: functions.px-to-rem(settings.$default-form-gutter);
+  border: utilities.$border-width solid utilities.$colour-alert;
+  padding: functions.px-to-rem(utilities.$default-form-gutter);
   margin-bottom: functions.px-to-rem(48px);
 
   p {
-    color: settings.$colour-alert;
+    color: utilities.$colour-alert;
   }
 
   ul {
-    color: settings.$colour-alert;
+    color: utilities.$colour-alert;
     margin-top: 0;
   }
 }
@@ -64,7 +64,7 @@ $_label-font-size: functions.px-to-rem(20px);
   button[type="submit"] {
     @include button.primary();
     margin-right: functions.px-to-rem(
-      settings.$default-form-element-separation
+      utilities.$default-form-element-separation
     );
   }
 
@@ -76,7 +76,7 @@ $_label-font-size: functions.px-to-rem(20px);
     @include breakpoints.not-narrow() {
       display: grid;
       grid-template-columns: 2fr 8fr;
-      column-gap: functions.px-to-rem(settings.$default-gutter);
+      column-gap: functions.px-to-rem(utilities.$default-gutter);
     }
 
     dt {
@@ -90,7 +90,7 @@ $_label-font-size: functions.px-to-rem(20px);
   }
 
   section {
-    margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
+    margin-bottom: functions.px-to-rem(utilities.$default-form-vertical-spacing);
   }
 }
 
@@ -104,7 +104,7 @@ $_label-font-size: functions.px-to-rem(20px);
 
 .standard-form__helper_text {
   color: $_microcopy-colour;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+  margin-bottom: functions.px-to-rem(utilities.$default-form-gutter);
 }
 
 .standard-form__constraints {

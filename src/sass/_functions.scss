@@ -1,17 +1,17 @@
 @use 'sass:math';
 
-@use 'settings';
+@use '../sass-utilities' as utilities;
 
 @function px-to-rem($px) {
   @if $px == 0 {
     @return 0;
   }
-  @return math.div($px, settings.$base-font-measure) * 1rem;
+  @return math.div($px, utilities.$base-font-measure) * 1rem;
 }
 
 @function px-to-em($px) {
   @if $px == 0 {
     @return 0;
   }
-  @return math.div($px, settings.$base-font-measure) * 1em;
+  @return math.div($px, utilities.$base-font-measure) * 1em;
 }

@@ -2,27 +2,27 @@
 @use 'functions';
 @use 'layout';
 @use 'list';
-@use 'settings';
+@use '../sass-utilities' as utilities;
 @use 'typography';
 @use 'avatar';
 
-$_card-border-radius: settings.$border-radius;
+$_card-border-radius: utilities.$border-radius;
 
 @mixin basics ($is-entire-card-linked: false) {
   @if ($is-entire-card-linked == true) {
     position: relative;
   }
-  background-color: settings.$colour-white;
-  padding: 1rem functions.px-to-rem(settings.$default-gutter);
+  background-color: utilities.$colour-white;
+  padding: 1rem functions.px-to-rem(utilities.$default-gutter);
 
-  border: settings.$border-width solid settings.$colour-furniture;
+  border: utilities.$border-width solid utilities.$colour-furniture;
   border-left-width: 0;
   border-right-width: 0;
 
   @include breakpoints.not-narrow {
     border-radius: $_card-border-radius;
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
+    border-left-width: utilities.$border-width;
+    border-right-width: utilities.$border-width;
   }
 }
 
@@ -32,15 +32,15 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin link () {
-  color: settings.$colour-text-primary;
+  color: utilities.$colour-text-primary;
 
   &:link,
   &:visited {
-    color: settings.$colour-text-primary;
+    color: utilities.$colour-text-primary;
 
     &:active,
     &:hover {
-      color: settings.$colour-text-primary;
+      color: utilities.$colour-text-primary;
     }
   }
 }
@@ -68,7 +68,7 @@ $_card-border-radius: settings.$border-radius;
 @mixin meta() {
   @include typography.details();
   @include typography.list-separator();
-  color: settings.$colour-text-secondary;
+  color: utilities.$colour-text-secondary;
 }
 
 @mixin list() {
