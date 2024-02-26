@@ -3,9 +3,10 @@ import { pipe } from 'fp-ts/function';
 import { AcmiEvaluationDoi } from './acmi-evaluation-doi';
 
 const deriveExpressionDoiSuffix = (doi: AcmiEvaluationDoi) => {
+  const acmiEvaluationDoiRegex = /^10.1099\/acmi\.0\.[0-9]{6,}\.v[0-9]+\.[0-9]+$/;
   const evaluationDoiSuffix = doi.substring(doi.indexOf('/') + 1);
   const expressionDoiSuffix = evaluationDoiSuffix.substring(0, evaluationDoiSuffix.lastIndexOf('.'));
-  if (expressionDoiSuffix.length >= 16) {
+  if (acmiEvaluationDoiRegex.test(doi)) {
     return O.some(expressionDoiSuffix);
   }
   return O.none;
