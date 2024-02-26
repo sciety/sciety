@@ -8,10 +8,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-jats';
-import * as AED from './acmi-evaluation-doi';
 import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
+import * as EFK from './evaluation-fetcher-key';
 
 const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',
@@ -37,13 +37,13 @@ const translateBodyToHtml = (body: string) => pipe(
   sanitise,
 );
 
-const toMapEntry = (subArticleWithABody: SubArticleWithBody): [AED.AcmiEvaluationDoi, SanitisedHtmlFragment] => [
-  AED.fromValidatedString(subArticleWithABody['front-stub']['article-id']),
+const toMapEntry = (subArticleWithABody: SubArticleWithBody): [EFK.EvaluationFetcherKey, SanitisedHtmlFragment] => [
+  EFK.fromValidatedString(subArticleWithABody['front-stub']['article-id']),
   translateBodyToHtml(subArticleWithABody.body),
 ];
 
 export const lookupFullText = (
-  key: AED.AcmiEvaluationDoi,
+  key: EFK.EvaluationFetcherKey,
 ) => (
   map: FullTextsOfEvaluations,
 ): E.Either<DE.DataError, SanitisedHtmlFragment> => pipe(
@@ -52,7 +52,7 @@ export const lookupFullText = (
   E.fromOption(() => DE.notFound),
 );
 
-type FullTextsOfEvaluations = ReadonlyMap<AED.AcmiEvaluationDoi, SanitisedHtmlFragment>;
+type FullTextsOfEvaluations = ReadonlyMap<EFK.EvaluationFetcherKey, SanitisedHtmlFragment>;
 
 const accessMicrobiologyXmlResponseCodec = t.string;
 
