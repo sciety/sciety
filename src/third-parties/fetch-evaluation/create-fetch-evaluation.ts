@@ -4,7 +4,7 @@ import { fetchNcrcReview } from './ncrc';
 import { fetchRapidReview } from './rapid-reviews';
 import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
 import { fetchHypothesisAnnotation } from '../hypothesis/fetch-hypothesis-annotation';
-import { fetchZenodoRecord } from '../zenodo/fetch-zenodo-record';
+import { fetchZenodoRecord } from './zenodo';
 import { fetchPrelightsHighlight } from './prelights';
 import { Logger } from '../../shared-ports';
 import { fetchDoiEvaluationByPublisher } from '../fetch-doi-evaluation-by-publisher';
