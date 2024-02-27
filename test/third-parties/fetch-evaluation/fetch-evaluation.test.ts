@@ -3,13 +3,13 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchEvaluation } from '../../src/third-parties/fetch-evaluation';
-import * as DE from '../../src/types/data-error';
-import * as RI from '../../src/types/evaluation-locator';
-import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
-import { Evaluation } from '../../src/types/evaluation';
+import { fetchEvaluation } from '../../../src/third-parties/fetch-evaluation/fetch-evaluation';
+import * as DE from '../../../src/types/data-error';
+import * as RI from '../../../src/types/evaluation-locator';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { Evaluation } from '../../../src/types/evaluation';
 
 describe('fetch-evaluation', () => {
   describe('when a service is supported', () => {
