@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { URL } from 'url';
-import * as DE from '../../src/types/data-error';
-import { fetchDoiEvaluationByPublisher } from '../../src/third-parties/fetch-doi-evaluation-by-publisher';
-import { Evaluation } from '../../src/types/evaluation';
-import { arbitraryNumber, arbitrarySanitisedHtmlFragment, arbitraryUri } from '../helpers';
-import { arbitraryDataError } from '../types/data-error.helper';
-import { dummyLogger } from '../dummy-logger';
+import * as DE from '../../../src/types/data-error';
+import { fetchDoiEvaluationByPublisher } from '../../../src/third-parties/fetch-evaluation/fetch-doi-evaluation-by-publisher';
+import { Evaluation } from '../../../src/types/evaluation';
+import { arbitraryNumber, arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
+import { arbitraryDataError } from '../../types/data-error.helper';
+import { dummyLogger } from '../../dummy-logger';
 
 const arbitraryEvaluation: Evaluation = {
   fullText: arbitrarySanitisedHtmlFragment(),
