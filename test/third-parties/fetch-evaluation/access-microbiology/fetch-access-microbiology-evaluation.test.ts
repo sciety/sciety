@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { fetchAccessMicrobiologyEvaluation } from '../../../src/third-parties/access-microbiology/fetch-access-microbiology-evaluation';
-import { QueryExternalService } from '../../../src/third-parties/query-external-service';
-import { Evaluation } from '../../../src/types/evaluation';
-import { arbitraryString, arbitraryWord } from '../../helpers';
-import { abortTest } from '../../framework/abort-test';
-import { dummyLogger } from '../../dummy-logger';
+import { QueryExternalService } from '../../../../src/third-parties/query-external-service';
+import { Evaluation } from '../../../../src/types/evaluation';
+import { arbitraryString, arbitraryWord } from '../../../helpers';
+import { abortTest } from '../../../framework/abort-test';
+import { dummyLogger } from '../../../dummy-logger';
+import { fetchAccessMicrobiologyEvaluation } from '../../../../src/third-parties/fetch-evaluation/access-microbiology/fetch-access-microbiology-evaluation';
 
 describe('fetch-access-microbiology-evaluation', () => {
   describe.skip('given an XML containing the relevant sub-article', () => {

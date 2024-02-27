@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { toJatsXmlUrlOfPublisher } from '../../../src/third-parties/access-microbiology/to-jats-xml-url-of-publisher';
-import * as AED from '../../../src/third-parties/access-microbiology/evaluation-fetcher-key';
-import { arbitraryWord } from '../../helpers';
+import * as AED from '../../../../src/third-parties/fetch-evaluation/access-microbiology/evaluation-fetcher-key';
+import { arbitraryWord } from '../../../helpers';
+import { toJatsXmlUrlOfPublisher } from '../../../../src/third-parties/fetch-evaluation/access-microbiology/to-jats-xml-url-of-publisher';
 
 describe('to-jats-xml-url-of-publisher', () => {
   describe.each([

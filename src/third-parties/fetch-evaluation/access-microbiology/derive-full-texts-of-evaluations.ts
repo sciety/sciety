@@ -5,12 +5,12 @@ import * as t from 'io-ts';
 import { identity, pipe } from 'fp-ts/function';
 import { XMLParser } from 'fast-xml-parser';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { SanitisedHtmlFragment, sanitise } from '../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { SanitisedHtmlFragment, sanitise } from '../../../types/sanitised-html-fragment';
+import { toHtmlFragment } from '../../../types/html-fragment';
 import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-jats';
-import * as DE from '../../types/data-error';
-import { Logger } from '../../shared-ports';
-import { decodeAndLogFailures } from '../decode-and-log-failures';
+import * as DE from '../../../types/data-error';
+import { Logger } from '../../../shared-ports';
+import { decodeAndLogFailures } from '../../decode-and-log-failures';
 import * as EFK from './evaluation-fetcher-key';
 
 const parser = new XMLParser({
