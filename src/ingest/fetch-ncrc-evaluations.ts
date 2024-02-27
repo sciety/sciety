@@ -7,7 +7,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { FetchGoogleSheet } from './fetch-google-sheet';
 import { supportedArticleIdFromLink } from './supported-article-id-from-link';
 import { FetchEvaluations } from './update-all';
-import { sheetId } from '../third-parties/ncrc';
+import { sheetId } from './third-parties/ncrc/sheet-id';
 
 type Ports = {
   fetchGoogleSheet: FetchGoogleSheet,
