@@ -15,7 +15,7 @@ import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
-import { fetchAccessMicrobiologyEvaluation } from './access-microbiology/fetch-access-microbiology-evaluation';
+import { fetchAccessMicrobiologyEvaluation } from './access-microbiology';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
