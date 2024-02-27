@@ -6,15 +6,15 @@ import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
-import { Logger } from '../../shared-ports';
-import { EvaluationFetcher } from '../evaluation-fetcher';
-import { Evaluation } from '../../types/evaluation';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
+import { Logger } from '../../../shared-ports';
+import { EvaluationFetcher } from '../../evaluation-fetcher';
+import { Evaluation } from '../../../types/evaluation';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { sanitise } from '../../../types/sanitised-html-fragment';
 import { HypothesisAnnotation, hypothesisAnnotation } from './HypothesisAnnotation';
-import * as DE from '../../types/data-error';
-import { QueryExternalService } from '../query-external-service';
-import { decodeAndLogFailures } from '../decode-and-log-failures';
+import * as DE from '../../../types/data-error';
+import { QueryExternalService } from '../../query-external-service';
+import { decodeAndLogFailures } from '../../decode-and-log-failures';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 

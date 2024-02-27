@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { fetchNcrcReview } from './ncrc';
 import { fetchRapidReview } from './rapid-reviews';
 import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
-import { fetchHypothesisAnnotation } from '../hypothesis';
+import { fetchHypothesisAnnotation } from './hypothesis';
 import { fetchZenodoRecord } from './zenodo';
 import { fetchPrelightsHighlight } from './prelights';
 import { Logger } from '../../shared-ports';
