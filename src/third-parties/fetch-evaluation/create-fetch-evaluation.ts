@@ -1,7 +1,7 @@
 /* eslint-disable quote-props */
 import { pipe } from 'fp-ts/function';
 import { fetchNcrcReview } from './ncrc';
-import { fetchRapidReview } from '../rapid-reviews';
+import { fetchRapidReview } from './rapid-reviews';
 import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
 import { fetchHypothesisAnnotation } from '../hypothesis/fetch-hypothesis-annotation';
 import { fetchZenodoRecord } from '../zenodo/fetch-zenodo-record';

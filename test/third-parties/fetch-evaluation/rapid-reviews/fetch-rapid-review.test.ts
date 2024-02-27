@@ -3,12 +3,12 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchRapidReview } from '../../../src/third-parties/rapid-reviews/fetch-rapid-review';
-import * as DE from '../../../src/types/data-error';
-import { HtmlFragment } from '../../../src/types/html-fragment';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryString, arbitraryUri } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
+import { fetchRapidReview } from '../../../../src/third-parties/fetch-evaluation/rapid-reviews/fetch-rapid-review';
+import * as DE from '../../../../src/types/data-error';
+import { HtmlFragment } from '../../../../src/types/html-fragment';
+import { dummyLogger } from '../../../dummy-logger';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const rapidReviewResponseWith = (metaTags: ReadonlyArray<[string, string]>) => `
   <!DOCTYPE html>
