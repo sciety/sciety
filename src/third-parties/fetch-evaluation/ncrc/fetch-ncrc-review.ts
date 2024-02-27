@@ -6,11 +6,11 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { constructNcrcReview, NcrcReview } from './construct-ncrc-review';
-import { EvaluationFetcher } from '../evaluation-fetcher';
+import { EvaluationFetcher } from '../../evaluation-fetcher';
 import { sheetId } from './sheet-id';
-import * as DE from '../../types/data-error';
+import * as DE from '../../../types/data-error';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../../shared-ports';
 
 // https://github.com/gcanti/io-ts/issues/431
 type TupleFn = <TCodecs extends readonly [t.Mixed, ...Array<t.Mixed>]>(
