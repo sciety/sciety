@@ -1,6 +1,6 @@
 /* eslint-disable quote-props */
 import { pipe } from 'fp-ts/function';
-import { fetchNcrcReview } from '../ncrc/fetch-ncrc-review';
+import { fetchNcrcReview } from '../ncrc';
 import { fetchRapidReview } from '../rapid-reviews/fetch-rapid-review';
 import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
 import { fetchHypothesisAnnotation } from '../hypothesis/fetch-hypothesis-annotation';
