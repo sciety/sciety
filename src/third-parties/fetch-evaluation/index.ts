@@ -1,1 +1,1 @@
-export { fetchEvaluation } from './fetch-evaluation';
+export { fetchEvaluationFromAppropriateService as fetchEvaluation } from './fetch-evaluation-from-appropriate-service';
