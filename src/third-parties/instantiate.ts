@@ -17,6 +17,7 @@ import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology';
 import { fetchPublishingHistory } from './fetch-publishing-history';
+import { QueryExternalService } from './query-external-service';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
@@ -31,6 +32,22 @@ const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | un
       maxAgeInMilliseconds,
     };
 };
+
+const createFetchEvaluation = (queryExternalService: QueryExternalService, logger: Logger) => fetchEvaluation({
+  doi: fetchDoiEvaluationByPublisher(
+    {
+      // eslint-disable-next-line quote-props
+      '10.5281': fetchZenodoRecord(queryExternalService, logger),
+      // eslint-disable-next-line quote-props
+      '10.1099': fetchAccessMicrobiologyEvaluation(queryExternalService, logger),
+    },
+    logger,
+  ),
+  hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
+  ncrc: fetchNcrcReview(logger),
+  prelights: fetchPrelightsHighlight(queryExternalService, logger),
+  rapidreviews: fetchRapidReview(queryExternalService, logger),
+});
 
 export const instantiate = (
   logger: Logger,
@@ -56,21 +73,7 @@ export const instantiate = (
       crossrefApiBearerToken,
     ),
     fetchRecommendedPapers: fetchRecommendedPapers(queryExternalService, logger),
-    fetchEvaluation: fetchEvaluation({
-      doi: fetchDoiEvaluationByPublisher(
-        {
-          // eslint-disable-next-line quote-props
-          '10.5281': fetchZenodoRecord(queryExternalService, logger),
-          // eslint-disable-next-line quote-props
-          '10.1099': fetchAccessMicrobiologyEvaluation(queryExternalService, logger),
-        },
-        logger,
-      ),
-      hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
-      ncrc: fetchNcrcReview(logger),
-      prelights: fetchPrelightsHighlight(queryExternalService, logger),
-      rapidreviews: fetchRapidReview(queryExternalService, logger),
-    }),
+    fetchEvaluation: createFetchEvaluation(queryExternalService, logger),
     fetchStaticFile: fetchStaticFile(logger),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
     fetchPublishingHistory: fetchPublishingHistory(
