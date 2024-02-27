@@ -7,7 +7,7 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { QueryExternalService } from '../../query-external-service';
-import { EvaluationFetcher } from '../../evaluation-fetcher';
+import { EvaluationFetcher } from '../evaluation-fetcher';
 import * as DE from '../../../types/data-error';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
