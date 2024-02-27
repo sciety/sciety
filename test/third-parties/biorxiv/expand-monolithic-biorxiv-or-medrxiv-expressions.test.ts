@@ -4,14 +4,14 @@ import * as O from 'fp-ts/Option';
 import {
   GetExpressionsFromBiorxiv,
   expandMonolithicBiorxivOrMedrxivExpressions,
-} from '../../src/third-parties/expand-monolithic-biorxiv-or-medrxiv-expressions';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { PaperExpression } from '../../src/types/paper-expression';
-import { arbitraryPaperExpression } from '../types/paper-expression.helper';
-import { arbitraryDataError } from '../types/data-error.helper';
-import { arbitraryNumber } from '../helpers';
-import { ArticleServer } from '../../src/types/article-server';
-import { arbitraryColdSpringHarborArticleServer } from './cold-spring-harbor-article-server.helper';
+} from '../../../src/third-parties/biorxiv/expand-monolithic-biorxiv-or-medrxiv-expressions';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { PaperExpression } from '../../../src/types/paper-expression';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
+import { arbitraryDataError } from '../../types/data-error.helper';
+import { arbitraryNumber } from '../../helpers';
+import { ArticleServer } from '../../../src/types/article-server';
+import { arbitraryColdSpringHarborArticleServer } from '../cold-spring-harbor-article-server.helper';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),
