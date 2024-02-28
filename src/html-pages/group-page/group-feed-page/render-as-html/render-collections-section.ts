@@ -5,7 +5,7 @@ import * as LID from '../../../../types/list-id';
 import { rawUserInput } from '../../../../read-models/annotations/handle-event';
 
 export const renderCollectionsSection = (): HtmlFragment => toHtmlFragment(`
-  <section>
+  <section class="group-page-collections">
     <h2>Collections</h2>
     <ol class="card-list" role="list">
         <li role="listitem">
