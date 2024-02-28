@@ -7,27 +7,25 @@ import { QueryExternalService } from '../../query-external-service';
 import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations';
 import { Logger } from '../../../shared-ports';
 import { toJatsXmlUrlOfPublisher } from './to-jats-xml-url-of-publisher';
-import * as EFK from './evaluation-fetcher-key';
 
 const fetchEvaluationFromPublisherJatsXmlEndpoint = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-) => (evaluationFetcherKey: EFK.EvaluationFetcherKey) => pipe(
-  evaluationFetcherKey,
+) => (key: string) => pipe(
+  key,
   toJatsXmlUrlOfPublisher,
   TE.fromOption(() => DE.unavailable),
   TE.mapLeft((left) => {
-    logger('error', 'Failed to derive JATS XML URL from ACMI evaluation DOI', { acmiEvaluationDoi: evaluationFetcherKey });
+    logger('error', 'Failed to derive JATS XML URL from ACMI evaluation DOI', { acmiEvaluationDoi: key });
     return left;
   }),
   TE.chain(queryExternalService()),
   TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
-  TE.chainEitherKW(lookupFullText(evaluationFetcherKey)),
+  TE.chainEitherKW(lookupFullText(key)),
   TE.map((fullText) => ({
-    url: new URL(`https://doi.org/${evaluationFetcherKey}`),
+    url: new URL(`https://doi.org/${key}`),
     fullText,
   })),
-
 );
 
 export const fetchAccessMicrobiologyEvaluation = (
@@ -35,6 +33,5 @@ export const fetchAccessMicrobiologyEvaluation = (
   logger: Logger,
 ): EvaluationFetcher => (key: string) => pipe(
   key,
-  EFK.fromValidatedString,
   fetchEvaluationFromPublisherJatsXmlEndpoint(queryExternalService, logger),
 );

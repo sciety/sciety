@@ -43,7 +43,7 @@ const toMapEntry = (subArticleWithABody: SubArticleWithBody): [EFK.EvaluationFet
 ];
 
 export const lookupFullText = (
-  key: EFK.EvaluationFetcherKey,
+  key: string,
 ) => (
   map: FullTextsOfEvaluations,
 ): E.Either<DE.DataError, SanitisedHtmlFragment> => pipe(
