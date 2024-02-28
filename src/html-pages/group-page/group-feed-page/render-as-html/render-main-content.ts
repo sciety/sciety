@@ -4,6 +4,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { tabList } from '../../common-components/tab-list';
 import { ViewModel } from '../view-model';
 import { renderListOfArticleCardsWithFallback } from './render-list-of-article-cards-with-fallback';
+import { renderCollectionsSection } from './render-collections-section';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.tabs),
@@ -11,7 +12,7 @@ const tabProps = (viewmodel: ViewModel) => ({
 });
 
 const augmentWithCollectionsSection = (otherContent: HtmlFragment) => toHtmlFragment(`
-  <p>Hello, world!</p>
+  ${renderCollectionsSection()}
   ${otherContent}
 `);
 
