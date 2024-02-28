@@ -5,6 +5,7 @@ import { tabList } from '../../common-components/tab-list';
 import { ViewModel } from '../view-model';
 import { renderListOfArticleCardsWithFallback } from './render-list-of-article-cards-with-fallback';
 import { renderCollectionsSection } from './render-collections-section';
+import { wrapperForTopSpace } from '../../wrapper-for-top-space';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.tabs),
@@ -20,12 +21,6 @@ const augmentWithCollectionsSection = (groupId: ViewModel['group']['id']) => (ot
   }
   return otherContent;
 };
-
-const wrapperForTopSpace = (wrapped: HtmlFragment) => toHtmlFragment(`
-  <div class="group-page-tab-panel-content">
-    ${wrapped}
-  </div>
-`);
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   renderListOfArticleCardsWithFallback(viewmodel.content),
