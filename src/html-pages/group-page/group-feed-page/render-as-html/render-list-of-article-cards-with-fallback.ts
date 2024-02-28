@@ -17,6 +17,7 @@ const renderCards = (
   (items) => renderListItems(items),
   (listContent) => `
     <section class="group-page-feed">
+      <h2>Latest preprint reviews</h2>
       <ol class="article-list" role="list">
         ${listContent}
       </ol>
