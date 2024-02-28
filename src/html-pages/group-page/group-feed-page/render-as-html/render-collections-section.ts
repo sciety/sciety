@@ -5,9 +5,11 @@ import * as LID from '../../../../types/list-id';
 import { rawUserInput } from '../../../../read-models/annotations/handle-event';
 
 export const renderCollectionsSection = (): HtmlFragment => toHtmlFragment(`
-  <ol class="card-list" role="list">
-    <li role="listitem">
-      ${renderListCard({
+  <section>
+    <h2>Collections</h2>
+    <ol class="card-list" role="list">
+        <li role="listitem">
+        ${renderListCard({
     listId: LID.fromValidatedString(''),
     articleCount: 0,
     updatedAt: O.none,
@@ -15,6 +17,7 @@ export const renderCollectionsSection = (): HtmlFragment => toHtmlFragment(`
     description: rawUserInput('My description'),
     avatarUrl: O.some('https://pbs.twimg.com/profile_images/1417582635040317442/jYHfOlh6_normal.jpg'),
   })}
-    </li>
-  </ol>
+        </li>
+    </ol>
+  </section>
 `);
