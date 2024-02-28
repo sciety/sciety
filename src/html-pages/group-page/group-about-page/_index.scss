@@ -2,10 +2,11 @@
 @use '../../../sass/functions';
 @use '../../../sass/breakpoints';
 @use '../../../sass/layout';
+@use '../tab-panel-content';
 
 .group-page-about {
+  @include tab-panel-content.top-vertical-spacing();
   margin-bottom: 1.5rem;
-  padding-top: 1rem;
   padding-bottom: 1rem;
   background-color: utilities.$colour-white;
 
