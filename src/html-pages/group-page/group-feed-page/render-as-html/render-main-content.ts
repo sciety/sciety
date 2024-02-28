@@ -25,8 +25,8 @@ const conciergedBiophysicsColabUserListCard: ListCardViewModel = {
   avatarUrl: O.some('https://pbs.twimg.com/profile_images/1417582635040317442/jYHfOlh6_normal.jpg'),
 };
 
-const augmentWithCollectionsSection = (groupId: ViewModel['group']['id']) => (otherContent: HtmlFragment) => {
-  if (groupId === '4bbf0c12-629b-4bb8-91d6-974f4df8efb2') {
+const augmentWithCollectionsSection = (viewmodel: ViewModel) => (otherContent: HtmlFragment) => {
+  if (viewmodel.group.id === '4bbf0c12-629b-4bb8-91d6-974f4df8efb2') {
     return toHtmlFragment(`
       ${renderCollectionsSection(conciergedBiophysicsColabUserListCard)}
       ${otherContent}
@@ -37,7 +37,7 @@ const augmentWithCollectionsSection = (groupId: ViewModel['group']['id']) => (ot
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   renderListOfArticleCardsWithFallback(viewmodel.content),
-  augmentWithCollectionsSection(viewmodel.group.id),
+  augmentWithCollectionsSection(viewmodel),
   wrapperForTopSpace,
   renderTabs(tabProps(viewmodel)),
 );
