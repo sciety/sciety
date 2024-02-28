@@ -11,7 +11,6 @@ import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-
 import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
 import { decodeAndLogFailures } from '../../decode-and-log-failures';
-import * as EFK from './evaluation-fetcher-key';
 
 const parser = new XMLParser({
   isArray: (tagName) => tagName === 'sub-article',
@@ -37,8 +36,8 @@ const translateBodyToHtml = (body: string) => pipe(
   sanitise,
 );
 
-const toMapEntry = (subArticleWithABody: SubArticleWithBody): [EFK.EvaluationFetcherKey, SanitisedHtmlFragment] => [
-  EFK.fromValidatedString(subArticleWithABody['front-stub']['article-id']),
+const toMapEntry = (subArticleWithABody: SubArticleWithBody): [string, SanitisedHtmlFragment] => [
+  subArticleWithABody['front-stub']['article-id'],
   translateBodyToHtml(subArticleWithABody.body),
 ];
 
@@ -52,7 +51,7 @@ export const lookupFullText = (
   E.fromOption(() => DE.notFound),
 );
 
-type FullTextsOfEvaluations = ReadonlyMap<EFK.EvaluationFetcherKey, SanitisedHtmlFragment>;
+type FullTextsOfEvaluations = ReadonlyMap<string, SanitisedHtmlFragment>;
 
 const accessMicrobiologyXmlResponseCodec = t.string;
 
