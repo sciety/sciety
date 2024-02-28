@@ -11,7 +11,7 @@ const tabProps = (viewmodel: ViewModel) => ({
   activeTabIndex: 0,
 });
 
-const augmentWithCollectionsSection = (otherContent: HtmlFragment, groupId: ViewModel['group']['id']) => {
+const augmentWithCollectionsSection = (groupId: ViewModel['group']['id']) => (otherContent: HtmlFragment) => {
   if (groupId === '4bbf0c12-629b-4bb8-91d6-974f4df8efb2') {
     return toHtmlFragment(`
       ${renderCollectionsSection()}
@@ -29,7 +29,7 @@ const wrapperForTopSpace = (wrapped: HtmlFragment) => toHtmlFragment(`
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   renderListOfArticleCardsWithFallback(viewmodel.content),
-  (otherContent) => (process.env.EXPERIMENT_ENABLED === 'true' ? augmentWithCollectionsSection(otherContent, viewmodel.group.id) : otherContent),
+  augmentWithCollectionsSection(viewmodel.group.id),
   wrapperForTopSpace,
   renderTabs(tabProps(viewmodel)),
 );
