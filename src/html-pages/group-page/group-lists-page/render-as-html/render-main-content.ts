@@ -4,6 +4,7 @@ import { HtmlFragment } from '../../../../types/html-fragment';
 import { tabList } from '../../common-components/tab-list';
 import { ViewModel } from '../view-model';
 import { renderListOfListCardsWithFallback } from './render-list-of-list-cards-with-fallback';
+import { wrapperForTopSpace } from '../../wrapper-for-top-space';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.tabs),
@@ -12,5 +13,6 @@ const tabProps = (viewmodel: ViewModel) => ({
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   renderListOfListCardsWithFallback(viewmodel.listCards),
+  wrapperForTopSpace,
   renderTabs(tabProps(viewmodel)),
 );
