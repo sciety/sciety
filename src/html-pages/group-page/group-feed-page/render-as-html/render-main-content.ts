@@ -11,15 +11,18 @@ const tabProps = (viewmodel: ViewModel) => ({
   activeTabIndex: 0,
 });
 
-const augmentWithCollectionsSection = (otherContent: HtmlFragment) => toHtmlFragment(`
-  ${renderCollectionsSection()}
-  ${otherContent}
-`);
-
-const unmodified = (a: HtmlFragment) => a;
+const augmentWithCollectionsSection = (otherContent: HtmlFragment, groupId: ViewModel['group']['id']) => {
+  if (groupId === '4bbf0c12-629b-4bb8-91d6-974f4df8efb2') {
+    return toHtmlFragment(`
+      ${renderCollectionsSection()}
+      ${otherContent}
+    `);
+  }
+  return otherContent;
+};
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   renderListOfArticleCardsWithFallback(viewmodel.content),
-  process.env.EXPERIMENT_ENABLED === 'true' ? augmentWithCollectionsSection : unmodified,
+  (otherContent) => (process.env.EXPERIMENT_ENABLED === 'true' ? augmentWithCollectionsSection(otherContent, viewmodel.group.id) : otherContent),
   renderTabs(tabProps(viewmodel)),
 );
