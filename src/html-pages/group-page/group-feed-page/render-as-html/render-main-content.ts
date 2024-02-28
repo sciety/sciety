@@ -21,8 +21,15 @@ const augmentWithCollectionsSection = (otherContent: HtmlFragment, groupId: View
   return otherContent;
 };
 
+const wrapperForTopSpace = (wrapped: HtmlFragment) => toHtmlFragment(`
+  <div class="group-page-tab-panel-content">
+    ${wrapped}
+  </div>
+`);
+
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   renderListOfArticleCardsWithFallback(viewmodel.content),
   (otherContent) => (process.env.EXPERIMENT_ENABLED === 'true' ? augmentWithCollectionsSection(otherContent, viewmodel.group.id) : otherContent),
+  wrapperForTopSpace,
   renderTabs(tabProps(viewmodel)),
 );
