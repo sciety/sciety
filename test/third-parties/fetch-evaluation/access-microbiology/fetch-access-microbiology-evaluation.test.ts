@@ -33,10 +33,12 @@ describe('fetch-access-microbiology-evaluation', () => {
       )();
     });
 
-    it('return a full text', () => {
+    it('returns a full text', () => {
       expect(result.fullText).toBe(`<p>${text}</p>`);
     });
 
-    it.todo('return a url');
+    it('returns a url', () => {
+      expect(result.url.toString()).toBe('https://doi.org/10.1099/acmi.0.000569.v1.3');
+    });
   });
 });
