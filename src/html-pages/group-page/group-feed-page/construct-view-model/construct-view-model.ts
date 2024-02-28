@@ -28,6 +28,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     constructContent(dependencies, partial.group, 10, params.page),
     TE.map((content) => ({
       ...partial,
+      collections: O.none,
       content,
     })),
   )),
