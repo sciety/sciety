@@ -4,7 +4,7 @@ import {
   containsUnrecoverableError,
   getAbstract, getAuthors, getServer, getTitle,
 } from '../../../src/third-parties/crossref/parse-crossref-article';
-import { arbitraryUri } from '../../helpers';
+import { arbitraryString, arbitraryUri } from '../../helpers';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -405,6 +405,19 @@ describe('parse-crossref-article', () => {
 
       it.failing('detects an unrecoverable error', () => {
         expect(result).toBe(true);
+      });
+    });
+
+    describe('contains an ordinary crossref record', () => {
+      const input = crossrefResponseWith(`
+        <titles>
+          <title>${arbitraryString()}</title>
+        </titles>
+      `);
+      const result = containsUnrecoverableError(parser.parseFromString(input, 'text/xml'));
+
+      it('does not detect an unrecoverable error', () => {
+        expect(result).toBe(false);
       });
     });
   });
