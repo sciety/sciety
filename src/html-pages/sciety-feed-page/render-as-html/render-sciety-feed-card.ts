@@ -1,5 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
+import { safelyRenderUserInput } from '../../../shared-components/safely-render-user-input';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
@@ -10,7 +11,7 @@ export const renderScietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment =>
     ? `
         <div class="sciety-feed-card__details">
           <h3 class="sciety-feed-card__details_title">${details.title}</h3>
-          <p>${details.content}</p>
+          <p>${safelyRenderUserInput(details.content)}</p>
         </div>
       `
     : ''),

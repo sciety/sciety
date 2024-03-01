@@ -5,6 +5,7 @@ import { ScietyFeedCard } from '../view-model';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { CollapsedArticlesAddedToList } from './feed-item';
 import { Dependencies } from './dependencies';
+import { rawUserInput } from '../../../read-models/annotations/handle-event';
 
 export const collapsedArticlesAddedToListCard = (
   dependencies: Dependencies,
@@ -27,7 +28,7 @@ export const collapsedArticlesAddedToListCard = (
       date: collapsedEvents.date,
       details: {
         title: toHtmlFragment(viewModel.listName),
-        content: toHtmlFragment(viewModel.listDescription),
+        content: rawUserInput(viewModel.listDescription),
       },
     }),
   ),

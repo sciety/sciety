@@ -5,6 +5,7 @@ import { EventOfType } from '../../../domain-events';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 import { Dependencies } from './dependencies';
+import { rawUserInput } from '../../../read-models/annotations/handle-event';
 
 type UserFollowedAGroupCard = (
   dependencies: Dependencies
@@ -35,7 +36,7 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (dependencies) => 
     date: event.date,
     details: {
       title: toHtmlFragment(group.name),
-      content: toHtmlFragment(group.shortDescription),
+      content: rawUserInput(group.shortDescription),
     },
   })),
 );

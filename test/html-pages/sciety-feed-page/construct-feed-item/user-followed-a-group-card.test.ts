@@ -64,7 +64,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('includes the group\'s short description in the details content', () => {
-      expect(viewModel.details?.content).toContain(addGroupCommand.shortDescription);
+      expect(viewModel.details?.content.content).toStrictEqual(addGroupCommand.shortDescription);
     });
   });
 
@@ -97,7 +97,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('includes the group\'s short description in the details content', () => {
-      expect(viewModel.details?.content).toContain(addGroupCommand.shortDescription);
+      expect(viewModel.details?.content.content).toStrictEqual(addGroupCommand.shortDescription);
     });
   });
 

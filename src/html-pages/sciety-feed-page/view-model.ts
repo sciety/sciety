@@ -1,9 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { HtmlFragment } from '../../types/html-fragment';
+import { RawUserInput } from '../../read-models/annotations/handle-event';
 
 type ScietyFeedCardDetails = {
   title: HtmlFragment,
-  content: HtmlFragment,
+  content: RawUserInput,
 };
 
 export type ScietyFeedCard = {
