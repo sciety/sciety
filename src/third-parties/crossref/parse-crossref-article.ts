@@ -10,7 +10,6 @@ const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const containsUnrecoverableError = (xml: Document): boolean => {
   const crossrefElement = getElement(xml, 'crossref');
   return !crossrefElement;
