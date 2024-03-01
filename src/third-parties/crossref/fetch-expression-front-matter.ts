@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import {
+  containsUnrecoverableError,
   getAbstract, getAuthors, getTitle,
 } from './parse-crossref-article';
 import { Logger } from '../../shared-ports';
@@ -31,6 +32,11 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
   let title: O.Option<SanitisedHtmlFragment>;
   try {
     const parsedXml = parser.parseFromString(document, 'text/xml');
+
+    if (containsUnrecoverableError(parsedXml)) {
+      logger('error', 'crossref/fetch-expression-front-matter: Unrecoverable error', { expressionDoi, document });
+      return E.left(DE.unavailable);
+    }
 
     authors = getAuthors(parsedXml);
     if (O.isNone(authors)) {

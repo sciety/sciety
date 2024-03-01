@@ -10,6 +10,9 @@ const getElement = (ancestor: Document | Element, qualifiedName: string) => (
   ancestor.getElementsByTagName(qualifiedName).item(0)
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const containsUnrecoverableError = (xml: Document): boolean => false;
+
 export const getAbstract = (
   doc: Document,
 ): O.Option<SanitisedHtmlFragment> => {
