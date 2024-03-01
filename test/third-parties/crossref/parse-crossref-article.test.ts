@@ -396,4 +396,10 @@ describe('parse-crossref-article', () => {
       expect(title).toStrictEqual(O.some('An article title for C. elegans'));
     });
   });
+
+  describe('when the document', () => {
+    describe('contains a <crossref> tag with its only child an <error> tag', () => {
+      it.todo('detects an unrecoverable error');
+    });
+  });
 });
