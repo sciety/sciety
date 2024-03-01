@@ -10,6 +10,8 @@ export const rawUserInput = (input: string): RawUserInput => ({
   content: input,
 });
 
+export const accessRawValue = (input: RawUserInput): string => input.content;
+
 type ListState = Record<string, RawUserInput>;
 
 export type ReadModel = Record<LID.ListId, ListState>;
