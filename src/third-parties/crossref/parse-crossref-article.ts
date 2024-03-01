@@ -11,7 +11,10 @@ const getElement = (ancestor: Document | Element, qualifiedName: string) => (
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const containsUnrecoverableError = (xml: Document): boolean => false;
+export const containsUnrecoverableError = (xml: Document): boolean => {
+  const crossrefElement = getElement(xml, 'crossref');
+  return !crossrefElement;
+};
 
 export const getAbstract = (
   doc: Document,

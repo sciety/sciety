@@ -403,7 +403,7 @@ describe('parse-crossref-article', () => {
       const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n      </doi_record>\r\n</doi_records>';
       const result = containsUnrecoverableError(parser.parseFromString(input, 'text/xml'));
 
-      it.failing('detects an unrecoverable error', () => {
+      it('detects an unrecoverable error', () => {
         expect(result).toBe(true);
       });
     });
