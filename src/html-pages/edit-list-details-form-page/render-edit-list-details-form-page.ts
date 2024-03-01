@@ -3,10 +3,12 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { inputFieldNames } from '../../standards';
+import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { safelyRenderUserInput } from '../../shared-components/safely-render-user-input';
 
 export type ViewModel = {
   listName: string,
-  listDescription: string,
+  listDescription: RawUserInput,
   listId: ListId,
   listHref: string,
   listNameMaxLength: number,
@@ -32,7 +34,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
   <section>
     <label for="listDescription" class="standard-form__sub_heading">Description <span class="standard-form__sub_heading_secondary_text">(optional)</span></label>
     <p class="standard-form__helper_text">Add further context to help readers understand your list.</p>
-    <textarea id="listDescription" name="description" rows="5" maxlength="${viewModel.listDescriptionMaxLength}">${htmlEscape(viewModel.listDescription)}</textarea>
+    <textarea id="listDescription" name="description" rows="5" maxlength="${viewModel.listDescriptionMaxLength}">${safelyRenderUserInput(viewModel.listDescription)}</textarea>
     <p class="standard-form__constraints">Maximum ${viewModel.listDescriptionMaxLength} characters</p>
   </section>
   <button type="submit">Save</button><a href="${viewModel.listHref}" class="edit-list-details-form__cancel">Cancel</a>
