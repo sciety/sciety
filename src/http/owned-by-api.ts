@@ -7,11 +7,17 @@ import { ownedByQueryCodec } from '../types/codecs/owned-by-query-codec';
 import * as LOID from '../types/list-owner-id';
 import { Queries } from '../read-models';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../read-models/lists';
+import { accessRawValue, rawUserInput } from '../read-models/annotations/handle-event';
 
-const constructResponseModel = (lists: ReadonlyArray<List>) => pipe(
+const constructViewModel = (lists: ReadonlyArray<List>) => pipe(
   lists,
   RA.map((list) => ({
     ...list,
+    description: pipe(
+      list.description,
+      rawUserInput,
+      accessRawValue,
+    ),
     articleIds: [...toExpressionDoisByMostRecentlyAdded(list.entries)],
   })),
 );
@@ -21,7 +27,7 @@ export const ownedBy = (queries: Queries): Middleware => async ({ params, respon
     params.ownerId,
     LOID.fromStringCodec.decode,
     E.map(queries.selectAllListsOwnedBy),
-    E.map(constructResponseModel),
+    E.map(constructViewModel),
     E.match(
       () => {
         response.status = StatusCodes.SERVICE_UNAVAILABLE;
