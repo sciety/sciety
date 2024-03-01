@@ -10,7 +10,7 @@ export const renderScietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment =>
     ? `
         <div class="sciety-feed-card__details">
           <h3 class="sciety-feed-card__details_title">${details.title}</h3>
-          ${details.content}
+          <p>${details.content}</p>
         </div>
       `
     : ''),

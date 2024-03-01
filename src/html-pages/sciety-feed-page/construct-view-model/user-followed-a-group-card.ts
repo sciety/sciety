@@ -35,7 +35,7 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (dependencies) => 
     date: event.date,
     details: {
       title: toHtmlFragment(group.name),
-      content: toHtmlFragment(`<p>${group.shortDescription}</p>`),
+      content: toHtmlFragment(group.shortDescription),
     },
   })),
 );
