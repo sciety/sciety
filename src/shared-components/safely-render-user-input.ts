@@ -19,3 +19,5 @@ export const safelyReflectUserInputForEditing = (
   htmlEscape(input.content),
   toHtmlFragment,
 );
+
+export const renderUserInputForJsonApi = (input: RawUserInput): string => input.content;

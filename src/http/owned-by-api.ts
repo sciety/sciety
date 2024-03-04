@@ -7,7 +7,8 @@ import { ownedByQueryCodec } from '../types/codecs/owned-by-query-codec';
 import * as LOID from '../types/list-owner-id';
 import { Queries } from '../read-models';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../read-models/lists';
-import { accessRawValue, rawUserInput } from '../read-models/annotations/handle-event';
+import { rawUserInput } from '../read-models/annotations/handle-event';
+import { renderUserInputForJsonApi } from '../shared-components/safely-render-user-input';
 
 const constructViewModel = (lists: ReadonlyArray<List>) => pipe(
   lists,
@@ -16,7 +17,7 @@ const constructViewModel = (lists: ReadonlyArray<List>) => pipe(
     description: pipe(
       list.description,
       rawUserInput,
-      accessRawValue,
+      renderUserInputForJsonApi,
     ),
     articleIds: [...toExpressionDoisByMostRecentlyAdded(list.entries)],
   })),
