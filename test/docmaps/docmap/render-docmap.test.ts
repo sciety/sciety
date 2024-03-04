@@ -163,21 +163,14 @@ describe('render-docmap', () => {
         });
 
         describe('the input', () => {
-          it('includes the uri and doi', async () => {
-            expect(action0.inputs).toStrictEqual([
-              expect.objectContaining(
-                {
-                  doi: expressionDoi,
-                  url: expect.stringContaining(expressionDoi),
-                },
-              )]);
-            expect(action1.inputs).toStrictEqual([
-              expect.objectContaining(
-                {
-                  doi: expressionDoi,
-                  url: expect.stringContaining(expressionDoi),
-                },
-              )]);
+          it('includes the uri', async () => {
+            expect(action0.inputs[0].url).toContain(expressionDoi);
+            expect(action1.inputs[0].url).toContain(expressionDoi);
+          });
+
+          it('includes the doi', async () => {
+            expect(action0.inputs[0].doi).toStrictEqual(expressionDoi);
+            expect(action1.inputs[0].doi).toStrictEqual(expressionDoi);
           });
         });
 
