@@ -13,7 +13,7 @@ import { DocmapViewModel } from './view-model';
 const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   doi: expressionDoi,
   url: `https://doi.org/${expressionDoi}`,
-}]
+}];
 
 const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluation) => ({
   participants: pipe(

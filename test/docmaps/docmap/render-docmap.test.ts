@@ -130,15 +130,17 @@ describe('render-docmap', () => {
         expect(theStep.assertions).toStrictEqual([]);
       });
 
-      describe('the (deprecated) inputs', () => {
-        it('include the uri and doi', async () => {
-          expect(theStep.inputs).toStrictEqual([
-            expect.objectContaining(
-              {
-                doi: expressionDoi,
-                url: expect.stringContaining(expressionDoi),
-              },
-            )]);
+      it('has a single (deprecated) input', () => {
+        expect(theStep.inputs).toHaveLength(1);
+      });
+
+      describe('the (deprecated) input', () => {
+        it('includes the uri', async () => {
+          expect(theStep.inputs[0].url).toContain(expressionDoi);
+        });
+
+        it('includes the doi', async () => {
+          expect(theStep.inputs[0].doi).toStrictEqual(expressionDoi);
         });
       });
 
