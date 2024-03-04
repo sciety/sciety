@@ -1,7 +1,7 @@
 @use 'sass-utilities' as utilities;
 @use '../../../sass/functions';
 @use '../../../sass/typography';
-@use '../../../sass/breakpoints';
+@use 'breakpoints';
 @use '../../../sass/button';
 @use '../../../sass/states';
 @use 'common';

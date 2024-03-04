@@ -6,7 +6,7 @@
 @use '../../sass/typography';
 @use '../../sass/list';
 @use '../../sass/states';
-@use '../../sass/breakpoints';
+@use 'breakpoints';
 @use 'avatar';
 
 $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);

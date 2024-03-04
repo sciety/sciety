@@ -2,7 +2,7 @@
 
 @use '../../../sass/functions';
 @use '../../../sass/button';
-@use '../../../sass/breakpoints';
+@use 'breakpoints';
 
 $home-page-breakpoint: functions.px-to-em(964px);
 $home-page-section-max-width: functions.px-to-rem(1400px);
