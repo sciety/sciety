@@ -12,3 +12,11 @@ export const safelyRenderUserInput = (
   transformNewLineCharactersToBrTags,
   toHtmlFragment,
 );
+
+export const safelyReflectUserInputForEditing = (
+  input: RawUserInput,
+): HtmlFragment => pipe(
+  htmlEscape(input.content),
+  transformNewLineCharactersToBrTags,
+  toHtmlFragment,
+);
