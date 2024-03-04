@@ -1,3 +1,6 @@
+/* eslint-disable jest/consistent-test-it */
+/* eslint-disable jest/require-top-level-describe */
+/* eslint-disable jest/require-hook */
 import { URL } from 'url';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
@@ -8,6 +11,22 @@ import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
+
+const itIsAValidInput = (inputs: Docmap['steps'][number]['inputs'], doi: ExpressionDoi) => {
+  it('has a single (deprecated) input', () => {
+    expect(inputs).toHaveLength(1);
+  });
+
+  it('includes the uri', async () => {
+    expect(inputs[0].url).toContain(doi);
+  });
+
+  it('includes the doi', async () => {
+    expect(inputs[0].doi).toStrictEqual(doi);
+  });
+};
 
 const expressionDoi = arbitraryExpressionDoi();
 
@@ -130,18 +149,8 @@ describe('render-docmap', () => {
         expect(theStep.assertions).toStrictEqual([]);
       });
 
-      it('has a single (deprecated) input', () => {
-        expect(theStep.inputs).toHaveLength(1);
-      });
-
       describe('the (deprecated) input', () => {
-        it('includes the uri', async () => {
-          expect(theStep.inputs[0].url).toContain(expressionDoi);
-        });
-
-        it('includes the doi', async () => {
-          expect(theStep.inputs[0].doi).toStrictEqual(expressionDoi);
-        });
+        itIsAValidInput(theStep.inputs, expressionDoi);
       });
 
       it('has one action per evaluation', () => {
@@ -157,21 +166,9 @@ describe('render-docmap', () => {
           expect(action1.participants[0].actor.name).toStrictEqual(authorName);
         });
 
-        it('has a single input', () => {
-          expect(action0.inputs).toHaveLength(1);
-          expect(action1.inputs).toHaveLength(1);
-        });
-
         describe('the input', () => {
-          it('includes the uri', async () => {
-            expect(action0.inputs[0].url).toContain(expressionDoi);
-            expect(action1.inputs[0].url).toContain(expressionDoi);
-          });
-
-          it('includes the doi', async () => {
-            expect(action0.inputs[0].doi).toStrictEqual(expressionDoi);
-            expect(action1.inputs[0].doi).toStrictEqual(expressionDoi);
-          });
+          itIsAValidInput(action0.inputs, expressionDoi);
+          itIsAValidInput(action1.inputs, expressionDoi);
         });
 
         it('has a single output', () => {
