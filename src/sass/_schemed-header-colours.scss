@@ -1,4 +1,4 @@
-@use '../sass-utilities' as utilities;
+@use 'sass-utilities' as utilities;
 
 @mixin light () {
     --colour-site-header-background: #{utilities.$colour-white};
