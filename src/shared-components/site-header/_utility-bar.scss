@@ -6,7 +6,7 @@
 @use '../../sass/typography';
 @use '../../sass/layout';
 @use '../../sass/breakpoints';
-@use '../../sass/avatar';
+@use 'avatar';
 @use '../../sass/schemed-header-colours';
 
 $_space-allocated-to-avatar-and-handle: 120px;

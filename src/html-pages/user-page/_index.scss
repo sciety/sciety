@@ -5,7 +5,7 @@
 @use '../../sass/breakpoints';
 @use '../../sass/layout';
 @use '../../sass/card';
-@use '../../sass/avatar';
+@use 'avatar';
 
 .page-header--user {
   display: flex;
