@@ -3,8 +3,6 @@ import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { RawUserInput, rawUserInput } from '../../read-side';
 import * as LID from '../../types/list-id';
 
-export const accessRawValue = (input: RawUserInput): string => input.content;
-
 type ListState = Record<string, RawUserInput>;
 
 export type ReadModel = Record<LID.ListId, ListState>;

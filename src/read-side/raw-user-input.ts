@@ -5,3 +5,5 @@ export type RawUserInput = {
 export const rawUserInput = (input: string): RawUserInput => ({
   content: input,
 });
+
+export const accessRawValue = (input: RawUserInput): string => input.content;

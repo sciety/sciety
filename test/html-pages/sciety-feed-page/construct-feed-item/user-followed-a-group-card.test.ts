@@ -9,7 +9,7 @@ import { constructEvent } from '../../../../src/domain-events';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { accessRawValue } from '../../../../src/read-models/annotations/handle-event';
+import { accessRawValue } from '../../../../src/read-side';
 
 describe('user-followed-a-group-card', () => {
   const createUserAccountCommand = arbitraryCreateUserAccountCommand();

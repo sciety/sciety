@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
-import { accessRawValue } from '../../../src/read-models/annotations/handle-event';
+import { accessRawValue } from '../../../src/read-side';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { TestFramework, createTestFramework } from '../../framework/create-test-framework';
 import { constructViewModel } from '../../../src/html-pages/edit-list-details-form-page/construct-view-model';
