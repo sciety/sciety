@@ -3,12 +3,12 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
 import { Docmap } from './docmap-type';
 import { Evaluation } from './evaluation';
-import { DocmapViewModel } from './construct-docmap-view-model';
 import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
 import * as EL from '../../types/evaluation-locator';
 import * as EDOI from '../../types/expression-doi';
 import { paperActivityPagePath } from '../../standards';
+import { DocmapViewModel } from './view-model';
 
 const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluation) => ({
   participants: pipe(
