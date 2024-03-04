@@ -6,7 +6,7 @@ import { templateDate } from '../date';
 import { renderListPageLinkHref } from '../render-list-page-link-href';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { RawUserInput } from '../../read-side';
-import { safelyRenderRawUserInput } from '../safely-render-user-input';
+import { safelyRenderRawUserInput } from '../raw-user-input-renderers';
 
 export type ListCardViewModel = {
   listId: ListId,

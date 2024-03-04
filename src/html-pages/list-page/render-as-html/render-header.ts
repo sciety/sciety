@@ -6,7 +6,7 @@ import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderSuccessBanner } from './render-success-banner';
-import { safelyRenderRawUserInput } from '../../../shared-components/safely-render-user-input';
+import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
 
 const renderArticleCount = (articleCount: ViewModel['articleCount']) => pipe(
   articleCount === 1,

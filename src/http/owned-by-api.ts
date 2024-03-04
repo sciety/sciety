@@ -8,7 +8,7 @@ import * as LOID from '../types/list-owner-id';
 import { Queries } from '../read-models';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../read-models/lists';
 import { rawUserInput } from '../read-side';
-import { renderRawUserInputForJsonApi } from '../shared-components/safely-render-user-input';
+import { renderRawUserInputForJsonApi } from '../shared-components/raw-user-input-renderers';
 
 const constructViewModel = (lists: ReadonlyArray<List>) => pipe(
   lists,

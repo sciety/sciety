@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
-import { safelyRenderRawUserInput } from '../../../shared-components/safely-render-user-input';
+import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
 import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';

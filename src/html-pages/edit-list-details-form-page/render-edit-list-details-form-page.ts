@@ -4,7 +4,7 @@ import { ListId } from '../../types/list-id';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { inputFieldNames } from '../../standards';
 import { RawUserInput } from '../../read-side';
-import { safelyReflectRawUserInputForEditing } from '../../shared-components/safely-render-user-input';
+import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
 
 export type ViewModel = {
   listName: string,
