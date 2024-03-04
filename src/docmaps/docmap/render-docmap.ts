@@ -10,6 +10,11 @@ import * as EDOI from '../../types/expression-doi';
 import { paperActivityPagePath } from '../../standards';
 import { DocmapViewModel } from './view-model';
 
+const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
+  doi: expressionDoi,
+  url: `https://doi.org/${expressionDoi}`,
+}]
+
 const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluation) => ({
   participants: pipe(
     evaluation.authors,
@@ -18,10 +23,7 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluat
       RA.map(peerReviewer),
     ),
   ),
-  inputs: [{
-    doi: expressionDoi,
-    url: `https://doi.org/${expressionDoi}`,
-  }],
+  inputs: renderInputs(expressionDoi),
   outputs: [
     {
       type: 'review-article' as const,
@@ -64,10 +66,7 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   steps: {
     '_:b0': {
       assertions: [],
-      inputs: [{
-        doi: viewModel.expressionDoi,
-        url: `https://doi.org/${viewModel.expressionDoi}`,
-      }],
+      inputs: renderInputs(viewModel.expressionDoi),
       actions: pipe(
         viewModel.evaluations,
         RA.map(createAction(viewModel.expressionDoi)),
