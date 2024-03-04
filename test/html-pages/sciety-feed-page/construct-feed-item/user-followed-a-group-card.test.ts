@@ -9,7 +9,7 @@ import { constructEvent } from '../../../../src/domain-events';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { accessRawValue } from '../../../../src/read-side';
+import { rawUserInput } from '../../../../src/read-side';
 
 describe('user-followed-a-group-card', () => {
   const createUserAccountCommand = arbitraryCreateUserAccountCommand();
@@ -65,11 +65,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('includes the group\'s short description in the details content', () => {
-      if (viewModel.details === undefined) {
-        throw new Error('No viewModel details');
-      }
-
-      expect(accessRawValue(viewModel.details.content)).toStrictEqual(addGroupCommand.shortDescription);
+      expect(viewModel.details?.content).toStrictEqual(rawUserInput(addGroupCommand.shortDescription));
     });
   });
 
@@ -102,11 +98,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('includes the group\'s short description in the details content', () => {
-      if (viewModel.details === undefined) {
-        throw new Error('No viewModel details');
-      }
-
-      expect(accessRawValue(viewModel.details.content)).toStrictEqual(addGroupCommand.shortDescription);
+      expect(viewModel.details?.content).toStrictEqual(rawUserInput(addGroupCommand.shortDescription));
     });
   });
 

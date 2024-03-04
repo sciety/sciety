@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
-import { accessRawValue } from '../../../src/read-side';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { TestFramework, createTestFramework } from '../../framework/create-test-framework';
 import { constructViewModel } from '../../../src/html-pages/edit-list-details-form-page/construct-view-model';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { ViewModel } from '../../../src/html-pages/edit-list-details-form-page/render-edit-list-details-form-page';
+import { rawUserInput } from '../../../src/read-side';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -37,7 +37,7 @@ describe('construct-view-model', () => {
     });
 
     it('includes the current list description', () => {
-      expect(accessRawValue(viewModel.listDescription)).toStrictEqual(command.description);
+      expect(viewModel.listDescription).toStrictEqual(rawUserInput(command.description));
     });
   });
 
