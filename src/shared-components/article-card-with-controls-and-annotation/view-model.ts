@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { ListId } from '../../types/list-id';
 import { ViewModel as DefaultVariantViewModel } from '../paper-activity-summary-card/view-model';
-import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { RawUserInput } from '../../read-side';
 import { ExpressionDoi } from '../../types/expression-doi';
 
 export type Annotation = {

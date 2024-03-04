@@ -5,7 +5,7 @@ import { ListId } from '../../types/list-id';
 import { templateDate } from '../date';
 import { renderListPageLinkHref } from '../render-list-page-link-href';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
-import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { RawUserInput } from '../../read-side';
 import { safelyRenderUserInput } from '../safely-render-user-input';
 
 export type ListCardViewModel = {

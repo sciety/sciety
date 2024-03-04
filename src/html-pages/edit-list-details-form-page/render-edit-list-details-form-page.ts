@@ -3,7 +3,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { inputFieldNames } from '../../standards';
-import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { RawUserInput } from '../../read-side';
 import { safelyReflectUserInputForEditing } from '../../shared-components/safely-render-user-input';
 
 export type ViewModel = {

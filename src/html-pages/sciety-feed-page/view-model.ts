@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { HtmlFragment } from '../../types/html-fragment';
-import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { RawUserInput } from '../../read-side';
 
 type ScietyFeedCardDetails = {
   title: HtmlFragment,

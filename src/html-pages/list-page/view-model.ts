@@ -7,7 +7,7 @@ import { PaperActivityErrorCardViewModel } from '../../shared-components/paper-a
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
 } from '../../shared-components/article-card-with-controls-and-annotation';
-import { RawUserInput } from '../../read-models/annotations/handle-event';
+import { RawUserInput } from '../../read-side';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
