@@ -1,63 +1,55 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { getNonEmptyUserLists } from '../../../src/read-models/lists/get-non-empty-user-lists';
-import { arbitraryList } from './list-helper';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import { constructEvent } from '../../../src/domain-events';
+import { EventOfType, constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 
 describe('get-non-empty-user-lists', () => {
   describe('when there are populated user lists', () => {
-    const userList1 = arbitraryList(LOID.fromUserId(arbitraryUserId()));
-    const userList2 = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+    const userList1CreatedEvent: EventOfType<'ListCreated'> = {
+      ...arbitraryListCreatedEvent(),
+      ownerId: LOID.fromUserId(arbitraryUserId()),
+    };
+    const userList2CreatedEvent: EventOfType<'ListCreated'> = {
+      ...arbitraryListCreatedEvent(),
+      ownerId: LOID.fromUserId(arbitraryUserId()),
+    };
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId: userList1.id,
-          name: userList1.name,
-          description: userList1.description,
-          ownerId: userList1.ownerId,
-        }),
-        constructEvent('ListCreated')({
-          listId: userList2.id,
-          name: userList2.name,
-          description: userList2.description,
-          ownerId: userList2.ownerId,
-        }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList1.id }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList2.id }),
+        userList1CreatedEvent,
+        userList2CreatedEvent,
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList1CreatedEvent.listId }),
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList2CreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
     it('returns only the populated user lists', () => {
       expect(getNonEmptyUserLists(readModel)()).toStrictEqual([
-        expect.objectContaining({ id: userList1.id }),
-        expect.objectContaining({ id: userList2.id }),
+        expect.objectContaining({ id: userList1CreatedEvent.listId }),
+        expect.objectContaining({ id: userList2CreatedEvent.listId }),
       ]);
     });
   });
 
   describe('when the only user lists are empty', () => {
-    const userList1 = arbitraryList(LOID.fromUserId(arbitraryUserId()));
-    const userList2 = arbitraryList(LOID.fromUserId(arbitraryUserId()));
+    const userList1CreatedEvent: EventOfType<'ListCreated'> = {
+      ...arbitraryListCreatedEvent(),
+      ownerId: LOID.fromUserId(arbitraryUserId()),
+    };
+    const userList2CreatedEvent: EventOfType<'ListCreated'> = {
+      ...arbitraryListCreatedEvent(),
+      ownerId: LOID.fromUserId(arbitraryUserId()),
+    };
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId: userList1.id,
-          name: userList1.name,
-          description: userList1.description,
-          ownerId: userList1.ownerId,
-        }),
-        constructEvent('ListCreated')({
-          listId: userList2.id,
-          name: userList2.name,
-          description: userList2.description,
-          ownerId: userList2.ownerId,
-        }),
+        userList1CreatedEvent,
+        userList2CreatedEvent,
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -68,16 +60,14 @@ describe('get-non-empty-user-lists', () => {
   });
 
   describe('when there are only group lists', () => {
-    const groupList = arbitraryList(LOID.fromGroupId(arbitraryGroupId()));
+    const groupListCreatedEvent: EventOfType<'ListCreated'> = {
+      ...arbitraryListCreatedEvent(),
+      ownerId: LOID.fromGroupId(arbitraryGroupId()),
+    };
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId: groupList.id,
-          name: groupList.name,
-          description: groupList.description,
-          ownerId: groupList.ownerId,
-        }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: groupList.id }),
+        groupListCreatedEvent,
+        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: groupListCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
