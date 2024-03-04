@@ -6,7 +6,7 @@ import { templateDate } from '../../../shared-components/date';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderSuccessBanner } from './render-success-banner';
-import { safelyRenderUserInput } from '../../../shared-components/safely-render-user-input';
+import { safelyRenderRawUserInput } from '../../../shared-components/safely-render-user-input';
 
 const renderArticleCount = (articleCount: ViewModel['articleCount']) => pipe(
   articleCount === 1,
@@ -47,7 +47,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
       <img src="${viewModel.ownerAvatarPath}" alt="" class="page-header__avatar">
       <span>A list by <a href="${viewModel.ownerHref}">${htmlEscape(viewModel.ownerName)}</a></span>
     </p>
-    <p class="page-header__description">${safelyRenderUserInput(viewModel.description)}</p>
+    <p class="page-header__description">${safelyRenderRawUserInput(viewModel.description)}</p>
     <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.updatedAt)}</p>
     <section class="list-page-actions">
       ${renderEditDetailsLink(viewModel.editCapability, viewModel.editListDetailsHref)}

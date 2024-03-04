@@ -5,7 +5,7 @@ import { RawUserInput } from '../read-side';
 
 const transformNewLineCharactersToBrTags = (plainText: string) => plainText.replaceAll('\n', '<br>\n');
 
-export const safelyRenderUserInput = (
+export const safelyRenderRawUserInput = (
   input: RawUserInput,
 ): HtmlFragment => pipe(
   htmlEscape(input.content),
@@ -13,11 +13,6 @@ export const safelyRenderUserInput = (
   toHtmlFragment,
 );
 
-export const safelyReflectUserInputForEditing = (
-  input: RawUserInput,
-): HtmlFragment => pipe(
-  htmlEscape(input.content),
-  toHtmlFragment,
-);
+export const safelyReflectRawUserInputForEditing = (input: RawUserInput): string => htmlEscape(input.content);
 
-export const renderUserInputForJsonApi = (input: RawUserInput): string => input.content;
+export const renderRawUserInputForJsonApi = (input: RawUserInput): string => input.content;

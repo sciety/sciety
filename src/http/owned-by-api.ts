@@ -8,7 +8,7 @@ import * as LOID from '../types/list-owner-id';
 import { Queries } from '../read-models';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../read-models/lists';
 import { rawUserInput } from '../read-side';
-import { renderUserInputForJsonApi } from '../shared-components/safely-render-user-input';
+import { renderRawUserInputForJsonApi } from '../shared-components/safely-render-user-input';
 
 const constructViewModel = (lists: ReadonlyArray<List>) => pipe(
   lists,
@@ -17,7 +17,7 @@ const constructViewModel = (lists: ReadonlyArray<List>) => pipe(
     description: pipe(
       list.description,
       rawUserInput,
-      renderUserInputForJsonApi,
+      renderRawUserInputForJsonApi,
     ),
     articleIds: [...toExpressionDoisByMostRecentlyAdded(list.entries)],
   })),

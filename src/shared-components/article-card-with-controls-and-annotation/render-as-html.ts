@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { renderArticleCardContents } from '../paper-activity-summary-card/render-as-html';
 import { ViewModel } from './view-model';
-import { safelyRenderUserInput } from '../safely-render-user-input';
+import { safelyRenderRawUserInput } from '../safely-render-user-input';
 import { ExpressionDoi } from '../../types/expression-doi';
 
 const renderRemoveArticleForm = (expressionDoi: ExpressionDoi, listId: ListId) => toHtmlFragment(`
@@ -49,7 +49,7 @@ const renderAnnotation = (viewModel: ViewModel['annotation']) => pipe(
           <img class="article-card-annotation__avatar" src="${annotation.authorAvatarPath}" alt="">
           <h4>${htmlEscape(annotation.author)}</h4>
         </header>
-        <p>${safelyRenderUserInput(annotation.content)}</p>
+        <p>${safelyRenderRawUserInput(annotation.content)}</p>
       </section>
     `,
   ),
