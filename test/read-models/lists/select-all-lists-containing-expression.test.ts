@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { arbitraryList } from './list-helper';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
@@ -10,6 +9,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { selectAllListsContainingExpression } from '../../../src/read-models/lists/select-all-lists-containing-expression';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 
 describe('select-all-lists-containing-expression', () => {
   describe('when the article is not in any list', () => {
@@ -21,50 +21,41 @@ describe('select-all-lists-containing-expression', () => {
   });
 
   describe('when the article appears in one list', () => {
-    const list = arbitraryList();
+    const listCreatedEvent = arbitraryListCreatedEvent();
     const expressionDoi = arbitraryExpressionDoi();
     const articleId = new ArticleId(expressionDoi);
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId: list.id,
-          name: list.name,
-          description: list.description,
-          ownerId: list.ownerId,
-        }),
-        constructEvent('ArticleAddedToList')({ articleId, listId: list.id }),
+        listCreatedEvent,
+        constructEvent('ArticleAddedToList')({ articleId, listId: listCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
     it('returns one list', () => {
       expect(selectAllListsContainingExpression(readModel)(expressionDoi)).toStrictEqual([
-        expect.objectContaining({ id: list.id }),
+        expect.objectContaining({ id: listCreatedEvent.listId }),
       ]);
     });
   });
 
   describe('when the article appears in a user and a group list', () => {
-    const userList = arbitraryList(LOID.fromUserId(arbitraryUserId()));
-    const groupList = arbitraryList(LOID.fromGroupId(arbitraryGroupId()));
+    const userListCreatedEvent = {
+      ...arbitraryListCreatedEvent(),
+      listOwnerId: LOID.fromUserId(arbitraryUserId()),
+    };
+    const groupListCreatedEvent = {
+      ...arbitraryListCreatedEvent(),
+      listOwnerId: LOID.fromGroupId(arbitraryGroupId()),
+    };
     const expressionDoi = arbitraryExpressionDoi();
     const articleId = new ArticleId(expressionDoi);
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId: userList.id,
-          name: userList.name,
-          description: userList.description,
-          ownerId: userList.ownerId,
-        }),
-        constructEvent('ArticleAddedToList')({ articleId, listId: userList.id }),
-        constructEvent('ListCreated')({
-          listId: groupList.id,
-          name: groupList.name,
-          description: groupList.description,
-          ownerId: groupList.ownerId,
-        }),
-        constructEvent('ArticleAddedToList')({ articleId, listId: groupList.id }),
+        userListCreatedEvent,
+        constructEvent('ArticleAddedToList')({ articleId, listId: userListCreatedEvent.listId }),
+        groupListCreatedEvent,
+        constructEvent('ArticleAddedToList')({ articleId, listId: groupListCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -73,24 +64,19 @@ describe('select-all-lists-containing-expression', () => {
       const result = selectAllListsContainingExpression(readModel)(expressionDoi);
 
       expect(result).toHaveLength(2);
-      expect(result).toContainEqual(expect.objectContaining({ id: userList.id }));
-      expect(result).toContainEqual(expect.objectContaining({ id: groupList.id }));
+      expect(result).toContainEqual(expect.objectContaining({ id: userListCreatedEvent.listId }));
+      expect(result).toContainEqual(expect.objectContaining({ id: groupListCreatedEvent.listId }));
     });
   });
 
   describe('when only other articles appear in lists', () => {
-    const list = arbitraryList();
+    const listCreatedEvent = arbitraryListCreatedEvent();
     const expressionDoi = arbitraryExpressionDoi();
     const anotherArticleId = arbitraryArticleId();
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId: list.id,
-          name: list.name,
-          description: list.description,
-          ownerId: list.ownerId,
-        }),
-        constructEvent('ArticleAddedToList')({ articleId: anotherArticleId, listId: list.id }),
+        listCreatedEvent,
+        constructEvent('ArticleAddedToList')({ articleId: anotherArticleId, listId: listCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
