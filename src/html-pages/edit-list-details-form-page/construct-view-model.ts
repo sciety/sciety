@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { rawUserInput } from '../../read-side';
 import { ViewModel } from './render-edit-list-details-form-page';
 import { listDescriptionMaxLength, listNameMaxLength } from '../../write-side/commands/edit-list-details';
 import { ListId } from '../../types/list-id';
@@ -18,7 +17,7 @@ export const constructViewModel = (dependencies: Dependencies) => (id: ListId): 
     listName: list.name,
     listId: id,
     listHref: `/lists/${id}`,
-    listDescription: rawUserInput(list.description),
+    listDescription: list.description,
     listNameMaxLength,
     listDescriptionMaxLength,
     pageHeading: 'Edit list details',

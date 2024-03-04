@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent, isEventOfType } from '../../domain-events';
+import { rawUserInput } from '../../read-side';
 import { toExpressionDoi } from '../../types/article-id';
 import { ListId } from '../../types/list-id';
 import { List, ListEntry } from './list';
@@ -29,7 +30,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       entries: [],
       updatedAt: event.date,
       name: event.name,
-      description: event.description,
+      description: rawUserInput(event.description),
       version: 0,
     };
   } else if (isEventOfType('ArticleAddedToList')(event)) {
@@ -49,7 +50,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     readmodel[event.listId].name = event.name;
   } else if (isEventOfType('ListDescriptionEdited')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
-    readmodel[event.listId].description = event.description;
+    readmodel[event.listId].description = rawUserInput(event.description);
   }
   return readmodel;
 };

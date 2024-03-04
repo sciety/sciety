@@ -8,6 +8,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
 import { ExpressionDoi } from '../../types/expression-doi';
+import { RawUserInput } from '../../read-side';
 
 export const byUpdatedAt: Ord.Ord<List> = pipe(
   D.Ord,
@@ -27,7 +28,7 @@ export type ListEntry = {
 export type List = {
   id: ListId,
   name: string,
-  description: string,
+  description: RawUserInput,
   entries: ReadonlyArray<ListEntry>,
   updatedAt: Date,
   ownerId: ListOwnerId,

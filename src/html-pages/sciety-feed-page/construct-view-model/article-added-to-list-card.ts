@@ -5,7 +5,6 @@ import { ScietyFeedCard } from '../view-model';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { EventOfType } from '../../../domain-events';
 import { Dependencies } from './dependencies';
-import { rawUserInput } from '../../../read-side';
 
 type ArticleAddedToListCard = (
   dependencies: Dependencies,
@@ -30,7 +29,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (dependencies) => 
       date: event.date,
       details: {
         title: toHtmlFragment(viewModel.listName),
-        content: rawUserInput(viewModel.listDescription),
+        content: viewModel.listDescription,
       },
     }),
   ),

@@ -12,7 +12,6 @@ import * as DE from '../../../types/data-error';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 import { Params } from './params';
-import { rawUserInput } from '../../../read-side';
 import { ExpressionDoi } from '../../../types/expression-doi';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists';
 
@@ -57,7 +56,7 @@ export const constructViewModel = (
   O.map((list) => ({
     ...list,
     listId: list.id,
-    description: rawUserInput(list.description),
+    description: list.description,
     basePath: `/lists/${list.id}`,
     articleCount: list.entries.length,
     listOwnerId: list.ownerId,
