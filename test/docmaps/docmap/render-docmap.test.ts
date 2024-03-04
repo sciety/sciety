@@ -130,7 +130,7 @@ describe('render-docmap', () => {
         expect(theStep.assertions).toStrictEqual([]);
       });
 
-      describe('the inputs', () => {
+      describe('the (deprecated) inputs', () => {
         it('include the uri and doi', async () => {
           expect(theStep.inputs).toStrictEqual([
             expect.objectContaining(
@@ -153,6 +153,30 @@ describe('render-docmap', () => {
         it('contains a single person actor as the participants', () => {
           expect(action0.participants[0].actor.name).toStrictEqual(anonymous);
           expect(action1.participants[0].actor.name).toStrictEqual(authorName);
+        });
+
+        it('has a single input', () => {
+          expect(action0.inputs).toHaveLength(1);
+          expect(action1.inputs).toHaveLength(1);
+        });
+
+        describe('the input', () => {
+          it('includes the uri and doi', async () => {
+            expect(action0.inputs).toStrictEqual([
+              expect.objectContaining(
+                {
+                  doi: expressionDoi,
+                  url: expect.stringContaining(expressionDoi),
+                },
+              )]);
+            expect(action1.inputs).toStrictEqual([
+              expect.objectContaining(
+                {
+                  doi: expressionDoi,
+                  url: expect.stringContaining(expressionDoi),
+                },
+              )]);
+          });
         });
 
         it('has a single output', () => {
