@@ -1,11 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
-import { RawUserInput } from '../../read-side';
+import { RawUserInput, rawUserInput } from '../../read-side';
 import * as LID from '../../types/list-id';
-
-export const rawUserInput = (input: string): RawUserInput => ({
-  content: input,
-});
 
 export const accessRawValue = (input: RawUserInput): string => input.content;
 

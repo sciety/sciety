@@ -5,7 +5,7 @@ import { EventOfType } from '../../../domain-events';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 import { Dependencies } from './dependencies';
-import { rawUserInput } from '../../../read-models/annotations/handle-event';
+import { rawUserInput } from '../../../read-side';
 
 type UserFollowedAGroupCard = (
   dependencies: Dependencies

@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { List } from '../../read-models/lists';
 import { ListCardViewModel } from './render-list-card';
-import { rawUserInput } from '../../read-models/annotations/handle-event';
+import { rawUserInput } from '../../read-side';
 
 export const constructListCardViewModelWithoutAvatar = (list: List): ListCardViewModel => ({
   listId: list.id,

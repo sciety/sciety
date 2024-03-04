@@ -7,7 +7,7 @@ import { ownedByQueryCodec } from '../types/codecs/owned-by-query-codec';
 import * as LOID from '../types/list-owner-id';
 import { Queries } from '../read-models';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../read-models/lists';
-import { rawUserInput } from '../read-models/annotations/handle-event';
+import { rawUserInput } from '../read-side';
 import { renderUserInputForJsonApi } from '../shared-components/safely-render-user-input';
 
 const constructViewModel = (lists: ReadonlyArray<List>) => pipe(

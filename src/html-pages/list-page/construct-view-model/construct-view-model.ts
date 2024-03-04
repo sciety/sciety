@@ -12,7 +12,7 @@ import * as DE from '../../../types/data-error';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 import { Params } from './params';
-import { rawUserInput } from '../../../read-models/annotations/handle-event';
+import { rawUserInput } from '../../../read-side';
 import { ExpressionDoi } from '../../../types/expression-doi';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists';
 

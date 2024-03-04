@@ -4,7 +4,7 @@ import { List } from '../../read-models/lists';
 import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
 import { Queries } from '../../read-models';
-import { rawUserInput } from '../../read-models/annotations/handle-event';
+import { rawUserInput } from '../../read-side';
 
 export type Dependencies = Queries & {
   logger: Logger,

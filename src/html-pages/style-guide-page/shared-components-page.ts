@@ -12,7 +12,7 @@ import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
 import { successBanner } from '../../shared-components/success-banner/success-banner';
-import { rawUserInput } from '../../read-models/annotations/handle-event';
+import { rawUserInput } from '../../read-side';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',

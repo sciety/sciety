@@ -1,12 +1,13 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { rawUserInput, handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
+import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { constructEvent } from '../../../src/domain-events';
 import { getAnnotationContent } from '../../../src/read-models/annotations/get-annotation-content';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
+import { rawUserInput } from '../../../src/read-side';
 
 describe('get-annotation-content', () => {
   const listId = arbitraryListId();

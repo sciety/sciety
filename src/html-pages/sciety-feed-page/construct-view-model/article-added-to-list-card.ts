@@ -5,7 +5,7 @@ import { ScietyFeedCard } from '../view-model';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { EventOfType } from '../../../domain-events';
 import { Dependencies } from './dependencies';
-import { rawUserInput } from '../../../read-models/annotations/handle-event';
+import { rawUserInput } from '../../../read-side';
 
 type ArticleAddedToListCard = (
   dependencies: Dependencies,
