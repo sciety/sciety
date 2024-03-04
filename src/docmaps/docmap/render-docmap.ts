@@ -18,6 +18,10 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluat
       RA.map(peerReviewer),
     ),
   ),
+  inputs: [{
+    doi: expressionDoi,
+    url: `https://doi.org/${expressionDoi}`,
+  }],
   outputs: [
     {
       type: 'review-article' as const,

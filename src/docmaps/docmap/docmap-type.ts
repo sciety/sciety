@@ -35,6 +35,7 @@ type Output = {
 
 type Action = {
   participants: ReadonlyArray<Participant>,
+  inputs: ReadonlyArray<Input>,
   outputs: ReadonlyArray<Output>,
 };
 
@@ -46,7 +47,7 @@ type Input = {
 
 type Step = {
   assertions: [],
-  inputs: ReadonlyArray<Input>,
+  inputs: ReadonlyArray<Input>, // deprecated
   actions: ReadonlyArray<Action>,
 };
 
