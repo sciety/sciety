@@ -1,4 +1,3 @@
-import * as B from 'fp-ts/boolean';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -12,17 +11,16 @@ import * as LID from '../../../../types/list-id';
 import { ListCardViewModel, constructListCardViewModelWithAvatar } from '../../../../shared-components/list-card';
 import { GroupId } from '../../../../types/group-id';
 
-const constructCollections = (dependencies: Dependencies, groupId: GroupId): O.Option<ListCardViewModel> => pipe(
-  groupId === '4bbf0c12-629b-4bb8-91d6-974f4df8efb2',
-  B.fold(
-    () => O.none,
-    () => pipe(
+const constructCollections = (dependencies: Dependencies, groupId: GroupId): O.Option<ListCardViewModel> => {
+  if (groupId === '4bbf0c12-629b-4bb8-91d6-974f4df8efb2') {
+    return pipe(
       LID.fromValidatedString('454ba80f-e0bc-47ed-ba76-c8f872c303d2'),
       dependencies.lookupList,
       O.map(constructListCardViewModelWithAvatar(dependencies)),
-    ),
-  ),
-);
+    );
+  }
+  return O.none;
+};
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
