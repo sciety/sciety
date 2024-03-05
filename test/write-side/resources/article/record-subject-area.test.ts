@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, EventOfType } from '../../../../src/domain-events';
 import { recordSubjectArea } from '../../../../src/write-side/resources/article';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
@@ -17,33 +17,31 @@ describe('execute-command', () => {
   };
 
   describe('given no events for the given article id', () => {
-    const result = pipe(
+    const eventsRaised = pipe(
       [constructEvent('SubjectAreaRecorded')({ articleId: new ArticleId(arbitraryExpressionDoi()), subjectArea: arbitrarySubjectArea() })],
       recordSubjectArea(command),
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it('raises an event', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        { type: 'SubjectAreaRecorded' },
-      )]);
+    it('raises a single event', () => {
+      expect(eventsRaised).toHaveLength(1);
     });
 
-    it('raises an event, containing the article id from the command', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        { articleId: new ArticleId(expressionDoi) },
-      )]);
-    });
+    describe('the event raised', () => {
+      const event = eventsRaised[0] as EventOfType<'SubjectAreaRecorded'>;
 
-    it('raises an event, containing the subject area from the command', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        { subjectArea },
-      )]);
+      it('includes the article id from the command', () => {
+        expect(event.articleId).toStrictEqual(new ArticleId(expressionDoi));
+      });
+
+      it('includes the subject area from the command', () => {
+        expect(event.subjectArea).toStrictEqual(subjectArea);
+      });
     });
   });
 
   describe('when an evaluation was recorded', () => {
-    const result = pipe(
+    const eventsRaised = pipe(
       [
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
@@ -54,10 +52,12 @@ describe('execute-command', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it('raises an event', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        { type: 'SubjectAreaRecorded' },
-      )]);
+    it('raises a single event', () => {
+      expect(eventsRaised).toHaveLength(1);
+    });
+
+    it('raises an event of the correct type', () => {
+      expect(eventsRaised[0].type).toBe('SubjectAreaRecorded');
     });
   });
 
@@ -84,7 +84,7 @@ describe('execute-command', () => {
     );
 
     it('returns an error message', () => {
-      expect(result).toStrictEqual(E.left(expect.anything()));
+      expect(E.isLeft(result)).toBe(true);
     });
   });
 });
