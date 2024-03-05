@@ -108,12 +108,9 @@ describe('lifecycle', () => {
       });
 
       it('raises the correct event', () => {
-        expect(eventsRaised[0]).toStrictEqual(
-          expect.objectContaining({
-            type: 'IncorrectlyRecordedEvaluationErased',
-            evaluationLocator: initialCommand.evaluationLocator,
-          }),
-        );
+        expect(eventsRaised[0]).toBeDomainEvent('IncorrectlyRecordedEvaluationErased', {
+          evaluationLocator: initialCommand.evaluationLocator,
+        });
       });
     });
 
@@ -129,12 +126,9 @@ describe('lifecycle', () => {
       });
 
       it('raises the correct event', () => {
-        expect(eventsRaised[0]).toStrictEqual(
-          expect.objectContaining({
-            type: 'EvaluationRemovalRecorded',
-            evaluationLocator: initialCommand.evaluationLocator,
-          }),
-        );
+        expect(eventsRaised[0]).toBeDomainEvent('EvaluationRemovalRecorded', {
+          evaluationLocator: initialCommand.evaluationLocator,
+        });
       });
     });
 
@@ -192,15 +186,14 @@ describe('lifecycle', () => {
       });
 
       it('raises the correct event', () => {
-        expect(eventsRaised[0]).toStrictEqual(expect.objectContaining({
-          type: 'EvaluationPublicationRecorded',
+        expect(eventsRaised[0]).toBeDomainEvent('EvaluationPublicationRecorded', {
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.expressionDoi,
           evaluationLocator,
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,
           evaluationType: mostRecentCommand.evaluationType,
-        }));
+        });
       });
     });
 
@@ -277,12 +270,9 @@ describe('lifecycle', () => {
       });
 
       it('raises the correct event', () => {
-        expect(eventsRaised[0]).toStrictEqual(
-          expect.objectContaining({
-            type: 'IncorrectlyRecordedEvaluationErased',
-            evaluationLocator,
-          }),
-        );
+        expect(eventsRaised[0]).toBeDomainEvent('IncorrectlyRecordedEvaluationErased', {
+          evaluationLocator,
+        });
       });
     });
 
