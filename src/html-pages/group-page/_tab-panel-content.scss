@@ -1,7 +1,0 @@
-@mixin top-vertical-spacing() {
-  padding-top: 2rem;
-}
-
-.group-page-tab-panel-content {
-  @include top-vertical-spacing();
-}

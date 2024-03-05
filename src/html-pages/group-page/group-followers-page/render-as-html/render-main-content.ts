@@ -6,7 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel, UserCardViewModel } from '../view-model';
 import { tabList } from '../../common-components/tab-list';
 import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
-import { wrapperForTopSpace } from '../../wrapper-for-top-space';
+import { wrapperForTopSpace } from '../../common-components/wrapper-for-top-space';
 
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="user-card">

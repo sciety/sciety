@@ -42,3 +42,7 @@
 .unfollow-button {
   @include button.secondary();
 }
+
+.group-page-tab-panel-content {
+  padding-top: 2rem;
+}
