@@ -29,16 +29,14 @@ describe('lifecycle', () => {
       });
 
       it('raises the correct event', () => {
-        expect(eventsRaised[0]).toBeDomainEvent('EvaluationPublicationRecorded');
-        expect(eventsRaised[0]).toStrictEqual(expect.objectContaining({
-          type: 'EvaluationPublicationRecorded',
+        expect(eventsRaised[0]).toBeDomainEvent('EvaluationPublicationRecorded', {
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.expressionDoi,
           evaluationLocator: mostRecentCommand.evaluationLocator,
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,
           evaluationType: mostRecentCommand.evaluationType,
-        }));
+        });
       });
     });
 
@@ -156,14 +154,10 @@ describe('lifecycle', () => {
       });
 
       it('raises the correct event', () => {
-        expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated');
-        expect(eventsRaised[0]).toStrictEqual(
-          expect.objectContaining({
-            type: 'EvaluationUpdated',
-            evaluationLocator: mostRecentCommand.evaluationLocator,
-            evaluationType: mostRecentCommand.evaluationType,
-          }),
-        );
+        expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
+          evaluationLocator: mostRecentCommand.evaluationLocator,
+          evaluationType: mostRecentCommand.evaluationType,
+        });
       });
     });
   });
