@@ -11,19 +11,23 @@ import * as LID from '../../../../types/list-id';
 import { ListCardViewModel, constructListCardViewModelWithAvatar } from '../../../../shared-components/list-card';
 import { GroupId } from '../../../../types/group-id';
 
+const constructListCardForACollection = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
+  listId,
+  dependencies.lookupList,
+  O.map(constructListCardViewModelWithAvatar(dependencies)),
+);
+
 const constructCollections = (dependencies: Dependencies, groupId: GroupId): O.Option<ListCardViewModel> => {
   if (groupId === '4bbf0c12-629b-4bb8-91d6-974f4df8efb2') {
     return pipe(
       LID.fromValidatedString('454ba80f-e0bc-47ed-ba76-c8f872c303d2'),
-      dependencies.lookupList,
-      O.map(constructListCardViewModelWithAvatar(dependencies)),
+      constructListCardForACollection(dependencies),
     );
   }
   if (groupId === 'f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58') {
     return pipe(
       LID.fromValidatedString('729cab51-b47d-4ab5-bf2f-8282f1de445e'),
-      dependencies.lookupList,
-      O.map(constructListCardViewModelWithAvatar(dependencies)),
+      constructListCardForACollection(dependencies),
     );
   }
   return O.none;
