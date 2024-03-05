@@ -6,7 +6,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-import { isSupportedArticle } from '../../types/article-server';
 import { QueryExternalService } from '../query-external-service';
 import * as PH from '../../types/publishing-history';
 import { ExternalQueries } from '../external-queries';
@@ -72,13 +71,6 @@ export const fetchRecommendedPapers = (
         logger('debug', 'fetchRecommendedPapers discarded a recommendation as corrupt', { recommendedDoi, url });
       }
       return isValid;
-    })),
-    TE.map(RA.filter((recommendedDoi) => {
-      const isSupported = isSupportedArticle(recommendedDoi);
-      if (!isSupported) {
-        logger('debug', 'fetchRecommendedPapers discarded a recommendation as unsupported', { recommendedDoi, url });
-      }
-      return isSupported;
     })),
     TE.map(RA.map(EDOI.fromValidatedString)),
   );

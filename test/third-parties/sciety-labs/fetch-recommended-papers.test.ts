@@ -159,34 +159,6 @@ describe('fetch-recommended-papers', () => {
     });
   });
 
-  describe.each([
-    ['10.26434/not-a-supported-doi'],
-    ['10.1590/2176-9451.19.4.027-029.ebo'],
-    ['10.1101/cshperspect.a041248'],
-    ['10.1101/gad.314351.118'],
-    ['10.1101/gr.277335.122'],
-    ['10.1101/lm.045724.117'],
-  ])('when a response contains an unsupported article (%s)', (unsupportedArticleId) => {
-    const supportedBiorxivArticleId = '10.1101/123';
-
-    it('removes the unsupported article', async () => {
-      const queryExternalService = () => () => TE.right({
-        recommendedPapers: [
-          arbitraryRecommendedPaper(supportedBiorxivArticleId),
-          arbitraryRecommendedPaper(unsupportedArticleId),
-        ],
-      });
-      const result = await pipe(
-        arbitraryPublishingHistoryOnlyPreprints(),
-        fetchRecommendedPapers(queryExternalService, dummyLogger),
-        TE.getOrElseW(shouldNotBeCalled),
-      )();
-      const expected: ReadonlyArray<EDOI.ExpressionDoi> = [EDOI.fromValidatedString(supportedBiorxivArticleId)];
-
-      expect(result).toStrictEqual(expected);
-    });
-  });
-
   describe('when we cannot access the third-party', () => {
     it('returns a left', async () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);

@@ -57,9 +57,3 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
     domain: 'elifesciences.org',
   },
 };
-
-export const isSupportedArticle = (articleId: string): boolean => (
-  !!articleId.match(/^10\.1101\/[0-9]{1,}/)
-  || articleId.startsWith('10.21203/')
-  || articleId.startsWith('10.1590/SciELOPreprints')
-);
