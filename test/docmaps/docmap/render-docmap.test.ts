@@ -1,3 +1,6 @@
+/* eslint-disable jest/consistent-test-it */
+/* eslint-disable jest/require-top-level-describe */
+/* eslint-disable jest/require-hook */
 import { URL } from 'url';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
@@ -8,6 +11,22 @@ import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
+
+const itIsAValidInput = (inputs: Docmap['steps'][number]['inputs'], doi: ExpressionDoi) => {
+  it('has a single (deprecated) input', () => {
+    expect(inputs).toHaveLength(1);
+  });
+
+  it('includes the uri', async () => {
+    expect(inputs[0].url).toContain(doi);
+  });
+
+  it('includes the doi', async () => {
+    expect(inputs[0].doi).toStrictEqual(doi);
+  });
+};
 
 const expressionDoi = arbitraryExpressionDoi();
 
@@ -130,16 +149,8 @@ describe('render-docmap', () => {
         expect(theStep.assertions).toStrictEqual([]);
       });
 
-      describe('the inputs', () => {
-        it('include the uri and doi', async () => {
-          expect(theStep.inputs).toStrictEqual([
-            expect.objectContaining(
-              {
-                doi: expressionDoi,
-                url: expect.stringContaining(expressionDoi),
-              },
-            )]);
-        });
+      describe('the (deprecated) input', () => {
+        itIsAValidInput(theStep.inputs, expressionDoi);
       });
 
       it('has one action per evaluation', () => {
@@ -153,6 +164,11 @@ describe('render-docmap', () => {
         it('contains a single person actor as the participants', () => {
           expect(action0.participants[0].actor.name).toStrictEqual(anonymous);
           expect(action1.participants[0].actor.name).toStrictEqual(authorName);
+        });
+
+        describe('the input', () => {
+          itIsAValidInput(action0.inputs, expressionDoi);
+          itIsAValidInput(action1.inputs, expressionDoi);
         });
 
         it('has a single output', () => {

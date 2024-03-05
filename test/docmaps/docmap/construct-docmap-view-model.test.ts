@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { DocmapViewModel, constructDocmapViewModel, Ports } from '../../../src/docmaps/docmap/construct-docmap-view-model';
+import { constructDocmapViewModel, Ports } from '../../../src/docmaps/docmap/construct-docmap-view-model';
 import * as DE from '../../../src/types/data-error';
 import { inferredSourceUrl } from '../../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
@@ -17,6 +17,7 @@ import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/co
 import { arbitraryUpdateEvaluationCommand } from '../../write-side/commands/update-evaluation-command.helper';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
 import { toExpressionDoi } from '../../../src/types/article-id';
+import { DocmapViewModel } from '../../../src/docmaps/docmap/view-model';
 
 const selectedGroupId = arbitraryGroupId();
 const articleId = arbitraryArticleId();

@@ -1,3 +1,3 @@
-import { DocmapViewModel } from '../docmap/construct-docmap-view-model';
+import { DocmapViewModel } from '../docmap/view-model';
 
 export type DocmapIndexViewModel = ReadonlyArray<DocmapViewModel>;
