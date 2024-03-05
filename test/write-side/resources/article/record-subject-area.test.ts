@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, EventOfType } from '../../../../src/domain-events';
+import { constructEvent } from '../../../../src/domain-events';
 import { recordSubjectArea } from '../../../../src/write-side/resources/article';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitrarySubjectArea } from '../../../types/subject-area.helper';
@@ -25,17 +25,9 @@ describe('execute-command', () => {
 
     it('raises a single event', () => {
       expect(eventsRaised).toHaveLength(1);
-    });
-
-    describe('the event raised', () => {
-      const event = eventsRaised[0] as EventOfType<'SubjectAreaRecorded'>;
-
-      it('includes the article id from the command', () => {
-        expect(event.articleId).toStrictEqual(new ArticleId(expressionDoi));
-      });
-
-      it('includes the subject area from the command', () => {
-        expect(event.subjectArea).toStrictEqual(subjectArea);
+      expect(eventsRaised[0]).toBeDomainEvent('SubjectAreaRecorded', {
+        articleId: new ArticleId(expressionDoi),
+        subjectArea,
       });
     });
   });
@@ -54,10 +46,7 @@ describe('execute-command', () => {
 
     it('raises a single event', () => {
       expect(eventsRaised).toHaveLength(1);
-    });
-
-    it('raises an event of the correct type', () => {
-      expect(eventsRaised[0].type).toBe('SubjectAreaRecorded');
+      expect(eventsRaised[0]).toBeDomainEvent('SubjectAreaRecorded');
     });
   });
 
