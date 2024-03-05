@@ -1,7 +1,9 @@
 import * as E from 'fp-ts/Either';
+import { identity, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { validateInputShape } from '../../../src/write-side/commands/validate-input-shape';
 import { arbitraryNumber, arbitraryString } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('validate-input-shape', () => {
   const fakeFieldName = arbitraryNumber(1, 100);
@@ -23,12 +25,19 @@ describe('validate-input-shape', () => {
   });
 
   describe('when the input is invalid', () => {
-    it('returns an error message', () => {
-      const result = validateInputShape(fakeCommandCodec)({
+    const errorMessage = pipe(
+      {
         fakeFieldName: arbitraryString(),
-      });
+      },
+      validateInputShape(fakeCommandCodec),
+      E.match(
+        identity,
+        shouldNotBeCalled,
+      ),
+    );
 
-      expect(result).toStrictEqual(E.left(expect.stringMatching(/.+/)));
+    it('returns an error message', () => {
+      expect(errorMessage).not.toHaveLength(0);
     });
   });
 });
