@@ -5,6 +5,7 @@ import { tabList } from '../../common-components/tab-list';
 import { ViewModel } from '../view-model';
 import { renderOurLists } from './render-our-lists';
 import { renderDescription } from './render-description';
+import { wrapperForTopSpace } from '../../wrapper-for-top-space';
 
 const tabProps = (viewmodel: ViewModel) => ({
   tabList: tabList(viewmodel.tabs),
@@ -13,15 +14,14 @@ const tabProps = (viewmodel: ViewModel) => ({
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   `
-    <div class="group-page-about">
-      <section>
-        ${renderOurLists(viewmodel.ourLists)}
-      </section>
-      <section>
-        ${renderDescription(viewmodel.markdown)}
-      </section>
-    </div>
+    <section>
+      ${renderOurLists(viewmodel.ourLists)}
+    </section>
+    <section>
+      ${renderDescription(viewmodel.markdown)}
+    </section>
   `,
   toHtmlFragment,
+  wrapperForTopSpace,
   renderTabs(tabProps(viewmodel)),
 );

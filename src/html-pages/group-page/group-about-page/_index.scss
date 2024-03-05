@@ -4,17 +4,6 @@
 @use '../../../sass/layout';
 @use '../tab-panel-content';
 
-.group-page-about {
-  @include tab-panel-content.top-vertical-spacing();
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  background-color: utilities.$colour-white;
-
-  @include breakpoints.not-narrow {
-    border-radius: utilities.$border-radius;
-  }
-}
-
 .group-page-pref {
   display: grid;
   grid-template-columns: 1fr 1fr;
