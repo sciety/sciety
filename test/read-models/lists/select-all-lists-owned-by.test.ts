@@ -7,7 +7,7 @@ import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
-import { accessRawValue } from '../../../src/read-side';
+import { rawUserInput } from '../../../src/read-side';
 
 describe('select-all-lists-owned-by', () => {
   const ownerId = arbitraryListOwnerId();
@@ -52,7 +52,7 @@ describe('select-all-lists-owned-by', () => {
     });
 
     it('returns the description of the list', () => {
-      expect(accessRawValue(result.description)).toStrictEqual(listDescription);
+      expect(result.description).toStrictEqual(rawUserInput(listDescription));
     });
 
     it('returns the list creation date as the last updated date', () => {
@@ -89,7 +89,7 @@ describe('select-all-lists-owned-by', () => {
     });
 
     it('returns the description of the list', () => {
-      expect(accessRawValue(result.description)).toStrictEqual(listDescription);
+      expect(result.description).toStrictEqual(rawUserInput(listDescription));
     });
 
     it('returns the last updated date', () => {
@@ -125,7 +125,7 @@ describe('select-all-lists-owned-by', () => {
     });
 
     it('returns the description of the list', () => {
-      expect(accessRawValue(result.description)).toStrictEqual(listDescription);
+      expect(result.description).toStrictEqual(rawUserInput(listDescription));
     });
 
     it('returns the last updated date', () => {
@@ -170,7 +170,7 @@ describe('select-all-lists-owned-by', () => {
     });
 
     it('returns the description of the list', () => {
-      expect(accessRawValue(result.description)).toStrictEqual(listDescription);
+      expect(result.description).toStrictEqual(rawUserInput(listDescription));
     });
 
     it('returns the last updated date', () => {

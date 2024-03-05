@@ -1,1 +1,1 @@
-export { RawUserInput, rawUserInput, accessRawValue } from './raw-user-input';
+export { RawUserInput, rawUserInput } from './raw-user-input';
