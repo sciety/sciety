@@ -19,6 +19,13 @@ const constructCollections = (dependencies: Dependencies, groupId: GroupId): O.O
       O.map(constructListCardViewModelWithAvatar(dependencies)),
     );
   }
+  if (groupId === 'f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58') {
+    return pipe(
+      LID.fromValidatedString('729cab51-b47d-4ab5-bf2f-8282f1de445e'),
+      dependencies.lookupList,
+      O.map(constructListCardViewModelWithAvatar(dependencies)),
+    );
+  }
   return O.none;
 };
 
