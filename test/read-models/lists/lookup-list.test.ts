@@ -15,7 +15,7 @@ import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
 import { ListId } from '../../../src/types/list-id';
 import { List } from '../../../src/read-models/lists';
-import { accessRawValue, rawUserInput } from '../../../src/read-side';
+import { rawUserInput } from '../../../src/read-side';
 
 const runQuery = (listId: ListId, readModel: ReadModel) => pipe(
   listId,
@@ -146,7 +146,7 @@ describe('lookup-list', () => {
       });
 
       it('returns the list description', () => {
-        expect(accessRawValue(runQuery(listId, readModel).description)).toStrictEqual(description);
+        expect(runQuery(listId, readModel).description).toStrictEqual(rawUserInput(description));
       });
     });
 
@@ -172,7 +172,7 @@ describe('lookup-list', () => {
       });
 
       it('returns the same list description', () => {
-        expect(accessRawValue(runQuery(listId, readModel).description)).toStrictEqual(description);
+        expect(runQuery(listId, readModel).description).toStrictEqual(rawUserInput(description));
       });
 
       it('returns the date of the latest event as the updatedAt', () => {
@@ -202,7 +202,7 @@ describe('lookup-list', () => {
       });
 
       it('returns the latest description', () => {
-        expect(accessRawValue(runQuery(listId, readModel).description)).toStrictEqual(description);
+        expect(runQuery(listId, readModel).description).toStrictEqual(rawUserInput(description));
       });
 
       it('returns the date of the latest event as the updatedAt', () => {
