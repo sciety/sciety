@@ -15,7 +15,7 @@ import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
 import { ListId } from '../../../src/types/list-id';
 import { List } from '../../../src/read-models/lists';
-import { accessRawValue } from '../../../src/read-side';
+import { accessRawValue, rawUserInput } from '../../../src/read-side';
 
 const runQuery = (listId: ListId, readModel: ReadModel) => pipe(
   listId,
@@ -61,11 +61,15 @@ describe('lookup-list', () => {
       );
 
       it('returns the list name', () => {
-        expect(runQuery(listId, readModel).name).toStrictEqual(name);
+        const result = runQuery(listId, readModel);
+
+        expect(result.name).toStrictEqual(name);
       });
 
       it('returns the list description', () => {
-        expect(accessRawValue(runQuery(listId, readModel).description)).toStrictEqual(description);
+        const result = runQuery(listId, readModel);
+
+        expect(result.description).toStrictEqual(rawUserInput(description));
       });
 
       it('returns the added papers as list entries', () => {
