@@ -14,15 +14,11 @@ export const constructRelatedArticles = (
 ): T.Task<ViewModel['relatedArticles']> => pipe(
   history,
   dependencies.fetchRecommendedPapers,
-  TE.mapLeft((error) => {
-    dependencies.logger('warn', 'Construct related articles has failed', { error, expressionDoi: history });
-    return error;
-  }),
-  TE.map((expressionDois) => {
-    dependencies.logger('debug', 'Construct related articles has been successful', { expressionDoi: history });
-    return expressionDois;
-  }),
   TE.map(RA.takeLeft(3)),
   TE.chainW(TE.traverseArray(constructPaperActivitySummaryCard(dependencies))),
+  TE.mapLeft((error) => {
+    dependencies.logger('error', 'constructRelatedArticles has failed', { error, history });
+    return error;
+  }),
   TO.fromTaskEither,
 );
