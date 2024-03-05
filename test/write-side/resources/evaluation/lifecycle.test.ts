@@ -9,6 +9,7 @@ import * as A from '../enact';
 import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
 import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {
@@ -17,13 +18,18 @@ describe('lifecycle', () => {
 
     describe('record publication', () => {
       const mostRecentCommand = arbitraryRecordEvaluationPublicationCommand();
-      const outcome = pipe(
+      const eventsRaised = pipe(
         initialState,
         A.last(recordPublication(mostRecentCommand)),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
-      it('succeeds with a new event', () => {
-        expect(outcome).toStrictEqual(E.right([expect.objectContaining({
+      it('raises a single event', () => {
+        expect(eventsRaised).toHaveLength(1);
+      });
+
+      it('raises the correct event', () => {
+        expect(eventsRaised[0]).toStrictEqual(expect.objectContaining({
           type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.expressionDoi,
@@ -31,7 +37,7 @@ describe('lifecycle', () => {
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,
           evaluationType: mostRecentCommand.evaluationType,
-        })]));
+        }));
       });
     });
 
@@ -92,34 +98,44 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      const outcome = pipe(
+      const eventsRaised = pipe(
         initialState,
         A.last(erase({ evaluationLocator: initialCommand.evaluationLocator })),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
-      it('succeeds with a new event', () => {
-        expect(outcome).toStrictEqual(E.right([
+      it('raises a single event', () => {
+        expect(eventsRaised).toHaveLength(1);
+      });
+
+      it('raises the correct event', () => {
+        expect(eventsRaised[0]).toStrictEqual(
           expect.objectContaining({
             type: 'IncorrectlyRecordedEvaluationErased',
             evaluationLocator: initialCommand.evaluationLocator,
           }),
-        ]));
+        );
       });
     });
 
     describe('record removal', () => {
-      const outcome = pipe(
+      const eventsRaised = pipe(
         initialState,
         A.last(recordRemoval({ evaluationLocator: initialCommand.evaluationLocator })),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
-      it('succeeds with a new event', () => {
-        expect(outcome).toStrictEqual(E.right([
+      it('raises a single event', () => {
+        expect(eventsRaised).toHaveLength(1);
+      });
+
+      it('raises the correct event', () => {
+        expect(eventsRaised[0]).toStrictEqual(
           expect.objectContaining({
             type: 'EvaluationRemovalRecorded',
             evaluationLocator: initialCommand.evaluationLocator,
           }),
-        ]));
+        );
       });
     });
 
@@ -128,19 +144,24 @@ describe('lifecycle', () => {
         ...arbitraryUpdateEvaluationCommand(),
         evaluationLocator: initialCommand.evaluationLocator,
       };
-      const outcome = pipe(
+      const eventsRaised = pipe(
         initialState,
         A.last(update(mostRecentCommand)),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
-      it('succeeds with a new event', () => {
-        expect(outcome).toStrictEqual(E.right([
+      it('raises a single event', () => {
+        expect(eventsRaised).toHaveLength(1);
+      });
+
+      it('raises the correct event', () => {
+        expect(eventsRaised[0]).toStrictEqual(
           expect.objectContaining({
             type: 'EvaluationUpdated',
             evaluationLocator: mostRecentCommand.evaluationLocator,
             evaluationType: mostRecentCommand.evaluationType,
           }),
-        ]));
+        );
       });
     });
   });
@@ -164,13 +185,18 @@ describe('lifecycle', () => {
         ...arbitraryRecordEvaluationPublicationCommand(),
         evaluationLocator,
       };
-      const outcome = pipe(
+      const eventsRaised = pipe(
         initialState,
         A.last(recordPublication(mostRecentCommand)),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
-      it('succeeds with a new event', () => {
-        expect(outcome).toStrictEqual(E.right([expect.objectContaining({
+      it('raises a single event', () => {
+        expect(eventsRaised).toHaveLength(1);
+      });
+
+      it('raises the correct event', () => {
+        expect(eventsRaised[0]).toStrictEqual(expect.objectContaining({
           type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.expressionDoi,
@@ -178,7 +204,7 @@ describe('lifecycle', () => {
           publishedAt: mostRecentCommand.publishedAt,
           authors: mostRecentCommand.authors,
           evaluationType: mostRecentCommand.evaluationType,
-        })]));
+        }));
       });
     });
 
@@ -244,18 +270,23 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      const outcome = pipe(
+      const eventsRaised = pipe(
         initialState,
         A.last(erase({ evaluationLocator })),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
-      it('succeeds with a new event', () => {
-        expect(outcome).toStrictEqual(E.right([
+      it('raises a single event', () => {
+        expect(eventsRaised).toHaveLength(1);
+      });
+
+      it('raises the correct event', () => {
+        expect(eventsRaised[0]).toStrictEqual(
           expect.objectContaining({
             type: 'IncorrectlyRecordedEvaluationErased',
             evaluationLocator,
           }),
-        ]));
+        );
       });
     });
 
