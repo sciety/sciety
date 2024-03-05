@@ -29,6 +29,7 @@ describe('lifecycle', () => {
       });
 
       it('raises the correct event', () => {
+        expect(eventsRaised[0]).toBeDomainEvent('EvaluationPublicationRecorded');
         expect(eventsRaised[0]).toStrictEqual(expect.objectContaining({
           type: 'EvaluationPublicationRecorded',
           groupId: mostRecentCommand.groupId,
@@ -155,6 +156,7 @@ describe('lifecycle', () => {
       });
 
       it('raises the correct event', () => {
+        expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated');
         expect(eventsRaised[0]).toStrictEqual(
           expect.objectContaining({
             type: 'EvaluationUpdated',
