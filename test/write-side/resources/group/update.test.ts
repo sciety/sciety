@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-commented-out-tests */
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as groupResource from '../../../../src/write-side/resources/group';
@@ -8,21 +7,6 @@ import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
 import { GroupId } from '../../../../src/types/group-id';
-
-const expectEvent = (fields: Record<string, unknown>) => ({
-  id: expect.any(String),
-  date: expect.any(Date),
-  type: 'GroupDetailsUpdated',
-  groupId: undefined,
-  name: undefined,
-  shortDescription: undefined,
-  largeLogoPath: undefined,
-  avatarPath: undefined,
-  descriptionPath: undefined,
-  homepage: undefined,
-  slug: undefined,
-  ...fields,
-});
 
 const arbitraryGroupJoinedEvent = (groupId = arbitraryGroupId(), name = arbitraryString()) => pipe(
   {
@@ -76,9 +60,17 @@ describe('update', () => {
           );
 
           it(`raises an event to update the group ${attributeToBeChanged}`, () => {
-            expect(eventsRaised).toStrictEqual([
-              expectEvent({ groupId: groupJoined.groupId, [attributeToBeChanged]: newValue }),
-            ]);
+            expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
+              name: undefined,
+              shortDescription: undefined,
+              largeLogoPath: undefined,
+              avatarPath: undefined,
+              descriptionPath: undefined,
+              homepage: undefined,
+              slug: undefined,
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: newValue,
+            });
           });
         });
 
@@ -99,9 +91,17 @@ describe('update', () => {
           );
 
           it(`raises an event to update the group ${attributeToBeChanged}`, () => {
-            expect(eventsRaised).toStrictEqual([
-              expectEvent({ groupId: groupJoined.groupId, [attributeToBeChanged]: newValue }),
-            ]);
+            expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
+              name: undefined,
+              shortDescription: undefined,
+              largeLogoPath: undefined,
+              avatarPath: undefined,
+              descriptionPath: undefined,
+              homepage: undefined,
+              slug: undefined,
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: newValue,
+            });
           });
         });
       });
@@ -129,9 +129,17 @@ describe('update', () => {
           );
 
           it(`raises an event to only update the group ${attributeToBeChanged}`, () => {
-            expect(eventsRaised).toStrictEqual([
-              expectEvent({ groupId: groupJoined.groupId, [attributeToBeChanged]: newValue }),
-            ]);
+            expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
+              name: undefined,
+              shortDescription: undefined,
+              largeLogoPath: undefined,
+              avatarPath: undefined,
+              descriptionPath: undefined,
+              homepage: undefined,
+              slug: undefined,
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: newValue,
+            });
           });
         });
 
@@ -153,9 +161,17 @@ describe('update', () => {
           );
 
           it(`raises an event to only update the group ${attributeToBeChanged}`, () => {
-            expect(eventsRaised).toStrictEqual([
-              expectEvent({ groupId: groupJoined.groupId, [attributeToBeChanged]: newValue }),
-            ]);
+            expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
+              name: undefined,
+              shortDescription: undefined,
+              largeLogoPath: undefined,
+              avatarPath: undefined,
+              descriptionPath: undefined,
+              homepage: undefined,
+              slug: undefined,
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: newValue,
+            });
           });
         });
       });
