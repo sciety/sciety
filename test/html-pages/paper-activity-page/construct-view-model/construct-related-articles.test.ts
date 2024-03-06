@@ -1,4 +1,6 @@
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { constructRelatedArticles } from '../../../../src/html-pages/paper-activity-page/construct-view-model/construct-related-articles';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -8,19 +10,36 @@ import { arbitraryPublishingHistoryOnlyPreprints } from '../../../types/publishi
 
 describe('construct-related-articles', () => {
   let framework: TestFramework;
-  let result: ReadonlyArray<PaperActivitySummaryCardViewModel>;
+  let relatedArticles: ReadonlyArray<PaperActivitySummaryCardViewModel>;
 
   describe('given there are more than 3 possible related articles', () => {
     beforeEach(async () => {
       framework = createTestFramework();
-      result = await pipe(
+      relatedArticles = await pipe(
         constructRelatedArticles(arbitraryPublishingHistoryOnlyPreprints(), framework.dependenciesForViews),
         TO.getOrElse(shouldNotBeCalled),
       )();
     });
 
     it('returns 3 items', () => {
-      expect(result).toHaveLength(3);
+      expect(relatedArticles).toHaveLength(3);
+    });
+  });
+
+  describe('given there are 0 related articles', () => {
+    let result: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>;
+
+    beforeEach(async () => {
+      framework = createTestFramework();
+      framework.dependenciesForViews.fetchRecommendedPapers = () => TE.right([]);
+      result = await constructRelatedArticles(
+        arbitraryPublishingHistoryOnlyPreprints(),
+        framework.dependenciesForViews,
+      )();
+    });
+
+    it.failing('the related articles section is not shown', () => {
+      expect(O.isNone(result)).toBe(true);
     });
   });
 });
