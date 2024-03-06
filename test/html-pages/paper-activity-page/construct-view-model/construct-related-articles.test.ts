@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
+import * as DE from '../../../../src/types/data-error';
 import { constructRelatedArticles } from '../../../../src/html-pages/paper-activity-page/construct-view-model/construct-related-articles';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -32,6 +33,23 @@ describe('construct-related-articles', () => {
     beforeEach(async () => {
       framework = createTestFramework();
       framework.dependenciesForViews.fetchRecommendedPapers = () => TE.right([]);
+      result = await constructRelatedArticles(
+        arbitraryPublishingHistoryOnlyPreprints(),
+        framework.dependenciesForViews,
+      )();
+    });
+
+    it('the related articles section is not shown', () => {
+      expect(O.isNone(result)).toBe(true);
+    });
+  });
+
+  describe('when the query fails', () => {
+    let result: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>;
+
+    beforeEach(async () => {
+      framework = createTestFramework();
+      framework.dependenciesForViews.fetchRecommendedPapers = () => TE.left(DE.unavailable);
       result = await constructRelatedArticles(
         arbitraryPublishingHistoryOnlyPreprints(),
         framework.dependenciesForViews,
