@@ -9,16 +9,6 @@ import { UpdateEvaluationCommand } from '../../../../src/write-side/commands';
 import { EvaluationType } from '../../../../src/types/recorded-evaluation';
 import { arbitraryDate, arbitraryString } from '../../../helpers';
 
-const expectEvent = (fields: Record<string, unknown>) => ({
-  id: expect.any(String),
-  date: expect.any(Date),
-  type: 'EvaluationUpdated',
-  evaluationLocator: undefined,
-  evaluationType: undefined,
-  authors: undefined,
-  ...fields,
-});
-
 describe('update', () => {
   describe('when the evaluation publication has been recorded', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
@@ -45,13 +35,16 @@ describe('update', () => {
             E.getOrElseW(shouldNotBeCalled),
           );
 
+          it('raises exactly one event', () => {
+            expect(eventsRaised).toHaveLength(1);
+          });
+
           it(`raises an event to update the evaluation ${attributeToBeChanged}`, () => {
-            expect(eventsRaised).toStrictEqual([
-              expectEvent({
-                evaluationLocator: command.evaluationLocator,
-                [attributeToBeChanged]: command[attributeToBeChanged],
-              }),
-            ]);
+            expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
+              evaluationType: undefined,
+              evaluationLocator: command.evaluationLocator,
+              [attributeToBeChanged]: command[attributeToBeChanged],
+            });
           });
         });
       });
@@ -81,13 +74,17 @@ describe('update', () => {
             E.getOrElseW(shouldNotBeCalled),
           );
 
+          it('raises exactly one event', () => {
+            expect(eventsRaised).toHaveLength(1);
+          });
+
           it(`raises an event to update the evaluation ${attributeToBeChanged}`, () => {
-            expect(eventsRaised).toStrictEqual([
-              expectEvent({
-                evaluationLocator: command.evaluationLocator,
-                [attributeToBeChanged]: command[attributeToBeChanged],
-              }),
-            ]);
+            expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
+              evaluationType: undefined,
+              authors: undefined,
+              evaluationLocator: command.evaluationLocator,
+              [attributeToBeChanged]: command[attributeToBeChanged],
+            });
           });
         });
       });
@@ -174,13 +171,17 @@ describe('update', () => {
             E.getOrElseW(shouldNotBeCalled),
           );
 
+          it('raises exactly one event', () => {
+            expect(eventsRaised).toHaveLength(1);
+          });
+
           it(`raises an event to only update the ${attributeToBeChanged}`, () => {
-            expect(eventsRaised).toStrictEqual([
-              expectEvent({
-                evaluationLocator,
-                [attributeToBeChanged]: newValue,
-              }),
-            ]);
+            expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
+              evaluationType: undefined,
+              authors: undefined,
+              evaluationLocator,
+              [attributeToBeChanged]: newValue,
+            });
           });
         });
 
@@ -209,13 +210,17 @@ describe('update', () => {
             E.getOrElseW(shouldNotBeCalled),
           );
 
+          it('raises exactly one event', () => {
+            expect(eventsRaised).toHaveLength(1);
+          });
+
           it(`raises an event to only update the ${attributeToBeChanged}`, () => {
-            expect(eventsRaised).toStrictEqual([
-              expectEvent({
-                evaluationLocator,
-                [attributeToBeChanged]: newValue,
-              }),
-            ]);
+            expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
+              evaluationType: undefined,
+              authors: undefined,
+              evaluationLocator,
+              [attributeToBeChanged]: newValue,
+            });
           });
         });
       });
@@ -238,8 +243,14 @@ describe('update', () => {
         E.getOrElseW(shouldNotBeCalled),
       );
 
+      it('raises exactly one event', () => {
+        expect(eventsRaised).toHaveLength(1);
+      });
+
       it('raises an event with issuedAt as the date', () => {
-        expect(eventsRaised[0].date).toStrictEqual(issuedAt);
+        expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
+          date: issuedAt,
+        });
       });
     });
   });

@@ -6,6 +6,7 @@ import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdated
 import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../../src/types/recorded-evaluation';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const evaluationRecordedWithType = (
   evaluationLocator: EvaluationLocator,
@@ -49,41 +50,47 @@ describe('update', () => {
       });
 
       describe('and the command does not match the existing evaluation type', () => {
-        const existingEvents = [
-          evaluationRecordedWithType(evaluationLocator, 'review'),
-        ];
         const generatedEvents = pipe(
-          existingEvents,
+          [
+            evaluationRecordedWithType(evaluationLocator, 'review'),
+          ],
           update(command),
+          E.getOrElseW(shouldNotBeCalled),
         );
 
+        it('raises exactly one event', () => {
+          expect(generatedEvents).toHaveLength(1);
+        });
+
         it('returns an EvaluationUpdated event', () => {
-          expect(generatedEvents).toStrictEqual(E.right([expect.objectContaining({
-            type: 'EvaluationUpdated',
+          expect(generatedEvents[0]).toBeDomainEvent('EvaluationUpdated', {
             evaluationLocator: command.evaluationLocator,
             evaluationType: command.evaluationType,
-          })]));
+          });
         });
       });
     });
 
     describe('when the evaluation type has already been updated in the EvaluationUpdated event', () => {
       describe('and the command does not match the existing evaluation type', () => {
-        const existingEvents = [
-          evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
-          evaluationUpdatedWithType(evaluationLocator, 'review'),
-        ];
         const generatedEvents = pipe(
-          existingEvents,
+          [
+            evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
+            evaluationUpdatedWithType(evaluationLocator, 'review'),
+          ],
           update(command),
+          E.getOrElseW(shouldNotBeCalled),
         );
 
+        it('raises exactly one event', () => {
+          expect(generatedEvents).toHaveLength(1);
+        });
+
         it('returns an EvaluationUpdated event', () => {
-          expect(generatedEvents).toStrictEqual(E.right([expect.objectContaining({
-            type: 'EvaluationUpdated',
+          expect(generatedEvents[0]).toBeDomainEvent('EvaluationUpdated', {
             evaluationLocator: command.evaluationLocator,
             evaluationType: command.evaluationType,
-          })]));
+          });
         });
       });
 
