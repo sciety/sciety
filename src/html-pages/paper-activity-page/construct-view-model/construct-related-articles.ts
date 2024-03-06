@@ -14,6 +14,10 @@ export const constructRelatedArticles = (
 ): T.Task<ViewModel['relatedArticles']> => pipe(
   history,
   dependencies.fetchRecommendedPapers,
+  TE.filterOrElse(
+    (queryResult) => queryResult.length > 0,
+    () => 'query-returned-no-results',
+  ),
   TE.map(RA.takeLeft(3)),
   TE.chainW(TE.traverseArray(constructPaperActivitySummaryCard(dependencies))),
   TE.mapLeft((error) => {

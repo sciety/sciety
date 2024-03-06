@@ -38,7 +38,7 @@ describe('construct-related-articles', () => {
       )();
     });
 
-    it.failing('the related articles section is not shown', () => {
+    it('the related articles section is not shown', () => {
       expect(O.isNone(result)).toBe(true);
     });
   });
