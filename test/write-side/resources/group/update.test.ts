@@ -1,7 +1,6 @@
 /* eslint-disable jest/no-commented-out-tests */
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { UpdateGroupDetailsCommand } from '../../../../src/write-side/commands/update-group-details';
 import * as groupResource from '../../../../src/write-side/resources/group';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
@@ -65,16 +64,16 @@ describe('update', () => {
         const newValue = arbitraryString();
 
         describe('and this group\'s details have never been updated', () => {
-          const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
-          const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          const eventsRaised = pipe(
             [
               groupJoined,
-              ...moreEventsRelatingToOurGroup,
             ],
-            groupResource.update(command),
+            groupResource.update({
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: newValue,
+            }),
             E.getOrElseW(shouldNotBeCalled),
           );
-          const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, [attributeToBeChanged]: newValue });
 
           it(`raises an event to update the group ${attributeToBeChanged}`, () => {
             expect(eventsRaised).toStrictEqual([
@@ -84,21 +83,20 @@ describe('update', () => {
         });
 
         describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
-          const moreEventsRelatingToOurGroup = [
-            {
-              ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
-              [attributeToBeChanged]: arbitraryString(),
-            },
-          ];
-          const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          const eventsRaised = pipe(
             [
               groupJoined,
-              ...moreEventsRelatingToOurGroup,
+              {
+                ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
+                [attributeToBeChanged]: arbitraryString(),
+              },
             ],
-            groupResource.update(command),
+            groupResource.update({
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: newValue,
+            }),
             E.getOrElseW(shouldNotBeCalled),
           );
-          const eventsRaised = executeUpdateAction({ groupId: groupJoined.groupId, [attributeToBeChanged]: newValue });
 
           it(`raises an event to update the group ${attributeToBeChanged}`, () => {
             expect(eventsRaised).toStrictEqual([
@@ -118,20 +116,17 @@ describe('update', () => {
         const newValue = arbitraryString();
 
         describe('and this group\'s details have never been updated', () => {
-          const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
-          const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          const eventsRaised = pipe(
             [
               groupJoined,
-              ...moreEventsRelatingToOurGroup,
             ],
-            groupResource.update(command),
+            groupResource.update({
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: newValue,
+              [unchangedAttribute]: groupJoined[unchangedAttribute],
+            }),
             E.getOrElseW(shouldNotBeCalled),
           );
-          const eventsRaised = executeUpdateAction({
-            groupId: groupJoined.groupId,
-            [attributeToBeChanged]: newValue,
-            [unchangedAttribute]: groupJoined[unchangedAttribute],
-          });
 
           it(`raises an event to only update the group ${attributeToBeChanged}`, () => {
             expect(eventsRaised).toStrictEqual([
@@ -141,25 +136,21 @@ describe('update', () => {
         });
 
         describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
-          const moreEventsRelatingToOurGroup = [
-            {
-              ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
-              [attributeToBeChanged]: arbitraryString(),
-            },
-          ];
-          const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          const eventsRaised = pipe(
             [
               groupJoined,
-              ...moreEventsRelatingToOurGroup,
+              {
+                ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
+                [attributeToBeChanged]: arbitraryString(),
+              },
             ],
-            groupResource.update(command),
+            groupResource.update({
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: newValue,
+              [unchangedAttribute]: groupJoined[unchangedAttribute],
+            }),
             E.getOrElseW(shouldNotBeCalled),
           );
-          const eventsRaised = executeUpdateAction({
-            groupId: groupJoined.groupId,
-            [attributeToBeChanged]: newValue,
-            [unchangedAttribute]: groupJoined[unchangedAttribute],
-          });
 
           it(`raises an event to only update the group ${attributeToBeChanged}`, () => {
             expect(eventsRaised).toStrictEqual([
@@ -176,19 +167,16 @@ describe('update', () => {
         ['name' as const],
       ])('%s', (attributeToBeChanged) => {
         describe('and this group\'s details have never been updated', () => {
-          const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
-          const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          const eventsRaised = pipe(
             [
               groupJoined,
-              ...moreEventsRelatingToOurGroup,
             ],
-            groupResource.update(command),
+            groupResource.update({
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: groupJoined[attributeToBeChanged],
+            }),
             E.getOrElseW(shouldNotBeCalled),
           );
-          const eventsRaised = executeUpdateAction({
-            groupId: groupJoined.groupId,
-            [attributeToBeChanged]: groupJoined[attributeToBeChanged],
-          });
 
           it('raises no events', () => {
             expect(eventsRaised).toStrictEqual([]);
@@ -202,18 +190,17 @@ describe('update', () => {
               [attributeToBeChanged]: arbitraryString(),
             },
           ];
-          const executeUpdateAction = (command: UpdateGroupDetailsCommand) => pipe(
+          const eventsRaised = pipe(
             [
               groupJoined,
               ...moreEventsRelatingToOurGroup,
             ],
-            groupResource.update(command),
+            groupResource.update({
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: moreEventsRelatingToOurGroup[0][attributeToBeChanged],
+            }),
             E.getOrElseW(shouldNotBeCalled),
           );
-          const eventsRaised = executeUpdateAction({
-            groupId: groupJoined.groupId,
-            [attributeToBeChanged]: moreEventsRelatingToOurGroup[0][attributeToBeChanged],
-          });
 
           it('raises no events', () => {
             expect(eventsRaised).toStrictEqual([]);
@@ -228,12 +215,10 @@ describe('update', () => {
       ])('%s', (attributeToBeChanged) => {
         describe('and neither group\'s details have ever been updated', () => {
           const otherGroupJoined = arbitraryGroupJoinedEvent();
-          const moreEventsRelatingToOurGroup: ReadonlyArray<DomainEvent> = [];
           const result = pipe(
             [
               groupJoined,
               otherGroupJoined,
-              ...moreEventsRelatingToOurGroup,
             ],
             groupResource.update(
               {
@@ -249,15 +234,12 @@ describe('update', () => {
         });
 
         describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
-          const moreEventsRelatingToOurGroup = [
-            arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
-          ];
           const otherGroupJoined = arbitraryGroupJoinedEvent();
           const result = pipe(
             [
               groupJoined,
               otherGroupJoined,
-              ...moreEventsRelatingToOurGroup,
+              arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -273,14 +255,11 @@ describe('update', () => {
         describe(`and the other group's ${attributeToBeChanged} has previously been updated`, () => {
           const otherGroupJoined = arbitraryGroupJoinedEvent();
           const valueTakenByOtherGroup = arbitraryString();
-          const moreEventsRelatingToOurGroup = [
-            arbitraryGroupDetailsUpdatedEvent(otherGroupJoined.groupId, valueTakenByOtherGroup),
-          ];
           const result = pipe(
             [
               groupJoined,
               otherGroupJoined,
-              ...moreEventsRelatingToOurGroup,
+              arbitraryGroupDetailsUpdatedEvent(otherGroupJoined.groupId, valueTakenByOtherGroup),
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
