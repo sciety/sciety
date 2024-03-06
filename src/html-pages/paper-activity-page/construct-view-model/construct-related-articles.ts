@@ -21,7 +21,7 @@ export const constructRelatedArticles = (
   TE.map(RA.takeLeft(3)),
   TE.chainW(TE.traverseArray(constructPaperActivitySummaryCard(dependencies))),
   TE.mapLeft((error) => {
-    dependencies.logger('error', 'constructRelatedArticles has failed', { error, paperExpressionDoi: history.expressions[0].expressionDoi });
+    dependencies.logger('error', 'constructRelatedArticles has failed', { error, paperExpressionDoi: PH.getLatestExpression(history).expressionDoi });
     return error;
   }),
   TO.fromTaskEither,
