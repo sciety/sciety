@@ -28,8 +28,7 @@ describe('create', () => {
     );
 
     it('creates the group', () => {
-      expect(result[0]).toStrictEqual(expect.objectContaining({
-        type: 'GroupJoined',
+      expect(result[0]).toBeDomainEvent('GroupJoined', {
         groupId: newGroup.id,
         name: newGroup.name,
         shortDescription: newGroup.shortDescription,
@@ -37,23 +36,21 @@ describe('create', () => {
         avatarPath: newGroup.avatarPath,
         descriptionPath: newGroup.descriptionPath,
         slug: newGroup.slug,
-      }));
+      });
     });
 
     it('creates a list owned by the group', () => {
-      expect(result[1]).toStrictEqual(expect.objectContaining({
-        type: 'ListCreated',
+      expect(result[1]).toBeDomainEvent('ListCreated', {
         ownerId: LOID.fromGroupId(newGroup.id),
         description: expect.stringContaining(newGroup.name),
-      }));
+      });
     });
 
     it('identifies the list as the target for ingestion', () => {
-      expect(result[2]).toStrictEqual(expect.objectContaining({
-        type: 'EvaluatedArticlesListSpecified',
+      expect(result[2]).toBeDomainEvent('EvaluatedArticlesListSpecified', {
         groupId: newGroup.id,
         listId: (result[1] as EventOfType<'ListCreated'>).listId,
-      }));
+      });
     });
   });
 
