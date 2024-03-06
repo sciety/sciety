@@ -16,6 +16,7 @@ import { CreateUserAccountCommand } from '../../commands';
 import { UserId } from '../../../types/user-id';
 import { createUserAccountCommandHandler } from '../../command-handlers';
 import { DependenciesForCommands } from '../../dependencies-for-commands';
+import { userHandleAlreadyExistsError } from '../../resources/user/check-command';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -64,9 +65,25 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     createUserAccountCommandHandler(dependencies),
   )();
 
+  if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
+    context.response.status = StatusCodes.BAD_REQUEST;
+    context.response.type = 'html';
+    context.response.body = pipe(
+      {
+        validationRecovery: O.some({
+          fullName: { userInput: formFields.right.fullName, error: O.none },
+          handle: { userInput: formFields.right.handle, error: O.some('The handle is already taken') },
+        }),
+      } satisfies ViewModel,
+      renderFormPage,
+      createUserAccountFormPageLayout(getLoggedInScietyUser(dependencies, context)),
+    );
+    return;
+  }
+
   if (E.isLeft(commandResult)) {
     context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-    context.response.body = 'Your input appears to be valid but we failed to handle it.';
+    context.response.body = `Your input appears to be valid but we failed to handle it. ${commandResult.left}`;
     return;
   }
 
