@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { getAuthenticatedUserIdFromContext, getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../../../http/authentication-and-logging-in-of-sciety-users';
 import { redirectToAuthenticationDestination } from '../../../http/authentication-destination';
-import { renderFormPage } from './create-user-account-form-page/create-user-account-form-page';
+import { renderFormPage } from './create-user-account-form-page/render-form-page';
 import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
 import {
   CreateUserAccountForm,
@@ -17,7 +17,7 @@ import { createUserAccountCommandHandler } from '../../command-handlers';
 import { DependenciesForCommands } from '../../dependencies-for-commands';
 import { userHandleAlreadyExistsError } from '../../resources/user/check-command';
 import { sendErrorResponse } from './send-error-response';
-import { CreateUserAccountFormRecovery } from './create-user-account-form-page/create-user-account-form-recovery';
+import { ViewModel } from './create-user-account-form-page/view-model';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -32,12 +32,12 @@ const toCommand = (authenticatedUserId: UserId) => (input: CreateUserAccountForm
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
   const sendRecovery = (
-    recovery: CreateUserAccountFormRecovery,
+    viewModel: ViewModel,
   ) => {
     context.response.status = StatusCodes.BAD_REQUEST;
     context.response.type = 'html';
     context.response.body = pipe(
-      recovery,
+      viewModel,
       renderFormPage,
       createUserAccountFormPageLayout(getLoggedInScietyUser(dependencies, context)),
     );

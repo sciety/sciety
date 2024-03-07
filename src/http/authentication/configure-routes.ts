@@ -17,7 +17,7 @@ import { createUserAccount } from '../../write-side/forms/create-user/create-use
 import { pageHandler } from '../page-handler';
 import { CollectedPorts } from '../../infrastructure';
 import { saveAuthenticationDestination } from '../authentication-destination';
-import { createUserAccountFormPage } from '../../write-side/forms/create-user/create-user-account-form-page/create-user-account-form-page';
+import { emptyCreateUserAccountFormPage } from '../../write-side/forms/create-user/create-user-account-form-page/empty-create-user-account-form-page';
 import { createUserAccountFormPageLayout } from '../../write-side/forms/create-user/create-user-account-form-page/create-user-account-form-page-layout';
 
 export type Config = LoginMiddlewaresConfig;
@@ -42,7 +42,7 @@ const configureAuth0Routes = (
     '/create-account-form',
     pageHandler(
       adapters,
-      createUserAccountFormPage,
+      emptyCreateUserAccountFormPage,
       createUserAccountFormPageLayout,
     ),
   );

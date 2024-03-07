@@ -1,14 +1,12 @@
 import { pipe } from 'fp-ts/function';
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
-import { ConstructPage } from '../../../../html-pages/construct-page';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage } from '../../../../types/html-page';
-import { CreateUserAccountFormRecovery } from './create-user-account-form-recovery';
+import { ViewModel } from './view-model';
 
-const renderErrorSummary = (recovery: CreateUserAccountFormRecovery) => pipe(
+const renderErrorSummary = (recovery: ViewModel) => pipe(
   recovery,
   O.map(R.map((r) => r.error)),
   O.map(R.compact),
@@ -28,7 +26,7 @@ const renderErrorSummary = (recovery: CreateUserAccountFormRecovery) => pipe(
   O.getOrElse(() => ''),
 );
 
-const renderFullNameInput = (recovery: CreateUserAccountFormRecovery) => {
+const renderFullNameInput = (recovery: ViewModel) => {
   const inputWithLegend = pipe(
     recovery,
     O.map((r) => r.fullName.userInput),
@@ -53,7 +51,7 @@ const renderFullNameInput = (recovery: CreateUserAccountFormRecovery) => {
   );
 };
 
-const renderHandleInput = (recovery: CreateUserAccountFormRecovery) => {
+const renderHandleInput = (recovery: ViewModel) => {
   const inputWithLegend = pipe(
     recovery,
     O.map((r) => r.handle.userInput),
@@ -82,7 +80,7 @@ const renderHandleInput = (recovery: CreateUserAccountFormRecovery) => {
 
 const pageHeader = 'Sign up';
 
-export const renderFormPage = (recovery: CreateUserAccountFormRecovery): HtmlPage => ({
+export const renderFormPage = (recovery: ViewModel): HtmlPage => ({
   title: `${O.isSome(recovery) ? 'Error: ' : ''}${pageHeader}`,
   content: toHtmlFragment(`
     <div class="create-user-account-form-wrapper">
@@ -99,9 +97,3 @@ export const renderFormPage = (recovery: CreateUserAccountFormRecovery): HtmlPag
     </div>
   `),
 });
-
-export const createUserAccountFormPage: ConstructPage = (): TE.TaskEither<never, HtmlPage> => pipe(
-  O.none,
-  renderFormPage,
-  TE.right,
-);
