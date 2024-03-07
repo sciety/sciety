@@ -1,9 +1,11 @@
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
-import { RawUserInput } from '../../read-side';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
+import { ValidationRecovery } from '../validation-recovery';
+import { createUserAccountFormCodec } from '../../http/form-submission-handlers/create-user-account/codecs';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,
@@ -26,14 +28,11 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   ),
 );
 
-type Recovery = O.Option<{
-  fullName: RawUserInput,
-  handle: RawUserInput,
-}>;
+type Recovery = O.Option<ValidationRecovery<t.TypeOf<typeof createUserAccountFormCodec>>>;
 
 const renderFullNameInput = (recovery: Recovery) => pipe(
   recovery,
-  O.map((r) => r.fullName),
+  O.map((r) => r.fullName.userInput),
   O.map(safelyReflectRawUserInputForEditing),
   O.getOrElse(() => ''),
   (fullName) => `
@@ -44,7 +43,7 @@ const renderFullNameInput = (recovery: Recovery) => pipe(
 
 const renderHandleInput = (recovery: Recovery) => pipe(
   recovery,
-  O.map((r) => r.handle),
+  O.map((r) => r.handle.userInput),
   O.map(safelyReflectRawUserInputForEditing),
   O.getOrElse(() => ''),
   (handle) => `

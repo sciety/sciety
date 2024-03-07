@@ -51,8 +51,8 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   if (E.isLeft(validatedFormFields)) {
     const htmlResponse = pipe(
       O.some({
-        fullName: rawUserInput(formFields.right.fullName),
-        handle: rawUserInput(formFields.right.handle),
+        fullName: { userInput: rawUserInput(formFields.right.fullName) },
+        handle: { userInput: rawUserInput(formFields.right.handle) },
       }),
       renderFormPage,
       E.right,
@@ -79,8 +79,8 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
     const htmlResponse = pipe(
       O.some({
-        fullName: rawUserInput(formFields.right.fullName),
-        handle: rawUserInput(formFields.right.handle),
+        fullName: { userInput: rawUserInput(formFields.right.fullName) },
+        handle: { userInput: rawUserInput(formFields.right.handle) },
       }),
       renderFormPage,
       E.right,
