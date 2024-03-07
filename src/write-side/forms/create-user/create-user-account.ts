@@ -17,6 +17,7 @@ import { UserId } from '../../../types/user-id';
 import { createUserAccountCommandHandler } from '../../command-handlers';
 import { DependenciesForCommands } from '../../dependencies-for-commands';
 import { userHandleAlreadyExistsError } from '../../resources/user/check-command';
+import { sendErrorResponse } from './send-error-response';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -35,14 +36,12 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   const validatedFormFields = createUserAccountFormCodec.decode(context.request.body);
 
   if (O.isNone(authenticatedUserId)) {
-    context.response.status = StatusCodes.UNAUTHORIZED;
-    context.response.body = 'You must be authenticated to perform this action.';
+    sendErrorResponse(context, StatusCodes.UNAUTHORIZED, 'You must be authenticated to perform this action.');
     return;
   }
 
   if (E.isLeft(formFields)) {
-    context.response.status = StatusCodes.BAD_REQUEST;
-    context.response.body = 'Something went wrong when you submitted the form.';
+    sendErrorResponse(context, StatusCodes.BAD_REQUEST, 'Something went wrong when you submitted the form.');
     return;
   }
 
@@ -82,8 +81,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   if (E.isLeft(commandResult)) {
-    context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-    context.response.body = `Your input appears to be valid but we failed to handle it. ${commandResult.left}`;
+    sendErrorResponse(context, StatusCodes.INTERNAL_SERVER_ERROR, `Your input appears to be valid but we failed to handle it. ${commandResult.left}`);
     return;
   }
 
