@@ -150,25 +150,33 @@ describe('fetch-recommended-papers', () => {
   });
 
   describe('when we cannot access the third-party', () => {
-    it('returns a left', async () => {
-      const queryExternalService = () => () => TE.left(DE.unavailable);
-      const result = await pipe(
+    const queryExternalService = () => () => TE.left(DE.unavailable);
+    let result: E.Either<unknown, unknown>;
+
+    beforeEach(async () => {
+      result = await pipe(
         arbitraryPublishingHistoryOnlyPreprints(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
       )();
+    });
 
+    it('returns a left', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
 
   describe('when we cannot decode the response', () => {
-    it('returns a left', async () => {
-      const queryExternalService = () => () => TE.right(arbitraryString());
-      const result = await pipe(
+    const queryExternalService = () => () => TE.right(arbitraryString());
+    let result: E.Either<unknown, unknown>;
+
+    beforeEach(async () => {
+      result = await pipe(
         arbitraryPublishingHistoryOnlyPreprints(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
       )();
+    });
 
+    it('returns a left', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
@@ -182,14 +190,17 @@ describe('fetch-recommended-papers', () => {
       ],
     };
     const queryExternalService = () => () => TE.right(response);
+    let result: ReadonlyArray<ExpressionDoi>;
 
-    it('ignores such papers', async () => {
-      const result = await pipe(
+    beforeEach(async () => {
+      result = await pipe(
         arbitraryPublishingHistoryOnlyPreprints(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
-        TE.getOrElseW(shouldNotBeCalled),
+        TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('ignores such papers', () => {
       expect(result).toStrictEqual([]);
     });
   });
