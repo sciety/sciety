@@ -1,10 +1,9 @@
 import { DOMParser } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import {
-  containsUnrecoverableError,
   getAbstract, getAuthors, getServer, getTitle,
 } from '../../../src/third-parties/crossref/parse-crossref-article';
-import { arbitraryString, arbitraryUri } from '../../helpers';
+import { arbitraryUri } from '../../helpers';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -395,39 +394,6 @@ describe('parse-crossref-article', () => {
       const title = getTitle(doc);
 
       expect(title).toStrictEqual(O.some('An article title for C. elegans'));
-    });
-  });
-
-  describe('when the document', () => {
-    describe('does not contain a <crossref> tag', () => {
-      const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n      </doi_record>\r\n</doi_records>';
-      const result = containsUnrecoverableError(parser.parseFromString(input, 'text/xml'));
-
-      it('detects an unrecoverable error', () => {
-        expect(result).toBe(true);
-      });
-    });
-
-    describe('contains a <crossref> tag with its only child an <error> tag', () => {
-      const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n    <crossref>\r\n      <error>doi:10.21203/rs.3.rs-3869684/v1</error>\r\n    </crossref>\r\n  </doi_record>\r\n</doi_records>';
-      const result = containsUnrecoverableError(parser.parseFromString(input, 'text/xml'));
-
-      it('detects an unrecoverable error', () => {
-        expect(result).toBe(true);
-      });
-    });
-
-    describe('contains an ordinary crossref record', () => {
-      const input = crossrefResponseWith(`
-        <titles>
-          <title>${arbitraryString()}</title>
-        </titles>
-      `);
-      const result = containsUnrecoverableError(parser.parseFromString(input, 'text/xml'));
-
-      it('does not detect an unrecoverable error', () => {
-        expect(result).toBe(false);
-      });
     });
   });
 });

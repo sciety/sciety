@@ -5,21 +5,7 @@ import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { identifyExpressionServer } from './fetch-all-paper-expressions/identify-expression-server';
-
-const getElement = (ancestor: Document | Element, qualifiedName: string) => (
-  ancestor.getElementsByTagName(qualifiedName).item(0)
-);
-
-export const containsUnrecoverableError = (xml: Document): boolean => {
-  const crossrefElement = getElement(xml, 'crossref');
-  if (!crossrefElement) {
-    return true;
-  }
-  if (getElement(crossrefElement, 'error')) {
-    return true;
-  }
-  return false;
-};
+import { getElement } from './get-element';
 
 export const getAbstract = (
   doc: Document,

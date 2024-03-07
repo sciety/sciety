@@ -5,9 +5,9 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import {
-  containsUnrecoverableError,
   getAbstract, getAuthors, getTitle,
 } from './parse-crossref-article';
+import { containsUnrecoverableError } from './contains-unrecoverable-error';
 import { Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
