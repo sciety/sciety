@@ -91,16 +91,16 @@ describe('render-docmap', () => {
     });
 
     it('includes the publisher properties', async () => {
-      expect(result.publisher).toStrictEqual(expect.objectContaining({
-        id: group.homepage,
-        name: group.name,
-        logo: expect.stringContaining(group.avatarPath),
-        homepage: group.homepage,
-        account: {
-          id: publisherAccountId(group),
-          service: 'https://sciety.org',
-        },
-      }));
+      const publisher = result.publisher;
+
+      expect(publisher.id).toStrictEqual(group.homepage);
+      expect(publisher.name).toStrictEqual(group.name);
+      expect(publisher.logo).toContain(group.avatarPath);
+      expect(publisher.homepage).toStrictEqual(group.homepage);
+      expect(publisher.account).toStrictEqual({
+        id: publisherAccountId(group),
+        service: 'https://sciety.org',
+      });
     });
 
     it('sets created to the date the first evaluation was recorded', async () => {

@@ -67,9 +67,7 @@ describe('construct-docmap-view-model', () => {
       });
 
       it('includes the group', async () => {
-        expect(viewModel).toStrictEqual(expect.objectContaining({
-          group: expect.objectContaining({ id: addGroupCommand.groupId }),
-        }));
+        expect(viewModel.group.id).toStrictEqual(addGroupCommand.groupId);
       });
     });
 
@@ -201,11 +199,7 @@ describe('construct-docmap-view-model', () => {
       });
 
       it('returns the inferred source URL rather than calling the port', () => {
-        expect(viewModel.evaluations).toStrictEqual([
-          expect.objectContaining({
-            sourceUrl,
-          }),
-        ]);
+        expect(viewModel.evaluations[0].sourceUrl).toStrictEqual(sourceUrl);
       });
     });
 
@@ -232,11 +226,7 @@ describe('construct-docmap-view-model', () => {
       });
 
       it('obtains the source URL by calling the port', () => {
-        expect(viewModel.evaluations).toStrictEqual([
-          expect.objectContaining({
-            sourceUrl,
-          }),
-        ]);
+        expect(viewModel.evaluations[0].sourceUrl).toStrictEqual(sourceUrl);
       });
     });
 
@@ -276,11 +266,7 @@ describe('construct-docmap-view-model', () => {
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
         )();
 
-        expect(viewModel.evaluations).toStrictEqual([
-          expect.objectContaining({
-            evaluationLocator: recordEvaluationByThisGroup.evaluationLocator,
-          }),
-        ]);
+        expect(viewModel.evaluations[0].evaluationLocator).toStrictEqual(recordEvaluationByThisGroup.evaluationLocator);
       });
     });
   });

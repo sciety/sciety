@@ -3,8 +3,8 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import * as E from 'fp-ts/Either';
 import { StatusCodes } from 'http-status-codes';
+import { identity } from 'io-ts';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -17,8 +17,8 @@ import { arbitraryString } from '../../helpers';
 import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import * as ER from '../../../src/docmaps/docmap-index/error-response';
-import { DocmapIndexViewModel } from '../../../src/docmaps/docmap-index/view-model';
 import { toExpressionDoi } from '../../../src/types/article-id';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('construct-view-model', () => {
   const defaultParams: Params = {
@@ -176,20 +176,22 @@ describe('construct-view-model', () => {
       ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: supportedGroups[0],
     };
-    let result: E.Either<ER.ErrorResponse, DocmapIndexViewModel>;
+    let result: ER.ErrorResponse;
 
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
       result = await pipe(
         defaultParams,
         constructViewModel(framework.dependenciesForViews),
+        TE.match(
+          identity,
+          shouldNotBeCalled,
+        ),
       )();
     });
 
     it('fails with an internal server error', () => {
-      expect(result).toStrictEqual(E.left(expect.objectContaining({
-        status: StatusCodes.INTERNAL_SERVER_ERROR,
-      })));
+      expect(result.status).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
     });
   });
 
