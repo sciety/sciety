@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../../src/types/expression-doi';
-import { arbitrarySanitisedHtmlFragment, arbitraryString } from '../../helpers';
+import { arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
 import { fetchRecommendedPapers } from '../../../src/third-parties/sciety-labs/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
@@ -14,22 +14,10 @@ import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { QueryExternalService } from '../../../src/third-parties/query-external-service';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
 
-const articleTitle = arbitrarySanitisedHtmlFragment();
-const articleAuthors = [arbitraryString(), arbitraryString()];
-
 const arbitraryRecommendedPaper = (articleId: string) => ({
   externalIds: {
     DOI: articleId,
   },
-  title: articleTitle.toString(),
-  authors: [
-    {
-      name: articleAuthors[0],
-    },
-    {
-      name: articleAuthors[1],
-    },
-  ],
 });
 
 const historyWithPreprintAsLatestExpression = (latestPreprintExpressionDoi: EDOI.ExpressionDoi) => pipe(
@@ -185,26 +173,17 @@ describe('fetch-recommended-papers', () => {
     });
   });
 
-  describe('when the response contains an article with no DOI', () => {
+  describe('when the response contains a paper with no DOI', () => {
     const response = {
       recommendedPapers: [
         {
           externalIds: {},
-          title: articleTitle.toString(),
-          authors: [
-            {
-              name: articleAuthors[0],
-            },
-            {
-              name: articleAuthors[1],
-            },
-          ],
         },
       ],
     };
     const queryExternalService = () => () => TE.right(response);
 
-    it('ignores such articles', async () => {
+    it('ignores such papers', async () => {
       const result = await pipe(
         arbitraryPublishingHistoryOnlyPreprints(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
