@@ -116,3 +116,13 @@ $_label-font-size: functions.px-to-rem(20px);
   align-items: center;
   margin-bottom: functions.px-to-rem(8px);
 }
+
+.standard-form__error {
+  border-left: 3px solid utilities.$colour-alert;
+  padding-left: 6px;
+
+  p {
+    color: utilities.$colour-alert;
+    margin-bottom: 0.5rem;
+  }
+}

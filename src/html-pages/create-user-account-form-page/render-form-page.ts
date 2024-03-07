@@ -37,18 +37,33 @@ const renderFullNameInput = (recovery: Recovery) => pipe(
   `,
 );
 
-const renderHandleInput = (recovery: Recovery) => pipe(
-  recovery,
-  O.map((r) => r.handle.userInput),
-  O.map(safelyReflectRawUserInputForEditing),
-  O.getOrElse(() => ''),
-  (handle) => `
-    <label for="handle" class="create-user-account-form__label">Create a handle</label>
-    <div class='create-user-account-form__handle'>
-      <span class='create-user-account-form__handle-url'>sciety.org/users/</span><input type="text" id="handle" name="handle" placeholder="ajeff18" class="create-user-account-form__input" value="${handle}">
-    </div>
+const renderHandleInput = (recovery: Recovery) => {
+  const inputWithLegend = pipe(
+    recovery,
+    O.map((r) => r.handle.userInput),
+    O.map(safelyReflectRawUserInputForEditing),
+    O.getOrElse(() => ''),
+    (value) => `
+        <label for="handle" class="create-user-account-form__label">Create a handle</label>
+        <div class='create-user-account-form__handle'>
+          <span class='create-user-account-form__handle-url'>sciety.org/users/</span><input type="text" id="handle" name="handle" placeholder="ajeff18" class="create-user-account-form__input" value="${value}">
+        </div>
   `,
-);
+  );
+  return pipe(
+    recovery,
+    O.chain((r) => r.handle.error),
+    O.match(
+      () => inputWithLegend,
+      (message) => `
+        <div class="standard-form__error">
+          <p><span class="visually-hidden">Error: </span>${message}</p>
+          ${inputWithLegend}
+        </div>
+      `,
+    ),
+  );
+};
 
 const prefixTitleWithErrorDuringValidationRecovery = (recovery: Recovery, title: string) => `${O.isSome(recovery) ? 'Error: ' : ''}${title}`;
 
