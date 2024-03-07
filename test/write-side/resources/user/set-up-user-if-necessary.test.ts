@@ -37,18 +37,15 @@ describe('set-up-user-if-necessary', () => {
     const eventsToCommit = setUpUserIfNecessary(command)([]);
 
     it('raises a UserCreatedAccount event and a ListCreated event', () => {
-      expect(eventsToCommit).toStrictEqual([
-        expect.objectContaining({
-          userId: command.userId,
-          handle: command.handle,
-          avatarUrl: command.avatarUrl,
-          displayName: command.displayName,
-        }),
-        expect.objectContaining({
-          type: 'ListCreated',
-          ownerId: LOID.fromUserId(command.userId),
-        }),
-      ]);
+      expect(eventsToCommit[0]).toBeDomainEvent('UserCreatedAccount', {
+        userId: command.userId,
+        handle: command.handle,
+        avatarUrl: command.avatarUrl,
+        displayName: command.displayName,
+      });
+      expect(eventsToCommit[1]).toBeDomainEvent('ListCreated', {
+        ownerId: LOID.fromUserId(command.userId),
+      });
     });
   });
 });

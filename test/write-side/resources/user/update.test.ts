@@ -38,14 +38,16 @@ describe('update', () => {
           );
         });
 
+        it('raises exactly one event', () => {
+          expect(events).toHaveLength(1);
+        });
+
         it('raises an event to update avatar url', () => {
-          expect(events).toStrictEqual([
-            expect.objectContaining({
-              userId: originalUserDetails.id,
-              avatarUrl: newAvatarUrl,
-              displayName: undefined,
-            }),
-          ]);
+          expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
+            userId: originalUserDetails.id,
+            avatarUrl: newAvatarUrl,
+            displayName: undefined,
+          });
         });
       });
 
@@ -63,14 +65,16 @@ describe('update', () => {
           );
         });
 
+        it('raises exactly one event', () => {
+          expect(events).toHaveLength(1);
+        });
+
         it('raises an event to update display name', () => {
-          expect(events).toStrictEqual([
-            expect.objectContaining({
-              userId: originalUserDetails.id,
-              avatarUrl: undefined,
-              displayName: newDisplayName,
-            }),
-          ]);
+          expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
+            userId: originalUserDetails.id,
+            avatarUrl: undefined,
+            displayName: newDisplayName,
+          });
         });
       });
 
@@ -90,14 +94,16 @@ describe('update', () => {
           );
         });
 
+        it('raises exactly one event', () => {
+          expect(events).toHaveLength(1);
+        });
+
         it('raises an event to update display name and avatar url', () => {
-          expect(events).toStrictEqual([
-            expect.objectContaining({
-              userId: originalUserDetails.id,
-              avatarUrl: newAvatarUrl,
-              displayName: newDisplayName,
-            }),
-          ]);
+          expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
+            userId: originalUserDetails.id,
+            avatarUrl: newAvatarUrl,
+            displayName: newDisplayName,
+          });
         });
       });
 
@@ -187,14 +193,16 @@ describe('update', () => {
           );
         });
 
+        it('raises exactly one event', () => {
+          expect(events).toHaveLength(1);
+        });
+
         it('raises an event to update avatar url', () => {
-          expect(events).toStrictEqual([
-            expect.objectContaining({
-              userId: originalUserDetails.id,
-              avatarUrl: newAvatarUrl,
-              displayName: undefined,
-            }),
-          ]);
+          expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
+            userId: originalUserDetails.id,
+            avatarUrl: newAvatarUrl,
+            displayName: undefined,
+          });
         });
       });
 
@@ -212,14 +220,16 @@ describe('update', () => {
           );
         });
 
+        it('raises exactly one event', () => {
+          expect(events).toHaveLength(1);
+        });
+
         it('raises an event to update display name', () => {
-          expect(events).toStrictEqual([
-            expect.objectContaining({
-              userId: originalUserDetails.id,
-              displayName: newDisplayName,
-              avatarUrl: undefined,
-            }),
-          ]);
+          expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
+            userId: originalUserDetails.id,
+            displayName: newDisplayName,
+            avatarUrl: undefined,
+          });
         });
       });
     });
