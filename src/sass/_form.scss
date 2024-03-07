@@ -9,8 +9,7 @@ $_label-font-size: functions.px-to-rem(20px);
 
 @mixin form-with-borders-and-white-background {
   background-color: utilities.$colour-white;
-  padding: functions.px-to-rem(16px)
-    functions.px-to-rem(utilities.$default-gutter);
+  padding: functions.px-to-rem(16px) functions.px-to-rem(utilities.$default-gutter);
 
   border: utilities.$border-width solid utilities.$colour-furniture;
   border-left-width: 0;
@@ -44,17 +43,34 @@ $_label-font-size: functions.px-to-rem(20px);
 }
 
 .error-summary {
-  border: utilities.$border-width solid utilities.$colour-alert;
+  border: 3px solid utilities.$colour-alert;
   padding: functions.px-to-rem(utilities.$default-form-gutter);
   margin-bottom: functions.px-to-rem(48px);
 
-  p {
+  a:link {
     color: utilities.$colour-alert;
+    text-decoration: underline;
+  }
+
+  a:link,
+  a:visited {
+    color: utilities.$colour-alert;
+
+    &:hover,
+    &:active {
+      color: utilities.$colour-alert;
+      text-decoration-thickness: 3px;
+    }
   }
 
   ul {
-    color: utilities.$colour-alert;
     margin-top: 0;
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
   }
 }
 
@@ -63,9 +79,7 @@ $_label-font-size: functions.px-to-rem(20px);
 
   button[type="submit"] {
     @include button.primary();
-    margin-right: functions.px-to-rem(
-      utilities.$default-form-element-separation
-    );
+    margin-right: functions.px-to-rem(utilities.$default-form-element-separation );
   }
 
   dl {

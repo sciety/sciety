@@ -1,29 +1,30 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import * as R from 'fp-ts/Record';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
 import { Recovery } from './recovery';
 
-const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
-  errorSummary,
-  O.match(
+const renderErrorSummary = (recovery: Recovery) => pipe(
+  recovery,
+  O.map(R.map((r) => r.error)),
+  O.map(R.compact),
+  O.map(R.toArray),
+  O.map(RA.map(([key, error]) => `<li><a href="#${key}">${error}</a></li>`)),
+  O.map(RA.match(
     () => '',
-    () => `
+    (errors) => `
     <div role='alert' class='error-summary'>
-      <h3>Something went wrong</h3>
-      <p>
-      Please check the following:
-      </p>
-        <ul>
-        <li>Your full name and handle must not contain any of &quot;,&lt;,&gt;</li>
-        <li>Your full name must be 1-30 characters long</li>
-        <li>Your handle must be 4-15 characters long</li>
-        <li>Your handle must not be in use by anyone else</li>
-        </ul>
+      <h3>There is a problem</h3>
+      <ul>
+      ${errors.join('\n')}
+      </ul>
     </div>
     `,
-  ),
+  )),
+  O.getOrElse(() => ''),
 );
 
 const renderFullNameInput = (recovery: Recovery) => {
