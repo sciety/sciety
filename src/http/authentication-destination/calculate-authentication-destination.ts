@@ -5,15 +5,7 @@ import { Logger } from '../../shared-ports';
 
 export const defaultDestination = '/';
 
-const toValidUrl = (logger: Logger) => (candidateUrl: string) => pipe(
-  O.tryCatch(() => new URL(candidateUrl)),
-  (url) => {
-    if (O.isNone(url)) {
-      logger('error', 'Referer is not a valid URL', { candidateUrl });
-    }
-    return url;
-  },
-);
+const toValidUrl = (candidateUrl: string) => O.tryCatch(() => new URL(candidateUrl));
 
 const isHostedBy = (applicationHostname: string) => (url: URL) => url.hostname === applicationHostname;
 
@@ -25,8 +17,11 @@ export const calculateAuthenticationDestination = (
   referer,
   O.fromNullable,
   O.filter((candidateUrl) => candidateUrl !== ''),
-  O.chain(toValidUrl(logger)),
+  O.chain(toValidUrl),
   O.filter(isHostedBy(applicationHostname)),
   O.map(urlToString),
-  O.getOrElse(() => defaultDestination),
+  O.getOrElse(() => {
+    logger('error', "Can't use the referer as an authentication destination", { referer });
+    return defaultDestination;
+  }),
 );
