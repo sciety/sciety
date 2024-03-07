@@ -22,6 +22,7 @@ import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-fail
 import { rawUserInput } from '../../../read-side';
 import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
 import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
+import { CreateUserAccountCommand } from '../../../write-side/commands';
 
 const createUserAccountFormFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props, 'createUserAccountFormFieldsCodec');
 
@@ -31,6 +32,14 @@ const userHandleAlreadyExistsRecovery = (formInputs: t.TypeOf<typeof createUserA
 });
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
+
+const toCommand = (inputs: t.TypeOf<typeof createUserAccountFormCodec>, userId: CreateUserAccountCommand['userId']) => (
+  {
+    handle: inputs.handle,
+    displayName: inputs.fullName,
+    userId,
+    avatarUrl: defaultSignUpAvatarUrl,
+  });
 
 type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
@@ -81,12 +90,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   const commandResult = await pipe(
-    {
-      handle: validatedFormFields.right.handle,
-      displayName: validatedFormFields.right.fullName,
-      userId: authenticatedUserId.value,
-      avatarUrl: defaultSignUpAvatarUrl,
-    },
+    toCommand(validatedFormFields.right, authenticatedUserId.value),
     createUserAccountCommandHandler(dependencies),
   )();
 
