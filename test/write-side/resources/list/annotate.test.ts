@@ -12,6 +12,7 @@ import {
 import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { AnnotateArticleInListCommand } from '../../../../src/write-side/commands';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('annotate', () => {
   const articleId = arbitraryArticleId();
@@ -60,15 +61,19 @@ describe('annotate', () => {
         const result = pipe(
           relevantEvents,
           annotate(annotateArticleInListCommand),
+          E.getOrElseW(shouldNotBeCalled),
         );
 
+        it('raises exactly one event', () => {
+          expect(result).toHaveLength(1);
+        });
+
         it('succeeds, raising a relevant event', () => {
-          expect(result).toStrictEqual(E.right([expect.objectContaining({
-            type: 'ArticleInListAnnotated',
+          expect(result[0]).toBeDomainEvent('ArticleInListAnnotated', {
             articleId,
             listId,
             content,
-          })]));
+          });
         });
       });
 

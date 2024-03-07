@@ -5,6 +5,7 @@ import { arbitraryString } from '../../../helpers';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('create', () => {
   const input = {
@@ -18,16 +19,20 @@ describe('create', () => {
     const result = pipe(
       [],
       create(input),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
+    it('raises exactly one event', () => {
+      expect(result).toHaveLength(1);
+    });
+
     it('returns a ListCreated event', () => {
-      expect(result).toStrictEqual(E.right([expect.objectContaining({
-        type: 'ListCreated',
+      expect(result[0]).toBeDomainEvent('ListCreated', {
         listId: input.listId,
         ownerId: input.ownerId,
         name: input.name,
         description: input.description,
-      })]));
+      });
     });
   });
 

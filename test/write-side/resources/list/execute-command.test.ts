@@ -36,8 +36,14 @@ describe('execute-command', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
+    it('raises exactly one event', () => {
+      expect(raisedEvents).toHaveLength(1);
+    });
+
     it('raises an event with the new name', () => {
-      expect(raisedEvents).toStrictEqual([expect.objectContaining({ name: newName, type: 'ListNameEdited' })]);
+      expect(raisedEvents[0]).toBeDomainEvent('ListNameEdited', {
+        name: newName,
+      });
     });
   });
 
@@ -63,8 +69,14 @@ describe('execute-command', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
+    it('raises exactly one event', () => {
+      expect(raisedEvents).toHaveLength(1);
+    });
+
     it('raises an event with the new description', () => {
-      expect(raisedEvents).toStrictEqual([expect.objectContaining({ description: newDescription, type: 'ListDescriptionEdited' })]);
+      expect(raisedEvents[0]).toBeDomainEvent('ListDescriptionEdited', {
+        description: newDescription,
+      });
     });
   });
 
@@ -116,11 +128,17 @@ describe('execute-command', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
+    it('raises exactly two events', () => {
+      expect(raisedEvents).toHaveLength(2);
+    });
+
     it('raises two events with the new details', () => {
-      expect(raisedEvents).toStrictEqual([
-        expect.objectContaining({ name: newName, type: 'ListNameEdited' }),
-        expect.objectContaining({ description: newDescription, type: 'ListDescriptionEdited' }),
-      ]);
+      expect(raisedEvents[0]).toBeDomainEvent('ListNameEdited', {
+        name: newName,
+      });
+      expect(raisedEvents[1]).toBeDomainEvent('ListDescriptionEdited', {
+        description: newDescription,
+      });
     });
   });
 });
