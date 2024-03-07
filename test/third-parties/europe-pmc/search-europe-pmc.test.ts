@@ -5,23 +5,25 @@ import { pipe } from 'fp-ts/function';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryWord } from '../../helpers';
-import * as EDOI from '../../../src/types/expression-doi';
 import { SearchResults } from '../../../src/types/search-results';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 describe('search-europe-pmc', () => {
   it('converts Europe PMC search result into our view model', async () => {
     const nextCursor = arbitraryWord();
+    const resultDoi1 = arbitraryExpressionDoi();
+    const resultDoi2 = arbitraryExpressionDoi();
     const queryExternalService = () => () => TE.right({
       hitCount: 3,
       nextCursorMark: nextCursor,
       resultList: {
         result: [
           {
-            doi: '10.1111/1234',
+            doi: resultDoi1,
           },
           {
-            doi: '10.1111/4321',
+            doi: resultDoi2,
           },
         ],
       },
@@ -33,10 +35,7 @@ describe('search-europe-pmc', () => {
 
     const expected: E.Either<never, SearchResults> = E.right({
       total: 3,
-      items: [
-        EDOI.fromValidatedString('10.1111/1234'),
-        EDOI.fromValidatedString('10.1111/4321'),
-      ],
+      items: [resultDoi1, resultDoi2],
       nextCursor: O.some(nextCursor),
     });
 
@@ -72,7 +71,7 @@ describe('search-europe-pmc', () => {
           hitCount: arbitraryNumber(0, 100),
           resultList: {
             result: [{
-              doi: '10.1111/1234',
+              doi: arbitraryExpressionDoi(),
             }],
           },
         });
@@ -96,7 +95,7 @@ describe('search-europe-pmc', () => {
           nextCursorMark: nextCursor,
           resultList: {
             result: [{
-              doi: '10.1111/1234',
+              doi: arbitraryExpressionDoi(),
             }],
           },
         });
@@ -121,10 +120,10 @@ describe('search-europe-pmc', () => {
           resultList: {
             result: [
               {
-                doi: '10.1111/1234',
+                doi: arbitraryExpressionDoi(),
               },
               {
-                doi: '10.1111/4321',
+                doi: arbitraryExpressionDoi(),
               },
             ],
           },
