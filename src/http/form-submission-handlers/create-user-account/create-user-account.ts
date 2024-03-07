@@ -4,7 +4,6 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { sequenceS } from 'fp-ts/Apply';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { StatusCodes } from 'http-status-codes';
 import {
@@ -12,11 +11,10 @@ import {
 } from '../../authentication-and-logging-in-of-sciety-users';
 import { createUserAccountFormPageLayout, renderFormPage } from '../../../html-pages/create-user-account-form-page';
 import { constructHtmlResponse } from '../../../html-pages/construct-html-response';
-import { createUserAccountFormCodec, unvalidatedFormDetailsCodec } from './codecs';
+import { createUserAccountFormCodec } from './codecs';
 import { redirectToAuthenticationDestination } from '../../authentication-destination';
 import { sendHtmlResponse } from '../../send-html-response';
 import { detectClientClassification } from '../../detect-client-classification';
-import { SanitisedUserInput } from '../../../types/sanitised-user-input';
 import { createUserAccountCommandHandler } from '../../../write-side/command-handlers';
 import { Logger } from '../../../shared-ports';
 import { DependenciesForCommands } from '../../../write-side/dependencies-for-commands';
@@ -49,23 +47,13 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   await pipe(
-    {
-      formUserDetails: pipe(
-        context.request.body,
-        createUserAccountFormCodec.decode,
-        E.mapLeft((errors) => {
-          dependencies.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
-          return 'validation-error';
-        }),
-      ),
-      authenticatedUserId: pipe(
-        context,
-        getAuthenticatedUserIdFromContext,
-        E.fromOption(() => 'no-authenticated-user-id'),
-      ),
-    },
-    sequenceS(E.Apply),
-    E.map(({ formUserDetails }) => ({
+    context.request.body,
+    createUserAccountFormCodec.decode,
+    E.mapLeft((errors) => {
+      dependencies.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
+      return 'validation-error';
+    }),
+    E.map((formUserDetails) => ({
       ...formUserDetails,
       displayName: formUserDetails.fullName,
       userId: authenticatedUserId.value,
@@ -80,21 +68,13 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
         return 'command-failed';
       }),
     )),
-    TE.mapLeft(() => pipe(
-      context.request.body,
-      unvalidatedFormDetailsCodec.decode,
-      E.getOrElse(() => ({
-        fullName: '' as SanitisedUserInput,
-        handle: '' as SanitisedUserInput,
-      })),
-    )),
     TE.bimap(
-      (formDetails) => {
+      () => {
         const htmlResponse = pipe(
           {
             errorSummary: O.some(''),
           },
-          renderFormPage(rawUserInput(formDetails.fullName), rawUserInput(formDetails.handle)),
+          renderFormPage(rawUserInput(formFields.right.fullName), rawUserInput(formFields.right.handle)),
           E.right,
           constructHtmlResponse(
             getLoggedInScietyUser(dependencies, context),
