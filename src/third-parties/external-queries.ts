@@ -12,7 +12,7 @@ import { PublishingHistory } from '../types/publishing-history';
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
 
-type FetchRelatedPapers = (history: PublishingHistory)
+type FetchRecommendedPapers = (history: PublishingHistory)
 => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
 
 type FetchEvaluation = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
@@ -31,7 +31,7 @@ type SearchForPaperExpressions = (
 
 export type ExternalQueries = {
   fetchExpressionFrontMatter: FetchExpressionFrontMatter,
-  fetchRecommendedPapers: FetchRelatedPapers,
+  fetchRecommendedPapers: FetchRecommendedPapers,
   fetchEvaluation: FetchEvaluation,
   fetchStaticFile: FetchStaticFile,
   fetchPublishingHistory: FetchPublishingHistory,
