@@ -1,34 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as E from 'fp-ts/Either';
-import * as R from 'fp-ts/Record';
-import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
-import { emptyRegex, userGeneratedInputCodec } from '../../../types/user-generated-input';
-import { userHandleCodec } from '../../../types/user-handle';
-
-export type ValidationRecovery<T extends Record<string, unknown>> = {
-  [K in keyof T]: {
-    userInput:
-    string,
-    error: O.Option<string>,
-  }
-};
-
-const toFieldsCodec = <P extends t.Props>(props: P) => pipe(
-  props,
-  R.map(() => t.string),
-  (stringProps) => stringProps as { [K in keyof P]: t.StringC },
-  t.type,
-);
-
-export const createUserAccountFormCodec = t.type({
-  fullName: userGeneratedInputCodec({ maxInputLength: 30 }),
-  handle: userHandleCodec,
-});
-
-export type CreateUserAccountForm = t.TypeOf<typeof createUserAccountFormCodec>;
-
-export const formFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props);
+import { emptyRegex } from '../../../types/user-generated-input';
+import { ValidationRecovery } from './validation-recovery';
+import { FormFields, CreateUserAccountForm, createUserAccountFormCodec } from './codecs';
 
 const determineFullNameErrorMessage = (fullName: string) => {
   if (fullName.length === 0) {
@@ -42,7 +17,6 @@ const determineFullNameErrorMessage = (fullName: string) => {
   }
   return O.some('Your full name is invalid but we do not know why');
 };
-
 const determineHandleErrorMessage = (handle: string) => {
   if (handle.length === 0) {
     return O.some('Enter a handle');
@@ -55,8 +29,6 @@ const determineHandleErrorMessage = (handle: string) => {
   }
   return O.some('Your handle is invalid but we do not know why');
 };
-
-type FormFields = t.TypeOf<typeof formFieldsCodec>;
 
 export const constructValidationRecovery = (
   input: FormFields,

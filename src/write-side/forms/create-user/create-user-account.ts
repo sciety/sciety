@@ -9,8 +9,9 @@ import { renderFormPage } from './create-user-account-form-page/render-form-page
 import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
 import {
   CreateUserAccountForm,
-  constructValidationRecovery, createUserAccountFormCodec, formFieldsCodec,
-} from './validation';
+  createUserAccountFormCodec, formFieldsCodec,
+} from './codecs';
+import { constructValidationRecovery } from './construct-validation-recovery';
 import { CreateUserAccountCommand } from '../../commands';
 import { UserId } from '../../../types/user-id';
 import { createUserAccountCommandHandler } from '../../command-handlers';
