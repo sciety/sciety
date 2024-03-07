@@ -8,6 +8,7 @@ import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryWord } from '../../../helpers';
 import { HypothesisAnnotation } from '../../../../src/third-parties/fetch-evaluation/hypothesis/HypothesisAnnotation';
 import { arbitraryDataError } from '../../../types/data-error.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
@@ -46,11 +47,13 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const evaluation = await fetchHypothesisAnnotation(queryExternalService, dummyLogger)(key)();
+    const evaluation = await pipe(
+      key,
+      fetchHypothesisAnnotation(queryExternalService, dummyLogger),
+      TE.getOrElse(shouldNotBeCalled),
+    )();
 
-    expect(evaluation).toStrictEqual(E.right(expect.objectContaining({
-      fullText: expect.stringContaining(expected),
-    })));
+    expect(evaluation.fullText).toContain(expected);
   });
 
   describe('when queryExternalService fails', () => {
