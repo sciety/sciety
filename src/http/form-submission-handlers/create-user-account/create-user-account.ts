@@ -21,6 +21,7 @@ import { createUserAccountCommandHandler } from '../../../write-side/command-han
 import { Logger } from '../../../shared-ports';
 import { DependenciesForCommands } from '../../../write-side/dependencies-for-commands';
 import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-response';
+import { toFieldsCodec } from '../to-fields-codec';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -30,9 +31,15 @@ type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
+  const formFields = toFieldsCodec(createUserAccountFormCodec.props).decode(context.request.body);
 
   if (O.isNone(authenticatedUserId)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'This step requires you do be logged in. Please try logging in again.');
+    return;
+  }
+
+  if (E.isLeft(formFields)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Something went wrong when you submitted the form. Please try again.');
     return;
   }
 
