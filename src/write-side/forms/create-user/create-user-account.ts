@@ -17,6 +17,7 @@ import { createUserAccountCommandHandler } from '../../command-handlers';
 import { DependenciesForCommands } from '../../dependencies-for-commands';
 import { userHandleAlreadyExistsError } from '../../resources/user/check-command';
 import { sendErrorResponse } from './send-error-response';
+import { CreateUserAccountFormRecovery } from './create-user-account-form-page/create-user-account-form-recovery';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -30,6 +31,18 @@ const toCommand = (authenticatedUserId: UserId) => (input: CreateUserAccountForm
  type Dependencies = DependenciesForCommands & GetLoggedInScietyUserDependencies;
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
+  const sendRecovery = (
+    recovery: CreateUserAccountFormRecovery,
+  ) => {
+    context.response.status = StatusCodes.BAD_REQUEST;
+    context.response.type = 'html';
+    context.response.body = pipe(
+      recovery,
+      renderFormPage,
+      createUserAccountFormPageLayout(getLoggedInScietyUser(dependencies, context)),
+    );
+  };
+
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
   const formFields = formFieldsCodec.decode(context.request.body);
   const validatedFormFields = createUserAccountFormCodec.decode(context.request.body);
@@ -45,13 +58,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   if (E.isLeft(validatedFormFields)) {
-    context.response.status = StatusCodes.BAD_REQUEST;
-    context.response.type = 'html';
-    context.response.body = pipe(
-      constructValidationRecovery(formFields.right),
-      renderFormPage,
-      createUserAccountFormPageLayout(getLoggedInScietyUser(dependencies, context)),
-    );
+    sendRecovery(constructValidationRecovery(formFields.right));
     return;
   }
 
@@ -62,16 +69,10 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   )();
 
   if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
-    context.response.status = StatusCodes.BAD_REQUEST;
-    context.response.type = 'html';
-    context.response.body = pipe(
-      O.some({
-        fullName: { userInput: formFields.right.fullName, error: O.none },
-        handle: { userInput: formFields.right.handle, error: O.some('The handle is already taken') },
-      }),
-      renderFormPage,
-      createUserAccountFormPageLayout(getLoggedInScietyUser(dependencies, context)),
-    );
+    sendRecovery(O.some({
+      fullName: { userInput: formFields.right.fullName, error: O.none },
+      handle: { userInput: formFields.right.handle, error: O.some('The handle is already taken') },
+    }));
     return;
   }
 

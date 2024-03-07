@@ -6,9 +6,7 @@ import * as R from 'fp-ts/Record';
 import { ConstructPage } from '../../../../html-pages/construct-page';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage } from '../../../../types/html-page';
-import { CreateUserAccountForm, ValidationRecovery } from '../validation';
-
-type CreateUserAccountFormRecovery = O.Option<ValidationRecovery<CreateUserAccountForm>>;
+import { CreateUserAccountFormRecovery } from './create-user-account-form-recovery';
 
 const renderErrorSummary = (recovery: CreateUserAccountFormRecovery) => pipe(
   recovery,
