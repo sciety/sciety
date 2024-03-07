@@ -2,7 +2,6 @@ import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getAuthenticatedUserIdFromContext, getLoggedInScietyUser,
@@ -20,6 +19,7 @@ import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-resp
 import { toFieldsCodec } from '../to-fields-codec';
 import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-failures';
 import { rawUserInput } from '../../../read-side';
+import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -65,40 +65,39 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     return;
   }
 
-  await pipe(
+  const commandResult = await pipe(
     {
       handle: validatedFormFields.right.handle,
       displayName: validatedFormFields.right.fullName,
       userId: authenticatedUserId.value,
       avatarUrl: defaultSignUpAvatarUrl,
     },
-    TE.right,
-    TE.chainW((command) => pipe(
-      command,
-      createUserAccountCommandHandler(dependencies),
-      TE.mapLeft((error) => {
-        dependencies.logger('error', 'createUserAccountCommandHandler failed', { error, command });
-        return 'command-failed';
-      }),
-    )),
-    TE.bimap(
-      () => {
-        const htmlResponse = pipe(
-          {
-            errorSummary: O.some(''),
-          },
-          renderFormPage(rawUserInput(formFields.right.fullName), rawUserInput(formFields.right.handle)),
-          E.right,
-          constructHtmlResponse(
-            getLoggedInScietyUser(dependencies, context),
-            createUserAccountFormPageLayout,
-            detectClientClassification(context),
-          ),
-        );
-        sendHtmlResponse(context)(htmlResponse);
-      },
-      () => redirectToAuthenticationDestination(context),
-    ),
+    createUserAccountCommandHandler(dependencies),
   )();
+
+  if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
+    const htmlResponse = pipe(
+      {
+        errorSummary: O.some(''),
+      },
+      renderFormPage(rawUserInput(formFields.right.fullName), rawUserInput(formFields.right.handle)),
+      E.right,
+      constructHtmlResponse(
+        getLoggedInScietyUser(dependencies, context),
+        createUserAccountFormPageLayout,
+        detectClientClassification(context),
+      ),
+    );
+    sendHtmlResponse(context)(htmlResponse);
+    return;
+  }
+
+  if (E.isLeft(commandResult)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong on our end when we tried to create your Sciety account. Please try again later.');
+    return;
+  }
+
+  redirectToAuthenticationDestination(context);
+
   await next();
 };

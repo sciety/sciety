@@ -6,6 +6,8 @@ import { DomainEvent } from '../../../domain-events';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import * as User from './handle-exists';
 
+export const userHandleAlreadyExistsError = toErrorMessage('user-handle-already-exists');
+
 export const checkCommand = (
   command: CreateUserAccountCommand,
 ) => (events: ReadonlyArray<DomainEvent>): E.Either<ErrorMessage, CreateUserAccountCommand> => pipe(
@@ -13,6 +15,6 @@ export const checkCommand = (
   User.handleExists(command.handle),
   B.match(
     () => E.right(command),
-    () => E.left(toErrorMessage('user-handle-already-exists')),
+    () => E.left(userHandleAlreadyExistsError),
   ),
 );
