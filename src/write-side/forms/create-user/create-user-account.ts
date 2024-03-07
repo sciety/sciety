@@ -5,7 +5,6 @@ import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { getAuthenticatedUserIdFromContext, getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../../../http/authentication-and-logging-in-of-sciety-users';
 import { redirectToAuthenticationDestination } from '../../../http/authentication-destination';
-import { ViewModel } from './create-user-account-form-page/view-model';
 import { renderFormPage } from './create-user-account-form-page/create-user-account-form-page';
 import { createUserAccountFormPageLayout } from './create-user-account-form-page/create-user-account-form-page-layout';
 import {
@@ -49,9 +48,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     context.response.status = StatusCodes.BAD_REQUEST;
     context.response.type = 'html';
     context.response.body = pipe(
-      {
-        validationRecovery: constructValidationRecovery(formFields.right),
-      } satisfies ViewModel,
+      constructValidationRecovery(formFields.right),
       renderFormPage,
       createUserAccountFormPageLayout(getLoggedInScietyUser(dependencies, context)),
     );
@@ -68,12 +65,10 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     context.response.status = StatusCodes.BAD_REQUEST;
     context.response.type = 'html';
     context.response.body = pipe(
-      {
-        validationRecovery: O.some({
-          fullName: { userInput: formFields.right.fullName, error: O.none },
-          handle: { userInput: formFields.right.handle, error: O.some('The handle is already taken') },
-        }),
-      } satisfies ViewModel,
+      O.some({
+        fullName: { userInput: formFields.right.fullName, error: O.none },
+        handle: { userInput: formFields.right.handle, error: O.some('The handle is already taken') },
+      }),
       renderFormPage,
       createUserAccountFormPageLayout(getLoggedInScietyUser(dependencies, context)),
     );

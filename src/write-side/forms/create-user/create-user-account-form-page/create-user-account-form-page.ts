@@ -3,12 +3,14 @@ import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
-import { ViewModel } from './view-model';
 import { ConstructPage } from '../../../../html-pages/construct-page';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage } from '../../../../types/html-page';
+import { CreateUserAccountForm, ValidationRecovery } from '../validation';
 
-const renderErrorSummary = (recovery: ViewModel['validationRecovery']) => pipe(
+type CreateUserAccountFormRecovery = O.Option<ValidationRecovery<CreateUserAccountForm>>;
+
+const renderErrorSummary = (recovery: CreateUserAccountFormRecovery) => pipe(
   recovery,
   O.map(R.map((r) => r.error)),
   O.map(R.compact),
@@ -28,7 +30,7 @@ const renderErrorSummary = (recovery: ViewModel['validationRecovery']) => pipe(
   O.getOrElse(() => ''),
 );
 
-const renderFullNameInput = (recovery: ViewModel['validationRecovery']) => {
+const renderFullNameInput = (recovery: CreateUserAccountFormRecovery) => {
   const inputWithLegend = pipe(
     recovery,
     O.map((r) => r.fullName.userInput),
@@ -53,7 +55,7 @@ const renderFullNameInput = (recovery: ViewModel['validationRecovery']) => {
   );
 };
 
-const renderHandleInput = (recovery: ViewModel['validationRecovery']) => {
+const renderHandleInput = (recovery: CreateUserAccountFormRecovery) => {
   const inputWithLegend = pipe(
     recovery,
     O.map((r) => r.handle.userInput),
@@ -67,7 +69,7 @@ const renderHandleInput = (recovery: ViewModel['validationRecovery']) => {
   );
   return pipe(
     recovery,
-    O.chain((r) => r.handle.error),
+    O.chain((vm) => vm.handle.error),
     O.match(
       () => inputWithLegend,
       (message) => `
@@ -82,30 +84,26 @@ const renderHandleInput = (recovery: ViewModel['validationRecovery']) => {
 
 const pageHeader = 'Sign up';
 
-export const renderFormPage = (viewModel: ViewModel): HtmlPage => ({
-  title: `${O.isSome(viewModel.validationRecovery) ? 'Error: ' : ''}${pageHeader}`,
+export const renderFormPage = (recovery: CreateUserAccountFormRecovery): HtmlPage => ({
+  title: `${O.isSome(recovery) ? 'Error: ' : ''}${pageHeader}`,
   content: toHtmlFragment(`
     <div class="create-user-account-form-wrapper">
       <header class="page-header">
-        ${renderErrorSummary(viewModel.validationRecovery)}
+        ${renderErrorSummary(recovery)}
         <h1>${pageHeader}</h1>
       </header>
       <form action="/forms/create-user-account" method="post" class="create-user-account-form">
         <h2>Sign up &ndash; Step 2 of 2</h2>
-        ${renderFullNameInput(viewModel.validationRecovery)}
-        ${renderHandleInput(viewModel.validationRecovery)}
+        ${renderFullNameInput(recovery)}
+        ${renderHandleInput(recovery)}
         <button id="createAccountButton" class="create-user-account-form__submit">Sign Up</button>
       </form>
     </div>
   `),
 });
 
-const emptyFormViewModel: ViewModel = {
-  validationRecovery: O.none,
-};
-
 export const createUserAccountFormPage: ConstructPage = (): TE.TaskEither<never, HtmlPage> => pipe(
-  emptyFormViewModel,
+  O.none,
   renderFormPage,
   TE.right,
 );
