@@ -3,7 +3,6 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { CreateUserAccountFormRaw, createUserAccountFormCodec } from './codecs';
 import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
-import { rawUserInput } from '../../../read-side';
 
 const determineFullNameErrorMessage = (fullName: string) => {
   if (fullName.length === 0) {
@@ -35,23 +34,23 @@ export const constructValidationRecovery = (
   input: CreateUserAccountFormRaw,
 ): Recovery => O.some({
   fullName: {
-    userInput: rawUserInput(input.fullName),
+    userInput: input.fullName,
     error: pipe(
       input.fullName,
       createUserAccountFormCodec.props.fullName.decode,
       E.match(
-        () => determineFullNameErrorMessage(input.fullName),
+        () => determineFullNameErrorMessage(input.fullName.content),
         () => O.none,
       ),
     ),
   },
   handle: {
-    userInput: rawUserInput(input.handle),
+    userInput: input.handle,
     error: pipe(
       input.handle,
       createUserAccountFormCodec.props.handle.decode,
       E.match(
-        () => determineHandleErrorMessage(input.handle),
+        () => determineHandleErrorMessage(input.handle.content),
         () => O.none,
       ),
     ),
