@@ -27,13 +27,13 @@ import { CreateUserAccountCommand } from '../../../write-side/commands';
 const createUserAccountFormFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props, 'createUserAccountFormFieldsCodec');
 
 const constructValidationRecovery = (formInputs: t.TypeOf<typeof createUserAccountFormFieldsCodec>) => O.some({
-  fullName: { userInput: rawUserInput(formInputs.fullName) },
-  handle: { userInput: rawUserInput(formInputs.handle) },
+  fullName: { userInput: rawUserInput(formInputs.fullName), error: O.none },
+  handle: { userInput: rawUserInput(formInputs.handle), error: O.none },
 });
 
 const userHandleAlreadyExistsRecovery = (formInputs: t.TypeOf<typeof createUserAccountFormFieldsCodec>) => O.some({
-  fullName: { userInput: rawUserInput(formInputs.fullName) },
-  handle: { userInput: rawUserInput(formInputs.handle) },
+  fullName: { userInput: rawUserInput(formInputs.fullName), error: O.none },
+  handle: { userInput: rawUserInput(formInputs.handle), error: O.some('This handle is already taken. Please try a different one.') },
 });
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
