@@ -3,6 +3,7 @@ import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
+import * as t from 'io-ts';
 import {
   Ports as GetLoggedInScietyUserPorts, getAuthenticatedUserIdFromContext, getLoggedInScietyUser,
 } from '../../authentication-and-logging-in-of-sciety-users';
@@ -23,6 +24,11 @@ import { userHandleAlreadyExistsError } from '../../../write-side/resources/user
 import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
 
 const createUserAccountFormFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props, 'createUserAccountFormFieldsCodec');
+
+const userHandleAlreadyExistsRecovery = (formInputs: t.TypeOf<typeof createUserAccountFormFieldsCodec>) => O.some({
+  fullName: { userInput: rawUserInput(formInputs.fullName) },
+  handle: { userInput: rawUserInput(formInputs.handle) },
+});
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -85,10 +91,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   )();
 
   if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
-    sendRecovery(O.some({
-      fullName: { userInput: rawUserInput(formFields.right.fullName) },
-      handle: { userInput: rawUserInput(formFields.right.handle) },
-    }));
+    sendRecovery(userHandleAlreadyExistsRecovery(formFields.right));
     return;
   }
 
