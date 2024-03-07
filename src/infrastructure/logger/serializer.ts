@@ -1,4 +1,5 @@
-import { LevelName, Payload } from './types';
+import { Payload } from './types';
+import { LevelName } from '../../shared-ports/logger';
 
 type Entry = {
   timestamp: Date,
