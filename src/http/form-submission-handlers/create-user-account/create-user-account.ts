@@ -23,6 +23,7 @@ import { DependenciesForCommands } from '../../../write-side/dependencies-for-co
 import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-response';
 import { toFieldsCodec } from '../to-fields-codec';
 import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-failures';
+import { rawUserInput } from '../../../read-side';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -93,7 +94,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
           {
             errorSummary: O.some(''),
           },
-          renderFormPage(formDetails.fullName, formDetails.handle),
+          renderFormPage(rawUserInput(formDetails.fullName), rawUserInput(formDetails.handle)),
           E.right,
           constructHtmlResponse(
             getLoggedInScietyUser(dependencies, context),
