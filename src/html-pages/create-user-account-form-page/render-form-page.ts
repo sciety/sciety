@@ -26,16 +26,31 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   ),
 );
 
-const renderFullNameInput = (recovery: Recovery) => pipe(
-  recovery,
-  O.map((r) => r.fullName.userInput),
-  O.map(safelyReflectRawUserInputForEditing),
-  O.getOrElse(() => ''),
-  (fullName) => `
-    <label for="fullName" class="create-user-account-form__label">Full name</label>
-    <input type="text" id="fullName" name="fullName" placeholder="Alec Jeffreys" class="create-user-account-form__input" value="${fullName}">
-  `,
-);
+const renderFullNameInput = (recovery: Recovery) => {
+  const inputWithLegend = pipe(
+    recovery,
+    O.map((r) => r.fullName.userInput),
+    O.map(safelyReflectRawUserInputForEditing),
+    O.getOrElse(() => ''),
+    (value) => `
+      <label for="fullName" class="create-user-account-form__label">Full name</label>
+      <input type="text" id="fullName" name="fullName" placeholder="Alec Jeffreys" class="create-user-account-form__input" value="${value}">
+    `,
+  );
+  return pipe(
+    recovery,
+    O.chain((r) => r.fullName.error),
+    O.match(
+      () => inputWithLegend,
+      (message) => `
+        <div class="standard-form__error">
+          <p><span class="visually-hidden">Error: </span>${message}</p>
+          ${inputWithLegend}
+        </div>
+      `,
+    ),
+  );
+};
 
 const renderHandleInput = (recovery: Recovery) => {
   const inputWithLegend = pipe(
