@@ -1,10 +1,8 @@
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
-import * as T from 'fp-ts/Task';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { formatValidationErrors } from 'io-ts-reporters';
 import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getAuthenticatedUserIdFromContext, getLoggedInScietyUser,
@@ -35,6 +33,10 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     context.request.body,
     decodeAndLogFailures(dependencies.logger, toFieldsCodec(createUserAccountFormCodec.props, 'createUserAccountFormFieldsCodec')),
   );
+  const validatedFormFields = pipe(
+    context.request.body,
+    decodeAndLogFailures(dependencies.logger, createUserAccountFormCodec),
+  );
 
   if (O.isNone(authenticatedUserId)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'This step requires you do be logged in. Please try logging in again.');
@@ -46,20 +48,31 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     return;
   }
 
+  if (E.isLeft(validatedFormFields)) {
+    const htmlResponse = pipe(
+      {
+        errorSummary: O.some(''),
+      },
+      renderFormPage(rawUserInput(formFields.right.fullName), rawUserInput(formFields.right.handle)),
+      E.right,
+      constructHtmlResponse(
+        getLoggedInScietyUser(dependencies, context),
+        createUserAccountFormPageLayout,
+        detectClientClassification(context),
+      ),
+    );
+    sendHtmlResponse(context)(htmlResponse);
+    return;
+  }
+
   await pipe(
-    context.request.body,
-    createUserAccountFormCodec.decode,
-    E.mapLeft((errors) => {
-      dependencies.logger('error', 'createUserAccountFormCodec failed', { error: formatValidationErrors(errors) });
-      return 'validation-error';
-    }),
-    E.map((formUserDetails) => ({
-      ...formUserDetails,
-      displayName: formUserDetails.fullName,
+    {
+      handle: validatedFormFields.right.handle,
+      displayName: validatedFormFields.right.fullName,
       userId: authenticatedUserId.value,
       avatarUrl: defaultSignUpAvatarUrl,
-    })),
-    T.of,
+    },
+    TE.right,
     TE.chainW((command) => pipe(
       command,
       createUserAccountCommandHandler(dependencies),
