@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { Middleware } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
@@ -20,6 +20,7 @@ import { toFieldsCodec } from '../to-fields-codec';
 import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-failures';
 import { rawUserInput } from '../../../read-side';
 import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
+import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -27,7 +28,22 @@ type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
 };
 
+const instantiateSendRecovery = (context: ParameterizedContext, dependencies: Dependencies) => (recovery: Recovery) => {
+  const htmlResponse = pipe(
+    recovery,
+    renderFormPage,
+    E.right,
+    constructHtmlResponse(
+      getLoggedInScietyUser(dependencies, context),
+      createUserAccountFormPageLayout,
+      detectClientClassification(context),
+    ),
+  );
+  sendHtmlResponse(context)(htmlResponse);
+};
+
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
+  const sendRecovery = instantiateSendRecovery(context, dependencies);
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
   const formFields = pipe(
     context.request.body,
@@ -49,20 +65,10 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   if (E.isLeft(validatedFormFields)) {
-    const htmlResponse = pipe(
-      O.some({
-        fullName: { userInput: rawUserInput(formFields.right.fullName) },
-        handle: { userInput: rawUserInput(formFields.right.handle) },
-      }),
-      renderFormPage,
-      E.right,
-      constructHtmlResponse(
-        getLoggedInScietyUser(dependencies, context),
-        createUserAccountFormPageLayout,
-        detectClientClassification(context),
-      ),
-    );
-    sendHtmlResponse(context)(htmlResponse);
+    sendRecovery(O.some({
+      fullName: { userInput: rawUserInput(formFields.right.fullName) },
+      handle: { userInput: rawUserInput(formFields.right.handle) },
+    }));
     return;
   }
 
@@ -77,20 +83,10 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   )();
 
   if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
-    const htmlResponse = pipe(
-      O.some({
-        fullName: { userInput: rawUserInput(formFields.right.fullName) },
-        handle: { userInput: rawUserInput(formFields.right.handle) },
-      }),
-      renderFormPage,
-      E.right,
-      constructHtmlResponse(
-        getLoggedInScietyUser(dependencies, context),
-        createUserAccountFormPageLayout,
-        detectClientClassification(context),
-      ),
-    );
-    sendHtmlResponse(context)(htmlResponse);
+    sendRecovery(O.some({
+      fullName: { userInput: rawUserInput(formFields.right.fullName) },
+      handle: { userInput: rawUserInput(formFields.right.handle) },
+    }));
     return;
   }
 

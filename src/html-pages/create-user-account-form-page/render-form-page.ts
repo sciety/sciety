@@ -1,11 +1,9 @@
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
-import { ValidationRecovery } from '../validation-recovery';
-import { createUserAccountFormCodec } from '../../http/form-submission-handlers/create-user-account/codecs';
+import { Recovery } from './recovery';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,
@@ -27,8 +25,6 @@ const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
     `,
   ),
 );
-
-type Recovery = O.Option<ValidationRecovery<t.TypeOf<typeof createUserAccountFormCodec>>>;
 
 const renderFullNameInput = (recovery: Recovery) => pipe(
   recovery,
