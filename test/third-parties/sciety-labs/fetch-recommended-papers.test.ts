@@ -12,6 +12,7 @@ import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
 import * as PH from '../../../src/types/publishing-history';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { QueryExternalService } from '../../../src/third-parties/query-external-service';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
 
 const articleTitle = arbitrarySanitisedHtmlFragment();
 const articleAuthors = [arbitraryString(), arbitraryString()];
@@ -113,27 +114,25 @@ describe('fetch-recommended-papers', () => {
     });
   });
 
-  describe.each([
-    ['biorxiv or medrxiv', '10.1101/2023.01.15.524119'],
-    ['biorxiv or medrxiv', '10.1101/452326'],
-    ['research square', '10.21203/rs.3.rs-2200020/v3'],
-    ['scielo preprints', '10.1590/SciELOPreprints.3429'],
-    // ['osf', '10.31234/osf.io/td68z'],
-  ])('when a response contains a supported article (%s %s)', (_, supportedArticleId) => {
-    it('translates to RelatedArticles type', async () => {
-      const queryExternalService = () => () => TE.right({
-        recommendedPapers: [
-          arbitraryRecommendedPaper(supportedArticleId),
-        ],
-      });
-      const result = await pipe(
+  describe('when a response contains an understandable DOI', () => {
+    const recommendedExpressionDoi = arbitraryExpressionDoi();
+    const queryExternalService = () => () => TE.right({
+      recommendedPapers: [
+        arbitraryRecommendedPaper(recommendedExpressionDoi),
+      ],
+    });
+    let recommendedPapers: ReadonlyArray<ExpressionDoi>;
+
+    beforeEach(async () => {
+      recommendedPapers = await pipe(
         arbitraryPublishingHistoryOnlyPreprints(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
-        TE.getOrElseW(shouldNotBeCalled),
+        TE.getOrElse(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<EDOI.ExpressionDoi> = [EDOI.fromValidatedString(supportedArticleId)];
+    });
 
-      expect(result).toStrictEqual(expected);
+    it('returns an array containing an expression DOI', async () => {
+      expect(recommendedPapers).toStrictEqual([recommendedExpressionDoi]);
     });
   });
 
