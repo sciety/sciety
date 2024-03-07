@@ -1,4 +1,3 @@
-import { fetchNcrcEvaluations } from './fetch-ncrc-evaluations';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './fetch-rapid-reviews';
@@ -19,11 +18,6 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
     id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
     name: 'eLife',
     fetchFeed: fetchReviewsFromHypothesisGroup('q5X6RWJ6'),
-  },
-  {
-    id: '62f9b0d0-8d43-4766-a52a-ce02af61bc6a',
-    name: 'NCRC',
-    fetchFeed: fetchNcrcEvaluations(),
   },
   {
     id: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
