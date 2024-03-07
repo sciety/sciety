@@ -3,13 +3,14 @@ import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
-import * as t from 'io-ts';
 import {
   Ports as GetLoggedInScietyUserPorts, getAuthenticatedUserIdFromContext, getLoggedInScietyUser,
 } from '../../authentication-and-logging-in-of-sciety-users';
 import { createUserAccountFormPageLayout, renderFormPage } from '../../../html-pages/create-user-account-form-page';
 import { constructHtmlResponse } from '../../../html-pages/construct-html-response';
-import { createUserAccountFormCodec } from './codecs';
+import {
+  CreateUserAccountForm, CreateUserAccountFormRaw, createUserAccountFormCodec, createUserAccountFormRawCodec,
+} from './codecs';
 import { redirectToAuthenticationDestination } from '../../authentication-destination';
 import { sendHtmlResponse } from '../../send-html-response';
 import { detectClientClassification } from '../../detect-client-classification';
@@ -17,28 +18,25 @@ import { createUserAccountCommandHandler } from '../../../write-side/command-han
 import { Logger } from '../../../shared-ports';
 import { DependenciesForCommands } from '../../../write-side/dependencies-for-commands';
 import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-response';
-import { toFieldsCodec } from '../to-fields-codec';
 import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-failures';
 import { rawUserInput } from '../../../read-side';
 import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
 import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
 import { CreateUserAccountCommand } from '../../../write-side/commands';
 
-const createUserAccountFormFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props, 'createUserAccountFormFieldsCodec');
-
-const constructValidationRecovery = (formInputs: t.TypeOf<typeof createUserAccountFormFieldsCodec>) => O.some({
+const constructValidationRecovery = (formInputs: CreateUserAccountFormRaw) => O.some({
   fullName: { userInput: rawUserInput(formInputs.fullName), error: O.none },
   handle: { userInput: rawUserInput(formInputs.handle), error: O.none },
 });
 
-const userHandleAlreadyExistsRecovery = (formInputs: t.TypeOf<typeof createUserAccountFormFieldsCodec>) => O.some({
+const userHandleAlreadyExistsRecovery = (formInputs: CreateUserAccountFormRaw) => O.some({
   fullName: { userInput: rawUserInput(formInputs.fullName), error: O.none },
   handle: { userInput: rawUserInput(formInputs.handle), error: O.some('This handle is already taken. Please try a different one.') },
 });
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
-const toCommand = (inputs: t.TypeOf<typeof createUserAccountFormCodec>, userId: CreateUserAccountCommand['userId']) => (
+const toCommand = (inputs: CreateUserAccountForm, userId: CreateUserAccountCommand['userId']) => (
   {
     handle: inputs.handle,
     displayName: inputs.fullName,
@@ -69,7 +67,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
   const formFields = pipe(
     context.request.body,
-    decodeAndLogFailures(dependencies.logger, createUserAccountFormFieldsCodec),
+    decodeAndLogFailures(dependencies.logger, createUserAccountFormRawCodec),
   );
   const validatedFormFields = pipe(
     context.request.body,
