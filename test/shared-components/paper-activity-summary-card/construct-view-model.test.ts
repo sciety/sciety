@@ -22,13 +22,14 @@ import { paperActivityPagePath } from '../../../src/standards';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let viewModel: E.Either<ErrorViewModel, PaperActivitySummaryCardViewModel>;
 
   beforeEach(() => {
     framework = createTestFramework();
   });
 
   describe('when all information is fetched successfully', () => {
+    let viewModel: PaperActivitySummaryCardViewModel;
+
     describe('when an article has not been evaluated', () => {
       const inputExpressionDoi = arbitraryExpressionDoi();
       const publishingHistory = arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: inputExpressionDoi });
@@ -43,29 +44,20 @@ describe('construct-view-model', () => {
             fetchPublishingHistory: () => TE.right(publishingHistory),
             logger: dummyLogger,
           }),
+          TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
-      it('returns an ArticleCardViewModel', () => {
-        expect(E.isRight(viewModel)).toBe(true);
-      });
-
       it('the latest activity date is not available', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          latestActivityAt: O.none,
-        })));
+        expect(viewModel.latestActivityAt).toStrictEqual(O.none);
       });
 
       it('the evaluation count is not displayed', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          evaluationCount: O.none,
-        })));
+        expect(viewModel.evaluationCount).toStrictEqual(O.none);
       });
 
       it('the article card links to the article page', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          paperActivityPageHref: paperActivityPagePath(latestExpressionDoi),
-        })));
+        expect(viewModel.paperActivityPageHref).toStrictEqual(paperActivityPagePath(latestExpressionDoi));
       });
     });
 
@@ -88,23 +80,16 @@ describe('construct-view-model', () => {
             ),
             logger: dummyLogger,
           }),
+          TE.getOrElse(shouldNotBeCalled),
         )();
       });
 
-      it('returns an ArticleCardViewModel', () => {
-        expect(E.isRight(viewModel)).toBe(true);
-      });
-
       it('the latest activity date is displayed', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          latestActivityAt: O.some(expect.anything()),
-        })));
+        expect(O.isSome(viewModel.latestActivityAt)).toBe(true);
       });
 
       it('the evaluation count is displayed', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          evaluationCount: O.some(expect.anything()),
-        })));
+        expect(O.isSome(viewModel.evaluationCount)).toBe(true);
       });
     });
   });
@@ -129,7 +114,7 @@ describe('construct-view-model', () => {
     });
 
     it('displays the count', () => {
-      expect(successfulViewModel.listMembershipCount).toStrictEqual(O.some(expect.anything()));
+      expect(O.isSome(successfulViewModel.listMembershipCount)).toBe(true);
     });
   });
 
@@ -155,6 +140,8 @@ describe('construct-view-model', () => {
   });
 
   describe('when fetching the front matter fails', () => {
+    let viewModel: E.Either<ErrorViewModel, PaperActivitySummaryCardViewModel>;
+
     beforeEach(async () => {
       viewModel = await pipe(
         EDOI.fromValidatedString(arbitraryArticleId().value),
@@ -173,6 +160,8 @@ describe('construct-view-model', () => {
   });
 
   describe('when fetching the publishing history fails', () => {
+    let viewModel: E.Either<ErrorViewModel, PaperActivitySummaryCardViewModel>;
+
     beforeEach(async () => {
       viewModel = await pipe(
         EDOI.fromValidatedString(arbitraryArticleId().value),
