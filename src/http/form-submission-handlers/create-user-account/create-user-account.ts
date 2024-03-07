@@ -50,10 +50,11 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
 
   if (E.isLeft(validatedFormFields)) {
     const htmlResponse = pipe(
-      {
-        errorSummary: O.some(''),
-      },
-      renderFormPage(rawUserInput(formFields.right.fullName), rawUserInput(formFields.right.handle)),
+      O.some({
+        fullName: rawUserInput(formFields.right.fullName),
+        handle: rawUserInput(formFields.right.handle),
+      }),
+      renderFormPage,
       E.right,
       constructHtmlResponse(
         getLoggedInScietyUser(dependencies, context),
@@ -77,10 +78,11 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
 
   if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
     const htmlResponse = pipe(
-      {
-        errorSummary: O.some(''),
-      },
-      renderFormPage(rawUserInput(formFields.right.fullName), rawUserInput(formFields.right.handle)),
+      O.some({
+        fullName: rawUserInput(formFields.right.fullName),
+        handle: rawUserInput(formFields.right.handle),
+      }),
+      renderFormPage,
       E.right,
       constructHtmlResponse(
         getLoggedInScietyUser(dependencies, context),
