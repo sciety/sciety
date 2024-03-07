@@ -3,11 +3,14 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
 import { dummyLogger } from '../../dummy-logger';
-import { arbitraryNumber, arbitraryWord } from '../../helpers';
+import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { SearchResults } from '../../../src/types/search-results';
 
 describe('search-europe-pmc', () => {
+  let results: SearchResults;
+
   describe('when there ar esearch results', () => {
     const nextCursor = arbitraryWord();
     const resultDoi1 = arbitraryExpressionDoi();
@@ -27,15 +30,17 @@ describe('search-europe-pmc', () => {
       },
     });
 
-    it('converts Europe PMC search result into our view model', async () => {
-      const results = await pipe(
+    beforeEach(async () => {
+      results = await pipe(
         searchEuropePmc(
           queryExternalService,
           dummyLogger,
-        )(2)('some query', O.none, false),
+        )(2)(arbitraryString(), O.none, false),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
+    it('converts Europe PMC search result into our view model', async () => {
       expect(results).toStrictEqual({
         total: 3,
         items: [resultDoi1, resultDoi2],
@@ -55,15 +60,17 @@ describe('search-europe-pmc', () => {
         },
       });
 
-      it('nextCursor should be none', async () => {
-        const results = await pipe(
+      beforeEach(async () => {
+        results = await pipe(
           searchEuropePmc(
             queryExternalService,
             dummyLogger,
-          )(10)('some query', O.none, false),
+          )(10)(arbitraryString(), O.none, false),
           TE.getOrElse(shouldNotBeCalled),
         )();
+      });
 
+      it('nextCursor should be none', async () => {
         expect(results.nextCursor).toStrictEqual(O.none);
       });
     });
@@ -78,15 +85,17 @@ describe('search-europe-pmc', () => {
         },
       });
 
-      it('nextCursor should be none', async () => {
-        const results = await pipe(
+      beforeEach(async () => {
+        results = await pipe(
           searchEuropePmc(
             queryExternalService,
             dummyLogger,
-          )(10)('some query', O.none, false),
+          )(10)(arbitraryString(), O.none, false),
           TE.getOrElse(shouldNotBeCalled),
         )();
+      });
 
+      it('nextCursor should be none', async () => {
         expect(results.nextCursor).toStrictEqual(O.none);
       });
     });
@@ -103,15 +112,17 @@ describe('search-europe-pmc', () => {
         },
       });
 
-      it('nextCursor should be none', async () => {
-        const results = await pipe(
+      beforeEach(async () => {
+        results = await pipe(
           searchEuropePmc(
             queryExternalService,
             dummyLogger,
-          )(10)('some query', O.none, false),
+          )(10)(arbitraryString(), O.none, false),
           TE.getOrElse(shouldNotBeCalled),
         )();
+      });
 
+      it('nextCursor should be none', async () => {
         expect(results.nextCursor).toStrictEqual(O.none);
       });
     });
@@ -133,15 +144,17 @@ describe('search-europe-pmc', () => {
         },
       });
 
-      it('nextCursor should be some', async () => {
-        const results = await pipe(
+      beforeEach(async () => {
+        results = await pipe(
           searchEuropePmc(
             queryExternalService,
             dummyLogger,
-          )(2)('some query', O.none, false),
+          )(2)(arbitraryString(), O.none, false),
           TE.getOrElse(shouldNotBeCalled),
         )();
+      });
 
+      it('nextCursor should be some', async () => {
         expect(results.nextCursor).toStrictEqual(O.some(nextCursor));
       });
     });
