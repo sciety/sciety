@@ -1,15 +1,14 @@
 import { Serializer } from './serializer';
-import { Level } from './types';
-import { Logger, LoggerLevelName } from '../../shared-ports';
+import { Logger, LoggerLevelName, LoggerLevel } from '../../shared-ports';
 
 export const streamLogger = (
   stream: NodeJS.WritableStream,
   serializer: Serializer,
   logLevelName: string,
 ): Logger => {
-  const configuredLevel = Level[logLevelName as LoggerLevelName] ?? Level.debug;
+  const configuredLevel = LoggerLevel[logLevelName as LoggerLevelName] ?? LoggerLevel.debug;
   return (level, message, payload = {}, date = new Date()) => {
-    if (Level[level] > configuredLevel) {
+    if (LoggerLevel[level] > configuredLevel) {
       return;
     }
     const entry = {

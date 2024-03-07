@@ -1,4 +1,4 @@
-enum Level {
+export enum Level {
   error,
   warn,
   info,
