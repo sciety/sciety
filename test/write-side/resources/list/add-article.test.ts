@@ -7,6 +7,7 @@ import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('add-article', () => {
   const listId = arbitraryListId();
@@ -46,14 +47,18 @@ describe('add-article', () => {
             listId,
             articleId,
           }),
+          E.getOrElseW(shouldNotBeCalled),
         );
 
+        it('raises exactly one event', () => {
+          expect(result).toHaveLength(1);
+        });
+
         it('succeeds, adding the article', () => {
-          expect(result).toStrictEqual(E.right([expect.objectContaining({
-            type: 'ArticleAddedToList',
+          expect(result[0]).toBeDomainEvent('ArticleAddedToList', {
             articleId,
             listId,
-          })]));
+          });
         });
       });
 
@@ -71,22 +76,23 @@ describe('add-article', () => {
             articleId,
             annotation,
           }),
+          E.getOrElseW(shouldNotBeCalled),
         );
 
+        it('raises exactly two events', () => {
+          expect(result).toHaveLength(2);
+        });
+
         it('succeeds, adding the article and creating the annotation', () => {
-          expect(result).toStrictEqual(E.right([
-            expect.objectContaining({
-              type: 'ArticleAddedToList',
-              articleId,
-              listId,
-            }),
-            expect.objectContaining({
-              type: 'ArticleInListAnnotated',
-              articleId,
-              listId,
-              content: annotation,
-            }),
-          ]));
+          expect(result[0]).toBeDomainEvent('ArticleAddedToList', {
+            articleId,
+            listId,
+          });
+          expect(result[1]).toBeDomainEvent('ArticleInListAnnotated', {
+            articleId,
+            listId,
+            content: annotation,
+          });
         });
       });
 
