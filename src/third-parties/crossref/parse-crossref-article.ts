@@ -12,7 +12,13 @@ const getElement = (ancestor: Document | Element, qualifiedName: string) => (
 
 export const containsUnrecoverableError = (xml: Document): boolean => {
   const crossrefElement = getElement(xml, 'crossref');
-  return !crossrefElement;
+  if (!crossrefElement) {
+    return true;
+  }
+  if (getElement(crossrefElement, 'error')) {
+    return true;
+  }
+  return false;
 };
 
 export const getAbstract = (
