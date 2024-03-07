@@ -6,6 +6,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { sequenceS } from 'fp-ts/Apply';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getAuthenticatedUserIdFromContext, getLoggedInScietyUser,
 } from '../authentication-and-logging-in-of-sciety-users';
@@ -19,6 +20,7 @@ import { SanitisedUserInput } from '../../types/sanitised-user-input';
 import { createUserAccountCommandHandler } from '../../write-side/command-handlers';
 import { Logger } from '../../shared-ports';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
@@ -27,6 +29,13 @@ type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
 };
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
+  const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
+
+  if (O.isNone(authenticatedUserId)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'This step requires you do be logged in. Please try logging in again.');
+    return;
+  }
+
   await pipe(
     {
       formUserDetails: pipe(
@@ -44,10 +53,10 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
       ),
     },
     sequenceS(E.Apply),
-    E.map(({ formUserDetails, authenticatedUserId }) => ({
+    E.map(({ formUserDetails }) => ({
       ...formUserDetails,
       displayName: formUserDetails.fullName,
-      userId: authenticatedUserId,
+      userId: authenticatedUserId.value,
       avatarUrl: defaultSignUpAvatarUrl,
     })),
     T.of,
