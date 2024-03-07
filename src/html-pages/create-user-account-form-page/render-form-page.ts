@@ -1,10 +1,9 @@
 import { pipe } from 'fp-ts/function';
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { Params } from './params';
-import { RawUserInput, rawUserInput } from '../../read-side';
+import { RawUserInput } from '../../read-side';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
@@ -55,10 +54,4 @@ export const renderFormPage = (
       </div>
     `),
   }),
-);
-
-export const createUserAccountFormPage = (params: Params): TE.TaskEither<never, HtmlPage> => pipe(
-  params,
-  renderFormPage(rawUserInput(''), rawUserInput('')),
-  TE.right,
 );
