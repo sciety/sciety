@@ -6,6 +6,7 @@ import { arbitraryString } from '../../../helpers';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('remove-article', () => {
   const listId = arbitraryListId();
@@ -23,14 +24,18 @@ describe('remove-article', () => {
         listId,
         articleId,
       }),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
+    it('raises exactly one event', () => {
+      expect(result).toHaveLength(1);
+    });
+
     it('succeeds and raises an event', () => {
-      expect(result).toStrictEqual(E.right([expect.objectContaining({
-        type: 'ArticleRemovedFromList',
+      expect(result[0]).toBeDomainEvent('ArticleRemovedFromList', {
         articleId,
         listId,
-      })]));
+      });
     });
   });
 
@@ -45,10 +50,11 @@ describe('remove-article', () => {
         listId,
         articleId,
       }),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
     it('succeeds and raises no events', () => {
-      expect(result).toStrictEqual(E.right([]));
+      expect(result).toHaveLength(0);
     });
   });
 });

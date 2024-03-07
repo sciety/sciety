@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
 import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model';
 import { arbitraryString } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
@@ -16,7 +17,7 @@ describe('get-list-write-model', () => {
     const listDescription = arbitraryString();
 
     describe('and an article used to be on the list and has been removed', () => {
-      const result = pipe(
+      const articles = pipe(
         [
           constructEvent('ListCreated')({
             listId,
@@ -28,15 +29,17 @@ describe('get-list-write-model', () => {
           constructEvent('ArticleRemovedFromList')({ articleId, listId }),
         ],
         getListWriteModel(listId),
+        E.getOrElseW(shouldNotBeCalled),
+        (resource) => resource.articles,
       );
 
       it('the article id is not in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ articles: [] })));
+        expect(articles).toStrictEqual([]);
       });
     });
 
     describe('and the list has been renamed', () => {
-      const result = pipe(
+      const writeModel = pipe(
         [
           constructEvent('ListCreated')({
             listId,
@@ -47,19 +50,20 @@ describe('get-list-write-model', () => {
           constructEvent('ListNameEdited')({ listId, name: listName }),
         ],
         getListWriteModel(listId),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
       it('the list name is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
+        expect(writeModel.name).toStrictEqual(listName);
       });
 
       it('the list description remains the same', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
+        expect(writeModel.description).toStrictEqual(listDescription);
       });
     });
 
     describe('and the list description has been changed', () => {
-      const result = pipe(
+      const writeModel = pipe(
         [
           constructEvent('ListCreated')({
             listId,
@@ -70,14 +74,15 @@ describe('get-list-write-model', () => {
           constructEvent('ListDescriptionEdited')({ listId, description: listDescription }),
         ],
         getListWriteModel(listId),
+        E.getOrElseW(shouldNotBeCalled),
       );
 
       it('the list name remains the same', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ name: listName })));
+        expect(writeModel.name).toStrictEqual(listName);
       });
 
       it('the list description is in the resource', () => {
-        expect(result).toStrictEqual(E.right(expect.objectContaining({ description: listDescription })));
+        expect(writeModel.description).toStrictEqual(listDescription);
       });
     });
   });
