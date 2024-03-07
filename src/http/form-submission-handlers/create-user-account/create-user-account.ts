@@ -22,6 +22,8 @@ import { rawUserInput } from '../../../read-side';
 import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
 import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
 
+const createUserAccountFormFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props, 'createUserAccountFormFieldsCodec');
+
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
 type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
@@ -47,7 +49,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
   const formFields = pipe(
     context.request.body,
-    decodeAndLogFailures(dependencies.logger, toFieldsCodec(createUserAccountFormCodec.props, 'createUserAccountFormFieldsCodec')),
+    decodeAndLogFailures(dependencies.logger, createUserAccountFormFieldsCodec),
   );
   const validatedFormFields = pipe(
     context.request.body,
