@@ -54,13 +54,15 @@ const renderHandleInput = (recovery: Recovery) => pipe(
   `,
 );
 
+const prefixTitleWithErrorDuringValidationRecovery = (recovery: Recovery, title: string) => `${O.isSome(recovery) ? 'Error: ' : ''}${title}`;
+
 export const renderFormPage = (
   recovery: Recovery,
 ): HtmlPage => pipe(
   recovery,
   renderErrorSummary,
   (errorSummary) => toHtmlPage({
-    title: 'Sign up',
+    title: prefixTitleWithErrorDuringValidationRecovery(recovery, 'Sign up'),
     content: toHtmlFragment(`
       <div class="create-user-account-form-wrapper">
         <header class="page-header">
