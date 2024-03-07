@@ -131,30 +131,33 @@ describe('fetch-recommended-papers', () => {
       )();
     });
 
-    it('returns an array containing an expression DOI', async () => {
+    it('returns an array containing an expression DOI', () => {
       expect(recommendedPapers).toStrictEqual([recommendedExpressionDoi]);
     });
   });
 
   describe('when a response contains an corrupt DOI', () => {
     const corruptDoi = '10.1101/2023.01.15.524119 10.1101/123456';
-    const supportedBiorxivArticleId = '10.1101/123';
+    const understandableDoi = '10.1101/123';
+    const queryExternalService = () => () => TE.right({
+      recommendedPapers: [
+        arbitraryRecommendedPaper(understandableDoi),
+        arbitraryRecommendedPaper(corruptDoi),
+      ],
+    });
 
-    it('removes the unsupported article', async () => {
-      const queryExternalService = () => () => TE.right({
-        recommendedPapers: [
-          arbitraryRecommendedPaper(supportedBiorxivArticleId),
-          arbitraryRecommendedPaper(corruptDoi),
-        ],
-      });
-      const result = await pipe(
+    let result: ReadonlyArray<ExpressionDoi>;
+
+    beforeEach(async () => {
+      result = await pipe(
         arbitraryPublishingHistoryOnlyPreprints(),
         fetchRecommendedPapers(queryExternalService, dummyLogger),
-        TE.getOrElseW(shouldNotBeCalled),
+        TE.getOrElse(shouldNotBeCalled),
       )();
-      const expected: ReadonlyArray<EDOI.ExpressionDoi> = [EDOI.fromValidatedString(supportedBiorxivArticleId)];
+    });
 
-      expect(result).toStrictEqual(expected);
+    it('returns an array that does not include the corrupted DOI', () => {
+      expect(result).toStrictEqual([EDOI.fromValidatedString(understandableDoi)]);
     });
   });
 
