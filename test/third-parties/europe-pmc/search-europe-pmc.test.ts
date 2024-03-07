@@ -1,16 +1,14 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryWord } from '../../helpers';
-import { SearchResults } from '../../../src/types/search-results';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 describe('search-europe-pmc', () => {
-  it('converts Europe PMC search result into our view model', async () => {
+  describe('when there ar esearch results', () => {
     const nextCursor = arbitraryWord();
     const resultDoi1 = arbitraryExpressionDoi();
     const resultDoi2 = arbitraryExpressionDoi();
@@ -28,31 +26,36 @@ describe('search-europe-pmc', () => {
         ],
       },
     });
-    const results = await searchEuropePmc(
-      queryExternalService,
-      dummyLogger,
-    )(2)('some query', O.none, false)();
 
-    const expected: E.Either<never, SearchResults> = E.right({
-      total: 3,
-      items: [resultDoi1, resultDoi2],
-      nextCursor: O.some(nextCursor),
+    it('converts Europe PMC search result into our view model', async () => {
+      const results = await pipe(
+        searchEuropePmc(
+          queryExternalService,
+          dummyLogger,
+        )(2)('some query', O.none, false),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+
+      expect(results).toStrictEqual({
+        total: 3,
+        items: [resultDoi1, resultDoi2],
+        nextCursor: O.some(nextCursor),
+      });
     });
-
-    expect(results).toStrictEqual(expected);
   });
 
   describe('nextCursor', () => {
     describe('when there are no results', () => {
+      const nextCursor = arbitraryWord();
+      const queryExternalService = () => () => TE.right({
+        hitCount: arbitraryNumber(0, 100),
+        nextCursorMark: nextCursor,
+        resultList: {
+          result: [],
+        },
+      });
+
       it('nextCursor should be none', async () => {
-        const nextCursor = arbitraryWord();
-        const queryExternalService = () => () => TE.right({
-          hitCount: arbitraryNumber(0, 100),
-          nextCursorMark: nextCursor,
-          resultList: {
-            result: [],
-          },
-        });
         const results = await pipe(
           searchEuropePmc(
             queryExternalService,
@@ -66,15 +69,16 @@ describe('search-europe-pmc', () => {
     });
 
     describe('when there is no next cursor mark', () => {
+      const queryExternalService = () => () => TE.right({
+        hitCount: arbitraryNumber(0, 100),
+        resultList: {
+          result: [{
+            doi: arbitraryExpressionDoi(),
+          }],
+        },
+      });
+
       it('nextCursor should be none', async () => {
-        const queryExternalService = () => () => TE.right({
-          hitCount: arbitraryNumber(0, 100),
-          resultList: {
-            result: [{
-              doi: arbitraryExpressionDoi(),
-            }],
-          },
-        });
         const results = await pipe(
           searchEuropePmc(
             queryExternalService,
@@ -88,17 +92,18 @@ describe('search-europe-pmc', () => {
     });
 
     describe('when there are fewer results than the page size', () => {
+      const nextCursor = arbitraryWord();
+      const queryExternalService = () => () => TE.right({
+        hitCount: arbitraryNumber(0, 100),
+        nextCursorMark: nextCursor,
+        resultList: {
+          result: [{
+            doi: arbitraryExpressionDoi(),
+          }],
+        },
+      });
+
       it('nextCursor should be none', async () => {
-        const nextCursor = arbitraryWord();
-        const queryExternalService = () => () => TE.right({
-          hitCount: arbitraryNumber(0, 100),
-          nextCursorMark: nextCursor,
-          resultList: {
-            result: [{
-              doi: arbitraryExpressionDoi(),
-            }],
-          },
-        });
         const results = await pipe(
           searchEuropePmc(
             queryExternalService,
@@ -112,22 +117,23 @@ describe('search-europe-pmc', () => {
     });
 
     describe('when result count equals page size', () => {
+      const nextCursor = arbitraryWord();
+      const queryExternalService = () => () => TE.right({
+        hitCount: arbitraryNumber(3, 100),
+        nextCursorMark: nextCursor,
+        resultList: {
+          result: [
+            {
+              doi: arbitraryExpressionDoi(),
+            },
+            {
+              doi: arbitraryExpressionDoi(),
+            },
+          ],
+        },
+      });
+
       it('nextCursor should be some', async () => {
-        const nextCursor = arbitraryWord();
-        const queryExternalService = () => () => TE.right({
-          hitCount: arbitraryNumber(3, 100),
-          nextCursorMark: nextCursor,
-          resultList: {
-            result: [
-              {
-                doi: arbitraryExpressionDoi(),
-              },
-              {
-                doi: arbitraryExpressionDoi(),
-              },
-            ],
-          },
-        });
         const results = await pipe(
           searchEuropePmc(
             queryExternalService,
