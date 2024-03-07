@@ -1,5 +1,6 @@
 import { Serializer } from './serializer';
-import { Level, LevelName, Logger } from './types';
+import { Level, LevelName } from './types';
+import { Logger } from '../../shared-ports';
 
 export const streamLogger = (
   stream: NodeJS.WritableStream,

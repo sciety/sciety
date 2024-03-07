@@ -10,7 +10,7 @@ import { commitEvents } from './commit-events';
 import { dispatcher } from '../read-models';
 import { getEventsFromDatabase } from './get-events-from-database';
 import {
-  createLogger, Logger, Config as LoggerConfig,
+  createLogger, Config as LoggerConfig,
 } from './logger';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
@@ -23,6 +23,7 @@ import {
 } from '../write-side/command-handlers';
 import { instantiate } from '../third-parties';
 import { createRedisClient } from './create-redis-client';
+import { Logger } from '../shared-ports';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,

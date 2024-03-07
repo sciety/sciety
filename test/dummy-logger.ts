@@ -1,6 +1,7 @@
 import * as L from '../src/infrastructure/logger';
+import { Logger } from '../src/shared-ports';
 
-const loggerStub: L.Logger = (process.env.TEST_DEBUG === 'true') ? (
+const loggerStub: Logger = (process.env.TEST_DEBUG === 'true') ? (
   L.createLogger({
     minimumLogLevel: process.env.LOG_LEVEL ?? 'debug',
     prettyLog: !!process.env.PRETTY_LOG,

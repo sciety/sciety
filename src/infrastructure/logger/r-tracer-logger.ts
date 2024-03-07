@@ -1,7 +1,8 @@
 import rTracer from 'cls-rtracer';
 import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
-import { Payload, Logger } from './types';
+import { Payload } from './types';
+import { Logger } from '../../shared-ports';
 
 export const rTracerLogger = (logger: Logger): Logger => {
   const withRequestId = (payload: Payload) => pipe(

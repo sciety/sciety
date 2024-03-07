@@ -6,10 +6,10 @@ import { flow, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
-import { Logger } from './logger';
 import {
   DomainEvent, CurrentOrLegacyDomainEvent, EventOfType,
 } from '../domain-events';
+import { Logger } from '../shared-ports';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');
