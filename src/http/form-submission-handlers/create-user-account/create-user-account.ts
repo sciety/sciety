@@ -26,6 +26,11 @@ import { CreateUserAccountCommand } from '../../../write-side/commands';
 
 const createUserAccountFormFieldsCodec = toFieldsCodec(createUserAccountFormCodec.props, 'createUserAccountFormFieldsCodec');
 
+const constructValidationRecovery = (formInputs: t.TypeOf<typeof createUserAccountFormFieldsCodec>) => O.some({
+  fullName: { userInput: rawUserInput(formInputs.fullName) },
+  handle: { userInput: rawUserInput(formInputs.handle) },
+});
+
 const userHandleAlreadyExistsRecovery = (formInputs: t.TypeOf<typeof createUserAccountFormFieldsCodec>) => O.some({
   fullName: { userInput: rawUserInput(formInputs.fullName) },
   handle: { userInput: rawUserInput(formInputs.handle) },
@@ -82,10 +87,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   if (E.isLeft(validatedFormFields)) {
-    sendRecovery(O.some({
-      fullName: { userInput: rawUserInput(formFields.right.fullName) },
-      handle: { userInput: rawUserInput(formFields.right.handle) },
-    }));
+    sendRecovery(constructValidationRecovery(formFields.right));
     return;
   }
 
