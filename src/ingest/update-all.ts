@@ -9,13 +9,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import axiosRetry, { exponentialDelay } from 'axios-retry';
 import { fetchData, FetchData } from './fetch-data';
-import { fetchGoogleSheet, FetchGoogleSheet } from './fetch-google-sheet';
 import { FeedData } from './types/feed-data';
 
-type Adapters = {
-  fetchData: FetchData,
-  fetchGoogleSheet: FetchGoogleSheet,
-};
+type Adapters = { fetchData: FetchData };
 
 export type FetchEvaluations = (adapters: Adapters) => TE.TaskEither<string, FeedData>;
 
@@ -132,10 +128,7 @@ const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (fe
 );
 
 const updateGroup = (group: GroupIngestionConfiguration): TE.TaskEither<unknown, void> => pipe(
-  group.fetchFeed({
-    fetchData,
-    fetchGoogleSheet,
-  }),
+  group.fetchFeed({ fetchData }),
   TE.bimap(
     (error) => ({
       groupName: group.name,

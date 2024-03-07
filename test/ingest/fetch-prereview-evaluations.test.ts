@@ -2,7 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
 import { arbitraryDate, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import * as AID from '../../src/types/article-id';
 
@@ -10,7 +9,6 @@ describe('fetch-prereview-evaluations', () => {
   describe('when the reponse includes no preprints', () => {
     const result = fetchPrereviewEvaluations()({
       fetchData: <D>() => TE.right({ data: [] } as unknown as D),
-      fetchGoogleSheet: shouldNotBeCalled,
     });
 
     it('returns no evaluations', async () => {
@@ -47,7 +45,6 @@ describe('fetch-prereview-evaluations', () => {
     ];
     const result = fetchPrereviewEvaluations()({
       fetchData: <D>() => TE.right({ data: response } as unknown as D),
-      fetchGoogleSheet: shouldNotBeCalled,
     });
 
     it('returns the reviews', async () => {
@@ -94,7 +91,6 @@ describe('fetch-prereview-evaluations', () => {
     ];
     const result = fetchPrereviewEvaluations()({
       fetchData: <D>() => TE.right({ data: response } as unknown as D),
-      fetchGoogleSheet: shouldNotBeCalled,
     });
 
     it('returns the valid review', async () => {
@@ -135,7 +131,6 @@ describe('fetch-prereview-evaluations', () => {
     ];
     const result = fetchPrereviewEvaluations()({
       fetchData: <D>() => TE.right({ data: response } as unknown as D),
-      fetchGoogleSheet: shouldNotBeCalled,
     });
 
     it('returns a skipped item', async () => {
@@ -154,7 +149,6 @@ describe('fetch-prereview-evaluations', () => {
     it('reports an error', async () => {
       const result = fetchPrereviewEvaluations()({
         fetchData: <D>() => TE.right({} as unknown as D),
-        fetchGoogleSheet: shouldNotBeCalled,
       });
 
       expect(await result()).toStrictEqual(E.left(expect.stringContaining('Invalid value')));
