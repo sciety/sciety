@@ -13,7 +13,7 @@ import {
   stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0, Config as LoginMiddlewaresConfig,
 } from './login-middlewares';
 import { catchErrors } from '../catch-errors';
-import { createUserAccount } from '../form-submission-handlers/create-user-account';
+import { createUserAccount } from '../form-submission-handlers/create-user-account/create-user-account';
 import { pageHandler } from '../page-handler';
 import { CollectedPorts } from '../../infrastructure';
 import { createPageFromParams } from '../create-page-from-params';

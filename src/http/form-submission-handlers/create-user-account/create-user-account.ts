@@ -9,18 +9,18 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { StatusCodes } from 'http-status-codes';
 import {
   Ports as GetLoggedInScietyUserPorts, getAuthenticatedUserIdFromContext, getLoggedInScietyUser,
-} from '../authentication-and-logging-in-of-sciety-users';
-import { createUserAccountFormPageLayout, renderFormPage } from '../../html-pages/create-user-account-form-page';
-import { constructHtmlResponse } from '../../html-pages/construct-html-response';
+} from '../../authentication-and-logging-in-of-sciety-users';
+import { createUserAccountFormPageLayout, renderFormPage } from '../../../html-pages/create-user-account-form-page';
+import { constructHtmlResponse } from '../../../html-pages/construct-html-response';
 import { createUserAccountFormCodec, unvalidatedFormDetailsCodec } from './codecs';
-import { redirectToAuthenticationDestination } from '../authentication-destination';
-import { sendHtmlResponse } from '../send-html-response';
-import { detectClientClassification } from '../detect-client-classification';
-import { SanitisedUserInput } from '../../types/sanitised-user-input';
-import { createUserAccountCommandHandler } from '../../write-side/command-handlers';
-import { Logger } from '../../shared-ports';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
+import { redirectToAuthenticationDestination } from '../../authentication-destination';
+import { sendHtmlResponse } from '../../send-html-response';
+import { detectClientClassification } from '../../detect-client-classification';
+import { SanitisedUserInput } from '../../../types/sanitised-user-input';
+import { createUserAccountCommandHandler } from '../../../write-side/command-handlers';
+import { Logger } from '../../../shared-ports';
+import { DependenciesForCommands } from '../../../write-side/dependencies-for-commands';
+import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-response';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
