@@ -9,7 +9,7 @@ import {
 import { createUserAccountFormPageLayout, renderFormPage } from '../../../html-pages/create-user-account-form-page';
 import { constructHtmlResponse } from '../../../html-pages/construct-html-response';
 import {
-  CreateUserAccountForm, CreateUserAccountFormRaw, createUserAccountFormCodec, createUserAccountFormRawCodec,
+  createUserAccountFormCodec, createUserAccountFormRawCodec,
 } from './codecs';
 import { redirectToAuthenticationDestination } from '../../authentication-destination';
 import { sendHtmlResponse } from '../../send-html-response';
@@ -19,30 +19,11 @@ import { Logger } from '../../../shared-ports';
 import { DependenciesForCommands } from '../../../write-side/dependencies-for-commands';
 import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-response';
 import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-failures';
-import { rawUserInput } from '../../../read-side';
 import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
 import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
-import { CreateUserAccountCommand } from '../../../write-side/commands';
-
-const constructValidationRecovery = (formInputs: CreateUserAccountFormRaw) => O.some({
-  fullName: { userInput: rawUserInput(formInputs.fullName), error: O.none },
-  handle: { userInput: rawUserInput(formInputs.handle), error: O.none },
-});
-
-const userHandleAlreadyExistsRecovery = (formInputs: CreateUserAccountFormRaw) => O.some({
-  fullName: { userInput: rawUserInput(formInputs.fullName), error: O.none },
-  handle: { userInput: rawUserInput(formInputs.handle), error: O.some('This handle is already taken. Please try a different one.') },
-});
-
-const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
-
-const toCommand = (inputs: CreateUserAccountForm, userId: CreateUserAccountCommand['userId']) => (
-  {
-    handle: inputs.handle,
-    displayName: inputs.fullName,
-    userId,
-    avatarUrl: defaultSignUpAvatarUrl,
-  });
+import { userHandleAlreadyExistsRecovery } from './user-handle-already-exists-recovery';
+import { constructValidationRecovery } from './construct-validation-recovery';
+import { toCommand } from './to-command';
 
 type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
