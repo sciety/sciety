@@ -6,12 +6,12 @@ import { Logger } from '../../shared-ports';
 
 export type Config = {
   prettyLog: boolean,
-  minimumLogLevel: string, // TODO: Make this a level name
+  desiredLogLevel: string, // TODO: Make this a level name
 };
 
 export const createLogger = (config: Config): Logger => pipe(
   config.prettyLog,
   jsonSerializer,
-  (serializer) => streamLogger(process.stdout, serializer, config.minimumLogLevel),
+  (serializer) => streamLogger(process.stdout, serializer, config.desiredLogLevel),
   rTracerLogger,
 );
