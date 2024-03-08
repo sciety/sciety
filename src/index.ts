@@ -52,7 +52,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
 void pipe(
   createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
-    minimumLogLevel: process.env.LOG_LEVEL ?? 'debug',
+    minimumLogLevel: process.env.LOG_LEVEL ?? 'verbose',
     prettyLog: !!process.env.PRETTY_LOG,
   }),
   TE.map((adapters) => {
