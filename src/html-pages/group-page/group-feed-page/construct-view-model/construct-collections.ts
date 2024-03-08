@@ -2,14 +2,19 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import * as LID from '../../../../types/list-id';
-import { ListCardViewModel, constructListCardViewModelWithAvatar } from '../../../../shared-components/list-card';
+import { constructListCardViewModelWithAvatar } from '../../../../shared-components/list-card';
 import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
+import { ListCardWithImageViewModel } from '../../../../shared-components/list-card/render-list-card-with-image';
 
 const constructListCardForACollection = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
   listId,
   dependencies.lookupList,
   O.map(constructListCardViewModelWithAvatar(dependencies)),
+  O.map((viewModel) => ({
+    ...viewModel,
+    imageUrl: process.env.EXPERIMENT_ENABLED === 'true' ? O.some('/static/images/collections/endorsed-by-gigabyte.png') : O.none,
+  })),
 );
 
 const hardcoded = new Map<GroupId, LID.ListId>([
@@ -17,7 +22,10 @@ const hardcoded = new Map<GroupId, LID.ListId>([
   [GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'), LID.fromValidatedString('729cab51-b47d-4ab5-bf2f-8282f1de445e')],
 ]);
 
-export const constructCollections = (dependencies: Dependencies, groupId: GroupId): O.Option<ListCardViewModel> => {
+export const constructCollections = (
+  dependencies: Dependencies,
+  groupId: GroupId,
+): O.Option<ListCardWithImageViewModel> => {
   const hardcodedListId = hardcoded.get(groupId);
   if (hardcodedListId) {
     return pipe(

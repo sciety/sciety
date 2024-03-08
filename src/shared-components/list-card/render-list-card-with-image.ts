@@ -5,7 +5,18 @@ import { templateDate } from '../date';
 import { renderListPageLinkHref } from '../render-list-page-link-href';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { safelyRenderRawUserInput } from '../raw-user-input-renderers';
-import { ListCardViewModel } from './render-list-card';
+import { RawUserInput } from '../../read-side';
+import { ListId } from '../../types/list-id';
+
+export type ListCardWithImageViewModel = {
+  listId: ListId,
+  articleCount: number,
+  updatedAt: O.Option<Date>,
+  title: string,
+  description: RawUserInput,
+  avatarUrl: O.Option<string>,
+  imageUrl: O.Option<string>,
+};
 
 const lastUpdated = O.fold(
   () => '',
@@ -22,7 +33,7 @@ const renderListImage = O.fold(
   (imgSrc: string) => `<img src="${imgSrc}" alt="">`,
 );
 
-export const renderListCardWithImage = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
+export const renderListCardWithImage = (viewModel: ListCardWithImageViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
     <div class="list-card__body">
       <div>
@@ -33,7 +44,7 @@ export const renderListCardWithImage = (viewModel: ListCardViewModel): HtmlFragm
         <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
       </div>
     </div>
-    ${renderListImage(process.env.EXPERIMENT_ENABLED === 'true' ? O.some('/static/images/collections/endorsed-by-gigabyte.png') : O.none)}
+    ${renderListImage(viewModel.imageUrl)}
     ${renderAvatar(viewModel.avatarUrl)}
   </article>
 `);
