@@ -1,4 +1,3 @@
-import { formatValidationErrors } from 'io-ts-reporters';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
@@ -10,6 +9,7 @@ import { QueryExternalService } from '../query-external-service';
 import * as PH from '../../types/publishing-history';
 import { ExternalQueries } from '../external-queries';
 import * as EDOI from '../../types/expression-doi';
+import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 const paperWithoutDoi = t.type({
   externalIds: t.type({
@@ -25,7 +25,7 @@ const paperWithDoi = t.type({
 
 const scietyLabsRecommendedPapersResponseCodec = t.type({
   recommendedPapers: t.array(t.union([paperWithDoi, paperWithoutDoi])),
-});
+}, 'scietyLabsRecommendedPapersResponseCodec');
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
@@ -53,17 +53,8 @@ export const createFetchRecommendedPapers = (
       },
     ),
     TE.chainEitherKW(flow(
-      scietyLabsRecommendedPapersResponseCodec.decode,
-      E.mapLeft(formatValidationErrors),
-      E.mapLeft(
-        (errors) => {
-          logger('error', 'Failed to decode Sciety Labs response', {
-            errors,
-            url,
-          });
-          return DE.unavailable;
-        },
-      ),
+      decodeAndLogFailures(logger, scietyLabsRecommendedPapersResponseCodec, { url }),
+      E.mapLeft(() => DE.unavailable),
     )),
     TE.map(
       (response) => pipe(
