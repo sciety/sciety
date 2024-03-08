@@ -29,7 +29,7 @@ const scietyLabsRecommendedPapersResponseCodec = t.type({
 
 type PaperWithDoi = t.TypeOf<typeof paperWithDoi>;
 
-export const fetchRecommendedPapers = (
+export const createFetchRecommendedPapers = (
   queryExternalService: QueryExternalService,
   logger: Logger,
 ): ExternalQueries['fetchRecommendedPapers'] => (history) => {

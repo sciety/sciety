@@ -4,7 +4,7 @@ import { fetchStaticFile } from './fetch-static-file';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchExpressionFrontMatter, crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
-import { fetchRecommendedPapers } from './fetch-recommended-papers';
+import { createFetchRecommendedPapers } from './fetch-recommended-papers';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
@@ -48,7 +48,7 @@ export const instantiate = (
       logger,
       crossrefApiBearerToken,
     ),
-    fetchRecommendedPapers: fetchRecommendedPapers(queryExternalService, logger),
+    fetchRecommendedPapers: createFetchRecommendedPapers(queryExternalService, logger),
     fetchEvaluation: createFetchEvaluation(queryExternalService, logger),
     fetchStaticFile: fetchStaticFile(logger),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),

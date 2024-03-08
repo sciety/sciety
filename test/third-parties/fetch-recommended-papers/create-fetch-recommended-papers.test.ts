@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../../src/types/expression-doi';
 import { arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
-import { fetchRecommendedPapers } from '../../../src/third-parties/fetch-recommended-papers/fetch-recommended-papers';
+import { createFetchRecommendedPapers } from '../../../src/third-parties/fetch-recommended-papers/create-fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
@@ -62,14 +62,14 @@ const historyWithJournalArticleAsLatestExpression = (latestPreprintExpressionDoi
   E.getOrElseW(shouldNotBeCalled),
 );
 
-describe('fetch-recommended-papers', () => {
+describe('create-fetch-recommended-papers', () => {
   describe('given a specific publishing history', () => {
     const latestPreprintExpressionDoi = arbitraryExpressionDoi();
     let spy: ReturnType<QueryExternalService>;
     let queryExternalService: QueryExternalService;
     const invokeExternalService = async (publishingHistory: PublishingHistory) => pipe(
       publishingHistory,
-      fetchRecommendedPapers(queryExternalService, dummyLogger),
+      createFetchRecommendedPapers(queryExternalService, dummyLogger),
       TE.getOrElseW(shouldNotBeCalled),
     )();
 
@@ -106,7 +106,7 @@ describe('fetch-recommended-papers', () => {
   describe('given an arbitrary publishing history', () => {
     const getRecommendedPapers = (queryExternalService: QueryExternalService) => pipe(
       arbitraryPublishingHistoryOnlyPreprints(),
-      fetchRecommendedPapers(queryExternalService, dummyLogger),
+      createFetchRecommendedPapers(queryExternalService, dummyLogger),
     );
 
     describe('when a response contains an understandable DOI', () => {
