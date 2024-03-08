@@ -12,4 +12,10 @@ describe('log-level', () => {
       expect(shouldBeLogged('error', 'verbose')).toBe(true);
     });
   });
+
+  describe('when configured level is warn and the requested level is warn', () => {
+    it('is logged', () => {
+      expect(shouldBeLogged('warn', 'warn')).toBe(true);
+    });
+  });
 });
