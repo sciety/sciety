@@ -14,7 +14,7 @@ import {
 } from './infrastructure';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { startSagas } from './sagas';
-import { Logger } from './shared-ports';
+import { defaultLogLevel, Logger } from './shared-ports';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -52,7 +52,7 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
 void pipe(
   createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
-    logLevel: process.env.LOG_LEVEL ?? 'verbose',
+    logLevel: process.env.LOG_LEVEL ?? defaultLogLevel,
     prettyLog: !!process.env.PRETTY_LOG,
   }),
   TE.map((adapters) => {

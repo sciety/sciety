@@ -8,6 +8,8 @@ enum LogLevelRanking {
 
 export type LogLevel = keyof typeof LogLevelRanking;
 
+export const defaultLogLevel: LogLevel = 'verbose';
+
 export const shouldLogLineBeIgnored = (
   requestedLevel: LogLevel,
   configuredLevel: string,
