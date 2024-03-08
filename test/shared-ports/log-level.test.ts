@@ -8,6 +8,8 @@ describe('log-level', () => {
   });
 
   describe('when requested level is error and the configured level is verbose', () => {
-    it.todo('does not get ignored');
+    it('does not get ignored', () => {
+      expect(shouldLogLineBeIgnored('error', 'verbose')).toBe(false);
+    });
   });
 });
