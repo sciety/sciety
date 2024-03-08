@@ -23,11 +23,6 @@ const lastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
-const renderAvatar = O.fold(
-  () => '',
-  (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
-);
-
 const renderListImage = O.fold(
   () => '',
   (imgSrc: string) => `<img class="list-card__image" src="${imgSrc}" alt="">`,
@@ -45,6 +40,5 @@ export const renderListCardWithImage = (viewModel: ListCardWithImageViewModel): 
       </div>
     </div>
     ${renderListImage(viewModel.imageUrl)}
-    ${renderAvatar(viewModel.avatarUrl)}
   </article>
 `);
