@@ -3,6 +3,7 @@ export enum Level {
   warn,
   info,
   debug,
+  verbose,
 }
 export type LevelName = keyof typeof Level;
 
