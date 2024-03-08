@@ -1,15 +1,15 @@
-import { shouldLogLineBeIgnored } from '../../src/shared-ports/log-level';
+import { shouldBeLogged } from '../../src/shared-ports/log-level';
 
 describe('log-level', () => {
-  describe('when requested level is debug and the configured level is info', () => {
-    it('gets ignored', () => {
-      expect(shouldLogLineBeIgnored('debug', 'info')).toBe(true);
+  describe('when configured level is info and the requested level is debug', () => {
+    it('is not logged', () => {
+      expect(shouldBeLogged('debug', 'info')).toBe(false);
     });
   });
 
-  describe('when requested level is error and the configured level is verbose', () => {
-    it('does not get ignored', () => {
-      expect(shouldLogLineBeIgnored('error', 'verbose')).toBe(false);
+  describe('when configured level is verbose and the requested level is error', () => {
+    it('is logged', () => {
+      expect(shouldBeLogged('error', 'verbose')).toBe(true);
     });
   });
 });
