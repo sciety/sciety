@@ -3,7 +3,7 @@ import { Logger } from '../src/shared-ports';
 
 const loggerStub: Logger = (process.env.TEST_DEBUG === 'true') ? (
   L.createLogger({
-    desiredLogLevel: process.env.LOG_LEVEL ?? 'debug',
+    logLevel: process.env.LOG_LEVEL ?? 'debug',
     prettyLog: !!process.env.PRETTY_LOG,
   })
 ) : () => {};
