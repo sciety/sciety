@@ -1,13 +1,7 @@
 import { Serializer } from './serializer';
-import { Logger, LoggerLevelName, LoggerLevel } from '../../shared-ports';
-
-const shouldLogLineBeIgnored = (
-  requestedLogLevelName: LoggerLevelName,
-  configuredLogLevelName: string,
-) => {
-  const configuredLogLevel = LoggerLevel[configuredLogLevelName as LoggerLevelName] ?? LoggerLevel.debug;
-  return LoggerLevel[requestedLogLevelName] > configuredLogLevel;
-};
+import {
+  Logger, shouldLogLineBeIgnored,
+} from '../../shared-ports';
 
 export const streamLogger = (
   stream: NodeJS.WritableStream,
