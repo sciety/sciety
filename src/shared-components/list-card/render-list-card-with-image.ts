@@ -17,6 +17,11 @@ const renderAvatar = O.fold(
   (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
 );
 
+const renderListImage = O.fold(
+  () => '',
+  (imgSrc: string) => `<img src="${imgSrc}" alt="">`,
+);
+
 export const renderListCardWithImage = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
     <div class="list-card__body">
@@ -28,6 +33,7 @@ export const renderListCardWithImage = (viewModel: ListCardViewModel): HtmlFragm
         <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
       </div>
     </div>
+    ${renderListImage(process.env.EXPERIMENT_ENABLED === 'true' ? O.some('/static/images/collections/endorsed-by-gigabyte.png') : O.none)}
     ${renderAvatar(viewModel.avatarUrl)}
   </article>
 `);
