@@ -1,9 +1,8 @@
 import { Serializer } from './serializer';
 import { Logger, LoggerLevelName, LoggerLevel } from '../../shared-ports';
-import { LevelName } from '../../shared-ports/logger';
 
 const shouldLogLineBeIgnored = (
-  requestedLogLevelName: LevelName,
+  requestedLogLevelName: LoggerLevelName,
   configuredLogLevel: LoggerLevel,
 ) => LoggerLevel[requestedLogLevelName] > configuredLogLevel;
 
