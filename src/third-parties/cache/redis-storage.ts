@@ -42,7 +42,7 @@ export const redisStorage = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async set(requestKey, value, cacheRequestConfig) {
     const redisKey = constructRedisKey(requestKey);
-    logger('debug', 'Storing third party data in the cache', { requestKey, redisKey });
+    logger('verbose', 'Storing third party data in the cache', { requestKey, redisKey });
     await client.set(redisKey, encode(value), {
       PX: maxAgeInMilliseconds,
     });
@@ -50,7 +50,7 @@ export const redisStorage = (
 
   async remove(requestKey) {
     const redisKey = constructRedisKey(requestKey);
-    logger('debug', 'Removing third party data from the cache', { requestKey, redisKey });
+    logger('verbose', 'Removing third party data from the cache', { requestKey, redisKey });
     await client.del(redisKey);
   },
 });
