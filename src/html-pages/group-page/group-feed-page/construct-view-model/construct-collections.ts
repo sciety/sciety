@@ -7,13 +7,19 @@ import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
 import { ListCardWithImageViewModel } from '../../../../shared-components/list-card/render-list-card-with-image';
 
+const lookupListImage = (listId: LID.ListId) => (
+  process.env.EXPERIMENT_ENABLED === 'true' && listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e'
+    ? O.some('/static/images/collections/endorsed-by-gigabyte.png')
+    : O.none
+);
+
 const constructListCardForACollection = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
   listId,
   dependencies.lookupList,
   O.map(constructListCardViewModelWithAvatar(dependencies)),
   O.map((viewModel) => ({
     ...viewModel,
-    imageUrl: process.env.EXPERIMENT_ENABLED === 'true' ? O.some('/static/images/collections/endorsed-by-gigabyte.png') : O.none,
+    imageUrl: lookupListImage(listId),
   })),
 );
 
