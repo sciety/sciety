@@ -1,4 +1,4 @@
-enum Level {
+enum LogLevelRanking {
   error,
   warn,
   info,
@@ -6,16 +6,17 @@ enum Level {
   verbose,
 }
 
-export type LevelName = keyof typeof Level;
+export type LogLevel = keyof typeof LogLevelRanking;
 
 export const shouldLogLineBeIgnored = (
-  requestedLogLevelName: LevelName,
-  configuredLogLevelName: string,
+  requestedLevel: LogLevel,
+  configuredLevel: string,
 ): boolean => {
-  const configuredLogLevel = Level[configuredLogLevelName as LevelName] ?? Level.debug;
-  return Level[requestedLogLevelName] > configuredLogLevel;
+  const configuredLevelRank = LogLevelRanking[configuredLevel as LogLevel] ?? LogLevelRanking.debug;
+  const requestedLevelRank = LogLevelRanking[requestedLevel];
+  return requestedLevelRank > configuredLevelRank;
 };
 
 type Payload = Record<string, unknown>;
 
-export type Logger = (level: LevelName, message: string, payload?: Payload, timestamp?: Date) => void;
+export type Logger = (level: LogLevel, message: string, payload?: Payload, timestamp?: Date) => void;

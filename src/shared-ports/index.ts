@@ -12,7 +12,7 @@ export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
 export { EditListDetails } from './edit-list-details';
 export {
-  Logger, LevelName as LoggerLevelName, shouldLogLineBeIgnored,
+  Logger, LogLevel, shouldLogLineBeIgnored,
 } from './logger';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';

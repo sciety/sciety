@@ -10,7 +10,7 @@ import {
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import { logAndTransformToDataError } from '../log-and-transform-to-data-error';
-import { Logger, LoggerLevelName } from '../../shared-ports';
+import { Logger, LogLevel } from '../../shared-ports';
 import { QueryExternalService } from '../query-external-service';
 import { redisStorage } from './redis-storage';
 import { cachedGetter, ResponseBodyCachePredicate } from './cached-getter';
@@ -54,7 +54,7 @@ export const createCachingFetcher = (
   const cachedAxios = createCacheAdapter(cachingFetcherOptions, logger);
   const get = cachedGetter(cachedAxios, logger, cachingFetcherOptions.responseBodyCachePredicate ?? (() => true));
   return (
-    notFoundLogLevel: LoggerLevelName = 'warn',
+    notFoundLogLevel: LogLevel = 'warn',
     headers = {},
   ) => (url: string) => pipe(
     TE.tryCatch(async () => get<unknown>(url, headers), identity),

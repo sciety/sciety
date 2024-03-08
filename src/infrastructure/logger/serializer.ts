@@ -1,9 +1,9 @@
 import { Payload } from './types';
-import { LevelName } from '../../shared-ports/logger';
+import { LogLevel } from '../../shared-ports/logger';
 
 type Entry = {
   timestamp: Date,
-  level: LevelName,
+  level: LogLevel,
   message: string,
   payload: Payload,
 };
