@@ -220,7 +220,7 @@
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
-  "dockerCommandTemplate": "docker run --rm -i --user $(id -u):$(id -g) --network sciety-test_default --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
+  "dockerCommandTemplate": "docker run --rm -it --network sciety-test_default --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 25,
   "debug": false,
