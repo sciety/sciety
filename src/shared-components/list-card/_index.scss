@@ -30,6 +30,7 @@
 .list-card__image {
   max-width: 30%;
   object-fit: cover;
+  margin-left: functions.px-to-rem(8px);
 }
 
 .list-card__avatar {
