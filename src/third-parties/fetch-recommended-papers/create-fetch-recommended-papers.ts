@@ -43,15 +43,6 @@ export const createFetchRecommendedPapers = (
   return pipe(
     url,
     queryExternalService(),
-    TE.mapLeft(
-      (errors) => {
-        logger('error', 'The external query to fetch recommended papers failed', {
-          errors,
-          url,
-        });
-        return DE.unavailable;
-      },
-    ),
     TE.chainEitherKW(flow(
       decodeAndLogFailures(logger, scietyLabsRecommendedPapersResponseCodec, { url }),
       E.mapLeft(() => DE.unavailable),
