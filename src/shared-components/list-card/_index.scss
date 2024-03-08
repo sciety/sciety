@@ -27,6 +27,11 @@
   @include card.meta();
 }
 
+.list-card__image {
+  max-width: 30%;
+  object-fit: cover;
+}
+
 .list-card__avatar {
   @include card.avatar();
   margin-left: functions.px-to-rem(8px);

@@ -30,7 +30,7 @@ const renderAvatar = O.fold(
 
 const renderListImage = O.fold(
   () => '',
-  (imgSrc: string) => `<img src="${imgSrc}" alt="">`,
+  (imgSrc: string) => `<img class="list-card__image" src="${imgSrc}" alt="">`,
 );
 
 export const renderListCardWithImage = (viewModel: ListCardWithImageViewModel): HtmlFragment => toHtmlFragment(`
