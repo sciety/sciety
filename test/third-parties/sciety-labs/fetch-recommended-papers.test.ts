@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../../src/types/expression-doi';
 import { arbitraryString } from '../../helpers';
 import * as DE from '../../../src/types/data-error';
-import { fetchRecommendedPapers } from '../../../src/third-parties/sciety-labs/fetch-recommended-papers';
+import { fetchRecommendedPapers } from '../../../src/third-parties/fetch-recommended-papers/fetch-recommended-papers';
 import { dummyLogger } from '../../dummy-logger';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';

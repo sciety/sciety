@@ -4,7 +4,7 @@ import { fetchStaticFile } from './fetch-static-file';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
 import { fetchExpressionFrontMatter, crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
-import { fetchRecommendedPapers } from './sciety-labs';
+import { fetchRecommendedPapers } from './fetch-recommended-papers';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../shared-ports';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
