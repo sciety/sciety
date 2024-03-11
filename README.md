@@ -165,14 +165,14 @@ KEYS *
 
 ### Local exploratory testing with copy of production DB
 
-<details>
-
-<summary>Requirements</summary>
+#### Requirements
 
 - [kubectl]
 - [aws-cli]
+- [aws credentials]
+- [kubeconfig setup]
 
-</details>
+#### Commands to get and run copy of production DB
 
 ```shell
 make download-exploratory-test-from-prod
@@ -231,3 +231,5 @@ We released this software under the [MIT license][License]. Copyright © 2020 [e
 [production-ingress-logs]: https://sciety.grafana.net/explore?orgId=1&left=%7B%22datasource%22:%22grafanacloud-sciety-logs%22,%22queries%22:%5B%7B%22refId%22:%22B%22,%22expr%22:%22%7Bapp_kubernetes_io_name%3D%5C%22ingress-nginx%5C%22%7D%5Cn%7C%20json%5Cn%7C%20__error__%3D%5C%22%5C%22%5Cn%7C%20ingress_name%3D%5C%22sciety--prod--frontend%5C%22%22%7D%5D,%22range%22:%7B%22from%22:%22now-2d%22,%22to%22:%22now%22%7D%7D
 [Staging environment]: https://staging.sciety.org
 [sciety.org]: https://sciety.org
+[aws credentials]: https://github.com/sciety/infrastructure/blob/main/README.md#aws-access
+[kubeconfig setup]: https://github.com/sciety/infrastructure/blob/main/README.md#kubectl-access
