@@ -146,7 +146,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/users/:handle/avatar',
-    redirectToAvatarImageUrl(),
+    redirectToAvatarImageUrl(adapters),
   );
 
   router.get(
