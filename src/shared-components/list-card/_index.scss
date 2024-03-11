@@ -1,6 +1,8 @@
 @use '../../sass/functions';
 @use '../../sass/card';
 
+$_image-max-width: 100px;
+
 .list-card {
   $_is-entire-card-linked: true;
   @include card.basics($_is-entire-card-linked);
@@ -28,7 +30,7 @@
 }
 
 .list-card__image {
-  max-width: 100px;
+  max-width: $_image-max-width;
   object-fit: contain;
   margin-left: functions.px-to-rem(8px);
 }
