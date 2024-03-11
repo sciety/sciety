@@ -28,8 +28,8 @@
 }
 
 .list-card__image {
-  max-width: 30%;
-  object-fit: cover;
+  max-width: 100px;
+  object-fit: contain;
   margin-left: functions.px-to-rem(8px);
 }
 
