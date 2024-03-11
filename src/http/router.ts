@@ -69,6 +69,7 @@ import { referencePage, sharedComponentsPage, indexPage } from '../html-pages/st
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
 import { paperActivityPagePath, paperActivityPagePathSpecification } from '../standards';
+import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -145,6 +146,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/users/:handle/avatar',
+    redirectToAvatarImageUrl(),
   );
 
   router.get(
