@@ -144,6 +144,10 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
+    '/users/:handle/avatar',
+  );
+
+  router.get(
     '/search',
     async (context, next) => {
       context.response.set('X-Robots-Tag', 'noindex');
