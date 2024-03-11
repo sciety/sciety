@@ -1,11 +1,19 @@
+import * as E from 'fp-ts/Either';
 import { Middleware } from '@koa/router';
+import { pipe } from 'fp-ts/function';
 import { toRedirectTarget } from '../../html-pages/redirect-target';
 import { sendRedirect } from '../../http/send-redirect';
 import { Queries } from '../../read-models';
+import { candidateUserHandleCodec } from '../../types/candidate-user-handle';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const redirectToAvatarImageUrl = (queries: Queries): Middleware => async (context, next) => {
-  const avatarUrl = toRedirectTarget('/static/images/profile-dark.svg');
+  const avatarUrl = pipe(
+    'foo',
+    candidateUserHandleCodec.decode,
+    E.map(queries.lookupUserByHandle),
+    () => '/static/images/profile-dark.svg',
+    toRedirectTarget,
+  );
   sendRedirect(context, avatarUrl);
   await next();
 };
