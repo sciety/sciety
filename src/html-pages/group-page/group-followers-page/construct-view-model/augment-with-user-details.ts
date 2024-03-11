@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Follower, UserCardViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
+import { constructUserAvatarUrl } from '../../../../read-side';
 
 export const augmentWithUserDetails = (
   dependencies: Dependencies,
@@ -21,6 +22,7 @@ export const augmentWithUserDetails = (
       O.map((userDetails) => ({
         ...follower,
         ...userDetails,
+        avatarUrl: constructUserAvatarUrl(userDetails),
         link: `/users/${userDetails.handle}`,
         title: userDetails.displayName,
       })),
