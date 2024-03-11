@@ -1,8 +1,8 @@
 @use 'sass:color';
-@use 'functions';
+@use '../sass/functions';
 @use 'settings';
-@use 'states';
-@use 'typography';
+@use '../sass/states';
+@use '../sass/typography';
 
 @mixin _link($text, $background, $background-hover) {
   @include typography.button();

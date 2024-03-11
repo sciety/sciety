@@ -3,7 +3,7 @@
 @use 'settings';
 @use '../../../sass/functions';
 @use 'breakpoints';
-@use '../../../sass/button';
+@use 'button';
 
 $_input-height: 48px;
 $_search-icon-size: functions.px-to-rem(24px);

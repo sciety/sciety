@@ -8,7 +8,7 @@
 @use '../../sass/typography';
 @use '../../sass/list';
 @use '../../sass/schemed-header-colours';
-@use '../../sass/button';
+@use 'button';
 
 $_search-icon-size: functions.px-to-rem(24px);
 $_menu-icon-size: functions.px-to-rem(26px);
