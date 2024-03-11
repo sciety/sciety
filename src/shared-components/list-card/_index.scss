@@ -2,6 +2,7 @@
 @use '../../sass/card';
 
 $_image-max-width: 100px;
+$_card-asset-gutter: functions.px-to-rem(8px);
 
 .list-card {
   $_is-entire-card-linked: true;
@@ -32,10 +33,10 @@ $_image-max-width: 100px;
 .list-card__image {
   max-width: $_image-max-width;
   object-fit: contain;
-  margin-left: functions.px-to-rem(8px);
+  margin-left: $_card-asset-gutter;
 }
 
 .list-card__avatar {
   @include card.avatar();
-  margin-left: functions.px-to-rem(8px);
+  margin-left: $_card-asset-gutter;
 }
