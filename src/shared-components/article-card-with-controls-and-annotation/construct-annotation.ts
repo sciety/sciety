@@ -8,6 +8,7 @@ import { ViewModel } from './view-model';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 import { ExpressionDoi } from '../../types/expression-doi';
+import { UserDetails } from '../../types/user-details';
 
 const getGroupName = (dependencies: Queries, groupId: GroupId) => pipe(
   groupId,
@@ -27,10 +28,12 @@ const getUserDisplayName = (dependencies: Queries, userId: UserId) => pipe(
   O.map((user) => user.displayName),
 );
 
+const constructUserAvatarUrl = (user: UserDetails): string => user.avatarUrl;
+
 const getUserAvatarPath = (dependencies: Queries, userId: UserId) => pipe(
   userId,
   dependencies.lookupUser,
-  O.map((user) => user.avatarUrl),
+  O.map(constructUserAvatarUrl),
 );
 
 const getAnnotationAuthor = (dependencies: Queries, listId: ListId) => pipe(
