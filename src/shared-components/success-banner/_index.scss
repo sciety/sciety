@@ -1,6 +1,6 @@
 @use 'settings';
 @use '../../sass/typography';
-@use '../../sass/functions';
+@use 'functions';
 
 .success-banner {
   border: settings.$border-width-wide solid settings.$colour-success;
