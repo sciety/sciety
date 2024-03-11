@@ -4,6 +4,7 @@ import { List } from '../../read-models/lists';
 import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
 import { Queries } from '../../read-models';
+import { constructUserAvatarUrl } from '../../read-side';
 
 export type Dependencies = Queries & {
   logger: Logger,
@@ -43,7 +44,7 @@ const getOwnerAvatarUrl = (
             });
             return degradedAvatarUrl;
           },
-          (userDetails) => (userDetails.avatarUrl),
+          constructUserAvatarUrl,
         ),
       );
   }
