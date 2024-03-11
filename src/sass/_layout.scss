@@ -1,4 +1,4 @@
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use 'functions';
 @use 'breakpoints';
 
@@ -25,8 +25,8 @@
 }
 
 @mixin page-content-horizontal-margins() {
-  margin-left: functions.px-to-rem(utilities.$default-gutter);
-  margin-right: functions.px-to-rem(utilities.$default-gutter);
+  margin-left: functions.px-to-rem(settings.$default-gutter);
+  margin-right: functions.px-to-rem(settings.$default-gutter);
 
   @include breakpoints.not-narrow {
     margin-left: 0;
@@ -35,8 +35,8 @@
 }
 
 @mixin allow-edge-to-edge-content-when-narrow() {
-  margin-left: utilities.$default-gutter * -1;
-  margin-right: utilities.$default-gutter * -1;
+  margin-left: settings.$default-gutter * -1;
+  margin-right: settings.$default-gutter * -1;
 
   @include breakpoints.not-narrow {
     margin-left: 0;
@@ -59,7 +59,7 @@
 .sciety-grid-two-columns {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-column-gap: functions.px-to-rem(utilities.$default-gutter);
+  grid-column-gap: functions.px-to-rem(settings.$default-gutter);
   grid-auto-rows: min-content;
   grid-auto-flow: column;
 
@@ -74,11 +74,11 @@
 
 .sciety-grid-two-columns {
   width: 100%;
-  max-width: functions.px-to-rem(utilities.$max-site-width);
+  max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
   @include breakpoints.not-narrow {
     margin: 0 auto;
-    padding: 0 functions.px-to-rem(utilities.$default-gutter);
+    padding: 0 functions.px-to-rem(settings.$default-gutter);
   }
 }
 

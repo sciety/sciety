@@ -1,7 +1,7 @@
 @use '../../sass/functions';
 @use '../../sass/list';
 @use '../../sass/button';
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use '../../sass/states';
 @use '../../sass/typography';
 @use '../../sass/layout';
@@ -11,8 +11,8 @@
 
 $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;
-$_navigation-text-top-spacing: functions.px-to-rem(utilities.$navigation-link-border-distance + utilities.$navigation-link-border-width);
-$_navigation-text-bottom-spacing: functions.px-to-rem(utilities.$navigation-link-border-distance);
+$_navigation-text-top-spacing: functions.px-to-rem(settings.$navigation-link-border-distance + settings.$navigation-link-border-width);
+$_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-border-distance);
 $_avatar-height-coupled-to-buttons: 34px;
 
 .utility-bar {
@@ -23,7 +23,7 @@ $_avatar-height-coupled-to-buttons: 34px;
   align-self: center;
 
   @include breakpoints.site-header() {
-    margin-right: functions.px-to-rem(utilities.$default-gutter);
+    margin-right: functions.px-to-rem(settings.$default-gutter);
   }
 }
 
@@ -66,7 +66,7 @@ $_avatar-height-coupled-to-buttons: 34px;
   @include typography.button();
   padding-top: $_navigation-text-top-spacing;
   padding-bottom: $_navigation-text-bottom-spacing;
-  border-bottom: utilities.$navigation-link-border-width solid transparent;
+  border-bottom: settings.$navigation-link-border-width solid transparent;
   display: block;
 
   &:link,
@@ -86,17 +86,17 @@ $_avatar-height-coupled-to-buttons: 34px;
 
 .utility-bar__list_link_secondary_button {
   @include typography.button();
-  border-radius: utilities.$border-radius;
-  border: utilities.$border-width solid utilities.$colour-furniture;
-  padding: functions.px-to-rem(8px) functions.px-to-rem(12px - utilities.$border-width);
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
 
   &:link,
   &:visited {
     color: var(--colour-text-navigation-link);
 
     @include states.link() {
-      background-color: utilities.$colour-furniture;
-      color: utilities.$colour-brand;
+      background-color: settings.$colour-furniture;
+      color: settings.$colour-brand;
       ;
     }
   }
@@ -124,7 +124,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 
 .utility-bar-user-profile__avatar {
   @include avatar.border();
-  background-color: utilities.$colour-white;
+  background-color: settings.$colour-white;
   width: functions.px-to-rem($_avatar-height-coupled-to-buttons);
   height: auto;
   margin-right: functions.px-to-rem(20px);

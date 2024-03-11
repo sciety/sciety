@@ -1,7 +1,7 @@
 @use 'sass:math';
 
 @use 'functions';
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use 'breakpoints';
 
 @mixin sizing ($font-size, $line-height-in-px: 24px) {
@@ -17,45 +17,45 @@
 
   &:hover,
   &:active {
-    color: utilities.$colour-accent;
+    color: settings.$colour-accent;
   }
 }
 
 @mixin card-title () {
-  font-family: utilities.$font-family;
+  font-family: settings.$font-family;
   font-size: functions.px-to-rem(18px);
   line-height: 1.3;
   font-weight: bold;
 }
 
 @mixin subheading () {
-  font-family: utilities.$font-family;
+  font-family: settings.$font-family;
   font-size: functions.px-to-rem(16px);
   line-height: 1.4;
   font-weight: bold;
 }
 
 @mixin body () {
-  font-family: utilities.$font-family;
+  font-family: settings.$font-family;
   font-size: functions.px-to-rem(16px);
   line-height: 1.6;
 }
 
 @mixin button () {
-  font-family: utilities.$font-family;
+  font-family: settings.$font-family;
   font-size: functions.px-to-rem(16px);
   font-weight: bold;
   line-height: 1;
 }
 
 @mixin details () {
-  font-family: utilities.$font-family;
+  font-family: settings.$font-family;
   font-size: functions.px-to-rem(14px);
   line-height: 1.2;
 }
 
 @mixin heading-base() {
-  font-family: utilities.$font-family;
+  font-family: settings.$font-family;
   font-weight: bold;
   line-height: 1.2;
 }

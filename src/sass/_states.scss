@@ -1,14 +1,14 @@
-@use 'sass-utilities' as utilities;
+@use 'settings';
 
 @mixin focus() {
   &:focus-visible {
     outline-style: none;
-    box-shadow: 0 0 0 utilities.$focus-width utilities.$colour-focus;
+    box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
   }
 
   &:focus {
     outline-style: none;
-    box-shadow: 0 0 0 utilities.$focus-width utilities.$colour-focus;
+    box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
 
     &:not(:focus-visible) {
       box-shadow: none;

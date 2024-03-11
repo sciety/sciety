@@ -1,4 +1,4 @@
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use '../../../sass/contain-image';
 @use '../../../sass/functions';
 @use '../../../sass/layout';
@@ -9,8 +9,8 @@
 @use 'common';
 
 .home-page-groups {
-  padding-left: functions.px-to-rem(utilities.$default-gutter);
-  padding-right: functions.px-to-rem(utilities.$default-gutter);
+  padding-left: functions.px-to-rem(settings.$default-gutter);
+  padding-right: functions.px-to-rem(settings.$default-gutter);
   margin-left: auto;
   margin-right: auto;
   margin-bottom: common.$section-vertical-separation;

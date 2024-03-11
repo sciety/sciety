@@ -3,7 +3,7 @@
 @use 'breakpoints';
 @use '../../sass/functions';
 @use '../../sass/layout';
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use '../../sass/states';
 @use '../../sass/typography';
 @use '../../sass/list';
@@ -12,20 +12,20 @@
 
 $_search-icon-size: functions.px-to-rem(24px);
 $_menu-icon-size: functions.px-to-rem(26px);
-$_search-button-padding: functions.px-to-rem(12px - utilities.$border-width);
-$_search-button-width-on-mobile: $_search-icon-size + $_search-button-padding * 2 + functions.px-to-rem(utilities.$border-width) * 2;
+$_search-button-padding: functions.px-to-rem(12px - settings.$border-width);
+$_search-button-width-on-mobile: $_search-icon-size + $_search-button-padding * 2 + functions.px-to-rem(settings.$border-width) * 2;
 $_left-links-width-not-narrow: 280px;
 
 .site-header {
   @include schemed-header-colours.light();
   background-color: var(--colour-site-header-background);
   width: 100%;
-  height: functions.px-to-rem(utilities.$site-header-height);
+  height: functions.px-to-rem(settings.$site-header-height);
   display: flex;
 
   @include breakpoints.site-header() {
     display: grid;
-    grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(utilities.$max-site-width - $_left-links-width-not-narrow)) 1fr;
+    grid-template-columns: 1fr auto minmax(auto, functions.px-to-rem(settings.$max-site-width - $_left-links-width-not-narrow)) 1fr;
   }
 
   &::before,
@@ -40,8 +40,8 @@ $_left-links-width-not-narrow: 280px;
 }
 
 .site-header__left_links {
-  padding-left: functions.px-to-rem(utilities.$default-gutter);
-  padding-right: functions.px-to-rem(utilities.$default-gutter);
+  padding-left: functions.px-to-rem(settings.$default-gutter);
+  padding-right: functions.px-to-rem(settings.$default-gutter);
   border-bottom: 1px solid var(--colour-site-header-border);
   flex-grow: 1;
 
@@ -97,7 +97,7 @@ $_left-links-width-not-narrow: 280px;
 
 .site-header__menu_link {
   display: flex;
-  margin-right: $_search-button-width-on-mobile - $_menu-icon-size + functions.px-to-rem(utilities.$click-target-separation);
+  margin-right: $_search-button-width-on-mobile - $_menu-icon-size + functions.px-to-rem(settings.$click-target-separation);
   ;
 
   &::before {
@@ -110,19 +110,19 @@ $_left-links-width-not-narrow: 280px;
   @include typography.button();
   display: flex;
   align-items: center;
-  border-radius: utilities.$border-radius;
-  border: utilities.$border-width solid utilities.$colour-furniture;
-  padding: 0.25rem functions.px-to-rem(12px - utilities.$border-width);
-  background-color: utilities.$colour-white;
-  margin-left: functions.px-to-rem(utilities.$click-target-separation);
+  border-radius: settings.$border-radius;
+  border: settings.$border-width solid settings.$colour-furniture;
+  padding: 0.25rem functions.px-to-rem(12px - settings.$border-width);
+  background-color: settings.$colour-white;
+  margin-left: functions.px-to-rem(settings.$click-target-separation);
 
   &:link,
   &:visited {
     color: var(--colour-text-navigation-link);
 
     @include states.link() {
-      background-color: utilities.$colour-furniture;
-      color: utilities.$colour-brand;
+      background-color: settings.$colour-furniture;
+      color: settings.$colour-brand;
       ;
     }
   }
@@ -138,6 +138,6 @@ $_left-links-width-not-narrow: 280px;
 
   @include breakpoints.site-header() {
     @include layout.visually-unhidden();
-    color: utilities.$colour-brand;
+    color: settings.$colour-brand;
   }
 }

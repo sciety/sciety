@@ -1,4 +1,4 @@
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use '../../sass/functions';
 @use '../../sass/card';
 @use '../../sass/typography';
@@ -13,10 +13,10 @@ $_card-padding: 16px;
 
 .article-card {
   position: relative;
-  background-color: utilities.$colour-white;
+  background-color: settings.$colour-white;
   padding-top: 2rem;
   padding-bottom: 2.5rem;
-  border-bottom: utilities.$border-width solid utilities.$colour-furniture;
+  border-bottom: settings.$border-width solid settings.$colour-furniture;
 }
 
 .article-card-content {
@@ -24,7 +24,7 @@ $_card-padding: 16px;
 }
 
 .article-card__title {
-  font-family: utilities.$font-family;
+  font-family: settings.$font-family;
   font-size: functions.px-to-rem(20px);
   line-height: 1.3;
   font-weight: bold;
@@ -56,7 +56,7 @@ $_card-padding: 16px;
 
 .article-card__controls {
   display: flex;
-  gap: functions.px-to-rem(utilities.$click-target-separation);
+  gap: functions.px-to-rem(settings.$click-target-separation);
   align-items: center;
   margin-top: functions.px-to-rem(16px);
 }
@@ -65,7 +65,7 @@ $_card-padding: 16px;
 .article-card-teasers {
   @include list.basics();
   margin-bottom: functions.px-to-rem(24px);
-  background-color: utilities.$colour-background-grey;
+  background-color: settings.$colour-background-grey;
   padding: functions.px-to-rem($_card-padding);
 }
 

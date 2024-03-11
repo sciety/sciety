@@ -1,5 +1,5 @@
 @use 'avatar';
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use '../../sass/functions';
 @use 'breakpoints';
 
@@ -9,7 +9,7 @@ $_triangle-size: 32px;
   @include breakpoints.two-column-display {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-column-gap: functions.px-to-rem(utilities.$default-gutter);
+    grid-column-gap: functions.px-to-rem(settings.$default-gutter);
     padding-bottom: 0;
     border-bottom-width: 0;
   }
@@ -17,15 +17,15 @@ $_triangle-size: 32px;
   .article-card-content {
     @include breakpoints.two-column-display {
       padding-bottom: 2.5rem;
-      border-bottom: utilities.$border-width solid utilities.$colour-furniture;
+      border-bottom: settings.$border-width solid settings.$colour-furniture;
     }
   }
 }
 
 .article-card-annotation {
   grid-column: 9/13;
-  border: utilities.$border-width solid utilities.$colour-accent;
-  border-radius: utilities.$border-radius;
+  border: settings.$border-width solid settings.$colour-accent;
+  border-radius: settings.$border-radius;
   padding: functions.px-to-rem(16px);
   margin-top: functions.px-to-rem(40px);
   position: relative;

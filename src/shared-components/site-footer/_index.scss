@@ -3,7 +3,7 @@
 @use 'breakpoints';
 @use '../../sass/button';
 @use '../../sass/functions';
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use '../../sass/typography';
 @use '../../sass/layout';
 @use '../../sass/list';
@@ -18,7 +18,7 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
     margin-right: auto;
   }
 
-  border-top: 1px solid utilities.$colour-furniture;
+  border-top: 1px solid settings.$colour-furniture;
   padding-top: $_outer-vertical-spacing;
   margin-bottom: $_outer-vertical-spacing;
   max-width: functions.px-to-rem(1200px);
@@ -42,7 +42,7 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
 }
 
 .main-footer {
-  background-color: utilities.$colour-brand;
+  background-color: settings.$colour-brand;
   padding-top: $_outer-vertical-spacing;
   padding-bottom: $_outer-vertical-spacing;
   text-align: center;
@@ -69,15 +69,15 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
   @include typography.sizing(18px, 20px);
   display: block;
   font-weight: bold;
-  border-bottom: utilities.$navigation-link-border-width solid utilities.$colour-white;
-  padding-bottom: functions.px-to-rem(utilities.$navigation-link-border-distance);
+  border-bottom: settings.$navigation-link-border-width solid settings.$colour-white;
+  padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
 
   &:link,
   &:visited {
-    color: utilities.$colour-white;
+    color: settings.$colour-white;
 
     @include states.link() {
-      color: utilities.$colour-accent-hover-on-dark-background;
+      color: settings.$colour-accent-hover-on-dark-background;
       border-color: transparent;
     }
   }
@@ -85,7 +85,7 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
 
 .main-footer__small_print {
   @include typography.sizing(14px, 16px);
-  color: utilities.$colour-white;
+  color: settings.$colour-white;
 
   a:link {
     font-weight: normal;
@@ -97,7 +97,7 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
     color: inherit;
 
     @include states.link() {
-      color: utilities.$colour-accent-hover-on-dark-background;
+      color: settings.$colour-accent-hover-on-dark-background;
     }
   }
 }

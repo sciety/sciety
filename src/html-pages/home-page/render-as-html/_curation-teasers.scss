@@ -1,7 +1,7 @@
 @use '../../../sass/functions';
 @use '../../../sass/list';
 @use '../../../sass/layout';
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use '../../../sass/typography';
 @use 'breakpoints';
 @use '../../../sass/card';
@@ -30,11 +30,11 @@ $_arbitrary-large-amount-of-px: 9000px;
   padding-bottom: common.$section-vertical-separation;
   padding-top: common.$section-vertical-separation;
   max-width: common.$home-page-section-max-width;
-  background-color: utilities.$colour-curation-teasers-background;
+  background-color: settings.$colour-curation-teasers-background;
 
   @include breakpoints.not-narrow {
-    padding-left: functions.px-to-rem(utilities.$default-gutter);
-    padding-right: functions.px-to-rem(utilities.$default-gutter);
+    padding-left: functions.px-to-rem(settings.$default-gutter);
+    padding-right: functions.px-to-rem(settings.$default-gutter);
   }
 
   @media screen and (min-width: common.$home-page-breakpoint) {
@@ -42,7 +42,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 
     &::before {
       content: '';
-      border-left: $_arbitrary-large-amount-of-px solid utilities.$colour-curation-teasers-background;
+      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-curation-teasers-background;
       position: absolute;
       bottom: 0;
       left: calc(#{$_arbitrary-large-amount-of-px} * -1);
@@ -53,7 +53,7 @@ $_arbitrary-large-amount-of-px: 9000px;
 
     &::after {
       content: '';
-      border-left: $_arbitrary-large-amount-of-px solid utilities.$colour-curation-teasers-background;
+      border-left: $_arbitrary-large-amount-of-px solid settings.$colour-curation-teasers-background;
       position: absolute;
       bottom: 0;
       left: 0;

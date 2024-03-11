@@ -1,4 +1,4 @@
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use '../../../sass/functions';
 @use '../../../sass/typography';
 @use 'breakpoints';
@@ -19,7 +19,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
 }
 
 .home-page-hero-wrapper {
-  background-color: utilities.$colour-brand;
+  background-color: settings.$colour-brand;
 
   img {
     display: none;
@@ -54,10 +54,10 @@ $_width-at-which-image-is-too-narrow: 1680px;
 }
 
 .home-page-hero {
-  color: utilities.$colour-white;
+  color: settings.$colour-white;
   padding-bottom: functions.px-to-rem(48px);
-  padding-right: functions.px-to-rem(utilities.$default-gutter);
-  padding-left: functions.px-to-rem(utilities.$default-gutter);
+  padding-right: functions.px-to-rem(settings.$default-gutter);
+  padding-left: functions.px-to-rem(settings.$default-gutter);
   padding-top: functions.px-to-rem(20px);
   max-width: fit-content;
   justify-self: center;

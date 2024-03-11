@@ -1,15 +1,15 @@
-@use 'sass-utilities' as utilities;
+@use 'settings';
 
 @mixin light () {
-    --colour-site-header-background: #{utilities.$colour-white};
-    --colour-text-primary: #{utilities.$colour-text-primary};
-    --colour-text-navigation-link: #{utilities.$colour-brand};
-    --colour-site-header-border: #{utilities.$colour-furniture};
+    --colour-site-header-background: #{settings.$colour-white};
+    --colour-text-primary: #{settings.$colour-text-primary};
+    --colour-text-navigation-link: #{settings.$colour-brand};
+    --colour-site-header-border: #{settings.$colour-furniture};
 }
 
 @mixin dark () {
-    --colour-site-header-background: #{utilities.$colour-brand};
-    --colour-text-primary: #{utilities.$colour-white};
-    --colour-text-navigation-link: #{utilities.$colour-white};
-    --colour-site-header-border: #{utilities.$colour-brand};
+    --colour-site-header-background: #{settings.$colour-brand};
+    --colour-text-primary: #{settings.$colour-white};
+    --colour-text-navigation-link: #{settings.$colour-white};
+    --colour-site-header-border: #{settings.$colour-brand};
 }

@@ -1,6 +1,6 @@
 @use 'sass:color';
 @use 'functions';
-@use 'sass-utilities' as utilities;
+@use 'settings';
 @use 'states';
 @use 'typography';
 
@@ -9,7 +9,7 @@
 
   display: inline-block;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
-  border-radius: utilities.$border-radius;
+  border-radius: settings.$border-radius;
 
   color: $text;
   background-color: $background;
@@ -42,7 +42,7 @@
 
 @mixin _button($text, $background, $background-hover) {
   border-width: 0;
-  border-radius: utilities.$border-radius;
+  border-radius: settings.$border-radius;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
 
   color: $text;
@@ -55,32 +55,32 @@
 
 @mixin primary {
   @include _button(
-    $text: utilities.$colour-white,
-    $background: utilities.$colour-accent,
-    $background-hover: utilities.$colour-accent-hover,
+    $text: settings.$colour-white,
+    $background: settings.$colour-accent,
+    $background-hover: settings.$colour-accent-hover,
   );
 }
 
 @mixin primary-link {
   @include _link(
-    $text: utilities.$colour-white,
-    $background: utilities.$colour-accent,
-    $background-hover: utilities.$colour-accent-hover,
+    $text: settings.$colour-white,
+    $background: settings.$colour-accent,
+    $background-hover: settings.$colour-accent-hover,
   );
 }
 
 @mixin secondary() {
   @include _button(
-    $text: utilities.$colour-text-primary,
-    $background: utilities.$colour-background-grey,
-    $background-hover: color.adjust(utilities.$colour-background-grey, $lightness: -12%),
+    $text: settings.$colour-text-primary,
+    $background: settings.$colour-background-grey,
+    $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
   );
 }
 
 @mixin secondary-link() {
   @include _link(
-    $text: utilities.$colour-text-primary,
-    $background: utilities.$colour-background-grey,
-    $background-hover: color.adjust(utilities.$colour-background-grey, $lightness: -12%),
+    $text: settings.$colour-text-primary,
+    $background: settings.$colour-background-grey,
+    $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
     );
 }
