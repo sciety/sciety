@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
 import { List } from '../../../read-models/lists';
 import { Dependencies } from './dependencies';
+import { constructUserAvatarUrl } from '../../../read-side';
 
 type ListWithAddedOwnershipInformation = {
   name: List['name'],
@@ -63,7 +64,7 @@ export const addListOwnershipInformation = (
             {
               ...list,
               ownerName: userDetails.handle,
-              ownerAvatarUrl: userDetails.avatarUrl,
+              ownerAvatarUrl: constructUserAvatarUrl(userDetails),
               linkUrl: renderListPageLinkHref(list.id),
             }
           ),
