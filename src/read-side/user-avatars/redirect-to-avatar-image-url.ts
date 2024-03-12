@@ -7,18 +7,21 @@ import { sendRedirect } from '../../http/send-redirect';
 import { Queries } from '../../read-models';
 import { candidateUserHandleCodec } from '../../types/candidate-user-handle';
 import * as DE from '../../types/data-error';
+import { ExternalQueries } from '../../third-parties';
+
+type Dependencies = Queries & ExternalQueries;
 
 const paramsCodec = t.type({
   handle: candidateUserHandleCodec,
 });
 
-export const redirectToAvatarImageUrl = (queries: Queries): Middleware => async (context, next) => {
+export const redirectToAvatarImageUrl = (dependencies: Dependencies): Middleware => async (context, next) => {
   const avatarUrl = pipe(
     context.params,
     paramsCodec.decode,
     E.map((params) => params.handle),
     E.flatMapOption(
-      queries.lookupUserByHandle,
+      dependencies.lookupUserByHandle,
       () => DE.notFound,
     ),
     E.map((userDetails) => userDetails.avatarUrl),
