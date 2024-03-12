@@ -8,6 +8,7 @@ import { ExpressionDoi } from '../types/expression-doi';
 import { SearchResults } from '../types/search-results';
 import { ExpressionFrontMatter } from '../types/expression-front-matter';
 import { PublishingHistory } from '../types/publishing-history';
+import { UserId } from '../types/user-id';
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
@@ -23,6 +24,8 @@ type FetchPublishingHistory = (
   expressionDoi: ExpressionDoi,
 ) => TE.TaskEither<DE.DataError, PublishingHistory>;
 
+type FetchUserAvatarUrl = (userId: UserId) => TE.TaskEither<DE.DataError, string>;
+
 type GetArticleSubjectArea = (expressionDoi: ExpressionDoi) => TE.TaskEither<DE.DataError, SubjectArea>;
 
 type SearchForPaperExpressions = (
@@ -30,11 +33,12 @@ type SearchForPaperExpressions = (
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>;
 
 export type ExternalQueries = {
-  fetchExpressionFrontMatter: FetchExpressionFrontMatter,
-  fetchRecommendedPapers: FetchRecommendedPapers,
   fetchEvaluation: FetchEvaluation,
-  fetchStaticFile: FetchStaticFile,
+  fetchExpressionFrontMatter: FetchExpressionFrontMatter,
   fetchPublishingHistory: FetchPublishingHistory,
+  fetchRecommendedPapers: FetchRecommendedPapers,
+  fetchStaticFile: FetchStaticFile,
+  fetchUserAvatarUrl: FetchUserAvatarUrl,
   getArticleSubjectArea: GetArticleSubjectArea,
   searchForPaperExpressions: SearchForPaperExpressions,
 };

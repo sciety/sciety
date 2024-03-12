@@ -38,6 +38,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     url: new URL(arbitraryUri()),
   }),
   fetchStaticFile: () => TE.right('lorem ipsum'),
+  fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
   fetchPublishingHistory: (expressionDoi) => pipe(
     [
       {

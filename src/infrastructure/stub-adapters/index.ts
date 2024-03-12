@@ -9,13 +9,14 @@ import { ExternalQueries } from '../../third-parties';
 
 export const stubAdapters: ExternalQueries = {
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
-  fetchStaticFile,
-  searchForPaperExpressions,
-  fetchPublishingHistory,
   fetchEvaluation,
+  fetchPublishingHistory,
   fetchRecommendedPapers,
+  fetchStaticFile,
+  fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
   getArticleSubjectArea: () => TE.right({
     value: 'Biology',
     server: 'biorxiv',
   }),
+  searchForPaperExpressions,
 };
