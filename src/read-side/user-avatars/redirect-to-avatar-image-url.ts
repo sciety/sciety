@@ -1,4 +1,6 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
 import { Middleware } from '@koa/router';
 import { pipe } from 'fp-ts/function';
@@ -16,7 +18,7 @@ const paramsCodec = t.type({
 });
 
 export const redirectToAvatarImageUrl = (dependencies: Dependencies): Middleware => async (context, next) => {
-  const avatarUrl = pipe(
+  const avatarUrl = await pipe(
     context.params,
     paramsCodec.decode,
     E.map((params) => params.handle),
@@ -24,10 +26,11 @@ export const redirectToAvatarImageUrl = (dependencies: Dependencies): Middleware
       dependencies.lookupUserByHandle,
       () => DE.notFound,
     ),
-    E.map((userDetails) => userDetails.avatarUrl),
-    E.getOrElseW(() => '/static/images/profile-dark.svg'),
-    toRedirectTarget,
-  );
+    TE.fromEither,
+    TE.map((userDetails) => userDetails.avatarUrl),
+    TE.getOrElseW(() => T.of('/static/images/profile-dark.svg')),
+    T.map(toRedirectTarget),
+  )();
   sendRedirect(context, avatarUrl);
   await next();
 };
