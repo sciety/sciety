@@ -17,6 +17,7 @@ Development
 - [GNU Make]
 - [Node.js]
 - [Git LFS]
+- [coreutils] (for the `timeout` command)
 - Unix-like operating system
 
 </details>
@@ -233,3 +234,5 @@ We released this software under the [MIT license][License]. Copyright © 2020 [e
 [sciety.org]: https://sciety.org
 [aws credentials]: https://github.com/sciety/infrastructure/blob/main/README.md#aws-access
 [kubeconfig setup]: https://github.com/sciety/infrastructure/blob/main/README.md#kubectl-access
+[coreutils]: https://www.gnu.org/software/coreutils/
+
