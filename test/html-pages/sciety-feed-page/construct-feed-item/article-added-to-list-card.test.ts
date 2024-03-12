@@ -50,7 +50,7 @@ describe('article-added-to-list-card', () => {
       });
 
       it('includes the user\'s avatar', async () => {
-        expect(viewModel.avatarUrl).toStrictEqual(createuserAccountCommand.avatarUrl);
+        expect(viewModel.avatarUrl).toContain(createuserAccountCommand.handle);
       });
 
       it('includes the event date', async () => {

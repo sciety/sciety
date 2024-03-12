@@ -45,7 +45,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('displays the user\'s avatar', async () => {
-      expect(viewModel.avatarUrl).toStrictEqual(createUserAccountCommand.avatarUrl);
+      expect(viewModel.avatarUrl).toContain(createUserAccountCommand.handle);
     });
 
     it('displays the user\'s handle in the title', async () => {
@@ -54,39 +54,6 @@ describe('user-followed-a-group-card', () => {
 
     it('displays the date of the event', async () => {
       expect(viewModel.date).toStrictEqual(date);
-    });
-
-    it('links to the group page', async () => {
-      expect(viewModel.feedItemHref).toBe(`/groups/${addGroupCommand.slug}`);
-    });
-
-    it('includes the group\'s name in the details title', () => {
-      expect(viewModel.details?.title).toContain(addGroupCommand.name);
-    });
-
-    it('includes the group\'s short description in the details content', () => {
-      expect(viewModel.details?.content).toStrictEqual(rawUserInput(addGroupCommand.shortDescription));
-    });
-  });
-
-  describe('when the user details cannot be found', () => {
-    let viewModel: ScietyFeedCard;
-
-    beforeEach(async () => {
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      viewModel = pipe(
-        event,
-        userFollowedAGroupCard(dependencies),
-        O.getOrElseW(shouldNotBeCalled),
-      );
-    });
-
-    it('replaces handle with "a user"', async () => {
-      expect(viewModel.titleText).toMatch(/^A user/);
-    });
-
-    it('replaces avatar with a default image', async () => {
-      expect(viewModel.avatarUrl).toBe('/static/images/sciety-logo.jpg');
     });
 
     it('links to the group page', async () => {

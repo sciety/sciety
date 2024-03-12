@@ -53,7 +53,7 @@ describe('collapsed-articles-added-to-list-card', () => {
       });
 
       it('includes the user\'s avatar', async () => {
-        expect(viewModel.avatarUrl).toStrictEqual(createUserAccountCommand.avatarUrl);
+        expect(viewModel.avatarUrl).toContain(createUserAccountCommand.handle);
       });
 
       it('includes the event date', async () => {

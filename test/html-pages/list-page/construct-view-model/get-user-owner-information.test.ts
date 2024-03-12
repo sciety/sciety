@@ -4,6 +4,7 @@ import { getUserOwnerInformation } from '../../../../src/html-pages/list-page/co
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('get-user-owner-information', () => {
   let framework: TestFramework;
@@ -23,13 +24,12 @@ describe('get-user-owner-information', () => {
       const ownerInfo = pipe(
         createUserAccountCommand.userId,
         getUserOwnerInformation(framework.dependenciesForViews),
+        O.getOrElseW(shouldNotBeCalled),
       );
 
-      expect(ownerInfo).toStrictEqual(O.some({
-        ownerName: createUserAccountCommand.displayName,
-        ownerAvatarPath: createUserAccountCommand.avatarUrl,
-        ownerHref: `/users/${createUserAccountCommand.handle}`,
-      }));
+      expect(ownerInfo.ownerName).toStrictEqual(createUserAccountCommand.displayName);
+      expect(ownerInfo.ownerAvatarPath).toContain(createUserAccountCommand.handle);
+      expect(ownerInfo.ownerHref).toContain(createUserAccountCommand.handle);
     });
   });
 

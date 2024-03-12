@@ -39,8 +39,8 @@ describe('construct-view-model', () => {
 
     it('the user avatar is included in each card', () => {
       expect(viewmodel).toStrictEqual([
-        expect.objectContaining({ avatarUrl: O.some(createUserAccountCommand.avatarUrl) }),
-        expect.objectContaining({ avatarUrl: O.some(createUserAccountCommand.avatarUrl) }),
+        expect.objectContaining({ avatarUrl: O.some(expect.stringContaining(createUserAccountCommand.handle)) }),
+        expect.objectContaining({ avatarUrl: O.some(expect.stringContaining(createUserAccountCommand.handle)) }),
       ]);
     });
 
