@@ -8,7 +8,7 @@ import { candidateUserHandleCodec } from '../../types/candidate-user-handle';
 
 export const redirectToAvatarImageUrl = (queries: Queries): Middleware => async (context, next) => {
   const avatarUrl = pipe(
-    'foo',
+    context.params,
     candidateUserHandleCodec.decode,
     E.map(queries.lookupUserByHandle),
     () => '/static/images/profile-dark.svg',
