@@ -58,7 +58,7 @@ export const instantiate = (
     ),
     fetchRecommendedPapers: createFetchRecommendedPapers(queryExternalService, logger),
     fetchStaticFile: fetchStaticFile(logger),
-    fetchUserAvatarUrl,
+    fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService),
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
   };
