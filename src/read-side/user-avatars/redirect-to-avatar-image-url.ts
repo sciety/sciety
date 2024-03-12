@@ -21,7 +21,8 @@ export const redirectToAvatarImageUrl = (queries: Queries): Middleware => async 
       queries.lookupUserByHandle,
       () => DE.notFound,
     ),
-    () => '/static/images/profile-dark.svg',
+    E.map((userDetails) => userDetails.avatarUrl),
+    E.getOrElseW(() => '/static/images/profile-dark.svg'),
     toRedirectTarget,
   );
   sendRedirect(context, avatarUrl);
