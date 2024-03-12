@@ -10,12 +10,19 @@ import { Queries } from '../../read-models';
 import { candidateUserHandleCodec } from '../../types/candidate-user-handle';
 import * as DE from '../../types/data-error';
 import { ExternalQueries } from '../../third-parties';
+import { UserDetails } from '../../types/user-details';
 
 type Dependencies = Queries & ExternalQueries;
 
 const paramsCodec = t.type({
   handle: candidateUserHandleCodec,
 });
+
+const fetchAvatarUrl = (dependencies: Dependencies) => (userDetails: UserDetails): T.Task<string> => pipe(
+  userDetails.id,
+  dependencies.fetchUserAvatarUrl,
+  TE.getOrElse(() => T.of(userDetails.avatarUrl)),
+);
 
 export const redirectToAvatarImageUrl = (dependencies: Dependencies): Middleware => async (context, next) => {
   const avatarUrl = await pipe(
@@ -27,7 +34,7 @@ export const redirectToAvatarImageUrl = (dependencies: Dependencies): Middleware
       () => DE.notFound,
     ),
     TE.fromEither,
-    TE.map((userDetails) => userDetails.avatarUrl),
+    TE.chainTaskK(fetchAvatarUrl(dependencies)),
     TE.getOrElseW(() => T.of('/static/images/profile-dark.svg')),
     T.map(toRedirectTarget),
   )();
