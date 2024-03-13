@@ -71,7 +71,7 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('returns the requested group with only the name changed', () => {
+    it('returns the requested group with only the name changed', () => {
       expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
         name: newName,
         avatarPath: groupJoinedEvent.avatarPath,
@@ -79,7 +79,7 @@ describe('getGroup', () => {
         shortDescription: groupJoinedEvent.shortDescription,
         homepage: groupJoinedEvent.homepage,
         slug: groupJoinedEvent.slug,
-        largeLogoPath: groupJoinedEvent.largeLogoPath,
+        largeLogoPath: O.fromNullable(groupJoinedEvent.largeLogoPath),
       })));
     });
   });
@@ -105,7 +105,7 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.failing('the new short description is returned', () => {
+    it('the new short description is returned', () => {
       expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
         name: groupJoinedEvent.name,
         avatarPath: groupJoinedEvent.avatarPath,
@@ -113,7 +113,7 @@ describe('getGroup', () => {
         shortDescription: newShortDescription,
         homepage: groupJoinedEvent.homepage,
         slug: groupJoinedEvent.slug,
-        largeLogoPath: groupJoinedEvent.largeLogoPath,
+        largeLogoPath: O.fromNullable(groupJoinedEvent.largeLogoPath),
       })));
     });
   });
