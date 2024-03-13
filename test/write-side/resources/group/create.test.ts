@@ -4,7 +4,6 @@ import { create } from '../../../../src/write-side/resources/group/create';
 import { constructEvent, EventOfType } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource-events.helper';
@@ -57,7 +56,6 @@ describe('create', () => {
 
   describe('when passed a value taken by another group', () => {
     const otherGroupJoinedEvent = arbitraryGroupJoinedEvent();
-    const otherGroup = arbitraryGroup();
 
     describe('name', () => {
       describe('and the other group\'s details have never been updated', () => {
@@ -77,9 +75,9 @@ describe('create', () => {
         const name = arbitraryString();
         const result = pipe(
           [
-            arbitraryGroupJoinedEvent(otherGroup.id),
+            otherGroupJoinedEvent,
             constructEvent('GroupDetailsUpdated')({
-              groupId: otherGroup.id,
+              groupId: otherGroupJoinedEvent.groupId,
               name,
               avatarPath: undefined,
               descriptionPath: undefined,
@@ -116,12 +114,9 @@ describe('create', () => {
         const slug = arbitraryWord();
         const result = pipe(
           [
-            constructEvent('GroupJoined')({
-              ...otherGroup,
-              groupId: otherGroup.id,
-            }),
+            otherGroupJoinedEvent,
             constructEvent('GroupDetailsUpdated')({
-              groupId: otherGroup.id,
+              groupId: otherGroupJoinedEvent.groupId,
               name: undefined,
               avatarPath: undefined,
               descriptionPath: undefined,
@@ -142,20 +137,12 @@ describe('create', () => {
   });
 
   describe('when the group already exists', () => {
-    const groupId = arbitraryGroupId();
+    const groupJoinedEvent = arbitraryGroupJoinedEvent();
     const result = pipe(
       [
-        constructEvent('GroupJoined')({
-          groupId,
-          name: newGroup.name,
-          avatarPath: newGroup.avatarPath,
-          descriptionPath: newGroup.descriptionPath,
-          shortDescription: newGroup.shortDescription,
-          homepage: newGroup.homepage,
-          slug: newGroup.slug,
-        }),
+        groupJoinedEvent,
       ],
-      create({ ...arbitraryGroup(), groupId }),
+      create({ ...arbitraryGroup(), groupId: groupJoinedEvent.groupId }),
     );
 
     it('fails with no events raised', () => {
