@@ -83,15 +83,14 @@ describe('getGroup', () => {
   });
 
   describe('when the group has changed its short description', () => {
+    const groupId = arbitraryGroupId();
+    const groupJoinedEvent = arbitraryGroupJoinedEvent(groupId);
     const newShortDescription = arbitraryString();
     const readModel = pipe(
       [
-        constructEvent('GroupJoined')({
-          groupId: group.id,
-          ...group,
-        }),
+        groupJoinedEvent,
         constructEvent('GroupDetailsUpdated')({
-          groupId: group.id,
+          groupId,
           name: undefined,
           avatarPath: undefined,
           shortDescription: newShortDescription,
@@ -105,14 +104,14 @@ describe('getGroup', () => {
     );
 
     it('the new short description is returned', () => {
-      expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
-        name: group.name,
-        avatarPath: group.avatarPath,
-        descriptionPath: group.descriptionPath,
+      expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
+        name: groupJoinedEvent.name,
+        avatarPath: groupJoinedEvent.avatarPath,
+        descriptionPath: groupJoinedEvent.descriptionPath,
         shortDescription: newShortDescription,
-        homepage: group.homepage,
-        slug: group.slug,
-        largeLogoPath: group.largeLogoPath,
+        homepage: groupJoinedEvent.homepage,
+        slug: groupJoinedEvent.slug,
+        largeLogoPath: O.none,
       })));
     });
   });
