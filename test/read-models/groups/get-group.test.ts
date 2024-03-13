@@ -34,7 +34,7 @@ describe('getGroup', () => {
       expect(foundGroup.id).toStrictEqual(groupJoinedEvent.groupId);
     });
 
-    it.failing('returns the requested group with a large logo', () => {
+    it('returns the requested group with a large logo', () => {
       expect(foundGroup.largeLogoPath).toStrictEqual(O.some(groupJoinedEvent.largeLogoPath));
     });
   });

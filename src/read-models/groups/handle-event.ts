@@ -16,7 +16,7 @@ const toGroup = (event: EventOfType<'GroupJoined'>) => ({
   shortDescription: event.shortDescription,
   homepage: event.homepage,
   slug: event.slug,
-  largeLogoPath: O.none,
+  largeLogoPath: O.fromNullable(event.largeLogoPath),
 });
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
