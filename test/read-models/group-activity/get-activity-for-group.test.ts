@@ -10,6 +10,7 @@ import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemoval
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -101,7 +102,8 @@ describe('get-activity-for-group', () => {
   });
 
   describe('when the group has joined', () => {
-    const groupJoinedEvent = constructEvent('GroupJoined')({
+    const groupJoinedEvent = {
+      ...arbitraryGroupJoinedEvent(),
       groupId: group.id,
       name: group.name,
       avatarPath: group.avatarPath,
@@ -109,7 +111,7 @@ describe('get-activity-for-group', () => {
       shortDescription: group.shortDescription,
       homepage: group.homepage,
       slug: group.slug,
-    });
+    };
 
     describe('when there are no recorded evaluations', () => {
       const readModel = pipe(
