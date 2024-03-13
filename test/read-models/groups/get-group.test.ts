@@ -4,36 +4,38 @@ import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryString } from '../../helpers';
 import { getGroup } from '../../../src/read-models/groups/get-group';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
 import { Group } from '../../../src/types/group';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
-const group = arbitraryGroup();
-
 describe('getGroup', () => {
   describe('when the group has joined', () => {
+    const groupJoinedEvent = arbitraryGroupJoinedEvent();
     let foundGroup: Group;
 
     beforeEach(() => {
       const readModel = pipe(
         [
-          arbitraryGroupJoinedEvent(group.id),
+          groupJoinedEvent,
         ],
         RA.reduce(initialState(), handleEvent),
       );
 
       foundGroup = pipe(
-        group.id,
+        groupJoinedEvent.groupId,
         getGroup(readModel),
         O.getOrElseW(shouldNotBeCalled),
       );
     });
 
     it('returns the requested group', () => {
-      expect(foundGroup.id).toStrictEqual(group.id);
+      expect(foundGroup.id).toStrictEqual(groupJoinedEvent.groupId);
+    });
+
+    it.failing('returns the requested group with a large logo', () => {
+      expect(foundGroup.largeLogoPath).toStrictEqual(O.some(groupJoinedEvent.largeLogoPath));
     });
   });
 
