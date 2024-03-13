@@ -2,24 +2,11 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as groupResource from '../../../../src/write-side/resources/group';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryString } from '../../../helpers';
 import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryDescriptionPath } from '../../../types/description-path.helper';
 import { GroupId } from '../../../../src/types/group-id';
-
-const arbitraryGroupJoinedEvent = (groupId = arbitraryGroupId(), name = arbitraryString()) => pipe(
-  {
-    groupId,
-    name,
-    avatarPath: arbitraryUri(),
-    descriptionPath: arbitraryDescriptionPath(),
-    shortDescription: arbitraryString(),
-    homepage: arbitraryString(),
-    slug: arbitraryString(),
-  },
-  constructEvent('GroupJoined'),
-);
+import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource-events.helper';
 
 const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, name?: string) => pipe(
   {
