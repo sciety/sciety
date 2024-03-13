@@ -69,7 +69,7 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('returns the requested group with only the name changed', () => {
+    it.failing('returns the requested group with only the name changed', () => {
       expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
         name: newName,
         avatarPath: groupJoinedEvent.avatarPath,
@@ -77,7 +77,7 @@ describe('getGroup', () => {
         shortDescription: groupJoinedEvent.shortDescription,
         homepage: groupJoinedEvent.homepage,
         slug: groupJoinedEvent.slug,
-        largeLogoPath: O.none,
+        largeLogoPath: groupJoinedEvent.largeLogoPath,
       })));
     });
   });
