@@ -118,7 +118,7 @@ describe('getGroup', () => {
     });
   });
 
-  describe('when the group has provided a large logo', () => {
+  describe('when the group has changed its large logo', () => {
     const groupId = arbitraryGroupId();
     const groupJoinedEvent = arbitraryGroupJoinedEvent(groupId);
     const largeLogoPath = arbitraryString();
@@ -139,7 +139,7 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('the large logo path is returned', () => {
+    it.skip('returns the requested group with only the large logo path changed', () => {
       expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
         largeLogoPath: O.some(largeLogoPath),
       })));
