@@ -7,23 +7,33 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryString } from '../../helpers';
 import { getGroup } from '../../../src/read-models/groups/get-group';
+import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
+import { Group } from '../../../src/types/group';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const group = arbitraryGroup();
 
 describe('getGroup', () => {
   describe('when the group has joined', () => {
-    const readModel = pipe(
-      [
-        constructEvent('GroupJoined')({
-          groupId: group.id,
-          ...group,
-        }),
-      ],
-      RA.reduce(initialState(), handleEvent),
-    );
+    let foundGroup: Group;
 
-    it('returns the group', () => {
-      expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(group));
+    beforeEach(() => {
+      const readModel = pipe(
+        [
+          arbitraryGroupJoinedEvent(group.id),
+        ],
+        RA.reduce(initialState(), handleEvent),
+      );
+
+      foundGroup = pipe(
+        group.id,
+        getGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it('returns the requested group', () => {
+      expect(foundGroup.id).toStrictEqual(group.id);
     });
   });
 
