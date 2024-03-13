@@ -15,4 +15,5 @@ export const groupJoinedEventCodec = t.type({
   shortDescription: t.string,
   homepage: t.string,
   slug: t.string,
+  largeLogoPath: t.union([t.string, t.undefined]),
 });
