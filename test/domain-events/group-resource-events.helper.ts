@@ -15,6 +15,6 @@ export const arbitraryGroupJoinedEvent = (
     shortDescription: arbitraryString(),
     homepage: arbitraryString(),
     slug: arbitraryString(),
-    largeLogoPath: undefined,
+    largeLogoPath: arbitraryString(),
   },
 );

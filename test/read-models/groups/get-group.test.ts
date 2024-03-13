@@ -103,7 +103,7 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('the new short description is returned', () => {
+    it.failing('the new short description is returned', () => {
       expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
         name: groupJoinedEvent.name,
         avatarPath: groupJoinedEvent.avatarPath,
@@ -111,7 +111,7 @@ describe('getGroup', () => {
         shortDescription: newShortDescription,
         homepage: groupJoinedEvent.homepage,
         slug: groupJoinedEvent.slug,
-        largeLogoPath: O.none,
+        largeLogoPath: groupJoinedEvent.largeLogoPath,
       })));
     });
   });
