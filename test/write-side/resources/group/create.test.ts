@@ -77,10 +77,7 @@ describe('create', () => {
         const name = arbitraryString();
         const result = pipe(
           [
-            constructEvent('GroupJoined')({
-              ...otherGroup,
-              groupId: otherGroup.id,
-            }),
+            arbitraryGroupJoinedEvent(otherGroup.id),
             constructEvent('GroupDetailsUpdated')({
               groupId: otherGroup.id,
               name,
@@ -103,20 +100,11 @@ describe('create', () => {
 
     describe('slug', () => {
       describe('and the other group\'s details have never been updated', () => {
-        const slug = arbitraryWord();
         const result = pipe(
           [
-            constructEvent('GroupJoined')({
-              groupId: otherGroup.id,
-              name: otherGroup.name,
-              avatarPath: otherGroup.avatarPath,
-              descriptionPath: otherGroup.descriptionPath,
-              shortDescription: otherGroup.shortDescription,
-              homepage: otherGroup.homepage,
-              slug,
-            }),
+            otherGroupJoinedEvent,
           ],
-          create({ ...addGroupCommand, slug }),
+          create({ ...addGroupCommand, slug: otherGroupJoinedEvent.slug }),
         );
 
         it('fails with no events raised', () => {
