@@ -10,7 +10,7 @@ import { arbitraryGroup } from '../../types/group.helper';
 const group = arbitraryGroup();
 
 describe('getGroupBySlug', () => {
-  describe('when the group exists', () => {
+  describe('when the group joined without a large logo', () => {
     const readmodel = pipe(
       [
         ...arbitraryUninterestingEvents,
@@ -31,6 +31,10 @@ describe('getGroupBySlug', () => {
     it('returns the group', () => {
       expect(getGroupBySlug(readmodel)(group.slug)).toStrictEqual(O.some(group));
     });
+  });
+
+  describe('when the group joined with a large logo', () => {
+    it.todo('returns the group');
   });
 
   describe('when the group does not exist', () => {
