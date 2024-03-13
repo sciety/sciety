@@ -7,6 +7,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryGroup } from '../../../types/group.helper';
+import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource-events.helper';
 
 describe('create', () => {
   const newGroup = arbitraryGroup();
@@ -55,24 +56,16 @@ describe('create', () => {
   });
 
   describe('when passed a value taken by another group', () => {
+    const otherGroupJoinedEvent = arbitraryGroupJoinedEvent();
     const otherGroup = arbitraryGroup();
 
     describe('name', () => {
       describe('and the other group\'s details have never been updated', () => {
-        const name = arbitraryString();
         const result = pipe(
           [
-            constructEvent('GroupJoined')({
-              groupId: otherGroup.id,
-              name,
-              avatarPath: otherGroup.avatarPath,
-              descriptionPath: otherGroup.descriptionPath,
-              shortDescription: otherGroup.shortDescription,
-              homepage: otherGroup.homepage,
-              slug: otherGroup.slug,
-            }),
+            otherGroupJoinedEvent,
           ],
-          create({ ...addGroupCommand, name }),
+          create({ ...addGroupCommand, name: otherGroupJoinedEvent.name }),
         );
 
         it('fails with no events raised', () => {
