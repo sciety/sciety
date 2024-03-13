@@ -49,15 +49,14 @@ describe('getGroup', () => {
   });
 
   describe('when the group has changed its name', () => {
+    const groupId = arbitraryGroupId();
+    const groupJoinedEvent = arbitraryGroupJoinedEvent(groupId);
     const newName = arbitraryString();
     const readModel = pipe(
       [
-        constructEvent('GroupJoined')({
-          groupId: group.id,
-          ...group,
-        }),
+        groupJoinedEvent,
         constructEvent('GroupDetailsUpdated')({
-          groupId: group.id,
+          groupId,
           name: newName,
           avatarPath: undefined,
           shortDescription: undefined,
@@ -70,15 +69,15 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
-    it('the new name is returned', () => {
-      expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
+    it('returns the requested group with only the name changed', () => {
+      expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
         name: newName,
-        avatarPath: group.avatarPath,
-        descriptionPath: group.descriptionPath,
-        shortDescription: group.shortDescription,
-        homepage: group.homepage,
-        slug: group.slug,
-        largeLogoPath: group.largeLogoPath,
+        avatarPath: groupJoinedEvent.avatarPath,
+        descriptionPath: groupJoinedEvent.descriptionPath,
+        shortDescription: groupJoinedEvent.shortDescription,
+        homepage: groupJoinedEvent.homepage,
+        slug: groupJoinedEvent.slug,
+        largeLogoPath: O.none,
       })));
     });
   });
