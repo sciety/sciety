@@ -117,15 +117,14 @@ describe('getGroup', () => {
   });
 
   describe('when the group has provided a large logo', () => {
+    const groupId = arbitraryGroupId();
+    const groupJoinedEvent = arbitraryGroupJoinedEvent(groupId);
     const largeLogoPath = arbitraryString();
     const readModel = pipe(
       [
-        constructEvent('GroupJoined')({
-          groupId: group.id,
-          ...group,
-        }),
+        groupJoinedEvent,
         constructEvent('GroupDetailsUpdated')({
-          groupId: group.id,
+          groupId,
           name: undefined,
           avatarPath: undefined,
           shortDescription: undefined,
@@ -139,7 +138,7 @@ describe('getGroup', () => {
     );
 
     it('the large logo path is returned', () => {
-      expect(getGroup(readModel)(group.id)).toStrictEqual(O.some(expect.objectContaining({
+      expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
         largeLogoPath: O.some(largeLogoPath),
       })));
     });
