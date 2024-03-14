@@ -1,3 +1,4 @@
+import { AddGroupCommand } from '../src/write-side/commands';
 import { callApi } from './../feature-test/helpers/call-api.helper';
 
 const constructBackstopStateViaApi = async () => {
@@ -9,6 +10,7 @@ const constructBackstopStateViaApi = async () => {
         avatarPath: '/static/images/profile-dark.svg',
         descriptionPath: 'asapbio-scielo-preprint-crowd-review.md',
         slug: 'groupA',
+        largeLogoPath: '/static/groups/large-logos/access-microbiology.png'
       }
     await callApi('api/add-group', groupA)
 };
