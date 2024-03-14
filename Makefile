@@ -7,7 +7,7 @@ DATA_VOLUME := $(shell pwd)
 IMAGE := sciety/sciety
 IMAGE_TAG := local
 AWS_DEFAULT_REGION := us-east-1
-SHELL := /usr/bin/bash
+SHELL := /bin/bash
 
 export IMAGE
 export IMAGE_TAG
