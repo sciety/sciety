@@ -152,12 +152,11 @@ describe('getGroup', () => {
       expect(result.largeLogoPath).toStrictEqual(O.some(newLargeLogoPath));
     });
 
-    it('returns the group\'s name unchanged', () => {
-      expect(result.name).toStrictEqual(groupJoinedEvent.name);
-    });
-
-    it('returns the group\'s avatarPath unchanged', () => {
-      expect(result.avatarPath).toStrictEqual(groupJoinedEvent.avatarPath);
+    it.each([
+      ['name' as const],
+      ['avatarPath' as const],
+    ])('returns the group\'s %s unchanged', (property) => {
+      expect(result[property]).toStrictEqual(groupJoinedEvent[property]);
     });
 
     it('returns the group\'s descriptionPath unchanged', () => {
