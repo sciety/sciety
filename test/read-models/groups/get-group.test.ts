@@ -30,12 +30,23 @@ describe('getGroup', () => {
       );
     });
 
-    it('returns the requested group', () => {
+    it('returns the requested group\'s id', () => {
       expect(foundGroup.id).toStrictEqual(groupJoinedEvent.groupId);
     });
 
-    it('returns the requested group with a large logo', () => {
+    it('returns the requested group\'s large logo', () => {
       expect(foundGroup.largeLogoPath).toStrictEqual(O.some(groupJoinedEvent.largeLogoPath));
+    });
+
+    it.each([
+      ['name' as const],
+      ['avatarPath' as const],
+      ['descriptionPath' as const],
+      ['shortDescription' as const],
+      ['homepage' as const],
+      ['slug' as const],
+    ])('returns the requested group\'s %s', (property) => {
+      expect(foundGroup[property]).toStrictEqual(groupJoinedEvent[property]);
     });
   });
 
