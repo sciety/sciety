@@ -155,24 +155,12 @@ describe('getGroup', () => {
     it.each([
       ['name' as const],
       ['avatarPath' as const],
+      ['descriptionPath' as const],
+      ['shortDescription' as const],
+      ['homepage' as const],
+      ['slug' as const],
     ])('returns the group\'s %s unchanged', (property) => {
       expect(result[property]).toStrictEqual(groupJoinedEvent[property]);
-    });
-
-    it('returns the group\'s descriptionPath unchanged', () => {
-      expect(result.descriptionPath).toStrictEqual(groupJoinedEvent.descriptionPath);
-    });
-
-    it('returns the group\'s shortDescription unchanged', () => {
-      expect(result.shortDescription).toStrictEqual(groupJoinedEvent.shortDescription);
-    });
-
-    it('returns the group\'s homepage unchanged', () => {
-      expect(result.homepage).toStrictEqual(groupJoinedEvent.homepage);
-    });
-
-    it('returns the group\'s slug unchanged', () => {
-      expect(result.slug).toStrictEqual(groupJoinedEvent.slug);
     });
   });
 });
