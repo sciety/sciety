@@ -5,7 +5,6 @@ import { constructEvent, EventOfType } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource-events.helper';
 import { arbitraryAddGroupCommand } from '../../commands/add-group-command.helper';
 
@@ -134,7 +133,7 @@ describe('create', () => {
       [
         groupJoinedEvent,
       ],
-      create({ ...arbitraryGroup(), groupId: groupJoinedEvent.groupId }),
+      create({ ...arbitraryAddGroupCommand(), groupId: groupJoinedEvent.groupId }),
     );
 
     it('fails with no events raised', () => {

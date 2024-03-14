@@ -10,6 +10,7 @@ export const addGroupCommandCodec = t.strict({
   avatarPath: t.string,
   descriptionPath: descriptionPathCodec,
   slug: t.string,
+  largeLogoPath: t.string,
 });
 
 export type AddGroupCommand = t.TypeOf<typeof addGroupCommandCodec>;

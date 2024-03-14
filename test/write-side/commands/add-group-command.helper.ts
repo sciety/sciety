@@ -11,4 +11,5 @@ export const arbitraryAddGroupCommand = (): AddGroupCommand => ({
   avatarPath: arbitraryString(),
   descriptionPath: arbitraryDescriptionPath(),
   slug: arbitraryWord(),
+  largeLogoPath: arbitraryString(),
 });
