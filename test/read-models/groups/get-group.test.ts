@@ -121,7 +121,7 @@ describe('getGroup', () => {
   describe('when the group has changed its large logo', () => {
     const groupId = arbitraryGroupId();
     const groupJoinedEvent = arbitraryGroupJoinedEvent(groupId);
-    const largeLogoPath = arbitraryString();
+    const newLargeLogoPath = arbitraryString();
     const readModel = pipe(
       [
         groupJoinedEvent,
@@ -133,15 +133,21 @@ describe('getGroup', () => {
           descriptionPath: undefined,
           homepage: undefined,
           slug: undefined,
-          largeLogoPath,
+          largeLogoPath: newLargeLogoPath,
         }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
-    it.skip('returns the requested group with only the large logo path changed', () => {
+    it('returns the requested group with only the large logo path changed', () => {
       expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
-        largeLogoPath: O.some(largeLogoPath),
+        largeLogoPath: O.some(newLargeLogoPath),
+        name: groupJoinedEvent.name,
+        avatarPath: groupJoinedEvent.avatarPath,
+        descriptionPath: groupJoinedEvent.descriptionPath,
+        shortDescription: groupJoinedEvent.shortDescription,
+        homepage: groupJoinedEvent.homepage,
+        slug: groupJoinedEvent.slug,
       })));
     });
   });
