@@ -148,16 +148,32 @@ describe('getGroup', () => {
       );
     });
 
-    it('returns the requested group with only the large logo path changed', () => {
-      expect(result).toStrictEqual(expect.objectContaining({
-        largeLogoPath: O.some(newLargeLogoPath),
-        name: groupJoinedEvent.name,
-        avatarPath: groupJoinedEvent.avatarPath,
-        descriptionPath: groupJoinedEvent.descriptionPath,
-        shortDescription: groupJoinedEvent.shortDescription,
-        homepage: groupJoinedEvent.homepage,
-        slug: groupJoinedEvent.slug,
-      }));
+    it('returns the group\'s largeLogoPath changed', () => {
+      expect(result.largeLogoPath).toStrictEqual(O.some(newLargeLogoPath));
+    });
+
+    it('returns the group\'s name unchanged', () => {
+      expect(result.name).toStrictEqual(groupJoinedEvent.name);
+    });
+
+    it('returns the group\'s avatarPath unchanged', () => {
+      expect(result.avatarPath).toStrictEqual(groupJoinedEvent.avatarPath);
+    });
+
+    it('returns the group\'s descriptionPath unchanged', () => {
+      expect(result.descriptionPath).toStrictEqual(groupJoinedEvent.descriptionPath);
+    });
+
+    it('returns the group\'s shortDescription unchanged', () => {
+      expect(result.shortDescription).toStrictEqual(groupJoinedEvent.shortDescription);
+    });
+
+    it('returns the group\'s homepage unchanged', () => {
+      expect(result.homepage).toStrictEqual(groupJoinedEvent.homepage);
+    });
+
+    it('returns the group\'s slug unchanged', () => {
+      expect(result.slug).toStrictEqual(groupJoinedEvent.slug);
     });
   });
 });
