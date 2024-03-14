@@ -7,18 +7,10 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryGroup } from '../../../types/group.helper';
 import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource-events.helper';
+import { arbitraryAddGroupCommand } from '../../commands/add-group-command.helper';
 
 describe('create', () => {
-  const newGroup = arbitraryGroup();
-  const addGroupCommand = {
-    groupId: newGroup.id,
-    name: newGroup.name,
-    shortDescription: newGroup.shortDescription,
-    homepage: newGroup.homepage,
-    avatarPath: newGroup.avatarPath,
-    descriptionPath: newGroup.descriptionPath,
-    slug: newGroup.slug,
-  };
+  const addGroupCommand = arbitraryAddGroupCommand();
 
   describe('when the group does not exist', () => {
     const result = pipe(
@@ -29,26 +21,26 @@ describe('create', () => {
 
     it('creates the group', () => {
       expect(result[0]).toBeDomainEvent('GroupJoined', {
-        groupId: newGroup.id,
-        name: newGroup.name,
-        shortDescription: newGroup.shortDescription,
-        homepage: newGroup.homepage,
-        avatarPath: newGroup.avatarPath,
-        descriptionPath: newGroup.descriptionPath,
-        slug: newGroup.slug,
+        groupId: addGroupCommand.groupId,
+        name: addGroupCommand.name,
+        shortDescription: addGroupCommand.shortDescription,
+        homepage: addGroupCommand.homepage,
+        avatarPath: addGroupCommand.avatarPath,
+        descriptionPath: addGroupCommand.descriptionPath,
+        slug: addGroupCommand.slug,
       });
     });
 
     it('creates a list owned by the group', () => {
       expect(result[1]).toBeDomainEvent('ListCreated', {
-        ownerId: LOID.fromGroupId(newGroup.id),
-        description: expect.stringContaining(newGroup.name),
+        ownerId: LOID.fromGroupId(addGroupCommand.groupId),
+        description: expect.stringContaining(addGroupCommand.name),
       });
     });
 
     it('identifies the list as the target for ingestion', () => {
       expect(result[2]).toBeDomainEvent('EvaluatedArticlesListSpecified', {
-        groupId: newGroup.id,
+        groupId: addGroupCommand.groupId,
         listId: (result[1] as EventOfType<'ListCreated'>).listId,
       });
     });
