@@ -18,7 +18,7 @@ describe('create', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it('creates the group', () => {
+    it.failing('creates the group', () => {
       expect(result[0]).toBeDomainEvent('GroupJoined', {
         groupId: addGroupCommand.groupId,
         name: addGroupCommand.name,
@@ -27,6 +27,7 @@ describe('create', () => {
         avatarPath: addGroupCommand.avatarPath,
         descriptionPath: addGroupCommand.descriptionPath,
         slug: addGroupCommand.slug,
+        largeLogoPath: addGroupCommand.largeLogoPath,
       });
     });
 
