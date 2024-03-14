@@ -138,9 +138,18 @@ describe('getGroup', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    let result: Group;
+
+    beforeEach(() => {
+      result = pipe(
+        groupId,
+        getGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('returns the requested group with only the large logo path changed', () => {
-      expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
+      expect(result).toStrictEqual(expect.objectContaining({
         largeLogoPath: O.some(newLargeLogoPath),
         name: groupJoinedEvent.name,
         avatarPath: groupJoinedEvent.avatarPath,
@@ -148,7 +157,7 @@ describe('getGroup', () => {
         shortDescription: groupJoinedEvent.shortDescription,
         homepage: groupJoinedEvent.homepage,
         slug: groupJoinedEvent.slug,
-      })));
+      }));
     });
   });
 });
