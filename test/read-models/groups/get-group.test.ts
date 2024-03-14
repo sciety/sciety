@@ -70,17 +70,32 @@ describe('getGroup', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    let result: Group;
 
-    it('returns the requested group with only the name changed', () => {
-      expect(getGroup(readModel)(groupId)).toStrictEqual(O.some(expect.objectContaining({
-        name: newName,
-        avatarPath: groupJoinedEvent.avatarPath,
-        descriptionPath: groupJoinedEvent.descriptionPath,
-        shortDescription: groupJoinedEvent.shortDescription,
-        homepage: groupJoinedEvent.homepage,
-        slug: groupJoinedEvent.slug,
-        largeLogoPath: O.fromNullable(groupJoinedEvent.largeLogoPath),
-      })));
+    beforeEach(() => {
+      result = pipe(
+        groupId,
+        getGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it('returns the group\'s name changed', () => {
+      expect(result.name).toBe(newName);
+    });
+
+    it('returns the group\'s largeLogoPath unchanged', () => {
+      expect(result.largeLogoPath).toStrictEqual(O.fromNullable(groupJoinedEvent.largeLogoPath));
+    });
+
+    it.each([
+      ['avatarPath' as const],
+      ['descriptionPath' as const],
+      ['shortDescription' as const],
+      ['homepage' as const],
+      ['slug' as const],
+    ])('returns the group\'s %s unchanged', (property) => {
+      expect(result[property]).toStrictEqual(groupJoinedEvent[property]);
     });
   });
 
