@@ -91,6 +91,10 @@ describe('getGroup', () => {
       );
     });
 
+    it('returns the group\'s id', () => {
+      expect(result.id).toStrictEqual(groupJoinedEvent.groupId);
+    });
+
     it('returns the group\'s name changed', () => {
       expect(result.name).toBe(newName);
     });
@@ -140,6 +144,10 @@ describe('getGroup', () => {
       );
     });
 
+    it('returns the group\'s id', () => {
+      expect(result.id).toStrictEqual(groupJoinedEvent.groupId);
+    });
+
     it('returns the group\'s shortDescription changed', () => {
       expect(result.shortDescription).toBe(newShortDescription);
     });
@@ -187,6 +195,10 @@ describe('getGroup', () => {
         getGroup(readModel),
         O.getOrElseW(shouldNotBeCalled),
       );
+    });
+
+    it('returns the group\'s id', () => {
+      expect(result.id).toStrictEqual(groupJoinedEvent.groupId);
     });
 
     it('returns the group\'s largeLogoPath changed', () => {
