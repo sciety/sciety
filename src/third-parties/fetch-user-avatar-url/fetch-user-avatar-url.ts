@@ -1,9 +1,20 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import axios from 'axios';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { ExternalQueries } from '../external-queries';
 import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
+
+const managementApiTokenCodec = t.type({
+  data: t.type({
+    access_token: t.string,
+    scope: t.literal('read:users'),
+    token_type: t.literal('Bearer'),
+  }),
+});
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const fetchUserAvatarUrl = (logger: Logger): ExternalQueries['fetchUserAvatarUrl'] => () => pipe(
@@ -32,5 +43,15 @@ export const fetchUserAvatarUrl = (logger: Logger): ExternalQueries['fetchUserAv
       return DE.unavailable;
     },
   ),
+  TE.chainEitherK(flow(
+    managementApiTokenCodec.decode,
+    E.bimap(
+      (errors) => {
+        logger('error', 'Unreadable response from Auth0', { errors: formatValidationErrors(errors) });
+        return DE.unavailable;
+      },
+      (response) => response.data.access_token,
+    ),
+  )),
   () => TE.left(DE.unavailable),
 );
