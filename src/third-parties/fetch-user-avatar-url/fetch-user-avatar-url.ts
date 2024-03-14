@@ -8,7 +8,7 @@ import { Logger } from '../../shared-ports';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const fetchUserAvatarUrl = (logger: Logger): ExternalQueries['fetchUserAvatarUrl'] => () => pipe(
   TE.tryCatch(
-    async () => axios.post(
+    async () => axios.post<unknown>(
       `https://${process.env.AUTH0_DOMAIN}/oauth/token`,
       JSON.stringify({
         grant_type: 'client_credentials',
@@ -22,7 +22,15 @@ export const fetchUserAvatarUrl = (logger: Logger): ExternalQueries['fetchUserAv
         },
       },
     ),
-    () => DE.unavailable,
+    (error) => {
+      if (axios.isAxiosError(error)) {
+        logger('error', 'Failed to get Management API token from Auth0', { error: String(error.response) });
+      } else {
+        logger('error', 'Failed to get Management API token from Auth0', { error: String(error) });
+      }
+
+      return DE.unavailable;
+    },
   ),
   () => TE.left(DE.unavailable),
 );
