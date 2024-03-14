@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -55,6 +56,6 @@ export const fetchUserAvatarUrl = (logger: Logger): ExternalQueries['fetchUserAv
         (response) => response.data.access_token,
       ),
     )),
-    () => TE.left(DE.unavailable),
+    T.map(() => E.left(DE.unavailable)),
   );
 };
