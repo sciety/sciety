@@ -114,11 +114,12 @@ describe('getGroup', () => {
       );
     });
 
-    it('the new short description is returned', () => {
-      expect(result).toStrictEqual(expect.objectContaining({
-        shortDescription: newShortDescription,
-        largeLogoPath: O.fromNullable(groupJoinedEvent.largeLogoPath),
-      }));
+    it('returns the group\'s shortDescription changed', () => {
+      expect(result.shortDescription).toBe(newShortDescription);
+    });
+
+    it('returns the group\'s largeLogoPath unchanged', () => {
+      expect(result.largeLogoPath).toStrictEqual(O.fromNullable(groupJoinedEvent.largeLogoPath));
     });
 
     it.each([
