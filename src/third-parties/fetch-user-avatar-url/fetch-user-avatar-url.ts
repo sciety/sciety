@@ -16,42 +16,45 @@ const managementApiTokenCodec = t.type({
   }),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const fetchUserAvatarUrl = (logger: Logger): ExternalQueries['fetchUserAvatarUrl'] => () => pipe(
-  TE.tryCatch(
-    async () => axios.post<unknown>(
-      `https://${process.env.AUTH0_DOMAIN}/oauth/token`,
-      JSON.stringify({
-        grant_type: 'client_credentials',
-        client_id: process.env.AUTH0_CLIENT_ID,
-        client_secret: process.env.AUTH0_CLIENT_SECRET,
-        audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
-      }),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    ),
-    (error) => {
-      if (axios.isAxiosError(error)) {
-        logger('error', 'Failed to get Management API token from Auth0', { error: String(error.response) });
-      } else {
-        logger('error', 'Failed to get Management API token from Auth0', { error: String(error) });
-      }
+export const fetchUserAvatarUrl = (logger: Logger): ExternalQueries['fetchUserAvatarUrl'] => () => {
+  logger('debug', 'START fetchUserAvatarUrl');
 
-      return DE.unavailable;
-    },
-  ),
-  TE.chainEitherK(flow(
-    managementApiTokenCodec.decode,
-    E.bimap(
-      (errors) => {
-        logger('error', 'Unreadable response from Auth0', { errors: formatValidationErrors(errors) });
+  return pipe(
+    TE.tryCatch(
+      async () => axios.post<unknown>(
+        `https://${process.env.AUTH0_DOMAIN}/oauth/token`,
+        JSON.stringify({
+          grant_type: 'client_credentials',
+          client_id: process.env.AUTH0_CLIENT_ID,
+          client_secret: process.env.AUTH0_CLIENT_SECRET,
+          audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      ),
+      (error) => {
+        if (axios.isAxiosError(error)) {
+          logger('error', 'Failed to get Management API token from Auth0', { error: String(error.response) });
+        } else {
+          logger('error', 'Failed to get Management API token from Auth0', { error: String(error) });
+        }
+
         return DE.unavailable;
       },
-      (response) => response.data.access_token,
     ),
-  )),
-  () => TE.left(DE.unavailable),
-);
+    TE.chainEitherK(flow(
+      managementApiTokenCodec.decode,
+      E.bimap(
+        (errors) => {
+          logger('error', 'Unreadable response from Auth0', { errors: formatValidationErrors(errors) });
+          return DE.unavailable;
+        },
+        (response) => response.data.access_token,
+      ),
+    )),
+    () => TE.left(DE.unavailable),
+  );
+};
