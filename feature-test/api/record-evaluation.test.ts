@@ -32,6 +32,7 @@ describe('record an evaluation', () => {
         avatarPath: arbitraryUri(),
         descriptionPath: arbitraryDescriptionPath(),
         slug: arbitraryWord(),
+        largeLogoPath: arbitraryString(),
       });
       await callApi('api/record-evaluation-publication', {
         evaluationLocator,

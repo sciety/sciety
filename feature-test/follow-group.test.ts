@@ -7,6 +7,7 @@ import { screenshotTeardown } from './utilities';
 import { callApi } from './helpers/call-api.helper';
 import { arbitraryGroup } from '../test/types/group.helper';
 import { Group } from '../src/types/group';
+import { arbitraryString } from '../test/helpers';
 
 describe('follow a group', () => {
   let group: Group;
@@ -17,6 +18,7 @@ describe('follow a group', () => {
     await callApi('api/add-group', {
       ...group,
       groupId: group.id,
+      largeLogoPath: arbitraryString(),
     });
   });
 

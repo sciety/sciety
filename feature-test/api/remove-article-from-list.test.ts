@@ -29,6 +29,7 @@ describe('remove an article from a list', () => {
         avatarPath: arbitraryUri(),
         descriptionPath: arbitraryDescriptionPath(),
         slug: arbitraryString(),
+        largeLogoPath: arbitraryString(),
       });
       listId = await getIdOfFirstListOwnedByGroup(groupId);
       await callApi('api/add-article-to-list', { articleId, listId });

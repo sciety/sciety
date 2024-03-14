@@ -6,6 +6,7 @@ import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryGroup } from '../test/types/group.helper';
+import { arbitraryString } from '../test/helpers';
 
 describe('unfollow a group', () => {
   const group = arbitraryGroup();
@@ -15,6 +16,7 @@ describe('unfollow a group', () => {
     await callApi('api/add-group', {
       ...group,
       groupId: group.id,
+      largeLogoPath: arbitraryString(),
     });
   });
 
