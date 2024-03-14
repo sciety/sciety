@@ -12,10 +12,7 @@ export const create: ResourceAction<AddGroupCommand> = (command) => (events) => 
   AG.check(command),
   E.map(LID.generate),
   E.map((listId) => [
-    constructEvent('GroupJoined')({
-      ...command,
-      largeLogoPath: undefined,
-    }),
+    constructEvent('GroupJoined')(command),
     constructEvent('ListCreated')({
       listId,
       name: 'Evaluated articles',

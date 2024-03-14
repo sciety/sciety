@@ -18,7 +18,7 @@ describe('create', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.failing('creates the group', () => {
+    it('creates the group', () => {
       expect(result[0]).toBeDomainEvent('GroupJoined', {
         groupId: addGroupCommand.groupId,
         name: addGroupCommand.name,

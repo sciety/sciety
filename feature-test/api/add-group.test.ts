@@ -23,7 +23,7 @@ describe('add-group', () => {
     expect(groupCardExists).toBe(true);
   });
 
-  it.failing('the group now has its own page', async () => {
+  it('the group now has its own page', async () => {
     await goto('localhost:8080/groups');
     const link = $(`[href="/groups/${addGroupCommand.slug}"].group-card__link`);
     await click(link);
