@@ -25,7 +25,7 @@ const buildGroup = (state: ReplayedGroupState, event: DomainEvent): ReplayedGrou
     return E.right({
       name: event.name,
       shortDescription: event.shortDescription,
-      largeLogoPath: undefined,
+      largeLogoPath: event.largeLogoPath,
     });
   }
   if (isEventOfType('GroupDetailsUpdated')(event)) {
