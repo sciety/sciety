@@ -12,5 +12,5 @@ export const arbitraryGroup = (): Group => ({
   shortDescription: arbitraryString(),
   homepage: arbitraryUri(),
   slug: arbitraryWord(),
-  largeLogoPath: O.none,
+  largeLogoPath: O.some(arbitraryString()),
 });
