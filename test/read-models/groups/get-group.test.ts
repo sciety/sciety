@@ -80,11 +80,17 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
     let result: Group;
+    let largeLogoPath: string;
 
     beforeEach(() => {
       result = pipe(
         groupId,
         getGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+
+      largeLogoPath = pipe(
+        result.largeLogoPath,
         O.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -98,7 +104,7 @@ describe('getGroup', () => {
     });
 
     it('returns the group\'s largeLogoPath unchanged', () => {
-      expect(result.largeLogoPath).toStrictEqual(O.fromNullable(groupJoinedEvent.largeLogoPath));
+      expect(largeLogoPath).toStrictEqual(groupJoinedEvent.largeLogoPath);
     });
 
     it.each([
@@ -124,11 +130,17 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
     let result: Group;
+    let largeLogoPath: string;
 
     beforeEach(() => {
       result = pipe(
         groupId,
         getGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+
+      largeLogoPath = pipe(
+        result.largeLogoPath,
         O.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -142,7 +154,7 @@ describe('getGroup', () => {
     });
 
     it('returns the group\'s largeLogoPath unchanged', () => {
-      expect(result.largeLogoPath).toStrictEqual(O.fromNullable(groupJoinedEvent.largeLogoPath));
+      expect(largeLogoPath).toStrictEqual(groupJoinedEvent.largeLogoPath);
     });
 
     it.each([
@@ -168,11 +180,17 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
     let result: Group;
+    let largeLogoPath: string;
 
     beforeEach(() => {
       result = pipe(
         groupId,
         getGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+
+      largeLogoPath = pipe(
+        result.largeLogoPath,
         O.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -182,7 +200,7 @@ describe('getGroup', () => {
     });
 
     it('returns the group\'s largeLogoPath changed', () => {
-      expect(result.largeLogoPath).toStrictEqual(O.some(newLargeLogoPath));
+      expect(largeLogoPath).toStrictEqual(newLargeLogoPath);
     });
 
     it.each([
