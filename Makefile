@@ -219,7 +219,7 @@ download-exploratory-test-from-staging:
 	aws s3 cp "s3://sciety-data-extractions/staging-events.csv" "./data/exploratory-test-from-staging.csv"
 
 exploratory-test-from-prod: node_modules clean-db build
-	if ! [[ -f 'data/exploratory-test-from-prod.csv' ]]; then \
+	@if ! [[ -f 'data/exploratory-test-from-prod.csv' ]]; then \
     echo "Ensure you have run: make download-exploratory-test-from-prod"; exit 1; \
 	fi
 	${DOCKER_COMPOSE} up -d db
