@@ -9,15 +9,16 @@ import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource
 import { arbitraryAddGroupCommand } from '../../commands/add-group-command.helper';
 import { GroupId } from '../../../../src/types/group-id';
 
-const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, name: string): EventOfType<'GroupDetailsUpdated'> => constructEvent('GroupDetailsUpdated')({
+const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, detailsToUpdate: Record<string, string>): EventOfType<'GroupDetailsUpdated'> => constructEvent('GroupDetailsUpdated')({
   groupId,
-  name,
+  name: undefined,
   avatarPath: undefined,
   descriptionPath: undefined,
   largeLogoPath: undefined,
   shortDescription: undefined,
   homepage: undefined,
   slug: undefined,
+  ...detailsToUpdate,
 });
 
 describe('create', () => {
@@ -79,7 +80,7 @@ describe('create', () => {
       const result = pipe(
         [
           otherGroupJoinedEvent,
-          arbitraryGroupDetailsUpdatedEvent(otherGroupJoinedEvent.groupId, name),
+          arbitraryGroupDetailsUpdatedEvent(otherGroupJoinedEvent.groupId, { name }),
         ],
         create({ ...addGroupCommand, name }),
       );
@@ -111,16 +112,7 @@ describe('create', () => {
       const result = pipe(
         [
           otherGroupJoinedEvent,
-          constructEvent('GroupDetailsUpdated')({
-            groupId: otherGroupJoinedEvent.groupId,
-            name: undefined,
-            avatarPath: undefined,
-            descriptionPath: undefined,
-            shortDescription: undefined,
-            homepage: undefined,
-            largeLogoPath: undefined,
-            slug,
-          }),
+          arbitraryGroupDetailsUpdatedEvent(otherGroupJoinedEvent.groupId, { slug }),
         ],
         create({ ...addGroupCommand, slug }),
       );
