@@ -1,12 +1,14 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryString } from '../../helpers';
 import { getGroup } from '../../../src/read-models/groups/get-group';
-import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
+import {
+  arbitraryGroupDetailsUpdatedEvent,
+  arbitraryGroupJoinedEvent,
+} from '../../domain-events/group-resource-events.helper';
 import { Group } from '../../../src/types/group';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
@@ -68,16 +70,7 @@ describe('getGroup', () => {
     const readModel = pipe(
       [
         groupJoinedEvent,
-        constructEvent('GroupDetailsUpdated')({
-          groupId,
-          name: newName,
-          avatarPath: undefined,
-          shortDescription: undefined,
-          descriptionPath: undefined,
-          largeLogoPath: undefined,
-          homepage: undefined,
-          slug: undefined,
-        }),
+        arbitraryGroupDetailsUpdatedEvent(groupId, { name: newName }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -121,16 +114,7 @@ describe('getGroup', () => {
     const readModel = pipe(
       [
         groupJoinedEvent,
-        constructEvent('GroupDetailsUpdated')({
-          groupId,
-          name: undefined,
-          avatarPath: undefined,
-          shortDescription: newShortDescription,
-          descriptionPath: undefined,
-          largeLogoPath: undefined,
-          homepage: undefined,
-          slug: undefined,
-        }),
+        arbitraryGroupDetailsUpdatedEvent(groupId, { shortDescription: newShortDescription }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -174,16 +158,7 @@ describe('getGroup', () => {
     const readModel = pipe(
       [
         groupJoinedEvent,
-        constructEvent('GroupDetailsUpdated')({
-          groupId,
-          name: undefined,
-          avatarPath: undefined,
-          shortDescription: undefined,
-          descriptionPath: undefined,
-          homepage: undefined,
-          slug: undefined,
-          largeLogoPath: newLargeLogoPath,
-        }),
+        arbitraryGroupDetailsUpdatedEvent(groupId, { largeLogoPath: newLargeLogoPath }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
