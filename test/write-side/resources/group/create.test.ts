@@ -1,25 +1,15 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { create } from '../../../../src/write-side/resources/group/create';
-import { constructEvent, EventOfType } from '../../../../src/domain-events';
+import { EventOfType } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource-events.helper';
+import {
+  arbitraryGroupDetailsUpdatedEvent,
+  arbitraryGroupJoinedEvent,
+} from '../../../domain-events/group-resource-events.helper';
 import { arbitraryAddGroupCommand } from '../../commands/add-group-command.helper';
-import { GroupId } from '../../../../src/types/group-id';
-
-const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, detailsToUpdate: Record<string, string>): EventOfType<'GroupDetailsUpdated'> => constructEvent('GroupDetailsUpdated')({
-  groupId,
-  name: undefined,
-  avatarPath: undefined,
-  descriptionPath: undefined,
-  largeLogoPath: undefined,
-  shortDescription: undefined,
-  homepage: undefined,
-  slug: undefined,
-  ...detailsToUpdate,
-});
 
 describe('create', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
