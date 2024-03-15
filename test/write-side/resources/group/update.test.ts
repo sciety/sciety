@@ -3,24 +3,9 @@ import * as E from 'fp-ts/Either';
 import * as groupResource from '../../../../src/write-side/resources/group';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryString } from '../../../helpers';
-import { DomainEvent, constructEvent } from '../../../../src/domain-events';
+import { DomainEvent } from '../../../../src/domain-events';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { GroupId } from '../../../../src/types/group-id';
-import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource-events.helper';
-
-const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, name?: string) => pipe(
-  {
-    groupId,
-    name,
-    avatarPath: undefined,
-    descriptionPath: undefined,
-    largeLogoPath: undefined,
-    shortDescription: undefined,
-    homepage: undefined,
-    slug: undefined,
-  },
-  constructEvent('GroupDetailsUpdated'),
-);
+import { arbitraryGroupJoinedEvent, arbitraryGroupDetailsUpdatedEvent } from '../../../domain-events/group-resource-events.helper';
 
 describe('update', () => {
   describe('when the group has joined', () => {
@@ -65,10 +50,7 @@ describe('update', () => {
           const eventsRaised = pipe(
             [
               groupJoined,
-              {
-                ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
-                [attributeToBeChanged]: arbitraryString(),
-              },
+              arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, { [attributeToBeChanged]: arbitraryString() }),
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -134,10 +116,7 @@ describe('update', () => {
           const eventsRaised = pipe(
             [
               groupJoined,
-              {
-                ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
-                [attributeToBeChanged]: arbitraryString(),
-              },
+              arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, { [attributeToBeChanged]: arbitraryString() }),
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -188,10 +167,7 @@ describe('update', () => {
 
         describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
           const moreEventsRelatingToOurGroup = [
-            {
-              ...arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId),
-              [attributeToBeChanged]: arbitraryString(),
-            },
+            arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, { [attributeToBeChanged]: arbitraryString() }),
           ];
           const eventsRaised = pipe(
             [
@@ -242,7 +218,7 @@ describe('update', () => {
             [
               groupJoined,
               otherGroupJoined,
-              arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, arbitraryString()),
+              arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, { [attributeToBeChanged]: arbitraryString() }),
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -262,7 +238,10 @@ describe('update', () => {
             [
               groupJoined,
               otherGroupJoined,
-              arbitraryGroupDetailsUpdatedEvent(otherGroupJoined.groupId, valueTakenByOtherGroup),
+              arbitraryGroupDetailsUpdatedEvent(
+                otherGroupJoined.groupId,
+                { [attributeToBeChanged]: valueTakenByOtherGroup },
+              ),
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -297,7 +276,7 @@ describe('update', () => {
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        arbitraryGroupDetailsUpdatedEvent(groupId, arbitraryString()),
+        arbitraryGroupDetailsUpdatedEvent(groupId, {}),
       ],
       groupResource.update({ groupId }),
     );
@@ -311,7 +290,7 @@ describe('update', () => {
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        arbitraryGroupDetailsUpdatedEvent(groupId, arbitraryString()),
+        arbitraryGroupDetailsUpdatedEvent(groupId, {}),
         arbitraryGroupJoinedEvent(groupId),
       ],
       groupResource.update({ groupId }),
