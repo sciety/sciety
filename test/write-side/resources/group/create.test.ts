@@ -7,6 +7,18 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { arbitraryGroupJoinedEvent } from '../../../domain-events/group-resource-events.helper';
 import { arbitraryAddGroupCommand } from '../../commands/add-group-command.helper';
+import { GroupId } from '../../../../src/types/group-id';
+
+const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, name: string): EventOfType<'GroupDetailsUpdated'> => constructEvent('GroupDetailsUpdated')({
+  groupId,
+  name,
+  avatarPath: undefined,
+  descriptionPath: undefined,
+  largeLogoPath: undefined,
+  shortDescription: undefined,
+  homepage: undefined,
+  slug: undefined,
+});
 
 describe('create', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
@@ -67,16 +79,7 @@ describe('create', () => {
       const result = pipe(
         [
           otherGroupJoinedEvent,
-          constructEvent('GroupDetailsUpdated')({
-            groupId: otherGroupJoinedEvent.groupId,
-            name,
-            avatarPath: undefined,
-            descriptionPath: undefined,
-            largeLogoPath: undefined,
-            shortDescription: undefined,
-            homepage: undefined,
-            slug: undefined,
-          }),
+          arbitraryGroupDetailsUpdatedEvent(otherGroupJoinedEvent.groupId, name),
         ],
         create({ ...addGroupCommand, name }),
       );
