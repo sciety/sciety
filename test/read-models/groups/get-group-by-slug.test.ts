@@ -7,6 +7,7 @@ import { getGroupBySlug } from '../../../src/read-models/groups/get-group-by-slu
 import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
 import { arbitraryString } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const group = arbitraryGroup();
 
@@ -21,11 +22,14 @@ describe('getGroupBySlug', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const result = pipe(
+      groupJoinedEvent.slug,
+      getGroupBySlug(readmodel),
+      O.getOrElseW(shouldNotBeCalled),
+    );
 
     it('returns the group', () => {
-      expect(getGroupBySlug(readmodel)(groupJoinedEvent.slug)).toStrictEqual(O.some(expect.objectContaining({
-        slug: groupJoinedEvent.slug,
-      })));
+      expect(result.slug).toBe(groupJoinedEvent.slug);
     });
   });
 
@@ -42,11 +46,14 @@ describe('getGroupBySlug', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const result = pipe(
+      groupJoinedEvent.slug,
+      getGroupBySlug(readmodel),
+      O.getOrElseW(shouldNotBeCalled),
+    );
 
     it('returns the group', () => {
-      expect(getGroupBySlug(readmodel)(groupJoinedEvent.slug)).toStrictEqual(O.some(expect.objectContaining({
-        slug: groupJoinedEvent.slug,
-      })));
+      expect(result.slug).toBe(groupJoinedEvent.slug);
     });
   });
 
