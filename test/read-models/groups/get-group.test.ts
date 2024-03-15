@@ -16,6 +16,7 @@ describe('getGroup', () => {
   describe('when the group has joined', () => {
     const groupJoinedEvent = arbitraryGroupJoinedEvent();
     let foundGroup: Group;
+    let largeLogoPath: string;
 
     beforeEach(() => {
       const readModel = pipe(
@@ -30,6 +31,10 @@ describe('getGroup', () => {
         getGroup(readModel),
         O.getOrElseW(shouldNotBeCalled),
       );
+      largeLogoPath = pipe(
+        foundGroup.largeLogoPath,
+        O.getOrElseW(shouldNotBeCalled),
+      );
     });
 
     it('returns the requested group\'s id', () => {
@@ -37,7 +42,7 @@ describe('getGroup', () => {
     });
 
     it('returns the requested group\'s large logo', () => {
-      expect(foundGroup.largeLogoPath).toStrictEqual(O.some(groupJoinedEvent.largeLogoPath));
+      expect(largeLogoPath).toStrictEqual(groupJoinedEvent.largeLogoPath);
     });
 
     it.each([
