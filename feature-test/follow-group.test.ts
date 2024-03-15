@@ -5,21 +5,16 @@ import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log
 import { arbitraryUserId } from '../test/types/user-id.helper';
 import { screenshotTeardown } from './utilities';
 import { callApi } from './helpers/call-api.helper';
-import { arbitraryGroup } from '../test/types/group.helper';
-import { Group } from '../src/types/group';
-import { arbitraryString } from '../test/helpers';
+import { arbitraryAddGroupCommand } from '../test/write-side/commands/add-group-command.helper';
+import { AddGroupCommand } from '../src/write-side/commands';
 
 describe('follow a group', () => {
-  let group: Group;
+  let command: AddGroupCommand;
 
   beforeEach(async () => {
-    group = arbitraryGroup();
+    command = arbitraryAddGroupCommand();
     await openBrowser();
-    await callApi('api/add-group', {
-      ...group,
-      groupId: group.id,
-      largeLogoPath: arbitraryString(),
-    });
+    await callApi('api/add-group', command);
   });
 
   afterEach(screenshotTeardown);
@@ -31,20 +26,20 @@ describe('follow a group', () => {
 
     describe('after clicking on the Follow button', () => {
       beforeEach(async () => {
-        await goto(`localhost:8080/groups/${group.slug}`);
+        await goto(`localhost:8080/groups/${command.slug}`);
         await click('Follow');
       });
 
       it('returns to the group page', async () => {
         const result = await currentURL();
 
-        expect(result).toContain(`/groups/${group.slug}`);
+        expect(result).toContain(`/groups/${command.slug}`);
       });
 
       it('adds the group to the user page', async () => {
         await click('My lists');
         await click('Following');
-        const groupExists = await text(group.name, within($('.card-list'))).exists();
+        const groupExists = await text(command.name, within($('.card-list'))).exists();
 
         expect(groupExists).toBe(true);
       });
