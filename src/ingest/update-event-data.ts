@@ -32,8 +32,8 @@ const environmentCodec = t.strict({
   SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
 });
 
-void (async (): Promise<unknown> => pipe(
-  process.env,
+const validateEnvironment = (env: unknown) => pipe(
+  env,
   environmentCodec.decode,
   E.mapLeft((errors) => {
     process.stderr.write(`Incorrect environment configuration: ${formatValidationErrors(errors).join('\n')}\n`);
@@ -42,6 +42,11 @@ void (async (): Promise<unknown> => pipe(
     targetApp: environment.INGESTION_TARGET_APP,
     bearerToken: environment.SCIETY_TEAM_API_BEARER_TOKEN,
   })),
+);
+
+void (async (): Promise<unknown> => pipe(
+  process.env,
+  validateEnvironment,
   E.map((environment) => ({
     ...environment,
     groupsToIngest: pipe(
