@@ -9,6 +9,7 @@ html {
 }
 
 body {
+  min-height: 100vh;
   font-family: settings.$font-family;
   font-size: settings.$base-font-measure;
   line-height: 1.5;
