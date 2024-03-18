@@ -1,8 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as tt from 'io-ts-types';
+import * as t from 'io-ts';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { groupIngestionConfigurations } from './group-ingestion-configurations';
 import { GroupIngestionConfiguration, updateAll } from './update-all';
 
@@ -24,12 +27,21 @@ const shouldNotExclude = (group: GroupIngestionConfiguration) => {
   return true;
 };
 
+const environmentCodec = t.strict({
+  INGESTION_TARGET_APP: tt.NonEmptyString,
+  SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
+});
+
 void (async (): Promise<unknown> => pipe(
-  {
-    targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
-    bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
-  },
-  E.right,
+  process.env,
+  environmentCodec.decode,
+  E.mapLeft((errors) => {
+    process.stderr.write(`Incorrect environment configuration: ${formatValidationErrors(errors).join('\n')}\n`);
+  }),
+  E.map((environment) => ({
+    targetApp: environment.INGESTION_TARGET_APP,
+    bearerToken: environment.SCIETY_TEAM_API_BEARER_TOKEN,
+  })),
   E.map((environment) => ({
     ...environment,
     groupsToIngest: pipe(

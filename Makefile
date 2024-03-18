@@ -140,12 +140,13 @@ stop:
 ingest-evaluations: export TARGET = dev
 ingest-evaluations: build
 	$(DOCKER_COMPOSE) run --name ingest --rm \
-	-e INGEST_DEBUG=${INGEST_DEBUG} \
-	-e INGEST_EXCEPT=${INGEST_EXCEPT} \
-	-e INGEST_ONLY=${INGEST_ONLY} \
-	-e INGEST_DAYS=${INGEST_DAYS} \
-	app \
-	npx ts-node src/ingest/update-event-data
+		-e INGESTION_TARGET_APP=http://app \
+		-e INGEST_DEBUG=${INGEST_DEBUG} \
+		-e INGEST_EXCEPT=${INGEST_EXCEPT} \
+		-e INGEST_ONLY=${INGEST_ONLY} \
+		-e INGEST_DAYS=${INGEST_DAYS} \
+		app \
+		npx ts-node src/ingest/update-event-data
 
 trigger-ingestion:
 	scripts/trigger-ingestion.sh
