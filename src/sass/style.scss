@@ -1,6 +1,7 @@
 @use 'normalise';
 @use 'page-content';
 @use 'layout';
+@use 'fonts';
 
 @use 'page-header';
 @use '../html-pages/about-page';
@@ -30,6 +31,4 @@
 @use '../shared-components/success-banner';
 @use '../shared-components/group-link';
 @use 'supplementary';
-
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
