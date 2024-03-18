@@ -69,6 +69,7 @@ axiosRetry(axios, {
 type Config = {
   targetApp: string,
   bearerToken: string,
+  groupsToIngest: ReadonlyArray<GroupIngestionConfiguration>,
 };
 
 const send = (config: Config) => (evaluationCommand: EvaluationCommand) => pipe(
@@ -151,11 +152,8 @@ const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE
     report('info', 'Ingestion successful'),
   ),
 );
-
-export const updateAll = (config: Config) => (
-  groups: ReadonlyArray<GroupIngestionConfiguration>,
-): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
-  groups,
+export const updateAll = (config: Config): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
+  config.groupsToIngest,
   T.traverseSeqArray(updateGroup(config)),
   T.map(E.sequenceArray),
 );

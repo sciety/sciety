@@ -24,13 +24,16 @@ const shouldNotExclude = (group: GroupIngestionConfiguration) => {
 };
 
 void (async (): Promise<unknown> => pipe(
-  groupIngestionConfigurations,
-  RA.filter(shouldUpdate),
-  RA.filter(shouldNotExclude),
-  updateAll({
+  {
     targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
     bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
-  }),
+    groupsToIngest: pipe(
+      groupIngestionConfigurations,
+      RA.filter(shouldUpdate),
+      RA.filter(shouldNotExclude),
+    ),
+  },
+  updateAll,
   TE.match(
     () => 1,
     () => 0,
