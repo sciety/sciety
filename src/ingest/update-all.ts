@@ -66,11 +66,16 @@ axiosRetry(axios, {
   },
 });
 
-const send = (evaluationCommand: EvaluationCommand) => pipe(
+type Config = {
+  targetApp: string,
+  bearerToken: string,
+};
+
+const send = (config: Config) => (evaluationCommand: EvaluationCommand) => pipe(
   TE.tryCatch(
-    async () => axios.post(`${process.env.INGESTION_TARGET_APP ?? 'http://app'}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
+    async () => axios.post(`${config.targetApp}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
       headers: {
-        Authorization: `Bearer ${process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret'}`,
+        Authorization: `Bearer ${config.bearerToken}`,
         'Content-Type': 'application/json',
       },
       timeout: 10000,
@@ -105,7 +110,10 @@ const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (fe
     authors: evaluation.authors,
     evaluationType: evaluation.evaluationType,
   })),
-  T.traverseSeqArray(send),
+  T.traverseSeqArray(send({
+    targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
+    bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
+  })),
   T.map((array) => {
     const leftsCount = RA.lefts(array).length;
     const lefts = pipe(
