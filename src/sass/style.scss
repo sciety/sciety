@@ -3,7 +3,7 @@
 @use 'layout';
 @use 'fonts';
 
-@use 'form';
+@use '../html-pages/form-rules';
 @use '../html-pages/page-header';
 @use '../html-pages/about-page';
 @use '../html-pages/paper-activity-page/render-as-html';
