@@ -27,7 +27,10 @@ void (async (): Promise<unknown> => pipe(
   groupIngestionConfigurations,
   RA.filter(shouldUpdate),
   RA.filter(shouldNotExclude),
-  updateAll,
+  updateAll({
+    targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
+    bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
+  }),
   TE.match(
     () => 1,
     () => 0,

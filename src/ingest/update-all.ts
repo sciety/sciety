@@ -152,13 +152,10 @@ const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE
   ),
 );
 
-export const updateAll = (
+export const updateAll = (config: Config) => (
   groups: ReadonlyArray<GroupIngestionConfiguration>,
 ): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
   groups,
-  T.traverseSeqArray(updateGroup({
-    targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
-    bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
-  })),
+  T.traverseSeqArray(updateGroup(config)),
   T.map(E.sequenceArray),
 );
