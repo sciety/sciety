@@ -135,7 +135,7 @@ const sendRecordEvaluationCommands = (
   }),
 );
 
-const updateGroup = (group: GroupIngestionConfiguration): TE.TaskEither<unknown, void> => pipe(
+const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE.TaskEither<unknown, void> => pipe(
   group.fetchFeed({ fetchData }),
   TE.bimap(
     (error) => ({
@@ -145,10 +145,7 @@ const updateGroup = (group: GroupIngestionConfiguration): TE.TaskEither<unknown,
     }),
     reportSkippedItems(group),
   ),
-  TE.chainW(sendRecordEvaluationCommands(group, {
-    targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
-    bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
-  })),
+  TE.chainW(sendRecordEvaluationCommands(group, config)),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
@@ -159,6 +156,9 @@ export const updateAll = (
   groups: ReadonlyArray<GroupIngestionConfiguration>,
 ): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
   groups,
-  T.traverseSeqArray(updateGroup),
+  T.traverseSeqArray(updateGroup({
+    targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
+    bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
+  })),
   T.map(E.sequenceArray),
 );
