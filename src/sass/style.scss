@@ -5,6 +5,7 @@
 @use '../html-pages/card-rules';
 @use '../html-pages/form-rules';
 @use '../html-pages/layout-rules';
+@use '../html-pages/list-rules';
 @use '../html-pages/page-header';
 @use '../html-pages/about-page';
 @use '../html-pages/paper-activity-page/render-as-html';
@@ -19,7 +20,6 @@
 @use '../html-pages/search-results-page';
 @use '../html-pages/user-page';
 @use '../http/error-page';
-@use 'list';
 @use '../shared-components/paper-activity-summary-card';
 @use '../shared-components/article-card-with-controls-and-annotation';
 @use '../shared-components/pagination';

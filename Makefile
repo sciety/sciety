@@ -288,7 +288,6 @@ $(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
 	diff .purgecss/full.css .purgecss/purged.css
 	rm -f .purgecss/{full,purged}.css
 	@touch $@
-	grep -l '@mixin [^_]' `grep -E -lR '^\.' src/**/*.scss`
 
 graphs:
 	$(MAKE) -C $(GRAPH_DIR)

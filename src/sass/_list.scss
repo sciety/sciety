@@ -12,17 +12,3 @@
     content: '.';
   }
 }
-
-.article-list {
-  @include basics();
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-
-  > li {
-    margin-bottom: 0.5rem;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-}
