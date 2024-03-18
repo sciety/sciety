@@ -28,13 +28,16 @@ void (async (): Promise<unknown> => pipe(
   {
     targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
     bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
+  },
+  E.right,
+  E.map((environment) => ({
+    ...environment,
     groupsToIngest: pipe(
       groupIngestionConfigurations,
       RA.filter(shouldUpdate),
       RA.filter(shouldNotExclude),
     ),
-  },
-  E.right,
+  })),
   TE.fromEither,
   TE.chain(updateAll),
   TE.match(
