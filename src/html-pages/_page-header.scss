@@ -1,6 +1,4 @@
-@use 'layout';
-@use 'typography';
-@use 'breakpoints';
+@use '../sass/layout';
 
 .page-header {
   @include layout.page-header-top-space();

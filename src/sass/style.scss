@@ -3,7 +3,7 @@
 @use 'layout';
 @use 'fonts';
 
-@use 'page-header';
+@use '../html-pages/page-header';
 @use '../html-pages/about-page';
 @use '../html-pages/paper-activity-page/render-as-html';
 @use '../html-pages/create-user-account-form-page';
