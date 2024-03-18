@@ -1,10 +1,10 @@
 @use 'normalise';
 @use 'page-content';
-@use 'layout';
 @use 'fonts';
 
 @use '../html-pages/card-rules';
 @use '../html-pages/form-rules';
+@use '../html-pages/layout-rules';
 @use '../html-pages/page-header';
 @use '../html-pages/about-page';
 @use '../html-pages/paper-activity-page/render-as-html';
