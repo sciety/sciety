@@ -12,18 +12,14 @@ import { executeCommand } from '../write-side/commands';
 import { getSecretSafely } from './api/get-secret-safely';
 
 const executeAndRespond = <C extends GenericCommand>(
-  ports: CollectedPorts,
+  dependencies: CollectedPorts,
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
 ): Middleware => async (context) => {
-    ports.logger(
-      'debug',
-      'Received command',
-      {
-        body: context.request.body,
-        url: context.request.url,
-      },
-    );
+    dependencies.logger('debug', 'Received command', {
+      body: context.request.body,
+      url: context.request.url,
+    });
 
     const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
     if (context.request.headers.authorization !== `Bearer ${expectedToken}`) {
@@ -34,7 +30,7 @@ const executeAndRespond = <C extends GenericCommand>(
 
     const commandResult = await pipe(
       context.request.body,
-      executeCommand(ports, codec, resourceAction),
+      executeCommand(dependencies, codec, resourceAction),
     )();
     if (E.isLeft(commandResult)) {
       context.response.status = StatusCodes.BAD_REQUEST;
