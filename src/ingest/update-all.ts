@@ -100,7 +100,10 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
   (count) => R.upsertAt(errorMessage, count)(accumulator),
 );
 
-const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (feedData: FeedData) => pipe(
+const sendRecordEvaluationCommands = (
+  group: GroupIngestionConfiguration,
+  config: Config,
+) => (feedData: FeedData) => pipe(
   feedData.evaluations,
   RA.map((evaluation) => ({
     groupId: group.id,
@@ -110,10 +113,7 @@ const sendRecordEvaluationCommands = (group: GroupIngestionConfiguration) => (fe
     authors: evaluation.authors,
     evaluationType: evaluation.evaluationType,
   })),
-  T.traverseSeqArray(send({
-    targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
-    bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
-  })),
+  T.traverseSeqArray(send(config)),
   T.map((array) => {
     const leftsCount = RA.lefts(array).length;
     const lefts = pipe(
@@ -145,7 +145,10 @@ const updateGroup = (group: GroupIngestionConfiguration): TE.TaskEither<unknown,
     }),
     reportSkippedItems(group),
   ),
-  TE.chainW(sendRecordEvaluationCommands(group)),
+  TE.chainW(sendRecordEvaluationCommands(group, {
+    targetApp: process.env.INGESTION_TARGET_APP ?? 'http://app',
+    bearerToken: process.env.SCIETY_TEAM_API_BEARER_TOKEN ?? 'secret',
+  })),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
