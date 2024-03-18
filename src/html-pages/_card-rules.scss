@@ -1,0 +1,7 @@
+@use '../sass/card';
+@use '../sass/layout';
+
+.card-list {
+  @include card.list();
+  @include layout.allow-edge-to-edge-content-when-narrow();
+}
