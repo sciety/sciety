@@ -62,7 +62,7 @@ axiosRetry(axios, {
   retryDelay: exponentialDelay,
   onRetry: (retryCount: number, error) => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    process.stderr.write(`Retrying retryCount: ${retryCount}, error: ${error}\n`);
+    process.stderr.write(`Retrying retryCount: ${retryCount}, error: ${error}, url: ${error.config?.url}\n`);
   },
 });
 
