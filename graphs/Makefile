@@ -8,12 +8,12 @@ TS_SOURCES := $(shell find ../src -name '*.ts')
 all: $(ARCH_DIAG) $(SRC_DIAG)
 
 $(ARCH_DIAG): $(TS_SOURCES) $(CONFIG)
-	npx depcruise --include-only src --collapse 3 --validate -T archi ../src \
+	npx depcruise --include-only src --collapse 3 --validate -T archi -- ../src \
 	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
 	> $@
 
 $(SRC_DIAG): $(TS_SOURCES) $(CONFIG)
-	npx depcruise --include-only src --validate -T dot ../src \
+	npx depcruise --include-only src --validate -T dot -F write-side --collapse 4 -- ../src \
 	| docker run --interactive --rm risaacson/graphviz dot -Tsvg \
 	> $@
 
