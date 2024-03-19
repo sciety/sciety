@@ -185,17 +185,17 @@ make exploratory-test-from-prod
 #### Adding an article to a group list
 
 - define beforehand the authorization variable
-  ` export AUTH_BEARER_TOKEN=the-secret-token-from-dotenv-or-1password`
+  ` export SCIETY_TEAM_API_BEARER_TOKEN=the-secret-token-from-dotenv-or-1password`
 - adjust `articleId` and `listId` as needed
 
 ```sh
-curl -v -H "Authorization: Bearer $AUTH_BEARER_TOKEN" -X POST https://sciety.org/api/add-article-to-list -H "Content-type: application/json" -d '{"articleId": "10.21203/rs.3.rs-955726/v1", "listId": "5ac3a439-e5c6-4b15-b109-92928a740812"}'
+curl -v -H "Authorization: Bearer $SCIETY_TEAM_API_BEARER_TOKEN" -X POST https://sciety.org/api/add-article-to-list -H "Content-type: application/json" -d '{"articleId": "10.21203/rs.3.rs-955726/v1", "listId": "5ac3a439-e5c6-4b15-b109-92928a740812"}'
 ```
 
 #### Adding a group
 
 ```sh
-curl -v -H "Authorization: Bearer secret" -X POST http://localhost:8080/api/add-group -H "Content-type: application/json" -d '{"groupId": "1480d2dd-463f-4834-8e81-d89c8ae2b86f", "avatarPath": "https://raw.githubusercontent.com/sciety/group-static-files/main/example-group.png", "descriptionPath": "life-science-editors--1480d2dd-463f-4834-8e81-d89c8ae2b86f.md", "homepage": "https://www.lifescienceeditors.com", "name": "Life Science Editors", "shortDescription": "Life Science Editors is a group of former journal editors and grant specialists who are passionate about helping scientists and science reach their full potential.", "slug": "life-science-editors"}'
+curl -v -H "Authorization: Bearer $SCIETY_TEAM_API_BEARER_TOKEN" -X POST http://localhost:8080/api/add-group -H "Content-type: application/json" -d '{"groupId": "1480d2dd-463f-4834-8e81-d89c8ae2b86f", "avatarPath": "https://raw.githubusercontent.com/sciety/group-static-files/main/example-group.png", "descriptionPath": "life-science-editors--1480d2dd-463f-4834-8e81-d89c8ae2b86f.md", "homepage": "https://www.lifescienceeditors.com", "name": "Life Science Editors", "shortDescription": "Life Science Editors is a group of former journal editors and grant specialists who are passionate about helping scientists and science reach their full potential.", "slug": "life-science-editors"}'
 ```
 
 #### Group large logos
