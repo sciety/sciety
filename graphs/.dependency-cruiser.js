@@ -1,7 +1,6 @@
 /** @type {import('dependency-cruiser').IConfiguration} */
 module.exports = {
   forbidden: [
-    /* rules from the 'recommended' preset: */
     {
       name: 'no-circular',
       severity: 'warn',
@@ -203,165 +202,100 @@ module.exports = {
     }
   ],
   options: {
-
-    /* conditions specifying which files not to follow further when encountered:
-       - path: a regular expression to match
-       - dependencyTypes: see https://github.com/sverweij/dependency-cruiser/blob/master/doc/rules-reference.md#dependencytypes-and-dependencytypesnot
-       for a complete list
-    */
     doNotFollow: {
       path: 'node_modules'
     },
-
-    /* conditions specifying which dependencies to exclude
-       - path: a regular expression to match
-       - dynamic: a boolean indicating whether to ignore dynamic (true) or static (false) dependencies.
-          leave out if you want to exclude neither (recommended!)
-    */
-    // exclude : {
-    //   path: '',
-    //   dynamic: true
-    // },
-
-    /* pattern specifying which files to include (regular expression)
-       dependency-cruiser will skip everything not matching this pattern
-    */
-    // includeOnly : '',
-
-    /* dependency-cruiser will include modules matching against the focus
-       regular expression in its output, as well as their neighbours (direct
-       dependencies and dependents)
-    */
-    // focus : '',
-
-    /* list of module systems to cruise */
-    // moduleSystems: ['amd', 'cjs', 'es6', 'tsd'],
-
-    /* prefix for links in html and svg output (e.g. 'https://github.com/you/yourrepo/blob/develop/'
-       to open it on your online repo or `vscode://file/${process.cwd()}/` to 
-       open it in visual studio code),
-     */
-    // prefix: '',
-
-    /* false (the default): ignore dependencies that only exist before typescript-to-javascript compilation
-       true: also detect dependencies that only exist before typescript-to-javascript compilation
-       "specify": for each dependency identify whether it only exists before compilation or also after
-     */
-    // tsPreCompilationDeps: false,
-    
-    /* 
-       list of extensions to scan that aren't javascript or compile-to-javascript. 
-       Empty by default. Only put extensions in here that you want to take into
-       account that are _not_ parsable. 
-    */
-    // extraExtensionsToScan: [".json", ".jpg", ".png", ".svg", ".webp"],
-
-    /* if true combines the package.jsons found from the module up to the base
-       folder the cruise is initiated from. Useful for how (some) mono-repos
-       manage dependencies & dependency definitions.
-     */
-    // combinedDependencies: false,
-
-    /* if true leave symlinks untouched, otherwise use the realpath */
-    // preserveSymlinks: false,
-
-    /* TypeScript project file ('tsconfig.json') to use for
-       (1) compilation and
-       (2) resolution (e.g. with the paths property)
-
-       The (optional) fileName attribute specifies which file to take (relative to
-       dependency-cruiser's current working directory). When not provided
-       defaults to './tsconfig.json'.
-     */
-    // tsConfig: {
-    //  fileName: './tsconfig.json'
-    // },
-
-    /* Webpack configuration to use to get resolve options from.
-
-       The (optional) fileName attribute specifies which file to take (relative
-       to dependency-cruiser's current working directory. When not provided defaults
-       to './webpack.conf.js'.
-
-       The (optional) `env` and `args` attributes contain the parameters to be passed if
-       your webpack config is a function and takes them (see webpack documentation
-       for details)
-     */
-    // webpackConfig: {
-    //  fileName: './webpack.config.js',
-    //  env: {},
-    //  args: {},
-    // },
-
-    /* Babel config ('.babelrc', '.babelrc.json', '.babelrc.json5', ...) to use
-      for compilation (and whatever other naughty things babel plugins do to
-      source code). This feature is well tested and usable, but might change
-      behavior a bit over time (e.g. more precise results for used module 
-      systems) without dependency-cruiser getting a major version bump.
-     */
-    // babelConfig: {
-    //   fileName: './.babelrc'
-    // },
-
-    /* List of strings you have in use in addition to cjs/ es6 requires
-       & imports to declare module dependencies. Use this e.g. if you've
-       re-declared require, use a require-wrapper or use window.require as
-       a hack.
-    */
-    // exoticRequireStrings: [],
-    /* options to pass on to enhanced-resolve, the package dependency-cruiser
-       uses to resolve module references to disk. You can set most of these
-       options in a webpack.conf.js - this section is here for those
-       projects that don't have a separate webpack config file.
-
-       Note: settings in webpack.conf.js override the ones specified here.
-     */
-    enhancedResolveOptions: {
-      /* List of strings to consider as 'exports' fields in package.json. Use
-         ['exports'] when you use packages that use such a field and your environment
-         supports it (e.g. node ^12.19 || >=14.7 or recent versions of webpack).
-
-         If you have an `exportsFields` attribute in your webpack config, that one
-         will have precedence over the one specified here.
-      */ 
-      exportsFields: ["exports"],
-      /* List of conditions to check for in the exports field. e.g. use ['imports']
-         if you're only interested in exposed es6 modules, ['require'] for commonjs,
-         or all conditions at once `(['import', 'require', 'node', 'default']`)
-         if anything goes for you. Only works when the 'exportsFields' array is
-         non-empty.
-
-        If you have a 'conditionNames' attribute in your webpack config, that one will
-        have precedence over the one specified here.
-      */
-      conditionNames: ["import", "require", "node", "default"]
-      /*
-         The extensions, by default are the same as the ones dependency-cruiser
-         can access (run `npx depcruise --info` to see which ones that are in
-         _your_ environment. If that list is larger than what you need (e.g. 
-         it contains .js, .jsx, .ts, .tsx, .cts, .mts - but you don't use 
-         TypeScript you can pass just the extensions you actually use (e.g. 
-         [".js", ".jsx"]). This can speed up the most expensive step in 
-         dependency cruising (module resolution) quite a bit.
-       */
-      // extensions: [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+    exclude : {
+      path: 'node_modules',
+      dynamic: true
     },
-    reporterOptions: {
-      dot: {
-        collapsePattern: 'node_modules/[^/]+',
-        theme: {
-          graph: { rankdir: "TD" },
+    includeOnly : '^src/',
+    tsPreCompilationDeps: true,
+    tsConfig: { fileName: '../tsconfig.json' },
+    enhancedResolveOptions: {
+      exportsFields: ['exports'],
+      conditionNames: ['import', 'require', 'node', 'default'],
+      mainFields: ['main', 'types'],
+    },
+
+      reporterOptions: {
+        dot: {
+          collapsePattern: 'node_modules/(@[^/]+/[^/]+|[^/]+)',
+          theme: {
+            graph: { rankdir: 'TD' },
+            modules: [
+              {
+                criteria: { consolidated: true },
+                attributes: {
+                  shape: 'folder',
+                  style: 'rounded, filled',
+                },
+              },
+              {
+                criteria: { source: 'views' },
+                attributes: { fillcolor: 'white' },
+              },
+              {
+                criteria: { source: 'app|http' },
+                attributes: { fillcolor: '#f8cce0' },
+              },
+              {
+                criteria: { source: 'readmodel' },
+                attributes: { fillcolor: '#b6e4db' },
+              },
+            ],
+          },
         },
-      },
-      archi: {
-        collapsePattern: '^(packages|src|lib|app|bin|test(s?)|spec(s?))/[^/]+|node_modules/[^/]+',
-        theme: {
-          graph: { rankdir: "TD" },
+        archi: {
+          collapsePattern: '^(packages|src|lib|app|bin|test(s?)|spec(s?))/[^/]+|node_modules/(@[^/]+/[^/]+|[^/]+)',
+          theme: {
+            graph: {
+              rankdir: 'LR',
+              splines: 'polyline',
+              nodesep: 0.1,
+              ranksep: 0.3,
+            },
+            node: {
+              shape: 'box',
+              style: 'rounded, filled',
+            },
+            edge: {
+              style: 'solid',
+              penwidth: '0.5',
+              color: '#888888',
+            },
+            modules: [
+              {
+                criteria: { consolidated: true },
+                attributes: {
+                  shape: 'rectangle',
+                  style: 'rounded, filled',
+                },
+              },
+              {
+                criteria: { source: 'docmaps|evaluation-content|html-pages|read-side|shared-components|views' },
+                attributes: { fillcolor: 'white' },
+              },
+              {
+                criteria: { source: 'app|http|infrastructure|third-parties' },
+                attributes: { fillcolor: '#f8cce0' },
+              },
+              {
+                criteria: { source: 'read-models' },
+                attributes: { fillcolor: '#b6e4db' },
+              },
+              {
+                criteria: { source: 'ingest|sagas' },
+                attributes: { fillcolor: '#d0bfe8' },
+              },
+              {
+                criteria: { source: 'write-side' },
+                attributes: { fillcolor: '#c9dff4' },
+              },
+            ],
+          },
         },
+        'text': { 'highlightFocused': true },
       },
-      "text": {
-        "highlightFocused": true,
-      },
-    }
-  }
-};
+    },
+}
