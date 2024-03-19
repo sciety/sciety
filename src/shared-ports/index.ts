@@ -5,7 +5,6 @@ import { EditListDetails } from './edit-list-details';
 import { GetAllEvents } from './get-all-events';
 import { Logger } from './logger';
 import { RecordSubjectArea } from './record-subject-area';
-import { RemoveArticleFromList } from './remove-article-from-list';
 import { ExternalQueries } from '../third-parties';
 
 export { GetAllEvents } from './get-all-events';
@@ -27,5 +26,4 @@ export type SharedPorts = ExternalQueries & {
   getAllEvents: GetAllEvents,
   logger: Logger,
   recordSubjectArea: RecordSubjectArea,
-  removeArticleFromList: RemoveArticleFromList,
 };
