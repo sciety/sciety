@@ -206,7 +206,7 @@ module.exports = {
       path: 'node_modules'
     },
     exclude : {
-      path: 'node_modules',
+      path: 'external-types.d.ts|node_modules',
       dynamic: true
     },
     includeOnly : '^src/',
