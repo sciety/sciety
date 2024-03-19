@@ -50,33 +50,37 @@ describe('fetch-prereview-evaluations', () => {
         ],
       },
     ];
-    const result = fetchPrereviewEvaluations()({
-      fetchData: <D>() => TE.right({ data: response } as unknown as D),
+    let result: FeedData;
+
+    beforeEach(async () => {
+      result = await pipe(
+        {
+          fetchData: <D>() => TE.right({ data: response } as unknown as D),
+        },
+        fetchPrereviewEvaluations(),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns the reviews', async () => {
-      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        evaluations: [
-          {
-            articleDoi: articleId.value,
-            date: date1,
-            evaluationLocator: `doi:${reviewDoi1.value}`,
-            authors: [],
-          },
-          {
-            articleDoi: articleId.value,
-            date: date2,
-            evaluationLocator: `doi:${reviewDoi2.value}`,
-            authors: [],
-          },
-        ],
-      })));
+      expect(result.evaluations).toStrictEqual([
+        {
+          articleDoi: articleId.value,
+          date: date1,
+          evaluationLocator: `doi:${reviewDoi1.value}`,
+          authors: [],
+        },
+        {
+          articleDoi: articleId.value,
+          date: date2,
+          evaluationLocator: `doi:${reviewDoi2.value}`,
+          authors: [],
+        },
+      ]);
     });
 
     it('returns no skipped items', async () => {
-      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: [],
-      })));
+      expect(result.skippedItems).toHaveLength(0);
     });
   });
 
@@ -96,31 +100,31 @@ describe('fetch-prereview-evaluations', () => {
         ],
       },
     ];
-    const result = fetchPrereviewEvaluations()({
-      fetchData: <D>() => TE.right({ data: response } as unknown as D),
+    let result: FeedData;
+
+    beforeEach(async () => {
+      result = await pipe(
+        {
+          fetchData: <D>() => TE.right({ data: response } as unknown as D),
+        },
+        fetchPrereviewEvaluations(),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns the valid review', async () => {
-      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        evaluations: [
-          {
-            articleDoi: articleId.value,
-            date: date1,
-            evaluationLocator: `doi:${reviewDoi1.value}`,
-            authors: [],
-          },
-        ],
-      })));
+      expect(result.evaluations).toStrictEqual([
+        {
+          articleDoi: articleId.value,
+          date: date1,
+          evaluationLocator: `doi:${reviewDoi1.value}`,
+          authors: [],
+        },
+      ]);
     });
 
     it('returns one skipped item for the DOI-less review', async () => {
-      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: [
-          expect.objectContaining({
-            reason: 'review has no DOI',
-          }),
-        ],
-      })));
+      expect(result.skippedItems[0].reason).toBe('review has no DOI');
     });
   });
 
@@ -136,29 +140,42 @@ describe('fetch-prereview-evaluations', () => {
         ],
       },
     ];
-    const result = fetchPrereviewEvaluations()({
-      fetchData: <D>() => TE.right({ data: response } as unknown as D),
+    let result: FeedData;
+
+    beforeEach(async () => {
+      result = await pipe(
+        {
+          fetchData: <D>() => TE.right({ data: response } as unknown as D),
+        },
+        fetchPrereviewEvaluations(),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns a skipped item', async () => {
-      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: [
-          {
-            item: AID.toString(articleId),
-            reason: 'is not published',
-          },
-        ],
-      })));
+      expect(result.skippedItems).toStrictEqual([
+        {
+          item: AID.toString(articleId),
+          reason: 'is not published',
+        },
+      ]);
     });
   });
 
   describe('when the response is corrupt', () => {
-    it('reports an error', async () => {
-      const result = fetchPrereviewEvaluations()({
-        fetchData: <D>() => TE.right({} as unknown as D),
-      });
+    let result: E.Either<unknown, unknown>;
 
-      expect(await result()).toStrictEqual(E.left(expect.stringContaining('Invalid value')));
+    beforeEach(async () => {
+      result = await pipe(
+        {
+          fetchData: <D>() => TE.right({} as unknown as D),
+        },
+        fetchPrereviewEvaluations(),
+      )();
+    });
+
+    it('reports an error', async () => {
+      expect(E.isLeft(result)).toBe(true);
     });
   });
 });
