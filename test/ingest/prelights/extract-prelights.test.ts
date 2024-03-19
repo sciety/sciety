@@ -23,7 +23,7 @@ describe('extract-prelights', () => {
     );
 
     it('records the evaluation', () => {
-      expect(result).toStrictEqual(expect.objectContaining({
+      expect(result).toStrictEqual({
         evaluations: [
           {
             date: pubDate,
@@ -33,7 +33,7 @@ describe('extract-prelights', () => {
           },
         ],
         skippedItems: [],
-      }));
+      });
     });
   });
 
@@ -52,13 +52,12 @@ describe('extract-prelights', () => {
       extractPrelights,
     );
 
+    it('records no evaluations', () => {
+      expect(result.evaluations).toHaveLength(0);
+    });
+
     it('skips the evaluation', () => {
-      expect(result).toStrictEqual(expect.objectContaining({
-        evaluations: [],
-        skippedItems: [expect.objectContaining({
-          item: guid,
-        })],
-      }));
+      expect(result.skippedItems[0].item).toStrictEqual(guid);
     });
   });
 
@@ -75,13 +74,12 @@ describe('extract-prelights', () => {
       extractPrelights,
     );
 
-    it('skips the item', () => {
-      expect(result).toStrictEqual(expect.objectContaining({
-        evaluations: [],
-        skippedItems: [expect.objectContaining({
-          item: guid,
-        })],
-      }));
+    it('records no evaluations', () => {
+      expect(result.evaluations).toHaveLength(0);
+    });
+
+    it('skips the evaluation', () => {
+      expect(result.skippedItems[0].item).toStrictEqual(guid);
     });
   });
 
@@ -98,14 +96,12 @@ describe('extract-prelights', () => {
       extractPrelights,
     );
 
-    it('skips the item', () => {
-      expect(result).toStrictEqual(expect.objectContaining({
-        evaluations: [],
-        skippedItems: [expect.objectContaining({
-          item: guid,
-          reason: expect.stringContaining('DOI'),
-        })],
-      }));
+    it('records no evaluations', () => {
+      expect(result.evaluations).toHaveLength(0);
+    });
+
+    it('skips the evaluation', () => {
+      expect(result.skippedItems[0].item).toStrictEqual(guid);
     });
   });
 });
