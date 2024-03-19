@@ -5,10 +5,10 @@ import * as t from 'io-ts';
 import { StatusCodes } from 'http-status-codes';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
-import { GenericCommand } from '../types/command-handler';
-import { CollectedPorts } from '../infrastructure';
-import { ResourceAction } from '../write-side/resources/resource-action';
-import { executeCommand } from '../write-side/commands';
+import { GenericCommand } from '../../types/command-handler';
+import { CollectedPorts } from '../../infrastructure';
+import { ResourceAction } from '../../write-side/resources/resource-action';
+import { executeCommand } from '../../write-side/commands';
 
 const executeAndRespond = <C extends GenericCommand>(
   dependencies: CollectedPorts,
@@ -41,7 +41,7 @@ const executeAndRespond = <C extends GenericCommand>(
     context.response.body = { commandResult };
   };
 
-export const createApiRouteForResourceAction = (
+export const createConfigurePostMiddleware = (
   ports: CollectedPorts,
   expectedToken: string,
 ) => <C extends GenericCommand>(
