@@ -70,6 +70,7 @@ import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
 import { paperActivityPagePath, paperActivityPagePathSpecification } from '../standards';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
+import { getSecretSafely } from './api/get-secret-safely';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -318,30 +319,32 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
-  router.post('/api/add-article-to-list', createApiRouteForResourceAction(adapters, addArticleToListCommandCodec, listResource.addArticle));
+  const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
 
-  router.post('/api/add-group', createApiRouteForResourceAction(adapters, addGroupCommandCodec, groupResource.create));
+  router.post('/api/add-article-to-list', createApiRouteForResourceAction(adapters, expectedToken, addArticleToListCommandCodec, listResource.addArticle));
+
+  router.post('/api/add-group', createApiRouteForResourceAction(adapters, expectedToken, addGroupCommandCodec, groupResource.create));
 
   router.post(
     '/api/create-user',
-    createApiRouteForResourceAction(adapters, createUserAccountCommandCodec, userResource.create),
+    createApiRouteForResourceAction(adapters, expectedToken, createUserAccountCommandCodec, userResource.create),
   );
 
-  router.post('/api/edit-list-details', createApiRouteForResourceAction(adapters, editListDetailsCommandCodec, listResource.update));
+  router.post('/api/edit-list-details', createApiRouteForResourceAction(adapters, expectedToken, editListDetailsCommandCodec, listResource.update));
 
-  router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, eraseEvaluationCommandCodec, evaluationResource.erase));
+  router.post('/api/erase-evaluation', createApiRouteForResourceAction(adapters, expectedToken, eraseEvaluationCommandCodec, evaluationResource.erase));
 
-  router.post('/api/record-evaluation-publication', createApiRouteForResourceAction(adapters, recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
+  router.post('/api/record-evaluation-publication', createApiRouteForResourceAction(adapters, expectedToken, recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
 
-  router.post('/api/record-evaluation-removal', createApiRouteForResourceAction(adapters, recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
+  router.post('/api/record-evaluation-removal', createApiRouteForResourceAction(adapters, expectedToken, recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
 
-  router.post('/api/remove-article-from-list', createApiRouteForResourceAction(adapters, removeArticleFromListCommandCodec, listResource.removeArticle));
+  router.post('/api/remove-article-from-list', createApiRouteForResourceAction(adapters, expectedToken, removeArticleFromListCommandCodec, listResource.removeArticle));
 
-  router.post('/api/update-evaluation', createApiRouteForResourceAction(adapters, updateEvaluationCommandCodec, evaluationResource.update));
+  router.post('/api/update-evaluation', createApiRouteForResourceAction(adapters, expectedToken, updateEvaluationCommandCodec, evaluationResource.update));
 
-  router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, updateGroupDetailsCommandCodec, groupResource.update));
+  router.post('/api/update-group-details', createApiRouteForResourceAction(adapters, expectedToken, updateGroupDetailsCommandCodec, groupResource.update));
 
-  router.post('/api/update-user-details', createApiRouteForResourceAction(adapters, updateUserDetailsCommandCodec, userResource.update));
+  router.post('/api/update-user-details', createApiRouteForResourceAction(adapters, expectedToken, updateUserDetailsCommandCodec, userResource.update));
 
   formSubmissionHandlers.configureRoutes(router, adapters);
 

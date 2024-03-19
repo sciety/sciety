@@ -9,7 +9,6 @@ import { GenericCommand } from '../types/command-handler';
 import { CollectedPorts } from '../infrastructure';
 import { ResourceAction } from '../write-side/resources/resource-action';
 import { executeCommand } from '../write-side/commands';
-import { getSecretSafely } from './api/get-secret-safely';
 
 const executeAndRespond = <C extends GenericCommand>(
   dependencies: CollectedPorts,
@@ -44,11 +43,12 @@ const executeAndRespond = <C extends GenericCommand>(
 
 export const createApiRouteForResourceAction = <C extends GenericCommand>(
   ports: CollectedPorts,
+  expectedToken: string,
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
 ): Middleware => compose(
     [
       bodyParser({ enableTypes: ['json'] }),
-      executeAndRespond(ports, codec, resourceAction, getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN)),
+      executeAndRespond(ports, codec, resourceAction, expectedToken),
     ],
   );
