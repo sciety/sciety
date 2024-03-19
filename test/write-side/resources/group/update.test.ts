@@ -307,16 +307,16 @@ describe('update', () => {
   });
 
   describe('when a GroupDetailsUpdated event is followed by a GroupJoined event', () => {
-    const groupId = arbitraryGroupId();
+    const groupJoinedEvent = arbitraryGroupJoinedEvent();
     const result = pipe(
       [
         {
           ...arbitraryGroupDetailsUpdatedEvent(),
-          groupId,
+          groupId: groupJoinedEvent.groupId,
         },
-        arbitraryGroupJoinedEvent(groupId),
+        groupJoinedEvent,
       ],
-      groupResource.update({ groupId }),
+      groupResource.update({ groupId: groupJoinedEvent.groupId }),
     );
 
     it('returns an error', () => {

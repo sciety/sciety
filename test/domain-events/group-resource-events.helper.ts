@@ -3,13 +3,10 @@ import { EventOfType, constructEvent } from '../../src/domain-events';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../types/description-path.helper';
 
-export const arbitraryGroupJoinedEvent = (
-  groupId = arbitraryGroupId(),
-  name = arbitraryString(),
-): EventOfType<'GroupJoined'> => constructEvent('GroupJoined')(
+export const arbitraryGroupJoinedEvent = (): EventOfType<'GroupJoined'> => constructEvent('GroupJoined')(
   {
-    groupId,
-    name,
+    groupId: arbitraryGroupId(),
+    name: arbitraryString(),
     avatarPath: arbitraryUri(),
     descriptionPath: arbitraryDescriptionPath(),
     shortDescription: arbitraryString(),

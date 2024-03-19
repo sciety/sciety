@@ -69,8 +69,8 @@ describe('getGroup', () => {
   });
 
   describe('when the group has changed its name', () => {
-    const groupId = arbitraryGroupId();
-    const groupJoinedEvent = arbitraryGroupJoinedEvent(groupId);
+    const groupJoinedEvent = arbitraryGroupJoinedEvent();
+    const groupId = groupJoinedEvent.groupId;
     const newName = arbitraryString();
     const readModel = pipe(
       [
@@ -123,8 +123,8 @@ describe('getGroup', () => {
   });
 
   describe('when the group has changed its short description', () => {
-    const groupId = arbitraryGroupId();
-    const groupJoinedEvent = arbitraryGroupJoinedEvent(groupId);
+    const groupJoinedEvent = arbitraryGroupJoinedEvent();
+    const groupId = groupJoinedEvent.groupId;
     const newShortDescription = arbitraryString();
     const readModel = pipe(
       [
@@ -177,8 +177,8 @@ describe('getGroup', () => {
   });
 
   describe('when the group has changed its large logo', () => {
-    const groupId = arbitraryGroupId();
-    const groupJoinedEvent = arbitraryGroupJoinedEvent(groupId);
+    const groupJoinedEvent = arbitraryGroupJoinedEvent();
+    const groupId = groupJoinedEvent.groupId;
     const newLargeLogoPath = arbitraryString();
     const readModel = pipe(
       [

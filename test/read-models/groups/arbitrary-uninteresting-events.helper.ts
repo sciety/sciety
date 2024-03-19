@@ -4,13 +4,13 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
 
-const groupId = arbitraryGroupId();
+const groupJoinedEvent = arbitraryGroupJoinedEvent();
 
 export const arbitraryUninterestingEvents = [
-  arbitraryGroupJoinedEvent(groupId),
+  groupJoinedEvent,
   constructEvent('UserFollowedEditorialCommunity')({ userId: arbitraryUserId(), editorialCommunityId: arbitraryGroupId() }),
   {
     ...arbitraryEvaluationPublicationRecordedEvent(),
-    groupId,
+    groupId: groupJoinedEvent.groupId,
   },
 ];
