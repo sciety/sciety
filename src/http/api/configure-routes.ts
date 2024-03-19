@@ -15,16 +15,14 @@ import {
 import { createUserAccountCommandCodec } from '../../write-side/commands/create-user-account';
 import { createApiRouteForResourceAction } from '../create-api-route-for-resource-action';
 import { ownedBy } from '../owned-by-api';
-import { getSecretSafely } from './get-secret-safely';
 import * as evaluationResource from '../../write-side/resources/evaluation';
 import * as groupResource from '../../write-side/resources/group';
 import * as listResource from '../../write-side/resources/list';
 import * as userResource from '../../write-side/resources/user';
 
-export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
+export const configureRoutes = (router: Router, adapters: CollectedPorts, expectedToken: string): void => {
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
-  const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
   const resourceActionApiMiddleware = createApiRouteForResourceAction(adapters, expectedToken);
 
   router.post('/api/add-article-to-list', resourceActionApiMiddleware(addArticleToListCommandCodec, listResource.addArticle));
