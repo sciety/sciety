@@ -15,13 +15,13 @@ const executeAndRespond = <C extends GenericCommand>(
   dependencies: CollectedPorts,
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
+  expectedToken: string,
 ): Middleware => async (context) => {
     dependencies.logger('debug', 'Received command', {
       body: context.request.body,
       url: context.request.url,
     });
 
-    const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
     if (context.request.headers.authorization !== `Bearer ${expectedToken}`) {
       context.response.status = StatusCodes.FORBIDDEN;
       context.response.body = { error: 'Unauthorized' };
@@ -49,6 +49,6 @@ export const createApiRouteForResourceAction = <C extends GenericCommand>(
 ): Middleware => compose(
     [
       bodyParser({ enableTypes: ['json'] }),
-      executeAndRespond(ports, codec, resourceAction),
+      executeAndRespond(ports, codec, resourceAction, getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN)),
     ],
   );
