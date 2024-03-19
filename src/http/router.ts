@@ -8,24 +8,12 @@ import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
 import * as EDOI from '../types/expression-doi';
 import { loadStaticFile } from './load-static-file';
-import { ownedBy } from './owned-by-api';
+import * as api from './api';
 import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
-import {
-  addArticleToListCommandCodec,
-  editListDetailsCommandCodec,
-  updateUserDetailsCommandCodec,
-  removeArticleFromListCommandCodec,
-  recordEvaluationPublicationCommandCodec,
-  addGroupCommandCodec,
-  eraseEvaluationCommandCodec,
-  updateGroupDetailsCommandCodec,
-  recordEvaluationRemovalCommandCodec,
-  updateEvaluationCommandCodec,
-} from '../write-side/commands';
 import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
@@ -43,7 +31,6 @@ import { page as listPage, paramsCodec as listPageParams } from '../html-pages/l
 import { CollectedPorts } from '../infrastructure';
 import { legalPage } from '../html-pages/legal-page';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
-
 import { scietyFeedCodec, scietyFeedPage } from '../html-pages/sciety-feed-page';
 import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
@@ -51,15 +38,9 @@ import { userPage as userFollowingPage, userPageParams as userFollowingPageParam
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
 import * as authentication from './authentication';
 import * as formSubmissionHandlers from './form-submission-handlers';
-import { createUserAccountCommandCodec } from '../write-side/commands/create-user-account';
 import { createPageFromParams } from './create-page-from-params';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
 import { listsPage } from '../html-pages/lists-page';
-import { createApiRouteForResourceAction } from './create-api-route-for-resource-action';
-import * as evaluationResource from '../write-side/resources/evaluation';
-import * as groupResource from '../write-side/resources/group';
-import * as listResource from '../write-side/resources/list';
-import * as userResource from '../write-side/resources/user';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import { applicationStatus } from '../views/status';
 import { listFeed } from '../views/list/list-feed';
@@ -70,7 +51,6 @@ import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
 import { paperActivityPagePath, paperActivityPagePathSpecification } from '../standards';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
-import { getSecretSafely } from './api/get-secret-safely';
 
 type Config = AuthenticationRoutesConfig;
 
@@ -317,35 +297,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     pageHandler(adapters, () => pipe(sharedComponentsPage, TE.right)),
   );
 
-  router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
-
-  const expectedToken = getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN);
-  const resourceActionApiMiddleware = createApiRouteForResourceAction(adapters, expectedToken);
-
-  router.post('/api/add-article-to-list', resourceActionApiMiddleware(addArticleToListCommandCodec, listResource.addArticle));
-
-  router.post('/api/add-group', resourceActionApiMiddleware(addGroupCommandCodec, groupResource.create));
-
-  router.post(
-    '/api/create-user',
-    resourceActionApiMiddleware(createUserAccountCommandCodec, userResource.create),
-  );
-
-  router.post('/api/edit-list-details', resourceActionApiMiddleware(editListDetailsCommandCodec, listResource.update));
-
-  router.post('/api/erase-evaluation', resourceActionApiMiddleware(eraseEvaluationCommandCodec, evaluationResource.erase));
-
-  router.post('/api/record-evaluation-publication', resourceActionApiMiddleware(recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
-
-  router.post('/api/record-evaluation-removal', resourceActionApiMiddleware(recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
-
-  router.post('/api/remove-article-from-list', resourceActionApiMiddleware(removeArticleFromListCommandCodec, listResource.removeArticle));
-
-  router.post('/api/update-evaluation', resourceActionApiMiddleware(updateEvaluationCommandCodec, evaluationResource.update));
-
-  router.post('/api/update-group-details', resourceActionApiMiddleware(updateGroupDetailsCommandCodec, groupResource.update));
-
-  router.post('/api/update-user-details', resourceActionApiMiddleware(updateUserDetailsCommandCodec, userResource.update));
+  api.configureRoutes(router, adapters);
 
   formSubmissionHandlers.configureRoutes(router, adapters);
 
