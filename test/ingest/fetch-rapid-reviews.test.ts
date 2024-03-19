@@ -61,31 +61,36 @@ describe('fetch-rapid-reviews', () => {
   });
 
   describe('when there is a valid Crossref review that is not by Rapid Reviews Infectious Diseases', () => {
-    it('returns a skipped item', async () => {
-      const articleDoi = arbitraryArticleId().value;
-      const date = arbitraryDate();
-      const reviewUrl = arbitraryUri();
-      const items = [
-        {
-          URL: reviewUrl,
-          created: { 'date-time': date.toString() },
-          relation: { 'is-review-of': [{ id: articleDoi }] },
-          resource: {
-            primary: {
-              URL: arbitraryUri(),
+    const articleDoi = arbitraryArticleId().value;
+    const date = arbitraryDate();
+    const reviewUrl = arbitraryUri();
+    let result: FeedData;
+
+    beforeEach(async () => {
+      result = await pipe(
+        [
+          {
+            URL: reviewUrl,
+            created: { 'date-time': date.toString() },
+            relation: { 'is-review-of': [{ id: articleDoi }] },
+            resource: {
+              primary: {
+                URL: arbitraryUri(),
+              },
             },
           },
-        },
-      ];
-
-      expect(await ingest(items)()).toStrictEqual(E.right({
-        evaluations: [],
-        skippedItems: [
-          expect.objectContaining({
-            item: reviewUrl,
-          }),
         ],
-      }));
+        ingest,
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns no evaluations', () => {
+      expect(result.evaluations).toHaveLength(0);
+    });
+
+    it('returns a skipped item', async () => {
+      expect(result.skippedItems[0].item).toStrictEqual(reviewUrl);
     });
   });
 
