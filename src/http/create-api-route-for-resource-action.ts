@@ -41,9 +41,10 @@ const executeAndRespond = <C extends GenericCommand>(
     context.response.body = { commandResult };
   };
 
-export const createApiRouteForResourceAction = <C extends GenericCommand>(
+export const createApiRouteForResourceAction = (
   ports: CollectedPorts,
   expectedToken: string,
+) => <C extends GenericCommand>(
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
 ): Middleware => compose(
