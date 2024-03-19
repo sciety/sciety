@@ -50,7 +50,11 @@ describe('update', () => {
           const eventsRaised = pipe(
             [
               groupJoined,
-              arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, { [attributeToBeChanged]: arbitraryString() }),
+              {
+                ...arbitraryGroupDetailsUpdatedEvent(),
+                groupId: groupJoined.groupId,
+                [attributeToBeChanged]: arbitraryString(),
+              },
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -116,7 +120,11 @@ describe('update', () => {
           const eventsRaised = pipe(
             [
               groupJoined,
-              arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, { [attributeToBeChanged]: arbitraryString() }),
+              {
+                ...arbitraryGroupDetailsUpdatedEvent(),
+                groupId: groupJoined.groupId,
+                [attributeToBeChanged]: arbitraryString(),
+              },
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -167,7 +175,11 @@ describe('update', () => {
 
         describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
           const moreEventsRelatingToOurGroup = [
-            arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, { [attributeToBeChanged]: arbitraryString() }),
+            {
+              ...arbitraryGroupDetailsUpdatedEvent(),
+              groupId: groupJoined.groupId,
+              [attributeToBeChanged]: arbitraryString(),
+            },
           ];
           const eventsRaised = pipe(
             [
@@ -218,7 +230,11 @@ describe('update', () => {
             [
               groupJoined,
               otherGroupJoined,
-              arbitraryGroupDetailsUpdatedEvent(groupJoined.groupId, { [attributeToBeChanged]: arbitraryString() }),
+              {
+                ...arbitraryGroupDetailsUpdatedEvent(),
+                groupId: groupJoined.groupId,
+                [attributeToBeChanged]: arbitraryString(),
+              },
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -238,10 +254,11 @@ describe('update', () => {
             [
               groupJoined,
               otherGroupJoined,
-              arbitraryGroupDetailsUpdatedEvent(
-                otherGroupJoined.groupId,
-                { [attributeToBeChanged]: valueTakenByOtherGroup },
-              ),
+              {
+                ...arbitraryGroupDetailsUpdatedEvent(),
+                groupId: otherGroupJoined.groupId,
+                [attributeToBeChanged]: valueTakenByOtherGroup,
+              },
             ],
             groupResource.update({
               groupId: groupJoined.groupId,
@@ -276,7 +293,10 @@ describe('update', () => {
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        arbitraryGroupDetailsUpdatedEvent(groupId, {}),
+        {
+          ...arbitraryGroupDetailsUpdatedEvent(),
+          groupId,
+        },
       ],
       groupResource.update({ groupId }),
     );
@@ -290,7 +310,10 @@ describe('update', () => {
     const groupId = arbitraryGroupId();
     const result = pipe(
       [
-        arbitraryGroupDetailsUpdatedEvent(groupId, {}),
+        {
+          ...arbitraryGroupDetailsUpdatedEvent(),
+          groupId,
+        },
         arbitraryGroupJoinedEvent(groupId),
       ],
       groupResource.update({ groupId }),

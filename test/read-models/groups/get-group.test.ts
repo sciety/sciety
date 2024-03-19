@@ -75,7 +75,11 @@ describe('getGroup', () => {
     const readModel = pipe(
       [
         groupJoinedEvent,
-        arbitraryGroupDetailsUpdatedEvent(groupId, { name: newName }),
+        {
+          ...arbitraryGroupDetailsUpdatedEvent(),
+          groupId,
+          name: newName,
+        },
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -125,7 +129,11 @@ describe('getGroup', () => {
     const readModel = pipe(
       [
         groupJoinedEvent,
-        arbitraryGroupDetailsUpdatedEvent(groupId, { shortDescription: newShortDescription }),
+        {
+          ...arbitraryGroupDetailsUpdatedEvent(),
+          groupId,
+          shortDescription: newShortDescription,
+        },
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -175,7 +183,11 @@ describe('getGroup', () => {
     const readModel = pipe(
       [
         groupJoinedEvent,
-        arbitraryGroupDetailsUpdatedEvent(groupId, { largeLogoPath: newLargeLogoPath }),
+        {
+          ...arbitraryGroupDetailsUpdatedEvent(),
+          groupId,
+          largeLogoPath: newLargeLogoPath,
+        },
       ],
       RA.reduce(initialState(), handleEvent),
     );

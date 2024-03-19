@@ -70,7 +70,11 @@ describe('create', () => {
       const result = pipe(
         [
           otherGroupJoinedEvent,
-          arbitraryGroupDetailsUpdatedEvent(otherGroupJoinedEvent.groupId, { name }),
+          {
+            ...arbitraryGroupDetailsUpdatedEvent(),
+            groupId: otherGroupJoinedEvent.groupId,
+            name,
+          },
         ],
         create({ ...addGroupCommand, name }),
       );
@@ -102,7 +106,11 @@ describe('create', () => {
       const result = pipe(
         [
           otherGroupJoinedEvent,
-          arbitraryGroupDetailsUpdatedEvent(otherGroupJoinedEvent.groupId, { slug }),
+          {
+            ...arbitraryGroupDetailsUpdatedEvent(),
+            groupId: otherGroupJoinedEvent.groupId,
+            slug,
+          },
         ],
         create({ ...addGroupCommand, slug }),
       );

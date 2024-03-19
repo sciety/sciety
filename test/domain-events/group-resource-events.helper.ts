@@ -2,7 +2,6 @@ import { arbitraryString, arbitraryUri } from '../helpers';
 import { EventOfType, constructEvent } from '../../src/domain-events';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../types/description-path.helper';
-import { GroupId } from '../../src/types/group-id';
 
 export const arbitraryGroupJoinedEvent = (
   groupId = arbitraryGroupId(),
@@ -20,8 +19,8 @@ export const arbitraryGroupJoinedEvent = (
   },
 );
 
-export const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, detailsToUpdate: Record<string, string>): EventOfType<'GroupDetailsUpdated'> => constructEvent('GroupDetailsUpdated')({
-  groupId,
+export const arbitraryGroupDetailsUpdatedEvent = (): EventOfType<'GroupDetailsUpdated'> => constructEvent('GroupDetailsUpdated')({
+  groupId: arbitraryGroupId(),
   name: undefined,
   avatarPath: undefined,
   descriptionPath: undefined,
@@ -29,5 +28,4 @@ export const arbitraryGroupDetailsUpdatedEvent = (groupId: GroupId, detailsToUpd
   shortDescription: undefined,
   homepage: undefined,
   slug: undefined,
-  ...detailsToUpdate,
 });
