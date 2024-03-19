@@ -51,9 +51,9 @@ import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
 import { paperActivityPagePath, paperActivityPagePathSpecification } from '../standards';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
-import { getSecretSafely } from './api/get-secret-safely';
+import { EnvironmentVariables } from './environment-variables-codec';
 
-type Config = AuthenticationRoutesConfig;
+type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 
 export const createRouter = (adapters: CollectedPorts, config: Config): Router => {
   const router = new Router();
@@ -298,7 +298,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     pageHandler(adapters, () => pipe(sharedComponentsPage, TE.right)),
   );
 
-  api.configureRoutes(router, adapters, getSecretSafely(process.env.SCIETY_TEAM_API_BEARER_TOKEN));
+  api.configureRoutes(router, adapters, config.SCIETY_TEAM_API_BEARER_TOKEN);
 
   formSubmissionHandlers.configureRoutes(router, adapters);
 
