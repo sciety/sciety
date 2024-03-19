@@ -1,4 +1,4 @@
-import { arbitraryString, arbitraryUri } from '../helpers';
+import { arbitraryNumber, arbitraryString, arbitraryUri } from '../helpers';
 import { EventOfType, constructEvent } from '../../src/domain-events';
 import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryDescriptionPath } from '../types/description-path.helper';
@@ -12,7 +12,7 @@ export const arbitraryGroupJoinedEvent = (): EventOfType<'GroupJoined'> => const
     shortDescription: arbitraryString(),
     homepage: arbitraryString(),
     slug: arbitraryString(),
-    largeLogoPath: arbitraryString(),
+    largeLogoPath: arbitraryNumber(0, 1) === 0 ? arbitraryString() : undefined,
   },
 );
 

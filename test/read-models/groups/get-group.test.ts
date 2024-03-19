@@ -16,7 +16,6 @@ describe('getGroup', () => {
   describe('when the group has joined', () => {
     const groupJoinedEvent = arbitraryGroupJoinedEvent();
     let foundGroup: Group;
-    let largeLogoPath: string;
 
     beforeEach(() => {
       const readModel = pipe(
@@ -31,10 +30,6 @@ describe('getGroup', () => {
         getGroup(readModel),
         O.getOrElseW(shouldNotBeCalled),
       );
-      largeLogoPath = pipe(
-        foundGroup.largeLogoPath,
-        O.getOrElseW(shouldNotBeCalled),
-      );
     });
 
     it('returns the requested group\'s id', () => {
@@ -42,7 +37,7 @@ describe('getGroup', () => {
     });
 
     it('returns the requested group\'s large logo', () => {
-      expect(largeLogoPath).toStrictEqual(groupJoinedEvent.largeLogoPath);
+      expect(foundGroup.largeLogoPath).toStrictEqual(O.fromNullable(groupJoinedEvent.largeLogoPath));
     });
 
     it.each([
@@ -84,17 +79,11 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
     let result: Group;
-    let largeLogoPath: string;
 
     beforeEach(() => {
       result = pipe(
         groupId,
         getGroup(readModel),
-        O.getOrElseW(shouldNotBeCalled),
-      );
-
-      largeLogoPath = pipe(
-        result.largeLogoPath,
         O.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -108,7 +97,7 @@ describe('getGroup', () => {
     });
 
     it('returns the group\'s largeLogoPath unchanged', () => {
-      expect(largeLogoPath).toStrictEqual(groupJoinedEvent.largeLogoPath);
+      expect(result.largeLogoPath).toStrictEqual(O.fromNullable(groupJoinedEvent.largeLogoPath));
     });
 
     it.each([
@@ -138,17 +127,11 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
     let result: Group;
-    let largeLogoPath: string;
 
     beforeEach(() => {
       result = pipe(
         groupId,
         getGroup(readModel),
-        O.getOrElseW(shouldNotBeCalled),
-      );
-
-      largeLogoPath = pipe(
-        result.largeLogoPath,
         O.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -162,7 +145,7 @@ describe('getGroup', () => {
     });
 
     it('returns the group\'s largeLogoPath unchanged', () => {
-      expect(largeLogoPath).toStrictEqual(groupJoinedEvent.largeLogoPath);
+      expect(result.largeLogoPath).toStrictEqual(O.fromNullable(groupJoinedEvent.largeLogoPath));
     });
 
     it.each([
@@ -192,17 +175,11 @@ describe('getGroup', () => {
       RA.reduce(initialState(), handleEvent),
     );
     let result: Group;
-    let largeLogoPath: string;
 
     beforeEach(() => {
       result = pipe(
         groupId,
         getGroup(readModel),
-        O.getOrElseW(shouldNotBeCalled),
-      );
-
-      largeLogoPath = pipe(
-        result.largeLogoPath,
         O.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -212,7 +189,7 @@ describe('getGroup', () => {
     });
 
     it('returns the group\'s largeLogoPath changed', () => {
-      expect(largeLogoPath).toStrictEqual(newLargeLogoPath);
+      expect(result.largeLogoPath).toStrictEqual(O.fromNullable(newLargeLogoPath));
     });
 
     it.each([
