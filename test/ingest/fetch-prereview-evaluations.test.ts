@@ -1,26 +1,33 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
 import { arbitraryDate, arbitraryWord } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
 import * as AID from '../../src/types/article-id';
+import { FeedData } from '../../src/ingest/types/feed-data';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('fetch-prereview-evaluations', () => {
   describe('when the reponse includes no preprints', () => {
-    const result = fetchPrereviewEvaluations()({
-      fetchData: <D>() => TE.right({ data: [] } as unknown as D),
+    let result: FeedData;
+
+    beforeEach(async () => {
+      result = await pipe(
+        {
+          fetchData: <D>() => TE.right({ data: [] } as unknown as D),
+        },
+        fetchPrereviewEvaluations(),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
     });
 
     it('returns no evaluations', async () => {
-      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        evaluations: [],
-      })));
+      expect(result.evaluations).toHaveLength(0);
     });
 
     it('returns no skipped items', async () => {
-      expect(await result()).toStrictEqual(E.right(expect.objectContaining({
-        skippedItems: [],
-      })));
+      expect(result.skippedItems).toHaveLength(0);
     });
   });
 
