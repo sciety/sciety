@@ -12,6 +12,6 @@ import { getAuth0UserPicture } from './get-auth0-user-picture';
 
 export const fetchUserAvatarUrl = (queryExternalService: QueryExternalService, logger: Logger): ExternalQueries['fetchUserAvatarUrl'] => (userId: UserId) => pipe(
   getAuth0ManagementApiToken(logger),
-  TE.chain(getAuth0UserPicture(queryExternalService, userId)),
+  TE.chain(getAuth0UserPicture(queryExternalService, logger, userId)),
   T.map(() => E.left(DE.unavailable)),
 );
