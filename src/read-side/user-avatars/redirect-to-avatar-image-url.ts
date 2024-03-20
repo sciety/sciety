@@ -18,9 +18,10 @@ const paramsCodec = t.type({
   handle: candidateUserHandleCodec,
 });
 
-const fetchAvatarUrl = (dependencies: Dependencies) => (userDetails: UserDetails) => pipe(
+const fetchAvatarUrl = (dependencies: Dependencies) => (userDetails: UserDetails): T.Task<string> => pipe(
   userDetails.id,
   dependencies.fetchUserAvatarUrl,
+  TE.getOrElse(() => T.of(userDetails.avatarUrl)),
 );
 
 export const redirectToAvatarImageUrl = (dependencies: Dependencies): Middleware => async (context, next) => {
@@ -33,7 +34,7 @@ export const redirectToAvatarImageUrl = (dependencies: Dependencies): Middleware
       () => DE.notFound,
     ),
     TE.fromEither,
-    TE.chainW(fetchAvatarUrl(dependencies)),
+    TE.chainTaskK(fetchAvatarUrl(dependencies)),
     TE.getOrElseW(() => T.of('/static/images/profile-dark.svg')),
     T.map(toRedirectTarget),
   )();
