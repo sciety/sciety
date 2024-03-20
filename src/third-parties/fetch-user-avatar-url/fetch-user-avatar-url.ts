@@ -9,7 +9,6 @@ import { getAuth0ManagementApiToken } from './get-auth0-management-api-token';
 import { UserId } from '../../types/user-id';
 import { getAuth0UserPicture } from './get-auth0-user-picture';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const fetchUserAvatarUrl = (logger: Logger): ExternalQueries['fetchUserAvatarUrl'] => (userId: UserId) => pipe(
   getAuth0ManagementApiToken(logger),
   TE.chain(getAuth0UserPicture(userId)),
