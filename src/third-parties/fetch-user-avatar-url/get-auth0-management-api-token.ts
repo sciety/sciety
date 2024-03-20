@@ -48,5 +48,9 @@ export const getAuth0ManagementApiToken = (logger: Logger): TE.TaskEither<DE.Dat
       },
     ),
   )),
+  TE.map((response) => {
+    logger('verbose', 'Auth0 Management API token obtained successfully', { truncatedAccessToken: `${response.access_token.substring(0, 5)}...` });
+    return response;
+  }),
   TE.map((response) => response.access_token),
 );
