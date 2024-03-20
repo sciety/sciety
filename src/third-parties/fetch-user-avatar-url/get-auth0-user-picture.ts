@@ -8,6 +8,6 @@ export const getAuth0UserPicture = (
   userId: UserId,
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 ) => (managementApiToken: string): TE.TaskEither<DE.DataError, URL> => pipe(
-  `/api/v2/users/${userId}`,
+  `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${userId}`,
   () => TE.right(new URL('http://example.com')),
 );
