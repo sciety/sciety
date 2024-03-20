@@ -10,9 +10,8 @@ import { QueryExternalService } from '../query-external-service';
 export const getAuth0UserPicture = (
   queryExternalService: QueryExternalService,
   userId: UserId,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 ) => (managementApiToken: string): TE.TaskEither<DE.DataError, URL> => pipe(
   `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${userId}`,
-  queryExternalService(undefined, {}),
+  queryExternalService(undefined, { Authorization: `Bearer ${managementApiToken}` }),
   T.map(() => E.right(new URL('http://example.com'))),
 );
