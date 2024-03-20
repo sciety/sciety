@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { parseHTML } from 'linkedom';
+import { JSDOM } from 'jsdom';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { QueryExternalService } from '../query-external-service.js';
@@ -28,8 +28,8 @@ export const fetchPrelightsHighlight = (
     }),
   )),
   TE.chainEitherKW(flow(
-    (doc) => parseHTML(doc),
-    (dom) => dom.document.querySelector('meta[property="og:description"]:not([content=""])'),
+    (doc) => new JSDOM(doc),
+    (dom) => dom.window.document.querySelector('meta[property="og:description"]:not([content=""])'),
     (meta) => meta?.getAttribute('content'),
     O.fromNullable,
     E.fromOption(() => DE.unavailable),

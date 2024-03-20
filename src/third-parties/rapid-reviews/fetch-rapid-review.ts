@@ -4,7 +4,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { parseHTML } from 'linkedom';
+import { JSDOM } from 'jsdom';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { QueryExternalService } from '../query-external-service.js';
 import { EvaluationFetcher } from '../evaluation-fetcher.js';
@@ -68,7 +68,7 @@ export const fetchRapidReview = (
     }),
   )),
   TE.chainEitherKW(flow(
-    (html) => parseHTML(html).window.document,
+    (html) => new JSDOM(html).window.document,
     extractEvaluation(logger),
     E.map(toHtmlFragment),
     E.map(sanitise),
