@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { persistEvents } from './persist-events';
+import { persistEventsToPostgres } from './persist-events-to-postgres';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
 import { dispatcher } from '../read-models';
@@ -82,7 +82,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       const commitEventsWithoutListeners = commitEvents({
         inMemoryEvents: partialAdapters.events,
         dispatchToAllReadModels,
-        persistEvents: persistEvents(partialAdapters.pool),
+        persistEvents: persistEventsToPostgres(partialAdapters.pool),
         logger: partialAdapters.logger,
       });
 

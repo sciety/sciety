@@ -20,7 +20,7 @@ const writeEventToDatabase = (pool: Pool) => (event: DomainEvent) => TE.tryCatch
   () => toErrorMessage('Failed to write an event to the database'),
 );
 
-export const persistEvents = (
+export const persistEventsToPostgres = (
   pool: Pool,
 ) => (
   events: ReadonlyArray<DomainEvent>,
