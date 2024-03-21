@@ -15,11 +15,11 @@ const constructListCards = (pageOfItems: PageOfItems<List>, dependencies: Depend
   RA.map(constructListCardViewModelWithAvatar(dependencies)),
 );
 
-const constructPagination = () => ({
+const constructPagination = (pageOfItems: PageOfItems<unknown>) => ({
   backwardPageHref: O.none,
   forwardPageHref: O.none,
-  page: 1,
-  pageCount: 1,
+  page: pageOfItems.pageNumber,
+  pageCount: pageOfItems.numberOfPages,
 });
 
 export type Dependencies = Queries & ConstructListCardViewModelWithAvatarDependencies;
@@ -30,6 +30,6 @@ export const constructViewModel = (dependencies: Dependencies): E.Either<DE.Data
   paginate(1000, 1),
   E.map((pageOfItems) => ({
     listCards: constructListCards(pageOfItems, dependencies),
-    pagination: constructPagination(),
+    pagination: constructPagination(pageOfItems),
   })),
 );
