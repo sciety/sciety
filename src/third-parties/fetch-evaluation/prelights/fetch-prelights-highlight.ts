@@ -3,9 +3,9 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import { JSDOM } from 'jsdom';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { load } from 'cheerio';
 import { QueryExternalService } from '../../query-external-service';
 import { EvaluationFetcher } from '../evaluation-fetcher';
 import * as DE from '../../../types/data-error';
@@ -28,9 +28,8 @@ export const fetchPrelightsHighlight = (
     }),
   )),
   TE.chainEitherKW(flow(
-    (doc) => new JSDOM(doc),
-    (dom) => dom.window.document.querySelector('meta[property="og:description"]:not([content=""])'),
-    (meta) => meta?.getAttribute('content'),
+    (html) => load(html),
+    (parsedDocument) => parsedDocument('meta[property="og:description"]:not([content=""])').attr('content'),
     O.fromNullable,
     E.fromOption(() => DE.unavailable),
     E.map((text) => `<h3>Excerpt</h3><p>${text}</p>`),
