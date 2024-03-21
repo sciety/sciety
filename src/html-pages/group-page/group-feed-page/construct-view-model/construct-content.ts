@@ -1,5 +1,6 @@
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
@@ -57,10 +58,14 @@ const toPageOfFeedContent = (
   page: number,
 ) => (articleIds: ReadonlyArray<string>) => pipe(
   articleIds,
-  paginate(pageSize, page),
-  E.mapLeft(
+  E.fromPredicate(
+    RA.isNonEmpty,
     () => ({ tag: 'no-activity-yet' as const }),
   ),
+  E.chain(flow(
+    paginate(pageSize, page),
+    E.mapLeft(() => ({ tag: 'no-activity-yet' as const })),
+  )),
   TE.fromEither,
   TE.chainTaskK(toOrderedArticleCards(dependencies, groupSlug)),
   TE.toUnion,
