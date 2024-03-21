@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import * as PR from 'io-ts/PathReporter';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 import { articleIdCodec } from '../../types/article-id';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';

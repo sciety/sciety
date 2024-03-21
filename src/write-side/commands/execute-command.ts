@@ -7,7 +7,7 @@ import { validateInputShape } from './validate-input-shape';
 import { ErrorMessage } from '../../types/error-message';
 import { CommandResult } from '../../types/command-result';
 import { DependenciesForCommands } from '../dependencies-for-commands';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 
 export const executeCommand = <C extends GenericCommand>(
   dependencies: DependenciesForCommands & { logger: Logger },

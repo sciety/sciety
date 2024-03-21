@@ -11,7 +11,7 @@ import { EvaluationFetcher } from '../evaluation-fetcher';
 import * as DE from '../../../types/data-error';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
-import { Logger } from '../../../shared-ports';
+import { Logger } from '../../../infrastructure-contract';
 
 const summary = (logger: Logger) => (doc: Document) => pipe(
   doc.querySelector('meta[name=description]')?.getAttribute('content'),

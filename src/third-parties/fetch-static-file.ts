@@ -3,7 +3,7 @@ import path from 'path';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as DE from '../types/data-error';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure-contract';
 import { ExternalQueries } from './external-queries';
 
 export const fetchStaticFile = (logger: Logger): ExternalQueries['fetchStaticFile'] => (filename) => pipe(

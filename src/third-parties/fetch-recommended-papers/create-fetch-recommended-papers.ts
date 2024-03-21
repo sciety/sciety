@@ -3,7 +3,7 @@ import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 import * as DE from '../../types/data-error';
 import { QueryExternalService } from '../query-external-service';
 import * as PH from '../../types/publishing-history';

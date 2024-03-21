@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { jsonSerializer } from './json-serializer';
 import { rTracerLogger } from './r-tracer-logger';
 import { streamLogger } from './stream-logger';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 
 export type Config = {
   prettyLog: boolean,

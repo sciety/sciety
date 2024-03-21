@@ -1,5 +1,5 @@
+import { Logger } from '../src/infrastructure-contract';
 import * as L from '../src/infrastructure/logger';
-import { Logger } from '../src/shared-ports';
 
 const loggerStub: Logger = (process.env.TEST_DEBUG === 'true') ? (
   L.createLogger({

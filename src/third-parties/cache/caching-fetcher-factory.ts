@@ -10,7 +10,7 @@ import {
 } from 'axios-cache-interceptor';
 import { createClient } from 'redis';
 import { logAndTransformToDataError } from '../log-and-transform-to-data-error';
-import { Logger, LogLevel } from '../../shared-ports';
+import { Logger, LogLevel } from '../../infrastructure-contract';
 import { QueryExternalService } from '../query-external-service';
 import { redisStorage } from './redis-storage';
 import { cachedGetter, ResponseBodyCachePredicate } from './cached-getter';

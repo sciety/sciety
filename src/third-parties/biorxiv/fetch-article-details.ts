@@ -8,7 +8,7 @@ import {
 } from './biorxiv-details-api-response';
 import { ArticleId } from '../../types/article-id';
 import { QueryExternalService } from '../query-external-service';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 type Dependencies = {

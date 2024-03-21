@@ -8,7 +8,7 @@ import { UserId } from '../../types/user-id';
 import * as DE from '../../types/data-error';
 import { QueryExternalService } from '../query-external-service';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 
 const auth0UserCodec = t.strict({
   picture: t.string,

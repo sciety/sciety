@@ -8,7 +8,7 @@ import { Middleware } from 'koa';
 import * as t from 'io-ts';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { followCommandHandler } from '../../write-side/command-handlers';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
 import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';

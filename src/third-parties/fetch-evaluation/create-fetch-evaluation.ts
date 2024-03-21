@@ -6,7 +6,7 @@ import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-a
 import { fetchHypothesisAnnotation } from './hypothesis';
 import { fetchZenodoRecord } from './zenodo';
 import { fetchPrelightsHighlight } from './prelights';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology';
 import { QueryExternalService } from '../query-external-service';

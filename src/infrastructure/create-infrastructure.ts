@@ -23,7 +23,7 @@ import {
 } from '../write-side/command-handlers';
 import { instantiate } from '../third-parties';
 import { createRedisClient } from './create-redis-client';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure-contract';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,

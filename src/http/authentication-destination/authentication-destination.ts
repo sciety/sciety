@@ -3,7 +3,7 @@ import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import * as E from 'fp-ts/Either';
 import { calculateAuthenticationDestination } from './calculate-authentication-destination';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 
 const contextCodec = t.type({
   session: t.type({

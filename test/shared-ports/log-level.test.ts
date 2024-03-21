@@ -1,4 +1,4 @@
-import { shouldBeLogged } from '../../src/shared-ports/log-level';
+import { shouldBeLogged } from '../../src/infrastructure-contract/log-level';
 
 describe('log-level', () => {
   describe('when configured level is info and the requested level is debug', () => {

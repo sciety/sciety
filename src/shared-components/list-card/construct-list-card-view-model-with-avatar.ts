@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { List } from '../../read-models/lists';
 import { ListCardViewModel } from './render-list-card';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 import { Queries } from '../../read-models';
 import { constructUserAvatarUrl } from '../../read-side';
 

@@ -2,11 +2,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../types/expression-doi';
 import {
-  Logger, RecordSubjectArea,
+  RecordSubjectArea,
 } from '../../shared-ports';
 import { Queries } from '../../read-models';
 import { ExternalQueries } from '../../third-parties';
 import { ArticleId } from '../../types/article-id';
+import { Logger } from '../../infrastructure-contract';
 
 export type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & ExternalQueries & {
   logger: Logger,

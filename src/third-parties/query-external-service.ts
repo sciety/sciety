@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
-import { LogLevel } from '../shared-ports';
+import { LogLevel } from '../infrastructure-contract';
 
 type Headers = Record<string, string>;
 

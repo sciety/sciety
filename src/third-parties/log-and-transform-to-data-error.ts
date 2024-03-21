@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import axios, { AxiosResponse } from 'axios';
-import { Logger, LogLevel } from '../shared-ports';
+import { Logger, LogLevel } from '../infrastructure-contract';
 import * as DE from '../types/data-error';
 
 const notFoundResponseStatuses = [404, 410];

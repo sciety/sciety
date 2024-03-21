@@ -3,7 +3,7 @@ import { Middleware } from '@koa/router';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from './send-default-error-html-response';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure-contract';
 
 type KoaSendError = {
   status: number,

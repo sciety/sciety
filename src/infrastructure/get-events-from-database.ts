@@ -9,7 +9,7 @@ import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './e
 import {
   DomainEvent, CurrentOrLegacyDomainEvent, EventOfType,
 } from '../domain-events';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure-contract';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');

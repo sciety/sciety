@@ -5,7 +5,7 @@ import * as t from 'io-ts';
 import axios from 'axios';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as DE from '../../types/data-error';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 
 const managementApiTokenCodec = t.type({
   access_token: t.string,

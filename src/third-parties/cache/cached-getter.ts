@@ -2,7 +2,7 @@ import {
   AxiosCacheInstance,
   CacheAxiosResponse,
 } from 'axios-cache-interceptor';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../infrastructure-contract';
 
 const shouldCacheAccordingToStatusCode = (status: number) => [
   200, 203, 300, 301, 302, 404, 405, 410, 414, 501,

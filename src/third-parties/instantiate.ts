@@ -6,7 +6,7 @@ import { fetchExpressionFrontMatter, crossrefResponseBodyCachePredicate } from '
 import { searchEuropePmc } from './europe-pmc';
 import { createFetchRecommendedPapers } from './fetch-recommended-papers';
 import { ExternalQueries } from './external-queries';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure-contract';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchEvaluation } from './fetch-evaluation';

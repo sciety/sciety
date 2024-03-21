@@ -1,7 +1,7 @@
 import { Serializer } from './serializer';
 import {
   Logger, shouldBeLogged,
-} from '../../shared-ports';
+} from '../../infrastructure-contract';
 
 export const streamLogger = (
   stream: NodeJS.WritableStream,

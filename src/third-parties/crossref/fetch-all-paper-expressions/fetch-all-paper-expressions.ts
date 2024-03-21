@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { PaperExpression } from '../../../types/paper-expression';
 import * as DE from '../../../types/data-error';
-import { Logger } from '../../../shared-ports';
+import { Logger } from '../../../infrastructure-contract';
 import { QueryCrossrefService } from './query-crossref-service';
 import { toPaperExpression } from './to-paper-expression';
 import { walkRelationGraph } from './walk-relation-graph';

@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { sequenceS } from 'fp-ts/Apply';
 import * as DE from '../../../types/data-error';
-import { Logger } from '../../../shared-ports';
+import { Logger } from '../../../infrastructure-contract';
 import { CrossrefWork } from './crossref-work';
 import { State } from './state';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';

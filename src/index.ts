@@ -14,7 +14,7 @@ import {
 } from './infrastructure';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { startSagas } from './sagas';
-import { defaultLogLevel, Logger } from './shared-ports';
+import { defaultLogLevel, Logger } from './infrastructure-contract';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {

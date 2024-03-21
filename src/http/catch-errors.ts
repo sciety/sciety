@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import { StatusCodes } from 'http-status-codes';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from './send-default-error-html-response';
-import { Logger } from '../shared-ports';
+import { Logger } from '../infrastructure-contract';
 
 type Dependencies = SendErrorHtmlResponseDependencies & { logger: Logger };
 
