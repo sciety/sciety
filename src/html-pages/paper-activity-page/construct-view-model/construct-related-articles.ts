@@ -16,13 +16,22 @@ export const constructRelatedArticles = (
   dependencies.fetchRecommendedPapers,
   TE.filterOrElseW(
     (queryResult) => queryResult.length > 0,
-    () => 'query-returned-no-results' as const,
+    () => {
+      dependencies.logger('error', 'fetchRecommendedPapers returned no results', { paperExpressionDoi: PH.getLatestExpression(history).expressionDoi });
+      return 'query-returned-no-results' as const;
+    },
   ),
   TE.map(RA.takeLeft(3)),
-  TE.chainW(TE.traverseArray(constructPaperActivitySummaryCard(dependencies))),
-  TE.mapLeft((error) => {
-    dependencies.logger('error', 'constructRelatedArticles has failed', { error, paperExpressionDoi: PH.getLatestExpression(history).expressionDoi });
-    return error;
-  }),
+  TE.chainW((recommendedPapers) => pipe(
+    recommendedPapers,
+    TE.traverseArray(constructPaperActivitySummaryCard(dependencies)),
+    TE.mapLeft((error) => {
+      dependencies.logger('error', 'at least one paper activity summary card could not be constructed', {
+        error,
+        paperExpressionDoi: PH.getLatestExpression(history).expressionDoi,
+      });
+      return error;
+    }),
+  )),
   TO.fromTaskEither,
 );
