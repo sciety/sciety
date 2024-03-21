@@ -52,7 +52,8 @@ CMD ["sh", "./scripts/start-dev.sh"]
 FROM dev AS build-prod
 ENV NODE_ENV=production
 
-RUN npm run build
+RUN npx esbuild /app/src/index.ts --bundle --platform=node --outfile=build/index.js --target=node18
+RUN npm run build:css
 
 #
 # Stage: Fast build without type checking
@@ -81,8 +82,8 @@ FROM node AS prod
 ENV NODE_ENV=production
 
 COPY --from=npm-prod /app/ .
-COPY --from=build-prod /app/build/src/ build/
-COPY --from=build-prod /app/static/ static/
+COPY --from=build-prod /app/build/ build/
+COPY --from=build-prod /app/static /static
 COPY data/ data/
 
 HEALTHCHECK --interval=5s --timeout=1s \

@@ -20,7 +20,7 @@ dev: .env install build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
 # This target is in development and experimental; does not restart on code changes
-dev-fast: export TARGET = fast
+dev-fast: export TARGET = prod
 dev-fast: export SCIETY_TEAM_API_BEARER_TOKEN = secret
 dev-fast: .env install build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
@@ -86,7 +86,7 @@ test-coverage: build
 jest-test:
 	EXPERIMENT_ENABLED="true" JWR_PROGRESS="tree" npx jest ${TEST}
 
-backstop-test: export TARGET = fast
+backstop-test: export TARGET = prod
 backstop-test: export USE_STUB_ADAPTERS = true
 backstop-test: export USE_STUB_LOGIN = true
 backstop-test: export DISABLE_COOKIEBOT = true
@@ -171,7 +171,7 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
 
-taiko: export TARGET = fast
+taiko: export TARGET = prod
 taiko: export USE_STUB_ADAPTERS = true
 taiko: export USE_STUB_LOGIN = true
 taiko: node_modules clean-db build
