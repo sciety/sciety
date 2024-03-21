@@ -1,5 +1,5 @@
 import { Payload } from './types';
-import { LogLevel } from '../../infrastructure-contract/log-level';
+import { LogLevel } from '../../infrastructure-contract';
 
 type Entry = {
   timestamp: Date,
