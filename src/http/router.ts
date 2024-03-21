@@ -40,7 +40,7 @@ import * as authentication from './authentication';
 import * as formSubmissionHandlers from './form-submission-handlers';
 import { createPageFromParams } from './create-page-from-params';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
-import { listsPage } from '../html-pages/lists-page';
+import { listsPage, paramsCodec as listsPageParamsCodec } from '../html-pages/lists-page';
 import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import { applicationStatus } from '../views/status';
 import { listFeed } from '../views/list/list-feed';
@@ -232,7 +232,10 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/lists',
-    pageHandler(adapters, () => listsPage(adapters)),
+    pageHandler(adapters, createPageFromParams(
+      listsPageParamsCodec,
+      listsPage(adapters),
+    )),
   );
 
   router.get(

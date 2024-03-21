@@ -6,10 +6,12 @@ import { HtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { renderAsHtml } from './render-as-html/render-as-html';
 import { toHtmlFragment } from '../../types/html-fragment';
+import { Params } from './params';
 
-type ListsPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
-
-export const listsPage = (dependencies: Dependencies): ListsPage => pipe(
+export const listsPage = (
+  dependencies: Dependencies,
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+) => (params: Params): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
   constructViewModel(dependencies),
   E.map(renderAsHtml),
   E.mapLeft((type) => toErrorPageBodyViewModel({
