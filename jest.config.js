@@ -11,7 +11,7 @@ module.exports = {
   roots: ['./src/', './test/'],
   testEnvironment: 'node',
   testRunner: 'jest-circus/runner',
-  transform: { '^.+\\.(t|j)sx?$': '@swc/jest' },
+  transform: { '^.+\\.(t|j)sx?$': 'esbuild-jest' },
   transformIgnorePatterns: ['\\.pnp\\.[^\\/]+$'],
   verbose: true,
 };
