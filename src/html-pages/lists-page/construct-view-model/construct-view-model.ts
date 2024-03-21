@@ -15,9 +15,11 @@ const constructListCards = (pageOfItems: PageOfItems<List>, dependencies: Depend
   RA.map(constructListCardViewModelWithAvatar(dependencies)),
 );
 
+const toListsPageHref = O.map((pageNumber: number) => `/lists?page=${pageNumber}`);
+
 const constructPagination = (pageOfItems: PageOfItems<unknown>) => ({
-  backwardPageHref: O.none,
-  forwardPageHref: O.none,
+  backwardPageHref: toListsPageHref(pageOfItems.prevPage),
+  forwardPageHref: toListsPageHref(pageOfItems.nextPage),
   page: pageOfItems.pageNumber,
   pageCount: pageOfItems.numberOfPages,
 });
