@@ -19,12 +19,6 @@ dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
 dev: .env install build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
-# This target is in development and experimental; does not restart on code changes
-dev-fast: export TARGET = prod
-dev-fast: export SCIETY_TEAM_API_BEARER_TOKEN = secret
-dev-fast: .env install build
-	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
-
 prod: export TARGET = prod
 prod: .env build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
