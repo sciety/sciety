@@ -11,4 +11,5 @@ export const constructViewModel = (dependencies: Dependencies): ViewModel => pip
   dependencies.getNonEmptyUserLists(),
   sortByDefaultListOrdering,
   RA.map(constructListCardViewModelWithAvatar(dependencies)),
+  (listCards) => ({ listCards }),
 );

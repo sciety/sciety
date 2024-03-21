@@ -8,7 +8,7 @@ import { renderListItems } from '../../../shared-components/render-list-items';
 import { renderPaginationControls } from '../../../shared-components/pagination';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
-  viewModel,
+  viewModel.listCards,
   RA.map(renderListCard),
   (cards) => renderListItems(cards),
   (listCards) => `
