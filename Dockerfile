@@ -65,23 +65,12 @@ COPY .swcrc ./
 RUN npx swc src --out-dir build
 RUN npm run build:css
 
-
-#
-# Stage: Production NPM install
-#
-FROM node AS npm-prod
-
-RUN npm ci --production
-
-
-
 #
 # Stage: Production environment
 #
 FROM node AS prod
 ENV NODE_ENV=production
 
-COPY --from=npm-prod /app/ .
 COPY --from=build-prod /app/build/ build/
 COPY --from=build-prod /app/static /static
 COPY data/ data/
