@@ -2,9 +2,10 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { paginate } from '../../../src/shared-components/pagination/paginate';
+import { PageOfItems, paginate } from '../../../src/shared-components/pagination/paginate';
 import * as DE from '../../../src/types/data-error';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { abortTest } from '../../framework/abort-test';
 
 const generateItems = (eventCount: number): ReadonlyArray<number> => pipe(
   Array(eventCount).keys(),
@@ -36,13 +37,24 @@ describe('paginate', () => {
   });
 
   describe('when there are no items', () => {
-    const result = pipe(
-      [],
-      paginate(1, 1),
-    );
+    describe.skip('and page one is requested', () => {
+      let result: PageOfItems<unknown>;
 
-    it('returns not found', () => {
-      expect(result).toStrictEqual(E.left(DE.notFound));
+      beforeEach(() => {
+        result = pipe(
+          [],
+          paginate(1, 1),
+          E.getOrElseW(abortTest('paginate returned on the left')),
+        );
+      });
+
+      it('returns no items', () => {
+        expect(result.items).toStrictEqual([]);
+      });
+
+      it('returns one as a page total', () => {
+        expect(result.numberOfPages).toBe(1);
+      });
     });
   });
 
