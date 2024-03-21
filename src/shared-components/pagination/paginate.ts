@@ -18,6 +18,10 @@ type Paginate = <I>(
   page: number,
 ) => (items: ReadonlyArray<I>) => E.Either<DE.DataError, PageOfItems<I>>;
 
+/**
+ * - Returns on left when `items` are empty.
+ * - Returns on left when the `page` does not exist.
+ */
 export const paginate: Paginate = (pageSize, page) => (items) => pipe(
   items,
   RA.chunksOf(pageSize),
