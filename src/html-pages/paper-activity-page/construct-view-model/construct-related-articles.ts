@@ -24,19 +24,21 @@ const buildRelatedArticleCards = (
   }),
 );
 
+const failIfNoResultsReturned = (dependencies: Dependencies, history: PH.PublishingHistory) => TE.filterOrElseW(
+  (queryResult: ReadonlyArray<ExpressionDoi>) => queryResult.length > 0,
+  () => {
+    dependencies.logger('error', 'fetchRecommendedPapers returned no results', { paperExpressionDoi: PH.getLatestExpression(history).expressionDoi });
+    return 'query-returned-no-results' as const;
+  },
+);
+
 export const constructRelatedArticles = (
   history: PH.PublishingHistory,
   dependencies: Dependencies,
 ): T.Task<ViewModel['relatedArticles']> => pipe(
   history,
   dependencies.fetchRecommendedPapers,
-  TE.filterOrElseW(
-    (queryResult) => queryResult.length > 0,
-    () => {
-      dependencies.logger('error', 'fetchRecommendedPapers returned no results', { paperExpressionDoi: PH.getLatestExpression(history).expressionDoi });
-      return 'query-returned-no-results' as const;
-    },
-  ),
+  failIfNoResultsReturned(dependencies, history),
   TE.map(RA.takeLeft(3)),
   TE.chainW(buildRelatedArticleCards(dependencies, history)),
   TO.fromTaskEither,
