@@ -10,8 +10,8 @@ import { Params } from './params';
 
 export const listsPage = (
   dependencies: Dependencies,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 ) => (params: Params): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
+  params,
   constructViewModel(dependencies),
   E.map(renderAsHtml),
   E.mapLeft((type) => toErrorPageBodyViewModel({

@@ -38,6 +38,7 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), command.listId);
 
       viewmodel = pipe(
+        { page: 1 },
         constructViewModel({ ...framework.queries, logger: dummyLogger }),
         E.getOrElseW(abortTest('viewmodel construction returned on the left')),
       );
@@ -71,6 +72,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createListCommand.listId);
 
         viewmodel = pipe(
+          { page: 1 },
           constructViewModel({ ...framework.queries, logger: dummyLogger }),
           E.getOrElseW(abortTest('viewmodel construction returned on the left')),
         );

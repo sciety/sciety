@@ -9,6 +9,7 @@ import { ViewModel } from '../view-model';
 import * as DE from '../../../types/data-error';
 import { PageOfItems, paginate } from '../../../shared-components/pagination';
 import { List } from '../../../read-models/lists';
+import { Params } from '../params';
 
 const constructListCards = (pageOfItems: PageOfItems<List>, dependencies: Dependencies) => pipe(
   pageOfItems.items,
@@ -26,7 +27,12 @@ const constructPagination = (pageOfItems: PageOfItems<unknown>) => ({
 
 export type Dependencies = Queries & ConstructListCardViewModelWithAvatarDependencies;
 
-export const constructViewModel = (dependencies: Dependencies): E.Either<DE.DataError, ViewModel> => pipe(
+export const constructViewModel = (
+  dependencies: Dependencies,
+) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  params: Params,
+): E.Either<DE.DataError, ViewModel> => pipe(
   dependencies.getNonEmptyUserLists(),
   sortByDefaultListOrdering,
   paginate(1000, 1),
