@@ -30,12 +30,11 @@ export type Dependencies = Queries & ConstructListCardViewModelWithAvatarDepende
 export const constructViewModel = (
   dependencies: Dependencies,
 ) => (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   params: Params,
 ): E.Either<DE.DataError, ViewModel> => pipe(
   dependencies.getNonEmptyUserLists(),
   sortByDefaultListOrdering,
-  paginate(1000, 1),
+  paginate(20, params.page),
   E.map((pageOfItems) => ({
     listCards: constructListCards(pageOfItems, dependencies),
     pagination: constructPagination(pageOfItems),
