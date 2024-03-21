@@ -1,4 +1,6 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { List } from '../../../../src/read-models/lists';
@@ -10,6 +12,7 @@ import { arbitraryUserId } from '../../../types/user-id.helper';
 import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model-with-avatar';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { abortTest } from '../../../framework/abort-test';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -34,7 +37,10 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createList(command);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), command.listId);
 
-      viewmodel = constructViewModel({ ...framework.queries, logger: dummyLogger });
+      viewmodel = pipe(
+        constructViewModel({ ...framework.queries, logger: dummyLogger }),
+        E.getOrElseW(abortTest('viewmodel construction returned on the left')),
+      );
     });
 
     it('the user avatar is included in each card', () => {
@@ -64,7 +70,10 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createListCommand.listId);
 
-        viewmodel = constructViewModel({ ...framework.queries, logger: dummyLogger });
+        viewmodel = pipe(
+          constructViewModel({ ...framework.queries, logger: dummyLogger }),
+          E.getOrElseW(abortTest('viewmodel construction returned on the left')),
+        );
       });
 
       it('returns a degraded avatarUrl in place of the list owner avatarUrl', () => {
