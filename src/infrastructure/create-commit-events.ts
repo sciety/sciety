@@ -11,7 +11,7 @@ type Dependencies = {
   logger: Logger,
 };
 
-export const commitEvents = ({
+export const createCommitEvents = ({
   inMemoryEvents,
   dispatchToAllReadModels,
   persistEvents,

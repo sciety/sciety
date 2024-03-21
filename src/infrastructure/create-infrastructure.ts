@@ -6,7 +6,7 @@ import { Pool } from 'pg';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { persistEventsToPostgres } from './persist-events-to-postgres';
 import { CollectedPorts } from './collected-ports';
-import { commitEvents } from './commit-events';
+import { createCommitEvents } from './create-commit-events';
 import { dispatcher } from '../read-models';
 import { getEventsFromDatabase } from './get-events-from-database';
 import {
@@ -79,7 +79,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
       dispatchToAllReadModels(partialAdapters.events);
       partialAdapters.logger('info', 'All read models initialized');
 
-      const commitEventsWithoutListeners = commitEvents({
+      const commitEvents = createCommitEvents({
         inMemoryEvents: partialAdapters.events,
         dispatchToAllReadModels,
         persistEvents: persistEventsToPostgres(partialAdapters.pool),
@@ -88,7 +88,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const commandHandlerAdapters = {
         getAllEvents,
-        commitEvents: commitEventsWithoutListeners,
+        commitEvents,
       };
 
       const redisClient = await createRedisClient(partialAdapters.logger);
@@ -109,7 +109,7 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const allAdapters = {
         ...collectedAdapters,
-        commitEvents: commitEventsWithoutListeners,
+        commitEvents,
       };
 
       if (process.env.USE_STUB_ADAPTERS === 'true') {
