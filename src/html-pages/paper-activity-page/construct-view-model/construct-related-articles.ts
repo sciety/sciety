@@ -7,6 +7,22 @@ import { constructPaperActivitySummaryCard } from '../../../shared-components/pa
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
 import * as PH from '../../../types/publishing-history';
+import { ExpressionDoi } from '../../../types/expression-doi';
+
+const buildRelatedArticleCards = (
+  dependencies: Dependencies,
+  history: PH.PublishingHistory,
+) => (recommendedPapers: ReadonlyArray<ExpressionDoi>) => pipe(
+  recommendedPapers,
+  TE.traverseArray(constructPaperActivitySummaryCard(dependencies)),
+  TE.mapLeft((error) => {
+    dependencies.logger('error', 'at least one paper activity summary card could not be constructed', {
+      error,
+      paperExpressionDoi: PH.getLatestExpression(history).expressionDoi,
+    });
+    return error;
+  }),
+);
 
 export const constructRelatedArticles = (
   history: PH.PublishingHistory,
@@ -22,16 +38,6 @@ export const constructRelatedArticles = (
     },
   ),
   TE.map(RA.takeLeft(3)),
-  TE.chainW((recommendedPapers) => pipe(
-    recommendedPapers,
-    TE.traverseArray(constructPaperActivitySummaryCard(dependencies)),
-    TE.mapLeft((error) => {
-      dependencies.logger('error', 'at least one paper activity summary card could not be constructed', {
-        error,
-        paperExpressionDoi: PH.getLatestExpression(history).expressionDoi,
-      });
-      return error;
-    }),
-  )),
+  TE.chainW(buildRelatedArticleCards(dependencies, history)),
   TO.fromTaskEither,
 );
