@@ -37,7 +37,7 @@ describe('paginate', () => {
   });
 
   describe('when there are no items', () => {
-    describe.skip('and page one is requested', () => {
+    describe('and page one is requested', () => {
       let result: PageOfItems<unknown>;
 
       beforeEach(() => {
@@ -74,13 +74,18 @@ describe('paginate', () => {
     });
 
     describe('and page two is requested', () => {
-      const result = pipe(
-        [],
-        paginate(20, 2),
-      );
+      let result: PageOfItems<unknown>;
 
-      it('returns not-found', () => {
-        expect(result).toStrictEqual(E.left(DE.notFound));
+      beforeEach(() => {
+        result = pipe(
+          [],
+          paginate(20, 2),
+          E.getOrElseW(abortTest('paginate returned on the left')),
+        );
+      });
+
+      it('returns no items', () => {
+        expect(result.items).toStrictEqual([]);
       });
     });
   });

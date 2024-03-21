@@ -13,16 +13,16 @@ export type PageOfItems<I> = {
   numberOfOriginalItems: number,
 };
 
-type Paginate = <I>(
-  pageSize: number,
-  page: number,
-) => (items: ReadonlyArray<I>) => E.Either<DE.DataError, PageOfItems<I>>;
+const emptyFirstPage = <I>(): PageOfItems<I> => ({
+  items: [],
+  prevPage: O.none,
+  nextPage: O.none,
+  pageNumber: 1,
+  numberOfPages: 1,
+  numberOfOriginalItems: 0,
+});
 
-/**
- * - Returns on left when `items` are empty.
- * - Returns on left when the `page` does not exist.
- */
-export const paginate: Paginate = (pageSize, page) => (items) => pipe(
+const selectAPageOfItems = (pageSize: number, page: number) => <I>(items: ReadonlyArray<I>) => pipe(
   items,
   RA.chunksOf(pageSize),
   (chunks) => pipe(
@@ -41,5 +41,22 @@ export const paginate: Paginate = (pageSize, page) => (items) => pipe(
         O.filter((nextPage) => nextPage <= chunks.length),
       ),
     })),
+  ),
+);
+
+type Paginate = <I>(
+  pageSize: number,
+  page: number,
+) => (items: ReadonlyArray<I>) => E.Either<DE.DataError, PageOfItems<I>>;
+
+/**
+ * - When `items` are empty, returns an empty page 1.
+ * - Returns on left when the `page` does not exist.
+ */
+export const paginate: Paginate = (pageSize, page) => (items) => pipe(
+  items,
+  RA.match(
+    () => E.right(emptyFirstPage()),
+    selectAPageOfItems(pageSize, page),
   ),
 );
