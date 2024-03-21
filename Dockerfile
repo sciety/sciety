@@ -1,25 +1,10 @@
 FROM node:18.18-alpine AS node
 ENV NODE_OPTIONS --unhandled-rejections=strict --enable-source-maps
 WORKDIR /app
-
 COPY .npmrc \
   package.json \
   package-lock.json \
   ./
-
-
-
-#
-# Stage: Development NPM install
-#
-FROM node AS npm-dev
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV TAIKO_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
-
-RUN npm ci
-
-
 
 #
 # Stage: Development environment
@@ -27,7 +12,11 @@ RUN npm ci
 FROM node AS dev
 ENV NODE_ENV=development
 ENV PRETTY_LOG=true
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV TAIKO_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
 
+RUN npm ci
 COPY .eslintignore \
   .eslintrc.js \
   .stylelintignore \
@@ -35,7 +24,6 @@ COPY .eslintignore \
   jest.config.js \
   tsconfig.json \
   ./
-COPY --from=npm-dev /app/ .
 COPY test/ test/
 COPY src/ src/
 COPY static/ static/
