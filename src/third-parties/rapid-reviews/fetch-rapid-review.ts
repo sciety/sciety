@@ -4,8 +4,8 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
-import { JSDOM } from 'jsdom';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { CheerioAPI, load } from 'cheerio';
 import { QueryExternalService } from '../query-external-service.js';
 import { EvaluationFetcher } from '../evaluation-fetcher.js';
 import * as DE from '../../types/data-error.js';
@@ -13,8 +13,8 @@ import { toHtmlFragment } from '../../types/html-fragment.js';
 import { sanitise } from '../../types/sanitised-html-fragment.js';
 import { Logger } from '../../infrastructure/index.js';
 
-const summary = (logger: Logger) => (doc: Document) => pipe(
-  doc.querySelector('meta[name=description]')?.getAttribute('content'),
+const summary = (logger: Logger) => (doc: CheerioAPI) => pipe(
+  doc('meta[name=description]').attr()?.content,
   O.fromNullable,
   E.fromOption(() => DE.notFound),
   E.bimap(
@@ -32,11 +32,11 @@ const summary = (logger: Logger) => (doc: Document) => pipe(
   ),
 );
 
-const review = (doc: Document) => pipe(
+const review = (doc: CheerioAPI) => pipe(
   {
-    creator: O.fromNullable(Array.from(doc.querySelectorAll('meta[name="dc.creator"]')).map((creatorNode) => creatorNode.getAttribute('content')).join(', ')),
-    title: O.fromNullable(doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')),
-    description: O.fromNullable(doc.querySelector('meta[name=description]')?.getAttribute('content')),
+    creator: O.fromNullable(doc('meta[name="dc.creator"]').map((i, element) => doc(element).attr('content')).get().join(', ')),
+    title: O.fromNullable(doc('meta[name="dc.title"]').attr('content')),
+    description: O.fromNullable(doc('meta[name=description]').attr('content')),
   },
   ({ description, creator, title }) => `
     ${pipe(creator, O.fold(constant(''), (txt) => `<h3>${txt}</h3>`))}
@@ -46,11 +46,12 @@ const review = (doc: Document) => pipe(
   E.right,
 );
 
-const extractEvaluation = (logger: Logger) => (doc: Document) => {
-  if (doc.querySelector('meta[name="dc.title"]')?.getAttribute('content')?.startsWith('Reviews of ')) {
-    return summary(logger)(doc);
+const extractEvaluation = (logger: Logger) => (html: string) => {
+  const parsedDocument = load(html);
+  if (parsedDocument('meta[name="dc.title"]').attr('content')?.startsWith('Reviews of ')) {
+    return summary(logger)(parsedDocument);
   }
-  return review(doc);
+  return review(parsedDocument);
 };
 
 export const fetchRapidReview = (
@@ -68,7 +69,6 @@ export const fetchRapidReview = (
     }),
   )),
   TE.chainEitherKW(flow(
-    (html) => new JSDOM(html).window.document,
     extractEvaluation(logger),
     E.map(toHtmlFragment),
     E.map(sanitise),
