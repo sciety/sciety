@@ -72,6 +72,17 @@ describe('paginate', () => {
         expect(result.prevPage).toStrictEqual(O.none);
       });
     });
+
+    describe('and page two is requested', () => {
+      const result = pipe(
+        [],
+        paginate(20, 2),
+      );
+
+      it('returns not-found', () => {
+        expect(result).toStrictEqual(E.left(DE.notFound));
+      });
+    });
   });
 
   describe('when paginating with 10 items per page', () => {
