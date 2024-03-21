@@ -1,15 +1,13 @@
 import * as E from 'fp-ts/Either';
-import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 import { CommitEvents } from '../shared-ports';
-import { ErrorMessage } from '../types/error-message';
-import { Logger } from '../infrastructure-contract';
+import { Logger, PersistEvents } from '../infrastructure-contract';
 
 type Dependencies = {
   inMemoryEvents: Array<DomainEvent>,
   dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void,
-  persistEvents: (events: ReadonlyArray<DomainEvent>) => TE.TaskEither<ErrorMessage, void>,
+  persistEvents: PersistEvents,
   logger: Logger,
 };
 
