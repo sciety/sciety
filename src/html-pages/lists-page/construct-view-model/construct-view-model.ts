@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as O from 'fp-ts/Option';
 import { constructListCardViewModelWithAvatar, ConstructListCardViewModelWithAvatarDependencies } from '../../../shared-components/list-card';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 import { Queries } from '../../../read-models';
@@ -11,5 +12,13 @@ export const constructViewModel = (dependencies: Dependencies): ViewModel => pip
   dependencies.getNonEmptyUserLists(),
   sortByDefaultListOrdering,
   RA.map(constructListCardViewModelWithAvatar(dependencies)),
-  (listCards) => ({ listCards }),
+  (listCards) => ({
+    listCards,
+    pagination: {
+      backwardPageHref: O.none,
+      forwardPageHref: O.none,
+      page: 1,
+      pageCount: 1,
+    },
+  }),
 );
