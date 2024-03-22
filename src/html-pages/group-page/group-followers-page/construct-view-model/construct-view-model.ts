@@ -2,8 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { renderLegacyPaginationControls } from '../../../../shared-components/pagination';
-import { paginate } from './paginate';
+import { paginate, renderLegacyPaginationControls } from '../../../../shared-components/pagination';
 import { augmentWithUserDetails } from './augment-with-user-details';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
@@ -31,7 +30,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   E.chain((group) => pipe(
     group.id,
     findFollowers(dependencies),
-    paginate(params.page, pageSize),
+    paginate(pageSize, params.page),
     E.map((pageOfFollowers) => ({
       group,
       pageNumber: params.page,
