@@ -1,4 +1,6 @@
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { createTestFramework, TestFramework } from '../../../../framework';
@@ -29,7 +31,7 @@ describe('construct-view-model', () => {
       ...arbitraryCreateListCommand(),
       ownerId: LOID.fromGroupId(addGroupCommand.groupId),
     };
-    let viewmodel: ViewModel;
+    let ourListIds: ReadonlyArray<ViewModel['ourLists']['lists'][number]['listId']>;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
@@ -39,27 +41,23 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createList(createMostRecentlyUpdatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createMostRecentlyUpdatedList.listId);
 
-      viewmodel = await pipe(
+      ourListIds = await pipe(
         {
           slug: addGroupCommand.slug,
           user: O.none,
         },
         constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
+        T.map((viewModel) => viewModel.ourLists.lists),
+        T.map(RA.map((list) => list.listId)),
       )();
     });
 
     it('returns lists in descending order of updated date', () => {
-      expect(viewmodel.ourLists.lists).toStrictEqual([
-        expect.objectContaining({
-          listId: createMostRecentlyUpdatedList.listId,
-        }),
-        expect.objectContaining({
-          listId: createMiddleList.listId,
-        }),
-        expect.objectContaining({
-          listId: initialGroupList.id,
-        }),
+      expect(ourListIds).toStrictEqual([
+        createMostRecentlyUpdatedList.listId,
+        createMiddleList.listId,
+        initialGroupList.id,
       ]);
     });
   });
