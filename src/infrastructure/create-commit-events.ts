@@ -11,6 +11,11 @@ type Dependencies = {
   logger: Logger,
 };
 
+/**
+ * - Records a state change in the form of `events`
+ * - Provides observability of successful state changes and failures
+ * - Dispatches events outside of the write side
+ */
 export const createCommitEvents = ({
   inMemoryEvents,
   dispatchToAllReadModels,
