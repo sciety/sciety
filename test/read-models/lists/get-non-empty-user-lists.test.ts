@@ -29,11 +29,14 @@ describe('get-non-empty-user-lists', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
+    const listIds = pipe(
+      getNonEmptyUserLists(readModel)(),
+      RA.map((list) => list.id),
+    );
+
     it('returns only the populated user lists', () => {
-      expect(getNonEmptyUserLists(readModel)()).toStrictEqual([
-        expect.objectContaining({ id: userList1CreatedEvent.listId }),
-        expect.objectContaining({ id: userList2CreatedEvent.listId }),
-      ]);
+      expect(listIds[0]).toStrictEqual(userList1CreatedEvent.listId);
+      expect(listIds[1]).toStrictEqual(userList2CreatedEvent.listId);
     });
   });
 
