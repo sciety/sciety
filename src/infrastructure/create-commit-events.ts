@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either';
+import { InMemoryEvents } from '../process-contract';
 import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 import { CommitEvents } from '../shared-ports';
-import { Logger, PersistEvents, InMemoryEvents } from '../infrastructure-contract';
+import { Logger, PersistEvents } from '../infrastructure-contract';
 
 type Dependencies = {
   inMemoryEvents: InMemoryEvents,
