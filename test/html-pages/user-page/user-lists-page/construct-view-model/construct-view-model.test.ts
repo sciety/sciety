@@ -57,38 +57,29 @@ describe('construct-view-model', () => {
       });
 
       it('the most recently updated list is shown first', async () => {
-        expect(viewmodel).toStrictEqual(expect.objectContaining({
-          ownedLists: [
-            expect.objectContaining({ listId: command.listId }),
-            expect.objectContaining({ listId: initialUserList.id }),
-          ],
-        }));
+        expect(viewmodel.ownedLists[0].listId).toStrictEqual(command.listId);
+        expect(viewmodel.ownedLists[1].listId).toStrictEqual(initialUserList.id);
       });
     });
   });
 
   describe('when the user saves an article to the default list for the first time', () => {
     beforeEach(async () => {
-      const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), list.id);
-    });
-
-    it('the article count of the default list is 1', async () => {
+      const listId = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0].id;
+      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), listId);
       viewmodel = await pipe(
         pageParams,
         constructViewModel(framework.queries),
         TE.getOrElse(shouldNotBeCalled),
       )();
+    });
 
-      expect(viewmodel).toStrictEqual(expect.objectContaining({
-        ownedLists: [expect.objectContaining({
-          articleCount: 1,
-        })],
-      }));
+    it('the article count of the default list is 1', async () => {
+      expect(viewmodel.ownedLists[0].articleCount).toBe(1);
     });
   });
 
-  describe('use details', () => {
+  describe('user details', () => {
     beforeEach(async () => {
       viewmodel = await pipe(
         pageParams,
