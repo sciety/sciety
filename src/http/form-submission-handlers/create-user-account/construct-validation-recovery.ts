@@ -37,7 +37,7 @@ export const constructValidationRecovery = (
     userInput: input.fullName,
     error: pipe(
       input.fullName,
-      createUserAccountFormCodec.props.fullName.decode,
+      createUserAccountFormCodec.type.props.fullName.decode,
       E.match(
         () => determineFullNameErrorMessage(input.fullName.content),
         () => O.none,
@@ -48,7 +48,7 @@ export const constructValidationRecovery = (
     userInput: input.handle,
     error: pipe(
       input.handle,
-      createUserAccountFormCodec.props.handle.decode,
+      createUserAccountFormCodec.type.props.handle.decode,
       E.match(
         () => determineHandleErrorMessage(input.handle.content),
         () => O.none,
