@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
+import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { constructEvent } from '../../../src/domain-events';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
@@ -10,13 +10,22 @@ import { selectAllListsContainingExpression } from '../../../src/read-models/lis
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
+
+const selectAllListsContainingExpressionHelper = (readModel: ReadModel, expressionDoi: ExpressionDoi) => pipe(
+  expressionDoi,
+  selectAllListsContainingExpression(readModel),
+  RA.map((list) => list.id),
+);
 
 describe('select-all-lists-containing-expression', () => {
   describe('when the article is not in any list', () => {
     const readModel = initialState();
 
+    const listIds = selectAllListsContainingExpressionHelper(readModel, arbitraryExpressionDoi());
+
     it('returns an empty result', () => {
-      expect(selectAllListsContainingExpression(readModel)(arbitraryExpressionDoi())).toStrictEqual([]);
+      expect(listIds).toStrictEqual([]);
     });
   });
 
@@ -31,11 +40,11 @@ describe('select-all-lists-containing-expression', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const listIds = selectAllListsContainingExpressionHelper(readModel, expressionDoi);
 
     it('returns one list', () => {
-      expect(selectAllListsContainingExpression(readModel)(expressionDoi)).toStrictEqual([
-        expect.objectContaining({ id: listCreatedEvent.listId }),
-      ]);
+      expect(listIds).toHaveLength(1);
+      expect(listIds[0]).toStrictEqual(listCreatedEvent.listId);
     });
   });
 
@@ -59,13 +68,12 @@ describe('select-all-lists-containing-expression', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const listIds = selectAllListsContainingExpressionHelper(readModel, expressionDoi);
 
     it('returns two lists', () => {
-      const result = selectAllListsContainingExpression(readModel)(expressionDoi);
-
-      expect(result).toHaveLength(2);
-      expect(result).toContainEqual(expect.objectContaining({ id: userListCreatedEvent.listId }));
-      expect(result).toContainEqual(expect.objectContaining({ id: groupListCreatedEvent.listId }));
+      expect(listIds).toHaveLength(2);
+      expect(listIds).toContain(userListCreatedEvent.listId);
+      expect(listIds).toContain(groupListCreatedEvent.listId);
     });
   });
 
@@ -80,9 +88,10 @@ describe('select-all-lists-containing-expression', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const listIds = selectAllListsContainingExpressionHelper(readModel, expressionDoi);
 
     it('returns an empty result', () => {
-      expect(selectAllListsContainingExpression(readModel)(expressionDoi)).toStrictEqual([]);
+      expect(listIds).toStrictEqual([]);
     });
   });
 });
