@@ -44,18 +44,22 @@ describe('construct-view-model', () => {
       );
     });
 
+    it('returns two cards', () => {
+      expect(viewmodel.listCards).toHaveLength(2);
+    });
+
     it('the user avatar is included in each card', () => {
-      expect(viewmodel.listCards).toStrictEqual([
-        expect.objectContaining({ avatarUrl: O.some(expect.stringContaining(createUserAccountCommand.handle)) }),
-        expect.objectContaining({ avatarUrl: O.some(expect.stringContaining(createUserAccountCommand.handle)) }),
-      ]);
+      expect(viewmodel.listCards[0].avatarUrl).toStrictEqual(
+        O.some(expect.stringContaining(createUserAccountCommand.handle)),
+      );
+      expect(viewmodel.listCards[1].avatarUrl).toStrictEqual(
+        O.some(expect.stringContaining(createUserAccountCommand.handle)),
+      );
     });
 
     it('the most recently updated list is shown first', async () => {
-      expect(viewmodel.listCards).toStrictEqual([
-        expect.objectContaining({ listId: command.listId }),
-        expect.objectContaining({ listId: initialUserList.id }),
-      ]);
+      expect(viewmodel.listCards[0].listId).toStrictEqual(command.listId);
+      expect(viewmodel.listCards[1].listId).toStrictEqual(initialUserList.id);
     });
   });
 
@@ -79,9 +83,8 @@ describe('construct-view-model', () => {
       });
 
       it('returns a degraded avatarUrl in place of the list owner avatarUrl', () => {
-        expect(viewmodel.listCards).toStrictEqual([
-          expect.objectContaining({ avatarUrl: O.some(degradedAvatarUrl) }),
-        ]);
+        expect(viewmodel.listCards).toHaveLength(1);
+        expect(viewmodel.listCards[0].avatarUrl).toStrictEqual(O.some(degradedAvatarUrl));
       });
     });
   });
