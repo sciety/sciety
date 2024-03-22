@@ -1,5 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import { constructViewModel } from '../../../../src/html-pages/groups-page/construct-view-model/construct-view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -11,7 +13,7 @@ type ViewModel = ReadonlyArray<GroupCardViewModel>;
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let result: ViewModel;
+  let groupNames: ReadonlyArray<ViewModel[number]['name']>;
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -34,21 +36,18 @@ describe('construct-view-model', () => {
         groupId: addLeastRecentlyActiveGroup.groupId,
         publishedAt: new Date('1970'),
       });
-      result = await pipe(
+      groupNames = await pipe(
         framework.queries,
         constructViewModel,
         TE.getOrElse(shouldNotBeCalled),
+        T.map(RA.map((groupCard) => groupCard.name)),
       )();
     });
 
     it('the group cards are listed in descending order of latest activity', () => {
-      expect(result).toStrictEqual([
-        expect.objectContaining({
-          name: addMostRecentlyActiveGroup.name,
-        }),
-        expect.objectContaining({
-          name: addLeastRecentlyActiveGroup.name,
-        }),
+      expect(groupNames).toStrictEqual([
+        addMostRecentlyActiveGroup.name,
+        addLeastRecentlyActiveGroup.name,
       ]);
     });
   });
