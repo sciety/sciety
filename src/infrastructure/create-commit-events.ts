@@ -2,10 +2,10 @@ import * as E from 'fp-ts/Either';
 import { DomainEvent } from '../domain-events';
 import { CommandResult } from '../types/command-result';
 import { CommitEvents } from '../shared-ports';
-import { Logger, PersistEvents } from '../infrastructure-contract';
+import { Logger, PersistEvents, InMemoryEvents } from '../infrastructure-contract';
 
 type Dependencies = {
-  inMemoryEvents: Array<DomainEvent>,
+  inMemoryEvents: InMemoryEvents,
   dispatchToAllReadModels: (events: ReadonlyArray<DomainEvent>) => void,
   persistEvents: PersistEvents,
   logger: Logger,

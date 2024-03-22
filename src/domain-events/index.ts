@@ -3,7 +3,6 @@ import * as Ord from 'fp-ts/Ord';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
-import * as A from 'fp-ts/Array';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
 import { annotationCreatedEventCodec, articleInListAnnotatedEventCodec } from './article-in-list-annotated-event';
@@ -32,17 +31,15 @@ import { EventId, generate } from '../types/event-id';
 import { groupDetailsUpdatedEventCodec } from './group-details-updated-event';
 import { evaluationPublicationRecordedEventCodec, evaluationRecordedEventCodec } from './evaluation-publication-recorded-event';
 
-const byDate: Ord.Ord<DomainEvent> = pipe(
+export const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,
   Ord.contramap((event) => event.date),
 );
 
-const byUuid: Ord.Ord<DomainEvent> = pipe(
+export const byUuid: Ord.Ord<DomainEvent> = pipe(
   S.Ord,
   Ord.contramap((event) => event.id),
 );
-
-export const sort = A.sortBy([byDate, byUuid]);
 
 const legacyDomainEventCodec = t.union([
   evaluationRecordedEventCodec,

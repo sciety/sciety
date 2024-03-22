@@ -1,5 +1,6 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import { InMemoryEvents } from '../../src/infrastructure-contract';
 import { DomainEvent } from '../../src/domain-events';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
 import { dummyLogger } from '../dummy-logger';
@@ -13,7 +14,7 @@ type EventStore = {
 };
 
 export const createInMemoryEventStore = (dispatchToAllReadModels: DispatchToAllReadModels): EventStore => {
-  const allEvents: Array<DomainEvent> = [];
+  const allEvents: InMemoryEvents = [];
   return {
     getAllEvents: T.of(allEvents),
     commitEvents: createCommitEvents({

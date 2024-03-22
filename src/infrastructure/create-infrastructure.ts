@@ -14,7 +14,7 @@ import {
 } from './logger';
 import { stubAdapters } from './stub-adapters';
 import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
-import { sort as sortEvents } from '../domain-events';
+import { sortEvents, Logger } from '../infrastructure-contract';
 import {
   editListDetailsCommandHandler,
   createListCommandHandler,
@@ -23,7 +23,6 @@ import {
 } from '../write-side/command-handlers';
 import { instantiate } from '../third-parties';
 import { createRedisClient } from './create-redis-client';
-import { Logger } from '../infrastructure-contract';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
