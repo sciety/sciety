@@ -1,4 +1,4 @@
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
@@ -14,6 +14,7 @@ import { arbitraryCreateListCommand } from '../../../write-side/commands/create-
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { ArticleId } from '../../../../src/types/article-id';
+import { abortTest } from '../../../framework/abort-test';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -54,7 +55,7 @@ describe('construct-view-model', () => {
 
     describe('when the article is not saved to any of the user\'s multiple lists', () => {
       let createListCommand: CreateListCommand;
-      let viewModel: LoggedInUserListManagement;
+      let saveArticleCta: (LoggedInUserListManagement & { '_tag': 'Left' })['left'];
 
       beforeEach(async () => {
         createListCommand = {
@@ -62,7 +63,7 @@ describe('construct-view-model', () => {
           ownerId: LOID.fromUserId(createUserAccountCommand.userId),
         };
         await framework.commandHelpers.createList(createListCommand);
-        viewModel = await pipe(
+        saveArticleCta = await pipe(
           {
             latestExpressionDoi: expressionDoi,
             user: O.some({ id: createUserAccountCommand.userId }),
@@ -70,25 +71,24 @@ describe('construct-view-model', () => {
           constructViewModel(framework.dependenciesForViews),
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
-          TE.getOrElse(shouldNotBeCalled),
+          TE.getOrElse(abortTest('constructViewModel unexpectedly is on the left')),
+          TE.match(identity, abortTest('LoggedInUserListManagement is unexpectedly on the right')),
         )();
       });
 
       it('displays save this article call to action', () => {
-        expect(viewModel).toStrictEqual(E.left(expect.objectContaining({
-          saveArticleHref: expect.anything(),
-        })));
+        expect(saveArticleCta.saveArticleHref).toStrictEqual(expect.anything());
       });
     });
 
     describe('when the article is saved to the default user list', () => {
       let list: List;
-      let viewModel: LoggedInUserListManagement;
+      let containingList: (LoggedInUserListManagement & { '_tag': 'Right' })['right'];
 
       beforeEach(async () => {
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), list.id);
-        viewModel = await pipe(
+        containingList = await pipe(
           {
             latestExpressionDoi: expressionDoi,
             user: O.some({ id: createUserAccountCommand.userId }),
@@ -97,25 +97,22 @@ describe('construct-view-model', () => {
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),
+          TE.getOrElse(abortTest('LoggedInUserListManagement is unexpectedly on the left')),
         )();
       });
 
       it('list management has access to list id', async () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listId: list.id,
-        })));
+        expect(containingList.listId).toStrictEqual(list.id);
       });
 
       it('list management has access to list name', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listName: list.name,
-        })));
+        expect(containingList.listName).toStrictEqual(list.name);
       });
     });
 
     describe('when the article is saved to another user list', () => {
       let createListCommand: CreateListCommand;
-      let viewModel: LoggedInUserListManagement;
+      let containingList: (LoggedInUserListManagement & { '_tag': 'Right' })['right'];
 
       beforeEach(async () => {
         createListCommand = {
@@ -124,7 +121,7 @@ describe('construct-view-model', () => {
         };
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), createListCommand.listId);
-        viewModel = await pipe(
+        containingList = await pipe(
           {
             latestExpressionDoi: expressionDoi,
             user: O.some({ id: createUserAccountCommand.userId }),
@@ -133,19 +130,16 @@ describe('construct-view-model', () => {
           TE.map((v) => v.userListManagement),
           TE.map(O.getOrElseW(shouldNotBeCalled)),
           TE.getOrElse(shouldNotBeCalled),
+          TE.getOrElse(abortTest('LoggedInUserListManagement is unexpectedly on the left')),
         )();
       });
 
       it('list management has access to list id', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listId: createListCommand.listId,
-        })));
+        expect(containingList.listId).toStrictEqual(createListCommand.listId);
       });
 
       it('list management has access to list name', () => {
-        expect(viewModel).toStrictEqual(E.right(expect.objectContaining({
-          listName: createListCommand.name,
-        })));
+        expect(containingList.listName).toStrictEqual(createListCommand.name);
       });
     });
   });
