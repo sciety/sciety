@@ -6,15 +6,17 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import * as PR from 'io-ts/PathReporter';
+import { StatusCodes } from 'http-status-codes';
 import { Logger } from '../../shared-ports';
 import { articleIdCodec } from '../../types/article-id';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
+import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
 export const articleIdFieldName = 'articleid';
 
@@ -29,13 +31,9 @@ const formBodyCodec = t.strict({
 });
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
-  const loggedInUserId = pipe(
-    getLoggedInScietyUser(dependencies, context),
-    O.map((userDetails) => userDetails.id),
-  );
-  if (O.isNone(loggedInUserId)) {
-    dependencies.logger('error', 'Missing user', { requestBody: context.request.body });
-    context.redirect('back');
+  const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
+  if (O.isNone(authenticatedUserId)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'This step requires you do be logged in. Please try logging in again.');
     return;
   }
   const formBody = pipe(
@@ -56,7 +54,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
   const articleId = formBody.right[articleIdFieldName];
   const listId = formBody.right.listId;
 
-  const logEntry = checkUserOwnsList(dependencies, listId, loggedInUserId.value);
+  const logEntry = checkUserOwnsList(dependencies, listId, authenticatedUserId.value);
   if (E.isLeft(logEntry)) {
     dependencies.logger('error', logEntry.left.message, logEntry.left.payload);
     dependencies.logger('error', 'saveArticleHandler failed', { error: logEntry.left });
