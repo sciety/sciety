@@ -11,6 +11,7 @@ import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('get-activity-for-group', () => {
   const group = arbitraryGroup();
@@ -120,22 +121,18 @@ describe('get-activity-for-group', () => {
         ],
         RA.reduce(initialState(), handleEvent),
       );
-      const result = getActivityForGroup(readModel)(group.id);
+      const activity = pipe(
+        group.id,
+        getActivityForGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('returns an evaluationCount of 0', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            evaluationCount: 0,
-          }),
-        ));
+        expect(activity.evaluationCount).toBe(0);
       });
 
       it('return a O.none for the latestActivityAt', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            latestActivityAt: O.none,
-          }),
-        ));
+        expect(activity.latestActivityAt).toStrictEqual(O.none);
       });
     });
 
@@ -152,22 +149,18 @@ describe('get-activity-for-group', () => {
         ],
         RA.reduce(initialState(), handleEvent),
       );
-      const result = getActivityForGroup(readModel)(group.id);
+      const activity = pipe(
+        group.id,
+        getActivityForGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('returns an evaluationCount of 1', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            evaluationCount: 1,
-          }),
-        ));
+        expect(activity.evaluationCount).toBe(1);
       });
 
       it('returns the publishedAt date of the evaluation as the latestActivityAt', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            latestActivityAt: O.some(publishedAt),
-          }),
-        ));
+        expect(activity.latestActivityAt).toStrictEqual(O.some(publishedAt));
       });
     });
 
@@ -191,22 +184,18 @@ describe('get-activity-for-group', () => {
           ],
           RA.reduce(initialState(), handleEvent),
         );
-        const result = getActivityForGroup(readModel)(group.id);
+        const activity = pipe(
+          group.id,
+          getActivityForGroup(readModel),
+          O.getOrElseW(shouldNotBeCalled),
+        );
 
         it('returns an evaluationCount of 2', () => {
-          expect(result).toStrictEqual(O.some(
-            expect.objectContaining({
-              evaluationCount: 2,
-            }),
-          ));
+          expect(activity.evaluationCount).toBe(2);
         });
 
         it('returns the most recent publishedAt date as the latestActivityAt', () => {
-          expect(result).toStrictEqual(O.some(
-            expect.objectContaining({
-              latestActivityAt: O.some(mostRecentPublishedAt),
-            }),
-          ));
+          expect(activity.latestActivityAt).toStrictEqual(O.some(mostRecentPublishedAt));
         });
       });
 
@@ -225,26 +214,21 @@ describe('get-activity-for-group', () => {
               groupId: group.id,
               publishedAt: new Date('1970'),
             },
-
           ],
           RA.reduce(initialState(), handleEvent),
         );
-        const result = getActivityForGroup(readModel)(group.id);
+        const activity = pipe(
+          group.id,
+          getActivityForGroup(readModel),
+          O.getOrElseW(shouldNotBeCalled),
+        );
 
         it('returns an evaluationCount of 2', () => {
-          expect(result).toStrictEqual(O.some(
-            expect.objectContaining({
-              evaluationCount: 2,
-            }),
-          ));
+          expect(activity.evaluationCount).toBe(2);
         });
 
         it('returns the most recent publishedAt date as the latestActivityAt', () => {
-          expect(result).toStrictEqual(O.some(
-            expect.objectContaining({
-              latestActivityAt: O.some(mostRecentPublishedAt),
-            }),
-          ));
+          expect(activity.latestActivityAt).toStrictEqual(O.some(mostRecentPublishedAt));
         });
       });
     });
@@ -263,22 +247,18 @@ describe('get-activity-for-group', () => {
         ],
         RA.reduce(initialState(), handleEvent),
       );
-      const result = getActivityForGroup(readModel)(group.id);
+      const activity = pipe(
+        group.id,
+        getActivityForGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('returns an evaluationCount of 0', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            evaluationCount: 0,
-          }),
-        ));
+        expect(activity.evaluationCount).toBe(0);
       });
 
       it('returns a O.none for the latestActivityAt', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            latestActivityAt: O.none,
-          }),
-        ));
+        expect(activity.latestActivityAt).toStrictEqual(O.none);
       });
     });
 
@@ -302,22 +282,18 @@ describe('get-activity-for-group', () => {
         ],
         RA.reduce(initialState(), handleEvent),
       );
-      const result = getActivityForGroup(readModel)(group.id);
+      const activity = pipe(
+        group.id,
+        getActivityForGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('returns an evaluationCount of 1', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            evaluationCount: 1,
-          }),
-        ));
+        expect(activity.evaluationCount).toBe(1);
       });
 
       it('returns the latestActivityAt for the remaining evaluation', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            latestActivityAt: O.some(remainingEvaluationPublishedAt),
-          }),
-        ));
+        expect(activity.latestActivityAt).toStrictEqual(O.some(remainingEvaluationPublishedAt));
       });
     });
 
@@ -344,22 +320,18 @@ describe('get-activity-for-group', () => {
         ],
         RA.reduce(initialState(), handleEvent),
       );
-      const result = getActivityForGroup(readModel)(group.id);
+      const activity = pipe(
+        group.id,
+        getActivityForGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('returns an evaluationCount of 1', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            evaluationCount: 1,
-          }),
-        ));
+        expect(activity.evaluationCount).toBe(1);
       });
 
       it('returns the latestActivityAt for the remaining evaluation', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            latestActivityAt: O.some(remainingEvaluationPublishedAt),
-          }),
-        ));
+        expect(activity.latestActivityAt).toStrictEqual(O.some(remainingEvaluationPublishedAt));
       });
     });
 
@@ -385,22 +357,18 @@ describe('get-activity-for-group', () => {
         ],
         RA.reduce(initialState(), handleEvent),
       );
-      const result = getActivityForGroup(readModel)(group.id);
+      const activity = pipe(
+        group.id,
+        getActivityForGroup(readModel),
+        O.getOrElseW(shouldNotBeCalled),
+      );
 
       it('returns an evaluationCount of 1', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            evaluationCount: 1,
-          }),
-        ));
+        expect(activity.evaluationCount).toBe(1);
       });
 
       it('returns the latestActivityAt of the first recorded', () => {
-        expect(result).toStrictEqual(O.some(
-          expect.objectContaining({
-            latestActivityAt: O.some(eventProperties.publishedAt),
-          }),
-        ));
+        expect(activity.latestActivityAt).toStrictEqual(O.some(eventProperties.publishedAt));
       });
     });
   });
