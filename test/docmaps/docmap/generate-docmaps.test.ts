@@ -1,7 +1,6 @@
 import { URL } from 'url';
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { generateDocmaps } from '../../../src/docmaps/docmap';
@@ -18,6 +17,7 @@ import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-co
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
 import { toExpressionDoi } from '../../../src/types/article-id';
+import { abortTest } from '../../framework/abort-test';
 
 describe('generate-docmaps', () => {
   const articleId = arbitraryArticleId();
@@ -35,21 +35,22 @@ describe('generate-docmaps', () => {
   });
 
   describe('when the article hasn\'t been evaluated', () => {
-    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
+    let response: { status: StatusCodes, message: string };
 
     beforeEach(async () => {
       response = await pipe(
         arbitraryArticleId().value,
         generateDocmaps(defaultAdapters),
+        TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
     });
 
     it('returns a 404 http status code', () => {
-      expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.NOT_FOUND })));
+      expect(response.status).toStrictEqual(StatusCodes.NOT_FOUND);
     });
 
     it('returns an error message', () => {
-      expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'No Docmaps available for requested DOI' })));
+      expect(response.message).toBe('No Docmaps available for requested DOI');
     });
   });
 
@@ -65,7 +66,7 @@ describe('generate-docmaps', () => {
       groupId: addGroup2.groupId,
     };
 
-    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
+    let response: { status: StatusCodes, message: string };
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroup1);
@@ -75,15 +76,16 @@ describe('generate-docmaps', () => {
       response = await pipe(
         articleId.value,
         generateDocmaps(defaultAdapters),
+        TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
     });
 
     it('returns a 404 http status code', () => {
-      expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.NOT_FOUND })));
+      expect(response.status).toStrictEqual(StatusCodes.NOT_FOUND);
     });
 
     it('returns an error message', () => {
-      expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'No Docmaps available for requested DOI' })));
+      expect(response.message).toBe('No Docmaps available for requested DOI');
     });
   });
 
@@ -224,7 +226,7 @@ describe('generate-docmaps', () => {
   });
 
   describe('when any docmap fails', () => {
-    let response: E.Either<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>>;
+    let response: { status: StatusCodes, message: string };
 
     beforeEach(async () => {
       const addGroupCommand = {
@@ -247,6 +249,7 @@ describe('generate-docmaps', () => {
       await framework.commandHelpers.recordEvaluationPublication(recordGoodEvaluation);
       await framework.commandHelpers.recordEvaluationPublication(recordBadEvaluation);
       response = await pipe(
+        articleId.value,
         generateDocmaps({
           ...defaultAdapters,
           fetchEvaluation: (id: EvaluationLocator) => (
@@ -254,34 +257,37 @@ describe('generate-docmaps', () => {
               ? TE.left(DE.notFound)
               : TE.right({ fullText: arbitrarySanitisedHtmlFragment(), url: new URL(`https://reviews.example.com/${id}`) })
           ),
-        })(articleId.value),
+        }),
+        TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
     });
 
     it('returns a 500 http status code', () => {
-      expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.INTERNAL_SERVER_ERROR })));
+      expect(response.status).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 
     it('returns an error message', () => {
-      expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'Failed to generate docmaps' })));
+      expect(response.message).toBe('Failed to generate docmaps');
     });
   });
 
   describe('when the doi can\'t be decoded', () => {
-    let response: E.Either<{ status: StatusCodes }, ReadonlyArray<Docmap>>;
+    let response: { status: StatusCodes, message: string };
 
     beforeEach(async () => {
       response = await pipe(
-        generateDocmaps(defaultAdapters)('not-a-doi'),
+        ('not-a-doi'),
+        generateDocmaps(defaultAdapters),
+        TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
     });
 
     it('returns a 400 http status code', () => {
-      expect(response).toStrictEqual(E.left(expect.objectContaining({ status: StatusCodes.BAD_REQUEST })));
+      expect(response.status).toStrictEqual(StatusCodes.BAD_REQUEST);
     });
 
     it('returns an error message', () => {
-      expect(response).toStrictEqual(E.left(expect.objectContaining({ message: 'Invalid DOI requested' })));
+      expect(response.message).toBe('Invalid DOI requested');
     });
   });
 });
