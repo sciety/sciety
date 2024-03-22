@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
+import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryString } from '../../helpers';
 import { arbitraryListId } from '../../types/list-id.helper';
@@ -10,6 +10,20 @@ import { arbitraryUserId } from '../../types/user-id.helper';
 import { selectListContainingExpression } from '../../../src/read-models/lists/select-list-containing-expression';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
+import { UserId } from '../../../src/types/user-id';
+
+const selectListContainingExpressionHelper = (
+  readModel: ReadModel,
+  userId: UserId,
+  expressionDoi: ExpressionDoi,
+) => pipe(
+  expressionDoi,
+  selectListContainingExpression(readModel)(userId),
+  O.getOrElseW(shouldNotBeCalled),
+  (list) => list.id,
+);
 
 describe('select-list-containing-article', () => {
   const expressionDoi = arbitraryExpressionDoi();
@@ -31,10 +45,10 @@ describe('select-list-containing-article', () => {
       RA.reduce(initialState(), handleEvent),
     );
 
+    const selectedListId = selectListContainingExpressionHelper(readModel, userId, expressionDoi);
+
     it('the query returns the first list id', () => {
-      expect(selectListContainingExpression(readModel)(userId)(expressionDoi)).toStrictEqual(
-        O.some(expect.objectContaining({ id: listId })),
-      );
+      expect(selectedListId).toStrictEqual(listId);
     });
   });
 
@@ -80,17 +94,15 @@ describe('select-list-containing-article', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const selectedListIdForFirstUser = selectListContainingExpressionHelper(readModel, userId, expressionDoi);
+    const selectedListIdForSecondUser = selectListContainingExpressionHelper(readModel, userId2, expressionDoi);
 
     it('the query returns the first list id belonging to the first user', () => {
-      expect(selectListContainingExpression(readModel)(userId)(expressionDoi)).toStrictEqual(
-        O.some(expect.objectContaining({ id: listId })),
-      );
+      expect(selectedListIdForFirstUser).toStrictEqual(listId);
     });
 
     it('the query returns the first list id belonging to the second user', () => {
-      expect(selectListContainingExpression(readModel)(userId2)(expressionDoi)).toStrictEqual(
-        O.some(expect.objectContaining({ id: listId2 })),
-      );
+      expect(selectedListIdForSecondUser).toStrictEqual(listId2);
     });
   });
 });
