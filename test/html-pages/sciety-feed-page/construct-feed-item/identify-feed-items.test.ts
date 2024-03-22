@@ -5,6 +5,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
+import { abortTest } from '../../../framework/abort-test';
 
 describe('identify-feed-items', () => {
   describe('when a single article is added to a list', () => {
@@ -34,7 +35,7 @@ describe('identify-feed-items', () => {
         constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId, date: laterDate }),
       ],
       identifyFeedItems(20, 1),
-      E.match(shouldNotBeCalled, identity),
+      E.getOrElseW(abortTest('identifyFeedItems returned on the Left')),
       (pageOfItems) => pageOfItems.items,
     );
 
@@ -43,28 +44,16 @@ describe('identify-feed-items', () => {
     });
 
     it('collapses into a CollapsedArticlesAddedToList item', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        {
-          type: 'CollapsedArticlesAddedToList',
-          listId,
-        },
-      )]);
+      expect(result[0].type).toBe('CollapsedArticlesAddedToList');
+      expect(result[0]).toStrictEqual(expect.objectContaining({ listId }));
     });
 
     it('returns the number of article events collapsed', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        {
-          articleCount: 2,
-        },
-      )]);
+      expect(result[0]).toStrictEqual(expect.objectContaining({ articleCount: 2 }));
     });
 
     it('returns the most recent date', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        {
-          date: laterDate,
-        },
-      )]);
+      expect(result[0]).toStrictEqual(expect.objectContaining({ date: laterDate }));
     });
   });
 
@@ -89,28 +78,16 @@ describe('identify-feed-items', () => {
     });
 
     it('returns the number of article events collapsed', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        {
-          articleCount: 3,
-        },
-      )]);
+      expect(result[0]).toStrictEqual(expect.objectContaining({ articleCount: 3 }));
     });
 
     it('collapses into a CollapsedArticlesAddedToList item', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        {
-          type: 'CollapsedArticlesAddedToList',
-          listId: myListId,
-        },
-      )]);
+      expect(result[0].type).toBe('CollapsedArticlesAddedToList');
+      expect(result[0]).toStrictEqual(expect.objectContaining({ listId: myListId }));
     });
 
     it('returns the most recent date', () => {
-      expect(result).toStrictEqual([expect.objectContaining(
-        {
-          date: laterDate,
-        },
-      )]);
+      expect(result[0]).toStrictEqual(expect.objectContaining({ date: laterDate }));
     });
   });
 
