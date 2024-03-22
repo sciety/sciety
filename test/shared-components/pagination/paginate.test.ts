@@ -87,6 +87,26 @@ describe('paginate', () => {
       it('returns no items', () => {
         expect(result.items).toStrictEqual([]);
       });
+
+      it('returns 1 as a page total', () => {
+        expect(result.numberOfPages).toBe(1);
+      });
+
+      it('returns 0 as the number of original items', () => {
+        expect(result.numberOfOriginalItems).toBe(0);
+      });
+
+      it('returns 1 as the current page number', () => {
+        expect(result.pageNumber).toBe(1);
+      });
+
+      it('returns no nextPage', () => {
+        expect(result.nextPage).toStrictEqual(O.none);
+      });
+
+      it('returns no prevPage', () => {
+        expect(result.prevPage).toStrictEqual(O.none);
+      });
     });
   });
 
