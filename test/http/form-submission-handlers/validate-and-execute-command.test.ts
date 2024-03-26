@@ -3,14 +3,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { ParameterizedContext } from 'koa';
 import { validateAndExecuteCommand, Dependencies } from '../../../src/http/form-submission-handlers/validate-and-execute-command';
-import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitrarySanitisedUserInput } from '../../types/sanitised-user-input.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
 import { SanitisedUserInput } from '../../../src/types/sanitised-user-input';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { constructEvent } from '../../../src/domain-events';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { dummyLogger } from '../../dummy-logger';
+import { arbitraryUserCreatedAccountEvent } from '../../domain-events/user-resource-events.helper';
 
 const defaultDependencies: Dependencies = {
   commitEvents: shouldNotBeCalled,
@@ -82,25 +81,23 @@ describe('validate-and-execute-command', () => {
   });
 
   describe('when the user handle already exists', () => {
-    const existingUser = arbitraryUserDetails();
-    const formBody = { fullName: arbitrarySanitisedUserInput(), handle: existingUser.handle };
+    const userCreatedAccountEvent = arbitraryUserCreatedAccountEvent();
     const dependencies: Dependencies = {
       ...defaultDependencies,
-      getAllEvents: T.of([
-        constructEvent('UserCreatedAccount')({
-          ...existingUser,
-          userId: existingUser.id,
-        }),
-      ]),
+      getAllEvents: T.of([userCreatedAccountEvent]),
     };
-    const koaContext = buildKoaContext(formBody, existingUser.id);
+    const formBody = {
+      fullName: arbitrarySanitisedUserInput(),
+      handle: userCreatedAccountEvent.handle,
+    };
+    const koaContext = buildKoaContext(formBody, userCreatedAccountEvent.userId);
 
     it('return a form populated with user input', async () => {
       const result = await validateAndExecuteCommand(koaContext, dependencies)();
 
       expect(result).toStrictEqual(E.left({
         fullName: formBody.fullName,
-        handle: existingUser.handle,
+        handle: userCreatedAccountEvent.handle,
       }));
     });
   });
