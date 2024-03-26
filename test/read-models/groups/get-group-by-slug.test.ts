@@ -4,12 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { arbitraryUninterestingEvents } from './arbitrary-uninteresting-events.helper';
 import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
 import { getGroupBySlug } from '../../../src/read-models/groups/get-group-by-slug';
-import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
 import { arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-
-const group = arbitraryGroup();
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('getGroupBySlug', () => {
   describe('when the group joined without a large logo', () => {
@@ -66,7 +64,7 @@ describe('getGroupBySlug', () => {
     );
 
     it('returns not-found', () => {
-      expect(getGroupBySlug(readmodel)(group.id)).toStrictEqual(O.none);
+      expect(getGroupBySlug(readmodel)(arbitraryGroupId())).toStrictEqual(O.none);
     });
   });
 });
