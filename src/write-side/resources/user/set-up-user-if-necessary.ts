@@ -41,7 +41,7 @@ export const setUpUserIfNecessary: SetUpUserIfNecessary = (command) => (events) 
       () => [constructEvent('UserCreatedAccount')({
         userId: command.userId,
         handle: command.handle,
-        avatarUrl: command.avatarUrl,
+        avatarUrl: 'unused',
         displayName: command.displayName,
       })],
     ),

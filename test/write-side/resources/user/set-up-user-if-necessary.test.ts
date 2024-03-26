@@ -11,13 +11,15 @@ describe('set-up-user-if-necessary', () => {
   const command: CreateUserAccountCommand = {
     userId: arbitraryUserId(),
     handle: arbitraryUserHandle(),
-    avatarUrl: arbitraryUri(),
     displayName: arbitraryString(),
   };
 
   describe('when the user already exists', () => {
     const events = [
-      constructEvent('UserCreatedAccount')(command),
+      constructEvent('UserCreatedAccount')({
+        ...command,
+        avatarUrl: arbitraryUri(),
+      }),
       {
         ...arbitraryListCreatedEvent(),
         ownerId: LOID.fromUserId(command.userId),
@@ -38,7 +40,6 @@ describe('set-up-user-if-necessary', () => {
       expect(eventsToCommit[0]).toBeDomainEvent('UserCreatedAccount', {
         userId: command.userId,
         handle: command.handle,
-        avatarUrl: command.avatarUrl,
         displayName: command.displayName,
       });
       expect(eventsToCommit[1]).toBeDomainEvent('ListCreated', {
