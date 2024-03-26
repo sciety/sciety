@@ -11,3 +11,9 @@ export const arbitraryUserCreatedAccountEvent = (): EventOfType<'UserCreatedAcco
     handle: arbitraryUserHandle(),
   },
 );
+
+export const arbitraryUserDetailsUpdatedEvent = (): EventOfType<'UserDetailsUpdated'> => constructEvent('UserDetailsUpdated')({
+  userId: arbitraryUserId(),
+  avatarUrl: undefined,
+  displayName: undefined,
+});

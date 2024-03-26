@@ -3,11 +3,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryString } from '../../helpers';
-import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/users/handle-event';
 import { lookupUser } from '../../../src/read-models/users/lookup-user';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryUserCreatedAccountEvent } from '../../domain-events/user-resource-events.helper';
+import { arbitraryUserCreatedAccountEvent, arbitraryUserDetailsUpdatedEvent } from '../../domain-events/user-resource-events.helper';
 
 describe('lookup-user', () => {
   describe('when user exists', () => {
@@ -36,11 +35,11 @@ describe('lookup-user', () => {
     const readModel = pipe(
       [
         accountCreatedEvent,
-        constructEvent('UserDetailsUpdated')({
+        {
+          ...arbitraryUserDetailsUpdatedEvent(),
           userId: accountCreatedEvent.userId,
-          avatarUrl: undefined,
           displayName: newDisplayName,
-        }),
+        },
       ],
       RA.reduce(initialState(), handleEvent),
     );
