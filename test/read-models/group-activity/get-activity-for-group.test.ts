@@ -5,7 +5,6 @@ import { handleEvent, initialState } from '../../../src/read-models/group-activi
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { getActivityForGroup } from '../../../src/read-models/group-activity/get-activity-for-group';
 import { DomainEvent, constructEvent } from '../../../src/domain-events';
-import { arbitraryGroup } from '../../types/group.helper';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
@@ -14,18 +13,16 @@ import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-ev
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { GroupId } from '../../../src/types/group-id';
 
+const getActivityForGroupHelper = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
+  const readModel = pipe(
+    events,
+    RA.reduce(initialState(), handleEvent),
+  );
+  return getActivityForGroup(readModel)(groupId);
+};
+
 describe('get-activity-for-group', () => {
-  const group = arbitraryGroup();
-
   describe('when the group has not joined', () => {
-    const getActivityForGroupHelper = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
-      const readModel = pipe(
-        events,
-        RA.reduce(initialState(), handleEvent),
-      );
-      return getActivityForGroup(readModel)(groupId);
-    };
-
     describe('and no group activity has been recorded', () => {
       const result = getActivityForGroupHelper([], arbitraryGroupId());
 
@@ -36,12 +33,9 @@ describe('get-activity-for-group', () => {
 
     describe('and an evaluation\'s publication has been recorded', () => {
       const events = [
-        {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
-        },
+        arbitraryEvaluationPublicationRecordedEvent(),
       ];
-      const result = getActivityForGroupHelper(events, group.id);
+      const result = getActivityForGroupHelper(events, events[0].groupId);
 
       it('returns O.none', () => {
         expect(result).toStrictEqual(O.none);
@@ -49,16 +43,14 @@ describe('get-activity-for-group', () => {
     });
 
     describe('and an evaluation\'s publication has been recorded, and then erased by Sciety', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
+      const evaluationPublicationRecorded = arbitraryEvaluationPublicationRecordedEvent();
       const events = [
-        {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
-          evaluationLocator,
-        },
-        constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
+        evaluationPublicationRecorded,
+        constructEvent('IncorrectlyRecordedEvaluationErased')({
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        }),
       ];
-      const result = getActivityForGroupHelper(events, group.id);
+      const result = getActivityForGroupHelper(events, evaluationPublicationRecorded.groupId);
 
       it('returns O.none', () => {
         expect(result).toStrictEqual(O.none);
@@ -66,19 +58,15 @@ describe('get-activity-for-group', () => {
     });
 
     describe('and an evaluation\'s publication and removal have been recorded', () => {
-      const evaluationLocator = arbitraryEvaluationLocator();
+      const evaluationPublicationRecorded = arbitraryEvaluationPublicationRecordedEvent();
       const events = [
-        {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
-          evaluationLocator,
-        },
+        evaluationPublicationRecorded,
         {
           ...arbitraryEvaluationRemovalRecordedEvent(),
-          evaluationLocator,
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
         },
       ];
-      const result = getActivityForGroupHelper(events, group.id);
+      const result = getActivityForGroupHelper(events, evaluationPublicationRecorded.groupId);
 
       it('returns O.none', () => {
         expect(result).toStrictEqual(O.none);
@@ -99,19 +87,10 @@ describe('get-activity-for-group', () => {
       );
     };
 
-    const groupJoinedEvent = {
-      ...arbitraryGroupJoinedEvent(),
-      groupId: group.id,
-      name: group.name,
-      avatarPath: group.avatarPath,
-      descriptionPath: group.descriptionPath,
-      shortDescription: group.shortDescription,
-      homepage: group.homepage,
-      slug: group.slug,
-    };
+    const groupJoinedEvent = arbitraryGroupJoinedEvent();
 
     describe('when there are no recorded evaluations', () => {
-      const activity = getActivityForGroupHelperExpectingSome([groupJoinedEvent], group.id);
+      const activity = getActivityForGroupHelperExpectingSome([groupJoinedEvent], groupJoinedEvent.groupId);
 
       it('returns an evaluationCount of 0', () => {
         expect(activity.evaluationCount).toBe(0);
@@ -128,11 +107,11 @@ describe('get-activity-for-group', () => {
         groupJoinedEvent,
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
+          groupId: groupJoinedEvent.groupId,
           publishedAt,
         },
       ];
-      const activity = getActivityForGroupHelperExpectingSome(events, group.id);
+      const activity = getActivityForGroupHelperExpectingSome(events, groupJoinedEvent.groupId);
 
       it('returns an evaluationCount of 1', () => {
         expect(activity.evaluationCount).toBe(1);
@@ -150,17 +129,17 @@ describe('get-activity-for-group', () => {
           groupJoinedEvent,
           {
             ...arbitraryEvaluationPublicationRecordedEvent(),
-            groupId: group.id,
+            groupId: groupJoinedEvent.groupId,
             publishedAt: new Date('1970'),
           },
           {
             ...arbitraryEvaluationPublicationRecordedEvent(),
-            groupId: group.id,
+            groupId: groupJoinedEvent.groupId,
             publishedAt: mostRecentPublishedAt,
           },
 
         ];
-        const activity = getActivityForGroupHelperExpectingSome(events, group.id);
+        const activity = getActivityForGroupHelperExpectingSome(events, groupJoinedEvent.groupId);
 
         it('returns an evaluationCount of 2', () => {
           expect(activity.evaluationCount).toBe(2);
@@ -177,16 +156,16 @@ describe('get-activity-for-group', () => {
           groupJoinedEvent,
           {
             ...arbitraryEvaluationPublicationRecordedEvent(),
-            groupId: group.id,
+            groupId: groupJoinedEvent.groupId,
             publishedAt: mostRecentPublishedAt,
           },
           {
             ...arbitraryEvaluationPublicationRecordedEvent(),
-            groupId: group.id,
+            groupId: groupJoinedEvent.groupId,
             publishedAt: new Date('1970'),
           },
         ];
-        const activity = getActivityForGroupHelperExpectingSome(events, group.id);
+        const activity = getActivityForGroupHelperExpectingSome(events, groupJoinedEvent.groupId);
 
         it('returns an evaluationCount of 2', () => {
           expect(activity.evaluationCount).toBe(2);
@@ -204,12 +183,12 @@ describe('get-activity-for-group', () => {
         groupJoinedEvent,
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
+          groupId: groupJoinedEvent.groupId,
           evaluationLocator,
         },
         constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator }),
       ];
-      const activity = getActivityForGroupHelperExpectingSome(events, group.id);
+      const activity = getActivityForGroupHelperExpectingSome(events, groupJoinedEvent.groupId);
 
       it('returns an evaluationCount of 0', () => {
         expect(activity.evaluationCount).toBe(0);
@@ -227,17 +206,17 @@ describe('get-activity-for-group', () => {
         groupJoinedEvent,
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
+          groupId: groupJoinedEvent.groupId,
           publishedAt: remainingEvaluationPublishedAt,
         },
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
+          groupId: groupJoinedEvent.groupId,
           evaluationLocator: evaluationToErase,
         },
         constructEvent('IncorrectlyRecordedEvaluationErased')({ evaluationLocator: evaluationToErase }),
       ];
-      const activity = getActivityForGroupHelperExpectingSome(events, group.id);
+      const activity = getActivityForGroupHelperExpectingSome(events, groupJoinedEvent.groupId);
 
       it('returns an evaluationCount of 1', () => {
         expect(activity.evaluationCount).toBe(1);
@@ -255,12 +234,12 @@ describe('get-activity-for-group', () => {
         groupJoinedEvent,
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
+          groupId: groupJoinedEvent.groupId,
           publishedAt: remainingEvaluationPublishedAt,
         },
         {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: group.id,
+          groupId: groupJoinedEvent.groupId,
           evaluationLocator,
         },
         {
@@ -268,7 +247,7 @@ describe('get-activity-for-group', () => {
           evaluationLocator,
         },
       ];
-      const activity = getActivityForGroupHelperExpectingSome(events, group.id);
+      const activity = getActivityForGroupHelperExpectingSome(events, groupJoinedEvent.groupId);
 
       it('returns an evaluationCount of 1', () => {
         expect(activity.evaluationCount).toBe(1);
@@ -281,7 +260,7 @@ describe('get-activity-for-group', () => {
 
     describe('when an evaluation\'s publication has been recorded twice', () => {
       const eventProperties = {
-        groupId: group.id,
+        groupId: groupJoinedEvent.groupId,
         articleId: arbitraryExpressionDoi(),
         evaluationLocator: arbitraryEvaluationLocator(),
         authors: [arbitraryString()],
@@ -298,7 +277,7 @@ describe('get-activity-for-group', () => {
           ...eventProperties,
         },
       ];
-      const activity = getActivityForGroupHelperExpectingSome(events, group.id);
+      const activity = getActivityForGroupHelperExpectingSome(events, groupJoinedEvent.groupId);
 
       it('returns an evaluationCount of 1', () => {
         expect(activity.evaluationCount).toBe(1);
