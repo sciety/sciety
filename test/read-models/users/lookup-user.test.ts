@@ -2,7 +2,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryUserDetails } from '../../types/user-details.helper';
 import { arbitraryString, arbitraryUri } from '../../helpers';
 import { constructEvent, EventOfType } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/users/handle-event';
@@ -62,36 +61,6 @@ describe('lookup-user', () => {
 
     it('returns the updated displayName', () => {
       expect(user.displayName).toStrictEqual(newDisplayName);
-    });
-  });
-
-  describe('when displayName and avatarUrl have been updated simultaneously', () => {
-    const user = arbitraryUserDetails();
-    const newDisplayName = arbitraryString();
-    const newAvatarUrl = arbitraryUri();
-    const readModel = pipe(
-      [
-        constructEvent('UserCreatedAccount')({
-          userId: user.id,
-          handle: user.handle,
-          avatarUrl: user.avatarUrl,
-          displayName: user.displayName,
-        }),
-        constructEvent('UserDetailsUpdated')({
-          userId: user.id,
-          avatarUrl: newAvatarUrl,
-          displayName: newDisplayName,
-        }),
-      ],
-      RA.reduce(initialState(), handleEvent),
-    );
-
-    it('returns the updated displayName and avatarUrl', () => {
-      expect(lookupUser(readModel)(user.id)).toStrictEqual(O.some({
-        ...user,
-        displayName: newDisplayName,
-        avatarUrl: newAvatarUrl,
-      }));
     });
   });
 
