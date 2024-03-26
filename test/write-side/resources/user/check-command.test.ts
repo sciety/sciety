@@ -1,11 +1,12 @@
 import * as E from 'fp-ts/Either';
-import { DomainEvent, constructEvent } from '../../../../src/domain-events';
+import { DomainEvent } from '../../../../src/domain-events';
 import { UserHandle } from '../../../../src/types/user-handle';
 import { checkCommand } from '../../../../src/write-side/resources/user/check-command';
 import { CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryWord, arbitraryString, arbitraryUri } from '../../../helpers';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import { arbitraryUserCreatedAccountEvent } from '../../../domain-events/user-resource-events.helper';
 
 describe('check-command', () => {
   describe('when the handle in the command is unique', () => {
@@ -32,12 +33,10 @@ describe('check-command', () => {
       avatarUrl: arbitraryUri(),
     };
     const events = [
-      constructEvent('UserCreatedAccount')({
-        userId: arbitraryUserId(),
+      {
+        ...arbitraryUserCreatedAccountEvent(),
         handle: userHandle,
-        avatarUrl: arbitraryUri(),
-        displayName: arbitraryString(),
-      }),
+      },
     ];
     const result = checkCommand(command)(events);
 
