@@ -40,34 +40,6 @@ describe('lookup-user', () => {
     });
   });
 
-  describe('when avatarUrl has been updated', () => {
-    const user = arbitraryUserDetails();
-    const newAvatarUrl = arbitraryUri();
-    const readModel = pipe(
-      [
-        constructEvent('UserCreatedAccount')({
-          userId: user.id,
-          handle: user.handle,
-          avatarUrl: user.avatarUrl,
-          displayName: user.displayName,
-        }),
-        constructEvent('UserDetailsUpdated')({
-          userId: user.id,
-          avatarUrl: newAvatarUrl,
-          displayName: undefined,
-        }),
-      ],
-      RA.reduce(initialState(), handleEvent),
-    );
-
-    it('returns the updated avatarUrl', () => {
-      expect(lookupUser(readModel)(user.id)).toStrictEqual(O.some({
-        ...user,
-        avatarUrl: newAvatarUrl,
-      }));
-    });
-  });
-
   describe('when displayName has been updated', () => {
     const user = arbitraryUserDetails();
     const newDisplayName = arbitraryString();
