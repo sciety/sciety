@@ -90,34 +90,32 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the owner owns a list where the list name has been changed', () => {
-    const listId = arbitraryListId();
-    const listName = arbitraryString();
-    const listDescription = arbitraryString();
+    const listCreated = arbitraryListCreatedEvent();
     const dateOfLastEvent = new Date('2021-07-08');
+    const listNameEdited = constructEvent('ListNameEdited')({
+      listId: listCreated.listId,
+      name: arbitraryString(),
+      date: dateOfLastEvent,
+    });
     const readmodel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId,
-          name: arbitraryString(),
-          description: listDescription,
-          ownerId,
-        }),
-        constructEvent('ListNameEdited')({ listId, name: listName, date: dateOfLastEvent }),
+        listCreated,
+        listNameEdited,
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
+    const result = selectAllListsOwnedBy(readmodel)(listCreated.ownerId)[0];
 
     it('returns the list id', () => {
-      expect(result.id).toBe(listId);
+      expect(result.id).toBe(listCreated.listId);
     });
 
     it('returns the updated name of the list', () => {
-      expect(result.name).toStrictEqual(listName);
+      expect(result.name).toStrictEqual(listNameEdited.name);
     });
 
     it('returns the description of the list', () => {
-      expect(result.description).toStrictEqual(rawUserInput(listDescription));
+      expect(result.description).toStrictEqual(rawUserInput(listCreated.description));
     });
 
     it('returns the last updated date', () => {
@@ -133,12 +131,6 @@ describe('select-all-lists-owned-by', () => {
     const removedArticleId = arbitraryArticleId();
     const readmodel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId,
-          name: listName,
-          description: listDescription,
-          ownerId,
-        }),
         constructEvent('ListCreated')({
           listId,
           name: listName,
