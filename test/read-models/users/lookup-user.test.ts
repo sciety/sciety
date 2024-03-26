@@ -8,6 +8,7 @@ import { constructEvent, EventOfType } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/users/handle-event';
 import { lookupUser } from '../../../src/read-models/users/lookup-user';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const arbitraryUserCreatedAccountEvent = (): EventOfType<'UserCreatedAccount'> => constructEvent('UserCreatedAccount')(
   {
@@ -20,16 +21,23 @@ const arbitraryUserCreatedAccountEvent = (): EventOfType<'UserCreatedAccount'> =
 
 describe('lookup-user', () => {
   describe('when user exists', () => {
-    const foo = arbitraryUserCreatedAccountEvent();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const event = arbitraryUserCreatedAccountEvent();
     const readModel = pipe(
       [
-        foo,
+        event,
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const user = pipe(
+      event.userId,
+      lookupUser(readModel),
+      O.getOrElseW(shouldNotBeCalled),
+    );
 
-    it.todo('returns the correct user details');
+    it('returns the correct user details', () => {
+      expect(user.displayName).toStrictEqual(event.displayName);
+      expect(user.handle).toStrictEqual(event.handle);
+    });
   });
 
   describe('when avatarUrl has been updated', () => {
