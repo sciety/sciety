@@ -3,9 +3,9 @@ import * as LOID from '../../../../src/types/list-owner-id';
 import { setUpUserIfNecessary } from '../../../../src/write-side/resources/user/set-up-user-if-necessary';
 import { CreateUserAccountCommand } from '../../../../src/write-side/commands';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
-import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
 
 describe('set-up-user-if-necessary', () => {
   const command: CreateUserAccountCommand = {
@@ -18,12 +18,10 @@ describe('set-up-user-if-necessary', () => {
   describe('when the user already exists', () => {
     const events = [
       constructEvent('UserCreatedAccount')(command),
-      constructEvent('ListCreated')({
-        listId: arbitraryListId(),
-        name: arbitraryString(),
-        description: arbitraryString(),
+      {
+        ...arbitraryListCreatedEvent(),
         ownerId: LOID.fromUserId(command.userId),
-      }),
+      },
     ];
 
     const eventsToCommit = setUpUserIfNecessary(command)(events);
