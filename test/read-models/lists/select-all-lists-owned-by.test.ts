@@ -124,37 +124,40 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the owner owns a list where some articles have been removed', () => {
-    const listId = arbitraryListId();
-    const listName = arbitraryString();
-    const listDescription = arbitraryString();
+    const listCreated = arbitraryListCreatedEvent();
     const dateOfLastEvent = arbitraryDate();
     const removedArticleId = arbitraryArticleId();
     const readmodel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId,
-          name: listName,
-          description: listDescription,
-          ownerId,
+        listCreated,
+        constructEvent('ArticleAddedToList')({
+          articleId: arbitraryArticleId(),
+          listId: listCreated.listId,
         }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId }),
-        constructEvent('ArticleAddedToList')({ articleId: removedArticleId, listId }),
-        constructEvent('ArticleRemovedFromList')({ articleId: removedArticleId, listId, date: dateOfLastEvent }),
+        constructEvent('ArticleAddedToList')({
+          articleId: removedArticleId,
+          listId: listCreated.listId,
+        }),
+        constructEvent('ArticleRemovedFromList')({
+          articleId: removedArticleId,
+          listId: listCreated.listId,
+          date: dateOfLastEvent,
+        }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
+    const result = selectAllListsOwnedBy(readmodel)(listCreated.ownerId)[0];
 
     it('returns the list id', () => {
-      expect(result.id).toBe(listId);
+      expect(result.id).toBe(listCreated.listId);
     });
 
     it('returns the name of the list', () => {
-      expect(result.name).toStrictEqual(listName);
+      expect(result.name).toStrictEqual(listCreated.name);
     });
 
     it('returns the description of the list', () => {
-      expect(result.description).toStrictEqual(rawUserInput(listDescription));
+      expect(result.description).toStrictEqual(rawUserInput(listCreated.description));
     });
 
     it('returns the last updated date', () => {
