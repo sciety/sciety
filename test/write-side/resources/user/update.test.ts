@@ -1,33 +1,28 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryUserDetails } from '../../../types/user-details.helper';
-import { DomainEvent, constructEvent } from '../../../../src/domain-events';
+import { DomainEvent } from '../../../../src/domain-events';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper';
 import { update } from '../../../../src/write-side/resources/user';
 import { arbitraryUserId } from '../../../types/user-id.helper';
+import { arbitraryUserCreatedAccountEvent, arbitraryUserDetailsUpdatedEvent } from '../../../domain-events/user-resource-events.helper';
 
 describe('update', () => {
   let events: ReadonlyArray<DomainEvent>;
 
   describe('when the user exists', () => {
-    const originalUserDetails = arbitraryUserDetails();
+    const userCreatedAccountEvent = arbitraryUserCreatedAccountEvent();
 
     describe('and they have never updated their details', () => {
       const existingEvents = [
-        constructEvent('UserCreatedAccount')({
-          userId: originalUserDetails.id,
-          handle: originalUserDetails.handle,
-          avatarUrl: originalUserDetails.avatarUrl,
-          displayName: originalUserDetails.displayName,
-        }),
+        userCreatedAccountEvent,
       ];
 
       describe('when passed a new avatar url', () => {
         const newAvatarUrl = arbitraryUri();
         const command = constructUpdateUserDetailsCommand({
-          userId: originalUserDetails.id,
+          userId: userCreatedAccountEvent.userId,
           avatarUrl: newAvatarUrl,
         });
 
@@ -44,7 +39,7 @@ describe('update', () => {
 
         it('raises an event to update avatar url', () => {
           expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
-            userId: originalUserDetails.id,
+            userId: userCreatedAccountEvent.userId,
             avatarUrl: newAvatarUrl,
             displayName: undefined,
           });
@@ -54,7 +49,7 @@ describe('update', () => {
       describe('when passed a new display name', () => {
         const newDisplayName = arbitraryString();
         const command = constructUpdateUserDetailsCommand({
-          userId: originalUserDetails.id,
+          userId: userCreatedAccountEvent.userId,
           displayName: newDisplayName,
         });
 
@@ -71,7 +66,7 @@ describe('update', () => {
 
         it('raises an event to update display name', () => {
           expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
-            userId: originalUserDetails.id,
+            userId: userCreatedAccountEvent.userId,
             avatarUrl: undefined,
             displayName: newDisplayName,
           });
@@ -82,7 +77,7 @@ describe('update', () => {
         const newAvatarUrl = arbitraryUri();
         const newDisplayName = arbitraryString();
         const command = constructUpdateUserDetailsCommand({
-          userId: originalUserDetails.id,
+          userId: userCreatedAccountEvent.userId,
           avatarUrl: newAvatarUrl,
           displayName: newDisplayName,
         });
@@ -100,7 +95,7 @@ describe('update', () => {
 
         it('raises an event to update display name and avatar url', () => {
           expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
-            userId: originalUserDetails.id,
+            userId: userCreatedAccountEvent.userId,
             avatarUrl: newAvatarUrl,
             displayName: newDisplayName,
           });
@@ -109,8 +104,8 @@ describe('update', () => {
 
       describe('when passed the existing avatar url', () => {
         const command = constructUpdateUserDetailsCommand({
-          userId: originalUserDetails.id,
-          avatarUrl: originalUserDetails.avatarUrl,
+          userId: userCreatedAccountEvent.userId,
+          avatarUrl: userCreatedAccountEvent.avatarUrl,
         });
 
         beforeEach(() => {
@@ -127,9 +122,9 @@ describe('update', () => {
 
       describe('when passed the existing display name', () => {
         const command = {
-          userId: originalUserDetails.id,
+          userId: userCreatedAccountEvent.userId,
           avatarUrl: undefined,
-          displayName: originalUserDetails.displayName,
+          displayName: userCreatedAccountEvent.displayName,
         };
 
         beforeEach(() => {
@@ -146,7 +141,7 @@ describe('update', () => {
 
       describe('when passed no avatarUrl and no displayName', () => {
         const command = {
-          userId: originalUserDetails.id,
+          userId: userCreatedAccountEvent.userId,
           avatarUrl: undefined,
           displayName: undefined,
         };
@@ -166,23 +161,17 @@ describe('update', () => {
 
     describe('and they have previously updated their details', () => {
       const existingEvents = [
-        constructEvent('UserCreatedAccount')({
-          userId: originalUserDetails.id,
-          handle: originalUserDetails.handle,
-          avatarUrl: originalUserDetails.avatarUrl,
-          displayName: originalUserDetails.displayName,
-        }),
-        constructEvent('UserDetailsUpdated')({
-          userId: originalUserDetails.id,
-          avatarUrl: arbitraryUri(),
-          displayName: arbitraryString(),
-        }),
+        userCreatedAccountEvent,
+        {
+          ...arbitraryUserDetailsUpdatedEvent(),
+          userId: userCreatedAccountEvent.userId,
+        },
       ];
 
       describe('when passed a new avatar url', () => {
         const newAvatarUrl = arbitraryUri();
         const command = constructUpdateUserDetailsCommand({
-          userId: originalUserDetails.id,
+          userId: userCreatedAccountEvent.userId,
           avatarUrl: newAvatarUrl,
         });
 
@@ -199,7 +188,7 @@ describe('update', () => {
 
         it('raises an event to update avatar url', () => {
           expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
-            userId: originalUserDetails.id,
+            userId: userCreatedAccountEvent.userId,
             avatarUrl: newAvatarUrl,
             displayName: undefined,
           });
@@ -209,7 +198,7 @@ describe('update', () => {
       describe('when passed a new display name', () => {
         const newDisplayName = arbitraryString();
         const command = constructUpdateUserDetailsCommand({
-          userId: originalUserDetails.id,
+          userId: userCreatedAccountEvent.userId,
           displayName: newDisplayName,
         });
 
@@ -226,7 +215,7 @@ describe('update', () => {
 
         it('raises an event to update display name', () => {
           expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
-            userId: originalUserDetails.id,
+            userId: userCreatedAccountEvent.userId,
             displayName: newDisplayName,
             avatarUrl: undefined,
           });
@@ -258,14 +247,8 @@ describe('update', () => {
   });
 
   describe('when a different user exists', () => {
-    const differentUserDetails = arbitraryUserDetails();
     const existingEvents: ReadonlyArray<DomainEvent> = [
-      constructEvent('UserCreatedAccount')({
-        userId: differentUserDetails.id,
-        handle: differentUserDetails.handle,
-        avatarUrl: differentUserDetails.avatarUrl,
-        displayName: differentUserDetails.displayName,
-      }),
+      arbitraryUserCreatedAccountEvent(),
     ];
 
     describe('when passed any command', () => {
