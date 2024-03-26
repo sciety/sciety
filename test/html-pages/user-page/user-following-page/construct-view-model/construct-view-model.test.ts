@@ -91,7 +91,6 @@ describe('construct-view-model', () => {
     it('exposes the user details', async () => {
       expect(viewmodel.userDetails.handle).toBe(createUserAccountCommand.handle);
       expect(viewmodel.userDetails.displayName).toBe(createUserAccountCommand.displayName);
-      expect(viewmodel.userDetails.avatarUrl).toBe(createUserAccountCommand.avatarUrl);
     });
   });
 });

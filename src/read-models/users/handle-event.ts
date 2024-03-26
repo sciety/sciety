@@ -10,7 +10,6 @@ export const initialState = (): ReadModel => ({});
 export const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('UserCreatedAccount')(event)) {
     readModel[event.userId] = {
-      avatarUrl: event.avatarUrl,
       displayName: event.displayName,
       handle: event.handle,
       id: event.userId,
@@ -18,7 +17,6 @@ export const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel
   }
   if (isEventOfType('UserDetailsUpdated')(event)) {
     const existingUserDetails = readModel[event.userId];
-    readModel[event.userId].avatarUrl = event.avatarUrl ?? existingUserDetails.avatarUrl;
     readModel[event.userId].displayName = event.displayName ?? existingUserDetails.displayName;
   }
   return readModel;
