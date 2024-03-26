@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { DomainEvent } from '../../../../src/domain-events';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryString } from '../../../helpers';
 import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper';
 import { update } from '../../../../src/write-side/resources/user';
 import { arbitraryUserId } from '../../../types/user-id.helper';
@@ -18,33 +18,6 @@ describe('update', () => {
       const existingEvents = [
         userCreatedAccountEvent,
       ];
-
-      describe('when passed a new avatar url', () => {
-        const newAvatarUrl = arbitraryUri();
-        const command = constructUpdateUserDetailsCommand({
-          userId: userCreatedAccountEvent.userId,
-          avatarUrl: newAvatarUrl,
-        });
-
-        beforeEach(() => {
-          events = pipe(
-            update(command)(existingEvents),
-            E.getOrElseW(shouldNotBeCalled),
-          );
-        });
-
-        it('raises exactly one event', () => {
-          expect(events).toHaveLength(1);
-        });
-
-        it('raises an event to update avatar url', () => {
-          expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
-            userId: userCreatedAccountEvent.userId,
-            avatarUrl: newAvatarUrl,
-            displayName: undefined,
-          });
-        });
-      });
 
       describe('when passed a new display name', () => {
         const newDisplayName = arbitraryString();
@@ -67,63 +40,15 @@ describe('update', () => {
         it('raises an event to update display name', () => {
           expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
             userId: userCreatedAccountEvent.userId,
+            displayName: newDisplayName,
             avatarUrl: undefined,
-            displayName: newDisplayName,
           });
-        });
-      });
-
-      describe('when passed a new display name and a new avatar url', () => {
-        const newAvatarUrl = arbitraryUri();
-        const newDisplayName = arbitraryString();
-        const command = constructUpdateUserDetailsCommand({
-          userId: userCreatedAccountEvent.userId,
-          avatarUrl: newAvatarUrl,
-          displayName: newDisplayName,
-        });
-
-        beforeEach(() => {
-          events = pipe(
-            update(command)(existingEvents),
-            E.getOrElseW(shouldNotBeCalled),
-          );
-        });
-
-        it('raises exactly one event', () => {
-          expect(events).toHaveLength(1);
-        });
-
-        it('raises an event to update display name and avatar url', () => {
-          expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
-            userId: userCreatedAccountEvent.userId,
-            avatarUrl: newAvatarUrl,
-            displayName: newDisplayName,
-          });
-        });
-      });
-
-      describe('when passed the existing avatar url', () => {
-        const command = constructUpdateUserDetailsCommand({
-          userId: userCreatedAccountEvent.userId,
-          avatarUrl: userCreatedAccountEvent.avatarUrl,
-        });
-
-        beforeEach(() => {
-          events = pipe(
-            update(command)(existingEvents),
-            E.getOrElseW(shouldNotBeCalled),
-          );
-        });
-
-        it('raises no events', () => {
-          expect(events).toStrictEqual([]);
         });
       });
 
       describe('when passed the existing display name', () => {
         const command = {
           userId: userCreatedAccountEvent.userId,
-          avatarUrl: undefined,
           displayName: userCreatedAccountEvent.displayName,
         };
 
@@ -139,10 +64,9 @@ describe('update', () => {
         });
       });
 
-      describe('when passed no avatarUrl and no displayName', () => {
+      describe('when passed no displayName', () => {
         const command = {
           userId: userCreatedAccountEvent.userId,
-          avatarUrl: undefined,
           displayName: undefined,
         };
 
@@ -167,33 +91,6 @@ describe('update', () => {
           userId: userCreatedAccountEvent.userId,
         },
       ];
-
-      describe('when passed a new avatar url', () => {
-        const newAvatarUrl = arbitraryUri();
-        const command = constructUpdateUserDetailsCommand({
-          userId: userCreatedAccountEvent.userId,
-          avatarUrl: newAvatarUrl,
-        });
-
-        beforeEach(() => {
-          events = pipe(
-            update(command)(existingEvents),
-            E.getOrElseW(shouldNotBeCalled),
-          );
-        });
-
-        it('raises exactly one event', () => {
-          expect(events).toHaveLength(1);
-        });
-
-        it('raises an event to update avatar url', () => {
-          expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
-            userId: userCreatedAccountEvent.userId,
-            avatarUrl: newAvatarUrl,
-            displayName: undefined,
-          });
-        });
-      });
 
       describe('when passed a new display name', () => {
         const newDisplayName = arbitraryString();
@@ -230,7 +127,7 @@ describe('update', () => {
     describe('when passed any command', () => {
       const command = constructUpdateUserDetailsCommand({
         userId: arbitraryUserId(),
-        avatarUrl: arbitraryUri(),
+        displayName: arbitraryString(),
       });
       let result: E.Either<unknown, unknown>;
 
@@ -254,7 +151,7 @@ describe('update', () => {
     describe('when passed any command', () => {
       const command = constructUpdateUserDetailsCommand({
         userId: arbitraryUserId(),
-        avatarUrl: arbitraryUri(),
+        displayName: arbitraryString(),
       });
       let result: E.Either<unknown, unknown>;
 

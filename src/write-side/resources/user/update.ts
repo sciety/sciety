@@ -10,13 +10,12 @@ type ExecuteCommand = (command: UpdateUserDetailsCommand)
 => ReadonlyArray<DomainEvent>;
 
 const executeCommand: ExecuteCommand = (command) => (userResource) => {
-  const avatarUrl = (userResource.avatarUrl === command.avatarUrl) ? undefined : command.avatarUrl;
   const displayName = (userResource.displayName === command.displayName) ? undefined : command.displayName;
-  return (avatarUrl === undefined && displayName === undefined)
+  return (displayName === undefined)
     ? []
     : [constructEvent('UserDetailsUpdated')({
       userId: command.userId,
-      avatarUrl,
+      avatarUrl: undefined,
       displayName,
     })];
 };
