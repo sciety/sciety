@@ -8,6 +8,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { rawUserInput } from '../../../src/read-side';
+import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 
 describe('select-all-lists-owned-by', () => {
   const ownerId = arbitraryListOwnerId();
@@ -25,71 +26,62 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the owner owns an empty list', () => {
-    const listId = arbitraryListId();
-    const listName = arbitraryString();
-    const listDescription = arbitraryString();
-    const listCreationDate = arbitraryDate();
+    const listCreated = arbitraryListCreatedEvent();
     const readmodel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId,
-          name: listName,
-          description: listDescription,
-          ownerId,
-          date: listCreationDate,
-        }),
+        listCreated,
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
+    const result = selectAllListsOwnedBy(readmodel)(listCreated.ownerId)[0];
 
     it('returns the list id', () => {
-      expect(result.id).toBe(listId);
+      expect(result.id).toBe(listCreated.listId);
     });
 
     it('returns the name of the list', () => {
-      expect(result.name).toStrictEqual(listName);
+      expect(result.name).toStrictEqual(listCreated.name);
     });
 
     it('returns the description of the list', () => {
-      expect(result.description).toStrictEqual(rawUserInput(listDescription));
+      expect(result.description).toStrictEqual(rawUserInput(listCreated.description));
     });
 
     it('returns the list creation date as the last updated date', () => {
-      expect(result.updatedAt).toStrictEqual(listCreationDate);
+      expect(result.updatedAt).toStrictEqual(listCreated.date);
     });
   });
 
   describe('when the owner owns a list where some articles have been added', () => {
-    const listId = arbitraryListId();
-    const listName = arbitraryString();
-    const listDescription = arbitraryString();
+    const listCreated = arbitraryListCreatedEvent();
     const dateOfLastEvent = new Date('2021-07-08');
     const readmodel = pipe(
       [
-        constructEvent('ListCreated')({
-          listId,
-          name: listName,
-          description: listDescription,
-          ownerId,
-        }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId, date: dateOfLastEvent }),
+        listCreated,
+        {
+          ...arbitraryArticleAddedToListEvent(),
+          listId: listCreated.listId,
+        },
+        {
+          ...arbitraryArticleAddedToListEvent(),
+          listId: listCreated.listId,
+          date: dateOfLastEvent,
+        },
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = selectAllListsOwnedBy(readmodel)(ownerId)[0];
+    const result = selectAllListsOwnedBy(readmodel)(listCreated.ownerId)[0];
 
     it('returns the list id', () => {
-      expect(result.id).toBe(listId);
+      expect(result.id).toBe(listCreated.listId);
     });
 
     it('returns the name of the list', () => {
-      expect(result.name).toStrictEqual(listName);
+      expect(result.name).toStrictEqual(listCreated.name);
     });
 
     it('returns the description of the list', () => {
-      expect(result.description).toStrictEqual(rawUserInput(listDescription));
+      expect(result.description).toStrictEqual(rawUserInput(listCreated.description));
     });
 
     it('returns the last updated date', () => {
@@ -179,17 +171,17 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when a list with a different owner contains some articles', () => {
-    const anotherOwnerId = arbitraryListOwnerId();
     const anotherListId = arbitraryListId();
     const readmodel = pipe(
       [
-        constructEvent('ListCreated')({
+        {
+          ...arbitraryListCreatedEvent(),
           listId: anotherListId,
-          name: arbitraryString(),
-          description: arbitraryString(),
-          ownerId: anotherOwnerId,
-        }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: anotherListId }),
+        },
+        {
+          ...arbitraryArticleAddedToListEvent(),
+          listId: anotherListId,
+        },
       ],
       RA.reduce(initialState(), handleEvent),
     );
