@@ -41,30 +41,27 @@ describe('lookup-user', () => {
   });
 
   describe('when displayName has been updated', () => {
-    const user = arbitraryUserDetails();
+    const accountCreatedEvent = arbitraryUserCreatedAccountEvent();
     const newDisplayName = arbitraryString();
     const readModel = pipe(
       [
-        constructEvent('UserCreatedAccount')({
-          userId: user.id,
-          handle: user.handle,
-          avatarUrl: user.avatarUrl,
-          displayName: user.displayName,
-        }),
+        accountCreatedEvent,
         constructEvent('UserDetailsUpdated')({
-          userId: user.id,
+          userId: accountCreatedEvent.userId,
           avatarUrl: undefined,
           displayName: newDisplayName,
         }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const user = pipe(
+      accountCreatedEvent.userId,
+      lookupUser(readModel),
+      O.getOrElseW(shouldNotBeCalled),
+    );
 
     it('returns the updated displayName', () => {
-      expect(lookupUser(readModel)(user.id)).toStrictEqual(O.some({
-        ...user,
-        displayName: newDisplayName,
-      }));
+      expect(user.displayName).toStrictEqual(newDisplayName);
     });
   });
 
