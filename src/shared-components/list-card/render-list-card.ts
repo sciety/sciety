@@ -8,6 +8,11 @@ import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { RawUserInput } from '../../read-side';
 import { safelyRenderRawUserInput } from '../raw-user-input-renderers';
 
+type Curator = {
+  avatarUrl: string,
+  name: string,
+};
+
 export type ListCardViewModel = {
   listId: ListId,
   articleCount: number,
@@ -18,6 +23,7 @@ export type ListCardViewModel = {
   avatarUrl: O.Option<string>,
   curatedByUser: boolean,
   ownerDisplayName: string,
+  curator: O.Option<Curator>,
 };
 
 const lastUpdated = O.fold(

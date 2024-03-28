@@ -87,5 +87,9 @@ export const constructListCardViewModelWithAvatar = (
     curatedByUser: ownerDetails.curatedByUser,
     ownerDisplayName: ownerDetails.displayName,
     imageUrl: O.none,
+    curator: O.some({
+      avatarUrl: ownerDetails.avatarUrl,
+      name: ownerDetails.displayName,
+    }),
   }),
 );

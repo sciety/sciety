@@ -12,4 +12,5 @@ export const constructListCardViewModelWithoutCurator = (list: List): ListCardVi
   curatedByUser: false,
   ownerDisplayName: 'unused',
   imageUrl: O.none,
+  curator: O.none,
 });
