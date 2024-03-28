@@ -26,6 +26,14 @@ $_card-asset-gutter: functions.px-to-rem(8px);
   @include card.entire-card-link();
 }
 
+.list-card__curator {
+  display: flex;
+  align-items: center;
+  gap: functions.px-to-rem(8px);
+  margin-bottom: functions.px-to-rem(16px);
+  margin-left: $_card-asset-gutter * -1;
+}
+
 .list-card__meta {
   @include card.meta();
 }

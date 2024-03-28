@@ -10,4 +10,5 @@ export const constructListCardViewModelWithoutAvatar = (list: List): ListCardVie
   description: list.description,
   avatarUrl: O.none,
   curatedByUser: false,
+  ownerDisplayName: 'somebody',
 });
