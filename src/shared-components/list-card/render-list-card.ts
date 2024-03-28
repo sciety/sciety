@@ -27,7 +27,7 @@ const renderAvatar = O.fold(
   (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
 );
 
-export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
+const renderListCardWithoutCurator = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
     <div class="list-card__body">
       <div>
@@ -41,3 +41,22 @@ export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => to
     ${renderAvatar(viewModel.avatarUrl)}
   </article>
 `);
+
+const renderListCardWithCurator = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
+  <article class="list-card">
+    <div class="list-card__body">
+      <div>
+        <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${htmlEscape(viewModel.title)}</a></h3>
+        <p>${safelyRenderRawUserInput(viewModel.description)}</p>
+      </div>
+      <div class="list-card__meta">
+        <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
+      </div>
+    </div>
+    ${renderAvatar(viewModel.avatarUrl)}
+  </article>
+`);
+
+export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => (process.env.EXPERIMENT_ENABLED === 'true'
+  ? renderListCardWithCurator(viewModel)
+  : renderListCardWithoutCurator(viewModel));
