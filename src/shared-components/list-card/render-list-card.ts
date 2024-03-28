@@ -43,6 +43,12 @@ const renderListCardWithoutCurator = (viewModel: ListCardViewModel): HtmlFragmen
   </article>
 `);
 
+const renderCurator = (viewModel: ListCardViewModel) => `
+  <div class="list-card__curator">
+    ${renderAvatar(viewModel.avatarUrl)}<span>Curated by ${viewModel.ownerDisplayName}</span>
+  </div>
+`;
+
 const renderListCardWithCurator = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
     <div class="list-card__body">
@@ -50,9 +56,7 @@ const renderListCardWithCurator = (viewModel: ListCardViewModel): HtmlFragment =
         <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${htmlEscape(viewModel.title)}</a></h3>
         <p>${safelyRenderRawUserInput(viewModel.description)}</p>
       </div>
-      <div class="list-card__curator">
-        ${renderAvatar(viewModel.avatarUrl)}<span>Curated by ${viewModel.ownerDisplayName}</span>
-      </div>
+      ${renderCurator(viewModel)}
       <div class="list-card__meta">
         <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
       </div>
