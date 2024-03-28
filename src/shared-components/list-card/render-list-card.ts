@@ -24,7 +24,7 @@ const lastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
-const renderAvatar = O.fold(
+export const renderAvatar = O.fold(
   () => '',
   (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
 );

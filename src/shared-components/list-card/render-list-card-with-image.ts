@@ -7,6 +7,7 @@ import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 import { safelyRenderRawUserInput } from '../raw-user-input-renderers';
 import { RawUserInput } from '../../read-side';
 import { ListId } from '../../types/list-id';
+import { renderAvatar } from './render-list-card';
 
 export type ListCardWithImageViewModel = {
   listId: ListId,
@@ -16,6 +17,7 @@ export type ListCardWithImageViewModel = {
   description: RawUserInput,
   avatarUrl: O.Option<string>,
   imageUrl: O.Option<string>,
+  ownerDisplayName: string,
 };
 
 const lastUpdated = O.fold(
@@ -34,6 +36,9 @@ export const renderListCardWithImage = (viewModel: ListCardWithImageViewModel): 
       <div>
         <h3 class="list-card__title"><a href="${renderListPageLinkHref(viewModel.listId)}" class="list-card__link">${htmlEscape(viewModel.title)}</a></h3>
         <p>${safelyRenderRawUserInput(viewModel.description)}</p>
+      </div>
+      <div class="list-card__curator">
+        ${renderAvatar(viewModel.avatarUrl)}<span>Curated by ${viewModel.ownerDisplayName}</span>
       </div>
       <div class="list-card__meta">
         <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
