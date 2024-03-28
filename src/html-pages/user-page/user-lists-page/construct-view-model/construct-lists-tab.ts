@@ -6,6 +6,7 @@ import { List } from '../../../../read-models/lists';
 import { UserId } from '../../../../types/user-id';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
 import { constructListCardViewModelWithoutAvatar } from '../../../../shared-components/list-card';
+import { UserDetails } from '../../../../types/user-details';
 
 const showCreateNewList = (pageOwner: UserId, loggedInUser: O.Option<UserId>) => pipe(
   loggedInUser,
@@ -13,13 +14,17 @@ const showCreateNewList = (pageOwner: UserId, loggedInUser: O.Option<UserId>) =>
   O.isSome,
 );
 
-type ConstructListsTab = (lists: ReadonlyArray<List>, pageOwner: UserId, loggedInUserId: O.Option<UserId>) => ListsTab;
+type ConstructListsTab = (
+  lists: ReadonlyArray<List>,
+  pageOwner: UserDetails,
+  loggedInUserId: O.Option<UserId>,
+) => ListsTab;
 
 export const constructListsTab: ConstructListsTab = (lists, pageOwner, loggedInUserId) => ({
   ownedLists: pipe(
     lists,
     sortByDefaultListOrdering,
-    RA.map(constructListCardViewModelWithoutAvatar),
+    RA.map(constructListCardViewModelWithoutAvatar(O.some(pageOwner.displayName))),
   ),
-  showCreateNewList: showCreateNewList(pageOwner, loggedInUserId),
+  showCreateNewList: showCreateNewList(pageOwner.id, loggedInUserId),
 });

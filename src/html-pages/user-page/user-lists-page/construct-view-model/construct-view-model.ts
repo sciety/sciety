@@ -40,7 +40,7 @@ export const constructViewModel: ConstructViewModel = (queries) => (params) => p
     listCount: lists.length,
     ...constructListsTab(
       lists,
-      userDetails.id,
+      userDetails,
       pipe(
         params.user,
         O.map((user) => user.id),

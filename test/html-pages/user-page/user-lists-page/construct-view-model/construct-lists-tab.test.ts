@@ -2,16 +2,25 @@ import * as O from 'fp-ts/Option';
 import { arbitraryList } from '../../../../read-models/lists/list-helper';
 import { constructListsTab } from '../../../../../src/html-pages/user-page/user-lists-page/construct-view-model/construct-lists-tab';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
+import { UserDetails } from '../../../../../src/types/user-details';
+import { arbitraryString } from '../../../../helpers';
+import { arbitraryUserHandle } from '../../../../types/user-handle.helper';
+
+const arbitraryUserDetails = (): UserDetails => ({
+  id: arbitraryUserId(),
+  displayName: arbitraryString(),
+  handle: arbitraryUserHandle(),
+});
 
 describe('construct-lists-tab', () => {
-  const pageOwner = arbitraryUserId();
+  const pageOwner = arbitraryUserDetails();
 
   describe('showCreateNewList', () => {
     const lists = [arbitraryList()];
 
     describe('when there is a logged in user', () => {
       describe('and the logged in user also owns the page', () => {
-        const user = O.some(pageOwner);
+        const user = O.some(pageOwner.id);
 
         it('the button should be shown', () => {
           const viewmodel = constructListsTab(lists, pageOwner, user);

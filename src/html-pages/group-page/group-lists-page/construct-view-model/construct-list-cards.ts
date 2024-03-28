@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { constructListCardViewModelWithoutAvatar } from '../../../../shared-components/list-card';
 import { ListCardViewModel } from '../../../../shared-components/list-card/render-list-card';
@@ -12,5 +13,5 @@ export const constructListCards = (dependencies: Dependencies, group: Group): Re
   LOID.fromGroupId,
   dependencies.selectAllListsOwnedBy,
   sortByDefaultListOrdering,
-  RA.map(constructListCardViewModelWithoutAvatar),
+  RA.map(constructListCardViewModelWithoutAvatar(O.none)),
 );
