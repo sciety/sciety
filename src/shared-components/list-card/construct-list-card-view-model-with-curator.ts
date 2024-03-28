@@ -10,42 +10,10 @@ export type Dependencies = Queries & {
   logger: Logger,
 };
 
-const degradedAvatarUrl = '/static/images/sciety-logo.jpg';
-
-type OwnerDetails = {
-  avatarUrl: string,
-  curatedByUser: boolean,
-  displayName: string,
-};
-
-const getOwnerDetails = (
-  dependencies: Dependencies,
-) => (
-  list: List,
-): OwnerDetails => {
+const getCurator = (dependencies: Dependencies) => (list: List): ListCardViewModel['curator'] => {
   switch (list.ownerId.tag) {
     case 'group-id':
-      return pipe(
-        dependencies.getGroup(list.ownerId.value),
-        O.match(
-          () => {
-            dependencies.logger('error', 'Could not find group that owns list', {
-              listId: list.id,
-              ownerId: list.ownerId,
-            });
-            return {
-              avatarUrl: degradedAvatarUrl,
-              curatedByUser: false,
-              displayName: 'unused',
-            };
-          },
-          (group) => ({
-            avatarUrl: group.avatarPath,
-            curatedByUser: false,
-            displayName: 'unused',
-          }),
-        ),
-      );
+      return O.none;
     case 'user-id':
       return pipe(
         list.ownerId.value,
@@ -56,16 +24,11 @@ const getOwnerDetails = (
               listId: list.id,
               ownerId: list.ownerId,
             });
-            return {
-              avatarUrl: degradedAvatarUrl,
-              curatedByUser: false as boolean,
-              displayName: 'unused',
-            };
+            return O.none;
           },
-          (userDetails) => ({
+          (userDetails) => O.some({
             avatarUrl: constructUserAvatarUrl(userDetails),
-            curatedByUser: true,
-            displayName: userDetails.displayName,
+            name: userDetails.displayName,
           }),
         ),
       );
@@ -74,19 +37,12 @@ const getOwnerDetails = (
 
 export const constructListCardViewModelWithCurator = (
   dependencies: Dependencies,
-) => (list: List): ListCardViewModel => pipe(
-  list,
-  getOwnerDetails(dependencies),
-  (ownerDetails) => ({
-    listId: list.id,
-    articleCount: list.entries.length,
-    updatedAt: O.some(list.updatedAt),
-    title: list.name,
-    description: list.description,
-    imageUrl: O.none,
-    curator: O.some({
-      avatarUrl: ownerDetails.avatarUrl,
-      name: ownerDetails.displayName,
-    }),
-  }),
-);
+) => (list: List): ListCardViewModel => ({
+  listId: list.id,
+  articleCount: list.entries.length,
+  updatedAt: O.some(list.updatedAt),
+  title: list.name,
+  description: list.description,
+  imageUrl: O.none,
+  curator: getCurator(dependencies)(list),
+});
