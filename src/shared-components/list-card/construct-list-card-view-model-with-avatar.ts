@@ -62,5 +62,6 @@ export const constructListCardViewModelWithAvatar = (
     title: list.name,
     description: list.description,
     avatarUrl: O.some(ownerAvatarUrl),
+    curatedByUser: false,
   }),
 );

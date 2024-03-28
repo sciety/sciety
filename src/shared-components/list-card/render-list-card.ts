@@ -15,6 +15,7 @@ export type ListCardViewModel = {
   title: string,
   description: RawUserInput,
   avatarUrl: O.Option<string>,
+  curatedByUser: boolean,
 };
 
 const lastUpdated = O.fold(
@@ -57,6 +58,8 @@ const renderListCardWithCurator = (viewModel: ListCardViewModel): HtmlFragment =
   </article>
 `);
 
-export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => (process.env.EXPERIMENT_ENABLED === 'true'
-  ? renderListCardWithCurator(viewModel)
-  : renderListCardWithoutCurator(viewModel));
+export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => (
+  (process.env.EXPERIMENT_ENABLED === 'true' && viewModel.curatedByUser)
+    ? renderListCardWithCurator(viewModel)
+    : renderListCardWithoutCurator(viewModel)
+);
