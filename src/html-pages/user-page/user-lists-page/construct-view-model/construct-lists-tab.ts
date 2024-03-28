@@ -24,7 +24,7 @@ export const constructListsTab: ConstructListsTab = (lists, pageOwner, loggedInU
   ownedLists: pipe(
     lists,
     sortByDefaultListOrdering,
-    RA.map(constructListCardViewModelWithoutAvatar(O.none)),
+    RA.map(constructListCardViewModelWithoutAvatar),
   ),
   showCreateNewList: showCreateNewList(pageOwner.id, loggedInUserId),
 });
