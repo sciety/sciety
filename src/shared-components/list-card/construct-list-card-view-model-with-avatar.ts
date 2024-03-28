@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import * as LOID from '../../types/list-owner-id';
 import { List } from '../../read-models/lists';
 import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
@@ -62,7 +63,7 @@ export const constructListCardViewModelWithAvatar = (
     title: list.name,
     description: list.description,
     avatarUrl: O.some(ownerAvatarUrl),
-    curatedByUser: false,
+    curatedByUser: !LOID.isGroupId(list.ownerId),
     ownerDisplayName: 'somebody',
   }),
 );

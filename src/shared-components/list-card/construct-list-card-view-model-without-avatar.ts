@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import * as LOID from '../../types/list-owner-id';
 import { List } from '../../read-models/lists';
 import { ListCardViewModel } from './render-list-card';
 
@@ -9,6 +10,6 @@ export const constructListCardViewModelWithoutAvatar = (list: List): ListCardVie
   title: list.name,
   description: list.description,
   avatarUrl: O.none,
-  curatedByUser: false,
+  curatedByUser: !LOID.isGroupId(list.ownerId),
   ownerDisplayName: 'somebody',
 });
