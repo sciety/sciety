@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as LOID from '../../types/list-owner-id';
 import { List } from '../../read-models/lists';
 import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
@@ -13,11 +12,17 @@ export type Dependencies = Queries & {
 
 export const degradedAvatarUrl = '/static/images/sciety-logo.jpg';
 
-const getOwnerAvatarUrl = (
+type OwnerDetails = {
+  avatarUrl: string,
+  curatedByUser: boolean,
+  displayName: string,
+};
+
+const getOwnerDetails = (
   dependencies: Dependencies,
 ) => (
   list: List,
-): string => {
+): OwnerDetails => {
   switch (list.ownerId.tag) {
     case 'group-id':
       return pipe(
@@ -28,9 +33,17 @@ const getOwnerAvatarUrl = (
               listId: list.id,
               ownerId: list.ownerId,
             });
-            return degradedAvatarUrl;
+            return {
+              avatarUrl: degradedAvatarUrl,
+              curatedByUser: false,
+              displayName: 'unused',
+            };
           },
-          (group) => (group.avatarPath),
+          (group) => ({
+            avatarUrl: group.avatarPath,
+            curatedByUser: false,
+            displayName: 'unused',
+          }),
         ),
       );
     case 'user-id':
@@ -43,9 +56,17 @@ const getOwnerAvatarUrl = (
               listId: list.id,
               ownerId: list.ownerId,
             });
-            return degradedAvatarUrl;
+            return {
+              avatarUrl: degradedAvatarUrl,
+              curatedByUser: false as boolean,
+              displayName: 'unused',
+            };
           },
-          constructUserAvatarUrl,
+          (userDetails) => ({
+            avatarUrl: constructUserAvatarUrl(userDetails),
+            curatedByUser: true,
+            displayName: userDetails.displayName,
+          }),
         ),
       );
   }
@@ -55,15 +76,15 @@ export const constructListCardViewModelWithAvatar = (
   dependencies: Dependencies,
 ) => (list: List): ListCardViewModel => pipe(
   list,
-  getOwnerAvatarUrl(dependencies),
-  (ownerAvatarUrl) => ({
+  getOwnerDetails(dependencies),
+  (ownerDetails) => ({
     listId: list.id,
     articleCount: list.entries.length,
     updatedAt: O.some(list.updatedAt),
     title: list.name,
     description: list.description,
-    avatarUrl: O.some(ownerAvatarUrl),
-    curatedByUser: !LOID.isGroupId(list.ownerId),
-    ownerDisplayName: 'somebody',
+    avatarUrl: O.some(ownerDetails.avatarUrl),
+    curatedByUser: ownerDetails.curatedByUser,
+    ownerDisplayName: ownerDetails.displayName,
   }),
 );
