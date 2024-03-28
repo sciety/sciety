@@ -17,6 +17,7 @@ export type ListCardWithImageViewModel = {
   description: RawUserInput,
   avatarUrl: O.Option<string>,
   imageUrl: O.Option<string>,
+  curatedByUser: boolean,
   ownerDisplayName: string,
 };
 

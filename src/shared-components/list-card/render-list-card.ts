@@ -14,6 +14,7 @@ export type ListCardViewModel = {
   updatedAt: O.Option<Date>,
   title: string,
   description: RawUserInput,
+  imageUrl: O.Option<string>,
   avatarUrl: O.Option<string>,
   curatedByUser: boolean,
   ownerDisplayName: string,
