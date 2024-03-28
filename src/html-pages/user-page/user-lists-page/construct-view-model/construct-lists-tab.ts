@@ -5,7 +5,7 @@ import { ListsTab } from '../view-model';
 import { List } from '../../../../read-models/lists';
 import { UserId } from '../../../../types/user-id';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
-import { constructListCardViewModelWithoutAvatar } from '../../../../shared-components/list-card';
+import { constructListCardViewModelWithoutCurator } from '../../../../shared-components/list-card';
 import { UserDetails } from '../../../../types/user-details';
 
 const showCreateNewList = (pageOwner: UserId, loggedInUser: O.Option<UserId>) => pipe(
@@ -24,7 +24,7 @@ export const constructListsTab: ConstructListsTab = (lists, pageOwner, loggedInU
   ownedLists: pipe(
     lists,
     sortByDefaultListOrdering,
-    RA.map(constructListCardViewModelWithoutAvatar),
+    RA.map(constructListCardViewModelWithoutCurator),
   ),
   showCreateNewList: showCreateNewList(pageOwner.id, loggedInUserId),
 });
