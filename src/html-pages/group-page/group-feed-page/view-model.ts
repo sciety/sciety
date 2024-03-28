@@ -5,7 +5,7 @@ import { PaginationControlsViewModel } from '../../../shared-components/paginati
 import { Group } from '../../../types/group';
 import { PageHeaderViewModel } from '../common-components/page-header';
 import { TabsViewModel } from '../common-components/tabs-view-model';
-import { ListCardWithImageViewModel } from '../../../shared-components/list-card/render-list-card-with-image';
+import { ListCardViewModel } from '../../../shared-components/list-card';
 
 type NoActivity = { tag: 'no-activity-yet' };
 
@@ -18,7 +18,7 @@ type Content = NoActivity | OrderedArticleCards;
 
 export type ViewModel = PageHeaderViewModel & {
   group: Group,
-  collections: O.Option<ListCardWithImageViewModel>,
+  collections: O.Option<ListCardViewModel>,
   content: Content,
   tabs: TabsViewModel,
 };

@@ -25,7 +25,7 @@ const lastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
-export const renderAvatar = O.fold(
+const renderAvatar = O.fold(
   () => '',
   (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
 );
@@ -35,6 +35,11 @@ const renderCurator = (viewModel: ListCardViewModel) => (viewModel.curatedByUser
     ${renderAvatar(viewModel.avatarUrl)}<span>Curated by ${viewModel.ownerDisplayName}</span>
   </div>
 ` : '');
+
+const renderListImage = O.fold(
+  () => '',
+  (imgSrc: string) => `<img class="list-card__image" src="${imgSrc}" alt="">`,
+);
 
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="list-card">
@@ -48,5 +53,6 @@ export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => to
         <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
       </div>
     </div>
+    ${renderListImage(viewModel.imageUrl)}
   </article>
 `);

@@ -2,10 +2,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import * as LID from '../../../../types/list-id';
-import { constructListCardViewModelWithAvatar } from '../../../../shared-components/list-card';
+import { constructListCardViewModelWithAvatar, ListCardViewModel } from '../../../../shared-components/list-card';
 import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
-import { ListCardWithImageViewModel } from '../../../../shared-components/list-card/render-list-card-with-image';
 
 const lookupListImage = (listId: LID.ListId) => (
   listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e'
@@ -31,7 +30,7 @@ const hardcoded = new Map<GroupId, LID.ListId>([
 export const constructCollections = (
   dependencies: Dependencies,
   groupId: GroupId,
-): O.Option<ListCardWithImageViewModel> => {
+): O.Option<ListCardViewModel> => {
   const hardcodedListId = hardcoded.get(groupId);
   if (hardcodedListId) {
     return pipe(
