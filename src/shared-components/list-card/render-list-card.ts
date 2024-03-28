@@ -62,7 +62,7 @@ const renderListCardWithCurator = (viewModel: ListCardViewModel): HtmlFragment =
 `);
 
 export const renderListCard = (viewModel: ListCardViewModel): HtmlFragment => (
-  (process.env.EXPERIMENT_ENABLED === 'true' && viewModel.curatedByUser)
+  (viewModel.curatedByUser)
     ? renderListCardWithCurator(viewModel)
     : renderListCardWithoutCurator(viewModel)
 );
