@@ -8,9 +8,6 @@ export const constructListCardViewModelWithoutCurator = (list: List): ListCardVi
   updatedAt: O.some(list.updatedAt),
   title: list.name,
   description: list.description,
-  avatarUrl: O.none,
-  curatedByUser: false,
-  ownerDisplayName: 'unused',
   imageUrl: O.none,
   curator: O.none,
 });

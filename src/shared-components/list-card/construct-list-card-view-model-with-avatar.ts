@@ -10,7 +10,7 @@ export type Dependencies = Queries & {
   logger: Logger,
 };
 
-export const degradedAvatarUrl = '/static/images/sciety-logo.jpg';
+const degradedAvatarUrl = '/static/images/sciety-logo.jpg';
 
 type OwnerDetails = {
   avatarUrl: string,
@@ -83,9 +83,6 @@ export const constructListCardViewModelWithAvatar = (
     updatedAt: O.some(list.updatedAt),
     title: list.name,
     description: list.description,
-    avatarUrl: O.some(ownerDetails.avatarUrl),
-    curatedByUser: ownerDetails.curatedByUser,
-    ownerDisplayName: ownerDetails.displayName,
     imageUrl: O.none,
     curator: O.some({
       avatarUrl: ownerDetails.avatarUrl,

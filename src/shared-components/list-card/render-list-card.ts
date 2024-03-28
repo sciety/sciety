@@ -21,9 +21,6 @@ export type ListCardViewModel = {
   title: string,
   description: RawUserInput,
   imageUrl: O.Option<string>,
-  avatarUrl: O.Option<string>,
-  curatedByUser: boolean,
-  ownerDisplayName: string,
   curator: O.Option<Curator>,
 };
 

@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { TestFramework, createTestFramework } from '../../../framework';
 import * as LOID from '../../../../src/types/list-owner-id';
@@ -9,7 +8,6 @@ import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
 import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryUserId } from '../../../types/user-id.helper';
-import { degradedAvatarUrl } from '../../../../src/shared-components/list-card/construct-list-card-view-model-with-avatar';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 import { abortTest } from '../../../framework/abort-test';
@@ -48,15 +46,6 @@ describe('construct-view-model', () => {
       expect(viewmodel.listCards).toHaveLength(2);
     });
 
-    it('the user avatar is included in each card', () => {
-      expect(viewmodel.listCards[0].avatarUrl).toStrictEqual(
-        O.some(expect.stringContaining(createUserAccountCommand.handle)),
-      );
-      expect(viewmodel.listCards[1].avatarUrl).toStrictEqual(
-        O.some(expect.stringContaining(createUserAccountCommand.handle)),
-      );
-    });
-
     it('the most recently updated list is shown first', async () => {
       expect(viewmodel.listCards[0].listId).toStrictEqual(command.listId);
       expect(viewmodel.listCards[1].listId).toStrictEqual(initialUserList.id);
@@ -82,9 +71,8 @@ describe('construct-view-model', () => {
         );
       });
 
-      it('returns a degraded avatarUrl in place of the list owner avatarUrl', () => {
+      it('still returns a list card', () => {
         expect(viewmodel.listCards).toHaveLength(1);
-        expect(viewmodel.listCards[0].avatarUrl).toStrictEqual(O.some(degradedAvatarUrl));
       });
     });
   });
