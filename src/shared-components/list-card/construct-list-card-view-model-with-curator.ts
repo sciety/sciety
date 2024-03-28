@@ -72,7 +72,7 @@ const getOwnerDetails = (
   }
 };
 
-export const constructListCardViewModelWithAvatar = (
+export const constructListCardViewModelWithCurator = (
   dependencies: Dependencies,
 ) => (list: List): ListCardViewModel => pipe(
   list,

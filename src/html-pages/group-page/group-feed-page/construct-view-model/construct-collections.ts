@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import * as LID from '../../../../types/list-id';
-import { constructListCardViewModelWithAvatar, ListCardViewModel } from '../../../../shared-components/list-card';
+import { constructListCardViewModelWithCurator, ListCardViewModel } from '../../../../shared-components/list-card';
 import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
 
@@ -15,7 +15,7 @@ const lookupListImage = (listId: LID.ListId) => (
 const constructListCardForACollection = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
   listId,
   dependencies.lookupList,
-  O.map(constructListCardViewModelWithAvatar(dependencies)),
+  O.map(constructListCardViewModelWithCurator(dependencies)),
   O.map((viewModel) => ({
     ...viewModel,
     imageUrl: lookupListImage(listId),

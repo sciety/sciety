@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
 import * as E from 'fp-ts/Either';
-import { constructListCardViewModelWithAvatar, ConstructListCardViewModelWithAvatarDependencies } from '../../../shared-components/list-card';
+import { constructListCardViewModelWithCurator, ConstructListCardViewModelWithCuratorDependencies } from '../../../shared-components/list-card';
 import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 import { Queries } from '../../../read-models';
 import { ViewModel } from '../view-model';
@@ -13,7 +13,7 @@ import { Params } from '../params';
 
 const constructListCards = (pageOfItems: PageOfItems<List>, dependencies: Dependencies) => pipe(
   pageOfItems.items,
-  RA.map(constructListCardViewModelWithAvatar(dependencies)),
+  RA.map(constructListCardViewModelWithCurator(dependencies)),
 );
 
 const toListsPageHref = O.map((pageNumber: number) => `/lists?page=${pageNumber}`);
@@ -25,7 +25,7 @@ const constructPagination = (pageOfItems: PageOfItems<unknown>) => ({
   pageCount: pageOfItems.numberOfPages,
 });
 
-export type Dependencies = Queries & ConstructListCardViewModelWithAvatarDependencies;
+export type Dependencies = Queries & ConstructListCardViewModelWithCuratorDependencies;
 
 export const constructViewModel = (
   dependencies: Dependencies,

@@ -1,3 +1,3 @@
-export { constructListCardViewModelWithAvatar, Dependencies as ConstructListCardViewModelWithAvatarDependencies } from './construct-list-card-view-model-with-avatar';
-export { constructListCardViewModelWithoutCurator } from './construct-list-card-view-model-without-avatar';
+export { constructListCardViewModelWithCurator, Dependencies as ConstructListCardViewModelWithCuratorDependencies } from './construct-list-card-view-model-with-curator';
+export { constructListCardViewModelWithoutCurator } from './construct-list-card-view-model-without-curator';
 export { renderListCard, ListCardViewModel } from './render-list-card';
