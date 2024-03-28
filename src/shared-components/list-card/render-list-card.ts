@@ -40,7 +40,6 @@ const renderListCardWithoutCurator = (viewModel: ListCardViewModel): HtmlFragmen
         <span class="visually-hidden">This list contains </span><span>${renderCountWithDescriptor(viewModel.articleCount, 'article', 'articles')}</span>${lastUpdated(viewModel.updatedAt)}
       </div>
     </div>
-    ${renderAvatar(viewModel.avatarUrl)}
   </article>
 `);
 
