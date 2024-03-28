@@ -1,5 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { templateDate } from '../date';
@@ -31,16 +32,17 @@ const lastUpdated = O.fold(
   (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
 );
 
-const renderAvatar = O.fold(
-  () => '',
-  (avatarUrl: string) => `<img class="list-card__avatar" src="${avatarUrl}" alt="" />`,
+const renderCurator = (viewModel: ListCardViewModel) => pipe(
+  viewModel.curator,
+  O.match(
+    () => '',
+    (curator) => `
+      <div class="list-card__curator">
+        <img class="list-card__avatar" src="${curator.avatarUrl}" alt="" /><span>Curated by ${curator.name}</span>
+      </div>
+    `,
+  ),
 );
-
-const renderCurator = (viewModel: ListCardViewModel) => (viewModel.curatedByUser ? `
-  <div class="list-card__curator">
-    ${renderAvatar(viewModel.avatarUrl)}<span>Curated by ${viewModel.ownerDisplayName}</span>
-  </div>
-` : '');
 
 const renderListImage = O.fold(
   () => '',
