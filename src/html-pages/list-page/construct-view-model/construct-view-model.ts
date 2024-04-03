@@ -48,7 +48,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   }),
 );
 
-const constructImageUrl = (listId: ListId) => {
+const constructImageSrc = (listId: ListId) => {
   if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
     return O.some('/static/images/collections/endorsed-by-gigabyte.png');
   }
@@ -101,7 +101,7 @@ export const constructViewModel = (
   )),
   TE.map((partial) => ({
     ...partial,
-    imageUrl: constructImageUrl(partial.listId),
+    imageSrc: constructImageSrc(partial.listId),
     showAnnotationSuccessBanner: params.success,
   })),
 );

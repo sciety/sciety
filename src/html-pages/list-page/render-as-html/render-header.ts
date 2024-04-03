@@ -39,8 +39,8 @@ const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
   ),
 );
 
-const renderListImage = (imageUrl: ViewModel['imageUrl']) => pipe(
-  imageUrl,
+const renderListImage = (imageSrc: ViewModel['imageSrc']) => pipe(
+  imageSrc,
   O.fold(
     () => '',
     (src) => `<img src="${src}" alt="" class="page-header__list_image">`,
@@ -62,7 +62,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
       ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
       ${renderSubscribeLink(viewModel.subscribeHref)}
     </section>
-    ${renderListImage(viewModel.imageUrl)}
+    ${renderListImage(viewModel.imageSrc)}
   </header>`,
   toHtmlFragment,
 );
