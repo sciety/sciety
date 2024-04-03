@@ -7,6 +7,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderSuccessBanner } from './render-success-banner';
 import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
+import { ListId } from '../../../types/list-id';
 
 const renderArticleCount = (articleCount: ViewModel['articleCount']) => pipe(
   articleCount === 1,
@@ -39,7 +40,14 @@ const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
   ),
 );
 
-const renderListImage = () => ((process.env.EXPERIMENT_ENABLED === 'true') ? '<img src="/static/images/collections/endorsed-by-gigabyte.png" alt="">' : '');
+const renderListImage = (listId: ListId) => {
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
+      return '<img src="/static/images/collections/endorsed-by-gigabyte.png" alt="">';
+    }
+  }
+  return '';
+};
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
@@ -56,7 +64,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
       ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
       ${renderSubscribeLink(viewModel.subscribeHref)}
     </section>
-    ${renderListImage()}
+    ${renderListImage(viewModel.listId)}
   </header>`,
   toHtmlFragment,
 );
