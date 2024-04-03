@@ -39,6 +39,8 @@ const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
   ),
 );
 
+const renderListImage = () => ((process.env.EXPERIMENT_ENABLED === 'true') ? '<img src="/static/images/collections/endorsed-by-gigabyte.png" alt="">' : '');
+
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
     ${renderSuccessBanner(viewModel)}
@@ -54,7 +56,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
       ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
       ${renderSubscribeLink(viewModel.subscribeHref)}
     </section>
-    ${process.env.EXPERIMENT_ENABLED === 'true' ? '<img src="/static/images/collections/endorsed-by-gigabyte.png" alt="">' : ''}
+    ${renderListImage()}
   </header>`,
   toHtmlFragment,
 );
