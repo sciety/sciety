@@ -43,7 +43,7 @@ const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
 const renderListImage = (listId: ListId) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
-      return '<img src="/static/images/collections/endorsed-by-gigabyte.png" alt="">';
+      return '<img src="/static/images/collections/endorsed-by-gigabyte.png" alt="" class="page-header__list_image">';
     }
   }
   return '';
