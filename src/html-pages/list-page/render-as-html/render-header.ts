@@ -54,6 +54,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
       ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
       ${renderSubscribeLink(viewModel.subscribeHref)}
     </section>
+    ${process.env.EXPERIMENT_ENABLED === 'true' ? '<img src="/static/images/collections/endorsed-by-gigabyte.png" alt="">' : ''}
   </header>`,
   toHtmlFragment,
 );
