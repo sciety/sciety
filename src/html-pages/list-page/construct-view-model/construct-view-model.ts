@@ -48,6 +48,13 @@ const constructContentViewModel: ConstructContentViewModel = (
   }),
 );
 
+const constructImageUrl = (listId: ListId) => {
+  if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
+    return O.some('/static/images/collections/endorsed-by-gigabyte.png');
+  }
+  return O.none;
+};
+
 export const constructViewModel = (
   dependencies: Dependencies,
 ) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
@@ -94,6 +101,7 @@ export const constructViewModel = (
   )),
   TE.map((partial) => ({
     ...partial,
+    imageUrl: constructImageUrl(partial.listId),
     showAnnotationSuccessBanner: params.success,
   })),
 );

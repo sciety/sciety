@@ -33,6 +33,7 @@ export type ViewModel = {
   ownerName: string,
   ownerHref: string,
   ownerAvatarPath: string,
+  imageUrl: O.Option<string>,
   articleCount: number,
   updatedAt: Date,
   editCapability: boolean,
