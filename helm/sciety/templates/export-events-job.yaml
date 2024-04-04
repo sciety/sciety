@@ -46,3 +46,13 @@ spec:
                     secretKeyRef:
                       name: "{{ .Values.postgresqlSecretName }}"
                       key: postgresql-port
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: sciety-events-shipper-aws-credentials
+                      key: id
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: sciety-events-shipper-aws-credentials
+                      key: secret
