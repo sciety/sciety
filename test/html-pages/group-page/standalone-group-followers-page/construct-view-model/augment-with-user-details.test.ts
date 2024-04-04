@@ -1,10 +1,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { augmentWithUserDetails } from '../../../../../src/html-pages/group-page/group-followers-page/construct-view-model/augment-with-user-details';
 import { arbitraryNumber } from '../../../../helpers';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
+import { augmentWithUserDetails } from '../../../../../src/html-pages/group-page/standalone-group-followers-page/construct-view-model/augment-with-user-details';
 
 describe('augment-with-user-details', () => {
   let framework: TestFramework;
