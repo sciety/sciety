@@ -41,7 +41,6 @@ $_image-max-width: 100px;
 
 .page-header--list .page-header__list_image {
   max-width: $_image-max-width;
-  object-fit: contain;
   margin-bottom: functions.px-to-rem(32px);
 }
 
