@@ -197,7 +197,7 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
         ${renderListCard({
     listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCount: 3,
-    updatedAt: O.some(new Date('2024-04-04')),
+    updatedAt: new Date('2024-04-04'),
     title: 'Endorsed by GigaByte',
     description: rawUserInput('Preprints that have undergone Editor’s Assessment by GigaByte.'),
     imageUrl: O.some('/static/images/collections/endorsed-by-gigabyte.png'),
@@ -215,7 +215,7 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
         ${renderListCard({
     listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCount: 3,
-    updatedAt: O.some(new Date('2024-04-04')),
+    updatedAt: new Date('2024-04-04'),
     title: 'Endorsed by GigaByte',
     description: rawUserInput('Preprints that have undergone Editor’s Assessment by GigaByte.'),
     imageUrl: O.none,

@@ -40,7 +40,7 @@ export const constructListCardViewModelWithCurator = (
 ) => (list: List): ListCardViewModel => ({
   listId: list.id,
   articleCount: list.entries.length,
-  updatedAt: O.some(list.updatedAt),
+  updatedAt: list.updatedAt,
   title: list.name,
   description: list.description,
   imageUrl: O.none,

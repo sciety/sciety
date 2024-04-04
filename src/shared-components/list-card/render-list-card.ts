@@ -17,17 +17,14 @@ type Curator = {
 export type ListCardViewModel = {
   listId: ListId,
   articleCount: number,
-  updatedAt: O.Option<Date>,
+  updatedAt: Date,
   title: string,
   description: RawUserInput,
   imageUrl: O.Option<string>,
   curator: O.Option<Curator>,
 };
 
-const lastUpdated = O.fold(
-  () => '',
-  (date: Date) => `<span>Last updated ${templateDate(date)}</span>`,
-);
+const lastUpdated = (date: Date) => `<span>Last updated ${templateDate(date)}</span>`;
 
 const renderCurator = (viewModel: ListCardViewModel) => pipe(
   viewModel.curator,
