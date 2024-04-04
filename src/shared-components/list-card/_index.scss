@@ -40,6 +40,7 @@ $_card-asset-gutter: functions.px-to-rem(8px);
 
 .list-card__image {
   max-width: $_image-max-width;
+  object-fit: contain;
   margin-left: $_card-asset-gutter;
 }
 
