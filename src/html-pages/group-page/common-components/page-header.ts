@@ -24,7 +24,7 @@ const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
 );
 
 const renderGroupFollowersLink = (slug: string, followerCount: number) => `
-  <a href="/groups/${slug}/followers-standalone">
+  <a href="/groups/${slug}/followers">
     <span class="visually-hidden">This group has ${followerCount} </span>Followers<span aria-hidden="true"> (${followerCount})</span>
   </a>
 `;
