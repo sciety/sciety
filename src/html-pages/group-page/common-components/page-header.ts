@@ -25,16 +25,16 @@ const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
 const renderGroupFollowersLink = (slug: string) => `<a href="/groups/${slug}/followers-standalone">Followers</a>`;
 
 export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
-  <header class="page-header page-header--group">
+  <header class="page-header">
     <div class="page-header__identity">
       ${renderPageHeaderIdentity(viewmodel.group)}
     </div>
-    <p>
+    <p class="group-page-short-description">
       ${htmlEscape(viewmodel.group.shortDescription)}
     </p>
+    <div>
+      ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
+      ${process.env.EXPERIMENT_ENABLED === 'true' ? renderGroupFollowersLink(viewmodel.group.slug) : ''}
+    </div>
   </header>
-  <div class="group-page-follow-toggle">
-    ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
-    ${process.env.EXPERIMENT_ENABLED === 'true' ? renderGroupFollowersLink(viewmodel.group.slug) : ''}
-  </div>
 `);

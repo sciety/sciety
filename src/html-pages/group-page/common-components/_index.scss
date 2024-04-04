@@ -8,10 +8,6 @@
 @use '../../../sass/layout';
 @use '../../../sass/list';
 
-.page-header.page-header--group {
-  margin-bottom: 1.5rem;
-}
-
 .page-header__visual_heading {
   width: 100%;
   height: 200px;
@@ -31,8 +27,8 @@
   }
 }
 
-.group-page-follow-toggle {
-  margin-bottom: 3rem;
+.page-header p.group-page-short-description {
+  margin-bottom: 1.5rem;
 }
 
 .follow-button {
