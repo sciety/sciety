@@ -34,7 +34,7 @@ export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment =
     </p>
     <div class="group-page-actions">
       ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
-      ${process.env.EXPERIMENT_ENABLED === 'true' ? renderGroupFollowersLink(viewmodel.group.slug) : ''}
+      ${renderGroupFollowersLink(viewmodel.group.slug)}
     </div>
   </header>
 `);
