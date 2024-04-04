@@ -209,6 +209,21 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
         </li>
     </ol>
 
+    <h3 class="_style-guide-heading">without curator and without an image</h2>
+    <ol class="card-list" role="list">
+        <li role="listitem">
+        ${renderListCard({
+    listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
+    articleCount: 3,
+    updatedAt: O.some(new Date('2024-04-04')),
+    title: 'Endorsed by GigaByte',
+    description: rawUserInput('Preprints that have undergone Editor’s Assessment by GigaByte.'),
+    imageUrl: O.none,
+    curator: O.none,
+  })}
+        </li>
+    </ol>
+
     <h3 class="_style-guide-heading">Success banner</h3>
       ${successBanner('You done good.')}
     </div>
