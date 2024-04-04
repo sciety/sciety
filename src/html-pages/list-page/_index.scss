@@ -9,10 +9,18 @@
 
 $_edit-details-icon-size: 24px;
 $_edit-details-icon-offset: 8px;
-$_image-max-width: 100px;
+$_image-max-width: 200px;
 
 .page-header.page-header--list {
   margin-bottom: 0;
+  display: flex;
+  flex-direction: column-reverse;
+
+  @include breakpoints.two-column-display() {
+    flex-direction: row;
+    justify-content: space-between;
+    grid-column: 1/-1;
+  }
 }
 
 .page-header--list .page-header__subheading {
@@ -41,6 +49,7 @@ $_image-max-width: 100px;
 
 .page-header--list .page-header__list_image {
   max-width: $_image-max-width;
+  object-fit: contain;
   margin-bottom: functions.px-to-rem(32px);
 }
 
