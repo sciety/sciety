@@ -7,7 +7,6 @@ import { Queries } from '../../../read-models';
 export type TabsViewModel = {
   groupSlug: string,
   listCount: number,
-  followerCount: number,
 };
 
 export type Dependencies = Pick<Queries, 'getFollowers' | 'selectAllListsOwnedBy'>;
@@ -18,10 +17,6 @@ export const constructTabsViewModel = (dependencies: Dependencies, group: Group)
     group.id,
     LOID.fromGroupId,
     dependencies.selectAllListsOwnedBy,
-    RA.size,
-  ),
-  followerCount: pipe(
-    dependencies.getFollowers(group.id),
     RA.size,
   ),
 });

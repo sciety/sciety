@@ -16,8 +16,4 @@ export const tabList = (viewmodel: TabsViewModel): RNEA.ReadonlyNonEmptyArray<Ta
     label: toHtmlFragment('About'),
     url: `/groups/${viewmodel.groupSlug}/about`,
   },
-  {
-    label: toHtmlFragment(`<span class="visually-hidden">This group has ${viewmodel.followerCount} </span>Followers<span aria-hidden="true"> (${viewmodel.followerCount})</span>`),
-    url: `/groups/${viewmodel.groupSlug}/followers`,
-  },
 ];
