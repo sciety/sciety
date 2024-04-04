@@ -13,6 +13,7 @@ import {
 } from '../../shared-components/article-card-with-controls-and-annotation';
 import { successBanner } from '../../shared-components/success-banner/success-banner';
 import { rawUserInput } from '../../read-side';
+import { renderListCard } from '../../shared-components/list-card';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',
@@ -188,6 +189,25 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
     error: DE.notFound,
     inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
   })}
+
+    <h2 class="_style-guide-heading">List card</h2>
+    <h3 class="_style-guide-heading">as collections card</h2>
+    <ol class="card-list" role="list">
+        <li role="listitem">
+        ${renderListCard({
+    listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
+    articleCount: 3,
+    updatedAt: O.some(new Date('2024-04-04')),
+    title: 'Endorsed by GigaByte',
+    description: rawUserInput('Preprints that have undergone Editor’s Assessment by GigaByte.'),
+    imageUrl: O.some('/static/images/collections/endorsed-by-gigabyte.png'),
+    curator: O.some({
+      avatarUrl: '/static/images/profile-dark.svg',
+      name: 'Scott C Edmunds',
+    }),
+  })}
+        </li>
+    </ol>
 
     <h3 class="_style-guide-heading">Success banner</h3>
       ${successBanner('You done good.')}
