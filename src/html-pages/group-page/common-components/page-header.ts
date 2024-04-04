@@ -8,6 +8,7 @@ import { renderFollowToggle } from './render-follow-toggle';
 export type PageHeaderViewModel = {
   group: Group,
   isFollowing: boolean,
+  followerCount: number,
 };
 
 const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
