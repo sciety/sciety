@@ -6,7 +6,7 @@ metadata:
     {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: export-events
 spec:
-  schedule: "@hourly"
+  schedule: "*/5 * * * *"
   jobTemplate:
     spec:
       template:
