@@ -39,6 +39,12 @@
   @include button.secondary();
 }
 
+.group-page-actions {
+  display: flex;
+  gap: settings.$click-target-separation;
+  align-items: center;
+}
+
 .group-page-tab-panel-content {
   padding-top: 2rem;
 }
