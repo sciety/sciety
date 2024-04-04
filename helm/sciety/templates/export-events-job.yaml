@@ -19,7 +19,7 @@ spec:
               command:
                 - /bin/bash
                 - -c
-                - 'echo Hello world.'
+                - 'yum install --assumeyes --quiet postgresql && psql -A -t -c "COPY events TO STDOUT WITH (FORMAT CSV, HEADER);" > events.csv && aws s3 cp events.csv "s3://sciety-data-extractions/{{ .Release.Name }}--events-from-cronjob.csv"'
               env:
                 - name: PGDATABASE
                   valueFrom:
