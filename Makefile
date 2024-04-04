@@ -311,3 +311,6 @@ connect-to-cache:
 
 connect-to-cache-dev:
 	docker run --tty -i --rm --network sciety_default redis bash
+
+helm-dry-run:
+	helm install --debug --dry-run --set hostname=example.sciety.org sciety--example ./helm/sciety
