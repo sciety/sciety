@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}--export-events
+  labels:
+    {{- include "sciety.labels" . | nindent 4 }}
+    app.kubernetes.io/component: export-events
+spec:
+  schedule: "@hourly"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: ship-events-to-s3
+              image: amazon/aws-cli:2.4.23
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/bash
+                - -c
+                - 'echo Hello world.'
+
