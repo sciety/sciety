@@ -8,7 +8,6 @@ import { constructViewModel, Dependencies, Params } from './construct-view-model
 
 type GroupPage = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
-// ts-unused-exports:disable-next-line
 export const constructAndRenderPage: GroupPage = (dependencies) => (params) => pipe(
   params,
   constructViewModel(dependencies),
