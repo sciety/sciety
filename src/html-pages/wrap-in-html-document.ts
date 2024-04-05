@@ -8,12 +8,14 @@ import { CompleteHtmlDocument, toCompleteHtmlDocument } from './complete-html-do
 
 const serverStartupTimestamp = new Date();
 
+const serverRestartObservability = process.env.DISPLAY_LAST_SERVER_STARTUP === 'true' ? `<div>Server restarted at: ${serverStartupTimestamp.toLocaleTimeString()} UTC</div>` : '';
+
 export const wrapInHtmlDocument = (user: O.Option<UserDetails>, dynamicHeadViewModel: DynamicHeadViewModel) => (contentWrappedInLayout: ContentWrappedInLayout): CompleteHtmlDocument => toCompleteHtmlDocument(`
   <!doctype html>
   <html lang="en" prefix="og: http://ogp.me/ns#">
     ${head(pipe(user, O.map((u) => u.id)), dynamicHeadViewModel)}
   <body>
-    ${process.env.DISPLAY_LAST_SERVER_STARTUP === 'true' ? `<div>Server restarted at: ${serverStartupTimestamp.toISOString()}</div>` : ''}
+    ${serverRestartObservability}
     ${googleTagManagerNoScript()}
     ${contentWrappedInLayout}
 
