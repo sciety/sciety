@@ -101,7 +101,6 @@
     "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
     "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color --max-warnings 0",
     "lint:stylelint": "stylelint ${STYLELINT:-} \"src/**/*.scss\" --cache --cache-location .stylelint/",
-    "lint:typescript:prod": "tsc --noEmit",
     "lint:unused-exports": "ts-unused-exports tsconfig.json --silent",
     "watch:typescript": "tsc --noEmit --watch",
     "test": "jest --colors",
