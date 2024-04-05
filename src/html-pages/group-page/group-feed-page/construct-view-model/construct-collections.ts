@@ -1,10 +1,12 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import * as LID from '../../../../types/list-id';
-import { constructListCardViewModelWithCurator, ListCardViewModel } from '../../../../shared-components/list-card';
+import { constructListCardViewModelWithCurator } from '../../../../shared-components/list-card';
 import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
+import { ViewModel } from '../view-model';
 
 const constructListCardForACollection = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
   listId,
@@ -24,13 +26,14 @@ const hardcoded = new Map<GroupId, LID.ListId>([
 export const constructCollections = (
   dependencies: Dependencies,
   groupId: GroupId,
-): O.Option<ListCardViewModel> => {
+): ViewModel['collections'] => {
   const hardcodedListId = hardcoded.get(groupId);
   if (hardcodedListId) {
     return pipe(
       hardcodedListId,
       constructListCardForACollection(dependencies),
+      RA.fromOption,
     );
   }
-  return O.none;
+  return [];
 };

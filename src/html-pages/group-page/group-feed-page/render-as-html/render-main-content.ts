@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { tabList } from '../../common-components/tab-list';
@@ -15,6 +16,7 @@ const tabProps = (viewmodel: ViewModel) => ({
 
 const augmentWithCollectionsSection = (viewmodel: ViewModel) => (otherContent: HtmlFragment) => pipe(
   viewmodel.collections,
+  RA.head,
   O.match(
     () => otherContent,
     (collectionCard) => toHtmlFragment(`

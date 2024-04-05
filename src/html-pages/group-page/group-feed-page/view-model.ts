@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { PaperActivitySummaryCardViewModel, PaperActivityErrorCardViewModel } from '../../../shared-components/paper-activity-summary-card';
 import { PaginationControlsViewModel } from '../../../shared-components/pagination';
 import { Group } from '../../../types/group';
@@ -18,7 +17,7 @@ type Content = NoActivity | OrderedArticleCards;
 
 export type ViewModel = PageHeaderViewModel & {
   group: Group,
-  collections: O.Option<ListCardViewModel>,
+  collections: ReadonlyArray<ListCardViewModel>,
   content: Content,
   tabs: TabsViewModel,
 };
