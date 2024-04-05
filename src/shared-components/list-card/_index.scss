@@ -2,7 +2,7 @@
 @use 'functions';
 @use '../../sass/card';
 
-$_image-max-width: 100px;
+$_image-max-width: 150px;
 $_card-asset-gutter: functions.px-to-rem(8px);
 
 .list-card {
