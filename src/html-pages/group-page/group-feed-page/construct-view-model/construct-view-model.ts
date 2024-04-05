@@ -28,6 +28,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       RA.size,
     ),
     tabs: constructTabsViewModel(dependencies, group),
+    groupFollowersPageHref: `/groups/${group.slug}/followers`,
   })),
   TE.fromOption(() => DE.notFound),
   TE.chain((partial) => pipe(

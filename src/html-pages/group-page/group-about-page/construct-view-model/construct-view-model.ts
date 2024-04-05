@@ -41,6 +41,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         TE.right,
       ),
       markdown: dependencies.fetchStaticFile(`groups/${group.descriptionPath}`),
+      groupFollowersPageHref: TE.right(`/groups/${group.slug}/followers`),
     },
     sequenceS(TE.ApplyPar),
   )),

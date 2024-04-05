@@ -9,6 +9,7 @@ export type PageHeaderViewModel = {
   group: Group,
   isFollowing: boolean,
   followerCount: number,
+  groupFollowersPageHref: string,
 };
 
 const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
@@ -23,8 +24,8 @@ const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
   ),
 );
 
-const renderGroupFollowersLink = (slug: string, followerCount: number) => `
-  <a href="/groups/${slug}/followers">
+const renderGroupFollowersLink = (groupFollowersPageHref: PageHeaderViewModel['groupFollowersPageHref'], followerCount: PageHeaderViewModel['followerCount']) => `
+  <a href="${groupFollowersPageHref}">
     <span class="visually-hidden">This group has ${followerCount} </span>Followers<span aria-hidden="true"> (${followerCount})</span>
   </a>
 `;
@@ -39,7 +40,7 @@ export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment =
     </p>
     <div class="group-page-actions">
       ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
-      ${renderGroupFollowersLink(viewmodel.group.slug, viewmodel.followerCount)}
+      ${renderGroupFollowersLink(viewmodel.groupFollowersPageHref, viewmodel.followerCount)}
     </div>
   </header>
 `);

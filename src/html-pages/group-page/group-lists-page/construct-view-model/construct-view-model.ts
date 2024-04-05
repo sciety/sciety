@@ -29,6 +29,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       ),
       listCards: constructListCards(dependencies, group),
       tabs: constructTabsViewModel(dependencies, group),
+      groupFollowersPageHref: `/groups/${group.slug}/followers`,
     },
   )),
   TE.fromOption(() => DE.notFound),
