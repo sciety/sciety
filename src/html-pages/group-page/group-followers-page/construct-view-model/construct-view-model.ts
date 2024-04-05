@@ -7,7 +7,6 @@ import { augmentWithUserDetails } from './augment-with-user-details';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { findFollowers } from './find-followers';
-import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { GroupId } from '../../../../types/group-id';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
@@ -45,7 +44,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           ),
         ),
       }),
-      tabs: constructTabsViewModel(dependencies, group),
     })),
   )),
   TE.fromEither,
