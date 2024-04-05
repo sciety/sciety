@@ -1,3 +1,4 @@
+@use 'breakpoints';
 @use 'functions';
 @use '../../sass/card';
 
@@ -39,9 +40,14 @@ $_card-asset-gutter: functions.px-to-rem(8px);
 }
 
 .list-card__image {
-  max-width: $_image-max-width;
-  object-fit: contain;
-  margin-left: $_card-asset-gutter;
+  display: none;
+
+  @include breakpoints.not-narrow() {
+    display:unset;
+    max-width: $_image-max-width;
+    object-fit: contain;
+    margin-left: $_card-asset-gutter;
+  }
 }
 
 .list-card__avatar {
