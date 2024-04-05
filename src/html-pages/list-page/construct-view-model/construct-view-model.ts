@@ -49,7 +49,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   }),
 );
 
-const constructImageSrc = (listId: ListId) => lookupHardcodedListImage(listId);
+const constructImageSrc = (listId: ListId) => lookupHardcodedListImage({})(listId);
 
 export const constructViewModel = (
   dependencies: Dependencies,

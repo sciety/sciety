@@ -13,7 +13,7 @@ const constructListCardForACollection = (dependencies: Dependencies) => (listId:
   O.map(constructListCardViewModelWithCurator(dependencies)),
   O.map((viewModel) => ({
     ...viewModel,
-    imageUrl: lookupHardcodedListImage(listId),
+    imageUrl: lookupHardcodedListImage({})(listId),
   })),
 );
 

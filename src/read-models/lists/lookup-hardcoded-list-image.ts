@@ -1,7 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as LID from '../../types/list-id';
+import { ReadModel } from './handle-event';
 
-export const lookupHardcodedListImage = (listId: LID.ListId): O.Option<string> => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const lookupHardcodedListImage = (readModel: ReadModel) => (listId: LID.ListId): O.Option<string> => {
   if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
     return O.some('/static/images/collections/endorsed-by-gigabyte.png');
   }
