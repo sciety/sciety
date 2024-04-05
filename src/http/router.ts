@@ -23,7 +23,7 @@ import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/act
 import { paperActivityPage } from '../html-pages/paper-activity-page';
 import * as GLP from '../html-pages/group-page/group-lists-page';
 import * as GAP from '../html-pages/group-page/group-about-page';
-import * as SGFP from '../html-pages/group-page/standalone-group-followers-page';
+import * as GFP from '../html-pages/group-page/group-followers-page';
 import * as GFEP from '../html-pages/group-page/group-feed-page';
 import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout } from '../html-pages/home-page';
@@ -217,8 +217,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     '/groups/:slug/followers',
     pageHandler(adapters, createPageFromParams(
-      SGFP.paramsCodec,
-      SGFP.constructAndRenderPage(adapters),
+      GFP.paramsCodec,
+      GFP.constructAndRenderPage(adapters),
     )),
   );
 
