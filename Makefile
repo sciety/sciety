@@ -27,6 +27,7 @@ dev-fast: .env install build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
 prod: export TARGET = prod
+prod: export DISPLAY_LAST_SERVER_STARTUP = false
 prod: .env build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
@@ -92,6 +93,7 @@ backstop-test: export USE_STUB_ADAPTERS = true
 backstop-test: export USE_STUB_LOGIN = true
 backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: export COMPOSE_PROJECT_NAME=sciety-test
+backstop-test: export DISPLAY_LAST_SERVER_STARTUP = false
 backstop-test: export APP_PORT=8081
 backstop-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
@@ -176,6 +178,7 @@ prod-sql:
 taiko: export TARGET = fast
 taiko: export USE_STUB_ADAPTERS = true
 taiko: export USE_STUB_LOGIN = true
+taiko: export DISPLAY_LAST_SERVER_STARTUP = false
 taiko: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
