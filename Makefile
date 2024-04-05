@@ -72,9 +72,8 @@ lint-sass: export TARGET = dev
 lint-sass: build unused-sass
 	${DOCKER_COMPOSE} run --rm app npm run lint:stylelint
 
-unused-exports: export TARGET = dev
-unused-exports: build
-	${DOCKER_COMPOSE} run --rm app npm run lint:unused-exports
+unused-exports: node_modules
+	npx ts-unused-exports tsconfig.json --silent
 
 test: export TARGET = dev
 test: build
