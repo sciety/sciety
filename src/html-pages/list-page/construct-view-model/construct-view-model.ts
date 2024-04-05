@@ -14,7 +14,6 @@ import { ViewModel } from '../view-model';
 import { Params } from './params';
 import { ExpressionDoi } from '../../../types/expression-doi';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists';
-import { lookupHardcodedListImage } from '../../../read-models/lists/lookup-hardcoded-list-image';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
@@ -49,7 +48,10 @@ const constructContentViewModel: ConstructContentViewModel = (
   }),
 );
 
-const constructImageSrc = (listId: ListId) => lookupHardcodedListImage({})(listId);
+const constructImageSrc = (
+  dependencies: Dependencies,
+  listId: ListId,
+) => dependencies.lookupHardcodedListImage(listId);
 
 export const constructViewModel = (
   dependencies: Dependencies,
@@ -97,7 +99,7 @@ export const constructViewModel = (
   )),
   TE.map((partial) => ({
     ...partial,
-    imageSrc: constructImageSrc(partial.listId),
+    imageSrc: constructImageSrc(dependencies, partial.listId),
     showAnnotationSuccessBanner: params.success,
   })),
 );

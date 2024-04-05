@@ -1,3 +1,4 @@
+import { lookupHardcodedListImage } from './lookup-hardcoded-list-image';
 import { handleEvent, initialState } from './handle-event';
 import { lookupList } from './lookup-list';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
@@ -11,6 +12,7 @@ export const lists = {
     getNonEmptyUserLists,
     listsStatus,
     lookupList,
+    lookupHardcodedListImage,
     selectAllListsContainingExpression,
     selectAllListsOwnedBy,
     selectListContainingExpression,

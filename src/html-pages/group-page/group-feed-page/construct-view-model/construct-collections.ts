@@ -5,7 +5,6 @@ import * as LID from '../../../../types/list-id';
 import { constructListCardViewModelWithCurator, ListCardViewModel } from '../../../../shared-components/list-card';
 import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
-import { lookupHardcodedListImage } from '../../../../read-models/lists/lookup-hardcoded-list-image';
 
 const constructListCardForACollection = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
   listId,
@@ -13,7 +12,7 @@ const constructListCardForACollection = (dependencies: Dependencies) => (listId:
   O.map(constructListCardViewModelWithCurator(dependencies)),
   O.map((viewModel) => ({
     ...viewModel,
-    imageUrl: lookupHardcodedListImage({})(listId),
+    imageUrl: dependencies.lookupHardcodedListImage(listId),
   })),
 );
 
