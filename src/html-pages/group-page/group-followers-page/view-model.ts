@@ -1,4 +1,4 @@
-import { PageHeaderViewModel } from '../common-components/page-header';
+import { Group } from '../../../types/group';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { UserHandle } from '../../../types/user-handle';
 
@@ -11,7 +11,10 @@ export type UserCardViewModel = {
   avatarUrl: string,
 };
 
-export type ViewModel = PageHeaderViewModel & {
+export type ViewModel = {
+  group: Group,
+  isFollowing: boolean,
+  followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
   nextLink: HtmlFragment,
 };

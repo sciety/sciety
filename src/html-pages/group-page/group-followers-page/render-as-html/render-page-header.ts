@@ -1,16 +1,11 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Group } from '../../../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderFollowToggle } from '../../common-components/render-follow-toggle';
+import { ViewModel } from '../view-model';
 
-type PageHeaderViewModel = {
-  group: Group,
-  isFollowing: boolean,
-};
-
-const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
+const renderPageHeaderIdentity = (group: ViewModel['group']) => pipe(
   group.largeLogoPath,
   O.match(
     () => `<h1>${htmlEscape(group.name)}</h1>`,
@@ -22,7 +17,7 @@ const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
   ),
 );
 
-export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
+export const renderPageHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header">
     <div class="page-header__identity">
       ${renderPageHeaderIdentity(viewmodel.group)}
