@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { paginate, renderLegacyPaginationControls } from '../../../../shared-components/pagination';
+import { paginate } from '../../../../shared-components/pagination';
 import { augmentWithUserDetails } from './augment-with-user-details';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
@@ -41,14 +41,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           (nextPage) => `/groups/${group.slug}/followers?page=${nextPage}`,
         ),
       ),
-      nextLink: renderLegacyPaginationControls({
-        nextPageHref: pipe(
-          pageOfFollowers.nextPage,
-          O.map(
-            (nextPage) => `/groups/${group.slug}/followers?page=${nextPage}`,
-          ),
-        ),
-      }),
     } satisfies ViewModel)),
   )),
   TE.fromEither,

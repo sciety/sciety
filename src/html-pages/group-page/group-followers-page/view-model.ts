@@ -1,6 +1,5 @@
 import { LegacyPaginationControlsViewModel } from '../../../shared-components/pagination';
 import { Group } from '../../../types/group';
-import { HtmlFragment } from '../../../types/html-fragment';
 import { UserHandle } from '../../../types/user-handle';
 
 export type UserCardViewModel = {
@@ -17,5 +16,4 @@ export type ViewModel = LegacyPaginationControlsViewModel & {
   isFollowing: boolean,
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
-  nextLink: HtmlFragment,
 };

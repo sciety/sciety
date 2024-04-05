@@ -1,6 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { renderLegacyPaginationControls } from '../../../../shared-components/pagination';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel, UserCardViewModel } from '../view-model';
 import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
@@ -35,7 +36,7 @@ export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
       ${renderCountWithDescriptor(viewmodel.followerCount, 'user is', 'users are')} following this group.
     </p>
     ${renderFollowersList(viewmodel.followers)}
-    ${viewmodel.nextLink}
+    ${renderLegacyPaginationControls(viewmodel)}
   `,
   toHtmlFragment,
 );
