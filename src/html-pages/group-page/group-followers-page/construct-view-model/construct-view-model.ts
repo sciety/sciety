@@ -32,7 +32,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     paginate(pageSize, params.page),
     E.map((pageOfFollowers) => ({
       group,
-      pageNumber: params.page,
       isFollowing: isFollowing(dependencies)(group.id, params.user),
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
@@ -44,7 +43,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
           ),
         ),
       }),
-    })),
+    } satisfies ViewModel)),
   )),
   TE.fromEither,
 );
