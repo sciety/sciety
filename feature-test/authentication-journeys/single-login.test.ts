@@ -29,7 +29,7 @@ describe('single-login', () => {
     ['About page', '/about'],
     ['Article page', '/articles/activity/10.1101/2023.02.09.527915'],
     ['Group page, about tab', `/groups/${addGroupCommand.slug}/about`],
-    ['Group page, followers tab', `/groups/${addGroupCommand.slug}/followers`],
+    ['Group followers page', `/groups/${addGroupCommand.slug}/followers`],
     ['Group page, lists tab', `/groups/${addGroupCommand.slug}/lists`],
     ['Groups page', '/groups'],
     ['Home page', '/'],
