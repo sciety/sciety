@@ -44,7 +44,7 @@ jobs:
 
       - name: Lint
         run: |
-          make IMAGE_TAG=${IMAGE_TAG} lint
+          make lint
 
       - name: Test
         run: |

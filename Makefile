@@ -49,9 +49,6 @@ find-unused-sass-declarations: node_modules
 watch-typescript: node_modules
 	npm run watch:typescript
 
-lint: export TARGET = dev
-lint: build unused-sass
-	${DOCKER_COMPOSE} run --rm app npm run lint
 
 lint-eslint: export TARGET=dev
 lint-eslint:
@@ -268,6 +265,8 @@ LINT_CACHE := .eslint-cache
 STYLELINT_CACHE := .stylelint/
 
 check: $(MK_TESTED_TS) $(MK_LINTED_TS) $(MK_LINTED_SASS)
+
+lint: $(MK_LINTED_TS) $(MK_LINTED_SASS)
 
 $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 	npx eslint src test feature-test \
