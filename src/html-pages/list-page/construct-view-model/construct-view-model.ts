@@ -14,6 +14,7 @@ import { ViewModel } from '../view-model';
 import { Params } from './params';
 import { ExpressionDoi } from '../../../types/expression-doi';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists';
+import { lookupListImage } from '../../group-page/group-feed-page/construct-view-model/construct-collections';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
@@ -48,15 +49,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   }),
 );
 
-const constructImageSrc = (listId: ListId) => {
-  if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
-    return O.some('/static/images/collections/endorsed-by-gigabyte.png');
-  }
-  if (listId === '454ba80f-e0bc-47ed-ba76-c8f872c303d2') {
-    return O.some('/static/images/collections/biophysics-colab-collection-1.png');
-  }
-  return O.none;
-};
+const constructImageSrc = (listId: ListId) => lookupListImage(listId);
 
 export const constructViewModel = (
   dependencies: Dependencies,

@@ -6,7 +6,7 @@ import { constructListCardViewModelWithCurator, ListCardViewModel } from '../../
 import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
 
-const lookupListImage = (listId: LID.ListId) => {
+export const lookupListImage = (listId: LID.ListId): O.Option<string> => {
   if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
     return O.some('/static/images/collections/endorsed-by-gigabyte.png');
   }
