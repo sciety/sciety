@@ -1,7 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Follower, UserCardViewModel } from '../view-model';
+import { UserCardViewModel } from '../view-model';
+import { Follower } from './follower';
 import { Dependencies } from './dependencies';
 import { constructUserAvatarUrl } from '../../../../read-side';
 
