@@ -14,7 +14,7 @@ import { ViewModel } from '../view-model';
 import { Params } from './params';
 import { ExpressionDoi } from '../../../types/expression-doi';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists';
-import { lookupListImage } from '../../../read-models/lists/lookup-list-image';
+import { lookupHardcodedListImage } from '../../../read-models/lists/lookup-hardcoded-list-image';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
@@ -49,7 +49,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   }),
 );
 
-const constructImageSrc = (listId: ListId) => lookupListImage(listId);
+const constructImageSrc = (listId: ListId) => lookupHardcodedListImage(listId);
 
 export const constructViewModel = (
   dependencies: Dependencies,

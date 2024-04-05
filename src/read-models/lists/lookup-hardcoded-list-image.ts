@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as LID from '../../types/list-id';
 
-export const lookupListImage = (listId: LID.ListId): O.Option<string> => {
+export const lookupHardcodedListImage = (listId: LID.ListId): O.Option<string> => {
   if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
     return O.some('/static/images/collections/endorsed-by-gigabyte.png');
   }
