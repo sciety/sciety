@@ -261,6 +261,7 @@ GRAPH_DIR := ./graphs
 MK_LINTED_TS := .mk-linted-ts
 MK_TESTED_TS := .mk-tested-ts
 MK_LINTED_SASS := .mk-linted-sass
+MK_TYPECHECKED_TS := .mk-typechecked-ts
 TS_SOURCES := $(shell find src test feature-test -name '*.ts')
 SASS_SOURCES := $(shell find src test feature-test -name '*.scss')
 LINT_CACHE := .eslint-cache
@@ -275,6 +276,12 @@ $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 		--color --max-warnings 0
 	npx madge --circular --extensions ts src test feature-test
 	npx ts-unused-exports tsconfig.json --silent
+	@touch $@
+
+typecheck: $(MK_TYPECHECKED_TS)
+
+$(MK_TYPECHECKED_TS): node_modules $(TS_SOURCES)
+	npx tsc --noEmit
 	@touch $@
 
 $(MK_TESTED_TS): node_modules $(TS_SOURCES)
