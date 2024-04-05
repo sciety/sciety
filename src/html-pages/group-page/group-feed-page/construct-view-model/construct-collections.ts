@@ -6,11 +6,12 @@ import { constructListCardViewModelWithCurator, ListCardViewModel } from '../../
 import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
 
-const lookupListImage = (listId: LID.ListId) => (
-  listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e'
-    ? O.some('/static/images/collections/endorsed-by-gigabyte.png')
-    : O.none
-);
+const lookupListImage = (listId: LID.ListId) => {
+  if (listId === '729cab51-b47d-4ab5-bf2f-8282f1de445e') {
+    return O.some('/static/images/collections/endorsed-by-gigabyte.png');
+  }
+  return O.none;
+};
 
 const constructListCardForACollection = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
   listId,
