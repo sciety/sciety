@@ -34,6 +34,7 @@ services:
       AUTH0_DOMAIN: 'dev-sqa2k3wwnhpxk36d.eu.auth0.com'
       AUTH0_CLIENT_SECRET: '${AUTH0_CLIENT_SECRET:-auth0-client-secret}'
       AUTH0_CALLBACK_URL: 'http://localhost:${APP_PORT:-8080}/auth0/callback'
+      DISPLAY_LAST_SERVER_STARTUP: 
     ports:
       - '${APP_PORT:-8080}:80'
     restart: unless-stopped
