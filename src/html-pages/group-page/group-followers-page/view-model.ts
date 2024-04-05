@@ -11,9 +11,10 @@ export type UserCardViewModel = {
   avatarUrl: string,
 };
 
-export type ViewModel = LegacyPaginationControlsViewModel & {
+export type ViewModel = {
   group: Group,
   isFollowing: boolean,
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
+  pagination: LegacyPaginationControlsViewModel,
 };

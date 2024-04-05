@@ -36,7 +36,7 @@ export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
       ${renderCountWithDescriptor(viewmodel.followerCount, 'user is', 'users are')} following this group.
     </p>
     ${renderFollowersList(viewmodel.followers)}
-    ${renderLegacyPaginationControls(viewmodel)}
+    ${renderLegacyPaginationControls(viewmodel.pagination)}
   `,
   toHtmlFragment,
 );

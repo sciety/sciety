@@ -35,12 +35,14 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       isFollowing: isFollowing(dependencies)(group.id, params.user),
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
-      nextPageHref: pipe(
-        pageOfFollowers.nextPage,
-        O.map(
-          (nextPage) => `/groups/${group.slug}/followers?page=${nextPage}`,
+      pagination: {
+        nextPageHref: pipe(
+          pageOfFollowers.nextPage,
+          O.map(
+            (nextPage) => `/groups/${group.slug}/followers?page=${nextPage}`,
+          ),
         ),
-      ),
+      },
     } satisfies ViewModel)),
   )),
   TE.fromEither,
