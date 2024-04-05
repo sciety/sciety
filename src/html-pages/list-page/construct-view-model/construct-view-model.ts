@@ -14,7 +14,7 @@ import { ViewModel } from '../view-model';
 import { Params } from './params';
 import { ExpressionDoi } from '../../../types/expression-doi';
 import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists';
-import { lookupListImage } from '../../group-page/group-feed-page/construct-view-model/construct-collections';
+import { lookupListImage } from '../../../read-models/lists/lookup-list-image';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
   user,
