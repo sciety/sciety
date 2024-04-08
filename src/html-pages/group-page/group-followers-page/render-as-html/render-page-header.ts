@@ -11,7 +11,7 @@ const renderPageHeaderIdentity = (group: ViewModel['group']) => pipe(
     () => `<h1>${htmlEscape(group.name)}</h1>`,
     (largeLogoPath) => htmlEscape`
     <h1 class="page-header__visual_heading">
-      <img src="${largeLogoPath}" alt="${group.name}" class="page-header__large_logo">
+      <a href="/groups/${group.slug}"><img src="${largeLogoPath}" alt="${group.name}" class="page-header__large_logo"></a>
     </h1>
   `,
   ),
