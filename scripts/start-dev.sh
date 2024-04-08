@@ -2,7 +2,7 @@
 
 rm -f static/style.css static/style.css.map
 
-node_modules/.bin/sass --watch --embed-sources --load-path=src/shared-sass --load-path=src src/sass/style.scss:static/style.css &
+node_modules/.bin/sass --watch --embed-sources --load-path=src/shared-sass --load-path=src src/html-pages/style.scss:static/style.css &
 pid1=$!
 
 node_modules/.bin/tsx watch ./src/index.ts &
