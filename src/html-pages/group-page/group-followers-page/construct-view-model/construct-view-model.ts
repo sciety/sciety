@@ -31,6 +31,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     findFollowers(dependencies),
     paginate(pageSize, params.page),
     E.map((pageOfFollowers) => ({
+      title: group.name,
       group,
       isFollowing: isFollowing(dependencies)(group.id, params.user),
       followerCount: pageOfFollowers.numberOfOriginalItems,

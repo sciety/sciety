@@ -17,4 +17,5 @@ export type ViewModel = {
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
   pagination: LegacyPaginationControlsViewModel,
+  title: string,
 };
