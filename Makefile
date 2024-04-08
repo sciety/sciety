@@ -54,10 +54,6 @@ lint-eslint: export TARGET=dev
 lint-eslint:
 	${DOCKER_COMPOSE} run --rm app node_modules/.bin/eslint . --ext .js,.ts --cache --cache-location .eslint/ --color --max-warnings 0
 
-lint-fix: export TARGET = dev
-lint-fix: build unused-sass
-	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix -e STYLELINT=--fix app npm run lint
-
 eslint-fix: node_modules
 	npx eslint src test feature-test \
 		--ext .js,.ts \
@@ -267,6 +263,16 @@ STYLELINT_CACHE := .stylelint/
 check: $(MK_TESTED_TS) $(MK_LINTED_TS) $(MK_LINTED_SASS)
 
 lint: $(MK_LINTED_TS) $(MK_LINTED_SASS)
+
+lint-fix: node_modules
+	npx eslint src test feature-test \
+		--ext .js,.ts \
+		--cache --cache-location $(LINT_CACHE) \
+		--color --max-warnings 0 \
+		--fix
+	npx stylelint 'src/**/*.scss' \
+		--cache --cache-location $(STYLELINT_CACHE) \
+		--fix
 
 $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 	npx eslint src test feature-test \
