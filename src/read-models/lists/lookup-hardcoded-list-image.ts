@@ -10,5 +10,8 @@ export const lookupHardcodedListImage = (readModel: ReadModel) => (listId: LID.L
   if (listId === '454ba80f-e0bc-47ed-ba76-c8f872c303d2') {
     return O.some('/static/images/collections/biophysics-colab-collection-1.png');
   }
+  if (listId === '5ac3a439-e5c6-4b15-b109-92928a740812') {
+    return O.some('/static/images/collections/biophysics-colab-collection-curated-articles.png');
+  }
   return O.none;
 };
