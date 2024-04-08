@@ -12,7 +12,7 @@ const renderPageHeaderIdentity = (viewModel: ViewModel) => pipe(
     (largeLogoPath) => htmlEscape`
     <h1 class="page-header__visual_heading">
       <span class="visually-hidden">${viewModel.title}</span>
-      <img src="${largeLogoPath}" alt="" class="page-header__large_logo">
+      <img src="${largeLogoPath}" alt="" class="page-header__large_logo" aria-hidden="true">
     </h1>
   `,
   ),
