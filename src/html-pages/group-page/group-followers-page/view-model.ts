@@ -1,4 +1,4 @@
-import { LegacyPaginationControlsViewModel } from '../../../shared-components/pagination';
+import { LegacyPaginationControlsViewModel } from '../../shared-components/pagination';
 import { Group } from '../../../types/group';
 import { UserHandle } from '../../../types/user-handle';
 

@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { renderLegacyPaginationControls } from '../../../../shared-components/pagination';
+import { renderLegacyPaginationControls } from '../../../shared-components/pagination';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel, UserCardViewModel } from '../view-model';
 import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';

@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option';
 import { collapseCloseListEvents } from './collapse-close-list-events';
 import { FeedItem } from './feed-item';
 import { DomainEvent, isEventOfType } from '../../../domain-events';
-import { PageOfItems, paginate } from '../../../shared-components/pagination';
+import { PageOfItems, paginate } from '../../shared-components/pagination';
 import * as DE from '../../../types/data-error';
 
 const isFeedRelevantEvent = (event: DomainEvent) => (

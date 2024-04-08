@@ -6,7 +6,7 @@ import { renderListItems } from '../../../../shared-components/render-list-items
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
 import { ViewModel } from '../view-model';
-import { PaginationControlsViewModel, renderPaginationControls } from '../../../../shared-components/pagination';
+import { PaginationControlsViewModel, renderPaginationControls } from '../../../shared-components/pagination';
 
 const renderCards = (
   paginationControlsViewModel: PaginationControlsViewModel,

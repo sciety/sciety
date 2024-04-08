@@ -4,7 +4,7 @@ import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListCard } from '../../../shared-components/list-card';
 import { renderListItems } from '../../../shared-components/render-list-items';
-import { renderPaginationControls } from '../../../shared-components/pagination';
+import { renderPaginationControls } from '../../shared-components/pagination';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.listCards,

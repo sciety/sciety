@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as EDOI from '../../types/expression-doi';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html';
-import { renderPaginationControls } from '../../shared-components/pagination/render-pagination-controls';
+import { renderPaginationControls } from '../shared-components/pagination/render-pagination-controls';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { renderPaperActivityErrorCard } from '../../shared-components/paper-activity-summary-card';

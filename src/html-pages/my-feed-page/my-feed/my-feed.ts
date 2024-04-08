@@ -13,7 +13,7 @@ import {
   troubleFetchingTryAgain,
 } from './static-content';
 import { renderPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
-import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../../shared-components/pagination';
+import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../shared-components/pagination';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';

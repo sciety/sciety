@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderLegacyPaginationControls } from '../../../shared-components/pagination';
+import { renderLegacyPaginationControls } from '../../shared-components/pagination';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export const renderNextLinkOrCallsToAction = (pageNumber: number, basePath: O.Option<string>): HtmlFragment => pipe(

@@ -1,6 +1,6 @@
 import { flow, pipe } from 'fp-ts/function';
 import { renderArticlesList } from './render-articles-list';
-import { LegacyPaginationControlsViewModel, renderLegacyPaginationControls } from '../../../shared-components/pagination';
+import { LegacyPaginationControlsViewModel, renderLegacyPaginationControls } from '../../shared-components/pagination';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ContentWithPaginationViewModel } from '../view-model';
 
