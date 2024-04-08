@@ -8,7 +8,7 @@ import { ViewModel } from '../view-model';
 const renderPageHeaderIdentity = (group: ViewModel['group']) => pipe(
   group.largeLogoPath,
   O.match(
-    () => `<h1>${htmlEscape(group.name)}</h1>`,
+    () => `<h1><a href="/groups/${group.slug}">${htmlEscape(group.name)}</a></h1>`,
     (largeLogoPath) => htmlEscape`
     <h1 class="page-header__visual_heading">
       <a href="/groups/${group.slug}"><img src="${largeLogoPath}" alt="${group.name}" class="page-header__large_logo"></a>
