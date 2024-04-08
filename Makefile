@@ -258,16 +258,6 @@ $(MK_LINTED_TS): node_modules $(TS_SOURCES)
 	npx ts-unused-exports tsconfig.json --silent
 	@touch $@
 
-typecheck: $(MK_TYPECHECKED_TS)
-
-$(MK_TYPECHECKED_TS): node_modules $(TS_SOURCES)
-	npx tsc --noEmit
-	@touch $@
-
-$(MK_TESTED_TS): node_modules $(TS_SOURCES)
-	EXPERIMENT_ENABLED="true" npx jest --onlyChanged
-	@touch $@
-
 $(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
 	npx stylelint 'src/**/*.scss' --cache --cache-location $(STYLELINT_CACHE)
 	npx sass-unused 'src/**/*.scss'
@@ -276,6 +266,16 @@ $(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
 	npx purgecss --config purgecss.config.js --css .purgecss/full.css --output .purgecss/purged.css
 	diff .purgecss/full.css .purgecss/purged.css
 	rm -f .purgecss/{full,purged}.css
+	@touch $@
+
+typecheck: $(MK_TYPECHECKED_TS)
+
+$(MK_TYPECHECKED_TS): node_modules $(TS_SOURCES)
+	npx tsc --noEmit
+	@touch $@
+
+$(MK_TESTED_TS): node_modules $(TS_SOURCES)
+	EXPERIMENT_ENABLED="true" npx jest --onlyChanged
 	@touch $@
 
 graphs:
