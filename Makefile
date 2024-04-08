@@ -61,10 +61,6 @@ eslint-fix: node_modules
 		--color --max-warnings 0 \
 		--fix
 
-lint-sass: export TARGET = dev
-lint-sass: build unused-sass
-	${DOCKER_COMPOSE} run --rm app npm run lint:stylelint
-
 unused-exports: node_modules
 	npx ts-unused-exports tsconfig.json --silent
 

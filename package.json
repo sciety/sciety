@@ -98,10 +98,6 @@
     "build": "run-p --aggregate-output --continue-on-error --print-label --silent build:**",
     "build:css": "sass --load-path=src/shared-sass --no-source-map src/sass/style.scss:static/style.css",
     "build:js": "tsc",
-    "lint": "run-p --aggregate-output --continue-on-error --print-label --silent lint:**",
-    "lint:eslint": "eslint ${ESLINT:-} . --ext .js,.ts --cache --cache-location .eslint/ --color --max-warnings 0",
-    "lint:stylelint": "stylelint ${STYLELINT:-} \"src/**/*.scss\" --cache --cache-location .stylelint/",
-    "lint:unused-exports": "ts-unused-exports tsconfig.json --silent",
     "watch:typescript": "tsc --noEmit --watch",
     "test": "jest --colors",
     "test:coverage": "jest --colors --coverage"

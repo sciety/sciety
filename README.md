@@ -116,11 +116,6 @@ export const iAmUnused = true;
 
 In our team we also rely on eslint feedback from our IDEs.
 
-To check only the SASS code, execute:
-```shell
-make lint-sass
-```
-
 To check only for unused TypeScript exports, execute:
 ```shell
 make unused-exports
