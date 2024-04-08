@@ -1,7 +1,6 @@
 @use '../sass/normalise';
 @use '../sass/page-content';
 @use '../sass/fonts';
-@use '../sass/supplementary';
 
 @use 'card-rules';
 @use 'form-rules';
@@ -33,4 +32,5 @@
 @use '../shared-components/site-footer';
 @use '../shared-components/success-banner';
 @use '../shared-components/group-link';
+@use '../sass/supplementary';
 
