@@ -8,10 +8,10 @@ import { ViewModel } from '../view-model';
 const renderPageHeaderIdentity = (viewModel: ViewModel) => pipe(
   viewModel.group.largeLogoPath,
   O.match(
-    () => `<h1><a href="/groups/${viewModel.group.slug}">${htmlEscape(viewModel.title)}</a></h1>`,
+    () => `<h1>${htmlEscape(viewModel.title)}</h1>`,
     (largeLogoPath) => htmlEscape`
     <h1 class="page-header__visual_heading">
-      <a href="/groups/${viewModel.group.slug}"><img src="${largeLogoPath}" alt="${viewModel.title}" class="page-header__large_logo"></a>
+      <img src="${largeLogoPath}" alt="${viewModel.title}" class="page-header__large_logo">
     </h1>
   `,
   ),
@@ -25,6 +25,7 @@ export const renderPageHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFr
     <p class="group-page-short-description">
       ${htmlEscape(viewmodel.group.shortDescription)}
     </p>
+    <a href="/groups/${viewmodel.group.slug}" class="group-followers-page-back-link">Back to ${viewmodel.group.name}'s group page</a>
     <div class="group-page-actions">
       ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
     </div>
