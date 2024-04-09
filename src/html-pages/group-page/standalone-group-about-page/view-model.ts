@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { ListId } from '../../../types/list-id';
-import { PageHeaderViewModel } from '../common-components/page-header';
+import { Group } from '../../../types/group';
 
 type ListViewModel = {
   listId: ListId,
@@ -15,8 +15,9 @@ type OurListsViewModel = {
   allListsUrl: O.Option<string>,
 };
 
-export type ViewModel = PageHeaderViewModel & {
+export type ViewModel = {
   ourLists: OurListsViewModel,
   markdown: string,
   title: string,
+  group: Group,
 };
