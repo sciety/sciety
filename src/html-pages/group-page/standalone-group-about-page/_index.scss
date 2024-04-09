@@ -1,0 +1,36 @@
+@use 'settings';
+@use 'functions';
+@use 'breakpoints';
+@use '../../../sass/layout';
+
+.group-page-pref {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: functions.px-to-rem(6px);
+  font-size: functions.px-to-rem(14px);
+  border-top: 1px solid settings.$colour-furniture;
+  border-bottom: 1px solid settings.$colour-furniture;
+  padding: functions.px-to-rem(12px) 0;
+  margin-bottom: 1.5rem;
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin-left: 0;
+  }
+}
+
+.our-lists__article_count {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.our-lists__updated_label {
+  display: block;
+
+  @include breakpoints.not-narrow {
+    display: inline;
+  }
+}
