@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { userIdCodec } from '../../../../types/user-id';
 
-export const paramsCodec = t.type({
+const paramsCodec = t.type({
   slug: t.string,
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
