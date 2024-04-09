@@ -37,8 +37,8 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       newPagination: {
         backwardPageHref: O.none,
         forwardPageHref: O.none,
-        page: 1,
-        pageCount: 1,
+        page: pageOfFollowers.pageNumber,
+        pageCount: pageOfFollowers.numberOfPages,
       },
     } satisfies ViewModel)),
   )),
