@@ -1,8 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import { JSDOM } from 'jsdom';
+import { load } from 'cheerio';
 import { renderEvaluationPublishedFeedItem } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-evaluation-published-feed-item';
 import { missingFullTextAndSourceLink } from '../../../../src/html-pages/paper-activity-page/render-as-html/static-messages';
-import { evaluationLocatorCodec } from '../../../../src/types/evaluation-locator';
+import { EvaluationLocator, evaluationLocatorCodec } from '../../../../src/types/evaluation-locator';
 import { arbitraryNumber, arbitraryWord } from '../../../helpers';
 import * as RFI from '../evaluation-feed-item.helper';
 
@@ -15,23 +16,21 @@ describe('render-evaluation-feed-item', () => {
       RFI.arbitrary(),
       RFI.withFullText(fullText),
     );
-    const rendered: DocumentFragment = pipe(
+    const parsedResult = pipe(
       renderEvaluationPublishedFeedItem(item, teaserLength),
-      JSDOM.fragment,
+      load,
     );
-    const fullTextWrapper = rendered.querySelector('[data-full-text]');
-    const teaserWrapper = rendered.querySelector('[data-teaser]');
 
     it('renders the full text', async () => {
-      const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
-
-      expect(toggleableContent).not.toBeNull();
-      expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
-      expect(teaserWrapper?.textContent).toStrictEqual(expect.stringContaining('…'));
+      expect(parsedResult('[data-behaviour="collapse_to_teaser"]')).toHaveLength(1);
+      expect(parsedResult('[data-full-text]').text()).toStrictEqual(expect.stringContaining(fullText));
+      expect(parsedResult('[data-teaser]').text()).toStrictEqual(expect.stringContaining('…'));
     });
 
+    const cheerioSafeIdSelector = (evaluationLocator: EvaluationLocator) => `#${evaluationLocatorCodec.encode(evaluationLocator).replace(':', '\\:')}`;
+
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(evaluationLocatorCodec.encode(item.id))).not.toBeNull();
+      expect(parsedResult(cheerioSafeIdSelector(item.id))).toHaveLength(1);
     });
   });
 
