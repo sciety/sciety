@@ -16,5 +16,6 @@ module.exports = {
       isolatedModules: true,
     }],
   },
+  transformIgnorePatterns: ['\\.pnp\\.[^\\\/]+$'],
   verbose: true,
 };
