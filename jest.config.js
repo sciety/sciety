@@ -11,10 +11,7 @@ module.exports = {
   testEnvironment: 'node',
   testRunner: 'jest-circus/runner',
   transform: {
-    '^.+\\.ts$': ['ts-jest', {
-      diagnostics: false,
-      isolatedModules: true,
-    }],
+    '^.+\\.ts$': 'esbuild-jest',
   },
   transformIgnorePatterns: ['\\.pnp\\.[^\\\/]+$'],
   verbose: true,
