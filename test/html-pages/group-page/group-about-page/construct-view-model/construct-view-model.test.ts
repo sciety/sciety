@@ -10,8 +10,8 @@ import { List } from '../../../../../src/read-models/lists';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
-import { ViewModel } from '../../../../../src/html-pages/group-page/standalone-group-about-page/view-model';
-import { constructViewModel } from '../../../../../src/html-pages/group-page/standalone-group-about-page/construct-view-model';
+import { ViewModel } from '../../../../../src/html-pages/group-page/group-about-page/view-model';
+import { constructViewModel } from '../../../../../src/html-pages/group-page/group-about-page/construct-view-model';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

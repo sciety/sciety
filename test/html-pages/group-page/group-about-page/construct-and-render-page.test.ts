@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as DE from '../../../../src/types/data-error';
 import { arbitraryWord } from '../../../helpers';
 import { TestFramework, createTestFramework } from '../../../framework';
-import { constructAndRenderPage } from '../../../../src/html-pages/group-page/standalone-group-about-page';
+import { constructAndRenderPage } from '../../../../src/html-pages/group-page/group-about-page';
 
 describe('construct-and-render-page', () => {
   let framework: TestFramework;

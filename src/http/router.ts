@@ -22,7 +22,7 @@ import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { paperActivityPage } from '../html-pages/paper-activity-page';
 import * as GLP from '../html-pages/group-page/group-lists-page';
-import * as GSAP from '../html-pages/group-page/standalone-group-about-page';
+import * as GAP from '../html-pages/group-page/group-about-page';
 import * as GFP from '../html-pages/group-page/group-followers-page';
 import * as GFEP from '../html-pages/group-page/group-feed-page';
 import { groupsPage } from '../html-pages/groups-page';
@@ -209,8 +209,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     '/groups/:slug/about',
     pageHandler(adapters, createPageFromParams(
-      GSAP.paramsCodec,
-      GSAP.constructAndRenderPage(adapters),
+      GAP.paramsCodec,
+      GAP.constructAndRenderPage(adapters),
     )),
   );
 
