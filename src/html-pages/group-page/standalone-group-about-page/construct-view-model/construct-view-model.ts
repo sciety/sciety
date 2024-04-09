@@ -6,7 +6,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as LOID from '../../../../types/list-owner-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { toOurListsViewModel } from './to-our-lists-view-model';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
@@ -32,7 +31,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         RA.size,
         TE.right,
       ),
-      tabs: TE.right(constructTabsViewModel(dependencies, group)),
       ourLists: pipe(
         group.id,
         LOID.fromGroupId,
