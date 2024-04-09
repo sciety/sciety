@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { JSDOM } from 'jsdom';
+import { load } from 'cheerio';
 import { myFeed, Dependencies } from '../../../../src/html-pages/my-feed-page/my-feed';
 import {
   feedTitle,
@@ -106,8 +106,8 @@ describe('my-feed acceptance', () => {
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluation3);
         const pageSize = 2;
         const renderedComponent = await myFeed(defaultDependencies)(createUserAccountCommand.userId, pageSize, 1)();
-        const html = JSDOM.fragment(renderedComponent);
-        const itemCount = Array.from(html.querySelectorAll('.article-card')).length;
+        const html = load(renderedComponent);
+        const itemCount = html('.article-card').length;
 
         expect(itemCount).toStrictEqual(pageSize);
       });
