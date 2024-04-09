@@ -1,4 +1,4 @@
-import { LegacyPaginationControlsViewModel } from '../../shared-components/pagination';
+import { LegacyPaginationControlsViewModel, PaginationControlsViewModel } from '../../shared-components/pagination';
 import { Group } from '../../../types/group';
 import { UserHandle } from '../../../types/user-handle';
 
@@ -16,5 +16,6 @@ export type ViewModel = {
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
   pagination: LegacyPaginationControlsViewModel,
+  newPagination: PaginationControlsViewModel,
   title: string,
 };
