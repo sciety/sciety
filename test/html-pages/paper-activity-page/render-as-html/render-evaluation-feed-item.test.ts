@@ -7,6 +7,10 @@ import { EvaluationLocator, evaluationLocatorCodec } from '../../../../src/types
 import { arbitraryNumber, arbitraryWord } from '../../../helpers';
 import * as RFI from '../evaluation-feed-item.helper';
 
+const toggleableContentSelector = '[data-behaviour="collapse_to_teaser"]';
+const teaserSelector = '[data-teaser]';
+const cheerioSafeIdSelector = (evaluationLocator: EvaluationLocator) => `#${evaluationLocatorCodec.encode(evaluationLocator).replace(':', '\\:')}`;
+
 describe('render-evaluation-feed-item', () => {
   const fullText = arbitraryWord(100);
 
@@ -22,12 +26,10 @@ describe('render-evaluation-feed-item', () => {
     );
 
     it('renders the full text', async () => {
-      expect(parsedResult('[data-behaviour="collapse_to_teaser"]')).toHaveLength(1);
+      expect(parsedResult(toggleableContentSelector)).toHaveLength(1);
       expect(parsedResult('[data-full-text]').text()).toStrictEqual(expect.stringContaining(fullText));
-      expect(parsedResult('[data-teaser]').text()).toStrictEqual(expect.stringContaining('…'));
+      expect(parsedResult(teaserSelector).text()).toStrictEqual(expect.stringContaining('…'));
     });
-
-    const cheerioSafeIdSelector = (evaluationLocator: EvaluationLocator) => `#${evaluationLocatorCodec.encode(evaluationLocator).replace(':', '\\:')}`;
 
     it('renders an id tag with the correct value', async () => {
       expect(parsedResult(cheerioSafeIdSelector(item.id))).toHaveLength(1);
@@ -41,25 +43,20 @@ describe('render-evaluation-feed-item', () => {
       RFI.withFullText(fullText),
       RFI.withSource(source),
     );
-    const rendered: DocumentFragment = pipe(
+    const parsedResult = pipe(
       renderEvaluationPublishedFeedItem(item, 200),
-      JSDOM.fragment,
+      load,
     );
-    const fullTextWrapper = rendered.querySelector('.activity-feed__item__body');
-    const teaserWrapper = rendered.querySelector('[data-teaser]');
 
     it('renders without a teaser', async () => {
-      const toggleableContent = rendered.querySelector('[data-behaviour="collapse_to_teaser"]');
-      const sourceLinkUrl = rendered.querySelector('.activity-feed__item__read_original_source')?.getAttribute('href');
-
-      expect(toggleableContent).toBeNull();
-      expect(teaserWrapper).toBeNull();
-      expect(fullTextWrapper?.textContent).toStrictEqual(expect.stringContaining(fullText));
-      expect(sourceLinkUrl).toStrictEqual(source);
+      expect(parsedResult(toggleableContentSelector)).toHaveLength(0);
+      expect(parsedResult(teaserSelector)).toHaveLength(0);
+      expect(parsedResult('.activity-feed__item__body').text()).toStrictEqual(expect.stringContaining(fullText));
+      expect(parsedResult('.activity-feed__item__read_original_source').attr('href')).toStrictEqual(source);
     });
 
     it('renders an id tag with the correct value', async () => {
-      expect(rendered.getElementById(evaluationLocatorCodec.encode(item.id))).not.toBeNull();
+      expect(parsedResult(cheerioSafeIdSelector(item.id))).toHaveLength(1);
     });
   });
 
