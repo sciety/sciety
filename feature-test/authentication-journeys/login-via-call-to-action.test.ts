@@ -25,10 +25,10 @@ describe('login-via-call-to-action', () => {
   afterEach(screenshotTeardown);
 
   describe('when I am on the group page and I am not logged in', () => {
-    const groupPageAboutTab = `http://localhost:8080/groups/${addGroupCommand.slug}/about`;
+    const groupPage = `http://localhost:8080/groups/${addGroupCommand.slug}/feed`;
 
     beforeEach(async () => {
-      await goto(groupPageAboutTab);
+      await goto(groupPage);
     });
 
     describe('when I attempt to follow the group and successfully log in', () => {
@@ -38,7 +38,7 @@ describe('login-via-call-to-action', () => {
       });
 
       it('i am still on the group page', async () => {
-        expect(await currentURL()).toBe(groupPageAboutTab);
+        expect(await currentURL()).toBe(groupPage);
       });
 
       it('i am logged in', async () => {
