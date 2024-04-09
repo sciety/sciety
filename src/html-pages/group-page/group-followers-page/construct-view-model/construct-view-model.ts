@@ -36,7 +36,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       },
       newPagination: {
         backwardPageHref: O.none,
-        forwardPageHref: O.none,
+        forwardPageHref: pipe(
+          pageOfFollowers.nextPage,
+          O.map((nextPageNumber) => `/groups/${group.slug}/followers?page=${nextPageNumber}`),
+        ),
         page: pageOfFollowers.pageNumber,
         pageCount: pageOfFollowers.numberOfPages,
       },
