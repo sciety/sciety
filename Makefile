@@ -1,3 +1,7 @@
+.PHONY: help
+help:
+	@eval $$(sed -r -n 's/^([a-zA-Z0-9_-]+):.*?## (.*)$$/printf "\\033[36m%-30s\\033[0m %s\\n" "\1" "\2" ;/; ta; b; :a p' $(MAKEFILE_LIST) | sort)
+
 include operations.mk
 
 ifeq (${TARGET},)

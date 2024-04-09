@@ -1,5 +1,5 @@
 .PHONY: trigger-ingestion
-trigger-ingestion:
+trigger-ingestion:  ## Force a run of the ingestion job in production
 	scripts/trigger-ingestion.sh
 
 .PHONY: staging-sql
