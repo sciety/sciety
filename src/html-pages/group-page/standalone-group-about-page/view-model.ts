@@ -18,4 +18,5 @@ type OurListsViewModel = {
 export type ViewModel = PageHeaderViewModel & {
   ourLists: OurListsViewModel,
   markdown: string,
+  title: string,
 };
