@@ -2,7 +2,6 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { renderFollowToggle } from '../../common-components/render-follow-toggle';
 import { ViewModel } from '../view-model';
 
 const renderPageHeaderIdentity = (viewModel: ViewModel) => pipe(
@@ -27,8 +26,5 @@ export const renderPageHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFr
       ${htmlEscape(viewmodel.group.shortDescription)}
     </p>
     <a href="/groups/${viewmodel.group.slug}" class="group-followers-page-back-link">Back to ${viewmodel.group.name}'s group page</a>
-    <div class="group-page-actions">
-      ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
-    </div>
   </header>
 `);

@@ -13,7 +13,6 @@ export type UserCardViewModel = {
 
 export type ViewModel = {
   group: Group,
-  isFollowing: boolean,
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
   pagination: LegacyPaginationControlsViewModel,
