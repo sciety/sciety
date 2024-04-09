@@ -1,5 +1,7 @@
-export const articleId = 'articleId';
-export const listId = 'listId';
-export const listName = 'name';
-export const success = 'success';
-export const annotationContent = 'annotationContent';
+export const inputFieldNames = {
+  articleId: 'articleId' as const,
+  listId: 'listId' as const,
+  listName: 'name' as const,
+  success: 'success' as const,
+  annotationContent: 'annotationContent' as const,
+};
