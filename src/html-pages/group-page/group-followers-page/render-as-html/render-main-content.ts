@@ -1,7 +1,8 @@
 import { htmlEscape } from 'escape-goat';
 import { flow, pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { renderLegacyPaginationControls } from '../../../shared-components/pagination';
+import * as O from 'fp-ts/Option';
+import { renderLegacyPaginationControls, renderPaginationControls } from '../../../shared-components/pagination';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel, UserCardViewModel } from '../view-model';
 import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
@@ -30,6 +31,13 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
   `),
 );
 
+const paginate = () => renderPaginationControls({
+  backwardPageHref: O.none,
+  forwardPageHref: O.none,
+  page: 1,
+  pageCount: 1,
+});
+
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   `
     <p>
@@ -37,6 +45,7 @@ export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
     </p>
     ${renderFollowersList(viewmodel.followers)}
     ${renderLegacyPaginationControls(viewmodel.pagination)}
+    ${process.env.EXPERIMENT_ENABLED === 'true' ? paginate() : ''}
   `,
   toHtmlFragment,
 );
