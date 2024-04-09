@@ -25,6 +25,6 @@ export const renderPageHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFr
     <p class="group-page-short-description">
       ${htmlEscape(viewmodel.group.shortDescription)}
     </p>
-    <a href="/groups/${viewmodel.group.slug}" class="group-followers-page-back-link">Back to ${viewmodel.group.name}'s group page</a>
+    <a href="/groups/${viewmodel.group.slug}" class="group-about-page-back-link">Back to ${viewmodel.group.name}'s group page</a>
   </header>
 `);

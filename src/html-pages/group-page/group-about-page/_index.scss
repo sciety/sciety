@@ -3,6 +3,10 @@
 @use 'breakpoints';
 @use '../../../sass/layout';
 
+.group-about-page-back-link {
+  display: block;
+}
+
 .group-page-pref {
   display: grid;
   grid-template-columns: 1fr 1fr;
