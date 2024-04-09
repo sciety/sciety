@@ -45,6 +45,10 @@
   align-items: center;
 }
 
+.group-page-actions__secondary_button {
+  @include button.secondary-link();
+}
+
 .group-page-tab-panel-content {
   padding-top: 2rem;
 }
