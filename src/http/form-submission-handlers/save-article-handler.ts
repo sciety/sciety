@@ -14,7 +14,7 @@ import { listIdCodec } from '../../types/list-id';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
+import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 import { toRawFormCodec } from './to-fields-codec';
 import { decodeAndLogFailures } from '../../third-parties/decode-and-log-failures';
@@ -38,6 +38,12 @@ const rawFormBodyCodec = toRawFormCodec(formBodyCodec.type.props, 'saveArticleFo
 const isAuthorised = (
   listOwnerId: LOID.ListOwnerId, userId: UserId,
 ): boolean => LOID.eqListOwnerId.equals(listOwnerId, LOID.fromUserId(userId));
+
+const toCommand = (form: t.TypeOf<typeof formBodyCodec>): AddArticleToListCommand => ({
+  articleId: form[articleIdFieldName],
+  listId: form.listId,
+  annotation: form.annotation.length === 0 ? undefined : form.annotation,
+});
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
@@ -79,21 +85,9 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  const articleId = validatedFormFields.right[articleIdFieldName];
-  const listId = validatedFormFields.right.listId;
-
-  const fromFormInputToOptionalProperty = (value: UnsafeUserInput) => (
-    value.length === 0 ? undefined : value
-  );
-
-  const command: AddArticleToListCommand = {
-    articleId,
-    listId,
-    annotation: fromFormInputToOptionalProperty(validatedFormFields.right.annotation),
-  };
-
   await pipe(
-    command,
+    validatedFormFields.right,
+    toCommand,
     addArticleToListCommandHandler(dependencies),
     TE.getOrElseW((error) => {
       dependencies.logger('error', 'saveArticleHandler failed', { error });
@@ -102,5 +96,5 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     T.map(() => undefined),
   )();
 
-  context.redirect(`/lists/${listId}`);
+  context.redirect(`/lists/${validatedFormFields.right.listId}`);
 };
