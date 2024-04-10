@@ -64,11 +64,11 @@ describe('paginate', () => {
         expect(result.pageNumber).toBe(1);
       });
 
-      it('returns no nextPage', () => {
+      it('returns no forwardPage', () => {
         expect(result.forwardPage).toStrictEqual(O.none);
       });
 
-      it('returns no prevPage', () => {
+      it('returns no backwardPage', () => {
         expect(result.backwardPage).toStrictEqual(O.none);
       });
     });
@@ -100,11 +100,11 @@ describe('paginate', () => {
         expect(result.pageNumber).toBe(1);
       });
 
-      it('returns no nextPage', () => {
+      it('returns no forwardPage', () => {
         expect(result.forwardPage).toStrictEqual(O.none);
       });
 
-      it('returns no prevPage', () => {
+      it('returns no backwardPage', () => {
         expect(result.backwardPage).toStrictEqual(O.none);
       });
     });
@@ -120,7 +120,7 @@ describe('paginate', () => {
       [11, 1, O.some(2), O.none],
       [20, 1, O.some(2), O.none],
       [21, 2, O.some(3), O.some(1)],
-    ])('given %d items and page %d is the current page', (itemCount, page, nextPage, prevPage) => {
+    ])('given %d items and page %d is the current page', (itemCount, page, forwardPage, backwardPage) => {
       const result = pipe(
         generateItems(itemCount),
         paginate(itemsPerPage, page),
@@ -135,12 +135,12 @@ describe('paginate', () => {
         expect(result.pageNumber).toBe(page);
       });
 
-      it(`returns ${valueOf(nextPage)} as nextPage`, () => {
-        expect(result.forwardPage).toStrictEqual(nextPage);
+      it(`returns ${valueOf(forwardPage)} as forwardPage`, () => {
+        expect(result.forwardPage).toStrictEqual(forwardPage);
       });
 
-      it(`returns ${valueOf(prevPage)} as prevPage`, () => {
-        expect(result.backwardPage).toStrictEqual(prevPage);
+      it(`returns ${valueOf(backwardPage)} as backwardPage`, () => {
+        expect(result.backwardPage).toStrictEqual(backwardPage);
       });
     });
   });
