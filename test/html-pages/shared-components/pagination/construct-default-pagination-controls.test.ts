@@ -36,7 +36,27 @@ describe('construct-default-pagination-controls', () => {
     });
 
     describe('when there is a backwardPage of items', () => {
-      it.todo('the path of the backwardPageHref is this path');
+      const backwardPageNumber = 1;
+      let result: string;
+
+      beforeEach(() => {
+        result = pipe(
+          constructDefaultPaginationControls(path, {
+            items: ['a', 'b'],
+            backwardPage: O.some(backwardPageNumber),
+            forwardPage: O.none,
+            pageNumber: 2,
+            numberOfPages: 2,
+            numberOfOriginalItems: 4,
+          }),
+          (viewModel) => viewModel.backwardPageHref,
+          O.getOrElseW(shouldNotBeCalled),
+        );
+      });
+
+      it('the path of the backwardPageHref is this path', () => {
+        expect(result.startsWith('/foo?')).toBe(true);
+      });
 
       it.todo('the query string of the backwardPageHref requests the page parameter to be the backwardPage value');
     });
