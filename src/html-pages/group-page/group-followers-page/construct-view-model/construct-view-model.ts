@@ -14,7 +14,7 @@ const pageSize = 10;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
-const buildPaginationHref = (path: string, pageNumber: O.Option<number>) => pipe(
+export const buildPaginationHref = (path: string, pageNumber: O.Option<number>): O.Option<string> => pipe(
   pageNumber,
   O.map((number) => `${path}?page=${number}`),
 );
