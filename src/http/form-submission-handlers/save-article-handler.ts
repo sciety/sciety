@@ -9,7 +9,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Logger } from '../../shared-ports';
 import { articleIdCodec } from '../../types/article-id';
 import { getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
+import { Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
@@ -18,6 +18,8 @@ import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-i
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 import { toRawFormCodec } from './to-fields-codec';
 import { decodeAndLogFailures } from '../../third-parties/decode-and-log-failures';
+import * as LOID from '../../types/list-owner-id';
+import { UserId } from '../../types/user-id';
 
 export const articleIdFieldName = 'articleid';
 
@@ -32,6 +34,10 @@ const formBodyCodec = t.strict({
 });
 
 const rawFormBodyCodec = toRawFormCodec(formBodyCodec.type.props, 'saveArticleFormFieldsCodec');
+
+const isAuthorised = (
+  listOwnerId: LOID.ListOwnerId, userId: UserId,
+): boolean => LOID.eqListOwnerId.equals(listOwnerId, LOID.fromUserId(userId));
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
@@ -68,16 +74,13 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  const articleId = validatedFormFields.right[articleIdFieldName];
-  const listId = validatedFormFields.right.listId;
-
-  const logEntry = checkUserOwnsList(dependencies, listId, authenticatedUserId.value);
-  if (E.isLeft(logEntry)) {
-    dependencies.logger('error', logEntry.left.message, logEntry.left.payload);
-    dependencies.logger('error', 'saveArticleHandler failed', { error: logEntry.left });
-    context.redirect(`/articles/${articleId.value}`);
+  if (!isAuthorised(listOwnerId.value, authenticatedUserId.value)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'You are not the owner of the list you are trying to save to.');
     return;
   }
+
+  const articleId = validatedFormFields.right[articleIdFieldName];
+  const listId = validatedFormFields.right.listId;
 
   const fromFormInputToOptionalProperty = (value: UnsafeUserInput) => (
     value.length === 0 ? undefined : value
