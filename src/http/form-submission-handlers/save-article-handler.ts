@@ -14,7 +14,6 @@ import { addArticleToListCommandHandler } from '../../write-side/command-handler
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
-import { toRawFormCodec } from './to-fields-codec';
 import { decodeAndLogFailures } from '../../third-parties/decode-and-log-failures';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
@@ -25,19 +24,22 @@ type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & DependenciesF
   logger: Logger,
 };
 
-const formBodyCodec = t.strict({
+const userInvisibleFormFieldsCodec = t.strict({
   [articleIdFieldName]: articleIdCodec,
   listId: listIdCodec,
+});
+
+const userEditableFormFieldsCodec = t.strict({
   annotation: unsafeUserInputCodec,
 });
 
-const rawFormBodyCodec = toRawFormCodec(formBodyCodec.type.props, 'saveArticleFormFieldsCodec');
+const saveArticleFormBodyCodec = t.intersection([userInvisibleFormFieldsCodec, userEditableFormFieldsCodec], 'saveArticleFormBodyCodec');
 
 const isAuthorised = (
   listOwnerId: LOID.ListOwnerId, userId: UserId,
 ): boolean => LOID.eqListOwnerId.equals(listOwnerId, LOID.fromUserId(userId));
 
-const toCommand = (form: t.TypeOf<typeof formBodyCodec>): AddArticleToListCommand => ({
+const toCommand = (form: t.TypeOf<typeof saveArticleFormBodyCodec>): AddArticleToListCommand => ({
   articleId: form[articleIdFieldName],
   listId: form.listId,
   annotation: form.annotation.length === 0 ? undefined : form.annotation,
@@ -45,30 +47,22 @@ const toCommand = (form: t.TypeOf<typeof formBodyCodec>): AddArticleToListComman
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
-  const formFields = pipe(
+  const formBody = pipe(
     context.request.body,
-    decodeAndLogFailures(dependencies.logger, rawFormBodyCodec),
-  );
-  const validatedFormFields = pipe(
-    context.request.body,
-    decodeAndLogFailures(dependencies.logger, formBodyCodec),
+    decodeAndLogFailures(dependencies.logger, saveArticleFormBodyCodec),
   );
 
   if (O.isNone(authenticatedUserId)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'This step requires you do be logged in. Please try logging in again.');
     return;
   }
-  if (E.isLeft(formFields)) {
+  if (E.isLeft(formBody)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Something went wrong when you submitted the form. Please try again.');
-    return;
-  }
-  if (E.isLeft(validatedFormFields)) {
-    context.redirect('back');
     return;
   }
 
   const listOwnerId = pipe(
-    validatedFormFields.right.listId,
+    formBody.right.listId,
     dependencies.lookupList,
     O.map((list) => list.ownerId),
   );
@@ -84,7 +78,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
   }
 
   const commandResult = await pipe(
-    validatedFormFields.right,
+    formBody.right,
     toCommand,
     addArticleToListCommandHandler(dependencies),
   )();
@@ -94,5 +88,5 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  context.redirect(`/lists/${validatedFormFields.right.listId}`);
+  context.redirect(`/lists/${formBody.right.listId}`);
 };
