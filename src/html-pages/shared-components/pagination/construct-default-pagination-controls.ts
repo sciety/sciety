@@ -2,10 +2,11 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { PageOfItems } from './paginate';
 import { ViewModel } from './render-pagination-controls';
+import { queryStringProperties } from '../../../standards';
 
 const buildPaginationHref = (path: string, pageNumber: O.Option<number>): O.Option<string> => pipe(
   pageNumber,
-  O.map((number) => `${path}?page=${number}`),
+  O.map((number) => `${path}?${queryStringProperties.page}=${number}`),
 );
 
 export const constructDefaultPaginationControls = (
