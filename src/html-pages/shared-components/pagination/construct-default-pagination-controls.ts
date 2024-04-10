@@ -13,7 +13,7 @@ export const constructDefaultPaginationControls = (
   path: string,
   pageOfItems: PageOfItems<unknown>,
 ): ViewModel => ({
-  backwardPageHref: buildPaginationHref(path, pageOfItems.prevPage),
+  backwardPageHref: buildPaginationHref(path, pageOfItems.backwardPage),
   forwardPageHref: buildPaginationHref(path, pageOfItems.forwardPage),
   page: pageOfItems.pageNumber,
   pageCount: pageOfItems.numberOfPages,

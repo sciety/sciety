@@ -69,7 +69,7 @@ describe('paginate', () => {
       });
 
       it('returns no prevPage', () => {
-        expect(result.prevPage).toStrictEqual(O.none);
+        expect(result.backwardPage).toStrictEqual(O.none);
       });
     });
 
@@ -105,7 +105,7 @@ describe('paginate', () => {
       });
 
       it('returns no prevPage', () => {
-        expect(result.prevPage).toStrictEqual(O.none);
+        expect(result.backwardPage).toStrictEqual(O.none);
       });
     });
   });
@@ -140,7 +140,7 @@ describe('paginate', () => {
       });
 
       it(`returns ${valueOf(prevPage)} as prevPage`, () => {
-        expect(result.prevPage).toStrictEqual(prevPage);
+        expect(result.backwardPage).toStrictEqual(prevPage);
       });
     });
   });
