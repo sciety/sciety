@@ -30,15 +30,13 @@ const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pip
   `),
 );
 
-const paginate = (pagination: ViewModel['newPagination']) => renderPaginationControls(pagination);
-
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   `
     <p>
       ${renderCountWithDescriptor(viewmodel.followerCount, 'user is', 'users are')} following this group.
     </p>
     ${renderFollowersList(viewmodel.followers)}
-    ${paginate(viewmodel.newPagination)}
+    ${renderPaginationControls(viewmodel.pagination)}
   `,
   toHtmlFragment,
 );

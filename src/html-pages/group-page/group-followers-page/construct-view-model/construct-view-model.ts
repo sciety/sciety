@@ -27,14 +27,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
       pagination: {
-        nextPageHref: pipe(
-          pageOfFollowers.nextPage,
-          O.map(
-            (nextPage) => `/groups/${group.slug}/followers?page=${nextPage}`,
-          ),
-        ),
-      },
-      newPagination: {
         backwardPageHref: pipe(
           pageOfFollowers.prevPage,
           O.map((previousPageNumber) => `/groups/${group.slug}/followers?page=${previousPageNumber}`),
