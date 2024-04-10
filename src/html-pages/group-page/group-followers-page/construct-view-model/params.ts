@@ -8,7 +8,7 @@ export const paramsCodec = t.type({
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
   })),
-  [queryStringParameters.page]: tt.withFallback(tt.NumberFromString, 1),
+  [queryStringParameters.page]: queryStringParameters.pageCodec,
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
