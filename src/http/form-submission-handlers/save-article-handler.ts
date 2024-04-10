@@ -1,7 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
@@ -85,16 +83,16 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  await pipe(
+  const commandResult = await pipe(
     validatedFormFields.right,
     toCommand,
     addArticleToListCommandHandler(dependencies),
-    TE.getOrElseW((error) => {
-      dependencies.logger('error', 'saveArticleHandler failed', { error });
-      return T.of(error);
-    }),
-    T.map(() => undefined),
   )();
+
+  if (E.isLeft(commandResult)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong on our end when we tried to save this article to your list. Please try again later.');
+    return;
+  }
 
   context.redirect(`/lists/${validatedFormFields.right.listId}`);
 };
