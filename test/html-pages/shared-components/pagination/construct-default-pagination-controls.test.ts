@@ -59,7 +59,9 @@ describe('construct-default-pagination-controls', () => {
         expect(result.startsWith('/foo?')).toBe(true);
       });
 
-      it.todo('the query string of the backwardPageHref requests the page parameter to be the backwardPage value');
+      it('the query string of the backwardPageHref requests the page parameter to be the backwardPage value', () => {
+        expect(result.endsWith(`?page=${backwardPageNumber}`)).toBe(true);
+      });
     });
   });
 });
