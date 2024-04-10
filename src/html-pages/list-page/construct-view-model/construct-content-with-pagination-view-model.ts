@@ -33,7 +33,7 @@ export const constructContentWithPaginationViewModel = (
     TE.map((articles) => ({
       articles,
       pagination: pageOfArticles,
-      ...constructPaginationControlsViewModel(pageOfArticles.nextPage, `/lists/${listId}`),
+      ...constructPaginationControlsViewModel(pageOfArticles.forwardPage, `/lists/${listId}`),
     })),
   )),
 );

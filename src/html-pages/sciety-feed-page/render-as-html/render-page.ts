@@ -36,7 +36,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       </ol>
       ${renderLegacyPaginationControls({
     nextPageHref: pipe(
-      viewModel.nextPage,
+      viewModel.forwardPage,
       O.map(
         (nextPage) => `/sciety-feed?page=${nextPage}`,
       ),

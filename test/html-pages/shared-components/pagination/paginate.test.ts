@@ -65,7 +65,7 @@ describe('paginate', () => {
       });
 
       it('returns no nextPage', () => {
-        expect(result.nextPage).toStrictEqual(O.none);
+        expect(result.forwardPage).toStrictEqual(O.none);
       });
 
       it('returns no prevPage', () => {
@@ -101,7 +101,7 @@ describe('paginate', () => {
       });
 
       it('returns no nextPage', () => {
-        expect(result.nextPage).toStrictEqual(O.none);
+        expect(result.forwardPage).toStrictEqual(O.none);
       });
 
       it('returns no prevPage', () => {
@@ -136,7 +136,7 @@ describe('paginate', () => {
       });
 
       it(`returns ${valueOf(nextPage)} as nextPage`, () => {
-        expect(result.nextPage).toStrictEqual(nextPage);
+        expect(result.forwardPage).toStrictEqual(nextPage);
       });
 
       it(`returns ${valueOf(prevPage)} as prevPage`, () => {

@@ -7,7 +7,7 @@ import * as DE from '../../../types/data-error';
 export type PageOfItems<I> = {
   items: ReadonlyArray<I>,
   prevPage: O.Option<number>,
-  nextPage: O.Option<number>,
+  forwardPage: O.Option<number>,
   pageNumber: number,
   numberOfPages: number,
   numberOfOriginalItems: number,
@@ -16,7 +16,7 @@ export type PageOfItems<I> = {
 const emptyFirstPage = <I>(): PageOfItems<I> => ({
   items: [],
   prevPage: O.none,
-  nextPage: O.none,
+  forwardPage: O.none,
   pageNumber: 1,
   numberOfPages: 1,
   numberOfOriginalItems: 0,
@@ -35,7 +35,7 @@ const selectAPageOfItems = (pageSize: number, page: number) => <I>(items: Readon
       numberOfPages: chunks.length,
       numberOfOriginalItems: items.length,
       prevPage: page > 1 ? O.some(page - 1) : O.none,
-      nextPage: pipe(
+      forwardPage: pipe(
         page + 1,
         O.some,
         O.filter((nextPage) => nextPage <= chunks.length),

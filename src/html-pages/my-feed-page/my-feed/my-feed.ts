@@ -59,7 +59,7 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
     <ol class="card-list" role="list">${cards.join('')}</ol>
     ${renderLegacyPaginationControls({
     nextPageHref: pipe(
-      pageofItems.nextPage,
+      pageofItems.forwardPage,
       O.map(
         (nextPage) => `/my-feed?page=${nextPage}`,
       ),
