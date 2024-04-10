@@ -3,15 +3,15 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import { constructEventCard } from './construct-event-card';
 import { identifyFeedItems } from './identify-feed-items';
 import * as DE from '../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
+import { queryStringParameters } from '../../../standards';
 
 export const scietyFeedCodec = t.type({
-  page: tt.withFallback(tt.NumberFromString, 1),
+  [queryStringParameters.page]: queryStringParameters.pageCodec,
 });
 
 export type Params = t.TypeOf<typeof scietyFeedCodec>;

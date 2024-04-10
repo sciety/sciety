@@ -11,9 +11,10 @@ import { renderPageHeader } from './render-page-header';
 import { userIdCodec } from '../../types/user-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage } from '../html-page';
+import { queryStringParameters } from '../../standards';
 
 export const myFeedParams = t.type({
-  page: tt.withFallback(tt.NumberFromString, 1),
+  [queryStringParameters.page]: queryStringParameters.pageCodec,
   user: tt.optionFromNullable(t.type({
     id: userIdCodec,
   })),
