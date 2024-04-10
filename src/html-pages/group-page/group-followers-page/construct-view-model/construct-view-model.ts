@@ -1,13 +1,14 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { paginate, buildPaginationHref } from '../../../shared-components/pagination';
+import { paginate } from '../../../shared-components/pagination';
 import { augmentWithUserDetails } from './augment-with-user-details';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { findFollowers } from './find-followers';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
+import { constructPagination } from '../../../lists-page/construct-view-model/construct-view-model';
 
 const pageSize = 10;
 
@@ -25,12 +26,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       group,
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
-      pagination: {
-        backwardPageHref: buildPaginationHref(`/groups/${group.slug}/followers`, pageOfFollowers.prevPage),
-        forwardPageHref: buildPaginationHref(`/groups/${group.slug}/followers`, pageOfFollowers.nextPage),
-        page: pageOfFollowers.pageNumber,
-        pageCount: pageOfFollowers.numberOfPages,
-      },
+      pagination: constructPagination(`/groups/${group.slug}/followers`, pageOfFollowers),
     } satisfies ViewModel)),
   )),
   TE.fromEither,
