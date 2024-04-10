@@ -14,6 +14,11 @@ const pageSize = 10;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
+const buildPaginationHref = (slug: string, pageNumber: O.Option<number>) => pipe(
+  pageNumber,
+  O.map((number) => `/groups/${slug}/followers?page=${number}`),
+);
+
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),
   E.fromOption(() => DE.notFound),
@@ -27,14 +32,8 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
       pagination: {
-        backwardPageHref: pipe(
-          pageOfFollowers.prevPage,
-          O.map((previousPageNumber) => `/groups/${group.slug}/followers?page=${previousPageNumber}`),
-        ),
-        forwardPageHref: pipe(
-          pageOfFollowers.nextPage,
-          O.map((nextPageNumber) => `/groups/${group.slug}/followers?page=${nextPageNumber}`),
-        ),
+        backwardPageHref: buildPaginationHref(group.slug, pageOfFollowers.prevPage),
+        forwardPageHref: buildPaginationHref(group.slug, pageOfFollowers.nextPage),
         page: pageOfFollowers.pageNumber,
         pageCount: pageOfFollowers.numberOfPages,
       },
