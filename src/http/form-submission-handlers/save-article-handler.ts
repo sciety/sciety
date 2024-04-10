@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
-import * as PR from 'io-ts/PathReporter';
 import { StatusCodes } from 'http-status-codes';
 import { Logger } from '../../shared-ports';
 import { articleIdCodec } from '../../types/article-id';
@@ -40,6 +39,11 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     context.request.body,
     decodeAndLogFailures(dependencies.logger, rawFormBodyCodec),
   );
+  const validatedFormFields = pipe(
+    context.request.body,
+    decodeAndLogFailures(dependencies.logger, formBodyCodec),
+  );
+
   if (O.isNone(authenticatedUserId)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'This step requires you do be logged in. Please try logging in again.');
     return;
@@ -48,23 +52,13 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Something went wrong when you submitted the form. Please try again.');
     return;
   }
-  const formBody = pipe(
-    context.request.body,
-    formBodyCodec.decode,
-    E.mapLeft((errors) => {
-      dependencies.logger('error', 'saveArticleHandler codec failed', {
-        requestBody: context.request.body,
-        errors: PR.failure(errors),
-      });
-    }),
-  );
-  if (E.isLeft(formBody)) {
+  if (E.isLeft(validatedFormFields)) {
     context.redirect('back');
     return;
   }
 
-  const articleId = formBody.right[articleIdFieldName];
-  const listId = formBody.right.listId;
+  const articleId = validatedFormFields.right[articleIdFieldName];
+  const listId = validatedFormFields.right.listId;
 
   const logEntry = checkUserOwnsList(dependencies, listId, authenticatedUserId.value);
   if (E.isLeft(logEntry)) {
@@ -81,7 +75,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
   const command: AddArticleToListCommand = {
     articleId,
     listId,
-    annotation: fromFormInputToOptionalProperty(formBody.right.annotation),
+    annotation: fromFormInputToOptionalProperty(validatedFormFields.right.annotation),
   };
 
   await pipe(
