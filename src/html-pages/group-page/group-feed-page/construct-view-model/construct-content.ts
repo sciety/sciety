@@ -10,10 +10,9 @@ import { GroupId } from '../../../../types/group-id';
 import * as DE from '../../../../types/data-error';
 import * as EDOI from '../../../../types/expression-doi';
 import { Dependencies } from './dependencies';
-import { PageOfItems, paginate } from '../../../shared-components/pagination';
+import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
 import { Group } from '../../../../types/group';
 import { toExpressionDoisByMostRecentlyAdded } from '../../../../read-models/lists';
-import { constructPagination } from '../../../lists-page/construct-view-model/construct-view-model';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,
@@ -35,7 +34,7 @@ const toOrderedArticleCards = (
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,
-    ...constructPagination(`/groups/${groupSlug}/feed`, pageOfArticleIds),
+    ...constructDefaultPaginationControls(`/groups/${groupSlug}/feed`, pageOfArticleIds),
     backwardPageLabel: 'Newer',
     forwardPageLabel: 'Older',
   })),

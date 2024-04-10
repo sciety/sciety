@@ -7,10 +7,9 @@ import { Queries } from '../../../read-models';
 import { ViewModel } from '../view-model';
 import * as DE from '../../../types/data-error';
 import {
-  buildPaginationHref,
   PageOfItems,
   paginate,
-  PaginationControlsViewModel,
+  constructDefaultPaginationControls,
 } from '../../shared-components/pagination';
 import { List } from '../../../read-models/lists';
 import { Params } from '../params';
@@ -19,13 +18,6 @@ const constructListCards = (pageOfItems: PageOfItems<List>, dependencies: Depend
   pageOfItems.items,
   RA.map(constructListCardViewModelWithCurator(dependencies)),
 );
-
-export const constructPagination = (path: string, pageOfItems: PageOfItems<unknown>): PaginationControlsViewModel => ({
-  backwardPageHref: buildPaginationHref(path, pageOfItems.prevPage),
-  forwardPageHref: buildPaginationHref(path, pageOfItems.nextPage),
-  page: pageOfItems.pageNumber,
-  pageCount: pageOfItems.numberOfPages,
-});
 
 export type Dependencies = Queries & ConstructListCardViewModelWithCuratorDependencies;
 
@@ -39,6 +31,6 @@ export const constructViewModel = (
   paginate(20, params.page),
   E.map((pageOfItems) => ({
     listCards: constructListCards(pageOfItems, dependencies),
-    pagination: constructPagination('/lists', pageOfItems),
+    pagination: constructDefaultPaginationControls('/lists', pageOfItems),
   })),
 );
