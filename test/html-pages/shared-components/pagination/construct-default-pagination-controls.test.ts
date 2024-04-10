@@ -8,6 +8,7 @@ describe('construct-default-pagination-controls', () => {
     const path = '/foo';
 
     describe('when there is a forwardPage of items', () => {
+      const forwardPageNumber = 2;
       let result: string;
 
       beforeEach(() => {
@@ -15,7 +16,7 @@ describe('construct-default-pagination-controls', () => {
           constructDefaultPaginationControls(path, {
             items: ['a', 'b'],
             backwardPage: O.none,
-            forwardPage: O.some(2),
+            forwardPage: O.some(forwardPageNumber),
             pageNumber: 1,
             numberOfPages: 2,
             numberOfOriginalItems: 4,
@@ -29,7 +30,9 @@ describe('construct-default-pagination-controls', () => {
         expect(result.startsWith('/foo?')).toBe(true);
       });
 
-      it.todo('the query string of the forwardPageHref requests the page parameter to be the forwardPage value');
+      it('the query string of the forwardPageHref requests the page parameter to be the forwardPage value', () => {
+        expect(result.endsWith(`?page=${forwardPageNumber}`)).toBe(true);
+      });
     });
 
     describe('when there is a backwardPage of items', () => {
