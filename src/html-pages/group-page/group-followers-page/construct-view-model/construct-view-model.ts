@@ -1,8 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { paginate } from '../../../shared-components/pagination';
+import { paginate, buildPaginationHref } from '../../../shared-components/pagination';
 import { augmentWithUserDetails } from './augment-with-user-details';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
@@ -13,11 +12,6 @@ import { Params } from './params';
 const pageSize = 10;
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
-
-export const buildPaginationHref = (path: string, pageNumber: O.Option<number>): O.Option<string> => pipe(
-  pageNumber,
-  O.map((number) => `${path}?page=${number}`),
-);
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),

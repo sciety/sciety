@@ -6,10 +6,9 @@ import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 import { Queries } from '../../../read-models';
 import { ViewModel } from '../view-model';
 import * as DE from '../../../types/data-error';
-import { PageOfItems, paginate } from '../../shared-components/pagination';
+import { buildPaginationHref, PageOfItems, paginate } from '../../shared-components/pagination';
 import { List } from '../../../read-models/lists';
 import { Params } from '../params';
-import { buildPaginationHref } from '../../group-page/group-followers-page/construct-view-model/construct-view-model';
 
 const constructListCards = (pageOfItems: PageOfItems<List>, dependencies: Dependencies) => pipe(
   pageOfItems.items,
