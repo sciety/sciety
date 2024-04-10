@@ -4,6 +4,15 @@ import { constructDefaultPaginationControls } from '../../../../src/html-pages/s
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('construct-default-pagination-controls', () => {
+  const arbitraryPageOfItems = {
+    items: ['a', 'b'],
+    backwardPage: O.none,
+    forwardPage: O.none,
+    pageNumber: 2,
+    numberOfPages: 2,
+    numberOfOriginalItems: 4,
+  };
+
   describe('given a path with no query string parameters', () => {
     const path = '/foo';
 
@@ -14,12 +23,8 @@ describe('construct-default-pagination-controls', () => {
       beforeEach(() => {
         result = pipe(
           constructDefaultPaginationControls(path, {
-            items: ['a', 'b'],
-            backwardPage: O.none,
+            ...arbitraryPageOfItems,
             forwardPage: O.some(forwardPageNumber),
-            pageNumber: 1,
-            numberOfPages: 2,
-            numberOfOriginalItems: 4,
           }),
           (viewModel) => viewModel.forwardPageHref,
           O.getOrElseW(shouldNotBeCalled),
@@ -42,12 +47,8 @@ describe('construct-default-pagination-controls', () => {
       beforeEach(() => {
         result = pipe(
           constructDefaultPaginationControls(path, {
-            items: ['a', 'b'],
+            ...arbitraryPageOfItems,
             backwardPage: O.some(backwardPageNumber),
-            forwardPage: O.none,
-            pageNumber: 2,
-            numberOfPages: 2,
-            numberOfOriginalItems: 4,
           }),
           (viewModel) => viewModel.backwardPageHref,
           O.getOrElseW(shouldNotBeCalled),
