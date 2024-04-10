@@ -13,6 +13,7 @@ import { Dependencies } from './dependencies';
 import { PageOfItems, paginate } from '../../../shared-components/pagination';
 import { Group } from '../../../../types/group';
 import { toExpressionDoisByMostRecentlyAdded } from '../../../../read-models/lists';
+import { buildPaginationHref } from '../../group-followers-page/construct-view-model/construct-view-model';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,
@@ -22,8 +23,6 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
   O.map(toExpressionDoisByMostRecentlyAdded),
   E.fromOption(() => DE.notFound),
 );
-
-const generateHref = (groupSlug: string) => (page: number) => `/groups/${groupSlug}/feed?page=${page}`;
 
 const toOrderedArticleCards = (
   dependencies: Dependencies,
@@ -36,15 +35,9 @@ const toOrderedArticleCards = (
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,
-    backwardPageHref: pipe(
-      pageOfArticleIds.prevPage,
-      O.map(generateHref(groupSlug)),
-    ),
+    backwardPageHref: buildPaginationHref(`/groups/${groupSlug}/feed`, pageOfArticleIds.prevPage),
     backwardPageLabel: 'Newer',
-    forwardPageHref: pipe(
-      pageOfArticleIds.nextPage,
-      O.map(generateHref(groupSlug)),
-    ),
+    forwardPageHref: buildPaginationHref(`/groups/${groupSlug}/feed`, pageOfArticleIds.nextPage),
     forwardPageLabel: 'Older',
     page: pageOfArticleIds.pageNumber,
     pageCount: pageOfArticleIds.numberOfPages,
