@@ -57,6 +57,17 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
+  const listOwnerId = pipe(
+    validatedFormFields.right.listId,
+    dependencies.lookupList,
+    O.map((list) => list.ownerId),
+  );
+
+  if (O.isNone(listOwnerId)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'The list you are trying to save to does not exist.');
+    return;
+  }
+
   const articleId = validatedFormFields.right[articleIdFieldName];
   const listId = validatedFormFields.right.listId;
 
