@@ -93,7 +93,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     {
       annotation: {
         userInput: formBody.right.annotation,
-        error: O.none,
+        error: formBody.right.annotation.content.length > 4000 ? O.some('Your annotation may not exceed 4000 characters') : O.none,
       },
     },
   );
