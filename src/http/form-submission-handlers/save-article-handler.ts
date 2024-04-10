@@ -17,6 +17,8 @@ import { addArticleToListCommandHandler } from '../../write-side/command-handler
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
+import { toRawFormCodec } from './to-fields-codec';
+import { decodeAndLogFailures } from '../../third-parties/decode-and-log-failures';
 
 export const articleIdFieldName = 'articleid';
 
@@ -30,10 +32,20 @@ const formBodyCodec = t.strict({
   annotation: unsafeUserInputCodec,
 });
 
+const rawFormBodyCodec = toRawFormCodec(formBodyCodec.type.props, 'saveArticleFormFieldsCodec');
+
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
+  const formFields = pipe(
+    context.request.body,
+    decodeAndLogFailures(dependencies.logger, rawFormBodyCodec),
+  );
   if (O.isNone(authenticatedUserId)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'This step requires you do be logged in. Please try logging in again.');
+    return;
+  }
+  if (E.isLeft(formFields)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Something went wrong when you submitted the form. Please try again.');
     return;
   }
   const formBody = pipe(
