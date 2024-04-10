@@ -1,6 +1,12 @@
-import { buildPaginationHref } from './build-pagination-href';
+import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import { PageOfItems } from './paginate';
 import { ViewModel } from './render-pagination-controls';
+
+const buildPaginationHref = (path: string, pageNumber: O.Option<number>): O.Option<string> => pipe(
+  pageNumber,
+  O.map((number) => `${path}?page=${number}`),
+);
 
 export const constructDefaultPaginationControls = (
   path: string,
