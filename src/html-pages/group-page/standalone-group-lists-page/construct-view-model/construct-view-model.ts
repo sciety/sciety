@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as LOID from '../../../../types/list-owner-id';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { constructListCards } from './construct-list-cards';
@@ -29,7 +30,12 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         dependencies.getFollowers(group.id),
         RA.size,
       ),
-      listCount: 1,
+      listCount: pipe(
+        group.id,
+        LOID.fromGroupId,
+        dependencies.selectAllListsOwnedBy,
+        RA.size,
+      ),
       listCards: constructListCards(dependencies, group),
       groupFollowersPageHref: `/groups/${group.slug}/followers`,
     },
