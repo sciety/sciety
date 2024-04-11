@@ -1,8 +1,10 @@
-import { pipe } from 'fp-ts/function';
-import { HtmlFragment } from '../../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderListOfListCardsWithFallback } from './render-list-of-list-cards-with-fallback';
 
-export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
-  renderListOfListCardsWithFallback(viewmodel.listCards),
-);
+const renderListCount = () => '<p>This group has 1 list.</p>';
+
+export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
+  ${renderListCount()}
+  ${renderListOfListCardsWithFallback(viewmodel.listCards)}
+`);
