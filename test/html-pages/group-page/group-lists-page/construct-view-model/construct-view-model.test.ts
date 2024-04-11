@@ -60,5 +60,7 @@ describe('construct-view-model', () => {
         initialGroupList.id,
       ]);
     });
+
+    it.todo('returns the total list count for the group');
   });
 });
