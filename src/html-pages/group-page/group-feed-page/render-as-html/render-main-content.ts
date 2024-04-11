@@ -5,7 +5,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { tabList } from '../../common-components/tab-list';
 import { ViewModel } from '../view-model';
 import { renderListOfArticleCardsWithFallback } from './render-list-of-article-cards-with-fallback';
-import { renderCollectionsSection } from './render-collections-section';
+import { renderFeaturedListsSection } from './render-featured-lists-section';
 import { wrapperForTopSpace } from '../../common-components/wrapper-for-top-space';
 
 const tabProps = (viewmodel: ViewModel) => ({
@@ -18,7 +18,7 @@ const augmentWithCollectionsSection = (viewmodel: ViewModel) => (otherContent: H
   RA.match(
     () => otherContent,
     (collectionCards) => toHtmlFragment(`
-        ${renderCollectionsSection(collectionCards)}
+        ${renderFeaturedListsSection(collectionCards)}
         ${otherContent}
       `),
   ),
