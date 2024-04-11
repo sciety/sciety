@@ -21,8 +21,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     findFollowers(dependencies),
     paginate(pageSize, params.page),
     E.map((pageOfFollowers) => ({
-      title: `${group.name} followers`,
-      group,
+      header: {
+        title: `${group.name} followers`,
+        group,
+      },
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
       pagination: constructDefaultPaginationControls(`/groups/${group.slug}/followers`, pageOfFollowers),

@@ -1,6 +1,6 @@
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
-import { Group } from '../../../types/group';
 import { UserHandle } from '../../../types/user-handle';
+import { ViewModel as HeaderViewModel } from '../sub-page-header/render-page-header';
 
 export type UserCardViewModel = {
   link: string,
@@ -12,9 +12,8 @@ export type UserCardViewModel = {
 };
 
 export type ViewModel = {
-  group: Group,
   followerCount: number,
   followers: ReadonlyArray<UserCardViewModel>,
   pagination: PaginationControlsViewModel,
-  title: string,
+  header: HeaderViewModel,
 };
