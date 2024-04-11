@@ -1,8 +1,8 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { Group } from '../../../../types/group';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { Group } from '../../../types/group';
 
 type ViewModel = {
   title: string,

@@ -4,10 +4,6 @@
 @use '../../../sass/typography';
 @use '../../../sass/layout';
 
-.group-followers-page-back-link {
-  display: block;
-}
-
 .user-card {
   $_is-entire-card-linked: true;
   @include card.basics($_is-entire-card-linked);
