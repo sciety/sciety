@@ -8,8 +8,4 @@ export const tabList = (viewmodel: TabsViewModel): RNEA.ReadonlyNonEmptyArray<Ta
     label: toHtmlFragment('Group feed'),
     url: `/groups/${viewmodel.groupSlug}/feed`,
   },
-  {
-    label: toHtmlFragment(`<span class="visually-hidden">This group has ${viewmodel.listCount} </span>Lists<span aria-hidden="true"> (${viewmodel.listCount})</span>`),
-    url: `/groups/${viewmodel.groupSlug}/lists`,
-  },
 ];
