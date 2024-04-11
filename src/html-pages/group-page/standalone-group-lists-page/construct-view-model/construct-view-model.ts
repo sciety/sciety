@@ -14,6 +14,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   dependencies.getGroupBySlug(params.slug),
   O.map((group) => pipe(
     {
+      header: {
+        title: `${group.name} lists`,
+        group,
+      },
       group,
       isFollowing: pipe(
         params.user,
