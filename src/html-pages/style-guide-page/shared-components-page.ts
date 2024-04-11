@@ -200,7 +200,7 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
     updatedAt: new Date('2024-04-04'),
     title: 'Endorsed by GigaByte',
     description: rawUserInput('Preprints that have undergone Editor’s Assessment by GigaByte.'),
-    imageUrl: O.some('/static/images/collections/endorsed-by-gigabyte.png'),
+    imageUrl: O.some('/static/images/lists/endorsed-by-gigabyte.png'),
     curator: O.some({
       avatarUrl: '/static/images/profile-dark.svg',
       name: 'Scott C Edmunds',
