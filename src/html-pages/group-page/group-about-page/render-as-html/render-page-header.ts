@@ -1,8 +1,13 @@
 import { htmlEscape } from 'escape-goat';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { ViewModel } from '../view-model';
+import { Group } from '../../../../types/group';
+
+type ViewModel = {
+  title: string,
+  group: Group,
+};
 
 const renderPageHeaderIdentity = (viewModel: ViewModel) => pipe(
   viewModel.group.largeLogoPath,
