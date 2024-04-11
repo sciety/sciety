@@ -8,7 +8,7 @@ import { GroupId } from '../../../../types/group-id';
 import * as GID from '../../../../types/group-id';
 import { ViewModel } from '../view-model';
 
-const constructListCardForACollection = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
+const constructAFeaturedListsCard = (dependencies: Dependencies) => (listId: LID.ListId) => pipe(
   listId,
   dependencies.lookupList,
   O.map(constructListCardViewModelWithCurator(dependencies)),
@@ -34,7 +34,7 @@ const filterOutListCardsThatCannotBeDisplayed = (
   RA.map((listCardViewModel) => listCardViewModel.value),
 );
 
-export const constructCollections = (
+export const constructFeaturedLists = (
   dependencies: Dependencies,
   groupId: GroupId,
 ): ViewModel['featuredLists'] => {
@@ -42,7 +42,7 @@ export const constructCollections = (
   if (hardcodedListIds) {
     return pipe(
       hardcodedListIds,
-      RA.map(constructListCardForACollection(dependencies)),
+      RA.map(constructAFeaturedListsCard(dependencies)),
       filterOutListCardsThatCannotBeDisplayed,
     );
   }
