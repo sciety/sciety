@@ -18,7 +18,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         title: `${group.name} lists`,
         group,
       },
-      group,
       isFollowing: pipe(
         params.user,
         O.fold(

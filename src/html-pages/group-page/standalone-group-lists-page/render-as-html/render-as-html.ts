@@ -3,6 +3,6 @@ import { ViewModel } from '../view-model';
 import { renderPage } from './render-page';
 
 export const renderAsHtml = (viewmodel: ViewModel): HtmlPage => toHtmlPage({
-  title: viewmodel.group.name,
+  title: viewmodel.header.title,
   content: renderPage(viewmodel),
 });
