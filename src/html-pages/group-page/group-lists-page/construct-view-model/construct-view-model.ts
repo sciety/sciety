@@ -19,17 +19,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         title: `${group.name} lists`,
         group,
       },
-      isFollowing: pipe(
-        params.user,
-        O.fold(
-          () => false,
-          (u) => dependencies.isFollowing(group.id)(u.id),
-        ),
-      ),
-      followerCount: pipe(
-        dependencies.getFollowers(group.id),
-        RA.size,
-      ),
       listCount: pipe(
         group.id,
         LOID.fromGroupId,
@@ -37,7 +26,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         RA.size,
       ),
       listCards: constructListCards(dependencies, group),
-      groupFollowersPageHref: `/groups/${group.slug}/followers`,
     },
   )),
   TE.fromOption(() => DE.notFound),
