@@ -191,7 +191,7 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
   })}
 
     <h2 class="_style-guide-heading">List card</h2>
-    <h3 class="_style-guide-heading">as collections card</h2>
+    <h3 class="_style-guide-heading">as a featured list card</h2>
     <ol class="card-list" role="list">
         <li role="listitem">
         ${renderListCard({
