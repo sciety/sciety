@@ -10,7 +10,7 @@ export const renderCollectionsSection = (listCards: ReadonlyArray<ListCardViewMo
   renderListItems,
   (renderedItems) => `
     <section class="group-page-collections">
-      <h2>Collections</h2>
+      <h2>Featured lists</h2>
       <ol class="card-list" role="list">
         ${renderedItems}
       </ol>
