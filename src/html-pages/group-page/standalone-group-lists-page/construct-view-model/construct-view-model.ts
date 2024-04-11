@@ -5,7 +5,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { constructListCards } from './construct-list-cards';
-import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 
@@ -28,7 +27,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         RA.size,
       ),
       listCards: constructListCards(dependencies, group),
-      tabs: constructTabsViewModel(dependencies, group),
       groupFollowersPageHref: `/groups/${group.slug}/followers`,
     },
   )),
