@@ -13,12 +13,12 @@ const tabProps = (viewmodel: ViewModel) => ({
   activeTabIndex: 0,
 });
 
-const augmentWithCollectionsSection = (viewmodel: ViewModel) => (otherContent: HtmlFragment) => pipe(
+const augmentWithFeaturedListsSection = (viewmodel: ViewModel) => (otherContent: HtmlFragment) => pipe(
   viewmodel.featuredLists,
   RA.match(
     () => otherContent,
-    (collectionCards) => toHtmlFragment(`
-        ${renderFeaturedListsSection(collectionCards)}
+    (listCards) => toHtmlFragment(`
+        ${renderFeaturedListsSection(listCards)}
         ${otherContent}
       `),
   ),
@@ -26,7 +26,7 @@ const augmentWithCollectionsSection = (viewmodel: ViewModel) => (otherContent: H
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   renderListOfArticleCardsWithFallback(viewmodel.content),
-  augmentWithCollectionsSection(viewmodel),
+  augmentWithFeaturedListsSection(viewmodel),
   wrapperForTopSpace,
   renderTabs(tabProps(viewmodel)),
 );
