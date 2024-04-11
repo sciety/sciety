@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import * as LOID from '../../../../../src/types/list-owner-id';
@@ -43,25 +42,21 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createList(createMostRecentlyUpdatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createMostRecentlyUpdatedList.listId);
 
-      listCardIds = await pipe(
+      const viewModel = await pipe(
         {
           slug: addGroupCommand.slug,
           user: O.none,
         },
         constructViewModel(framework.queries),
         TE.getOrElse(shouldNotBeCalled),
-        T.map((viewModel) => viewModel.listCards),
-        T.map(RA.map((list) => list.listId)),
       )();
-      listCount = await pipe(
-        {
-          slug: addGroupCommand.slug,
-          user: O.none,
-        },
-        constructViewModel(framework.queries),
-        TE.getOrElse(shouldNotBeCalled),
-        T.map((viewModel) => viewModel.listCount),
-      )();
+
+      listCardIds = pipe(
+        viewModel.listCards,
+        RA.map((list) => list.listId),
+      );
+
+      listCount = viewModel.listCount;
     });
 
     it('returns lists in descending order of updated date', () => {
