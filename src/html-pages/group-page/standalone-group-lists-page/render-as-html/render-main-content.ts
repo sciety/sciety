@@ -3,9 +3,9 @@ import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderListOfListCardsWithFallback } from './render-list-of-list-cards-with-fallback';
 
-const renderListCount = () => `<p>This group has ${renderCountWithDescriptor(1, 'list', 'lists')}.</p>`;
+const renderListCount = (listCount: ViewModel['listCount']) => `<p>This group has ${renderCountWithDescriptor(listCount, 'list', 'lists')}.</p>`;
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
-  ${renderListCount()}
+  ${renderListCount(viewmodel.listCount)}
   ${renderListOfListCardsWithFallback(viewmodel.listCards)}
 `);

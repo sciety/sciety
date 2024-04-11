@@ -29,6 +29,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
         dependencies.getFollowers(group.id),
         RA.size,
       ),
+      listCount: 1,
       listCards: constructListCards(dependencies, group),
       groupFollowersPageHref: `/groups/${group.slug}/followers`,
     },

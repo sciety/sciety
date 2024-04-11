@@ -4,4 +4,5 @@ import { ViewModel as HeaderViewModel } from '../sub-page-header/render-page-hea
 export type ViewModel = {
   header: HeaderViewModel,
   listCards: ReadonlyArray<ListCardViewModel>,
+  listCount: number,
 };
