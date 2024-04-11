@@ -21,7 +21,6 @@ import { evaluationContent, paramsCodec as evaluationContentParams } from '../ev
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { paperActivityPage } from '../html-pages/paper-activity-page';
-import * as GLP from '../html-pages/group-page/group-lists-page';
 import * as GLPS from '../html-pages/group-page/standalone-group-lists-page';
 import * as GAP from '../html-pages/group-page/group-about-page';
 import * as GFP from '../html-pages/group-page/group-followers-page';
@@ -201,14 +200,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/groups/:slug/lists',
-    pageHandler(adapters, createPageFromParams(
-      GLP.paramsCodec,
-      GLP.constructAndRenderPage(adapters),
-    )),
-  );
-
-  router.get(
-    '/groups/:slug/lists-standalone',
     pageHandler(adapters, createPageFromParams(
       GLPS.paramsCodec,
       GLPS.constructAndRenderPage(adapters),
