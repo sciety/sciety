@@ -15,8 +15,10 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.fromOption(() => DE.notFound),
   TE.chain((group) => pipe(
     {
-      title: TE.right(`About ${group.name}`),
-      group: TE.right(group),
+      header: TE.right({
+        title: `About ${group.name}`,
+        group,
+      }),
       ourLists: pipe(
         group.id,
         LOID.fromGroupId,

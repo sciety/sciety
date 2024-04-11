@@ -4,6 +4,6 @@ import { renderMainContent } from './render-main-content';
 import { renderPageHeader } from '../../sub-page-header/render-page-header';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
-  ${renderPageHeader(viewmodel)}
+  ${renderPageHeader(viewmodel.header)}
   ${renderMainContent(viewmodel)}
 `);

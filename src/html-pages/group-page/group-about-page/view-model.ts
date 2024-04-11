@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { ListId } from '../../../types/list-id';
-import { Group } from '../../../types/group';
+import { ViewModel as HeaderViewModel } from '../sub-page-header/render-page-header';
 
 type ListViewModel = {
   listId: ListId,
@@ -18,6 +18,5 @@ type OurListsViewModel = {
 export type ViewModel = {
   ourLists: OurListsViewModel,
   markdown: string,
-  title: string,
-  group: Group,
+  header: HeaderViewModel,
 };

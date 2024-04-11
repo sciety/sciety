@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { Group } from '../../../types/group';
 
-type ViewModel = {
+export type ViewModel = {
   title: string,
   group: Group,
 };
