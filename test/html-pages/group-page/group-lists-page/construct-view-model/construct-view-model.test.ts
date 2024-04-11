@@ -31,7 +31,9 @@ describe('construct-view-model', () => {
       ...arbitraryCreateListCommand(),
       ownerId: LOID.fromGroupId(addGroupCommand.groupId),
     };
+    const expectedNumberOfListsCreated = 3;
     let listCardIds: ReadonlyArray<ViewModel['listCards'][number]['listId']>;
+    let listCount: number;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
@@ -51,6 +53,15 @@ describe('construct-view-model', () => {
         T.map((viewModel) => viewModel.listCards),
         T.map(RA.map((list) => list.listId)),
       )();
+      listCount = await pipe(
+        {
+          slug: addGroupCommand.slug,
+          user: O.none,
+        },
+        constructViewModel(framework.queries),
+        TE.getOrElse(shouldNotBeCalled),
+        T.map((viewModel) => viewModel.listCount),
+      )();
     });
 
     it('returns lists in descending order of updated date', () => {
@@ -61,6 +72,8 @@ describe('construct-view-model', () => {
       ]);
     });
 
-    it.todo('returns the total list count for the group');
+    it('returns the total list count for the group', () => {
+      expect(listCount).toStrictEqual(expectedNumberOfListsCreated);
+    });
   });
 });
