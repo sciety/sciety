@@ -41,6 +41,7 @@
 
 .group-page-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: settings.$click-target-separation;
   align-items: center;
 }
