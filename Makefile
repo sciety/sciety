@@ -32,7 +32,7 @@ prod: .env build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
 .env:
-	cp .env.example .env
+	test -f .env
 
 .gcp-ncrc-key.json:
 	gcloud iam service-accounts keys create ./.gcp-ncrc-key.json --iam-account ncrc-sheet@sciety.iam.gserviceaccount.com

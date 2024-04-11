@@ -44,7 +44,7 @@ Environment variables control certain behaviour.
 
 For the application to be able to interact with external services, credentials need to be provided via the `.env` file as well as dedicated credential files.
 
-Running `make dev` creates a `.env` file based on `.env.example`. This includes instructions on how to populate and use it.
+Before running `make dev` you have to create a `.env` file based on `.env.example`. This includes instructions on how to populate and use it.
 
 You'll need to re-run `make dev` after modifying the `.env` file.
 
