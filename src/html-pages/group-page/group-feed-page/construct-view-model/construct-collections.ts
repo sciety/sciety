@@ -37,7 +37,7 @@ const filterOutListCardsThatCannotBeDisplayed = (
 export const constructCollections = (
   dependencies: Dependencies,
   groupId: GroupId,
-): ViewModel['collections'] => {
+): ViewModel['featuredLists'] => {
   const hardcodedListIds = hardcoded.get(groupId);
   if (hardcodedListIds) {
     return pipe(

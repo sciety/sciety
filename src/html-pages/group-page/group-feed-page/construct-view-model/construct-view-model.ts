@@ -35,7 +35,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     constructContent(dependencies, partial.group, 10, params.page),
     TE.map((content) => ({
       ...partial,
-      collections: constructCollections(dependencies, partial.group.id),
+      featuredLists: constructCollections(dependencies, partial.group.id),
       content,
     })),
   )),

@@ -14,7 +14,7 @@ const tabProps = (viewmodel: ViewModel) => ({
 });
 
 const augmentWithCollectionsSection = (viewmodel: ViewModel) => (otherContent: HtmlFragment) => pipe(
-  viewmodel.collections,
+  viewmodel.featuredLists,
   RA.match(
     () => otherContent,
     (collectionCards) => toHtmlFragment(`

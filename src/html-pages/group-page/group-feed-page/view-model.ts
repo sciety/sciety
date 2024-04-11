@@ -17,7 +17,7 @@ type Content = NoActivity | OrderedArticleCards;
 
 export type ViewModel = PageHeaderViewModel & {
   group: Group,
-  collections: ReadonlyArray<ListCardViewModel>,
+  featuredLists: ReadonlyArray<ListCardViewModel>,
   content: Content,
   tabs: TabsViewModel,
 };
