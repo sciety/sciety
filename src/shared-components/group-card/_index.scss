@@ -1,7 +1,6 @@
 @use 'functions';
 @use '../../sass/card';
 @use 'breakpoints';
-@use '../../shared-sass/typography';
 
 .group-card {
   $_is-entire-card-linked: true;

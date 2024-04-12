@@ -6,7 +6,7 @@
 @use '../../../sass/list';
 @use 'settings';
 @use '../../../sass/states';
-@use '../../../shared-sass/typography';
+@use 'typography';
 
 .activity-feed__list {
   @include card.list();

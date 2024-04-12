@@ -1,7 +1,6 @@
 @use 'functions';
 @use 'settings';
 @use 'breakpoints';
-@use '../../../shared-sass/typography';
 @use 'common';
 
 $_value-statements-max-width: functions.px-to-rem(996px);
