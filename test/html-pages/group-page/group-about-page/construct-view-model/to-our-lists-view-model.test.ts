@@ -28,7 +28,7 @@ describe('to-our-lists-view-model', () => {
       expect(O.isSome(model.allListsUrl)).toBe(true);
     });
 
-    it('the View All Lists button is a link to the lists tab', () => {
+    it('the View All Lists button is a link to the lists sub page', () => {
       expect(model.allListsUrl).toStrictEqual(O.some(`/groups/${groupSlug}/lists`));
     });
   });
