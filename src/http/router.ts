@@ -190,12 +190,10 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/groups/:slug',
-    async (context, next) => {
-      context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/groups/${context.params.slug}/feed`);
-
-      await next();
-    },
+    pageHandler(adapters, createPageFromParams(
+      GFEP.paramsCodec,
+      GFEP.constructAndRenderPage(adapters),
+    )),
   );
 
   router.get(
@@ -224,10 +222,12 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/groups/:slug/feed',
-    pageHandler(adapters, createPageFromParams(
-      GFEP.paramsCodec,
-      GFEP.constructAndRenderPage(adapters),
-    )),
+    async (context, next) => {
+      context.status = StatusCodes.TEMPORARY_REDIRECT;
+      context.redirect(`/groups/${context.params.slug}`);
+
+      await next();
+    },
   );
 
   router.get(
