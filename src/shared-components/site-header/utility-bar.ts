@@ -3,7 +3,7 @@ import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 import { UserHandle } from '../../types/user-handle';
 import { ColourSchemes } from '../colour-schemes';
-import { constructUserAvatarUrl } from '../../read-side';
+import { constructUserAvatarSrc } from '../../read-side';
 
 const homeMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation" aria-hidden="true">
@@ -90,7 +90,7 @@ const loggedInMenuItems = (user: UserDetails) => `
   ${listsMenuItem()}
   ${myFeedMenuItem()}
   ${myListsMenuItem(user.handle)}
-  ${myUsernameMenuItem(user.handle, constructUserAvatarUrl(user))}
+  ${myUsernameMenuItem(user.handle, constructUserAvatarSrc(user))}
   ${logOutMenuItem()}
 `;
 

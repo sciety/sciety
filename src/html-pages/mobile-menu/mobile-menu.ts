@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
-import { constructUserAvatarUrl } from '../../read-side';
+import { constructUserAvatarSrc } from '../../read-side';
 
 const renderProfileLink = (user: O.Option<UserDetails>) => pipe(
   user,
@@ -11,7 +11,7 @@ const renderProfileLink = (user: O.Option<UserDetails>) => pipe(
     (loggedInUser) => `
       <li>
       <a href="/users/${loggedInUser.handle}" class="mobile-menu__link mobile-menu__link--user-profile">
-        <img src="${constructUserAvatarUrl(loggedInUser)}" alt="" class="mobile-menu__user_avatar">
+        <img src="${constructUserAvatarSrc(loggedInUser)}" alt="" class="mobile-menu__user_avatar">
         <span><span class="visually-hidden">Currently logged in as </span>${loggedInUser.handle}</span>
       </a>
     </li>`,

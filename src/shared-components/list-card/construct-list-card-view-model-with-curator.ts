@@ -4,7 +4,7 @@ import { List } from '../../read-models/lists';
 import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../shared-ports';
 import { Queries } from '../../read-models';
-import { constructUserAvatarUrl } from '../../read-side';
+import { constructUserAvatarSrc } from '../../read-side';
 
 export type Dependencies = Queries & {
   logger: Logger,
@@ -27,7 +27,7 @@ const getCurator = (dependencies: Dependencies) => (list: List): ListCardViewMod
             return O.none;
           },
           (userDetails) => O.some({
-            avatarUrl: constructUserAvatarUrl(userDetails),
+            avatarUrl: constructUserAvatarSrc(userDetails),
             name: userDetails.displayName,
           }),
         ),

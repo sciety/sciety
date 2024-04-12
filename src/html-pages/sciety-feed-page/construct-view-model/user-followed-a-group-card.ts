@@ -5,7 +5,7 @@ import { EventOfType } from '../../../domain-events';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 import { Dependencies } from './dependencies';
-import { constructUserAvatarUrl, rawUserInput } from '../../../read-side';
+import { constructUserAvatarSrc, rawUserInput } from '../../../read-side';
 import { UserHandle } from '../../../types/user-handle';
 
 type UserFollowedAGroupCard = (
@@ -34,7 +34,7 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (dependencies) => 
   sequenceS(O.Apply),
   O.map(({ group, userDetails }) => ({
     feedItemHref: `/groups/${group.slug}`,
-    avatarUrl: constructUserAvatarUrl(userDetails),
+    avatarUrl: constructUserAvatarSrc(userDetails),
     titleText: `${userDetails.handle} followed a group`,
     date: event.date,
     details: {
