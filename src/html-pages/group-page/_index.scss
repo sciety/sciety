@@ -5,10 +5,9 @@
 @use '../../sass/layout';
 @use '../../sass/list';
 
-@use './group-feed-page';
-@use './group-about-page';
-@use './group-lists-page';
-@use './group-followers-page';
-@use './sub-page-header';
-
-@use './common-components';
+@use 'group-feed-page';
+@use 'group-about-page';
+@use 'group-lists-page';
+@use 'group-followers-page';
+@use 'sub-page-header';
+@use 'common-components';
