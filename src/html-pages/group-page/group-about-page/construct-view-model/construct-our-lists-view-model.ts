@@ -4,6 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { List } from '../../../../read-models/lists';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
 import { ViewModel } from '../view-model';
+import * as LOID from '../../../../types/list-owner-id';
+import { Dependencies } from './dependencies';
+import { Group } from '../../../../types/group';
 
 const maxLists = 3;
 
@@ -30,4 +33,11 @@ export const toOurListsViewModel: ToOurListsViewModel = (groupSlug) => (lists) =
     ? truncatedView(listViewModels, groupSlug)
     : { lists: listViewModels, allListsUrl: O.none }
   ),
+);
+
+export const constructOurListsViewModel = (dependencies: Dependencies, group: Group): ViewModel['ourLists'] => pipe(
+  group.id,
+  LOID.fromGroupId,
+  dependencies.selectAllListsOwnedBy,
+  toOurListsViewModel(group.slug),
 );
