@@ -3,7 +3,6 @@ import { PaperActivitySummaryCardViewModel, PaperActivityErrorCardViewModel } fr
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
 import { Group } from '../../../types/group';
 import { PageHeaderViewModel } from '../common-components/render-page-header';
-import { TabsViewModel } from '../common-components/tabs-view-model';
 import { ListCardViewModel } from '../../../shared-components/list-card';
 
 type NoActivity = { tag: 'no-activity-yet' };
@@ -19,5 +18,4 @@ export type ViewModel = PageHeaderViewModel & {
   group: Group,
   featuredLists: ReadonlyArray<ListCardViewModel>,
   content: Content,
-  tabs: TabsViewModel,
 };

@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { constructTabsViewModel } from '../../common-components/tabs-view-model';
 import { Dependencies } from './dependencies';
 import { constructContent } from './construct-content';
 import { Params } from './params';
@@ -27,7 +26,6 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       dependencies.getFollowers(group.id),
       RA.size,
     ),
-    tabs: constructTabsViewModel(dependencies, group),
     groupAboutPageHref: `/groups/${group.slug}/about`,
     groupListsPageHref: `/groups/${group.slug}/lists`,
     groupFollowersPageHref: `/groups/${group.slug}/followers`,
