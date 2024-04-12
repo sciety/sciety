@@ -11,6 +11,11 @@ import { Group } from '../../../../types/group';
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
+const constructHeaderViewModel = (group: Group) => ({
+  title: `About ${group.name}`,
+  group,
+});
+
 const constructOurListsViewModel = (dependencies: Dependencies, group: Group) => pipe(
   group.id,
   LOID.fromGroupId,
@@ -23,10 +28,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   TE.fromOption(() => DE.notFound),
   TE.chain((group) => pipe(
     {
-      header: TE.right({
-        title: `About ${group.name}`,
-        group,
-      }),
+      header: TE.right(constructHeaderViewModel(group)),
       ourLists: TE.right(constructOurListsViewModel(dependencies, group)),
       markdown: dependencies.fetchStaticFile(`groups/${group.descriptionPath}`),
     },
