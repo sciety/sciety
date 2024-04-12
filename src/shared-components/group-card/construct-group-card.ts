@@ -11,7 +11,7 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../read-models';
 import { GroupCardViewModel } from './view-model';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { groupPageHref } from '../../html-pages/list-page/construct-view-model/get-owner-information';
+import { groupPageHref } from '../../read-side/group-page-href';
 
 type Dependencies = Queries;
 

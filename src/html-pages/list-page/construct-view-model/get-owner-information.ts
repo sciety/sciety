@@ -3,14 +3,13 @@ import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation } from './get-user-owner-information';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { Dependencies } from './dependencies';
+import { groupPageHref } from '../../../read-side/group-page-href';
 
 type OwnerInformation = {
   ownerName: string,
   ownerHref: string,
   ownerAvatarPath: string,
 };
-
-export const groupPageHref = (slug: string): string => `/groups/${slug}`;
 
 type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
 
