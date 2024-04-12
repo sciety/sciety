@@ -1,6 +1,6 @@
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
 import { UserHandle } from '../../../types/user-handle';
-import { ViewModel as HeaderViewModel } from '../sub-page-header/render-page-header';
+import { HeaderViewModel } from '../sub-page-header';
 
 export type UserCardViewModel = {
   link: string,

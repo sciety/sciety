@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { ListId } from '../../../types/list-id';
-import { ViewModel as HeaderViewModel } from '../sub-page-header/render-page-header';
+import { HeaderViewModel } from '../sub-page-header';
 
 type ListViewModel = {
   listId: ListId,
