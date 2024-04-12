@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as LOID from '../../../../types/list-owner-id';
@@ -24,12 +25,13 @@ const constructOurListsViewModel = (dependencies: Dependencies, group: Group) =>
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),
-  TE.fromOption(() => DE.notFound),
-  TE.map((group) => ({
+  E.fromOption(() => DE.notFound),
+  E.map((group) => ({
     group,
     header: constructHeaderViewModel(group),
     ourLists: constructOurListsViewModel(dependencies, group),
   })),
+  TE.fromEither,
   TE.chain((partial) => pipe(
     dependencies.fetchStaticFile(`groups/${partial.group.descriptionPath}`),
     TE.map((markdown) => ({
