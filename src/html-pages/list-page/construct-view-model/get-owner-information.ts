@@ -10,6 +10,8 @@ type OwnerInformation = {
   ownerAvatarPath: string,
 };
 
+const groupPageHref = (slug: string) => `/groups/${slug}`;
+
 type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
 
 export const getOwnerInformation: GetOwnerInformation = (dependencies) => (ownerId) => {
@@ -20,7 +22,7 @@ export const getOwnerInformation: GetOwnerInformation = (dependencies) => (owner
         dependencies.getGroup,
         O.map((group) => ({
           ownerName: group.name,
-          ownerHref: `/groups/${group.slug}`,
+          ownerHref: groupPageHref(group.slug),
           ownerAvatarPath: group.avatarPath,
         })),
       );
