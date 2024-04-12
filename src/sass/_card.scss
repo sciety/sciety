@@ -2,7 +2,7 @@
 @use 'functions';
 @use 'list';
 @use 'settings';
-@use 'typography';
+@use '../shared-sass/typography';
 @use 'avatar';
 
 $_card-border-radius: settings.$border-radius;

@@ -2,7 +2,7 @@
 @use 'functions';
 @use 'form';
 @use 'states';
-@use 'typography';
+@use '../shared-sass/typography';
 
 html {
   font-size: unset;

@@ -2,7 +2,7 @@
 @use 'functions';
 @use 'settings';
 @use '../sass/states';
-@use '../sass/typography';
+@use 'typography';
 
 @mixin _link($text, $background, $background-hover) {
   @include typography.button();

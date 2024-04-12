@@ -1,5 +1,5 @@
 @use '../sass/layout';
-@use '../sass/typography';
+@use '../shared-sass/typography';
 
 @mixin feed-page-numbers() {
   @include typography.details();
