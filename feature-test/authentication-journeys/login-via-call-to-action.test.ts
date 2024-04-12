@@ -25,7 +25,7 @@ describe('login-via-call-to-action', () => {
   afterEach(screenshotTeardown);
 
   describe('when I am on the group page and I am not logged in', () => {
-    const groupPage = `http://localhost:8080/groups/${addGroupCommand.slug}/feed`;
+    const groupPage = `http://localhost:8080/groups/${addGroupCommand.slug}`;
 
     beforeEach(async () => {
       await goto(groupPage);
