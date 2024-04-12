@@ -21,7 +21,7 @@ export const getOwnerInformation: GetOwnerInformation = (dependencies) => (owner
         dependencies.getGroup,
         O.map((group) => ({
           ownerName: group.name,
-          ownerHref: groupPageHref(group.slug),
+          ownerHref: groupPageHref(group),
           ownerAvatarPath: group.avatarPath,
         })),
       );

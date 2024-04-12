@@ -19,7 +19,7 @@ export const constructGroupLink = (
     return O.none;
   }),
   O.map((foundGroup) => ({
-    href: groupPageHref(foundGroup.slug),
+    href: groupPageHref(foundGroup),
     groupName: foundGroup.name,
     logoPath: foundGroup.largeLogoPath,
   })),

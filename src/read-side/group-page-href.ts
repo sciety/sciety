@@ -1,1 +1,3 @@
-export const groupPageHref = (slug: string): string => `/groups/${slug}`;
+import { Group } from '../types/group';
+
+export const groupPageHref = (group: Group): string => `/groups/${group.slug}`;

@@ -56,7 +56,7 @@ export const constructGroupCard = (
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
       curatedArticlesCount: calculateCuratedArticlesCount(groupId, dependencies),
       listCount: calculateListCount(groupId, dependencies),
-      groupPageHref: groupPageHref(group.slug),
+      groupPageHref: groupPageHref(group),
     })),
   )),
   E.fromOption(() => DE.notFound),

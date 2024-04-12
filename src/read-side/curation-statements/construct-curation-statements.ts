@@ -38,7 +38,7 @@ const addGroupInformation = (dependencies: Dependencies) => (statement: PartialC
     ...statement,
     groupName: group.name,
     groupLogo: group.largeLogoPath,
-    groupPageHref: groupPageHref(group.slug),
+    groupPageHref: groupPageHref(group),
   })),
 );
 
