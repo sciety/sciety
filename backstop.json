@@ -92,21 +92,21 @@
       ]
     },
     {
-      "label": "Group page, lists tab",
+      "label": "Group page, lists sub-page",
       "url": "http://sciety-test-app-1/groups/pci-zoology/lists",
       "selectors": [
         "main"
       ]
     },
     {
-      "label": "Group page, about tab",
+      "label": "Group page, about sub-page",
       "url": "http://sciety-test-app-1/groups/pci-zoology/about",
       "selectors": [
         "main"
       ]
     },
     {
-      "label": "Group page, followers",
+      "label": "Group page, followers sub-page",
       "url": "http://sciety-test-app-1/groups/pci-zoology/followers",
       "selectors": [
         "main"
