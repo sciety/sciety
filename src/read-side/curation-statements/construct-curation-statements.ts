@@ -17,6 +17,7 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ExternalQueries } from '../../third-parties';
 import { CurationStatement } from './curation-statement';
 import * as PH from '../../types/publishing-history';
+import { groupPageHref } from '../../html-pages/list-page/construct-view-model/get-owner-information';
 
 export type Dependencies = Queries & ExternalQueries & {
   logger: Logger,
@@ -37,7 +38,7 @@ const addGroupInformation = (dependencies: Dependencies) => (statement: PartialC
     ...statement,
     groupName: group.name,
     groupLogo: group.largeLogoPath,
-    groupPageHref: `/groups/${group.slug}`,
+    groupPageHref: groupPageHref(group.slug),
   })),
 );
 

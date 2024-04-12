@@ -10,7 +10,7 @@ type OwnerInformation = {
   ownerAvatarPath: string,
 };
 
-const groupPageHref = (slug: string) => `/groups/${slug}`;
+export const groupPageHref = (slug: string): string => `/groups/${slug}`;
 
 type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
 
