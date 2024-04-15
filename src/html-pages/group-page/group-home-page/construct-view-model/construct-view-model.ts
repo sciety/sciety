@@ -12,27 +12,29 @@ import { Group } from '../../../../types/group';
 
 const constructGroupListsPageHref = (group: Group): O.Option<string> => O.some(`/groups/${group.slug}/lists`);
 
+const constructHeader = (dependencies: Dependencies, user: Params['user']) => (group: Group) => ({
+  group,
+  isFollowing: pipe(
+    user,
+    O.fold(
+      () => false,
+      (u) => dependencies.isFollowing(group.id)(u.id),
+    ),
+  ),
+  followerCount: pipe(
+    dependencies.getFollowers(group.id),
+    RA.size,
+  ),
+  groupAboutPageHref: `/groups/${group.slug}/about`,
+  groupListsPageHref: constructGroupListsPageHref(group),
+  groupFollowersPageHref: `/groups/${group.slug}/followers`,
+});
+
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
 export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),
-  O.map((group) => ({
-    group,
-    isFollowing: pipe(
-      params.user,
-      O.fold(
-        () => false,
-        (u) => dependencies.isFollowing(group.id)(u.id),
-      ),
-    ),
-    followerCount: pipe(
-      dependencies.getFollowers(group.id),
-      RA.size,
-    ),
-    groupAboutPageHref: `/groups/${group.slug}/about`,
-    groupListsPageHref: constructGroupListsPageHref(group),
-    groupFollowersPageHref: `/groups/${group.slug}/followers`,
-  })),
+  O.map(constructHeader(dependencies, params.user)),
   TE.fromOption(() => DE.notFound),
   TE.chain((header) => pipe(
     constructContent(dependencies, header.group, 10, params.page),
