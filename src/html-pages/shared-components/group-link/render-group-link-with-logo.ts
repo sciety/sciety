@@ -8,7 +8,7 @@ const renderGroupLogoWithTextFallback = (viewModel: GroupLinkWithLogoViewModel) 
   viewModel.logoSrc,
   O.fold(
     () => htmlEscape(viewModel.groupName),
-    (logoPath) => `<img src="${logoPath}"alt="${htmlEscape(viewModel.groupName)}" class="group-link-with-logo__logo">`,
+    (logoSrc) => `<img src="${logoSrc}"alt="${htmlEscape(viewModel.groupName)}" class="group-link-with-logo__logo">`,
   ),
 );
 
