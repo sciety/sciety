@@ -11,7 +11,7 @@ import { sanitise } from '../../types/sanitised-html-fragment';
 import { Queries } from '../../read-models';
 import { GroupCardViewModel } from './view-model';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { groupPageHref } from '../../read-side/group-page-href';
+import { constructGroupPageHref } from '../../read-side/construct-group-page-href';
 
 type Dependencies = Queries;
 
@@ -56,7 +56,7 @@ export const constructGroupCard = (
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
       curatedArticlesCount: calculateCuratedArticlesCount(groupId, dependencies),
       listCount: calculateListCount(groupId, dependencies),
-      groupPageHref: groupPageHref(group),
+      groupPageHref: constructGroupPageHref(group),
     })),
   )),
   E.fromOption(() => DE.notFound),

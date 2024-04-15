@@ -5,7 +5,7 @@ import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
 import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 import { GroupLinkAsTextViewModel } from './group-link-as-text-view-model';
-import { groupPageHref } from '../../read-side/group-page-href';
+import { constructGroupPageHref } from '../../read-side/construct-group-page-href';
 
 export type ConstructGroupLinkDependencies = Queries & { logger: Logger };
 
@@ -19,7 +19,7 @@ export const constructGroupLink = (
     return O.none;
   }),
   O.map((foundGroup) => ({
-    href: groupPageHref(foundGroup),
+    href: constructGroupPageHref(foundGroup),
     groupName: foundGroup.name,
     logoPath: foundGroup.largeLogoPath,
   })),

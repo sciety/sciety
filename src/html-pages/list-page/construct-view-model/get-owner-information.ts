@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation } from './get-user-owner-information';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { Dependencies } from './dependencies';
-import { groupPageHref } from '../../../read-side/group-page-href';
+import { constructGroupPageHref } from '../../../read-side/construct-group-page-href';
 
 type OwnerInformation = {
   ownerName: string,
@@ -21,7 +21,7 @@ export const getOwnerInformation: GetOwnerInformation = (dependencies) => (owner
         dependencies.getGroup,
         O.map((group) => ({
           ownerName: group.name,
-          ownerHref: groupPageHref(group),
+          ownerHref: constructGroupPageHref(group),
           ownerAvatarPath: group.avatarPath,
         })),
       );
