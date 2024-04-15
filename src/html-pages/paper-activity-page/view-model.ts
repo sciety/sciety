@@ -20,7 +20,7 @@ export type EvaluationPublishedFeedItem = {
   publishedAt: Date,
   groupName: string,
   groupHref: string,
-  groupAvatar: string,
+  groupAvatarSrc: string,
   fullText: O.Option<SanitisedHtmlFragment>,
   fullTextLanguageCode: O.Option<LanguageCode>,
 };

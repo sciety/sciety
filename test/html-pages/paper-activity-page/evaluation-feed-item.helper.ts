@@ -14,7 +14,7 @@ export const arbitrary = (): EvaluationPublishedFeedItem => ({
   publishedAt: new Date(),
   groupHref: arbitraryWord(),
   groupName: 'group 1',
-  groupAvatar: '/avatar',
+  groupAvatarSrc: '/avatar',
   fullText: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
   fullTextLanguageCode: O.none,
 });

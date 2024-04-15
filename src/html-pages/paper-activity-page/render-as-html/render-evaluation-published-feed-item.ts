@@ -10,7 +10,7 @@ import { EvaluationPublishedFeedItem } from '../view-model';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
 const avatar = (review: EvaluationPublishedFeedItem) => toHtmlFragment(`
-  <img class="activity-feed__item__avatar" src="${review.groupAvatar}" alt="">
+  <img class="activity-feed__item__avatar" src="${review.groupAvatarSrc}" alt="">
 `);
 
 const eventMetadata = (review: EvaluationPublishedFeedItem) => toHtmlFragment(`

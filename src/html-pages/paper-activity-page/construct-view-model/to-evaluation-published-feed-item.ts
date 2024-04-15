@@ -20,12 +20,12 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
         () => ({
           groupName: 'A group',
           groupHref: `/groups/${evaluation.groupId}`,
-          groupAvatar: '/static/images/sciety-logo.jpg',
+          groupAvatarSrc: '/static/images/sciety-logo.jpg',
         }),
         (group) => ({
           groupName: group.name,
           groupHref: `/groups/${group.slug}`,
-          groupAvatar: group.avatarPath,
+          groupAvatarSrc: group.avatarPath,
         }),
       ),
       T.of,
