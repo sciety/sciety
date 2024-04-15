@@ -1,8 +1,10 @@
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { pipe } from 'fp-ts/function';
+import { HtmlFragment } from '../../../../types/html-fragment';
 import { renderListItems } from '../../../../shared-components/render-list-items';
+import { renderListOfCards } from '../../../shared-components/list-of-cards';
 
-export const renderFollowList = (list: ReadonlyArray<HtmlFragment>): HtmlFragment => toHtmlFragment(`
-  <ol class="card-list" role="list">
-    ${renderListItems(list)}
-  </ol>
-`);
+export const renderFollowList = (list: ReadonlyArray<HtmlFragment>): HtmlFragment => pipe(
+  list,
+  renderListItems,
+  renderListOfCards,
+);

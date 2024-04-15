@@ -1,7 +1,9 @@
+import { pipe } from 'fp-ts/function';
 import { renderListItems } from '../../shared-components/render-list-items';
 import { supplementaryCard } from '../../shared-components/supplementary-card';
 import { supplementaryInfo } from '../../shared-components/supplementary-info';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { renderListOfCards } from '../shared-components/list-of-cards';
 
 const supplementaryItems = [
   supplementaryCard(
@@ -13,7 +15,11 @@ const supplementaryItems = [
   ),
 ];
 
-export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment => toHtmlFragment(`
+export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment => pipe(
+  groups,
+  renderListItems,
+  renderListOfCards,
+  (listOfCards) => `
   <header class="page-header">
     <h1>
       Groups
@@ -21,8 +27,8 @@ export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment 
     <p>A group on Sciety represents a team of scientists who evaluate and curate preprint research articles.</p>
     <p>Select a group to follow their work.</p>
   </header>
-  <ol class="card-list" role="list">
-    ${renderListItems(groups)}
-  </ol>
+  ${listOfCards}
   ${supplementaryInfo(supplementaryItems)}
-`);
+  `,
+  toHtmlFragment,
+);

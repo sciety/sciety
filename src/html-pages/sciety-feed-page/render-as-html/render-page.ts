@@ -8,6 +8,7 @@ import { supplementaryInfo } from '../../../shared-components/supplementary-info
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 import { renderScietyFeedCard } from './render-sciety-feed-card';
+import { renderListOfCards } from '../../shared-components/list-of-cards';
 
 const supplementaryItems = [
   supplementaryCard(
@@ -23,7 +24,9 @@ const supplementaryItems = [
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.cards,
   RA.map(renderScietyFeedCard),
-  (cards) => `
+  renderListItems,
+  renderListOfCards,
+  (listOfCards) => `
     <header class="page-header">
       <h1>${viewModel.pageHeading}</h1>
     </header>
@@ -31,9 +34,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <p class="sciety-feed-page-numbers">
         Showing page <b>${viewModel.pageNumber}</b> of <b>${viewModel.numberOfPages}</b><span class="visually-hidden"> pages of activity</span>
       </p>
-      <ol class="card-list" role="list">
-        ${renderListItems(cards)}
-      </ol>
+      ${listOfCards}
       ${renderLegacyPaginationControls({
     nextPageHref: pipe(
       viewModel.forwardPage,
