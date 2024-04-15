@@ -5,6 +5,7 @@ import { renderPaginationControls } from '../../../shared-components/pagination'
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel, UserCardViewModel } from '../view-model';
 import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
+import { renderListOfCards } from '../../../shared-components/list-of-cards';
 
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`
   <article class="user-card">
@@ -16,8 +17,6 @@ const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFrag
     <img class="user-card__avatar" src="${userCard.avatarUrl}" alt="">
   </article>
 `);
-
-const renderListOfCards = (cards: HtmlFragment) => `<ol class="card-list" role="list">${cards}</ol>`;
 
 const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pipe(
   userCards,
