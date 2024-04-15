@@ -8,7 +8,7 @@ import { constructGroupPageHref } from '../../../read-side/paths';
 type OwnerInformation = {
   ownerName: string,
   ownerHref: string,
-  ownerAvatarPath: string,
+  ownerAvatarSrc: string,
 };
 
 type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
@@ -22,7 +22,7 @@ export const getOwnerInformation: GetOwnerInformation = (dependencies) => (owner
         O.map((group) => ({
           ownerName: group.name,
           ownerHref: constructGroupPageHref(group),
-          ownerAvatarPath: group.avatarPath,
+          ownerAvatarSrc: group.avatarPath,
         })),
       );
     case 'user-id':

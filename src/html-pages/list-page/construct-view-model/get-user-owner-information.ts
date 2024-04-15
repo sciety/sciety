@@ -7,7 +7,7 @@ import { constructUserAvatarSrc } from '../../../read-side/paths';
 type OwnerInfo = {
   ownerName: string,
   ownerHref: string,
-  ownerAvatarPath: string,
+  ownerAvatarSrc: string,
 };
 
 type GetUserOwnerInformation = (dependencies: Dependencies) => (userId: UserId) => O.Option<OwnerInfo>;
@@ -18,6 +18,6 @@ export const getUserOwnerInformation: GetUserOwnerInformation = (dependencies) =
   O.map((userDetails) => ({
     ownerName: userDetails.displayName,
     ownerHref: `/users/${userDetails.handle}`,
-    ownerAvatarPath: constructUserAvatarSrc(userDetails),
+    ownerAvatarSrc: constructUserAvatarSrc(userDetails),
   })),
 );

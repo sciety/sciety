@@ -53,7 +53,7 @@ export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
     <div>
       <h1>${htmlEscape(viewModel.name)}</h1>
         <p class="page-header__subheading">
-        <img src="${viewModel.ownerAvatarPath}" alt="" class="page-header__avatar">
+        <img src="${viewModel.ownerAvatarSrc}" alt="" class="page-header__avatar">
         <span>A list by <a href="${viewModel.ownerHref}">${htmlEscape(viewModel.ownerName)}</a></span>
         </p>
       <p class="page-header__description">${safelyRenderRawUserInput(viewModel.description)}</p>

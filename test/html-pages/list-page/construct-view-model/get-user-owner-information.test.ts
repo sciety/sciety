@@ -28,7 +28,7 @@ describe('get-user-owner-information', () => {
       );
 
       expect(ownerInfo.ownerName).toStrictEqual(createUserAccountCommand.displayName);
-      expect(ownerInfo.ownerAvatarPath).toContain(createUserAccountCommand.handle);
+      expect(ownerInfo.ownerAvatarSrc).toContain(createUserAccountCommand.handle);
       expect(ownerInfo.ownerHref).toContain(createUserAccountCommand.handle);
     });
   });

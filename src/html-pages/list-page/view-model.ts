@@ -32,7 +32,7 @@ export type ViewModel = {
   description: RawUserInput,
   ownerName: string,
   ownerHref: string,
-  ownerAvatarPath: string,
+  ownerAvatarSrc: string,
   imageSrc: O.Option<string>,
   articleCount: number,
   updatedAt: Date,
