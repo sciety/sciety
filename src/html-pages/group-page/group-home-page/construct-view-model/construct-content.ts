@@ -13,6 +13,7 @@ import { Dependencies } from './dependencies';
 import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
 import { Group } from '../../../../types/group';
 import { toExpressionDoisByMostRecentlyAdded } from '../../../../read-models/lists';
+import { constructGroupPageHref } from '../../../../read-side/paths';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,
@@ -25,7 +26,7 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
 
 const toOrderedArticleCards = (
   dependencies: Dependencies,
-  groupSlug: string,
+  group: Group,
 ) => (
   pageOfArticleIds: PageOfItems<string>,
 ) => pipe(
@@ -34,7 +35,7 @@ const toOrderedArticleCards = (
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,
-    ...constructDefaultPaginationControls(`/groups/${groupSlug}/feed`, pageOfArticleIds),
+    ...constructDefaultPaginationControls(constructGroupPageHref(group), pageOfArticleIds),
     backwardPageLabel: 'Newer',
     forwardPageLabel: 'Older',
   })),
@@ -42,7 +43,7 @@ const toOrderedArticleCards = (
 
 const toPageOfFeedContent = (
   dependencies: Dependencies,
-  groupSlug: string,
+  group: Group,
   pageSize: number,
   page: number,
 ) => (articleIds: ReadonlyArray<string>) => pipe(
@@ -56,7 +57,7 @@ const toPageOfFeedContent = (
     E.mapLeft(() => ({ tag: 'no-activity-yet' as const })),
   )),
   TE.fromEither,
-  TE.chainTaskK(toOrderedArticleCards(dependencies, groupSlug)),
+  TE.chainTaskK(toOrderedArticleCards(dependencies, group)),
   TE.toUnion,
 );
 
@@ -69,5 +70,5 @@ export const constructContent = (
   group.id,
   getEvaluatedArticleIds(dependencies),
   TE.fromEither,
-  TE.chainTaskK(toPageOfFeedContent(dependencies, group.slug, pageSize, page)),
+  TE.chainTaskK(toPageOfFeedContent(dependencies, group, pageSize, page)),
 );

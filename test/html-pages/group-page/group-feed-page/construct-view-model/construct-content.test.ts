@@ -109,7 +109,7 @@ describe('construct-content', () => {
     });
 
     it('does have a link to the next page', () => {
-      expect(nextPageHref).toStrictEqual(O.some(`/groups/${addGroupCommand.slug}/feed?page=2`));
+      expect(nextPageHref).toStrictEqual(O.some(`/groups/${addGroupCommand.slug}?page=2`));
     });
   });
 
