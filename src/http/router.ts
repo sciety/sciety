@@ -24,7 +24,7 @@ import { paperActivityPage } from '../html-pages/paper-activity-page';
 import * as GLP from '../html-pages/group-page/group-lists-page';
 import * as GAP from '../html-pages/group-page/group-about-page';
 import * as GFP from '../html-pages/group-page/group-followers-page';
-import * as GFEP from '../html-pages/group-page/group-feed-page';
+import * as GHP from '../html-pages/group-page/group-home-page';
 import { groupsPage } from '../html-pages/groups-page';
 import { homePage, homePageLayout } from '../html-pages/home-page';
 import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page';
@@ -191,8 +191,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     groupPagePathSpecification,
     pageHandler(adapters, createPageFromParams(
-      GFEP.paramsCodec,
-      GFEP.constructAndRenderPage(adapters),
+      GHP.paramsCodec,
+      GHP.constructAndRenderPage(adapters),
     )),
   );
 
