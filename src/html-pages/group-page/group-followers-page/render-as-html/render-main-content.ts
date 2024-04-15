@@ -14,7 +14,7 @@ const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFrag
       <div class="user-card__handle">@${userCard.handle}</div>
       <span class="user-card__meta"><span class="visually-hidden">This user has </span><span>${renderCountWithDescriptor(userCard.listCount, 'list', 'lists')}</span><span>${userCard.followedGroupCount} groups followed</span></span>
     </div>
-    <img class="user-card__avatar" src="${userCard.avatarUrl}" alt="">
+    <img class="user-card__avatar" src="${userCard.avatarSrc}" alt="">
   </article>
 `);
 

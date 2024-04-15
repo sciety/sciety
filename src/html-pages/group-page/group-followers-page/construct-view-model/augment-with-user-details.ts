@@ -23,7 +23,7 @@ export const augmentWithUserDetails = (
       O.map((userDetails) => ({
         ...follower,
         ...userDetails,
-        avatarUrl: constructUserAvatarSrc(userDetails),
+        avatarSrc: constructUserAvatarSrc(userDetails),
         link: `/users/${userDetails.handle}`,
         title: userDetails.displayName,
       })),

@@ -8,7 +8,7 @@ export type UserCardViewModel = {
   handle: UserHandle,
   listCount: number,
   followedGroupCount: number,
-  avatarUrl: string,
+  avatarSrc: string,
 };
 
 export type ViewModel = {
