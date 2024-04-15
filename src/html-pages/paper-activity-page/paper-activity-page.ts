@@ -12,7 +12,7 @@ import { toRedirectTarget } from '../redirect-target';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 import { userIdCodec } from '../../types/user-id';
-import { paperActivityPagePath } from '../../read-side/paths';
+import { constructPaperActivityPageHref } from '../../read-side/paths';
 
 const canonicalParamsCodec = t.type({
   expressionDoi: canonicalExpressionDoiCodec,
@@ -39,7 +39,7 @@ const decodeCombinedParams = (params: unknown) => pipe(
 
 const redirectTo = (expressionDoi: ExpressionDoi) => pipe(
   expressionDoi,
-  paperActivityPagePath,
+  constructPaperActivityPageHref,
   toRedirectTarget,
 );
 

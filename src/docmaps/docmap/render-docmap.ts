@@ -8,7 +8,7 @@ import { publisherAccountId } from './publisher-account-id';
 import * as EL from '../../types/evaluation-locator';
 import * as EDOI from '../../types/expression-doi';
 import { DocmapViewModel } from './view-model';
-import { paperActivityPagePath } from '../../read-side/paths';
+import { constructPaperActivityPageHref } from '../../read-side/paths';
 
 const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   doi: expressionDoi,
@@ -35,7 +35,7 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluat
         },
         {
           type: 'web-page',
-          url: `https://sciety.org${paperActivityPagePath(expressionDoi)}#${EL.serialize(evaluation.evaluationLocator)}`,
+          url: `https://sciety.org${constructPaperActivityPageHref(expressionDoi)}#${EL.serialize(evaluation.evaluationLocator)}`,
         },
         {
           type: 'web-content',

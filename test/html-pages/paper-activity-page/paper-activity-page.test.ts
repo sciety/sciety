@@ -10,7 +10,7 @@ import { paperActivityPage } from '../../../src/html-pages/paper-activity-page/p
 import * as EDOI from '../../../src/types/expression-doi';
 import { toRedirectTarget } from '../../../src/html-pages/redirect-target';
 import { HtmlPage } from '../../../src/html-pages/html-page';
-import { paperActivityPagePath } from '../../../src/read-side/paths';
+import { constructPaperActivityPageHref } from '../../../src/read-side/paths';
 
 const getDecision = async (inputExpressionDoi: string, dependencies: Dependencies) => pipe(
   {
@@ -66,7 +66,7 @@ describe('paper-activity-page', () => {
 
     it('redirects to the paper activity page for the latest expression doi', () => {
       expect(output).toStrictEqual(E.left(toRedirectTarget(
-        paperActivityPagePath(latestExpressionDoi),
+        constructPaperActivityPageHref(latestExpressionDoi),
       )));
     });
   });
@@ -92,7 +92,7 @@ describe('paper-activity-page', () => {
 
     it('redirects to the paper activity page for the canonical doi', () => {
       expect(output).toStrictEqual(E.left(toRedirectTarget(
-        paperActivityPagePath(expressionDoiContainingLetters),
+        constructPaperActivityPageHref(expressionDoiContainingLetters),
       )));
     });
   });

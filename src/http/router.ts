@@ -51,7 +51,7 @@ import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import { EnvironmentVariables } from './environment-variables-codec';
-import { groupPagePathSpecification, paperActivityPagePath, paperActivityPagePathSpecification } from '../read-side/paths';
+import { groupPagePathSpecification, constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 
@@ -162,7 +162,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     `/articles/:expressionDoi(${doesNotBeginWithActivity})`,
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(paperActivityPagePath(EDOI.fromValidatedString(context.params.expressionDoi)));
+      context.redirect(constructPaperActivityPageHref(EDOI.fromValidatedString(context.params.expressionDoi)));
 
       await next();
     },
