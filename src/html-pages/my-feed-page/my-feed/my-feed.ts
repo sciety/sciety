@@ -18,6 +18,8 @@ import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
 import { Dependencies } from './dependencies';
+import { renderListItems } from '../../../shared-components/render-list-items';
+import { renderListOfCards } from '../../shared-components/list-of-cards';
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>
@@ -51,12 +53,13 @@ const constructArticleViewModels = (dependencies: Dependencies) => flow(
 
 const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
   RNEA.map(renderPaperActivitySummaryCard),
-  RNEA.map((card) => `<li class="my-feed__list_item">${card}</li>`),
-  (cards) => `
+  (cards) => renderListItems(cards, 'my-feed__list_item'),
+  renderListOfCards,
+  (listOfCards) => `
     <p class="my-feed-page-numbers">
       Showing page <b>${pageofItems.pageNumber}</b> of <b>${pageofItems.numberOfPages}</b><span class="visually-hidden"> pages of articles that have been evaluated by groups that you follow.</span>
     </p>
-    <ol class="card-list" role="list">${cards.join('')}</ol>
+    ${listOfCards}
     ${renderLegacyPaginationControls({
     nextPageHref: pipe(
       pageofItems.forwardPage,
