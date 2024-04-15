@@ -45,7 +45,7 @@ describe('user-followed-a-group-card', () => {
     });
 
     it('displays the user\'s avatar', async () => {
-      expect(viewModel.avatarUrl).toContain(createUserAccountCommand.handle);
+      expect(viewModel.avatarSrc).toContain(createUserAccountCommand.handle);
     });
 
     it('displays the user\'s handle in the title', async () => {

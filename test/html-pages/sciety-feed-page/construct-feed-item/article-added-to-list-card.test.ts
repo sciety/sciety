@@ -50,7 +50,7 @@ describe('article-added-to-list-card', () => {
       });
 
       it('includes the user\'s avatar', async () => {
-        expect(viewModel.avatarUrl).toContain(createuserAccountCommand.handle);
+        expect(viewModel.avatarSrc).toContain(createuserAccountCommand.handle);
       });
 
       it('includes the event date', async () => {
@@ -83,7 +83,7 @@ describe('article-added-to-list-card', () => {
       });
 
       it('replaces avatar with a default image', async () => {
-        expect(viewModel.avatarUrl).toBe('/static/images/sciety-logo.jpg');
+        expect(viewModel.avatarSrc).toBe('/static/images/sciety-logo.jpg');
       });
 
       it('includes the event date', async () => {

@@ -9,7 +9,7 @@ type ListWithAddedOwnershipInformation = {
   name: List['name'],
   description: List['description'],
   ownerName: string,
-  ownerAvatarUrl: string,
+  ownerAvatarSrc: string,
   linkUrl: string,
 };
 
@@ -31,14 +31,14 @@ export const addListOwnershipInformation = (
             return {
               ...list,
               ownerName: 'A group',
-              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+              ownerAvatarSrc: '/static/images/sciety-logo.jpg',
               linkUrl: renderListPageLinkHref(list.id),
             };
           },
           (group) => ({
             ...list,
             ownerName: group.name,
-            ownerAvatarUrl: group.avatarPath,
+            ownerAvatarSrc: group.avatarPath,
             linkUrl: renderListPageLinkHref(list.id),
           }),
         ),
@@ -56,7 +56,7 @@ export const addListOwnershipInformation = (
             return {
               ...list,
               ownerName: 'A user',
-              ownerAvatarUrl: '/static/images/sciety-logo.jpg',
+              ownerAvatarSrc: '/static/images/sciety-logo.jpg',
               linkUrl: renderListPageLinkHref(list.id),
             };
           },
@@ -64,7 +64,7 @@ export const addListOwnershipInformation = (
             {
               ...list,
               ownerName: userDetails.handle,
-              ownerAvatarUrl: constructUserAvatarSrc(userDetails),
+              ownerAvatarSrc: constructUserAvatarSrc(userDetails),
               linkUrl: renderListPageLinkHref(list.id),
             }
           ),

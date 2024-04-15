@@ -16,7 +16,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (dependencies) => 
   O.map(addListOwnershipInformation(dependencies)),
   O.map((extendedListMetadata) => ({
     ownerName: extendedListMetadata.ownerName,
-    ownerAvatarUrl: extendedListMetadata.ownerAvatarUrl,
+    ownerAvatarSrc: extendedListMetadata.ownerAvatarSrc,
     listName: extendedListMetadata.name,
     listDescription: extendedListMetadata.description,
     linkUrl: extendedListMetadata.linkUrl,
@@ -25,7 +25,7 @@ export const articleAddedToListCard: ArticleAddedToListCard = (dependencies) => 
     (viewModel) => ({
       titleText: `${viewModel.ownerName} added an article to a list`,
       feedItemHref: viewModel.linkUrl,
-      avatarUrl: viewModel.ownerAvatarUrl,
+      avatarSrc: viewModel.ownerAvatarSrc,
       date: event.date,
       details: {
         title: toHtmlFragment(viewModel.listName),

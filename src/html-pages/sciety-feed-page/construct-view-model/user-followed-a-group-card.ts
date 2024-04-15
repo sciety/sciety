@@ -35,7 +35,7 @@ export const userFollowedAGroupCard: UserFollowedAGroupCard = (dependencies) => 
   sequenceS(O.Apply),
   O.map(({ group, userDetails }) => ({
     feedItemHref: `/groups/${group.slug}`,
-    avatarUrl: constructUserAvatarSrc(userDetails),
+    avatarSrc: constructUserAvatarSrc(userDetails),
     titleText: `${userDetails.handle} followed a group`,
     date: event.date,
     details: {

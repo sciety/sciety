@@ -10,7 +10,7 @@ type ScietyFeedCardDetails = {
 export type ScietyFeedCard = {
   titleText: string,
   feedItemHref: string,
-  avatarUrl: string,
+  avatarSrc: string,
   date: Date,
   details?: ScietyFeedCardDetails,
 };
