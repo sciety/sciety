@@ -27,7 +27,7 @@ const getCurator = (dependencies: Dependencies) => (list: List): ListCardViewMod
             return O.none;
           },
           (userDetails) => O.some({
-            avatarUrl: constructUserAvatarSrc(userDetails),
+            avatarSrc: constructUserAvatarSrc(userDetails),
             name: userDetails.displayName,
           }),
         ),

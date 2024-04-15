@@ -10,7 +10,7 @@ import { RawUserInput } from '../../read-side';
 import { safelyRenderRawUserInput } from '../raw-user-input-renderers';
 
 type Curator = {
-  avatarUrl: string,
+  avatarSrc: string,
   name: string,
 };
 
@@ -32,7 +32,7 @@ const renderCurator = (viewModel: ListCardViewModel) => pipe(
     () => '',
     (curator) => `
       <div class="list-card__curator">
-        <img class="list-card__avatar" src="${curator.avatarUrl}" alt="" /><span>Curated by ${curator.name}</span>
+        <img class="list-card__avatar" src="${curator.avatarSrc}" alt="" /><span>Curated by ${curator.name}</span>
       </div>
     `,
   ),

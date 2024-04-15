@@ -203,7 +203,7 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
     description: rawUserInput('Preprints that have undergone Editor’s Assessment by GigaByte.'),
     imageUrl: O.some('/static/images/lists/endorsed-by-gigabyte.png'),
     curator: O.some({
-      avatarUrl: '/static/images/profile-dark.svg',
+      avatarSrc: '/static/images/profile-dark.svg',
       name: 'Scott C Edmunds',
     }),
   },
