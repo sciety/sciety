@@ -34,11 +34,12 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
     groupFollowersPageHref: `/groups/${group.slug}/followers`,
   })),
   TE.fromOption(() => DE.notFound),
-  TE.chain((partial) => pipe(
-    constructContent(dependencies, partial.group, 10, params.page),
+  TE.chain((header) => pipe(
+    constructContent(dependencies, header.group, 10, params.page),
     TE.map((content) => ({
-      ...partial,
-      featuredLists: constructFeaturedLists(dependencies, partial.group.id),
+      header,
+      group: header.group,
+      featuredLists: constructFeaturedLists(dependencies, header.group.id),
       content,
     })),
   )),
