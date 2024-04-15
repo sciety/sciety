@@ -17,17 +17,15 @@ const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFrag
   </article>
 `);
 
+const renderListOfCards = (cards: HtmlFragment) => `<ol class="card-list" role="list">${cards}</ol>`;
+
 const renderFollowersList = (userCards: ReadonlyArray<UserCardViewModel>) => pipe(
   userCards,
   RA.map(flow(
     renderUserCard,
     (userCard) => `<li>${userCard}</li>`,
   )),
-  (items) => (items.length === 0 ? '' : `
-    <ol class="card-list" role="list">
-      ${items.join('')}
-    </ol>
-  `),
+  (items) => (items.length === 0 ? '' : renderListOfCards(toHtmlFragment(items.join('')))),
 );
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
