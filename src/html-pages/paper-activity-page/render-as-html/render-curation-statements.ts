@@ -11,7 +11,7 @@ const renderGroupLogo = (curationStatement: ViewModel['curationStatements'][numb
   curationStatement.groupLogoSrc,
   O.match(
     () => '',
-    (logoPath) => `<img src="${logoPath}" alt="${htmlEscape(curationStatement.groupName)} logo">`,
+    (logoSrc) => `<img src="${logoSrc}" alt="${htmlEscape(curationStatement.groupName)} logo">`,
   ),
 );
 
