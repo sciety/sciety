@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import {
   constructArticleCardWithControlsAndAnnotation,
-} from '../../../shared-components/article-card-with-controls-and-annotation';
+} from '../../../html-pages/shared-components/article-card-with-controls-and-annotation';
 import { ExpressionActivity } from '../../../types/expression-activity';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';

@@ -7,7 +7,7 @@ import { PaperActivityErrorCardViewModel } from '../../../shared-components/pape
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
   constructArticleCardWithControlsAndAnnotation,
-} from '../../../shared-components/article-card-with-controls-and-annotation';
+} from '../../shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems } from '../../shared-components/pagination';
 import { ListId } from '../../../types/list-id';
 import { Dependencies } from './dependencies';

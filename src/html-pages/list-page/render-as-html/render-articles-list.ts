@@ -8,7 +8,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
 import {
   ArticleCardWithControlsAndAnnotationViewModel, renderArticleCardWithControlsAndAnnotation,
-} from '../../../shared-components/article-card-with-controls-and-annotation';
+} from '../../shared-components/article-card-with-controls-and-annotation';
 
 type RenderArticlesList = (
   articleViewModels: ReadonlyArray<E.Either<

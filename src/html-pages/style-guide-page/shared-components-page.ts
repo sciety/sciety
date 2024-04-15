@@ -11,7 +11,7 @@ import * as LID from '../../types/list-id';
 import * as DE from '../../types/data-error';
 import {
   renderArticleCardWithControlsAndAnnotation,
-} from '../../shared-components/article-card-with-controls-and-annotation';
+} from '../shared-components/article-card-with-controls-and-annotation';
 import { successBanner } from '../../shared-components/success-banner/success-banner';
 import { rawUserInput } from '../../read-side';
 import { renderListCard } from '../../shared-components/list-card';

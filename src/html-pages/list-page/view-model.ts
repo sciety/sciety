@@ -6,7 +6,7 @@ import { ListId } from '../../types/list-id';
 import { PaperActivityErrorCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
-} from '../../shared-components/article-card-with-controls-and-annotation';
+} from '../shared-components/article-card-with-controls-and-annotation';
 import { RawUserInput } from '../../read-side';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';

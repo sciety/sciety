@@ -1,12 +1,12 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
-import { renderArticleCardContents } from '../paper-activity-summary-card/render-as-html';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { ListId } from '../../../types/list-id';
+import { renderArticleCardContents } from '../../../shared-components/paper-activity-summary-card/render-as-html';
 import { ViewModel } from './view-model';
-import { safelyRenderRawUserInput } from '../raw-user-input-renderers';
-import { ExpressionDoi } from '../../types/expression-doi';
+import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
 const renderRemoveArticleForm = (expressionDoi: ExpressionDoi, listId: ListId) => toHtmlFragment(`
   <form method="post" action="/forms/remove-article-from-list">

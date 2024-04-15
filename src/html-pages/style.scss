@@ -21,7 +21,7 @@
 @use 'user-page';
 @use '../http/error-page';
 @use '../shared-components/paper-activity-summary-card';
-@use '../shared-components/article-card-with-controls-and-annotation';
+@use 'shared-components/article-card-with-controls-and-annotation';
 @use 'shared-components/pagination';
 @use '../shared-components/standard-page-layout';
 @use '../shared-components/tabs';

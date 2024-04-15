@@ -1,14 +1,14 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { missingAvatarFallback, unknownAuthor } from './static-content';
-import { ListId } from '../../types/list-id';
-import { ArticleId } from '../../types/article-id';
-import { Queries } from '../../read-models';
+import { ListId } from '../../../types/list-id';
+import { ArticleId } from '../../../types/article-id';
+import { Queries } from '../../../read-models';
 import { ViewModel } from './view-model';
-import { GroupId } from '../../types/group-id';
-import { UserId } from '../../types/user-id';
-import { ExpressionDoi } from '../../types/expression-doi';
-import { constructUserAvatarSrc } from '../../read-side/paths';
+import { GroupId } from '../../../types/group-id';
+import { UserId } from '../../../types/user-id';
+import { ExpressionDoi } from '../../../types/expression-doi';
+import { constructUserAvatarSrc } from '../../../read-side/paths';
 
 const getGroupName = (dependencies: Queries, groupId: GroupId) => pipe(
   groupId,
