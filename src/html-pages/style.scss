@@ -2,7 +2,7 @@
 @use '../sass/page-content';
 @use '../sass/fonts';
 
-@use 'shared-components/list-of-cards';
+@use 'shared-components';
 @use 'form-rules';
 @use 'layout-rules';
 @use 'list-rules';
@@ -21,8 +21,6 @@
 @use 'user-page';
 @use '../http/error-page';
 @use '../shared-components/paper-activity-summary-card';
-@use 'shared-components/article-card-with-controls-and-annotation';
-@use 'shared-components/pagination';
 @use '../shared-components/standard-page-layout';
 @use '../shared-components/tabs';
 @use '../shared-components/group-card';
@@ -31,6 +29,5 @@
 @use '../shared-components/site-header';
 @use '../shared-components/site-footer';
 @use '../shared-components/success-banner';
-@use 'shared-components/group-link';
 @use '../sass/supplementary';
 
