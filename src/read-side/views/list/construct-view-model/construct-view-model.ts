@@ -6,12 +6,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
 import { getOwnerName } from './get-owner-name';
-import * as DE from '../../../types/data-error';
-import { ArticleId } from '../../../types/article-id';
+import * as DE from '../../../../types/data-error';
+import { ArticleId } from '../../../../types/article-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 import { Params } from './params';
-import { toExpressionDoisByMostRecentlyAdded } from '../../../read-models/lists';
+import { toExpressionDoisByMostRecentlyAdded } from '../../../../read-models/lists';
 
 export const constructViewModel = (
   dependencies: Dependencies,

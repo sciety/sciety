@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ListOwnerId } from '../../../types/list-owner-id';
+import { ListOwnerId } from '../../../../types/list-owner-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
 

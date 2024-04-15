@@ -3,12 +3,12 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import {
   constructArticleCardWithControlsAndAnnotation,
-} from '../../../html-pages/shared-components/article-card-with-controls-and-annotation';
-import { ExpressionActivity } from '../../../types/expression-activity';
-import { ListId } from '../../../types/list-id';
+} from '../../../../html-pages/shared-components/article-card-with-controls-and-annotation';
+import { ExpressionActivity } from '../../../../types/expression-activity';
+import { ListId } from '../../../../types/list-id';
 import { Dependencies } from './dependencies';
 import { ViewModel } from '../view-model';
-import * as EDOI from '../../../types/expression-doi';
+import * as EDOI from '../../../../types/expression-doi';
 
 export const toPageOfCards = (
   dependencies: Dependencies,
