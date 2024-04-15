@@ -27,7 +27,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       RA.size,
     ),
     groupAboutPageHref: `/groups/${group.slug}/about`,
-    groupListsPageHref: `/groups/${group.slug}/lists`,
+    groupListsPageHref: O.some(`/groups/${group.slug}/lists`),
     groupFollowersPageHref: `/groups/${group.slug}/followers`,
   })),
   TE.fromOption(() => DE.notFound),

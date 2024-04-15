@@ -10,7 +10,7 @@ export type PageHeaderViewModel = {
   isFollowing: boolean,
   followerCount: number,
   groupAboutPageHref: string,
-  groupListsPageHref: string,
+  groupListsPageHref: O.Option<string>,
   groupFollowersPageHref: string,
 };
 
@@ -30,9 +30,13 @@ const renderAboutLink = (groupAboutPageHref: PageHeaderViewModel['groupAboutPage
     <a href="${groupAboutPageHref}" class="group-page-actions__secondary_button">About</a>
 `;
 
-const renderGroupListsLink = (groupListsPageHref: PageHeaderViewModel['groupListsPageHref']) => `
-    <a href="${groupListsPageHref}" class="group-page-actions__secondary_button">Lists</a>
-`;
+const renderGroupListsLink = (groupListsPageHref: PageHeaderViewModel['groupListsPageHref']) => pipe(
+  groupListsPageHref,
+  O.fold(
+    () => '',
+    (href) => `<a href="${href}" class="group-page-actions__secondary_button">Lists</a>`,
+  ),
+);
 
 const renderGroupFollowersLink = (groupFollowersPageHref: PageHeaderViewModel['groupFollowersPageHref'], followerCount: PageHeaderViewModel['followerCount']) => `
   <a href="${groupFollowersPageHref}">
