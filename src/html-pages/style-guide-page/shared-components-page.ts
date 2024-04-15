@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import * as EDOI from '../../types/expression-doi';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html';
@@ -14,6 +15,8 @@ import {
 import { successBanner } from '../../shared-components/success-banner/success-banner';
 import { rawUserInput } from '../../read-side';
 import { renderListCard } from '../../shared-components/list-card';
+import { renderListOfCards } from '../shared-components/list-of-cards';
+import { renderListItems } from '../../shared-components/render-list-items';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',
@@ -191,10 +194,8 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
   })}
 
     <h2 class="_style-guide-heading">List card</h2>
-    <h3 class="_style-guide-heading">as a featured list card</h2>
-    <ol class="card-list" role="list">
-        <li role="listitem">
-        ${renderListCard({
+    <h3 class="_style-guide-heading">as a featured list card</h3>
+        ${pipe({
     listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCount: 3,
     updatedAt: new Date('2024-04-04'),
@@ -205,14 +206,13 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
       avatarUrl: '/static/images/profile-dark.svg',
       name: 'Scott C Edmunds',
     }),
-  })}
-        </li>
-    </ol>
+  },
+  (viewmodel) => [renderListCard(viewmodel)],
+  renderListItems,
+  renderListOfCards)}
 
-    <h3 class="_style-guide-heading">without curator and without an image</h2>
-    <ol class="card-list" role="list">
-        <li role="listitem">
-        ${renderListCard({
+    <h3 class="_style-guide-heading">without curator and without an image</h3>
+        ${pipe({
     listId: LID.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),
     articleCount: 3,
     updatedAt: new Date('2024-04-04'),
@@ -220,9 +220,10 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
     description: rawUserInput('Preprints that have undergone Editor’s Assessment by GigaByte.'),
     imageUrl: O.none,
     curator: O.none,
-  })}
-        </li>
-    </ol>
+  },
+  (viewmodel) => [renderListCard(viewmodel)],
+  renderListItems,
+  renderListOfCards)}
 
     <h3 class="_style-guide-heading">Success banner</h3>
       ${successBanner('You done good.')}
