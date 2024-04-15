@@ -8,6 +8,9 @@ import { Dependencies } from './dependencies';
 import { constructContent } from './construct-content';
 import { Params } from './params';
 import { constructFeaturedLists } from './construct-featured-lists';
+import { Group } from '../../../../types/group';
+
+const constructGroupListsPageHref = (group: Group): O.Option<string> => O.some(`/groups/${group.slug}/lists`);
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 
@@ -27,7 +30,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       RA.size,
     ),
     groupAboutPageHref: `/groups/${group.slug}/about`,
-    groupListsPageHref: O.some(`/groups/${group.slug}/lists`),
+    groupListsPageHref: constructGroupListsPageHref(group),
     groupFollowersPageHref: `/groups/${group.slug}/followers`,
   })),
   TE.fromOption(() => DE.notFound),
