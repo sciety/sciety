@@ -46,7 +46,7 @@ const renderAnnotation = (viewModel: ViewModel['annotation']) => pipe(
     (annotation) => `
       <section class="article-card-annotation">
         <header class="article-card-annotation__header">
-          <img class="article-card-annotation__avatar" src="${annotation.authorAvatarPath}" alt="">
+          <img class="article-card-annotation__avatar" src="${annotation.authorAvatarSrc}" alt="">
           <h4>${htmlEscape(annotation.author)}</h4>
         </header>
         <p>${safelyRenderRawUserInput(annotation.content)}</p>

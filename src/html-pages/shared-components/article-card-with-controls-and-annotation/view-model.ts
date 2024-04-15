@@ -6,7 +6,7 @@ import { ExpressionDoi } from '../../../types/expression-doi';
 
 export type Annotation = {
   author: string,
-  authorAvatarPath: string,
+  authorAvatarSrc: string,
   content: RawUserInput,
 };
 

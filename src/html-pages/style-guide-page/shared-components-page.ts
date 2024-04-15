@@ -145,7 +145,7 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
     annotation: O.some({
       content: rawUserInput('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
       author: 'AvasthiReading',
-      authorAvatarPath: '/static/images/profile-dark.svg',
+      authorAvatarSrc: '/static/images/profile-dark.svg',
     }),
     articleCard: {
       paperActivityPageHref: '/articles/foo',
@@ -166,7 +166,7 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
     annotation: O.some({
       content: rawUserInput('There are few things I enjoy more than a comparative analysis of actin probes. Another of my all time favorites is this: https://www.tandfonline.com/doi/full/10.1080/19490992.2014.1047714'),
       author: 'AvasthiReading',
-      authorAvatarPath: '/static/images/profile-dark.svg',
+      authorAvatarSrc: '/static/images/profile-dark.svg',
     }),
     articleCard: {
       paperActivityPageHref: '/articles/foo',

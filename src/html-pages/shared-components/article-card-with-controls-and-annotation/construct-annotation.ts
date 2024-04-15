@@ -70,7 +70,7 @@ export const constructAnnotation = (dependencies: Queries) => (listId: ListId, e
       getAnnotationAuthor(dependencies, listId),
       O.getOrElse(() => unknownAuthor),
     ),
-    authorAvatarPath: pipe(
+    authorAvatarSrc: pipe(
       getAnnotationAuthorAvatarPath(dependencies, listId),
       O.getOrElse(() => missingAvatarFallback),
     ),
