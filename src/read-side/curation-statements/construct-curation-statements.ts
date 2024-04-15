@@ -37,7 +37,7 @@ const addGroupInformation = (dependencies: Dependencies) => (statement: PartialC
   E.map((group) => ({
     ...statement,
     groupName: group.name,
-    groupLogo: group.largeLogoPath,
+    groupLogoSrc: group.largeLogoPath,
     groupPageHref: constructGroupPageHref(group),
   })),
 );

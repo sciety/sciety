@@ -8,7 +8,7 @@ import { renderListItems } from '../../../shared-components/render-list-items';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
 
 const renderGroupLogo = (curationStatement: ViewModel['curationStatements'][number]) => pipe(
-  curationStatement.groupLogo,
+  curationStatement.groupLogoSrc,
   O.match(
     () => '',
     (logoPath) => `<img src="${logoPath}" alt="${htmlEscape(curationStatement.groupName)} logo">`,

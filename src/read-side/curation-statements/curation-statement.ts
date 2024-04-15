@@ -6,7 +6,7 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 export type CurationStatement = {
   groupId: GID.GroupId,
   groupName: string,
-  groupLogo: O.Option<string>,
+  groupLogoSrc: O.Option<string>,
   groupPageHref: string,
   statement: string,
   statementLanguageCode: O.Option<LanguageCode>,
