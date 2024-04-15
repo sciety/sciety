@@ -4,7 +4,7 @@ import { ViewModel } from '../view-model';
 import * as GID from '../../../types/group-id';
 import { Dependencies } from '../dependencies';
 import { constructCurationTeasers } from './construct-curation-teasers';
-import { constructGroupLink } from '../../../shared-components/group-link';
+import { constructGroupLink } from '../../shared-components/group-link';
 
 export type GroupsToHighlight = ReadonlyArray<{
   groupId: GID.GroupId,

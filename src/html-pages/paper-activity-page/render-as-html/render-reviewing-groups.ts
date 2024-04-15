@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/render-list-items';
-import { renderGroupLinkWithLogo } from '../../../shared-components/group-link';
+import { renderGroupLinkWithLogo } from '../../shared-components/group-link';
 
 export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
   if (reviewingGroups.length === 0) {

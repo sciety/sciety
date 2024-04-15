@@ -9,7 +9,7 @@ import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { ListId } from '../../types/list-id';
 import { PaperActivitySummaryCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import { LanguageCode } from '../../shared-components/lang-attribute';
-import { GroupLinkWithLogoViewModel } from '../../shared-components/group-link';
+import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
 import { CurationStatement } from '../../read-side/curation-statements';
 import { ExpressionDoi } from '../../types/expression-doi';
 

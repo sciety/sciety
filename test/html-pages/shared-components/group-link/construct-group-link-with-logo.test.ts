@@ -1,16 +1,16 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { GroupLinkWithLogoViewModel } from '../../../src/shared-components/group-link/group-link-with-logo-view-model';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { GroupLinkWithLogoViewModel } from '../../../../src/html-pages/shared-components/group-link/group-link-with-logo-view-model';
 import {
   arbitraryRecordEvaluationPublicationCommand,
-} from '../../write-side/commands/record-evaluation-publication-command.helper';
+} from '../../../write-side/commands/record-evaluation-publication-command.helper';
 
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { createTestFramework, TestFramework } from '../../framework';
-import { constructGroupLink } from '../../../src/shared-components/group-link';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { toExpressionDoi } from '../../../src/types/article-id';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { createTestFramework, TestFramework } from '../../../framework';
+import { constructGroupLink } from '../../../../src/html-pages/shared-components/group-link';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { toExpressionDoi } from '../../../../src/types/article-id';
 
 describe('construct-group-link-with-logo', () => {
   const articleId = arbitraryArticleId();

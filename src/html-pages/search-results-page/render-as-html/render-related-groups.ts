@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from '../view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { renderGroupLinkWithLogo } from '../../../shared-components/group-link';
+import { renderGroupLinkWithLogo } from '../../shared-components/group-link';
 import { renderListItems } from '../../../shared-components/render-list-items';
 
 export const renderRelatedGroups = (relatedGroups: ViewModel['relatedGroups']): HtmlFragment => (relatedGroups.tag === 'some-related-groups'
