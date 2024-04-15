@@ -52,7 +52,7 @@ import { htmlFragmentHandler } from './html-fragment-handler';
 import { paperActivityPagePath, paperActivityPagePathSpecification } from '../standards';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import { EnvironmentVariables } from './environment-variables-codec';
-import { groupPagePathSpecification } from '../read-side/construct-group-page-href';
+import { groupPagePathSpecification } from '../read-side/paths/construct-group-page-href';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 

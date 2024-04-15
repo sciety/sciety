@@ -5,7 +5,7 @@ import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
 import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 import { GroupLinkAsTextViewModel } from './group-link-as-text-view-model';
-import { constructGroupPageHref } from '../../read-side/construct-group-page-href';
+import { constructGroupPageHref } from '../../read-side/paths/construct-group-page-href';
 
 export type ConstructGroupLinkDependencies = Queries & { logger: Logger };
 

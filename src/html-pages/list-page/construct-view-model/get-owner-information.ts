@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation } from './get-user-owner-information';
 import { ListOwnerId } from '../../../types/list-owner-id';
 import { Dependencies } from './dependencies';
-import { constructGroupPageHref } from '../../../read-side/construct-group-page-href';
+import { constructGroupPageHref } from '../../../read-side/paths/construct-group-page-href';
 
 type OwnerInformation = {
   ownerName: string,
