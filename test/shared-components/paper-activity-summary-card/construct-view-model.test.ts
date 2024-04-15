@@ -18,7 +18,7 @@ import { RecordEvaluationPublicationCommand } from '../../../src/write-side/comm
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import * as PH from '../../../src/types/publishing-history';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
-import { paperActivityPagePath } from '../../../src/standards';
+import { paperActivityPagePath } from '../../../src/read-side/paths/paper-activity-page-redirect-path';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

@@ -8,11 +8,11 @@ import { toErrorPage, renderAsHtml } from './render-as-html';
 import { Dependencies } from './construct-view-model/dependencies';
 import { ConstructPage } from '../construct-page';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
-import { paperActivityPagePath } from '../../standards';
 import { toRedirectTarget } from '../redirect-target';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 import { userIdCodec } from '../../types/user-id';
+import { paperActivityPagePath } from '../../read-side/paths/paper-activity-page-redirect-path';
 
 const canonicalParamsCodec = t.type({
   expressionDoi: canonicalExpressionDoiCodec,

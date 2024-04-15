@@ -8,9 +8,9 @@ import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-
 import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
 import { paperActivityPage } from '../../../src/html-pages/paper-activity-page/paper-activity-page';
 import * as EDOI from '../../../src/types/expression-doi';
-import { paperActivityPagePath } from '../../../src/standards';
 import { toRedirectTarget } from '../../../src/html-pages/redirect-target';
 import { HtmlPage } from '../../../src/html-pages/html-page';
+import { paperActivityPagePath } from '../../../src/read-side/paths/paper-activity-page-redirect-path';
 
 const getDecision = async (inputExpressionDoi: string, dependencies: Dependencies) => pipe(
   {

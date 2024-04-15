@@ -7,8 +7,8 @@ import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
 import * as EL from '../../types/evaluation-locator';
 import * as EDOI from '../../types/expression-doi';
-import { paperActivityPagePath } from '../../standards';
 import { DocmapViewModel } from './view-model';
+import { paperActivityPagePath } from '../../read-side/paths/paper-activity-page-redirect-path';
 
 const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   doi: expressionDoi,
