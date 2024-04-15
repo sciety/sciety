@@ -8,7 +8,7 @@ import { publisherAccountId } from './publisher-account-id';
 import * as EL from '../../types/evaluation-locator';
 import * as EDOI from '../../types/expression-doi';
 import { DocmapViewModel } from './view-model';
-import { paperActivityPagePath } from '../../read-side/paths/paper-activity-page-redirect-path';
+import { paperActivityPagePath } from '../../read-side/paths';
 
 const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   doi: expressionDoi,

@@ -12,7 +12,7 @@ import { toRedirectTarget } from '../redirect-target';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 import { userIdCodec } from '../../types/user-id';
-import { paperActivityPagePath } from '../../read-side/paths/paper-activity-page-redirect-path';
+import { paperActivityPagePath } from '../../read-side/paths';
 
 const canonicalParamsCodec = t.type({
   expressionDoi: canonicalExpressionDoiCodec,

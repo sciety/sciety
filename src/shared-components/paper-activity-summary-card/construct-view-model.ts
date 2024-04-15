@@ -17,7 +17,7 @@ import * as PH from '../../types/publishing-history';
 import { constructFrontMatter } from '../../read-side/construct-front-matter';
 import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
 import { findAllListsContainingPaper } from '../../read-side/find-all-lists-containing-paper';
-import { paperActivityPagePath } from '../../read-side/paths/paper-activity-page-redirect-path';
+import { paperActivityPagePath } from '../../read-side/paths';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatement,
