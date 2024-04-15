@@ -52,6 +52,7 @@ export const constructGroupCard = (
     O.map((activity) => ({
       ...group,
       ...activity,
+      avatarSrc: group.avatarPath,
       followerCount: dependencies.getFollowers(groupId).length,
       description: pipe(group.shortDescription, toHtmlFragment, sanitise),
       curatedArticlesCount: calculateCuratedArticlesCount(groupId, dependencies),

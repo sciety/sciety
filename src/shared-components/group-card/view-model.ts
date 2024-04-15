@@ -6,7 +6,7 @@ export type GroupCardViewModel = {
   id: GroupId,
   name: string,
   description: SanitisedHtmlFragment,
-  avatarPath: string,
+  avatarSrc: string,
   slug: string,
   listCount: number,
   followerCount: number,

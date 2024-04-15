@@ -45,7 +45,7 @@ describe('construct-group-card', () => {
     });
 
     it('contains the group avatar path', () => {
-      expect(constructedViewModel(addGroupCommand).avatarPath).toStrictEqual(addGroupCommand.avatarPath);
+      expect(constructedViewModel(addGroupCommand).avatarSrc).toStrictEqual(addGroupCommand.avatarPath);
     });
 
     it('contains the group slug', () => {

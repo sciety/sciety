@@ -65,7 +65,7 @@ export const renderGroupCard = (viewModel: GroupCardViewModel): HtmlFragment => 
             <span class="visually-hidden">This group has </span>${meta}
           </span>
         </div>
-        <img class="group-card__avatar" src="${viewModel.avatarPath}" alt="" />
+        <img class="group-card__avatar" src="${viewModel.avatarSrc}" alt="" />
     </article>
   `,
   toHtmlFragment,
