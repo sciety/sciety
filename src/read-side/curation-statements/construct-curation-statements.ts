@@ -17,7 +17,7 @@ import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ExternalQueries } from '../../third-parties';
 import { CurationStatement } from './curation-statement';
 import * as PH from '../../types/publishing-history';
-import { constructGroupPageHref } from '../paths/construct-group-page-href';
+import { constructGroupPageHref } from '../paths';
 
 export type Dependencies = Queries & ExternalQueries & {
   logger: Logger,

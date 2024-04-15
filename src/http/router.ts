@@ -51,7 +51,7 @@ import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { htmlFragmentHandler } from './html-fragment-handler';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import { EnvironmentVariables } from './environment-variables-codec';
-import { groupPagePathSpecification } from '../read-side/paths/construct-group-page-href';
+import { groupPagePathSpecification } from '../read-side/paths';
 import { paperActivityPagePath, paperActivityPagePathSpecification } from '../read-side/paths/paper-activity-page-redirect-path';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
