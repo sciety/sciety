@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { UserId } from '../../../types/user-id';
 import { Dependencies } from './dependencies';
-import { constructUserAvatarSrc } from '../../../read-side';
+import { constructUserAvatarSrc } from '../../../read-side/paths';
 
 type OwnerInfo = {
   ownerName: string,

@@ -5,8 +5,9 @@ import { EventOfType } from '../../../domain-events';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 import { Dependencies } from './dependencies';
-import { constructUserAvatarSrc, rawUserInput } from '../../../read-side';
+import { rawUserInput } from '../../../read-side';
 import { UserHandle } from '../../../types/user-handle';
+import { constructUserAvatarSrc } from '../../../read-side/paths';
 
 type UserFollowedAGroupCard = (
   dependencies: Dependencies

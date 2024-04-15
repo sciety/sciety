@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { renderListPageLinkHref } from '../../../shared-components/render-list-page-link-href';
 import { List } from '../../../read-models/lists';
 import { Dependencies } from './dependencies';
-import { constructUserAvatarSrc } from '../../../read-side';
+import { constructUserAvatarSrc } from '../../../read-side/paths';
 
 type ListWithAddedOwnershipInformation = {
   name: List['name'],

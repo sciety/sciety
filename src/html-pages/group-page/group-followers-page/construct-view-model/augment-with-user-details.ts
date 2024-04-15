@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { UserCardViewModel } from '../view-model';
 import { Follower } from './follower';
 import { Dependencies } from './dependencies';
-import { constructUserAvatarSrc } from '../../../../read-side';
+import { constructUserAvatarSrc } from '../../../../read-side/paths';
 
 export const augmentWithUserDetails = (
   dependencies: Dependencies,
