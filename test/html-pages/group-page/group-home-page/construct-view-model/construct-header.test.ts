@@ -43,6 +43,25 @@ describe('construct-header', () => {
   });
 
   describe('when the group has only one list', () => {
-    it.todo('does not display a link to the group lists sub page');
+    let result: ViewModel['header'];
+
+    beforeEach(async () => {
+      const addGroupCommand = arbitraryAddGroupCommand();
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.createList({
+        ...arbitraryCreateListCommand(),
+        ownerId: LOID.fromGroupId(addGroupCommand.groupId),
+      });
+      result = pipe(
+        addGroupCommand.groupId,
+        framework.queries.getGroup,
+        O.getOrElseW(shouldNotBeCalled),
+        constructHeader(framework.dependenciesForViews, O.none),
+      );
+    });
+
+    it.failing('does not display a link to the group lists sub page', () => {
+      expect(O.isNone(result.groupListsPageHref)).toBe(true);
+    });
   });
 });
