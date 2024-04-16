@@ -12,7 +12,11 @@ export const logRequestAndResponse = (logger: Logger): Middleware => async ({ re
 
   res.once('finish', () => {
     const durationInMs = new Date().getTime() - startTime.getTime();
-    logger(logLevel, 'Sent HTTP response', { status: res.statusCode, durationInMs });
+    logger(logLevel, 'Sent HTTP response', {
+      url: request.url,
+      status: res.statusCode,
+      durationInMs,
+    });
   });
 
   res.once('close', () => {
