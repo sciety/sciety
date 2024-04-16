@@ -48,3 +48,7 @@
 .group-page-actions__secondary_button {
   @include button.secondary-link();
 }
+
+.group-sub-page-back-link {
+  display: block;
+}
