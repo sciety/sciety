@@ -6,7 +6,10 @@ import { Params } from './params';
 import { Group } from '../../../../types/group';
 import { ViewModel } from '../view-model';
 
-const constructGroupListsPageHref = (group: Group): O.Option<string> => O.some(`/groups/${group.slug}/lists`);
+const constructGroupListsPageHref = (group: Group, listCount: number): O.Option<string> => (
+  listCount === 1
+    ? O.none
+    : O.some(`/groups/${group.slug}/lists`));
 
 export const constructHeader = (dependencies: Dependencies, user: Params['user']) => (group: Group): ViewModel['header'] => ({
   group,
@@ -22,6 +25,6 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
     RA.size,
   ),
   groupAboutPageHref: `/groups/${group.slug}/about`,
-  groupListsPageHref: constructGroupListsPageHref(group),
+  groupListsPageHref: constructGroupListsPageHref(group, 2),
   groupFollowersPageHref: `/groups/${group.slug}/followers`,
 });
