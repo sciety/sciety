@@ -41,7 +41,7 @@ export const pageHandler = (
     },
     (partialParams) => pipe(
       getLoggedInScietyUser(adapters, context),
-      O.foldW(
+      O.matchW(
         () => ({
           ...partialParams,
           user: undefined,

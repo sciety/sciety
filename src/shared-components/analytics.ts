@@ -11,14 +11,14 @@ const cookieBot = (): HtmlFragment => pipe(
   process.env.DISABLE_COOKIEBOT,
   O.fromNullable,
   O.filter((disableCookieBot) => disableCookieBot === 'true'),
-  O.fold(
+  O.match(
     constant(renderCookieBotScript),
     constant(''),
   ),
   toHtmlFragment,
 );
 
-const renderPageLoadedByLoggedInUserEvent = O.fold(
+const renderPageLoadedByLoggedInUserEvent = O.match(
   constant(''),
   (userId: UserId) => `
     dataLayer.push({
@@ -70,7 +70,7 @@ const renderFathomScript = (fathomId: string) => `
 export const googleTagManager = (userId: O.Option<UserId>): HtmlFragment => pipe(
   process.env.GOOGLE_TAG_MANAGER_ID,
   O.fromNullable,
-  O.fold(
+  O.match(
     constant(''),
     renderTagManagerScript(userId),
   ),
@@ -80,7 +80,7 @@ export const googleTagManager = (userId: O.Option<UserId>): HtmlFragment => pipe
 export const googleTagManagerNoScript = (): HtmlFragment => pipe(
   process.env.GOOGLE_TAG_MANAGER_ID,
   O.fromNullable,
-  O.fold(
+  O.match(
     constant(''),
     renderTagManagerNoScript,
   ),
@@ -90,7 +90,7 @@ export const googleTagManagerNoScript = (): HtmlFragment => pipe(
 export const fathom = (): HtmlFragment => pipe(
   process.env.FATHOM_SITE_ID,
   O.fromNullable,
-  O.fold(
+  O.match(
     constant(''),
     renderFathomScript,
   ),

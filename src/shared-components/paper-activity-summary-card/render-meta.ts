@@ -9,7 +9,7 @@ const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
 const renderEvaluationCount = (evaluationCount: ViewModel['evaluationCount']) => pipe(
   evaluationCount,
-  O.fold(
+  O.match(
     () => '<span class="visually-hidden">This article has no evaluations</span>',
     (count) => pipe(
       renderCountWithDescriptor(count, 'evaluation', 'evaluations'),
@@ -21,7 +21,7 @@ const renderEvaluationCount = (evaluationCount: ViewModel['evaluationCount']) =>
 
 const renderListMembershipCount = (listMembershipCount: ViewModel['listMembershipCount']) => pipe(
   listMembershipCount,
-  O.fold(
+  O.match(
     constant(''),
     (count) => pipe(
       `Appears in ${renderCountWithDescriptor(count, 'list', 'lists')}`,
@@ -36,7 +36,7 @@ const renderLatestPublicationDate = flow(
   wrapInSpan,
 );
 
-const renderArticleLatestActivityDate = O.fold(
+const renderArticleLatestActivityDate = O.match(
   constant(''),
   flow(
     templateDate,

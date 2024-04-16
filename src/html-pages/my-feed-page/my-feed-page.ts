@@ -31,7 +31,7 @@ export const myFeedPage = (dependencies: Dependencies): HomePage => (params: Par
     header: T.of(renderPageHeader()),
     content: pipe(
       params.user,
-      O.fold(
+      O.match(
         () => T.of(callToAction),
         ({ id }) => myFeed(dependencies)(id, 20, params.page),
       ),

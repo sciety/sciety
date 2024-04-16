@@ -34,7 +34,7 @@ const renderFollowerCount = (followerCount: GroupCardViewModel['followerCount'])
 
 const renderLatestActivity = (latestActivity: GroupCardViewModel['latestActivityAt']): HtmlFragment => pipe(
   latestActivity,
-  O.fold(
+  O.match(
     () => toHtmlFragment(''),
     flow(
       templateDate,

@@ -22,7 +22,7 @@ type Params = t.TypeOf<typeof actionFailedPageParamsCodec>;
 
 const generateErrorMessage = (errorType: O.Option<string>) => pipe(
   errorType,
-  O.fold(
+  O.match(
     () => 'Something unexpected happened; the action may have not completed. Please go back and try again.',
     () => 'The list description cannot contain the following characters: &lt; &gt;. Please go back and try again.',
   ),

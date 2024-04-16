@@ -7,7 +7,7 @@ import { Logger } from '../../shared-ports';
 export const rTracerLogger = (logger: Logger): Logger => {
   const withRequestId = (payload: Payload) => pipe(
     O.of(rTracer.id()),
-    O.fold(
+    O.match(
       constant(payload),
       (requestId) => ({ ...payload, requestId }),
     ),

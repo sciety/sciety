@@ -32,7 +32,7 @@ const renderAboutLink = (groupAboutPageHref: PageHeaderViewModel['groupAboutPage
 
 const renderGroupListsLink = (groupListsPageHref: PageHeaderViewModel['groupListsPageHref']) => pipe(
   groupListsPageHref,
-  O.fold(
+  O.match(
     () => '',
     (href) => `<a href="${href}" class="group-page-actions__secondary_button">Lists</a>`,
   ),

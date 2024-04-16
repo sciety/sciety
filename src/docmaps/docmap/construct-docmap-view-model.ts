@@ -25,7 +25,7 @@ export type Ports = Queries & ExternalQueries;
 const extendWithSourceUrl = (adapters: Ports) => (evaluation: RecordedEvaluation) => pipe(
   evaluation.evaluationLocator,
   inferredSourceUrl,
-  O.fold(
+  O.match(
     () => pipe(
       evaluation.evaluationLocator,
       adapters.fetchEvaluation,

@@ -18,7 +18,7 @@ const constructGroupListsPageHref = (group: Group, dependencies: Dependencies) =
 
 const checkFollowingStatus = (user: Params['user'], dependencies: Dependencies, groupId: GroupId) => pipe(
   user,
-  O.fold(
+  O.match(
     () => false,
     (u) => dependencies.isFollowing(groupId)(u.id),
   ),

@@ -25,7 +25,7 @@ export const unfollowHandler = (dependencies: Ports): Middleware => async (conte
     requestCodec.decode,
     O.fromEither,
     O.map((req) => req.body.editorialcommunityid),
-    O.fold(
+    O.match(
       () => context.throw(StatusCodes.BAD_REQUEST),
       async (groupId) => pipe(
         getLoggedInScietyUser(dependencies, context),

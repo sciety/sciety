@@ -64,7 +64,7 @@ export const evaluationLocatorCodec = new t.Type(
     t.string.validate(input, context),
     E.chain(flow(
       deserialize,
-      O.fold(
+      O.match(
         () => t.failure(input, context),
         t.success,
       ),

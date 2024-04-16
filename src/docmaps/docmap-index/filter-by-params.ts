@@ -11,7 +11,7 @@ const filterByPublisherAccount = (
   requestedPublisherAccountId: O.Option<string>,
 ) => (indexEntries: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
   requestedPublisherAccountId,
-  O.fold(
+  O.match(
     () => indexEntries,
     (publisherAccountId) => pipe(
       indexEntries,
@@ -24,7 +24,7 @@ const filterByUpdatedAfter = (
   updatedAfter: O.Option<Date>,
 ) => (docmaps: ReadonlyArray<DocmapIndexEntryModel>) => pipe(
   updatedAfter,
-  O.fold(
+  O.match(
     () => docmaps,
     (updated) => pipe(
       docmaps,

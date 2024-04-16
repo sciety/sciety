@@ -11,7 +11,7 @@ export const GroupIdFromString = new t.Type(
     t.string.validate(u, c),
     E.chain(flow(
       GroupId.fromString,
-      O.fold(
+      O.match(
         () => t.failure(u, c),
         t.success,
       ),

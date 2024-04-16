@@ -42,7 +42,7 @@ export const articleIdCodec = new t.Type(
     t.string.validate(u, c),
     E.chain(flow(
       fromString,
-      O.fold(
+      O.match(
         () => t.failure(u, c),
         t.success,
       ),

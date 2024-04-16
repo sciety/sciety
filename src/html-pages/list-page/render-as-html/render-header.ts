@@ -33,7 +33,7 @@ const renderRelatedArticlesLink = (url: ViewModel['relatedArticlesLink']) => pip
 
 const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
   subscribeHref,
-  O.fold(
+  O.match(
     () => '',
     (href) => `<a class="list-page-actions__subscribe" href="${href}">Subscribe</a>`,
   ),
@@ -41,7 +41,7 @@ const renderSubscribeLink = (subscribeHref: ViewModel['subscribeHref']) => pipe(
 
 const renderListImage = (imageSrc: ViewModel['imageSrc']) => pipe(
   imageSrc,
-  O.fold(
+  O.match(
     () => '',
     (src) => `<img src="${src}" alt="" class="page-header__list_image">`,
   ),

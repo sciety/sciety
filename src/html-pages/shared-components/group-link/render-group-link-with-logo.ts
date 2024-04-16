@@ -6,7 +6,7 @@ import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 
 const renderGroupLogoWithTextFallback = (viewModel: GroupLinkWithLogoViewModel) => pipe(
   viewModel.logoSrc,
-  O.fold(
+  O.match(
     () => htmlEscape(viewModel.groupName),
     (logoSrc) => `<img src="${logoSrc}"alt="${htmlEscape(viewModel.groupName)}" class="group-link-with-logo__logo">`,
   ),

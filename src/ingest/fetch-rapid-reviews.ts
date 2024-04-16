@@ -29,7 +29,7 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
     evaluationLocator: `rapidreviews:${review.URL}`,
     authors: pipe(
       review.author,
-      O.map(RA.map((author) => `${pipe(author.given, O.fold(() => '', (given) => `${given} `))}${author.family}`)),
+      O.map(RA.map((author) => `${pipe(author.given, O.match(() => '', (given) => `${given} `))}${author.family}`)),
       O.getOrElseW(() => []),
     ),
   })),

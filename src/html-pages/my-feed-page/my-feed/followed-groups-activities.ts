@@ -56,7 +56,7 @@ const addEventToActivities = (
 ) => pipe(
   activities.get(event.articleId),
   O.fromNullable,
-  O.fold(
+  O.match(
     () => eventToActivityDetails(event, groupIds),
     (existingActivityDetails) => mergeActivities(existingActivityDetails, eventToActivityDetails(event, groupIds)),
   ),

@@ -23,7 +23,7 @@ const handleArticleAddedToListEvent = (readmodel: ReadModel, event: EventOfType<
   pipe(
     readmodel.get(event.articleId.value),
     O.fromNullable,
-    O.fold(
+    O.match(
       () => readmodel.set(event.articleId.value, {
         articleId: event.articleId,
         lists: new Set([event.listId]),
@@ -40,7 +40,7 @@ const handleArticleRemovedFromListEvent = (readmodel: ReadModel, event: EventOfT
   pipe(
     readmodel.get(event.articleId.value),
     O.fromNullable,
-    O.fold(
+    O.match(
       () => readmodel,
       (entry) => readmodel.set(event.articleId.value, {
         ...entry,

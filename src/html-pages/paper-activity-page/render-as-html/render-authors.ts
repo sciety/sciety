@@ -8,7 +8,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 export const renderAuthors = (authors: ArticleAuthors): HtmlFragment => pipe(
   authors,
   O.filter(RA.isNonEmpty),
-  O.fold(
+  O.match(
     () => '',
     flow(
       RA.map((author) => `<li>${htmlEscape(author)}</li>`),

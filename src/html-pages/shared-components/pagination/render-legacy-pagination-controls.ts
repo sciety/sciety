@@ -8,7 +8,7 @@ export type ViewModel = {
 
 export const renderLegacyPaginationControls = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.nextPageHref,
-  O.fold(
+  O.match(
     () => '',
     (url) => `<div class="pagination-controls">
       <a href="${url}" class="pagination-controls__next_link">Next</a>

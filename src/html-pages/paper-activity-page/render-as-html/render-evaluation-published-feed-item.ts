@@ -86,7 +86,7 @@ export const renderEvaluationPublishedFeedItem = (
   teaserChars: number,
 ): HtmlFragment => pipe(
   feedItem.fullText,
-  O.fold(
+  O.match(
     () => `
       <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
         <header class="activity-feed__item__header">

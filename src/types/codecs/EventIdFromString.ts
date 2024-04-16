@@ -12,7 +12,7 @@ export const EventIdFromString = new t.Type(
     tt.UUID.validate(u, c),
     E.chain(flow(
       EventId.fromString,
-      O.fold(
+      O.match(
         () => t.failure(u, c),
         t.success,
       ),

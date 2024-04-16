@@ -98,7 +98,7 @@ export const utilityBar = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
   <nav class="utility-bar${scheme === 'dark' ? ' utility-bar--dark' : ''}" aria-describedby="application-settings">
     <div id="application-settings" style="display: none;">Sciety application settings</div>
     <ul class="utility-bar__list" role="list">
-      ${O.fold(loggedOutMenuItems, loggedInMenuItems)(user)}
+      ${O.match(loggedOutMenuItems, loggedInMenuItems)(user)}
     </ul>
   </nav>
 `);

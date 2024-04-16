@@ -39,9 +39,9 @@ const review = (doc: CheerioAPI) => pipe(
     description: O.fromNullable(doc('meta[name=description]').attr('content')),
   },
   ({ description, creator, title }) => `
-    ${pipe(creator, O.fold(constant(''), (txt) => `<h3>${txt}</h3>`))}
-    ${pipe(title, O.fold(constant(''), (txt) => `<p>${txt}</p>`))}
-    ${pipe(description, O.fold(constant(''), (txt) => `<p>${txt}</p>`))}
+    ${pipe(creator, O.match(constant(''), (txt) => `<h3>${txt}</h3>`))}
+    ${pipe(title, O.match(constant(''), (txt) => `<p>${txt}</p>`))}
+    ${pipe(description, O.match(constant(''), (txt) => `<p>${txt}</p>`))}
   `,
   E.right,
 );

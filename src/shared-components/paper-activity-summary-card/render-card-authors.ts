@@ -11,7 +11,7 @@ type RenderAuthors = (authors: ArticleAuthors) => HtmlFragment;
 
 export const renderAuthors: RenderAuthors = (authors) => pipe(
   authors,
-  O.fold(
+  O.match(
     constant(''),
     RA.match(
       constant(''),

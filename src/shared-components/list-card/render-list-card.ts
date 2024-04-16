@@ -38,7 +38,7 @@ const renderCurator = (viewModel: ListCardViewModel) => pipe(
   ),
 );
 
-const renderListImage = O.fold(
+const renderListImage = O.match(
   () => '',
   (imgSrc: string) => `<img class="list-card__image" src="${imgSrc}" alt="">`,
 );

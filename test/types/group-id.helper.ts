@@ -5,7 +5,7 @@ import { arbitraryWord } from '../helpers';
 
 const fromStringNoOption: (id: string) => GroupId = flow(
   fromString,
-  O.fold(
+  O.match(
     // eslint-disable-next-line jest/no-jasmine-globals
     () => { throw new Error('not a valid groupId'); },
     identity,
