@@ -5,7 +5,7 @@ import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { Group } from '../../../../types/group';
 import { ViewModel } from '../view-model';
-import * as LOID from '../../../../types/list-owner-id';
+import { calculateListCount } from '../../common-components/calculate-list-count';
 
 const constructGroupListsPageHref = (group: Group, listCount: number): O.Option<string> => (
   listCount === 1
@@ -28,9 +28,7 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
   groupAboutPageHref: `/groups/${group.slug}/about`,
   groupListsPageHref: pipe(
     group.id,
-    LOID.fromGroupId,
-    dependencies.selectAllListsOwnedBy,
-    RA.size,
+    calculateListCount(dependencies),
     (listCount) => constructGroupListsPageHref(group, listCount),
   ),
   groupFollowersPageHref: `/groups/${group.slug}/followers`,
