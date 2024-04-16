@@ -1,8 +1,8 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../src/domain-events';
-import { ResourceAction } from '../../../src/write-side/resources/resource-action';
 import { ErrorMessage } from '../../../src/types/error-message';
+import { ResourceAction } from '../../../src/write-side/resources/resource-action';
 
 type State = E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
 

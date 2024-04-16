@@ -1,23 +1,23 @@
 import * as D from 'fp-ts/Date';
-import * as T from 'fp-ts/Task';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CurationStatement, constructCurationStatements } from '../../read-side/curation-statements';
-import { ErrorViewModel } from './render-error-as-html';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { ViewModel } from './view-model';
-import { constructReviewingGroups } from '../../read-side/reviewing-groups';
-import * as DE from '../../types/data-error';
 import { Dependencies } from './dependencies';
-import { ExpressionDoi } from '../../types/expression-doi';
-import * as PH from '../../types/publishing-history';
-import { constructFrontMatter } from '../../read-side/construct-front-matter';
+import { ErrorViewModel } from './render-error-as-html';
+import { ViewModel } from './view-model';
 import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
+import { constructFrontMatter } from '../../read-side/construct-front-matter';
+import { CurationStatement, constructCurationStatements } from '../../read-side/curation-statements';
 import { findAllListsContainingPaper } from '../../read-side/find-all-lists-containing-paper';
 import { constructPaperActivityPageHref } from '../../read-side/paths';
+import { constructReviewingGroups } from '../../read-side/reviewing-groups';
+import * as DE from '../../types/data-error';
+import { ExpressionDoi } from '../../types/expression-doi';
+import { toHtmlFragment } from '../../types/html-fragment';
+import * as PH from '../../types/publishing-history';
+import { sanitise } from '../../types/sanitised-html-fragment';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatement,

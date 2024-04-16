@@ -4,10 +4,10 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../../shared-components/date';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import * as EL from '../../../types/evaluation-locator';
-import { EvaluationPublishedFeedItem } from '../view-model';
 import { renderLangAttribute } from '../../../shared-components/lang-attribute';
+import * as EL from '../../../types/evaluation-locator';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { EvaluationPublishedFeedItem } from '../view-model';
 
 const avatar = (review: EvaluationPublishedFeedItem) => toHtmlFragment(`
   <img class="activity-feed__item__avatar" src="${review.groupAvatarSrc}" alt="">

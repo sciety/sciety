@@ -1,13 +1,13 @@
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
 import { Evaluation } from '../types/evaluation';
 import { EvaluationLocator } from '../types/evaluation-locator';
-import { SubjectArea } from '../types/subject-area';
 import { ExpressionDoi } from '../types/expression-doi';
-import { SearchResults } from '../types/search-results';
 import { ExpressionFrontMatter } from '../types/expression-front-matter';
 import { PublishingHistory } from '../types/publishing-history';
+import { SearchResults } from '../types/search-results';
+import { SubjectArea } from '../types/subject-area';
 import { UserId } from '../types/user-id';
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)

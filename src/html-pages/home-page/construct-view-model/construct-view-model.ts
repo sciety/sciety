@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import * as GID from '../../../types/group-id';
-import { Dependencies } from '../dependencies';
 import { constructCurationTeasers } from './construct-curation-teasers';
+import * as GID from '../../../types/group-id';
 import { constructGroupLink } from '../../shared-components/group-link';
+import { Dependencies } from '../dependencies';
+import { ViewModel } from '../view-model';
 
 export type GroupsToHighlight = ReadonlyArray<{
   groupId: GID.GroupId,

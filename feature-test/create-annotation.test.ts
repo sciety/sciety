@@ -1,12 +1,12 @@
 import {
   $, click, closeBrowser, currentURL, goto, into, openBrowser, textBox, write,
 } from 'taiko';
-import { arbitraryString } from '../test/helpers';
-import { arbitraryArticleId } from '../test/types/article-id.helper';
-import { arbitraryUserId } from '../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 import { inputFieldNames } from '../src/standards';
+import { arbitraryString } from '../test/helpers';
+import { arbitraryArticleId } from '../test/types/article-id.helper';
+import { arbitraryUserId } from '../test/types/user-id.helper';
 
 describe('create-annotation', () => {
   beforeEach(async () => {

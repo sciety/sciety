@@ -1,8 +1,8 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import { isGroupId } from '../../types/list-owner-id';
 import { List } from './list';
+import { isGroupId } from '../../types/list-owner-id';
 
 type GetNonEmptyUserLists = () => ReadonlyArray<List>;
 

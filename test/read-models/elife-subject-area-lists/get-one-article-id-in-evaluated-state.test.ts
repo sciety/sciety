@@ -1,15 +1,15 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { constructEvent } from '../../../src/domain-events';
+import { elifeGroupId } from '../../../src/read-models/elife-subject-area-lists/data';
+import { getOneArticleIdInEvaluatedState } from '../../../src/read-models/elife-subject-area-lists/get-one-article-id-in-evaluated-state';
 import {
   handleEvent, initialState,
 } from '../../../src/read-models/elife-subject-area-lists/handle-event';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryDate } from '../../helpers';
-import { getOneArticleIdInEvaluatedState } from '../../../src/read-models/elife-subject-area-lists/get-one-article-id-in-evaluated-state';
-import { elifeGroupId } from '../../../src/read-models/elife-subject-area-lists/data';
 import * as EDOI from '../../../src/types/expression-doi';
+import { arbitraryDate } from '../../helpers';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 
 describe('get-one-article-id-in-evaluated-state', () => {
   describe('given a biorxiv article that has been evaluated by eLife', () => {

@@ -1,6 +1,4 @@
 import { URL } from 'url';
-import * as TE from 'fp-ts/TaskEither';
-import { identity, pipe } from 'fp-ts/function';
 import Axios from 'axios';
 import {
   setupCache,
@@ -8,13 +6,15 @@ import {
   HeaderInterpreter,
   buildMemoryStorage,
 } from 'axios-cache-interceptor';
+import * as TE from 'fp-ts/TaskEither';
+import { identity, pipe } from 'fp-ts/function';
 import { createClient } from 'redis';
-import { logAndTransformToDataError } from '../log-and-transform-to-data-error';
-import { Logger, LogLevel } from '../../shared-ports';
-import { QueryExternalService } from '../query-external-service';
-import { redisStorage } from './redis-storage';
 import { cachedGetter, ResponseBodyCachePredicate } from './cached-getter';
 import { generateUrlBasedKey } from './generate-url-based-key';
+import { redisStorage } from './redis-storage';
+import { Logger, LogLevel } from '../../shared-ports';
+import { logAndTransformToDataError } from '../log-and-transform-to-data-error';
+import { QueryExternalService } from '../query-external-service';
 
 const headerInterpreterWithFixedMaxAge = (maxAge: number): HeaderInterpreter => () => maxAge;
 

@@ -1,5 +1,5 @@
-import { CacheRequestConfig } from 'axios-cache-interceptor';
 import { createHash } from 'crypto';
+import { CacheRequestConfig } from 'axios-cache-interceptor';
 import { Logger } from '../../shared-ports';
 
 export const generateUrlBasedKey = (logger: Logger) => (input: CacheRequestConfig<unknown, unknown>): string => {

@@ -1,10 +1,10 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { RecordSubjectAreaCommand } from '../commands';
 import { CommandHandler } from '../../types/command-handler';
-import { recordSubjectArea } from '../resources/article';
+import { RecordSubjectAreaCommand } from '../commands';
 import { DependenciesForCommands } from '../dependencies-for-commands';
+import { recordSubjectArea } from '../resources/article';
 
 type RecordSubjectAreaCommandHandler = (
   dependencies: DependenciesForCommands

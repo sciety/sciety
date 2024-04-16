@@ -1,11 +1,11 @@
 import * as T from 'fp-ts/Task';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import { isFollowing } from '../../http/form-submission-handlers/is-following';
 import { constructEvent } from '../../domain-events';
+import { isFollowing } from '../../http/form-submission-handlers/is-following';
+import { CommandHandler } from '../../types/command-handler';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
-import { CommandHandler } from '../../types/command-handler';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 
 type UnfollowCommand = {

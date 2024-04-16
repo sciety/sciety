@@ -1,19 +1,19 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { constructEvent } from '../../../src/domain-events';
+import { elifeGroupId } from '../../../src/read-models/elife-subject-area-lists/data';
+import { getCorrespondingListId } from '../../../src/read-models/elife-subject-area-lists/get-corresponding-list-id';
+import { getOneArticleReadyToBeListed } from '../../../src/read-models/elife-subject-area-lists/get-one-article-ready-to-be-listed';
 import {
   handleEvent, initialState,
 } from '../../../src/read-models/elife-subject-area-lists/handle-event';
-import { getOneArticleReadyToBeListed } from '../../../src/read-models/elife-subject-area-lists/get-one-article-ready-to-be-listed';
-import { constructEvent } from '../../../src/domain-events';
+import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryDate } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitrarySubjectArea } from '../../types/subject-area.helper';
-import { arbitraryDate } from '../../helpers';
-import { getCorrespondingListId } from '../../../src/read-models/elife-subject-area-lists/get-corresponding-list-id';
-import { elifeGroupId } from '../../../src/read-models/elife-subject-area-lists/data';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
+import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
 describe('get-one-article-ready-to-be-listed', () => {
   describe('given a bunch of events', () => {

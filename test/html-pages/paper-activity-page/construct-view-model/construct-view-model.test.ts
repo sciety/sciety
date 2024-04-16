@@ -1,20 +1,20 @@
-import { identity, pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { identity, pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/html-pages/paper-activity-page/construct-view-model';
+import { LoggedInUserListManagement, ViewModel } from '../../../../src/html-pages/paper-activity-page/view-model';
+import { List } from '../../../../src/read-models/lists';
+import { ArticleId } from '../../../../src/types/article-id';
 import * as DE from '../../../../src/types/data-error';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { List } from '../../../../src/read-models/lists';
-import { createTestFramework, TestFramework } from '../../../framework';
-import { LoggedInUserListManagement, ViewModel } from '../../../../src/html-pages/paper-activity-page/view-model';
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../src/write-side/commands';
+import { createTestFramework, TestFramework } from '../../../framework';
+import { abortTest } from '../../../framework/abort-test';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { ArticleId } from '../../../../src/types/article-id';
-import { abortTest } from '../../../framework/abort-test';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

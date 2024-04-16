@@ -1,5 +1,5 @@
-import { Strategy as LocalStrategy, VerifyFunction } from 'passport-local';
 import { pipe } from 'fp-ts/function';
+import { Strategy as LocalStrategy, VerifyFunction } from 'passport-local';
 import { userIdCodec } from '../../types/user-id';
 import { authenticateWithUserId } from '../authentication-and-logging-in-of-sciety-users';
 

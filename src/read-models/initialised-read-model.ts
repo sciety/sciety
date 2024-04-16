@@ -1,5 +1,5 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../domain-events';
 
 export class InitialisedReadModel<S, Q > {

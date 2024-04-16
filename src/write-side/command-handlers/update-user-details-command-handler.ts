@@ -1,9 +1,9 @@
-import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { UpdateUserDetailsCommand } from '../commands';
+import { pipe } from 'fp-ts/function';
 import { CommandHandler } from '../../types/command-handler';
-import * as userResource from '../resources/user';
+import { UpdateUserDetailsCommand } from '../commands';
 import { DependenciesForCommands } from '../dependencies-for-commands';
+import * as userResource from '../resources/user';
 
 type UpdateUserDetailsCommandHandler = (
   dependencies: DependenciesForCommands

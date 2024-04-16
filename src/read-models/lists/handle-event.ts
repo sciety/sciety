@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
+import { List, ListEntry } from './list';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { rawUserInput } from '../../read-side';
 import { toExpressionDoi } from '../../types/article-id';
 import { ListId } from '../../types/list-id';
-import { List, ListEntry } from './list';
 
 type ListState = Pick<
 List,

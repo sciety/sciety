@@ -1,16 +1,16 @@
-import { pipe } from 'fp-ts/function';
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import {
   GetExpressionsFromBiorxiv,
   expandMonolithicBiorxivOrMedrxivExpressions,
 } from '../../../src/third-parties/biorxiv/expand-monolithic-biorxiv-or-medrxiv-expressions';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { PaperExpression } from '../../../src/types/paper-expression';
-import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
-import { arbitraryDataError } from '../../types/data-error.helper';
-import { arbitraryNumber } from '../../helpers';
 import { ArticleServer } from '../../../src/types/article-server';
+import { PaperExpression } from '../../../src/types/paper-expression';
+import { arbitraryNumber } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryDataError } from '../../types/data-error.helper';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
 import { arbitraryColdSpringHarborArticleServer } from '../cold-spring-harbor-article-server.helper';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({

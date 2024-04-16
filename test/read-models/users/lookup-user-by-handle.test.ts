@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { arbitraryCandidateUserHandle, candidateUserHandleFromString } from '../../types/candidate-user-handle.helper';
 import { handleEvent, initialState } from '../../../src/read-models/users/handle-event';
 import { lookupUserByHandle } from '../../../src/read-models/users/lookup-user-by-handle';
 import { arbitraryUserCreatedAccountEvent } from '../../domain-events/user-resource-events.helper';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryCandidateUserHandle, candidateUserHandleFromString } from '../../types/candidate-user-handle.helper';
 
 describe('lookup-user-by-handle', () => {
   const userCreatedAccountEvent = arbitraryUserCreatedAccountEvent();

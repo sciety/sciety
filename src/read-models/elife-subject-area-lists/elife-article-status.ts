@@ -1,6 +1,6 @@
+import { Json } from 'fp-ts/Json';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { Json } from 'fp-ts/Json';
 import { ArticleStateName, ReadModel } from './handle-event';
 
 const getArticleIds = (readModel: ReadModel,

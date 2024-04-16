@@ -1,16 +1,16 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryString } from '../../helpers';
 import { getGroup } from '../../../src/read-models/groups/get-group';
+import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
+import { Group } from '../../../src/types/group';
 import {
   arbitraryGroupDetailsUpdatedEvent,
   arbitraryGroupJoinedEvent,
 } from '../../domain-events/group-resource-events.helper';
-import { Group } from '../../../src/types/group';
+import { arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('getGroup', () => {
   describe('when the group has joined', () => {

@@ -1,13 +1,13 @@
-import * as T from 'fp-ts/Task';
-import * as TO from 'fp-ts/TaskOption';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
-import { ViewModel } from '../view-model';
+import * as TO from 'fp-ts/TaskOption';
+import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import * as PH from '../../../types/publishing-history';
+import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
 import { ExpressionDoi } from '../../../types/expression-doi';
+import * as PH from '../../../types/publishing-history';
+import { ViewModel } from '../view-model';
 
 const buildRelatedArticleCards = (
   dependencies: Dependencies,

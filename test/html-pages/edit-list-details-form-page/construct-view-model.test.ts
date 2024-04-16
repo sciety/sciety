@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
-import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
-import { TestFramework, createTestFramework } from '../../framework/create-test-framework';
 import { constructViewModel } from '../../../src/html-pages/edit-list-details-form-page/construct-view-model';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryListId } from '../../types/list-id.helper';
 import { ViewModel } from '../../../src/html-pages/edit-list-details-form-page/render-edit-list-details-form-page';
 import { rawUserInput } from '../../../src/read-side';
+import { TestFramework, createTestFramework } from '../../framework/create-test-framework';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

@@ -1,16 +1,16 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getPaperExpressionsFromBiorxiv, expandMonolithicBiorxivOrMedrxivExpressions } from './biorxiv';
 import { fetchAllPaperExpressions as fetchAllPaperExpressionsFromCrossref } from './crossref';
+import { ExternalQueries } from './external-queries';
 import { QueryExternalService } from './query-external-service';
 import { Logger } from '../shared-ports';
-import { ExternalQueries } from './external-queries';
-import * as PH from '../types/publishing-history';
 import * as DE from '../types/data-error';
 import { ExpressionDoi } from '../types/expression-doi';
+import * as PH from '../types/publishing-history';
 
 const setupCrossrefHeaders = (bearerToken: O.Option<string>) => {
   const headers: Record<string, string> = { };

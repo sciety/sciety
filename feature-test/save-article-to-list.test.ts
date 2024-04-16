@@ -2,10 +2,10 @@ import {
   click, closeBrowser, currentURL, goto, openBrowser, $,
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryUserId } from '../test/types/user-id.helper';
-import { arbitraryUserHandle } from '../test/types/user-handle.helper';
-import { ListId } from '../src/types/list-id';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
+import { ListId } from '../src/types/list-id';
+import { arbitraryUserHandle } from '../test/types/user-handle.helper';
+import { arbitraryUserId } from '../test/types/user-id.helper';
 
 describe('save-article-to-list', () => {
   describe('when a new user logs in and visits an article page', () => {

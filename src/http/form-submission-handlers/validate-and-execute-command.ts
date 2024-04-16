@@ -1,19 +1,19 @@
-import { pipe } from 'fp-ts/function';
-import * as tt from 'io-ts-types';
-import { ParameterizedContext } from 'koa';
-import * as t from 'io-ts';
+import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { sequenceS } from 'fp-ts/Apply';
+import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler';
-import { userHandleCodec } from '../../types/user-handle';
-import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
-import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
-import { CommandResult } from '../../types/command-result';
+import * as tt from 'io-ts-types';
+import { ParameterizedContext } from 'koa';
 import { Logger } from '../../shared-ports';
+import { CommandResult } from '../../types/command-result';
+import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
+import { userHandleCodec } from '../../types/user-handle';
+import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 

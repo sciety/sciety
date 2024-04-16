@@ -1,11 +1,11 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import { constructEvent } from '../../../../src/domain-events';
 import { create } from '../../../../src/write-side/resources/list/create';
 import { arbitraryString } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
-import { constructEvent } from '../../../../src/domain-events';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('create', () => {
   const input = {

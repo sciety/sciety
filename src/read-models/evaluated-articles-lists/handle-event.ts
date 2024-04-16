@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent, isEventOfType } from '../../domain-events';
-import { GroupId } from '../../types/group-id';
-import { ListId } from '../../types/list-id';
-import * as Gid from '../../types/group-id';
-import * as Lid from '../../types/list-id';
-import { ExpressionDoi } from '../../types/expression-doi';
 import { toExpressionDoi } from '../../types/article-id';
+import { ExpressionDoi } from '../../types/expression-doi';
+import { GroupId } from '../../types/group-id';
+import * as Gid from '../../types/group-id';
+import { ListId } from '../../types/list-id';
+import * as Lid from '../../types/list-id';
 
 const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2')]: Lid.fromValidatedString('ee7e738a-a1f1-465b-807c-132d273ca952'),

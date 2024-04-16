@@ -3,12 +3,12 @@ import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { selectAllListsOwnedBy } from '../../../src/read-models/lists/select-all-lists-owned-by';
+import { rawUserInput } from '../../../src/read-side';
+import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
-import { rawUserInput } from '../../../src/read-side';
-import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 
 describe('select-all-lists-owned-by', () => {
   const ownerId = arbitraryListOwnerId();

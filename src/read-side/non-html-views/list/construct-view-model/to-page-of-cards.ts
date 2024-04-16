@@ -1,14 +1,14 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import { Dependencies } from './dependencies';
 import {
   constructArticleCardWithControlsAndAnnotation,
 } from '../../../../html-pages/shared-components/article-card-with-controls-and-annotation';
 import { ExpressionActivity } from '../../../../types/expression-activity';
-import { ListId } from '../../../../types/list-id';
-import { Dependencies } from './dependencies';
-import { ViewModel } from '../view-model';
 import * as EDOI from '../../../../types/expression-doi';
+import { ListId } from '../../../../types/list-id';
+import { ViewModel } from '../view-model';
 
 export const toPageOfCards = (
   dependencies: Dependencies,

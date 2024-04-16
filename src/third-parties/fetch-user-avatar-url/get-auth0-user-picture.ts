@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import * as t from 'io-ts';
 import { flow, pipe } from 'fp-ts/function';
-import { UserId } from '../../types/user-id';
-import * as DE from '../../types/data-error';
-import { QueryExternalService } from '../query-external-service';
-import { decodeAndLogFailures } from '../decode-and-log-failures';
+import * as t from 'io-ts';
 import { Logger } from '../../shared-ports';
+import * as DE from '../../types/data-error';
+import { UserId } from '../../types/user-id';
+import { decodeAndLogFailures } from '../decode-and-log-failures';
+import { QueryExternalService } from '../query-external-service';
 
 const auth0UserCodec = t.strict({
   picture: t.string,

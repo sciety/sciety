@@ -1,15 +1,15 @@
-import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { dummyLogger } from '../../../../dummy-logger';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import { constructFeed } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/construct-feed';
+import { Dependencies } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/dependencies';
 import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-home-page/view-model';
+import { ListId } from '../../../../../src/types/list-id';
+import { dummyLogger } from '../../../../dummy-logger';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { constructFeed } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/construct-feed';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
-import { Dependencies } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/dependencies';
-import { ListId } from '../../../../../src/types/list-id';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 
 describe('construct-feed', () => {

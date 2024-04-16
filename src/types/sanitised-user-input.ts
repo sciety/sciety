@@ -1,6 +1,6 @@
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as B from 'fp-ts/boolean';
 
 const notEmptyRegex = /^[^<>"]+$/;
 const emptyRegex = /^[^<>"]*$/;

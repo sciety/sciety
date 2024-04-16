@@ -1,12 +1,12 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
-import * as DE from '../../types/data-error';
+import { pipe } from 'fp-ts/function';
 import { ExternalQueries } from '../../third-parties';
-import * as PH from '../../types/publishing-history';
+import * as DE from '../../types/data-error';
 import { PaperExpression } from '../../types/paper-expression';
+import * as PH from '../../types/publishing-history';
 
 export const fetchPublishingHistory: ExternalQueries['fetchPublishingHistory'] = (expressionDoi) => pipe(
   [

@@ -4,11 +4,11 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { flow, pipe } from 'fp-ts/function';
-import { ArticleId } from '../../../types/article-id';
 import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
+import { ArticleId } from '../../../types/article-id';
 import { ExpressionActivity } from '../../../types/expression-activity';
-import { GroupId } from '../../../types/group-id';
 import { ExpressionDoi } from '../../../types/expression-doi';
+import { GroupId } from '../../../types/group-id';
 
 type ArticleActivityDetails = {
   mostRecentRecordedEvaluationByFollowedGroups: Date,

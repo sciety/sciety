@@ -1,16 +1,16 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
+import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import * as LOID from '../../../src/types/list-owner-id';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
+import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { selectAllListsContainingExpression } from '../../../src/read-models/lists/select-all-lists-containing-expression';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
+import * as LOID from '../../../src/types/list-owner-id';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 const selectAllListsContainingExpressionHelper = (readModel: ReadModel, expressionDoi: ExpressionDoi) => pipe(
   expressionDoi,

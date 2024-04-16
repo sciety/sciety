@@ -1,16 +1,16 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { arbitraryString } from '../../helpers';
-import { createTestFramework, TestFramework } from '../../framework';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import {
-  arbitraryRecordEvaluationPublicationCommand,
-} from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { pipe } from 'fp-ts/function';
 import {
   constructReviewingGroups,
 } from '../../../src/read-side/reviewing-groups/construct-reviewing-groups';
 import * as PH from '../../../src/types/publishing-history';
+import { createTestFramework, TestFramework } from '../../framework';
+import { arbitraryString } from '../../helpers';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
+import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
+import {
+  arbitraryRecordEvaluationPublicationCommand,
+} from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-reviewing-groups', () => {
   const publishingHistory = arbitraryPublishingHistoryOnlyPreprints();

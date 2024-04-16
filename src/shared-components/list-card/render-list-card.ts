@@ -1,13 +1,13 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { RawUserInput } from '../../read-side';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { ListId } from '../../types/list-id';
 import { templateDate } from '../date';
-import { renderListPageLinkHref } from '../render-list-page-link-href';
-import { renderCountWithDescriptor } from '../render-count-with-descriptor';
-import { RawUserInput } from '../../read-side';
 import { safelyRenderRawUserInput } from '../raw-user-input-renderers';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor';
+import { renderListPageLinkHref } from '../render-list-page-link-href';
 
 type Curator = {
   avatarSrc: string,

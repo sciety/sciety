@@ -1,14 +1,14 @@
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
-import { constructEvent } from '../../../domain-events';
-import { ListWriteModel } from './list-write-model';
 import { getListWriteModel } from './get-list-write-model';
-import { ResourceAction } from '../resource-action';
-import { AddArticleToListCommand } from '../../commands';
-import { toErrorMessage } from '../../../types/error-message';
 import { isAnnotationLengthValid } from './is-annotation-length-valid';
+import { ListWriteModel } from './list-write-model';
+import { constructEvent } from '../../../domain-events';
+import { toErrorMessage } from '../../../types/error-message';
+import { AddArticleToListCommand } from '../../commands';
+import { ResourceAction } from '../resource-action';
 
 const constructEvents = (command: AddArticleToListCommand) => (
   command.annotation === undefined

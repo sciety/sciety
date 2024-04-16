@@ -1,12 +1,12 @@
-import * as T from 'fp-ts/Task';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import { Dependencies } from './dependencies';
 import { toPageOfCards } from './to-page-of-cards';
 import { ArticleId } from '../../../../types/article-id';
-import { ViewModel } from '../view-model';
-import { ListId } from '../../../../types/list-id';
-import { Dependencies } from './dependencies';
 import * as EDOI from '../../../../types/expression-doi';
+import { ListId } from '../../../../types/list-id';
+import { ViewModel } from '../view-model';
 
 export const constructContentWithPaginationViewModel = (
   dependencies: Dependencies,

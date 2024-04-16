@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export type ViewModel = {

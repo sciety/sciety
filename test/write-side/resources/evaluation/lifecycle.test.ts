@@ -1,15 +1,15 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import {
   erase, update, recordPublication, recordRemoval,
 } from '../../../../src/write-side/resources/evaluation';
-import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import * as A from '../enact';
 import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
 import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
+import * as A from '../enact';
 
 describe('lifecycle', () => {
   describe('given no existing evaluation', () => {

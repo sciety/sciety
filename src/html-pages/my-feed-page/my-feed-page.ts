@@ -8,10 +8,10 @@ import * as tt from 'io-ts-types';
 import { myFeed, Dependencies } from './my-feed';
 import { renderPage } from './render-page';
 import { renderPageHeader } from './render-page-header';
-import { userIdCodec } from '../../types/user-id';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
 import { queryStringParameters } from '../../standards';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { userIdCodec } from '../../types/user-id';
+import { HtmlPage } from '../html-page';
 
 export const myFeedParams = t.type({
   [queryStringParameters.page]: queryStringParameters.pageCodec,

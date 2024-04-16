@@ -1,17 +1,17 @@
-import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { TestFramework, createTestFramework } from '../../../framework';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { List } from '../../../../src/read-models/lists';
+import { pipe } from 'fp-ts/function';
+import { constructContainingList } from '../../../../src/html-pages/paper-activity-page/construct-view-model/construct-containing-list';
 import { ViewModel } from '../../../../src/html-pages/paper-activity-page/view-model';
+import { List } from '../../../../src/read-models/lists';
+import { ArticleId } from '../../../../src/types/article-id';
+import * as LOID from '../../../../src/types/list-owner-id';
+import { TestFramework, createTestFramework } from '../../../framework';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { ArticleId } from '../../../../src/types/article-id';
-import { constructContainingList } from '../../../../src/html-pages/paper-activity-page/construct-view-model/construct-containing-list';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('construct-containing-list', () => {
   let framework: TestFramework;

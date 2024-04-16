@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { arbitraryWord } from '../../../helpers';
 import { toJatsXmlUrlOfPublisher } from '../../../../src/third-parties/fetch-evaluation/access-microbiology/to-jats-xml-url-of-publisher';
+import { arbitraryWord } from '../../../helpers';
 
 describe('to-jats-xml-url-of-publisher', () => {
   describe.each([

@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { convertHypothesisAnnotationToEvaluation } from '../../../src/ingest/third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
 import {
   arbitraryNumber, arbitraryDate, arbitraryString, arbitraryWord,
 } from '../../helpers';
-import { convertHypothesisAnnotationToEvaluation } from '../../../src/ingest/third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('convert-hypothesis-annotation-to-evaluation', () => {

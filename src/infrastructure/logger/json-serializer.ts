@@ -1,8 +1,8 @@
-import { flow } from 'fp-ts/function';
 import axios, { AxiosError } from 'axios';
+import { flow } from 'fp-ts/function';
+import { replaceError } from './replace-error';
 import { Serializer } from './serializer';
 import { Payload } from './types';
-import { replaceError } from './replace-error';
 
 const interpretAxiosStatus = (error: AxiosError<unknown, unknown>) => {
   if (error.response?.status) {

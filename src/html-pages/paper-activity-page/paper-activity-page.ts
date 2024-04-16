@@ -1,18 +1,18 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import * as DE from '../../types/data-error';
-import { toErrorPage, renderAsHtml } from './render-as-html';
-import { Dependencies } from './construct-view-model/dependencies';
-import { ConstructPage } from '../construct-page';
-import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
-import { toRedirectTarget } from '../redirect-target';
 import { constructViewModel } from './construct-view-model/construct-view-model';
+import { Dependencies } from './construct-view-model/dependencies';
+import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
+import { toErrorPage, renderAsHtml } from './render-as-html';
+import { constructPaperActivityPageHref } from '../../read-side/paths';
+import * as DE from '../../types/data-error';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../types/expression-doi';
 import { userIdCodec } from '../../types/user-id';
-import { constructPaperActivityPageHref } from '../../read-side/paths';
+import { ConstructPage } from '../construct-page';
+import { toRedirectTarget } from '../redirect-target';
 
 const canonicalParamsCodec = t.type({
   expressionDoi: canonicalExpressionDoiCodec,

@@ -57,8 +57,29 @@ module.exports = {
     'fp-ts/prefer-chain': 'off',
     'function-paren-newline': ['error', 'consistent'],
     'import/namespace': 'off',
+    'import/newline-after-import': ['error', {
+      count: 1,
+      exactCount: true,
+      considerComments: true,
+    }],
     'import/no-cycle': 'off',
     'import/no-relative-packages': 'off',
+    'import/no-useless-path-segments': ['error', {
+      noUselessIndex: true,
+    }],
+    'import/order': ['error', {
+      alphabetize: {
+        order: 'asc',
+      },
+      groups: [
+        'builtin',
+        'external',
+        'internal',
+        'index',
+        'sibling',
+        'parent',
+      ],
+    }],
     'import/prefer-default-export': 'off',
     'max-len': ['error', 120, 2, {
       ignoreComments: false,

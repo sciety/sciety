@@ -4,8 +4,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers/add-article-to-list-command-handler';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
 type Dependencies = Queries & DependenciesForCommands & {
   logger: Logger,

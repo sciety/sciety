@@ -1,9 +1,9 @@
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { renderAuthors } from './render-card-authors';
-import { ViewModel } from './view-model';
 import { renderCurationStatements } from './render-curation-statements';
-import { renderReviewingGroupsWithLink } from './render-reviewing-groups-with-link';
 import { renderMeta } from './render-meta';
+import { renderReviewingGroupsWithLink } from './render-reviewing-groups-with-link';
+import { ViewModel } from './view-model';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 export const renderArticleCardContents = (model: ViewModel): HtmlFragment => toHtmlFragment(`
   <h3 class="article-card__title"><a href="${model.paperActivityPageHref}">${model.title}</a></h3>

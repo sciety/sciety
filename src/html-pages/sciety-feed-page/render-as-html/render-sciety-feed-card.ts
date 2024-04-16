@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
-import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
 import { templateDate } from '../../../shared-components/date';
+import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 

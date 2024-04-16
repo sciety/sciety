@@ -1,9 +1,9 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import { Queries } from '../../read-models';
 import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
-import { Queries } from '../../read-models';
 
 export type Ports = {
   lookupList: Queries['lookupList'],

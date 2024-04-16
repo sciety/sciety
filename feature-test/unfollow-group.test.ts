@@ -2,9 +2,9 @@ import {
   $, click, goto, openBrowser, text, within,
 } from 'taiko';
 import { callApi } from './helpers/call-api.helper';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { screenshotTeardown } from './utilities';
 import { arbitraryUserId } from '../test/types/user-id.helper';
-import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { arbitraryAddGroupCommand } from '../test/write-side/commands/add-group-command.helper';
 
 describe('unfollow a group', () => {

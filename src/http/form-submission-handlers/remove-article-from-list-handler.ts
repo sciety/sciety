@@ -1,15 +1,15 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
-import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import { Logger } from '../../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
+import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 
 type Ports = DependenciesForCommands & CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,

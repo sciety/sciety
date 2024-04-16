@@ -1,6 +1,6 @@
-import * as PR from 'io-ts/PathReporter';
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import * as PR from 'io-ts/PathReporter';
 import * as UH from '../../src/types/user-handle';
 import { arbitraryWord } from '../helpers';
 

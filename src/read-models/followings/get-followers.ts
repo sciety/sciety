@@ -1,5 +1,5 @@
-import * as R from 'fp-ts/Record';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';

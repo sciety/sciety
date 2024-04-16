@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { constructViewModel } from '../../../src/html-pages/sciety-feed-page/construct-view-model';
+import { TestFramework, createTestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { constructViewModel } from '../../../src/html-pages/sciety-feed-page/construct-view-model';
+import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 
 describe('sciety-feed-page', () => {
   const addGroupCommand = arbitraryAddGroupCommand();

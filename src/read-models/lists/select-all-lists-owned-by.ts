@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import * as LOID from '../../types/list-owner-id';
 import { List } from './list';
+import * as LOID from '../../types/list-owner-id';
 
 type SelectAllListsOwnedBy = (listOwnerId: LOID.ListOwnerId) => ReadonlyArray<List>;
 

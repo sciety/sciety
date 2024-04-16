@@ -1,6 +1,6 @@
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
-import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent, domainEventCodec } from '../domain-events';
 import { ErrorMessage, toErrorMessage } from '../types/error-message';
 

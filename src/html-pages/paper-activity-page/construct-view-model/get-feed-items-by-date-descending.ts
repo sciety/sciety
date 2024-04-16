@@ -1,15 +1,15 @@
+import { sequenceS } from 'fp-ts/Apply';
+import * as D from 'fp-ts/Date';
+import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import * as D from 'fp-ts/Date';
-import * as Ord from 'fp-ts/Ord';
-import { sequenceS } from 'fp-ts/Apply';
-import { FeedItem } from '../view-model';
 import { Dependencies } from './dependencies';
-import * as PH from '../../../types/publishing-history';
-import { constructEvaluationHistory } from '../../../read-side/construct-evaluation-history';
 import { toEvaluationPublishedFeedItem } from './to-evaluation-published-feed-item';
 import { toExpressionPublishedFeedItem } from './to-expression-published-feed-item';
+import { constructEvaluationHistory } from '../../../read-side/construct-evaluation-history';
+import * as PH from '../../../types/publishing-history';
+import { FeedItem } from '../view-model';
 
 const byDate: Ord.Ord<FeedItem> = pipe(
   D.Ord,

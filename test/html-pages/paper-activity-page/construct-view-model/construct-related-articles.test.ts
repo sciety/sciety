@@ -1,12 +1,12 @@
-import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
-import * as DE from '../../../../src/types/data-error';
+import { pipe } from 'fp-ts/function';
 import { constructRelatedArticles } from '../../../../src/html-pages/paper-activity-page/construct-view-model/construct-related-articles';
+import { PaperActivitySummaryCardViewModel } from '../../../../src/shared-components/paper-activity-summary-card';
+import * as DE from '../../../../src/types/data-error';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { PaperActivitySummaryCardViewModel } from '../../../../src/shared-components/paper-activity-summary-card';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../../types/publishing-history.helper';
 
 describe('construct-related-articles', () => {

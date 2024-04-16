@@ -1,10 +1,10 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as listResource from '../resources/list';
-import { EditListDetailsCommand } from '../commands';
 import { CommandHandler } from '../../types/command-handler';
+import { EditListDetailsCommand } from '../commands';
 import { DependenciesForCommands } from '../dependencies-for-commands';
+import * as listResource from '../resources/list';
 
 type EditListDetailsCommandHandler = (
   dependencies: DependenciesForCommands

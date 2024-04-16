@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { TestFramework, createTestFramework } from '../../../framework';
 import { constructViewModel } from '../../../../src/html-pages/home-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/home-page/view-model';
-import { arbitraryString } from '../../../helpers';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { GroupLinkWithLogoViewModel } from '../../../../src/html-pages/shared-components/group-link';
+import { TestFramework, createTestFramework } from '../../../framework';
+import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

@@ -7,12 +7,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { DomainEvent } from './domain-events';
+import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, replaceError,
 } from './infrastructure';
-import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { startSagas } from './sagas';
 import { defaultLogLevel, Logger } from './shared-ports';
 

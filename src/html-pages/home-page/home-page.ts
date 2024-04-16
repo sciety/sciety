@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
-import { HtmlPage } from '../html-page';
 import { constructViewModel, GroupsToHighlight } from './construct-view-model/construct-view-model';
-import * as GID from '../../types/group-id';
 import { Dependencies } from './dependencies';
 import { renderAsHtml } from './render-as-html/render-as-html';
+import * as GID from '../../types/group-id';
+import { HtmlPage } from '../html-page';
 
 const groupsToHighlight: GroupsToHighlight = [
   {

@@ -1,8 +1,8 @@
 import { constructEvent } from '../../../src/domain-events';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryUserId } from '../../types/user-id.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 const groupJoinedEvent = arbitraryGroupJoinedEvent();
 

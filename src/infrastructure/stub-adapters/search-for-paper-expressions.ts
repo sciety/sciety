@@ -1,5 +1,5 @@
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
 import { ExternalQueries } from '../../third-parties';
 import * as EDOI from '../../types/expression-doi';
 

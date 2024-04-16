@@ -1,11 +1,11 @@
 import { constructEvent } from '../../../../src/domain-events';
 import * as LOID from '../../../../src/types/list-owner-id';
-import { setUpUserIfNecessary } from '../../../../src/write-side/resources/user/set-up-user-if-necessary';
 import { CreateUserAccountCommand } from '../../../../src/write-side/commands';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import { setUpUserIfNecessary } from '../../../../src/write-side/resources/user/set-up-user-if-necessary';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryUserHandle } from '../../../types/user-handle.helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('set-up-user-if-necessary', () => {
   const command: CreateUserAccountCommand = {

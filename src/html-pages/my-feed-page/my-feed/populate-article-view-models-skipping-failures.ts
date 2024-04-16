@@ -2,10 +2,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../types/expression-doi';
+import { Dependencies } from './dependencies';
 import { PaperActivitySummaryCardViewModel, constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
 import { ExpressionActivity } from '../../../types/expression-activity';
-import { Dependencies } from './dependencies';
+import * as EDOI from '../../../types/expression-doi';
 
 type PopulateArticleViewModelsSkippingFailures = (
   dependencies: Dependencies,

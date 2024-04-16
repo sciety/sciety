@@ -1,13 +1,13 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
+import { pipe } from 'fp-ts/function';
 import { augmentWithUserDetails } from './augment-with-user-details';
-import * as DE from '../../../../types/data-error';
-import { ViewModel } from '../view-model';
-import { findFollowers } from './find-followers';
 import { Dependencies } from './dependencies';
+import { findFollowers } from './find-followers';
 import { Params } from './params';
+import * as DE from '../../../../types/data-error';
+import { paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
+import { ViewModel } from '../view-model';
 
 const pageSize = 10;
 

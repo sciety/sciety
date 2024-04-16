@@ -1,5 +1,5 @@
-import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { constructDefaultPaginationControls } from '../../../../src/html-pages/shared-components/pagination';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 

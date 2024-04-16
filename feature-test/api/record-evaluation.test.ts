@@ -1,15 +1,15 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { arbitraryGroupId } from '../../test/types/group-id.helper';
 import * as RI from '../../src/types/evaluation-locator';
 import {
   arbitraryDate, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../../test/helpers';
+import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';
 import { arbitraryEvaluationLocator } from '../../test/types/evaluation-locator.helper';
+import { arbitraryGroupId } from '../../test/types/group-id.helper';
 import { callApi } from '../helpers/call-api.helper';
 import { screenshotTeardown } from '../utilities';
-import { arbitraryDescriptionPath } from '../../test/types/description-path.helper';
 
 describe('record an evaluation', () => {
   beforeEach(async () => {

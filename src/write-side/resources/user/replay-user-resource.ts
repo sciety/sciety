@@ -1,13 +1,13 @@
-import { pipe } from 'fp-ts/function';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import {
   DomainEvent,
   EventOfType,
   isEventOfType,
 } from '../../../domain-events';
-import { UserId } from '../../../types/user-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
+import { UserId } from '../../../types/user-id';
 
 type RelevantEvent = EventOfType<'UserCreatedAccount'> | EventOfType<'UserDetailsUpdated'>;
 

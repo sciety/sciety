@@ -1,12 +1,10 @@
-import { pipe } from 'fp-ts/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as listResource from '../../src/write-side/resources/list';
+import { pipe } from 'fp-ts/function';
+import { createInMemoryEventStore } from './create-in-memory-event-store';
 import { dispatcher, Queries } from '../../src/read-models';
-import * as groupResource from '../../src/write-side/resources/group';
-import * as evaluationResource from '../../src/write-side/resources/evaluation';
 import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
-import { followCommandHandler } from '../../src/write-side/command-handlers/follow-command-handler';
+import { CommandHandler } from '../../src/types/command-handler';
 import {
   updateUserDetailsCommandHandler,
   recordEvaluationPublicationCommandHandler,
@@ -14,13 +12,15 @@ import {
   removeArticleFromListCommandHandler,
   createUserAccountCommandHandler,
 } from '../../src/write-side/command-handlers';
+import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
+import { followCommandHandler } from '../../src/write-side/command-handlers/follow-command-handler';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler';
-import { CommandHandler } from '../../src/types/command-handler';
 import {
   AddGroupCommand, AnnotateArticleInListCommand, UpdateEvaluationCommand, UpdateGroupDetailsCommand,
 } from '../../src/write-side/commands';
-import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
-import { createInMemoryEventStore } from './create-in-memory-event-store';
+import * as evaluationResource from '../../src/write-side/resources/evaluation';
+import * as groupResource from '../../src/write-side/resources/group';
+import * as listResource from '../../src/write-side/resources/list';
 import { dummyLogger } from '../dummy-logger';
 
 type EventStore = {

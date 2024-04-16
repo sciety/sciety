@@ -1,10 +1,10 @@
+import * as D from 'fp-ts/Date';
+import { Json } from 'fp-ts/Json';
+import * as O from 'fp-ts/Option';
+import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Json } from 'fp-ts/Json';
-import * as D from 'fp-ts/Date';
-import * as Ord from 'fp-ts/Ord';
 import { ReadModel } from './handle-event';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 

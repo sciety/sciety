@@ -1,11 +1,11 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import * as groupResource from '../../../../src/write-side/resources/group';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryString } from '../../../helpers';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../../src/domain-events';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
+import * as groupResource from '../../../../src/write-side/resources/group';
 import { arbitraryGroupJoinedEvent, arbitraryGroupDetailsUpdatedEvent } from '../../../domain-events/group-resource-events.helper';
+import { arbitraryString } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryGroupId } from '../../../types/group-id.helper';
 
 describe('update', () => {
   describe('when the group has joined', () => {

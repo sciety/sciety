@@ -4,17 +4,17 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { Middleware } from 'koa';
 import * as PR from 'io-ts/PathReporter';
+import { Middleware } from 'koa';
+import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { Logger } from '../../shared-ports';
 import { articleIdCodec } from '../../types/article-id';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { listIdCodec } from '../../types/list-id';
-import { AddArticleToListCommand } from '../../write-side/commands';
-import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
+import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
+import { AddArticleToListCommand } from '../../write-side/commands';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 
 export const articleIdFieldName = 'articleid';
 

@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { getUserOwnerInformation } from './get-user-owner-information';
-import { ListOwnerId } from '../../../types/list-owner-id';
 import { Dependencies } from './dependencies';
+import { getUserOwnerInformation } from './get-user-owner-information';
 import { constructGroupPageHref } from '../../../read-side/paths';
+import { ListOwnerId } from '../../../types/list-owner-id';
 
 type OwnerInformation = {
   ownerName: string,

@@ -1,8 +1,8 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { UpdateUserDetailsCommand } from '../../commands';
+import { pipe } from 'fp-ts/function';
 import { UserResource, replayUserResource } from './replay-user-resource';
 import { DomainEvent, constructEvent } from '../../../domain-events';
+import { UpdateUserDetailsCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
 type ExecuteCommand = (command: UpdateUserDetailsCommand)

@@ -1,15 +1,15 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
-import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { createTestFramework, TestFramework } from '../../../framework';
-import { List } from '../../../../src/read-models/lists';
-import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
-import { arbitraryUserId } from '../../../types/user-id.helper';
 import { constructEvent } from '../../../../src/domain-events';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
+import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
+import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
+import { List } from '../../../../src/read-models/lists';
+import * as LOID from '../../../../src/types/list-owner-id';
+import { createTestFramework, TestFramework } from '../../../framework';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryUserId } from '../../../types/user-id.helper';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 

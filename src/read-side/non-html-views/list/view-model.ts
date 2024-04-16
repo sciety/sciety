@@ -1,6 +1,6 @@
 import { URL } from 'url';
-import { ListId } from '../../../types/list-id';
 import { ArticleCardWithControlsAndAnnotationViewModel } from '../../../html-pages/shared-components/article-card-with-controls-and-annotation';
+import { ListId } from '../../../types/list-id';
 
 export type ViewModel = {
   name: string,

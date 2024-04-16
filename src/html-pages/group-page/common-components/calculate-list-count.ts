@@ -1,8 +1,8 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as LOID from '../../../types/list-owner-id';
-import { GroupId } from '../../../types/group-id';
+import { pipe } from 'fp-ts/function';
 import { Queries } from '../../../read-models';
+import { GroupId } from '../../../types/group-id';
+import * as LOID from '../../../types/list-owner-id';
 
 type Dependencies = Queries;
 

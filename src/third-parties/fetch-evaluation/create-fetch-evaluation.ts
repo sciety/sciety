@@ -1,16 +1,16 @@
 /* eslint-disable quote-props */
 import { pipe } from 'fp-ts/function';
-import { fetchNcrcReview } from './ncrc';
-import { fetchRapidReview } from './rapid-reviews';
+import { fetchAccessMicrobiologyEvaluation } from './access-microbiology';
+import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
 import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
 import { fetchHypothesisAnnotation } from './hypothesis';
-import { fetchZenodoRecord } from './zenodo';
+import { fetchNcrcReview } from './ncrc';
 import { fetchPrelightsHighlight } from './prelights';
+import { fetchRapidReview } from './rapid-reviews';
+import { fetchZenodoRecord } from './zenodo';
 import { Logger } from '../../shared-ports';
-import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
-import { fetchAccessMicrobiologyEvaluation } from './access-microbiology';
-import { QueryExternalService } from '../query-external-service';
 import { ExternalQueries } from '../external-queries';
+import { QueryExternalService } from '../query-external-service';
 
 export const createFetchEvaluation = (queryExternalService: QueryExternalService, logger: Logger): ExternalQueries['fetchEvaluation'] => pipe(
   {

@@ -1,18 +1,18 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { constructFrontMatter } from '../../src/read-side/construct-front-matter';
+import { ExternalQueries } from '../../src/third-parties';
+import * as DE from '../../src/types/data-error';
+import { ExpressionDoi } from '../../src/types/expression-doi';
 import { ExpressionFrontMatter } from '../../src/types/expression-front-matter';
 import * as PH from '../../src/types/publishing-history';
 import { createTestFramework, TestFramework } from '../framework';
-import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitrarySanitisedHtmlFragment } from '../helpers';
-import { arbitraryPaperExpression } from '../types/paper-expression.helper';
-import { ExpressionDoi } from '../../src/types/expression-doi';
-import * as DE from '../../src/types/data-error';
+import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
-import { ExternalQueries } from '../../src/third-parties';
+import { arbitraryPaperExpression } from '../types/paper-expression.helper';
 
 describe('construct-front-matter', () => {
   const latestExpressionDoi = arbitraryExpressionDoi();

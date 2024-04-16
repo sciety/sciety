@@ -1,14 +1,13 @@
-import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { CreateListCommand } from '../../src/write-side/commands/create-list';
-import { ReadAndWriteSides } from './create-read-and-write-sides';
-import { UserId } from '../../src/types/user-id';
-import { GroupId } from '../../src/types/group-id';
-import { ListId } from '../../src/types/list-id';
-import { ArticleId } from '../../src/types/article-id';
+import { pipe } from 'fp-ts/function';
 import { abortTest } from './abort-test';
+import { ReadAndWriteSides } from './create-read-and-write-sides';
+import { ArticleId } from '../../src/types/article-id';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
+import { GroupId } from '../../src/types/group-id';
+import { ListId } from '../../src/types/list-id';
+import { UserId } from '../../src/types/user-id';
 import {
   AddGroupCommand,
   AnnotateArticleInListCommand,
@@ -16,6 +15,7 @@ import {
   RecordEvaluationPublicationCommand,
   UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
+import { CreateListCommand } from '../../src/write-side/commands/create-list';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,

@@ -1,12 +1,12 @@
 import { htmlEscape } from 'escape-goat';
-import * as B from 'fp-ts/boolean';
 import * as O from 'fp-ts/Option';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import { renderSuccessBanner } from './render-success-banner';
 import { templateDate } from '../../../shared-components/date';
+import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
-import { renderSuccessBanner } from './render-success-banner';
-import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
 
 const renderArticleCount = (articleCount: ViewModel['articleCount']) => pipe(
   articleCount === 1,

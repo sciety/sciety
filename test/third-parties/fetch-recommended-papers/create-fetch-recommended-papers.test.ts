@@ -1,19 +1,19 @@
-import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../src/types/expression-doi';
-import { arbitraryString } from '../../helpers';
-import * as DE from '../../../src/types/data-error';
 import { createFetchRecommendedPapers } from '../../../src/third-parties/fetch-recommended-papers/create-fetch-recommended-papers';
-import { dummyLogger } from '../../dummy-logger';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
-import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
-import * as PH from '../../../src/types/publishing-history';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { QueryExternalService } from '../../../src/third-parties/query-external-service';
+import * as DE from '../../../src/types/data-error';
+import * as EDOI from '../../../src/types/expression-doi';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
+import * as PH from '../../../src/types/publishing-history';
 import { PublishingHistory } from '../../../src/types/publishing-history';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryString } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 
 const arbitraryRecommendedPaper = (articleId: string) => ({
   externalIds: {

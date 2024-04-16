@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent } from '../domain-events';
-import { CommandResult } from '../types/command-result';
 import { CommitEvents, Logger } from '../shared-ports';
+import { CommandResult } from '../types/command-result';
 import { ErrorMessage } from '../types/error-message';
 
 type Dependencies = {

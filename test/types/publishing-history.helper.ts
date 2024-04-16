@@ -1,11 +1,11 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 
-import * as PH from '../../src/types/publishing-history';
-import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryExpressionDoi } from './expression-doi.helper';
 import { arbitraryPaperExpression } from './paper-expression.helper';
 import { ExpressionDoi } from '../../src/types/expression-doi';
-import { arbitraryExpressionDoi } from './expression-doi.helper';
+import * as PH from '../../src/types/publishing-history';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 type ArbitraryPublishingHistoryOnlyPreprints = (overrides?: {
   earliestExpressionDoi?: ExpressionDoi,

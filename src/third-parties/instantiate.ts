@@ -1,16 +1,16 @@
 import * as O from 'fp-ts/Option';
 import { createClient } from 'redis';
-import { fetchStaticFile } from './fetch-static-file';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
+import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { fetchExpressionFrontMatter, crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
-import { createFetchRecommendedPapers } from './fetch-recommended-papers';
 import { ExternalQueries } from './external-queries';
-import { Logger } from '../shared-ports';
-import { CachingFetcherOptions, createCachingFetcher } from './cache';
-import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchEvaluation } from './fetch-evaluation';
+import { fetchPublishingHistory } from './fetch-publishing-history';
+import { createFetchRecommendedPapers } from './fetch-recommended-papers';
+import { fetchStaticFile } from './fetch-static-file';
 import { fetchUserAvatarUrl } from './fetch-user-avatar-url';
+import { Logger } from '../shared-ports';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;

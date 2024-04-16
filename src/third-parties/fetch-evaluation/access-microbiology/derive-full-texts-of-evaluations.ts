@@ -1,15 +1,15 @@
-import * as E from 'fp-ts/Either';
-import * as S from 'fp-ts/string';
-import * as RM from 'fp-ts/ReadonlyMap';
-import * as t from 'io-ts';
-import { identity, pipe } from 'fp-ts/function';
 import { XMLParser } from 'fast-xml-parser';
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { SanitisedHtmlFragment, sanitise } from '../../../types/sanitised-html-fragment';
-import { toHtmlFragment } from '../../../types/html-fragment';
+import * as RM from 'fp-ts/ReadonlyMap';
+import { identity, pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
+import * as t from 'io-ts';
 import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-jats';
-import * as DE from '../../../types/data-error';
 import { Logger } from '../../../shared-ports';
+import * as DE from '../../../types/data-error';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { SanitisedHtmlFragment, sanitise } from '../../../types/sanitised-html-fragment';
 import { decodeAndLogFailures } from '../../decode-and-log-failures';
 
 const parser = new XMLParser({

@@ -4,8 +4,8 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import { GroupIdFromString } from './codecs/GroupIdFromString';
-import { userIdCodec, UserId } from './user-id';
 import { GroupId } from './group-id';
+import { userIdCodec, UserId } from './user-id';
 
 export const fromObjectOfStrings = t.union([
   t.type({ value: GroupIdFromString, tag: t.literal('group-id') }),

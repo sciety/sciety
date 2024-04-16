@@ -1,14 +1,14 @@
-import { articleActivity } from './article-activity';
-import { evaluations } from './evaluations';
 import { annotations } from './annotations';
+import { articleActivity } from './article-activity';
+import { elifeSubjectAreaLists } from './elife-subject-area-lists';
+import { evaluatedArticlesLists } from './evaluated-articles-lists';
+import { evaluations } from './evaluations';
 import { followings } from './followings';
 import { groupActivity } from './group-activity';
 import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { lists } from './lists';
 import { users } from './users';
-import { elifeSubjectAreaLists } from './elife-subject-area-lists';
-import { evaluatedArticlesLists } from './evaluated-articles-lists';
 
 const queries = {
   ...elifeSubjectAreaLists.queries,

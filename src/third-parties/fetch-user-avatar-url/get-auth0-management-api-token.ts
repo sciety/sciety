@@ -1,11 +1,11 @@
+import axios from 'axios';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import axios from 'axios';
 import { formatValidationErrors } from 'io-ts-reporters';
-import * as DE from '../../types/data-error';
 import { Logger } from '../../shared-ports';
+import * as DE from '../../types/data-error';
 
 const managementApiTokenCodec = t.type({
   access_token: t.string,

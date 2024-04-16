@@ -1,9 +1,9 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { ExternalQueries } from '../../third-parties';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
-import { ExternalQueries } from '../../third-parties';
 
 const htmlFullText = `
 <h1>Stubbed evaluation content</h1>

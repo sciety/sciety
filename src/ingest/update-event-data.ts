@@ -1,11 +1,11 @@
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as tt from 'io-ts-types';
-import * as t from 'io-ts';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
+import * as tt from 'io-ts-types';
 import { groupIngestionConfigurations } from './group-ingestion-configurations';
 import { GroupIngestionConfiguration, updateAll } from './update-all';
 

@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { identity, pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { ExpressionDoi } from '../../types/expression-doi';
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 type GetEvaluationsOfExpression = (expressionDoi: ExpressionDoi) => ReadonlyArray<RecordedEvaluation>;
 

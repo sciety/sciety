@@ -1,8 +1,8 @@
 import { URL } from 'url';
 import { pipe } from 'fp-ts/function';
+import { Evaluation } from '../../../types/evaluation';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
-import { Evaluation } from '../../../types/evaluation';
 
 export type NcrcReview = {
   title: string,

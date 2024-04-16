@@ -3,16 +3,16 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { Dependencies } from './dependencies';
 import { PaperActivityErrorCardViewModel } from '../../../shared-components/paper-activity-summary-card';
+import { ExpressionDoi } from '../../../types/expression-doi';
+import { ListId } from '../../../types/list-id';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
   constructArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems } from '../../shared-components/pagination';
-import { ListId } from '../../../types/list-id';
-import { Dependencies } from './dependencies';
 import { ContentWithPaginationViewModel } from '../view-model';
-import { ExpressionDoi } from '../../../types/expression-doi';
 
 export const toPageOfCards = (
   dependencies: Dependencies,

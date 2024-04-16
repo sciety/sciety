@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import {
   isEventOfType, constructEvent, DomainEvent, EventOfType,
 } from '../../../domain-events';
+import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
+import { GroupId } from '../../../types/group-id';
 import { UpdateGroupDetailsCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
-import { GroupId } from '../../../types/group-id';
 
 type GroupState = {
   name: string,

@@ -1,17 +1,17 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { handleEvent, initialState } from '../../../src/read-models/group-activity/handle-event';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { getActivityForGroup } from '../../../src/read-models/group-activity/get-activity-for-group';
 import { DomainEvent, constructEvent } from '../../../src/domain-events';
+import { getActivityForGroup } from '../../../src/read-models/group-activity/get-activity-for-group';
+import { handleEvent, initialState } from '../../../src/read-models/group-activity/handle-event';
+import { GroupId } from '../../../src/types/group-id';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
+import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { GroupId } from '../../../src/types/group-id';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const getActivityForGroupHelper = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
   const readModel = pipe(

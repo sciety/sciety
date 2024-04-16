@@ -1,12 +1,12 @@
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as E from 'fp-ts/Either';
+import { renderPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
 import { renderErrorAsHtml } from '../../../../shared-components/paper-activity-summary-card/render-error-as-html';
 import { renderListItems } from '../../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { renderPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
-import { ViewModel } from '../view-model';
 import { PaginationControlsViewModel, renderPaginationControls } from '../../../shared-components/pagination';
+import { ViewModel } from '../view-model';
 
 const renderCards = (
   paginationControlsViewModel: PaginationControlsViewModel,

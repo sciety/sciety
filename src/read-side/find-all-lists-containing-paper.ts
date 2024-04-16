@@ -1,5 +1,5 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { Dependencies } from '../html-pages/paper-activity-page/construct-view-model/dependencies';
 import { eqList, List } from '../read-models/lists';
 import * as PH from '../types/publishing-history';

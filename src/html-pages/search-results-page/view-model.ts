@@ -1,7 +1,7 @@
 import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information';
 import { PaperActivitySummaryCardViewModel } from '../../shared-components/paper-activity-summary-card';
-import { LegacyPaginationControlsViewModel } from '../shared-components/pagination';
 import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
+import { LegacyPaginationControlsViewModel } from '../shared-components/pagination';
 
 type NoGroupsEvaluatedTheFoundArticles = {
   tag: 'no-groups-evaluated-the-found-articles',

@@ -1,24 +1,24 @@
 /* eslint-disable padded-blocks */
 import { URL } from 'url';
 import Router from '@koa/router';
-import { ParameterizedContext } from 'koa';
-import bodyParser from 'koa-bodyparser';
-import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import { ParameterizedContext } from 'koa';
+import bodyParser from 'koa-bodyparser';
 import {
   logInAuth0,
   signUpAuth0,
   completeAuthenticationJourney,
   stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0, Config as LoginMiddlewaresConfig,
 } from './login-middlewares';
+import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../html-pages/create-user-account-form-page';
+import { CollectedPorts } from '../../infrastructure';
+import { saveAuthenticationDestination } from '../authentication-destination';
 import { catchErrors } from '../catch-errors';
+import { createPageFromParams } from '../create-page-from-params';
 import { createUserAccount } from '../form-submission-handlers/create-user-account';
 import { pageHandler } from '../page-handler';
-import { CollectedPorts } from '../../infrastructure';
-import { createPageFromParams } from '../create-page-from-params';
-import { saveAuthenticationDestination } from '../authentication-destination';
-import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../html-pages/create-user-account-form-page';
 
 export type Config = LoginMiddlewaresConfig;
 

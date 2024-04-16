@@ -1,6 +1,6 @@
-import * as PR from 'io-ts/PathReporter';
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import * as PR from 'io-ts/PathReporter';
 import { SanitisedUserInput, sanitisedUserInputCodec } from '../../src/types/sanitised-user-input';
 import { arbitraryWord } from '../helpers';
 

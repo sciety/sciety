@@ -1,8 +1,8 @@
-import * as PR from 'io-ts/PathReporter';
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { arbitraryWord } from '../helpers';
+import { pipe } from 'fp-ts/function';
+import * as PR from 'io-ts/PathReporter';
 import { CandidateUserHandle, candidateUserHandleCodec } from '../../src/types/candidate-user-handle';
+import { arbitraryWord } from '../helpers';
 
 export const arbitraryCandidateUserHandle = (): CandidateUserHandle => pipe(
   arbitraryWord(10),

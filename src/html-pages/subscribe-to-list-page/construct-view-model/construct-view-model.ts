@@ -1,11 +1,11 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { listIdCodec } from '../../../types/list-id';
 import { Queries } from '../../../read-models';
-import { ViewModel } from '../view-model';
 import * as DE from '../../../types/data-error';
+import { listIdCodec } from '../../../types/list-id';
+import { ViewModel } from '../view-model';
 
 const codec = t.strict({
   listId: listIdCodec,

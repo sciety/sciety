@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { arbitraryUserHandle } from '../../../types/user-handle.helper';
-import * as User from '../../../../src/write-side/resources/user/handle-exists';
 import { UserHandle } from '../../../../src/types/user-handle';
+import * as User from '../../../../src/write-side/resources/user/handle-exists';
 import { arbitraryUserCreatedAccountEvent } from '../../../domain-events/user-resource-events.helper';
+import { arbitraryUserHandle } from '../../../types/user-handle.helper';
 
 describe('handle-exists', () => {
   describe('when the user exists', () => {

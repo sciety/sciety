@@ -1,7 +1,7 @@
+import { arbitraryGroupId } from './group-id.helper';
 import { arbitraryUserId } from './user-id.helper';
 import * as LOID from '../../src/types/list-owner-id';
 import { arbitraryNumber } from '../helpers';
-import { arbitraryGroupId } from './group-id.helper';
 
 type ArbitraryListOwnerId = () => LOID.ListOwnerId;
 

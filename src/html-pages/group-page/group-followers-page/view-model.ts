@@ -1,5 +1,5 @@
-import { PaginationControlsViewModel } from '../../shared-components/pagination';
 import { UserHandle } from '../../../types/user-handle';
+import { PaginationControlsViewModel } from '../../shared-components/pagination';
 import { ViewModel as HeaderViewModel } from '../common-components/render-page-header';
 
 export type UserCardViewModel = {

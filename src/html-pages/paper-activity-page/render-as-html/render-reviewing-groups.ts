@@ -1,9 +1,9 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ViewModel } from '../view-model';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { pipe } from 'fp-ts/function';
 import { renderListItems } from '../../../shared-components/render-list-items';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderGroupLinkWithLogo } from '../../shared-components/group-link';
+import { ViewModel } from '../view-model';
 
 export const renderReviewingGroups = (reviewingGroups: ViewModel['reviewingGroups']): HtmlFragment => {
   if (reviewingGroups.length === 0) {

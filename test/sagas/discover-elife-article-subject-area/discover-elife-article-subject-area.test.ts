@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { Ports, discoverElifeArticleSubjectArea } from '../../../src/sagas/discover-elife-article-subject-area/discover-elife-article-subject-area';
+import { ArticleId } from '../../../src/types/article-id';
 import { dummyLogger } from '../../dummy-logger';
+import { TestFramework, createTestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryDataError } from '../../types/data-error.helper';
-import { arbitrarySubjectArea } from '../../types/subject-area.helper';
-import { Ports, discoverElifeArticleSubjectArea } from '../../../src/sagas/discover-elife-article-subject-area/discover-elife-article-subject-area';
-import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
+import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
 describe('discover-elife-article-subject-area', () => {
   let framework: TestFramework;

@@ -1,14 +1,14 @@
-import { pipe } from 'fp-ts/function';
 import * as D from 'fp-ts/Date';
-import * as N from 'fp-ts/number';
-import * as Ord from 'fp-ts/Ord';
-import * as S from 'fp-ts/string';
 import * as EQ from 'fp-ts/Eq';
+import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
+import * as N from 'fp-ts/number';
+import * as S from 'fp-ts/string';
+import { RawUserInput } from '../../read-side';
+import { ExpressionDoi } from '../../types/expression-doi';
 import { ListId } from '../../types/list-id';
 import { ListOwnerId } from '../../types/list-owner-id';
-import { ExpressionDoi } from '../../types/expression-doi';
-import { RawUserInput } from '../../read-side';
 
 export const byUpdatedAt: Ord.Ord<List> = pipe(
   D.Ord,

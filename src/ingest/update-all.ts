@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { v4 } from 'uuid';
+import axiosRetry, { exponentialDelay } from 'axios-retry';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -7,7 +7,7 @@ import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import axiosRetry, { exponentialDelay } from 'axios-retry';
+import { v4 } from 'uuid';
 import { fetchData, FetchData } from './fetch-data';
 import { FeedData } from './types/feed-data';
 

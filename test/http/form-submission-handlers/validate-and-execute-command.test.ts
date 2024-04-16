@@ -3,13 +3,13 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { ParameterizedContext } from 'koa';
 import { validateAndExecuteCommand, Dependencies } from '../../../src/http/form-submission-handlers/validate-and-execute-command';
+import { SanitisedUserInput } from '../../../src/types/sanitised-user-input';
+import { arbitraryUserCreatedAccountEvent } from '../../domain-events/user-resource-events.helper';
+import { dummyLogger } from '../../dummy-logger';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitrarySanitisedUserInput } from '../../types/sanitised-user-input.helper';
 import { arbitraryUserHandle } from '../../types/user-handle.helper';
-import { SanitisedUserInput } from '../../../src/types/sanitised-user-input';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { dummyLogger } from '../../dummy-logger';
-import { arbitraryUserCreatedAccountEvent } from '../../domain-events/user-resource-events.helper';
 
 const defaultDependencies: Dependencies = {
   commitEvents: shouldNotBeCalled,

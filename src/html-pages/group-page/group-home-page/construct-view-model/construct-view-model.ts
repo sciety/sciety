@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { constructFeaturedLists } from './construct-featured-lists';
+import { constructFeed } from './construct-feed';
+import { constructHeader } from './construct-header';
+import { Dependencies } from './dependencies';
+import { Params } from './params';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { Dependencies } from './dependencies';
-import { constructFeed } from './construct-feed';
-import { Params } from './params';
-import { constructFeaturedLists } from './construct-featured-lists';
-import { constructHeader } from './construct-header';
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 

@@ -4,6 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
+import { Dependencies } from './dependencies';
 import { followedGroupsActivities } from './followed-groups-activities';
 import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models-skipping-failures';
 import {
@@ -13,13 +14,12 @@ import {
   troubleFetchingTryAgain,
 } from './static-content';
 import { renderPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
-import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../shared-components/pagination';
+import { renderListItems } from '../../../shared-components/render-list-items';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { UserId } from '../../../types/user-id';
-import { Dependencies } from './dependencies';
-import { renderListItems } from '../../../shared-components/render-list-items';
 import { renderListOfCards } from '../../shared-components/list-of-cards';
+import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../shared-components/pagination';
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>

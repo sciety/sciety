@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../src/types/expression-doi';
 import { getBiorxivOrMedrxivCategory } from '../../../src/third-parties/biorxiv/get-biorxiv-or-medrxiv-category';
 import * as DE from '../../../src/types/data-error';
+import * as EDOI from '../../../src/types/expression-doi';
 import { SubjectArea } from '../../../src/types/subject-area';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryDate } from '../../helpers';

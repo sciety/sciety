@@ -1,19 +1,19 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../domain-events';
-import { articleActivity } from './article-activity';
-import { Queries } from './queries';
-import { evaluations } from './evaluations';
-import { InitialisedReadModel, UnionToIntersection } from './initialised-read-model';
 import { annotations } from './annotations';
+import { articleActivity } from './article-activity';
+import { elifeSubjectAreaLists } from './elife-subject-area-lists';
+import { evaluatedArticlesLists } from './evaluated-articles-lists';
+import { evaluations } from './evaluations';
 import { followings } from './followings';
 import { groupActivity } from './group-activity';
 import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
+import { InitialisedReadModel, UnionToIntersection } from './initialised-read-model';
 import { lists } from './lists';
+import { Queries } from './queries';
 import { users } from './users';
-import { elifeSubjectAreaLists } from './elife-subject-area-lists';
-import { evaluatedArticlesLists } from './evaluated-articles-lists';
+import { DomainEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;

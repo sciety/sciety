@@ -1,11 +1,11 @@
 import {
   click, goto, into, openBrowser, textBox, write, $, currentURL,
 } from 'taiko';
-import { arbitraryString, arbitraryWord } from '../test/helpers';
-import { screenshotTeardown } from './utilities';
-import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
 import * as apiHelpers from './helpers/api-helpers';
+import { completeLoginViaStubWithSpecifiedUserId } from './helpers/complete-login-via-stub-with-specified-user-id';
+import { screenshotTeardown } from './utilities';
 import { CreateUserAccountCommand } from '../src/write-side/commands';
+import { arbitraryString, arbitraryWord } from '../test/helpers';
 import { arbitraryCreateUserAccountCommand } from '../test/write-side/commands/create-user-account-command.helper';
 
 describe('journey-to-create-new-list', () => {

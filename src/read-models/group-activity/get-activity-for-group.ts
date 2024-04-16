@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import * as RM from 'fp-ts/ReadonlyMap';
+import { pipe } from 'fp-ts/function';
 import { Activity, ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 

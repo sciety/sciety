@@ -3,8 +3,8 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import * as tt from 'io-ts-types';
 import { Prelight } from './extract-prelights';
 
 const itemCodec = t.type({

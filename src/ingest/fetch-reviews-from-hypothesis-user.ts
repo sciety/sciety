@@ -2,11 +2,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchData } from './fetch-data';
-import { daysAgo } from './time';
-import { FetchEvaluations } from './update-all';
+import { tagToEvaluationTypeMap } from './tag-to-evaluation-type-map';
 import * as Hyp from './third-parties/hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from './third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
-import { tagToEvaluationTypeMap } from './tag-to-evaluation-type-map';
+import { daysAgo } from './time';
+import { FetchEvaluations } from './update-all';
 
 type Ports = {
   fetchData: FetchData,

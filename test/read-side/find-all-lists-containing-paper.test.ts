@@ -1,10 +1,10 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as PH from '../../src/types/publishing-history';
+import { pipe } from 'fp-ts/function';
 import { findAllListsContainingPaper } from '../../src/read-side/find-all-lists-containing-paper';
 import { ArticleId } from '../../src/types/article-id';
 import { ListId } from '../../src/types/list-id';
+import * as PH from '../../src/types/publishing-history';
 import { TestFramework, createTestFramework } from '../framework';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';

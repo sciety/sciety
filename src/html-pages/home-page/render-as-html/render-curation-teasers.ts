@@ -1,7 +1,7 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { pipe } from 'fp-ts/function';
 import { renderListItems } from '../../../shared-components/render-list-items';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
 const renderCurationTeaser = (viewModel: ViewModel['curationTeasers'][number]) => toHtmlFragment(`

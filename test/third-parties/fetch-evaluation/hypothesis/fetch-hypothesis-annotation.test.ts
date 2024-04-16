@@ -1,14 +1,14 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import { HypothesisAnnotation } from '../../../../src/third-parties/fetch-evaluation/hypothesis/HypothesisAnnotation';
 import { fetchHypothesisAnnotation, insertSelectedText } from '../../../../src/third-parties/fetch-evaluation/hypothesis/fetch-hypothesis-annotation';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryWord } from '../../../helpers';
-import { HypothesisAnnotation } from '../../../../src/third-parties/fetch-evaluation/hypothesis/HypothesisAnnotation';
-import { arbitraryDataError } from '../../../types/data-error.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryDataError } from '../../../types/data-error.helper';
 
 const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();

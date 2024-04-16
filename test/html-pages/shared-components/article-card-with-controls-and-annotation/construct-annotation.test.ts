@@ -1,22 +1,22 @@
 import * as O from 'fp-ts/Option';
 
 import { pipe } from 'fp-ts/function';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { TestFramework, createTestFramework } from '../../../framework';
 import {
   constructAnnotation,
 } from '../../../../src/html-pages/shared-components/article-card-with-controls-and-annotation/construct-annotation';
-import { arbitraryListId } from '../../../types/list-id.helper';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { unknownAuthor } from '../../../../src/html-pages/shared-components/article-card-with-controls-and-annotation/static-content';
-import { arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
 import { Annotation } from '../../../../src/html-pages/shared-components/article-card-with-controls-and-annotation/view-model';
 import { rawUserInput } from '../../../../src/read-side';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { ArticleId } from '../../../../src/types/article-id';
+import * as LOID from '../../../../src/types/list-owner-id';
+import { TestFramework, createTestFramework } from '../../../framework';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;

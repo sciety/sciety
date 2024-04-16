@@ -1,16 +1,16 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { TestFramework, createTestFramework } from '../../../framework';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { List } from '../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../src/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/lists-page/view-model';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { List } from '../../../../src/read-models/lists';
+import * as LOID from '../../../../src/types/list-owner-id';
 import { dummyLogger } from '../../../dummy-logger';
+import { TestFramework, createTestFramework } from '../../../framework';
+import { abortTest } from '../../../framework/abort-test';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { abortTest } from '../../../framework/abort-test';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

@@ -3,16 +3,16 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
-import { ConstructPage } from '../html-pages/construct-page';
-import { PageLayout } from '../html-pages/page-layout';
-import { constructHtmlResponse } from '../html-pages/construct-html-response';
-import { sendHtmlResponse } from './send-html-response';
 import { detectClientClassification } from './detect-client-classification';
-import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
+import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
+import { constructHtmlResponse } from '../html-pages/construct-html-response';
+import { ConstructPage } from '../html-pages/construct-page';
 import { HtmlPage } from '../html-pages/html-page';
+import { PageLayout } from '../html-pages/page-layout';
+import { standardPageLayout } from '../shared-components/standard-page-layout';
+import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 
 const constructAndSendHtmlResponse = (
   adapters: GetLoggedInScietyUserPorts,

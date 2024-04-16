@@ -1,17 +1,17 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ExpressionDoi } from '../../../src/types/expression-doi';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { getEvaluationsOfMultipleExpressions } from '../../../src/read-models/evaluations/get-evaluations-of-multiple-expressions';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { getEvaluationsOfMultipleExpressions } from '../../../src/read-models/evaluations/get-evaluations-of-multiple-expressions';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
 import { EvaluationType } from '../../../src/types/recorded-evaluation';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent, arbitraryEvaluationRemovalRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const runQuery = (expressionDois: ReadonlyArray<ExpressionDoi>) => (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(

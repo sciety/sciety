@@ -5,10 +5,10 @@ import { Docmap } from './docmap-type';
 import { Evaluation } from './evaluation';
 import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
-import * as EL from '../../types/evaluation-locator';
-import * as EDOI from '../../types/expression-doi';
 import { DocmapViewModel } from './view-model';
 import { constructPaperActivityPageHref } from '../../read-side/paths';
+import * as EL from '../../types/evaluation-locator';
+import * as EDOI from '../../types/expression-doi';
 
 const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   doi: expressionDoi,

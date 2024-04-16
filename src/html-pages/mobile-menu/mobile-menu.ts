@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { constructUserAvatarSrc } from '../../read-side/paths';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
-import { constructUserAvatarSrc } from '../../read-side/paths';
 
 const renderProfileLink = (user: O.Option<UserDetails>) => pipe(
   user,

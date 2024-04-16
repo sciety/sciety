@@ -5,9 +5,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchPrelightsHighlight } from '../../../../src/third-parties/fetch-evaluation/prelights/fetch-prelights-highlight';
 import * as DE from '../../../../src/types/data-error';
+import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { dummyLogger } from '../../../dummy-logger';
 
 const makeDoc = (descriptions: Array<string>) => `
   <!doctype html>

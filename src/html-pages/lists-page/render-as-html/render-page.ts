@@ -1,11 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListCard } from '../../../shared-components/list-card';
 import { renderListItems } from '../../../shared-components/render-list-items';
-import { renderPaginationControls } from '../../shared-components/pagination';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListOfCards } from '../../shared-components/list-of-cards';
+import { renderPaginationControls } from '../../shared-components/pagination';
+import { ViewModel } from '../view-model';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.listCards,

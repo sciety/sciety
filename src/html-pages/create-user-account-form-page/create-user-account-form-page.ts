@@ -1,10 +1,10 @@
-import { pipe } from 'fp-ts/function';
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage, toHtmlPage } from '../html-page';
-import { SanitisedUserInput } from '../../types/sanitised-user-input';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { Params } from './params';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { SanitisedUserInput } from '../../types/sanitised-user-input';
+import { HtmlPage, toHtmlPage } from '../html-page';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,

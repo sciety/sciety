@@ -1,5 +1,5 @@
-import { pipe } from 'fp-ts/function';
 import { load } from 'cheerio';
+import { pipe } from 'fp-ts/function';
 import { renderEvaluationPublishedFeedItem } from '../../../../src/html-pages/paper-activity-page/render-as-html/render-evaluation-published-feed-item';
 import { missingFullTextAndSourceLink } from '../../../../src/html-pages/paper-activity-page/render-as-html/static-messages';
 import { EvaluationLocator, evaluationLocatorCodec } from '../../../../src/types/evaluation-locator';

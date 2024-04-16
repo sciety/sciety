@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryString } from '../helpers';
-import { canonicalExpressionDoiCodec, expressionDoiCodec, hasPrefix } from '../../src/types/expression-doi';
 import { arbitraryExpressionDoi } from './expression-doi.helper';
+import { canonicalExpressionDoiCodec, expressionDoiCodec, hasPrefix } from '../../src/types/expression-doi';
+import { arbitraryString } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('expression-doi', () => {
   describe.each([

@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
+import * as tt from 'io-ts-types';
 import { FetchData } from '../../fetch-data';
 
 const crossrefReviewFromJson = t.type({

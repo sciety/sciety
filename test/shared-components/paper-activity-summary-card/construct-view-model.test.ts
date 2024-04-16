@@ -1,24 +1,24 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
-import * as EDOI from '../../../src/types/expression-doi';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { dummyLogger } from '../../dummy-logger';
-import * as DE from '../../../src/types/data-error';
-import { constructViewModel } from '../../../src/shared-components/paper-activity-summary-card/construct-view-model';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { createTestFramework, TestFramework } from '../../framework';
+import { constructPaperActivityPageHref } from '../../../src/read-side/paths';
 import { PaperActivitySummaryCardViewModel } from '../../../src/shared-components/paper-activity-summary-card';
+import { constructViewModel } from '../../../src/shared-components/paper-activity-summary-card/construct-view-model';
 import { ErrorViewModel } from '../../../src/shared-components/paper-activity-summary-card/render-error-as-html';
+import { ArticleId } from '../../../src/types/article-id';
+import * as DE from '../../../src/types/data-error';
+import * as EDOI from '../../../src/types/expression-doi';
+import * as PH from '../../../src/types/publishing-history';
+import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
+import { dummyLogger } from '../../dummy-logger';
+import { createTestFramework, TestFramework } from '../../framework';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
 import { arbitraryCreateListCommand } from '../../write-side/commands/create-list-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
-import { ArticleId } from '../../../src/types/article-id';
-import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import * as PH from '../../../src/types/publishing-history';
-import { arbitraryPublishingHistoryOnlyPreprints } from '../../types/publishing-history.helper';
-import { constructPaperActivityPageHref } from '../../../src/read-side/paths';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

@@ -1,10 +1,10 @@
 import { Middleware } from '@koa/router';
 import { HttpStatusCode } from 'axios';
-import { flow, pipe } from 'fp-ts/function';
-import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
-import { renderAsAtom } from './render-as-atom';
+import * as TE from 'fp-ts/TaskEither';
+import { flow, pipe } from 'fp-ts/function';
 import { Dependencies, constructViewModel, paramsCodec } from './construct-view-model';
+import { renderAsAtom } from './render-as-atom';
 
 export const listFeed = (dependencies: Dependencies): Middleware => async (context, next) => {
   context.response.type = 'application/atom+xml';

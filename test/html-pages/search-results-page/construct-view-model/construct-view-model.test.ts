@@ -4,13 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
+import { ExternalQueries } from '../../../../src/third-parties';
+import { ExpressionDoi } from '../../../../src/types/expression-doi';
+import { SearchResults } from '../../../../src/types/search-results';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitraryString, arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { ExternalQueries } from '../../../../src/third-parties';
-import { ExpressionDoi } from '../../../../src/types/expression-doi';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { SearchResults } from '../../../../src/types/search-results';
 
 const searchForPaperExpressionsReturningResults = (
   expressionDois: SearchResults['items'],

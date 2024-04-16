@@ -1,8 +1,8 @@
-import * as PR from 'io-ts/PathReporter';
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { arbitraryWord } from '../helpers';
+import { pipe } from 'fp-ts/function';
+import * as PR from 'io-ts/PathReporter';
 import { UnsafeUserInput, unsafeUserInputCodec } from '../../src/types/unsafe-user-input';
+import { arbitraryWord } from '../helpers';
 
 export const arbitraryUnsafeUserInput = (): UnsafeUserInput => pipe(
   arbitraryWord(12),

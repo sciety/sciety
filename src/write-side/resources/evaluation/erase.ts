@@ -1,13 +1,13 @@
-import * as B from 'fp-ts/boolean';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import { evaluationResourceError } from './evaluation-resource-error';
 import {
   DomainEvent, isEventOfType, constructEvent, EventOfType,
 } from '../../../domain-events';
 import { EraseEvaluationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
-import { evaluationResourceError } from './evaluation-resource-error';
 
 type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 

@@ -1,12 +1,12 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
-import { update } from '../../../../src/write-side/resources/evaluation';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-resource-events.helper';
 import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../../src/types/recorded-evaluation';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
+import { update } from '../../../../src/write-side/resources/evaluation';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 
 const evaluationRecordedWithType = (
   evaluationLocator: EvaluationLocator,

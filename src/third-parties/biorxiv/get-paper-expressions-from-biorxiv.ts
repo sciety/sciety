@@ -3,14 +3,14 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as DE from '../../types/data-error';
-import * as EDOI from '../../types/expression-doi';
-import { ColdSpringHarborServer } from '../cold-spring-harbor-server';
 import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
-import { ArticleId } from '../../types/article-id';
-import { PaperExpression } from '../../types/paper-expression';
 import { Logger } from '../../shared-ports';
+import { ArticleId } from '../../types/article-id';
+import * as DE from '../../types/data-error';
+import * as EDOI from '../../types/expression-doi';
+import { PaperExpression } from '../../types/paper-expression';
+import { ColdSpringHarborServer } from '../cold-spring-harbor-server';
 import { QueryExternalService } from '../query-external-service';
 
 type Dependencies = {

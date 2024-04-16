@@ -1,19 +1,19 @@
 import { sequenceS } from 'fp-ts/Apply';
+import * as D from 'fp-ts/Date';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as D from 'fp-ts/Date';
-import * as DE from '../../types/data-error';
-import { GroupId } from '../../types/group-id';
-import { inferredSourceUrl } from '../../types/evaluation-locator';
-import { Queries } from '../../read-models';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import * as EDOI from '../../types/expression-doi';
-import { ExternalQueries } from '../../third-parties';
 import { DocmapViewModel } from './view-model';
+import { Queries } from '../../read-models';
+import { ExternalQueries } from '../../third-parties';
+import * as DE from '../../types/data-error';
+import { inferredSourceUrl } from '../../types/evaluation-locator';
+import * as EDOI from '../../types/expression-doi';
+import { GroupId } from '../../types/group-id';
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 type DocmapIdentifier = {
   expressionDoi: EDOI.ExpressionDoi,

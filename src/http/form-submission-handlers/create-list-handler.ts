@@ -5,10 +5,10 @@ import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { Payload } from '../../infrastructure/logger';
 import { CreateList, Logger } from '../../shared-ports';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { CreateListCommand } from '../../write-side/commands';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
+import { CreateListCommand } from '../../write-side/commands';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 
 type Ports = GetLoggedInScietyUserPorts & {
   logger: Logger,

@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { create } from '../../../../src/write-side/resources/group/create';
 import { EventOfType } from '../../../../src/domain-events';
-import { arbitraryString, arbitraryWord } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
 import * as LOID from '../../../../src/types/list-owner-id';
+import { create } from '../../../../src/write-side/resources/group/create';
 import {
   arbitraryGroupDetailsUpdatedEvent,
   arbitraryGroupJoinedEvent,
 } from '../../../domain-events/group-resource-events.helper';
+import { arbitraryString, arbitraryWord } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryAddGroupCommand } from '../../commands/add-group-command.helper';
 
 describe('create', () => {

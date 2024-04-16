@@ -1,21 +1,21 @@
 import { URL } from 'url';
-import * as TE from 'fp-ts/TaskEither';
-import * as O from 'fp-ts/Option';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { ExternalQueries } from '../../src/third-parties';
+import { ArticleId } from '../../src/types/article-id';
+import { ArticleServer } from '../../src/types/article-server';
 import * as DE from '../../src/types/data-error';
-import { sanitise } from '../../src/types/sanitised-html-fragment';
 import { toHtmlFragment } from '../../src/types/html-fragment';
+import * as PH from '../../src/types/publishing-history';
+import { sanitise } from '../../src/types/sanitised-html-fragment';
 import {
   arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
 } from '../helpers';
-import { ArticleServer } from '../../src/types/article-server';
 import { arbitraryArticleServer } from '../types/article-server.helper';
-import { ExternalQueries } from '../../src/third-parties';
-import { ArticleId } from '../../src/types/article-id';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
-import * as PH from '../../src/types/publishing-history';
 
 export type HappyPathThirdPartyAdapters = ExternalQueries;
 

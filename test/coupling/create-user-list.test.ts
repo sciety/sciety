@@ -1,18 +1,18 @@
-import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ViewModel as UserListsPage } from '../../src/html-pages/user-page/user-lists-page/view-model';
-import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/user-lists-page/construct-view-model';
-import * as LOID from '../../src/types/list-owner-id';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { constructViewModel as constructGroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/construct-view-model';
 import { ViewModel as GroupFollowersPage } from '../../src/html-pages/group-page/group-followers-page/view-model';
-import { shouldNotBeCalled } from '../should-not-be-called';
+import { constructViewModel as constructUserListsPage } from '../../src/html-pages/user-page/user-lists-page/construct-view-model';
+import { ViewModel as UserListsPage } from '../../src/html-pages/user-page/user-lists-page/view-model';
 import { CandidateUserHandle } from '../../src/types/candidate-user-handle';
+import * as LOID from '../../src/types/list-owner-id';
 import { createTestFramework, TestFramework } from '../framework';
+import { shouldNotBeCalled } from '../should-not-be-called';
+import { arbitraryAddGroupCommand } from '../write-side/commands/add-group-command.helper';
 import { arbitraryCreateListCommand } from '../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../write-side/commands/create-user-account-command.helper';
-import { arbitraryAddGroupCommand } from '../write-side/commands/add-group-command.helper';
 
 describe('create user list', () => {
   let framework: TestFramework;

@@ -1,12 +1,12 @@
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { searchEuropePmc } from '../../../src/third-parties/europe-pmc';
+import { SearchResults } from '../../../src/types/search-results';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitraryString, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { SearchResults } from '../../../src/types/search-results';
 
 describe('search-europe-pmc', () => {
   let results: SearchResults;

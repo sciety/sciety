@@ -2,11 +2,11 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { fetchExpressionFrontMatter } from '../../../src/third-parties/crossref/fetch-expression-front-matter';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { fetchExpressionFrontMatter } from '../../../src/third-parties/crossref/fetch-expression-front-matter';
 
 describe('fetch-expression-front-matter', () => {
   const expressionDoi = arbitraryExpressionDoi();

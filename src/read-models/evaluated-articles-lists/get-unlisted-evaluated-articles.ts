@@ -1,11 +1,11 @@
-import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import * as S from 'fp-ts/string';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
+import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { ArticleState, ReadModel } from './handle-event';
-import { ListId } from '../../types/list-id';
 import { ArticleId } from '../../types/article-id';
+import { ListId } from '../../types/list-id';
 
 const hasBeenEvaluated = (a: ArticleState): boolean => a.evaluatedBy.length > 0;
 

@@ -5,13 +5,13 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { Dependencies } from './dependencies';
 import * as ER from './error-response';
 import * as DE from '../../types/data-error';
+import { ExpressionDoi } from '../../types/expression-doi';
 import * as GID from '../../types/group-id';
 import { GroupId } from '../../types/group-id';
 import { publisherAccountId } from '../docmap/publisher-account-id';
-import { Dependencies } from './dependencies';
-import { ExpressionDoi } from '../../types/expression-doi';
 
 export type DocmapIndexEntryModel = {
   expressionDoi: ExpressionDoi,

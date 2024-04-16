@@ -1,17 +1,17 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import { CurationStatement } from '../../read-side/curation-statements';
+import { LanguageCode } from '../../shared-components/lang-attribute';
+import { PaperActivitySummaryCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import { ArticleAuthors } from '../../types/article-authors';
 import { ArticleServer } from '../../types/article-server';
-import { HtmlFragment } from '../../types/html-fragment';
 import * as EL from '../../types/evaluation-locator';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { ListId } from '../../types/list-id';
-import { PaperActivitySummaryCardViewModel } from '../../shared-components/paper-activity-summary-card';
-import { LanguageCode } from '../../shared-components/lang-attribute';
-import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
-import { CurationStatement } from '../../read-side/curation-statements';
 import { ExpressionDoi } from '../../types/expression-doi';
+import { HtmlFragment } from '../../types/html-fragment';
+import { ListId } from '../../types/list-id';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
 
 export type EvaluationPublishedFeedItem = {
   type: 'evaluation-published',

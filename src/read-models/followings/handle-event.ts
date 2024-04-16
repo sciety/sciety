@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
-import { DomainEvent, isEventOfType } from '../../domain-events';
 
 export type ReadModel = Record<UserId, Array<GroupId>>;
 

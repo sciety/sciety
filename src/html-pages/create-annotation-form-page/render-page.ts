@@ -1,8 +1,8 @@
-import * as O from 'fp-ts/Option';
 import { htmlEscape } from 'escape-goat';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import * as O from 'fp-ts/Option';
 import { ViewModel } from './view-model';
 import { inputFieldNames } from '../../standards';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 const renderErrorSummary = O.match(
   () => '',

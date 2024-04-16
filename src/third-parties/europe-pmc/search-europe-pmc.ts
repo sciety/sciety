@@ -3,14 +3,14 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import * as PR from 'io-ts/PathReporter';
-import * as DE from '../../types/data-error';
-import { Logger } from '../../shared-ports';
+import * as tt from 'io-ts-types';
 import { constructQueryUrl } from './construct-query-url';
-import { QueryExternalService } from '../query-external-service';
-import { ExternalQueries } from '../external-queries';
+import { Logger } from '../../shared-ports';
+import * as DE from '../../types/data-error';
 import { expressionDoiCodec } from '../../types/expression-doi';
+import { ExternalQueries } from '../external-queries';
+import { QueryExternalService } from '../query-external-service';
 
 const itemFromJson = t.type({
   doi: expressionDoiCodec,

@@ -1,7 +1,7 @@
-import { arbitraryNumber, arbitraryString, arbitraryUri } from '../helpers';
 import { EventOfType, constructEvent } from '../../src/domain-events';
-import { arbitraryGroupId } from '../types/group-id.helper';
+import { arbitraryNumber, arbitraryString, arbitraryUri } from '../helpers';
 import { arbitraryDescriptionPath } from '../types/description-path.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
 
 export const arbitraryGroupJoinedEvent = (): EventOfType<'GroupJoined'> => constructEvent('GroupJoined')(
   {

@@ -1,7 +1,7 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { pipe } from 'fp-ts/function';
 import { renderListItems } from '../../../shared-components/render-list-items';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { GroupLinkWithLogoViewModel, renderGroupLinkWithLogo } from '../../shared-components/group-link';
 
 type GroupsViewModel = ReadonlyArray<GroupLinkWithLogoViewModel>;

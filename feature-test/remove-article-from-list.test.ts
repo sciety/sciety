@@ -5,10 +5,10 @@ import {
   goto,
   openBrowser,
 } from 'taiko';
-import { arbitraryArticleId } from '../test/types/article-id.helper';
-import { arbitraryUserId } from '../test/types/user-id.helper';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
+import { arbitraryArticleId } from '../test/types/article-id.helper';
+import { arbitraryUserId } from '../test/types/user-id.helper';
 
 describe('remove-article-from-list', () => {
   beforeAll(async () => {

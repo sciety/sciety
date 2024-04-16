@@ -1,9 +1,9 @@
-import * as Eq from 'fp-ts/Eq';
-import * as S from 'fp-ts/string';
-import { v4 } from 'uuid';
 import * as E from 'fp-ts/Either';
+import * as Eq from 'fp-ts/Eq';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
+import { v4 } from 'uuid';
 
 export type ListId = string & { readonly ListId: unique symbol };
 

@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
-import { GroupId } from '../../../../src/types/group-id';
-import { arbitraryString } from '../../../helpers';
 import { findGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/find-groups';
+import { GroupId } from '../../../../src/types/group-id';
 import { TestFramework, createTestFramework } from '../../../framework';
+import { arbitraryString } from '../../../helpers';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 
 describe('find-groups', () => {

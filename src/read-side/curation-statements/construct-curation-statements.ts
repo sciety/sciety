@@ -1,22 +1,22 @@
-import * as E from 'fp-ts/Either';
 import * as D from 'fp-ts/Date';
+import * as E from 'fp-ts/Either';
+import * as Eq from 'fp-ts/Eq';
+import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
-import * as TE from 'fp-ts/TaskEither';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
 import * as S from 'fp-ts/string';
-import * as Eq from 'fp-ts/Eq';
-import * as GID from '../../types/group-id';
-import { detectLanguage } from '../../shared-components/lang-attribute';
-import { EvaluationLocator } from '../../types/evaluation-locator';
-import { Queries } from '../../read-models';
-import { Logger } from '../../shared-ports';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
-import { ExternalQueries } from '../../third-parties';
 import { CurationStatement } from './curation-statement';
+import { Queries } from '../../read-models';
+import { detectLanguage } from '../../shared-components/lang-attribute';
+import { Logger } from '../../shared-ports';
+import { ExternalQueries } from '../../third-parties';
+import { EvaluationLocator } from '../../types/evaluation-locator';
+import * as GID from '../../types/group-id';
 import * as PH from '../../types/publishing-history';
+import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { constructGroupPageHref } from '../paths';
 
 export type Dependencies = Queries & ExternalQueries & {

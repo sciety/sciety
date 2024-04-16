@@ -1,10 +1,10 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
+import { GroupCardViewModel } from './view-model';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 import { templateDate } from '../date';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
-import { GroupCardViewModel } from './view-model';
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 

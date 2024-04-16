@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
-import { toDefaultErrorHtmlDocument } from '../html-pages/to-default-error-html-document';
-import { detectClientClassification } from './detect-client-classification';
 import { Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
+import { detectClientClassification } from './detect-client-classification';
+import { toDefaultErrorHtmlDocument } from '../html-pages/to-default-error-html-document';
 
 export type Dependencies = GetLoggedInScietyUserPorts;
 

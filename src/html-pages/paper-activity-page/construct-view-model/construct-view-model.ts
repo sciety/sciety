@@ -1,25 +1,25 @@
+import { sequenceS } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { sequenceS } from 'fp-ts/Apply';
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as O from 'fp-ts/Option';
+import { constructContainingList } from './construct-containing-list';
+import { constructRelatedArticles } from './construct-related-articles';
+import { constructUserListManagement } from './construct-user-list-management';
+import { Dependencies } from './dependencies';
 import { feedSummary } from './feed-summary';
 import { getFeedItemsByDateDescending } from './get-feed-items-by-date-descending';
-import * as DE from '../../../types/data-error';
-import { ViewModel } from '../view-model';
-import { UserId } from '../../../types/user-id';
-import { constructUserListManagement } from './construct-user-list-management';
-import { constructRelatedArticles } from './construct-related-articles';
-import { detectLanguage } from '../../../shared-components/lang-attribute';
+import { constructFrontMatter } from '../../../read-side/construct-front-matter';
 import { constructCurationStatements } from '../../../read-side/curation-statements';
-import { Dependencies } from './dependencies';
+import { findAllListsContainingPaper } from '../../../read-side/find-all-lists-containing-paper';
 import { constructReviewingGroups } from '../../../read-side/reviewing-groups';
+import { detectLanguage } from '../../../shared-components/lang-attribute';
+import * as DE from '../../../types/data-error';
 import { CanonicalExpressionDoi, ExpressionDoi } from '../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { constructFrontMatter } from '../../../read-side/construct-front-matter';
-import { constructContainingList } from './construct-containing-list';
-import { findAllListsContainingPaper } from '../../../read-side/find-all-lists-containing-paper';
+import { UserId } from '../../../types/user-id';
+import { ViewModel } from '../view-model';
 
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 

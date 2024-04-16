@@ -4,11 +4,11 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { constructViewModel, Dependencies } from './construct-view-model';
 import { renderEditListDetailsFormPage } from './render-edit-list-details-form-page';
-import { listIdCodec, ListId } from '../../types/list-id';
 import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage } from '../html-page';
 import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
+import { toHtmlFragment } from '../../types/html-fragment';
+import { listIdCodec, ListId } from '../../types/list-id';
+import { HtmlPage } from '../html-page';
 
 export const editListDetailsFormPageParamsCodec = t.type({
   id: listIdCodec,

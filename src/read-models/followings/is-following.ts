@@ -1,5 +1,5 @@
-import { ReadModel } from './handle-event';
 import { getGroupsFollowedBy } from './get-groups-followed-by';
+import { ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 

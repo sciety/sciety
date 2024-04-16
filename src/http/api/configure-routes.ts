@@ -1,4 +1,5 @@
 import Router from '@koa/router';
+import { createConfigurePostMiddleware } from './create-configure-post-middleware';
 import { CollectedPorts } from '../../infrastructure';
 import {
   addArticleToListCommandCodec,
@@ -13,12 +14,11 @@ import {
   updateUserDetailsCommandCodec,
 } from '../../write-side/commands';
 import { createUserAccountCommandCodec } from '../../write-side/commands/create-user-account';
-import { createConfigurePostMiddleware } from './create-configure-post-middleware';
-import { ownedBy } from '../owned-by-api';
 import * as evaluationResource from '../../write-side/resources/evaluation';
 import * as groupResource from '../../write-side/resources/group';
 import * as listResource from '../../write-side/resources/list';
 import * as userResource from '../../write-side/resources/user';
+import { ownedBy } from '../owned-by-api';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts, expectedToken: string): void => {
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));

@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import { SanitisedHtmlFragment } from './sanitised-html-fragment';
 import { ArticleAuthors } from './article-authors';
+import { SanitisedHtmlFragment } from './sanitised-html-fragment';
 
 export type ExpressionFrontMatter = {
   abstract: O.Option<SanitisedHtmlFragment>,

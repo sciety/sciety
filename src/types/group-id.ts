@@ -1,8 +1,8 @@
+import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { v4 } from 'uuid';
 import * as S from 'fp-ts/string';
-import * as Eq from 'fp-ts/Eq';
+import { v4 } from 'uuid';
 
 export type GroupId = string & { readonly GroupId: unique symbol };
 

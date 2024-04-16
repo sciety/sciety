@@ -1,15 +1,15 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { userFollowedAGroupCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/user-followed-a-group-card';
-import { arbitraryDate } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { constructEvent } from '../../../../src/domain-events';
 import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { userFollowedAGroupCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/user-followed-a-group-card';
+import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { rawUserInput } from '../../../../src/read-side';
+import { TestFramework, createTestFramework } from '../../../framework';
+import { arbitraryDate } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('user-followed-a-group-card', () => {
   const createUserAccountCommand = arbitraryCreateUserAccountCommand();

@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryString } from '../../helpers';
 import { handleEvent, initialState } from '../../../src/read-models/users/handle-event';
 import { lookupUser } from '../../../src/read-models/users/lookup-user';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryUserCreatedAccountEvent, arbitraryUserDetailsUpdatedEvent } from '../../domain-events/user-resource-events.helper';
+import { arbitraryString } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('lookup-user', () => {
   describe('when user exists', () => {

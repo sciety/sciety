@@ -2,18 +2,18 @@
 /* eslint-disable jest/prefer-lowercase-title */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { constructEvent, DomainEvent } from '../../../src/domain-events';
+import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/read-models/elife-subject-area-lists/data';
 import {
   handleEvent, initialState, ReadModel, ArticleState, ArticleStateName,
 } from '../../../src/read-models/elife-subject-area-lists/handle-event';
-import { elifeGroupId, elifeSubjectAreaListIds } from '../../../src/read-models/elife-subject-area-lists/data';
-import { constructEvent, DomainEvent } from '../../../src/domain-events';
-import * as LID from '../../../src/types/list-id';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitrarySubjectArea } from '../../types/subject-area.helper';
-import { arbitraryDate } from '../../helpers';
 import { ArticleId } from '../../../src/types/article-id';
+import * as LID from '../../../src/types/list-id';
+import { arbitraryDate } from '../../helpers';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
 describe('handle-event', () => {
   describe('the state machine of a single article', () => {

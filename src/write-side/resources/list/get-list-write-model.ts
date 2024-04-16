@@ -1,14 +1,14 @@
-import * as E from 'fp-ts/Either';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as A from 'fp-ts/Array';
-import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
+import { ListWriteModel } from './list-write-model';
 import {
   isEventOfType,
   DomainEvent,
   filterByName,
 } from '../../../domain-events';
-import { ListWriteModel } from './list-write-model';
 import { eqArticleId } from '../../../types/article-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';

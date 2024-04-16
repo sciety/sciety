@@ -1,29 +1,29 @@
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { Pool } from 'pg';
-import * as RA from 'fp-ts/ReadonlyArray';
-import { persistEvents } from './persist-events';
 import { CollectedPorts } from './collected-ports';
 import { commitEvents } from './commit-events';
-import { dispatcher } from '../read-models';
+import { createRedisClient } from './create-redis-client';
 import { getEventsFromDatabase } from './get-events-from-database';
 import {
   createLogger, Config as LoggerConfig,
 } from './logger';
+import { persistEvents } from './persist-events';
 import { stubAdapters } from './stub-adapters';
-import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 import { sort as sortEvents } from '../domain-events';
+import { dispatcher } from '../read-models';
+import { Logger } from '../shared-ports';
+import { instantiate } from '../third-parties';
 import {
   editListDetailsCommandHandler,
   createListCommandHandler,
   recordSubjectAreaCommandHandler,
   removeArticleFromListCommandHandler,
 } from '../write-side/command-handlers';
-import { instantiate } from '../third-parties';
-import { createRedisClient } from './create-redis-client';
-import { Logger } from '../shared-ports';
+import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,

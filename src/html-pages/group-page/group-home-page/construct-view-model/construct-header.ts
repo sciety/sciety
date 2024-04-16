@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { Group } from '../../../../types/group';
-import { ViewModel } from '../view-model';
-import { calculateListCount } from '../../common-components/calculate-list-count';
 import { GroupId } from '../../../../types/group-id';
+import { calculateListCount } from '../../common-components/calculate-list-count';
+import { ViewModel } from '../view-model';
 
 const constructGroupListsPageHref = (group: Group, dependencies: Dependencies) => pipe(
   group.id,

@@ -1,10 +1,10 @@
+import { toExpressionDoisByMostRecentlyAdded } from '../../../src/read-models/lists/list';
 import { ensureEvaluationsAreListed } from '../../../src/sagas/ensure-evaluations-are-listed/ensure-evaluations-are-listed';
+import * as LOID from '../../../src/types/list-owner-id';
 import { dummyLogger } from '../../dummy-logger';
 import { TestFramework, createTestFramework } from '../../framework';
-import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
-import { toExpressionDoisByMostRecentlyAdded } from '../../../src/read-models/lists/list';
 
 describe('ensure-evaluations-are-listed', () => {
   let framework: TestFramework;

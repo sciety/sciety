@@ -1,23 +1,27 @@
+import * as A from 'fp-ts/Array';
 import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
-import * as A from 'fp-ts/Array';
-import * as RA from 'fp-ts/ReadonlyArray';
-import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
-import { annotationCreatedEventCodec, articleInListAnnotatedEventCodec } from './article-in-list-annotated-event';
 import { articleAddedToListEventCodec } from './article-added-to-list-event';
+import { annotationCreatedEventCodec, articleInListAnnotatedEventCodec } from './article-in-list-annotated-event';
 import { articleRemovedFromListEventCodec } from './article-removed-from-list-event';
+import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
 import { evaluatedArticlesListSpecifiedEventCodec } from './evaluated-articles-list-specified-event';
+import { evaluationPublicationRecordedEventCodec, evaluationRecordedEventCodec } from './evaluation-publication-recorded-event';
 import { evaluationRemovalRecordedEventCodec } from './evaluation-removal-recorded-event';
 import { evaluationUpdatedEventCodec } from './evaluation-updated-event';
+import { groupDetailsUpdatedEventCodec } from './group-details-updated-event';
 import { groupJoinedEventCodec } from './group-joined-event';
+import { incorrectlyRecordedEvaluationErasedEventCodec } from './incorrectly-recorded-evaluation-erased-event';
 import { listCreatedEventCodec } from './list-created-event';
 import { listDescriptionEditedEventCodec } from './list-description-edited-event';
 import { listNameEditedEventCodec } from './list-name-edited-event';
 import { subjectAreaRecordedEventCodec } from './subject-area-recorded-event';
 import { userCreatedAccountEventCodec } from './user-created-account-event';
+import { userDetailsUpdatedEventCodec } from './user-details-updated-event';
 import { userFollowedEditorialCommunityEventCodec } from './user-followed-editorial-community-event';
 import { userFoundReviewHelpfulEventCodec } from './user-found-review-helpful-event';
 import { userFoundReviewNotHelpfulEventCodec } from './user-found-review-not-helpful-event';
@@ -26,11 +30,7 @@ import { userRevokedFindingReviewNotHelpfulEventCodec } from './user-revoked-fin
 import { userSavedArticleEventCodec } from './user-saved-article-event';
 import { userUnfollowedEditorialCommunityEventCodec } from './user-unfollowed-editorial-community-event';
 import { userUnsavedArticleEventCodec } from './user-unsaved-article-event';
-import { userDetailsUpdatedEventCodec } from './user-details-updated-event';
-import { incorrectlyRecordedEvaluationErasedEventCodec } from './incorrectly-recorded-evaluation-erased-event';
 import { EventId, generate } from '../types/event-id';
-import { groupDetailsUpdatedEventCodec } from './group-details-updated-event';
-import { evaluationPublicationRecordedEventCodec, evaluationRecordedEventCodec } from './evaluation-publication-recorded-event';
 
 const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,

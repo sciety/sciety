@@ -2,10 +2,10 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { feedSummary } from '../../../../src/html-pages/paper-activity-page/construct-view-model/feed-summary';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
-import * as RFI from '../evaluation-feed-item.helper';
 import { ExpressionPublishedFeedItem } from '../../../../src/html-pages/paper-activity-page/view-model';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import * as RFI from '../evaluation-feed-item.helper';
 
 const arbitraryPaperExpressionFeedItem = (publishedAt: Date = arbitraryDate()): ExpressionPublishedFeedItem => ({
   type: 'expression-published' as const,

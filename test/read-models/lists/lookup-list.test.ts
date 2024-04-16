@@ -1,21 +1,21 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as EDOI from '../../../src/types/expression-doi';
 import { constructEvent } from '../../../src/domain-events';
+import { List } from '../../../src/read-models/lists';
 import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { lookupList } from '../../../src/read-models/lists/lookup-list';
+import { rawUserInput } from '../../../src/read-side';
+import { ArticleId } from '../../../src/types/article-id';
+import * as EDOI from '../../../src/types/expression-doi';
+import { ListId } from '../../../src/types/list-id';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
-import { ListId } from '../../../src/types/list-id';
-import { List } from '../../../src/read-models/lists';
-import { rawUserInput } from '../../../src/read-side';
 
 const runQuery = (listId: ListId, readModel: ReadModel) => pipe(
   listId,

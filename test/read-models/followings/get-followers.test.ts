@@ -1,11 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
-import { handleEvent, initialState } from '../../../src/read-models/followings/handle-event';
 import { getFollowers } from '../../../src/read-models/followings/get-followers';
+import { handleEvent, initialState } from '../../../src/read-models/followings/handle-event';
+import * as UID from '../../../src/types/user-id';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import * as UID from '../../../src/types/user-id';
 
 describe('get-users-following', () => {
   const groupId = arbitraryGroupId();

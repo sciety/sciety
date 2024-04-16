@@ -1,15 +1,15 @@
-import { flow, pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
+import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
-import { QueryExternalService } from '../query-external-service';
-import * as PH from '../../types/publishing-history';
-import { ExternalQueries } from '../external-queries';
 import * as EDOI from '../../types/expression-doi';
+import * as PH from '../../types/publishing-history';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
+import { ExternalQueries } from '../external-queries';
+import { QueryExternalService } from '../query-external-service';
 
 const paperWithoutDoi = t.type({
   externalIds: t.type({

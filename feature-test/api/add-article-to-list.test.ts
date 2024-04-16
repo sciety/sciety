@@ -1,12 +1,12 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
+import { ListId } from '../../src/types/list-id';
+import { arbitraryArticleId } from '../../test/types/article-id.helper';
+import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
+import * as api from '../helpers/api-helpers';
 import { getIdOfFirstListOwnedByGroup } from '../helpers/get-first-list-owned-by.helper';
 import { screenshotTeardown } from '../utilities';
-import * as api from '../helpers/api-helpers';
-import { arbitraryArticleId } from '../../test/types/article-id.helper';
-import { ListId } from '../../src/types/list-id';
-import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 
 describe('add an article to a list', () => {
   beforeEach(async () => {

@@ -3,16 +3,16 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
 import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
+import { selectListContainingExpression } from '../../../src/read-models/lists/select-list-containing-expression';
+import { ArticleId } from '../../../src/types/article-id';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
 import * as LOID from '../../../src/types/list-owner-id';
+import { UserId } from '../../../src/types/user-id';
 import { arbitraryString } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { selectListContainingExpression } from '../../../src/read-models/lists/select-list-containing-expression';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { ArticleId } from '../../../src/types/article-id';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { ExpressionDoi } from '../../../src/types/expression-doi';
-import { UserId } from '../../../src/types/user-id';
 
 const selectListContainingExpressionHelper = (
   readModel: ReadModel,

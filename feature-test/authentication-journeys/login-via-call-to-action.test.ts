@@ -1,13 +1,13 @@
 import {
   click, currentURL, goto, openBrowser,
 } from 'taiko';
-import { screenshotTeardown } from '../utilities';
-import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { arbitraryArticleId } from '../../test/types/article-id.helper';
-import * as api from '../helpers/api-helpers';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
+import * as api from '../helpers/api-helpers';
+import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-login-via-stub-with-specified-user-id';
 import { isLoggedIn } from '../helpers/is-logged-in';
+import { screenshotTeardown } from '../utilities';
 
 describe('login-via-call-to-action', () => {
   const addGroupCommand = arbitraryAddGroupCommand();

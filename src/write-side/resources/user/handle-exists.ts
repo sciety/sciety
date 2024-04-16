@@ -1,7 +1,7 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { UserHandle } from '../../../types/user-handle';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent, isEventOfType } from '../../../domain-events';
+import { UserHandle } from '../../../types/user-handle';
 
 export const handleExists = (userHandle: UserHandle) => (events: ReadonlyArray<DomainEvent>): boolean => pipe(
   events,

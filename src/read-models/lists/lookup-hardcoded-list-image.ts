@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
-import * as LID from '../../types/list-id';
 import { ReadModel } from './handle-event';
+import * as LID from '../../types/list-id';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const lookupHardcodedListImage = (readModel: ReadModel) => (listId: LID.ListId): O.Option<string> => {

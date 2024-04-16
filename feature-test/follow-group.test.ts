@@ -1,12 +1,12 @@
 import {
   $, click, currentURL, goto, openBrowser, text, within,
 } from 'taiko';
-import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
-import { arbitraryUserId } from '../test/types/user-id.helper';
-import { screenshotTeardown } from './utilities';
 import { callApi } from './helpers/call-api.helper';
-import { arbitraryAddGroupCommand } from '../test/write-side/commands/add-group-command.helper';
+import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
+import { screenshotTeardown } from './utilities';
 import { AddGroupCommand } from '../src/write-side/commands';
+import { arbitraryUserId } from '../test/types/user-id.helper';
+import { arbitraryAddGroupCommand } from '../test/write-side/commands/add-group-command.helper';
 
 describe('follow a group', () => {
   let command: AddGroupCommand;

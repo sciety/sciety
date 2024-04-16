@@ -1,9 +1,9 @@
+import * as D from 'fp-ts/Date';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as D from 'fp-ts/Date';
-import * as DE from '../../types/data-error';
 import { Dependencies } from './construct-view-model/dependencies';
+import * as DE from '../../types/data-error';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as PH from '../../types/publishing-history';
 

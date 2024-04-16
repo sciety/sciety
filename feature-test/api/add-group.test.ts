@@ -1,8 +1,8 @@
 import {
   $, click, closeBrowser, goto, openBrowser, text, within,
 } from 'taiko';
-import { callApi } from '../helpers/call-api.helper';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
+import { callApi } from '../helpers/call-api.helper';
 
 describe('add-group', () => {
   const addGroupCommand = arbitraryAddGroupCommand();

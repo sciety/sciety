@@ -1,21 +1,21 @@
 import { DOMParser } from '@xmldom/xmldom';
-import * as t from 'io-ts';
 import * as E from 'fp-ts/Either';
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
+import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import { containsUnrecoverableError } from './contains-unrecoverable-error';
 import {
   getAbstract, getAuthors, getTitle,
 } from './parse-crossref-article';
-import { containsUnrecoverableError } from './contains-unrecoverable-error';
 import { Logger } from '../../shared-ports';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
-import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { QueryExternalService } from '../query-external-service';
-import { ExternalQueries } from '../external-queries';
 import { ExpressionDoi } from '../../types/expression-doi';
+import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
+import { ExternalQueries } from '../external-queries';
+import { QueryExternalService } from '../query-external-service';
 
 const parseResponseAndConstructDomainObject = (document: string, logger: Logger, expressionDoi: ExpressionDoi) => {
   if (document.length === 0) {

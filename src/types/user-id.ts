@@ -1,6 +1,6 @@
-import * as t from 'io-ts';
-import { identity, pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { identity, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 
 export type UserId = string & { readonly UserId: unique symbol };
 

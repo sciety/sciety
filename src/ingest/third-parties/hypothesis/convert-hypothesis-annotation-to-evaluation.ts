@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
-import { Evaluation } from '../../types/evaluations';
-import { supportedArticleIdFromLink } from '../../supported-article-id-from-link';
+import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
+import { supportedArticleIdFromLink } from '../../supported-article-id-from-link';
+import { Evaluation } from '../../types/evaluations';
 import { SkippedItem } from '../../types/skipped-item';
 
 const annotationContainsText = (annotation: Annotation) => annotation.text.length > 0;

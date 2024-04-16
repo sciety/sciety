@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { constructEvent } from '../../../domain-events';
 import * as LID from '../../../types/list-id';
 import * as LOID from '../../../types/list-owner-id';
 import { AddGroupCommand } from '../../commands';
-import { constructEvent } from '../../../domain-events';
 import * as AG from '../all-groups';
 import { ResourceAction } from '../resource-action';
 

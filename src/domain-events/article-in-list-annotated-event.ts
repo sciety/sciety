@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { articleIdCodec } from '../types/article-id';
+import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { listIdCodec } from '../types/list-id';
 import { unsafeUserInputCodec } from '../types/unsafe-user-input';
 

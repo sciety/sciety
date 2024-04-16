@@ -1,10 +1,10 @@
-import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
-import { List } from '../../read-models/lists';
+import { pipe } from 'fp-ts/function';
 import { ListCardViewModel } from './render-list-card';
-import { Logger } from '../../shared-ports';
 import { Queries } from '../../read-models';
+import { List } from '../../read-models/lists';
 import { constructUserAvatarSrc } from '../../read-side/paths';
+import { Logger } from '../../shared-ports';
 
 export type Dependencies = Queries & {
   logger: Logger,

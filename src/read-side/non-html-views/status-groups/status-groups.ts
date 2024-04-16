@@ -1,7 +1,7 @@
-import { identity, pipe } from 'fp-ts/function';
 import { Json } from 'fp-ts/Json';
-import { Queries } from '../../../read-models';
+import { identity, pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model';
+import { Queries } from '../../../read-models';
 
 const renderAsJson = identity;
 

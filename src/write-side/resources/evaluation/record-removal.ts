@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { ResourceAction } from '../resource-action';
-import { RecordEvaluationRemovalCommand } from '../../commands';
+import { pipe } from 'fp-ts/function';
+import { evaluationResourceError } from './evaluation-resource-error';
 import {
   constructEvent, DomainEvent, EventOfType, isEventOfType,
 } from '../../../domain-events';
-import { evaluationResourceError } from './evaluation-resource-error';
+import { RecordEvaluationRemovalCommand } from '../../commands';
+import { ResourceAction } from '../resource-action';
 
 type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'EvaluationRemovalRecorded'> | EventOfType<'IncorrectlyRecordedEvaluationErased'>;
 

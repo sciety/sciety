@@ -1,17 +1,17 @@
 import { URL } from 'url';
+import { load } from 'cheerio';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { load } from 'cheerio';
-import { QueryExternalService } from '../../query-external-service';
-import { EvaluationFetcher } from '../evaluation-fetcher';
+import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
-import { Logger } from '../../../shared-ports';
+import { QueryExternalService } from '../../query-external-service';
+import { EvaluationFetcher } from '../evaluation-fetcher';
 
 export const fetchPrelightsHighlight = (
   queryExternalService: QueryExternalService,

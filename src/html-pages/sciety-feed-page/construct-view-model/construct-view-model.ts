@@ -4,11 +4,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { constructEventCard } from './construct-event-card';
+import { Dependencies } from './dependencies';
 import { identifyFeedItems } from './identify-feed-items';
+import { queryStringParameters } from '../../../standards';
 import * as DE from '../../../types/data-error';
 import { ViewModel } from '../view-model';
-import { Dependencies } from './dependencies';
-import { queryStringParameters } from '../../../standards';
 
 export const scietyFeedCodec = t.type({
   [queryStringParameters.page]: queryStringParameters.pageCodec,

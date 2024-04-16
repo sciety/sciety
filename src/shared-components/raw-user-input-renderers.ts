@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 import { RawUserInput } from '../read-side';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
 
 const transformNewLineCharactersToBrTags = (plainText: string) => plainText.replaceAll('\n', '<br>\n');
 

@@ -1,7 +1,7 @@
 import { Middleware } from '@koa/router';
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { getHttpStatusCode } from './get-http-status-code';
 import { HtmlPage } from '../html-pages/html-page';
 import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';

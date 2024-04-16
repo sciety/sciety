@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../../../types/data-error';
-import { ViewModel } from '../view-model';
 import { constructListCards } from './construct-list-cards';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
+import * as DE from '../../../../types/data-error';
 import { calculateListCount } from '../../common-components/calculate-list-count';
+import { ViewModel } from '../view-model';
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 

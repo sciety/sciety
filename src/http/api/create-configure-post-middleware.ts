@@ -1,14 +1,14 @@
-import { Middleware } from 'koa';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
 import { StatusCodes } from 'http-status-codes';
+import * as t from 'io-ts';
+import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
-import { GenericCommand } from '../../types/command-handler';
 import { CollectedPorts } from '../../infrastructure';
-import { ResourceAction } from '../../write-side/resources/resource-action';
+import { GenericCommand } from '../../types/command-handler';
 import { executeCommand } from '../../write-side/commands';
+import { ResourceAction } from '../../write-side/resources/resource-action';
 
 const executeAndRespond = <C extends GenericCommand>(
   dependencies: CollectedPorts,

@@ -1,13 +1,13 @@
-import { pipe } from 'fp-ts/function';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
+import { EventOfType, constructEvent } from '../../../src/domain-events';
 import { getNonEmptyUserLists } from '../../../src/read-models/lists/get-non-empty-user-lists';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import { EventOfType, constructEvent } from '../../../src/domain-events';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import * as LOID from '../../../src/types/list-owner-id';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
-import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 
 describe('get-non-empty-user-lists', () => {
   describe('when there are populated user lists', () => {

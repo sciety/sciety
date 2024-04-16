@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { evaluationAuthorsCodec } from './types/evaluation-authors';
+import { evaluationTypeCodec } from './types/evaluation-type';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { evaluationLocatorCodec } from '../types/evaluation-locator';
-import { evaluationTypeCodec } from './types/evaluation-type';
-import { evaluationAuthorsCodec } from './types/evaluation-authors';
 
 export const evaluationUpdatedEventCodec = t.type({
   id: EventIdFromString,

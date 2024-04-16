@@ -1,8 +1,8 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import { arbitraryArticleId } from './article-id.helper';
 import { ArticleId, articleIdCodec } from '../../src/types/article-id';
 import * as AID from '../../src/types/article-id';
-import { arbitraryArticleId } from './article-id.helper';
 
 describe('article-id', () => {
   it.each([

@@ -2,13 +2,13 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CandidateUserHandle } from '../../../../../src/types/candidate-user-handle';
-import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { TestFramework, createTestFramework } from '../../../../framework';
 import { constructViewModel } from '../../../../../src/html-pages/user-page/user-following-page/construct-view-model';
 import { ViewModel } from '../../../../../src/html-pages/user-page/user-following-page/view-model';
-import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
+import { CandidateUserHandle } from '../../../../../src/types/candidate-user-handle';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

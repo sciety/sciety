@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { GroupId } from '../../../../types/group-id';
-import { Follower } from './follower';
 import { Dependencies } from './dependencies';
+import { Follower } from './follower';
+import { GroupId } from '../../../../types/group-id';
 import * as LOID from '../../../../types/list-owner-id';
 
 type FindFollowers = (dependencies: Dependencies) => (groupId: GroupId) => ReadonlyArray<Follower>;

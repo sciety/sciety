@@ -1,14 +1,14 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as TE from 'fp-ts/TaskEither';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { getPaperExpressionsFromBiorxiv } from '../../../src/third-parties/biorxiv/get-paper-expressions-from-biorxiv';
+import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
-import * as DE from '../../../src/types/data-error';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { getPaperExpressionsFromBiorxiv } from '../../../src/third-parties/biorxiv/get-paper-expressions-from-biorxiv';
 
 describe('get-paper-expressions-from-biorxiv', () => {
   describe('when biorxiv is available', () => {

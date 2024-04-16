@@ -1,6 +1,6 @@
 import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
 import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
+import { toHtmlFragment } from '../../types/html-fragment';
 
 export const toErrorPage = (error: DE.DataError): ErrorPageBodyViewModel => toErrorPageBodyViewModel({
   type: error,

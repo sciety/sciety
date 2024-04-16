@@ -1,9 +1,9 @@
 import {
   AxiosStorage, StorageValue, buildStorage,
 } from 'axios-cache-interceptor';
-import { createClient } from 'redis';
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
+import { createClient } from 'redis';
 import { Logger } from '../../shared-ports';
 
 export const encode = (value: StorageValue): string => JSON.stringify(value);

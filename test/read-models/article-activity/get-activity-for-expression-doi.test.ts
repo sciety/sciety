@@ -1,12 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent, DomainEvent } from '../../../src/domain-events';
+import { getActivityForExpressionDoi } from '../../../src/read-models/article-activity/get-activity-for-expression-doi';
+import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event';
+import { ArticleId } from '../../../src/types/article-id';
+import * as EDOI from '../../../src/types/expression-doi';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { handleEvent, initialState } from '../../../src/read-models/article-activity/handle-event';
-import * as EDOI from '../../../src/types/expression-doi';
-import { ArticleId } from '../../../src/types/article-id';
-import { getActivityForExpressionDoi } from '../../../src/read-models/article-activity/get-activity-for-expression-doi';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => (articleId: ArticleId) => pipe(
   events,

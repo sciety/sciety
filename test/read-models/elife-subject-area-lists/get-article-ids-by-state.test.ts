@@ -1,16 +1,16 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { constructEvent } from '../../../src/domain-events';
+import { elifeGroupId, elifeSubjectAreaLists } from '../../../src/read-models/elife-subject-area-lists/data';
+import { getArticleIdsByState } from '../../../src/read-models/elife-subject-area-lists/get-article-ids-by-state';
 import {
   handleEvent, initialState,
 } from '../../../src/read-models/elife-subject-area-lists/handle-event';
-import { elifeGroupId, elifeSubjectAreaLists } from '../../../src/read-models/elife-subject-area-lists/data';
-import { constructEvent } from '../../../src/domain-events';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitrarySubjectArea } from '../../types/subject-area.helper';
-import { arbitraryDate } from '../../helpers';
-import { getArticleIdsByState } from '../../../src/read-models/elife-subject-area-lists/get-article-ids-by-state';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryDate } from '../../helpers';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
+import { arbitrarySubjectArea } from '../../types/subject-area.helper';
 
 describe('get-article-ids-by-state', () => {
   describe('given a bunch of events', () => {

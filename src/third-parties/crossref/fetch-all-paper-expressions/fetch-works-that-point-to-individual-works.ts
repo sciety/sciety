@@ -1,12 +1,12 @@
-import * as t from 'io-ts';
-import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
+import { QueryCrossrefService } from './query-crossref-service';
 import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
-import { QueryCrossrefService } from './query-crossref-service';
 import { decodeAndLogFailures } from '../../decode-and-log-failures';
 
 const crossrefMultipleWorksResponseCodec = t.strict({

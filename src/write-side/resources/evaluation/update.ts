@@ -2,15 +2,15 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { evaluationResourceError } from './evaluation-resource-error';
 import {
   EventOfType, constructEvent, DomainEvent, isEventOfType,
 } from '../../../domain-events';
-import { ResourceAction } from '../resource-action';
-import { UpdateEvaluationCommand } from '../../commands';
-import { EvaluationLocator } from '../../../types/evaluation-locator';
-import { evaluationResourceError } from './evaluation-resource-error';
-import { EvaluationType } from '../../../types/recorded-evaluation';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
+import { EvaluationLocator } from '../../../types/evaluation-locator';
+import { EvaluationType } from '../../../types/recorded-evaluation';
+import { UpdateEvaluationCommand } from '../../commands';
+import { ResourceAction } from '../resource-action';
 
 type RelevantEvent = EventOfType<'EvaluationPublicationRecorded'> | EventOfType<'EvaluationUpdated'> | EventOfType<'IncorrectlyRecordedEvaluationErased'> | EventOfType<'EvaluationRemovalRecorded'>;
 

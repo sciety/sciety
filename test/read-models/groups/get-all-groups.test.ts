@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
 import { getAllGroups } from '../../../src/read-models/groups/get-all-groups';
+import { handleEvent, initialState } from '../../../src/read-models/groups/handle-event';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
 
 describe('get-all-groups', () => {

@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { evaluationLocatorCodec } from '../../types/evaluation-locator';
-import { evaluationTypeCodec } from './types/evaluation-type';
 import { evaluationAuthorsCodec } from './types/evaluation-authors';
+import { evaluationTypeCodec } from './types/evaluation-type';
+import { evaluationLocatorCodec } from '../../types/evaluation-locator';
 
 export const updateEvaluationCommandCodec = t.intersection([
   t.strict({

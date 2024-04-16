@@ -1,11 +1,11 @@
 import { XMLSerializer } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
+import { identifyExpressionServer } from './fetch-all-paper-expressions/identify-expression-server';
+import { getElement } from './get-element';
 import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { identifyExpressionServer } from './fetch-all-paper-expressions/identify-expression-server';
-import { getElement } from './get-element';
 
 export const getAbstract = (
   doc: Document,

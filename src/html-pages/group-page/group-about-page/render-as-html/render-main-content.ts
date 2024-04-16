@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
+import { renderDescription } from './render-description';
+import { renderOurLists } from './render-our-lists';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel } from '../view-model';
-import { renderOurLists } from './render-our-lists';
-import { renderDescription } from './render-description';
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
   `

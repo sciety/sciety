@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from '../view-model';
-import { Dependencies } from '../dependencies';
+import { ExpressionDoi } from '../../../types/expression-doi';
 import { GroupId } from '../../../types/group-id';
 import { HtmlFragment } from '../../../types/html-fragment';
-import { ExpressionDoi } from '../../../types/expression-doi';
+import { Dependencies } from '../dependencies';
+import { ViewModel } from '../view-model';
 
 export type CurationStatement = {
   expressionDoi: ExpressionDoi,

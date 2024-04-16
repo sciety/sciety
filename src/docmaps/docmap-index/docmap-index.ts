@@ -3,10 +3,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { decodeParams } from './filter-by-params';
-import { renderDocmap } from '../docmap/render-docmap';
 import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
+import { decodeParams } from './filter-by-params';
+import { renderDocmap } from '../docmap/render-docmap';
 
 type DocmapIndexBody = {
   articles?: ReadonlyArray<unknown>,

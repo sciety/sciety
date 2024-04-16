@@ -1,12 +1,12 @@
-import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../../src/domain-events';
-import { arbitraryString } from '../../../helpers';
-import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper';
 import { update } from '../../../../src/write-side/resources/user';
-import { arbitraryUserId } from '../../../types/user-id.helper';
 import { arbitraryUserCreatedAccountEvent, arbitraryUserDetailsUpdatedEvent } from '../../../domain-events/user-resource-events.helper';
+import { arbitraryString } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryUserId } from '../../../types/user-id.helper';
+import { constructUpdateUserDetailsCommand } from '../../commands/construct-update-user-details-command.helper';
 
 describe('update', () => {
   let events: ReadonlyArray<DomainEvent>;
