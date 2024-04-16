@@ -1,7 +1,29 @@
+@use 'settings';
+@use 'button';
+
 .group-page-featured-lists {
   margin-bottom: calc(3rem - 1.5rem);
 }
 
 .group-page-feed {
   margin-bottom: 1.5rem;
+}
+
+.follow-button {
+  @include button.primary();
+}
+
+.unfollow-button {
+  @include button.secondary();
+}
+
+.group-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: settings.$click-target-separation;
+  align-items: center;
+}
+
+.group-page-actions__secondary_button {
+  @include button.secondary-link();
 }

@@ -1,11 +1,5 @@
-@use 'settings';
-@use 'button';
-@use '../../../sass/card';
 @use 'contain-image';
-@use 'functions';
 @use 'breakpoints';
-@use '../../../sass/layout';
-@use '../../../sass/list';
 
 .page-header__visual_heading {
   width: 100%;
@@ -28,25 +22,6 @@
 
 .page-header p.group-page-short-description {
   margin-bottom: 1.5rem;
-}
-
-.follow-button {
-  @include button.primary();
-}
-
-.unfollow-button {
-  @include button.secondary();
-}
-
-.group-page-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: settings.$click-target-separation;
-  align-items: center;
-}
-
-.group-page-actions__secondary_button {
-  @include button.secondary-link();
 }
 
 .group-sub-page-back-link {
