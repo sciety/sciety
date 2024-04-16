@@ -1,4 +1,6 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
@@ -27,11 +29,12 @@ describe('construct-header', () => {
         ...arbitraryCreateListCommand(),
         ownerId: LOID.fromGroupId(addGroupCommand.groupId),
       });
-      result = constructHeader(framework.dependenciesForViews, O.none)({
-        ...addGroupCommand,
-        id: addGroupCommand.groupId,
-        largeLogoPath: O.none,
-      });
+      result = pipe(
+        addGroupCommand.groupId,
+        framework.queries.getGroup,
+        O.getOrElseW(shouldNotBeCalled),
+        constructHeader(framework.dependenciesForViews, O.none),
+      );
     });
 
     it('displays a link to the group lists sub page', () => {
