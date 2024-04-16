@@ -15,7 +15,7 @@ const constructHeadersWithUserAgent = (headers: Record<string, string> = {}) => 
 
 const logResponseTime = (logger: Logger, startTime: Date, response: CacheAxiosResponse | undefined, url: string) => {
   const durationInMs = new Date().getTime() - startTime.getTime();
-  logger('debug', 'Response time', { url, durationInMs, responseStatus: response ? response.status : undefined });
+  logger('debug', 'Response time', { url, durationInMs, responseStatus: response ? response.status : 'not-available-because-request-failed' });
 };
 
 export type ResponseBodyCachePredicate = (responseBody: unknown, url: string) => boolean;
