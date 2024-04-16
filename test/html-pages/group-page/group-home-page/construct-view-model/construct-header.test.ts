@@ -48,10 +48,6 @@ describe('construct-header', () => {
     beforeEach(async () => {
       const addGroupCommand = arbitraryAddGroupCommand();
       await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.createList({
-        ...arbitraryCreateListCommand(),
-        ownerId: LOID.fromGroupId(addGroupCommand.groupId),
-      });
       result = pipe(
         addGroupCommand.groupId,
         framework.queries.getGroup,
@@ -60,7 +56,7 @@ describe('construct-header', () => {
       );
     });
 
-    it.failing('does not display a link to the group lists sub page', () => {
+    it('does not display a link to the group lists sub page', () => {
       expect(O.isNone(result.groupListsPageHref)).toBe(true);
     });
   });
