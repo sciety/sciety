@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 import { Dependencies } from './dependencies';
-import { constructContent } from './construct-content';
+import { constructFeed } from './construct-feed';
 import { Params } from './params';
 import { constructFeaturedLists } from './construct-featured-lists';
 import { constructHeader } from './construct-header';
@@ -16,12 +16,12 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   O.map(constructHeader(dependencies, params.user)),
   TE.fromOption(() => DE.notFound),
   TE.chain((header) => pipe(
-    constructContent(dependencies, header.group, 10, params.page),
-    TE.map((content) => ({
+    constructFeed(dependencies, header.group, 10, params.page),
+    TE.map((feed) => ({
       header,
       group: header.group,
       featuredLists: constructFeaturedLists(dependencies, header.group.id),
-      content,
+      feed,
     })),
   )),
 );

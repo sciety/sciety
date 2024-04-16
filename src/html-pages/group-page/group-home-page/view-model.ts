@@ -11,10 +11,10 @@ export type OrderedArticleCards = PaginationControlsViewModel & {
   articleCards: ReadonlyArray<E.Either<PaperActivityErrorCardViewModel, PaperActivitySummaryCardViewModel>>,
 };
 
-type Content = NoActivity | OrderedArticleCards;
+type Feed = NoActivity | OrderedArticleCards;
 
 export type ViewModel = {
   header: PageHeaderViewModel,
   featuredLists: ReadonlyArray<ListCardViewModel>,
-  content: Content,
+  feed: Feed,
 };

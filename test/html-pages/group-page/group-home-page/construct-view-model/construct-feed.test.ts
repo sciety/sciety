@@ -6,19 +6,19 @@ import { dummyLogger } from '../../../../dummy-logger';
 import { OrderedArticleCards, ViewModel } from '../../../../../src/html-pages/group-page/group-home-page/view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { constructContent } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/construct-content';
+import { constructFeed } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/construct-feed';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { Dependencies } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/dependencies';
 import { ListId } from '../../../../../src/types/list-id';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 
-describe('construct-content', () => {
+describe('construct-feed', () => {
   let framework: TestFramework;
   let dependencies: Dependencies;
   const addGroupCommand = arbitraryAddGroupCommand();
   let groupEvaluatedArticlesList: ListId;
-  const isOrderedArticleCards = (c: ViewModel['content']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
-  const getContent = () => constructContent(
+  const isOrderedArticleCards = (c: ViewModel['feed']): c is OrderedArticleCards => c.tag === 'ordered-article-cards';
+  const getContent = () => constructFeed(
     dependencies,
     {
       ...addGroupCommand,
@@ -114,7 +114,7 @@ describe('construct-content', () => {
   });
 
   describe('when the group\'s evaluated articles list is empty', () => {
-    let content: ViewModel['content'];
+    let content: ViewModel['feed'];
 
     beforeEach(async () => {
       content = await getContentAsRight();

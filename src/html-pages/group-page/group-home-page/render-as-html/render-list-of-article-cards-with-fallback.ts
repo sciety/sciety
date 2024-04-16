@@ -28,7 +28,7 @@ const renderCards = (
 );
 
 type RenderListOfArticleCardsWithFallback = (
-  content: ViewModel['content'],
+  content: ViewModel['feed'],
 )
 => HtmlFragment;
 

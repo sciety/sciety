@@ -61,12 +61,12 @@ const toPageOfFeedContent = (
   TE.toUnion,
 );
 
-export const constructContent = (
+export const constructFeed = (
   dependencies: Dependencies,
   group: Group,
   pageSize: number,
   page: number,
-): TE.TaskEither<DE.DataError, ViewModel['content']> => pipe(
+): TE.TaskEither<DE.DataError, ViewModel['feed']> => pipe(
   group.id,
   getEvaluatedArticleIds(dependencies),
   TE.fromEither,

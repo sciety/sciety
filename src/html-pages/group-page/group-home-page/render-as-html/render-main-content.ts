@@ -17,6 +17,6 @@ const augmentWithFeaturedListsSection = (viewmodel: ViewModel) => (otherContent:
 );
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
-  renderListOfArticleCardsWithFallback(viewmodel.content),
+  renderListOfArticleCardsWithFallback(viewmodel.feed),
   augmentWithFeaturedListsSection(viewmodel),
 );
