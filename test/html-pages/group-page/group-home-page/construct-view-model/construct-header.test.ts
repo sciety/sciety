@@ -4,6 +4,7 @@ import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-gr
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { ViewModel } from '../../../../../src/html-pages/group-page/group-home-page/view-model';
+import { constructHeader } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/construct-header';
 
 describe('construct-header', () => {
   let framework: TestFramework;
@@ -26,9 +27,14 @@ describe('construct-header', () => {
         ...arbitraryCreateListCommand(),
         ownerId: LOID.fromGroupId(addGroupCommand.groupId),
       });
+      result = constructHeader(framework.dependenciesForViews, O.none)({
+        ...addGroupCommand,
+        id: addGroupCommand.groupId,
+        largeLogoPath: O.none,
+      });
     });
 
-    it.skip('displays a link to the group lists sub page', () => {
+    it('displays a link to the group lists sub page', () => {
       expect(O.isSome(result.groupListsPageHref)).toBe(true);
     });
   });
