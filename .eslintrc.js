@@ -106,6 +106,7 @@ module.exports = {
         'jest/prefer-expect-assertions': 'off',
         'jest/prefer-to-be': 'error',
         'jest/prefer-expect-resolves': 'off',
+        'jest/prefer-importing-jest-globals': 'off',
         'jest/unbound-method': 'off',
       },
     },
