@@ -213,7 +213,7 @@ $(MK_TESTED_TS): node_modules $(TS_SOURCES)
 graphs:
 	$(MAKE) -C $(GRAPH_DIR)
 
-clean:
+clean: clean-db-dumps
 	rm -rf $(MK_LINTED_SASS) $(MK_LINTED_TS) $(MK_TESTED_TS)
 	rm -rf $(LINT_CACHE)
 	rm -rf $(STYLELINT_CACHE)
