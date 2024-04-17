@@ -85,7 +85,7 @@ connect-to-cache:
 connect-to-cache-dev:
 	docker run --tty -i --rm --network sciety_default redis bash
 
-.PHONY: clean
-clean:
+.PHONY: clean-db-dumps
+clean-db-dumps:
 	rm -rf "./data/exploratory-test-from-prod.csv"
 	rm -rf "./data/exploratory-test-from-staging.csv"
