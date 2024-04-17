@@ -24,7 +24,6 @@ prod-sql:
 
 .PHONY: download-exploratory-test-from-prod
 download-exploratory-test-from-prod:
-	rm -rf "./data/exploratory-test-from-prod.csv"
 	kubectl run --rm --attach ship-events \
 		--image=amazon/aws-cli:2.4.23 \
 		--command=true \
@@ -85,3 +84,8 @@ connect-to-cache:
 .PHONY: connect-to-cache-dev
 connect-to-cache-dev:
 	docker run --tty -i --rm --network sciety_default redis bash
+
+.PHONY: clean
+clean:
+	rm -rf "./data/exploratory-test-from-prod.csv"
+	rm -rf "./data/exploratory-test-from-staging.csv"
