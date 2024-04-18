@@ -231,6 +231,12 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
+    '/groups/add-a-featured-list',
+    requireLoggedInUser(adapters),
+    pageHandler(adapters, () => pipe(legalPage, TE.right)),
+  );
+
+  router.get(
     '/lists',
     pageHandler(adapters, createPageFromParams(
       listsPageParamsCodec,
