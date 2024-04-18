@@ -24,41 +24,11 @@ prod-sql:
 
 .PHONY: download-exploratory-test-from-prod
 download-exploratory-test-from-prod:
-	kubectl run --rm --attach ship-events \
-		--image=amazon/aws-cli:2.4.23 \
-		--command=true \
-		--restart=Never \
-		--env=PGHOST=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
-		--env=PGDATABASE=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
-		--env=PGUSER=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
-		--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
-		--env=AWS_ACCESS_KEY_ID=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."id"'| base64 -d) \
-		--env=AWS_SECRET_ACCESS_KEY=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."secret"'| base64 -d) \
-		-- \
-		bash -c 'yum install --assumeyes --quiet postgresql \
-			&& psql -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > ./events.csv \
-			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/events.csv" \
-		'
-	aws s3 cp "s3://sciety-data-extractions/events.csv" "./data/exploratory-test-from-prod.csv"
+	aws s3 cp "s3://sciety-data-extractions/sciety--prod--events-from-cronjob.csv" "./data/exploratory-test-from-prod.csv"
 
 .PHONY: download-exploratory-test-from-staging
 download-exploratory-test-from-staging:
-	kubectl run --rm --attach ship-events \
-		--image=amazon/aws-cli:2.4.23 \
-		--command=true \
-		--restart=Never \
-		--env=PGHOST=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
-		--env=PGDATABASE=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
-		--env=PGUSER=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
-		--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
-		--env=AWS_ACCESS_KEY_ID=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."id"'| base64 -d) \
-		--env=AWS_SECRET_ACCESS_KEY=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."secret"'| base64 -d) \
-		-- \
-		bash -c 'yum install --assumeyes --quiet postgresql \
-			&& psql -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > ./events.csv \
-			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/staging-events.csv" \
-		'
-	aws s3 cp "s3://sciety-data-extractions/staging-events.csv" "./data/exploratory-test-from-staging.csv"
+	aws s3 cp "s3://sciety-data-extractions/sciety--staging--events-from-cronjob.csv" "./data/exploratory-test-from-staging.csv"
 
 .PHONY: replace-staging-database-with-snapshot-from-prod
 replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from-prod
