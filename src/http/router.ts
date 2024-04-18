@@ -235,7 +235,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
-    '/groups/add-a-featured-list',
+    '/groups/:slug/add-a-featured-list',
     requireLoggedInUser(adapters),
     pageHandler(adapters, createPageFromParams(
       addAFeaturedListFormPageParamsCodec,

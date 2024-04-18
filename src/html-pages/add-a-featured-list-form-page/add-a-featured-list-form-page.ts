@@ -6,7 +6,9 @@ import { renderAddAFeaturedListFormPage } from './render-add-a-featured-list-for
 import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { HtmlPage } from '../html-page';
 
-export const addAFeaturedListFormPageParamsCodec = t.type({});
+export const addAFeaturedListFormPageParamsCodec = t.type({
+  slug: t.string,
+});
 
 export const addAFeaturedListFormPage = () => (): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
   constructViewModel(),
