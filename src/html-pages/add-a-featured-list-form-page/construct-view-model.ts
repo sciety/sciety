@@ -5,7 +5,7 @@ import { Queries } from '../../read-models';
 export type Dependencies = Queries;
 
 export type ViewModel = {
-  groupName: string,
+  pageHeading: string,
 };
 
 export const constructViewModel = (dependencies: Dependencies) => (groupSlug: string): E.Either<'no-such-group', ViewModel> => pipe(
@@ -13,6 +13,6 @@ export const constructViewModel = (dependencies: Dependencies) => (groupSlug: st
   dependencies.getGroupBySlug,
   E.fromOption(() => 'no-such-group' as const),
   E.map((group) => ({
-    groupName: group.name,
+    pageHeading: `Add a featured list form for a ${group.name}`,
   })),
 );

@@ -3,10 +3,10 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 
 export const renderAddAFeaturedListFormPage = (viewModel: ViewModel): HtmlPage => toHtmlPage({
-  title: 'Add a featured list form for a group',
+  title: viewModel.pageHeading,
   content: toHtmlFragment(`
   <header class="page-header">
-    <h1>Add a featured list form for a ${viewModel.groupName}</h1>
+    <h1>${viewModel.pageHeading}</h1>
   </header>
   <form action="#" method="post" class="standard-form">
     <section>
