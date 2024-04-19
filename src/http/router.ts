@@ -23,10 +23,7 @@ import { docmapIndex } from '../docmaps/docmap-index';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
-import {
-  page as addAFeaturedListFormPage,
-} from '../html-pages/add-a-featured-list-form-page/page';
-import { addAFeaturedListFormPageParamsCodec } from '../html-pages/add-a-featured-list-form-page/params';
+import { addAFeaturedListFormPage, addAFeaturedListFormPageParamsCodec } from '../html-pages/add-a-featured-list-form-page';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
 import * as GAP from '../html-pages/group-page/group-about-page';
