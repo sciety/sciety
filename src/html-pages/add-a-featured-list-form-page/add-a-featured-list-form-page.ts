@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { constructViewModel } from './construct-view-model';
+import { Dependencies, constructViewModel } from './construct-view-model';
 import { renderAddAFeaturedListFormPage } from './render-add-a-featured-list-form-page';
 import * as DE from '../../types/data-error';
 import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
@@ -20,8 +20,10 @@ const renderNoSuchGroupError = (): ErrorPageBodyViewModel => toErrorPageBodyView
   },
 );
 
-export const addAFeaturedListFormPage = () => (): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
-  constructViewModel(),
+export const addAFeaturedListFormPage = (
+  dependencies: Dependencies,
+) => (): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
+  constructViewModel(dependencies),
   E.bimap(
     renderNoSuchGroupError,
     renderAddAFeaturedListFormPage,

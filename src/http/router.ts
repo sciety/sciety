@@ -239,7 +239,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     requireLoggedInUser(adapters),
     pageHandler(adapters, createPageFromParams(
       addAFeaturedListFormPageParamsCodec,
-      addAFeaturedListFormPage(),
+      addAFeaturedListFormPage(adapters),
     )),
   );
 
