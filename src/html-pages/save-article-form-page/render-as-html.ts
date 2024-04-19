@@ -36,7 +36,7 @@ const renderDependingOnUserListCount = (userLists: ViewModel['userLists'], artic
       <dd>${articleName}</dd>
     </dl>
     <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
-    <legend>
+    <legend class="standard-form__sub_heading">
       Which list do you want to save this article to?
     </legend>
     <p id="saveArticlePageFormHelperTextForLists" class="standard-form__helper_text">Select one of your lists.</p>

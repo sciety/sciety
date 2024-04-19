@@ -1,9 +1,9 @@
 @use "functions";
 @use "settings";
-@use "../sass/form";
 @use "button";
 @use "breakpoints";
 
+$_label-font-size: functions.px-to-rem(20px);
 $_microcopy-colour: settings.$colour-text-secondary;
 
 .error-summary {
@@ -46,7 +46,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
   dl {
     padding: functions.px-to-rem(12px) 0;
     margin-bottom: 1.5rem;
-    font-size: form.$label-font-size;
+    font-size: $_label-font-size;
 
     @include breakpoints.not-narrow() {
       display: grid;
@@ -70,7 +70,10 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 .standard-form__sub_heading {
-  @include form.labelling();
+  display: block;
+  font-weight: bold;
+  font-size: $_label-font-size;
+  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
 }
 
 .standard-form__sub_heading_secondary_text {

@@ -33,7 +33,7 @@ export const referencePage: HtmlPage = toHtmlPage({
           <dd>My reading list</dd>
         </dl>
         <fieldset aria-describedby="saveArticlePageFormHelperTextForLists">
-          <legend>
+          <legend class="standard-form__sub_heading">
             Standard form fieldset legend
           </legend>
           <div class="standard-form__labelled_selectable_control">

@@ -1,6 +1,5 @@
 @use 'settings';;
 @use 'functions';
-@use 'form';
 @use 'states';
 @use 'typography';
 
@@ -135,10 +134,6 @@ fieldset {
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
   margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
-}
-
-legend {
-  @include form.labelling();
 }
 
 input[type='checkbox'] {
