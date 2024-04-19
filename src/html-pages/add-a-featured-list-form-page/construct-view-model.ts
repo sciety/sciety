@@ -13,6 +13,6 @@ export const constructViewModel = (dependencies: Dependencies) => (groupSlug: st
   dependencies.getGroupBySlug,
   E.fromOption(() => 'no-such-group' as const),
   E.map((group) => ({
-    pageHeading: `Add a featured list form for a ${group.name}`,
+    pageHeading: `Add a featured list for ${group.name}`,
   })),
 );
