@@ -25,8 +25,8 @@ import { aboutPage } from '../html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import {
   addAFeaturedListFormPage,
-  addAFeaturedListFormPageParamsCodec,
 } from '../html-pages/add-a-featured-list-form-page/add-a-featured-list-form-page';
+import { addAFeaturedListFormPageParamsCodec } from '../html-pages/add-a-featured-list-form-page/params';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
 import * as GAP from '../html-pages/group-page/group-about-page';
