@@ -9,7 +9,7 @@ import { renderErrorPage } from './render-error-page';
 import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { HtmlPage } from '../html-page';
 
-export const addAFeaturedListFormPage = (
+export const page = (
   dependencies: Dependencies,
 ) => (params: Params): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
   params.slug,
