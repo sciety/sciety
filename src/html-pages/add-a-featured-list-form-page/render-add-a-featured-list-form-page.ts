@@ -13,7 +13,7 @@ export const renderAddAFeaturedListFormPage = (viewModel: ViewModel): HtmlPage =
       <label for="listId" class="standard-form__sub_heading">List Id</label>
       <input type="text" id="listId" name="" value="">
     </section>
-    <button type="submit">Save</button><a href="#">Cancel</a>
+    <button type="submit">Save</button><a href="#" class="standard-form__cancel">Cancel</a>
   </form>
   `),
 });
