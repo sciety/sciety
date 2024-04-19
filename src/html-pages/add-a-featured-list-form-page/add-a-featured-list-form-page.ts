@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Dependencies, constructViewModel } from './construct-view-model';
+import { constructViewModel } from './construct-view-model';
+import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { renderAddAFeaturedListFormPage } from './render-add-a-featured-list-form-page';
 import * as DE from '../../types/data-error';

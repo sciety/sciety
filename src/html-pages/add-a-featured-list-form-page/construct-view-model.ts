@@ -1,9 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { Dependencies } from './dependencies';
 import { Params } from './params';
-import { Queries } from '../../read-models';
-
-export type Dependencies = Queries;
 
 export type ViewModel = {
   pageHeading: string,
