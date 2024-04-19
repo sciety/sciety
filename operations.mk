@@ -23,13 +23,13 @@ prod-sql:
 	-- psql
 
 ./data/exploratory-test-from-prod.csv:
-	aws s3 cp "s3://sciety-data-extractions/sciety--prod--events-from-cronjob.csv" "./data/exploratory-test-from-prod.csv"
+	aws s3 cp "s3://sciety-data-extractions/sciety--prod--events-from-cronjob.csv" "$@"
 
 .PHONY: download-exploratory-test-from-prod
 download-exploratory-test-from-prod: ./data/exploratory-test-from-prod.csv
 
 ./data/exploratory-test-from-staging.csv:
-	aws s3 cp "s3://sciety-data-extractions/sciety--prod--events-from-cronjob.csv" "./data/exploratory-test-from-staging.csv"
+	aws s3 cp "s3://sciety-data-extractions/sciety--prod--events-from-cronjob.csv" "$@"
 
 .PHONY: download-exploratory-test-from-staging
 download-exploratory-test-from-staging: ./data/exploratory-test-from-staging.csv
