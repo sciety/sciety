@@ -13,7 +13,6 @@ $_clear-button-inline-size: 48px;
 .search-form {
   @include layout.allow-edge-to-edge-content-when-narrow();
 
-  @include form.form-with-borders-and-white-background();
   margin-bottom: functions.px-to-rem(48px);
 }
 

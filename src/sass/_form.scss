@@ -5,22 +5,6 @@
 
 $label-font-size: functions.px-to-rem(20px);
 
-@mixin form-with-borders-and-white-background {
-  background-color: settings.$colour-white;
-  padding: functions.px-to-rem(16px)
-    functions.px-to-rem(settings.$default-gutter);
-
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-left-width: 0;
-  border-right-width: 0;
-
-  @include breakpoints.not-narrow {
-    border-radius: settings.$border-radius;
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
-  }
-}
-
 @mixin labelling {
   display: block;
   font-weight: bold;
