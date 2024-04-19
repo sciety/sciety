@@ -61,7 +61,7 @@ export const referencePage: HtmlPage = toHtmlPage({
         </section>
         <button type="submit">
           Submit
-        </button>
+        </button><a href="#" class="standard-form__cancel">Cancel</a>
       </form>
       <h3 class="_style-guide-heading">Error summary</h3>
       <div role='alert' class='error-summary'>
