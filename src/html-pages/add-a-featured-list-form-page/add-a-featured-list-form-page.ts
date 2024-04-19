@@ -13,6 +13,8 @@ export const addAFeaturedListFormPageParamsCodec = t.type({
   slug: t.string,
 });
 
+type Params = t.TypeOf<typeof addAFeaturedListFormPageParamsCodec>;
+
 const renderNoSuchGroupError = (): ErrorPageBodyViewModel => toErrorPageBodyViewModel(
   {
     type: DE.notFound,
@@ -22,7 +24,8 @@ const renderNoSuchGroupError = (): ErrorPageBodyViewModel => toErrorPageBodyView
 
 export const addAFeaturedListFormPage = (
   dependencies: Dependencies,
-) => (): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
+) => (params: Params): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
+  params.slug,
   constructViewModel(dependencies),
   E.bimap(
     renderNoSuchGroupError,

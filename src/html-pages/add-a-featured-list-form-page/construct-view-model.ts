@@ -8,8 +8,8 @@ export type ViewModel = {
   groupName: string,
 };
 
-export const constructViewModel = (dependencies: Dependencies): E.Either<'no-such-group', ViewModel> => pipe(
-  'prereview',
+export const constructViewModel = (dependencies: Dependencies) => (groupSlug: string): E.Either<'no-such-group', ViewModel> => pipe(
+  groupSlug,
   dependencies.getGroupBySlug,
   E.fromOption(() => 'no-such-group' as const),
   E.map((group) => ({
