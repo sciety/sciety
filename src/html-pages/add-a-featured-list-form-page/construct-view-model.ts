@@ -2,10 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
-
-export type ViewModel = {
-  pageHeading: string,
-};
+import { ViewModel } from './view-model';
 
 export const constructViewModel = (dependencies: Dependencies) => (groupSlug: Params['slug']): E.Either<'no-such-group', ViewModel> => pipe(
   groupSlug,

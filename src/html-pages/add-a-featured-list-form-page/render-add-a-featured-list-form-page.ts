@@ -1,4 +1,4 @@
-import { ViewModel } from './construct-view-model';
+import { ViewModel } from './view-model';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 
