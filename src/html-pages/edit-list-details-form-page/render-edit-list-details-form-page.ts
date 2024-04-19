@@ -37,7 +37,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
     <textarea id="listDescription" name="description" rows="5" maxlength="${viewModel.listDescriptionMaxLength}">${safelyReflectRawUserInputForEditing(viewModel.listDescription)}</textarea>
     <p class="standard-form__constraints">Maximum ${viewModel.listDescriptionMaxLength} characters</p>
   </section>
-  <button type="submit">Save</button><a href="${viewModel.listHref}" class="edit-list-details-form__cancel">Cancel</a>
+  <button type="submit">Save</button><a href="${viewModel.listHref}" class="standard-form__cancel">Cancel</a>
 </form>
 `),
   },

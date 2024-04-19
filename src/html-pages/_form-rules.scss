@@ -79,3 +79,7 @@ $_microcopy-colour: settings.$colour-text-secondary;
   align-items: center;
   margin-bottom: functions.px-to-rem(8px);
 }
+
+.standard-form__cancel {
+  @include form.cancel-button();
+}
