@@ -137,10 +137,7 @@ taiko: node_modules clean-db build
 	npx jest ${TEST} --testTimeout=300000 --cache-directory=.jest-taiko --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
-exploratory-test-from-prod: node_modules clean-db build
-	@if ! [[ -f 'data/exploratory-test-from-prod.csv' ]]; then \
-    echo "Ensure you have run: make download-exploratory-test-from-prod"; exit 1; \
-	fi
+exploratory-test-from-prod: node_modules clean-db build ./data/exploratory-test-from-prod.csv
 	${DOCKER_COMPOSE} up -d db
 	scripts/wait-for-database.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "CREATE TABLE IF NOT EXISTS events ( id uuid, type varchar, date timestamp, payload jsonb, PRIMARY KEY (id));" sciety user

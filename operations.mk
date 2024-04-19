@@ -22,13 +22,17 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
 	-- psql
 
-.PHONY: download-exploratory-test-from-prod
-download-exploratory-test-from-prod:
+./data/exploratory-test-from-prod.csv:
 	aws s3 cp "s3://sciety-data-extractions/sciety--prod--events-from-cronjob.csv" "./data/exploratory-test-from-prod.csv"
 
+.PHONY: download-exploratory-test-from-prod
+download-exploratory-test-from-prod: ./data/exploratory-test-from-prod.csv
+
+./data/exploratory-test-from-staging.csv:
+	aws s3 cp "s3://sciety-data-extractions/sciety--prod--events-from-cronjob.csv" "./data/exploratory-test-from-staging.csv"
+
 .PHONY: download-exploratory-test-from-staging
-download-exploratory-test-from-staging:
-	aws s3 cp "s3://sciety-data-extractions/sciety--staging--events-from-cronjob.csv" "./data/exploratory-test-from-staging.csv"
+download-exploratory-test-from-staging: ./data/exploratory-test-from-staging.csv
 
 .PHONY: replace-staging-database-with-snapshot-from-prod
 replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from-prod
