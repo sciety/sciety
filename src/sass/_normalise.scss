@@ -118,7 +118,12 @@ textarea {
 }
 
 textarea {
-  @include form.field();
+  display: block;
+  width: 100%;
+  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+  padding: functions.px-to-rem(settings.$default-form-gutter);
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
 }
 
 button {

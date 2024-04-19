@@ -11,16 +11,3 @@ $label-font-size: functions.px-to-rem(20px);
   font-size: $label-font-size;
   margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
 }
-
-@mixin field {
-  display: block;
-  width: 100%;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
-  padding: functions.px-to-rem(settings.$default-form-gutter);
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
-}
-
-@mixin cancel-button {
-  @include button.secondary-link();
-}

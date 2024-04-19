@@ -93,5 +93,5 @@ $_microcopy-colour: settings.$colour-text-secondary;
 }
 
 .standard-form__cancel {
-  @include form.cancel-button();
+  @include button.secondary-link();
 }
