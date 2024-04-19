@@ -5,17 +5,9 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { renderAddAFeaturedListFormPage } from './render-add-a-featured-list-form-page';
-import * as DE from '../../types/data-error';
-import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { renderErrorPage } from './render-error-page';
+import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { HtmlPage } from '../html-page';
-
-const renderNoSuchGroupError = (): ErrorPageBodyViewModel => toErrorPageBodyViewModel(
-  {
-    type: DE.notFound,
-    message: toHtmlFragment('The group does not exist.'),
-  },
-);
 
 export const addAFeaturedListFormPage = (
   dependencies: Dependencies,
@@ -23,7 +15,7 @@ export const addAFeaturedListFormPage = (
   params.slug,
   constructViewModel(dependencies),
   E.bimap(
-    renderNoSuchGroupError,
+    renderErrorPage,
     renderAddAFeaturedListFormPage,
   ),
   TE.fromEither,
