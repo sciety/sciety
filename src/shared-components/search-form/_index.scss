@@ -20,10 +20,6 @@ $_clear-button-inline-size: 48px;
   position: relative;
 }
 
-.search-form__text_input_label {
-  @include form.labelling();
-}
-
 .search-form__text {
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
