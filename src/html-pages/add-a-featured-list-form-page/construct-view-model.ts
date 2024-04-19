@@ -4,6 +4,6 @@ export type ViewModel = {
   groupName: string,
 };
 
-export const constructViewModel = (): E.Either<unknown, ViewModel> => E.right({
+export const constructViewModel = (): E.Either<'no-such-group', ViewModel> => E.right({
   groupName: 'Group',
 });
