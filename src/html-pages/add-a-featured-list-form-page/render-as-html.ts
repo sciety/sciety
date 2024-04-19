@@ -2,7 +2,7 @@ import { ViewModel } from './view-model';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 
-export const renderAddAFeaturedListFormPage = (viewModel: ViewModel): HtmlPage => toHtmlPage({
+export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.pageHeading,
   content: toHtmlFragment(`
   <header class="page-header">

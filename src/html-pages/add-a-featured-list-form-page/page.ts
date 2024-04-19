@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
-import { renderAddAFeaturedListFormPage } from './render-add-a-featured-list-form-page';
+import { renderAsHtml } from './render-as-html';
 import { renderErrorPage } from './render-error-page';
 import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { HtmlPage } from '../html-page';
@@ -16,7 +16,7 @@ export const page = (
   constructViewModel(dependencies),
   E.bimap(
     renderErrorPage,
-    renderAddAFeaturedListFormPage,
+    renderAsHtml,
   ),
   TE.fromEither,
 );
