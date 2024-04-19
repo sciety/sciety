@@ -6,8 +6,8 @@ import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { renderAsHtml } from './render-as-html';
 import { renderErrorPage } from './render-error-page';
-import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
-import { HtmlPage } from '../html-page';
+import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { HtmlPage } from '../../html-page';
 
 export const page = (
   dependencies: Dependencies,
