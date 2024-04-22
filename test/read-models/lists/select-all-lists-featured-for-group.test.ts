@@ -36,7 +36,7 @@ describe('select-all-lists-featured-for-group', () => {
     );
     const result = selectAllListsFeaturedForGroup(readModel)(groupId);
 
-    it.failing('returns that list', () => {
+    it('returns that list', () => {
       expect(result[0].id).toStrictEqual(listCreated.listId);
     });
   });
