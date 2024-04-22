@@ -2,6 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { selectAllListsFeaturedForGroup } from '../../../src/read-models/lists/select-all-lists-featured-for-group';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('select-all-lists-featured-for-group', () => {
@@ -20,6 +21,18 @@ describe('select-all-lists-featured-for-group', () => {
   });
 
   describe('when a list has been featured for a group', () => {
-    it.todo('returns that list');
+    const listCreated = arbitraryListCreatedEvent();
+    const readModel = pipe(
+      [
+        listCreated,
+        // listFeaturedForGroup,
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsFeaturedForGroup(readModel)(groupId);
+
+    it.skip('returns that list', () => {
+      expect(result[0].id).toStrictEqual(listCreated.listId);
+    });
   });
 });
