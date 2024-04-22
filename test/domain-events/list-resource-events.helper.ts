@@ -1,6 +1,7 @@
 import { EventOfType, constructEvent } from '../../src/domain-events';
 import { arbitraryString } from '../helpers';
 import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryGroupId } from '../types/group-id.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 import { arbitraryUnsafeUserInput } from '../types/unsafe-user-input.helper';
@@ -26,4 +27,9 @@ export const arbitraryArticleInListAnnotatedEvent = (): EventOfType<'ArticleInLi
   articleId: arbitraryArticleId(),
   listId: arbitraryListId(),
   content: arbitraryUnsafeUserInput(),
+});
+
+export const arbitraryListFeaturedForGroupEvent = (): EventOfType<'ListFeaturedForGroup'> => constructEvent('ListFeaturedForGroup')({
+  featuredFor: arbitraryGroupId(),
+  listId: arbitraryListId(),
 });
