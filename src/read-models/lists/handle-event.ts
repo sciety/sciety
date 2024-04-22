@@ -21,7 +21,7 @@ const registerUpdateToList = (readModel: ReadModel, listId: ListId, date: Date) 
 
 export type ReadModel = {
   byListId: Record<ListId, ListState>,
-  byFeaturingGroupId: Record<GroupId, List>,
+  byFeaturingGroupId: Record<GroupId, ReadonlyArray<ListId>>,
 };
 
 export const initialState = (): ReadModel => ({

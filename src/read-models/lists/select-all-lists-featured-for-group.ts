@@ -21,9 +21,13 @@ export const selectAllListsFeaturedForGroup = (
 ) => (
   groupId: GroupId,
 ): ReadonlyArray<List> => {
-  const featuredListIds = hardcoded.get(groupId) ?? [];
+  const featuredListIdsThatAreHardcoded = hardcoded.get(groupId) ?? [];
+  const featuredListIdsFromReadModel = readModel.byFeaturingGroupId[groupId] ?? [];
   const featuredLists = pipe(
-    featuredListIds,
+    [
+      ...featuredListIdsFromReadModel,
+      ...featuredListIdsThatAreHardcoded,
+    ],
     RA.map((listId) => pipe(
       readModel.byListId,
       R.lookup(listId),
