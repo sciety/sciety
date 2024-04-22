@@ -26,6 +26,8 @@ const hardcoded = new Map<GroupId, ReadonlyArray<LID.ListId>>([
   [GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'), [LID.fromValidatedString('729cab51-b47d-4ab5-bf2f-8282f1de445e')]],
 ]);
 
+const selectAllListsFeaturedForGroup = (groupId: GroupId) => hardcoded.get(groupId);
+
 const filterOutListCardsThatCannotBeDisplayed = (
   listCardViewModels: ReadonlyArray<O.Option<ListCardViewModel>>,
 ) => pipe(
@@ -38,10 +40,10 @@ export const constructFeaturedLists = (
   dependencies: Dependencies,
   groupId: GroupId,
 ): ViewModel['featuredLists'] => {
-  const hardcodedListIds = hardcoded.get(groupId);
-  if (hardcodedListIds) {
+  const featuredListIds = selectAllListsFeaturedForGroup(groupId);
+  if (featuredListIds) {
     return pipe(
-      hardcodedListIds,
+      featuredListIds,
       RA.map(constructAFeaturedListsCard(dependencies)),
       filterOutListCardsThatCannotBeDisplayed,
     );
