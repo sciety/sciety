@@ -8,7 +8,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   <header class="page-header">
     <h1>${viewModel.pageHeading}</h1>
   </header>
-  <form action="#" method="post" class="standard-form">
+  <form action="/forms/add-a-featured-list" method="post" class="standard-form">
     <section>
       <label for="listId" class="standard-form__sub_heading">List Id</label>
       <input type="text" id="listId" name="" value="">
