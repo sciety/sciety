@@ -26,7 +26,13 @@ const hardcoded = new Map<GroupId, ReadonlyArray<LID.ListId>>([
   [GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'), [LID.fromValidatedString('729cab51-b47d-4ab5-bf2f-8282f1de445e')]],
 ]);
 
-const selectAllListsFeaturedForGroup = (groupId: GroupId) => hardcoded.get(groupId);
+const selectAllListsFeaturedForGroup = (groupId: GroupId): ReadonlyArray<LID.ListId> => {
+  const featuredListIds = hardcoded.get(groupId);
+  if (featuredListIds === undefined) {
+    return [];
+  }
+  return featuredListIds;
+};
 
 const filterOutListCardsThatCannotBeDisplayed = (
   listCardViewModels: ReadonlyArray<O.Option<ListCardViewModel>>,
@@ -41,12 +47,9 @@ export const constructFeaturedLists = (
   groupId: GroupId,
 ): ViewModel['featuredLists'] => {
   const featuredListIds = selectAllListsFeaturedForGroup(groupId);
-  if (featuredListIds) {
-    return pipe(
-      featuredListIds,
-      RA.map(constructAFeaturedListsCard(dependencies)),
-      filterOutListCardsThatCannotBeDisplayed,
-    );
-  }
-  return [];
+  return pipe(
+    featuredListIds,
+    RA.map(constructAFeaturedListsCard(dependencies)),
+    filterOutListCardsThatCannotBeDisplayed,
+  );
 };
