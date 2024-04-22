@@ -1,4 +1,9 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
+import { List } from './list';
 import { GroupId } from '../../types/group-id';
 import * as GID from '../../types/group-id';
 import * as LID from '../../types/list-id';
@@ -16,10 +21,16 @@ export const selectAllListsFeaturedForGroup = (
   readModel: ReadModel,
 ) => (
   groupId: GroupId,
-): ReadonlyArray<LID.ListId> => {
-  const featuredListIds = hardcoded.get(groupId);
-  if (featuredListIds === undefined) {
-    return [];
-  }
-  return featuredListIds;
+): ReadonlyArray<List> => {
+  const featuredListIds = hardcoded.get(groupId) ?? [];
+  const featuredLists = pipe(
+    featuredListIds,
+    RA.map((listId) => pipe(
+      readModel,
+      R.lookup(listId),
+    )),
+    RA.filter(O.isSome),
+    RA.map((option) => option.value),
+  );
+  return featuredLists;
 };
