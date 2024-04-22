@@ -28,11 +28,9 @@ const filterOutListCardsThatCannotBeDisplayed = (
 export const constructFeaturedLists = (
   dependencies: Dependencies,
   groupId: GroupId,
-): ViewModel['featuredLists'] => {
-  const featuredListIds = dependencies.selectAllListsFeaturedForGroup(groupId);
-  return pipe(
-    featuredListIds,
-    RA.map(constructAFeaturedListsCard(dependencies)),
-    filterOutListCardsThatCannotBeDisplayed,
-  );
-};
+): ViewModel['featuredLists'] => pipe(
+  groupId,
+  dependencies.selectAllListsFeaturedForGroup,
+  RA.map(constructAFeaturedListsCard(dependencies)),
+  filterOutListCardsThatCannotBeDisplayed,
+);
