@@ -4,7 +4,6 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { listIdCodec } from '../types/list-id';
 
-// ts-unused-exports:disable-next-line
 export const listFeaturedForGroupEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('ListFeaturedForGroup'),
