@@ -3,6 +3,7 @@ import { List, ListEntry } from './list';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { rawUserInput } from '../../read-side';
 import { toExpressionDoi } from '../../types/article-id';
+import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 
 type ListState = Pick<
@@ -18,9 +19,15 @@ const registerUpdateToList = (readModel: ReadModel, listId: ListId, date: Date) 
   readModel.byListId[listId].updatedAt = date;
 };
 
-export type ReadModel = { byListId: Record<ListId, ListState> };
+export type ReadModel = {
+  byListId: Record<ListId, ListState>,
+  byFeaturingGroupId: Record<GroupId, List>,
+};
 
-export const initialState = (): ReadModel => ({ byListId: {} });
+export const initialState = (): ReadModel => ({
+  byListId: {},
+  byFeaturingGroupId: {},
+});
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ListCreated')(event)) {
