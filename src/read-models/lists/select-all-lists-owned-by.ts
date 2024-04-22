@@ -9,6 +9,6 @@ type SelectAllListsOwnedBy = (listOwnerId: LOID.ListOwnerId) => ReadonlyArray<Li
 export const selectAllListsOwnedBy = (
   readModel: ReadModel,
 ): SelectAllListsOwnedBy => (listOwnerId) => pipe(
-  Object.values(readModel),
+  Object.values(readModel.byListId),
   RA.filter((list) => LOID.eqListOwnerId.equals(list.ownerId, listOwnerId)),
 );

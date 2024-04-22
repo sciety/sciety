@@ -17,7 +17,6 @@ const hardcoded = new Map<GroupId, ReadonlyArray<LID.ListId>>([
 ]);
 
 export const selectAllListsFeaturedForGroup = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   readModel: ReadModel,
 ) => (
   groupId: GroupId,
@@ -26,7 +25,7 @@ export const selectAllListsFeaturedForGroup = (
   const featuredLists = pipe(
     featuredListIds,
     RA.map((listId) => pipe(
-      readModel,
+      readModel.byListId,
       R.lookup(listId),
     )),
     RA.filter(O.isSome),

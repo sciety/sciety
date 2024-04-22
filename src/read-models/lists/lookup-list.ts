@@ -8,6 +8,6 @@ import { ListId } from '../../types/list-id';
 type LookupList = (listId: ListId) => O.Option<List>;
 
 export const lookupList = (readModel: ReadModel): LookupList => (listId: ListId) => pipe(
-  readModel,
+  readModel.byListId,
   R.lookup(listId),
 );

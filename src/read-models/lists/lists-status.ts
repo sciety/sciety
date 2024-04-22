@@ -5,7 +5,7 @@ import { ReadModel } from './handle-event';
 import { isGroupId } from '../../types/list-owner-id';
 
 export const listsStatus = (readModel: ReadModel) => (): Json => pipe(
-  Object.values(readModel),
+  Object.values(readModel.byListId),
   RA.partition((list) => isGroupId(list.ownerId)),
   ({ left, right }) => ({
     ownedByGroups: {

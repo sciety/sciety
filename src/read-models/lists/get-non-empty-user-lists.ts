@@ -9,7 +9,7 @@ type GetNonEmptyUserLists = () => ReadonlyArray<List>;
 export const getNonEmptyUserLists = (
   readModel: ReadModel,
 ): GetNonEmptyUserLists => () => pipe(
-  Object.values(readModel),
+  Object.values(readModel.byListId),
   RA.filter((list) => !isGroupId(list.ownerId)),
   RA.filter((list) => list.entries.length > 0),
 );

@@ -15,6 +15,6 @@ type SelectAllListsContainingExpression = (expressionDoi: ExpressionDoi) => Read
 export const selectAllListsContainingExpression = (
   readModel: ReadModel,
 ): SelectAllListsContainingExpression => (expressionDoi) => pipe(
-  Object.values(readModel),
+  Object.values(readModel.byListId),
   RA.filter(isListContaining(expressionDoi)),
 );

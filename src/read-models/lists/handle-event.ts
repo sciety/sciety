@@ -14,17 +14,17 @@ List,
 };
 
 const registerUpdateToList = (readModel: ReadModel, listId: ListId, date: Date) => {
-  readModel[listId].version += 1;
-  readModel[listId].updatedAt = date;
+  readModel.byListId[listId].version += 1;
+  readModel.byListId[listId].updatedAt = date;
 };
 
-export type ReadModel = Record<ListId, ListState>;
+export type ReadModel = { byListId: Record<ListId, ListState> };
 
-export const initialState = (): ReadModel => ({});
+export const initialState = (): ReadModel => ({ byListId: {} });
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ListCreated')(event)) {
-    readmodel[event.listId] = {
+    readmodel.byListId[event.listId] = {
       id: event.listId,
       ownerId: event.ownerId,
       entries: [],
@@ -36,21 +36,21 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isEventOfType('ArticleAddedToList')(event)) {
     const expressionDoi = toExpressionDoi(event.articleId);
     registerUpdateToList(readmodel, event.listId, event.date);
-    readmodel[event.listId].entries.push({
+    readmodel.byListId[event.listId].entries.push({
       expressionDoi,
-      addedAtListVersion: readmodel[event.listId].version,
+      addedAtListVersion: readmodel.byListId[event.listId].version,
     });
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
-    readmodel[event.listId].entries = readmodel[event.listId].entries.filter(
+    readmodel.byListId[event.listId].entries = readmodel.byListId[event.listId].entries.filter(
       (entry) => entry.expressionDoi !== toExpressionDoi(event.articleId),
     );
   } else if (isEventOfType('ListNameEdited')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
-    readmodel[event.listId].name = event.name;
+    readmodel.byListId[event.listId].name = event.name;
   } else if (isEventOfType('ListDescriptionEdited')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
-    readmodel[event.listId].description = rawUserInput(event.description);
+    readmodel.byListId[event.listId].description = rawUserInput(event.description);
   }
   return readmodel;
 };
