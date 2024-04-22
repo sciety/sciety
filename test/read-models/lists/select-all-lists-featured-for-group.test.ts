@@ -40,4 +40,8 @@ describe('select-all-lists-featured-for-group', () => {
       expect(result[0].id).toStrictEqual(listCreated.listId);
     });
   });
+
+  describe('when two lists have been featured for a group', () => {
+    it.todo('returns those two lists');
+  });
 });
