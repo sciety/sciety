@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { ListCardViewModel, constructListCardViewModelWithCurator } from '../../../../shared-components/list-card';
 import { GroupId } from '../../../../types/group-id';
-import * as GID from '../../../../types/group-id';
 import * as LID from '../../../../types/list-id';
 import { ViewModel } from '../view-model';
 
@@ -18,22 +17,6 @@ const constructAFeaturedListsCard = (dependencies: Dependencies) => (listId: LID
   })),
 );
 
-const hardcoded = new Map<GroupId, ReadonlyArray<LID.ListId>>([
-  [GID.fromValidatedString('4bbf0c12-629b-4bb8-91d6-974f4df8efb2'), [
-    LID.fromValidatedString('454ba80f-e0bc-47ed-ba76-c8f872c303d2'),
-    LID.fromValidatedString('5ac3a439-e5c6-4b15-b109-92928a740812'),
-  ]],
-  [GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'), [LID.fromValidatedString('729cab51-b47d-4ab5-bf2f-8282f1de445e')]],
-]);
-
-const selectAllListsFeaturedForGroup = (groupId: GroupId): ReadonlyArray<LID.ListId> => {
-  const featuredListIds = hardcoded.get(groupId);
-  if (featuredListIds === undefined) {
-    return [];
-  }
-  return featuredListIds;
-};
-
 const filterOutListCardsThatCannotBeDisplayed = (
   listCardViewModels: ReadonlyArray<O.Option<ListCardViewModel>>,
 ) => pipe(
@@ -46,7 +29,7 @@ export const constructFeaturedLists = (
   dependencies: Dependencies,
   groupId: GroupId,
 ): ViewModel['featuredLists'] => {
-  const featuredListIds = selectAllListsFeaturedForGroup(groupId);
+  const featuredListIds = dependencies.selectAllListsFeaturedForGroup(groupId);
   return pipe(
     featuredListIds,
     RA.map(constructAFeaturedListsCard(dependencies)),

@@ -4,6 +4,7 @@ import { listsStatus } from './lists-status';
 import { lookupHardcodedListImage } from './lookup-hardcoded-list-image';
 import { lookupList } from './lookup-list';
 import { selectAllListsContainingExpression } from './select-all-lists-containing-expression';
+import { selectAllListsFeaturedForGroup } from './select-all-lists-featured-for-group';
 import { selectAllListsOwnedBy } from './select-all-lists-owned-by';
 import { selectListContainingExpression } from './select-list-containing-expression';
 
@@ -14,6 +15,7 @@ export const lists = {
     lookupList,
     lookupHardcodedListImage,
     selectAllListsContainingExpression,
+    selectAllListsFeaturedForGroup,
     selectAllListsOwnedBy,
     selectListContainingExpression,
   },
