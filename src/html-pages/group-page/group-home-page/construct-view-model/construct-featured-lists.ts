@@ -20,6 +20,6 @@ export const constructFeaturedLists = (
   groupId: GroupId,
 ): ViewModel['featuredLists'] => pipe(
   groupId,
-  dependencies.selectAllListsFeaturedForGroup,
+  dependencies.selectAllListsPromotedByGroup,
   RA.map(constructAFeaturedListsCard(dependencies)),
 );

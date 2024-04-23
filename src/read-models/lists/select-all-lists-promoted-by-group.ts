@@ -16,24 +16,24 @@ const hardcoded = new Map<GroupId, ReadonlyArray<LID.ListId>>([
   [GID.fromValidatedString('f7a7aec3-8b1c-4b81-b098-f3f2e4eefe58'), [LID.fromValidatedString('729cab51-b47d-4ab5-bf2f-8282f1de445e')]],
 ]);
 
-export const selectAllListsFeaturedForGroup = (
+export const selectAllListsPromotedByGroup = (
   readModel: ReadModel,
 ) => (
   groupId: GroupId,
 ): ReadonlyArray<List> => {
-  const featuredListIdsThatAreHardcoded = hardcoded.get(groupId) ?? [];
-  const featuredListIdsFromReadModel = pipe(
+  const promotedListIdsThatAreHardcoded = hardcoded.get(groupId) ?? [];
+  const promotedListIdsFromReadModel = pipe(
     readModel.byFeaturingGroupId,
     R.lookup(groupId),
     O.match(
       () => [],
-      (featuredListIds) => featuredListIds,
+      (promotedListIds) => promotedListIds,
     ),
   );
-  const featuredLists = pipe(
+  const promotedLists = pipe(
     [
-      ...featuredListIdsFromReadModel,
-      ...featuredListIdsThatAreHardcoded,
+      ...promotedListIdsFromReadModel,
+      ...promotedListIdsThatAreHardcoded,
     ],
     RA.map((listId) => pipe(
       readModel.byListId,
@@ -42,5 +42,5 @@ export const selectAllListsFeaturedForGroup = (
     RA.filter(O.isSome),
     RA.map((option) => option.value),
   );
-  return featuredLists;
+  return promotedLists;
 };
