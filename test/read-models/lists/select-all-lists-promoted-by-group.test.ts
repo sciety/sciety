@@ -6,6 +6,7 @@ import { selectAllListsPromotedByGroup } from '../../../src/read-models/lists/se
 import { arbitraryListPromotionCreatedEvent } from '../../domain-events/list-promotion-resource-events.helper';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
+import { arbitraryListId } from '../../types/list-id.helper';
 
 describe('select-all-lists-promoted-by-group', () => {
   const groupId = arbitraryGroupId();
@@ -74,6 +75,21 @@ describe('select-all-lists-promoted-by-group', () => {
   });
 
   describe('when the promoted list does not exist', () => {
-    it.todo('ignores that promotion');
+    const listPromotedByGroup: EventOfType<'ListPromotionCreated'> = {
+      ...arbitraryListPromotionCreatedEvent(),
+      byGroup: groupId,
+      listId: arbitraryListId(),
+    };
+    const readModel = pipe(
+      [
+        listPromotedByGroup,
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsPromotedByGroup(readModel)(groupId);
+
+    it('ignores that promotion', () => {
+      expect(result).toStrictEqual([]);
+    });
   });
 });
