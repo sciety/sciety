@@ -21,7 +21,7 @@ const registerUpdateToList = (readModel: ReadModel, listId: ListId, date: Date) 
 
 export type ReadModel = {
   byListId: Record<ListId, ListState>,
-  byPromotingGroupId: Record<GroupId, ReadonlyArray<ListId>>,
+  byPromotingGroupId: Record<GroupId, Array<ListId>>,
 };
 
 export const initialState = (): ReadModel => ({
@@ -59,7 +59,11 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     registerUpdateToList(readmodel, event.listId, event.date);
     readmodel.byListId[event.listId].description = rawUserInput(event.description);
   } else if (isEventOfType('ListPromotionCreated')(event)) {
-    readmodel.byPromotingGroupId[event.byGroup] = [event.listId];
+    if (readmodel.byPromotingGroupId[event.byGroup] === undefined) {
+      readmodel.byPromotingGroupId[event.byGroup] = [event.listId];
+    } else {
+      readmodel.byPromotingGroupId[event.byGroup].push(event.listId);
+    }
   }
   return readmodel;
 };

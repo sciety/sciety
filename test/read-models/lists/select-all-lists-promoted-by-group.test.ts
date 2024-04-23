@@ -67,7 +67,7 @@ describe('select-all-lists-promoted-by-group', () => {
     );
     const result = selectAllListsPromotedByGroup(readModel)(groupId);
 
-    it.failing('returns those two lists', () => {
+    it('returns those two lists', () => {
       expect(result[0].id).toStrictEqual(list1Created.listId);
       expect(result[1].id).toStrictEqual(list2Created.listId);
     });
