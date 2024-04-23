@@ -44,7 +44,33 @@ describe('select-all-lists-promoted-by-group', () => {
   });
 
   describe('when two lists have been promoted by a group', () => {
-    it.todo('returns those two lists');
+    const list1Created = arbitraryListCreatedEvent();
+    const list2Created = arbitraryListCreatedEvent();
+    const list1PromotedByGroup: EventOfType<'ListPromotionCreated'> = {
+      ...arbitraryListPromotionCreatedEvent(),
+      byGroup: groupId,
+      listId: list1Created.listId,
+    };
+    const list2PromotedByGroup: EventOfType<'ListPromotionCreated'> = {
+      ...arbitraryListPromotionCreatedEvent(),
+      byGroup: groupId,
+      listId: list2Created.listId,
+    };
+    const readModel = pipe(
+      [
+        list1Created,
+        list2Created,
+        list1PromotedByGroup,
+        list2PromotedByGroup,
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsPromotedByGroup(readModel)(groupId);
+
+    it.failing('returns those two lists', () => {
+      expect(result[0].id).toStrictEqual(list1Created.listId);
+      expect(result[1].id).toStrictEqual(list2Created.listId);
+    });
   });
 
   describe('when the promoted list does not exist', () => {
