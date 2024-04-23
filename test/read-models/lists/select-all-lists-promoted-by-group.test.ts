@@ -46,4 +46,8 @@ describe('select-all-lists-promoted-by-group', () => {
   describe('when two lists have been promoted by a group', () => {
     it.todo('returns those two lists');
   });
+
+  describe('when the promoted list does not exist', () => {
+    it.todo('ignores that promotion');
+  });
 });
