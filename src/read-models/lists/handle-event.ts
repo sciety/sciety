@@ -58,7 +58,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isEventOfType('ListDescriptionEdited')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
     readmodel.byListId[event.listId].description = rawUserInput(event.description);
-  } else if (isEventOfType('ListFeaturedForGroup')(event)) {
+  } else if (isEventOfType('ListPromotionCreated')(event)) {
     readmodel.byFeaturingGroupId[event.featuredFor] = [event.listId];
   }
   return readmodel;

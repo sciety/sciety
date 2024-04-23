@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { selectAllListsPromotedByGroup } from '../../../src/read-models/lists/select-all-lists-promoted-by-group';
-import { arbitraryListCreatedEvent, arbitraryListFeaturedForGroupEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryListCreatedEvent, arbitraryListPromotionCretedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
 describe('select-all-lists-promoted-by-group', () => {
@@ -23,7 +23,7 @@ describe('select-all-lists-promoted-by-group', () => {
   describe('when a list has been promoted by a group', () => {
     const listCreated = arbitraryListCreatedEvent();
     const listPromotedByGroup = {
-      ...arbitraryListFeaturedForGroupEvent(),
+      ...arbitraryListPromotionCretedEvent(),
       featuredFor: groupId,
       listId: listCreated.listId,
     };

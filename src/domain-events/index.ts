@@ -18,8 +18,8 @@ import { groupJoinedEventCodec } from './group-joined-event';
 import { incorrectlyRecordedEvaluationErasedEventCodec } from './incorrectly-recorded-evaluation-erased-event';
 import { listCreatedEventCodec } from './list-created-event';
 import { listDescriptionEditedEventCodec } from './list-description-edited-event';
-import { listFeaturedForGroupEventCodec } from './list-featured-for-group-event';
 import { listNameEditedEventCodec } from './list-name-edited-event';
+import { listPromotionCreatedEventCodec } from './list-promotion-created-event';
 import { subjectAreaRecordedEventCodec } from './subject-area-recorded-event';
 import { userCreatedAccountEventCodec } from './user-created-account-event';
 import { userDetailsUpdatedEventCodec } from './user-details-updated-event';
@@ -64,7 +64,7 @@ export const domainEventCodec = t.union([
   incorrectlyRecordedEvaluationErasedEventCodec,
   listCreatedEventCodec,
   listDescriptionEditedEventCodec,
-  listFeaturedForGroupEventCodec,
+  listPromotionCreatedEventCodec,
   listNameEditedEventCodec,
   subjectAreaRecordedEventCodec,
   userCreatedAccountEventCodec,

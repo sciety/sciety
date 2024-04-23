@@ -29,7 +29,7 @@ export const arbitraryArticleInListAnnotatedEvent = (): EventOfType<'ArticleInLi
   content: arbitraryUnsafeUserInput(),
 });
 
-export const arbitraryListFeaturedForGroupEvent = (): EventOfType<'ListFeaturedForGroup'> => constructEvent('ListFeaturedForGroup')({
+export const arbitraryListPromotionCretedEvent = (): EventOfType<'ListPromotionCreated'> => constructEvent('ListPromotionCreated')({
   featuredFor: arbitraryGroupId(),
   listId: arbitraryListId(),
 });
