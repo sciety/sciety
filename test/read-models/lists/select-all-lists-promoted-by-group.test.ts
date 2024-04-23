@@ -1,5 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { EventOfType } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { selectAllListsPromotedByGroup } from '../../../src/read-models/lists/select-all-lists-promoted-by-group';
 import { arbitraryListCreatedEvent, arbitraryListPromotionCretedEvent } from '../../domain-events/list-resource-events.helper';
@@ -22,9 +23,9 @@ describe('select-all-lists-promoted-by-group', () => {
 
   describe('when a list has been promoted by a group', () => {
     const listCreated = arbitraryListCreatedEvent();
-    const listPromotedByGroup = {
+    const listPromotedByGroup: EventOfType<'ListPromotionCreated'> = {
       ...arbitraryListPromotionCretedEvent(),
-      featuredFor: groupId,
+      byGroup: groupId,
       listId: listCreated.listId,
     };
     const readModel = pipe(

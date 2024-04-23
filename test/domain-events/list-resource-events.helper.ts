@@ -30,6 +30,6 @@ export const arbitraryArticleInListAnnotatedEvent = (): EventOfType<'ArticleInLi
 });
 
 export const arbitraryListPromotionCretedEvent = (): EventOfType<'ListPromotionCreated'> => constructEvent('ListPromotionCreated')({
-  featuredFor: arbitraryGroupId(),
+  byGroup: arbitraryGroupId(),
   listId: arbitraryListId(),
 });

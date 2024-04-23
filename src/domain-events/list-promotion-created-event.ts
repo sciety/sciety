@@ -9,5 +9,5 @@ export const listPromotionCreatedEventCodec = t.type({
   type: t.literal('ListPromotionCreated'),
   date: tt.DateFromISOString,
   listId: listIdCodec,
-  featuredFor: GroupIdFromString,
+  byGroup: GroupIdFromString,
 });

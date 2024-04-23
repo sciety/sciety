@@ -59,7 +59,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     registerUpdateToList(readmodel, event.listId, event.date);
     readmodel.byListId[event.listId].description = rawUserInput(event.description);
   } else if (isEventOfType('ListPromotionCreated')(event)) {
-    readmodel.byFeaturingGroupId[event.featuredFor] = [event.listId];
+    readmodel.byFeaturingGroupId[event.byGroup] = [event.listId];
   }
   return readmodel;
 };
