@@ -23,7 +23,7 @@ export const selectAllListsPromotedByGroup = (
 ): ReadonlyArray<List> => {
   const promotedListIdsThatAreHardcoded = hardcoded.get(groupId) ?? [];
   const promotedListIdsFromReadModel = pipe(
-    readModel.byFeaturingGroupId,
+    readModel.byPromotingGroupId,
     R.lookup(groupId),
     O.match(
       () => [],
