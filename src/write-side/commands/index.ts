@@ -14,3 +14,4 @@ export { updateEvaluationCommandCodec, UpdateEvaluationCommand } from './update-
 export { executeCommand } from './execute-command';
 export { recordEvaluationRemovalCommandCodec, RecordEvaluationRemovalCommand } from './record-evaluation-removal';
 export { annotateArticleInListCommandCodec, AnnotateArticleInListCommand } from './annotate-article-in-list';
+export { promoteListCommandCodec, PromoteListCommand } from './promote-list';

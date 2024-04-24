@@ -6,6 +6,7 @@ import {
   addGroupCommandCodec,
   editListDetailsCommandCodec,
   eraseEvaluationCommandCodec,
+  promoteListCommandCodec,
   recordEvaluationPublicationCommandCodec,
   recordEvaluationRemovalCommandCodec,
   removeArticleFromListCommandCodec,
@@ -17,6 +18,7 @@ import { createUserAccountCommandCodec } from '../../write-side/commands/create-
 import * as evaluationResource from '../../write-side/resources/evaluation';
 import * as groupResource from '../../write-side/resources/group';
 import * as listResource from '../../write-side/resources/list';
+import * as listPromotionResource from '../../write-side/resources/list-promotion';
 import * as userResource from '../../write-side/resources/user';
 import { ownedBy } from '../owned-by-api';
 
@@ -37,6 +39,8 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts, expect
   router.post('/api/edit-list-details', configurePostMiddleware(editListDetailsCommandCodec, listResource.update));
 
   router.post('/api/erase-evaluation', configurePostMiddleware(eraseEvaluationCommandCodec, evaluationResource.erase));
+
+  router.post('/api/promote-list', configurePostMiddleware(promoteListCommandCodec, listPromotionResource.create));
 
   router.post('/api/record-evaluation-publication', configurePostMiddleware(recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
 
