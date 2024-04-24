@@ -1,18 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../../src/domain-events';
-import { PromoteListCommand } from '../../../../src/write-side/commands';
 import { create } from '../../../../src/write-side/resources/list-promotion';
 import { arbitraryListPromotionCreatedEvent } from '../../../domain-events/list-promotion-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryGroupId } from '../../../types/group-id.helper';
-import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryPromoteListCommand } from '../../commands/promote-list-command.helper';
 
 describe('create', () => {
-  const command: PromoteListCommand = {
-    forGroup: arbitraryGroupId(),
-    listId: arbitraryListId(),
-  };
+  const command = arbitraryPromoteListCommand();
   let result: ReadonlyArray<DomainEvent>;
 
   describe('when given the id of a list that the group has never before promoted', () => {
