@@ -1,4 +1,4 @@
-@use '../sass/layout';
+@use 'layout';
 
 .standard-page-container {
   @include layout.page-container();

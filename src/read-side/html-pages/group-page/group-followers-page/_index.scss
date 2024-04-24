@@ -1,7 +1,7 @@
 @use 'functions';
 @use '../../../../sass/card';
 @use 'breakpoints';
-@use '../../../../sass/layout';
+@use 'layout';
 
 .user-card {
   $_is-entire-card-linked: true;

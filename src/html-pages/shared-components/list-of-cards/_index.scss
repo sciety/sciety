@@ -1,5 +1,5 @@
 @use '../sass/card';
-@use '../sass/layout';
+@use 'layout';
 
 .card-list {
   @include card.list();

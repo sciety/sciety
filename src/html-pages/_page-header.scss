@@ -1,4 +1,4 @@
-@use '../sass/layout';
+@use '../shared-sass/layout';
 
 .page-header {
   @include layout.page-header-top-space();

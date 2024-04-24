@@ -3,7 +3,7 @@
 @use '../../sass/card';
 @use 'functions';
 @use 'settings';
-@use '../../sass/layout';
+@use 'layout';
 
 .create-user-account-form-page__container {
   @include layout.page-container();

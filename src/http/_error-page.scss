@@ -1,4 +1,4 @@
-@use '../sass/layout';
+@use 'layout';
 
 .error-page {
   @include layout.page-header-top-space();
