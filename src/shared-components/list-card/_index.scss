@@ -1,6 +1,6 @@
 @use 'breakpoints';
 @use 'functions';
-@use '../../sass/card';
+@use 'card';
 
 $_image-max-width: 150px;
 $_card-asset-gutter: functions.px-to-rem(8px);
