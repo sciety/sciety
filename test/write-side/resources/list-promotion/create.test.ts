@@ -24,7 +24,7 @@ describe('create', () => {
       );
     });
 
-    it.skip('raises exactly one ListPromotionCreated event', () => {
+    it('raises exactly one ListPromotionCreated event', () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toBeDomainEvent('ListPromotionCreated', {
         byGroup: command.forGroup,
