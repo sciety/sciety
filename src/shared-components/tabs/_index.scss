@@ -5,7 +5,6 @@
 @use 'breakpoints';
 @use 'typography';
 @use '../../sass/list';
-@use 'card';
 
 .tab-list {
   @include list.basics();
