@@ -10,25 +10,17 @@ export const selectAllListsPromotedByGroup = (
   readModel: ReadModel,
 ) => (
   groupId: GroupId,
-): ReadonlyArray<List> => {
-  const promotedListIdsFromReadModel = pipe(
-    readModel.byPromotingGroupId,
-    R.lookup(groupId),
-    O.match(
-      () => [],
-      (promotedListIds) => promotedListIds,
-    ),
-  );
-  const promotedLists = pipe(
-    [
-      ...promotedListIdsFromReadModel,
-    ],
-    RA.map((listId) => pipe(
-      readModel.byListId,
-      R.lookup(listId),
-    )),
-    RA.filter(O.isSome),
-    RA.map((option) => option.value),
-  );
-  return promotedLists;
-};
+): ReadonlyArray<List> => pipe(
+  readModel.byPromotingGroupId,
+  R.lookup(groupId),
+  O.match(
+    () => [],
+    (promotedListIds) => promotedListIds,
+  ),
+  RA.map((listId) => pipe(
+    readModel.byListId,
+    R.lookup(listId),
+  )),
+  RA.filter(O.isSome),
+  RA.map((option) => option.value),
+);
