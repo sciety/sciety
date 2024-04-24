@@ -10,7 +10,7 @@
     "@types/passport-local": "^1.0.38",
     "@xmldom/xmldom": "^0.8.10",
     "axios": "^1.6.8",
-    "axios-cache-interceptor": "^1.5.1",
+    "axios-cache-interceptor": "^1.5.2",
     "axios-retry": "4.1.0",
     "cheerio": "^1.0.0-rc.12",
     "cls-rtracer": "^2.6.3",
