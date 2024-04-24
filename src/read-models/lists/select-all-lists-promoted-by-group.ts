@@ -16,6 +16,15 @@ const getPromotedListIdsForGroup = (groupId: GroupId) => (index: ReadModel['byPr
   ),
 );
 
+const filterOutNonExistentListIds = (index: ReadModel['byListId']) => (listIds: ReadonlyArray<ListId>) => pipe(
+  listIds,
+  RA.map((listId) => pipe(
+    index,
+    R.lookup(listId),
+  )),
+  RA.filter(O.isSome),
+);
+
 export const selectAllListsPromotedByGroup = (
   readModel: ReadModel,
 ) => (
@@ -23,10 +32,6 @@ export const selectAllListsPromotedByGroup = (
 ): ReadonlyArray<List> => pipe(
   readModel.byPromotingGroupId,
   getPromotedListIdsForGroup(groupId),
-  RA.map((listId) => pipe(
-    readModel.byListId,
-    R.lookup(listId),
-  )),
-  RA.filter(O.isSome),
+  filterOutNonExistentListIds(readModel.byListId),
   RA.map((option) => option.value),
 );
