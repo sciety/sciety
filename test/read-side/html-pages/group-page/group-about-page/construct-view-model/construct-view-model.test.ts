@@ -1,16 +1,17 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { List } from '../../../../../src/read-models/lists';
-import { constructViewModel } from '../../../../../src/read-side/html-pages/group-page/group-lists-page/construct-view-model/construct-view-model';
-import { ViewModel } from '../../../../../src/read-side/html-pages/group-page/group-lists-page/view-model';
-import * as LOID from '../../../../../src/types/list-owner-id';
-import { createTestFramework, TestFramework } from '../../../../framework';
-import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
-import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
-import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
+import { List } from '../../../../../../src/read-models/lists';
+import { constructViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-about-page/construct-view-model';
+import { ViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-about-page/view-model';
+import * as LOID from '../../../../../../src/types/list-owner-id';
+import { createTestFramework, TestFramework } from '../../../../../framework';
+import { shouldNotBeCalled } from '../../../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../../../types/article-id.helper';
+import { arbitraryAddGroupCommand } from '../../../../../write-side/commands/add-group-command.helper';
+import { arbitraryCreateListCommand } from '../../../../../write-side/commands/create-list-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -30,9 +31,7 @@ describe('construct-view-model', () => {
       ...arbitraryCreateListCommand(),
       ownerId: LOID.fromGroupId(addGroupCommand.groupId),
     };
-    const expectedNumberOfListsCreated = 3;
-    let listCardIds: ReadonlyArray<ViewModel['listCards'][number]['listId']>;
-    let listCount: number;
+    let ourListIds: ReadonlyArray<ViewModel['ourLists']['lists'][number]['listId']>;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
@@ -42,33 +41,24 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createList(createMostRecentlyUpdatedList);
       await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createMostRecentlyUpdatedList.listId);
 
-      const viewModel = await pipe(
+      ourListIds = await pipe(
         {
           slug: addGroupCommand.slug,
           user: O.none,
         },
-        constructViewModel(framework.queries),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
+        T.map((viewModel) => viewModel.ourLists.lists),
+        T.map(RA.map((list) => list.listId)),
       )();
-
-      listCardIds = pipe(
-        viewModel.listCards,
-        RA.map((list) => list.listId),
-      );
-
-      listCount = viewModel.listCount;
     });
 
     it('returns lists in descending order of updated date', () => {
-      expect(listCardIds).toStrictEqual([
+      expect(ourListIds).toStrictEqual([
         createMostRecentlyUpdatedList.listId,
         createMiddleList.listId,
         initialGroupList.id,
       ]);
-    });
-
-    it('returns the total list count for the group', () => {
-      expect(listCount).toStrictEqual(expectedNumberOfListsCreated);
     });
   });
 });

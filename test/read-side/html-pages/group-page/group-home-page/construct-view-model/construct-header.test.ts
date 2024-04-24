@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { constructHeader } from '../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-header';
-import { ViewModel } from '../../../../../src/read-side/html-pages/group-page/group-home-page/view-model';
-import * as LOID from '../../../../../src/types/list-owner-id';
-import { TestFramework, createTestFramework } from '../../../../framework';
-import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
-import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
+import { constructHeader } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-header';
+import { ViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/view-model';
+import * as LOID from '../../../../../../src/types/list-owner-id';
+import { TestFramework, createTestFramework } from '../../../../../framework';
+import { shouldNotBeCalled } from '../../../../../should-not-be-called';
+import { arbitraryAddGroupCommand } from '../../../../../write-side/commands/add-group-command.helper';
+import { arbitraryCreateListCommand } from '../../../../../write-side/commands/create-list-command.helper';
 
 describe('construct-header', () => {
   let framework: TestFramework;

@@ -2,10 +2,10 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructAndRenderPage } from '../../../../src/read-side/html-pages/group-page/group-about-page';
-import * as DE from '../../../../src/types/data-error';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryWord } from '../../../helpers';
+import { constructAndRenderPage } from '../../../../../src/read-side/html-pages/group-page/group-lists-page';
+import * as DE from '../../../../../src/types/data-error';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { arbitraryWord } from '../../../../helpers';
 
 describe('construct-and-render-page', () => {
   let framework: TestFramework;
@@ -21,10 +21,7 @@ describe('construct-and-render-page', () => {
           slug: arbitraryWord(),
           user: O.none,
         },
-        constructAndRenderPage({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
-        }),
+        constructAndRenderPage(framework.queries),
         TE.mapLeft((error) => error.type),
       )();
 
