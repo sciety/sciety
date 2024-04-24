@@ -5,6 +5,16 @@ import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { List } from './list';
 import { GroupId } from '../../types/group-id';
+import { ListId } from '../../types/list-id';
+
+const getPromotedListIdsForGroup = (groupId: GroupId) => (index: ReadModel['byPromotingGroupId']): ReadonlyArray<ListId> => pipe(
+  index,
+  R.lookup(groupId),
+  O.match(
+    () => [],
+    (promotedListIds) => promotedListIds,
+  ),
+);
 
 export const selectAllListsPromotedByGroup = (
   readModel: ReadModel,
@@ -12,11 +22,7 @@ export const selectAllListsPromotedByGroup = (
   groupId: GroupId,
 ): ReadonlyArray<List> => pipe(
   readModel.byPromotingGroupId,
-  R.lookup(groupId),
-  O.match(
-    () => [],
-    (promotedListIds) => promotedListIds,
-  ),
+  getPromotedListIdsForGroup(groupId),
   RA.map((listId) => pipe(
     readModel.byListId,
     R.lookup(listId),
