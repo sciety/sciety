@@ -11,7 +11,7 @@
 @use 'paper-activity-page/render-as-html';
 @use 'create-user-account-form-page';
 @use 'edit-list-details-form-page';
-@use 'group-page';
+@use '../read-side/html-pages/group-page';
 @use 'home-page';
 @use 'list-page';
 @use 'mobile-menu';

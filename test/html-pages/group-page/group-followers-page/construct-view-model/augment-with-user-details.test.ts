@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { augmentWithUserDetails } from '../../../../../src/html-pages/group-page/group-followers-page/construct-view-model/augment-with-user-details';
+import { augmentWithUserDetails } from '../../../../../src/read-side/html-pages/group-page/group-followers-page/construct-view-model/augment-with-user-details';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryNumber } from '../../../../helpers';
 import { arbitraryUserId } from '../../../../types/user-id.helper';

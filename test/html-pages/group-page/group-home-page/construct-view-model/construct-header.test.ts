@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { constructHeader } from '../../../../../src/html-pages/group-page/group-home-page/construct-view-model/construct-header';
-import { ViewModel } from '../../../../../src/html-pages/group-page/group-home-page/view-model';
+import { constructHeader } from '../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-header';
+import { ViewModel } from '../../../../../src/read-side/html-pages/group-page/group-home-page/view-model';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
