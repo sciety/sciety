@@ -48,7 +48,7 @@ describe('create', () => {
       );
     });
 
-    it.failing('raises no events', () => {
+    it('raises no events', () => {
       expect(result).toHaveLength(0);
     });
   });
