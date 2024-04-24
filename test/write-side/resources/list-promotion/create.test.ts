@@ -77,6 +77,25 @@ describe('create', () => {
   });
 
   describe('when the group has already promoted a different list', () => {
-    it.todo('raises exactly one ListPromotionCreated event');
+    beforeEach(() => {
+      result = pipe(
+        [
+          {
+            ...arbitraryListPromotionCreatedEvent(),
+            byGroup: command.forGroup,
+          },
+        ],
+        create(command),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it('raises exactly one ListPromotionCreated event', () => {
+      expect(result).toHaveLength(1);
+      expect(result[0]).toBeDomainEvent('ListPromotionCreated', {
+        byGroup: command.forGroup,
+        listId: command.listId,
+      });
+    });
   });
 });
