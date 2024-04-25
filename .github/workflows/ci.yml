@@ -175,12 +175,15 @@ jobs:
         with:
           repository: 'sciety/deployment'
           path: 'deployment'
+          ssh-key: '${{ secrets.SCIETY_DEPLOYMENT_REPO_WRITE_ACCESS_SSH_KEY }}'
 
       - name: Update demo deployment to latest version
         run: |
           cd deployment
           yq -i '.spec.values.images.frontend.tag = "${IMAGE_TAG}"' manifests/sciety--demo.yaml
           git add .
+          git config user.email "team@sciety.org"
+          git config user.name "Deployment update bot"
           git commit -m "Update demo deployment to ${IMAGE_TAG}"
           git push
 
