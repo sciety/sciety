@@ -170,6 +170,12 @@ jobs:
           name: backstop_data
           path: backstop_data
 
+      - name: Checkout deployment
+        uses: actions/checkout@v4
+        with:
+          repository: 'sciety/deployment'
+          path: 'deployment'
+
   automerge:
     needs: frontend
     runs-on: ubuntu-latest
