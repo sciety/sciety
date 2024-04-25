@@ -1,6 +1,6 @@
 export { domainEventCodec } from './domain-event-codec';
+export { sort } from './sort';
 export {
-  sort,
   currentOrLegacyDomainEventCodec,
   CurrentOrLegacyDomainEvent,
   DomainEvent,
