@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
-import { renderListCard } from '../../../shared-components/list-card';
 import { renderPaperActivityErrorCard } from '../../../shared-components/paper-activity-summary-card';
 import { renderAsHtml } from '../../../shared-components/paper-activity-summary-card/render-as-html';
 import { renderListItems } from '../../../shared-components/render-list-items';
@@ -15,6 +14,7 @@ import { rawUserInput } from '../../raw-user-input';
 import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../shared-components/article-card-with-controls-and-annotation';
+import { renderListCard } from '../shared-components/list-card';
 import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderPaginationControls } from '../shared-components/pagination';
 

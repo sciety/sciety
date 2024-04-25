@@ -1,4 +1,4 @@
-import { ListCardViewModel } from '../../../../shared-components/list-card/render-list-card';
+import { ListCardViewModel } from '../../shared-components/list-card/render-list-card';
 import { ViewModel as HeaderViewModel } from '../common-components/render-page-header';
 
 export type ViewModel = {

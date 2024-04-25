@@ -2,8 +2,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { List } from '../../../../../read-models/lists';
-import { constructListCardViewModelWithCurator } from '../../../../../shared-components/list-card';
 import { GroupId } from '../../../../../types/group-id';
+import { constructListCardViewModelWithCurator } from '../../../shared-components/list-card';
 import { ViewModel } from '../view-model';
 
 const constructAFeaturedListsCard = (dependencies: Dependencies) => (list: List) => pipe(

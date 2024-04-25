@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { List } from '../../../../read-models/lists';
-import { constructListCardViewModelWithoutCurator } from '../../../../shared-components/list-card';
+import { constructListCardViewModelWithoutCurator } from '../../../../read-side/html-pages/shared-components/list-card';
 import { UserDetails } from '../../../../types/user-details';
 import { UserId } from '../../../../types/user-id';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';

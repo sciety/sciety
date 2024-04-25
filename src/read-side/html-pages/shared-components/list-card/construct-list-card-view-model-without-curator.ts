@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { ListCardViewModel } from './render-list-card';
-import { List } from '../../read-models/lists';
+import { List } from '../../../../read-models/lists';
 
 export const constructListCardViewModelWithoutCurator = (list: List): ListCardViewModel => ({
   listId: list.id,

@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { PageHeaderViewModel } from './render-as-html/render-page-header';
-import { ListCardViewModel } from '../../../../shared-components/list-card';
 import { PaperActivitySummaryCardViewModel, PaperActivityErrorCardViewModel } from '../../../../shared-components/paper-activity-summary-card';
+import { ListCardViewModel } from '../../shared-components/list-card';
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
 
 type NoActivity = { tag: 'no-activity-yet' };

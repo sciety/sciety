@@ -1,4 +1,4 @@
-import { ListCardViewModel } from '../../../shared-components/list-card';
+import { ListCardViewModel } from '../../../read-side/html-pages/shared-components/list-card';
 import { GroupId } from '../../../types/group-id';
 import { UserDetails } from '../../../types/user-details';
 

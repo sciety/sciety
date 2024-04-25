@@ -4,8 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { sortByDefaultListOrdering } from '../../../../html-pages/sort-by-default-list-ordering';
 import { Queries } from '../../../../read-models';
 import { List } from '../../../../read-models/lists';
-import { constructListCardViewModelWithCurator, ConstructListCardViewModelWithCuratorDependencies } from '../../../../shared-components/list-card';
 import * as DE from '../../../../types/data-error';
+import { constructListCardViewModelWithCurator, ConstructListCardViewModelWithCuratorDependencies } from '../../shared-components/list-card';
 import {
   PageOfItems,
   paginate,
