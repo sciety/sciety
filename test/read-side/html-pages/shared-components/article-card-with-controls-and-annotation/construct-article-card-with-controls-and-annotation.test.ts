@@ -2,12 +2,12 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
-import { ArticleCardWithControlsAndAnnotationViewModel, constructArticleCardWithControlsAndAnnotation } from '../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation';
-import { ArticleId } from '../../../../src/types/article-id';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
-import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
+import { ArticleCardWithControlsAndAnnotationViewModel, constructArticleCardWithControlsAndAnnotation } from '../../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation';
+import { ArticleId } from '../../../../../src/types/article-id';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
+import { arbitraryUnsafeUserInput } from '../../../../types/unsafe-user-input.helper';
+import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 
 const mustBeOnTheRight = E.getOrElseW((left: unknown) => {
   throw new Error(`Must be on the right. Left was: ${JSON.stringify(left, null, 2)}`);

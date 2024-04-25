@@ -1,22 +1,22 @@
 import * as O from 'fp-ts/Option';
 
 import { pipe } from 'fp-ts/function';
-import { rawUserInput } from '../../../../src/read-side';
+import { rawUserInput } from '../../../../../src/read-side';
 import {
   constructAnnotation,
-} from '../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/construct-annotation';
-import { unknownAuthor } from '../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/static-content';
-import { Annotation } from '../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/view-model';
-import { ArticleId } from '../../../../src/types/article-id';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+} from '../../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/construct-annotation';
+import { unknownAuthor } from '../../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/static-content';
+import { Annotation } from '../../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/view-model';
+import { ArticleId } from '../../../../../src/types/article-id';
+import * as LOID from '../../../../../src/types/list-owner-id';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
+import { arbitraryListId } from '../../../../types/list-id.helper';
+import { arbitraryUnsafeUserInput } from '../../../../types/unsafe-user-input.helper';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
