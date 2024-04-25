@@ -1,5 +1,5 @@
-import { toHtmlFragment } from '../../types/html-fragment';
-import { HtmlPage, toHtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
+import { toHtmlFragment } from '../../../types/html-fragment';
 
 export const legalPage: HtmlPage = toHtmlPage({
   title: 'Legal information',
