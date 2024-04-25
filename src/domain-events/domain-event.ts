@@ -54,3 +54,11 @@ export const domainEventCodec = t.union([
 ], 'type');
 
 export type DomainEvent = t.TypeOf<typeof domainEventCodec>;
+
+export type EventName = DomainEvent['type'];
+
+export type EventOfType<T extends EventName> = DomainEvent & { 'type': T };
+
+export const isEventOfType = <T extends EventName>(name: T) => (
+  event: DomainEvent,
+): event is EventOfType<T> => event.type === name;

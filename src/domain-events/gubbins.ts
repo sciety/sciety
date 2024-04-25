@@ -3,7 +3,9 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { annotationCreatedEventCodec } from './article-in-list-annotated-event';
 import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
-import { DomainEvent, domainEventCodec } from './domain-event';
+import {
+  DomainEvent, domainEventCodec, EventName, EventOfType,
+} from './domain-event';
 import { evaluationRecordedEventCodec } from './evaluation-publication-recorded-event';
 import { EventId, generate } from '../types/event-id';
 
@@ -19,14 +21,6 @@ export const currentOrLegacyDomainEventCodec = t.union([
 ], 'type');
 
 export type CurrentOrLegacyDomainEvent = t.TypeOf<typeof currentOrLegacyDomainEventCodec>;
-
-type EventName = DomainEvent['type'];
-
-export type EventOfType<T extends EventName> = DomainEvent & { 'type': T };
-
-export const isEventOfType = <T extends EventName>(name: T) => (
-  event: DomainEvent,
-): event is EventOfType<T> => event.type === name;
 
 type EventSpecificFields<T extends EventName> = Omit<EventOfType<T>, 'type' | 'id' | 'date'>;
 
