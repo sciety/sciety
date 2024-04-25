@@ -5,8 +5,8 @@ import { renderRelatedArticles } from './render-related-articles';
 import { renderRelatedArticlesLink } from './render-related-articles-link';
 import { renderReviewingGroups } from './render-reviewing-groups';
 import { renderUserListManagement } from './render-user-list-management';
-import { renderLangAttribute } from '../../../../shared-components/lang-attribute';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderLangAttribute } from '../../shared-components/lang-attribute';
 import { ViewModel } from '../view-model';
 
 export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`

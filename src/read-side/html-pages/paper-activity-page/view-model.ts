@@ -1,7 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { LanguageCode } from '../../../shared-components/lang-attribute';
 import { PaperActivitySummaryCardViewModel } from '../../../shared-components/paper-activity-summary-card';
 import { ArticleAuthors } from '../../../types/article-authors';
 import { ArticleServer } from '../../../types/article-server';
@@ -12,6 +11,7 @@ import { ListId } from '../../../types/list-id';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { CurationStatement } from '../../curation-statements';
 import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
+import { LanguageCode } from '../shared-components/lang-attribute';
 
 export type EvaluationPublishedFeedItem = {
   type: 'evaluation-published',

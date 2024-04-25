@@ -10,13 +10,13 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { CurationStatement } from './curation-statement';
 import { Queries } from '../../read-models';
-import { detectLanguage } from '../../shared-components/lang-attribute';
 import { Logger } from '../../shared-ports';
 import { ExternalQueries } from '../../third-parties';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as GID from '../../types/group-id';
 import * as PH from '../../types/publishing-history';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { detectLanguage } from '../html-pages/shared-components/lang-attribute';
 import { constructGroupPageHref } from '../paths';
 
 export type Dependencies = Queries & ExternalQueries & {

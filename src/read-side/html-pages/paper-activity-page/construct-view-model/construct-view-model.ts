@@ -9,7 +9,6 @@ import { constructUserListManagement } from './construct-user-list-management';
 import { Dependencies } from './dependencies';
 import { feedSummary } from './feed-summary';
 import { getFeedItemsByDateDescending } from './get-feed-items-by-date-descending';
-import { detectLanguage } from '../../../../shared-components/lang-attribute';
 import * as DE from '../../../../types/data-error';
 import { CanonicalExpressionDoi, ExpressionDoi } from '../../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../../types/expression-front-matter';
@@ -19,6 +18,7 @@ import { constructFrontMatter } from '../../../construct-front-matter';
 import { constructCurationStatements } from '../../../curation-statements';
 import { findAllListsContainingPaper } from '../../../find-all-lists-containing-paper';
 import { constructReviewingGroups } from '../../../reviewing-groups';
+import { detectLanguage } from '../../shared-components/lang-attribute';
 import { ViewModel } from '../view-model';
 
 const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;

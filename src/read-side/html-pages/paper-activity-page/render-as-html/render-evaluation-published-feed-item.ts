@@ -4,9 +4,9 @@ import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
 import { missingFullTextAndSourceLink } from './static-messages';
 import { templateDate } from '../../../../shared-components/date';
-import { renderLangAttribute } from '../../../../shared-components/lang-attribute';
 import * as EL from '../../../../types/evaluation-locator';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderLangAttribute } from '../../shared-components/lang-attribute';
 import { EvaluationPublishedFeedItem } from '../view-model';
 
 const avatar = (review: EvaluationPublishedFeedItem) => toHtmlFragment(`

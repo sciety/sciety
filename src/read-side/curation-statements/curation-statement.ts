@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { LanguageCode } from '../../shared-components/lang-attribute';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as GID from '../../types/group-id';
+import { LanguageCode } from '../html-pages/shared-components/lang-attribute';
 
 export type CurationStatement = {
   groupId: GID.GroupId,

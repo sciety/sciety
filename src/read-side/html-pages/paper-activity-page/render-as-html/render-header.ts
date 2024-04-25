@@ -1,7 +1,7 @@
 import { renderAuthors } from './render-authors';
 import { renderCurationStatements } from './render-curation-statements';
-import { renderLangAttribute } from '../../../../shared-components/lang-attribute';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderLangAttribute } from '../../shared-components/lang-attribute';
 import { ViewModel } from '../view-model';
 
 export const renderHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
