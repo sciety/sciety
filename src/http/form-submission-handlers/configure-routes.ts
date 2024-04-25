@@ -5,13 +5,15 @@ import { createAnnotationHandler } from './create-annotation-handler';
 import { createListHandler } from './create-list-handler';
 import { editListDetailsHandler } from './edit-list-details-handler';
 import { followHandler } from './follow-handler';
-import { pathToSubmitAddAFeaturedList } from './path-to-submit-add-a-featured-list';
-import { pathToSubmitCreateAnnotation } from './path-to-submit-create-annotation';
-import { pathToSubmitCreateList } from './path-to-submit-create-list';
-import { pathToSubmitEditListDetails } from './path-to-submit-edit-list-details';
-import { pathToSubmitFollow } from './path-to-submit-follow';
 import { removeArticleFromListHandler } from './remove-article-from-list-handler';
 import { saveArticleHandler } from './save-article-handler';
+import {
+  pathToSubmitEditListDetails,
+  pathToSubmitAddAFeaturedList,
+  pathToSubmitCreateList,
+  pathToSubmitCreateAnnotation,
+  pathToSubmitFollow,
+} from './submit-paths';
 import { unfollowHandler } from './unfollow-handler';
 import { CollectedPorts } from '../../infrastructure';
 import { requireLoggedInUser } from '../require-logged-in-user';

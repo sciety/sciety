@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { ViewModel } from './view-model';
-import { pathToSubmitCreateAnnotation } from '../../http/form-submission-handlers/path-to-submit-create-annotation';
+import { pathToSubmitCreateAnnotation } from '../../http/form-submission-handlers/submit-paths';
 import { inputFieldNames } from '../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 

@@ -2,7 +2,7 @@ import { htmlEscape } from 'escape-goat';
 import * as B from 'fp-ts/boolean';
 import { flow } from 'fp-ts/function';
 import { groupProperty } from '../../../../../http/form-submission-handlers/follow-handler';
-import { pathToSubmitFollow } from '../../../../../http/form-submission-handlers/path-to-submit-follow';
+import { pathToSubmitFollow } from '../../../../../http/form-submission-handlers/submit-paths';
 import { GroupId } from '../../../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
 

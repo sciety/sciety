@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { tabList } from './tab-list';
-import { pathToSubmitCreateList } from '../../../../http/form-submission-handlers/path-to-submit-create-list';
+import { pathToSubmitCreateList } from '../../../../http/form-submission-handlers/submit-paths';
 import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card';
 import { renderListItems } from '../../../../shared-components/render-list-items';
 import { renderTabs } from '../../../../shared-components/tabs';

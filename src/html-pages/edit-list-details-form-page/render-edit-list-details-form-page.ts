@@ -1,5 +1,5 @@
 import { htmlEscape } from 'escape-goat';
-import { pathToSubmitEditListDetails } from '../../http/form-submission-handlers/path-to-submit-edit-list-details';
+import { pathToSubmitEditListDetails } from '../../http/form-submission-handlers/submit-paths';
 import { RawUserInput } from '../../read-side';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
 import { inputFieldNames } from '../../standards';
