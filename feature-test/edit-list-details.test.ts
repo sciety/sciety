@@ -34,7 +34,7 @@ describe('edit-list-details', () => {
       await write(listName, into(textBox({ name: inputFieldNames.listName })));
       await write(listDescription, into(textBox('Description')));
 
-      const editListDetailsButtonSelector = 'form[action="/forms/edit-list-details"] button';
+      const editListDetailsButtonSelector = 'button[type="submit"]';
       const saveButton = $(editListDetailsButtonSelector);
       await click(saveButton);
     });
