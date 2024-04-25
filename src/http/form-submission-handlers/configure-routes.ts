@@ -26,11 +26,17 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     removeArticleFromListHandler(adapters),
   );
 
-  router.post(
-    '/forms/edit-list-details',
-    bodyParser({ enableTypes: ['form'] }),
-    editListDetailsHandler(adapters),
-  );
+  const formHandlerRoutes = [
+    { path: '/forms/edit-list-details', handler: editListDetailsHandler(adapters) },
+  ];
+
+  formHandlerRoutes.forEach((route) => {
+    router.post(
+      route.path,
+      bodyParser({ enableTypes: ['form'] }),
+      route.handler,
+    );
+  });
 
   router.post(
     '/forms/add-a-featured-list',
