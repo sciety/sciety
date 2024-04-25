@@ -2,9 +2,9 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { GroupCardViewModel } from './view-model';
-import { templateDate } from '../../../../shared-components/date';
 import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { templateDate } from '../date';
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 

@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { constant, pipe } from 'fp-ts/function';
-import { toDisplayString } from '../../../../shared-components/date';
+import { toDisplayString } from '../../shared-components/date';
 import { ViewModel } from '../view-model';
 
 export const renderDescriptionMetaTagContent = (viewmodel: ViewModel): string => `${viewmodel.evaluationCount} evaluations

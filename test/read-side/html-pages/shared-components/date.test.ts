@@ -1,5 +1,5 @@
-import { templateDate } from '../../src/shared-components/date';
-import { toHtmlFragment } from '../../src/types/html-fragment';
+import { templateDate } from '../../../../src/read-side/html-pages/shared-components/date';
+import { toHtmlFragment } from '../../../../src/types/html-fragment';
 
 describe('date template', () => {
   it.each([

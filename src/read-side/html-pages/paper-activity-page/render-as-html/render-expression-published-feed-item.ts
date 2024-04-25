@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { templateDate } from '../../../../shared-components/date';
 import { articleServers } from '../../../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { templateDate } from '../../shared-components/date';
 import { ExpressionPublishedFeedItem } from '../view-model';
 
 const onServer = (server: ExpressionPublishedFeedItem['server']) => pipe(
