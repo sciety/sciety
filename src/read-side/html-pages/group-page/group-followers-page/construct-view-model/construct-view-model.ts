@@ -5,8 +5,8 @@ import { augmentWithUserDetails } from './augment-with-user-details';
 import { Dependencies } from './dependencies';
 import { findFollowers } from './find-followers';
 import { Params } from './params';
-import { paginate, constructDefaultPaginationControls } from '../../../../../html-pages/shared-components/pagination';
 import * as DE from '../../../../../types/data-error';
+import { paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
 
 const pageSize = 10;

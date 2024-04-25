@@ -5,7 +5,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../../../html-pages/shared-components/pagination';
 import { toExpressionDoisByMostRecentlyAdded } from '../../../../../read-models/lists';
 import { constructPaperActivitySummaryCard } from '../../../../../shared-components/paper-activity-summary-card';
 import * as DE from '../../../../../types/data-error';
@@ -13,6 +12,7 @@ import * as EDOI from '../../../../../types/expression-doi';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
 import { constructGroupPageHref } from '../../../../paths';
+import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(

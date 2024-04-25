@@ -3,10 +3,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { toPageOfCards } from './to-page-of-cards';
-import { paginate } from '../../../../html-pages/shared-components/pagination';
 import * as DE from '../../../../types/data-error';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
+import { paginate } from '../../shared-components/pagination';
 import { ContentWithPaginationViewModel } from '../view-model';
 
 const constructPaginationControlsViewModel = (nextPageNumber: O.Option<number>, basePath: string) => ({

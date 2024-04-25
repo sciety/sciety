@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { PageOfItems } from './paginate';
 import { ViewModel } from './render-pagination-controls';
-import { queryStringParameters } from '../../../standards';
+import { queryStringParameters } from '../../../../standards';
 
 const buildPaginationHref = (path: string, pageNumber: O.Option<number>): O.Option<string> => pipe(
   pageNumber,

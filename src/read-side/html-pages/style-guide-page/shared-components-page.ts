@@ -1,7 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
-import { renderPaginationControls } from '../../../html-pages/shared-components/pagination';
 import { renderListCard } from '../../../shared-components/list-card';
 import { renderPaperActivityErrorCard } from '../../../shared-components/paper-activity-summary-card';
 import { renderAsHtml } from '../../../shared-components/paper-activity-summary-card/render-as-html';
@@ -17,6 +16,7 @@ import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../shared-components/article-card-with-controls-and-annotation';
 import { renderListOfCards } from '../shared-components/list-of-cards';
+import { renderPaginationControls } from '../shared-components/pagination';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',

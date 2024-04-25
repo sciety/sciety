@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { constructDefaultPaginationControls } from '../../../../src/html-pages/shared-components/pagination';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { constructDefaultPaginationControls } from '../../../../../src/read-side/html-pages/shared-components/pagination';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
 
 describe('construct-default-pagination-controls', () => {
   const arbitraryPageOfItems = {

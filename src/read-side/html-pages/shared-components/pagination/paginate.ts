@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import * as DE from '../../../types/data-error';
+import * as DE from '../../../../types/data-error';
 
 export type PageOfItems<I> = {
   items: ReadonlyArray<I>,
