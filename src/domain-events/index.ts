@@ -1,3 +1,4 @@
+export { constructEvent } from './construct-event';
 export {
   DomainEvent,
   domainEventCodec,
@@ -8,6 +9,5 @@ export { sort } from './sort';
 export {
   currentOrLegacyDomainEventCodec,
   CurrentOrLegacyDomainEvent,
-  constructEvent,
   filterByName,
 } from './gubbins';

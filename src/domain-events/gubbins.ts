@@ -4,10 +4,9 @@ import * as t from 'io-ts';
 import { annotationCreatedEventCodec } from './article-in-list-annotated-event';
 import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
 import {
-  DomainEvent, domainEventCodec, EventName, EventOfType,
+  DomainEvent, domainEventCodec, EventName,
 } from './domain-event';
 import { evaluationRecordedEventCodec } from './evaluation-publication-recorded-event';
-import { EventId, generate } from '../types/event-id';
 
 const legacyDomainEventCodec = t.union([
   evaluationRecordedEventCodec,
@@ -21,24 +20,6 @@ export const currentOrLegacyDomainEventCodec = t.union([
 ], 'type');
 
 export type CurrentOrLegacyDomainEvent = t.TypeOf<typeof currentOrLegacyDomainEventCodec>;
-
-type EventSpecificFields<T extends EventName> = Omit<EventOfType<T>, 'type' | 'id' | 'date'>;
-
-type EventBase<T> = {
-  id: EventId,
-  date: Date,
-  type: T,
-};
-
-export const constructEvent = <
-T extends EventName,
-A extends EventSpecificFields<T>,
->(type: T) => (args: A & Partial<{ date: Date }>): EventBase<T> & A => ({
-    type,
-    id: generate(),
-    date: new Date(),
-    ...args,
-  });
 
 type SubsetOfDomainEvent<Names extends Array<EventName>> = Extract<DomainEvent, { type: Names[number] }>;
 
