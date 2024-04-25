@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { GroupLinkWithLogoViewModel } from '../../../../../src/html-pages/shared-components/group-link';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/home-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../../src/read-side/html-pages/home-page/view-model';
+import { GroupLinkWithLogoViewModel } from '../../../../../src/read-side/html-pages/shared-components/group-link';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryString } from '../../../../helpers';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';

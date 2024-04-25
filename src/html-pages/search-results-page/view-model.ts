@@ -1,6 +1,6 @@
 import { PaginationViewModel } from './render-as-html/wrap-with-pagination-information';
+import { GroupLinkWithLogoViewModel } from '../../read-side/html-pages/shared-components/group-link';
 import { PaperActivitySummaryCardViewModel } from '../../shared-components/paper-activity-summary-card';
-import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
 import { LegacyPaginationControlsViewModel } from '../shared-components/pagination';
 
 type NoGroupsEvaluatedTheFoundArticles = {

@@ -3,12 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import {
-  GroupLinkAsTextViewModel, GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies,
-} from '../../html-pages/shared-components/group-link';
 import { Queries } from '../../read-models';
 import * as PH from '../../types/publishing-history';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import {
+  GroupLinkAsTextViewModel, GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies,
+} from '../html-pages/shared-components/group-link';
 
 export type Dependencies = Queries
 & ConstructGroupLinkDependencies;

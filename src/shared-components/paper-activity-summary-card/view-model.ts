@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { GroupLinkAsTextViewModel } from '../../html-pages/shared-components/group-link';
+import { GroupLinkAsTextViewModel } from '../../read-side/html-pages/shared-components/group-link';
 import { ArticleAuthors } from '../../types/article-authors';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { LanguageCode } from '../lang-attribute';
