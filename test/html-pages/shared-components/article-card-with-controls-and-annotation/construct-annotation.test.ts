@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option';
 
 import { pipe } from 'fp-ts/function';
+import { rawUserInput } from '../../../../src/read-side';
 import {
   constructAnnotation,
-} from '../../../../src/html-pages/shared-components/article-card-with-controls-and-annotation/construct-annotation';
-import { unknownAuthor } from '../../../../src/html-pages/shared-components/article-card-with-controls-and-annotation/static-content';
-import { Annotation } from '../../../../src/html-pages/shared-components/article-card-with-controls-and-annotation/view-model';
-import { rawUserInput } from '../../../../src/read-side';
+} from '../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/construct-annotation';
+import { unknownAuthor } from '../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/static-content';
+import { Annotation } from '../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/view-model';
 import { ArticleId } from '../../../../src/types/article-id';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { TestFramework, createTestFramework } from '../../../framework';

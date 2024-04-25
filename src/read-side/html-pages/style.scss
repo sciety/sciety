@@ -2,7 +2,8 @@
 @use '../../sass/page-content';
 @use '../../sass/fonts';
 
-@use '../../html-pages/shared-components';
+@use '../../html-pages/shared-components' as interim-shared-components;
+@use 'shared-components';
 @use '../../html-pages/form-rules';
 @use '../../html-pages/layout-rules';
 @use '../../html-pages/list-rules';

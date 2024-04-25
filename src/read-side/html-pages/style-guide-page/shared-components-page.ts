@@ -1,9 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
-import {
-  renderArticleCardWithControlsAndAnnotation,
-} from '../../../html-pages/shared-components/article-card-with-controls-and-annotation';
 import { renderListOfCards } from '../../../html-pages/shared-components/list-of-cards';
 import { renderPaginationControls } from '../../../html-pages/shared-components/pagination';
 import { renderListCard } from '../../../shared-components/list-card';
@@ -17,6 +14,9 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 import * as LID from '../../../types/list-id';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { rawUserInput } from '../../raw-user-input';
+import {
+  renderArticleCardWithControlsAndAnnotation,
+} from '../shared-components/article-card-with-controls-and-annotation';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',

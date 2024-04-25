@@ -4,14 +4,14 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import {
-  ArticleCardWithControlsAndAnnotationViewModel,
-  constructArticleCardWithControlsAndAnnotation,
-} from '../../../../html-pages/shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems } from '../../../../html-pages/shared-components/pagination';
 import { PaperActivityErrorCardViewModel } from '../../../../shared-components/paper-activity-summary-card';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
+import {
+  ArticleCardWithControlsAndAnnotationViewModel,
+  constructArticleCardWithControlsAndAnnotation,
+} from '../../shared-components/article-card-with-controls-and-annotation';
 import { ContentWithPaginationViewModel } from '../view-model';
 
 export const toPageOfCards = (

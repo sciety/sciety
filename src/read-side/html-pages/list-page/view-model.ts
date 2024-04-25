@@ -1,13 +1,13 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import {
-  ArticleCardWithControlsAndAnnotationViewModel,
-} from '../../../html-pages/shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems, LegacyPaginationControlsViewModel } from '../../../html-pages/shared-components/pagination';
 import { PaperActivityErrorCardViewModel } from '../../../shared-components/paper-activity-summary-card';
 import { ListId } from '../../../types/list-id';
 import { RawUserInput } from '../../raw-user-input';
+import {
+  ArticleCardWithControlsAndAnnotationViewModel,
+} from '../shared-components/article-card-with-controls-and-annotation';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
