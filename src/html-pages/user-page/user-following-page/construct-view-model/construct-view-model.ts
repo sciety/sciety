@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Queries } from '../../../../read-models';
-import { constructGroupCard } from '../../../../shared-components/group-card';
+import { constructGroupCard } from '../../../../read-side/html-pages/shared-components/group-card';
 import { candidateUserHandleCodec } from '../../../../types/candidate-user-handle';
 import * as DE from '../../../../types/data-error';
 import * as LOID from '../../../../types/list-owner-id';

@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { GroupCardViewModel } from '../../../shared-components/group-card';
+import { GroupCardViewModel } from '../../../read-side/html-pages/shared-components/group-card';
 import { GroupId } from '../../../types/group-id';
 import { UserDetails } from '../../../types/user-details';
 

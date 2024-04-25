@@ -4,7 +4,7 @@ import { flow, identity, pipe } from 'fp-ts/function';
 import { renderFollowList } from './render-follow-list';
 import { followingNothing, informationUnavailable } from './static-messages';
 import { tabList } from './tab-list';
-import { renderGroupCard } from '../../../../shared-components/group-card';
+import { renderGroupCard } from '../../../../read-side/html-pages/shared-components/group-card';
 import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel } from '../view-model';

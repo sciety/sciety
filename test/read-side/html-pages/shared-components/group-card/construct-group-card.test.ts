@@ -1,16 +1,16 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { constructGroupCard } from '../../../src/shared-components/group-card';
-import { toExpressionDoi } from '../../../src/types/article-id';
-import * as DE from '../../../src/types/data-error';
-import { AddGroupCommand } from '../../../src/write-side/commands';
-import { createTestFramework, TestFramework } from '../../framework';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { constructGroupCard } from '../../../../../src/read-side/html-pages/shared-components/group-card';
+import { toExpressionDoi } from '../../../../../src/types/article-id';
+import * as DE from '../../../../../src/types/data-error';
+import { AddGroupCommand } from '../../../../../src/write-side/commands';
+import { createTestFramework, TestFramework } from '../../../../framework';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { arbitraryGroupId } from '../../../../types/group-id.helper';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-group-card', () => {
   let framework: TestFramework;
