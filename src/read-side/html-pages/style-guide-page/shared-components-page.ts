@@ -1,22 +1,22 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { rawUserInput } from '../../read-side';
-import { renderListCard } from '../../shared-components/list-card';
-import { renderPaperActivityErrorCard } from '../../shared-components/paper-activity-summary-card';
-import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html';
-import { renderListItems } from '../../shared-components/render-list-items';
-import { successBanner } from '../../shared-components/success-banner/success-banner';
-import * as DE from '../../types/data-error';
-import * as EDOI from '../../types/expression-doi';
-import { toHtmlFragment } from '../../types/html-fragment';
-import * as LID from '../../types/list-id';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { HtmlPage, toHtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
 import {
   renderArticleCardWithControlsAndAnnotation,
-} from '../shared-components/article-card-with-controls-and-annotation';
-import { renderListOfCards } from '../shared-components/list-of-cards';
-import { renderPaginationControls } from '../shared-components/pagination/render-pagination-controls';
+} from '../../../html-pages/shared-components/article-card-with-controls-and-annotation';
+import { renderListOfCards } from '../../../html-pages/shared-components/list-of-cards';
+import { renderPaginationControls } from '../../../html-pages/shared-components/pagination';
+import { renderListCard } from '../../../shared-components/list-card';
+import { renderPaperActivityErrorCard } from '../../../shared-components/paper-activity-summary-card';
+import { renderAsHtml } from '../../../shared-components/paper-activity-summary-card/render-as-html';
+import { renderListItems } from '../../../shared-components/render-list-items';
+import { successBanner } from '../../../shared-components/success-banner/success-banner';
+import * as DE from '../../../types/data-error';
+import * as EDOI from '../../../types/expression-doi';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import * as LID from '../../../types/list-id';
+import { sanitise } from '../../../types/sanitised-html-fragment';
+import { rawUserInput } from '../../raw-user-input';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',
