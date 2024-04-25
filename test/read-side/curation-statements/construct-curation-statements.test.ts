@@ -4,10 +4,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Dependencies } from '../../../src/html-pages/paper-activity-page/construct-view-model/dependencies';
 import {
   constructCurationStatements,
 } from '../../../src/read-side/curation-statements/construct-curation-statements';
+import { Dependencies } from '../../../src/read-side/html-pages/paper-activity-page/construct-view-model/dependencies';
 import * as DE from '../../../src/types/data-error';
 import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import * as PH from '../../../src/types/publishing-history';

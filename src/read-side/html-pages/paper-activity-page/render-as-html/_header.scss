@@ -1,0 +1,104 @@
+@use 'breakpoints';
+@use 'settings';
+@use 'functions';
+@use 'layout';
+@use '../../../../sass/list';
+@use '../../../../sass/curation-statement';
+
+@use 'local-settings';
+
+.article-page-wrapper {
+  width: 100%;
+}
+
+.article-page-header-wrapper {
+  margin-bottom: local-settings.$component-vertical-spacing;
+}
+
+@mixin _apply-page-gutter-as-padding() {
+  padding-left: settings.$default-gutter;
+  padding-right: settings.$default-gutter;
+
+  @include breakpoints.not-narrow() {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.article-page-header-wrapper--with-curation-statements {
+  @include layout.allow-edge-to-edge-content-when-narrow();
+  @include _apply-page-gutter-as-padding();
+  padding-bottom: local-settings.$component-vertical-spacing;
+  background-color: settings.$colour-background-grey;
+  margin-top: calc(-1 * settings.$border-width);
+}
+
+.page-header.page-header--article {
+  margin-top: 0;
+  margin-bottom: local-settings.$component-vertical-spacing;
+  max-width: functions.px-to-rem(settings.$max-site-width);
+
+  @include breakpoints.not-narrow {
+    margin: 0 auto;
+    padding-left: functions.px-to-rem(settings.$default-gutter);
+    padding-right: functions.px-to-rem(settings.$default-gutter);
+  }
+}
+
+.article-author-list {
+  @include list.basics();
+  margin-top: 0;
+  margin-bottom: 0;
+
+  + * {
+    clear: left;
+  }
+
+  @supports (display: flow-root) {
+    display: flow-root;
+
+    + * {
+      clear: unset;
+    }
+  }
+}
+
+.article-author-list > li {
+  @include list.author-separator-terminator();
+  float: left;
+  font-weight: bold;
+}
+
+.curation-statements {
+  @include list.basics();
+  margin-top: 3rem;
+  margin-bottom: 0;
+}
+
+.curation-statement {
+  border-top: 1px solid settings.$colour-furniture;
+  padding-top: 3rem;
+  margin-bottom: 3rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.curation-statement-header {
+  display: flex;
+  justify-content: space-between;
+
+  img {
+    max-height: 2rem;
+  }
+}
+
+.curation-statement-full-text {
+  @include curation-statement.quote(
+    $quotation-mark-font-size: 48px,
+    $close-quotation-bottom-offset: -32px,
+  );
+  padding-left: functions.px-to-rem(32px);
+  padding-right: functions.px-to-rem(32px);
+}
