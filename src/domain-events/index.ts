@@ -9,5 +9,5 @@ export { sort } from './sort';
 export {
   currentOrLegacyDomainEventCodec,
   CurrentOrLegacyDomainEvent,
-  filterByName,
-} from './gubbins';
+} from './current-or-legacy-domain-event';
+export { filterByName } from './filter-by-name';
