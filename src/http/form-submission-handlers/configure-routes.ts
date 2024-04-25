@@ -12,20 +12,6 @@ import { CollectedPorts } from '../../infrastructure';
 import { requireLoggedInUser } from '../require-logged-in-user';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
-  router.post(
-    '/save-article',
-    bodyParser({ enableTypes: ['form'] }),
-    requireLoggedInUser(adapters),
-    saveArticleHandler(adapters),
-  );
-
-  router.post(
-    '/forms/remove-article-from-list',
-    bodyParser({ enableTypes: ['form'] }),
-    requireLoggedInUser(adapters),
-    removeArticleFromListHandler(adapters),
-  );
-
   const formHandlerRoutes = [
     { path: '/forms/edit-list-details', handler: editListDetailsHandler(adapters) },
     { path: '/forms/add-a-featured-list', handler: addAFeaturedListHandler(adapters) },
@@ -42,10 +28,18 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     );
   });
 
-  router.post(
-    '/unfollow',
-    bodyParser({ enableTypes: ['form'] }),
-    requireLoggedInUser(adapters),
-    unfollowHandler(adapters),
-  );
+  const formHandlerRoutesWithAuthentication = [
+    { path: '/save-article', handler: saveArticleHandler(adapters) },
+    { path: '/forms/remove-article-from-list', handler: removeArticleFromListHandler(adapters) },
+    { path: '/unfollow', handler: unfollowHandler(adapters) },
+  ];
+
+  formHandlerRoutesWithAuthentication.forEach((route) => {
+    router.post(
+      route.path,
+      bodyParser({ enableTypes: ['form'] }),
+      requireLoggedInUser(adapters),
+      route.handler,
+    );
+  });
 };
