@@ -176,6 +176,15 @@ jobs:
           repository: 'sciety/deployment'
           path: 'deployment'
 
+      - name: Update demo deployment to latest version
+        run: |
+          cd deployment
+          yq -i '.spec.values.images.frontend.tag = "${IMAGE_TAG}"' manifests/sciety--demo.yaml
+          git add .
+          git commit -m "Update demo deployment to ${IMAGE_TAG}"
+          git push
+
+
   automerge:
     needs: frontend
     runs-on: ubuntu-latest
