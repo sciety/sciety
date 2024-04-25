@@ -2,12 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../../src/read-side/html-pages/groups-page/construct-view-model/construct-view-model';
-import { GroupCardViewModel } from '../../../../src/shared-components/group-card/view-model';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
+import { constructViewModel } from '../../../../../src/read-side/html-pages/groups-page/construct-view-model/construct-view-model';
+import { GroupCardViewModel } from '../../../../../src/shared-components/group-card/view-model';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 type ViewModel = ReadonlyArray<GroupCardViewModel>;
 
