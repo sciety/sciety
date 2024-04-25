@@ -6,9 +6,8 @@ import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Pool } from 'pg';
 import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
-import {
-  DomainEvent, CurrentOrLegacyDomainEvent, EventOfType,
-} from '../domain-events';
+import { upgradeLegacyEventIfNecessary } from './upgrade-legacy-event-if-necessary';
+import { DomainEvent } from '../domain-events';
 import { Logger } from '../shared-ports';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
@@ -25,34 +24,6 @@ const waitForTableToExist = async (pool: Pool, logger: Logger) => {
     }
     await T.delay(1000)(T.of(''))();
   }
-};
-
-const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): DomainEvent => {
-  if (event.type === 'EvaluationRecorded') {
-    return {
-      ...event,
-      type: 'EvaluationPublicationRecorded' as const,
-    };
-  }
-  if (event.type === 'CurationStatementRecorded') {
-    return {
-      ...event,
-      authors: undefined,
-      evaluationType: 'curation-statement',
-      type: 'EvaluationUpdated' as const,
-    } satisfies EventOfType<'EvaluationUpdated'>;
-  }
-  if (event.type === 'AnnotationCreated') {
-    return {
-      id: event.id,
-      type: 'ArticleInListAnnotated',
-      date: event.date,
-      content: event.content,
-      articleId: event.target.articleId,
-      listId: event.target.listId,
-    };
-  }
-  return event;
 };
 
 const decodeEvents = (
