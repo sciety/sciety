@@ -5,6 +5,7 @@ import { createAnnotationHandler } from './create-annotation-handler';
 import { createListHandler } from './create-list-handler';
 import { editListDetailsHandler } from './edit-list-details-handler';
 import { followHandler } from './follow-handler';
+import { pathToSubmitCreateAnnotation } from './path-to-submit-create-annotation';
 import { removeArticleFromListHandler } from './remove-article-from-list-handler';
 import { saveArticleHandler } from './save-article-handler';
 import { unfollowHandler } from './unfollow-handler';
@@ -16,7 +17,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     { path: '/forms/edit-list-details', handler: editListDetailsHandler(adapters) },
     { path: '/forms/add-a-featured-list', handler: addAFeaturedListHandler(adapters) },
     { path: '/forms/create-list', handler: createListHandler(adapters) },
-    { path: '/annotations/create-annotation', handler: createAnnotationHandler(adapters) },
+    { path: pathToSubmitCreateAnnotation(), handler: createAnnotationHandler(adapters) },
     { path: '/follow', handler: followHandler(adapters) },
   ];
 

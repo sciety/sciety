@@ -1,6 +1,7 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { ViewModel } from './view-model';
+import { pathToSubmitCreateAnnotation } from '../../http/form-submission-handlers/path-to-submit-create-annotation';
 import { inputFieldNames } from '../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
@@ -20,7 +21,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
     <h1>${viewModel.pageHeading}</h1>
     <p>Add a public comment to share with others what's interesting or important about this article.</p>
   </header>
-  <form class="standard-form" method="POST" action="/annotations/create-annotation">
+  <form class="standard-form" method="POST" action="${pathToSubmitCreateAnnotation()}">
     <input type="hidden" name="${inputFieldNames.articleId}" value="${viewModel.articleId.value}">
     <input type="hidden" name="${inputFieldNames.listId}" value="${viewModel.listId}">
     <dl>
