@@ -180,7 +180,7 @@ jobs:
       - name: Update demo deployment to latest version
         run: |
           cd deployment
-          yq -i '.spec.values.images.frontend.tag = "${IMAGE_TAG}"' manifests/sciety--demo.yaml
+          TAG=${IMAGE_TAG} yq -i '.spec.values.images.frontend.tag = strenv(TAG)' manifests/sciety--demo.yaml
           git add .
           git config user.email "team@sciety.org"
           git config user.name "Deployment update bot"
