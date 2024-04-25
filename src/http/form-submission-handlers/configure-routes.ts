@@ -28,6 +28,10 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
 
   const formHandlerRoutes = [
     { path: '/forms/edit-list-details', handler: editListDetailsHandler(adapters) },
+    { path: '/forms/add-a-featured-list', handler: addAFeaturedListHandler(adapters) },
+    { path: '/forms/create-list', handler: createListHandler(adapters) },
+    { path: '/forms/create-annotation', handler: createAnnotationHandler(adapters) },
+    { path: '/follow', handler: followHandler(adapters) },
   ];
 
   formHandlerRoutes.forEach((route) => {
@@ -37,30 +41,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       route.handler,
     );
   });
-
-  router.post(
-    '/forms/add-a-featured-list',
-    bodyParser({ enableTypes: ['form'] }),
-    addAFeaturedListHandler(adapters),
-  );
-
-  router.post(
-    '/forms/create-list',
-    bodyParser({ enableTypes: ['form'] }),
-    createListHandler(adapters),
-  );
-
-  router.post(
-    '/annotations/create-annotation',
-    bodyParser({ enableTypes: ['form'] }),
-    createAnnotationHandler(adapters),
-  );
-
-  router.post(
-    '/follow',
-    bodyParser({ enableTypes: ['form'] }),
-    followHandler(adapters),
-  );
 
   router.post(
     '/unfollow',
