@@ -16,7 +16,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     { path: '/forms/edit-list-details', handler: editListDetailsHandler(adapters) },
     { path: '/forms/add-a-featured-list', handler: addAFeaturedListHandler(adapters) },
     { path: '/forms/create-list', handler: createListHandler(adapters) },
-    { path: '/forms/create-annotation', handler: createAnnotationHandler(adapters) },
+    { path: '/annotations/create-annotation', handler: createAnnotationHandler(adapters) },
     { path: '/follow', handler: followHandler(adapters) },
   ];
 
