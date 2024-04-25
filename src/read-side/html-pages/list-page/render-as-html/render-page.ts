@@ -1,7 +1,7 @@
 import { renderContentWithPagination } from './render-content-with-pagination';
 import { renderHeader } from './render-header';
 import { noArticlesCanBeFetchedMessage, noArticlesMessageForOwner, noArticlesMessageForReader } from './static-messages';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
 const renderListOrMessage = (viewModel: ViewModel) => {

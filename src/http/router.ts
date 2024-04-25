@@ -24,7 +24,6 @@ import { evaluationContent, paramsCodec as evaluationContentParams } from '../ev
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
-import { page as listPage, paramsCodec as listPageParams } from '../html-pages/list-page';
 import { listsPage, paramsCodec as listsPageParamsCodec } from '../html-pages/lists-page';
 import { myFeedPage, myFeedParams } from '../html-pages/my-feed-page';
 import { paperActivityPage } from '../html-pages/paper-activity-page';
@@ -46,6 +45,7 @@ import * as GLP from '../read-side/html-pages/group-page/group-lists-page';
 import { groupsPage } from '../read-side/html-pages/groups-page';
 import { homePage, homePageLayout } from '../read-side/html-pages/home-page';
 import { legalPage } from '../read-side/html-pages/legal-page';
+import { page as listPage, paramsCodec as listPageParams } from '../read-side/html-pages/list-page';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';

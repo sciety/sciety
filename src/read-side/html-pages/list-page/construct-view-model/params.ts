@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { queryStringParameters, inputFieldNames } from '../../../standards';
-import { listIdCodec } from '../../../types/list-id';
-import { userIdCodec } from '../../../types/user-id';
+import { queryStringParameters, inputFieldNames } from '../../../../standards';
+import { listIdCodec } from '../../../../types/list-id';
+import { userIdCodec } from '../../../../types/user-id';
 
 export const paramsCodec = t.type({
   [queryStringParameters.page]: queryStringParameters.pageCodec,

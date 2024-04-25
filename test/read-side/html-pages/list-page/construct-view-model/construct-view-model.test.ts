@@ -4,14 +4,14 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../../src/html-pages/list-page/construct-view-model/construct-view-model';
-import { hasContentWithPagination, ViewModel } from '../../../../src/html-pages/list-page/view-model';
-import { ArticleId } from '../../../../src/types/article-id';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { createTestFramework, TestFramework } from '../../../framework';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
+import { constructViewModel } from '../../../../../src/read-side/html-pages/list-page/construct-view-model/construct-view-model';
+import { hasContentWithPagination, ViewModel } from '../../../../../src/read-side/html-pages/list-page/view-model';
+import { ArticleId } from '../../../../../src/types/article-id';
+import * as LOID from '../../../../../src/types/list-owner-id';
+import { createTestFramework, TestFramework } from '../../../../framework';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
 const toPaperHrefs = (viewModel: ViewModel) => pipe(
   viewModel.content,

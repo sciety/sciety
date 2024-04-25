@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { userHasEditCapability } from '../../../../src/html-pages/list-page/construct-view-model/user-has-edit-capability';
-import * as LOID from '../../../../src/types/list-owner-id';
-import { arbitraryUserId } from '../../../types/user-id.helper';
+import { userHasEditCapability } from '../../../../../src/read-side/html-pages/list-page/construct-view-model/user-has-edit-capability';
+import * as LOID from '../../../../../src/types/list-owner-id';
+import { arbitraryUserId } from '../../../../types/user-id.helper';
 
 describe('user-has-edit-capability', () => {
   describe('when the logged in user owns the list', () => {

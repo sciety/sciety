@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { constructUserAvatarSrc } from '../../../read-side/paths';
-import { UserId } from '../../../types/user-id';
+import { UserId } from '../../../../types/user-id';
+import { constructUserAvatarSrc } from '../../../paths';
 
 type OwnerInfo = {
   ownerName: string,

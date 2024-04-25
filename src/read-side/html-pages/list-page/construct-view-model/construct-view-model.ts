@@ -8,11 +8,11 @@ import { Dependencies } from './dependencies';
 import { getOwnerInformation } from './get-owner-information';
 import { Params } from './params';
 import { userHasEditCapability } from './user-has-edit-capability';
-import { toExpressionDoisByMostRecentlyAdded, List } from '../../../read-models/lists';
-import * as DE from '../../../types/data-error';
-import { ExpressionDoi } from '../../../types/expression-doi';
-import { ListId } from '../../../types/list-id';
-import { UserId } from '../../../types/user-id';
+import { toExpressionDoisByMostRecentlyAdded, List } from '../../../../read-models/lists';
+import * as DE from '../../../../types/data-error';
+import { ExpressionDoi } from '../../../../types/expression-doi';
+import { ListId } from '../../../../types/list-id';
+import { UserId } from '../../../../types/user-id';
 import { ViewModel } from '../view-model';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(

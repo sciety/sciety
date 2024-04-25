@@ -1,4 +1,4 @@
-import { toHtmlFragment } from '../../../types/html-fragment';
+import { toHtmlFragment } from '../../../../types/html-fragment';
 
 const staticMessage = (message: string) => toHtmlFragment(`<p>${message}</p>`);
 
