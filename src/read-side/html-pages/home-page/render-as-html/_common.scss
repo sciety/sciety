@@ -1,7 +1,6 @@
 @use 'sass:math';
 
 @use 'functions';
-@use 'button';
 @use 'breakpoints';
 
 $home-page-breakpoint: functions.px-to-em(964px);

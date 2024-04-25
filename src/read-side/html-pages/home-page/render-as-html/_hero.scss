@@ -3,8 +3,6 @@
 @use 'typography';
 @use 'breakpoints';
 @use 'button';
-@use '../../../../sass/states';
-@use 'common';
 @use 'hero-search-form';
 
 $_width-at-which-image-is-too-narrow: 1680px;
