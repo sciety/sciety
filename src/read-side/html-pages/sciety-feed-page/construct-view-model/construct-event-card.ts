@@ -7,7 +7,7 @@ import {
   isCollapsedArticlesAddedToList,
 } from './feed-item';
 import { userFollowedAGroupCard } from './user-followed-a-group-card';
-import { DomainEvent, isEventOfType } from '../../../domain-events';
+import { DomainEvent, isEventOfType } from '../../../../domain-events';
 import { ScietyFeedCard } from '../view-model';
 
 export const constructEventCard = (

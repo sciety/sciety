@@ -6,8 +6,8 @@ import * as t from 'io-ts';
 import { constructEventCard } from './construct-event-card';
 import { Dependencies } from './dependencies';
 import { identifyFeedItems } from './identify-feed-items';
-import { queryStringParameters } from '../../../standards';
-import * as DE from '../../../types/data-error';
+import { queryStringParameters } from '../../../../standards';
+import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 
 export const scietyFeedCodec = t.type({

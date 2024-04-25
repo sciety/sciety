@@ -2,8 +2,8 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { addListOwnershipInformation } from './add-list-ownership-information';
 import { Dependencies } from './dependencies';
-import { EventOfType } from '../../../domain-events';
-import { toHtmlFragment } from '../../../types/html-fragment';
+import { EventOfType } from '../../../../domain-events';
+import { toHtmlFragment } from '../../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 
 type ArticleAddedToListCard = (

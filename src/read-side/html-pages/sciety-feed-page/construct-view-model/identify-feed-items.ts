@@ -3,9 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow } from 'fp-ts/function';
 import { collapseCloseListEvents } from './collapse-close-list-events';
 import { FeedItem } from './feed-item';
-import { DomainEvent, isEventOfType } from '../../../domain-events';
-import * as DE from '../../../types/data-error';
-import { PageOfItems, paginate } from '../../shared-components/pagination';
+import { DomainEvent, isEventOfType } from '../../../../domain-events';
+import { PageOfItems, paginate } from '../../../../html-pages/shared-components/pagination';
+import * as DE from '../../../../types/data-error';
 
 const isFeedRelevantEvent = (event: DomainEvent) => (
   isEventOfType('UserFollowedEditorialCommunity')(event)

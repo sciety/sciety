@@ -1,10 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
-import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
-import { articleAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
-import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { List } from '../../../../src/read-models/lists';
+import { Dependencies } from '../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model';
+import { articleAddedToListCard } from '../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
+import { ScietyFeedCard } from '../../../../src/read-side/html-pages/sciety-feed-page/view-model';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';

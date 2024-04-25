@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { FeedItem, isArticleAddedToListEvent, isCollapsedArticlesAddedToList } from './feed-item';
-import { DomainEvent, EventOfType, isEventOfType } from '../../../domain-events';
+import { DomainEvent, EventOfType, isEventOfType } from '../../../../domain-events';
 
 const collapsesIntoPreviousEvent = (
   state: ReadonlyArray<FeedItem>, event: EventOfType<'ArticleAddedToList'>,

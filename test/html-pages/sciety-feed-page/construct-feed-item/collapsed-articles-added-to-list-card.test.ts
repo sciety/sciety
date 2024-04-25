@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Dependencies } from '../../../../src/html-pages/sciety-feed-page/construct-view-model';
-import { collapsedArticlesAddedToListCard } from '../../../../src/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
-import { ScietyFeedCard } from '../../../../src/html-pages/sciety-feed-page/view-model';
 import { List } from '../../../../src/read-models/lists';
+import { Dependencies } from '../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model';
+import { collapsedArticlesAddedToListCard } from '../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model/collapsed-articles-added-to-list-card';
+import { ScietyFeedCard } from '../../../../src/read-side/html-pages/sciety-feed-page/view-model';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryDate, arbitraryNumber } from '../../../helpers';

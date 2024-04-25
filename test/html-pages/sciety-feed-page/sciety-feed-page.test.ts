@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../src/html-pages/sciety-feed-page/construct-view-model';
+import { constructViewModel } from '../../../src/read-side/html-pages/sciety-feed-page/construct-view-model';
 import { TestFramework, createTestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';

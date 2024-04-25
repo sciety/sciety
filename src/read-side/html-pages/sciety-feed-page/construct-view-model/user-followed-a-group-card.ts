@@ -2,11 +2,11 @@ import { sequenceS } from 'fp-ts/Apply';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { EventOfType } from '../../../domain-events';
-import { rawUserInput } from '../../../read-side';
-import { constructUserAvatarSrc } from '../../../read-side/paths';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { UserHandle } from '../../../types/user-handle';
+import { EventOfType } from '../../../../domain-events';
+import { toHtmlFragment } from '../../../../types/html-fragment';
+import { UserHandle } from '../../../../types/user-handle';
+import { constructUserAvatarSrc } from '../../../paths';
+import { rawUserInput } from '../../../raw-user-input';
 import { ScietyFeedCard } from '../view-model';
 
 type UserFollowedAGroupCard = (

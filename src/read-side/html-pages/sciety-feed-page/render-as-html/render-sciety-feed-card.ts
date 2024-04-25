@@ -1,8 +1,8 @@
 import { htmlEscape } from 'escape-goat';
 import { pipe } from 'fp-ts/function';
-import { templateDate } from '../../../shared-components/date';
-import { safelyRenderRawUserInput } from '../../../shared-components/raw-user-input-renderers';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { templateDate } from '../../../../shared-components/date';
+import { safelyRenderRawUserInput } from '../../../../shared-components/raw-user-input-renderers';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ScietyFeedCard } from '../view-model';
 
 export const renderScietyFeedCard = (viewModel: ScietyFeedCard): HtmlFragment => pipe(
