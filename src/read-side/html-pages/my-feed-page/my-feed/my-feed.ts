@@ -13,13 +13,13 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from './static-content';
-import { renderPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
-import { renderListItems } from '../../../shared-components/render-list-items';
-import { GroupId } from '../../../types/group-id';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { UserId } from '../../../types/user-id';
-import { renderListOfCards } from '../../shared-components/list-of-cards';
-import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../shared-components/pagination';
+import { renderListOfCards } from '../../../../html-pages/shared-components/list-of-cards';
+import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../../../html-pages/shared-components/pagination';
+import { renderPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
+import { renderListItems } from '../../../../shared-components/render-list-items';
+import { GroupId } from '../../../../types/group-id';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { UserId } from '../../../../types/user-id';
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>

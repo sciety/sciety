@@ -1,6 +1,6 @@
 @use 'breakpoints';
 @use 'card';
-@use '../../sass/feed-page-numbers';
+@use '../../../sass/feed-page-numbers';
 
 .my-feed-page-numbers {
   @include feed-page-numbers.feed-page-numbers();

@@ -1,23 +1,23 @@
 import { load } from 'cheerio';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
-import { myFeed, Dependencies } from '../../../../src/html-pages/my-feed-page/my-feed';
+import { myFeed, Dependencies } from '../../../../../src/read-side/html-pages/my-feed-page/my-feed';
 import {
   feedTitle,
   followSomething,
   noEvaluationsYet,
   troubleFetchingTryAgain,
-} from '../../../../src/html-pages/my-feed-page/my-feed/static-content';
-import * as DE from '../../../../src/types/data-error';
-import { toHtmlFragment } from '../../../../src/types/html-fragment';
-import { sanitise } from '../../../../src/types/sanitised-html-fragment';
-import { RecordEvaluationPublicationCommand } from '../../../../src/write-side/commands';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
-import { arbitraryUserId } from '../../../types/user-id.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
+} from '../../../../../src/read-side/html-pages/my-feed-page/my-feed/static-content';
+import * as DE from '../../../../../src/types/data-error';
+import { toHtmlFragment } from '../../../../../src/types/html-fragment';
+import { sanitise } from '../../../../../src/types/sanitised-html-fragment';
+import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { arbitrarySanitisedHtmlFragment } from '../../../../helpers';
+import { arbitraryUserId } from '../../../../types/user-id.helper';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('my-feed acceptance', () => {
   let framework: TestFramework;

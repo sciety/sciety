@@ -1,4 +1,4 @@
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export const renderPageHeader = (): HtmlFragment => toHtmlFragment(`
   <header class="page-header">
