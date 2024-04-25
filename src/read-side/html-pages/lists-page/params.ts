@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { queryStringParameters } from '../../standards';
+import { queryStringParameters } from '../../../standards';
 
 export const paramsCodec = t.type({
   [queryStringParameters.page]: queryStringParameters.pageCodec,

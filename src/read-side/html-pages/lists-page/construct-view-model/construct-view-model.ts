@@ -1,16 +1,16 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Queries } from '../../../read-models';
-import { List } from '../../../read-models/lists';
-import { constructListCardViewModelWithCurator, ConstructListCardViewModelWithCuratorDependencies } from '../../../shared-components/list-card';
-import * as DE from '../../../types/data-error';
 import {
   PageOfItems,
   paginate,
   constructDefaultPaginationControls,
-} from '../../shared-components/pagination';
-import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
+} from '../../../../html-pages/shared-components/pagination';
+import { sortByDefaultListOrdering } from '../../../../html-pages/sort-by-default-list-ordering';
+import { Queries } from '../../../../read-models';
+import { List } from '../../../../read-models/lists';
+import { constructListCardViewModelWithCurator, ConstructListCardViewModelWithCuratorDependencies } from '../../../../shared-components/list-card';
+import * as DE from '../../../../types/data-error';
 import { Params } from '../params';
 import { ViewModel } from '../view-model';
 
