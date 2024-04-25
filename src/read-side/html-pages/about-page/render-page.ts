@@ -1,5 +1,5 @@
 import { blogLinks, callToAction, content } from './content';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 
 export const renderPage = (): HtmlFragment => toHtmlFragment(
   `
