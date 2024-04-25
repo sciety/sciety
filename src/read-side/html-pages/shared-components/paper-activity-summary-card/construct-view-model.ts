@@ -7,17 +7,17 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { ErrorViewModel } from './render-error-as-html';
 import { ViewModel } from './view-model';
-import { constructEvaluationHistory } from '../../read-side/construct-evaluation-history';
-import { constructFrontMatter } from '../../read-side/construct-front-matter';
-import { CurationStatement, constructCurationStatements } from '../../read-side/curation-statements';
-import { findAllListsContainingPaper } from '../../read-side/find-all-lists-containing-paper';
-import { constructPaperActivityPageHref } from '../../read-side/paths';
-import { constructReviewingGroups } from '../../read-side/reviewing-groups';
-import * as DE from '../../types/data-error';
-import { ExpressionDoi } from '../../types/expression-doi';
-import { toHtmlFragment } from '../../types/html-fragment';
-import * as PH from '../../types/publishing-history';
-import { sanitise } from '../../types/sanitised-html-fragment';
+import * as DE from '../../../../types/data-error';
+import { ExpressionDoi } from '../../../../types/expression-doi';
+import { toHtmlFragment } from '../../../../types/html-fragment';
+import * as PH from '../../../../types/publishing-history';
+import { sanitise } from '../../../../types/sanitised-html-fragment';
+import { constructEvaluationHistory } from '../../../construct-evaluation-history';
+import { constructFrontMatter } from '../../../construct-front-matter';
+import { CurationStatement, constructCurationStatements } from '../../../curation-statements';
+import { findAllListsContainingPaper } from '../../../find-all-lists-containing-paper';
+import { constructPaperActivityPageHref } from '../../../paths';
+import { constructReviewingGroups } from '../../../reviewing-groups';
 
 const transformIntoCurationStatementViewModel = (
   curationStatement: CurationStatement,

@@ -1,10 +1,10 @@
 @use 'settings';
 @use 'functions';
 @use 'card';
-@use '../../sass/curation-statement';
+@use '../../../../sass/curation-statement';
 @use 'breakpoints';
-@use '../../sass/list';
-@use './card-authors';
+@use '../../../../sass/list';
+@use 'card-authors';
 
 $_optional-controls-icon-size: 24px;
 $_footer-icon-separation: 16px;

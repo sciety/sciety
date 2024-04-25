@@ -4,9 +4,9 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { constructPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import * as PH from '../../../../types/publishing-history';
+import { constructPaperActivitySummaryCard } from '../../shared-components/paper-activity-summary-card';
 import { ViewModel } from '../view-model';
 
 const buildRelatedArticleCards = (

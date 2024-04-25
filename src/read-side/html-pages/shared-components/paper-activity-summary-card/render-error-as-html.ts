@@ -1,6 +1,6 @@
-import * as DE from '../../types/data-error';
-import { ExpressionDoi } from '../../types/expression-doi';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import * as DE from '../../../../types/data-error';
+import { ExpressionDoi } from '../../../../types/expression-doi';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 export type ErrorViewModel = {
   href: string,

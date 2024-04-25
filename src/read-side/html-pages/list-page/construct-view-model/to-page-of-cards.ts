@@ -4,7 +4,6 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { PaperActivityErrorCardViewModel } from '../../../../shared-components/paper-activity-summary-card';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
 import {
@@ -12,6 +11,7 @@ import {
   constructArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems } from '../../shared-components/pagination';
+import { PaperActivityErrorCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import { ContentWithPaginationViewModel } from '../view-model';
 
 export const toPageOfCards = (

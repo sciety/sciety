@@ -3,9 +3,9 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { PaperActivitySummaryCardViewModel, constructPaperActivitySummaryCard } from '../../../../shared-components/paper-activity-summary-card';
 import { ExpressionActivity } from '../../../../types/expression-activity';
 import * as EDOI from '../../../../types/expression-doi';
+import { PaperActivitySummaryCardViewModel, constructPaperActivitySummaryCard } from '../../shared-components/paper-activity-summary-card';
 
 type PopulateArticleViewModelsSkippingFailures = (
   dependencies: Dependencies,

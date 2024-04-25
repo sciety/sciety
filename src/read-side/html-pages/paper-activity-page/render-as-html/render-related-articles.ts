@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { renderAsHtml } from '../../../../shared-components/paper-activity-summary-card/render-as-html';
 import { renderListItems } from '../../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html';
 import { ViewModel } from '../view-model';
 
 export const renderRelatedArticles = (viewmodel: ViewModel): HtmlFragment => pipe(

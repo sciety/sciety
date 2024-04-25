@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { constructRelatedArticles } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/construct-related-articles';
-import { PaperActivitySummaryCardViewModel } from '../../../../../src/shared-components/paper-activity-summary-card';
+import { PaperActivitySummaryCardViewModel } from '../../../../../src/read-side/html-pages/shared-components/paper-activity-summary-card';
 import * as DE from '../../../../../src/types/data-error';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
