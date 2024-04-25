@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
+import { GroupIdFromStringCodec } from '../types/group-id';
 import { listIdCodec } from '../types/list-id';
 
 export const evaluatedArticlesListSpecifiedEventCodec = t.type({
@@ -9,5 +9,5 @@ export const evaluatedArticlesListSpecifiedEventCodec = t.type({
   type: t.literal('EvaluatedArticlesListSpecified'),
   date: tt.DateFromISOString,
   listId: listIdCodec,
-  groupId: GroupIdFromString,
+  groupId: GroupIdFromStringCodec,
 });

@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Logger } from '../../shared-ports';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
+import { GroupIdFromStringCodec } from '../../types/group-id';
 import { unfollowCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
@@ -15,7 +15,7 @@ type Ports = GetLoggedInScietyUserPorts & DependenciesForCommands & {
 
 const requestCodec = t.type({
   body: t.type({
-    editorialcommunityid: GroupIdFromString,
+    editorialcommunityid: GroupIdFromStringCodec,
   }),
 });
 

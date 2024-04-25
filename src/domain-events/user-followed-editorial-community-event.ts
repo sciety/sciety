@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
+import { GroupIdFromStringCodec } from '../types/group-id';
 import { userIdCodec } from '../types/user-id';
 
 export const userFollowedEditorialCommunityEventCodec = t.type({
@@ -9,5 +9,5 @@ export const userFollowedEditorialCommunityEventCodec = t.type({
   type: t.literal('UserFollowedEditorialCommunity'),
   date: tt.DateFromISOString,
   userId: userIdCodec,
-  editorialCommunityId: GroupIdFromString,
+  editorialCommunityId: GroupIdFromStringCodec,
 });

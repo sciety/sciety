@@ -1,14 +1,14 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { descriptionPathCodec } from '../types/description-path';
+import { GroupIdFromStringCodec } from '../types/group-id';
 
 export const groupDetailsUpdatedEventCodec = t.type({
   id: EventIdFromString,
   type: t.literal('GroupDetailsUpdated'),
   date: tt.DateFromISOString,
-  groupId: GroupIdFromString,
+  groupId: GroupIdFromStringCodec,
   name: t.union([t.string, t.undefined]),
   avatarPath: t.union([t.string, t.undefined]),
   descriptionPath: t.union([descriptionPathCodec, t.undefined]),

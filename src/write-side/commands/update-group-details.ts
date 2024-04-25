@@ -1,10 +1,10 @@
 import * as t from 'io-ts';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { descriptionPathCodec } from '../../types/description-path';
+import { GroupIdFromStringCodec } from '../../types/group-id';
 
 export const updateGroupDetailsCommandCodec = t.intersection([
   t.strict({
-    groupId: GroupIdFromString,
+    groupId: GroupIdFromStringCodec,
   }),
   t.partial({
     name: t.string,

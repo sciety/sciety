@@ -3,12 +3,11 @@ import * as Eq from 'fp-ts/Eq';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
-import { GroupIdFromString } from './codecs/GroupIdFromString';
-import { GroupId } from './group-id';
+import { GroupId, GroupIdFromStringCodec } from './group-id';
 import { userIdCodec, UserId } from './user-id';
 
 export const fromObjectOfStrings = t.union([
-  t.type({ value: GroupIdFromString, tag: t.literal('group-id') }),
+  t.type({ value: GroupIdFromStringCodec, tag: t.literal('group-id') }),
   t.type({ value: userIdCodec, tag: t.literal('user-id') }),
 ]);
 

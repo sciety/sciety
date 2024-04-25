@@ -3,14 +3,14 @@ import * as tt from 'io-ts-types';
 import { evaluationAuthorsCodec } from './types/evaluation-authors';
 import { evaluationTypeCodec } from './types/evaluation-type';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
-import { GroupIdFromString } from '../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../types/evaluation-locator';
 import { canonicalExpressionDoiCodec } from '../types/expression-doi';
+import { GroupIdFromStringCodec } from '../types/group-id';
 
 const commonFields = {
   id: EventIdFromString,
   date: tt.DateFromISOString,
-  groupId: GroupIdFromString,
+  groupId: GroupIdFromStringCodec,
   evaluationLocator: evaluationLocatorCodec,
   articleId: canonicalExpressionDoiCodec,
   publishedAt: tt.DateFromISOString,

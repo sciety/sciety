@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { descriptionPathCodec } from '../../types/description-path';
+import { GroupIdFromStringCodec } from '../../types/group-id';
 
 export const addGroupCommandCodec = t.strict({
-  groupId: GroupIdFromString,
+  groupId: GroupIdFromStringCodec,
   name: t.string,
   shortDescription: t.string,
   homepage: t.string,

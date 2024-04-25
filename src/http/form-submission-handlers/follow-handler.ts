@@ -8,9 +8,9 @@ import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
+import { GroupIdFromStringCodec } from '../../types/group-id';
 import { followCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
@@ -33,7 +33,7 @@ const validate = (dependencies: Ports) => (groupId: GroupId.GroupId) => pipe(
 
 const requestCodec = t.type({
   body: t.type({
-    [groupProperty]: GroupIdFromString,
+    [groupProperty]: GroupIdFromStringCodec,
   }),
 });
 

@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
+import { GroupIdFromStringCodec } from '../../types/group-id';
 import { listIdCodec } from '../../types/list-id';
 
 export const promoteListCommandCodec = t.strict({
-  forGroup: GroupIdFromString,
+  forGroup: GroupIdFromStringCodec,
   listId: listIdCodec,
 });
 

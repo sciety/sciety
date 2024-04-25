@@ -2,12 +2,12 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { evaluationAuthorsCodec } from './types/evaluation-authors';
 import { evaluationTypeCodec } from './types/evaluation-type';
-import { GroupIdFromString } from '../../types/codecs/GroupIdFromString';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
 import { expressionDoiCodec } from '../../types/expression-doi';
+import { GroupIdFromStringCodec } from '../../types/group-id';
 
 const requiredFields = t.strict({
-  groupId: GroupIdFromString,
+  groupId: GroupIdFromStringCodec,
   publishedAt: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
   expressionDoi: expressionDoiCodec,
