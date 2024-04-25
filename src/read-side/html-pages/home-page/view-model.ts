@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { GroupId } from '../../types/group-id';
-import { HtmlFragment } from '../../types/html-fragment';
-import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
+import { GroupLinkWithLogoViewModel } from '../../../html-pages/shared-components/group-link';
+import { GroupId } from '../../../types/group-id';
+import { HtmlFragment } from '../../../types/html-fragment';
 
 type CurationTeaser = {
   articleHref: string,

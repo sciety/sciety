@@ -1,4 +1,4 @@
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
 const renderSearchForm = () => `

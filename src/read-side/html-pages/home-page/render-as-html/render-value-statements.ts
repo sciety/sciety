@@ -1,4 +1,4 @@
-import { toHtmlFragment } from '../../../types/html-fragment';
+import { toHtmlFragment } from '../../../../types/html-fragment';
 
 export const renderValueStatements = toHtmlFragment(`
     <section class="home-page-value-statements-wrapper">

@@ -1,9 +1,9 @@
 @use 'functions';
-@use '../../../sass/list';
+@use '../../../../sass/list';
 @use 'layout';
 @use 'settings';
 @use 'breakpoints';
-@use '../../../sass/curation-statement';
+@use '../../../../sass/curation-statement';
 @use 'common';
 
 $_arbitrary-large-amount-of-px: 9000px;

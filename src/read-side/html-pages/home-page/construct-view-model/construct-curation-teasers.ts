@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { CurationStatement, constructCurationTeaser } from './construct-curation-teaser';
-import * as EDOI from '../../../types/expression-doi';
-import * as GID from '../../../types/group-id';
-import { toHtmlFragment } from '../../../types/html-fragment';
+import * as EDOI from '../../../../types/expression-doi';
+import * as GID from '../../../../types/group-id';
+import { toHtmlFragment } from '../../../../types/html-fragment';
 import { Dependencies } from '../dependencies';
 import { ViewModel } from '../view-model';
 
