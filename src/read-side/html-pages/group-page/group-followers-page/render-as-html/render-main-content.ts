@@ -1,10 +1,10 @@
 import { htmlEscape } from 'escape-goat';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { renderListOfCards } from '../../../../../html-pages/shared-components/list-of-cards';
 import { renderPaginationControls } from '../../../../../html-pages/shared-components/pagination';
 import { renderCountWithDescriptor } from '../../../../../shared-components/render-count-with-descriptor';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
+import { renderListOfCards } from '../../../shared-components/list-of-cards';
 import { ViewModel, UserCardViewModel } from '../view-model';
 
 const renderUserCard = (userCard: UserCardViewModel): HtmlFragment => toHtmlFragment(`

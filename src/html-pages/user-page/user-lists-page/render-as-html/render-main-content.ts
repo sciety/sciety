@@ -2,11 +2,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { tabList } from './tab-list';
 import { pathToSubmitCreateList } from '../../../../http/form-submission-handlers/submit-paths';
+import { renderListOfCards } from '../../../../read-side/html-pages/shared-components/list-of-cards';
 import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card';
 import { renderListItems } from '../../../../shared-components/render-list-items';
 import { renderTabs } from '../../../../shared-components/tabs';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { renderListOfCards } from '../../../shared-components/list-of-cards';
 import { ListsTab, ViewModel } from '../view-model';
 
 const tabProps = (viewmodel: ViewModel) => ({

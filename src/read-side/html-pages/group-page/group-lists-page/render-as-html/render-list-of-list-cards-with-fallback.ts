@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { renderListOfCards } from '../../../../../html-pages/shared-components/list-of-cards';
 import { ListCardViewModel, renderListCard } from '../../../../../shared-components/list-card';
 import { renderListItems } from '../../../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
+import { renderListOfCards } from '../../../shared-components/list-of-cards';
 
 const renderCards = (cards: ReadonlyArray<HtmlFragment>) => pipe(
   cards,
