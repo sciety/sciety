@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
-import { mobileMenu } from '../../read-side/html-pages/mobile-menu/mobile-menu';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { UserDetails } from '../../types/user-details';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { UserDetails } from '../../../../types/user-details';
+import { mobileMenu } from '../../mobile-menu/mobile-menu';
 
 export const siteFooter = (user: O.Option<UserDetails>): HtmlFragment => toHtmlFragment(`
   <footer>

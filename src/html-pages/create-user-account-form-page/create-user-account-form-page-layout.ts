@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { siteFooter } from '../../shared-components/site-footer';
+import { siteFooter } from '../../read-side/html-pages/shared-components/site-footer';
 import { siteHeader } from '../../shared-components/site-header';
 import { toContentWrappedInLayout } from '../content-wrapped-in-layout';
 import { PageLayout } from '../page-layout';
