@@ -1,4 +1,5 @@
 import { htmlEscape } from 'escape-goat';
+import { pathToSubmitEditListDetails } from '../../http/form-submission-handlers/path-to-submit-edit-list-details';
 import { RawUserInput } from '../../read-side';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
 import { inputFieldNames } from '../../standards';
@@ -23,7 +24,7 @@ export const renderEditListDetailsFormPage = (viewModel: ViewModel): HtmlPage =>
 <header class="page-header page-header--edit-list-details-form-page">
   <h1>${viewModel.pageHeading}</h1>
 </header>
-<form action="/forms/edit-list-details" method="post" class="standard-form">
+<form action="${pathToSubmitEditListDetails()}" method="post" class="standard-form">
   <input type="hidden" value="${viewModel.listId}" name="listId">
   <section>
     <label for="listName" class="standard-form__sub_heading">List name</label>

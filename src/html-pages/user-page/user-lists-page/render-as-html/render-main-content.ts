@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { tabList } from './tab-list';
+import { pathToSubmitCreateList } from '../../../../http/form-submission-handlers/path-to-submit-create-list';
 import { ListCardViewModel, renderListCard } from '../../../../shared-components/list-card';
 import { renderListItems } from '../../../../shared-components/render-list-items';
 import { renderTabs } from '../../../../shared-components/tabs';
@@ -14,7 +15,7 @@ const tabProps = (viewmodel: ViewModel) => ({
 });
 
 const createNewListCallToAction = `
-  <form action="/forms/create-list" method="post">
+  <form action="${pathToSubmitCreateList()}" method="post">
     <button class="create-new-list-call-to-action">Create new list</button>
   </form>
 `;

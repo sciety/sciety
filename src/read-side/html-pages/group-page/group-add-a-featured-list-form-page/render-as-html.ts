@@ -1,5 +1,6 @@
 import { ViewModel } from './view-model';
 import { HtmlPage, toHtmlPage } from '../../../../html-pages/html-page';
+import { pathToSubmitAddAFeaturedList } from '../../../../http/form-submission-handlers/path-to-submit-add-a-featured-list';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
@@ -8,7 +9,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   <header class="page-header">
     <h1>${viewModel.pageHeading}</h1>
   </header>
-  <form action="/forms/add-a-featured-list" method="post" class="standard-form">
+  <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
     <section>
       <label for="listId" class="standard-form__sub_heading">List Id</label>
       <input type="text" id="listId" name="" value="">
