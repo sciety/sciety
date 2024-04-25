@@ -3,7 +3,7 @@ import * as D from 'fp-ts/Date';
 import * as Ord from 'fp-ts/Ord';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import { DomainEvent } from './gubbins';
+import { DomainEvent } from './domain-event';
 
 const byDate: Ord.Ord<DomainEvent> = pipe(
   D.Ord,

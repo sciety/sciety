@@ -52,3 +52,5 @@ export const domainEventCodec = t.union([
   userUnfollowedEditorialCommunityEventCodec,
   userUnsavedArticleEventCodec,
 ], 'type');
+
+export type DomainEvent = t.TypeOf<typeof domainEventCodec>;

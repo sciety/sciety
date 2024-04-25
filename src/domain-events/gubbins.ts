@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { annotationCreatedEventCodec } from './article-in-list-annotated-event';
 import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
-import { domainEventCodec } from './domain-event-codec';
+import { DomainEvent, domainEventCodec } from './domain-event';
 import { evaluationRecordedEventCodec } from './evaluation-publication-recorded-event';
 import { EventId, generate } from '../types/event-id';
 
@@ -19,8 +19,6 @@ export const currentOrLegacyDomainEventCodec = t.union([
 ], 'type');
 
 export type CurrentOrLegacyDomainEvent = t.TypeOf<typeof currentOrLegacyDomainEventCodec>;
-
-export type DomainEvent = t.TypeOf<typeof domainEventCodec>;
 
 type EventName = DomainEvent['type'];
 
