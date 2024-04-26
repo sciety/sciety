@@ -9,4 +9,5 @@ type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const addAFeaturedListHandler = (adapters: Ports): Middleware => async (context) => {
+  context.redirect('/groups/prereview');
 };
