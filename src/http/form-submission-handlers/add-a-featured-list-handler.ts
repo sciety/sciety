@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
+import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware, ParameterizedContext } from 'koa';
 import { Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
@@ -14,18 +15,19 @@ type Dependencies = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,
 };
 
-const decodeCommandAndHandleFailures = (
+const decodeCommandAndHandleFailures = <C>(
   dependencies: Dependencies,
   context: ParameterizedContext,
+  codec: t.Decoder<unknown, C>,
   loggedInUser: O.Some<UserDetails>,
 ) => {
-  const command = promoteListCommandCodec.decode(context.request.body);
+  const command = codec.decode(context.request.body);
   if (E.isLeft(command)) {
     dependencies.logger(
       'error',
       'Failed to decode a command via a form',
       {
-        codec: promoteListCommandCodec.name,
+        codec: codec.name,
         codecDecodingError: PR.failure(command.left),
         requestBody: context.request.body,
         loggedInUserId: loggedInUser.value.id,
@@ -43,7 +45,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     return;
   }
 
-  if (E.isLeft(decodeCommandAndHandleFailures(dependencies, context, loggedInUser))) {
+  if (E.isLeft(decodeCommandAndHandleFailures(dependencies, context, promoteListCommandCodec, loggedInUser))) {
     return;
   }
 
