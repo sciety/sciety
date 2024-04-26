@@ -3,12 +3,20 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { FetchEvaluations } from './update-all';
+import * as crossrefDate from '../third-parties/crossref/fetch-all-paper-expressions/date-stamp';
+import { expressionDoiCodec } from '../types/expression-doi';
 
 const crossrefResponseCodec = t.strict({
   message: t.strict({
-    items: t.readonlyArray(
-      t.unknown,
-    ),
+    items: t.readonlyArray(t.strict({
+      DOI: t.string,
+      published: crossrefDate.codec,
+      relation: t.strict({
+        'is-review-of': t.tuple([t.strict({
+          id: expressionDoiCodec,
+        })]),
+      }),
+    })),
   }),
 });
 
