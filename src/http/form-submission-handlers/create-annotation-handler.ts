@@ -66,6 +66,7 @@ type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
 export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) => async (context) => {
   const loggedInUser = getLoggedInScietyUser(dependencies, context);
   if (O.isNone(loggedInUser)) {
+    dependencies.logger('warn', 'Form submission attempted while not logged in', { requestPath: context.request.path });
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to annotate a list.');
     return;
   }

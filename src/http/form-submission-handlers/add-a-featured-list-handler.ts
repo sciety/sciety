@@ -14,6 +14,7 @@ type Dependencies = GetLoggedInScietyUserDependencies
 export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const loggedInUser = getLoggedInScietyUser(dependencies, context);
   if (O.isNone(loggedInUser)) {
+    dependencies.logger('warn', 'Form submission attempted while not logged in', { requestPath: context.request.path });
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to feature a list.');
     return;
   }

@@ -25,6 +25,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     { path: pathToSubmitCreateList(), handler: createListHandler(adapters) },
     { path: pathToSubmitCreateAnnotation(), handler: createAnnotationHandler(adapters) },
     { path: pathToSubmitFollow(), handler: followHandler(adapters) },
+    { path: '/save-article', handler: saveArticleHandler(adapters) },
   ];
 
   formHandlerRoutes.forEach((route) => {
@@ -36,7 +37,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   });
 
   const formHandlerRoutesWithAuthentication = [
-    { path: '/save-article', handler: saveArticleHandler(adapters) },
     { path: '/forms/remove-article-from-list', handler: removeArticleFromListHandler(adapters) },
     { path: '/unfollow', handler: unfollowHandler(adapters) },
   ];

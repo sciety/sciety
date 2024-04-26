@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
@@ -15,6 +16,7 @@ import { addArticleToListCommandHandler } from '../../write-side/command-handler
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
 export const articleIdFieldName = 'articleid';
 
@@ -34,8 +36,8 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     O.map((userDetails) => userDetails.id),
   );
   if (O.isNone(loggedInUserId)) {
-    dependencies.logger('error', 'Missing user', { requestBody: context.request.body });
-    context.redirect('back');
+    dependencies.logger('warn', 'Form submission attempted while not logged in', { requestPath: context.request.path });
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to save an article.');
     return;
   }
 
