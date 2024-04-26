@@ -1,7 +1,9 @@
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { Evaluation } from './types/evaluations';
 import { FetchEvaluations } from './update-all';
 import * as crossrefDate from '../third-parties/crossref/fetch-all-paper-expressions/date-stamp';
 import { expressionDoiCodec } from '../types/expression-doi';
@@ -20,6 +22,18 @@ const crossrefResponseCodec = t.strict({
   }),
 });
 
+type CrossrefResponse = t.TypeOf<typeof crossrefResponseCodec>;
+
+const toEvaluation = (
+  item: CrossrefResponse['message']['items'][number],
+): Evaluation => ({
+  evaluationLocator: `doi:${item.DOI}`,
+  articleDoi: item.relation['is-review-of'][0].id,
+  authors: [],
+  evaluationType: 'review',
+  date: crossrefDate.toDate(item.published),
+});
+
 export const fetchReviewsFromAccessMicrobiology: FetchEvaluations = (dependencies) => pipe(
   'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of',
   dependencies.fetchData,
@@ -27,6 +41,8 @@ export const fetchReviewsFromAccessMicrobiology: FetchEvaluations = (dependencie
     crossrefResponseCodec.decode,
     E.mapLeft(() => 'acmi: could not decode crossref response'),
   )),
+  TE.map((response) => response.message.items),
+  TE.map(RA.map(toEvaluation)),
   TE.map(() => ({
     evaluations: [],
     skippedItems: [],
