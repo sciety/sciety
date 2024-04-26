@@ -1,6 +1,4 @@
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { createCommandHandler } from './create-command-handler';
 import { CommandHandler } from '../../types/command-handler';
 import { EditListDetailsCommand } from '../commands';
 import { DependenciesForCommands } from '../dependencies-for-commands';
@@ -12,10 +10,4 @@ type EditListDetailsCommandHandler = (
 
 export const editListDetailsCommandHandler: EditListDetailsCommandHandler = (
   dependencies,
-) => (
-  command,
-) => pipe(
-  dependencies.getAllEvents,
-  T.map(listResource.update(command)),
-  TE.chainW(dependencies.commitEvents),
-);
+) => createCommandHandler(dependencies, listResource.update);
