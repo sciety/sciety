@@ -7,9 +7,9 @@ import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import {
-  decodeCommandAndHandleFailures,
-  Dependencies as DecodeCommandAndHandleFailuresDependencies,
-} from './decode-command-and-handle-failures';
+  decodeFormSubmissionAndHandleFailures,
+  Dependencies as DecodeFormSubmissionAndHandleFailuresDependencies,
+} from './decode-form-submission-and-handle-failures';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec, Dependencies as CreateAnnotationFormPageDependencies } from '../../html-pages/create-annotation-form-page';
@@ -31,7 +31,7 @@ import { sendHtmlResponse } from '../send-html-response';
 type Dependencies = CreateAnnotationFormPageDependencies &
 Queries &
 GetLoggedInScietyUserPorts &
-DecodeCommandAndHandleFailuresDependencies &
+DecodeFormSubmissionAndHandleFailuresDependencies &
 HandleCreateAnnotationCommandDependencies &
 SendErrorHtmlResponseDependencies;
 
@@ -69,7 +69,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to annotate a list.');
     return;
   }
-  const command = decodeCommandAndHandleFailures(
+  const command = decodeFormSubmissionAndHandleFailures(
     dependencies,
     context,
     annotateArticleInListCommandCodec,

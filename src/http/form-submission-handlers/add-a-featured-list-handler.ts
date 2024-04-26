@@ -2,14 +2,14 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
-import { decodeCommandAndHandleFailures, Dependencies as DecodeCommandAndHandleFailuresDependencies } from './decode-command-and-handle-failures';
+import { decodeFormSubmissionAndHandleFailures, Dependencies as DecodeFormSubmissionAndHandleFailuresDependencies } from './decode-form-submission-and-handle-failures';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { Ports as GetLoggedInScietyUserDependencies, getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendDefaultErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
 type Dependencies = GetLoggedInScietyUserDependencies
 & SendDefaultErrorHtmlResponseDependencies
-& DecodeCommandAndHandleFailuresDependencies;
+& DecodeFormSubmissionAndHandleFailuresDependencies;
 
 export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const loggedInUser = getLoggedInScietyUser(dependencies, context);
@@ -18,7 +18,12 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     return;
   }
 
-  if (E.isLeft(decodeCommandAndHandleFailures(dependencies, context, promoteListCommandCodec, loggedInUser.value.id))) {
+  if (E.isLeft(decodeFormSubmissionAndHandleFailures(
+    dependencies,
+    context,
+    promoteListCommandCodec,
+    loggedInUser.value.id,
+  ))) {
     return;
   }
 

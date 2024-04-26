@@ -9,25 +9,25 @@ import { sendDefaultErrorHtmlResponse, Dependencies as SendDefaultErrorHtmlRespo
 
 export type Dependencies = SendDefaultErrorHtmlResponseDependencies & { logger: Logger };
 
-export const decodeCommandAndHandleFailures = <C>(
+export const decodeFormSubmissionAndHandleFailures = <C>(
   dependencies: Dependencies,
   context: ParameterizedContext,
   codec: t.Decoder<unknown, C>,
   loggedInUserId: UserId,
 ): E.Either<unknown, C> => {
-  const command = codec.decode(context.request.body);
-  if (E.isLeft(command)) {
+  const decodedForm = codec.decode(context.request.body);
+  if (E.isLeft(decodedForm)) {
     dependencies.logger(
       'error',
-      'Failed to decode a command via a form',
+      'Failed to decode a form submission',
       {
         codec: codec.name,
-        codecDecodingError: PR.failure(command.left),
+        codecDecodingError: PR.failure(decodedForm.left),
         requestBody: context.request.body,
         loggedInUserId,
       },
     );
-    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Cannot understand the command.');
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Form submission failed unexpectedly.');
   }
-  return command;
+  return decodedForm;
 };
