@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { Evaluation } from './types/evaluations';
 import { FetchEvaluations } from './update-all';
 import * as crossrefDate from '../third-parties/crossref/fetch-all-paper-expressions/date-stamp';
@@ -34,12 +35,20 @@ const toEvaluation = (
   date: crossrefDate.toDate(item.published),
 });
 
+const toHumanFriendlyErrorMessage = (
+  errors: t.Errors,
+) => pipe(
+  errors,
+  formatValidationErrors,
+  (formattedErrors) => `acmi: could not decode crossref response ${formattedErrors.join(', ')}`,
+);
+
 export const fetchReviewsFromAccessMicrobiology: FetchEvaluations = (dependencies) => pipe(
   'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of',
   dependencies.fetchData,
   TE.chainEitherK(flow(
     crossrefResponseCodec.decode,
-    E.mapLeft(() => 'acmi: could not decode crossref response'),
+    E.mapLeft(toHumanFriendlyErrorMessage),
   )),
   TE.map((response) => response.message.items),
   TE.map(RA.map(toEvaluation)),
