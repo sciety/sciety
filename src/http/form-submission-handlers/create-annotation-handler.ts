@@ -6,15 +6,17 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
-import { decodeCommandAndHandleFailures } from './decode-command-and-handle-failures';
+import {
+  decodeCommandAndHandleFailures,
+  Dependencies as DecodeCommandAndHandleFailuresDependencies,
+} from './decode-command-and-handle-failures';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
-import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-annotation-form-page';
+import { createAnnotationFormPage, paramsCodec, Dependencies as CreateAnnotationFormPageDependencies } from '../../html-pages/create-annotation-form-page';
 import { HtmlPage, toHtmlPage } from '../../html-pages/html-page';
 import { Queries } from '../../read-models';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { inputFieldNames } from '../../standards';
-import { ExternalQueries } from '../../third-parties';
 import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -26,10 +28,11 @@ import { detectClientClassification } from '../detect-client-classification';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 import { sendHtmlResponse } from '../send-html-response';
 
-type Dependencies = Queries &
+type Dependencies = CreateAnnotationFormPageDependencies &
+Queries &
 GetLoggedInScietyUserPorts &
+DecodeCommandAndHandleFailuresDependencies &
 HandleCreateAnnotationCommandDependencies &
-ExternalQueries &
 SendErrorHtmlResponseDependencies;
 
 const isUserAllowedToCreateAnnotation = (userId: UserId, listOwnerId: UserId | GroupId) => userId === listOwnerId;
