@@ -10,6 +10,7 @@ import {
   decodeFormSubmissionAndHandleFailures,
   Dependencies as DecodeFormSubmissionAndHandleFailuresDependencies,
 } from './decode-form-submission-and-handle-failures';
+import { ensureUserIsLoggedInAndHandleFailures, Dependencies as EnsureUserIsLoggedInAndHandleFailuresDependencies } from './ensure-user-is-logged-in-and-handle-failures';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec, Dependencies as CreateAnnotationFormPageDependencies } from '../../html-pages/create-annotation-form-page';
@@ -23,14 +24,13 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 import { UserId } from '../../types/user-id';
 import { annotateArticleInListCommandCodec } from '../../write-side/commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from '../detect-client-classification';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 import { sendHtmlResponse } from '../send-html-response';
 
 type Dependencies = CreateAnnotationFormPageDependencies &
 Queries &
-GetLoggedInScietyUserPorts &
+EnsureUserIsLoggedInAndHandleFailuresDependencies &
 DecodeFormSubmissionAndHandleFailuresDependencies &
 HandleCreateAnnotationCommandDependencies &
 SendErrorHtmlResponseDependencies;
@@ -60,19 +60,6 @@ const redisplayFormPage = (
   ),
   T.map(constructHtmlResponse(user, standardPageLayout, detectClientClassification(context))),
 );
-
-const ensureUserIsLoggedInAndHandleFailures = (
-  dependencies: Dependencies,
-  context: ParameterizedContext,
-  errorMessage: string,
-): O.Option<UserDetails> => {
-  const loggedInUser = getLoggedInScietyUser(dependencies, context);
-  if (O.isNone(loggedInUser)) {
-    dependencies.logger('warn', 'Form submission attempted while not logged in', { requestPath: context.request.path });
-    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, errorMessage);
-  }
-  return loggedInUser;
-};
 
 type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
 
