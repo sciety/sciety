@@ -5,8 +5,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
-import * as PR from 'io-ts/PathReporter';
 import { Middleware, ParameterizedContext } from 'koa';
+import { decodeCommandAndHandleFailures } from './add-a-featured-list-handler';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-annotation-form-page';
@@ -66,18 +66,13 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to annotate a list.');
     return;
   }
-  const command = annotateArticleInListCommandCodec.decode(context.request.body);
+  const command = decodeCommandAndHandleFailures(
+    dependencies,
+    context,
+    annotateArticleInListCommandCodec,
+    loggedInUser.value.id,
+  );
   if (E.isLeft(command)) {
-    dependencies.logger(
-      'error',
-      'Failed to decode the create annotation form',
-      {
-        codecDecodingError: PR.failure(command.left),
-        requestBody: context.request.body,
-        loggedInUserId: loggedInUser.value.id,
-      },
-    );
-    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Cannot understand the command.');
     return;
   }
 

@@ -8,6 +8,6 @@ export const annotateArticleInListCommandCodec = t.type({
   [inputFieldNames.annotationContent]: unsafeUserInputCodec,
   [inputFieldNames.articleId]: articleIdCodec,
   [inputFieldNames.listId]: listIdCodec,
-});
+}, 'annotateArticleInListCommandCodec');
 
 export type AnnotateArticleInListCommand = t.TypeOf<typeof annotateArticleInListCommandCodec>;

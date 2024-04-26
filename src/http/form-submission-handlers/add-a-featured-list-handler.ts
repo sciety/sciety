@@ -15,12 +15,12 @@ type Dependencies = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,
 };
 
-const decodeCommandAndHandleFailures = <C>(
+export const decodeCommandAndHandleFailures = <C>(
   dependencies: Dependencies,
   context: ParameterizedContext,
   codec: t.Decoder<unknown, C>,
   loggedInUserId: UserId,
-) => {
+): E.Either<unknown, C> => {
   const command = codec.decode(context.request.body);
   if (E.isLeft(command)) {
     dependencies.logger(
