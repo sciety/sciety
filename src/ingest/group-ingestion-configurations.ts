@@ -1,6 +1,7 @@
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './fetch-rapid-reviews';
+import { fetchReviewsFromAccessMicrobiology } from './fetch-reviews-from-access-microbiology';
 import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossref-via-biorxiv';
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
 import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user';
@@ -128,5 +129,10 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
     id: '1e6f6b49-2a9b-417e-831b-8cee5af033bd',
     name: 'The Unjournal',
     fetchFeed: fetchReviewsFromHypothesisUser('theunjournal', 60),
+  },
+  {
+    id: '4d6a8908-22a9-45c8-bd56-3c7140647709',
+    name: 'Access Microbiology',
+    fetchFeed: fetchReviewsFromAccessMicrobiology,
   },
 ];
