@@ -61,13 +61,24 @@ const redisplayFormPage = (
   T.map(constructHtmlResponse(user, standardPageLayout, detectClientClassification(context))),
 );
 
-type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
-
-export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) => async (context) => {
+const ensureUserIsLoggedInAndHandleFailures = (
+  dependencies: Dependencies,
+  context: ParameterizedContext,
+  errorMessage: string,
+): O.Option<UserDetails> => {
   const loggedInUser = getLoggedInScietyUser(dependencies, context);
   if (O.isNone(loggedInUser)) {
     dependencies.logger('warn', 'Form submission attempted while not logged in', { requestPath: context.request.path });
-    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to annotate a list.');
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, errorMessage);
+  }
+  return loggedInUser;
+};
+
+type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
+
+export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) => async (context) => {
+  const loggedInUser = ensureUserIsLoggedInAndHandleFailures(dependencies, context, 'You must be logged in to annotate a list.');
+  if (O.isNone(loggedInUser)) {
     return;
   }
   const command = decodeFormSubmissionAndHandleFailures(
