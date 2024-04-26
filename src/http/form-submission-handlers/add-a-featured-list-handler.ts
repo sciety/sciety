@@ -6,7 +6,7 @@ import * as PR from 'io-ts/PathReporter';
 import { Middleware, ParameterizedContext } from 'koa';
 import { Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { Logger } from '../../shared-ports';
-import { UserDetails } from '../../types/user-details';
+import { UserId } from '../../types/user-id';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
@@ -19,7 +19,7 @@ const decodeCommandAndHandleFailures = <C>(
   dependencies: Dependencies,
   context: ParameterizedContext,
   codec: t.Decoder<unknown, C>,
-  loggedInUser: O.Some<UserDetails>,
+  loggedInUserId: UserId,
 ) => {
   const command = codec.decode(context.request.body);
   if (E.isLeft(command)) {
@@ -30,7 +30,7 @@ const decodeCommandAndHandleFailures = <C>(
         codec: codec.name,
         codecDecodingError: PR.failure(command.left),
         requestBody: context.request.body,
-        loggedInUserId: loggedInUser.value.id,
+        loggedInUserId,
       },
     );
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Cannot understand the command.');
@@ -45,7 +45,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     return;
   }
 
-  if (E.isLeft(decodeCommandAndHandleFailures(dependencies, context, promoteListCommandCodec, loggedInUser))) {
+  if (E.isLeft(decodeCommandAndHandleFailures(dependencies, context, promoteListCommandCodec, loggedInUser.value.id))) {
     return;
   }
 
