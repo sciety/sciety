@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
-import { decodeCommandAndHandleFailures } from './add-a-featured-list-handler';
+import { decodeCommandAndHandleFailures } from './decode-command-and-handle-failures';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec } from '../../html-pages/create-annotation-form-page';
