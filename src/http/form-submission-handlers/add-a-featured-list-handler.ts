@@ -1,13 +1,39 @@
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
+import { StatusCodes } from 'http-status-codes';
+import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { Logger } from '../../shared-ports';
-import { Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { promoteListCommandCodec } from '../../write-side/commands';
+import { Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser } from '../authentication-and-logging-in-of-sciety-users';
+import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
-type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
+type Dependencies = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
   logger: Logger,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const addAFeaturedListHandler = (adapters: Ports): Middleware => async (context) => {
+export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware => async (context) => {
+  const loggedInUser = getLoggedInScietyUser(dependencies, context);
+  if (O.isNone(loggedInUser)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to feature a list.');
+    return;
+  }
+
+  const command = promoteListCommandCodec.decode(context.request.body);
+  if (E.isLeft(command)) {
+    dependencies.logger(
+      'error',
+      'Failed to decode the add a featured list form',
+      {
+        codecDecodingError: PR.failure(command.left),
+        requestBody: context.request.body,
+        loggedInUserId: loggedInUser.value.id,
+      },
+    );
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Cannot understand the command.');
+    return;
+  }
+
   context.redirect('/groups/prereview');
 };
