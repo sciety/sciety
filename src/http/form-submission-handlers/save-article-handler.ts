@@ -22,11 +22,11 @@ type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & DependenciesF
   logger: Logger,
 };
 
-const formBodyCodec = t.strict({
+const saveArticleHandlerFormBodyCodec = t.strict({
   [articleIdFieldName]: articleIdCodec,
   listId: listIdCodec,
   annotation: unsafeUserInputCodec,
-});
+}, 'saveArticleHandlerFormBodyCodec');
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
   const loggedInUserId = pipe(
@@ -40,9 +40,9 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
   }
   const formBody = pipe(
     context.request.body,
-    formBodyCodec.decode,
+    saveArticleHandlerFormBodyCodec.decode,
     E.mapLeft((errors) => {
-      dependencies.logger('error', 'saveArticleHandler codec failed', {
+      dependencies.logger('error', 'saveArticleHandlerFormBodyCodec failed', {
         requestBody: context.request.body,
         errors: PR.failure(errors),
       });
