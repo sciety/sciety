@@ -33,14 +33,6 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
   if (!isLegacyDomainEvent(event)) {
     return event;
   }
-  if (event.type === 'EvaluationRecorded') {
-    return upgradeFunctions[event.type](event);
-  }
-  if (event.type === 'CurationStatementRecorded') {
-    return upgradeFunctions[event.type](event);
-  }
-  if (event.type === 'AnnotationCreated') {
-    return upgradeFunctions[event.type](event);
-  }
-  return event;
+  const selectedFunction = upgradeFunctions[event.type];
+  return selectedFunction(event);
 };
