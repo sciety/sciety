@@ -2,6 +2,7 @@ import {
   DomainEvent, CurrentOrLegacyDomainEvent, EventOfType,
   LegacyEventOfType,
 } from '../domain-events';
+import { LegacyDomainEvent } from '../domain-events/current-or-legacy-domain-event';
 
 const upgradeFunctions = {
   EvaluationRecorded: (legacyEvent: LegacyEventOfType<'EvaluationRecorded'>) => ({
@@ -24,7 +25,14 @@ const upgradeFunctions = {
   } satisfies EventOfType<'ArticleInListAnnotated'>),
 };
 
+const isLegacyDomainEvent = (
+  event: CurrentOrLegacyDomainEvent,
+): event is LegacyDomainEvent => event.type in upgradeFunctions;
+
 export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): DomainEvent => {
+  if (!isLegacyDomainEvent(event)) {
+    return event;
+  }
   if (event.type === 'EvaluationRecorded') {
     return upgradeFunctions[event.type](event);
   }

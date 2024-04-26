@@ -12,7 +12,7 @@ const legacyDomainEventCodec = t.union([
   annotationCreatedEventCodec,
 ], 'type');
 
-type LegacyDomainEvent = t.TypeOf<typeof legacyDomainEventCodec>;
+export type LegacyDomainEvent = t.TypeOf<typeof legacyDomainEventCodec>;
 
 type LegacyEventName = LegacyDomainEvent['type'];
 
