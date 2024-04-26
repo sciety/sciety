@@ -29,14 +29,14 @@ const isLegacyDomainEvent = (
   event: CurrentOrLegacyDomainEvent,
 ): event is LegacyDomainEvent => event.type in upgradeFunctions;
 
-type FindByEventType<Union, EventType> = Union extends { type: EventType } ? Union : never;
-type TParam<EventType> = FindByEventType<LegacyDomainEvent, EventType>;
-type TFunction<EventType> = (props: TParam<EventType>) => DomainEvent;
+type PickByEventType<Union, EventType> = Union extends { type: EventType } ? Union : never;
+type UpgradableEvent<EventType> = PickByEventType<LegacyDomainEvent, EventType>;
+type UpgradeFunction<EventType> = (props: UpgradableEvent<EventType>) => DomainEvent;
 
 export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): DomainEvent => {
   if (!isLegacyDomainEvent(event)) {
     return event;
   }
-  const selectedFunction = upgradeFunctions[event.type] as TFunction<typeof event.type>;
+  const selectedFunction = upgradeFunctions[event.type] as UpgradeFunction<typeof event.type>;
   return selectedFunction(event);
 };
