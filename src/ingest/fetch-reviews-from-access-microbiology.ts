@@ -43,8 +43,8 @@ export const fetchReviewsFromAccessMicrobiology: FetchEvaluations = (dependencie
   )),
   TE.map((response) => response.message.items),
   TE.map(RA.map(toEvaluation)),
-  TE.map(() => ({
-    evaluations: [],
+  TE.map((evaluations) => ({
+    evaluations: process.env.EXPERIMENT_ENABLED === 'true' ? evaluations : [],
     skippedItems: [],
   })),
 );
