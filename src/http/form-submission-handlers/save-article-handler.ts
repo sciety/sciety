@@ -31,11 +31,8 @@ const saveArticleHandlerFormBodyCodec = t.strict({
 }, 'saveArticleHandlerFormBodyCodec');
 
 export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
-  const loggedInUserId = pipe(
-    getLoggedInScietyUser(dependencies, context),
-    O.map((userDetails) => userDetails.id),
-  );
-  if (O.isNone(loggedInUserId)) {
+  const loggedInUser = getLoggedInScietyUser(dependencies, context);
+  if (O.isNone(loggedInUser)) {
     dependencies.logger('warn', 'Form submission attempted while not logged in', { requestPath: context.request.path });
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to save an article.');
     return;
@@ -45,7 +42,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     dependencies,
     context,
     saveArticleHandlerFormBodyCodec,
-    loggedInUserId.value,
+    loggedInUser.value.id,
   );
   if (E.isLeft(formBody)) {
     return;
@@ -54,7 +51,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
   const articleId = formBody.right[articleIdFieldName];
   const listId = formBody.right.listId;
 
-  const logEntry = checkUserOwnsList(dependencies, listId, loggedInUserId.value);
+  const logEntry = checkUserOwnsList(dependencies, listId, loggedInUser.value.id);
   if (E.isLeft(logEntry)) {
     dependencies.logger('error', logEntry.left.message, logEntry.left.payload);
     dependencies.logger('error', 'saveArticleHandler failed', { error: logEntry.left });
