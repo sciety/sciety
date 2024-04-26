@@ -3,11 +3,11 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
+import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Logger } from '../../shared-ports';
 import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
@@ -15,14 +15,12 @@ import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-i
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
 export const articleIdFieldName = 'articleid';
 
-type Ports =
+type Dependencies =
   CheckUserOwnsListPorts &
-  GetLoggedInScietyUserPorts &
+  EnsureUserIsLoggedInDependencies &
   DependenciesForCommands &
   DecodeFormSubmissionDependencies &
   {
@@ -35,11 +33,9 @@ const saveArticleHandlerFormBodyCodec = t.strict({
   annotation: unsafeUserInputCodec,
 }, 'saveArticleHandlerFormBodyCodec');
 
-export const saveArticleHandler = (dependencies: Ports): Middleware => async (context) => {
-  const loggedInUser = getLoggedInScietyUser(dependencies, context);
+export const saveArticleHandler = (dependencies: Dependencies): Middleware => async (context) => {
+  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to save an article.');
   if (O.isNone(loggedInUser)) {
-    dependencies.logger('warn', 'Form submission attempted while not logged in', { requestPath: context.request.path });
-    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You must be logged in to save an article.');
     return;
   }
 
