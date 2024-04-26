@@ -7,10 +7,10 @@ import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import {
-  decodeFormSubmissionAndHandleFailures,
-  Dependencies as DecodeFormSubmissionAndHandleFailuresDependencies,
-} from './decode-form-submission-and-handle-failures';
-import { ensureUserIsLoggedInAndHandleFailures, Dependencies as EnsureUserIsLoggedInAndHandleFailuresDependencies } from './ensure-user-is-logged-in-and-handle-failures';
+  decodeFormSubmission,
+  Dependencies as DecodeFormSubmissionDependencies,
+} from './decode-form-submission';
+import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec, Dependencies as CreateAnnotationFormPageDependencies } from '../../html-pages/create-annotation-form-page';
@@ -30,8 +30,8 @@ import { sendHtmlResponse } from '../send-html-response';
 
 type Dependencies = CreateAnnotationFormPageDependencies &
 Queries &
-EnsureUserIsLoggedInAndHandleFailuresDependencies &
-DecodeFormSubmissionAndHandleFailuresDependencies &
+EnsureUserIsLoggedInDependencies &
+DecodeFormSubmissionDependencies &
 HandleCreateAnnotationCommandDependencies &
 SendErrorHtmlResponseDependencies;
 
@@ -64,11 +64,11 @@ const redisplayFormPage = (
 type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
 
 export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) => async (context) => {
-  const loggedInUser = ensureUserIsLoggedInAndHandleFailures(dependencies, context, 'You must be logged in to annotate a list.');
+  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to annotate a list.');
   if (O.isNone(loggedInUser)) {
     return;
   }
-  const command = decodeFormSubmissionAndHandleFailures(
+  const command = decodeFormSubmission(
     dependencies,
     context,
     annotateArticleInListCommandCodec,

@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { decodeFormSubmissionAndHandleFailures } from './decode-form-submission-and-handle-failures';
+import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { Logger } from '../../shared-ports';
 import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
@@ -20,9 +20,14 @@ import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-respons
 
 export const articleIdFieldName = 'articleid';
 
-type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & DependenciesForCommands & {
-  logger: Logger,
-};
+type Ports =
+  CheckUserOwnsListPorts &
+  GetLoggedInScietyUserPorts &
+  DependenciesForCommands &
+  DecodeFormSubmissionDependencies &
+  {
+    logger: Logger,
+  };
 
 const saveArticleHandlerFormBodyCodec = t.strict({
   [articleIdFieldName]: articleIdCodec,
@@ -38,7 +43,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  const formBody = decodeFormSubmissionAndHandleFailures(
+  const formBody = decodeFormSubmission(
     dependencies,
     context,
     saveArticleHandlerFormBodyCodec,

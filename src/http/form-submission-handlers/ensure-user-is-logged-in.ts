@@ -10,7 +10,7 @@ export type Dependencies = GetLoggedInScietyUserDependencies
 & SendDefaultErrorHtmlResponseDependencies
 & { logger: Logger };
 
-export const ensureUserIsLoggedInAndHandleFailures = (
+export const ensureUserIsLoggedIn = (
   dependencies: Dependencies,
   context: ParameterizedContext,
   errorMessage: string,

@@ -9,7 +9,7 @@ import { sendDefaultErrorHtmlResponse, Dependencies as SendDefaultErrorHtmlRespo
 
 export type Dependencies = SendDefaultErrorHtmlResponseDependencies & { logger: Logger };
 
-export const decodeFormSubmissionAndHandleFailures = <C>(
+export const decodeFormSubmission = <C>(
   dependencies: Dependencies,
   context: ParameterizedContext,
   codec: t.Decoder<unknown, C>,
