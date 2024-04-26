@@ -171,6 +171,7 @@ jobs:
           path: backstop_data
 
       - name: Checkout deployment
+        if: github.ref == 'refs/heads/main'
         uses: actions/checkout@v4
         with:
           repository: 'sciety/deployment'
@@ -178,6 +179,7 @@ jobs:
           ssh-key: '${{ secrets.SCIETY_DEPLOYMENT_REPO_WRITE_ACCESS_SSH_KEY }}'
 
       - name: Update demo deployment to latest version
+        if: github.ref == 'refs/heads/main'
         run: |
           cd deployment
           TAG=${IMAGE_TAG} yq -i '.spec.values.images.frontend.tag = strenv(TAG)' manifests/sciety--demo.yaml
