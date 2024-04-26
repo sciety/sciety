@@ -24,8 +24,9 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
   if (E.isLeft(command)) {
     dependencies.logger(
       'error',
-      'Failed to decode the add a featured list form',
+      'Failed to decode a command via a form',
       {
+        codec: promoteListCommandCodec.name,
         codecDecodingError: PR.failure(command.left),
         requestBody: context.request.body,
         loggedInUserId: loggedInUser.value.id,
