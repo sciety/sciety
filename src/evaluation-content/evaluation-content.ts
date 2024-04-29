@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Params } from './params';
-import { HtmlPage, toHtmlPage } from '../html-pages/html-page';
+import { HtmlPage, toHtmlPage } from '../read-side/html-pages/html-page';
 import { ExternalQueries } from '../third-parties';
 import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 import { toHtmlFragment } from '../types/html-fragment';

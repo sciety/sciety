@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
 import { renderListItems } from '../../../shared-components/render-list-items';
 import { successBanner } from '../../../shared-components/success-banner/success-banner';
 import * as DE from '../../../types/data-error';
@@ -9,6 +8,7 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 import * as LID from '../../../types/list-id';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { rawUserInput } from '../../raw-user-input';
+import { HtmlPage, toHtmlPage } from '../html-page';
 import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../shared-components/article-card-with-controls-and-annotation';

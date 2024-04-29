@@ -1,7 +1,7 @@
 import { ViewModel } from './view-model';
-import { HtmlPage, toHtmlPage } from '../../../../html-pages/html-page';
 import { pathToSubmitAddAFeaturedList } from '../../../../http/form-submission-handlers/submit-paths';
 import { toHtmlFragment } from '../../../../types/html-fragment';
+import { HtmlPage, toHtmlPage } from '../../html-page';
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.pageHeading,

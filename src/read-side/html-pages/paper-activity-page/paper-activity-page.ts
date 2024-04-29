@@ -7,12 +7,12 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
 import { toErrorPage, renderAsHtml } from './render-as-html';
-import { ConstructPage } from '../../../html-pages/construct-page';
-import { toRedirectTarget } from '../../../html-pages/redirect-target';
 import * as DE from '../../../types/data-error';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../../types/expression-doi';
 import { userIdCodec } from '../../../types/user-id';
 import { constructPaperActivityPageHref } from '../../paths';
+import { ConstructPage } from '../construct-page';
+import { toRedirectTarget } from '../redirect-target';
 
 const canonicalParamsCodec = t.type({
   expressionDoi: canonicalExpressionDoiCodec,

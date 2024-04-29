@@ -1,4 +1,4 @@
-import { HtmlFragment } from '../types/html-fragment';
+import { HtmlFragment } from '../../types/html-fragment';
 
 export type NotHtml = string & { readonly NotHtml: unique symbol };
 

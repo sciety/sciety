@@ -5,8 +5,8 @@ import { constructViewModel, Dependencies } from './construct-view-model/constru
 import { Params } from './params';
 import { renderAsHtml } from './render-as-html/render-as-html';
 import { renderErrorPage } from './render-as-html/render-error-page';
-import { HtmlPage } from '../../../html-pages/html-page';
 import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { HtmlPage } from '../html-page';
 
 export const listsPage = (
   dependencies: Dependencies,

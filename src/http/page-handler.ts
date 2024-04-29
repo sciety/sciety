@@ -7,10 +7,10 @@ import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './au
 import { detectClientClassification } from './detect-client-classification';
 import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
-import { constructHtmlResponse } from '../html-pages/construct-html-response';
-import { ConstructPage } from '../html-pages/construct-page';
-import { HtmlPage } from '../html-pages/html-page';
-import { PageLayout } from '../html-pages/page-layout';
+import { constructHtmlResponse } from '../read-side/html-pages/construct-html-response';
+import { ConstructPage } from '../read-side/html-pages/construct-page';
+import { HtmlPage } from '../read-side/html-pages/html-page';
+import { PageLayout } from '../read-side/html-pages/page-layout';
 import { standardPageLayout } from '../shared-components/standard-page-layout';
 import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 

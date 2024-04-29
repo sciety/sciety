@@ -12,10 +12,10 @@ import {
 } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
-import { constructHtmlResponse } from '../../html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec, Dependencies as CreateAnnotationFormPageDependencies } from '../../html-pages/create-annotation-form-page';
-import { HtmlPage, toHtmlPage } from '../../html-pages/html-page';
 import { Queries } from '../../read-models';
+import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
+import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
 import { standardPageLayout } from '../../shared-components/standard-page-layout';
 import { inputFieldNames } from '../../standards';
 import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';

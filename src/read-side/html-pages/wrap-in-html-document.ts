@@ -2,9 +2,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { CompleteHtmlDocument, toCompleteHtmlDocument } from './complete-html-document';
 import { ContentWrappedInLayout } from './content-wrapped-in-layout';
-import { googleTagManagerNoScript } from '../shared-components/analytics';
-import { DynamicHeadViewModel, head } from '../shared-components/head';
-import { UserDetails } from '../types/user-details';
+import { googleTagManagerNoScript } from '../../shared-components/analytics';
+import { DynamicHeadViewModel, head } from '../../shared-components/head';
+import { UserDetails } from '../../types/user-details';
 
 const serverStartupTimestamp = new Date();
 

@@ -1,5 +1,5 @@
 import { ParameterizedContext } from 'koa';
-import { RedirectTarget } from '../html-pages/redirect-target';
+import { RedirectTarget } from '../read-side/html-pages/redirect-target';
 
 export const sendRedirect = (
   context: ParameterizedContext,

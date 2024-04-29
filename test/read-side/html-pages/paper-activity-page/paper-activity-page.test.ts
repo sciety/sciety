@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { HtmlPage } from '../../../../src/html-pages/html-page';
-import { toRedirectTarget } from '../../../../src/html-pages/redirect-target';
+import { HtmlPage } from '../../../../src/read-side/html-pages/html-page';
 import { Dependencies } from '../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/dependencies';
 import { paperActivityPage } from '../../../../src/read-side/html-pages/paper-activity-page/paper-activity-page';
+import { toRedirectTarget } from '../../../../src/read-side/html-pages/redirect-target';
 import { constructPaperActivityPageHref } from '../../../../src/read-side/paths';
 import * as EDOI from '../../../../src/types/expression-doi';
 import { TestFramework, createTestFramework } from '../../../framework';

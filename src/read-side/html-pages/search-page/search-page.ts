@@ -1,6 +1,6 @@
-import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
 import { renderSearchForm } from '../../../shared-components/search-form';
 import { toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlPage, toHtmlPage } from '../html-page';
 
 export const searchPage: HtmlPage = toHtmlPage({
   title: 'Search',

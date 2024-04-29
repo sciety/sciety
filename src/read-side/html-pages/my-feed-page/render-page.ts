@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
 import { toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlPage, toHtmlPage } from '../html-page';
 
 // TODO: should all be HtmlFragment
 type Components = {

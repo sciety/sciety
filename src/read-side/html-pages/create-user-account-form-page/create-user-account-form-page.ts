@@ -2,9 +2,9 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Params } from './params';
-import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { SanitisedUserInput } from '../../../types/sanitised-user-input';
+import { HtmlPage, toHtmlPage } from '../html-page';
 
 const renderErrorSummary = (errorSummary: O.Option<unknown>) => pipe(
   errorSummary,
