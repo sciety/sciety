@@ -20,7 +20,7 @@ export type DiscoverPublishedEvaluations = (
 export type GroupIngestionConfiguration = {
   id: string,
   name: string,
-  fetchFeed: DiscoverPublishedEvaluations,
+  discoverPublishedEvaluations: DiscoverPublishedEvaluations,
 };
 
 type LevelName = 'error' | 'warn' | 'info' | 'debug';
@@ -38,15 +38,19 @@ const report = (level: LevelName, message: string) => (payload: Record<string, u
   process.stderr.write(`${JSON.stringify(thingToLog)}\n`);
 };
 
-const reportSkippedItems = (group: GroupIngestionConfiguration) => (feedData: DiscoveredPublishedEvaluations) => {
+const reportSkippedItems = (
+  group: GroupIngestionConfiguration,
+) => (
+  discoveredPublishedEvaluations: DiscoveredPublishedEvaluations,
+) => {
   if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
     pipe(
-      feedData.skippedItems,
+      discoveredPublishedEvaluations.skippedItems,
       RA.map((skippedItem) => ({ item: skippedItem.item, reason: skippedItem.reason, groupName: group.name })),
       RA.map(report('debug', 'Ingestion item skipped')),
     );
   }
-  return feedData;
+  return discoveredPublishedEvaluations;
 };
 
 type EvaluationCommand = {
@@ -106,8 +110,8 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 const sendRecordEvaluationCommands = (
   group: GroupIngestionConfiguration,
   config: Config,
-) => (feedData: DiscoveredPublishedEvaluations) => pipe(
-  feedData.evaluations,
+) => (discoveredPublishedEvaluations: DiscoveredPublishedEvaluations) => pipe(
+  discoveredPublishedEvaluations.evaluations,
   RA.map((evaluation) => ({
     groupId: group.id,
     expressionDoi: evaluation.paperExpressionDoi,
@@ -139,11 +143,11 @@ const sendRecordEvaluationCommands = (
 );
 
 const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE.TaskEither<unknown, void> => pipe(
-  group.fetchFeed({ fetchData }),
+  group.discoverPublishedEvaluations({ fetchData }),
   TE.bimap(
     (error) => ({
       groupName: group.name,
-      cause: 'Could not fetch feed',
+      cause: 'Could not discover any published evaluations',
       error,
     }),
     reportSkippedItems(group),
