@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandPorts } from './validate-and-execute-command';
 import { constructHtmlResponse } from '../../html-pages/construct-html-response';
-import { createUserAccountFormPageLayout, renderFormPage } from '../../html-pages/create-user-account-form-page';
+import { createUserAccountFormPageLayout, renderFormPage } from '../../read-side/html-pages/create-user-account-form-page';
 import {
   Ports as GetLoggedInScietyUserPorts, getLoggedInScietyUser,
 } from '../authentication-and-logging-in-of-sciety-users';

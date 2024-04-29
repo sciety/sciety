@@ -12,8 +12,8 @@ import {
   completeAuthenticationJourney,
   stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0, Config as LoginMiddlewaresConfig,
 } from './login-middlewares';
-import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../html-pages/create-user-account-form-page';
 import { CollectedPorts } from '../../infrastructure';
+import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../read-side/html-pages/create-user-account-form-page';
 import { saveAuthenticationDestination } from '../authentication-destination';
 import { catchErrors } from '../catch-errors';
 import { createPageFromParams } from '../create-page-from-params';
