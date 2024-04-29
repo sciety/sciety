@@ -46,7 +46,6 @@ const toEvaluation = (
 ): Evaluation => constructEvaluation({
   evaluationLocator: `doi:${item.DOI}`,
   paperExpressionDoi: item.relation['is-review-of'][0].id,
-  authors: [],
   evaluationType: 'review',
   publishedOn: toEvaluationDate(item.published),
 });
