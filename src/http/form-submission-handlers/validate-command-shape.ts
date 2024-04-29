@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { ActionFailedErrorType } from '../../html-pages/action-failed/action-failed-page';
 import { Payload } from '../../infrastructure/logger';
+import { ActionFailedErrorType } from '../../read-side/html-pages/action-failed/action-failed-page';
 
 type CommandCodec<C> = t.Decoder<unknown, C>;
 
