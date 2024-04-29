@@ -1,4 +1,4 @@
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 export const successBanner = (message: string): HtmlFragment => toHtmlFragment(`
   <div class="success-banner">
