@@ -80,7 +80,7 @@ export const fetchPciEvaluations = (url: string): DiscoverPublishedEvaluations =
   TE.map(identifyCandidates),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((items) => ({
-    evaluations: RA.rights(items),
-    skippedItems: RA.lefts(items),
+    understood: RA.rights(items),
+    skipped: RA.lefts(items),
   })),
 );

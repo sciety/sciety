@@ -24,11 +24,11 @@ describe('fetch-prereview-evaluations', () => {
     });
 
     it('returns no evaluations', async () => {
-      expect(result.evaluations).toHaveLength(0);
+      expect(result.understood).toHaveLength(0);
     });
 
     it('returns no skipped items', async () => {
-      expect(result.skippedItems).toHaveLength(0);
+      expect(result.skipped).toHaveLength(0);
     });
   });
 
@@ -75,14 +75,14 @@ describe('fetch-prereview-evaluations', () => {
         evaluationLocator: `doi:${reviewDoi2.value}`,
       });
 
-      expect(result.evaluations).toStrictEqual([
+      expect(result.understood).toStrictEqual([
         expectedEvaluation1,
         expectedEvaluation2,
       ]);
     });
 
     it('returns no skipped items', async () => {
-      expect(result.skippedItems).toHaveLength(0);
+      expect(result.skipped).toHaveLength(0);
     });
   });
 
@@ -121,13 +121,13 @@ describe('fetch-prereview-evaluations', () => {
         evaluationLocator: `doi:${reviewDoi1.value}`,
       });
 
-      expect(result.evaluations).toStrictEqual([
+      expect(result.understood).toStrictEqual([
         expectedEvaluation,
       ]);
     });
 
     it('returns one skipped item for the DOI-less review', async () => {
-      expect(result.skippedItems[0].reason).toBe('review has no DOI');
+      expect(result.skipped[0].reason).toBe('review has no DOI');
     });
   });
 
@@ -156,7 +156,7 @@ describe('fetch-prereview-evaluations', () => {
     });
 
     it('returns a skipped item', async () => {
-      expect(result.skippedItems).toStrictEqual([
+      expect(result.skipped).toStrictEqual([
         {
           item: AID.toString(articleId),
           reason: 'is not published',

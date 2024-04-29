@@ -68,7 +68,7 @@ export const fetchEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublished
   TE.map((response) => response.message.items),
   TE.map(RA.map(toEvaluation)),
   TE.map((evaluations) => ({
-    evaluations: process.env.EXPERIMENT_ENABLED === 'true' ? evaluations : [],
-    skippedItems: [],
+    understood: process.env.EXPERIMENT_ENABLED === 'true' ? evaluations : [],
+    skipped: [],
   })),
 );

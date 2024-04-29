@@ -32,10 +32,10 @@ describe('extract-prelights', () => {
       });
 
       expect(result).toStrictEqual({
-        evaluations: [
+        understood: [
           expectedEvaluation,
         ],
-        skippedItems: [],
+        skipped: [],
       });
     });
   });
@@ -56,11 +56,11 @@ describe('extract-prelights', () => {
     );
 
     it('records no evaluations', () => {
-      expect(result.evaluations).toHaveLength(0);
+      expect(result.understood).toHaveLength(0);
     });
 
     it('skips the evaluation', () => {
-      expect(result.skippedItems[0].item).toStrictEqual(guid);
+      expect(result.skipped[0].item).toStrictEqual(guid);
     });
   });
 
@@ -78,11 +78,11 @@ describe('extract-prelights', () => {
     );
 
     it('records no evaluations', () => {
-      expect(result.evaluations).toHaveLength(0);
+      expect(result.understood).toHaveLength(0);
     });
 
     it('skips the evaluation', () => {
-      expect(result.skippedItems[0].item).toStrictEqual(guid);
+      expect(result.skipped[0].item).toStrictEqual(guid);
     });
   });
 
@@ -100,11 +100,11 @@ describe('extract-prelights', () => {
     );
 
     it('records no evaluations', () => {
-      expect(result.evaluations).toHaveLength(0);
+      expect(result.understood).toHaveLength(0);
     });
 
     it('skips the evaluation', () => {
-      expect(result.skippedItems[0].item).toStrictEqual(guid);
+      expect(result.skipped[0].item).toStrictEqual(guid);
     });
   });
 });

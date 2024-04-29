@@ -40,7 +40,7 @@ export const fetchRapidReviews = (): DiscoverPublishedEvaluations => (ports: Por
   identifyCandidates(ports.fetchData),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({
-    evaluations: RA.rights(parts),
-    skippedItems: RA.lefts(parts),
+    understood: RA.rights(parts),
+    skipped: RA.lefts(parts),
   })),
 );

@@ -23,7 +23,7 @@ export const fetchReviewsFromHypothesisGroup = (
   ),
   TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),
   TE.map((parts) => ({
-    evaluations: RA.rights(parts),
-    skippedItems: RA.lefts(parts),
+    understood: RA.rights(parts),
+    skipped: RA.lefts(parts),
   })),
 );

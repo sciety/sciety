@@ -75,7 +75,7 @@ export const fetchReviewsFromCrossrefViaBiorxiv = (
   identifyCandidates(doiPrefix, reviewDoiPrefix),
   TE.map(RA.map(toEvaluation)),
   TE.map((evaluations) => ({
-    evaluations,
-    skippedItems: [],
+    understood: evaluations,
+    skipped: [],
   })),
 );

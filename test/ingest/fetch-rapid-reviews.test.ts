@@ -23,8 +23,8 @@ describe('fetch-rapid-reviews', () => {
   describe('when there are no Crossref reviews', () => {
     it('returns no evaluations and no skipped items', async () => {
       expect(await ingest([])()).toStrictEqual(E.right({
-        evaluations: [],
-        skippedItems: [],
+        understood: [],
+        skipped: [],
       }));
     });
   });
@@ -53,10 +53,10 @@ describe('fetch-rapid-reviews', () => {
       });
 
       expect(await ingest(items)()).toStrictEqual(E.right({
-        evaluations: [
+        understood: [
           expectedEvaluation,
         ],
-        skippedItems: [],
+        skipped: [],
       }));
     });
   });
@@ -87,11 +87,11 @@ describe('fetch-rapid-reviews', () => {
     });
 
     it('returns no evaluations', () => {
-      expect(result.evaluations).toHaveLength(0);
+      expect(result.understood).toHaveLength(0);
     });
 
     it('returns a skipped item', async () => {
-      expect(result.skippedItems[0].item).toStrictEqual(reviewUrl);
+      expect(result.skipped[0].item).toStrictEqual(reviewUrl);
     });
   });
 
@@ -120,7 +120,7 @@ describe('fetch-rapid-reviews', () => {
         items,
         ingest,
         TE.getOrElse(shouldNotBeCalled),
-        T.map((result) => result.evaluations[0].authors),
+        T.map((result) => result.understood[0].authors),
       )();
     });
 
@@ -154,7 +154,7 @@ describe('fetch-rapid-reviews', () => {
     });
 
     it('returns an evaluation with an empty array of authors', () => {
-      expect(result.evaluations[0].authors).toStrictEqual([]);
+      expect(result.understood[0].authors).toStrictEqual([]);
     });
   });
 
@@ -184,7 +184,7 @@ describe('fetch-rapid-reviews', () => {
     });
 
     it('returns an evaluation with an empty array of authors', () => {
-      expect(result.evaluations[0].authors).toStrictEqual([]);
+      expect(result.understood[0].authors).toStrictEqual([]);
     });
   });
 
@@ -215,7 +215,7 @@ describe('fetch-rapid-reviews', () => {
     });
 
     it('returns the evaluation including an author with that family name', () => {
-      expect(result.evaluations[0].authors).toStrictEqual([
+      expect(result.understood[0].authors).toStrictEqual([
         familyName,
       ]);
     });
@@ -252,7 +252,7 @@ describe('fetch-rapid-reviews', () => {
     });
 
     it('returns the evaluation including an author with both those names', () => {
-      expect(result.evaluations[0].authors).toStrictEqual([
+      expect(result.understood[0].authors).toStrictEqual([
         `${givenName} ${familyName}`,
       ]);
     });

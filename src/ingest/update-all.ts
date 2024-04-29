@@ -45,7 +45,7 @@ const reportSkippedItems = (
 ) => {
   if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
     pipe(
-      discoveredPublishedEvaluations.skippedItems,
+      discoveredPublishedEvaluations.skipped,
       RA.map((skippedItem) => ({ item: skippedItem.item, reason: skippedItem.reason, groupName: group.name })),
       RA.map(report('debug', 'Ingestion item skipped')),
     );
@@ -111,7 +111,7 @@ const sendRecordEvaluationCommands = (
   group: GroupIngestionConfiguration,
   config: Config,
 ) => (discoveredPublishedEvaluations: DiscoveredPublishedEvaluations) => pipe(
-  discoveredPublishedEvaluations.evaluations,
+  discoveredPublishedEvaluations.understood,
   RA.map((evaluation) => ({
     groupId: group.id,
     expressionDoi: evaluation.paperExpressionDoi,

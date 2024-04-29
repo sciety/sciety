@@ -26,8 +26,8 @@ describe('fetch-pci-evaluations', () => {
 
     it('returns no evaluations and no skipped items', async () => {
       expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
-        evaluations: [],
-        skippedItems: [],
+        understood: [],
+        skipped: [],
       }));
     });
   });
@@ -56,10 +56,10 @@ describe('fetch-pci-evaluations', () => {
       });
 
       expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
-        evaluations: [
+        understood: [
           expectedEvaluation,
         ],
-        skippedItems: [],
+        skipped: [],
       }));
     });
   });
@@ -81,8 +81,8 @@ describe('fetch-pci-evaluations', () => {
       `;
 
       expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
-        evaluations: [],
-        skippedItems: [
+        understood: [],
+        skipped: [
           {
             item: articleId,
             reason: 'not a biorxiv|medrxiv DOI',
@@ -114,8 +114,8 @@ describe('fetch-pci-evaluations', () => {
       )();
 
       expect(result).toStrictEqual({
-        evaluations: [],
-        skippedItems: [
+        understood: [],
+        skipped: [
           {
             item: evaluationId,
             reason: 'malformed evaluation doi',

@@ -40,7 +40,7 @@ export const extractPrelights = (items: ReadonlyArray<Prelight>): DiscoveredPubl
     E.map(toEvaluation),
   )),
   (evaluationsOrSkippedItems) => ({
-    evaluations: RA.rights(evaluationsOrSkippedItems),
-    skippedItems: RA.lefts(evaluationsOrSkippedItems),
+    understood: RA.rights(evaluationsOrSkippedItems),
+    skipped: RA.lefts(evaluationsOrSkippedItems),
   }),
 );
