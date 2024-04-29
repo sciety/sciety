@@ -1,5 +1,5 @@
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { successBanner } from '../../shared-components/success-banner/success-banner';
+import { successBanner } from '../../shared-components/success-banner';
 import { ViewModel } from '../view-model';
 
 export const renderSuccessBanner = (viewModel: ViewModel): HtmlFragment => (
