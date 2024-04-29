@@ -9,7 +9,7 @@ import * as tt from 'io-ts-types';
 import * as AID from '../../types/article-id';
 import { FetchData } from '../fetch-data';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { FetchEvaluations } from '../update-all';
+import { DiscoverPublishedEvaluations } from '../update-all';
 
 type Ports = {
   fetchData: FetchData,
@@ -90,7 +90,7 @@ const identifyCandidates = (fetchData: FetchData) => pipe(
   )),
 );
 
-export const fetchPrereviewEvaluations = (): FetchEvaluations => (ports: Ports) => pipe(
+export const fetchPrereviewEvaluations = (): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
   identifyCandidates(ports.fetchData),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({

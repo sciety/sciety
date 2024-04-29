@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { extractPrelights } from './extract-prelights';
 import { identifyCandidates } from './identify-candidates';
 import { FetchData } from '../../fetch-data';
-import { FetchEvaluations } from '../../update-all';
+import { DiscoverPublishedEvaluations } from '../../update-all';
 
 const keyFromEnv = pipe(
   process.env.PRELIGHTS_FEED_KEY,
@@ -15,7 +15,7 @@ type Dependencies = {
   fetchData: FetchData,
 };
 
-export const fetchPrelightsEvaluations = (): FetchEvaluations => (dependencies: Dependencies) => pipe(
+export const fetchPrelightsEvaluations = (): DiscoverPublishedEvaluations => (dependencies: Dependencies) => pipe(
   keyFromEnv,
   TE.fromEither,
   TE.map((key) => `https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),

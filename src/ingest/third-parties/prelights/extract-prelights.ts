@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { FeedData } from '../../types/feed-data';
+import { DiscoveredPublishedEvaluations } from '../../types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../types/published-evaluation';
 
 export type Prelight = {
@@ -21,7 +21,7 @@ const toEvaluation = (prelight: Prelight) => constructPublishedEvaluation({
   authors: [prelight.author],
 });
 
-export const extractPrelights = (items: ReadonlyArray<Prelight>): FeedData => pipe(
+export const extractPrelights = (items: ReadonlyArray<Prelight>): DiscoveredPublishedEvaluations => pipe(
   items,
   RA.map(flow(
     E.right,

@@ -7,7 +7,7 @@ import { FetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
 import { daysAgo } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { FetchEvaluations } from '../update-all';
+import { DiscoverPublishedEvaluations } from '../update-all';
 
 type Ports = {
   fetchData: FetchData,
@@ -36,7 +36,7 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
   })),
 );
 
-export const fetchRapidReviews = (): FetchEvaluations => (ports: Ports) => pipe(
+export const fetchRapidReviews = (): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
   identifyCandidates(ports.fetchData),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({

@@ -6,7 +6,7 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { expressionDoiCodec } from '../../types/expression-doi';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
-import { FetchEvaluations } from '../update-all';
+import { DiscoverPublishedEvaluations } from '../update-all';
 
 const publishedDateCodec = t.strict({
   'date-parts': t.tuple([
@@ -58,7 +58,7 @@ const toHumanFriendlyErrorMessage = (
   (formattedErrors) => `acmi: could not decode crossref response ${formattedErrors.join(', ')}`,
 );
 
-export const fetchEvaluationsForAccessMicrobiologyViaCrossref: FetchEvaluations = (dependencies) => pipe(
+export const fetchEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = (dependencies) => pipe(
   'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc',
   dependencies.fetchData,
   TE.chainEitherK(flow(

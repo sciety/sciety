@@ -6,7 +6,7 @@ import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
 import * as Hyp from '../third-parties/hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from '../third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
 import { daysAgo } from '../time';
-import { FetchEvaluations } from '../update-all';
+import { DiscoverPublishedEvaluations } from '../update-all';
 
 type Ports = {
   fetchData: FetchData,
@@ -14,7 +14,7 @@ type Ports = {
 
 export const fetchReviewsFromHypothesisUser = (
   publisherUserId: string, days = 5,
-): FetchEvaluations => (ports: Ports) => pipe(
+): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
   publisherUserId,
   Hyp.fetchEvaluationsByUserSince(daysAgo(days), ports.fetchData),
   TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),

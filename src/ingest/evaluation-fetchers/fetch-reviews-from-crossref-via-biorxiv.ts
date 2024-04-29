@@ -5,7 +5,7 @@ import { fetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
 import { daysAgo } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { FetchEvaluations } from '../update-all';
+import { DiscoverPublishedEvaluations } from '../update-all';
 
 type BiorxivItem = {
   biorxiv_doi: string,
@@ -71,7 +71,7 @@ const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
 export const fetchReviewsFromCrossrefViaBiorxiv = (
   doiPrefix: string,
   reviewDoiPrefix: string,
-): FetchEvaluations => () => pipe(
+): DiscoverPublishedEvaluations => () => pipe(
   identifyCandidates(doiPrefix, reviewDoiPrefix),
   TE.map(RA.map(toEvaluation)),
   TE.map((evaluations) => ({

@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchPrereviewEvaluations } from '../../src/ingest/evaluation-fetchers/fetch-prereview-evaluations';
-import { FeedData } from '../../src/ingest/types/feed-data';
+import { DiscoveredPublishedEvaluations } from '../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
 import * as AID from '../../src/types/article-id';
 import { arbitraryDate, arbitraryWord } from '../helpers';
@@ -11,7 +11,7 @@ import { arbitraryArticleId } from '../types/article-id.helper';
 
 describe('fetch-prereview-evaluations', () => {
   describe('when the reponse includes no preprints', () => {
-    let result: FeedData;
+    let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(
@@ -51,7 +51,7 @@ describe('fetch-prereview-evaluations', () => {
         ],
       },
     ];
-    let result: FeedData;
+    let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(
@@ -102,7 +102,7 @@ describe('fetch-prereview-evaluations', () => {
         ],
       },
     ];
-    let result: FeedData;
+    let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(
@@ -143,7 +143,7 @@ describe('fetch-prereview-evaluations', () => {
         ],
       },
     ];
-    let result: FeedData;
+    let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(

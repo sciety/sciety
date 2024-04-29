@@ -8,7 +8,7 @@ import * as AID from '../../types/article-id';
 import { FetchData } from '../fetch-data';
 import { daysAgo } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { FetchEvaluations } from '../update-all';
+import { DiscoverPublishedEvaluations } from '../update-all';
 
 type Candidate = {
   date: string,
@@ -75,7 +75,7 @@ type Ports = {
   fetchData: FetchData,
 };
 
-export const fetchPciEvaluations = (url: string): FetchEvaluations => (ports: Ports) => pipe(
+export const fetchPciEvaluations = (url: string): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
   ports.fetchData<string>(url),
   TE.map(identifyCandidates),
   TE.map(RA.map(toEvaluationOrSkip)),

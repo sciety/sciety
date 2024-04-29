@@ -9,16 +9,18 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { v4 } from 'uuid';
 import { fetchData, FetchData } from './fetch-data';
-import { FeedData } from './types/feed-data';
+import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
 
 type Adapters = { fetchData: FetchData };
 
-export type FetchEvaluations = (adapters: Adapters) => TE.TaskEither<string, FeedData>;
+export type DiscoverPublishedEvaluations = (
+  adapters: Adapters
+) => TE.TaskEither<string, DiscoveredPublishedEvaluations>;
 
 export type GroupIngestionConfiguration = {
   id: string,
   name: string,
-  fetchFeed: FetchEvaluations,
+  fetchFeed: DiscoverPublishedEvaluations,
 };
 
 type LevelName = 'error' | 'warn' | 'info' | 'debug';
@@ -36,7 +38,7 @@ const report = (level: LevelName, message: string) => (payload: Record<string, u
   process.stderr.write(`${JSON.stringify(thingToLog)}\n`);
 };
 
-const reportSkippedItems = (group: GroupIngestionConfiguration) => (feedData: FeedData) => {
+const reportSkippedItems = (group: GroupIngestionConfiguration) => (feedData: DiscoveredPublishedEvaluations) => {
   if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
     pipe(
       feedData.skippedItems,
@@ -104,7 +106,7 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 const sendRecordEvaluationCommands = (
   group: GroupIngestionConfiguration,
   config: Config,
-) => (feedData: FeedData) => pipe(
+) => (feedData: DiscoveredPublishedEvaluations) => pipe(
   feedData.evaluations,
   RA.map((evaluation) => ({
     groupId: group.id,
