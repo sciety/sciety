@@ -14,9 +14,9 @@ const publishedDateCodec = t.strict({
   ]),
 });
 
-type DateStamp = t.TypeOf<typeof publishedDateCodec>;
+type PublishedDate = t.TypeOf<typeof publishedDateCodec>;
 
-const toDate = (date: DateStamp): Date => {
+const toEvaluationDate = (date: PublishedDate): Date => {
   const dateParts = date['date-parts'][0];
   return new Date(
     dateParts[0],
@@ -48,7 +48,7 @@ const toEvaluation = (
   articleDoi: item.relation['is-review-of'][0].id,
   authors: [],
   evaluationType: 'review',
-  date: toDate(item.published),
+  date: toEvaluationDate(item.published),
 });
 
 const toHumanFriendlyErrorMessage = (
