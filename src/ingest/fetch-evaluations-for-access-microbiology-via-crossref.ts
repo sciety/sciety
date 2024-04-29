@@ -43,7 +43,7 @@ const toHumanFriendlyErrorMessage = (
   (formattedErrors) => `acmi: could not decode crossref response ${formattedErrors.join(', ')}`,
 );
 
-export const fetchReviewsFromAccessMicrobiology: FetchEvaluations = (dependencies) => pipe(
+export const fetchEvaluationsForAccessMicrobiologyViaCrossref: FetchEvaluations = (dependencies) => pipe(
   'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of',
   dependencies.fetchData,
   TE.chainEitherK(flow(

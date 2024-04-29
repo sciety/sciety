@@ -1,7 +1,7 @@
+import { fetchEvaluationsForAccessMicrobiologyViaCrossref } from './fetch-evaluations-for-access-microbiology-via-crossref';
 import { fetchPciEvaluations } from './fetch-pci-evaluations';
 import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
 import { fetchRapidReviews } from './fetch-rapid-reviews';
-import { fetchReviewsFromAccessMicrobiology } from './fetch-reviews-from-access-microbiology';
 import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossref-via-biorxiv';
 import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
 import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user';
@@ -133,6 +133,6 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
   {
     id: '4d6a8908-22a9-45c8-bd56-3c7140647709',
     name: 'Access Microbiology',
-    fetchFeed: fetchReviewsFromAccessMicrobiology,
+    fetchFeed: fetchEvaluationsForAccessMicrobiologyViaCrossref,
   },
 ];
