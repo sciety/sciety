@@ -11,7 +11,7 @@ import { constructHtmlResponse } from '../read-side/html-pages/construct-html-re
 import { ConstructPage } from '../read-side/html-pages/construct-page';
 import { HtmlPage } from '../read-side/html-pages/html-page';
 import { PageLayout } from '../read-side/html-pages/page-layout';
-import { standardPageLayout } from '../shared-components/standard-page-layout';
+import { standardPageLayout } from '../read-side/html-pages/shared-components/standard-page-layout';
 import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 
 const constructAndSendHtmlResponse = (

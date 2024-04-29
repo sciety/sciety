@@ -16,7 +16,7 @@ import { createAnnotationFormPage, paramsCodec, Dependencies as CreateAnnotation
 import { Queries } from '../../read-models';
 import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
 import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
-import { standardPageLayout } from '../../shared-components/standard-page-layout';
+import { standardPageLayout } from '../../read-side/html-pages/shared-components/standard-page-layout';
 import { inputFieldNames } from '../../standards';
 import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { GroupId } from '../../types/group-id';
