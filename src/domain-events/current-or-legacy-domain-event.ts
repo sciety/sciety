@@ -24,3 +24,7 @@ export const currentOrLegacyDomainEventCodec = t.union([
 ], 'type');
 
 export type CurrentOrLegacyDomainEvent = t.TypeOf<typeof currentOrLegacyDomainEventCodec>;
+
+type SubsetOfEvent<Names extends Array<CurrentOrLegacyDomainEvent['type']>> = Extract<CurrentOrLegacyDomainEvent, { type: Names[number] }>;
+
+export const isEventOfSubset = <T extends Array<CurrentOrLegacyDomainEvent['type']>>(names: T) => (event: CurrentOrLegacyDomainEvent): event is SubsetOfEvent<T> => names.includes(event.type);
