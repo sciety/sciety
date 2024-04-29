@@ -1,13 +1,13 @@
 @use 'functions';
-@use '../../sass/list';
+@use '../../../../sass/list';
 @use 'button';
 @use 'settings';
-@use '../../sass/states';
+@use '../../../../sass/states';
 @use 'typography';
 @use 'layout';
 @use 'breakpoints';
 @use 'avatar';
-@use '../../sass/schemed-header-colours';
+@use '../../../../sass/schemed-header-colours';
 
 $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;

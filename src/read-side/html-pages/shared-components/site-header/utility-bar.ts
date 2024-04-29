@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
-import { constructUserAvatarSrc } from '../../read-side/paths';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { UserDetails } from '../../types/user-details';
-import { UserHandle } from '../../types/user-handle';
-import { ColourSchemes } from '../colour-schemes';
+import { ColourSchemes } from '../../../../shared-components/colour-schemes';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { UserDetails } from '../../../../types/user-details';
+import { UserHandle } from '../../../../types/user-handle';
+import { constructUserAvatarSrc } from '../../../paths';
 
 const homeMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation" aria-hidden="true">

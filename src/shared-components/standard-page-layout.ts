@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/function';
-import { siteHeader } from './site-header';
 import { toContentWrappedInLayout } from '../read-side/html-pages/content-wrapped-in-layout';
 import { PageLayout } from '../read-side/html-pages/page-layout';
 import { siteFooter } from '../read-side/html-pages/shared-components/site-footer';
+import { siteHeader } from '../read-side/html-pages/shared-components/site-header';
 
 export const standardPageLayout: PageLayout = (user) => (page) => pipe(
   `

@@ -4,10 +4,10 @@
 @use 'functions';
 @use 'layout';
 @use 'settings';
-@use '../../sass/states';
+@use '../../../../sass/states';
 @use 'typography';
-@use '../../sass/list';
-@use '../../sass/schemed-header-colours';
+@use '../../../../sass/list';
+@use '../../../../sass/schemed-header-colours';
 @use 'button';
 
 $_search-icon-size: functions.px-to-rem(24px);
