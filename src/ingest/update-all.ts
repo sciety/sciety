@@ -108,7 +108,7 @@ const sendRecordEvaluationCommands = (
   feedData.evaluations,
   RA.map((evaluation) => ({
     groupId: group.id,
-    expressionDoi: evaluation.articleDoi,
+    expressionDoi: evaluation.paperExpressionDoi,
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.publishedOn,
     authors: evaluation.authors,

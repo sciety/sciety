@@ -58,7 +58,7 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
   ),
   E.map((p) => constructEvaluation({
     publishedOn: p.date,
-    articleDoi: p.handle.value,
+    paperExpressionDoi: p.handle.value,
     evaluationLocator: `doi:${p.reviewDoi.value.value}`,
     authors: p.authors,
   })),

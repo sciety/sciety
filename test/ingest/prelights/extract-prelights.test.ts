@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { extractPrelights } from '../../../src/ingest/third-parties/prelights/extract-prelights';
+import { constructEvaluation } from '../../../src/ingest/types/evaluations';
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
 } from '../../helpers';
@@ -23,14 +24,16 @@ describe('extract-prelights', () => {
     );
 
     it('records the evaluation', () => {
+      const expectedEvaluation = constructEvaluation({
+        publishedOn: pubDate,
+        paperExpressionDoi: preprintDoi.value,
+        evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
+        authors: [author],
+      });
+
       expect(result).toStrictEqual({
         evaluations: [
-          {
-            publishedOn: pubDate,
-            articleDoi: preprintDoi.value,
-            evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
-            authors: [author],
-          },
+          expectedEvaluation,
         ],
         skippedItems: [],
       });

@@ -40,7 +40,7 @@ const toEvaluation = (review: CrossrefReview) => {
   const reviewDoi = review.DOI;
   return constructEvaluation({
     publishedOn: date,
-    articleDoi: review.biorxivDoi,
+    paperExpressionDoi: review.biorxivDoi,
     evaluationLocator: `doi:${reviewDoi}`,
   });
 };

@@ -3,6 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchRapidReviews } from '../../src/ingest/evaluation-fetchers/fetch-rapid-reviews';
+import { constructEvaluation } from '../../src/ingest/types/evaluations';
 import { FeedData } from '../../src/ingest/types/feed-data';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -45,15 +46,15 @@ describe('fetch-rapid-reviews', () => {
           },
         },
       ];
+      const expectedEvaluation = constructEvaluation({
+        paperExpressionDoi: articleDoi,
+        publishedOn: date,
+        evaluationLocator: `rapidreviews:${reviewUrl}`,
+      });
 
       expect(await ingest(items)()).toStrictEqual(E.right({
         evaluations: [
-          {
-            articleDoi,
-            publishedOn: date,
-            evaluationLocator: `rapidreviews:${reviewUrl}`,
-            authors: [],
-          },
+          expectedEvaluation,
         ],
         skippedItems: [],
       }));

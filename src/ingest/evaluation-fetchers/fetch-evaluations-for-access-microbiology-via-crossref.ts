@@ -45,7 +45,7 @@ const toEvaluation = (
   item: CrossrefResponse['message']['items'][number],
 ): Evaluation => constructEvaluation({
   evaluationLocator: `doi:${item.DOI}`,
-  articleDoi: item.relation['is-review-of'][0].id,
+  paperExpressionDoi: item.relation['is-review-of'][0].id,
   authors: [],
   evaluationType: 'review',
   publishedOn: toEvaluationDate(item.published),

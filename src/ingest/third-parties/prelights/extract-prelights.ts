@@ -16,7 +16,7 @@ const skipWithReason = (item: Prelight, reason: string) => ({ item: item.guid, r
 
 const toEvaluation = (prelight: Prelight) => constructEvaluation({
   publishedOn: prelight.pubDate,
-  articleDoi: prelight.preprintDoi,
+  paperExpressionDoi: prelight.preprintDoi,
   evaluationLocator: `prelights:${prelight.guid.replace('&#038;', '&')}`,
   authors: [prelight.author],
 });

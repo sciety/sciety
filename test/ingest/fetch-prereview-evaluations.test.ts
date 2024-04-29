@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchPrereviewEvaluations } from '../../src/ingest/evaluation-fetchers/fetch-prereview-evaluations';
+import { constructEvaluation } from '../../src/ingest/types/evaluations';
 import { FeedData } from '../../src/ingest/types/feed-data';
 import * as AID from '../../src/types/article-id';
 import { arbitraryDate, arbitraryWord } from '../helpers';
@@ -63,19 +64,20 @@ describe('fetch-prereview-evaluations', () => {
     });
 
     it('returns the reviews', async () => {
+      const expectedEvaluation1 = constructEvaluation({
+        paperExpressionDoi: articleId.value,
+        publishedOn: date1,
+        evaluationLocator: `doi:${reviewDoi1.value}`,
+      });
+      const expectedEvaluation2 = constructEvaluation({
+        paperExpressionDoi: articleId.value,
+        publishedOn: date2,
+        evaluationLocator: `doi:${reviewDoi2.value}`,
+      });
+
       expect(result.evaluations).toStrictEqual([
-        {
-          articleDoi: articleId.value,
-          publishedOn: date1,
-          evaluationLocator: `doi:${reviewDoi1.value}`,
-          authors: [],
-        },
-        {
-          articleDoi: articleId.value,
-          publishedOn: date2,
-          evaluationLocator: `doi:${reviewDoi2.value}`,
-          authors: [],
-        },
+        expectedEvaluation1,
+        expectedEvaluation2,
       ]);
     });
 
@@ -113,13 +115,14 @@ describe('fetch-prereview-evaluations', () => {
     });
 
     it('returns the valid review', async () => {
+      const expectedEvaluation = constructEvaluation({
+        paperExpressionDoi: articleId.value,
+        publishedOn: date1,
+        evaluationLocator: `doi:${reviewDoi1.value}`,
+      });
+
       expect(result.evaluations).toStrictEqual([
-        {
-          articleDoi: articleId.value,
-          publishedOn: date1,
-          evaluationLocator: `doi:${reviewDoi1.value}`,
-          authors: [],
-        },
+        expectedEvaluation,
       ]);
     });
 

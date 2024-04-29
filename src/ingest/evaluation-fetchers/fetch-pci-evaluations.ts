@@ -58,7 +58,7 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
         }),
         (validatedEvaluationDoi) => constructEvaluation({
           publishedOn: new Date(candidate.date),
-          articleDoi,
+          paperExpressionDoi: articleDoi,
           evaluationLocator: AID.toString(validatedEvaluationDoi),
         }),
       ),

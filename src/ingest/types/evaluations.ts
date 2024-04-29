@@ -1,6 +1,6 @@
 export type Evaluation = {
   publishedOn: Date,
-  articleDoi: string,
+  paperExpressionDoi: string,
   evaluationLocator: string,
   authors: ReadonlyArray<string>,
   evaluationType?: string,
@@ -8,7 +8,7 @@ export type Evaluation = {
 
 type Properties = {
   publishedOn: Date,
-  articleDoi: string,
+  paperExpressionDoi: string,
   evaluationLocator: string,
   authors?: ReadonlyArray<string>,
   evaluationType?: string,

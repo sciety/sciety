@@ -37,7 +37,7 @@ export const convertHypothesisAnnotationToEvaluation = (
     (reason) => ({ item: annotation.uri, reason }),
     (articleDoi) => constructEvaluation({
       publishedOn: new Date(annotation.created),
-      articleDoi,
+      paperExpressionDoi: articleDoi,
       evaluationLocator: `hypothesis:${annotation.id}`,
       evaluationType: mapTagToType(
         annotation.tags,
