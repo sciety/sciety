@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { FetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
 import { daysAgo } from '../time';
+import { constructEvaluation } from '../types/evaluations';
 import { FetchEvaluations } from '../update-all';
 
 type Ports = {
@@ -23,7 +24,7 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
     (review) => review.resource.primary.URL.includes('rrid.'),
     (review) => ({ item: review.URL, reason: 'Not a rrid evaluation' }),
   ),
-  E.map((review) => ({
+  E.map((review) => constructEvaluation({
     publishedOn: new Date(review.created['date-time']),
     articleDoi: review.relation['is-review-of'][0].id,
     evaluationLocator: `rapidreviews:${review.URL}`,

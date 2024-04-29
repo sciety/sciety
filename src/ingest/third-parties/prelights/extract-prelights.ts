@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
+import { constructEvaluation } from '../../types/evaluations';
 import { FeedData } from '../../types/feed-data';
 
 export type Prelight = {
@@ -13,7 +14,7 @@ export type Prelight = {
 
 const skipWithReason = (item: Prelight, reason: string) => ({ item: item.guid, reason });
 
-const toEvaluation = (prelight: Prelight) => ({
+const toEvaluation = (prelight: Prelight) => constructEvaluation({
   publishedOn: prelight.pubDate,
   articleDoi: prelight.preprintDoi,
   evaluationLocator: `prelights:${prelight.guid.replace('&#038;', '&')}`,
