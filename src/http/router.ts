@@ -23,7 +23,6 @@ import { docmapIndex } from '../docmaps/docmap-index';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
-import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../html-pages/edit-list-details-form-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { searchPage } from '../html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
@@ -32,6 +31,7 @@ import { userPage as userFollowingPage, userPageParams as userFollowingPageParam
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
 import { CollectedPorts } from '../infrastructure';
 import { aboutPage } from '../read-side/html-pages/about-page';
+import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../read-side/html-pages/edit-list-details-form-page';
 import * as GAP from '../read-side/html-pages/group-page/group-about-page';
 import { addAFeaturedListFormPage, addAFeaturedListFormPageParamsCodec } from '../read-side/html-pages/group-page/group-add-a-featured-list-form-page';
 import * as GFP from '../read-side/html-pages/group-page/group-followers-page';

@@ -1,11 +1,11 @@
 import { htmlEscape } from 'escape-goat';
-import { pathToSubmitEditListDetails } from '../../http/form-submission-handlers/submit-paths';
-import { RawUserInput } from '../../read-side';
-import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
-import { inputFieldNames } from '../../standards';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
-import { HtmlPage, toHtmlPage } from '../html-page';
+import { HtmlPage, toHtmlPage } from '../../../html-pages/html-page';
+import { pathToSubmitEditListDetails } from '../../../http/form-submission-handlers/submit-paths';
+import { safelyReflectRawUserInputForEditing } from '../../../shared-components/raw-user-input-renderers';
+import { inputFieldNames } from '../../../standards';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { ListId } from '../../../types/list-id';
+import { RawUserInput } from '../../raw-user-input';
 
 export type ViewModel = {
   listName: string,
