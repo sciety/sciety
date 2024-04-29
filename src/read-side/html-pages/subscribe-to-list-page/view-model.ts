@@ -1,4 +1,4 @@
-import { ListId } from '../../types/list-id';
+import { ListId } from '../../../types/list-id';
 
 export type ViewModel = {
   listId: ListId,

@@ -1,6 +1,6 @@
 import { htmlEscape } from 'escape-goat';
 import { renderJotForm } from './render-jot-form';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
