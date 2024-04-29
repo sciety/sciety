@@ -7,6 +7,7 @@ import * as S from 'fp-ts/string';
 import * as AID from '../../types/article-id';
 import { FetchData } from '../fetch-data';
 import { daysAgo } from '../time';
+import { constructEvaluation } from '../types/evaluations';
 import { FetchEvaluations } from '../update-all';
 
 type Candidate = {
@@ -55,11 +56,10 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
           item: candidate.reviewId,
           reason: 'malformed evaluation doi',
         }),
-        (validatedEvaluationDoi) => ({
+        (validatedEvaluationDoi) => constructEvaluation({
           publishedOn: new Date(candidate.date),
           articleDoi,
           evaluationLocator: AID.toString(validatedEvaluationDoi),
-          authors: [],
         }),
       ),
     );
