@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { discoverPrereviewEvaluations } from '../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
-import { DiscoveredPublishedEvaluations } from '../../src/ingest/types/discovered-published-evaluations';
-import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
-import * as AID from '../../src/types/article-id';
-import { arbitraryDate, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryArticleId } from '../types/article-id.helper';
+import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
+import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
+import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
+import * as AID from '../../../src/types/article-id';
+import { arbitraryDate, arbitraryWord } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 
 describe('discover-prereview-evaluations', () => {
   describe('when the response includes no preprints', () => {

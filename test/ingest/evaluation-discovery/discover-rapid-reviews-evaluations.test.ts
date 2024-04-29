@@ -2,12 +2,12 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { discoverRapidReviewsEvaluations } from '../../src/ingest/evaluation-discovery/discover-rapid-reviews-evaluations';
-import { DiscoveredPublishedEvaluations } from '../../src/ingest/types/discovered-published-evaluations';
-import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
-import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
-import { arbitraryArticleId } from '../types/article-id.helper';
+import { discoverRapidReviewsEvaluations } from '../../../src/ingest/evaluation-discovery/discover-rapid-reviews-evaluations';
+import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
+import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
+import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
   {
