@@ -18,7 +18,7 @@
 @use 'my-feed-page';
 @use 'sciety-feed-page';
 @use 'search-results-page';
-@use '../../html-pages/user-page';
+@use 'user-page';
 @use '../../http/error-page';
 @use '../../shared-components/standard-page-layout';
 @use '../../shared-components/tabs';
