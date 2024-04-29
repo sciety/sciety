@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
 import { supportedArticleIdFromLink } from '../../supported-article-id-from-link';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../../types/published-evaluation';
-import { SkippedItem } from '../../types/skipped-item';
+import { SkippedEvaluation } from '../../types/skipped-evaluation';
 
 const annotationContainsText = (annotation: Annotation) => annotation.text.length > 0;
 
@@ -26,7 +26,7 @@ export const convertHypothesisAnnotationToEvaluation = (
   tagToEvaluationTypeMap: Record<string, ReadonlyArray<string>>,
 ) => (
   annotation: Annotation,
-): E.Either<SkippedItem, PublishedEvaluation> => pipe(
+): E.Either<SkippedEvaluation, PublishedEvaluation> => pipe(
   annotation.uri,
   supportedArticleIdFromLink,
   E.filterOrElse(

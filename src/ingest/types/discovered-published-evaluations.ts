@@ -1,7 +1,7 @@
 import { PublishedEvaluation } from './published-evaluation';
-import { SkippedItem } from './skipped-item';
+import { SkippedEvaluation } from './skipped-evaluation';
 
 export type DiscoveredPublishedEvaluations = {
   understood: ReadonlyArray<PublishedEvaluation>,
-  skipped: ReadonlyArray<SkippedItem>,
+  skipped: ReadonlyArray<SkippedEvaluation>,
 };
