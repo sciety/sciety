@@ -1,5 +1,5 @@
-import { buildPageUrl } from '../../../../src/html-pages/search-results-page/render-as-html/build-page-url';
-import { arbitraryBoolean, arbitraryString } from '../../../helpers';
+import { buildPageUrl } from '../../../../../src/read-side/html-pages/search-results-page/render-as-html/build-page-url';
+import { arbitraryBoolean, arbitraryString } from '../../../../helpers';
 
 describe('build-page-url', () => {
   const defaultParams = {

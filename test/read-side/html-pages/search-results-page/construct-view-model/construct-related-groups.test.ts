@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructRelatedGroups } from '../../../../src/html-pages/search-results-page/construct-view-model/construct-related-groups';
-import { SomeRelatedGroups, ViewModel } from '../../../../src/html-pages/search-results-page/view-model';
-import { ExpressionDoi } from '../../../../src/types/expression-doi';
-import { TestFramework, createTestFramework } from '../../../framework';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../../write-side/commands/record-evaluation-publication-command.helper';
+import { constructRelatedGroups } from '../../../../../src/read-side/html-pages/search-results-page/construct-view-model/construct-related-groups';
+import { SomeRelatedGroups, ViewModel } from '../../../../../src/read-side/html-pages/search-results-page/view-model';
+import { ExpressionDoi } from '../../../../../src/types/expression-doi';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 const isSomeRelatedGroups = (value: ViewModel['relatedGroups']): value is SomeRelatedGroups => value.tag === 'some-related-groups';
 

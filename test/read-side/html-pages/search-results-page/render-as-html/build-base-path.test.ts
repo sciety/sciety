@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { buildBasePath } from '../../../../src/html-pages/search-results-page/render-as-html/wrap-with-pagination-information';
+import { buildBasePath } from '../../../../../src/read-side/html-pages/search-results-page/render-as-html/wrap-with-pagination-information';
 
 describe('buildBasePath', () => {
   it('encodes the cursor for http', () => {

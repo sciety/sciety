@@ -4,8 +4,8 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { constructRelatedGroups } from './construct-related-groups';
 import { Dependencies } from './dependencies';
-import { constructPaperActivitySummaryCard } from '../../../read-side/html-pages/shared-components/paper-activity-summary-card';
-import { SearchResults } from '../../../types/search-results';
+import { SearchResults } from '../../../../types/search-results';
+import { constructPaperActivitySummaryCard } from '../../shared-components/paper-activity-summary-card';
 import { ViewModel } from '../view-model';
 
 type LimitedSet = {

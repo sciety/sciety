@@ -3,8 +3,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { Group } from '../../../types/group';
-import { GroupId } from '../../../types/group-id';
+import { Group } from '../../../../types/group';
+import { GroupId } from '../../../../types/group-id';
 
 type SearchableGroupFields = Group & { description: string };
 

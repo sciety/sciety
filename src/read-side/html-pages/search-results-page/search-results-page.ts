@@ -4,8 +4,8 @@ import { Dependencies, constructViewModel } from './construct-view-model';
 import { Params } from './construct-view-model/params';
 import { renderAsHtml } from './render-as-html/render-as-html';
 import { renderErrorPage } from './render-as-html/render-error-page';
-import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
-import { HtmlPage } from '../html-page';
+import { HtmlPage } from '../../../html-pages/html-page';
+import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 
 type SearchResultsPage = (
   dependencies: Dependencies,

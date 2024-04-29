@@ -24,7 +24,6 @@ import { evaluationContent, paramsCodec as evaluationContentParams } from '../ev
 import { actionFailedPage, actionFailedPageParamsCodec } from '../html-pages/action-failed';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
 import { saveArticleFormPage } from '../html-pages/save-article-form-page';
-import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../html-pages/search-results-page';
 import { subscribeToListPage } from '../html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../html-pages/user-page/user-lists-page';
@@ -45,6 +44,7 @@ import { myFeedPage, myFeedParams } from '../read-side/html-pages/my-feed-page';
 import { paperActivityPage } from '../read-side/html-pages/paper-activity-page';
 import { scietyFeedCodec, scietyFeedPage } from '../read-side/html-pages/sciety-feed-page';
 import { searchPage } from '../read-side/html-pages/search-page';
+import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../read-side/html-pages/search-results-page';
 import { referencePage, sharedComponentsPage, indexPage } from '../read-side/html-pages/style-guide-page';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { applicationStatus } from '../read-side/non-html-views/status';
