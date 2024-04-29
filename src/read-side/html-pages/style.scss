@@ -3,10 +3,10 @@
 @use '../../sass/fonts';
 
 @use 'shared-components';
-@use '../../html-pages/form-rules';
-@use '../../html-pages/layout-rules';
-@use '../../html-pages/list-rules';
-@use '../../html-pages/page-header';
+@use 'form-rules';
+@use 'layout-rules';
+@use 'list-rules';
+@use 'page-header';
 @use 'about-page';
 @use 'paper-activity-page/render-as-html';
 @use 'create-user-account-form-page';
