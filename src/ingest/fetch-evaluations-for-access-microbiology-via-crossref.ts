@@ -6,14 +6,30 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Evaluation } from './types/evaluations';
 import { FetchEvaluations } from './update-all';
-import * as crossrefDate from '../third-parties/crossref/fetch-all-paper-expressions/date-stamp';
 import { expressionDoiCodec } from '../types/expression-doi';
+
+const publishedDateCodec = t.strict({
+  'date-parts': t.tuple([
+    t.tuple([t.number, t.number, t.number]),
+  ]),
+});
+
+type DateStamp = t.TypeOf<typeof publishedDateCodec>;
+
+const toDate = (date: DateStamp): Date => {
+  const dateParts = date['date-parts'][0];
+  return new Date(
+    dateParts[0],
+    dateParts[1] ? dateParts[1] - 1 : 0,
+    dateParts[2] ?? 1,
+  );
+};
 
 const crossrefResponseCodec = t.strict({
   message: t.strict({
     items: t.readonlyArray(t.strict({
       DOI: t.string,
-      published: crossrefDate.codec,
+      published: publishedDateCodec,
       relation: t.strict({
         'is-review-of': t.tuple([t.strict({
           id: expressionDoiCodec,
@@ -32,7 +48,7 @@ const toEvaluation = (
   articleDoi: item.relation['is-review-of'][0].id,
   authors: [],
   evaluationType: 'review',
-  date: crossrefDate.toDate(item.published),
+  date: toDate(item.published),
 });
 
 const toHumanFriendlyErrorMessage = (
