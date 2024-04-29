@@ -1,7 +1,7 @@
-import * as Es from './evaluations';
+import { PublishedEvaluation } from './published-evaluation';
 import { SkippedItem } from './skipped-item';
 
 export type FeedData = {
-  evaluations: Es.Evaluations,
+  evaluations: ReadonlyArray<PublishedEvaluation>,
   skippedItems: ReadonlyArray<SkippedItem>,
 };

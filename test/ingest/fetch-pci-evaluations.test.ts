@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchPciEvaluations } from '../../src/ingest/evaluation-fetchers/fetch-pci-evaluations';
 import { daysAgo } from '../../src/ingest/time';
-import { constructEvaluation } from '../../src/ingest/types/evaluations';
+import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
 import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
@@ -49,7 +49,7 @@ describe('fetch-pci-evaluations', () => {
           </link>
         </links>
       `;
-      const expectedEvaluation = constructEvaluation({
+      const expectedEvaluation = constructPublishedEvaluation({
         paperExpressionDoi: articleId,
         publishedOn: date,
         evaluationLocator: `doi:${reviewId}`,

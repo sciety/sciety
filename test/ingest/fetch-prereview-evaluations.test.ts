@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchPrereviewEvaluations } from '../../src/ingest/evaluation-fetchers/fetch-prereview-evaluations';
-import { constructEvaluation } from '../../src/ingest/types/evaluations';
 import { FeedData } from '../../src/ingest/types/feed-data';
+import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
 import * as AID from '../../src/types/article-id';
 import { arbitraryDate, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
@@ -64,12 +64,12 @@ describe('fetch-prereview-evaluations', () => {
     });
 
     it('returns the reviews', async () => {
-      const expectedEvaluation1 = constructEvaluation({
+      const expectedEvaluation1 = constructPublishedEvaluation({
         paperExpressionDoi: articleId.value,
         publishedOn: date1,
         evaluationLocator: `doi:${reviewDoi1.value}`,
       });
-      const expectedEvaluation2 = constructEvaluation({
+      const expectedEvaluation2 = constructPublishedEvaluation({
         paperExpressionDoi: articleId.value,
         publishedOn: date2,
         evaluationLocator: `doi:${reviewDoi2.value}`,
@@ -115,7 +115,7 @@ describe('fetch-prereview-evaluations', () => {
     });
 
     it('returns the valid review', async () => {
-      const expectedEvaluation = constructEvaluation({
+      const expectedEvaluation = constructPublishedEvaluation({
         paperExpressionDoi: articleId.value,
         publishedOn: date1,
         evaluationLocator: `doi:${reviewDoi1.value}`,

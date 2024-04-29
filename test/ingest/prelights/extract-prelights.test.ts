@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { extractPrelights } from '../../../src/ingest/third-parties/prelights/extract-prelights';
-import { constructEvaluation } from '../../../src/ingest/types/evaluations';
+import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
 } from '../../helpers';
@@ -24,7 +24,7 @@ describe('extract-prelights', () => {
     );
 
     it('records the evaluation', () => {
-      const expectedEvaluation = constructEvaluation({
+      const expectedEvaluation = constructPublishedEvaluation({
         publishedOn: pubDate,
         paperExpressionDoi: preprintDoi.value,
         evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,

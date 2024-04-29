@@ -8,7 +8,7 @@ import * as PR from 'io-ts/PathReporter';
 import * as tt from 'io-ts-types';
 import * as AID from '../../types/article-id';
 import { FetchData } from '../fetch-data';
-import { constructEvaluation } from '../types/evaluations';
+import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { FetchEvaluations } from '../update-all';
 
 type Ports = {
@@ -56,7 +56,7 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
     (p) => p.isPublished,
     () => ({ item: AID.toString(preprint.handle as AID.ArticleId), reason: 'is not published' }),
   ),
-  E.map((p) => constructEvaluation({
+  E.map((p) => constructPublishedEvaluation({
     publishedOn: p.date,
     paperExpressionDoi: p.handle.value,
     evaluationLocator: `doi:${p.reviewDoi.value.value}`,

@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { fetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
 import { daysAgo } from '../time';
-import { constructEvaluation } from '../types/evaluations';
+import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { FetchEvaluations } from '../update-all';
 
 type BiorxivItem = {
@@ -38,7 +38,7 @@ const toEvaluation = (review: CrossrefReview) => {
   const [year, month, day] = review['published-print']['date-parts'][0];
   const date = new Date(year, month - 1, day);
   const reviewDoi = review.DOI;
-  return constructEvaluation({
+  return constructPublishedEvaluation({
     publishedOn: date,
     paperExpressionDoi: review.biorxivDoi,
     evaluationLocator: `doi:${reviewDoi}`,

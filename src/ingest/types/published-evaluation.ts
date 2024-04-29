@@ -1,4 +1,4 @@
-export type Evaluation = {
+export type PublishedEvaluation = {
   publishedOn: Date,
   paperExpressionDoi: string,
   evaluationLocator: string,
@@ -14,9 +14,7 @@ type Properties = {
   evaluationType?: string,
 };
 
-export type Evaluations = ReadonlyArray<Evaluation>;
-
-export const constructEvaluation = (properties: Properties): Evaluation => ({
+export const constructPublishedEvaluation = (properties: Properties): PublishedEvaluation => ({
   authors: [],
   ...properties,
 });

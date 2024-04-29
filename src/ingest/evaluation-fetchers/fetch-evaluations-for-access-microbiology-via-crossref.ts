@@ -5,7 +5,7 @@ import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { expressionDoiCodec } from '../../types/expression-doi';
-import { Evaluation, constructEvaluation } from '../types/evaluations';
+import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
 import { FetchEvaluations } from '../update-all';
 
 const publishedDateCodec = t.strict({
@@ -43,7 +43,7 @@ type CrossrefResponse = t.TypeOf<typeof crossrefResponseCodec>;
 
 const toEvaluation = (
   item: CrossrefResponse['message']['items'][number],
-): Evaluation => constructEvaluation({
+): PublishedEvaluation => constructPublishedEvaluation({
   evaluationLocator: `doi:${item.DOI}`,
   paperExpressionDoi: item.relation['is-review-of'][0].id,
   evaluationType: 'review',
