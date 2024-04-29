@@ -36,7 +36,7 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
   })),
 );
 
-export const fetchRapidReviews = (): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
+export const discoverRapidReviewsEvaluations = (): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
   identifyCandidates(ports.fetchData),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({

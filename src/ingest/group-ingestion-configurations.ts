@@ -1,10 +1,10 @@
-import { discoverEvaluationsForAccessMicrobiologyViaCrossref } from './evaluation-fetchers/discover-evaluations-for-access-microbiology-via-crossref';
-import { discoverEvaluationsFromHypothesisGroup } from './evaluation-fetchers/discover-evaluations-from-hypothesis-group';
-import { discoverEvaluationsFromHypothesisUser } from './evaluation-fetchers/discover-evaluations-from-hypothesis-user';
-import { discoverPciEvaluations } from './evaluation-fetchers/discover-pci-evaluations';
-import { fetchPrereviewEvaluations } from './evaluation-fetchers/fetch-prereview-evaluations';
-import { fetchRapidReviews } from './evaluation-fetchers/fetch-rapid-reviews';
-import { fetchReviewsFromCrossrefViaBiorxiv } from './evaluation-fetchers/fetch-reviews-from-crossref-via-biorxiv';
+import { discoverEvaluationsForAccessMicrobiologyViaCrossref } from './evaluation-discovery/discover-evaluations-for-access-microbiology-via-crossref';
+import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discovery/discover-evaluations-from-crossref-via-biorxiv';
+import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
+import { discoverEvaluationsFromHypothesisUser } from './evaluation-discovery/discover-evaluations-from-hypothesis-user';
+import { discoverPciEvaluations } from './evaluation-discovery/discover-pci-evaluations';
+import { discoverPrereviewEvaluations } from './evaluation-discovery/discover-prereview-evaluations';
+import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover-rapid-reviews-evaluations';
 import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations';
 import { GroupIngestionConfiguration } from './update-all';
 
@@ -58,7 +58,7 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
   {
     id: '53ed5364-a016-11ea-bb37-0242ac130002',
     name: 'PeerJ',
-    discoverPublishedEvaluations: fetchReviewsFromCrossrefViaBiorxiv('10.7717', '10.7287'),
+    discoverPublishedEvaluations: discoverEvaluationsFromCrossrefViaBiorxiv('10.7717', '10.7287'),
   },
   {
     id: 'f97bd177-5cb6-4296-8573-078318755bf2',
@@ -68,12 +68,12 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
   {
     id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
     name: 'PREreview',
-    discoverPublishedEvaluations: fetchPrereviewEvaluations(),
+    discoverPublishedEvaluations: discoverPrereviewEvaluations(),
   },
   {
     id: '5142a5bc-6b18-42b1-9a8d-7342d7d17e94',
     name: 'Rapid Reviews COVID-19',
-    discoverPublishedEvaluations: fetchRapidReviews(),
+    discoverPublishedEvaluations: discoverRapidReviewsEvaluations(),
   },
   {
     id: '316db7d9-88cc-4c26-b386-f067e0f56334',

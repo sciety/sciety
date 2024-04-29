@@ -68,7 +68,7 @@ const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
   );
 };
 
-export const fetchReviewsFromCrossrefViaBiorxiv = (
+export const discoverEvaluationsFromCrossrefViaBiorxiv = (
   doiPrefix: string,
   reviewDoiPrefix: string,
 ): DiscoverPublishedEvaluations => () => pipe(

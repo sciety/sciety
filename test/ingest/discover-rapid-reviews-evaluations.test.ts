@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchRapidReviews } from '../../src/ingest/evaluation-fetchers/fetch-rapid-reviews';
+import { discoverRapidReviewsEvaluations } from '../../src/ingest/evaluation-discovery/discover-rapid-reviews-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../helpers';
@@ -14,10 +14,10 @@ const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
     fetchData: <D>() => TE.right({ message: { items: crossrefResponseItems } } as unknown as D),
     fetchGoogleSheet: shouldNotBeCalled,
   },
-  fetchRapidReviews(),
+  discoverRapidReviewsEvaluations(),
 );
 
-describe('fetch-rapid-reviews', () => {
+describe('discover-rapid-reviews-evaluations', () => {
   const arbitraryPrimaryUrl = `https://rrid.${arbitraryWord()}`;
 
   describe('when there are no Crossref reviews', () => {

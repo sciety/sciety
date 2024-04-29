@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchPrereviewEvaluations } from '../../src/ingest/evaluation-fetchers/fetch-prereview-evaluations';
+import { discoverPrereviewEvaluations } from '../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
 import * as AID from '../../src/types/article-id';
@@ -9,8 +9,8 @@ import { arbitraryDate, arbitraryWord } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 
-describe('fetch-prereview-evaluations', () => {
-  describe('when the reponse includes no preprints', () => {
+describe('discover-prereview-evaluations', () => {
+  describe('when the response includes no preprints', () => {
     let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
@@ -18,7 +18,7 @@ describe('fetch-prereview-evaluations', () => {
         {
           fetchData: <D>() => TE.right({ data: [] } as unknown as D),
         },
-        fetchPrereviewEvaluations(),
+        discoverPrereviewEvaluations(),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -58,7 +58,7 @@ describe('fetch-prereview-evaluations', () => {
         {
           fetchData: <D>() => TE.right({ data: response } as unknown as D),
         },
-        fetchPrereviewEvaluations(),
+        discoverPrereviewEvaluations(),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -109,7 +109,7 @@ describe('fetch-prereview-evaluations', () => {
         {
           fetchData: <D>() => TE.right({ data: response } as unknown as D),
         },
-        fetchPrereviewEvaluations(),
+        discoverPrereviewEvaluations(),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -150,7 +150,7 @@ describe('fetch-prereview-evaluations', () => {
         {
           fetchData: <D>() => TE.right({ data: response } as unknown as D),
         },
-        fetchPrereviewEvaluations(),
+        discoverPrereviewEvaluations(),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -173,7 +173,7 @@ describe('fetch-prereview-evaluations', () => {
         {
           fetchData: <D>() => TE.right({} as unknown as D),
         },
-        fetchPrereviewEvaluations(),
+        discoverPrereviewEvaluations(),
       )();
     });
 

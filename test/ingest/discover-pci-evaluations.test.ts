@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { discoverPciEvaluations } from '../../src/ingest/evaluation-fetchers/discover-pci-evaluations';
+import { discoverPciEvaluations } from '../../src/ingest/evaluation-discovery/discover-pci-evaluations';
 import { daysAgo } from '../../src/ingest/time';
 import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
 import { arbitraryUri } from '../helpers';
