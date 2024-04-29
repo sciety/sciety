@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchPrereviewEvaluations } from '../../src/ingest/fetch-prereview-evaluations';
+import { fetchPrereviewEvaluations } from '../../src/ingest/evaluation-fetchers/fetch-prereview-evaluations';
 import { FeedData } from '../../src/ingest/types/feed-data';
 import * as AID from '../../src/types/article-id';
 import { arbitraryDate, arbitraryWord } from '../helpers';

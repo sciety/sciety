@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchPciEvaluations } from '../../src/ingest/fetch-pci-evaluations';
+import { fetchPciEvaluations } from '../../src/ingest/evaluation-fetchers/fetch-pci-evaluations';
 import { daysAgo } from '../../src/ingest/time';
 import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';

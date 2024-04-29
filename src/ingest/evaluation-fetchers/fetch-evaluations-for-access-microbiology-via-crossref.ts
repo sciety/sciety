@@ -4,9 +4,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { Evaluation } from './types/evaluations';
-import { FetchEvaluations } from './update-all';
-import { expressionDoiCodec } from '../types/expression-doi';
+import { expressionDoiCodec } from '../../types/expression-doi';
+import { Evaluation } from '../types/evaluations';
+import { FetchEvaluations } from '../update-all';
 
 const publishedDateCodec = t.strict({
   'date-parts': t.tuple([

@@ -1,10 +1,10 @@
-import { fetchEvaluationsForAccessMicrobiologyViaCrossref } from './fetch-evaluations-for-access-microbiology-via-crossref';
-import { fetchPciEvaluations } from './fetch-pci-evaluations';
-import { fetchPrereviewEvaluations } from './fetch-prereview-evaluations';
-import { fetchRapidReviews } from './fetch-rapid-reviews';
-import { fetchReviewsFromCrossrefViaBiorxiv } from './fetch-reviews-from-crossref-via-biorxiv';
-import { fetchReviewsFromHypothesisGroup } from './fetch-reviews-from-hypothesis-group';
-import { fetchReviewsFromHypothesisUser } from './fetch-reviews-from-hypothesis-user';
+import { fetchEvaluationsForAccessMicrobiologyViaCrossref } from './evaluation-fetchers/fetch-evaluations-for-access-microbiology-via-crossref';
+import { fetchPciEvaluations } from './evaluation-fetchers/fetch-pci-evaluations';
+import { fetchPrereviewEvaluations } from './evaluation-fetchers/fetch-prereview-evaluations';
+import { fetchRapidReviews } from './evaluation-fetchers/fetch-rapid-reviews';
+import { fetchReviewsFromCrossrefViaBiorxiv } from './evaluation-fetchers/fetch-reviews-from-crossref-via-biorxiv';
+import { fetchReviewsFromHypothesisGroup } from './evaluation-fetchers/fetch-reviews-from-hypothesis-group';
+import { fetchReviewsFromHypothesisUser } from './evaluation-fetchers/fetch-reviews-from-hypothesis-user';
 import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations';
 import { GroupIngestionConfiguration } from './update-all';
 
