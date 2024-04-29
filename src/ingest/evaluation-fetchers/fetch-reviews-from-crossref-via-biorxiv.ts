@@ -38,7 +38,7 @@ const toEvaluation = (review: CrossrefReview) => {
   const date = new Date(year, month - 1, day);
   const reviewDoi = review.DOI;
   return {
-    date,
+    publishedOn: date,
     articleDoi: review.biorxivDoi,
     evaluationLocator: `doi:${reviewDoi}`,
     authors: [],

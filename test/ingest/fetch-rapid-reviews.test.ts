@@ -50,7 +50,7 @@ describe('fetch-rapid-reviews', () => {
         evaluations: [
           {
             articleDoi,
-            date,
+            publishedOn: date,
             evaluationLocator: `rapidreviews:${reviewUrl}`,
             authors: [],
           },

@@ -56,7 +56,7 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
           reason: 'malformed evaluation doi',
         }),
         (validatedEvaluationDoi) => ({
-          date: new Date(candidate.date),
+          publishedOn: new Date(candidate.date),
           articleDoi,
           evaluationLocator: AID.toString(validatedEvaluationDoi),
           authors: [],

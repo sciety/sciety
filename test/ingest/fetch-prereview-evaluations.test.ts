@@ -66,13 +66,13 @@ describe('fetch-prereview-evaluations', () => {
       expect(result.evaluations).toStrictEqual([
         {
           articleDoi: articleId.value,
-          date: date1,
+          publishedOn: date1,
           evaluationLocator: `doi:${reviewDoi1.value}`,
           authors: [],
         },
         {
           articleDoi: articleId.value,
-          date: date2,
+          publishedOn: date2,
           evaluationLocator: `doi:${reviewDoi2.value}`,
           authors: [],
         },
@@ -116,7 +116,7 @@ describe('fetch-prereview-evaluations', () => {
       expect(result.evaluations).toStrictEqual([
         {
           articleDoi: articleId.value,
-          date: date1,
+          publishedOn: date1,
           evaluationLocator: `doi:${reviewDoi1.value}`,
           authors: [],
         },

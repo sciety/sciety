@@ -26,7 +26,7 @@ describe('extract-prelights', () => {
       expect(result).toStrictEqual({
         evaluations: [
           {
-            date: pubDate,
+            publishedOn: pubDate,
             articleDoi: preprintDoi.value,
             evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
             authors: [author],

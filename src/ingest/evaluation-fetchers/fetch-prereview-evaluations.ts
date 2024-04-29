@@ -56,7 +56,7 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
     () => ({ item: AID.toString(preprint.handle as AID.ArticleId), reason: 'is not published' }),
   ),
   E.map((p) => ({
-    date: p.date,
+    publishedOn: p.date,
     articleDoi: p.handle.value,
     evaluationLocator: `doi:${p.reviewDoi.value.value}`,
     authors: p.authors,

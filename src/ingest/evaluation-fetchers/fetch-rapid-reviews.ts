@@ -24,7 +24,7 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
     (review) => ({ item: review.URL, reason: 'Not a rrid evaluation' }),
   ),
   E.map((review) => ({
-    date: new Date(review.created['date-time']),
+    publishedOn: new Date(review.created['date-time']),
     articleDoi: review.relation['is-review-of'][0].id,
     evaluationLocator: `rapidreviews:${review.URL}`,
     authors: pipe(

@@ -36,7 +36,7 @@ export const convertHypothesisAnnotationToEvaluation = (
   E.bimap(
     (reason) => ({ item: annotation.uri, reason }),
     (articleDoi) => ({
-      date: new Date(annotation.created),
+      publishedOn: new Date(annotation.created),
       articleDoi,
       evaluationLocator: `hypothesis:${annotation.id}`,
       authors: [],

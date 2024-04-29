@@ -48,7 +48,7 @@ const toEvaluation = (
   articleDoi: item.relation['is-review-of'][0].id,
   authors: [],
   evaluationType: 'review',
-  date: toEvaluationDate(item.published),
+  publishedOn: toEvaluationDate(item.published),
 });
 
 const toHumanFriendlyErrorMessage = (

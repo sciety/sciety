@@ -1,5 +1,5 @@
 export type Evaluation = {
-  date: Date,
+  publishedOn: Date,
   articleDoi: string,
   evaluationLocator: string,
   authors: ReadonlyArray<string>,

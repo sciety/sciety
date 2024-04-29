@@ -110,7 +110,7 @@ const sendRecordEvaluationCommands = (
     groupId: group.id,
     expressionDoi: evaluation.articleDoi,
     evaluationLocator: evaluation.evaluationLocator,
-    publishedAt: evaluation.date,
+    publishedAt: evaluation.publishedOn,
     authors: evaluation.authors,
     evaluationType: evaluation.evaluationType,
   })),
