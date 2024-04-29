@@ -4,9 +4,9 @@ import { flow, identity, pipe } from 'fp-ts/function';
 import { renderFollowList } from './render-follow-list';
 import { followingNothing, informationUnavailable } from './static-messages';
 import { tabList } from './tab-list';
-import { renderTabs } from '../../../../../shared-components/tabs';
 import { HtmlFragment } from '../../../../../types/html-fragment';
 import { renderGroupCard } from '../../../shared-components/group-card';
+import { renderTabs } from '../../../shared-components/tabs';
 import { ViewModel } from '../view-model';
 
 const tabProps = (viewmodel: ViewModel) => ({

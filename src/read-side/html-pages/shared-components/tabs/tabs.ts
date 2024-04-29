@@ -1,6 +1,6 @@
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 export type Tab = {
   label: HtmlFragment,

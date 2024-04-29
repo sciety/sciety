@@ -1,6 +1,6 @@
-import { Tab } from '../../../../../shared-components/tabs';
 import { toHtmlFragment } from '../../../../../types/html-fragment';
 import { UserHandle } from '../../../../../types/user-handle';
+import { Tab } from '../../../shared-components/tabs';
 
 export const tabList = (userHandle: UserHandle, listCount: number, followingCount: number): [Tab, Tab] => [
   {
