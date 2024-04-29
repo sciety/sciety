@@ -1,22 +1,22 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchPciEvaluations } from '../../src/ingest/evaluation-fetchers/fetch-pci-evaluations';
+import { discoverPciEvaluations } from '../../src/ingest/evaluation-fetchers/discover-pci-evaluations';
 import { daysAgo } from '../../src/ingest/time';
 import { constructPublishedEvaluation } from '../../src/ingest/types/published-evaluation';
 import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 import { arbitraryArticleId } from '../types/article-id.helper';
 
-const ingest = (xml: string) => pipe(
+const discover = (xml: string) => pipe(
   {
     fetchData: <D>() => TE.right(xml as unknown as D),
     fetchGoogleSheet: shouldNotBeCalled,
   },
-  fetchPciEvaluations(arbitraryUri()),
+  discoverPciEvaluations(arbitraryUri()),
 );
 
-describe('fetch-pci-evaluations', () => {
+describe('discover-pci-evaluations', () => {
   describe('when there are no evaluations', () => {
     const pciXmlResponse = `
       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -25,7 +25,7 @@ describe('fetch-pci-evaluations', () => {
     `;
 
     it('returns no evaluations and no skipped items', async () => {
-      expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
+      expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
         understood: [],
         skipped: [],
       }));
@@ -55,7 +55,7 @@ describe('fetch-pci-evaluations', () => {
         evaluationLocator: `doi:${reviewId}`,
       });
 
-      expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
+      expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
         understood: [
           expectedEvaluation,
         ],
@@ -80,7 +80,7 @@ describe('fetch-pci-evaluations', () => {
         </links>
       `;
 
-      expect(await ingest(pciXmlResponse)()).toStrictEqual(E.right({
+      expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
         understood: [],
         skipped: [
           {
@@ -109,7 +109,7 @@ describe('fetch-pci-evaluations', () => {
       `;
 
       const result = await pipe(
-        ingest(pciXmlResponse),
+        discover(pciXmlResponse),
         TE.getOrElse(shouldNotBeCalled),
       )();
 

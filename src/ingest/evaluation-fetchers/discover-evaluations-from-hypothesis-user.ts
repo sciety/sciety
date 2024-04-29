@@ -12,7 +12,7 @@ type Ports = {
   fetchData: FetchData,
 };
 
-export const fetchReviewsFromHypothesisUser = (
+export const discoverEvaluationsFromHypothesisUser = (
   publisherUserId: string, days = 5,
 ): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
   publisherUserId,
