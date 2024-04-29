@@ -60,7 +60,7 @@ const toHumanFriendlyErrorMessage = (
 );
 
 export const fetchEvaluationsForAccessMicrobiologyViaCrossref: FetchEvaluations = (dependencies) => pipe(
-  'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of',
+  'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc',
   dependencies.fetchData,
   TE.chainEitherK(flow(
     crossrefResponseCodec.decode,
