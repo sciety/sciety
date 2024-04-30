@@ -1,5 +1,6 @@
 import { ViewModel } from './view-model';
 import { pathToSubmitAddAFeaturedList } from '../../../../http/form-submission-handlers/submit-paths';
+import { inputFieldNames } from '../../../../standards';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
 
@@ -12,7 +13,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
     <section>
       <label for="listId" class="standard-form__sub_heading">List Id</label>
-      <input type="text" id="listId" name="" value="">
+      <input type="text" id="listId" name="${inputFieldNames.listId}" value="">
     </section>
     <button type="submit">Save</button><a href="#" class="standard-form__cancel">Cancel</a>
   </form>
