@@ -118,6 +118,12 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
           ...stubAdapters,
         };
       }
+      if (process.env.USE_STUB_AVATARS === 'true') {
+        return {
+          ...allAdapters,
+          fetchUserAvatarUrl: stubAdapters.fetchUserAvatarUrl,
+        };
+      }
       return allAdapters;
     },
     identity,
