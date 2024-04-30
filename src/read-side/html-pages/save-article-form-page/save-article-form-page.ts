@@ -6,10 +6,10 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
-import { ConstructPage } from '../../read-side/html-pages/construct-page';
-import * as DE from '../../types/data-error';
-import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
-import { toHtmlFragment } from '../../types/html-fragment';
+import * as DE from '../../../types/data-error';
+import { toErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { ConstructPage } from '../construct-page';
 
 export const saveArticleFormPage = (
   dependencies: Dependencies,

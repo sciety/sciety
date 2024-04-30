@@ -5,10 +5,10 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { ViewModel } from './view-model';
-import * as DE from '../../types/data-error';
-import * as EDOI from '../../types/expression-doi';
-import { toHtmlFragment } from '../../types/html-fragment';
-import * as LOID from '../../types/list-owner-id';
+import * as DE from '../../../types/data-error';
+import * as EDOI from '../../../types/expression-doi';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import * as LOID from '../../../types/list-owner-id';
 
 type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
 

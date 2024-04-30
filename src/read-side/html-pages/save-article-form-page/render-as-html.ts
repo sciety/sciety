@@ -2,9 +2,9 @@ import { htmlEscape } from 'escape-goat';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from './view-model';
-import { articleIdFieldName } from '../../http/form-submission-handlers/save-article-handler';
-import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
-import { toHtmlFragment } from '../../types/html-fragment';
+import { articleIdFieldName } from '../../../http/form-submission-handlers/save-article-handler';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { HtmlPage, toHtmlPage } from '../html-page';
 
 const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   lists,

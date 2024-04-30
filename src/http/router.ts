@@ -22,7 +22,6 @@ import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../html-pages/create-annotation-form-page';
-import { saveArticleFormPage } from '../html-pages/save-article-form-page';
 import { CollectedPorts } from '../infrastructure';
 import { aboutPage } from '../read-side/html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../read-side/html-pages/action-failed';
@@ -39,6 +38,7 @@ import { page as listPage, paramsCodec as listPageParams } from '../read-side/ht
 import { listsPage, paramsCodec as listsPageParamsCodec } from '../read-side/html-pages/lists-page';
 import { myFeedPage, myFeedParams } from '../read-side/html-pages/my-feed-page';
 import { paperActivityPage } from '../read-side/html-pages/paper-activity-page';
+import { saveArticleFormPage } from '../read-side/html-pages/save-article-form-page';
 import { scietyFeedCodec, scietyFeedPage } from '../read-side/html-pages/sciety-feed-page';
 import { searchPage } from '../read-side/html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../read-side/html-pages/search-results-page';
