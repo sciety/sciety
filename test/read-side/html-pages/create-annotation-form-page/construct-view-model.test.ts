@@ -1,18 +1,18 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../src/html-pages/create-annotation-form-page/construct-view-model';
-import { ViewModel } from '../../../src/html-pages/create-annotation-form-page/view-model';
-import { List } from '../../../src/read-models/lists';
-import * as DE from '../../../src/types/data-error';
-import * as LOID from '../../../src/types/list-owner-id';
-import { TestFramework, createTestFramework } from '../../framework';
-import { arbitrarySanitisedHtmlFragment } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleDetails } from '../../third-parties/external-queries.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryCreateUserAccountCommand } from '../../write-side/commands/create-user-account-command.helper';
+import { List } from '../../../../src/read-models/lists';
+import { constructViewModel } from '../../../../src/read-side/html-pages/create-annotation-form-page/construct-view-model';
+import { ViewModel } from '../../../../src/read-side/html-pages/create-annotation-form-page/view-model';
+import * as DE from '../../../../src/types/data-error';
+import * as LOID from '../../../../src/types/list-owner-id';
+import { TestFramework, createTestFramework } from '../../../framework';
+import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryArticleDetails } from '../../../third-parties/external-queries.helper';
+import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryListId } from '../../../types/list-id.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;

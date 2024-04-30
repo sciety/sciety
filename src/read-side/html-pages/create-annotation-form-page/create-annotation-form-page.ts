@@ -5,8 +5,8 @@ import { Params } from './params';
 import { renderPage } from './render-page';
 import { toErrorPage } from './to-error-page';
 import { UnrecoverableError } from './view-model';
-import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
-import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
+import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { HtmlPage, toHtmlPage } from '../html-page';
 
 type CreateAnnotationFormPage = (dependencies: Dependencies)
 => (params: Params, unrecoverableError?: UnrecoverableError)

@@ -5,14 +5,14 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ViewModel, UnrecoverableError } from './view-model';
-import { Queries } from '../../read-models';
-import { ExternalQueries } from '../../third-parties';
-import { ArticleId } from '../../types/article-id';
-import { DataError } from '../../types/data-error';
-import * as DE from '../../types/data-error';
-import * as EDOI from '../../types/expression-doi';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { ListId } from '../../types/list-id';
+import { Queries } from '../../../read-models';
+import { ExternalQueries } from '../../../third-parties';
+import { ArticleId } from '../../../types/article-id';
+import { DataError } from '../../../types/data-error';
+import * as DE from '../../../types/data-error';
+import * as EDOI from '../../../types/expression-doi';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { ListId } from '../../../types/list-id';
 
 export type Dependencies = Queries & ExternalQueries;
 
