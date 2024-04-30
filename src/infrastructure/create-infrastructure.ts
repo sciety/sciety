@@ -27,6 +27,8 @@ import { addArticleToListCommandHandler } from '../write-side/command-handlers/a
 
 type Dependencies = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
+  useStubAdapters: boolean,
+  useStubAvatars: boolean,
 };
 
 type DatabaseConnectionPoolAndLogger = { pool: Pool, logger: Logger };
@@ -112,13 +114,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
       };
 
-      if (process.env.USE_STUB_ADAPTERS === 'true') {
+      if (dependencies.useStubAdapters) {
         return {
           ...allAdapters,
           ...stubAdapters,
         };
       }
-      if (process.env.USE_STUB_AVATARS === 'true') {
+      if (dependencies.useStubAvatars) {
         return {
           ...allAdapters,
           fetchUserAvatarUrl: stubAdapters.fetchUserAvatarUrl,

@@ -52,6 +52,8 @@ const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async ()
 void pipe(
   createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
+    useStubAdapters: process.env.USE_STUB_ADAPTERS === 'true',
+    useStubAvatars: process.env.USE_STUB_AVATARS === 'true',
     logLevel: process.env.LOG_LEVEL ?? defaultLogLevel,
     prettyLog: !!process.env.PRETTY_LOG,
   }),
