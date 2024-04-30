@@ -12,6 +12,7 @@ services:
       APP_SECRET: 'secret'
       CACHE_HOST: 'cache'
       USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
+      USE_STUB_AVATARS: '${USE_STUB_AVATARS:-false}'
       USE_STUB_LOGIN: '${USE_STUB_LOGIN:-false}'
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'

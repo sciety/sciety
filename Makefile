@@ -57,6 +57,7 @@ jest-test:
 
 backstop-test: export TARGET = fast
 backstop-test: export USE_STUB_ADAPTERS = true
+backstop-test: export USE_STUB_AVATARS = true
 backstop-test: export USE_STUB_LOGIN = true
 backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: export COMPOSE_PROJECT_NAME=sciety-test
@@ -144,6 +145,7 @@ prod-sql:
 
 taiko: export TARGET = fast
 taiko: export USE_STUB_ADAPTERS = true
+taiko: export USE_STUB_AVATARS = true
 taiko: export USE_STUB_LOGIN = true
 taiko: export DISPLAY_LAST_SERVER_STARTUP = false
 taiko: node_modules clean-db build
