@@ -25,7 +25,7 @@ import {
 } from '../write-side/command-handlers';
 import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 
-type Dependencies = LoggerConfig & {
+type InfrastructureConfig = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
   useStubAdapters: boolean,
   useStubAvatars: boolean,
@@ -46,10 +46,12 @@ const createEventsTable = ({ pool }: DatabaseConnectionPoolAndLogger) => TE.tryC
   identity,
 );
 
-export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<unknown, CollectedPorts> => pipe(
+export const createInfrastructure = (
+  config: InfrastructureConfig,
+): TE.TaskEither<unknown, CollectedPorts> => pipe(
   {
     pool: new Pool(),
-    logger: createLogger(dependencies),
+    logger: createLogger(config),
   },
   TE.right,
   TE.map((adapters) => {
@@ -95,7 +97,11 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
 
       const redisClient = await createRedisClient(partialAdapters.logger);
 
-      const externalQueries = instantiate(partialAdapters.logger, dependencies.crossrefApiBearerToken, redisClient);
+      const externalQueries = instantiate(
+        partialAdapters.logger,
+        config.crossrefApiBearerToken,
+        redisClient,
+      );
 
       const collectedAdapters = {
         ...queries,
@@ -114,13 +120,13 @@ export const createInfrastructure = (dependencies: Dependencies): TE.TaskEither<
         commitEvents: commitEventsWithoutListeners,
       };
 
-      if (dependencies.useStubAdapters) {
+      if (config.useStubAdapters) {
         return {
           ...allAdapters,
           ...stubAdapters,
         };
       }
-      if (dependencies.useStubAvatars) {
+      if (config.useStubAvatars) {
         return {
           ...allAdapters,
           fetchUserAvatarUrl: stubAdapters.fetchUserAvatarUrl,
