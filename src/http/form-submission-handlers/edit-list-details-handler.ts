@@ -1,16 +1,17 @@
 import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
+import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { validateCommandShape } from './validate-command-shape';
 import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
-type Dependencies = CheckUserOwnsListDependencies & GetLoggedInScietyUserDependencies & {
+type Dependencies = CheckUserOwnsListDependencies & EnsureUserIsLoggedInDependencies & {
   editListDetails: EditListDetails,
   logger: Logger,
 };
@@ -27,16 +28,12 @@ const handleCommand = (dependencies: Dependencies) => (command: EditListDetailsC
 );
 
 export const editListDetailsHandler = (dependencies: Dependencies): Middleware => async (context) => {
+  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
+  if (O.isNone(loggedInUser)) {
+    return;
+  }
   await pipe(
     {
-      userDetails: pipe(
-        getLoggedInScietyUser(dependencies, context),
-        E.fromOption(() => ({
-          message: 'No authenticated user',
-          payload: { formBody: context.request.body },
-          errorType: 'codec-failed' as const,
-        })),
-      ),
       command: pipe(
         context.request.body,
         validateCommandShape(editListDetailsCommandCodec),
@@ -44,13 +41,13 @@ export const editListDetailsHandler = (dependencies: Dependencies): Middleware =
     },
     sequenceS(E.Apply),
     TE.fromEither,
-    TE.chainFirstEitherKW(({ command, userDetails }) => (
-      checkUserOwnsList(dependencies, command.listId, userDetails.id)
+    TE.chainFirstEitherKW(({ command }) => (
+      checkUserOwnsList(dependencies, command.listId, loggedInUser.value.id)
     )),
-    TE.chainW(({ command, userDetails }) => pipe(
+    TE.chainW(({ command }) => pipe(
       command,
       handleCommand(dependencies),
-      TE.map(() => userDetails),
+      TE.map(() => loggedInUser.value),
     )),
     TE.match(
       (error: { errorType?: string, message: string, payload: Payload }) => {
