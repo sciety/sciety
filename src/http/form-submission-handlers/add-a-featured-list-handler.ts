@@ -19,19 +19,23 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     if (O.isNone(loggedInUser)) {
       return;
     }
-    const command = decodeFormSubmission(
+    const formBody = decodeFormSubmission(
       dependencies,
       context,
       promoteListCommandCodec,
       loggedInUser.value.id,
     );
-    if (E.isLeft(command)) {
+    if (E.isLeft(formBody)) {
       return;
     }
+    const command = {
+      forGroup: formBody.right.forGroup,
+      listId: formBody.right.listId,
+    };
 
     await pipe(
       dependencies.getAllEvents,
-      T.map(listPromotion.create(command.right)),
+      T.map(listPromotion.create(command)),
       TE.chainW(dependencies.commitEvents),
     )();
 
