@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { sortByDefaultListOrdering } from '../../../../html-pages/sort-by-default-list-ordering';
 import { Queries } from '../../../../read-models';
 import { List } from '../../../../read-models/lists';
 import * as DE from '../../../../types/data-error';
@@ -11,6 +10,7 @@ import {
   paginate,
   constructDefaultPaginationControls,
 } from '../../shared-components/pagination';
+import { sortByDefaultListOrdering } from '../../sort-by-default-list-ordering';
 import { Params } from '../params';
 import { ViewModel } from '../view-model';
 

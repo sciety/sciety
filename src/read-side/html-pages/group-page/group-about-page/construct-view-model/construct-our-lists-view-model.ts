@@ -2,10 +2,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { sortByDefaultListOrdering } from '../../../../../html-pages/sort-by-default-list-ordering';
 import { List } from '../../../../../read-models/lists';
 import { Group } from '../../../../../types/group';
 import * as LOID from '../../../../../types/list-owner-id';
+import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
 import { ViewModel } from '../view-model';
 
 const maxLists = 3;
