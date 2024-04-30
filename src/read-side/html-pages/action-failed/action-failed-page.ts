@@ -12,8 +12,6 @@ type ActionFailedPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
 const actionFailedErrorTypeCodec = t.literal('codec-failed');
 
-export type ActionFailedErrorType = t.TypeOf<typeof actionFailedErrorTypeCodec>;
-
 export const actionFailedPageParamsCodec = t.type({
   errorType: tt.optionFromNullable(actionFailedErrorTypeCodec),
 });
