@@ -1,5 +1,3 @@
-import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -28,23 +26,18 @@ const handleCommand = (dependencies: Dependencies) => (command: EditListDetailsC
 );
 
 export const editListDetailsHandler = (dependencies: Dependencies): Middleware => async (context) => {
-  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
+  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to edit a list.');
   if (O.isNone(loggedInUser)) {
     return;
   }
   await pipe(
-    {
-      command: pipe(
-        context.request.body,
-        validateCommandShape(editListDetailsCommandCodec),
-      ),
-    },
-    sequenceS(E.Apply),
+    context.request.body,
+    validateCommandShape(editListDetailsCommandCodec),
     TE.fromEither,
-    TE.chainFirstEitherKW(({ command }) => (
+    TE.chainFirstEitherKW((command) => (
       checkUserOwnsList(dependencies, command.listId, loggedInUser.value.id)
     )),
-    TE.chainW(({ command }) => pipe(
+    TE.chainW((command) => pipe(
       command,
       handleCommand(dependencies),
       TE.map(() => loggedInUser.value),
