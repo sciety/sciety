@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from './authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from './detect-client-classification';
 import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
@@ -15,13 +15,13 @@ import { standardPageLayout } from '../read-side/html-pages/shared-components/st
 import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 
 const constructAndSendHtmlResponse = (
-  adapters: GetLoggedInScietyUserPorts,
+  dependencies: GetLoggedInScietyUserDependencies,
   pageLayout: PageLayout,
   context: ParameterizedContext,
 ) => (input: E.Either<ErrorPageBodyViewModel, HtmlPage>) => pipe(
   input,
   constructHtmlResponse(
-    getLoggedInScietyUser(adapters, context),
+    getLoggedInScietyUser(dependencies, context),
     pageLayout,
     detectClientClassification(context),
   ),
@@ -29,7 +29,7 @@ const constructAndSendHtmlResponse = (
 );
 
 export const pageHandler = (
-  adapters: GetLoggedInScietyUserPorts,
+  dependencies: GetLoggedInScietyUserDependencies,
   handler: ConstructPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {
@@ -40,7 +40,7 @@ export const pageHandler = (
       ...context.state,
     },
     (partialParams) => pipe(
-      getLoggedInScietyUser(adapters, context),
+      getLoggedInScietyUser(dependencies, context),
       O.matchW(
         () => ({
           ...partialParams,
@@ -55,11 +55,11 @@ export const pageHandler = (
     handler,
   )();
   if (E.isRight(input)) {
-    constructAndSendHtmlResponse(adapters, pageLayout, context)(E.right(input.right));
+    constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.right(input.right));
   } else {
     switch (input.left.tag) {
       case 'error-page-body-view-model':
-        constructAndSendHtmlResponse(adapters, pageLayout, context)(E.left(input.left));
+        constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.left(input.left));
         break;
       case 'redirect-target':
         sendRedirect(context, input.left);

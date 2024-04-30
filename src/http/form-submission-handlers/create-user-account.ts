@@ -7,7 +7,7 @@ import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandDep
 import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
 import { createUserAccountFormPageLayout, renderFormPage } from '../../read-side/html-pages/create-user-account-form-page';
 import {
-  Ports as GetLoggedInScietyUserDependencies, getLoggedInScietyUser,
+  Dependencies as GetLoggedInScietyUserDependencies, getLoggedInScietyUser,
 } from '../authentication-and-logging-in-of-sciety-users';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
 import { detectClientClassification } from '../detect-client-classification';

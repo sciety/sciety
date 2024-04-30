@@ -8,7 +8,7 @@ import { validateCommandShape } from './validate-command-shape';
 import { Payload } from '../../infrastructure/logger';
 import { EditListDetails, Logger } from '../../shared-ports';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
 type Dependencies = CheckUserOwnsListDependencies & GetLoggedInScietyUserDependencies & {
   editListDetails: EditListDetails,

@@ -8,7 +8,7 @@ import { CreateList, Logger } from '../../shared-ports';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { CreateListCommand } from '../../write-side/commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
 type Dependencies = GetLoggedInScietyUserDependencies & {
   logger: Logger,

@@ -13,7 +13,7 @@ import * as GroupId from '../../types/group-id';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { followCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
 export const groupProperty = 'groupid';

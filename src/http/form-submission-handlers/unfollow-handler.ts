@@ -7,7 +7,7 @@ import { Logger } from '../../shared-ports';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { unfollowCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
 type Dependencies = GetLoggedInScietyUserDependencies & DependenciesForCommands & {
   logger: Logger,

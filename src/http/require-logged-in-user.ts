@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from './authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from './authentication-and-logging-in-of-sciety-users';
 
 export const requireLoggedInUser = (
-  adapters: GetLoggedInScietyUserPorts,
+  dependencies: GetLoggedInScietyUserDependencies,
 ): Middleware => async (context, next) => {
   await pipe(
-    getLoggedInScietyUser(adapters, context),
+    getLoggedInScietyUser(dependencies, context),
     O.match(
       async () => { context.redirect('/log-in'); },
       async () => { await next(); },

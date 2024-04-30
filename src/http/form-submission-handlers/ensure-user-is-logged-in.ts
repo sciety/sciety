@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
 import { Logger } from '../../shared-ports';
 import { UserDetails } from '../../types/user-details';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendDefaultErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
 export type Dependencies = GetLoggedInScietyUserDependencies

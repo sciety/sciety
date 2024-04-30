@@ -9,7 +9,7 @@ import { Logger } from '../../shared-ports';
 import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
 type Dependencies = DependenciesForCommands & CheckUserOwnsListDependencies & GetLoggedInScietyUserDependencies & {
   logger: Logger,

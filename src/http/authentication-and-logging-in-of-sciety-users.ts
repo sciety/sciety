@@ -27,7 +27,7 @@ export const authenticateWithUserId = (
   );
 };
 
-export type Ports = Pick<Queries, 'lookupUser'>;
+export type Dependencies = Pick<Queries, 'lookupUser'>;
 
 export const getAuthenticatedUserIdFromContext = (
   context: ParameterizedContext,
@@ -38,8 +38,11 @@ export const getAuthenticatedUserIdFromContext = (
   O.map((contextWithPassportUser) => contextWithPassportUser.state.user.id),
 );
 
-export const getLoggedInScietyUser = (adapters: Ports, context: ParameterizedContext): O.Option<UserDetails> => pipe(
+export const getLoggedInScietyUser = (
+  dependencies: Dependencies,
+  context: ParameterizedContext,
+): O.Option<UserDetails> => pipe(
   context,
   getAuthenticatedUserIdFromContext,
-  O.chain((id) => adapters.lookupUser(id)),
+  O.chain((id) => dependencies.lookupUser(id)),
 );
