@@ -7,9 +7,9 @@ import { Logger } from '../../shared-ports';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { unfollowCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
-type Ports = GetLoggedInScietyUserPorts & DependenciesForCommands & {
+type Dependencies = GetLoggedInScietyUserDependencies & DependenciesForCommands & {
   logger: Logger,
 };
 
@@ -19,7 +19,7 @@ const requestCodec = t.type({
   }),
 });
 
-export const unfollowHandler = (dependencies: Ports): Middleware => async (context, next) => {
+export const unfollowHandler = (dependencies: Dependencies): Middleware => async (context, next) => {
   await pipe(
     context.request,
     requestCodec.decode,

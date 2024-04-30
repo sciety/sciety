@@ -5,14 +5,12 @@ import { ListId } from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 
-export type Ports = {
-  lookupList: Queries['lookupList'],
-};
+export type Dependencies = Queries;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const checkUserOwnsList = (adapters: Ports, listId: ListId, userId: UserId) => pipe(
+export const checkUserOwnsList = (dependencies: Dependencies, listId: ListId, userId: UserId) => pipe(
   listId,
-  adapters.lookupList,
+  dependencies.lookupList,
   E.fromOption(() => ({
     message: 'List id not found',
     payload: { listId, userId },

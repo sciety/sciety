@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
+import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Logger } from '../../shared-ports';
@@ -19,7 +19,7 @@ import { DependenciesForCommands } from '../../write-side/dependencies-for-comma
 export const articleIdFieldName = 'articleid';
 
 type Dependencies =
-  CheckUserOwnsListPorts &
+  CheckUserOwnsListDependencies &
   EnsureUserIsLoggedInDependencies &
   DependenciesForCommands &
   DecodeFormSubmissionDependencies &

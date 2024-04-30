@@ -4,24 +4,24 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
-import { checkUserOwnsList, Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
+import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
 import { Logger } from '../../shared-ports';
 import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
-type Ports = DependenciesForCommands & CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & {
+type Dependencies = DependenciesForCommands & CheckUserOwnsListDependencies & GetLoggedInScietyUserDependencies & {
   logger: Logger,
 };
 
-const logCodecError = (dependencies: Ports, errors: t.Errors) => pipe(
+const logCodecError = (dependencies: Dependencies, errors: t.Errors) => pipe(
   errors,
   PR.failure,
   (fails) => dependencies.logger('error', 'invalid remove article from list form command', { fails }),
 );
 
-const logCodecSuccess = (dependencies: Ports, command: RemoveArticleFromListCommand) => {
+const logCodecSuccess = (dependencies: Dependencies, command: RemoveArticleFromListCommand) => {
   dependencies.logger('info', 'received remove article from list form command', { command });
 };
 
@@ -32,7 +32,7 @@ const requestCodec = t.type({
   }),
 });
 
-export const removeArticleFromListHandler = (dependencies: Ports): Middleware => async (context) => {
+export const removeArticleFromListHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const user = getLoggedInScietyUser(dependencies, context);
   const formRequest = requestCodec.decode(context.request);
   if (E.isLeft(formRequest)) {

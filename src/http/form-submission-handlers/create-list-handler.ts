@@ -8,16 +8,16 @@ import { CreateList, Logger } from '../../shared-ports';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { CreateListCommand } from '../../write-side/commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
-type Ports = GetLoggedInScietyUserPorts & {
+type Dependencies = GetLoggedInScietyUserDependencies & {
   logger: Logger,
   createList: CreateList,
 };
 
-export const createListHandler = (adapters: Ports): Middleware => async (context) => {
+export const createListHandler = (dependencies: Dependencies): Middleware => async (context) => {
   await pipe(
-    getLoggedInScietyUser(adapters, context),
+    getLoggedInScietyUser(dependencies, context),
     O.map((userDetails) => userDetails.id),
     E.fromOption(() => ({
       message: 'No authenticated user',
@@ -33,7 +33,7 @@ export const createListHandler = (adapters: Ports): Middleware => async (context
     })),
     TE.chainW((command) => pipe(
       command,
-      adapters.createList,
+      dependencies.createList,
       TE.bimap(
         (errorMessage) => ({
           message: 'Command handler failed',
@@ -46,7 +46,7 @@ export const createListHandler = (adapters: Ports): Middleware => async (context
     )),
     TE.match(
       (error: { errorType?: string, message: string, payload: Payload }) => {
-        adapters.logger('error', error.message, error.payload);
+        dependencies.logger('error', error.message, error.payload);
         context.redirect('back');
       },
       (listId) => {

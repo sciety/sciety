@@ -13,17 +13,17 @@ import * as GroupId from '../../types/group-id';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { followCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Ports as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
 export const groupProperty = 'groupid';
 
-type Ports = GetLoggedInScietyUserPorts & DependenciesForCommands & SendErrorHtmlResponseDependencies & {
+type Dependencies = GetLoggedInScietyUserDependencies & DependenciesForCommands & SendErrorHtmlResponseDependencies & {
   logger: Logger,
   getGroup: Queries['getGroup'],
 };
 
-const validate = (dependencies: Ports) => (groupId: GroupId.GroupId) => pipe(
+const validate = (dependencies: Dependencies) => (groupId: GroupId.GroupId) => pipe(
   dependencies.getGroup(groupId),
   E.fromOption(() => DE.notFound),
   E.map((group) => ({
@@ -37,7 +37,7 @@ const requestCodec = t.type({
   }),
 });
 
-export const followHandler = (dependencies: Ports): Middleware => async (context, next) => {
+export const followHandler = (dependencies: Dependencies): Middleware => async (context, next) => {
   await pipe(
     context.request,
     requestCodec.decode,
