@@ -10,5 +10,6 @@ export const constructViewModel = (dependencies: Dependencies) => (groupSlug: Pa
   E.fromOption(() => 'no-such-group' as const),
   E.map((group) => ({
     pageHeading: `Add a featured list for ${group.name}`,
+    groupId: group.id,
   })),
 );
