@@ -1,4 +1,3 @@
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Logger } from '../../shared-ports';
@@ -20,10 +19,5 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dep
   input,
   annotateArticleInListCommandCodec.decode,
   TE.fromEither,
-  TE.chainFirstTaskK(
-    (command) => T.of(
-      dependencies.logger('debug', 'Received CreateAnnotation command', { command }),
-    ),
-  ),
   TE.chainW(createCommandHandler(dependencies, listResource.annotate)),
 );
