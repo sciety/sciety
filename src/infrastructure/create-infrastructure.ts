@@ -18,7 +18,6 @@ import { dispatcher } from '../read-models';
 import { Logger } from '../shared-ports';
 import { instantiate } from '../third-parties';
 import {
-  editListDetailsCommandHandler,
   createListCommandHandler,
   recordSubjectAreaCommandHandler,
   removeArticleFromListCommandHandler,
@@ -109,7 +108,6 @@ export const createInfrastructure = (
         ...partialAdapters,
         getAllEvents,
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
-        editListDetails: editListDetailsCommandHandler(commandHandlerAdapters),
         createList: createListCommandHandler(commandHandlerAdapters),
         addArticleToList: addArticleToListCommandHandler(commandHandlerAdapters),
         removeArticleFromList: removeArticleFromListCommandHandler(commandHandlerAdapters),

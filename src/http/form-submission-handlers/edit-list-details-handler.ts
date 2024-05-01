@@ -7,17 +7,18 @@ import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from
 import { decodeFormSubmission } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Payload } from '../../infrastructure/logger';
-import { EditListDetails, Logger } from '../../shared-ports';
+import { Logger } from '../../shared-ports';
+import { editListDetailsCommandHandler } from '../../write-side/command-handlers';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
-type Dependencies = CheckUserOwnsListDependencies & EnsureUserIsLoggedInDependencies & {
-  editListDetails: EditListDetails,
+type Dependencies = CheckUserOwnsListDependencies & EnsureUserIsLoggedInDependencies & DependenciesForCommands & {
   logger: Logger,
 };
 
 const handleCommand = (dependencies: Dependencies) => (command: EditListDetailsCommand) => pipe(
   command,
-  dependencies.editListDetails,
+  editListDetailsCommandHandler(dependencies),
   TE.mapLeft((errorMessage) => ({
     message: 'Command handler failed',
     payload: {
