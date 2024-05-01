@@ -23,7 +23,7 @@ import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 import { UserId } from '../../types/user-id';
-import { annotateArticleInListCommandCodec } from '../../write-side/commands';
+import { AnnotateArticleInListCommand, annotateArticleInListCommandCodec } from '../../write-side/commands';
 import { detectClientClassification } from '../detect-client-classification';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 import { sendHtmlResponse } from '../send-html-response';
@@ -68,7 +68,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
   if (O.isNone(loggedInUser)) {
     return;
   }
-  const command = decodeFormSubmission(
+  const command: E.Either<unknown, AnnotateArticleInListCommand> = decodeFormSubmission(
     dependencies,
     context,
     annotateArticleInListCommandCodec,
