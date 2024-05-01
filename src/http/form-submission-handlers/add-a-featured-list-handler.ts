@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
@@ -11,6 +12,7 @@ import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies 
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import * as listPromotion from '../../write-side/resources/list-promotion';
+import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
 const formBodyCodec = t.intersection([
   promoteListCommandCodec,
@@ -42,12 +44,17 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
       listId: formBody.right.listId,
     };
 
-    await pipe(
+    const commandResult = await pipe(
       dependencies.getAllEvents,
       T.map(listPromotion.create(command)),
       TE.chainW(dependencies.commitEvents),
     )();
 
-    context.redirect(formBody.right.successRedirectPath);
+    if (E.isRight(commandResult)) {
+      context.redirect(formBody.right.successRedirectPath);
+      return;
+    }
+    dependencies.logger('error', 'Command execution failed', { command });
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'An unexpected error occurred.');
   }
 };
