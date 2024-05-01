@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Logger } from '../../shared-ports';
 import { CommandResult } from '../../types/command-result';
+import { createCommandHandler } from '../../write-side/command-handlers/create-command-handler';
 import { annotateArticleInListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import * as listResource from '../../write-side/resources/list';
@@ -24,9 +25,5 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dep
       dependencies.logger('debug', 'Received CreateAnnotation command', { command }),
     ),
   ),
-  TE.chainW((command) => pipe(
-    dependencies.getAllEvents,
-    T.map(listResource.annotate(command)),
-  )),
-  TE.chainW(dependencies.commitEvents),
+  TE.chainW(createCommandHandler(dependencies, listResource.annotate)),
 );
