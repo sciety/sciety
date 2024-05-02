@@ -1,0 +1,14 @@
+@use 'button';
+@use 'card';
+
+.supplementary-card {
+  @include card.basics();
+}
+
+.supplementary-card__title {
+  @include card.title();
+}
+
+.supplementary-card__button_link {
+  @include button.primary-link();
+}

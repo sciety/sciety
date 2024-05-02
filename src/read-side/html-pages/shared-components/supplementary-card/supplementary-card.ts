@@ -1,4 +1,4 @@
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 export const supplementaryCard = (title: string, content: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <article class="supplementary-card">
