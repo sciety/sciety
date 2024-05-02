@@ -20,6 +20,8 @@ const formBodyCodec = t.intersection([
   }),
 ]);
 
+const isUserAdminOfThisGroup = () => true;
+
 type Dependencies = EnsureUserIsLoggedInDependencies
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
 
@@ -38,19 +40,21 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     if (E.isLeft(formBody)) {
       return;
     }
-    const command = {
-      forGroup: formBody.right.forGroup,
-      listId: formBody.right.listId,
-    };
+    if (isUserAdminOfThisGroup()) {
+      const command = {
+        forGroup: formBody.right.forGroup,
+        listId: formBody.right.listId,
+      };
 
-    const commandResult = await pipe(
-      command,
-      executeResourceAction(dependencies, listPromotion.create),
-    )();
+      const commandResult = await pipe(
+        command,
+        executeResourceAction(dependencies, listPromotion.create),
+      )();
 
-    if (E.isRight(commandResult)) {
-      context.redirect(formBody.right.successRedirectPath);
-      return;
+      if (E.isRight(commandResult)) {
+        context.redirect(formBody.right.successRedirectPath);
+        return;
+      }
     }
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'An unexpected error occurred.');
   }
