@@ -2,6 +2,7 @@ import { htmlEscape } from 'escape-goat';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from './view-model';
+import { pathToSubmitSaveArticle } from '../../../http/form-submission-handlers/submit-paths';
 import { inputFieldNames } from '../../../standards/input-field-names';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
@@ -51,7 +52,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   <header class="page-header">
     <h1>${viewModel.pageHeading}</h1>
   </header>
-  <form class="standard-form" method="post" action="/save-article">
+  <form class="standard-form" method="post" action="${pathToSubmitSaveArticle()}">
     <input type="hidden" name="${inputFieldNames.articleId}" value="${viewModel.article.id.value}">
     ${renderDependingOnUserListCount(viewModel.userLists, viewModel.article.name)}
     <section>

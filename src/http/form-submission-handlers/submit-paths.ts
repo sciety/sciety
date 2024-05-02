@@ -7,3 +7,5 @@ export const pathToSubmitEditListDetails = (): string => '/forms/edit-list-detai
 export const pathToSubmitCreateList = (): string => '/forms/create-list';
 
 export const pathToSubmitCreateAnnotation = (): string => '/annotations/create-annotation';
+
+export const pathToSubmitSaveArticle = (): string => '/save-article';
