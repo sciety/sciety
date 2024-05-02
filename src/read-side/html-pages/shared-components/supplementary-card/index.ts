@@ -1,1 +1,1 @@
-export { supplementaryCard } from './supplementary-card';
+export { renderSupplementaryCard } from './render-supplementary-card';
