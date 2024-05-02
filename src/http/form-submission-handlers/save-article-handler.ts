@@ -9,14 +9,13 @@ import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Logger } from '../../shared-ports';
+import { inputFieldNames } from '../../standards';
 import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
 import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-
-export const articleIdFieldName = 'articleid';
 
 type Dependencies =
   CheckUserOwnsListDependencies &
@@ -28,8 +27,8 @@ type Dependencies =
   };
 
 const saveArticleHandlerFormBodyCodec = t.strict({
-  [articleIdFieldName]: articleIdCodec,
-  listId: listIdCodec,
+  [inputFieldNames.articleId]: articleIdCodec,
+  [inputFieldNames.listId]: listIdCodec,
   annotation: unsafeUserInputCodec,
 }, 'saveArticleHandlerFormBodyCodec');
 
@@ -49,8 +48,8 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
     return;
   }
 
-  const articleId = formBody.right[articleIdFieldName];
-  const listId = formBody.right.listId;
+  const articleId = formBody.right[inputFieldNames.articleId];
+  const listId = formBody.right[inputFieldNames.listId];
 
   const logEntry = checkUserOwnsList(dependencies, listId, loggedInUser.value.id);
   if (E.isLeft(logEntry)) {

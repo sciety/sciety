@@ -2,7 +2,7 @@ import { htmlEscape } from 'escape-goat';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from './view-model';
-import { articleIdFieldName } from '../../../http/form-submission-handlers/save-article-handler';
+import { inputFieldNames } from '../../../standards/input-field-names';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 
@@ -52,7 +52,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <h1>${viewModel.pageHeading}</h1>
   </header>
   <form class="standard-form" method="post" action="/save-article">
-    <input type="hidden" name="${articleIdFieldName}" value="${viewModel.article.id.value}">
+    <input type="hidden" name="${inputFieldNames.articleId}" value="${viewModel.article.id.value}">
     ${renderDependingOnUserListCount(viewModel.userLists, viewModel.article.name)}
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Why are you saving this article? <span class="standard-form__sub_heading_secondary_text">(optional)</span></label>
