@@ -38,36 +38,34 @@ type Dependencies = EnsureUserIsLoggedInDependencies
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
 
 export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware => async (context) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
-    if (O.isNone(loggedInUser)) {
-      return;
-    }
-    const formBody = decodeFormSubmission(
-      dependencies,
-      context,
-      formBodyCodec,
-      loggedInUser.value.id,
-    );
-    if (E.isLeft(formBody)) {
-      return;
-    }
-    if (isUserAdminOfThisGroup(loggedInUser.value.id, formBody.right.forGroup)) {
-      const command = {
-        forGroup: formBody.right.forGroup,
-        listId: formBody.right.listId,
-      };
-
-      const commandResult = await pipe(
-        command,
-        executeResourceAction(dependencies, listPromotion.create),
-      )();
-
-      if (E.isRight(commandResult)) {
-        context.redirect(formBody.right.successRedirectPath);
-        return;
-      }
-    }
-    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'An unexpected error occurred.');
+  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
+  if (O.isNone(loggedInUser)) {
+    return;
   }
+  const formBody = decodeFormSubmission(
+    dependencies,
+    context,
+    formBodyCodec,
+    loggedInUser.value.id,
+  );
+  if (E.isLeft(formBody)) {
+    return;
+  }
+  if (isUserAdminOfThisGroup(loggedInUser.value.id, formBody.right.forGroup)) {
+    const command = {
+      forGroup: formBody.right.forGroup,
+      listId: formBody.right.listId,
+    };
+
+    const commandResult = await pipe(
+      command,
+      executeResourceAction(dependencies, listPromotion.create),
+    )();
+
+    if (E.isRight(commandResult)) {
+      context.redirect(formBody.right.successRedirectPath);
+      return;
+    }
+  }
+  sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'An unexpected error occurred.');
 };
