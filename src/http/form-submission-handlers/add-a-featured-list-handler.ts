@@ -1,12 +1,13 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { createCommandHandler } from '../../write-side/command-handlers/create-command-handler';
+import { executeResourceAction } from '../../write-side/command-handlers/execute-resource-action';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import * as listPromotion from '../../write-side/resources/list-promotion';
@@ -42,7 +43,10 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
       listId: formBody.right.listId,
     };
 
-    const commandResult = await createCommandHandler(dependencies, listPromotion.create)(command)();
+    const commandResult = await pipe(
+      command,
+      executeResourceAction(dependencies, listPromotion.create),
+    )();
 
     if (E.isRight(commandResult)) {
       context.redirect(formBody.right.successRedirectPath);

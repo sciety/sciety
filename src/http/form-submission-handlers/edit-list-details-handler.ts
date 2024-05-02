@@ -8,7 +8,7 @@ import { decodeFormSubmission } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Payload } from '../../infrastructure/logger';
 import { Logger } from '../../shared-ports';
-import { createCommandHandler } from '../../write-side/command-handlers/create-command-handler';
+import { executeResourceAction } from '../../write-side/command-handlers/execute-resource-action';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import * as listResource from '../../write-side/resources/list';
@@ -19,7 +19,7 @@ type Dependencies = CheckUserOwnsListDependencies & EnsureUserIsLoggedInDependen
 
 const handleCommand = (dependencies: Dependencies) => (command: EditListDetailsCommand) => pipe(
   command,
-  createCommandHandler(dependencies, listResource.update),
+  executeResourceAction(dependencies, listResource.update),
   TE.mapLeft((errorMessage) => ({
     message: 'Command handler failed',
     payload: {
