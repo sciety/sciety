@@ -51,21 +51,23 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
   if (E.isLeft(formBody)) {
     return;
   }
-  if (isUserAdminOfThisGroup(loggedInUser.value.id, formBody.right.forGroup)) {
-    const command = {
-      forGroup: formBody.right.forGroup,
-      listId: formBody.right.listId,
-    };
+  if (!isUserAdminOfThisGroup(loggedInUser.value.id, formBody.right.forGroup)) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
+    return;
+  }
+  const command = {
+    forGroup: formBody.right.forGroup,
+    listId: formBody.right.listId,
+  };
 
-    const commandResult = await pipe(
-      command,
-      executeResourceAction(dependencies, listPromotion.create),
-    )();
+  const commandResult = await pipe(
+    command,
+    executeResourceAction(dependencies, listPromotion.create),
+  )();
 
-    if (E.isRight(commandResult)) {
-      context.redirect(formBody.right.successRedirectPath);
-      return;
-    }
+  if (E.isRight(commandResult)) {
+    context.redirect(formBody.right.successRedirectPath);
+    return;
   }
   sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'An unexpected error occurred.');
 };
