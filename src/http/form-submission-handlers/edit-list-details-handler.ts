@@ -8,9 +8,9 @@ import { decodeFormSubmission } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Payload } from '../../infrastructure/logger';
 import { Logger } from '../../shared-ports';
-import { executeResourceAction } from '../../write-side/command-handlers/execute-resource-action';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listResource from '../../write-side/resources/list';
 
 type Dependencies = CheckUserOwnsListDependencies & EnsureUserIsLoggedInDependencies & DependenciesForCommands & {

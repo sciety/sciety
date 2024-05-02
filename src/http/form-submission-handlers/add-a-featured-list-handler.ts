@@ -7,9 +7,9 @@ import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { executeResourceAction } from '../../write-side/command-handlers/execute-resource-action';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listPromotion from '../../write-side/resources/list-promotion';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
