@@ -7,6 +7,8 @@ import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
+import { GroupId } from '../../types/group-id';
+import { UserId } from '../../types/user-id';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
@@ -20,7 +22,8 @@ const formBodyCodec = t.intersection([
   }),
 ]);
 
-const isUserAdminOfThisGroup = () => true;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const isUserAdminOfThisGroup = (userId: UserId, groupId: GroupId) => true;
 
 type Dependencies = EnsureUserIsLoggedInDependencies
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
@@ -40,7 +43,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     if (E.isLeft(formBody)) {
       return;
     }
-    if (isUserAdminOfThisGroup()) {
+    if (isUserAdminOfThisGroup(loggedInUser.value.id, formBody.right.forGroup)) {
       const command = {
         forGroup: formBody.right.forGroup,
         listId: formBody.right.listId,
