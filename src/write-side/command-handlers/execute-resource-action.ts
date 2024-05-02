@@ -15,4 +15,8 @@ export const executeResourceAction = <C extends GenericCommand>(
     dependencies.getAllEvents,
     T.map(resourceAction(command)),
     TE.chainW(dependencies.commitEvents),
+    TE.mapLeft((errors) => {
+      dependencies.logger('error', 'Command execution failed', { command });
+      return errors;
+    }),
   );

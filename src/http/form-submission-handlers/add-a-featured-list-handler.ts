@@ -52,7 +52,6 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
       context.redirect(formBody.right.successRedirectPath);
       return;
     }
-    dependencies.logger('error', 'Command execution failed', { command });
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'An unexpected error occurred.');
   }
 };
