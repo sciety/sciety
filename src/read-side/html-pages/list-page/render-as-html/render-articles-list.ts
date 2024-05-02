@@ -6,6 +6,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import {
   ArticleCardWithControlsAndAnnotationViewModel, renderArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
+import { renderArticleList } from '../../shared-components/article-list';
 import {
   PaperActivityErrorCardViewModel, renderPaperActivityErrorCard,
 } from '../../shared-components/paper-activity-summary-card';
@@ -24,6 +25,6 @@ export const renderArticlesList: RenderArticlesList = (articles) => pipe(
     (articleCard) => renderArticleCardWithControlsAndAnnotation(articleCard),
   )),
   (listItems) => renderListItems(listItems),
-  (list) => `<ol class="article-list" role="list">${list}</ol>`,
+  (list) => renderArticleList(list),
   toHtmlFragment,
 );

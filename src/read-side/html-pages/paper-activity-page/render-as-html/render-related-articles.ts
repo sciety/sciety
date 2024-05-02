@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { renderListItems } from '../../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderArticleList } from '../../shared-components/article-list';
 import { renderAsHtml } from '../../shared-components/paper-activity-summary-card/render-as-html';
 import { ViewModel } from '../view-model';
 
@@ -17,9 +18,7 @@ export const renderRelatedArticles = (viewmodel: ViewModel): HtmlFragment => pip
       (listContent) => `
   <div id="relatedArticles">
     <h2 class="related-articles__header">Related articles</h2>
-    <ol class="article-list" role="list">
-      ${listContent}
-    </ol>
+    ${renderArticleList(listContent)}
   </div>
 `,
     ),
