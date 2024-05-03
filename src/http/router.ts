@@ -162,7 +162,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     `/articles/:expressionDoi(${doesNotBeginWithActivity})`,
     async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
+      context.status = StatusCodes.TEMPORARY_REDIRECT;
       context.redirect(constructPaperActivityPageHref(EDOI.fromValidatedString(context.params.expressionDoi)));
 
       await next();
