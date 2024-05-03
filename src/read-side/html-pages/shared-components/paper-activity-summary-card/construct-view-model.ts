@@ -30,7 +30,7 @@ const transformIntoCurationStatementViewModel = (
 
 const toErrorViewModel = (inputExpressionDoi: ExpressionDoi) => (error: DE.DataError) => ({
   inputExpressionDoi,
-  href: `/articles/${inputExpressionDoi}`,
+  href: constructPaperActivityPageHref(inputExpressionDoi),
   error,
 });
 
