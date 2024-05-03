@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 type ItemClass = string | undefined;
 

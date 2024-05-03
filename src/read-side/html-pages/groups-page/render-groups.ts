@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function';
-import { renderListItems } from '../../../shared-components/render-list-items';
 import { supplementaryInfo } from '../../../shared-components/supplementary-info';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { renderListItems } from '../shared-components/list-items';
 import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderSupplementaryCard } from '../shared-components/supplementary-card';
 

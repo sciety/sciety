@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { renderListItems } from '../../../../../shared-components/render-list-items';
 import { HtmlFragment } from '../../../../../types/html-fragment';
+import { renderListItems } from '../../../shared-components/list-items';
 import { renderListOfCards } from '../../../shared-components/list-of-cards';
 
 export const renderFollowList = (list: ReadonlyArray<HtmlFragment>): HtmlFragment => pipe(

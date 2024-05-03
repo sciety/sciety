@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderListItems } from '../../../shared-components/render-list-items';
 import * as DE from '../../../types/data-error';
 import * as EDOI from '../../../types/expression-doi';
 import { toHtmlFragment } from '../../../types/html-fragment';
@@ -12,6 +11,7 @@ import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../shared-components/article-card-with-controls-and-annotation';
 import { renderListCard } from '../shared-components/list-card';
+import { renderListItems } from '../shared-components/list-items';
 import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderPaginationControls } from '../shared-components/pagination';
 import { renderPaperActivityErrorCard } from '../shared-components/paper-activity-summary-card';

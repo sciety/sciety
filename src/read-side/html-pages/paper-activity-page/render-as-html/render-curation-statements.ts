@@ -2,9 +2,9 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { renderListItems } from '../../../../shared-components/render-list-items';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderLangAttribute } from '../../shared-components/lang-attribute';
+import { renderListItems } from '../../shared-components/list-items';
 import { ViewModel } from '../view-model';
 
 const renderGroupLogo = (curationStatement: ViewModel['curationStatements'][number]) => pipe(
