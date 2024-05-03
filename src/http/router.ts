@@ -170,6 +170,16 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
+    '/articles/meta/:expressionDoi(.+)',
+    async (context, next) => {
+      context.status = StatusCodes.TEMPORARY_REDIRECT;
+      context.redirect(constructPaperActivityPageHref(EDOI.fromValidatedString(context.params.expressionDoi)));
+
+      await next();
+    },
+  );
+
+  router.get(
     paperActivityPagePathSpecification,
     pageHandler(adapters, paperActivityPage(adapters), fullWidthPageLayout),
   );
