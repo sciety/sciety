@@ -235,7 +235,7 @@ load-test: clean-db build
 	${DOCKER_COMPOSE} restart app
 	scripts/wait-for-healthy.sh
 	drill --benchmark load-test/benchmark-get.yaml -s
-	drill --benchmark load-test/benchmark-post.yaml -s
+	# drill --benchmark load-test/benchmark-post.yaml -s  # only works with unreleased drill version built from source
 
 #------------------------------------------------------------------------------
 
