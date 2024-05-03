@@ -16,7 +16,6 @@ import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderPaginationControls } from '../shared-components/pagination';
 import { renderPaperActivityErrorCard } from '../shared-components/paper-activity-summary-card';
 import { renderAsHtml } from '../shared-components/paper-activity-summary-card/render-as-html';
-import { successBanner } from '../shared-components/success-banner';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',
@@ -225,8 +224,6 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
   renderListItems,
   renderListOfCards)}
 
-    <h3 class="_style-guide-heading">Success banner</h3>
-      ${successBanner('You done good.')}
     </div>
   `),
 });
