@@ -41,17 +41,21 @@ plan:
     request:
       url: /users/scietyHQ/following
 
+  - name: Group Feed
+    request:
+      url: /groups/elife
+
   - name: Group Lists
     request:
-      url: /groups/pci-zoology/lists
+      url: /groups/elife/lists
 
   - name: Groups About
     request:
-      url: /groups/pci-zoology/about
+      url: /groups/elife/about
 
   - name: Group Followers
     request:
-      url: /groups/pci-zoology/followers
+      url: /groups/elife/followers
 
   - name: List
     request:
