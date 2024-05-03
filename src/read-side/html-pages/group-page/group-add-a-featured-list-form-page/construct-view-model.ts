@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import * as jsonwebtoken from 'jsonwebtoken';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { ViewModel } from './view-model';
@@ -13,5 +14,11 @@ export const constructViewModel = (dependencies: Dependencies) => (groupSlug: Pa
     pageHeading: `Add a featured list for ${group.name}`,
     groupId: group.id,
     successRedirectPath: constructGroupPageHref(group),
+    authorizationToken: jsonwebtoken.sign({
+      command: 'list-promotion.create',
+      parameters: {
+        groupId: group.id,
+      },
+    }, process.env.APP_SECRET ?? 'a-secret'),
   })),
 );

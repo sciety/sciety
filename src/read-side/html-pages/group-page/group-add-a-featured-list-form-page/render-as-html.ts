@@ -14,6 +14,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <section>
       <input type="hidden" name="forGroup" value="${viewModel.groupId}">
       <input type="hidden" name="successRedirectPath" value="${viewModel.successRedirectPath}">
+      <input type="hidden" name="authorizationToken" value="${viewModel.authorizationToken}">
       <label for="listId" class="standard-form__sub_heading">List Id</label>
       <input type="text" id="listId" name="${inputFieldNames.listId}" value="">
     </section>
