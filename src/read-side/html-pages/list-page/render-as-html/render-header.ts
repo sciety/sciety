@@ -47,23 +47,27 @@ const renderListImage = (imageSrc: ViewModel['imageSrc']) => pipe(
   ),
 );
 
+const renderFrontMatter = (viewModel: ViewModel) => `
+  <div>
+    <h1>${htmlEscape(viewModel.name)}</h1>
+    <p class="page-header__subheading">
+      <img src="${viewModel.ownerAvatarSrc}" alt="" class="page-header__avatar">
+      <span>A list by <a href="${viewModel.ownerHref}">${htmlEscape(viewModel.ownerName)}</a></span>
+    </p>
+    <p class="page-header__description">${safelyRenderRawUserInput(viewModel.description)}</p>
+    <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.updatedAt)}</p>
+    <section class="list-page-actions">
+      ${renderEditDetailsLink(viewModel.editCapability, viewModel.editListDetailsHref)}
+      ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
+      ${renderSubscribeLink(viewModel.subscribeHref)}
+    </section>
+  </div>
+`;
+
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
   `<header class="page-header page-header--list">
     ${renderSuccessBanner(viewModel)}
-    <div>
-      <h1>${htmlEscape(viewModel.name)}</h1>
-        <p class="page-header__subheading">
-        <img src="${viewModel.ownerAvatarSrc}" alt="" class="page-header__avatar">
-        <span>A list by <a href="${viewModel.ownerHref}">${htmlEscape(viewModel.ownerName)}</a></span>
-        </p>
-      <p class="page-header__description">${safelyRenderRawUserInput(viewModel.description)}</p>
-      <p class="page-header__meta"><span class="visually-hidden">This list contains </span>${renderArticleCount(viewModel.articleCount)}${renderLastUpdated(viewModel.updatedAt)}</p>
-      <section class="list-page-actions">
-        ${renderEditDetailsLink(viewModel.editCapability, viewModel.editListDetailsHref)}
-        ${renderRelatedArticlesLink(viewModel.relatedArticlesLink)}
-        ${renderSubscribeLink(viewModel.subscribeHref)}
-      </section>
-    </div>
+    ${renderFrontMatter(viewModel)} 
     ${renderListImage(viewModel.imageSrc)}
   </header>`,
   toHtmlFragment,
