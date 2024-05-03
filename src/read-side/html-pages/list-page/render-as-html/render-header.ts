@@ -65,8 +65,9 @@ const renderFrontMatter = (viewModel: ViewModel) => `
 `;
 
 export const renderHeader = (viewModel: ViewModel): HtmlFragment => pipe(
-  `<header class="page-header page-header--list">
-    ${renderSuccessBanner(viewModel)}
+  `
+  ${renderSuccessBanner(viewModel)}
+  <header class="page-header page-header--list">
     ${renderFrontMatter(viewModel)} 
     ${renderListImage(viewModel.imageSrc)}
   </header>`,

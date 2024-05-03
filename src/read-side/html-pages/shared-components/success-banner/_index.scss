@@ -4,7 +4,7 @@
 
 .success-banner {
   border: settings.$border-width-wide solid settings.$colour-success;
-  margin-bottom: functions.px-to-rem(48px);
+  margin-top: functions.px-to-rem(16px);
 
   p {
     padding: functions.px-to-rem(settings.$default-form-gutter);
