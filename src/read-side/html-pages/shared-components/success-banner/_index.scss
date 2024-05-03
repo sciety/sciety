@@ -5,6 +5,7 @@
 .success-banner {
   border: settings.$border-width-wide solid settings.$colour-success;
   margin-top: functions.px-to-rem(16px);
+
   .sciety-grid-two-columns > & {
     grid-column: 1/-1;
   }
