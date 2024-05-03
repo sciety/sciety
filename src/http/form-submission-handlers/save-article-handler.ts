@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
@@ -16,6 +17,7 @@ import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-i
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
 type Dependencies =
   CheckUserOwnsListDependencies &
@@ -55,7 +57,7 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
   if (E.isLeft(logEntry)) {
     dependencies.logger('error', logEntry.left.message, logEntry.left.payload);
     dependencies.logger('error', 'saveArticleHandler failed', { error: logEntry.left });
-    context.redirect(`/articles/${articleId.value}`);
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
   }
 
