@@ -127,6 +127,13 @@
       ]
     },
     {
+      "label": "List page, with success banner",
+      "url": "http://sciety-test-app-1/lists/cbd478fe-3ff7-4125-ac9f-c94ff52ae0f7?success=true",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "Groups page",
       "url": "http://sciety-test-app-1/groups",
       "selectors": [
