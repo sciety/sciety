@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as jsonwebtoken from 'jsonwebtoken';
-import { Middleware } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { promoteListCommandCodec } from '../../write-side/commands';
@@ -22,10 +22,37 @@ const formBodyCodec = t.intersection([
   }),
 ]);
 
+type FormBody = t.TypeOf<typeof formBodyCodec>;
+
 const authorizationTokenCodec = t.strict({
   command: tt.NonEmptyString,
   parameters: t.record(t.string, t.string),
 });
+
+const isFormSubmissionIsAuthorized = (
+  dependencies: Dependencies,
+  context: ParameterizedContext,
+  formBody: FormBody,
+) => {
+  try {
+    const token = jsonwebtoken.verify(formBody.authorizationToken, process.env.APP_SECRET ?? 'a-secret', { complete: true });
+    // now check decoded contains the right authorization
+    const decoded = authorizationTokenCodec.decode(token.payload);
+    if (E.isLeft(decoded)) {
+      sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Authorization token cannot be understood.');
+      return false;
+    }
+    if (!(decoded.right.command === 'list-promotion.create' && decoded.right.parameters.groupId === formBody.forGroup)) {
+      dependencies.logger('warn', 'Authorization check in a form handler failed', { authorizationTokenPayload: decoded.right, formBody });
+      sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
+      return false;
+    }
+  } catch (error) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Authorization token failed verification.');
+    return false;
+  }
+  return true;
+};
 
 type Dependencies = EnsureUserIsLoggedInDependencies
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
@@ -44,21 +71,8 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
   if (E.isLeft(formBody)) {
     return;
   }
-  try {
-    const token = jsonwebtoken.verify(formBody.right.authorizationToken, process.env.APP_SECRET ?? 'a-secret', { complete: true });
-    // now check decoded contains the right authorization
-    const decoded = authorizationTokenCodec.decode(token.payload);
-    if (E.isLeft(decoded)) {
-      sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Authorization token cannot be understood.');
-      return;
-    }
-    if (!(decoded.right.command === 'list-promotion.create' && decoded.right.parameters.groupId === formBody.right.forGroup)) {
-      dependencies.logger('warn', 'Authorization check in a form handler failed', { authorizationTokenPayload: decoded.right, formBody: formBody.right });
-      sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
-      return;
-    }
-  } catch (error) {
-    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Authorization token failed verification.');
+
+  if (!isFormSubmissionIsAuthorized(dependencies, context, formBody.right)) {
     return;
   }
 
