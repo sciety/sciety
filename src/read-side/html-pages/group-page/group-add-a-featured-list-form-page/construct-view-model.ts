@@ -4,6 +4,7 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { ViewModel } from './view-model';
+import { Group } from '../../../../types/group';
 import { GroupId } from '../../../../types/group-id';
 import { UserId } from '../../../../types/user-id';
 import { constructGroupPageHref } from '../../../paths';
@@ -20,20 +21,22 @@ const isUserAdminOfThisGroup = (userId: UserId, groupId: GroupId) => (
   groupAdministratedBy[userId] === groupId
 );
 
-export const constructViewModel = (dependencies: Dependencies) => (params: Params): E.Either<'no-such-group', ViewModel> => pipe(
+const ensureUserIsAuthorized = (params: Params) => (group: Group): E.Either<'user-not-logged-in' | 'user-not-admin', { group: Group }> => pipe(
+  params.user,
+  E.fromOption(() => 'user-not-logged-in' as const),
+  E.filterOrElseW(
+    (user) => isUserAdminOfThisGroup(user.id, group.id),
+    () => 'user-not-admin' as const,
+  ),
+  E.map(() => ({ group })),
+);
+
+export const constructViewModel = (dependencies: Dependencies) => (params: Params): E.Either<'no-such-group' | 'user-not-logged-in' | 'user-not-admin', ViewModel> => pipe(
   params.slug,
   dependencies.getGroupBySlug,
   E.fromOption(() => 'no-such-group' as const),
-  E.chainW((group) => pipe(
-    params.user,
-    E.fromOption(() => 'user-not-logged-in' as const),
-    E.filterOrElseW(
-      (user) => isUserAdminOfThisGroup(user.id, group.id),
-      () => 'user-not-admin' as const,
-    ),
-    E.map((userId) => ({ group, userId })),
-  )),
-  E.map(({ group, userId }) => ({
+  E.chainW(ensureUserIsAuthorized(params)),
+  E.map(({ group }) => ({
     pageHeading: `Add a featured list for ${group.name}`,
     groupId: group.id,
     successRedirectPath: constructGroupPageHref(group),
