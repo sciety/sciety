@@ -7,7 +7,7 @@ import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { GroupId } from '../../types/group-id';
+import { GroupId, GroupIdFromStringCodec } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
@@ -36,6 +36,13 @@ const isUserAdminOfThisGroup = (userId: UserId, groupId: GroupId) => (
   groupAdministratedBy[userId] === groupId
 );
 
+const authorizationTokenCodec = t.strict({
+  command: tt.NonEmptyString,
+  parameters: t.strict({
+    groupId: GroupIdFromStringCodec,
+  }),
+});
+
 type Dependencies = EnsureUserIsLoggedInDependencies
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
 
@@ -54,9 +61,18 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     return;
   }
   try {
-    const decoded = jsonwebtoken.verify(formBody.right.authorizationToken, process.env.APP_SECRET ?? 'a-secret', { complete: true });
+    const token = jsonwebtoken.verify(formBody.right.authorizationToken, process.env.APP_SECRET ?? 'a-secret', { complete: true });
     // now check decoded contains the right authorization
-    console.log(decoded);
+    console.log(token.payload);
+    const decoded = authorizationTokenCodec.decode(token.payload);
+    if (E.isLeft(decoded)) {
+      sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Authorization token cannot be understood.');
+      return;
+    }
+    if (!(decoded.right.command === 'list-promotion.create' && decoded.right.parameters.groupId === formBody.right.forGroup)) {
+      sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
+      return;
+    }
   } catch (error) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Authorization token failed verification.');
     return;
