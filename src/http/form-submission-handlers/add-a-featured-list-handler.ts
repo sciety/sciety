@@ -54,7 +54,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     return;
   }
   try {
-    const decoded = jsonwebtoken.verify(formBody.right.authorizationToken, process.env.APP_SECRET ?? 'a-secret');
+    const decoded = jsonwebtoken.verify(formBody.right.authorizationToken, process.env.APP_SECRET ?? 'a-secret', { complete: true });
     // now check decoded contains the right authorization
     console.log(decoded);
   } catch (error) {
