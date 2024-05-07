@@ -14,11 +14,13 @@ import { DependenciesForCommands } from '../../write-side/dependencies-for-comma
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listPromotion from '../../write-side/resources/list-promotion';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
+import * as jsonwebtoken from 'jsonwebtoken';
 
 const formBodyCodec = t.intersection([
   promoteListCommandCodec,
   t.strict({
     successRedirectPath: tt.NonEmptyString,
+    authorizationToken: tt.NonEmptyString,
   }),
 ]);
 
@@ -51,6 +53,15 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
   if (E.isLeft(formBody)) {
     return;
   }
+  try {
+    const decoded = jsonwebtoken.verify(formBody.right.authorizationToken, process.env.APP_SECRET ?? 'a-secret');
+    // now check decoded contains the right authorization
+    console.log(decoded);
+  } catch (error) {
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Authorization token failed verification.');
+    return;
+  }
+  
   if (!isUserAdminOfThisGroup(loggedInUser.value.id, formBody.right.forGroup)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
