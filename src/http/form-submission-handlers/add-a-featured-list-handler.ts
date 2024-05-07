@@ -8,7 +8,6 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { GroupIdFromStringCodec } from '../../types/group-id';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
@@ -25,9 +24,7 @@ const formBodyCodec = t.intersection([
 
 const authorizationTokenCodec = t.strict({
   command: tt.NonEmptyString,
-  parameters: t.strict({
-    groupId: GroupIdFromStringCodec,
-  }),
+  parameters: t.record(t.string, t.string),
 });
 
 type Dependencies = EnsureUserIsLoggedInDependencies
