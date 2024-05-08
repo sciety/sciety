@@ -4,39 +4,24 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { StatusCodes } from 'http-status-codes';
-import { Logger } from '../../shared-ports';
-import { articleIdCodec } from '../../types/article-id';
-import { getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
-import { Ports as CheckUserOwnsListPorts } from './check-user-owns-list';
-import { listIdCodec } from '../../types/list-id';
-import { AddArticleToListCommand } from '../../write-side/commands';
-import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { UnsafeUserInput } from '../../types/unsafe-user-input';
-import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
-import { decodeAndLogFailures } from '../../third-parties/decode-and-log-failures';
-import * as LOID from '../../types/list-owner-id';
-import { UserId } from '../../types/user-id';
-import { rawUserInputCodec } from '../../read-side/raw-user-input';
-import { ValidationRecovery } from '../../html-pages/validation-recovery/validation-recovery';
-import { containsErrors } from '../../html-pages/validation-recovery/contains-errors';
-
-export const articleIdFieldName = 'articleid';
+import { Logger } from '../../../shared-ports';
+import { getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts } from '../../authentication-and-logging-in-of-sciety-users';
+import { Ports as CheckUserOwnsListPorts } from '../check-user-owns-list';
+import { AddArticleToListCommand } from '../../../write-side/commands';
+import { addArticleToListCommandHandler } from '../../../write-side/command-handlers';
+import { DependenciesForCommands } from '../../../write-side/dependencies-for-commands';
+import { UnsafeUserInput } from '../../../types/unsafe-user-input';
+import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-response';
+import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-failures';
+import * as LOID from '../../../types/list-owner-id';
+import { UserId } from '../../../types/user-id';
+import { containsErrors } from '../../../html-pages/validation-recovery/contains-errors';
+import { constructValidationRecovery } from './construct-validation-recovery';
+import { saveArticleFormBodyCodec, articleIdFieldName } from './form-body';
 
 type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
 };
-
-const userInvisibleFormFieldsCodec = t.strict({
-  [articleIdFieldName]: articleIdCodec,
-  listId: listIdCodec,
-});
-
-const userEditableFormFieldsCodec = t.strict({
-  annotation: rawUserInputCodec,
-});
-
-const saveArticleFormBodyCodec = t.intersection([userInvisibleFormFieldsCodec, userEditableFormFieldsCodec], 'saveArticleFormBodyCodec');
 
 const isAuthorised = (
   listOwnerId: LOID.ListOwnerId, userId: UserId,
@@ -80,16 +65,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  const validationRecovery: ValidationRecovery<t.TypeOf<typeof userEditableFormFieldsCodec>> = pipe(
-    {
-      annotation: {
-        userInput: formBody.right.annotation,
-        error: formBody.right.annotation.content.length > 4000 ? O.some('Your annotation may not exceed 4000 characters') : O.none,
-      },
-    },
-  );
-
-  if (containsErrors(validationRecovery)) {
+  if (containsErrors(constructValidationRecovery(formBody.right))) {
     context.redirect('back');
   }
 

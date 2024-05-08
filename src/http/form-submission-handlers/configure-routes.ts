@@ -8,7 +8,7 @@ import { removeArticleFromListHandler } from './remove-article-from-list-handler
 import { editListDetailsHandler } from './edit-list-details-handler';
 import { createListHandler } from './create-list-handler';
 import { createAnnotationHandler } from './create-annotation-handler';
-import { saveArticleHandler } from './save-article-handler';
+import { saveArticleHandler } from './save-article/save-article-handler';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
   router.post(
