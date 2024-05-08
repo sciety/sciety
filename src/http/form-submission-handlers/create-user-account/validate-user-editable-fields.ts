@@ -1,6 +1,7 @@
+import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
-import { CreateUserAccountFormRaw } from './codecs';
-import { ViewModel } from '../../../html-pages/create-user-account-form-page/view-model';
+import { CreateUserAccountFormRaw, createUserAccountFormCodec } from './codecs';
+import { ValidationRecovery } from '../../../html-pages/validation-recovery/validation-recovery';
 
 const validateFullName = (fullName: string) => {
   if (fullName.length === 0) {
@@ -30,7 +31,7 @@ const validateHandle = (handle: string) => {
 
 export const validateUserEditableFields = (
   input: CreateUserAccountFormRaw,
-): ViewModel => O.some({
+): ValidationRecovery<t.TypeOf<typeof createUserAccountFormCodec>> => ({
   fullName: {
     userInput: input.fullName,
     error: validateFullName(input.fullName.content),

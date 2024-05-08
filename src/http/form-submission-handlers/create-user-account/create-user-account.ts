@@ -8,9 +8,7 @@ import {
 } from '../../authentication-and-logging-in-of-sciety-users';
 import { createUserAccountFormPageLayout, renderFormPage } from '../../../html-pages/create-user-account-form-page';
 import { constructHtmlResponse } from '../../../html-pages/construct-html-response';
-import {
-  createUserAccountFormCodec, createUserAccountFormRawCodec,
-} from './codecs';
+import { createUserAccountFormRawCodec } from './codecs';
 import { redirectToAuthenticationDestination } from '../../authentication-destination';
 import { sendHtmlResponse } from '../../send-html-response';
 import { detectClientClassification } from '../../detect-client-classification';
@@ -24,6 +22,7 @@ import { ViewModel } from '../../../html-pages/create-user-account-form-page/vie
 import { userHandleAlreadyExists } from './user-handle-already-exists';
 import { validateUserEditableFields } from './validate-user-editable-fields';
 import { toCommand } from './to-command';
+import { containsErrors } from '../../../html-pages/validation-recovery/contains-errors';
 
 type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
@@ -53,10 +52,6 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     context.request.body,
     decodeAndLogFailures(dependencies.logger, createUserAccountFormRawCodec),
   );
-  const validatedFormFields = pipe(
-    context.request.body,
-    decodeAndLogFailures(dependencies.logger, createUserAccountFormCodec),
-  );
 
   if (O.isNone(authenticatedUserId)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'This step requires you do be logged in. Please try logging in again.');
@@ -68,13 +63,15 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     return;
   }
 
-  if (E.isLeft(validatedFormFields)) {
-    sendRecovery(validateUserEditableFields(formFields.right));
+  const validationResult = validateUserEditableFields(formFields.right);
+
+  if (containsErrors(validationResult)) {
+    sendRecovery(O.some(validationResult));
     return;
   }
 
   const commandResult = await pipe(
-    toCommand(validatedFormFields.right, authenticatedUserId.value),
+    toCommand(formFields.right, authenticatedUserId.value),
     createUserAccountCommandHandler(dependencies),
   )();
 

@@ -1,12 +1,13 @@
-import { CreateUserAccountForm } from './codecs';
+import { CreateUserAccountFormRaw } from './codecs';
 import { CreateUserAccountCommand } from '../../../write-side/commands';
+import { UserHandle } from '../../../types/user-handle';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
-export const toCommand = (inputs: CreateUserAccountForm, userId: CreateUserAccountCommand['userId']): CreateUserAccountCommand => (
+export const toCommand = (inputs: CreateUserAccountFormRaw, userId: CreateUserAccountCommand['userId']): CreateUserAccountCommand => (
   {
-    handle: inputs.handle,
-    displayName: inputs.fullName,
+    handle: inputs.handle.content as UserHandle,
+    displayName: inputs.fullName.content,
     userId,
     avatarUrl: defaultSignUpAvatarUrl,
   });
