@@ -1,1 +1,2 @@
-export { fathom, googleTagManager, googleTagManagerNoScript } from './analytics';
+export { googleTagManager, googleTagManagerNoScript } from './analytics';
+export { fathom } from './fathom';

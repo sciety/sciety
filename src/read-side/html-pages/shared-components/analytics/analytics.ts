@@ -63,10 +63,6 @@ const renderTagManagerNoScript = (tagManagerId: string) => `
   <!-- End Google Tag Manager (noscript) -->
 `;
 
-const renderFathomScript = (fathomId: string) => `
-  <script src="https://cdn.usefathom.com/script.js" data-site="${fathomId}" defer data-cookieconsent="ignore"></script>
-`;
-
 export const googleTagManager = (userId: O.Option<UserId>): HtmlFragment => pipe(
   process.env.GOOGLE_TAG_MANAGER_ID,
   O.fromNullable,
@@ -83,16 +79,6 @@ export const googleTagManagerNoScript = (): HtmlFragment => pipe(
   O.match(
     constant(''),
     renderTagManagerNoScript,
-  ),
-  toHtmlFragment,
-);
-
-export const fathom = (): HtmlFragment => pipe(
-  process.env.FATHOM_SITE_ID,
-  O.fromNullable,
-  O.match(
-    constant(''),
-    renderFathomScript,
   ),
   toHtmlFragment,
 );
