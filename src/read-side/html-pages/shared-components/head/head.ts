@@ -1,10 +1,10 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { fathom, googleTagManager } from './analytics';
-import { HtmlPageHead } from '../read-side/html-pages/html-page';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
-import { UserId } from '../types/user-id';
+import { fathom, googleTagManager } from '../../../../shared-components/analytics';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { UserId } from '../../../../types/user-id';
+import { HtmlPageHead } from '../../html-page';
 
 export type ClientClassification = {
   userAgent: string | undefined,
