@@ -19,8 +19,8 @@ import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-respons
 import { decodeAndLogFailures } from '../../third-parties/decode-and-log-failures';
 import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
-import { ValidationRecovery } from '../../html-pages/validation-recovery';
 import { rawUserInputCodec } from '../../read-side/raw-user-input';
+import { ValidationRecovery } from '../../html-pages/validation-recovery/validation-recovery';
 
 export const articleIdFieldName = 'articleid';
 

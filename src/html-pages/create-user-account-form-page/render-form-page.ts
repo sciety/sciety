@@ -4,7 +4,8 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
 import { ViewModel } from './view-model';
-import { renderErrorSummary } from '../render-error-summary';
+import { renderErrorSummary } from '../validation-recovery/render-error-summary';
+import { validationRecoveryTitlePrefix } from './validation-recovery-title-prefix';
 
 const renderFullNameInput = (recovery: ViewModel) => {
   const inputWithLegend = pipe(
@@ -60,15 +61,13 @@ const renderHandleInput = (viewModel: ViewModel) => {
   );
 };
 
-const prefixTitleWithErrorDuringValidationRecovery = (recovery: ViewModel, title: string) => `${O.isSome(recovery) ? 'Error: ' : ''}${title}`;
-
 export const renderFormPage = (
   recovery: ViewModel,
 ): HtmlPage => pipe(
   recovery,
   renderErrorSummary,
   (errorSummary) => toHtmlPage({
-    title: prefixTitleWithErrorDuringValidationRecovery(recovery, 'Sign up'),
+    title: validationRecoveryTitlePrefix(recovery, 'Sign up'),
     content: toHtmlFragment(`
       <div class="create-user-account-form-wrapper">
         <header class="page-header">
