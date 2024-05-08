@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { ColourSchemes } from '../../../../shared-components/colour-schemes';
+import { ColourSchemes } from './colour-schemes';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { UserDetails } from '../../../../types/user-details';
 import { UserHandle } from '../../../../types/user-handle';
