@@ -8,6 +8,8 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName, userEditableFormFieldsCodec } from '../../http/form-submission-handlers/save-article/form-body';
 import { ViewModel } from './view-model';
 import { validationRecoveryTitlePrefix } from '../validation-recovery/validation-recovery-title-prefix';
+import { renderErrorSummary } from '../validation-recovery/render-error-summary';
+import { ValidationRecovery } from '../validation-recovery/validation-recovery';
 
 const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   lists,
@@ -48,12 +50,13 @@ const renderDependingOnUserListCount = (userLists: ViewModel['userLists'], artic
   `;
 };
 
-type Recovery = O.Option<t.TypeOf<typeof userEditableFormFieldsCodec>>;
+type Recovery = O.Option<ValidationRecovery<t.TypeOf<typeof userEditableFormFieldsCodec>>>;
 
 export const renderAsHtml = (viewModel: ViewModel, recovery: Recovery): HtmlPage => toHtmlPage({
   title: validationRecoveryTitlePrefix(recovery, viewModel.pageHeading),
   content: toHtmlFragment(`
   <header class="page-header">
+    ${renderErrorSummary(recovery)}
     <h1>${viewModel.pageHeading}</h1>
   </header>
   <form class="standard-form" method="post" action="/save-article">
