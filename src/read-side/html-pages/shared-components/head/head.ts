@@ -2,14 +2,10 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ClientClassification } from './client-classification';
+import { DynamicHeadViewModel } from './dynamic-head-view-model';
 import { fathom, googleTagManager } from '../../../../shared-components/analytics';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { UserId } from '../../../../types/user-id';
-import { HtmlPageHead } from '../../html-page';
-
-export type DynamicHeadViewModel = HtmlPageHead & {
-  clientClassification: ClientClassification,
-};
 
 const renderWithClientClassification = (headTagContents: string, clientClassification: ClientClassification) => `
   <head data-user-agent="${htmlEscape(clientClassification.userAgent ?? '')}">
