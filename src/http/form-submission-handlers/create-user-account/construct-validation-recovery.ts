@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { CreateUserAccountFormRaw, createUserAccountFormCodec } from './codecs';
-import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
+import { ViewModel } from '../../../html-pages/create-user-account-form-page/view-model';
 
 const determineFullNameErrorMessage = (fullName: string) => {
   if (fullName.length === 0) {
@@ -32,7 +32,7 @@ const determineHandleErrorMessage = (handle: string) => {
 
 export const constructValidationRecovery = (
   input: CreateUserAccountFormRaw,
-): Recovery => O.some({
+): ViewModel => O.some({
   fullName: {
     userInput: input.fullName,
     error: pipe(

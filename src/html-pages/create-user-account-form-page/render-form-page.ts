@@ -3,10 +3,10 @@ import * as O from 'fp-ts/Option';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
-import { Recovery } from './recovery';
+import { ViewModel } from './view-model';
 import { renderErrorSummary } from '../render-error-summary';
 
-const renderFullNameInput = (recovery: Recovery) => {
+const renderFullNameInput = (recovery: ViewModel) => {
   const inputWithLegend = pipe(
     recovery,
     O.map((r) => r.fullName.userInput),
@@ -32,9 +32,9 @@ const renderFullNameInput = (recovery: Recovery) => {
   );
 };
 
-const renderHandleInput = (recovery: Recovery) => {
+const renderHandleInput = (viewModel: ViewModel) => {
   const inputWithLegend = pipe(
-    recovery,
+    viewModel,
     O.map((r) => r.handle.userInput),
     O.map(safelyReflectRawUserInputForEditing),
     O.getOrElse(() => ''),
@@ -46,7 +46,7 @@ const renderHandleInput = (recovery: Recovery) => {
   `,
   );
   return pipe(
-    recovery,
+    viewModel,
     O.chain((r) => r.handle.error),
     O.match(
       () => inputWithLegend,
@@ -60,10 +60,10 @@ const renderHandleInput = (recovery: Recovery) => {
   );
 };
 
-const prefixTitleWithErrorDuringValidationRecovery = (recovery: Recovery, title: string) => `${O.isSome(recovery) ? 'Error: ' : ''}${title}`;
+const prefixTitleWithErrorDuringValidationRecovery = (recovery: ViewModel, title: string) => `${O.isSome(recovery) ? 'Error: ' : ''}${title}`;
 
 export const renderFormPage = (
-  recovery: Recovery,
+  recovery: ViewModel,
 ): HtmlPage => pipe(
   recovery,
   renderErrorSummary,

@@ -20,8 +20,8 @@ import { DependenciesForCommands } from '../../../write-side/dependencies-for-co
 import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-response';
 import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-failures';
 import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
-import { Recovery } from '../../../html-pages/create-user-account-form-page/recovery';
-import { userHandleAlreadyExistsRecovery } from './user-handle-already-exists-recovery';
+import { ViewModel } from '../../../html-pages/create-user-account-form-page/view-model';
+import { userHandleAlreadyExists } from './user-handle-already-exists';
 import { constructValidationRecovery } from './construct-validation-recovery';
 import { toCommand } from './to-command';
 
@@ -29,9 +29,12 @@ type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
   logger: Logger,
 };
 
-const instantiateSendRecovery = (context: ParameterizedContext, dependencies: Dependencies) => (recovery: Recovery) => {
+const instantiateSendRecovery = (
+  context: ParameterizedContext,
+  dependencies: Dependencies,
+) => (viewModel: ViewModel) => {
   const htmlResponse = pipe(
-    recovery,
+    viewModel,
     renderFormPage,
     E.right,
     constructHtmlResponse(
@@ -76,7 +79,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   )();
 
   if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
-    sendRecovery(userHandleAlreadyExistsRecovery(formFields.right));
+    sendRecovery(userHandleAlreadyExists(formFields.right));
     return;
   }
 
