@@ -1,15 +1,13 @@
 import { htmlEscape } from 'escape-goat';
-import * as t from 'io-ts';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { articleIdFieldName, userEditableFormFieldsCodec } from '../../http/form-submission-handlers/save-article/form-body';
+import { articleIdFieldName } from '../../http/form-submission-handlers/save-article/form-body';
 import { ViewModel } from './view-model';
 import { validationRecoveryTitlePrefix } from '../validation-recovery/validation-recovery-title-prefix';
 import { renderErrorSummary } from '../validation-recovery/render-error-summary';
-import { ValidationRecovery } from '../validation-recovery/validation-recovery';
+import { Recovery } from './recovery';
 
 const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   lists,
@@ -49,8 +47,6 @@ const renderDependingOnUserListCount = (userLists: ViewModel['userLists'], artic
     </fieldset>
   `;
 };
-
-type Recovery = O.Option<ValidationRecovery<t.TypeOf<typeof userEditableFormFieldsCodec>>>;
 
 export const renderAsHtml = (viewModel: ViewModel, recovery: Recovery): HtmlPage => toHtmlPage({
   title: validationRecoveryTitlePrefix(recovery, viewModel.pageHeading),

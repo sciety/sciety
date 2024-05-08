@@ -1,4 +1,3 @@
-import * as O from 'fp-ts/Option';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -11,9 +10,10 @@ import { paramsCodec } from './params';
 import { Dependencies } from './dependencies';
 import { ConstructPage } from '../construct-page';
 import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
+import { Recovery } from './recovery';
 
 export const saveArticleFormPage = (
-  dependencies: Dependencies,
+  dependencies: Dependencies, recovery: Recovery,
 ): ConstructPage => (
   input,
 ) => pipe(
@@ -30,6 +30,6 @@ export const saveArticleFormPage = (
       type: DE.unavailable,
       message: toHtmlFragment('Sorry, something went wrong. Please try again later.'),
     }),
-    (viewModel) => renderAsHtml(viewModel, O.none),
+    (viewModel) => renderAsHtml(viewModel, recovery),
   ),
 );

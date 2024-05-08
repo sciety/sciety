@@ -78,7 +78,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
   if (containsErrors(validationRecovery)) {
     await pipe(
       ({ articleId: formBody.right[articleIdFieldName].value, user: { id: authenticatedUserId.value } }),
-      saveArticleFormPage(dependencies),
+      saveArticleFormPage(dependencies, O.some(validationRecovery)),
       TE.mapLeft((left) => (left.tag === 'redirect-target' ? toErrorPageBodyViewModel({ type: 'unavailable', message: toHtmlFragment('Something went wrong on our end') }) : left)),
       T.map(constructAndSendHtmlResponse(dependencies, standardPageLayout, context)),
     )();

@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import path from 'path';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';
@@ -271,7 +272,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get(
     '/save-article',
     requireLoggedInUser(adapters),
-    pageHandler(adapters, saveArticleFormPage(adapters)),
+    pageHandler(adapters, saveArticleFormPage(adapters, O.none)),
   );
 
   router.get(
