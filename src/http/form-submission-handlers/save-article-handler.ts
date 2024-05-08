@@ -1,11 +1,9 @@
 import * as E from 'fp-ts/Either';
-import * as R from 'fp-ts/Record';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { StatusCodes } from 'http-status-codes';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { Logger } from '../../shared-ports';
 import { articleIdCodec } from '../../types/article-id';
 import { getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts } from '../authentication-and-logging-in-of-sciety-users';
@@ -21,6 +19,7 @@ import * as LOID from '../../types/list-owner-id';
 import { UserId } from '../../types/user-id';
 import { rawUserInputCodec } from '../../read-side/raw-user-input';
 import { ValidationRecovery } from '../../html-pages/validation-recovery/validation-recovery';
+import { containsErrors } from '../../html-pages/validation-recovery/contains-errors';
 
 export const articleIdFieldName = 'articleid';
 
@@ -80,14 +79,6 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.UNAUTHORIZED, 'You are not the owner of the list you are trying to save to.');
     return;
   }
-
-  const containsErrors = <A extends Record<string, unknown>>(recovery: ValidationRecovery<A>): boolean => pipe(
-    recovery,
-    R.map((entry) => entry.error),
-    R.toEntries,
-    RA.map((entry) => entry[1]),
-    RA.some(O.isSome),
-  );
 
   const validationRecovery: ValidationRecovery<t.TypeOf<typeof userEditableFormFieldsCodec>> = pipe(
     {
