@@ -16,7 +16,7 @@ import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-fail
 import * as LOID from '../../../types/list-owner-id';
 import { UserId } from '../../../types/user-id';
 import { containsErrors } from '../../../html-pages/validation-recovery/contains-errors';
-import { constructValidationRecovery } from './construct-validation-recovery';
+import { validateUserEditableFormFields } from './validate-user-editable-form-fields';
 import { saveArticleFormBodyCodec, articleIdFieldName } from './form-body';
 import { saveArticleFormPage } from '../../../html-pages/save-article-form-page';
 import { Queries } from '../../../read-models';
@@ -73,7 +73,7 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  const validationRecovery = constructValidationRecovery(formBody.right);
+  const validationRecovery = validateUserEditableFormFields(formBody.right);
 
   if (containsErrors(validationRecovery)) {
     await pipe(

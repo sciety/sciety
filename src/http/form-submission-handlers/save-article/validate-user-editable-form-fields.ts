@@ -3,7 +3,7 @@ import * as t from 'io-ts';
 import { ValidationRecovery } from '../../../html-pages/validation-recovery/validation-recovery';
 import { FormBody, userEditableFormFieldsCodec } from './form-body';
 
-export const constructValidationRecovery = (
+export const validateUserEditableFormFields = (
   formBody: FormBody,
 ): ValidationRecovery<t.TypeOf<typeof userEditableFormFieldsCodec>> => (
   {
