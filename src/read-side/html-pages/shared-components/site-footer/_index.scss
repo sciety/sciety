@@ -6,7 +6,7 @@
 @use 'settings';
 @use 'typography';
 @use 'layout';
-@use '../../../../sass/list';
+@use 'list';
 @use '../../../../sass/states';
 
 $_outer-vertical-spacing: functions.px-to-rem(32px);

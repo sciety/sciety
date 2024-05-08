@@ -1,5 +1,5 @@
 @use 'functions';
-@use '../../../../sass/list';
+@use 'list';
 
 .card-authors {
   @include list.basics();
