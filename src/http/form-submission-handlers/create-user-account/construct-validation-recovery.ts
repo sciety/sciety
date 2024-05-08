@@ -21,8 +21,8 @@ const determineHandleErrorMessage = (handle: string) => {
   if (handle.length === 0) {
     return O.some('Enter a handle');
   }
-  if (/[<>"]/.test(handle)) {
-    return O.some('Your handle must not contain any of these chacters: "<>');
+  if (handle.match('^[a-zA-Z0-9_]+$') === null) {
+    return O.some('Your handle may only contain the letters a-z (lower or upper case), numbers and underscores');
   }
   if (handle.length < 4 || handle.length > 15) {
     return O.some('Your handle must be 4-15 characters long');
@@ -36,7 +36,7 @@ export const constructValidationRecovery = (
   fullName: {
     userInput: input.fullName,
     error: pipe(
-      input.fullName,
+      input.fullName.content,
       createUserAccountFormCodec.type.props.fullName.decode,
       E.match(
         () => determineFullNameErrorMessage(input.fullName.content),
@@ -47,7 +47,7 @@ export const constructValidationRecovery = (
   handle: {
     userInput: input.handle,
     error: pipe(
-      input.handle,
+      input.handle.content,
       createUserAccountFormCodec.type.props.handle.decode,
       E.match(
         () => determineHandleErrorMessage(input.handle.content),
