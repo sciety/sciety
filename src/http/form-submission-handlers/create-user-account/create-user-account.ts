@@ -22,7 +22,7 @@ import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-fail
 import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
 import { ViewModel } from '../../../html-pages/create-user-account-form-page/view-model';
 import { userHandleAlreadyExists } from './user-handle-already-exists';
-import { constructValidationRecovery } from './construct-validation-recovery';
+import { validateUserEditableFields } from './validate-user-editable-fields';
 import { toCommand } from './to-command';
 
 type Dependencies = GetLoggedInScietyUserPorts & DependenciesForCommands & {
@@ -69,7 +69,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   if (E.isLeft(validatedFormFields)) {
-    sendRecovery(constructValidationRecovery(formFields.right));
+    sendRecovery(validateUserEditableFields(formFields.right));
     return;
   }
 
