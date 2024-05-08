@@ -1,3 +1,5 @@
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
@@ -5,11 +7,9 @@ import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { StatusCodes } from 'http-status-codes';
 import { Logger } from '../../../shared-ports';
-import { getAuthenticatedUserIdFromContext, Ports as GetLoggedInScietyUserPorts } from '../../authentication-and-logging-in-of-sciety-users';
-import { Ports as CheckUserOwnsListPorts } from '../check-user-owns-list';
+import { getAuthenticatedUserIdFromContext } from '../../authentication-and-logging-in-of-sciety-users';
 import { AddArticleToListCommand } from '../../../write-side/commands';
 import { addArticleToListCommandHandler } from '../../../write-side/command-handlers';
-import { DependenciesForCommands } from '../../../write-side/dependencies-for-commands';
 import { UnsafeUserInput } from '../../../types/unsafe-user-input';
 import { sendDefaultErrorHtmlResponse } from '../../send-default-error-html-response';
 import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-failures';
@@ -18,8 +18,16 @@ import { UserId } from '../../../types/user-id';
 import { containsErrors } from '../../../html-pages/validation-recovery/contains-errors';
 import { constructValidationRecovery } from './construct-validation-recovery';
 import { saveArticleFormBodyCodec, articleIdFieldName } from './form-body';
+import { saveArticleFormPage } from '../../../html-pages/save-article-form-page';
+import { Queries } from '../../../read-models';
+import { ExternalQueries } from '../../../third-parties';
+import { DependenciesForCommands } from '../../../write-side/dependencies-for-commands';
+import { constructAndSendHtmlResponse } from '../../page-handler';
+import { standardPageLayout } from '../../../shared-components/standard-page-layout';
+import { toErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { toHtmlFragment } from '../../../types/html-fragment';
 
-type Ports = CheckUserOwnsListPorts & GetLoggedInScietyUserPorts & DependenciesForCommands & {
+type Ports = Queries & ExternalQueries & DependenciesForCommands & {
   logger: Logger,
 };
 
@@ -65,8 +73,16 @@ export const saveArticleHandler = (dependencies: Ports): Middleware => async (co
     return;
   }
 
-  if (containsErrors(constructValidationRecovery(formBody.right))) {
-    context.redirect('back');
+  const validationRecovery = constructValidationRecovery(formBody.right);
+
+  if (containsErrors(validationRecovery)) {
+    await pipe(
+      ({ articleId: formBody.right[articleIdFieldName].value, user: { id: authenticatedUserId.value } }),
+      saveArticleFormPage(dependencies),
+      TE.mapLeft((left) => (left.tag === 'redirect-target' ? toErrorPageBodyViewModel({ type: 'unavailable', message: toHtmlFragment('Something went wrong on our end') }) : left)),
+      T.map(constructAndSendHtmlResponse(dependencies, standardPageLayout, context)),
+    )();
+    return;
   }
 
   const commandResult = await pipe(

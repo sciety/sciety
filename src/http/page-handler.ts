@@ -14,11 +14,11 @@ import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 import { sendRedirect } from './send-redirect';
 import { HtmlPage } from '../html-pages/html-page';
 
-const constructAndSendHtmlResponse = (
+export const constructAndSendHtmlResponse = (
   adapters: GetLoggedInScietyUserPorts,
   pageLayout: PageLayout,
   context: ParameterizedContext,
-) => (input: E.Either<ErrorPageBodyViewModel, HtmlPage>) => pipe(
+) => (input: E.Either<ErrorPageBodyViewModel, HtmlPage>): void => pipe(
   input,
   constructHtmlResponse(
     getLoggedInScietyUser(adapters, context),
