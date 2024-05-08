@@ -3,10 +3,10 @@ import { renderListItems } from '../../../shared-components/render-list-items';
 import { supplementaryInfo } from '../../../shared-components/supplementary-info';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
 import { renderListOfCards } from '../shared-components/list-of-cards';
-import { supplementaryCard } from '../shared-components/supplementary-card';
+import { renderSupplementaryCard } from '../shared-components/supplementary-card';
 
 const supplementaryItems = [
-  supplementaryCard(
+  renderSupplementaryCard(
     'Share your insights',
     toHtmlFragment(`
       <p>Join the growing number of journals, societies and preprint review clubs that are making Sciety their home.</p>

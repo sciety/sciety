@@ -7,11 +7,11 @@ import { supplementaryInfo } from '../../../../shared-components/supplementary-i
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderListOfCards } from '../../shared-components/list-of-cards';
 import { renderLegacyPaginationControls } from '../../shared-components/pagination';
-import { supplementaryCard } from '../../shared-components/supplementary-card';
+import { renderSupplementaryCard } from '../../shared-components/supplementary-card';
 import { ViewModel } from '../view-model';
 
 const supplementaryItems = [
-  supplementaryCard(
+  renderSupplementaryCard(
     'What is the Sciety feed?',
     toHtmlFragment(`
       <p>
