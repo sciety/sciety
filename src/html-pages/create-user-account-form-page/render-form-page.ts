@@ -4,7 +4,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
 import { Recovery } from './recovery';
-import { renderErrorSummary } from './render-error-summary';
+import { renderErrorSummary } from '../render-error-summary';
 
 const renderFullNameInput = (recovery: Recovery) => {
   const inputWithLegend = pipe(

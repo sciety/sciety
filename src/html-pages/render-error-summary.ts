@@ -2,8 +2,8 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
-import { ValidationRecovery } from '../validation-recovery';
+import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { ValidationRecovery } from './validation-recovery';
 
 type Viewmodel<T extends Record<string, unknown>> = O.Option<ValidationRecovery<T>>;
 
