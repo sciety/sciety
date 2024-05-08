@@ -1,7 +1,7 @@
-@use "functions";
-@use "settings";
-@use "button";
-@use "breakpoints";
+@use 'functions';
+@use 'settings';
+@use 'button';
+@use 'breakpoints';
 
 $_label-font-size: functions.px-to-rem(20px);
 $_microcopy-colour: settings.$colour-text-secondary;
