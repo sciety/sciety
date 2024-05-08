@@ -5,7 +5,7 @@ import { HtmlPage, toHtmlPage } from '../html-page';
 import { safelyReflectRawUserInputForEditing } from '../../shared-components/raw-user-input-renderers';
 import { ViewModel } from './view-model';
 import { renderErrorSummary } from '../validation-recovery/render-error-summary';
-import { validationRecoveryTitlePrefix } from './validation-recovery-title-prefix';
+import { validationRecoveryTitlePrefix } from '../validation-recovery/validation-recovery-title-prefix';
 
 const renderFullNameInput = (recovery: ViewModel) => {
   const inputWithLegend = pipe(

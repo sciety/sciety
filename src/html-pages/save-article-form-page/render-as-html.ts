@@ -6,7 +6,7 @@ import { HtmlPage, toHtmlPage } from '../html-page';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { articleIdFieldName } from '../../http/form-submission-handlers/save-article/form-body';
 import { ViewModel } from './view-model';
-import { validationRecoveryTitlePrefix } from '../create-user-account-form-page/validation-recovery-title-prefix';
+import { validationRecoveryTitlePrefix } from '../validation-recovery/validation-recovery-title-prefix';
 
 const renderListRadios = (lists: ViewModel['userLists']) => pipe(
   lists,
