@@ -7,7 +7,7 @@
 @use '../../../../sass/states';
 @use 'typography';
 @use 'list';
-@use '../../../../sass/schemed-header-colours';
+@use 'schemed-colours';
 @use 'button';
 
 $_search-icon-size: functions.px-to-rem(24px);
@@ -17,7 +17,7 @@ $_search-button-width-on-mobile: $_search-icon-size + $_search-button-padding * 
 $_left-links-width-not-narrow: 280px;
 
 .site-header {
-  @include schemed-header-colours.light();
+  @include schemed-colours.light();
   background-color: var(--colour-site-header-background);
   width: 100%;
   height: functions.px-to-rem(settings.$site-header-height);
@@ -36,7 +36,7 @@ $_left-links-width-not-narrow: 280px;
 }
 
 .site-header--dark {
-  @include schemed-header-colours.dark();
+  @include schemed-colours.dark();
 }
 
 .site-header__left_links {

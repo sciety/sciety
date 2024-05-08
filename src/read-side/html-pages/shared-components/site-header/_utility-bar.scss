@@ -7,7 +7,7 @@
 @use 'layout';
 @use 'breakpoints';
 @use 'avatar';
-@use '../../../../sass/schemed-header-colours';
+@use 'schemed-colours';
 
 $_space-allocated-to-avatar-and-handle: 120px;
 $_avatar-right-margin: 6px;
@@ -16,7 +16,7 @@ $_navigation-text-bottom-spacing: functions.px-to-rem(settings.$navigation-link-
 $_avatar-height-coupled-to-buttons: 34px;
 
 .utility-bar {
-  @include schemed-header-colours.light();
+  @include schemed-colours.light();
   display: flex;
   margin-right: 0;
   flex-grow: 1;
@@ -28,7 +28,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 }
 
 .utility-bar--dark {
-  @include schemed-header-colours.dark();
+  @include schemed-colours.dark();
 }
 
 .utility-bar__list {
