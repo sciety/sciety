@@ -1,10 +1,11 @@
 import { htmlEscape } from 'escape-goat';
+import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { articleIdFieldName } from '../../http/form-submission-handlers/save-article/form-body';
+import { articleIdFieldName, userEditableFormFieldsCodec } from '../../http/form-submission-handlers/save-article/form-body';
 import { ViewModel } from './view-model';
 import { validationRecoveryTitlePrefix } from '../validation-recovery/validation-recovery-title-prefix';
 
@@ -47,8 +48,10 @@ const renderDependingOnUserListCount = (userLists: ViewModel['userLists'], artic
   `;
 };
 
-export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
-  title: validationRecoveryTitlePrefix(O.none, viewModel.pageHeading),
+type Recovery = O.Option<t.TypeOf<typeof userEditableFormFieldsCodec>>;
+
+export const renderAsHtml = (viewModel: ViewModel, recovery: Recovery): HtmlPage => toHtmlPage({
+  title: validationRecoveryTitlePrefix(recovery, viewModel.pageHeading),
   content: toHtmlFragment(`
   <header class="page-header">
     <h1>${viewModel.pageHeading}</h1>
