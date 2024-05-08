@@ -1,6 +1,5 @@
-import * as t from 'io-ts';
 import * as O from 'fp-ts/Option';
-import { CreateUserAccountFormRaw, createUserAccountFormCodec } from './codecs';
+import { FormBody } from './form-body';
 import { ValidationRecovery } from '../../../html-pages/validation-recovery/validation-recovery';
 
 const validateFullName = (fullName: string) => {
@@ -29,9 +28,9 @@ const validateHandle = (handle: string) => {
   return O.none;
 };
 
-export const validateUserEditableFields = (
-  input: CreateUserAccountFormRaw,
-): ValidationRecovery<t.TypeOf<typeof createUserAccountFormCodec>> => ({
+export const validateForm = (
+  input: FormBody,
+): ValidationRecovery<FormBody> => ({
   fullName: {
     userInput: input.fullName,
     error: validateFullName(input.fullName.content),

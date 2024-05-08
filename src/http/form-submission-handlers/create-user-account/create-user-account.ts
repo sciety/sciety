@@ -8,7 +8,7 @@ import {
 } from '../../authentication-and-logging-in-of-sciety-users';
 import { createUserAccountFormPageLayout, renderFormPage } from '../../../html-pages/create-user-account-form-page';
 import { constructHtmlResponse } from '../../../html-pages/construct-html-response';
-import { createUserAccountFormRawCodec } from './codecs';
+import { formBodyCodec } from './form-body';
 import { redirectToAuthenticationDestination } from '../../authentication-destination';
 import { sendHtmlResponse } from '../../send-html-response';
 import { detectClientClassification } from '../../detect-client-classification';
@@ -20,7 +20,7 @@ import { decodeAndLogFailures } from '../../../third-parties/decode-and-log-fail
 import { userHandleAlreadyExistsError } from '../../../write-side/resources/user/check-command';
 import { ViewModel } from '../../../html-pages/create-user-account-form-page/view-model';
 import { userHandleAlreadyExists } from './user-handle-already-exists';
-import { validateUserEditableFields } from './validate-user-editable-fields';
+import { validateForm } from './validate-form';
 import { toCommand } from './to-command';
 import { containsErrors } from '../../../html-pages/validation-recovery/contains-errors';
 
@@ -48,9 +48,9 @@ const instantiateSendRecovery = (
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
   const sendRecovery = instantiateSendRecovery(context, dependencies);
   const authenticatedUserId = getAuthenticatedUserIdFromContext(context);
-  const formFields = pipe(
+  const formBody = pipe(
     context.request.body,
-    decodeAndLogFailures(dependencies.logger, createUserAccountFormRawCodec),
+    decodeAndLogFailures(dependencies.logger, formBodyCodec),
   );
 
   if (O.isNone(authenticatedUserId)) {
@@ -58,12 +58,12 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
     return;
   }
 
-  if (E.isLeft(formFields)) {
+  if (E.isLeft(formBody)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Something went wrong when you submitted the form. Please try again.');
     return;
   }
 
-  const validationResult = validateUserEditableFields(formFields.right);
+  const validationResult = validateForm(formBody.right);
 
   if (containsErrors(validationResult)) {
     sendRecovery(O.some(validationResult));
@@ -71,12 +71,12 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
   }
 
   const commandResult = await pipe(
-    toCommand(formFields.right, authenticatedUserId.value),
+    toCommand(formBody.right, authenticatedUserId.value),
     createUserAccountCommandHandler(dependencies),
   )();
 
   if (E.isLeft(commandResult) && commandResult.left === userHandleAlreadyExistsError) {
-    sendRecovery(userHandleAlreadyExists(formFields.right));
+    sendRecovery(userHandleAlreadyExists(formBody.right));
     return;
   }
 
