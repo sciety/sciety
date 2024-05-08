@@ -63,6 +63,18 @@ export const renderAsHtml = (viewModel: ViewModel, recovery: Recovery): HtmlPage
       <p class="standard-form__helper_text">Add a public comment to share with others what's interesting or important about this article.</p>
       <textarea id="annotationContent" name="annotation" rows="10"></textarea>
     </section>
+    <fieldset>
+      <legend>Do you have a conflict of interest</legend>
+      <div>
+        <input type="radio" id="no" name="conflictOfInterest" value="no"/>
+        <label for="no">No</label>
+      </div>
+      <div>
+        <input type="radio" id="yes" name="conflictOfInterest" value="yes"/>
+        <label for="yes">Yes</label>
+      </div>
+      <textarea name="conflictOfInterestContent"></textarea>
+    </fieldset>
     <button type="submit">
       Confirm
     </button>
