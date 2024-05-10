@@ -5,7 +5,7 @@ import { FetchData } from '../fetch-data';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
 import * as Hyp from '../third-parties/hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from '../third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
-import { daysAgo } from '../time';
+import { ingestionWindowStartDate } from '../time';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
 type Ports = {
@@ -15,7 +15,7 @@ type Ports = {
 const calculateEarliestPublicationDateToConsider = (earliestPublicationDateToConsider: Date | undefined): Date => (
   earliestPublicationDateToConsider instanceof Date
     ? earliestPublicationDateToConsider
-    : daysAgo(5)
+    : ingestionWindowStartDate(5)
 );
 
 export const discoverEvaluationsFromHypothesisGroup = (

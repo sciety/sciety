@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
-import { daysAgo } from '../time';
+import { ingestionWindowStartDate } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
@@ -14,7 +14,7 @@ type Ports = {
 };
 
 const identifyCandidates = (fetchData: FetchData) => (
-  CR.fetchReviewsIndexedSince(fetchData)('10.1162', daysAgo(1))
+  CR.fetchReviewsIndexedSince(fetchData)('10.1162', ingestionWindowStartDate(1))
 );
 
 const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(

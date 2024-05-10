@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
-import { daysAgo } from '../time';
+import { ingestionWindowStartDate } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
@@ -58,7 +58,7 @@ const fetchPaginatedData = (baseUrl: string, offset: number): TE.TaskEither<stri
 );
 
 const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
-  const startDate = daysAgo(60).toISOString().split('T')[0];
+  const startDate = ingestionWindowStartDate(60).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
