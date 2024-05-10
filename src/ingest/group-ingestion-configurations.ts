@@ -13,7 +13,12 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
   {
     id: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
     name: 'Arcadia Science',
-    discoverPublishedEvaluations: discoverEvaluationsFromHypothesisGroup('ApM1XL6A'),
+    discoverPublishedEvaluations: discoverEvaluationsFromHypothesisGroup('ApM1XL6A', new Date('2023-04-15')),
+  },
+  {
+    id: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
+    name: 'Arcadia Science (old private group)',
+    discoverPublishedEvaluations: discoverEvaluationsFromHypothesisGroup('VzenYeD8'),
   },
   {
     id: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
