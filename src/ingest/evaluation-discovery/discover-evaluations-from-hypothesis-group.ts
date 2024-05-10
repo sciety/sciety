@@ -14,11 +14,11 @@ type Ports = {
 
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
-  daysToLookBack: number | Date = 5,
+  earliestPublicationDateToConsider?: Date,
 ): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
   publisherGroupId,
   Hyp.fetchEvaluationsByGroupSince(
-    daysToLookBack instanceof Date ? daysToLookBack : daysAgo(daysToLookBack),
+    earliestPublicationDateToConsider instanceof Date ? earliestPublicationDateToConsider : daysAgo(5),
     ports.fetchData,
   ),
   TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),

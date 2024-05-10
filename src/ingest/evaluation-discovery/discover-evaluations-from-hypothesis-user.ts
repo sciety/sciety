@@ -13,10 +13,11 @@ type Ports = {
 };
 
 export const discoverEvaluationsFromHypothesisUser = (
-  publisherUserId: string, days = 5,
+  publisherUserId: string,
+  daysToLookBackForAcceptablePerformance = 5,
 ): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
   publisherUserId,
-  Hyp.fetchEvaluationsByUserSince(daysAgo(days), ports.fetchData),
+  Hyp.fetchEvaluationsByUserSince(daysAgo(daysToLookBackForAcceptablePerformance), ports.fetchData),
   TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),
   TE.map((parts) => ({
     understood: RA.rights(parts),
