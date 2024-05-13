@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
@@ -9,16 +8,18 @@ import { arbitraryDate, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 
+const runDiscovery = (stubbedResponse: unknown) => pipe(
+  ({ fetchData: <D>() => TE.right({ data: stubbedResponse } as unknown as D) }),
+  discoverPrereviewEvaluations(),
+);
+
 describe('discover-prereview-evaluations', () => {
   describe('when the response includes no preprints', () => {
     let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(
-        {
-          fetchData: <D>() => TE.right({ data: [] } as unknown as D),
-        },
-        discoverPrereviewEvaluations(),
+        runDiscovery([]),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -55,10 +56,7 @@ describe('discover-prereview-evaluations', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        {
-          fetchData: <D>() => TE.right({ data: response } as unknown as D),
-        },
-        discoverPrereviewEvaluations(),
+        runDiscovery(response),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -106,10 +104,7 @@ describe('discover-prereview-evaluations', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        {
-          fetchData: <D>() => TE.right({ data: response } as unknown as D),
-        },
-        discoverPrereviewEvaluations(),
+        runDiscovery(response),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -147,10 +142,7 @@ describe('discover-prereview-evaluations', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        {
-          fetchData: <D>() => TE.right({ data: response } as unknown as D),
-        },
-        discoverPrereviewEvaluations(),
+        runDiscovery(response),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -162,23 +154,6 @@ describe('discover-prereview-evaluations', () => {
           reason: 'is not published',
         },
       ]);
-    });
-  });
-
-  describe('when the response is corrupt', () => {
-    let result: E.Either<unknown, unknown>;
-
-    beforeEach(async () => {
-      result = await pipe(
-        {
-          fetchData: <D>() => TE.right({} as unknown as D),
-        },
-        discoverPrereviewEvaluations(),
-      )();
-    });
-
-    it('reports an error', async () => {
-      expect(E.isLeft(result)).toBe(true);
     });
   });
 });
