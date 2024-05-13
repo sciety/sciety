@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as AID from '../../types/article-id';
 import { FetchData } from '../fetch-data';
-import { deprecatedIngestionWindowStartDate } from '../time';
+import { ingestionWindowStartDate } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
@@ -16,9 +16,7 @@ type Candidate = {
   reviewId: string,
 };
 
-const since = deprecatedIngestionWindowStartDate(60);
-
-const identifyCandidates = (feed: string) => {
+const identifyCandidates = (since: Date) => (feed: string) => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
@@ -75,9 +73,15 @@ type Ports = {
   fetchData: FetchData,
 };
 
-export const discoverPciEvaluations = (url: string): DiscoverPublishedEvaluations => () => (ports: Ports) => pipe(
+export const discoverPciEvaluations = (
+  url: string,
+): DiscoverPublishedEvaluations => (
+  ingestDays,
+) => (
+  ports: Ports,
+) => pipe(
   ports.fetchData<string>(url),
-  TE.map(identifyCandidates),
+  TE.map(identifyCandidates(ingestionWindowStartDate(ingestDays))),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((items) => ({
     understood: RA.rights(items),
