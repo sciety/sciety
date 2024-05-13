@@ -1,6 +1,20 @@
+import { ingestionWindowStartDate } from '../../../src/ingest/evaluation-discovery/ingestion-window-start-date';
+
 describe('ingestion-window-start-date', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({
+      now: new Date('2020-01-06'),
+    });
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   describe('when only ingestDays are specified', () => {
-    it.todo('returns a date in the past');
+    it('returns a date in the past', () => {
+      expect(ingestionWindowStartDate(5)).toStrictEqual(new Date('2020-01-01'));
+    });
   });
 
   describe('when both ingestDays and earliestAllowedStartDate are specified', () => {
