@@ -2,10 +2,10 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
+import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { fetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { DiscoverPublishedEvaluations } from '../update-all';
 
 type BiorxivItem = {
   biorxiv_doi: string,

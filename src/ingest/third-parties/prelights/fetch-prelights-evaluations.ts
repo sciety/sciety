@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { extractPrelights } from './extract-prelights';
 import { identifyCandidates } from './identify-candidates';
-import { DiscoverPublishedEvaluations } from '../../update-all';
+import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 
 const keyFromEnv = pipe(
   process.env.PRELIGHTS_FEED_KEY,

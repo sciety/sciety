@@ -6,8 +6,8 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import * as AID from '../../types/article-id';
+import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { DiscoverPublishedEvaluations } from '../update-all';
 
 type Candidate = {
   date: string,

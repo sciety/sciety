@@ -3,10 +3,10 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { DiscoverPublishedEvaluations } from '../update-all';
 
 const shortIngestionWindowStartDateToAvoidMissingEvaluationsDueToNonPagingFetcher = (
 ): Date => new Date(Date.now() - 1 * 24 * 60 * 60 * 1000);

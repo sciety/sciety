@@ -7,9 +7,9 @@ import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import * as tt from 'io-ts-types';
 import * as AID from '../../types/article-id';
+import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { DiscoverPublishedEvaluations } from '../update-all';
 
 const preReviewPreprint = t.type({
   handle: t.union([AID.articleIdCodec, t.string]),

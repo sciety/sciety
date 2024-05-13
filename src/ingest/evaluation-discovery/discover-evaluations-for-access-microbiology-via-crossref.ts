@@ -5,8 +5,8 @@ import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { expressionDoiCodec } from '../../types/expression-doi';
+import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
-import { DiscoverPublishedEvaluations } from '../update-all';
 
 const publishedDateCodec = t.strict({
   'date-parts': t.tuple([

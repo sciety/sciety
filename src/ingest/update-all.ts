@@ -8,16 +8,9 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { v4 } from 'uuid';
-import { fetchData, FetchData } from './fetch-data';
+import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
+import { fetchData } from './fetch-data';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
-
-type Dependencies = { fetchData: FetchData };
-
-export type DiscoverPublishedEvaluations = (
-  ingestDays: number,
-) => (
-  dependencies: Dependencies
-) => TE.TaskEither<string, DiscoveredPublishedEvaluations>;
 
 export type GroupIngestionConfiguration = {
   id: string,
