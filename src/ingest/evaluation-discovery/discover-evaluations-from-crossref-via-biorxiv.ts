@@ -58,7 +58,7 @@ const fetchPaginatedData = (baseUrl: string, offset: number): TE.TaskEither<stri
 );
 
 const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
-  const startDate = deprecatedIngestionWindowStartDate(60).toISOString().split('T')[0];
+  const startDate = deprecatedIngestionWindowStartDate(5).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
