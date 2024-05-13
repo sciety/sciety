@@ -12,22 +12,13 @@ type Ports = {
   fetchData: FetchData,
 };
 
-const calculateEarliestPublicationDateToConsider = (
-  earliestPublicationDateToConsider: Date | undefined,
-  ingestDays: number,
-): Date => (
-  earliestPublicationDateToConsider instanceof Date
-    ? earliestPublicationDateToConsider
-    : ingestionWindowStartDate(ingestDays)
-);
-
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
   avoidWhenPublishedBefore?: Date,
 ): DiscoverPublishedEvaluations => (ingestDays) => (ports: Ports) => pipe(
   publisherGroupId,
   Hyp.fetchEvaluationsByGroupSince(
-    calculateEarliestPublicationDateToConsider(avoidWhenPublishedBefore, ingestDays),
+    ingestionWindowStartDate(ingestDays, avoidWhenPublishedBefore),
     ports.fetchData,
   ),
   TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),
