@@ -1,20 +1,22 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery/discover-pci-evaluations';
-import { deprecatedIngestionWindowStartDate } from '../../../src/ingest/time';
+import { ingestionWindowStartDate } from '../../../src/ingest/time';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+
+const ingestDays = 10;
+const publishedDateThatFallsIntoIngestionWindow = ingestionWindowStartDate(8);
 
 const discover = (xml: string) => pipe(
   {
     fetchData: <D>() => TE.right(xml as unknown as D),
     fetchGoogleSheet: shouldNotBeCalled,
   },
-  discoverPciEvaluations(arbitraryUri())(arbitraryIngestDays()),
+  discoverPciEvaluations(arbitraryUri())(ingestDays),
 );
 
 describe('discover-pci-evaluations', () => {
@@ -37,14 +39,13 @@ describe('discover-pci-evaluations', () => {
     it('returns 1 evaluation and no skipped items', async () => {
       const articleId = arbitraryArticleId().value;
       const reviewId = arbitraryArticleId().value;
-      const date = deprecatedIngestionWindowStartDate(5);
       const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <links>
           <link providerId="PCIArchaeology">
             <resource>
               <doi>${reviewId}</doi>
-              <date>${date.toISOString()}</date>
+              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
             </resource>
             <doi>${articleId}</doi>
           </link>
@@ -52,7 +53,7 @@ describe('discover-pci-evaluations', () => {
       `;
       const expectedEvaluation = constructPublishedEvaluation({
         paperExpressionDoi: articleId,
-        publishedOn: date,
+        publishedOn: publishedDateThatFallsIntoIngestionWindow,
         evaluationLocator: `doi:${reviewId}`,
       });
 
@@ -74,7 +75,7 @@ describe('discover-pci-evaluations', () => {
           <link providerId="PCIArchaeology">
             <resource>
               <doi>10.24072/pci.archaeo.100011</doi>
-              <date>${deprecatedIngestionWindowStartDate(5).toISOString()}</date>
+              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
             </resource>
             <doi>${articleId}</doi>
           </link>
@@ -102,7 +103,7 @@ describe('discover-pci-evaluations', () => {
           <link providerId="PCIArchaeology">
             <resource>
               <doi>${evaluationId}</doi>
-              <date>${deprecatedIngestionWindowStartDate(5).toISOString()}</date>
+              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
             </resource>
             <doi>${arbitraryArticleId().value}</doi>
           </link>
