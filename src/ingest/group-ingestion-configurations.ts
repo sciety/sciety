@@ -133,7 +133,7 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
   {
     id: '1e6f6b49-2a9b-417e-831b-8cee5af033bd',
     name: 'The Unjournal',
-    discoverPublishedEvaluations: discoverEvaluationsFromHypothesisUser('theunjournal', 60),
+    discoverPublishedEvaluations: discoverEvaluationsFromHypothesisUser('theunjournal'),
   },
   {
     id: '4d6a8908-22a9-45c8-bd56-3c7140647709',
