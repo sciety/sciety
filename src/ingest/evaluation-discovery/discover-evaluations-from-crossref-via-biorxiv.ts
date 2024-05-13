@@ -71,7 +71,7 @@ const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
 export const discoverEvaluationsFromCrossrefViaBiorxiv = (
   doiPrefix: string,
   reviewDoiPrefix: string,
-): DiscoverPublishedEvaluations => () => pipe(
+): DiscoverPublishedEvaluations => () => () => pipe(
   identifyCandidates(doiPrefix, reviewDoiPrefix),
   TE.map(RA.map(toEvaluation)),
   TE.map((evaluations) => ({

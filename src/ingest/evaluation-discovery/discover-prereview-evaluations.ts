@@ -90,7 +90,7 @@ const identifyCandidates = (fetchData: FetchData) => pipe(
   )),
 );
 
-export const discoverPrereviewEvaluations = (): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
+export const discoverPrereviewEvaluations = (): DiscoverPublishedEvaluations => () => (ports: Ports) => pipe(
   identifyCandidates(ports.fetchData),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({

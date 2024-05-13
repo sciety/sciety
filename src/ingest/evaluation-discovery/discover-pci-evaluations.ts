@@ -75,7 +75,7 @@ type Ports = {
   fetchData: FetchData,
 };
 
-export const discoverPciEvaluations = (url: string): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
+export const discoverPciEvaluations = (url: string): DiscoverPublishedEvaluations => () => (ports: Ports) => pipe(
   ports.fetchData<string>(url),
   TE.map(identifyCandidates),
   TE.map(RA.map(toEvaluationOrSkip)),

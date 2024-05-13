@@ -14,6 +14,8 @@ import { DiscoveredPublishedEvaluations } from './types/discovered-published-eva
 type Adapters = { fetchData: FetchData };
 
 export type DiscoverPublishedEvaluations = (
+  ingestDays: number,
+) => (
   adapters: Adapters
 ) => TE.TaskEither<string, DiscoveredPublishedEvaluations>;
 
@@ -144,7 +146,8 @@ const sendRecordEvaluationCommands = (
 );
 
 const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE.TaskEither<unknown, void> => pipe(
-  group.discoverPublishedEvaluations({ fetchData }),
+  { fetchData },
+  group.discoverPublishedEvaluations(config.ingestDays),
   TE.bimap(
     (error) => ({
       groupName: group.name,

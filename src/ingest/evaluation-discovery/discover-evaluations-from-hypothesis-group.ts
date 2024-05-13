@@ -21,7 +21,7 @@ const calculateEarliestPublicationDateToConsider = (earliestPublicationDateToCon
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
   avoidWhenPublishedBefore?: Date,
-): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
+): DiscoverPublishedEvaluations => () => (ports: Ports) => pipe(
   publisherGroupId,
   Hyp.fetchEvaluationsByGroupSince(
     calculateEarliestPublicationDateToConsider(avoidWhenPublishedBefore),

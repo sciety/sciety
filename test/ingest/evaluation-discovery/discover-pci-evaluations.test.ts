@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery/discover-pci-evaluations';
 import { ingestionWindowStartDate } from '../../../src/ingest/time';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
@@ -13,7 +14,7 @@ const discover = (xml: string) => pipe(
     fetchData: <D>() => TE.right(xml as unknown as D),
     fetchGoogleSheet: shouldNotBeCalled,
   },
-  discoverPciEvaluations(arbitraryUri()),
+  discoverPciEvaluations(arbitraryUri())(arbitraryIngestDays()),
 );
 
 describe('discover-pci-evaluations', () => {

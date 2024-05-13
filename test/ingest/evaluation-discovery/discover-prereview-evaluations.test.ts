@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
@@ -10,7 +11,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const runDiscovery = (stubbedResponse: unknown) => pipe(
   ({ fetchData: <D>() => TE.right({ data: stubbedResponse } as unknown as D) }),
-  discoverPrereviewEvaluations(),
+  discoverPrereviewEvaluations()(arbitraryIngestDays()),
 );
 
 describe('discover-prereview-evaluations', () => {

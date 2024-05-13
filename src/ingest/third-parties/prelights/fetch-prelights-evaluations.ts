@@ -15,7 +15,7 @@ type Dependencies = {
   fetchData: FetchData,
 };
 
-export const fetchPrelightsEvaluations = (): DiscoverPublishedEvaluations => (dependencies: Dependencies) => pipe(
+export const fetchPrelightsEvaluations = (): DiscoverPublishedEvaluations => () => (dependencies: Dependencies) => pipe(
   keyFromEnv,
   TE.fromEither,
   TE.map((key) => `https://prelights.biologists.com/feed/sciety/?key=${key}&hours=120`),

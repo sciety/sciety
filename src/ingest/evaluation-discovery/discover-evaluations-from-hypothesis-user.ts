@@ -15,7 +15,7 @@ type Ports = {
 export const discoverEvaluationsFromHypothesisUser = (
   publisherUserId: string,
   daysToLookBackForAcceptablePerformance = 5,
-): DiscoverPublishedEvaluations => (ports: Ports) => pipe(
+): DiscoverPublishedEvaluations => () => (ports: Ports) => pipe(
   publisherUserId,
   Hyp.fetchEvaluationsByUserSince(ingestionWindowStartDate(daysToLookBackForAcceptablePerformance), ports.fetchData),
   TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),
