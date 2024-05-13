@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery/discover-pci-evaluations';
-import { ingestionWindowStartDate } from '../../../src/ingest/time';
+import { deprecatedIngestionWindowStartDate } from '../../../src/ingest/time';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -37,7 +37,7 @@ describe('discover-pci-evaluations', () => {
     it('returns 1 evaluation and no skipped items', async () => {
       const articleId = arbitraryArticleId().value;
       const reviewId = arbitraryArticleId().value;
-      const date = ingestionWindowStartDate(5);
+      const date = deprecatedIngestionWindowStartDate(5);
       const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <links>
@@ -74,7 +74,7 @@ describe('discover-pci-evaluations', () => {
           <link providerId="PCIArchaeology">
             <resource>
               <doi>10.24072/pci.archaeo.100011</doi>
-              <date>${ingestionWindowStartDate(5).toISOString()}</date>
+              <date>${deprecatedIngestionWindowStartDate(5).toISOString()}</date>
             </resource>
             <doi>${articleId}</doi>
           </link>
@@ -102,7 +102,7 @@ describe('discover-pci-evaluations', () => {
           <link providerId="PCIArchaeology">
             <resource>
               <doi>${evaluationId}</doi>
-              <date>${ingestionWindowStartDate(5).toISOString()}</date>
+              <date>${deprecatedIngestionWindowStartDate(5).toISOString()}</date>
             </resource>
             <doi>${arbitraryArticleId().value}</doi>
           </link>

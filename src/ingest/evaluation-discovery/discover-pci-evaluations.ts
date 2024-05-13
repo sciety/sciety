@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as AID from '../../types/article-id';
 import { FetchData } from '../fetch-data';
-import { ingestionWindowStartDate } from '../time';
+import { deprecatedIngestionWindowStartDate } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
@@ -16,7 +16,7 @@ type Candidate = {
   reviewId: string,
 };
 
-const since = ingestionWindowStartDate(60);
+const since = deprecatedIngestionWindowStartDate(60);
 
 const identifyCandidates = (feed: string) => {
   const parser = new DOMParser({
