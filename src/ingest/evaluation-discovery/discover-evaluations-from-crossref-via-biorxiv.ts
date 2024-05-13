@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
-import { deprecatedIngestionWindowStartDate } from '../time';
+import { ingestionWindowStartDate } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
@@ -57,8 +57,8 @@ const fetchPaginatedData = (baseUrl: string, offset: number): TE.TaskEither<stri
   )),
 );
 
-const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
-  const startDate = deprecatedIngestionWindowStartDate(5).toISOString().split('T')[0];
+const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string, ingestDays: number) => {
+  const startDate = ingestionWindowStartDate(ingestDays).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
@@ -71,8 +71,8 @@ const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string) => {
 export const discoverEvaluationsFromCrossrefViaBiorxiv = (
   doiPrefix: string,
   reviewDoiPrefix: string,
-): DiscoverPublishedEvaluations => () => () => pipe(
-  identifyCandidates(doiPrefix, reviewDoiPrefix),
+): DiscoverPublishedEvaluations => (ingestDays) => () => pipe(
+  identifyCandidates(doiPrefix, reviewDoiPrefix, ingestDays),
   TE.map(RA.map(toEvaluation)),
   TE.map((evaluations) => ({
     understood: evaluations,
