@@ -1,11 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { FetchData } from '../fetch-data';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
 import * as Hyp from '../third-parties/hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from '../third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
-import { ingestionWindowStartDate } from '../time';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
 type Ports = {

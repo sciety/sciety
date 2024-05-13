@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { fetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
-import { ingestionWindowStartDate } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 

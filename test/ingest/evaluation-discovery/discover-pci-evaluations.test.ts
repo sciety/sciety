@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery/discover-pci-evaluations';
-import { ingestionWindowStartDate } from '../../../src/ingest/time';
+import { ingestionWindowStartDate } from '../../../src/ingest/evaluation-discovery/ingestion-window-start-date';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
 import { arbitraryUri } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';

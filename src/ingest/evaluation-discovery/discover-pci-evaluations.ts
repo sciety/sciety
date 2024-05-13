@@ -4,9 +4,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import * as AID from '../../types/article-id';
 import { FetchData } from '../fetch-data';
-import { ingestionWindowStartDate } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
