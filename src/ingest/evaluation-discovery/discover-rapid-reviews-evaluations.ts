@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { FetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
-import { deprecatedIngestionWindowStartDate } from '../time';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
@@ -13,8 +12,11 @@ type Ports = {
   fetchData: FetchData,
 };
 
+const shortIngestionWindowStartDateToAvoidMissingEvaluationsDueToNonPagingFetcher = (
+): Date => new Date(Date.now() - 1 * 24 * 60 * 60 * 1000);
+
 const identifyCandidates = (fetchData: FetchData) => (
-  CR.fetchReviewsIndexedSince(fetchData)('10.1162', deprecatedIngestionWindowStartDate(1))
+  CR.fetchReviewsIndexedSince(fetchData)('10.1162', shortIngestionWindowStartDateToAvoidMissingEvaluationsDueToNonPagingFetcher())
 );
 
 const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
