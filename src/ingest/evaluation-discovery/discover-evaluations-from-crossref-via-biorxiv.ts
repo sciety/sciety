@@ -2,8 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
-import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
-import { fetchData } from '../fetch-data';
+import { Dependencies, DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import * as CR from '../third-parties/crossref';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 
@@ -45,24 +44,33 @@ const toEvaluation = (review: CrossrefReview) => {
   });
 };
 
-const fetchPaginatedData = (baseUrl: string, offset: number): TE.TaskEither<string, ReadonlyArray<BiorxivItem>> => pipe(
-  fetchData<BiorxivResponse>(`${baseUrl}/${offset}`),
+const fetchPaginatedData = (
+  dependencies: Dependencies,
+  baseUrl: string,
+  offset: number,
+): TE.TaskEither<string, ReadonlyArray<BiorxivItem>> => pipe(
+  dependencies.fetchData<BiorxivResponse>(`${baseUrl}/${offset}`),
   TE.map((response) => response.collection),
   TE.chain(RA.match(
     () => TE.right([]),
     (items) => pipe(
-      fetchPaginatedData(baseUrl, offset + items.length),
+      fetchPaginatedData(dependencies, baseUrl, offset + items.length),
       TE.map((next) => [...items, ...next]),
     ),
   )),
 );
 
-const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string, ingestDays: number) => {
+const identifyCandidates = (
+  dependencies: Dependencies,
+  doiPrefix: string,
+  reviewDoiPrefix: string,
+  ingestDays: number,
+) => {
   const startDate = ingestionWindowStartDate(ingestDays).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
-    fetchPaginatedData(baseUrl, 0),
+    fetchPaginatedData(dependencies, baseUrl, 0),
     TE.chain(TE.traverseSeqArray(getReviews(reviewDoiPrefix))),
     TE.map(RA.flatten),
   );
@@ -71,8 +79,8 @@ const identifyCandidates = (doiPrefix: string, reviewDoiPrefix: string, ingestDa
 export const discoverEvaluationsFromCrossrefViaBiorxiv = (
   doiPrefix: string,
   reviewDoiPrefix: string,
-): DiscoverPublishedEvaluations => (ingestDays) => () => pipe(
-  identifyCandidates(doiPrefix, reviewDoiPrefix, ingestDays),
+): DiscoverPublishedEvaluations => (ingestDays) => (dependencies) => pipe(
+  identifyCandidates(dependencies, doiPrefix, reviewDoiPrefix, ingestDays),
   TE.map(RA.map(toEvaluation)),
   TE.map((evaluations) => ({
     understood: evaluations,
