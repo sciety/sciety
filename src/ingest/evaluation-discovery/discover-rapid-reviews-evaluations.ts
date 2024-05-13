@@ -8,10 +8,6 @@ import * as CR from '../third-parties/crossref';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
-type Ports = {
-  fetchData: FetchData,
-};
-
 const shortIngestionWindowStartDateToAvoidMissingEvaluationsDueToNonPagingFetcher = (
 ): Date => new Date(Date.now() - 1 * 24 * 60 * 60 * 1000);
 
@@ -38,8 +34,8 @@ const toEvaluationOrSkip = (candidate: CR.CrossrefReview) => pipe(
   })),
 );
 
-export const discoverRapidReviewsEvaluations = (): DiscoverPublishedEvaluations => () => (ports: Ports) => pipe(
-  identifyCandidates(ports.fetchData),
+export const discoverRapidReviewsEvaluations = (): DiscoverPublishedEvaluations => () => (dependencies) => pipe(
+  identifyCandidates(dependencies.fetchData),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({
     understood: RA.rights(parts),

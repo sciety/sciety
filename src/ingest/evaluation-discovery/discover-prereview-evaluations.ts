@@ -11,10 +11,6 @@ import { FetchData } from '../fetch-data';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
-type Ports = {
-  fetchData: FetchData,
-};
-
 const preReviewPreprint = t.type({
   handle: t.union([AID.articleIdCodec, t.string]),
   fullReviews: t.readonlyArray(t.type({
@@ -90,8 +86,8 @@ const identifyCandidates = (fetchData: FetchData) => pipe(
   )),
 );
 
-export const discoverPrereviewEvaluations = (): DiscoverPublishedEvaluations => () => (ports: Ports) => pipe(
-  identifyCandidates(ports.fetchData),
+export const discoverPrereviewEvaluations = (): DiscoverPublishedEvaluations => () => (dependencies) => pipe(
+  identifyCandidates(dependencies.fetchData),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({
     understood: RA.rights(parts),

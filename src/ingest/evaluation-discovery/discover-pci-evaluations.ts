@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import * as AID from '../../types/article-id';
-import { FetchData } from '../fetch-data';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 import { DiscoverPublishedEvaluations } from '../update-all';
 
@@ -69,18 +68,14 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
   });
 };
 
-type Ports = {
-  fetchData: FetchData,
-};
-
 export const discoverPciEvaluations = (
   url: string,
 ): DiscoverPublishedEvaluations => (
   ingestDays,
 ) => (
-  ports: Ports,
+  dependencies,
 ) => pipe(
-  ports.fetchData<string>(url),
+  dependencies.fetchData<string>(url),
   TE.map(identifyCandidates(ingestionWindowStartDate(ingestDays))),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((items) => ({

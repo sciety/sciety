@@ -11,12 +11,12 @@ import { v4 } from 'uuid';
 import { fetchData, FetchData } from './fetch-data';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
 
-type Adapters = { fetchData: FetchData };
+type Dependencies = { fetchData: FetchData };
 
 export type DiscoverPublishedEvaluations = (
   ingestDays: number,
 ) => (
-  adapters: Adapters
+  dependencies: Dependencies
 ) => TE.TaskEither<string, DiscoveredPublishedEvaluations>;
 
 export type GroupIngestionConfiguration = {
