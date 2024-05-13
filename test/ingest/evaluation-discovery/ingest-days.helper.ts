@@ -1,1 +1,3 @@
-export const arbitraryIngestDays = (): number => 5;
+import { arbitraryNumber } from '../../helpers';
+
+export const arbitraryIngestDays = (): number => arbitraryNumber(1, 300);
