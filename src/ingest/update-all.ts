@@ -72,10 +72,11 @@ axiosRetry(axios, {
   },
 });
 
-type Config = {
+export type Config = {
   targetApp: string,
   bearerToken: string,
   groupsToIngest: ReadonlyArray<GroupIngestionConfiguration>,
+  ingestDays: number,
 };
 
 const send = (config: Config) => (evaluationCommand: EvaluationCommand) => pipe(
@@ -158,6 +159,7 @@ const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE
     report('info', 'Ingestion successful'),
   ),
 );
+
 export const updateAll = (config: Config): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
   config.groupsToIngest,
   T.traverseSeqArray(updateGroup(config)),

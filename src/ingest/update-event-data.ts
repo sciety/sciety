@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
 import { groupIngestionConfigurations } from './group-ingestion-configurations';
-import { GroupIngestionConfiguration, updateAll } from './update-all';
+import { Config, GroupIngestionConfiguration, updateAll } from './update-all';
 
 const shouldUpdate = (group: GroupIngestionConfiguration) => {
   const pattern = process.env.INGEST_ONLY;
@@ -30,9 +30,10 @@ const shouldNotExclude = (group: GroupIngestionConfiguration) => {
 const environmentCodec = t.strict({
   INGESTION_TARGET_APP: tt.NonEmptyString,
   SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
+  INGEST_DAYS: tt.withFallback(tt.NumberFromString, 5),
 });
 
-const validateEnvironment = (env: unknown) => pipe(
+const validateEnvironment = (env: unknown): E.Either<void, Omit<Config, 'groupsToIngest'>> => pipe(
   env,
   environmentCodec.decode,
   E.mapLeft((errors) => {
@@ -41,6 +42,7 @@ const validateEnvironment = (env: unknown) => pipe(
   E.map((environment) => ({
     targetApp: environment.INGESTION_TARGET_APP,
     bearerToken: environment.SCIETY_TEAM_API_BEARER_TOKEN,
+    ingestDays: environment.INGEST_DAYS,
   })),
 );
 
