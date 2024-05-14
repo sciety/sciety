@@ -8,6 +8,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { DocmapViewModel } from './view-model';
 import { Queries } from '../../read-models';
+import { fetchEvaluation } from '../../read-side/fetch-evaluation';
 import { ExternalQueries } from '../../third-parties';
 import * as DE from '../../types/data-error';
 import { inferredSourceUrl } from '../../types/evaluation-locator';
@@ -28,7 +29,7 @@ const extendWithSourceUrl = (adapters: Ports) => (evaluation: RecordedEvaluation
   O.match(
     () => pipe(
       evaluation.evaluationLocator,
-      adapters.fetchEvaluation,
+      fetchEvaluation(adapters),
       TE.map((fetchedReview) => ({
         ...evaluation,
         sourceUrl: fetchedReview.url,
