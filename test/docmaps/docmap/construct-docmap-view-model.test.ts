@@ -10,6 +10,7 @@ import { RecordEvaluationPublicationCommand } from '../../../src/write-side/comm
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryUri } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryDataError } from '../../types/data-error.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
@@ -82,7 +83,22 @@ describe('construct-docmap-view-model', () => {
       });
 
       describe('when we can not fetch a human readable original url for the evaluations', () => {
-        it.todo('returns an E.left of unavailable');
+        let result: E.Either<unknown, unknown>;
+        const externalQueryError = arbitraryDataError();
+
+        beforeEach(async () => {
+          result = await pipe(
+            { expressionDoi, groupId: addGroupCommand.groupId },
+            constructDocmapViewModel({
+              ...defaultAdapters,
+              fetchEvaluationHumanReadableOriginalUrl: () => TE.left(externalQueryError),
+            }),
+          )();
+        });
+
+        it('returns an E.left of the external query error', () => {
+          expect(result).toStrictEqual(E.left(externalQueryError));
+        });
       });
     });
 
