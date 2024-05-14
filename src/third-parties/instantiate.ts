@@ -6,11 +6,11 @@ import { fetchExpressionFrontMatter, crossrefResponseBodyCachePredicate } from '
 import { searchEuropePmc } from './europe-pmc';
 import { ExternalQueries } from './external-queries';
 import { createFetchEvaluation } from './fetch-evaluation';
+import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchRecommendedPapers } from './fetch-recommended-papers';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchUserAvatarUrl } from './fetch-user-avatar-url';
-import { fetchEvaluationHumanReadableOriginalUrl } from '../read-side/fetch-evaluation-human-readable-original-url';
 import { Logger } from '../shared-ports';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {

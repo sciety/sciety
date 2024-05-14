@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ExternalQueries } from '../third-parties';
+import { ExternalQueries } from './external-queries';
 import * as DE from '../types/data-error';
 import {
   EvaluationLocator, key, service,
