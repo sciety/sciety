@@ -16,6 +16,7 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as GID from '../../types/group-id';
 import * as PH from '../../types/publishing-history';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { fetchEvaluation } from '../fetch-evaluation';
 import { detectLanguage } from '../html-pages/shared-components/lang-attribute';
 import { constructGroupPageHref } from '../paths';
 
@@ -46,7 +47,7 @@ type Partial = Omit<CurationStatement, 'statementLanguageCode' | 'statement'>;
 
 const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => pipe(
   partial.evaluationLocator,
-  dependencies.fetchEvaluation,
+  fetchEvaluation(dependencies),
   TE.map((review) => ({
     ...partial,
     statement: review.fullText,
