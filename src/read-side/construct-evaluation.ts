@@ -13,6 +13,8 @@ type Evaluation = {
   url: URL,
 };
 
-type FetchEvaluation = (evaluationLocator: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
+type ConstructEvaluation = (evaluationLocator: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
 
-export const fetchEvaluation = (dependencies: Dependencies): FetchEvaluation => dependencies.fetchEvaluationDigest;
+export const constructEvaluation = (
+  dependencies: Dependencies,
+): ConstructEvaluation => dependencies.fetchEvaluationDigest;

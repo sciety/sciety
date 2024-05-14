@@ -7,7 +7,7 @@ import { Dependencies } from './dependencies';
 import * as EL from '../../../../types/evaluation-locator';
 import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
 import { sanitise } from '../../../../types/sanitised-html-fragment';
-import { fetchEvaluation } from '../../../fetch-evaluation';
+import { constructEvaluation } from '../../../construct-evaluation';
 import { detectLanguage } from '../../shared-components/lang-attribute';
 import { EvaluationPublishedFeedItem } from '../view-model';
 
@@ -33,7 +33,7 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
     ),
     review: pipe(
       evaluation.evaluationLocator,
-      fetchEvaluation(dependencies),
+      constructEvaluation(dependencies),
       TE.match(
         () => ({
           url: EL.inferredSourceUrl(evaluation.evaluationLocator),
