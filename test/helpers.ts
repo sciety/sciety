@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../src/types/html-fragment';
@@ -32,6 +33,8 @@ export const arbitrarySanitisedHtmlFragment = (): SanitisedHtmlFragment => pipe(
 );
 
 export const arbitraryUri = (): string => `http://localhost/${arbitraryWord()}`;
+
+export const arbitraryUrl = (): URL => new URL(arbitraryUri());
 
 export const arbitraryTextLongerThan = (min: number): string => 'xy '.repeat(min);
 

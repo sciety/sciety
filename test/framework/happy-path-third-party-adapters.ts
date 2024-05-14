@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
@@ -12,7 +11,7 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import * as PH from '../../src/types/publishing-history';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import {
-  arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUri, arbitraryWord,
+  arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUrl, arbitraryWord,
 } from '../helpers';
 import { arbitraryArticleServer } from '../types/article-server.helper';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
@@ -27,7 +26,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     abstract: O.some(sanitise(toHtmlFragment(arbitraryString()))),
     server: 'biorxiv' as ArticleServer,
   }),
-  fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL(arbitraryUri())),
+  fetchEvaluationHumanReadableOriginalUrl: () => TE.right(arbitraryUrl()),
   fetchRecommendedPapers: () => TE.right([
     arbitraryExpressionDoi(),
     arbitraryExpressionDoi(),
@@ -42,7 +41,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
       {
         expressionType: 'preprint',
         expressionDoi,
-        publisherHtmlUrl: new URL(arbitraryUri()),
+        publisherHtmlUrl: arbitraryUrl(),
         publishedAt: arbitraryDate(),
         publishedTo: arbitraryWord(),
         server: O.some(arbitraryArticleServer()),

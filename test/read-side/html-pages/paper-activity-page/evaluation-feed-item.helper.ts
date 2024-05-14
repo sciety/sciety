@@ -4,13 +4,15 @@ import { pipe } from 'fp-ts/function';
 import { EvaluationPublishedFeedItem } from '../../../../src/read-side/html-pages/paper-activity-page/view-model';
 import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { sanitise } from '../../../../src/types/sanitised-html-fragment';
-import { arbitraryString, arbitraryUri, arbitraryWord } from '../../../helpers';
+import {
+  arbitraryString, arbitraryUrl, arbitraryWord,
+} from '../../../helpers';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
 
 export const arbitrary = (): EvaluationPublishedFeedItem => ({
   type: 'evaluation-published',
   id: arbitraryEvaluationLocator(),
-  sourceHref: O.some(new URL(arbitraryUri())),
+  sourceHref: O.some(arbitraryUrl()),
   publishedAt: new Date(),
   groupHref: arbitraryWord(),
   groupName: 'group 1',

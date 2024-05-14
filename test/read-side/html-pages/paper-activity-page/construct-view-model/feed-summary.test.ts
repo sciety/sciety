@@ -1,15 +1,16 @@
-import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { feedSummary } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/feed-summary';
 import { ExpressionPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../../helpers';
+import {
+  arbitraryDate, arbitraryString, arbitraryUrl,
+} from '../../../../helpers';
 import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import * as RFI from '../evaluation-feed-item.helper';
 
 const arbitraryPaperExpressionFeedItem = (publishedAt: Date = arbitraryDate()): ExpressionPublishedFeedItem => ({
   type: 'expression-published' as const,
-  source: new URL(arbitraryUri()),
+  source: arbitraryUrl(),
   publishedAt,
   server: O.some('biorxiv' as const),
   doi: arbitraryExpressionDoi(),

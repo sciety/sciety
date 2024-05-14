@@ -9,7 +9,9 @@ import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
 import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
 import { renderDocmap } from '../../../src/docmaps/docmap/render-docmap';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import {
+  arbitraryDate, arbitraryString, arbitraryUrl,
+} from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroup } from '../../types/group.helper';
@@ -40,14 +42,14 @@ describe('render-docmap', () => {
       group,
       evaluations: [
         {
-          sourceUrl: new URL(arbitraryUri()),
+          sourceUrl: arbitraryUrl(),
           evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: earlierEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
         },
         {
-          sourceUrl: new URL(arbitraryUri()),
+          sourceUrl: arbitraryUrl(),
           evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: laterEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
@@ -63,7 +65,7 @@ describe('render-docmap', () => {
         group,
         evaluations: [
           {
-            sourceUrl: new URL(arbitraryUri()),
+            sourceUrl: arbitraryUrl(),
             evaluationLocator: arbitraryEvaluationLocator(),
             recordedAt: arbitraryDate(),
             publishedAt: arbitraryDate(),

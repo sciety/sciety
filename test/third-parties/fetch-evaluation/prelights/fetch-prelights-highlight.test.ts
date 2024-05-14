@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -6,7 +5,7 @@ import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchPrelightsHighlight } from '../../../../src/third-parties/fetch-evaluation/prelights/fetch-prelights-highlight';
 import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryString, arbitraryUrl } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const makeDoc = (descriptions: Array<string>) => `
@@ -32,7 +31,7 @@ describe('fetch-prelights-highlight', () => {
     [[ogDescription]],
     [[ogDescription, arbitraryString()]],
   ])('returns the summary of the prelight', async (descriptions) => {
-    const guid = new URL(arbitraryUri());
+    const guid = arbitraryUrl();
     const queryExternalService = () => () => TE.right(makeDoc(descriptions));
     const fullText = await pipe(
       fetchPrelightsHighlight(queryExternalService, dummyLogger)(guid.toString()),
@@ -44,7 +43,7 @@ describe('fetch-prelights-highlight', () => {
 
   describe('cant find fullText', () => {
     it('returns unavailable', async () => {
-      const guid = new URL(arbitraryUri());
+      const guid = arbitraryUrl();
       const queryExternalService = () => () => TE.right(makeDoc([]));
       const fullText = await pipe(
         guid.toString(),

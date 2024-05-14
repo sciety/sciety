@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -8,7 +7,7 @@ import { toExpressionDoi } from '../../../src/types/article-id';
 import * as DE from '../../../src/types/data-error';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
 import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryUri } from '../../helpers';
+import { arbitraryUrl } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryDataError } from '../../types/data-error.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
@@ -56,7 +55,7 @@ describe('construct-docmap-view-model', () => {
       });
 
       describe('when we can fetch a human readable original url for the evaluations', () => {
-        const humanReadableOriginalUrl = new URL(arbitraryUri());
+        const humanReadableOriginalUrl = arbitraryUrl();
 
         beforeEach(async () => {
           viewModel = await pipe(

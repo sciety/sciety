@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -7,7 +6,7 @@ import { fetchRapidReview } from '../../../../src/third-parties/fetch-evaluation
 import * as DE from '../../../../src/types/data-error';
 import { HtmlFragment } from '../../../../src/types/html-fragment';
 import { dummyLogger } from '../../../dummy-logger';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryString, arbitraryUri, arbitraryUrl } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const rapidReviewResponseWith = (metaTags: ReadonlyArray<[string, string]>) => `
@@ -137,7 +136,7 @@ describe('fetch-rapid-review', () => {
 
   describe('queryExternalService fails', () => {
     it('return "unavailable"', async () => {
-      const guid = new URL(arbitraryUri());
+      const guid = arbitraryUrl();
       const queryExternalService = () => () => TE.left(DE.unavailable);
       const fullText = await pipe(
         guid.toString(),
