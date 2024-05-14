@@ -14,10 +14,12 @@ const extractService = (candidate: string) => {
   return service;
 };
 
-const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews'];
+const supportedServices = ['doi', 'hypothesis', 'ncrc', 'prelights', 'rapidreviews'] as const;
+
+type EvaluationLocatorService = typeof supportedServices[number];
 
 const isEvaluationLocator = (candidate: unknown): candidate is EvaluationLocator => (
-  typeof candidate === 'string' && supportedServices.includes(extractService(candidate))
+  typeof candidate === 'string' && (supportedServices as ReadonlyArray<string>).includes(extractService(candidate))
 );
 
 export const toEvaluationLocator = (serialization: string): EvaluationLocator => {
@@ -32,7 +34,7 @@ export const deserialize = (value: string): O.Option<EvaluationLocator> => O.try
 
 export const serialize = (id: EvaluationLocator): string => id;
 
-export const service = (id: EvaluationLocator): string => id.split(':')[0];
+export const service = (id: EvaluationLocator): EvaluationLocatorService => id.split(':')[0] as EvaluationLocatorService;
 
 export const key = (id: EvaluationLocator): string => id.slice(id.indexOf(':') + 1);
 
