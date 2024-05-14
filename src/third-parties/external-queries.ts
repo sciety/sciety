@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
@@ -18,6 +19,8 @@ type FetchRecommendedPapers = (history: PublishingHistory)
 
 type FetchEvaluationDigest = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
 
+type FetchEvaluationHumanReadableOriginalUrl = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, URL>;
+
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
 type FetchPublishingHistory = (
@@ -34,6 +37,7 @@ type SearchForPaperExpressions = (
 
 export type ExternalQueries = {
   fetchEvaluationDigest: FetchEvaluationDigest,
+  fetchEvaluationHumanReadableOriginalUrl: FetchEvaluationHumanReadableOriginalUrl,
   fetchExpressionFrontMatter: FetchExpressionFrontMatter,
   fetchPublishingHistory: FetchPublishingHistory,
   fetchRecommendedPapers: FetchRecommendedPapers,

@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { fetchEvaluation } from './fetch-evaluation';
 import { fetchPublishingHistory } from './fetch-publishing-history';
@@ -9,6 +10,7 @@ import { ExternalQueries } from '../../third-parties';
 
 export const stubAdapters: ExternalQueries = {
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
+  fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL('https://example.com')),
   fetchEvaluationDigest: fetchEvaluation,
   fetchPublishingHistory,
   fetchRecommendedPapers,
