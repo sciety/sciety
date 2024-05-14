@@ -1,25 +1,33 @@
 import { URL } from 'url';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ExternalQueries } from '../third-parties';
 import * as DE from '../types/data-error';
-import { EvaluationLocator, inferredSourceUrl } from '../types/evaluation-locator';
+import {
+  EvaluationLocator, key, service,
+} from '../types/evaluation-locator';
 
 type Dependencies = ExternalQueries;
 
 export const fetchEvaluationHumanReadableOriginalUrl = (
   evaluationLocator: EvaluationLocator,
   dependencies: Dependencies,
-): TE.TaskEither<DE.DataError, URL> => pipe(
-  evaluationLocator,
-  inferredSourceUrl,
-  O.match(
-    () => pipe(
-      evaluationLocator,
-      dependencies.fetchEvaluationDigest,
-      TE.map(({ url }) => url),
-    ),
-    (url) => TE.right(url),
-  ),
-);
+): TE.TaskEither<DE.DataError, URL> => {
+  const selectedService = service(evaluationLocator);
+  switch (selectedService) {
+    case 'doi':
+      return TE.right(new URL(`https://doi.org/${key(evaluationLocator)}`));
+    case 'hypothesis':
+      return TE.right(new URL(`https://hypothes.is/a/${key(evaluationLocator)}`));
+    case 'prelights':
+      return TE.right(new URL(key(evaluationLocator)));
+    case 'rapidreviews':
+      return TE.right(new URL(key(evaluationLocator)));
+    case 'ncrc':
+      return pipe(
+        evaluationLocator,
+        dependencies.fetchEvaluationDigest,
+        TE.map(({ url }) => url),
+      );
+  }
+};
