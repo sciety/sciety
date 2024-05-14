@@ -21,10 +21,7 @@ describe('construct-and-render-page', () => {
           slug: arbitraryWord(),
           user: O.none,
         },
-        constructAndRenderPage({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
-        }),
+        constructAndRenderPage(framework.dependenciesForViews),
         TE.mapLeft((error) => error.type),
       )();
 

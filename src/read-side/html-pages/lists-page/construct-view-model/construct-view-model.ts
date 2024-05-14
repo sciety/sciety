@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Queries } from '../../../../read-models';
 import { List } from '../../../../read-models/lists';
 import * as DE from '../../../../types/data-error';
-import { constructListCardViewModelWithCurator, ConstructListCardViewModelWithCuratorDependencies } from '../../shared-components/list-card';
+import { DependenciesForViews } from '../../../dependencies-for-views';
+import { constructListCardViewModelWithCurator } from '../../shared-components/list-card';
 import {
   PageOfItems,
   paginate,
@@ -19,7 +19,7 @@ const constructListCards = (pageOfItems: PageOfItems<List>, dependencies: Depend
   RA.map(constructListCardViewModelWithCurator(dependencies)),
 );
 
-export type Dependencies = Queries & ConstructListCardViewModelWithCuratorDependencies;
+export type Dependencies = DependenciesForViews;
 
 export const constructViewModel = (
   dependencies: Dependencies,

@@ -6,7 +6,7 @@ import { List } from '../../../../read-models/lists';
 import { Logger } from '../../../../shared-ports';
 import { constructUserAvatarSrc } from '../../../paths';
 
-export type Dependencies = Queries & {
+type Dependencies = Queries & {
   logger: Logger,
 };
 

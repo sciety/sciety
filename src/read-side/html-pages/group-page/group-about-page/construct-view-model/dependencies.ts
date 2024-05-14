@@ -1,5 +1,3 @@
-import { Queries } from '../../../../../read-models';
-import { ExternalQueries } from '../../../../../third-parties';
+import { DependenciesForViews } from '../../../../dependencies-for-views';
 
-export type Dependencies = Pick<Queries, 'getGroupBySlug' | 'isFollowing' | 'selectAllListsOwnedBy'>
-& ExternalQueries;
+export type Dependencies = DependenciesForViews;

@@ -4,7 +4,6 @@ import { List } from '../../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../../src/read-side/html-pages/lists-page/view-model';
 import * as LOID from '../../../../../src/types/list-owner-id';
-import { dummyLogger } from '../../../../dummy-logger';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { abortTest } from '../../../../framework/abort-test';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
@@ -37,7 +36,7 @@ describe('construct-view-model', () => {
 
       viewmodel = pipe(
         { page: 1 },
-        constructViewModel({ ...framework.queries, logger: dummyLogger }),
+        constructViewModel(framework.dependenciesForViews),
         E.getOrElseW(abortTest('viewmodel construction returned on the left')),
       );
     });
@@ -66,7 +65,7 @@ describe('construct-view-model', () => {
 
         viewmodel = pipe(
           { page: 1 },
-          constructViewModel({ ...framework.queries, logger: dummyLogger }),
+          constructViewModel(framework.dependenciesForViews),
           E.getOrElseW(abortTest('viewmodel construction returned on the left')),
         );
       });

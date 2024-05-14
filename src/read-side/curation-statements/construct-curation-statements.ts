@@ -9,26 +9,20 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { CurationStatement } from './curation-statement';
-import { Queries } from '../../read-models';
-import { Logger } from '../../shared-ports';
-import { ExternalQueries } from '../../third-parties';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as GID from '../../types/group-id';
 import * as PH from '../../types/publishing-history';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { DependenciesForViews } from '../dependencies-for-views';
 import { detectLanguage } from '../html-pages/shared-components/lang-attribute';
 import { constructGroupPageHref } from '../paths';
-
-export type Dependencies = Queries & ExternalQueries & {
-  logger: Logger,
-};
 
 type PartialCurationStatement = {
   evaluationLocator: EvaluationLocator,
   groupId: GID.GroupId,
 };
 
-const addGroupInformation = (dependencies: Dependencies) => (statement: PartialCurationStatement) => pipe(
+const addGroupInformation = (dependencies: DependenciesForViews) => (statement: PartialCurationStatement) => pipe(
   statement.groupId,
   dependencies.getGroup,
   E.fromOption(() => {
@@ -44,7 +38,7 @@ const addGroupInformation = (dependencies: Dependencies) => (statement: PartialC
 
 type Partial = Omit<CurationStatement, 'statementLanguageCode' | 'statement'>;
 
-const addEvaluationText = (dependencies: Dependencies) => (partial: Partial) => pipe(
+const addEvaluationText = (dependencies: DependenciesForViews) => (partial: Partial) => pipe(
   partial.evaluationLocator,
   dependencies.fetchEvaluationDigest,
   TE.map((digest) => ({
@@ -73,7 +67,7 @@ const onlyIncludeLatestCurationPerGroup = (
 );
 
 type ConstructCurationStatements = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
   history: PH.PublishingHistory,
 ) => T.Task<ReadonlyArray<CurationStatement>>;
 
