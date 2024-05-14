@@ -252,7 +252,7 @@ describe('generate-docmaps', () => {
         articleId.value,
         generateDocmaps({
           ...defaultAdapters,
-          fetchEvaluation: (id: EvaluationLocator) => (
+          fetchEvaluationDigest: (id: EvaluationLocator) => (
             id === failingReviewId
               ? TE.left(DE.notFound)
               : TE.right({ fullText: arbitrarySanitisedHtmlFragment(), url: new URL(`https://reviews.example.com/${id}`) })

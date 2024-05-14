@@ -189,7 +189,7 @@ describe('construct-docmap-view-model', () => {
         };
         const ports: Ports = {
           ...defaultAdapters,
-          fetchEvaluation: shouldNotBeCalled,
+          fetchEvaluationDigest: shouldNotBeCalled,
         };
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         viewModel = await pipe(
@@ -216,7 +216,7 @@ describe('construct-docmap-view-model', () => {
         };
         const ports: Ports = {
           ...defaultAdapters,
-          fetchEvaluation: () => TE.right({ fullText: arbitrarySanitisedHtmlFragment(), url: sourceUrl }),
+          fetchEvaluationDigest: () => TE.right({ fullText: arbitrarySanitisedHtmlFragment(), url: sourceUrl }),
         };
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
         viewModel = await pipe(

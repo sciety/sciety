@@ -44,7 +44,7 @@ export const instantiate = (
   );
 
   return {
-    fetchEvaluation: createFetchEvaluation(queryExternalService, logger),
+    fetchEvaluationDigest: createFetchEvaluation(queryExternalService, logger),
     fetchExpressionFrontMatter: fetchExpressionFrontMatter(
       queryCrossrefService,
       logger,

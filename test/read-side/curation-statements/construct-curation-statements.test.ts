@@ -79,7 +79,7 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       curationStatementLocators = await getCurationStatementLocators({
         ...framework.dependenciesForViews,
-        fetchEvaluation: () => TE.left(DE.unavailable),
+        fetchEvaluationDigest: () => TE.left(DE.unavailable),
       });
     });
 
@@ -106,7 +106,9 @@ describe('construct-curation-statements', () => {
       await framework.commandHelpers.recordEvaluationPublication(recordCurationStatementByGroupA);
       curationStatementLocators = await getCurationStatementLocators({
         ...framework.dependenciesForViews,
-        fetchEvaluation: (evaluationLocator: EvaluationLocator) => (evaluationLocator === retrievableEvaluationLocator
+        fetchEvaluationDigest: (
+          evaluationLocator: EvaluationLocator,
+        ) => (evaluationLocator === retrievableEvaluationLocator
           ? TE.right({
             url: new URL(arbitraryUri()),
             fullText: arbitrarySanitisedHtmlFragment(),

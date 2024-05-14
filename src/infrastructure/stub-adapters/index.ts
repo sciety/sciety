@@ -9,7 +9,7 @@ import { ExternalQueries } from '../../third-parties';
 
 export const stubAdapters: ExternalQueries = {
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
-  fetchEvaluation,
+  fetchEvaluationDigest: fetchEvaluation,
   fetchPublishingHistory,
   fetchRecommendedPapers,
   fetchStaticFile,

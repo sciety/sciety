@@ -12,7 +12,7 @@ import { Logger } from '../../shared-ports';
 import { ExternalQueries } from '../external-queries';
 import { QueryExternalService } from '../query-external-service';
 
-export const createFetchEvaluation = (queryExternalService: QueryExternalService, logger: Logger): ExternalQueries['fetchEvaluation'] => pipe(
+export const createFetchEvaluation = (queryExternalService: QueryExternalService, logger: Logger): ExternalQueries['fetchEvaluationDigest'] => pipe(
   {
     doi: fetchDoiEvaluationByPublisher(
       {

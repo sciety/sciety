@@ -15,4 +15,4 @@ type Evaluation = {
 
 type FetchEvaluation = (evaluationLocator: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
 
-export const fetchEvaluation = (dependencies: Dependencies): FetchEvaluation => dependencies.fetchEvaluation;
+export const fetchEvaluation = (dependencies: Dependencies): FetchEvaluation => dependencies.fetchEvaluationDigest;

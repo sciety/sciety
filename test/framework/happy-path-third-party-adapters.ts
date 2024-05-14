@@ -33,7 +33,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     arbitraryExpressionDoi(),
     arbitraryExpressionDoi(),
   ]),
-  fetchEvaluation: () => TE.right({
+  fetchEvaluationDigest: () => TE.right({
     fullText: arbitrarySanitisedHtmlFragment(),
     url: new URL(arbitraryUri()),
   }),
