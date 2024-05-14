@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { auth, sheets, sheets_v4 } from '@googleapis/sheets';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -144,4 +145,14 @@ export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluatio
     return DE.notFound;
   }),
   TE.map(constructNcrcReview),
+);
+
+export const fetchNcrcHumanReadableOriginalUrl = (
+  logger: Logger,
+) => (
+  evaluationUuid: string,
+): TE.TaskEither<DE.DataError, URL> => pipe(
+  evaluationUuid,
+  fetchNcrcReview(logger),
+  TE.map((evaluation) => evaluation.url),
 );

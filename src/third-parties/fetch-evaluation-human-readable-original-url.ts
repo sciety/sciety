@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchNcrcReview } from './fetch-evaluation/ncrc';
+import { fetchNcrcHumanReadableOriginalUrl } from './fetch-evaluation/ncrc/fetch-ncrc-review';
 import { Logger } from '../shared-ports';
 import * as DE from '../types/data-error';
 import {
@@ -27,8 +27,7 @@ export const fetchEvaluationHumanReadableOriginalUrl = (
       return pipe(
         evaluationLocator,
         key,
-        fetchNcrcReview(logger),
-        TE.map(({ url }) => url),
+        fetchNcrcHumanReadableOriginalUrl(logger),
       );
   }
 };
