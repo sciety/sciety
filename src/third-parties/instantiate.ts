@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { createClient } from 'redis';
 import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
@@ -11,8 +10,8 @@ import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchRecommendedPapers } from './fetch-recommended-papers';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchUserAvatarUrl } from './fetch-user-avatar-url';
+import { fetchEvaluationHumanReadableOriginalUrl } from '../read-side/fetch-evaluation-human-readable-original-url';
 import { Logger } from '../shared-ports';
-import * as DE from '../types/data-error';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
@@ -47,7 +46,9 @@ export const instantiate = (
 
   return {
     fetchEvaluationDigest: createFetchEvaluation(queryExternalService, logger),
-    fetchEvaluationHumanReadableOriginalUrl: () => TE.left(DE.unavailable),
+    fetchEvaluationHumanReadableOriginalUrl: fetchEvaluationHumanReadableOriginalUrl(
+      createFetchEvaluation(queryExternalService, logger),
+    ),
     fetchExpressionFrontMatter: fetchExpressionFrontMatter(
       queryCrossrefService,
       logger,

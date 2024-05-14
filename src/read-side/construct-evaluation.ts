@@ -2,7 +2,6 @@ import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
 import { Queries } from '../read-models';
 import { ExternalQueries } from '../third-parties';
 import * as DE from '../types/data-error';
@@ -27,7 +26,7 @@ export const constructEvaluation = (
       dependencies.fetchEvaluationDigest,
       TE.map(({ fullText }) => fullText),
     ),
-    url: fetchEvaluationHumanReadableOriginalUrl(evaluationLocator, dependencies),
+    url: dependencies.fetchEvaluationHumanReadableOriginalUrl(evaluationLocator),
   },
   sequenceS(TE.ApplySeq),
 );

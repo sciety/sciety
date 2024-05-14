@@ -7,11 +7,10 @@ import {
   EvaluationLocator, key, service,
 } from '../types/evaluation-locator';
 
-type Dependencies = ExternalQueries;
-
 export const fetchEvaluationHumanReadableOriginalUrl = (
+  fetchEvaluationDigest: ExternalQueries['fetchEvaluationDigest'],
+) => (
   evaluationLocator: EvaluationLocator,
-  dependencies: Dependencies,
 ): TE.TaskEither<DE.DataError, URL> => {
   const selectedService = service(evaluationLocator);
   switch (selectedService) {
@@ -26,7 +25,7 @@ export const fetchEvaluationHumanReadableOriginalUrl = (
     case 'ncrc':
       return pipe(
         evaluationLocator,
-        dependencies.fetchEvaluationDigest,
+        fetchEvaluationDigest,
         TE.map(({ url }) => url),
       );
   }
