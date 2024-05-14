@@ -7,10 +7,12 @@ import { toEvaluationPublishedFeedItem } from '../../../../../src/read-side/html
 import { EvaluationPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryUri } from '../../../../helpers';
+import { arbitraryDataError } from '../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../types/recorded-evaluation.helper';
 
 describe('to-evaluation-published-feed-item', () => {
   let framework: TestFramework;
+  let sourceHref: EvaluationPublishedFeedItem['sourceHref'];
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -18,7 +20,6 @@ describe('to-evaluation-published-feed-item', () => {
 
   describe('when the human readable original URL is available for the evaluation', () => {
     const humanReadableOriginalUrl = new URL(arbitraryUri());
-    let sourceHref: EvaluationPublishedFeedItem['sourceHref'];
 
     beforeEach(async () => {
       sourceHref = await pipe(
@@ -37,7 +38,20 @@ describe('to-evaluation-published-feed-item', () => {
   });
 
   describe('when the human readable original URL is not available for the evaluation', () => {
-    it.todo('hides the link');
+    beforeEach(async () => {
+      sourceHref = await pipe(
+        arbitraryRecordedEvaluation(),
+        toEvaluationPublishedFeedItem({
+          ...framework.dependenciesForViews,
+          fetchEvaluationHumanReadableOriginalUrl: () => TE.left(arbitraryDataError()),
+        }),
+        T.map((feedItem) => feedItem.sourceHref),
+      )();
+    });
+
+    it.skip('hides the link', () => {
+      expect(sourceHref).toStrictEqual(O.none);
+    });
   });
 
   describe('when the evaluation digest is available', () => {
