@@ -133,7 +133,7 @@ const lookup = (evaluationUuid: string) => (sheet: ReadonlyArray<FindableNcrcRev
   E.fromOption(() => DE.notFound),
 );
 
-export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
+const fetchNcrcSpreadsheetRow = (logger: Logger) => (evaluationUuid: string) => pipe(
   getCachedSheet(logger),
   TE.chainEitherKW(lookup(evaluationUuid)),
   TE.alt(() => pipe(
@@ -144,8 +144,15 @@ export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluatio
     logger('error', 'NCRC evaluation id not found in sheet', { evaluationUuid });
     return DE.notFound;
   }),
+);
+
+export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
+  evaluationUuid,
+  fetchNcrcSpreadsheetRow(logger),
   TE.map(constructNcrcReview),
 );
+
+const slugify = (value: string) => value.toLowerCase().replace(/\s/g, '-');
 
 export const fetchNcrcHumanReadableOriginalUrl = (
   logger: Logger,
@@ -153,6 +160,6 @@ export const fetchNcrcHumanReadableOriginalUrl = (
   evaluationUuid: string,
 ): TE.TaskEither<DE.DataError, URL> => pipe(
   evaluationUuid,
-  fetchNcrcReview(logger),
-  TE.map((evaluation) => evaluation.url),
+  fetchNcrcSpreadsheetRow(logger),
+  TE.map((row) => new URL(`https://ncrc.jhsph.edu/research/${slugify(row.title)}/`)),
 );
