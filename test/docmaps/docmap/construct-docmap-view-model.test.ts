@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -7,6 +8,7 @@ import { toExpressionDoi } from '../../../src/types/article-id';
 import * as DE from '../../../src/types/data-error';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
 import { TestFramework, createTestFramework } from '../../framework';
+import { arbitraryUri } from '../../helpers';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -50,19 +52,37 @@ describe('construct-docmap-view-model', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-        viewModel = await pipe(
-          { expressionDoi, groupId: addGroupCommand.groupId },
-          constructDocmapViewModel(defaultAdapters),
-          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-        )();
       });
 
-      it('includes the article id', async () => {
-        expect(viewModel.expressionDoi).toStrictEqual(expressionDoi);
+      describe('when we can fetch a human readable original url for the evaluations', () => {
+        const humanReadableOriginalUrl = new URL(arbitraryUri());
+
+        beforeEach(async () => {
+          viewModel = await pipe(
+            { expressionDoi, groupId: addGroupCommand.groupId },
+            constructDocmapViewModel({
+              ...defaultAdapters,
+              fetchEvaluationHumanReadableOriginalUrl: () => TE.right(humanReadableOriginalUrl),
+            }),
+            TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
+          )();
+        });
+
+        it('includes the article id', async () => {
+          expect(viewModel.expressionDoi).toStrictEqual(expressionDoi);
+        });
+
+        it('includes the group', async () => {
+          expect(viewModel.group.id).toStrictEqual(addGroupCommand.groupId);
+        });
+
+        it('includes a source URL', () => {
+          expect(viewModel.evaluations[0].sourceUrl).toStrictEqual(humanReadableOriginalUrl);
+        });
       });
 
-      it('includes the group', async () => {
-        expect(viewModel.group.id).toStrictEqual(addGroupCommand.groupId);
+      describe('when we can not fetch a human readable original url for the evaluations', () => {
+        it.todo('returns an E.left of unavailable');
       });
     });
 
@@ -166,14 +186,6 @@ describe('construct-docmap-view-model', () => {
       it('the updatedAt is when the evaluation was updated', () => {
         expect(viewModel.updatedAt).toStrictEqual(updateEvaluationCommand.issuedAt);
       });
-    });
-
-    describe('when we can fetch a human readable original url for the evaluations', () => {
-      it.todo('includes a source URL');
-    });
-
-    describe('when we can not fetch a human readable original url for the evaluations', () => {
-      it.todo('returns an E.left of unavailable');
     });
 
     describe('when there are no evaluations by the selected group', () => {
