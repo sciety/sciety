@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { arbitraryEvaluationLocator } from './evaluation-locator.helper';
 import * as RI from '../../src/types/evaluation-locator';
@@ -90,16 +89,6 @@ describe('review-id', () => {
       )).toStrictEqual(E.right(key));
     });
 
-    it('infers the original URL', () => {
-      expect(pipe(
-        ingestedReviewId,
-        RI.evaluationLocatorCodec.decode,
-        O.fromEither,
-        O.chain(RI.inferredSourceUrl),
-        O.map((url) => url.toString()),
-      )).toStrictEqual(O.some(key));
-    });
-
     it('encodes to the original string', () => {
       expect(pipe(
         ingestedReviewId,
@@ -127,16 +116,6 @@ describe('review-id', () => {
         RI.evaluationLocatorCodec.decode,
         E.map(RI.key),
       )).toStrictEqual(E.right(key));
-    });
-
-    it('infers the original URL', () => {
-      expect(pipe(
-        ingestedReviewId,
-        RI.evaluationLocatorCodec.decode,
-        O.fromEither,
-        O.chain(RI.inferredSourceUrl),
-        O.map((url) => url.toString()),
-      )).toStrictEqual(O.some(key));
     });
 
     it('encodes to the original string', () => {

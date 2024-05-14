@@ -1,8 +1,6 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
-import * as R from 'fp-ts/Record';
 import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
@@ -37,20 +35,6 @@ export const serialize = (id: EvaluationLocator): string => id;
 export const service = (id: EvaluationLocator): EvaluationLocatorService => id.split(':')[0] as EvaluationLocatorService;
 
 export const key = (id: EvaluationLocator): string => id.slice(id.indexOf(':') + 1);
-
-const urlTemplates = ({
-  doi: (id: EvaluationLocator) => `https://doi.org/${key(id)}`,
-  hypothesis: (id: EvaluationLocator) => `https://hypothes.is/a/${key(id)}`,
-  prelights: (id: EvaluationLocator) => key(id),
-  rapidreviews: (id: EvaluationLocator) => key(id),
-});
-
-export const inferredSourceUrl = (id: EvaluationLocator): O.Option<URL> => pipe(
-  urlTemplates,
-  R.lookup(service(id)),
-  O.map((template) => template(id)),
-  O.map((u) => new URL(u)),
-);
 
 const eq: Eq.Eq<EvaluationLocator> = pipe(
   S.Eq,
