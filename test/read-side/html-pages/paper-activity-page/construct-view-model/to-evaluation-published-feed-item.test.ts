@@ -13,6 +13,7 @@ import { arbitraryRecordedEvaluation } from '../../../../types/recorded-evaluati
 describe('to-evaluation-published-feed-item', () => {
   let framework: TestFramework;
   let sourceHref: EvaluationPublishedFeedItem['sourceHref'];
+  let fullText: EvaluationPublishedFeedItem['fullText'];
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -56,7 +57,6 @@ describe('to-evaluation-published-feed-item', () => {
 
   describe('when the evaluation digest is available', () => {
     const digest = arbitrarySanitisedHtmlFragment();
-    let fullText: EvaluationPublishedFeedItem['fullText'];
 
     beforeEach(async () => {
       fullText = await pipe(
@@ -75,6 +75,19 @@ describe('to-evaluation-published-feed-item', () => {
   });
 
   describe('when the evaluation digest is not available', () => {
-    it.todo('hides the digest');
+    beforeEach(async () => {
+      fullText = await pipe(
+        arbitraryRecordedEvaluation(),
+        toEvaluationPublishedFeedItem({
+          ...framework.dependenciesForViews,
+          fetchEvaluationDigest: () => TE.left(arbitraryDataError()),
+        }),
+        T.map((feedItem) => feedItem.fullText),
+      )();
+    });
+
+    it('hides the digest', () => {
+      expect(fullText).toStrictEqual(O.none);
+    });
   });
 });
