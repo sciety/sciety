@@ -2,7 +2,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Params } from './params';
 import { Queries } from '../read-models';
-import { constructEvaluation } from '../read-side/construct-evaluation';
 import { HtmlPage, toHtmlPage } from '../read-side/html-pages/html-page';
 import { ExternalQueries } from '../third-parties';
 import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../types/error-page-body-view-model';
@@ -14,7 +13,7 @@ type Dependencies = ExternalQueries & Queries;
 
 export const evaluationContent = (dependencies: Dependencies) => (params: Params): EvaluationContent => pipe(
   params.reviewid,
-  constructEvaluation(dependencies),
+  dependencies.fetchEvaluationDigest,
   TE.bimap(
     (error) => toErrorPageBodyViewModel({
       type: error,
