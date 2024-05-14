@@ -1,14 +1,15 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ExternalQueries } from './external-queries';
+import { fetchNcrcReview } from './fetch-evaluation/ncrc';
+import { Logger } from '../shared-ports';
 import * as DE from '../types/data-error';
 import {
   EvaluationLocator, key, service,
 } from '../types/evaluation-locator';
 
 export const fetchEvaluationHumanReadableOriginalUrl = (
-  fetchEvaluationDigest: ExternalQueries['fetchEvaluationDigest'],
+  logger: Logger,
 ) => (
   evaluationLocator: EvaluationLocator,
 ): TE.TaskEither<DE.DataError, URL> => {
@@ -25,7 +26,8 @@ export const fetchEvaluationHumanReadableOriginalUrl = (
     case 'ncrc':
       return pipe(
         evaluationLocator,
-        fetchEvaluationDigest,
+        key,
+        fetchNcrcReview(logger),
         TE.map(({ url }) => url),
       );
   }
