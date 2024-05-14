@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 import { pipe } from 'fp-ts/function';
 import { renderEvaluationPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/render-as-html/render-evaluation-published-feed-item';
-import { missingFullTextAndSourceLink } from '../../../../../src/read-side/html-pages/paper-activity-page/render-as-html/static-messages';
+import { missingDigestAndSourceLink } from '../../../../../src/read-side/html-pages/paper-activity-page/render-as-html/static-messages';
 import { EvaluationLocator, evaluationLocatorCodec } from '../../../../../src/types/evaluation-locator';
 import { arbitraryNumber, arbitraryWord } from '../../../../helpers';
 import * as RFI from '../evaluation-feed-item.helper';
@@ -92,7 +92,7 @@ describe('render-evaluation-feed-item', () => {
       const result = renderEvaluationPublishedFeedItem(item, arbitraryNumber(6, 10));
 
       it('displays a message that the evaluation is unavailable', () => {
-        expect(result).toContain(missingFullTextAndSourceLink);
+        expect(result).toContain(missingDigestAndSourceLink);
       });
     });
   });

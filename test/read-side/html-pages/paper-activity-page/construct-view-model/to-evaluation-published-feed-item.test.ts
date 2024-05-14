@@ -12,7 +12,7 @@ import { arbitraryRecordedEvaluation } from '../../../../types/recorded-evaluati
 describe('to-evaluation-published-feed-item', () => {
   let framework: TestFramework;
   let sourceHref: EvaluationPublishedFeedItem['sourceHref'];
-  let fullText: EvaluationPublishedFeedItem['fullText'];
+  let fullText: EvaluationPublishedFeedItem['digest'];
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -64,7 +64,7 @@ describe('to-evaluation-published-feed-item', () => {
           ...framework.dependenciesForViews,
           fetchEvaluationDigest: () => TE.right(digest),
         }),
-        T.map((feedItem) => feedItem.fullText),
+        T.map((feedItem) => feedItem.digest),
       )();
     });
 
@@ -81,7 +81,7 @@ describe('to-evaluation-published-feed-item', () => {
           ...framework.dependenciesForViews,
           fetchEvaluationDigest: () => TE.left(arbitraryDataError()),
         }),
-        T.map((feedItem) => feedItem.fullText),
+        T.map((feedItem) => feedItem.digest),
       )();
     });
 

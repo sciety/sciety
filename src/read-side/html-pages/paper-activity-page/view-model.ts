@@ -21,8 +21,8 @@ export type EvaluationPublishedFeedItem = {
   groupName: string,
   groupHref: string,
   groupAvatarSrc: string,
-  fullText: O.Option<SanitisedHtmlFragment>,
-  fullTextLanguageCode: O.Option<LanguageCode>,
+  digest: O.Option<SanitisedHtmlFragment>,
+  digestLanguageCode: O.Option<LanguageCode>,
 };
 
 export type ExpressionPublishedFeedItem = {

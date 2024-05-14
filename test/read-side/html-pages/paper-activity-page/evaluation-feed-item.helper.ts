@@ -17,18 +17,18 @@ export const arbitrary = (): EvaluationPublishedFeedItem => ({
   groupHref: arbitraryWord(),
   groupName: 'group 1',
   groupAvatarSrc: '/avatar',
-  fullText: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
-  fullTextLanguageCode: O.none,
+  digest: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
+  digestLanguageCode: O.none,
 });
 
 export const withFullText = (fullText: string) => (rfi: EvaluationPublishedFeedItem): EvaluationPublishedFeedItem => ({
   ...rfi,
-  fullText: pipe(fullText, toHtmlFragment, sanitise, O.some),
+  digest: pipe(fullText, toHtmlFragment, sanitise, O.some),
 });
 
 export const withNoFullText = (rfi: EvaluationPublishedFeedItem): EvaluationPublishedFeedItem => ({
   ...rfi,
-  fullText: O.none,
+  digest: O.none,
 });
 
 export const withSource = (uri: string) => (rfi: EvaluationPublishedFeedItem): EvaluationPublishedFeedItem => ({

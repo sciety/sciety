@@ -34,31 +34,31 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
       dependencies.fetchEvaluationHumanReadableOriginalUrl,
       T.map(O.fromEither),
     ),
-    review: pipe(
+    evaluationDigest: pipe(
       evaluation.evaluationLocator,
       dependencies.fetchEvaluationDigest,
       TE.match(
         () => ({
-          fullText: O.none,
-          fullTextLanguageCode: O.none,
+          digest: O.none,
+          digestLanguageCode: O.none,
         }),
         (digest) => ({
-          fullText: O.some(digest),
-          fullTextLanguageCode: detectLanguage(digest),
+          digest: O.some(digest),
+          digestLanguageCode: detectLanguage(digest),
         }),
       ),
     ),
   },
   sequenceS(T.ApplyPar),
   T.map(({
-    groupDetails, review, sourceHref,
+    groupDetails, evaluationDigest, sourceHref,
   }) => ({
     type: 'evaluation-published' as const,
     id: evaluation.evaluationLocator,
     sourceHref,
     publishedAt: evaluation.publishedAt,
     ...groupDetails,
-    fullText: O.map(sanitise)(review.fullText),
-    fullTextLanguageCode: review.fullTextLanguageCode,
+    digest: O.map(sanitise)(evaluationDigest.digest),
+    digestLanguageCode: evaluationDigest.digestLanguageCode,
   })),
 );

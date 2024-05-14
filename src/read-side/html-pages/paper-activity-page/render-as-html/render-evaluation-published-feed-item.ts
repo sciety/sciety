@@ -2,7 +2,7 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import clip from 'text-clipper';
-import { missingFullTextAndSourceLink } from './static-messages';
+import { missingDigestAndSourceLink } from './static-messages';
 import * as EL from '../../../../types/evaluation-locator';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { templateDate } from '../../shared-components/date';
@@ -38,28 +38,28 @@ const appendSourceLink = flow(
   )),
 );
 
-const renderWithText = (teaserChars: number, review: EvaluationPublishedFeedItem, fullText: string) => {
-  const teaserText = clip(fullText, teaserChars, { html: true });
-  const fulltextAndSourceLink = `
-    <div${renderLangAttribute(review.fullTextLanguageCode)}>${fullText}</div>
+const renderWhenDigestAvailable = (teaserChars: number, review: EvaluationPublishedFeedItem, digest: string) => {
+  const teaserText = clip(digest, teaserChars, { html: true });
+  const digestAndSourceLink = `
+    <div${renderLangAttribute(review.digestLanguageCode)}>${digest}</div>
     ${pipe(review, appendSourceLink, O.getOrElse(constant('')))}
   `;
   let feedItemBody = `
     <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
-      <div class="hidden" data-teaser${renderLangAttribute(review.fullTextLanguageCode)}>
+      <div class="hidden" data-teaser${renderLangAttribute(review.digestLanguageCode)}>
         ${teaserText}
       </div>
       <div data-full-text>
-        ${fulltextAndSourceLink}
+        ${digestAndSourceLink}
       </div>
     </div>
   `;
 
-  if (teaserText === fullText) {
+  if (teaserText === digest) {
     feedItemBody = `
       <div class="activity-feed__item__body">
         <div>
-          ${fulltextAndSourceLink}
+          ${digestAndSourceLink}
         </div>
       </div>
     `;
@@ -75,17 +75,17 @@ const renderWithText = (teaserChars: number, review: EvaluationPublishedFeedItem
   `;
 };
 
-const renderSourceLinkWhenFulltextMissing = (review: EvaluationPublishedFeedItem) => pipe(
+const renderSourceLinkWhenDigestMissing = (review: EvaluationPublishedFeedItem) => pipe(
   review,
   appendSourceLink,
-  O.getOrElse(constant(missingFullTextAndSourceLink)),
+  O.getOrElse(constant(missingDigestAndSourceLink)),
 );
 
 export const renderEvaluationPublishedFeedItem = (
   feedItem: EvaluationPublishedFeedItem,
   teaserChars: number,
 ): HtmlFragment => pipe(
-  feedItem.fullText,
+  feedItem.digest,
   O.match(
     () => `
       <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
@@ -95,12 +95,12 @@ export const renderEvaluationPublishedFeedItem = (
         </header>
         <div class="activity-feed__item__body">
           <div>
-            ${renderSourceLinkWhenFulltextMissing(feedItem)}
+            ${renderSourceLinkWhenDigestMissing(feedItem)}
           </div>
         </div>
       </article>
     `,
-    (fullText) => renderWithText(teaserChars, feedItem, fullText),
+    (digest) => renderWhenDigestAvailable(teaserChars, feedItem, digest),
   ),
   toHtmlFragment,
 );
