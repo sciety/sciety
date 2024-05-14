@@ -3,7 +3,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { HypothesisAnnotation } from '../../../../src/third-parties/fetch-evaluation/hypothesis/HypothesisAnnotation';
 import { fetchHypothesisAnnotation, insertSelectedText } from '../../../../src/third-parties/fetch-evaluation/hypothesis/fetch-hypothesis-annotation';
-import { toHtmlFragment } from '../../../../src/types/html-fragment';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -22,13 +21,9 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const evaluation = await fetchHypothesisAnnotation(queryExternalService, dummyLogger)(key)();
+    const digest = await fetchHypothesisAnnotation(queryExternalService, dummyLogger)(key)();
 
-    const expected = {
-      fullText: pipe('<p>Very good</p>', toHtmlFragment),
-    };
-
-    expect(evaluation).toStrictEqual(E.right(expected));
+    expect(digest).toStrictEqual(E.right('<p>Very good</p>'));
   });
 
   it.each([
@@ -45,13 +40,13 @@ describe('fetch-hypothesis-annotation', () => {
         incontext: 'https://www.example.com',
       },
     });
-    const evaluation = await pipe(
+    const digest = await pipe(
       key,
       fetchHypothesisAnnotation(queryExternalService, dummyLogger),
       TE.getOrElse(shouldNotBeCalled),
     )();
 
-    expect(evaluation.fullText).toContain(expected);
+    expect(digest).toContain(expected);
   });
 
   describe('when queryExternalService fails', () => {

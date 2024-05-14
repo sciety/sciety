@@ -2,25 +2,23 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { fetchDoiEvaluationByPublisher } from '../../../src/third-parties/fetch-evaluation/fetch-doi-evaluation-by-publisher';
 import * as DE from '../../../src/types/data-error';
-import { Evaluation } from '../../../src/types/evaluation';
+import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryNumber, arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { arbitraryDataError } from '../../types/data-error.helper';
 
-const arbitraryEvaluation: Evaluation = {
-  fullText: arbitrarySanitisedHtmlFragment(),
-};
+const digest = arbitrarySanitisedHtmlFragment();
 const arbitraryDoiPrefix = () => `10.${arbitraryNumber(1, 9999)}`;
 
 describe('fetch-doi-evaluation-by-publisher', () => {
-  let result: E.Either<DE.DataError, Evaluation>;
+  let result: E.Either<DE.DataError, SanitisedHtmlFragment>;
 
   describe('when a doi with a configured prefix is passed in', () => {
     const configuredDoiPrefix = arbitraryDoiPrefix();
 
     describe('when the delegated doi fetcher returns a right', () => {
       const evaluationFetchersConfiguration = {
-        [configuredDoiPrefix]: () => TE.right(arbitraryEvaluation),
+        [configuredDoiPrefix]: () => TE.right(digest),
       };
 
       beforeEach(async () => {
@@ -28,7 +26,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
       });
 
       it('returns a right', () => {
-        expect(result).toStrictEqual(E.right(arbitraryEvaluation));
+        expect(result).toStrictEqual(E.right(digest));
       });
     });
 
@@ -51,7 +49,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
   describe('when a doi with an unknown prefix is passed in', () => {
     const unknownDoiPrefix = arbitraryDoiPrefix();
     const evaluationFetchersConfiguration = {
-      [arbitraryDoiPrefix()]: () => TE.right(arbitraryEvaluation),
+      [arbitraryDoiPrefix()]: () => TE.right(digest),
     };
 
     beforeEach(async () => {

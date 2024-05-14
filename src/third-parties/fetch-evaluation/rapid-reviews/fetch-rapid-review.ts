@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { CheerioAPI, load } from 'cheerio';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -73,8 +72,4 @@ export const fetchRapidReview = (
     E.map(toHtmlFragment),
     E.map(sanitise),
   )),
-  TE.map((fullText) => ({
-    fullText,
-    url: new URL(url),
-  })),
 );

@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations';
@@ -22,10 +21,6 @@ const fetchEvaluationFromPublisherJatsXmlEndpoint = (
   TE.chain(queryExternalService()),
   TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
   TE.chainEitherKW(lookupFullText(key)),
-  TE.map((fullText) => ({
-    url: new URL(`https://doi.org/${key}`),
-    fullText,
-  })),
 );
 
 export const fetchAccessMicrobiologyEvaluation = (

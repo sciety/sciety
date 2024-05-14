@@ -8,7 +8,6 @@ import { linkify } from 'remarkable/linkify';
 import { HypothesisAnnotation, hypothesisAnnotation } from './HypothesisAnnotation';
 import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
-import { Evaluation } from '../../../types/evaluation';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { decodeAndLogFailures } from '../../decode-and-log-failures';
@@ -32,16 +31,14 @@ ${response.text}`,
 );
 
 const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
-  const evaluation: Evaluation = {
-    fullText: pipe(
-      insertSelectedText(response),
-      (text) => converter.render(text),
-      toHtmlFragment,
-      sanitise,
-    ),
-  };
-  logger('debug', 'Retrieved evaluation', { ...evaluation, fullText: '[text]' });
-  return evaluation;
+  const digest = pipe(
+    insertSelectedText(response),
+    (text) => converter.render(text),
+    toHtmlFragment,
+    sanitise,
+  );
+  logger('debug', 'Retrieved digest from hypothesis', { digest, fullText: '[text]' });
+  return digest;
 };
 
 export const fetchHypothesisAnnotation = (

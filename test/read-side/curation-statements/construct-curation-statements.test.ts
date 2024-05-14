@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -13,7 +12,7 @@ import { EvaluationLocator } from '../../../src/types/evaluation-locator';
 import * as PH from '../../../src/types/publishing-history';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
 import { createTestFramework, TestFramework } from '../../framework';
-import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
+import { arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
@@ -109,10 +108,7 @@ describe('construct-curation-statements', () => {
         fetchEvaluationDigest: (
           evaluationLocator: EvaluationLocator,
         ) => (evaluationLocator === retrievableEvaluationLocator
-          ? TE.right({
-            url: new URL(arbitraryUri()),
-            fullText: arbitrarySanitisedHtmlFragment(),
-          })
+          ? TE.right(arbitrarySanitisedHtmlFragment())
           : TE.left(DE.unavailable)),
       });
     });

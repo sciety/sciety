@@ -34,10 +34,7 @@ export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters
     arbitraryExpressionDoi(),
     arbitraryExpressionDoi(),
   ]),
-  fetchEvaluationDigest: () => TE.right({
-    fullText: arbitrarySanitisedHtmlFragment(),
-    url: new URL(arbitraryUri()),
-  }),
+  fetchEvaluationDigest: () => TE.right(arbitrarySanitisedHtmlFragment()),
   fetchStaticFile: () => TE.right('lorem ipsum'),
   fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
   fetchPublishingHistory: (expressionDoi) => pipe(

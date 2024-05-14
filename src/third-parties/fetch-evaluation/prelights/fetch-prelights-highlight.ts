@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { load } from 'cheerio';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -36,8 +35,4 @@ export const fetchPrelightsHighlight = (
     E.map(toHtmlFragment),
     E.map(sanitise),
   )),
-  TE.map((text) => ({
-    url: new URL(url),
-    fullText: text,
-  })),
 );

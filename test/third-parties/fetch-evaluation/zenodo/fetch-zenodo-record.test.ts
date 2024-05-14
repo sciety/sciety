@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import { fetchZenodoRecord } from '../../../../src/third-parties/fetch-evaluation/zenodo/fetch-zenodo-record';
 import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
@@ -35,14 +34,9 @@ describe('fetch-zenodo-record', () => {
       });
 
       it('returns the metadata description as full text', async () => {
-        const evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
+        const digest = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
 
-        expect(
-          pipe(
-            evaluation,
-            E.map((ev) => ev.fullText),
-          ),
-        ).toStrictEqual(E.right(description));
+        expect(digest).toStrictEqual(E.right(description));
       });
     });
 

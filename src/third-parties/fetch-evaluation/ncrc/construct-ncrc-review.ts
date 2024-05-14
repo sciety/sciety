@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { Evaluation } from '../../../types/evaluation';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { sanitise } from '../../../types/sanitised-html-fragment';
+import { SanitisedHtmlFragment, sanitise } from '../../../types/sanitised-html-fragment';
 
 export type NcrcReview = {
   title: string,
@@ -46,10 +45,8 @@ const constructFullText = (review: NcrcReview) => toHtmlFragment(`
   </p>
 `);
 
-export const constructNcrcReview = (review: NcrcReview): Evaluation => ({
-  fullText: pipe(
-    review,
-    constructFullText,
-    sanitise,
-  ),
-});
+export const constructNcrcReview = (review: NcrcReview): SanitisedHtmlFragment => pipe(
+  review,
+  constructFullText,
+  sanitise,
+);

@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ExternalQueries } from '../../third-parties';
@@ -91,11 +90,9 @@ please follow <a href="https://scicrunch.org/ASWG/about/References">this link</a
 </div>
 `;
 
-export const fetchEvaluation: ExternalQueries['fetchEvaluationDigest'] = () => TE.right({
-  url: new URL('http://example.com'),
-  fullText: pipe(
-    htmlFullText,
-    toHtmlFragment,
-    sanitise,
-  ),
-});
+export const fetchEvaluation: ExternalQueries['fetchEvaluationDigest'] = () => pipe(
+  htmlFullText,
+  toHtmlFragment,
+  sanitise,
+  TE.right,
+);

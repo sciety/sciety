@@ -19,9 +19,9 @@ export const evaluationContent = (dependencies: Dependencies) => (params: Params
       type: error,
       message: toHtmlFragment('Could not fetch evaluation'),
     }),
-    (review) => toHtmlPage({
+    (digest) => toHtmlPage({
       title: 'Evaluation',
-      content: toHtmlFragment(review.fullText),
+      content: toHtmlFragment(digest),
     }),
   ),
 );

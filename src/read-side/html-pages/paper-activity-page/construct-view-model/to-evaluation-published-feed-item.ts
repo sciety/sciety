@@ -37,7 +37,6 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
     review: pipe(
       evaluation.evaluationLocator,
       dependencies.fetchEvaluationDigest,
-      TE.map(({ fullText }) => fullText),
       TE.match(
         () => ({
           fullText: O.none,

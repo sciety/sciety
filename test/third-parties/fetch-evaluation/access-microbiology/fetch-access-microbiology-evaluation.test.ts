@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { fetchAccessMicrobiologyEvaluation } from '../../../../src/third-parties/fetch-evaluation/access-microbiology/fetch-access-microbiology-evaluation';
 import { QueryExternalService } from '../../../../src/third-parties/query-external-service';
-import { Evaluation } from '../../../../src/types/evaluation';
+import { SanitisedHtmlFragment } from '../../../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../../../dummy-logger';
 import { abortTest } from '../../../framework/abort-test';
 import { arbitraryString } from '../../../helpers';
@@ -23,7 +23,7 @@ describe('fetch-access-microbiology-evaluation', () => {
         </sub-article>
       </article>
     `);
-    let result: Evaluation;
+    let result: SanitisedHtmlFragment;
 
     beforeEach(async () => {
       result = await pipe(
@@ -34,7 +34,7 @@ describe('fetch-access-microbiology-evaluation', () => {
     });
 
     it('returns a full text', () => {
-      expect(result.fullText).toBe(`<p>${text}</p>`);
+      expect(result).toBe(`<p>${text}</p>`);
     });
   });
 });

@@ -36,7 +36,7 @@ describe('fetch-prelights-highlight', () => {
     const queryExternalService = () => () => TE.right(makeDoc(descriptions));
     const fullText = await pipe(
       fetchPrelightsHighlight(queryExternalService, dummyLogger)(guid.toString()),
-      TE.map((evaluation) => evaluation.fullText.toString()),
+      TE.map((digest) => digest.toString()),
     )();
 
     expect(fullText).toStrictEqual(E.right(expect.stringContaining(ogDescription)));

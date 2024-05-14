@@ -63,7 +63,7 @@ describe('to-evaluation-published-feed-item', () => {
         arbitraryRecordedEvaluation(),
         toEvaluationPublishedFeedItem({
           ...framework.dependenciesForViews,
-          fetchEvaluationDigest: () => TE.right({ fullText: digest, url: new URL(arbitraryUri()) }),
+          fetchEvaluationDigest: () => TE.right(digest),
         }),
         T.map((feedItem) => feedItem.fullText),
       )();

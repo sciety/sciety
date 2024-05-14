@@ -17,9 +17,7 @@ type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 type FetchRecommendedPapers = (history: PublishingHistory)
 => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
 
-type FetchEvaluationDigest = (
-  id: EvaluationLocator
-) => TE.TaskEither<DE.DataError, { fullText: SanitisedHtmlFragment }>;
+type FetchEvaluationDigest = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, SanitisedHtmlFragment>;
 
 type FetchEvaluationHumanReadableOriginalUrl = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, URL>;
 

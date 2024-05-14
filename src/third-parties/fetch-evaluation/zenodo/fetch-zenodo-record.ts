@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -8,10 +7,10 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
-import { Evaluation } from '../../../types/evaluation';
 import { htmlFragmentCodec } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../../query-external-service';
+import { EvaluationFetcher } from '../evaluation-fetcher';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 
@@ -27,11 +26,10 @@ const zenodoRecordCodec = t.type({
   }),
 });
 
-type FetchZenodoRecord = (queryExternalService: QueryExternalService, logger: Logger)
-=> (key: string)
-=> TE.TaskEither<DE.DataError, Evaluation>;
-
-export const fetchZenodoRecord: FetchZenodoRecord = (queryExternalService, logger) => (key) => pipe(
+export const fetchZenodoRecord = (
+  queryExternalService: QueryExternalService,
+  logger: Logger,
+): EvaluationFetcher => (key) => pipe(
   key,
   E.fromPredicate(
     isDoiFromZenodo,
@@ -52,8 +50,5 @@ export const fetchZenodoRecord: FetchZenodoRecord = (queryExternalService, logge
     }),
   )),
   TE.map((data) => data.metadata.description),
-  TE.map((fullText) => ({
-    fullText: sanitise(fullText),
-    url: new URL(`https://doi.org/${key}`),
-  })),
+  TE.map(sanitise),
 );

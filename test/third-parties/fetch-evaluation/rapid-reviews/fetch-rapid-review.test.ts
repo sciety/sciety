@@ -25,7 +25,6 @@ const toFullText = (html: string): TE.TaskEither<DE.DataError, HtmlFragment> => 
   return pipe(
     doiUrl,
     fetchRapidReview(queryExternalService, dummyLogger),
-    TE.map((evaluation) => evaluation.fullText),
   );
 };
 
