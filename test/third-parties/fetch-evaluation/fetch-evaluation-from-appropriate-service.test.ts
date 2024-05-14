@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -7,7 +6,7 @@ import { fetchEvaluationFromAppropriateService } from '../../../src/third-partie
 import * as DE from '../../../src/types/data-error';
 import { Evaluation } from '../../../src/types/evaluation';
 import * as RI from '../../../src/types/evaluation-locator';
-import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
+import { arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 
@@ -17,7 +16,6 @@ describe('fetch-evaluation-from-appropriate-service', () => {
       const reviewId = arbitraryEvaluationLocator();
       const evaluation: Evaluation = {
         fullText: arbitrarySanitisedHtmlFragment(),
-        url: new URL(arbitraryUri()),
       };
       const fetchers = {
         [RI.service(reviewId)]: () => TE.right(evaluation),

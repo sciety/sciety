@@ -2,11 +2,11 @@ import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
-import { Evaluation } from '../types/evaluation';
 import { EvaluationLocator } from '../types/evaluation-locator';
 import { ExpressionDoi } from '../types/expression-doi';
 import { ExpressionFrontMatter } from '../types/expression-front-matter';
 import { PublishingHistory } from '../types/publishing-history';
+import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { SearchResults } from '../types/search-results';
 import { SubjectArea } from '../types/subject-area';
 import { UserId } from '../types/user-id';
@@ -17,7 +17,9 @@ type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 type FetchRecommendedPapers = (history: PublishingHistory)
 => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
 
-type FetchEvaluationDigest = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, Evaluation>;
+type FetchEvaluationDigest = (
+  id: EvaluationLocator
+) => TE.TaskEither<DE.DataError, { fullText: SanitisedHtmlFragment }>;
 
 type FetchEvaluationHumanReadableOriginalUrl = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, URL>;
 

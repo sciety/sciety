@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
@@ -40,7 +39,6 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
       toHtmlFragment,
       sanitise,
     ),
-    url: new URL(response.links.incontext),
   };
   logger('debug', 'Retrieved evaluation', { ...evaluation, fullText: '[text]' });
   return evaluation;

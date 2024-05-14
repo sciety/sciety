@@ -30,24 +30,6 @@ const toFullText = (html: string): TE.TaskEither<DE.DataError, HtmlFragment> => 
 };
 
 describe('fetch-rapid-review', () => {
-  it('given an arbitrary URL the result contains the same URL', async () => {
-    const doiUrl = arbitraryUri();
-    const queryExternalService = () => () => pipe(
-      rapidReviewResponseWith([
-        ['dc.title', `Review ${arbitraryString()}`],
-        ['dc.creator', arbitraryString()],
-      ]),
-      TE.right,
-    );
-    const evaluationUrl = await pipe(
-      doiUrl,
-      fetchRapidReview(queryExternalService, dummyLogger),
-      TE.map((evaluation) => evaluation.url.toString()),
-    )();
-
-    expect(evaluationUrl).toStrictEqual(E.right(doiUrl));
-  });
-
   describe('when fetching review', () => {
     describe('with one author', () => {
       const title = arbitraryString();

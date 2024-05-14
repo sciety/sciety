@@ -25,17 +25,6 @@ const makeDoc = (descriptions: Array<string>) => `
 `;
 
 describe('fetch-prelights-highlight', () => {
-  it('given an arbitrary URL the result contains the same URL', async () => {
-    const guid = new URL(arbitraryUri());
-    const queryExternalService = () => () => TE.right(makeDoc([arbitraryString()]));
-    const evaluationUrl = await pipe(
-      fetchPrelightsHighlight(queryExternalService, dummyLogger)(guid.toString()),
-      TE.map((evaluation) => evaluation.url.toString()),
-    )();
-
-    expect(evaluationUrl).toStrictEqual(E.right(guid.toString()));
-  });
-
   const ogDescription = arbitraryString();
 
   it.each([

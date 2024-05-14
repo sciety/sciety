@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -11,7 +10,6 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 const notZenodoKey = '10.1234/zenodo/123';
 const zenodoKey = '10.5281/zenodo.6386692';
 const unexpectedSuffixZenodoKeyMostComplex = '10.5281/somethingelse.123';
-const doiUrl = 'https://doi.org/10.5281/zenodo.6386692';
 
 describe('fetch-zenodo-record', () => {
   describe('when the DOI is from Zenodo', () => {
@@ -45,17 +43,6 @@ describe('fetch-zenodo-record', () => {
             E.map((ev) => ev.fullText),
           ),
         ).toStrictEqual(E.right(description));
-      });
-
-      it('returns the Doi.org url as url', async () => {
-        const evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
-
-        expect(
-          pipe(
-            evaluation,
-            E.map((ev) => ev.url),
-          ),
-        ).toStrictEqual(E.right(new URL(doiUrl)));
       });
     });
 

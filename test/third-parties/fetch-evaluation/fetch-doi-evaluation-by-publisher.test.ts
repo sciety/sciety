@@ -1,16 +1,14 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { fetchDoiEvaluationByPublisher } from '../../../src/third-parties/fetch-evaluation/fetch-doi-evaluation-by-publisher';
 import * as DE from '../../../src/types/data-error';
 import { Evaluation } from '../../../src/types/evaluation';
 import { dummyLogger } from '../../dummy-logger';
-import { arbitraryNumber, arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
+import { arbitraryNumber, arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { arbitraryDataError } from '../../types/data-error.helper';
 
 const arbitraryEvaluation: Evaluation = {
   fullText: arbitrarySanitisedHtmlFragment(),
-  url: new URL(arbitraryUri()),
 };
 const arbitraryDoiPrefix = () => `10.${arbitraryNumber(1, 9999)}`;
 

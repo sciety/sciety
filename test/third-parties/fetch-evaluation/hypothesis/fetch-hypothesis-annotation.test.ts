@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -27,7 +26,6 @@ describe('fetch-hypothesis-annotation', () => {
 
     const expected = {
       fullText: pipe('<p>Very good</p>', toHtmlFragment),
-      url: new URL('https://www.example.com'),
     };
 
     expect(evaluation).toStrictEqual(E.right(expected));
