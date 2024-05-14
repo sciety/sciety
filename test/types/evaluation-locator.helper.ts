@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import { EvaluationLocator } from '../../src/types/evaluation-locator';
 import { arbitraryNumber, arbitraryWord } from '../helpers';
 
-export const arbitraryReviewDoi = (): EvaluationLocator => (
+const arbitraryReviewDoi = (): EvaluationLocator => (
   `doi:${arbitraryWord(20)}` as EvaluationLocator
 );
 

@@ -12,7 +12,6 @@ import * as GID from '../../../src/types/group-id';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands/record-evaluation-publication';
 import { TestFramework, createTestFramework } from '../../framework';
 import { abortTest } from '../../framework/abort-test';
-import { arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryNcrcId } from '../../types/evaluation-locator.helper';
@@ -252,10 +251,10 @@ describe('generate-docmaps', () => {
         articleId.value,
         generateDocmaps({
           ...defaultAdapters,
-          fetchEvaluationDigest: (id: EvaluationLocator) => (
+          fetchEvaluationHumanReadableOriginalUrl: (id: EvaluationLocator) => (
             id === failingReviewId
               ? TE.left(DE.notFound)
-              : TE.right({ fullText: arbitrarySanitisedHtmlFragment(), url: new URL(`https://reviews.example.com/${id}`) })
+              : TE.right(new URL(`https://reviews.example.com/${id}`))
           ),
         }),
         TE.match(identity, abortTest('generateDocmaps returned on the right')),

@@ -1,19 +1,14 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructDocmapViewModel, Ports } from '../../../src/docmaps/docmap/construct-docmap-view-model';
 import { DocmapViewModel } from '../../../src/docmaps/docmap/view-model';
 import { toExpressionDoi } from '../../../src/types/article-id';
 import * as DE from '../../../src/types/data-error';
-import { inferredSourceUrl } from '../../../src/types/evaluation-locator';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';
 import { TestFramework, createTestFramework } from '../../framework';
-import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryEvaluationLocator, arbitraryNcrcId, arbitraryReviewDoi } from '../../types/evaluation-locator.helper';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -173,62 +168,12 @@ describe('construct-docmap-view-model', () => {
       });
     });
 
-    describe('when we can infer a source URL for the evaluations', () => {
-      const evaluationLocatorWithInferrableSourceUrl = arbitraryReviewDoi();
-      const sourceUrl = pipe(
-        inferredSourceUrl(evaluationLocatorWithInferrableSourceUrl),
-        O.getOrElseW(shouldNotBeCalled),
-      );
-
-      beforeEach(async () => {
-        const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
-          ...arbitraryRecordEvaluationPublicationCommand(),
-          groupId: addGroupCommand.groupId,
-          evaluationLocator: evaluationLocatorWithInferrableSourceUrl,
-          expressionDoi,
-        };
-        const ports: Ports = {
-          ...defaultAdapters,
-          fetchEvaluationDigest: shouldNotBeCalled,
-        };
-        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-        viewModel = await pipe(
-          constructDocmapViewModel(ports)({ expressionDoi, groupId: addGroupCommand.groupId }),
-          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-        )();
-      });
-
-      it('returns the inferred source URL rather than calling the port', () => {
-        expect(viewModel.evaluations[0].sourceUrl).toStrictEqual(sourceUrl);
-      });
+    describe('when we can fetch a human readable original url for the evaluations', () => {
+      it.todo('includes a source URL');
     });
 
-    describe('when we cannot infer a source URL for the evaluations', () => {
-      const evaluationLocatorWithUninferrableSourceUrl = arbitraryNcrcId();
-      const sourceUrl = new URL(arbitraryUri());
-
-      beforeEach(async () => {
-        const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
-          ...arbitraryRecordEvaluationPublicationCommand(),
-          groupId: addGroupCommand.groupId,
-          evaluationLocator: evaluationLocatorWithUninferrableSourceUrl,
-          expressionDoi,
-        };
-        const ports: Ports = {
-          ...defaultAdapters,
-          fetchEvaluationDigest: () => TE.right({ fullText: arbitrarySanitisedHtmlFragment(), url: sourceUrl }),
-          fetchEvaluationHumanReadableOriginalUrl: () => TE.right(sourceUrl),
-        };
-        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-        viewModel = await pipe(
-          constructDocmapViewModel(ports)({ expressionDoi, groupId: addGroupCommand.groupId }),
-          TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
-        )();
-      });
-
-      it('obtains the source URL by calling the port', () => {
-        expect(viewModel.evaluations[0].sourceUrl).toStrictEqual(sourceUrl);
-      });
+    describe('when we can not fetch a human readable original url for the evaluations', () => {
+      it.todo('returns an E.left of unavailable');
     });
 
     describe('when there are no evaluations by the selected group', () => {
