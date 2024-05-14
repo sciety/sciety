@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { toEvaluationPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/to-evaluation-published-feed-item';
 import { EvaluationPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
 import { TestFramework, createTestFramework } from '../../../../framework';
-import { arbitraryUri } from '../../../../helpers';
+import { arbitrarySanitisedHtmlFragment, arbitraryUri } from '../../../../helpers';
 import { arbitraryDataError } from '../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../types/recorded-evaluation.helper';
 
@@ -55,7 +55,23 @@ describe('to-evaluation-published-feed-item', () => {
   });
 
   describe('when the evaluation digest is available', () => {
-    it.todo('displays the digest');
+    const digest = arbitrarySanitisedHtmlFragment();
+    let fullText: EvaluationPublishedFeedItem['fullText'];
+
+    beforeEach(async () => {
+      fullText = await pipe(
+        arbitraryRecordedEvaluation(),
+        toEvaluationPublishedFeedItem({
+          ...framework.dependenciesForViews,
+          fetchEvaluationDigest: () => TE.right({ fullText: digest, url: new URL(arbitraryUri()) }),
+        }),
+        T.map((feedItem) => feedItem.fullText),
+      )();
+    });
+
+    it('displays the digest', () => {
+      expect(fullText).toStrictEqual(O.some(digest));
+    });
   });
 
   describe('when the evaluation digest is not available', () => {
