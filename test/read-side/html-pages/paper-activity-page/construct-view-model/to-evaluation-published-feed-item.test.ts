@@ -50,7 +50,7 @@ describe('to-evaluation-published-feed-item', () => {
       )();
     });
 
-    it.skip('hides the link', () => {
+    it('hides the link', () => {
       expect(sourceHref).toStrictEqual(O.none);
     });
   });

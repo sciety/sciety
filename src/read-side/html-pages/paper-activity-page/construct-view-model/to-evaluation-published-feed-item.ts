@@ -44,6 +44,11 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
       ),
       T.of,
     ),
+    sourceHref: pipe(
+      evaluation.evaluationLocator,
+      dependencies.fetchEvaluationHumanReadableOriginalUrl,
+      T.map(O.fromEither),
+    ),
     review: pipe(
       evaluation.evaluationLocator,
       constructEvaluation(dependencies),
@@ -64,11 +69,11 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
   },
   sequenceS(T.ApplyPar),
   T.map(({
-    groupDetails, review,
+    groupDetails, review, sourceHref,
   }) => ({
     type: 'evaluation-published' as const,
     id: evaluation.evaluationLocator,
-    sourceHref: review.url,
+    sourceHref,
     publishedAt: evaluation.publishedAt,
     ...groupDetails,
     fullText: O.map(sanitise)(review.fullText),
