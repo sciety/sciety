@@ -7,7 +7,7 @@ import * as DE from '../../../types/data-error';
 import { QueryExternalService } from '../../query-external-service';
 import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 
-const fetchEvaluationFromPublisherJatsXmlEndpoint = (
+const fetchEvaluationDigestFromPublisherJatsXmlEndpoint = (
   queryExternalService: QueryExternalService,
   logger: Logger,
 ) => (key: string) => pipe(
@@ -23,10 +23,10 @@ const fetchEvaluationFromPublisherJatsXmlEndpoint = (
   TE.chainEitherKW(lookupFullText(key)),
 );
 
-export const fetchAccessMicrobiologyEvaluation = (
+export const fetchAccessMicrobiologyEvaluationDigest = (
   queryExternalService: QueryExternalService,
   logger: Logger,
 ): EvaluationDigestFetcher => (key: string) => pipe(
   key,
-  fetchEvaluationFromPublisherJatsXmlEndpoint(queryExternalService, logger),
+  fetchEvaluationDigestFromPublisherJatsXmlEndpoint(queryExternalService, logger),
 );

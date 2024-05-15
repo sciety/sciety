@@ -1,6 +1,6 @@
 /* eslint-disable quote-props */
 import { pipe } from 'fp-ts/function';
-import { fetchAccessMicrobiologyEvaluation } from './access-microbiology';
+import { fetchAccessMicrobiologyEvaluationDigest } from './access-microbiology';
 import { fetchDoiEvaluationDigestByPublisher } from './fetch-doi-evaluation-digest-by-publisher';
 import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
 import { fetchHypothesisAnnotation } from './hypothesis';
@@ -17,7 +17,7 @@ export const createFetchEvaluationDigest = (queryExternalService: QueryExternalS
     doi: fetchDoiEvaluationDigestByPublisher(
       {
         '10.5281': fetchZenodoRecord(queryExternalService, logger),
-        '10.1099': fetchAccessMicrobiologyEvaluation(queryExternalService, logger),
+        '10.1099': fetchAccessMicrobiologyEvaluationDigest(queryExternalService, logger),
       },
       logger,
     ),
