@@ -10,7 +10,7 @@ import * as DE from '../../../types/data-error';
 import { htmlFragmentCodec } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../../query-external-service';
-import { EvaluationFetcher } from '../evaluation-fetcher';
+import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 
 const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 
@@ -29,7 +29,7 @@ const zenodoRecordCodec = t.type({
 export const fetchZenodoRecord = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): EvaluationFetcher => (key) => pipe(
+): EvaluationDigestFetcher => (key) => pipe(
   key,
   E.fromPredicate(
     isDoiFromZenodo,

@@ -4,7 +4,7 @@ import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
-import { EvaluationFetcher } from './evaluation-fetcher';
+import { EvaluationDigestFetcher } from './evaluation-digest-fetcher';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 
@@ -15,9 +15,9 @@ const deriveDoiPrefixFrom = (key: string) => pipe(
 );
 
 export const fetchDoiEvaluationByPublisher = (
-  evaluationFetchers: Record<string, EvaluationFetcher>,
+  evaluationFetchers: Record<string, EvaluationDigestFetcher>,
   logger: Logger,
-): EvaluationFetcher => (key) => pipe(
+): EvaluationDigestFetcher => (key) => pipe(
   evaluationFetchers,
   R.lookup(deriveDoiPrefixFrom(key)),
   O.match(

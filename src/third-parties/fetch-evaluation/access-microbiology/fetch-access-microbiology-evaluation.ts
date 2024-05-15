@@ -5,7 +5,7 @@ import { toJatsXmlUrlOfPublisher } from './to-jats-xml-url-of-publisher';
 import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
 import { QueryExternalService } from '../../query-external-service';
-import { EvaluationFetcher } from '../evaluation-fetcher';
+import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 
 const fetchEvaluationFromPublisherJatsXmlEndpoint = (
   queryExternalService: QueryExternalService,
@@ -26,7 +26,7 @@ const fetchEvaluationFromPublisherJatsXmlEndpoint = (
 export const fetchAccessMicrobiologyEvaluation = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): EvaluationFetcher => (key: string) => pipe(
+): EvaluationDigestFetcher => (key: string) => pipe(
   key,
   fetchEvaluationFromPublisherJatsXmlEndpoint(queryExternalService, logger),
 );

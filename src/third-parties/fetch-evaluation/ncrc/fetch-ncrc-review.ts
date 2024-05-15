@@ -10,7 +10,7 @@ import { constructNcrcReview, NcrcReview } from './construct-ncrc-review';
 import { sheetId } from './sheet-id';
 import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
-import { EvaluationFetcher } from '../evaluation-fetcher';
+import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;
 
 // https://github.com/gcanti/io-ts/issues/431
@@ -146,7 +146,7 @@ const fetchNcrcSpreadsheetRow = (logger: Logger) => (evaluationUuid: string) => 
   }),
 );
 
-export const fetchNcrcReview = (logger: Logger): EvaluationFetcher => (evaluationUuid: string) => pipe(
+export const fetchNcrcReview = (logger: Logger): EvaluationDigestFetcher => (evaluationUuid: string) => pipe(
   evaluationUuid,
   fetchNcrcSpreadsheetRow(logger),
   TE.map(constructNcrcReview),

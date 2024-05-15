@@ -10,7 +10,7 @@ import * as DE from '../../../types/data-error';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../../query-external-service';
-import { EvaluationFetcher } from '../evaluation-fetcher';
+import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 
 const summary = (logger: Logger) => (doc: CheerioAPI) => pipe(
   doc('meta[name=description]').attr()?.content,
@@ -56,7 +56,7 @@ const extractEvaluation = (logger: Logger) => (html: string) => {
 export const fetchRapidReview = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): EvaluationFetcher => (url) => pipe(
+): EvaluationDigestFetcher => (url) => pipe(
   url,
   queryExternalService(),
   TE.chainEitherKW(flow(

@@ -10,12 +10,12 @@ import * as DE from '../../../types/data-error';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../../query-external-service';
-import { EvaluationFetcher } from '../evaluation-fetcher';
+import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 
 export const fetchPrelightsHighlight = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): EvaluationFetcher => (url: string) => pipe(
+): EvaluationDigestFetcher => (url: string) => pipe(
   url,
   queryExternalService(),
   TE.chainEitherKW(flow(

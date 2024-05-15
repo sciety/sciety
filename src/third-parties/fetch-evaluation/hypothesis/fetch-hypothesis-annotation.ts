@@ -12,7 +12,7 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { decodeAndLogFailures } from '../../decode-and-log-failures';
 import { QueryExternalService } from '../../query-external-service';
-import { EvaluationFetcher } from '../evaluation-fetcher';
+import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 
 const converter = new Remarkable({ html: true }).use(linkify);
 
@@ -44,7 +44,7 @@ const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
 export const fetchHypothesisAnnotation = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): EvaluationFetcher => (key) => pipe(
+): EvaluationDigestFetcher => (key) => pipe(
   `https://api.hypothes.is/api/annotations/${key}`,
   queryExternalService(),
   TE.chainEitherKW(flow(
