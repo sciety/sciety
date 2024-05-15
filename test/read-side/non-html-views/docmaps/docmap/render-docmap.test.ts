@@ -3,18 +3,18 @@
 /* eslint-disable jest/require-hook */
 import { URL } from 'url';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { Docmap } from '../../../src/read-side/non-html-views/docmaps/docmap/docmap-type';
-import { Evaluation } from '../../../src/read-side/non-html-views/docmaps/docmap/evaluation';
-import { anonymous } from '../../../src/read-side/non-html-views/docmaps/docmap/peer-reviewer';
-import { publisherAccountId } from '../../../src/read-side/non-html-views/docmaps/docmap/publisher-account-id';
-import { renderDocmap } from '../../../src/read-side/non-html-views/docmaps/docmap/render-docmap';
-import { ExpressionDoi } from '../../../src/types/expression-doi';
+import { Docmap } from '../../../../../src/read-side/non-html-views/docmaps/docmap/docmap-type';
+import { Evaluation } from '../../../../../src/read-side/non-html-views/docmaps/docmap/evaluation';
+import { anonymous } from '../../../../../src/read-side/non-html-views/docmaps/docmap/peer-reviewer';
+import { publisherAccountId } from '../../../../../src/read-side/non-html-views/docmaps/docmap/publisher-account-id';
+import { renderDocmap } from '../../../../../src/read-side/non-html-views/docmaps/docmap/render-docmap';
+import { ExpressionDoi } from '../../../../../src/types/expression-doi';
 import {
   arbitraryDate, arbitraryString, arbitraryUrl,
-} from '../../helpers';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
-import { arbitraryGroup } from '../../types/group.helper';
+} from '../../../../helpers';
+import { arbitraryEvaluationLocator } from '../../../../types/evaluation-locator.helper';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
+import { arbitraryGroup } from '../../../../types/group.helper';
 
 const itIsAValidInput = (inputs: Docmap['steps'][number]['inputs'], doi: ExpressionDoi) => {
   it('has a single (deprecated) input', () => {
