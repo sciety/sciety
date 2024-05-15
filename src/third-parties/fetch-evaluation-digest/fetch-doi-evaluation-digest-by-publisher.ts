@@ -14,7 +14,7 @@ const deriveDoiPrefixFrom = (key: string) => pipe(
   RNEA.head,
 );
 
-export const fetchDoiEvaluationByPublisher = (
+export const fetchDoiEvaluationDigestByPublisher = (
   evaluationFetchers: Record<string, EvaluationDigestFetcher>,
   logger: Logger,
 ): EvaluationDigestFetcher => (key) => pipe(
@@ -22,9 +22,9 @@ export const fetchDoiEvaluationByPublisher = (
   R.lookup(deriveDoiPrefixFrom(key)),
   O.match(
     () => {
-      logger('warn', 'Attempt to fetch evaluation with an unknown DOI prefix', { key });
+      logger('warn', 'Attempt to fetch evaluation digest with an unknown DOI prefix', { key });
       return TE.left(DE.unavailable);
     },
-    (evaluationFetcher) => evaluationFetcher(key),
+    (evaluationDigestFetcher) => evaluationDigestFetcher(key),
   ),
 );

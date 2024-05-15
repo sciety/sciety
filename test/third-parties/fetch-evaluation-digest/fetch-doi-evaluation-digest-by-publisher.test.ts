@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { fetchDoiEvaluationByPublisher } from '../../../src/third-parties/fetch-evaluation-digest/fetch-doi-evaluation-by-publisher';
+import { fetchDoiEvaluationDigestByPublisher } from '../../../src/third-parties/fetch-evaluation-digest/fetch-doi-evaluation-digest-by-publisher';
 import * as DE from '../../../src/types/data-error';
 import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../../dummy-logger';
@@ -10,7 +10,7 @@ import { arbitraryDataError } from '../../types/data-error.helper';
 const digest = arbitrarySanitisedHtmlFragment();
 const arbitraryDoiPrefix = () => `10.${arbitraryNumber(1, 9999)}`;
 
-describe('fetch-doi-evaluation-by-publisher', () => {
+describe('fetch-doi-evaluation-digest-by-publisher', () => {
   let result: E.Either<DE.DataError, SanitisedHtmlFragment>;
 
   describe('when a doi with a configured prefix is passed in', () => {
@@ -22,7 +22,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
       };
 
       beforeEach(async () => {
-        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${configuredDoiPrefix}/123`)();
+        result = await fetchDoiEvaluationDigestByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${configuredDoiPrefix}/123`)();
       });
 
       it('returns a right', () => {
@@ -37,7 +37,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
       };
 
       beforeEach(async () => {
-        result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${configuredDoiPrefix}/123`)();
+        result = await fetchDoiEvaluationDigestByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${configuredDoiPrefix}/123`)();
       });
 
       it('returns a left', () => {
@@ -53,7 +53,7 @@ describe('fetch-doi-evaluation-by-publisher', () => {
     };
 
     beforeEach(async () => {
-      result = await fetchDoiEvaluationByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${unknownDoiPrefix}/123`)();
+      result = await fetchDoiEvaluationDigestByPublisher(evaluationFetchersConfiguration, dummyLogger)(`${unknownDoiPrefix}/123`)();
     });
 
     it('returns unavailable', () => {

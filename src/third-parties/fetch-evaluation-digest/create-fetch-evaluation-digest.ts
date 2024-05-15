@@ -1,7 +1,7 @@
 /* eslint-disable quote-props */
 import { pipe } from 'fp-ts/function';
 import { fetchAccessMicrobiologyEvaluation } from './access-microbiology';
-import { fetchDoiEvaluationByPublisher } from './fetch-doi-evaluation-by-publisher';
+import { fetchDoiEvaluationDigestByPublisher } from './fetch-doi-evaluation-digest-by-publisher';
 import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
 import { fetchHypothesisAnnotation } from './hypothesis';
 import { fetchNcrcReview } from './ncrc';
@@ -14,7 +14,7 @@ import { QueryExternalService } from '../query-external-service';
 
 export const createFetchEvaluationDigest = (queryExternalService: QueryExternalService, logger: Logger): ExternalQueries['fetchEvaluationDigest'] => pipe(
   {
-    doi: fetchDoiEvaluationByPublisher(
+    doi: fetchDoiEvaluationDigestByPublisher(
       {
         '10.5281': fetchZenodoRecord(queryExternalService, logger),
         '10.1099': fetchAccessMicrobiologyEvaluation(queryExternalService, logger),
