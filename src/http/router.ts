@@ -338,7 +338,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   });
 
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const collectedParams: NonHtmlViewParams = context.params;
     const response = await pipe(
       collectedParams,

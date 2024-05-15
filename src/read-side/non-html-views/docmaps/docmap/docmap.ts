@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Docmap } from './docmap-type';
 import { Ports, generateDocmaps } from './generate-docmaps';
+import { NonHtmlViewError } from '../../non-html-view-error';
 import { NonHtmlViewParams } from '../../non-html-view-params';
 
 const paramsCodec = t.strict({
@@ -15,7 +16,7 @@ export const docmap = (
   ports: Ports,
 ) => (
   params: NonHtmlViewParams,
-): TE.TaskEither<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>> => pipe(
+): TE.TaskEither<NonHtmlViewError, ReadonlyArray<Docmap>> => pipe(
   params,
   paramsCodec.decode,
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Cannot understand the request' })),
