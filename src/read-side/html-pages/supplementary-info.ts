@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function';
-import { renderListItems } from '../read-side/html-pages/shared-components/list-items/render-list-items';
-import { HtmlFragment, toHtmlFragment } from '../types/html-fragment';
+import { renderListItems } from './shared-components/list-items/render-list-items';
+import { HtmlFragment, toHtmlFragment } from '../../types/html-fragment';
 
 type SupplementaryInfo = (items: ReadonlyArray<HtmlFragment>, modifierClass?: string) => HtmlFragment;
 
