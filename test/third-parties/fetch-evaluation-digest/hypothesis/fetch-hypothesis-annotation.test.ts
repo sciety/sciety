@@ -12,7 +12,7 @@ const date = '2019-09-12T09:55:46.146050+00:00';
 const key = arbitraryWord();
 
 describe('fetch-hypothesis-annotation', () => {
-  it('returns the evaluation', async () => {
+  it('returns the full text as the evaluation digest', async () => {
     const queryExternalService = () => () => TE.right({
       created: date,
       text: '<p>Very good</p>',

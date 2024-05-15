@@ -30,7 +30,7 @@ ${response.text}`,
   ),
 );
 
-const toReview = (logger: Logger) => (response: HypothesisAnnotation) => {
+const toEvaluationDigest = (logger: Logger) => (response: HypothesisAnnotation) => {
   const digest = pipe(
     insertSelectedText(response),
     (text) => converter.render(text),
@@ -51,5 +51,5 @@ export const fetchHypothesisAnnotation = (
     decodeAndLogFailures(logger, hypothesisAnnotation, { key }),
     E.mapLeft(() => DE.unavailable),
   )),
-  TE.map(toReview(logger)),
+  TE.map(toEvaluationDigest(logger)),
 );
