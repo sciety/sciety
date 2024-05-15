@@ -12,14 +12,22 @@ const paramsCodec = t.strict({
   doi: t.string,
 });
 
+export type NonHtmlViewRepresentation = {
+  state: Json,
+};
+
 export const docmap = (
   ports: Ports,
 ) => (
   params: NonHtmlViewParams,
-): TE.TaskEither<NonHtmlViewError, Json> => pipe(
+): TE.TaskEither<NonHtmlViewError, NonHtmlViewRepresentation> => pipe(
   params,
   paramsCodec.decode,
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Cannot understand the request' })),
   TE.fromEither,
-  TE.chain((decodedParams) => generateDocmaps(ports)(decodedParams.doi)),
+  TE.chain((decodedParams) => pipe(
+    decodedParams.doi,
+    generateDocmaps(ports),
+  )),
+  TE.map((docmaps) => ({ state: docmaps })),
 );
