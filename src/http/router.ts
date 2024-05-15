@@ -52,6 +52,7 @@ import { statusGroups } from '../read-side/non-html-views/status-groups';
 import { groupPagePathSpecification, constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import * as EDOI from '../types/expression-doi';
+import { NonHtmlViewParams } from '../read-side/non-html-views';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 
@@ -338,7 +339,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const collectedParams: Record<string, unknown> = context.params;
+    const collectedParams: NonHtmlViewParams = context.params;
     const response = await pipe(
       context.params.doi,
       generateDocmaps(adapters),
