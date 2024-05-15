@@ -5,6 +5,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import { Middleware } from 'koa';
 import send from 'koa-send';
 import * as api from './api';
 import * as authentication from './authentication';
@@ -48,6 +49,7 @@ import { NonHtmlViewParams, NonHtmlViewRepresentation } from '../read-side/non-h
 import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../read-side/non-html-views/evaluation-content';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
+import { NonHtmlViewError } from '../read-side/non-html-views/non-html-view-error';
 import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';
 import { groupPagePathSpecification, constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
@@ -337,11 +339,15 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     await next();
   });
 
-  router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
+  type NonHtmlView = (
+    params: NonHtmlViewParams,
+  ) => TE.TaskEither<NonHtmlViewError, NonHtmlViewRepresentation>;
+
+  const routeForNonHtmlView = (nonHtmlView: NonHtmlView): Middleware => async (context, next) => {
     const collectedParams: NonHtmlViewParams = context.params;
     const response = await pipe(
       collectedParams,
-      docmap(adapters),
+      nonHtmlView,
       TE.foldW(
         (error) => T.of({
           body: { message: error.message },
@@ -357,7 +363,9 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     context.response.status = response.status;
     context.response.body = response.body;
     await next();
-  });
+  };
+
+  router.get('/docmaps/v1/articles/:doi(.+).docmap.json', routeForNonHtmlView(docmap(adapters)));
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
