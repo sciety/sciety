@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { fetchDoiEvaluationByPublisher } from '../../../src/third-parties/fetch-evaluation/fetch-doi-evaluation-by-publisher';
+import { fetchDoiEvaluationByPublisher } from '../../../src/third-parties/fetch-evaluation-digest/fetch-doi-evaluation-by-publisher';
 import * as DE from '../../../src/types/data-error';
 import { SanitisedHtmlFragment } from '../../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../../dummy-logger';

@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { fetchZenodoRecord } from '../../../../src/third-parties/fetch-evaluation/zenodo/fetch-zenodo-record';
+import { fetchZenodoRecord } from '../../../../src/third-parties/fetch-evaluation-digest/zenodo/fetch-zenodo-record';
 import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryHtmlFragment } from '../../../helpers';

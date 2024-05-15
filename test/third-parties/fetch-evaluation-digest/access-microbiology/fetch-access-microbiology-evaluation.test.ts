@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchAccessMicrobiologyEvaluation } from '../../../../src/third-parties/fetch-evaluation/access-microbiology/fetch-access-microbiology-evaluation';
+import { fetchAccessMicrobiologyEvaluation } from '../../../../src/third-parties/fetch-evaluation-digest/access-microbiology/fetch-access-microbiology-evaluation';
 import { QueryExternalService } from '../../../../src/third-parties/query-external-service';
 import { SanitisedHtmlFragment } from '../../../../src/types/sanitised-html-fragment';
 import { dummyLogger } from '../../../dummy-logger';

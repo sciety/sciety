@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchEvaluationFromAppropriateService } from '../../../src/third-parties/fetch-evaluation/fetch-evaluation-from-appropriate-service';
+import { fetchEvaluationFromAppropriateService } from '../../../src/third-parties/fetch-evaluation-digest/fetch-evaluation-from-appropriate-service';
 import * as DE from '../../../src/types/data-error';
 import * as RI from '../../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment } from '../../helpers';

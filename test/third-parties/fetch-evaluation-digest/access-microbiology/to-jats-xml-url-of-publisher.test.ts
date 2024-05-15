@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { toJatsXmlUrlOfPublisher } from '../../../../src/third-parties/fetch-evaluation/access-microbiology/to-jats-xml-url-of-publisher';
+import { toJatsXmlUrlOfPublisher } from '../../../../src/third-parties/fetch-evaluation-digest/access-microbiology/to-jats-xml-url-of-publisher';
 import { arbitraryWord } from '../../../helpers';
 
 describe('to-jats-xml-url-of-publisher', () => {

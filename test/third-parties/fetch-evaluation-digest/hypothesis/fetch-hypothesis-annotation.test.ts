@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { HypothesisAnnotation } from '../../../../src/third-parties/fetch-evaluation/hypothesis/HypothesisAnnotation';
-import { fetchHypothesisAnnotation, insertSelectedText } from '../../../../src/third-parties/fetch-evaluation/hypothesis/fetch-hypothesis-annotation';
+import { HypothesisAnnotation } from '../../../../src/third-parties/fetch-evaluation-digest/hypothesis/HypothesisAnnotation';
+import { fetchHypothesisAnnotation, insertSelectedText } from '../../../../src/third-parties/fetch-evaluation-digest/hypothesis/fetch-hypothesis-annotation';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryWord } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';

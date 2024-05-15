@@ -5,7 +5,7 @@ import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { fetchExpressionFrontMatter, crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { ExternalQueries } from './external-queries';
-import { createFetchEvaluation } from './fetch-evaluation';
+import { createFetchEvaluationDigest } from './fetch-evaluation-digest';
 import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchRecommendedPapers } from './fetch-recommended-papers';
@@ -45,7 +45,7 @@ export const instantiate = (
   );
 
   return {
-    fetchEvaluationDigest: createFetchEvaluation(queryExternalService, logger),
+    fetchEvaluationDigest: createFetchEvaluationDigest(queryExternalService, logger),
     fetchEvaluationHumanReadableOriginalUrl: fetchEvaluationHumanReadableOriginalUrl(logger),
     fetchExpressionFrontMatter: fetchExpressionFrontMatter(
       queryCrossrefService,
