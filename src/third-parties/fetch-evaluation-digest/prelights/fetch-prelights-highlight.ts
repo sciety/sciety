@@ -22,7 +22,7 @@ export const fetchPrelightsHighlight = (
     t.string.decode,
     E.mapLeft(formatValidationErrors),
     E.mapLeft((errors) => {
-      logger('error', 'RapidReviews response is not a string', { errors, url });
+      logger('error', 'preLights response is not a string', { errors, url });
       return DE.unavailable;
     }),
   )),
