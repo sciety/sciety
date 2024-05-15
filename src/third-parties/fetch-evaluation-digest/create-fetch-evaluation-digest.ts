@@ -4,7 +4,7 @@ import { fetchAccessMicrobiologyEvaluationDigest } from './access-microbiology';
 import { fetchDoiEvaluationDigestByPublisher } from './fetch-doi-evaluation-digest-by-publisher';
 import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
 import { fetchHypothesisAnnotation } from './hypothesis';
-import { fetchNcrcReview } from './ncrc';
+import { fetchNcrcEvaluationDigest } from './ncrc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRapidReview } from './rapid-reviews';
 import { fetchZenodoRecord } from './zenodo';
@@ -22,7 +22,7 @@ export const createFetchEvaluationDigest = (queryExternalService: QueryExternalS
       logger,
     ),
     hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
-    ncrc: fetchNcrcReview(logger),
+    ncrc: fetchNcrcEvaluationDigest(logger),
     prelights: fetchPrelightsHighlight(queryExternalService, logger),
     rapidreviews: fetchRapidReview(queryExternalService, logger),
   },

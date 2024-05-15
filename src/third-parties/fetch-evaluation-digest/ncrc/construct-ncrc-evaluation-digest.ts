@@ -45,7 +45,7 @@ const constructFullText = (review: NcrcReview) => toHtmlFragment(`
   </p>
 `);
 
-export const constructNcrcReview = (review: NcrcReview): SanitisedHtmlFragment => pipe(
+export const constructNcrcEvaluationDigest = (review: NcrcReview): SanitisedHtmlFragment => pipe(
   review,
   constructFullText,
   sanitise,

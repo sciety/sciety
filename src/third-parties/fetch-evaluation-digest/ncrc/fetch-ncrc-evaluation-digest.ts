@@ -6,7 +6,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
-import { constructNcrcReview, NcrcReview } from './construct-ncrc-review';
+import { constructNcrcEvaluationDigest, NcrcReview } from './construct-ncrc-evaluation-digest';
 import { sheetId } from './sheet-id';
 import { Logger } from '../../../shared-ports';
 import * as DE from '../../../types/data-error';
@@ -146,10 +146,10 @@ const fetchNcrcSpreadsheetRow = (logger: Logger) => (evaluationUuid: string) => 
   }),
 );
 
-export const fetchNcrcReview = (logger: Logger): EvaluationDigestFetcher => (evaluationUuid: string) => pipe(
+export const fetchNcrcEvaluationDigest = (logger: Logger): EvaluationDigestFetcher => (evaluationUuid: string) => pipe(
   evaluationUuid,
   fetchNcrcSpreadsheetRow(logger),
-  TE.map(constructNcrcReview),
+  TE.map(constructNcrcEvaluationDigest),
 );
 
 const slugify = (value: string) => value.toLowerCase().replace(/\s/g, '-');

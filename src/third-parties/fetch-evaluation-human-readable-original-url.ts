@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchNcrcHumanReadableOriginalUrl } from './fetch-evaluation-digest/ncrc/fetch-ncrc-review';
+import { fetchNcrcHumanReadableOriginalUrl } from './fetch-evaluation-digest/ncrc/fetch-ncrc-evaluation-digest';
 import { Logger } from '../shared-ports';
 import * as DE from '../types/data-error';
 import {

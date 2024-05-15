@@ -1,1 +1,1 @@
-export { fetchNcrcReview } from './fetch-ncrc-review';
+export { fetchNcrcEvaluationDigest } from './fetch-ncrc-evaluation-digest';
