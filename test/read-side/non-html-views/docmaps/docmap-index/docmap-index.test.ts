@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
-import { docmapIndex } from '../../../src/docmaps/docmap-index';
-import { Dependencies } from '../../../src/docmaps/docmap-index/dependencies';
-import * as GID from '../../../src/types/group-id';
-import { dummyLogger } from '../../dummy-logger';
-import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { docmapIndex } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index';
+import { Dependencies } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index/dependencies';
+import * as GID from '../../../../../src/types/group-id';
+import { dummyLogger } from '../../../../dummy-logger';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');

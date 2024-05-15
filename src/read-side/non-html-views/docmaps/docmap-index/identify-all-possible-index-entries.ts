@@ -7,11 +7,11 @@ import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { Dependencies } from './dependencies';
 import * as ER from './error-response';
-import { publisherAccountId } from '../../read-side/non-html-views/docmaps/docmap/publisher-account-id';
-import * as DE from '../../types/data-error';
-import { ExpressionDoi } from '../../types/expression-doi';
-import * as GID from '../../types/group-id';
-import { GroupId } from '../../types/group-id';
+import * as DE from '../../../../types/data-error';
+import { ExpressionDoi } from '../../../../types/expression-doi';
+import * as GID from '../../../../types/group-id';
+import { GroupId } from '../../../../types/group-id';
+import { publisherAccountId } from '../docmap/publisher-account-id';
 
 export type DocmapIndexEntryModel = {
   expressionDoi: ExpressionDoi,

@@ -5,20 +5,20 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { identity } from 'io-ts';
-import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model';
-import * as ER from '../../../src/docmaps/docmap-index/error-response';
-import { Params } from '../../../src/docmaps/docmap-index/params';
-import { publisherAccountId } from '../../../src/read-side/non-html-views/docmaps/docmap/publisher-account-id';
-import { supportedGroups } from '../../../src/read-side/non-html-views/docmaps/supported-groups';
-import { toExpressionDoi } from '../../../src/types/article-id';
-import { TestFramework, createTestFramework } from '../../framework';
-import { arbitraryString } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
-import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
-import { arbitraryGroupId } from '../../types/group-id.helper';
-import { arbitraryAddGroupCommand } from '../../write-side/commands/add-group-command.helper';
-import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+import { publisherAccountId } from '../../../../../src/read-side/non-html-views/docmaps/docmap/publisher-account-id';
+import { constructViewModel } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index/construct-view-model';
+import * as ER from '../../../../../src/read-side/non-html-views/docmaps/docmap-index/error-response';
+import { Params } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index/params';
+import { supportedGroups } from '../../../../../src/read-side/non-html-views/docmaps/supported-groups';
+import { toExpressionDoi } from '../../../../../src/types/article-id';
+import { TestFramework, createTestFramework } from '../../../../framework';
+import { arbitraryString } from '../../../../helpers';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
+import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { arbitraryEvaluationLocator } from '../../../../types/evaluation-locator.helper';
+import { arbitraryGroupId } from '../../../../types/group-id.helper';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-view-model', () => {
   const defaultParams: Params = {
