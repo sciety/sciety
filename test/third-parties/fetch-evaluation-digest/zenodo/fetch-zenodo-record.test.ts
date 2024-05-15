@@ -14,14 +14,14 @@ describe('fetch-zenodo-record', () => {
   describe('when the DOI is from Zenodo', () => {
     describe('and the DOI suffix has an unexpected format', () => {
       const queryExternalService = () => shouldNotBeCalled;
-      let evaluation: E.Either<unknown, unknown>;
+      let result: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(unexpectedSuffixZenodoKeyMostComplex)();
+        result = await fetchZenodoRecord(queryExternalService, dummyLogger)(unexpectedSuffixZenodoKeyMostComplex)();
       });
 
       it('returns a left', () => {
-        expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+        expect(result).toStrictEqual(E.left(DE.unavailable));
       });
     });
 
@@ -34,22 +34,22 @@ describe('fetch-zenodo-record', () => {
       });
 
       it('returns the metadata description as full text', async () => {
-        const digest = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
+        const result = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
 
-        expect(digest).toStrictEqual(E.right(description));
+        expect(result).toStrictEqual(E.right(description));
       });
     });
 
     describe('when the request fails', () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);
-      let evaluation: E.Either<unknown, unknown>;
+      let result: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
+        result = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
       });
 
       it('returns a left', () => {
-        expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+        expect(result).toStrictEqual(E.left(DE.unavailable));
       });
     });
 
@@ -60,28 +60,28 @@ describe('fetch-zenodo-record', () => {
           wrongProperty,
         },
       });
-      let evaluation: E.Either<unknown, unknown>;
+      let result: E.Either<unknown, unknown>;
 
       beforeEach(async () => {
-        evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
+        result = await fetchZenodoRecord(queryExternalService, dummyLogger)(zenodoKey)();
       });
 
       it('returns a left', () => {
-        expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+        expect(result).toStrictEqual(E.left(DE.unavailable));
       });
     });
   });
 
   describe('when the DOI is not from Zenodo', () => {
-    let evaluation: E.Either<unknown, unknown>;
+    let result: E.Either<unknown, unknown>;
     const queryExternalService = shouldNotBeCalled;
 
     beforeEach(async () => {
-      evaluation = await fetchZenodoRecord(queryExternalService, dummyLogger)(notZenodoKey)();
+      result = await fetchZenodoRecord(queryExternalService, dummyLogger)(notZenodoKey)();
     });
 
     it('returns a left', () => {
-      expect(evaluation).toStrictEqual(E.left(DE.unavailable));
+      expect(result).toStrictEqual(E.left(DE.unavailable));
     });
   });
 });
