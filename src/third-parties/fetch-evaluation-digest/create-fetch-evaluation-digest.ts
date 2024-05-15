@@ -6,7 +6,7 @@ import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-a
 import { fetchHypothesisAnnotation } from './hypothesis';
 import { fetchNcrcEvaluationDigest } from './ncrc';
 import { fetchPrelightsHighlight } from './prelights';
-import { fetchRapidReview } from './rapid-reviews';
+import { fetchRapidReviewsEvaluationDigest } from './rapid-reviews';
 import { fetchZenodoRecord } from './zenodo';
 import { Logger } from '../../shared-ports';
 import { ExternalQueries } from '../external-queries';
@@ -24,7 +24,7 @@ export const createFetchEvaluationDigest = (queryExternalService: QueryExternalS
     hypothesis: fetchHypothesisAnnotation(queryExternalService, logger),
     ncrc: fetchNcrcEvaluationDigest(logger),
     prelights: fetchPrelightsHighlight(queryExternalService, logger),
-    rapidreviews: fetchRapidReview(queryExternalService, logger),
+    rapidreviews: fetchRapidReviewsEvaluationDigest(queryExternalService, logger),
   },
   fetchEvaluationFromAppropriateService,
 );

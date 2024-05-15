@@ -1,1 +1,1 @@
-export { fetchRapidReview } from './fetch-rapid-review';
+export { fetchRapidReviewsEvaluationDigest } from './fetch-rapid-reviews-evaluation-digest';

@@ -45,7 +45,7 @@ const review = (doc: CheerioAPI) => pipe(
   E.right,
 );
 
-const extractEvaluation = (logger: Logger) => (html: string) => {
+const extractEvaluationDigest = (logger: Logger) => (html: string) => {
   const parsedDocument = load(html);
   if (parsedDocument('meta[name="dc.title"]').attr('content')?.startsWith('Reviews of ')) {
     return summary(logger)(parsedDocument);
@@ -53,7 +53,7 @@ const extractEvaluation = (logger: Logger) => (html: string) => {
   return review(parsedDocument);
 };
 
-export const fetchRapidReview = (
+export const fetchRapidReviewsEvaluationDigest = (
   queryExternalService: QueryExternalService,
   logger: Logger,
 ): EvaluationDigestFetcher => (url) => pipe(
@@ -68,7 +68,7 @@ export const fetchRapidReview = (
     }),
   )),
   TE.chainEitherKW(flow(
-    extractEvaluation(logger),
+    extractEvaluationDigest(logger),
     E.map(toHtmlFragment),
     E.map(sanitise),
   )),

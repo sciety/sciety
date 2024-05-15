@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
-import { fetchRapidReview } from '../../../../src/third-parties/fetch-evaluation-digest/rapid-reviews/fetch-rapid-review';
+import { fetchRapidReviewsEvaluationDigest } from '../../../../src/third-parties/fetch-evaluation-digest/rapid-reviews/fetch-rapid-reviews-evaluation-digest';
 import * as DE from '../../../../src/types/data-error';
 import { HtmlFragment } from '../../../../src/types/html-fragment';
 import { dummyLogger } from '../../../dummy-logger';
@@ -23,11 +23,11 @@ const toFullText = (html: string): TE.TaskEither<DE.DataError, HtmlFragment> => 
   const queryExternalService = () => () => TE.right(html);
   return pipe(
     doiUrl,
-    fetchRapidReview(queryExternalService, dummyLogger),
+    fetchRapidReviewsEvaluationDigest(queryExternalService, dummyLogger),
   );
 };
 
-describe('fetch-rapid-review', () => {
+describe('fetch-rapid-reviews-evaluation-digest', () => {
   describe('when fetching review', () => {
     describe('with one author', () => {
       const title = arbitraryString();
@@ -140,7 +140,7 @@ describe('fetch-rapid-review', () => {
       const queryExternalService = () => () => TE.left(DE.unavailable);
       const fullText = await pipe(
         guid.toString(),
-        fetchRapidReview(queryExternalService, dummyLogger),
+        fetchRapidReviewsEvaluationDigest(queryExternalService, dummyLogger),
         T.map(flow(
           E.matchW(
             identity,
