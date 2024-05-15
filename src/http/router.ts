@@ -39,6 +39,7 @@ import { saveArticleFormPage } from '../read-side/html-pages/save-article-form-p
 import { scietyFeedCodec, scietyFeedPage } from '../read-side/html-pages/sciety-feed-page';
 import { searchPage } from '../read-side/html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../read-side/html-pages/search-results-page';
+import { fullWidthPageLayout } from '../read-side/html-pages/shared-components/full-width-page-layout';
 import { referencePage, sharedComponentsPage, indexPage } from '../read-side/html-pages/style-guide-page';
 import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
@@ -50,7 +51,6 @@ import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';
 import { groupPagePathSpecification, constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
-import { fullWidthPageLayout } from '../shared-components/full-width-page-layout';
 import * as EDOI from '../types/expression-doi';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
