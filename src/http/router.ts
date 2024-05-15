@@ -44,9 +44,8 @@ import { referencePage, sharedComponentsPage, indexPage } from '../read-side/htm
 import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
-import { NonHtmlViewParams } from '../read-side/non-html-views';
+import { NonHtmlViewParams, NonHtmlViewRepresentation } from '../read-side/non-html-views';
 import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
-import { NonHtmlViewRepresentation } from '../read-side/non-html-views/docmaps/docmap/docmap';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../read-side/non-html-views/evaluation-content';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { applicationStatus } from '../read-side/non-html-views/status';
