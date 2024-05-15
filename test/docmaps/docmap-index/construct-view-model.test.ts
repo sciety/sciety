@@ -9,7 +9,7 @@ import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-accoun
 import { constructViewModel } from '../../../src/docmaps/docmap-index/construct-view-model';
 import * as ER from '../../../src/docmaps/docmap-index/error-response';
 import { Params } from '../../../src/docmaps/docmap-index/params';
-import { supportedGroups } from '../../../src/docmaps/supported-groups';
+import { supportedGroups } from '../../../src/read-side/non-html-views/docmaps/supported-groups';
 import { toExpressionDoi } from '../../../src/types/article-id';
 import { TestFramework, createTestFramework } from '../../framework';
 import { arbitraryString } from '../../helpers';
