@@ -1,9 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from './view-model';
-import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderLangAttribute } from '../lang-attribute';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 
 export const renderCurationStatements = (curationStatementsTeasers: ViewModel['curationStatementsTeasers']): HtmlFragment => {
   if (curationStatementsTeasers.length === 0) {

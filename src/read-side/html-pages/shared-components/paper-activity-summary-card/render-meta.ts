@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { ViewModel } from './view-model';
-import { renderCountWithDescriptor } from '../../../../shared-components/render-count-with-descriptor';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { templateDate } from '../date';
+import { renderCountWithDescriptor } from '../render-count-with-descriptor';
 
 const wrapInSpan = (text: string) => toHtmlFragment(`<span>${text}</span>`);
 
