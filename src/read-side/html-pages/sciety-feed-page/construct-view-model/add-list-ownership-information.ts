@@ -2,8 +2,8 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { List } from '../../../../read-models/lists';
-import { renderListPageLinkHref } from '../../../../shared-components/render-list-page-link-href';
 import { constructUserAvatarSrc } from '../../../paths';
+import { renderListPageLinkHref } from '../../shared-components/render-list-page-link-href';
 
 type ListWithAddedOwnershipInformation = {
   name: List['name'],

@@ -2,12 +2,12 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { safelyRenderRawUserInput } from '../../../../shared-components/raw-user-input-renderers';
-import { renderListPageLinkHref } from '../../../../shared-components/render-list-page-link-href';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ListId } from '../../../../types/list-id';
 import { RawUserInput } from '../../../raw-user-input';
 import { templateDate } from '../date';
 import { renderCountWithDescriptor } from '../render-count-with-descriptor';
+import { renderListPageLinkHref } from '../render-list-page-link-href';
 
 type Curator = {
   avatarSrc: string,
