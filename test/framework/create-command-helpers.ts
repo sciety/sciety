@@ -1,6 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { abortTest } from './abort-test';
 import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { ArticleId } from '../../src/types/article-id';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
@@ -16,6 +15,7 @@ import {
   UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
+import { abortTest } from '../abort-test';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,

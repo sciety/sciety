@@ -1,9 +1,9 @@
-import { AbortTest, abortTest } from './abort-test';
 import { CommandHelpers, createCommandHelpers } from './create-command-helpers';
 import { createReadAndWriteSides, ReadAndWriteSides } from './create-read-and-write-sides';
 import { createHappyPathThirdPartyAdapters, HappyPathThirdPartyAdapters } from './happy-path-third-party-adapters';
 import { Queries } from '../../src/read-models';
 import { Logger } from '../../src/shared-ports';
+import { AbortTest, abortTest } from '../abort-test';
 import { dummyLogger } from '../dummy-logger';
 
 export type TestFramework = ReadAndWriteSides & {

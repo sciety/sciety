@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { PageOfItems, paginate } from '../../../../../src/read-side/html-pages/shared-components/pagination/paginate';
 import * as DE from '../../../../../src/types/data-error';
-import { abortTest } from '../../../../framework/abort-test';
+import { abortTest } from '../../../../abort-test';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 
 const generateItems = (eventCount: number): ReadonlyArray<number> => pipe(

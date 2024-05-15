@@ -3,8 +3,8 @@ import { pipe } from 'fp-ts/function';
 import { fetchAccessMicrobiologyEvaluationDigest } from '../../../../src/third-parties/fetch-evaluation-digest/access-microbiology/fetch-access-microbiology-evaluation-digest';
 import { QueryExternalService } from '../../../../src/third-parties/query-external-service';
 import { SanitisedHtmlFragment } from '../../../../src/types/sanitised-html-fragment';
+import { abortTest } from '../../../abort-test';
 import { dummyLogger } from '../../../dummy-logger';
-import { abortTest } from '../../../framework/abort-test';
 import { arbitraryString } from '../../../helpers';
 
 describe('fetch-access-microbiology-evaluation-digest', () => {

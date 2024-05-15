@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../../src/domain-events';
 import { identifyFeedItems } from '../../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model/identify-feed-items';
-import { abortTest } from '../../../../framework/abort-test';
+import { abortTest } from '../../../../abort-test';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryListId } from '../../../../types/list-id.helper';
