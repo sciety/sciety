@@ -1,5 +1,5 @@
+import { Ports as DocmapDependencies } from '../../read-side/non-html-views/docmaps/docmap/construct-docmap-view-model';
 import { Logger } from '../../shared-ports';
-import { Ports as DocmapDependencies } from '../docmap/construct-docmap-view-model';
 
 export type Dependencies = DocmapDependencies & {
   logger: Logger,

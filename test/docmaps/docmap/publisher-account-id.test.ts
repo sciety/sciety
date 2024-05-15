@@ -1,4 +1,4 @@
-import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
+import { publisherAccountId } from '../../../src/read-side/non-html-views/docmaps/docmap/publisher-account-id';
 import { arbitraryGroup } from '../../types/group.helper';
 
 describe('publisher-account-id', () => {

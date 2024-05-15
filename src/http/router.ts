@@ -18,7 +18,6 @@ import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
-import { generateDocmaps } from '../docmaps/docmap';
 import { docmapIndex } from '../docmaps/docmap-index';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import { CollectedPorts } from '../infrastructure';
@@ -46,6 +45,7 @@ import { referencePage, sharedComponentsPage, indexPage } from '../read-side/htm
 import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
+import { generateDocmaps } from '../read-side/non-html-views/docmaps/docmap';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';

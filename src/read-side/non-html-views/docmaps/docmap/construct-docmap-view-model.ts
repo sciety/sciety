@@ -6,12 +6,12 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { DocmapViewModel } from './view-model';
-import { Queries } from '../../read-models';
-import { ExternalQueries } from '../../third-parties';
-import * as DE from '../../types/data-error';
-import * as EDOI from '../../types/expression-doi';
-import { GroupId } from '../../types/group-id';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { Queries } from '../../../../read-models';
+import { ExternalQueries } from '../../../../third-parties';
+import * as DE from '../../../../types/data-error';
+import * as EDOI from '../../../../types/expression-doi';
+import { GroupId } from '../../../../types/group-id';
+import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
 
 type DocmapIdentifier = {
   expressionDoi: EDOI.ExpressionDoi,

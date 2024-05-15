@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructDocmapViewModel, Ports } from '../../../src/docmaps/docmap/construct-docmap-view-model';
-import { DocmapViewModel } from '../../../src/docmaps/docmap/view-model';
+import { constructDocmapViewModel, Ports } from '../../../src/read-side/non-html-views/docmaps/docmap/construct-docmap-view-model';
+import { DocmapViewModel } from '../../../src/read-side/non-html-views/docmaps/docmap/view-model';
 import { toExpressionDoi } from '../../../src/types/article-id';
 import * as DE from '../../../src/types/data-error';
 import { RecordEvaluationPublicationCommand } from '../../../src/write-side/commands';

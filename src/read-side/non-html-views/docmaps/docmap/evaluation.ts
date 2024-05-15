@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import * as EL from '../../types/evaluation-locator';
+import * as EL from '../../../../types/evaluation-locator';
 
 export type Evaluation = {
   sourceUrl: URL,

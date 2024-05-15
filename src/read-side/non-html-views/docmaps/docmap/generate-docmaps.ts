@@ -7,10 +7,10 @@ import { StatusCodes } from 'http-status-codes';
 import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
 import { Docmap } from './docmap-type';
 import { renderDocmap } from './render-docmap';
-import { Queries } from '../../read-models';
-import { supportedGroups } from '../../read-side/non-html-views/docmaps/supported-groups';
-import { articleIdCodec, ArticleId, toExpressionDoi } from '../../types/article-id';
-import * as EDOI from '../../types/expression-doi';
+import { Queries } from '../../../../read-models';
+import { articleIdCodec, ArticleId, toExpressionDoi } from '../../../../types/article-id';
+import * as EDOI from '../../../../types/expression-doi';
+import { supportedGroups } from '../supported-groups';
 
 export type Ports = DocmapPorts & Queries;
 

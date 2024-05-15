@@ -3,11 +3,11 @@
 /* eslint-disable jest/require-hook */
 import { URL } from 'url';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
-import { Docmap } from '../../../src/docmaps/docmap/docmap-type';
-import { Evaluation } from '../../../src/docmaps/docmap/evaluation';
-import { anonymous } from '../../../src/docmaps/docmap/peer-reviewer';
-import { publisherAccountId } from '../../../src/docmaps/docmap/publisher-account-id';
-import { renderDocmap } from '../../../src/docmaps/docmap/render-docmap';
+import { Docmap } from '../../../src/read-side/non-html-views/docmaps/docmap/docmap-type';
+import { Evaluation } from '../../../src/read-side/non-html-views/docmaps/docmap/evaluation';
+import { anonymous } from '../../../src/read-side/non-html-views/docmaps/docmap/peer-reviewer';
+import { publisherAccountId } from '../../../src/read-side/non-html-views/docmaps/docmap/publisher-account-id';
+import { renderDocmap } from '../../../src/read-side/non-html-views/docmaps/docmap/render-docmap';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
 import {
   arbitraryDate, arbitraryString, arbitraryUrl,

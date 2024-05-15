@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { decodeParams } from './filter-by-params';
-import { renderDocmap } from '../docmap/render-docmap';
+import { renderDocmap } from '../../read-side/non-html-views/docmaps/docmap/render-docmap';
 
 type DocmapIndexBody = {
   articles?: ReadonlyArray<unknown>,
