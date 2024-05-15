@@ -18,7 +18,6 @@ import { pageHandler } from './page-handler';
 import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
-import { evaluationContent, paramsCodec as evaluationContentParams } from '../evaluation-content';
 import { CollectedPorts } from '../infrastructure';
 import { aboutPage } from '../read-side/html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../read-side/html-pages/action-failed';
@@ -45,6 +44,7 @@ import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-p
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
 import { generateDocmaps, docmapIndex } from '../read-side/non-html-views/docmaps';
+import { evaluationContent, paramsCodec as evaluationContentParams } from '../read-side/non-html-views/evaluation-content';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';
