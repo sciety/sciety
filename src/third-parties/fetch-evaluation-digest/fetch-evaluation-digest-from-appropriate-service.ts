@@ -6,7 +6,7 @@ import * as DE from '../../types/data-error';
 import * as EL from '../../types/evaluation-locator';
 import { ExternalQueries } from '../external-queries';
 
-export const fetchEvaluationFromAppropriateService = (fetchers: Record<string, EvaluationDigestFetcher>): ExternalQueries['fetchEvaluationDigest'] => (id) => pipe(
+export const fetchEvaluationDigestFromAppropriateService = (fetchers: Record<string, EvaluationDigestFetcher>): ExternalQueries['fetchEvaluationDigest'] => (id) => pipe(
   fetchers,
   R.lookup(EL.service(id)),
   TE.fromOption(() => DE.notFound),

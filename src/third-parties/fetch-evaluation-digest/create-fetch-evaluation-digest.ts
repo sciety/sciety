@@ -2,7 +2,7 @@
 import { pipe } from 'fp-ts/function';
 import { fetchAccessMicrobiologyEvaluationDigest } from './access-microbiology';
 import { fetchDoiEvaluationDigestByPublisher } from './fetch-doi-evaluation-digest-by-publisher';
-import { fetchEvaluationFromAppropriateService } from './fetch-evaluation-from-appropriate-service';
+import { fetchEvaluationDigestFromAppropriateService } from './fetch-evaluation-digest-from-appropriate-service';
 import { fetchHypothesisAnnotation } from './hypothesis';
 import { fetchNcrcEvaluationDigest } from './ncrc';
 import { fetchPrelightsHighlight } from './prelights';
@@ -26,5 +26,5 @@ export const createFetchEvaluationDigest = (queryExternalService: QueryExternalS
     prelights: fetchPrelightsHighlight(queryExternalService, logger),
     rapidreviews: fetchRapidReviewsEvaluationDigest(queryExternalService, logger),
   },
-  fetchEvaluationFromAppropriateService,
+  fetchEvaluationDigestFromAppropriateService,
 );
