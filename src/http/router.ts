@@ -44,7 +44,8 @@ import { referencePage, sharedComponentsPage, indexPage } from '../read-side/htm
 import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
-import { generateDocmaps, docmapIndex } from '../read-side/non-html-views/docmaps';
+import { NonHtmlViewParams } from '../read-side/non-html-views';
+import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
 import { evaluationContent, paramsCodec as evaluationContentParams } from '../read-side/non-html-views/evaluation-content';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { applicationStatus } from '../read-side/non-html-views/status';
@@ -52,7 +53,6 @@ import { statusGroups } from '../read-side/non-html-views/status-groups';
 import { groupPagePathSpecification, constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import * as EDOI from '../types/expression-doi';
-import { NonHtmlViewParams } from '../read-side/non-html-views';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 
@@ -341,8 +341,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const collectedParams: NonHtmlViewParams = context.params;
     const response = await pipe(
-      context.params.doi,
-      generateDocmaps(adapters),
+      collectedParams,
+      docmap(adapters),
       TE.foldW(
         (error) => T.of({
           body: { message: error.message },

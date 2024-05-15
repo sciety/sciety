@@ -1,1 +1,1 @@
-export { generateDocmaps } from './generate-docmaps';
+export { docmap } from './docmap';
