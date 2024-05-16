@@ -54,7 +54,7 @@ export const createInfrastructure = (
   },
   TE.right,
   TE.map((adapters) => {
-    adapters.logger('info', 'Database connection pool and logger available');
+    adapters.logger('info', 'Database connection pool and logger available', { databaseHost: process.env.PGHOST });
     return adapters;
   }),
   TE.chainFirst(createEventsTable),
