@@ -17,17 +17,20 @@ export const routeForNonHtmlView = (nonHtmlView: NonHtmlView): Middleware => asy
     nonHtmlView,
     TE.foldW(
       (error) => T.of({
-        body: { message: error.message },
         status: error.status,
+        contentType: 'application/json',
+        body: { message: error.message },
       }),
       (representation: NonHtmlViewRepresentation) => T.of({
-        body: representation.state,
         status: StatusCodes.OK,
+        contentType: representation.mediaType,
+        body: representation.state,
       }),
     ),
   )();
 
   context.response.status = response.status;
+  context.response.type = response.contentType;
   context.response.body = response.body;
   await next();
 };

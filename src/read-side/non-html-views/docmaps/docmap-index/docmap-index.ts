@@ -23,5 +23,5 @@ export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
     message: internalErrorResponse.body.error,
   })),
   TE.map(RA.map(renderDocmap)),
-  TE.map((docmaps) => toNonHtmlViewRepresentation({ articles: docmaps })),
+  TE.map((docmaps) => toNonHtmlViewRepresentation({ articles: docmaps }, 'application/ld+json')),
 );

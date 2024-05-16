@@ -1,39 +1,27 @@
-import { Middleware } from '@koa/router';
-import { HttpStatusCode } from 'axios';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import { Dependencies, constructViewModel, paramsCodec } from './construct-view-model';
 import { renderAsAtom } from './render-as-atom';
+import { NonHtmlView } from '../non-html-view';
+import { toNonHtmlViewRepresentation } from '../non-html-view-representation';
 
-export const listFeed = (dependencies: Dependencies): Middleware => async (context, next) => {
-  context.response.type = 'application/atom+xml';
-  const result = await pipe(
-    {
-      ...context.params,
-      ...context.query,
-    },
-    paramsCodec.decode,
-    E.mapLeft(() => HttpStatusCode.BadRequest),
-    TE.fromEither,
-    TE.chain(flow(
-      constructViewModel(dependencies),
-      TE.mapLeft(() => HttpStatusCode.ServiceUnavailable),
-    )),
-    TE.map(renderAsAtom),
-    TE.match(
-      (status) => ({
-        status,
-        body: '',
-      }),
-      (body) => ({
-        status: HttpStatusCode.Ok,
-        body,
-      }),
-    ),
-  )();
-  context.response.status = result.status;
-  context.response.body = result.body;
-
-  await next();
-};
+export const listFeed = (dependencies: Dependencies): NonHtmlView => (nonHtmlViewParams) => pipe(
+  nonHtmlViewParams,
+  paramsCodec.decode,
+  E.mapLeft(() => StatusCodes.BAD_REQUEST),
+  TE.fromEither,
+  TE.chain(flow(
+    constructViewModel(dependencies),
+    TE.mapLeft(() => StatusCodes.SERVICE_UNAVAILABLE),
+  )),
+  TE.map(renderAsAtom),
+  TE.bimap(
+    (status) => ({
+      status,
+      message: '',
+    }),
+    (body) => toNonHtmlViewRepresentation(body, 'application/atom+xml'),
+  ),
+);

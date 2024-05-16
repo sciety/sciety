@@ -25,5 +25,5 @@ export const docmap = (
     decodedParams.doi,
     generateDocmaps(ports),
   )),
-  TE.map(toNonHtmlViewRepresentation),
+  TE.map((state) => toNonHtmlViewRepresentation(state, 'application/ld+json')),
 );
