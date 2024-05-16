@@ -23,9 +23,6 @@ export const evaluationContent = (dependencies: Dependencies) => (params: NonHtm
       status: StatusCodes.INTERNAL_SERVER_ERROR,
       message: toHtmlFragment('Could not fetch evaluation'),
     }),
-    (digest) => toNonHtmlViewRepresentation({
-      title: 'Evaluation',
-      content: toHtmlFragment(digest),
-    }),
+    (digest) => toNonHtmlViewRepresentation(toHtmlFragment(digest)),
   ),
 );
