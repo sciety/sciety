@@ -13,3 +13,4 @@ ingestionAuthBearerToken:
 healthchecksPingKey:
 enableEventsExportToS3: "true"
 certManagerClusterIssuer: "letsencrypt"
+pgSslMode: "allow"
