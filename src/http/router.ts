@@ -328,7 +328,11 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
-    const response = await docmapIndex(adapters)(context.query)();
+    const response = await pipe(
+      context.query,
+      docmapIndex(adapters),
+      TE.toUnion,
+    )();
 
     context.response.status = response.status;
     context.response.body = response.body;

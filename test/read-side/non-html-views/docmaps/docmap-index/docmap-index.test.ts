@@ -1,7 +1,10 @@
+import * as TE from 'fp-ts/TaskEither';
+import { identity, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index';
 import { Dependencies } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index/dependencies';
 import * as GID from '../../../../../src/types/group-id';
+import { abortTest } from '../../../../abort-test';
 import { dummyLogger } from '../../../../dummy-logger';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
@@ -33,7 +36,11 @@ describe('docmap-index', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-      response = await docmapIndex(defaultDependencies)({})();
+      response = await pipe(
+        {},
+        docmapIndex(defaultDependencies),
+        TE.match(identity, abortTest('returned on the right')),
+      )();
     });
 
     it('returns a body containing an error object', () => {
@@ -51,9 +58,13 @@ describe('docmap-index', () => {
     let response: { body: DocmapIndexBody, status: StatusCodes };
 
     beforeEach(async () => {
-      response = await docmapIndex(defaultDependencies)({
-        updatedAfter: 'not-a-date',
-      })();
+      response = await pipe(
+        {
+          updatedAfter: 'not-a-date',
+        },
+        docmapIndex(defaultDependencies),
+        TE.match(identity, abortTest('returned on the right')),
+      )();
     });
 
     it('returns a body containing an error object', () => {

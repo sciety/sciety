@@ -1,5 +1,4 @@
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
@@ -13,10 +12,16 @@ type DocmapIndexBody = {
   error?: string,
 };
 
-type DocmapIndex = (dependencies: Dependencies) => (query: Record<string, unknown>) => T.Task<{
+type DocmapIndex = (dependencies: Dependencies) => (query: Record<string, unknown>) => TE.TaskEither<
+{
   body: DocmapIndexBody,
   status: StatusCodes,
-}>;
+},
+{
+  body: DocmapIndexBody,
+  status: StatusCodes,
+}
+>;
 
 export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
   query,
@@ -28,5 +33,4 @@ export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
     body: { articles: docmaps },
     status: StatusCodes.OK,
   })),
-  TE.toUnion,
 );
