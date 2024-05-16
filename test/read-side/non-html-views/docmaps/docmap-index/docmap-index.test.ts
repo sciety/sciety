@@ -3,6 +3,7 @@ import { identity, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { docmapIndex } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index';
 import { Dependencies } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index/dependencies';
+import { NonHtmlViewError } from '../../../../../src/read-side/non-html-views/non-html-view-error';
 import * as GID from '../../../../../src/types/group-id';
 import { abortTest } from '../../../../abort-test';
 import { dummyLogger } from '../../../../dummy-logger';
@@ -11,10 +12,6 @@ import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-s
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
-  type DocmapIndexBody = {
-    articles?: ReadonlyArray<unknown>,
-    error?: string,
-  };
   let framework: TestFramework;
   let defaultDependencies: Dependencies;
 
@@ -28,7 +25,7 @@ describe('docmap-index', () => {
   });
 
   describe('when any docmap fails to generate', () => {
-    let response: { body: DocmapIndexBody, status: StatusCodes };
+    let errorResult: NonHtmlViewError;
     const recordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: ncrcGroupId,
@@ -36,7 +33,7 @@ describe('docmap-index', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
-      response = await pipe(
+      errorResult = await pipe(
         {},
         docmapIndex(defaultDependencies),
         TE.match(identity, abortTest('returned on the right')),
@@ -44,21 +41,19 @@ describe('docmap-index', () => {
     });
 
     it('returns a body containing an error object', () => {
-      expect(response.body).toStrictEqual({
-        error: 'Internal server error while generating Docmaps',
-      });
+      expect(errorResult.message).toBe('Internal server error while generating Docmaps');
     });
 
     it('returns a 500 status code', () => {
-      expect(response.status).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+      expect(errorResult.status).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
     });
   });
 
   describe('when the query parameters are invalid', () => {
-    let response: { body: DocmapIndexBody, status: StatusCodes };
+    let errorResult: NonHtmlViewError;
 
     beforeEach(async () => {
-      response = await pipe(
+      errorResult = await pipe(
         {
           updatedAfter: 'not-a-date',
         },
@@ -68,11 +63,11 @@ describe('docmap-index', () => {
     });
 
     it('returns a body containing an error object', () => {
-      expect(response.body.error).toMatch(/^Invalid value "not-a-date"/);
+      expect(errorResult.message).toMatch(/^Invalid value "not-a-date"/);
     });
 
     it('returns a 400 status code', () => {
-      expect(response.status).toStrictEqual(StatusCodes.BAD_REQUEST);
+      expect(errorResult.status).toStrictEqual(StatusCodes.BAD_REQUEST);
     });
   });
 });

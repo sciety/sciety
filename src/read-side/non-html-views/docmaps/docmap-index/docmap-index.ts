@@ -1,26 +1,16 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { StatusCodes } from 'http-status-codes';
 import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { decodeParams } from './filter-by-params';
+import { NonHtmlViewError } from '../../non-html-view-error';
+import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
 import { renderDocmap } from '../docmap/render-docmap';
 
-type DocmapIndexBody = {
-  articles?: ReadonlyArray<unknown>,
-  error?: string,
-};
-
 type DocmapIndex = (dependencies: Dependencies) => (query: Record<string, unknown>) => TE.TaskEither<
-{
-  body: DocmapIndexBody,
-  status: StatusCodes,
-},
-{
-  body: DocmapIndexBody,
-  status: StatusCodes,
-}
+NonHtmlViewError,
+NonHtmlViewRepresentation
 >;
 
 export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
@@ -28,9 +18,10 @@ export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
   decodeParams,
   TE.fromEither,
   TE.chain(constructViewModel(dependencies)),
-  TE.map(RA.map(renderDocmap)),
-  TE.map((docmaps) => ({
-    body: { articles: docmaps },
-    status: StatusCodes.OK,
+  TE.mapLeft((internalErrorResponse) => ({
+    status: internalErrorResponse.status,
+    message: internalErrorResponse.body.error,
   })),
+  TE.map(RA.map(renderDocmap)),
+  TE.map((docmaps) => toNonHtmlViewRepresentation({ articles: docmaps })),
 );

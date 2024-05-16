@@ -327,18 +327,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   authentication.configureRoutes(router, adapters, config);
 
   // DOCMAPS
-  router.get('/docmaps/v1/index', async (context, next) => {
-    const response = await pipe(
-      context.query,
-      docmapIndex(adapters),
-      TE.toUnion,
-    )();
-
-    context.response.status = response.status;
-    context.response.body = response.body;
-
-    await next();
-  });
+  // context.query,
+  router.get('/docmaps/v1/index', routeForNonHtmlView(docmapIndex(adapters)));
 
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', routeForNonHtmlView(docmap(adapters)));
 

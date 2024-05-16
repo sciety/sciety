@@ -11,7 +11,7 @@ type NonHtmlView = (
 ) => TE.TaskEither<NonHtmlViewError, NonHtmlViewRepresentation>;
 
 export const routeForNonHtmlView = (nonHtmlView: NonHtmlView): Middleware => async (context, next) => {
-  const collectedParams: NonHtmlViewParams = context.params;
+  const collectedParams: NonHtmlViewParams = { ...context.params, ...context.query };
   const response = await pipe(
     collectedParams,
     nonHtmlView,
