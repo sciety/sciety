@@ -337,11 +337,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get('/status', routeForNonHtmlView(applicationStatus(adapters)));
 
-  router.get('/status/groups', async (context, next) => {
-    context.response.body = statusGroups(adapters);
-    context.response.status = StatusCodes.OK;
-    await next();
-  });
+  router.get('/status/groups', routeForNonHtmlView(statusGroups(adapters)));
 
   // MISC
 
