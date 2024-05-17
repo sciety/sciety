@@ -1,6 +1,7 @@
 import Router from '@koa/router';
 import { createConfigurePostMiddleware } from './create-configure-post-middleware';
 import { CollectedPorts } from '../../infrastructure';
+import { ownedBy } from '../../read-side/non-html-views/owned-by';
 import {
   addArticleToListCommandCodec,
   addGroupCommandCodec,
@@ -20,7 +21,6 @@ import * as groupResource from '../../write-side/resources/group';
 import * as listResource from '../../write-side/resources/list';
 import * as listPromotionResource from '../../write-side/resources/list-promotion';
 import * as userResource from '../../write-side/resources/user';
-import { ownedBy } from '../owned-by-api';
 import { routeForNonHtmlView } from '../route-for-non-html-view';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts, expectedToken: string): void => {
