@@ -70,8 +70,6 @@ spec:
                 secretKeyRef:
                   name: "{{ .Values.postgresqlSecretName }}"
                   key: postgresql-port
-            - name: PGSSLMODE
-              value: {{ .Values.pgSslMode }}
             - name: AUTH0_CLIENT_ID
               value: {{ .Values.auth0ClientId }}
             - name: AUTH0_CLIENT_SECRET
