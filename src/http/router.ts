@@ -335,11 +335,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   // OBSERVABILITY
 
-  router.get('/status', async (context, next) => {
-    context.response.body = applicationStatus(adapters);
-    context.response.status = StatusCodes.OK;
-    await next();
-  });
+  router.get('/status', routeForNonHtmlView(applicationStatus(adapters)));
 
   router.get('/status/groups', async (context, next) => {
     context.response.body = statusGroups(adapters);
