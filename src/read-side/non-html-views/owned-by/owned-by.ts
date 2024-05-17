@@ -9,6 +9,7 @@ import { renderRawUserInputForJsonApi } from '../../../shared-components/raw-use
 import { ownedByQueryCodec } from '../../../types/codecs/owned-by-query-codec';
 import * as LOID from '../../../types/list-owner-id';
 import { NonHtmlView } from '../non-html-view';
+import { toNonHtmlViewError } from '../non-html-view-error';
 import { toNonHtmlViewRepresentation } from '../non-html-view-representation';
 
 const constructViewModel = (lists: ReadonlyArray<List>) => pipe(
@@ -29,10 +30,10 @@ export const ownedBy = (queries: Queries): NonHtmlView => (params) => pipe(
   E.map(queries.selectAllListsOwnedBy),
   E.map(constructViewModel),
   E.bimap(
-    () => ({
-      status: StatusCodes.BAD_REQUEST,
-      message: 'Cannot understand the ownerId',
-    }),
+    () => toNonHtmlViewError(
+      'Cannot understand the ownerId',
+      StatusCodes.BAD_REQUEST,
+    ),
     (items) => toNonHtmlViewRepresentation(
       ownedByQueryCodec.encode({ items }),
       'application/json',

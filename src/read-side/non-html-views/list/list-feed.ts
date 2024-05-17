@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Dependencies, constructViewModel, paramsCodec } from './construct-view-model';
 import { renderAsAtom } from './render-as-atom';
 import { NonHtmlView } from '../non-html-view';
+import { toNonHtmlViewError } from '../non-html-view-error';
 import { toNonHtmlViewRepresentation } from '../non-html-view-representation';
 
 export const listFeed = (dependencies: Dependencies): NonHtmlView => (nonHtmlViewParams) => pipe(
@@ -18,10 +19,10 @@ export const listFeed = (dependencies: Dependencies): NonHtmlView => (nonHtmlVie
   )),
   TE.map(renderAsAtom),
   TE.bimap(
-    (status) => ({
+    (status) => toNonHtmlViewError(
+      'Cannot generate a Atom feed',
       status,
-      message: '',
-    }),
+    ),
     (body) => toNonHtmlViewRepresentation(body, 'application/atom+xml'),
   ),
 );

@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { decodeParams } from './filter-by-params';
-import { NonHtmlViewError } from '../../non-html-view-error';
+import { NonHtmlViewError, toNonHtmlViewError } from '../../non-html-view-error';
 import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
 import { renderDocmap } from '../docmap/render-docmap';
 
@@ -18,10 +18,10 @@ export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
   decodeParams,
   TE.fromEither,
   TE.chain(constructViewModel(dependencies)),
-  TE.mapLeft((internalErrorResponse) => ({
-    status: internalErrorResponse.status,
-    message: internalErrorResponse.body.error,
-  })),
+  TE.mapLeft((internalErrorResponse) => toNonHtmlViewError(
+    internalErrorResponse.body.error,
+    internalErrorResponse.status,
+  )),
   TE.map(RA.map(renderDocmap)),
   TE.map((docmaps) => toNonHtmlViewRepresentation({ articles: docmaps }, 'application/ld+json')),
 );
