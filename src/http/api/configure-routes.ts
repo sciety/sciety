@@ -21,9 +21,10 @@ import * as listResource from '../../write-side/resources/list';
 import * as listPromotionResource from '../../write-side/resources/list-promotion';
 import * as userResource from '../../write-side/resources/user';
 import { ownedBy } from '../owned-by-api';
+import { routeForNonHtmlView } from '../route-for-non-html-view';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts, expectedToken: string): void => {
-  router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
+  router.get('/api/lists/owned-by/:ownerId', routeForNonHtmlView(ownedBy(adapters)));
 
   const configurePostMiddleware = createConfigurePostMiddleware(adapters, expectedToken);
 
