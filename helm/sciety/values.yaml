@@ -1,6 +1,6 @@
 images:
   frontend:
-    repository: sciety/sciety
+    repository: ghcr.io/sciety/sciety
 
 allowSiteCrawlers: "false"
 crossrefApiBearerToken:
