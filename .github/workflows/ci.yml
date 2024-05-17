@@ -75,6 +75,15 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      - name: Push Image to GHCR
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "${GHCR_PASSWORD}" | docker login ghcr.io --username "${GHCR_USERNAME}" --password-stdin
+          docker push ghcr.io/sciety/sciety:${IMAGE_TAG}
+        env:
+          GHCR_USERNAME: ${{ github.actor }}
+          GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Deploy to staging
         if: github.ref == 'refs/heads/main'
         run: |
