@@ -13,6 +13,7 @@ type GroupState = {
   name: string,
   shortDescription: string,
   largeLogoPath: string | undefined,
+  avatarPath: string,
 };
 
 type ReplayedGroupState = E.Either<'no-such-group' | 'bad-data', GroupState>;
@@ -26,6 +27,7 @@ const buildGroup = (state: ReplayedGroupState, event: DomainEvent): ReplayedGrou
       name: event.name,
       shortDescription: event.shortDescription,
       largeLogoPath: event.largeLogoPath,
+      avatarPath: event.avatarPath,
     });
   }
   if (isEventOfType('GroupDetailsUpdated')(event)) {
@@ -37,6 +39,7 @@ const buildGroup = (state: ReplayedGroupState, event: DomainEvent): ReplayedGrou
           name: event.name ?? groupState.name,
           shortDescription: event.shortDescription ?? groupState.shortDescription,
           largeLogoPath: event.largeLogoPath ?? groupState.largeLogoPath,
+          avatarPath: event.avatarPath ?? groupState.avatarPath,
         }),
       ),
     );
@@ -91,12 +94,17 @@ const calculateAttributesToUpdate = (
     && command.shortDescription !== groupState.shortDescription)
     ? command.shortDescription
     : undefined,
+  avatarPath: (command.avatarPath !== undefined
+    && command.avatarPath !== groupState.avatarPath)
+    ? command.avatarPath
+    : undefined,
 });
 
 const hasAnyValues = (attributes: Record<string, string | undefined>): boolean => (
   (attributes.name !== undefined)
   || (attributes.shortDescription !== undefined)
   || (attributes.largeLogoPath !== undefined)
+  || (attributes.avatarPath !== undefined)
 );
 
 export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (events) => pipe(
@@ -110,7 +118,6 @@ export const update: ResourceAction<UpdateGroupDetailsCommand> = (command) => (e
   E.map((attributesToUpdate) => (hasAnyValues(attributesToUpdate) ? [constructEvent('GroupDetailsUpdated')({
     groupId: command.groupId,
     homepage: undefined,
-    avatarPath: undefined,
     descriptionPath: undefined,
     slug: undefined,
     ...attributesToUpdate,
