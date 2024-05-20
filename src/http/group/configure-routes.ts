@@ -66,6 +66,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
 
   router.get(
     groupSubPagePathSpecification('manage-details'),
+    requireLoggedInUser(adapters),
     pageHandler(adapters, createPageFromParams(
       GMDP.paramsCodec,
       GMDP.constructAndRenderPage,
