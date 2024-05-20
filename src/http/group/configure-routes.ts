@@ -6,6 +6,7 @@ import { addAFeaturedListFormPage, addAFeaturedListFormPageParamsCodec } from '.
 import * as GFP from '../../read-side/html-pages/group-page/group-followers-page';
 import * as GHP from '../../read-side/html-pages/group-page/group-home-page';
 import * as GLP from '../../read-side/html-pages/group-page/group-lists-page';
+import * as GMDP from '../../read-side/html-pages/group-page/group-manage-details-page';
 import { groupPagePathSpecification, groupSubPagePathSpecification } from '../../read-side/paths';
 import { createPageFromParams } from '../create-page-from-params';
 import { pageHandler } from '../page-handler';
@@ -66,8 +67,8 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     groupSubPagePathSpecification('manage-details'),
     pageHandler(adapters, createPageFromParams(
-      GAP.paramsCodec,
-      GAP.constructAndRenderPage(adapters),
+      GMDP.paramsCodec,
+      GMDP.constructAndRenderPage,
     )),
   );
 };
