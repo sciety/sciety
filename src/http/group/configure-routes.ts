@@ -62,4 +62,12 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
       addAFeaturedListFormPage(adapters),
     )),
   );
+
+  router.get(
+    groupSubPagePathSpecification('manage-details'),
+    pageHandler(adapters, createPageFromParams(
+      GAP.paramsCodec,
+      GAP.constructAndRenderPage(adapters),
+    )),
+  );
 };
