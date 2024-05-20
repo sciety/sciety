@@ -46,11 +46,6 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluat
   ],
 });
 
-const constructLogoUrl = (avatarPath: string) => (
-  avatarPath.startsWith('http')
-    ? avatarPath
-    : `https://sciety.org${avatarPath}`);
-
 export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   '@context': 'https://w3id.org/docmaps/context.jsonld',
   id: `https://sciety.org/docmaps/v1/articles/${viewModel.expressionDoi}/${viewModel.group.slug}.docmap.json`,
@@ -60,7 +55,7 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   publisher: {
     id: viewModel.group.homepage,
     name: viewModel.group.name,
-    logo: constructLogoUrl(viewModel.group.avatarPath),
+    logo: viewModel.group.avatarPath,
     homepage: viewModel.group.homepage,
     account: {
       id: publisherAccountId(viewModel.group),
