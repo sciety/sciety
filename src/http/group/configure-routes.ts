@@ -6,7 +6,7 @@ import { addAFeaturedListFormPage, addAFeaturedListFormPageParamsCodec } from '.
 import * as GFP from '../../read-side/html-pages/group-page/group-followers-page';
 import * as GHP from '../../read-side/html-pages/group-page/group-home-page';
 import * as GLP from '../../read-side/html-pages/group-page/group-lists-page';
-import { groupPagePathSpecification } from '../../read-side/paths';
+import { groupPagePathSpecification, groupSubPagePathSpecification } from '../../read-side/paths';
 import { createPageFromParams } from '../create-page-from-params';
 import { pageHandler } from '../page-handler';
 import { requireLoggedInUser } from '../require-logged-in-user';
@@ -21,7 +21,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    '/groups/:slug/lists',
+    groupSubPagePathSpecification('lists'),
     pageHandler(adapters, createPageFromParams(
       GLP.paramsCodec,
       GLP.constructAndRenderPage(adapters),
@@ -29,7 +29,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    '/groups/:slug/about',
+    groupSubPagePathSpecification('about'),
     pageHandler(adapters, createPageFromParams(
       GAP.paramsCodec,
       GAP.constructAndRenderPage(adapters),
@@ -37,7 +37,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    '/groups/:slug/followers',
+    groupSubPagePathSpecification('followers'),
     pageHandler(adapters, createPageFromParams(
       GFP.paramsCodec,
       GFP.constructAndRenderPage(adapters),
@@ -45,7 +45,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    '/groups/:slug/feed',
+    groupSubPagePathSpecification('feed'),
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
       context.redirect(`/groups/${context.params.slug}`);
@@ -55,7 +55,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    '/groups/:slug/add-a-featured-list',
+    groupSubPagePathSpecification('add-a-featured-list'),
     requireLoggedInUser(adapters),
     pageHandler(adapters, createPageFromParams(
       addAFeaturedListFormPageParamsCodec,
