@@ -12,6 +12,7 @@ import { Config as AuthenticationRoutesConfig } from './authentication/configure
 import { createPageFromParams } from './create-page-from-params';
 import { EnvironmentVariables } from './environment-variables-codec';
 import * as formSubmissionHandlers from './form-submission-handlers';
+import * as group from './group';
 import { htmlFragmentHandler } from './html-fragment-handler';
 import { loadStaticFile } from './load-static-file';
 import { pageHandler } from './page-handler';
@@ -23,11 +24,6 @@ import { aboutPage } from '../read-side/html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../read-side/html-pages/action-failed';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../read-side/html-pages/create-annotation-form-page';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../read-side/html-pages/edit-list-details-form-page';
-import * as GAP from '../read-side/html-pages/group-page/group-about-page';
-import { addAFeaturedListFormPage, addAFeaturedListFormPageParamsCodec } from '../read-side/html-pages/group-page/group-add-a-featured-list-form-page';
-import * as GFP from '../read-side/html-pages/group-page/group-followers-page';
-import * as GHP from '../read-side/html-pages/group-page/group-home-page';
-import * as GLP from '../read-side/html-pages/group-page/group-lists-page';
 import { groupsPage } from '../read-side/html-pages/groups-page';
 import { homePage, homePageLayout } from '../read-side/html-pages/home-page';
 import { legalPage } from '../read-side/html-pages/legal-page';
@@ -49,7 +45,7 @@ import { evaluationContent, paramsCodec as evaluationContentParams } from '../re
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';
-import { groupPagePathSpecification, constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
+import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import * as EDOI from '../types/expression-doi';
 
@@ -199,57 +195,6 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   );
 
   router.get(
-    groupPagePathSpecification,
-    pageHandler(adapters, createPageFromParams(
-      GHP.paramsCodec,
-      GHP.constructAndRenderPage(adapters),
-    )),
-  );
-
-  router.get(
-    '/groups/:slug/lists',
-    pageHandler(adapters, createPageFromParams(
-      GLP.paramsCodec,
-      GLP.constructAndRenderPage(adapters),
-    )),
-  );
-
-  router.get(
-    '/groups/:slug/about',
-    pageHandler(adapters, createPageFromParams(
-      GAP.paramsCodec,
-      GAP.constructAndRenderPage(adapters),
-    )),
-  );
-
-  router.get(
-    '/groups/:slug/followers',
-    pageHandler(adapters, createPageFromParams(
-      GFP.paramsCodec,
-      GFP.constructAndRenderPage(adapters),
-    )),
-  );
-
-  router.get(
-    '/groups/:slug/feed',
-    async (context, next) => {
-      context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/groups/${context.params.slug}`);
-
-      await next();
-    },
-  );
-
-  router.get(
-    '/groups/:slug/add-a-featured-list',
-    requireLoggedInUser(adapters),
-    pageHandler(adapters, createPageFromParams(
-      addAFeaturedListFormPageParamsCodec,
-      addAFeaturedListFormPage(adapters),
-    )),
-  );
-
-  router.get(
     '/lists',
     pageHandler(adapters, createPageFromParams(
       listsPageParamsCodec,
@@ -325,6 +270,8 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   formSubmissionHandlers.configureRoutes(router, adapters);
 
   authentication.configureRoutes(router, adapters, config);
+
+  group.configureRoutes(router, adapters);
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
