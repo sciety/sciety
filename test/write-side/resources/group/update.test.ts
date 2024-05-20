@@ -16,6 +16,7 @@ describe('update', () => {
         ['shortDescription'],
         ['name'],
         ['largeLogoPath'],
+        ['avatarPath'],
       ])('%s', (attributeToBeChanged) => {
         const newValue = arbitraryString();
 
@@ -85,6 +86,7 @@ describe('update', () => {
         ['name' as const, 'largeLogoPath' as const],
         ['shortDescription' as const, 'name' as const],
         ['largeLogoPath' as const, 'shortDescription' as const],
+        ['avatarPath' as const, 'shortDescription' as const],
       ])('new %s, existing %s', (attributeToBeChanged, unchangedAttribute) => {
         const newValue = arbitraryString();
 
@@ -155,6 +157,7 @@ describe('update', () => {
       describe.each([
         ['shortDescription' as const],
         ['name' as const],
+        ['avatarPath' as const],
       ])('%s', (attributeToBeChanged) => {
         describe('and this group\'s details have never been updated', () => {
           const eventsRaised = pipe(
