@@ -169,9 +169,9 @@ download-exploratory-test-from-prod:
 		-- \
 		bash -c 'yum install --assumeyes --quiet postgresql \
 			&& psql -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > ./events.csv \
-			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/events.csv" \
+			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/exploratory-test-from-prod.csv" \
 		'
-	aws s3 cp "s3://sciety-data-extractions/events.csv" "./data/exploratory-test-from-prod.csv"
+	aws s3 cp "s3://sciety-data-extractions/exploratory-test-from-prod.csv" "./data/exploratory-test-from-prod.csv"
 
 download-exploratory-test-from-staging:
 	kubectl run --rm --attach ship-events \
@@ -187,9 +187,9 @@ download-exploratory-test-from-staging:
 		-- \
 		bash -c 'yum install --assumeyes --quiet postgresql \
 			&& psql -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > ./events.csv \
-			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/staging-events.csv" \
+			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/exploratory-test-from-staging.csv" \
 		'
-	aws s3 cp "s3://sciety-data-extractions/staging-events.csv" "./data/exploratory-test-from-staging.csv"
+	aws s3 cp "s3://sciety-data-extractions/exploratory-test-from-staging.csv" "./data/exploratory-test-from-staging.csv"
 
 exploratory-test-from-prod: node_modules clean-db build
 	@if ! [[ -f 'data/exploratory-test-from-prod.csv' ]]; then \
