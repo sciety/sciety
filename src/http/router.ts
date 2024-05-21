@@ -30,12 +30,11 @@ import { legalPage } from '../read-side/html-pages/legal-page';
 import { page as listPage, paramsCodec as listPageParams } from '../read-side/html-pages/list-page';
 import { listsPage, paramsCodec as listsPageParamsCodec } from '../read-side/html-pages/lists-page';
 import { myFeedPage, myFeedParams } from '../read-side/html-pages/my-feed-page';
-import { paperActivityPage } from '../read-side/html-pages/paper-activity-page';
+import { paperActivityPage, paperActivityPageLayout } from '../read-side/html-pages/paper-activity-page';
 import { saveArticleFormPage } from '../read-side/html-pages/save-article-form-page';
 import { scietyFeedCodec, scietyFeedPage } from '../read-side/html-pages/sciety-feed-page';
 import { searchPage } from '../read-side/html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../read-side/html-pages/search-results-page';
-import { fullWidthPageLayout } from '../read-side/html-pages/shared-components/full-width-page-layout';
 import { referencePage, sharedComponentsPage, indexPage } from '../read-side/html-pages/style-guide-page';
 import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
@@ -176,7 +175,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     paperActivityPagePathSpecification,
-    pageHandler(adapters, paperActivityPage(adapters), fullWidthPageLayout),
+    pageHandler(adapters, paperActivityPage(adapters), paperActivityPageLayout),
   );
 
   router.get(
