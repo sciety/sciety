@@ -207,7 +207,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
     pageHandler(adapters, createPageFromParams(
       listPageParams,
       listPage(adapters),
-    ), fullWidthPageLayout),
+    )),
   );
 
   router.get(
