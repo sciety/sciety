@@ -1,16 +1,6 @@
 @use 'settings';
 @use 'functions';
 @use 'breakpoints';
-@use 'layout';
-
-.standard-page-container {
-  @include layout.page-container();
-}
-
-.page-content {
-  display: flex;
-  padding-bottom: 3rem;
-}
 
 .sciety-grid-two-columns {
   display: grid;
