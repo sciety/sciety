@@ -1,3 +1,6 @@
+@use 'settings';
+@use 'functions';
+@use 'breakpoints';
 @use 'layout';
 
 .standard-page-container {
@@ -7,4 +10,30 @@
 .page-content {
   display: flex;
   padding-bottom: 3rem;
+}
+
+.sciety-grid-two-columns {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-column-gap: functions.px-to-rem(settings.$default-gutter);
+  grid-auto-rows: min-content;
+  grid-auto-flow: column;
+
+  width: 100%;
+  max-width: functions.px-to-rem(settings.$max-site-width);
+
+  flex-grow: 1;
+
+  @include breakpoints.not-narrow {
+    margin: 0 auto;
+    padding: 0 functions.px-to-rem(settings.$default-gutter);
+  }
+
+  > * {
+    grid-column: 1 / -1;
+
+    @include breakpoints.two-column-display {
+      grid-column: 1 / 9;
+    }
+  }
 }
