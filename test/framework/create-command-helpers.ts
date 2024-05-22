@@ -20,6 +20,7 @@ import { abortTest } from '../abort-test';
 export type CommandHelpers = {
   addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
   addGroup: (command: AddGroupCommand) => Promise<unknown>,
+  assignUserAsGroupAdmin: (command: unknown) => Promise<unknown>,
   createAnnotation: (command: AnnotateArticleInListCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
@@ -50,6 +51,7 @@ export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['command
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   ),
   addGroup: invoke(commandHandlers.addGroup, 'addGroup'),
+  assignUserAsGroupAdmin: async () => undefined,
   createAnnotation: invoke(commandHandlers.createAnnotation, 'createAnnotation'),
   createList: invoke(commandHandlers.createList, 'createList'),
   createUserAccount: invoke(commandHandlers.createUserAccount, 'createUserAccount'),

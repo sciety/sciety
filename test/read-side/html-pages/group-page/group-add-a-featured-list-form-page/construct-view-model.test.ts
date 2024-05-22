@@ -7,6 +7,7 @@ import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryWord } from '../../../../helpers';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryAssignUserAsGroupAdminCommand } from '../../../../write-side/commands/assign-user-as-group-admin-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -25,11 +26,19 @@ describe('construct-view-model', () => {
     });
 
     describe('and the user is an admin of this group', () => {
-      beforeEach(() => {
+      const userId = arbitraryUserId();
+
+      beforeEach(async () => {
+        const assignUserAsGroupAdminCommand = {
+          ...arbitraryAssignUserAsGroupAdminCommand(),
+          userId,
+          groupId: addGroupCommand.groupId,
+        };
+        await framework.commandHelpers.assignUserAsGroupAdmin(assignUserAsGroupAdminCommand);
         result = pipe(
           {
             slug: groupSlug,
-            user: O.some({ id: arbitraryUserId() }),
+            user: O.some({ id: userId }),
           },
           constructViewModel(framework.dependenciesForViews),
         );
