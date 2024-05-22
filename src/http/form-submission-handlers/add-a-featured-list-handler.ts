@@ -7,7 +7,7 @@ import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { isUserAdminOfGroup } from './is-user-admin-of-group';
+import { isUserAdminOfGroup } from '../../read-models/group-authorisations';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
