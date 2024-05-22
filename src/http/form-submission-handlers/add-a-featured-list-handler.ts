@@ -7,7 +7,7 @@ import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { isUserAdminOfThisGroup } from './is-user-admin-of-this-group';
+import { isUserAdminOfGroup } from './is-user-admin-of-group';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
@@ -38,7 +38,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
   if (E.isLeft(formBody)) {
     return;
   }
-  if (!isUserAdminOfThisGroup(loggedInUser.value.id, formBody.right.forGroup)) {
+  if (!isUserAdminOfGroup(loggedInUser.value.id, formBody.right.forGroup)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
   }
