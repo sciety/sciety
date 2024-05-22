@@ -15,6 +15,7 @@ import {
   UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
+import { Dependencies as DependenciesForExecuteResourceAction } from '../../src/write-side/resources/execute-resource-action';
 import { abortTest } from '../abort-test';
 
 export type CommandHelpers = {
@@ -42,7 +43,10 @@ const invoke = <C extends GenericCommand>(
     TE.getOrElse(abortTest(`${name} helper`)),
   )();
 
-export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
+export const createCommandHelpers = (
+  dependencies: DependenciesForExecuteResourceAction,
+  commandHandlers: ReadAndWriteSides['commandHandlers'],
+): CommandHelpers => ({
   addArticleToList: async (articleId, listId) => pipe(
     {
       articleId,

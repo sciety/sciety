@@ -26,7 +26,7 @@ export const createTestFramework = (): TestFramework => {
   return {
     ...framework,
     abortTest,
-    commandHelpers: createCommandHelpers(framework.commandHandlers),
+    commandHelpers: createCommandHelpers(dependenciesForExecuteResourceAction, framework.commandHandlers),
     happyPathThirdParties,
     dependenciesForViews: {
       ...framework.queries,
