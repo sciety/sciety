@@ -6,7 +6,7 @@ import { Logger } from '../../shared-ports';
 import { CommandHandler, GenericCommand } from '../../types/command-handler';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 
-type Dependencies = DependenciesForCommands & { logger: Logger };
+export type Dependencies = DependenciesForCommands & { logger: Logger };
 
 export const executeResourceAction = <C extends GenericCommand>(
   dependencies: Dependencies,
