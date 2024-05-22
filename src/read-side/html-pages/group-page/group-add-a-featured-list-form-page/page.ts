@@ -12,7 +12,7 @@ import { HtmlPage } from '../../html-page';
 export const page = (
   dependencies: Dependencies,
 ) => (params: Params): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
-  params.slug,
+  params,
   constructViewModel(dependencies),
   E.bimap(
     renderErrorPage,

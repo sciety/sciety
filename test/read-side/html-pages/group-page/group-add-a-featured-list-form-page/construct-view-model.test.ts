@@ -23,7 +23,7 @@ describe('construct-view-model', () => {
 
     describe('and the user is an admin of this group', () => {
       beforeEach(() => {
-        result = constructViewModel(framework.dependenciesForViews)(groupSlug);
+        result = constructViewModel(framework.dependenciesForViews)({ slug: groupSlug });
       });
 
       it('returns on the right', () => {
@@ -39,7 +39,7 @@ describe('construct-view-model', () => {
   describe('when the group can not be found', () => {
     beforeEach(() => {
       const groupSlug = arbitraryWord();
-      result = constructViewModel(framework.dependenciesForViews)(groupSlug);
+      result = constructViewModel(framework.dependenciesForViews)({ slug: groupSlug });
     });
 
     it('returns on the left', () => {
