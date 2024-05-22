@@ -15,9 +15,7 @@ import {
 import { addArticleToListCommandHandler } from '../../src/write-side/command-handlers/add-article-to-list-command-handler';
 import { followCommandHandler } from '../../src/write-side/command-handlers/follow-command-handler';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers/unfollow-command-handler';
-import {
-  AddGroupCommand, AnnotateArticleInListCommand, UpdateEvaluationCommand, UpdateGroupDetailsCommand,
-} from '../../src/write-side/commands';
+import { AnnotateArticleInListCommand, UpdateEvaluationCommand, UpdateGroupDetailsCommand } from '../../src/write-side/commands';
 import * as evaluationResource from '../../src/write-side/resources/evaluation';
 import * as groupResource from '../../src/write-side/resources/group';
 import * as listResource from '../../src/write-side/resources/list';
@@ -27,14 +25,6 @@ type EventStore = {
   getAllEvents: GetAllEvents,
   commitEvents: CommitEvents,
 };
-
-type AddGroup = (adapters: EventStore) => CommandHandler<AddGroupCommand>;
-
-const addGroup: AddGroup = (adapters) => (command) => pipe(
-  adapters.getAllEvents,
-  T.map(groupResource.create(command)),
-  TE.chainW(adapters.commitEvents),
-);
 
 const updateEvaluation = (adapters: EventStore): CommandHandler<UpdateEvaluationCommand> => (command) => pipe(
   adapters.getAllEvents,
@@ -60,7 +50,6 @@ const createAnnotationCommandHandler: CreateAnnotation = (adapters) => (command)
 
 const instantiateCommandHandlers = (eventStore: EventStore, queries: Queries) => ({
   addArticleToList: addArticleToListCommandHandler(eventStore),
-  addGroup: addGroup(eventStore),
   createAnnotation: createAnnotationCommandHandler(eventStore),
   createList: createListCommandHandler(eventStore),
   createUserAccount: createUserAccountCommandHandler(eventStore),
