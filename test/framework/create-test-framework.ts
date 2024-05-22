@@ -17,7 +17,6 @@ export type TestFramework = ReadAndWriteSides & {
 export const createTestFramework = (): TestFramework => {
   const framework = createReadAndWriteSides();
   const happyPathThirdParties = createHappyPathThirdPartyAdapters();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dependenciesForExecuteResourceAction: DependenciesForExecuteResourceAction = {
     getAllEvents: framework.getAllEvents,
     commitEvents: framework.commitEvents,

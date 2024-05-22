@@ -15,7 +15,11 @@ import {
   UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
-import { Dependencies as DependenciesForExecuteResourceAction } from '../../src/write-side/resources/execute-resource-action';
+import {
+  Dependencies as DependenciesForExecuteResourceAction,
+  executeResourceAction,
+} from '../../src/write-side/resources/execute-resource-action';
+import * as group from '../../src/write-side/resources/group';
 import { abortTest } from '../abort-test';
 
 export type CommandHelpers = {
@@ -54,7 +58,7 @@ export const createCommandHelpers = (
     },
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   ),
-  addGroup: invoke(commandHandlers.addGroup, 'addGroup'),
+  addGroup: invoke(executeResourceAction(dependencies, group.create), 'addGroup'),
   assignUserAsGroupAdmin: async () => undefined,
   createAnnotation: invoke(commandHandlers.createAnnotation, 'createAnnotation'),
   createList: invoke(commandHandlers.createList, 'createList'),
