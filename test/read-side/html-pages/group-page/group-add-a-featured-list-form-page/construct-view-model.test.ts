@@ -3,6 +3,8 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/group-page/group-add-a-featured-list-form-page/construct-view-model';
 import { ViewModel } from '../../../../../src/read-side/html-pages/group-page/group-add-a-featured-list-form-page/view-model';
+import { GroupId } from '../../../../../src/types/group-id';
+import { UserId } from '../../../../../src/types/user-id';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryWord } from '../../../../helpers';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
@@ -42,25 +44,31 @@ describe('construct-view-model', () => {
     });
 
     describe('and the user is an admin of this group', () => {
-      const userId = arbitraryUserId();
+      const hardcodedUserId = 'auth0|650a91161c07d3acf5ff7da5' as UserId;
+      const addHardcodedGroupCommand = {
+        ...arbitraryAddGroupCommand(),
+        groupId: 'd6e1a913-76f8-40dc-9074-8eac033e1bc8' as GroupId,
+      };
+      const hardcodedGroupSlug = addHardcodedGroupCommand.slug;
 
       beforeEach(async () => {
+        await framework.commandHelpers.addGroup(addHardcodedGroupCommand);
         const assignUserAsGroupAdminCommand = {
           ...arbitraryAssignUserAsGroupAdminCommand(),
-          userId,
+          userId: hardcodedUserId,
           groupId: addGroupCommand.groupId,
         };
         await framework.commandHelpers.assignUserAsGroupAdmin(assignUserAsGroupAdminCommand);
         result = pipe(
           {
-            slug: groupSlug,
-            user: O.some({ id: userId }),
+            slug: hardcodedGroupSlug,
+            user: O.some({ id: hardcodedUserId }),
           },
           constructViewModel(framework.dependenciesForViews),
         );
       });
 
-      it.failing('returns on the right', () => {
+      it('returns on the right', () => {
         expect(E.isRight(result)).toBe(true);
       });
     });
