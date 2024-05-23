@@ -69,3 +69,50 @@ export const pageHandler = (
 
   await next();
 };
+
+export const pageHandlerWithLoggedInUser = (
+  dependencies: GetLoggedInScietyUserDependencies,
+  handler: ConstructPage,
+  pageLayout: PageLayout = standardPageLayout,
+): Middleware => async (context, next) => {
+  const loggedInUser = getLoggedInScietyUser(dependencies, context);
+  if (O.isNone(loggedInUser)) {
+    context.redirect('/log-in');
+    return;
+  }
+  const input = await pipe(
+    {
+      ...context.params,
+      ...context.query,
+      ...context.state,
+    },
+    (partialParams) => pipe(
+      getLoggedInScietyUser(dependencies, context),
+      O.matchW(
+        () => ({
+          ...partialParams,
+          user: undefined,
+        }),
+        (user) => ({
+          ...partialParams,
+          user,
+        }),
+      ),
+    ),
+    handler,
+  )();
+  if (E.isRight(input)) {
+    constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.right(input.right));
+  } else {
+    switch (input.left.tag) {
+      case 'error-page-body-view-model':
+        constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.left(input.left));
+        break;
+      case 'redirect-target':
+        sendRedirect(context, input.left);
+        break;
+    }
+  }
+
+  await next();
+};

@@ -8,8 +8,7 @@ import * as GFP from '../../read-side/html-pages/group-page/group-followers-page
 import * as GHP from '../../read-side/html-pages/group-page/group-home-page';
 import * as GLP from '../../read-side/html-pages/group-page/group-lists-page';
 import { groupPagePathSpecification, groupSubPagePathSpecification } from '../../read-side/paths';
-import { pageHandler } from '../page-handler';
-import { requireLoggedInUser } from '../require-logged-in-user';
+import { pageHandler, pageHandlerWithLoggedInUser } from '../page-handler';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
   router.get(
@@ -56,7 +55,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
 
   router.get(
     groupSubPagePathSpecification('add-a-featured-list'),
-    requireLoggedInUser(adapters),
-    pageHandler(adapters, addAFeaturedListFormPage(adapters)),
+    pageHandlerWithLoggedInUser(adapters, addAFeaturedListFormPage(adapters)),
   );
 };
