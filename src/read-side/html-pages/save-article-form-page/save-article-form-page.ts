@@ -11,11 +11,14 @@ import { toErrorPageBodyViewModel } from '../../../types/error-page-body-view-mo
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { ConstructPage } from '../construct-page';
 
+const toUnavailable = () => toErrorPageBodyViewModel({
+  type: DE.unavailable,
+  message: toHtmlFragment('Sorry, something went wrong. Please try again later.'),
+});
+
 export const saveArticleFormPage = (
   dependencies: Dependencies,
-): ConstructPage => (
-  input,
-) => pipe(
+): ConstructPage => (input) => pipe(
   input,
   paramsCodec.decode,
   E.mapLeft((errors) => {
@@ -25,10 +28,7 @@ export const saveArticleFormPage = (
   TE.fromEither,
   TE.chainW(constructViewModel(dependencies)),
   TE.bimap(
-    () => toErrorPageBodyViewModel({
-      type: DE.unavailable,
-      message: toHtmlFragment('Sorry, something went wrong. Please try again later.'),
-    }),
+    toUnavailable,
     renderAsHtml,
   ),
 );
