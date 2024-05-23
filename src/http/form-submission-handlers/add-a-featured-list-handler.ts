@@ -7,7 +7,7 @@ import * as tt from 'io-ts-types';
 import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { isUserAdminOfGroup } from '../../read-models/group-authorisations';
+import { Queries } from '../../read-models';
 import { promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
@@ -22,6 +22,7 @@ const formBodyCodec = t.intersection([
 ]);
 
 type Dependencies = EnsureUserIsLoggedInDependencies
+& Queries
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
 
 export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware => async (context) => {
@@ -38,7 +39,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
   if (E.isLeft(formBody)) {
     return;
   }
-  if (!isUserAdminOfGroup({})(loggedInUser.value.id, formBody.right.forGroup)) {
+  if (!dependencies.isUserAdminOfGroup(loggedInUser.value.id, formBody.right.forGroup)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
   }
