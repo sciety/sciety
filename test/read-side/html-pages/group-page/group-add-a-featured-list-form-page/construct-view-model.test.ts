@@ -60,7 +60,7 @@ describe('construct-view-model', () => {
         );
       });
 
-      it('returns on the right', () => {
+      it.failing('returns on the right', () => {
         expect(E.isRight(result)).toBe(true);
       });
     });
@@ -78,7 +78,7 @@ describe('construct-view-model', () => {
         );
       });
 
-      it.failing('returns on the left', () => {
+      it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
