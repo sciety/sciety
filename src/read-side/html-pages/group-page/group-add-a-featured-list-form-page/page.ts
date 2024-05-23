@@ -6,8 +6,8 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
-import { toNotFound } from '../../../../http/create-page-from-params';
 import { ConstructPage } from '../../construct-page';
+import { toNotFound } from '../../create-page-from-params';
 
 export const page = (
   dependencies: Dependencies,
