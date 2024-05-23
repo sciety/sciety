@@ -9,7 +9,12 @@ import { toHtmlFragment } from '../../types/html-fragment';
 
 export const toNotFound = (): ErrorPageBodyViewModel => toErrorPageBodyViewModel({
   type: DE.notFound,
-  message: toHtmlFragment('Page not found'),
+  message: toHtmlFragment('Page not found.'),
+});
+
+export const toUnavailable = (): ErrorPageBodyViewModel => toErrorPageBodyViewModel({
+  type: DE.unavailable,
+  message: toHtmlFragment('Sorry, something went wrong. Please try again later.'),
 });
 
 type GeneratePage<P> = (params: P) => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;

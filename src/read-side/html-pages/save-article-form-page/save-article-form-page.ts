@@ -6,15 +6,8 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
-import * as DE from '../../../types/data-error';
-import { toErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
-import { toHtmlFragment } from '../../../types/html-fragment';
 import { ConstructPage } from '../construct-page';
-
-const toUnavailable = () => toErrorPageBodyViewModel({
-  type: DE.unavailable,
-  message: toHtmlFragment('Sorry, something went wrong. Please try again later.'),
-});
+import { toUnavailable } from '../create-page-from-params';
 
 export const saveArticleFormPage = (
   dependencies: Dependencies,

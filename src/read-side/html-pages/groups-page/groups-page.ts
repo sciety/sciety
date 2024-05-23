@@ -4,16 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
 import { renderGroups } from './render-groups';
-import * as DE from '../../../types/data-error';
-import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
-import { toHtmlFragment } from '../../../types/html-fragment';
+import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { toUnavailable } from '../create-page-from-params';
 import { HtmlPage, NotHtml, toHtmlPage } from '../html-page';
 import { renderGroupCard } from '../shared-components/group-card';
-
-const renderErrorPage = (error: DE.DataError): ErrorPageBodyViewModel => toErrorPageBodyViewModel({
-  type: error,
-  message: toHtmlFragment('We\'re having trouble accessing search right now, please try again later.'),
-});
 
 type GroupsPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
@@ -22,7 +16,7 @@ export const groupsPage = (dependencies: Dependencies): GroupsPage => pipe(
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderGroups),
   TE.bimap(
-    renderErrorPage,
+    toUnavailable,
     (content) => toHtmlPage({
       title: 'Groups',
       content,
