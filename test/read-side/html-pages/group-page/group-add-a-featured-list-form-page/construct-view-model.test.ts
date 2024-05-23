@@ -66,7 +66,21 @@ describe('construct-view-model', () => {
     });
 
     describe('and the user is not an admin of this group', () => {
-      it.todo('returns on the left');
+      const userId = arbitraryUserId();
+
+      beforeEach(async () => {
+        result = pipe(
+          {
+            slug: groupSlug,
+            user: O.some({ id: userId }),
+          },
+          constructViewModel(framework.dependenciesForViews),
+        );
+      });
+
+      it.failing('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
     });
   });
 
