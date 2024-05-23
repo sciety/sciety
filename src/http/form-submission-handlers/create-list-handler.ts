@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
@@ -8,7 +7,7 @@ import { CreateList, Logger } from '../../shared-ports';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { CreateListCommand } from '../../write-side/commands';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 
 type Dependencies = GetLoggedInScietyUserDependencies & {
   logger: Logger,
@@ -17,8 +16,7 @@ type Dependencies = GetLoggedInScietyUserDependencies & {
 
 export const createListHandler = (dependencies: Dependencies): Middleware => async (context) => {
   await pipe(
-    getLoggedInScietyUser(dependencies, context),
-    O.map((userDetails) => userDetails.id),
+    getAuthenticatedUserIdFromContext(context),
     E.fromOption(() => ({
       message: 'No authenticated user',
       payload: { formBody: context.request.body },
