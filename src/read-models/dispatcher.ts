@@ -7,6 +7,7 @@ import { evaluatedArticlesLists } from './evaluated-articles-lists';
 import { evaluations } from './evaluations';
 import { followings } from './followings';
 import { groupActivity } from './group-activity';
+import { groupAuthorisations } from './group-authorisations';
 import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { InitialisedReadModel, UnionToIntersection } from './initialised-read-model';
@@ -32,6 +33,7 @@ export const dispatcher = (logger: Logger): Dispatcher => {
     new InitialisedReadModel(evaluatedArticlesLists),
     new InitialisedReadModel(followings),
     new InitialisedReadModel(groupActivity),
+    new InitialisedReadModel(groupAuthorisations),
     new InitialisedReadModel(groups),
     new InitialisedReadModel(idsOfEvalutedArticlesLists),
     new InitialisedReadModel(lists),

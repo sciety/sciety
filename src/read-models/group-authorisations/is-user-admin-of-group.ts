@@ -1,3 +1,4 @@
+import { ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
@@ -9,6 +10,7 @@ const groupAdministratedBy: Record<UserId, string> = {
   ['twitter|380816062' as UserId]: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
 };
 
-export const isUserAdminOfGroup = (userId: UserId, groupId: GroupId): boolean => (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const isUserAdminOfGroup = (readModel: ReadModel) => (userId: UserId, groupId: GroupId): boolean => (
   groupAdministratedBy[userId] === groupId
 );

@@ -38,7 +38,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
   if (E.isLeft(formBody)) {
     return;
   }
-  if (!isUserAdminOfGroup(loggedInUser.value.id, formBody.right.forGroup)) {
+  if (!isUserAdminOfGroup({})(loggedInUser.value.id, formBody.right.forGroup)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
   }
