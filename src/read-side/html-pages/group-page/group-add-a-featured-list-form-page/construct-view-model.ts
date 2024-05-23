@@ -19,14 +19,13 @@ const checkUserIsAdminOfGroup = (dependencies: Dependencies, userId: UserId, gro
   E.map(() => group),
 );
 
-export const constructViewModel = (dependencies: Dependencies) => (params: Params): E.Either<'no-such-group', ViewModel> => pipe(
+export const constructViewModel = (dependencies: Dependencies, userId: UserId) => (params: Params): E.Either<'no-such-group', ViewModel> => pipe(
   {
     group: dependencies.getGroupBySlug(params.slug),
-    user: params.user,
   },
   sequenceS(O.Apply),
   E.fromOption(() => 'no-such-group' as const),
-  E.chainW(({ group, user }) => checkUserIsAdminOfGroup(dependencies, user.id, group)),
+  E.chainW(({ group }) => checkUserIsAdminOfGroup(dependencies, userId, group)),
   E.map((group) => ({
     pageHeading: `Add a featured list for ${group.name}`,
     groupId: group.id,

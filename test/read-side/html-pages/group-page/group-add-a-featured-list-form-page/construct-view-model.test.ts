@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/group-page/group-add-a-featured-list-form-page/construct-view-model';
 import { ViewModel } from '../../../../../src/read-side/html-pages/group-page/group-add-a-featured-list-form-page/view-model';
@@ -27,22 +26,6 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
     });
 
-    describe('and there is no logged in user', () => {
-      beforeEach(async () => {
-        result = pipe(
-          {
-            slug: groupSlug,
-            user: O.none,
-          },
-          constructViewModel(framework.dependenciesForViews),
-        );
-      });
-
-      it('returns on the left', () => {
-        expect(E.isLeft(result)).toBe(true);
-      });
-    });
-
     describe('and the user is an admin of this group', () => {
       const hardcodedUserId = 'auth0|650a91161c07d3acf5ff7da5' as UserId;
       const addHardcodedGroupCommand = {
@@ -62,9 +45,8 @@ describe('construct-view-model', () => {
         result = pipe(
           {
             slug: hardcodedGroupSlug,
-            user: O.some({ id: hardcodedUserId }),
           },
-          constructViewModel(framework.dependenciesForViews),
+          constructViewModel(framework.dependenciesForViews, hardcodedUserId),
         );
       });
 
@@ -80,9 +62,8 @@ describe('construct-view-model', () => {
         result = pipe(
           {
             slug: groupSlug,
-            user: O.some({ id: userId }),
           },
-          constructViewModel(framework.dependenciesForViews),
+          constructViewModel(framework.dependenciesForViews, userId),
         );
       });
 
@@ -98,9 +79,8 @@ describe('construct-view-model', () => {
       result = pipe(
         {
           slug: groupSlug,
-          user: O.some({ id: arbitraryUserId() }),
         },
-        constructViewModel(framework.dependenciesForViews),
+        constructViewModel(framework.dependenciesForViews, arbitraryUserId()),
       );
     });
 

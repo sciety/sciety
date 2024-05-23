@@ -11,7 +11,6 @@ import { toNotFound } from '../../create-page-from-params';
 
 export const page = (
   dependencies: Dependencies,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 ): ConstructLoggedInPage => (userId) => (input) => pipe(
   input,
   paramsCodec.decode,
@@ -19,7 +18,7 @@ export const page = (
     dependencies.logger('warn', 'group-add-a-featured-list-form-page params codec failed', { errors: formatValidationErrors(errors) });
     return errors;
   }),
-  E.chainW(constructViewModel(dependencies)),
+  E.chainW(constructViewModel(dependencies, userId)),
   E.bimap(
     toNotFound,
     renderAsHtml,
