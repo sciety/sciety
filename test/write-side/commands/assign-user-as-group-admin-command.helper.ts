@@ -1,8 +1,8 @@
+import { AssignUserAsGroupAdminCommand } from '../../../src/write-side/commands';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const arbitraryAssignUserAsGroupAdminCommand = () => ({
+export const arbitraryAssignUserAsGroupAdminCommand = (): AssignUserAsGroupAdminCommand => ({
   userId: arbitraryUserId(),
   groupId: arbitraryGroupId(),
 });
