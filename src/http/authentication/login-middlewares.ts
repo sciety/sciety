@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { Middleware, ParameterizedContext } from 'koa';
 import koaPassport from 'koa-passport';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
 
 const oAuthScope = 'openid profile';
@@ -69,7 +69,8 @@ export const completeAuthenticationJourney = (
   dependencies: GetLoggedInScietyUserDependencies,
 ): Middleware => async (context, next) => {
   pipe(
-    getLoggedInScietyUser(dependencies, context),
+    getAuthenticatedUserIdFromContext(context),
+    O.chain((id) => dependencies.lookupUser(id)),
     O.match(
       () => context.redirect('/create-account-form'),
       () => redirectToAuthenticationDestination(context),

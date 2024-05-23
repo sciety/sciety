@@ -13,12 +13,12 @@ import * as GroupId from '../../types/group-id';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { followCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
 export const groupProperty = 'groupid';
 
-type Dependencies = GetLoggedInScietyUserDependencies & DependenciesForCommands & SendErrorHtmlResponseDependencies & {
+type Dependencies = DependenciesForCommands & SendErrorHtmlResponseDependencies & {
   logger: Logger,
   getGroup: Queries['getGroup'],
 };
@@ -51,16 +51,16 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
         return T.of(undefined);
       },
       (params) => pipe(
-        getLoggedInScietyUser(dependencies, context),
+        getAuthenticatedUserIdFromContext(context),
         O.match(
           () => {
             context.redirect('/log-in');
             return T.of(undefined);
           },
-          (userDetails) => {
+          (userId) => {
             context.redirect('back');
             return pipe(
-              followCommandHandler(dependencies)({ userId: userDetails.id, groupId: params.groupId }),
+              followCommandHandler(dependencies)({ userId, groupId: params.groupId }),
               T.chain(() => next),
             );
           },
