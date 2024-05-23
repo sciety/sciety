@@ -8,7 +8,7 @@ import { detectClientClassification } from './detect-client-classification';
 import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
 import { constructHtmlResponse } from '../read-side/html-pages/construct-html-response';
-import { ConstructPage } from '../read-side/html-pages/construct-page';
+import { ConstructLoggedInPage, ConstructPage } from '../read-side/html-pages/construct-page';
 import { HtmlPage } from '../read-side/html-pages/html-page';
 import { PageLayout } from '../read-side/html-pages/page-layout';
 import { standardPageLayout } from '../read-side/html-pages/shared-components/standard-page-layout';
@@ -72,7 +72,7 @@ export const pageHandler = (
 
 export const pageHandlerWithLoggedInUser = (
   dependencies: GetLoggedInScietyUserDependencies,
-  handler: ConstructPage,
+  handler: ConstructLoggedInPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {
   const loggedInUser = getLoggedInScietyUser(dependencies, context);
@@ -87,19 +87,13 @@ export const pageHandlerWithLoggedInUser = (
       ...context.state,
     },
     (partialParams) => pipe(
-      getLoggedInScietyUser(dependencies, context),
-      O.matchW(
-        () => ({
-          ...partialParams,
-          user: undefined,
-        }),
-        (user) => ({
-          ...partialParams,
-          user,
-        }),
-      ),
+      loggedInUser.value,
+      (user) => ({
+        ...partialParams,
+        user,
+      }),
     ),
-    handler,
+    handler(loggedInUser.value.id),
   )();
   if (E.isRight(input)) {
     constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.right(input.right));

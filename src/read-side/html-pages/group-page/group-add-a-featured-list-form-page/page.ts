@@ -6,12 +6,13 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
-import { ConstructPage } from '../../construct-page';
+import { ConstructLoggedInPage } from '../../construct-page';
 import { toNotFound } from '../../create-page-from-params';
 
 export const page = (
   dependencies: Dependencies,
-): ConstructPage => (input) => pipe(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+): ConstructLoggedInPage => (userId) => (input) => pipe(
   input,
   paramsCodec.decode,
   E.mapLeft((errors) => {
