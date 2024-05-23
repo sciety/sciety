@@ -7,9 +7,9 @@ import { Logger } from '../../shared-ports';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { unfollowCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
-type Dependencies = GetLoggedInScietyUserDependencies & DependenciesForCommands & {
+type Dependencies = DependenciesForCommands & {
   logger: Logger,
 };
 
@@ -28,17 +28,17 @@ export const unfollowHandler = (dependencies: Dependencies): Middleware => async
     O.match(
       () => context.throw(StatusCodes.BAD_REQUEST),
       async (groupId) => pipe(
-        getLoggedInScietyUser(dependencies, context),
+        getAuthenticatedUserIdFromContext(context),
         O.match(
           () => {
             dependencies.logger('error', 'Logged in user not found', { context });
             context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
           },
-          async (userDetails) => {
+          async (userId) => {
             context.redirect('back');
             await pipe(
               {
-                userId: userDetails.id,
+                userId,
                 groupId,
               },
               unfollowCommandHandler(dependencies),
