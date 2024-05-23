@@ -25,6 +25,22 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
     });
 
+    describe('and there is no logged in user', () => {
+      beforeEach(async () => {
+        result = pipe(
+          {
+            slug: groupSlug,
+            user: O.none,
+          },
+          constructViewModel(framework.dependenciesForViews),
+        );
+      });
+
+      it.failing('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
+    });
+
     describe('and the user is an admin of this group', () => {
       const userId = arbitraryUserId();
 
