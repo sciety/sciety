@@ -2,7 +2,7 @@ import Router from '@koa/router';
 import { StatusCodes } from 'http-status-codes';
 import { CollectedPorts } from '../../infrastructure';
 import * as GAP from '../../read-side/html-pages/group-page/group-about-page';
-import { addAFeaturedListFormPage, addAFeaturedListFormPageParamsCodec } from '../../read-side/html-pages/group-page/group-add-a-featured-list-form-page';
+import { addAFeaturedListFormPage } from '../../read-side/html-pages/group-page/group-add-a-featured-list-form-page';
 import * as GFP from '../../read-side/html-pages/group-page/group-followers-page';
 import * as GHP from '../../read-side/html-pages/group-page/group-home-page';
 import * as GLP from '../../read-side/html-pages/group-page/group-lists-page';
@@ -57,9 +57,6 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   router.get(
     groupSubPagePathSpecification('add-a-featured-list'),
     requireLoggedInUser(adapters),
-    pageHandler(adapters, createPageFromParams(
-      addAFeaturedListFormPageParamsCodec,
-      addAFeaturedListFormPage(adapters),
-    )),
+    pageHandler(adapters, addAFeaturedListFormPage(adapters)),
   );
 };

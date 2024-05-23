@@ -1,3 +1,3 @@
-import { Queries } from '../../../../read-models';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 
-export type Dependencies = Queries;
+export type Dependencies = DependenciesForViews;
