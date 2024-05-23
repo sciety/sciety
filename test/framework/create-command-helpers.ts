@@ -10,6 +10,7 @@ import { UserId } from '../../src/types/user-id';
 import {
   AddGroupCommand,
   AnnotateArticleInListCommand,
+  AssignUserAsGroupAdminCommand,
   CreateUserAccountCommand,
   RecordEvaluationPublicationCommand,
   UpdateEvaluationCommand,
@@ -20,12 +21,13 @@ import {
   executeResourceAction,
 } from '../../src/write-side/resources/execute-resource-action';
 import * as group from '../../src/write-side/resources/group';
+import * as groupAuthorisation from '../../src/write-side/resources/group-authorisation';
 import { abortTest } from '../abort-test';
 
 export type CommandHelpers = {
   addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
   addGroup: (command: AddGroupCommand) => Promise<unknown>,
-  assignUserAsGroupAdmin: (command: unknown) => Promise<unknown>,
+  assignUserAsGroupAdmin: (command: AssignUserAsGroupAdminCommand) => Promise<unknown>,
   createAnnotation: (command: AnnotateArticleInListCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
@@ -59,7 +61,7 @@ export const createCommandHelpers = (
     invoke(commandHandlers.addArticleToList, 'addArticleToList'),
   ),
   addGroup: invoke(executeResourceAction(dependencies, group.create), 'addGroup'),
-  assignUserAsGroupAdmin: async () => undefined,
+  assignUserAsGroupAdmin: invoke(executeResourceAction(dependencies, groupAuthorisation.create), 'assignUserAsGroupAdmin'),
   createAnnotation: invoke(commandHandlers.createAnnotation, 'createAnnotation'),
   createList: invoke(commandHandlers.createList, 'createList'),
   createUserAccount: invoke(commandHandlers.createUserAccount, 'createUserAccount'),
