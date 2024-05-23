@@ -80,30 +80,22 @@ export const pageHandlerWithLoggedInUser = (
     context.redirect('/log-in');
     return;
   }
-  const input = await pipe(
+  const result = await pipe(
     {
       ...context.params,
       ...context.query,
-      ...context.state,
     },
-    (partialParams) => pipe(
-      loggedInUser.value,
-      (user) => ({
-        ...partialParams,
-        user,
-      }),
-    ),
     handler(loggedInUser.value.id),
   )();
-  if (E.isRight(input)) {
-    constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.right(input.right));
+  if (E.isRight(result)) {
+    constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.right(result.right));
   } else {
-    switch (input.left.tag) {
+    switch (result.left.tag) {
       case 'error-page-body-view-model':
-        constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.left(input.left));
+        constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.left(result.left));
         break;
       case 'redirect-target':
-        sendRedirect(context, input.left);
+        sendRedirect(context, result.left);
         break;
     }
   }
