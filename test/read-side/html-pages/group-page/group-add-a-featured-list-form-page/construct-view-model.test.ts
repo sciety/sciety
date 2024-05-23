@@ -36,7 +36,7 @@ describe('construct-view-model', () => {
         );
       });
 
-      it.failing('returns on the left', () => {
+      it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
