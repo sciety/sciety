@@ -8,6 +8,7 @@ export type ConstructPage = (
   params: Record<string, unknown>,
 ) => TE.TaskEither<ErrorPageBodyViewModel | RedirectTarget, HtmlPage>;
 
-export type ConstructLoggedInPage = (userId: UserId) => (
+export type ConstructLoggedInPage = (
   params: Record<string, unknown>,
+  userId: UserId,
 ) => TE.TaskEither<ErrorPageBodyViewModel | RedirectTarget, HtmlPage>;

@@ -90,12 +90,12 @@ export const pageHandlerWithLoggedInUser = (
     context.redirect('/log-in');
     return;
   }
-  const result = await pipe(
+  const result = await handler(
     {
       ...context.params,
       ...context.query,
     },
-    handler(loggedInUser.value.id),
+    loggedInUser.value.id,
   )();
   sendHtmlResponseOrRedirect(dependencies, context, pageLayout, result);
 
