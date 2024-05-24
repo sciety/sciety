@@ -1,5 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/group-authorisations/handle-event';
 import { isUserAdminOfGroup } from '../../../src/read-models/group-authorisations/is-user-admin-of-group';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -21,7 +22,22 @@ describe('is-user-admin-of-group', () => {
   });
 
   describe('when a user has been assigned as an admin of a group', () => {
-    it.todo('returns true');
+    const userId = arbitraryUserId();
+    const groupId = arbitraryGroupId();
+    const readModel = pipe(
+      [
+        constructEvent('UserAssignedAsAdminOfGroup')({
+          userId,
+          groupId,
+        }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = isUserAdminOfGroup(readModel)(userId, groupId);
+
+    it.failing('returns true', () => {
+      expect(result).toBe(true);
+    });
   });
 
   describe('when multiple users have been assigned as admins of a group', () => {
