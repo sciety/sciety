@@ -69,7 +69,30 @@ describe('is-user-admin-of-group', () => {
   });
 
   describe('when the same user has been assigned as admin to multiple groups', () => {
-    it.todo('returns true for each of these groups');
+    const userId = arbitraryUserId();
+    const groupId1 = arbitraryGroupId();
+    const groupId2 = arbitraryGroupId();
+
+    const readModel = pipe(
+      [
+        constructEvent('UserAssignedAsAdminOfGroup')({
+          userId,
+          groupId: groupId1,
+        }),
+        constructEvent('UserAssignedAsAdminOfGroup')({
+          userId,
+          groupId: groupId2,
+        }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result1 = isUserAdminOfGroup(readModel)(userId, groupId1);
+    const result2 = isUserAdminOfGroup(readModel)(userId, groupId2);
+
+    it.failing('returns true for each of these groups', () => {
+      expect(result1).toBe(true);
+      expect(result2).toBe(true);
+    });
 
     it.todo('returns false for a different group');
   });
