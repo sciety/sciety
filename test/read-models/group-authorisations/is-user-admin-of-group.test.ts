@@ -35,7 +35,7 @@ describe('is-user-admin-of-group', () => {
     );
     const result = isUserAdminOfGroup(readModel)(userId, groupId);
 
-    it.failing('returns true', () => {
+    it('returns true', () => {
       expect(result).toBe(true);
     });
   });

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { DomainEvent } from '../../domain-events';
+import { DomainEvent, isEventOfType } from '../../domain-events';
 import { UserId } from '../../types/user-id';
 
 export type ReadModel = Record<UserId, string>;
@@ -12,5 +12,9 @@ export const initialState = (): ReadModel => ({
   ['twitter|380816062' as UserId]: 'b560187e-f2fb-4ff9-a861-a204f3fc0fb0',
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => readmodel;
+export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
+  if (isEventOfType('UserAssignedAsAdminOfGroup')(event)) {
+    readmodel[event.userId] = event.groupId;
+  }
+  return readmodel;
+};
