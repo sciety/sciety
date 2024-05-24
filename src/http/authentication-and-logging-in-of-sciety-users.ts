@@ -40,6 +40,8 @@ export const getAuthenticatedUserIdFromContext = (
 
 /**
  * @deprecated
+ * Replace with call to getAuthenticatedUserIdFromContext.
+ * If you require user details, use the query for lookupUser.
  */
 export const getLoggedInScietyUser = (
   dependencies: Dependencies,
