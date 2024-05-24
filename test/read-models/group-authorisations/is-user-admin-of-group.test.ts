@@ -40,8 +40,30 @@ describe('is-user-admin-of-group', () => {
     });
   });
 
-  describe('when multiple users have been assigned as admins of a group', () => {
-    it.todo('returns true for all those users');
+  describe('when multiple users have been assigned as admins of the same group', () => {
+    const userId1 = arbitraryUserId();
+    const userId2 = arbitraryUserId();
+    const groupId = arbitraryGroupId();
+    const readModel = pipe(
+      [
+        constructEvent('UserAssignedAsAdminOfGroup')({
+          userId: userId1,
+          groupId,
+        }),
+        constructEvent('UserAssignedAsAdminOfGroup')({
+          userId: userId2,
+          groupId,
+        }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result1 = isUserAdminOfGroup(readModel)(userId1, groupId);
+    const result2 = isUserAdminOfGroup(readModel)(userId2, groupId);
+
+    it('returns true for all those users', () => {
+      expect(result1).toBe(true);
+      expect(result2).toBe(true);
+    });
 
     it.todo('returns false for other users');
   });
