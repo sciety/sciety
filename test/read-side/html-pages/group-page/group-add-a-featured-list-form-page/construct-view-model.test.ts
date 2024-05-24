@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/group-page/group-add-a-featured-list-form-page/construct-view-model';
-import { ViewModel } from '../../../../../src/read-side/html-pages/group-page/group-add-a-featured-list-form-page/view-model';
 import { GroupId } from '../../../../../src/types/group-id';
 import { UserId } from '../../../../../src/types/user-id';
 import { TestFramework, createTestFramework } from '../../../../framework';
@@ -12,7 +11,7 @@ import { arbitraryAssignUserAsGroupAdminCommand } from '../../../../write-side/c
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
-  let result: E.Either<'no-such-group', ViewModel>;
+  let result: ReturnType<ReturnType<typeof constructViewModel>>;
 
   beforeEach(async () => {
     framework = createTestFramework();

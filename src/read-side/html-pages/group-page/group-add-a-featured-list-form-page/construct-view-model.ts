@@ -12,12 +12,12 @@ const checkUserIsAdminOfGroup = (dependencies: Dependencies, userId: UserId, gro
   dependencies.isUserAdminOfGroup(userId, group.id),
   E.fromPredicate(
     identity,
-    () => 'no-such-group' as const,
+    () => 'unauthorised-user' as const,
   ),
   E.map(() => group),
 );
 
-export const constructViewModel = (dependencies: Dependencies, userId: UserId) => (params: Params): E.Either<'no-such-group', ViewModel> => pipe(
+export const constructViewModel = (dependencies: Dependencies, userId: UserId) => (params: Params): E.Either<'no-such-group' | 'unauthorised-user', ViewModel> => pipe(
   params.slug,
   dependencies.getGroupBySlug,
   E.fromOption(() => 'no-such-group' as const),
