@@ -14,6 +14,7 @@ import { listDescriptionEditedEventCodec } from './list-description-edited-event
 import { listNameEditedEventCodec } from './list-name-edited-event';
 import { listPromotionCreatedEventCodec } from './list-promotion-created-event';
 import { subjectAreaRecordedEventCodec } from './subject-area-recorded-event';
+import { userAssignedAsAdminOfGroupEventCodec } from './user-assigned-as-admin-of-group-event';
 import { userCreatedAccountEventCodec } from './user-created-account-event';
 import { userDetailsUpdatedEventCodec } from './user-details-updated-event';
 import { userFollowedEditorialCommunityEventCodec } from './user-followed-editorial-community-event';
@@ -41,6 +42,7 @@ export const domainEventCodec = t.union([
   listPromotionCreatedEventCodec,
   listNameEditedEventCodec,
   subjectAreaRecordedEventCodec,
+  userAssignedAsAdminOfGroupEventCodec,
   userCreatedAccountEventCodec,
   userDetailsUpdatedEventCodec,
   userFollowedEditorialCommunityEventCodec,
