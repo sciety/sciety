@@ -4,7 +4,7 @@ import { Middleware } from 'koa';
 import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from './authentication-and-logging-in-of-sciety-users';
 
 /**
- * @deprecated
+ * @deprecated replace with pageHandlerWithLoggedInUser for GET requests
  */
 export const requireLoggedInUser = (
   dependencies: GetLoggedInScietyUserDependencies,
