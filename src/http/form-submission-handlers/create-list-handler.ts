@@ -2,7 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
-import { Payload } from '../../infrastructure/logger';
 import { CreateList, Logger } from '../../shared-ports';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
@@ -20,7 +19,6 @@ export const createListHandler = (dependencies: Dependencies): Middleware => asy
     E.fromOption(() => ({
       message: 'No authenticated user',
       payload: { formBody: context.request.body },
-      errorType: 'codec-failed' as const,
     })),
     TE.fromEither,
     TE.map((userId): CreateListCommand => ({
@@ -43,7 +41,7 @@ export const createListHandler = (dependencies: Dependencies): Middleware => asy
       ),
     )),
     TE.match(
-      (error: { errorType?: string, message: string, payload: Payload }) => {
+      (error) => {
         dependencies.logger('error', error.message, error.payload);
         context.redirect('back');
       },
