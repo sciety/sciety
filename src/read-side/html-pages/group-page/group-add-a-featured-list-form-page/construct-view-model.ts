@@ -1,6 +1,4 @@
-import { sequenceS } from 'fp-ts/Apply';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { identity } from 'io-ts';
 import { Dependencies } from './dependencies';
@@ -20,12 +18,10 @@ const checkUserIsAdminOfGroup = (dependencies: Dependencies, userId: UserId, gro
 );
 
 export const constructViewModel = (dependencies: Dependencies, userId: UserId) => (params: Params): E.Either<'no-such-group', ViewModel> => pipe(
-  {
-    group: dependencies.getGroupBySlug(params.slug),
-  },
-  sequenceS(O.Apply),
+  params.slug,
+  dependencies.getGroupBySlug,
   E.fromOption(() => 'no-such-group' as const),
-  E.chainW(({ group }) => checkUserIsAdminOfGroup(dependencies, userId, group)),
+  E.chainW((group) => checkUserIsAdminOfGroup(dependencies, userId, group)),
   E.map((group) => ({
     pageHeading: `Add a featured list for ${group.name}`,
     groupId: group.id,
