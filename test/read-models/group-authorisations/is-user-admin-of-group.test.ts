@@ -43,6 +43,7 @@ describe('is-user-admin-of-group', () => {
   describe('when multiple users have been assigned as admins of the same group', () => {
     const userId1 = arbitraryUserId();
     const userId2 = arbitraryUserId();
+    const userId3 = arbitraryUserId();
     const groupId = arbitraryGroupId();
     const readModel = pipe(
       [
@@ -60,12 +61,16 @@ describe('is-user-admin-of-group', () => {
     const result1 = isUserAdminOfGroup(readModel)(userId1, groupId);
     const result2 = isUserAdminOfGroup(readModel)(userId2, groupId);
 
+    const result3 = isUserAdminOfGroup(readModel)(userId3, groupId);
+
     it('returns true for all those users', () => {
       expect(result1).toBe(true);
       expect(result2).toBe(true);
     });
 
-    it.todo('returns false for other users');
+    it('returns false for other users', () => {
+      expect(result3).toBe(false);
+    });
   });
 
   describe('when the same user has been assigned as admin to multiple groups', () => {
