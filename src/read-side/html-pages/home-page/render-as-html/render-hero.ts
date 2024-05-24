@@ -21,7 +21,7 @@ export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
         ${viewModel.pageHeading}
       </h1>
       <p class="home-page-hero__content_byline">
-        Find preprints recommended and reviewed by trusted groups of researchers.
+        Join the global network discovering and highlighting important new studies.
       </p>
 
       <section class="home-page-hero__section">
