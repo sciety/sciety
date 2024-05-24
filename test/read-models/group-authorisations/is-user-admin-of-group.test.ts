@@ -67,4 +67,10 @@ describe('is-user-admin-of-group', () => {
 
     it.todo('returns false for other users');
   });
+
+  describe('when the same user has been assigned as admin to multiple groups', () => {
+    it.todo('returns true for each of these groups');
+
+    it.todo('returns false for a different group');
+  });
 });
