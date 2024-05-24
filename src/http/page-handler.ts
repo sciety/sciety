@@ -11,6 +11,7 @@ import { constructHtmlResponse } from '../read-side/html-pages/construct-html-re
 import { ConstructLoggedInPage, ConstructPage } from '../read-side/html-pages/construct-page';
 import { HtmlPage } from '../read-side/html-pages/html-page';
 import { PageLayout } from '../read-side/html-pages/page-layout';
+import { RedirectTarget } from '../read-side/html-pages/redirect-target';
 import { standardPageLayout } from '../read-side/html-pages/shared-components/standard-page-layout';
 import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 
@@ -28,12 +29,32 @@ const constructAndSendHtmlResponse = (
   sendHtmlResponse(context),
 );
 
+const sendHtmlResponseOrRedirect = (
+  dependencies: GetLoggedInScietyUserDependencies,
+  context: ParameterizedContext,
+  pageLayout: PageLayout,
+  result: E.Either<ErrorPageBodyViewModel | RedirectTarget, HtmlPage>,
+) => {
+  if (E.isRight(result)) {
+    constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.right(result.right));
+  } else {
+    switch (result.left.tag) {
+      case 'error-page-body-view-model':
+        constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.left(result.left));
+        break;
+      case 'redirect-target':
+        sendRedirect(context, result.left);
+        break;
+    }
+  }
+};
+
 export const pageHandler = (
   dependencies: GetLoggedInScietyUserDependencies,
   handler: ConstructPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {
-  const input = await pipe(
+  const result = await pipe(
     {
       ...context.params,
       ...context.query,
@@ -54,18 +75,7 @@ export const pageHandler = (
     ),
     handler,
   )();
-  if (E.isRight(input)) {
-    constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.right(input.right));
-  } else {
-    switch (input.left.tag) {
-      case 'error-page-body-view-model':
-        constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.left(input.left));
-        break;
-      case 'redirect-target':
-        sendRedirect(context, input.left);
-        break;
-    }
-  }
+  sendHtmlResponseOrRedirect(dependencies, context, pageLayout, result);
 
   await next();
 };
@@ -87,18 +97,7 @@ export const pageHandlerWithLoggedInUser = (
     },
     handler(loggedInUser.value.id),
   )();
-  if (E.isRight(result)) {
-    constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.right(result.right));
-  } else {
-    switch (result.left.tag) {
-      case 'error-page-body-view-model':
-        constructAndSendHtmlResponse(dependencies, pageLayout, context)(E.left(result.left));
-        break;
-      case 'redirect-target':
-        sendRedirect(context, result.left);
-        break;
-    }
-  }
+  sendHtmlResponseOrRedirect(dependencies, context, pageLayout, result);
 
   await next();
 };
