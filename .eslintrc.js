@@ -17,6 +17,7 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
+    'deprecation',
     'node',
     'no-loops',
     'unused-imports',
@@ -52,6 +53,7 @@ module.exports = {
     '@typescript-eslint/type-annotation-spacing': 'error',
     'consistent-return': 'off',
     'default-case': 'off',
+    'deprecation/deprecation': 'warn',
     'fp-ts/no-module-imports': 'off',
     'fp-ts/prefer-bimap': 'off',
     'fp-ts/prefer-chain': 'off',
