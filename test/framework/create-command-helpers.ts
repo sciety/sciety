@@ -7,6 +7,7 @@ import { CommandResult } from '../../src/types/command-result';
 import { GroupId } from '../../src/types/group-id';
 import { ListId } from '../../src/types/list-id';
 import { UserId } from '../../src/types/user-id';
+import { follow } from '../../src/write-side/command-handlers/follow-command-handler';
 import {
   AddGroupCommand,
   AnnotateArticleInListCommand,
@@ -70,7 +71,7 @@ export const createCommandHelpers = (
   createUserAccount: invoke(executeResourceAction(dependencies, user.create), 'createUserAccount'),
   followGroup: async (userId, groupId) => pipe(
     { userId, groupId },
-    invoke(commandHandlers.followGroup, 'followGroup'),
+    invoke(executeResourceAction(dependencies, follow), 'followGroup'),
   ),
   recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
   removeArticleFromList: async (articleId, listId) => pipe(

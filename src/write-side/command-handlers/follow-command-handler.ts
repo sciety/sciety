@@ -14,7 +14,7 @@ type FollowCommandHandler = (
   dependencies: DependenciesForCommands
 ) => CommandHandler<FollowCommand>;
 
-const follow: ResourceAction<FollowCommand> = (command) => (events) => pipe(
+export const follow: ResourceAction<FollowCommand> = (command) => (events) => pipe(
   events,
   isFollowing(command.userId, command.groupId),
   B.fold(
