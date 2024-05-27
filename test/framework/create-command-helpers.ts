@@ -22,6 +22,8 @@ import {
 } from '../../src/write-side/resources/execute-resource-action';
 import * as group from '../../src/write-side/resources/group';
 import * as groupAuthorisation from '../../src/write-side/resources/group-authorisation';
+import * as listResource from '../../src/write-side/resources/list';
+import * as user from '../../src/write-side/resources/user';
 import { abortTest } from '../abort-test';
 
 export type CommandHelpers = {
@@ -62,9 +64,9 @@ export const createCommandHelpers = (
   ),
   addGroup: invoke(executeResourceAction(dependencies, group.create), 'addGroup'),
   assignUserAsGroupAdmin: invoke(executeResourceAction(dependencies, groupAuthorisation.create), 'assignUserAsGroupAdmin'),
-  createAnnotation: invoke(commandHandlers.createAnnotation, 'createAnnotation'),
-  createList: invoke(commandHandlers.createList, 'createList'),
-  createUserAccount: invoke(commandHandlers.createUserAccount, 'createUserAccount'),
+  createAnnotation: invoke(executeResourceAction(dependencies, listResource.annotate), 'createAnnotation'),
+  createList: invoke(executeResourceAction(dependencies, listResource.create), 'createList'),
+  createUserAccount: invoke(executeResourceAction(dependencies, user.create), 'createUserAccount'),
   followGroup: async (userId, groupId) => pipe(
     { userId, groupId },
     invoke(commandHandlers.followGroup, 'followGroup'),
