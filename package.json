@@ -63,7 +63,7 @@
     "backstopjs": "^6.2.2",
     "browserslist": "^4.23.0",
     "dependency-cruiser": "16.3.2",
-    "esbuild": "^0.21.2",
+    "esbuild": "^0.21.4",
     "esbuild-jest": "^0.5.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
