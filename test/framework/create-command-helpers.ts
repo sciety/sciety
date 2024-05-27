@@ -16,6 +16,7 @@ import {
   UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
+import * as evaluation from '../../src/write-side/resources/evaluation';
 import {
   Dependencies as DependenciesForExecuteResourceAction,
   executeResourceAction,
@@ -60,7 +61,7 @@ export const createCommandHelpers = (
       articleId,
       listId,
     },
-    invoke(commandHandlers.addArticleToList, 'addArticleToList'),
+    invoke(executeResourceAction(dependencies, listResource.addArticle), 'addArticleToList'),
   ),
   addGroup: invoke(executeResourceAction(dependencies, group.create), 'addGroup'),
   assignUserAsGroupAdmin: invoke(executeResourceAction(dependencies, groupAuthorisation.create), 'assignUserAsGroupAdmin'),
@@ -71,13 +72,13 @@ export const createCommandHelpers = (
     { userId, groupId },
     invoke(commandHandlers.followGroup, 'followGroup'),
   ),
-  recordEvaluationPublication: invoke(commandHandlers.recordEvaluationPublication, 'recordEvaluationPublication'),
+  recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
       articleId,
       listId,
     },
-    invoke(commandHandlers.removeArticleFromList, 'removeArticleFromList'),
+    invoke(executeResourceAction(dependencies, listResource.removeArticle), 'removeArticleFromList'),
   ),
   unfollowGroup: async (userId, groupId) => pipe(
     {
@@ -86,13 +87,13 @@ export const createCommandHelpers = (
     },
     invoke(commandHandlers.unfollowGroup, 'unfollowGroup'),
   ),
-  updateEvaluation: invoke(commandHandlers.updateEvaluation, 'updateEvaluation'),
+  updateEvaluation: invoke(executeResourceAction(dependencies, evaluation.update), 'updateEvaluation'),
   updateGroupDetails: async (groupId, largeLogoPath) => pipe(
     {
       groupId,
       largeLogoPath,
     },
-    invoke(commandHandlers.updateGroupDetails, 'updateGroupDetails'),
+    invoke(executeResourceAction(dependencies, group.update), 'updateGroupDetails'),
   ),
   updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
     {
@@ -100,6 +101,6 @@ export const createCommandHelpers = (
       avatarUrl,
       displayName,
     },
-    invoke(commandHandlers.updateUserDetails, 'updateUserDetails'),
+    invoke(executeResourceAction(dependencies, user.update), 'updateUserDetails'),
   ),
 });
