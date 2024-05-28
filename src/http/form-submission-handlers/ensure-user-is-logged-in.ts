@@ -1,9 +1,10 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
 import { Logger } from '../../shared-ports';
 import { UserDetails } from '../../types/user-details';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendDefaultErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
 export type Dependencies = GetLoggedInScietyUserDependencies
@@ -15,7 +16,11 @@ export const ensureUserIsLoggedIn = (
   context: ParameterizedContext,
   errorMessage: string,
 ): O.Option<UserDetails> => {
-  const loggedInUser = getLoggedInScietyUser(dependencies, context);
+  const loggedInUser = pipe(
+    context,
+    getAuthenticatedUserIdFromContext,
+    O.chain((id) => dependencies.lookupUser(id)),
+  );
   if (O.isNone(loggedInUser)) {
     dependencies.logger('warn', 'Form submission attempted while not logged in', { requestPath: context.request.path });
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, errorMessage);
