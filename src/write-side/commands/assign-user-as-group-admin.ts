@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { userIdCodec } from '../../types/user-id';
 
-const assignUserAsGroupAdminCommandCodec = t.strict({
+export const assignUserAsGroupAdminCommandCodec = t.strict({
   groupId: GroupIdFromStringCodec,
   userId: userIdCodec,
 });

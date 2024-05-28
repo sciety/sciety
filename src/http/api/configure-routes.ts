@@ -4,6 +4,7 @@ import { CollectedPorts } from '../../infrastructure';
 import {
   addArticleToListCommandCodec,
   addGroupCommandCodec,
+  assignUserAsGroupAdminCommandCodec,
   editListDetailsCommandCodec,
   eraseEvaluationCommandCodec,
   promoteListCommandCodec,
@@ -17,6 +18,7 @@ import {
 import { createUserAccountCommandCodec } from '../../write-side/commands/create-user-account';
 import * as evaluationResource from '../../write-side/resources/evaluation';
 import * as groupResource from '../../write-side/resources/group';
+import * as groupAuthorisation from '../../write-side/resources/group-authorisation';
 import * as listResource from '../../write-side/resources/list';
 import * as listPromotionResource from '../../write-side/resources/list-promotion';
 import * as userResource from '../../write-side/resources/user';
@@ -30,6 +32,8 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts, expect
   router.post('/api/add-article-to-list', configurePostMiddleware(addArticleToListCommandCodec, listResource.addArticle));
 
   router.post('/api/add-group', configurePostMiddleware(addGroupCommandCodec, groupResource.create));
+
+  router.post('/api/authorise-group-admin', configurePostMiddleware(assignUserAsGroupAdminCommandCodec, groupAuthorisation.create));
 
   router.post(
     '/api/create-user',

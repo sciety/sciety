@@ -15,5 +15,4 @@ export { executeCommand } from './execute-command';
 export { recordEvaluationRemovalCommandCodec, RecordEvaluationRemovalCommand } from './record-evaluation-removal';
 export { annotateArticleInListCommandCodec, AnnotateArticleInListCommand } from './annotate-article-in-list';
 export { promoteListCommandCodec, PromoteListCommand } from './promote-list';
-// ts-unused-exports:disable-next-line
-export { AssignUserAsGroupAdminCommand } from './assign-user-as-group-admin';
+export { assignUserAsGroupAdminCommandCodec, AssignUserAsGroupAdminCommand } from './assign-user-as-group-admin';
