@@ -3,10 +3,11 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from './authentication-and-logging-in-of-sciety-users';
+import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from './authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from './detect-client-classification';
 import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
+import { Queries } from '../read-models';
 import { constructHtmlResponse } from '../read-side/html-pages/construct-html-response';
 import { ConstructLoggedInPage, ConstructPage } from '../read-side/html-pages/construct-page';
 import { HtmlPage } from '../read-side/html-pages/html-page';
@@ -50,7 +51,7 @@ const sendHtmlResponseOrRedirect = (
 };
 
 export const pageHandler = (
-  dependencies: GetLoggedInScietyUserDependencies,
+  dependencies: Queries,
   handler: ConstructPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {
@@ -61,7 +62,8 @@ export const pageHandler = (
       ...context.state,
     },
     (partialParams) => pipe(
-      getLoggedInScietyUser(dependencies, context),
+      getAuthenticatedUserIdFromContext(context),
+      O.chain((id) => dependencies.lookupUser(id)),
       O.matchW(
         () => ({
           ...partialParams,
@@ -85,8 +87,8 @@ export const pageHandlerWithLoggedInUser = (
   handler: ConstructLoggedInPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {
-  const loggedInUser = getLoggedInScietyUser(dependencies, context);
-  if (O.isNone(loggedInUser)) {
+  const loggedInUserId = getAuthenticatedUserIdFromContext(context);
+  if (O.isNone(loggedInUserId)) {
     context.redirect('/log-in');
     return;
   }
@@ -95,7 +97,7 @@ export const pageHandlerWithLoggedInUser = (
       ...context.params,
       ...context.query,
     },
-    loggedInUser.value.id,
+    loggedInUserId.value,
   )();
   sendHtmlResponseOrRedirect(dependencies, context, pageLayout, result);
 
