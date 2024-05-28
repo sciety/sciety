@@ -2,12 +2,13 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
+import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
 import { UserDetails } from '../../types/user-details';
-import { Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendDefaultErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
-export type Dependencies = GetLoggedInScietyUserDependencies
+export type Dependencies = Queries
 & SendDefaultErrorHtmlResponseDependencies
 & { logger: Logger };
 
