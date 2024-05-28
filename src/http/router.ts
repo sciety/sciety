@@ -14,7 +14,7 @@ import * as formSubmissionHandlers from './form-submission-handlers';
 import * as group from './group';
 import { htmlFragmentHandler } from './html-fragment-handler';
 import { loadStaticFile } from './load-static-file';
-import { pageHandler } from './page-handler';
+import { pageHandler, pageHandlerWithLoggedInUser } from './page-handler';
 import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
@@ -225,8 +225,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/save-article',
-    requireLoggedInUser(adapters),
-    pageHandler(adapters, saveArticleFormPage(adapters)),
+    pageHandlerWithLoggedInUser(adapters, saveArticleFormPage(adapters)),
   );
 
   router.get(

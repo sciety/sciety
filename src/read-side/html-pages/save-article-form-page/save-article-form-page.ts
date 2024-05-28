@@ -6,12 +6,13 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
-import { ConstructPage } from '../construct-page';
+import { UserId } from '../../../types/user-id';
+import { ConstructLoggedInPage } from '../construct-page';
 import { toUnavailable } from '../create-page-from-params';
 
 export const saveArticleFormPage = (
   dependencies: Dependencies,
-): ConstructPage => (input) => pipe(
+): ConstructLoggedInPage => (input, userId: UserId) => pipe(
   input,
   paramsCodec.decode,
   E.mapLeft((errors) => {
@@ -19,7 +20,7 @@ export const saveArticleFormPage = (
     return errors;
   }),
   TE.fromEither,
-  TE.chainW(constructViewModel(dependencies)),
+  TE.chainW(constructViewModel(dependencies, userId)),
   TE.bimap(
     toUnavailable,
     renderAsHtml,

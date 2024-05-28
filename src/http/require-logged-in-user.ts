@@ -5,6 +5,7 @@ import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencie
 
 /**
  * @deprecated replace with pageHandlerWithLoggedInUser for GET requests
+ * (and remember to change to handler type to ConstructLoggedInPage)
  */
 export const requireLoggedInUser = (
   dependencies: GetLoggedInScietyUserDependencies,
