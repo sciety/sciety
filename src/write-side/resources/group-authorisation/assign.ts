@@ -5,7 +5,7 @@ import { constructEvent, isEventOfType } from '../../../domain-events';
 import { AssignUserAsGroupAdminCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
-export const create: ResourceAction<AssignUserAsGroupAdminCommand> = (command) => (events) => pipe(
+export const assign: ResourceAction<AssignUserAsGroupAdminCommand> = (command) => (events) => pipe(
   events,
   RA.filter(isEventOfType('UserAssignedAsAdminOfGroup')),
   RA.filter((event) => event.userId === command.userId && event.groupId === command.groupId),

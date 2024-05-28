@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
-import { create } from '../../../../src/write-side/resources/group-authorisation/create';
+import { assign } from '../../../../src/write-side/resources/group-authorisation/assign';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 
-describe('create', () => {
+describe('assign', () => {
   const input = {
     groupId: arbitraryGroupId(),
     userId: arbitraryUserId(),
@@ -15,7 +15,7 @@ describe('create', () => {
   describe('given an assignment that does not already exist', () => {
     const result = pipe(
       [],
-      create(input),
+      assign(input),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -29,7 +29,7 @@ describe('create', () => {
       [
         constructEvent('UserAssignedAsAdminOfGroup')(input),
       ],
-      create(input),
+      assign(input),
       E.getOrElseW(shouldNotBeCalled),
     );
 

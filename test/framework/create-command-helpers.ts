@@ -65,7 +65,7 @@ export const createCommandHelpers = (
     invoke(executeResourceAction(dependencies, listResource.addArticle), 'addArticleToList'),
   ),
   addGroup: invoke(executeResourceAction(dependencies, group.create), 'addGroup'),
-  assignUserAsGroupAdmin: invoke(executeResourceAction(dependencies, groupAuthorisation.create), 'assignUserAsGroupAdmin'),
+  assignUserAsGroupAdmin: invoke(executeResourceAction(dependencies, groupAuthorisation.assign), 'assignUserAsGroupAdmin'),
   createAnnotation: invoke(executeResourceAction(dependencies, listResource.annotate), 'createAnnotation'),
   createList: invoke(executeResourceAction(dependencies, listResource.create), 'createList'),
   createUserAccount: invoke(executeResourceAction(dependencies, user.create), 'createUserAccount'),

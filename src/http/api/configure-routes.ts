@@ -33,7 +33,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts, expect
 
   router.post('/api/add-group', configurePostMiddleware(addGroupCommandCodec, groupResource.create));
 
-  router.post('/api/authorise-group-admin', configurePostMiddleware(assignUserAsGroupAdminCommandCodec, groupAuthorisation.create));
+  router.post('/api/assign-group-admin', configurePostMiddleware(assignUserAsGroupAdminCommandCodec, groupAuthorisation.assign));
 
   router.post(
     '/api/create-user',
