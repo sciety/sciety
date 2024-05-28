@@ -1,20 +1,21 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { AssignUserAsGroupAdminCommand } from '../../../../src/write-side/commands';
+import { constructEvent } from '../../../../src/domain-events';
 import { create } from '../../../../src/write-side/resources/group-authorisation/create';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 
 describe('create', () => {
+  const input = {
+    groupId: arbitraryGroupId(),
+    userId: arbitraryUserId(),
+  };
+
   describe('given an assignment that does not already exist', () => {
-    const command: AssignUserAsGroupAdminCommand = {
-      groupId: arbitraryGroupId(),
-      userId: arbitraryUserId(),
-    };
     const result = pipe(
       [],
-      create(command),
+      create(input),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -24,6 +25,16 @@ describe('create', () => {
   });
 
   describe('given an assignment that already exists', () => {
-    it.todo('succeeds and does nothing');
+    const result = pipe(
+      [
+        constructEvent('UserAssignedAsAdminOfGroup')(input),
+      ],
+      create(input),
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    it('succeeds and does nothing', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 });
