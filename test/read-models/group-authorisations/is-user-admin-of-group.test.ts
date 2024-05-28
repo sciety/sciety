@@ -14,10 +14,9 @@ describe('is-user-admin-of-group', () => {
       [],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = isUserAdminOfGroup(readModel)(userId, groupId);
 
     it('returns false', () => {
-      expect(result).toBe(false);
+      expect(isUserAdminOfGroup(readModel)(userId, groupId)).toBe(false);
     });
   });
 
@@ -33,10 +32,9 @@ describe('is-user-admin-of-group', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = isUserAdminOfGroup(readModel)(userId, groupId);
 
     it('returns true', () => {
-      expect(result).toBe(true);
+      expect(isUserAdminOfGroup(readModel)(userId, groupId)).toBe(true);
     });
   });
 
@@ -58,18 +56,14 @@ describe('is-user-admin-of-group', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result1 = isUserAdminOfGroup(readModel)(userId1, groupId);
-    const result2 = isUserAdminOfGroup(readModel)(userId2, groupId);
-
-    const result3 = isUserAdminOfGroup(readModel)(userId3, groupId);
 
     it('returns true for all those users', () => {
-      expect(result1).toBe(true);
-      expect(result2).toBe(true);
+      expect(isUserAdminOfGroup(readModel)(userId1, groupId)).toBe(true);
+      expect(isUserAdminOfGroup(readModel)(userId2, groupId)).toBe(true);
     });
 
     it('returns false for other users', () => {
-      expect(result3).toBe(false);
+      expect(isUserAdminOfGroup(readModel)(userId3, groupId)).toBe(false);
     });
   });
 
@@ -91,17 +85,14 @@ describe('is-user-admin-of-group', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result1 = isUserAdminOfGroup(readModel)(userId, groupId1);
-    const result2 = isUserAdminOfGroup(readModel)(userId, groupId2);
-    const result3 = isUserAdminOfGroup(readModel)(userId, arbitraryGroupId());
 
     it('returns true for each of these groups', () => {
-      expect(result1).toBe(true);
-      expect(result2).toBe(true);
+      expect(isUserAdminOfGroup(readModel)(userId, groupId1)).toBe(true);
+      expect(isUserAdminOfGroup(readModel)(userId, groupId2)).toBe(true);
     });
 
     it('returns false for a different group', () => {
-      expect(result3).toBe(false);
+      expect(isUserAdminOfGroup(readModel)(userId, arbitraryGroupId())).toBe(false);
     });
   });
 });
