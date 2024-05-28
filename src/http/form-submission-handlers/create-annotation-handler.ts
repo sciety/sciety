@@ -50,7 +50,7 @@ const redisplayFormPage = (
   params: Params,
   user: O.Option<UserDetails>,
 ) => pipe(
-  createAnnotationFormPage(dependencies)(params, 'article-not-in-list'),
+  createAnnotationFormPage(dependencies, 'article-not-in-list')(params),
   TE.map(prependErrorToTitleForAccessibility),
   TE.mapLeft(
     (errorPageBodyViewModel) => toErrorPageBodyViewModel({

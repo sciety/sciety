@@ -8,15 +8,14 @@ import { UnrecoverableError } from './view-model';
 import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { HtmlPage, toHtmlPage } from '../html-page';
 
-type CreateAnnotationFormPage = (dependencies: Dependencies)
-=> (params: Params, unrecoverableError?: UnrecoverableError)
+type CreateAnnotationFormPage = (dependencies: Dependencies, unrecoverableError?: UnrecoverableError)
+=> (params: Params)
 => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
 export const createAnnotationFormPage: CreateAnnotationFormPage = (
-  dependencies,
+  dependencies, unrecoverableError,
 ) => (
   params,
-  unrecoverableError,
 ) => pipe(
   params,
   ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies, unrecoverableError),
