@@ -93,12 +93,15 @@ describe('is-user-admin-of-group', () => {
     );
     const result1 = isUserAdminOfGroup(readModel)(userId, groupId1);
     const result2 = isUserAdminOfGroup(readModel)(userId, groupId2);
+    const result3 = isUserAdminOfGroup(readModel)(userId, arbitraryGroupId());
 
     it('returns true for each of these groups', () => {
       expect(result1).toBe(true);
       expect(result2).toBe(true);
     });
 
-    it.todo('returns false for a different group');
+    it('returns false for a different group', () => {
+      expect(result3).toBe(false);
+    });
   });
 });
