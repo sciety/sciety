@@ -94,7 +94,7 @@ describe('is-user-admin-of-group', () => {
     const result1 = isUserAdminOfGroup(readModel)(userId, groupId1);
     const result2 = isUserAdminOfGroup(readModel)(userId, groupId2);
 
-    it.failing('returns true for each of these groups', () => {
+    it('returns true for each of these groups', () => {
       expect(result1).toBe(true);
       expect(result2).toBe(true);
     });

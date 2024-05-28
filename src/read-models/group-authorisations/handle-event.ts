@@ -15,7 +15,9 @@ export const initialState = (): ReadModel => ({
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('UserAssignedAsAdminOfGroup')(event)) {
-    readmodel[event.userId] = [event.groupId];
+    const current = readmodel[event.userId] ?? [];
+    current.push(event.groupId);
+    readmodel[event.userId] = current;
   }
   return readmodel;
 };
