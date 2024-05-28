@@ -41,7 +41,7 @@ import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-p
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
 import { generateDocmaps, docmapIndex } from '../read-side/non-html-views/docmaps';
-import { evaluationContent, paramsCodec as evaluationContentParams } from '../read-side/non-html-views/evaluation-content';
+import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';
@@ -181,12 +181,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/evaluations/:reviewid/content',
-    htmlFragmentHandler(
-      createPageFromParams(
-        evaluationContentParams,
-        evaluationContent(adapters),
-      ),
-    ),
+    htmlFragmentHandler(evaluationContent(adapters)),
   );
 
   router.get(
