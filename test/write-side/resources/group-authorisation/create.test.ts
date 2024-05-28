@@ -19,7 +19,7 @@ describe('create', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.failing('assigns the user as admin of the group', () => {
+    it('assigns the user as admin of the group', () => {
       expect(result).toHaveLength(1);
     });
   });
