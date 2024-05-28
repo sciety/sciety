@@ -35,8 +35,8 @@ const saveArticleHandlerFormBodyCodec = t.strict({
 }, 'saveArticleHandlerFormBodyCodec');
 
 export const saveArticleHandler = (dependencies: Dependencies): Middleware => async (context) => {
-  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to save an article.');
-  if (O.isNone(loggedInUser)) {
+  const loggedInUserId = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to save an article.');
+  if (O.isNone(loggedInUserId)) {
     return;
   }
 
@@ -44,7 +44,7 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
     dependencies,
     context,
     saveArticleHandlerFormBodyCodec,
-    loggedInUser.value.id,
+    loggedInUserId.value,
   );
   if (E.isLeft(formBody)) {
     return;
@@ -53,7 +53,7 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
   const articleId = formBody.right[inputFieldNames.articleId];
   const listId = formBody.right[inputFieldNames.listId];
 
-  const logEntry = checkUserOwnsList(dependencies, listId, loggedInUser.value.id);
+  const logEntry = checkUserOwnsList(dependencies, listId, loggedInUserId.value);
   if (E.isLeft(logEntry)) {
     dependencies.logger('error', logEntry.left.message, logEntry.left.payload);
     dependencies.logger('error', 'saveArticleHandler failed', { error: logEntry.left });

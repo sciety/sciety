@@ -64,7 +64,10 @@ const redisplayFormPage = (
 type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
 
 export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) => async (context) => {
-  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to annotate a list.');
+  const loggedInUser = pipe(
+    ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to annotate a list.'),
+    O.chain((id) => dependencies.lookupUser(id)),
+  );
   if (O.isNone(loggedInUser)) {
     return;
   }

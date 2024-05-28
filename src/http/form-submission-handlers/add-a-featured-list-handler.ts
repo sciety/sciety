@@ -26,20 +26,20 @@ type Dependencies = EnsureUserIsLoggedInDependencies
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
 
 export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware => async (context) => {
-  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
-  if (O.isNone(loggedInUser)) {
+  const loggedInUserId = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
+  if (O.isNone(loggedInUserId)) {
     return;
   }
   const formBody = decodeFormSubmission(
     dependencies,
     context,
     formBodyCodec,
-    loggedInUser.value.id,
+    loggedInUserId.value,
   );
   if (E.isLeft(formBody)) {
     return;
   }
-  if (!dependencies.isUserAdminOfGroup(loggedInUser.value.id, formBody.right.forGroup)) {
+  if (!dependencies.isUserAdminOfGroup(loggedInUserId.value, formBody.right.forGroup)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
   }
