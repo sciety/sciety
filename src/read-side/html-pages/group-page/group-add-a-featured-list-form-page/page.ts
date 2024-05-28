@@ -11,7 +11,7 @@ import { toNotFound } from '../../create-page-from-params';
 
 export const page = (
   dependencies: Dependencies,
-): ConstructLoggedInPage => (input, userId) => pipe(
+): ConstructLoggedInPage => (userId, input) => pipe(
   input,
   paramsCodec.decode,
   E.mapLeft((errors) => {

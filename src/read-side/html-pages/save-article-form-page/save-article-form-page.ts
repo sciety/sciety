@@ -6,13 +6,12 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
-import { UserId } from '../../../types/user-id';
 import { ConstructLoggedInPage } from '../construct-page';
 import { toUnavailable } from '../create-page-from-params';
 
 export const saveArticleFormPage = (
   dependencies: Dependencies,
-): ConstructLoggedInPage => (input, userId: UserId) => pipe(
+): ConstructLoggedInPage => (userId, input) => pipe(
   input,
   paramsCodec.decode,
   E.mapLeft((errors) => {

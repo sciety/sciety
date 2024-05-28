@@ -93,11 +93,11 @@ export const pageHandlerWithLoggedInUser = (
     return;
   }
   const result = await handler(
+    loggedInUserId.value,
     {
       ...context.params,
       ...context.query,
     },
-    loggedInUserId.value,
   )();
   sendHtmlResponseOrRedirect(dependencies, context, pageLayout, result);
 
