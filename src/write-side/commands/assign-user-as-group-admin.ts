@@ -7,5 +7,4 @@ export const assignUserAsGroupAdminCommandCodec = t.strict({
   userId: userIdCodec,
 });
 
-// ts-unused-exports:disable-next-line
 export type AssignUserAsGroupAdminCommand = t.TypeOf<typeof assignUserAsGroupAdminCommandCodec>;
