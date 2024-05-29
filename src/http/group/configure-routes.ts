@@ -54,7 +54,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    groupSubPagePathSpecification('add-a-featured-list'),
+    groupSubPagePathSpecification('management'),
     pageHandlerWithLoggedInUser(adapters, addAFeaturedListFormPage(adapters)),
   );
 };
