@@ -23,7 +23,7 @@ export const constructViewModel = (dependencies: Dependencies, userId: UserId) =
   E.fromOption(() => 'no-such-group' as const),
   E.chainW((group) => checkUserIsAdminOfGroup(dependencies, userId, group)),
   E.map((group) => ({
-    pageHeading: `Add a featured list for ${group.name}`,
+    pageHeading: `Group management details for ${group.name}`,
     groupId: group.id,
     successRedirectPath: constructGroupPageHref(group),
   })),
