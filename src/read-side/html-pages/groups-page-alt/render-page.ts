@@ -15,7 +15,7 @@ const supplementaryItems = [
   ),
 ];
 
-export const renderGroups = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment => pipe(
+export const renderPage = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment => pipe(
   groups,
   renderListItems,
   renderListOfCards,

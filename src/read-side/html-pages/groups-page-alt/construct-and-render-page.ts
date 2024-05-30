@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { ViewModel, constructViewModel } from './construct-view-model/construct-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
 import { renderAsHtml } from './render-as-html';
-import { renderGroups } from './render-groups';
+import { renderPage } from './render-page';
 import * as DE from '../../../types/data-error';
 import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { toUnavailable } from '../create-page-from-params';
@@ -22,6 +22,6 @@ export const constructAndRenderPage = (dependencies: Dependencies): GroupsPage =
   constructViewModel(dependencies),
   TE.map((viewModel) => viewModel.groupCards),
   renderGroupCards,
-  TE.map(renderGroups),
+  TE.map(renderPage),
   TE.bimap(toUnavailable, renderAsHtml),
 );
