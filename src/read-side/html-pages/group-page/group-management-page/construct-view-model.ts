@@ -4,6 +4,7 @@ import { identity } from 'io-ts';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { ViewModel } from './view-model';
+import * as DE from '../../../../types/data-error';
 import { Group } from '../../../../types/group';
 import { UserId } from '../../../../types/user-id';
 import { constructGroupPageHref } from '../../../paths';
@@ -12,15 +13,19 @@ const checkUserIsAdminOfGroup = (dependencies: Dependencies, userId: UserId, gro
   dependencies.isUserAdminOfGroup(userId, group.id),
   E.fromPredicate(
     identity,
-    () => 'unauthorised-user' as const,
+    () => DE.notAuthorised,
   ),
   E.map(() => group),
 );
 
-export const constructViewModel = (dependencies: Dependencies, userId: UserId) => (params: Params): E.Either<'no-such-group' | 'unauthorised-user', ViewModel> => pipe(
+type ConstructViewModel = (dependencies: Dependencies, userId: UserId)
+=> (params: Params)
+=> E.Either<DE.DataError, ViewModel>;
+
+export const constructViewModel: ConstructViewModel = (dependencies, userId) => (params) => pipe(
   params.slug,
   dependencies.getGroupBySlug,
-  E.fromOption(() => 'no-such-group' as const),
+  E.fromOption(() => DE.notFound),
   E.chainW((group) => checkUserIsAdminOfGroup(dependencies, userId, group)),
   E.map((group) => ({
     pageHeading: `Group management details for ${group.name}`,
