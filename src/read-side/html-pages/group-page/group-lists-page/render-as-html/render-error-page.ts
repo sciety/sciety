@@ -8,6 +8,7 @@ export const renderErrorPage = (e: DE.DataError): ErrorPageBodyViewModel => pipe
   DE.match({
     notFound: () => 'No such group. Please check and try again.',
     unavailable: () => 'We couldn\'t retrieve this information. Please try again.',
+    notAuthorised: () => 'You aren\'t permitted to do that.',
   }),
   toHtmlFragment,
   (message) => toErrorPageBodyViewModel({

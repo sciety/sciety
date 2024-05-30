@@ -10,6 +10,7 @@ export const getHttpStatusCode = (error: O.Option<DE.DataError>): StatusCodes =>
     DE.match({
       notFound: () => StatusCodes.NOT_FOUND,
       unavailable: () => StatusCodes.SERVICE_UNAVAILABLE,
+      notAuthorised: () => StatusCodes.FORBIDDEN,
     }),
   ),
 );

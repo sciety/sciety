@@ -8,6 +8,7 @@ export const renderErrorPage = (e: DE.DataError): ErrorPageBodyViewModel => pipe
   DE.match({
     notFound: () => 'User not found',
     unavailable: () => 'User information unavailable',
+    notAuthorised: () => 'You aren\'t permitted to do that.',
   }),
   toHtmlFragment,
   (message) => toErrorPageBodyViewModel({

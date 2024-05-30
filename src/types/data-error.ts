@@ -12,6 +12,12 @@ export const isUnavailable = (de: DataError): boolean => de === unavailable;
 
 export const isNotAuthorised = (de: DataError): boolean => de === notAuthorised;
 
-export const match = <B>(opts: Record<'notFound' | 'unavailable', Lazy<B>>) => (e: DataError): B => (
-  isNotFound(e) ? opts.notFound() : opts.unavailable()
-);
+export const match = <B>(opts: Record<'notFound' | 'unavailable' | 'notAuthorised', Lazy<B>>) => (e: DataError): B => {
+  if (isNotFound(e)) {
+    return opts.notFound();
+  }
+  if (isUnavailable(e)) {
+    return opts.unavailable();
+  }
+  return opts.notAuthorised();
+};
