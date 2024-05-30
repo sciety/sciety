@@ -11,9 +11,9 @@ import * as DE from '../../../types/data-error';
 import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../../types/expression-doi';
 import { userIdCodec } from '../../../types/user-id';
 import { constructPaperActivityPageHref } from '../../paths';
+import { constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { ConstructPage } from '../construct-page';
 import { toRedirectTarget } from '../redirect-target';
-import { renderErrorPage } from '../render-error-page';
 
 const canonicalParamsCodec = t.type({
   expressionDoi: canonicalExpressionDoiCodec,
@@ -63,7 +63,7 @@ const extendWithLatestExpressionDoi = (
 ) => <A extends { expressionDoi: ExpressionDoi }>(input: A) => pipe(
   input.expressionDoi,
   identifyLatestExpressionDoiOfTheSamePaper(dependencies),
-  TE.mapLeft(renderErrorPage),
+  TE.mapLeft(constructErrorPageViewModel),
   TE.map((latestExpressionDoi) => ({
     ...input,
     latestExpressionDoi,
@@ -77,7 +77,7 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
   decodeCombinedParams,
   TE.fromEither,
   TE.mapLeft(() => DE.notFound),
-  TE.mapLeft(renderErrorPage),
+  TE.mapLeft(constructErrorPageViewModel),
   TE.filterOrElseW(
     isCanonicalExpressionDoi,
     (combinedParams) => redirectTo(combinedParams.expressionDoi),
@@ -89,7 +89,7 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
   ),
   TE.chainW(flow(
     constructViewModel(dependencies),
-    TE.mapLeft(renderErrorPage),
+    TE.mapLeft(constructErrorPageViewModel),
   )),
   TE.map(renderAsHtml),
 );

@@ -4,12 +4,12 @@ import { pipe } from 'fp-ts/function';
 import { paramsCodec } from './params';
 import { Queries } from '../../../read-models';
 import { ExternalQueries } from '../../../third-parties';
-import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { toHtmlFragment } from '../../../types/html-fragment';
+import { ErrorPageViewModel, toErrorPageViewModel } from '../../html-pages/construct-error-page-view-model';
 import { toNotFound } from '../../html-pages/create-page-from-params';
 import { HtmlPage, toHtmlPage } from '../../html-pages/html-page';
 
-type EvaluationContent = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
+type EvaluationContent = TE.TaskEither<ErrorPageViewModel, HtmlPage>;
 
 type Dependencies = ExternalQueries & Queries;
 
@@ -27,7 +27,7 @@ export const evaluationContent = (
     evaluationLocator,
     dependencies.fetchEvaluationDigest,
     TE.mapLeft(
-      (error) => toErrorPageBodyViewModel({
+      (error) => toErrorPageViewModel({
         type: error,
         message: toHtmlFragment('Could not fetch evaluation'),
       }),

@@ -4,19 +4,18 @@ import { pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
 import { renderGroups } from './render-groups';
-import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { ErrorPageViewModel, constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { HtmlPage, NotHtml, toHtmlPage } from '../html-page';
-import { renderErrorPage } from '../render-error-page';
 import { renderGroupCard } from '../shared-components/group-card';
 
-type GroupsPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
+type GroupsPage = TE.TaskEither<ErrorPageViewModel, HtmlPage>;
 
 export const groupsPage = (dependencies: Dependencies): GroupsPage => pipe(
   constructViewModel(dependencies),
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderGroups),
   TE.bimap(
-    renderErrorPage,
+    constructErrorPageViewModel,
     (content) => toHtmlPage({
       title: 'Groups',
       content,

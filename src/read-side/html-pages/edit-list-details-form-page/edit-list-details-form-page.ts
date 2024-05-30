@@ -4,10 +4,9 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { constructViewModel, Dependencies } from './construct-view-model';
 import { renderEditListDetailsFormPage } from './render-edit-list-details-form-page';
-import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { listIdCodec, ListId } from '../../../types/list-id';
+import { constructErrorPageViewModel, ErrorPageViewModel } from '../construct-error-page-view-model';
 import { HtmlPage } from '../html-page';
-import { renderErrorPage } from '../render-error-page';
 
 export const editListDetailsFormPageParamsCodec = t.type({
   id: listIdCodec,
@@ -15,11 +14,11 @@ export const editListDetailsFormPageParamsCodec = t.type({
 
 export const editListDetailsFormPage = (dependencies: Dependencies) => (
   params: { id: ListId },
-): TE.TaskEither<ErrorPageBodyViewModel, HtmlPage> => pipe(
+): TE.TaskEither<ErrorPageViewModel, HtmlPage> => pipe(
   params.id,
   constructViewModel(dependencies),
   E.bimap(
-    renderErrorPage,
+    constructErrorPageViewModel,
     renderEditListDetailsFormPage,
   ),
   TE.fromEither,

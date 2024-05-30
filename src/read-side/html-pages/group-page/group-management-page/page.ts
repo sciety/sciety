@@ -7,8 +7,8 @@ import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
 import * as DE from '../../../../types/data-error';
+import { constructErrorPageViewModel } from '../../construct-error-page-view-model';
 import { ConstructLoggedInPage } from '../../construct-page';
-import { renderErrorPage } from '../../render-error-page';
 
 export const page = (
   dependencies: Dependencies,
@@ -20,6 +20,6 @@ export const page = (
     return DE.notFound;
   }),
   E.chainW(constructViewModel(dependencies, userId)),
-  E.bimap(renderErrorPage, renderAsHtml),
+  E.bimap(constructErrorPageViewModel, renderAsHtml),
   TE.fromEither,
 );

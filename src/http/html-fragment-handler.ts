@@ -3,12 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { getHttpStatusCode } from './get-http-status-code';
+import { ErrorPageViewModel } from '../read-side/html-pages/construct-error-page-view-model';
 import { HtmlPage } from '../read-side/html-pages/html-page';
-import { ErrorPageBodyViewModel } from '../types/error-page-body-view-model';
 
 type ConstructPage = (
   params: Record<string, unknown>,
-) => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
+) => TE.TaskEither<ErrorPageViewModel, HtmlPage>;
 
 export const htmlFragmentHandler = (
   handler: ConstructPage,

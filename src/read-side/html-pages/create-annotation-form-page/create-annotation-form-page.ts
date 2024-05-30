@@ -4,13 +4,12 @@ import { Dependencies, constructViewModel } from './construct-view-model';
 import { Params } from './params';
 import { renderPage } from './render-page';
 import { UnrecoverableError } from './view-model';
-import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { ErrorPageViewModel, constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { HtmlPage, toHtmlPage } from '../html-page';
-import { renderErrorPage } from '../render-error-page';
 
 type CreateAnnotationFormPage = (dependencies: Dependencies, unrecoverableError?: UnrecoverableError)
 => (params: Params)
-=> TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
+=> TE.TaskEither<ErrorPageViewModel, HtmlPage>;
 
 export const createAnnotationFormPage: CreateAnnotationFormPage = (
   dependencies, unrecoverableError,
@@ -20,7 +19,7 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = (
   params,
   ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies, unrecoverableError),
   TE.bimap(
-    renderErrorPage,
+    constructErrorPageViewModel,
     (viewModel) => toHtmlPage({
       title: viewModel.pageHeading,
       content: renderPage(viewModel),
