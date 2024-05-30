@@ -1,12 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from './construct-view-model/construct-view-model';
-import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { renderGroupCard } from '../shared-components/group-card';
-import { renderListItems } from '../shared-components/list-items';
-import { renderListOfCards } from '../shared-components/list-of-cards';
-import { renderSupplementaryCard } from '../shared-components/supplementary-card';
-import { supplementaryInfo } from '../supplementary-info';
+import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderGroupCard } from '../../shared-components/group-card';
+import { renderListItems } from '../../shared-components/list-items';
+import { renderListOfCards } from '../../shared-components/list-of-cards';
+import { renderSupplementaryCard } from '../../shared-components/supplementary-card';
+import { supplementaryInfo } from '../../supplementary-info';
+import { ViewModel } from '../view-model';
 
 const renderGroupCards = (groupCards: ViewModel['groupCards']): ReadonlyArray<HtmlFragment> => pipe(
   groupCards,

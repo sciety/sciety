@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model/construct-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
-import { renderAsHtml } from './render-as-html';
+import { renderAsHtml } from './render-as-html/render-as-html';
 import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { toUnavailable } from '../create-page-from-params';
 import { HtmlPage } from '../html-page';

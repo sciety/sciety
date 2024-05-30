@@ -1,14 +1,9 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
+import { toListOfGroupCardViewModels } from './to-list-of-group-card-view-models';
 import * as DE from '../../../../types/data-error';
-import { GroupCardViewModel } from '../../shared-components/group-card';
-import { toListOfGroupCardViewModels } from '../to-list-of-group-card-view-models';
-
-export type ViewModel = {
-  title: string,
-  groupCards: ReadonlyArray<GroupCardViewModel>,
-};
+import { ViewModel } from '../view-model';
 
 export const constructViewModel = (
   dependencies: Dependencies,

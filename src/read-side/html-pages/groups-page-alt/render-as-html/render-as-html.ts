@@ -1,6 +1,6 @@
-import { ViewModel } from './construct-view-model/construct-view-model';
 import { renderPage } from './render-page';
-import { HtmlPage, NotHtml, toHtmlPage } from '../html-page';
+import { HtmlPage, NotHtml, toHtmlPage } from '../../html-page';
+import { ViewModel } from '../view-model';
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.title,
