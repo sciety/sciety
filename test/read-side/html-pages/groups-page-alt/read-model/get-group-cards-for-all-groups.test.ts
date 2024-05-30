@@ -1,3 +1,3 @@
 describe('getGroupCardForAllGroups', () => {
-  it.todo('returns a group card for every group');
+  it.todo('returns an array containing one group card for every group');
 });
