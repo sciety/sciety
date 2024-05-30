@@ -8,7 +8,7 @@ import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
 import * as DE from '../../../../types/data-error';
 import { ConstructLoggedInPage } from '../../construct-page';
-import { renderErrorPage } from '../common-components/render-error-page';
+import { renderErrorPage } from '../../render-error-page';
 
 export const page = (
   dependencies: Dependencies,

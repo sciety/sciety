@@ -4,7 +4,7 @@ import { constructViewModel, Dependencies, Params } from './construct-view-model
 import { renderAsHtml } from './render-as-html';
 import { ErrorPageBodyViewModel } from '../../../../types/error-page-body-view-model';
 import { HtmlPage } from '../../html-page';
-import { renderErrorPage } from '../common-components/render-error-page';
+import { renderErrorPage } from '../../render-error-page';
 
 type GroupPage = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
