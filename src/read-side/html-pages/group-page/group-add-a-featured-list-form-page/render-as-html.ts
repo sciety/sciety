@@ -18,6 +18,8 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <a href="${viewModel.groupHomePageHref}">View public group page</a>
   </p>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
+  <h2>Featured Lists</h2>
+  <p class="standard-form__sub_heading_secondary_text">Choose a list to feature on your group page.</p>
     <section>
       <input type="hidden" name="forGroup" value="${viewModel.groupId}">
       <input type="hidden" name="successRedirectPath" value="${viewModel.successRedirectPath}">
