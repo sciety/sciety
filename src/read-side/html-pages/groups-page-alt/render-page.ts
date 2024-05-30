@@ -1,9 +1,17 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { ViewModel } from './construct-view-model/construct-view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
+import { GroupCardViewModel, renderGroupCard } from '../shared-components/group-card';
 import { renderListItems } from '../shared-components/list-items';
 import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderSupplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../supplementary-info';
+
+const renderGroupCards = (groupCards: ViewModel['groupCards']) => pipe(
+  groupCards,
+  RA.map(renderGroupCard),
+);
 
 const supplementaryItems = [
   renderSupplementaryCard(
@@ -15,8 +23,9 @@ const supplementaryItems = [
   ),
 ];
 
-export const renderPage = (groups: ReadonlyArray<HtmlFragment>): HtmlFragment => pipe(
-  groups,
+export const renderPage = (groupCards: ReadonlyArray<GroupCardViewModel>): HtmlFragment => pipe(
+  groupCards,
+  renderGroupCards,
   renderListItems,
   renderListOfCards,
   (listOfCards) => `
