@@ -3,10 +3,10 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies, constructViewModel } from './construct-view-model';
 import { Params } from './params';
 import { renderPage } from './render-page';
-import { toErrorPage } from './to-error-page';
 import { UnrecoverableError } from './view-model';
 import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { HtmlPage, toHtmlPage } from '../html-page';
+import { renderErrorPage } from '../render-error-page';
 
 type CreateAnnotationFormPage = (dependencies: Dependencies, unrecoverableError?: UnrecoverableError)
 => (params: Params)
@@ -20,7 +20,7 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = (
   params,
   ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies, unrecoverableError),
   TE.bimap(
-    toErrorPage,
+    renderErrorPage,
     (viewModel) => toHtmlPage({
       title: viewModel.pageHeading,
       content: renderPage(viewModel),
