@@ -3,9 +3,9 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies, constructViewModel } from './construct-view-model';
 import { Params } from './construct-view-model/params';
 import { renderAsHtml } from './render-as-html/render-as-html';
-import { renderErrorPage } from './render-as-html/render-error-page';
 import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { HtmlPage } from '../html-page';
+import { renderErrorPage } from '../render-error-page';
 
 type SearchResultsPage = (
   dependencies: Dependencies,

@@ -12,11 +12,6 @@ export const toNotFound = (): ErrorPageBodyViewModel => toErrorPageBodyViewModel
   message: toHtmlFragment('Page not found.'),
 });
 
-export const toUnavailable = (): ErrorPageBodyViewModel => toErrorPageBodyViewModel({
-  type: DE.unavailable,
-  message: toHtmlFragment('Sorry, something went wrong. Please try again later.'),
-});
-
 type ConstructPageFromDecodedParams<P> = (params: P) => ReturnType<ConstructPage>;
 
 export const createPageFromParams = <P>(

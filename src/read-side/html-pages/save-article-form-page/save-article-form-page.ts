@@ -6,8 +6,9 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
+import * as DE from '../../../types/data-error';
 import { ConstructLoggedInPage } from '../construct-page';
-import { toUnavailable } from '../create-page-from-params';
+import { renderErrorPage } from '../render-error-page';
 
 export const saveArticleFormPage = (
   dependencies: Dependencies,
@@ -16,12 +17,9 @@ export const saveArticleFormPage = (
   paramsCodec.decode,
   E.mapLeft((errors) => {
     dependencies.logger('warn', 'saveArticleFormPage params codec failed', { errors: formatValidationErrors(errors) });
-    return errors;
+    return DE.notFound;
   }),
   TE.fromEither,
   TE.chainW(constructViewModel(dependencies, userId)),
-  TE.bimap(
-    toUnavailable,
-    renderAsHtml,
-  ),
+  TE.bimap(renderErrorPage, renderAsHtml),
 );
