@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../../../src/read-side/html-pages/group-page/group-add-a-featured-list-form-page/construct-view-model';
+import { constructViewModel } from '../../../../../src/read-side/html-pages/group-page/group-management-page/construct-view-model';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryWord } from '../../../../helpers';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
