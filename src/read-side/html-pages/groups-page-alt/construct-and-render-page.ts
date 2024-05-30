@@ -17,8 +17,5 @@ export const constructAndRenderPage = (dependencies: Dependencies): GroupsPage =
   TE.map((viewModel) => viewModel.groupCards),
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderGroups),
-  TE.bimap(
-    toUnavailable,
-    renderAsHtml,
-  ),
+  TE.bimap(toUnavailable, renderAsHtml),
 );
