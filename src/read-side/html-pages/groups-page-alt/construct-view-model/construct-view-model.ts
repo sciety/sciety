@@ -5,7 +5,7 @@ import * as DE from '../../../../types/data-error';
 import { GroupCardViewModel } from '../../shared-components/group-card';
 import { toListOfGroupCardViewModels } from '../to-list-of-group-card-view-models';
 
-type ViewModel = {
+export type ViewModel = {
   groupCards: ReadonlyArray<GroupCardViewModel>,
 };
 
