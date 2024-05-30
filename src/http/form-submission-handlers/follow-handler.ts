@@ -11,8 +11,9 @@ import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
 import * as GroupId from '../../types/group-id';
 import { GroupIdFromStringCodec } from '../../types/group-id';
-import { followCommandHandler } from '../../write-side/command-handlers';
+import { follow } from '../../write-side/command-handlers/follow-command-handler';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
@@ -60,7 +61,8 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
           (userId) => {
             context.redirect('back');
             return pipe(
-              followCommandHandler(dependencies)({ userId, groupId: params.groupId }),
+              { userId, groupId: params.groupId },
+              executeResourceAction(dependencies, follow),
               T.chain(() => next),
             );
           },
