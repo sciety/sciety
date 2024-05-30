@@ -12,7 +12,6 @@ type GroupsPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
 export const constructAndRenderPage = (dependencies: Dependencies): GroupsPage => pipe(
   constructViewModel(dependencies),
-  TE.map((viewModel) => viewModel.groupCards),
   TE.map(renderPage),
   TE.bimap(toUnavailable, renderAsHtml),
 );

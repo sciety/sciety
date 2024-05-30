@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from './construct-view-model/construct-view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../types/html-fragment';
-import { GroupCardViewModel, renderGroupCard } from '../shared-components/group-card';
+import { renderGroupCard } from '../shared-components/group-card';
 import { renderListItems } from '../shared-components/list-items';
 import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderSupplementaryCard } from '../shared-components/supplementary-card';
@@ -23,15 +23,15 @@ const supplementaryItems = [
   ),
 ];
 
-export const renderPage = (groupCards: ReadonlyArray<GroupCardViewModel>): HtmlFragment => pipe(
-  groupCards,
+export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
+  viewModel.groupCards,
   renderGroupCards,
   renderListItems,
   renderListOfCards,
   (listOfCards) => `
   <header class="page-header">
     <h1>
-      Groups
+      ${viewModel.title}
     </h1>
     <p>A group on Sciety represents a team of scientists who evaluate and curate preprint research articles.</p>
     <p>Select a group to follow their work.</p>
