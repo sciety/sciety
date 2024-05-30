@@ -1,2 +1,1 @@
-// ts-unused-exports:disable-next-line
-export { groupsPage as groupsPageAlt } from './groups-page';
+export { constructAndRenderPage } from './construct-and-render-page';

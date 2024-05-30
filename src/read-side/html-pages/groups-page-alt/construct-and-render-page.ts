@@ -11,8 +11,7 @@ import { renderGroupCard } from '../shared-components/group-card';
 
 type GroupsPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
 
-// ts-unused-exports:disable-next-line
-export const groupsPage = (dependencies: Dependencies): GroupsPage => pipe(
+export const constructAndRenderPage = (dependencies: Dependencies): GroupsPage => pipe(
   constructViewModel(dependencies),
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderGroups),

@@ -25,7 +25,7 @@ import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParams
 import { createPageFromParams } from '../read-side/html-pages/create-page-from-params';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../read-side/html-pages/edit-list-details-form-page';
 import { groupsPage } from '../read-side/html-pages/groups-page';
-import { groupsPageAlt } from '../read-side/html-pages/groups-page-alt';
+import * as GPA from '../read-side/html-pages/groups-page-alt';
 import { homePage, homePageLayout } from '../read-side/html-pages/home-page';
 import { legalPage } from '../read-side/html-pages/legal-page';
 import { page as listPage, paramsCodec as listPageParams } from '../read-side/html-pages/list-page';
@@ -192,7 +192,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/groups-alt',
-    pageHandler(adapters, () => groupsPageAlt(adapters)),
+    pageHandler(adapters, () => GPA.constructAndRenderPage(adapters)),
   );
 
   router.get(
