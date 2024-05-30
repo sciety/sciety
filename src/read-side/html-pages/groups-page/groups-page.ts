@@ -5,8 +5,8 @@ import { constructViewModel } from './construct-view-model/construct-view-model'
 import { Dependencies } from './construct-view-model/dependencies';
 import { renderGroups } from './render-groups';
 import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
-import { toUnavailable } from '../create-page-from-params';
 import { HtmlPage, NotHtml, toHtmlPage } from '../html-page';
+import { renderErrorPage } from '../render-error-page';
 import { renderGroupCard } from '../shared-components/group-card';
 
 type GroupsPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
@@ -16,7 +16,7 @@ export const groupsPage = (dependencies: Dependencies): GroupsPage => pipe(
   TE.map(RA.map(renderGroupCard)),
   TE.map(renderGroups),
   TE.bimap(
-    toUnavailable,
+    renderErrorPage,
     (content) => toHtmlPage({
       title: 'Groups',
       content,
