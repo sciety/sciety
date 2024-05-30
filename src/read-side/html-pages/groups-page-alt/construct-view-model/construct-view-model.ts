@@ -5,7 +5,8 @@ import * as DE from '../../../../types/data-error';
 import { GroupCardViewModel } from '../../shared-components/group-card';
 import { toListOfGroupCardViewModels } from '../to-list-of-group-card-view-models';
 
-type ViewModel = {
+export type ViewModel = {
+  title: string,
   groupCards: ReadonlyArray<GroupCardViewModel>,
 };
 
@@ -14,5 +15,8 @@ export const constructViewModel = (
 ): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   dependencies.getAllGroups(),
   toListOfGroupCardViewModels(dependencies),
-  TE.map((groupCards) => ({ groupCards })),
+  TE.map((groupCards) => ({
+    title: 'Groups',
+    groupCards,
+  })),
 );
