@@ -26,5 +26,6 @@ export const constructViewModel = (dependencies: Dependencies, userId: UserId) =
     pageHeading: `Group management details for ${group.name}`,
     groupId: group.id,
     successRedirectPath: constructGroupPageHref(group),
+    groupHomePageHref: constructGroupPageHref(group),
   })),
 );

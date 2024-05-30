@@ -15,7 +15,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     You are able to see this page as you are a designated representative for a Sciety group.
   </p>
   <p>
-  <a href="#">View public group page</a>
+    <a href="${viewModel.groupHomePageHref}">View public group page</a>
   </p>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
     <section>

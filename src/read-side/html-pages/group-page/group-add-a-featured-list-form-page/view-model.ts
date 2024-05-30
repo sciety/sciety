@@ -4,4 +4,5 @@ export type ViewModel = {
   pageHeading: string,
   groupId: GroupId,
   successRedirectPath: string,
+  groupHomePageHref: string,
 };
