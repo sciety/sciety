@@ -5,6 +5,8 @@
 
 $_label-font-size: functions.px-to-rem(20px);
 $_microcopy-colour: settings.$colour-text-secondary;
+$_text-input-height: 3rem;
+$_clear-button-inline-size: 48px;
 
 .error-summary {
   border: settings.$border-width solid settings.$colour-alert;
@@ -97,4 +99,17 @@ $_microcopy-colour: settings.$colour-text-secondary;
 
 .standard-form__cancel {
   @include button.secondary-link();
+}
+
+.standard-form__full_width_text_input {
+  border: settings.$border-width solid settings.$colour-furniture;
+  border-radius: settings.$border-radius;
+  height: $_text-input-height;
+  width: 100%;
+  padding-top: functions.px-to-rem(17px);
+  padding-bottom: functions.px-to-rem(17px);
+  padding-left: functions.px-to-rem(12px);
+  padding-right: functions.px-to-rem($_clear-button-inline-size);
+  margin-bottom: functions.px-to-rem(8px);
+  color: settings.$colour-text-primary;
 }
