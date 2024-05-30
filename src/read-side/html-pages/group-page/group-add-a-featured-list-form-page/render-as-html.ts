@@ -14,6 +14,9 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     From here you can manage your group pages on Sciety.
     You are able to see this page as you are a designated representative for a Sciety group.
   </p>
+  <p>
+  <a href="#">View public group page</a>
+  </p>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
     <section>
       <input type="hidden" name="forGroup" value="${viewModel.groupId}">
