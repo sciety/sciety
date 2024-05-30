@@ -8,9 +8,14 @@ import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderSupplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../supplementary-info';
 
-const renderGroupCardList = (groupCards: ViewModel['groupCards']) => pipe(
+const renderGroupCards = (groupCards: ViewModel['groupCards']): ReadonlyArray<HtmlFragment> => pipe(
   groupCards,
   RA.map(renderGroupCard),
+);
+
+const renderGroupCardList = (groupCards: ViewModel['groupCards']) => pipe(
+  groupCards,
+  renderGroupCards,
   renderListItems,
   renderListOfCards,
 );
