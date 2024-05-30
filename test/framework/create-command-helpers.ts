@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ReadAndWriteSides } from './create-read-and-write-sides';
 import { ArticleId } from '../../src/types/article-id';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
 import { GroupId } from '../../src/types/group-id';
 import { ListId } from '../../src/types/list-id';
 import { UserId } from '../../src/types/user-id';
+import { unfollowCommandHandler } from '../../src/write-side/command-handlers';
 import { follow } from '../../src/write-side/command-handlers/follow-command-handler';
 import {
   AddGroupCommand,
@@ -55,7 +55,6 @@ const invoke = <C extends GenericCommand>(
 
 export const createCommandHelpers = (
   dependencies: DependenciesForExecuteResourceAction,
-  commandHandlers: ReadAndWriteSides['commandHandlers'],
 ): CommandHelpers => ({
   addArticleToList: async (articleId, listId) => pipe(
     {
@@ -86,7 +85,7 @@ export const createCommandHelpers = (
       userId,
       groupId,
     },
-    invoke(commandHandlers.unfollowGroup, 'unfollowGroup'),
+    invoke(unfollowCommandHandler(dependencies), 'unfollowGroup'),
   ),
   updateEvaluation: invoke(executeResourceAction(dependencies, evaluation.update), 'updateEvaluation'),
   updateGroupDetails: async (groupId, largeLogoPath) => pipe(

@@ -1,6 +1,3 @@
-export { createUserAccountCommandHandler } from './create-user-account-command-handler';
-export { updateUserDetailsCommandHandler } from './update-user-details-command-handler';
-export { recordEvaluationPublicationCommandHandler } from './record-evaluation-publication-command-handler';
 export { createListCommandHandler } from './create-list-command-handler';
 export { recordSubjectAreaCommandHandler } from './record-subject-area-command-handler';
 export { removeArticleFromListCommandHandler } from './remove-article-from-list-command-handler';
