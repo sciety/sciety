@@ -7,23 +7,8 @@ import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
 import * as DE from '../../../../types/data-error';
-import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../../../types/error-page-body-view-model';
-import { toHtmlFragment } from '../../../../types/html-fragment';
 import { ConstructLoggedInPage } from '../../construct-page';
-
-const renderErrorPage = (e: DE.DataError): ErrorPageBodyViewModel => pipe(
-  e,
-  DE.match({
-    notFound: () => 'No such group. Please check and try again.',
-    unavailable: () => 'We couldn\'t retrieve this information. Please try again.',
-    notAuthorised: () => 'You aren\'t permitted to do that.',
-  }),
-  toHtmlFragment,
-  (message) => toErrorPageBodyViewModel({
-    type: e,
-    message,
-  }),
-);
+import { renderErrorPage } from '../common-components/render-error-page';
 
 export const page = (
   dependencies: Dependencies,
