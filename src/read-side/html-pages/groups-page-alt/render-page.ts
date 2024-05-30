@@ -8,9 +8,11 @@ import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderSupplementaryCard } from '../shared-components/supplementary-card';
 import { supplementaryInfo } from '../supplementary-info';
 
-const renderGroupCards = (groupCards: ViewModel['groupCards']) => pipe(
+const renderGroupCardList = (groupCards: ViewModel['groupCards']) => pipe(
   groupCards,
   RA.map(renderGroupCard),
+  renderListItems,
+  renderListOfCards,
 );
 
 const supplementaryItems = [
@@ -23,12 +25,7 @@ const supplementaryItems = [
   ),
 ];
 
-export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
-  viewModel.groupCards,
-  renderGroupCards,
-  renderListItems,
-  renderListOfCards,
-  (listOfCards) => `
+export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header">
     <h1>
       ${viewModel.title}
@@ -36,8 +33,6 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     <p>A group on Sciety represents a team of scientists who evaluate and curate preprint research articles.</p>
     <p>Select a group to follow their work.</p>
   </header>
-  ${listOfCards}
+  ${renderGroupCardList(viewModel.groupCards)}
   ${supplementaryInfo(supplementaryItems)}
-  `,
-  toHtmlFragment,
-);
+  `);
