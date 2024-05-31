@@ -10,6 +10,6 @@ export const selectAllListsPromotedByGroup = (readModel: ReadModel) => (groupId:
   R.lookup(groupId),
   O.match(
     () => [],
-    (promotedListIds) => promotedListIds,
+    (promotedLists) => Array.from(promotedLists.values()),
   ),
 );
