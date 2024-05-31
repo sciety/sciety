@@ -13,7 +13,6 @@ describe('create', () => {
     byGroup: command.forGroup,
     listId: command.listId,
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const listPromotionRemoved = {
     ...arbitraryListPromotionRemovedEvent(),
     byGroup: command.forGroup,
@@ -34,7 +33,7 @@ describe('create', () => {
     [[]],
     [[otherGroupPromotedList]],
     [[otherListPromoted]],
-    // [[listPromoted, listPromotionRemoved]],
+    [[listPromoted, listPromotionRemoved]],
   ])('when the list is currently not promoted by the group', (events) => {
     beforeEach(() => {
       result = pipe(
