@@ -93,4 +93,8 @@ describe('create', () => {
       });
     });
   });
+
+  describe('when the list is not currently promoted by the group, but was promoted in the past', () => {
+    it.todo('raises ListPromotionCreated event');
+  });
 });
