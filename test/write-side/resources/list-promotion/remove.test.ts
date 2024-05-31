@@ -41,7 +41,7 @@ describe('remove', () => {
       );
     });
 
-    it.failing('succeeds, doing nothing', () => {
+    it('succeeds, doing nothing', () => {
       expect(result).toHaveLength(0);
     });
   });
