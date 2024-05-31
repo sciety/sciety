@@ -30,6 +30,16 @@ describe('remove', () => {
   });
 
   describe('when the list is not promoted', () => {
-    it.todo('succeeds, doing nothing');
+    beforeEach(() => {
+      result = pipe(
+        [],
+        remove(command),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it.failing('succeeds, doing nothing', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 });
