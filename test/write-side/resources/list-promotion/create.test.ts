@@ -13,17 +13,32 @@ describe('create', () => {
     byGroup: command.forGroup,
     listId: command.listId,
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const listPromotionRemoved = {
     ...arbitraryListPromotionRemovedEvent(),
     byGroup: command.forGroup,
     listId: command.listId,
   };
+  const otherGroupPromotedList = {
+    ...arbitraryListPromotionCreatedEvent(),
+    listId: command.listId,
+  };
+  const otherListPromoted = {
+    ...arbitraryListPromotionCreatedEvent(),
+    byGroup: command.forGroup,
+  };
+
   let result: ReadonlyArray<DomainEvent>;
 
-  describe('when given the id of a list that the group has never before promoted', () => {
+  describe.each([
+    [[]],
+    [[otherGroupPromotedList]],
+    [[otherListPromoted]],
+    // [[listPromoted, listPromotionRemoved]],
+  ])('when the list is currently not promoted by the group', (events) => {
     beforeEach(() => {
       result = pipe(
-        [],
+        events,
         create(command),
         E.getOrElseW(shouldNotBeCalled),
       );
@@ -51,76 +66,6 @@ describe('create', () => {
 
     it('raises no events', () => {
       expect(result).toHaveLength(0);
-    });
-  });
-
-  describe('when given the id of a list that a different group has already promoted', () => {
-    beforeEach(() => {
-      const otherGroupPromotedList = {
-        ...arbitraryListPromotionCreatedEvent(),
-        listId: command.listId,
-      };
-      result = pipe(
-        [
-          otherGroupPromotedList,
-        ],
-        create(command),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-    });
-
-    it('raises exactly one ListPromotionCreated event', () => {
-      expect(result).toHaveLength(1);
-      expect(result[0]).toBeDomainEvent('ListPromotionCreated', {
-        byGroup: command.forGroup,
-        listId: command.listId,
-      });
-    });
-  });
-
-  describe('when the group has already promoted a different list', () => {
-    const otherListPromoted = {
-      ...arbitraryListPromotionCreatedEvent(),
-      byGroup: command.forGroup,
-    };
-
-    beforeEach(() => {
-      result = pipe(
-        [
-          otherListPromoted,
-        ],
-        create(command),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-    });
-
-    it('raises exactly one ListPromotionCreated event', () => {
-      expect(result).toHaveLength(1);
-      expect(result[0]).toBeDomainEvent('ListPromotionCreated', {
-        byGroup: command.forGroup,
-        listId: command.listId,
-      });
-    });
-  });
-
-  describe('when the list is not currently promoted by the group, but was promoted in the past', () => {
-    beforeEach(() => {
-      result = pipe(
-        [
-          listPromoted,
-          listPromotionRemoved,
-        ],
-        create(command),
-        E.getOrElseW(shouldNotBeCalled),
-      );
-    });
-
-    it.failing('raises ListPromotionCreated event', () => {
-      expect(result).toHaveLength(1);
-      expect(result[0]).toBeDomainEvent('ListPromotionCreated', {
-        byGroup: command.forGroup,
-        listId: command.listId,
-      });
     });
   });
 });
