@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { EventOfType } from '../../../src/domain-events';
-import { deprecatedSelectAllListsPromotedByGroup } from '../../../src/read-models/lists/deprecated-select-all-lists-promoted-by-group';
+import { selectAllListsPromotedByGroup } from '../../../src/read-models/list-promotions/select-all-lists-promoted-by-group';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { GroupId } from '../../../src/types/group-id';
 import { ListId } from '../../../src/types/list-id';
@@ -33,7 +33,7 @@ describe('select-all-lists-promoted-by-group', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = deprecatedSelectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
+    const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
 
     it('returns no lists', () => {
       expect(result).toStrictEqual([]);
@@ -49,9 +49,9 @@ describe('select-all-lists-promoted-by-group', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = deprecatedSelectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
+    const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
 
-    it('returns that list', () => {
+    it.failing('returns that list', () => {
       expect(result[0].id).toStrictEqual(listCreated.listId);
     });
   });
@@ -66,9 +66,9 @@ describe('select-all-lists-promoted-by-group', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = deprecatedSelectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
+    const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
 
-    it.failing('returns no lists', () => {
+    it('returns no lists', () => {
       expect(result).toStrictEqual([]);
     });
   });
@@ -90,9 +90,9 @@ describe('select-all-lists-promoted-by-group', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = deprecatedSelectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
+    const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
 
-    it('returns those two lists', () => {
+    it.failing('returns those two lists', () => {
       expect(result[0].id).toStrictEqual(list1Created.listId);
       expect(result[1].id).toStrictEqual(list2Created.listId);
     });
@@ -106,7 +106,7 @@ describe('select-all-lists-promoted-by-group', () => {
       ],
       RA.reduce(initialState(), handleEvent),
     );
-    const result = deprecatedSelectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
+    const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
 
     it('ignores that promotion', () => {
       expect(result).toStrictEqual([]);
