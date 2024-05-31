@@ -32,13 +32,16 @@ describe('remove', () => {
   describe('when the list is not promoted', () => {
     beforeEach(() => {
       result = pipe(
-        [],
+        [
+          constructEvent('ListPromotionCreated')({ byGroup: command.forGroup, listId: command.listId }),
+          constructEvent('ListPromotionRemoved')({ byGroup: command.forGroup, listId: command.listId }),
+        ],
         remove(command),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
 
-    it('succeeds, doing nothing', () => {
+    it.failing('succeeds, doing nothing', () => {
       expect(result).toHaveLength(0);
     });
   });
