@@ -11,6 +11,7 @@ import {
   recordEvaluationPublicationCommandCodec,
   recordEvaluationRemovalCommandCodec,
   removeArticleFromListCommandCodec,
+  removeListPromotionCommandCodec,
   updateEvaluationCommandCodec,
   updateGroupDetailsCommandCodec,
   updateUserDetailsCommandCodec,
@@ -45,6 +46,8 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts, expect
   router.post('/api/erase-evaluation', configurePostMiddleware(eraseEvaluationCommandCodec, evaluationResource.erase));
 
   router.post('/api/promote-list', configurePostMiddleware(promoteListCommandCodec, listPromotionResource.create));
+
+  router.post('/api/remove-list-promotion', configurePostMiddleware(removeListPromotionCommandCodec, listPromotionResource.remove));
 
   router.post('/api/record-evaluation-publication', configurePostMiddleware(recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
 
