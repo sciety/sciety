@@ -6,7 +6,7 @@ import { selectAllListsPromotedByGroup } from '../../../src/read-models/lists/se
 import { GroupId } from '../../../src/types/group-id';
 import { ListId } from '../../../src/types/list-id';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
-import { arbitraryListPromotionCreatedEvent } from '../../domain-events/list-promotion-resource-events.helper';
+import { arbitraryListPromotionCreatedEvent, arbitraryListPromotionRemovedEvent } from '../../domain-events/list-promotion-resource-events.helper';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 
@@ -16,8 +16,15 @@ const listPromotedByGroup = (groupId: GroupId, listId: ListId): EventOfType<'Lis
   listId,
 });
 
+const listPromotionRemovedByGroup = (groupId: GroupId, listId: ListId): EventOfType<'ListPromotionRemoved'> => ({
+  ...arbitraryListPromotionRemovedEvent(),
+  byGroup: groupId,
+  listId,
+});
+
 describe('select-all-lists-promoted-by-group', () => {
   const groupJoined = arbitraryGroupJoinedEvent();
+  const listCreated = arbitraryListCreatedEvent();
 
   describe('when no lists have ever been promoted by a group', () => {
     const readModel = pipe(
@@ -34,7 +41,6 @@ describe('select-all-lists-promoted-by-group', () => {
   });
 
   describe('when a list has been promoted by a group', () => {
-    const listCreated = arbitraryListCreatedEvent();
     const readModel = pipe(
       [
         groupJoined,
@@ -51,7 +57,20 @@ describe('select-all-lists-promoted-by-group', () => {
   });
 
   describe('when a list has been promoted and later demoted by a group', () => {
-    it.todo('returns no lists');
+    const readModel = pipe(
+      [
+        groupJoined,
+        listCreated,
+        listPromotedByGroup(groupJoined.groupId, listCreated.listId),
+        listPromotionRemovedByGroup(groupJoined.groupId, listCreated.listId),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
+
+    it.failing('returns no lists', () => {
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe('when a list has been promoted, demoted and promoted again by a group', () => {

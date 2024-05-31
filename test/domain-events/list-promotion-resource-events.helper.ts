@@ -7,7 +7,6 @@ export const arbitraryListPromotionCreatedEvent = (): EventOfType<'ListPromotion
   listId: arbitraryListId(),
 });
 
-// ts-unused-exports:disable-next-line
 export const arbitraryListPromotionRemovedEvent = (): EventOfType<'ListPromotionRemoved'> => constructEvent('ListPromotionRemoved')({
   byGroup: arbitraryGroupId(),
   listId: arbitraryListId(),
