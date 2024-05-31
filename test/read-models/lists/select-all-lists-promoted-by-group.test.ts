@@ -50,6 +50,14 @@ describe('select-all-lists-promoted-by-group', () => {
     });
   });
 
+  describe('when a list has been promoted and later demoted by a group', () => {
+    it.todo('returns no lists');
+  });
+
+  describe('when a list has been promoted, demoted and promoted again by a group', () => {
+    it.todo('returns that list');
+  });
+
   describe('when two lists have been promoted by a group', () => {
     const list1Created = arbitraryListCreatedEvent();
     const list2Created = arbitraryListCreatedEvent();
