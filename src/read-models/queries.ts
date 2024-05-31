@@ -8,6 +8,7 @@ import { groupActivity } from './group-activity';
 import { groupAuthorisations } from './group-authorisations';
 import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
+import { listPromotions } from './list-promotions';
 import { lists } from './lists';
 import { users } from './users';
 
@@ -22,6 +23,7 @@ const queries = {
   ...groupAuthorisations.queries,
   ...groups.queries,
   ...idsOfEvalutedArticlesLists.queries,
+  ...listPromotions.queries,
   ...lists.queries,
   ...users.queries,
 };

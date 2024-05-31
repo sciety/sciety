@@ -11,6 +11,7 @@ import { groupAuthorisations } from './group-authorisations';
 import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { InitialisedReadModel, UnionToIntersection } from './initialised-read-model';
+import { listPromotions } from './list-promotions';
 import { lists } from './lists';
 import { Queries } from './queries';
 import { users } from './users';
@@ -36,6 +37,7 @@ export const dispatcher = (logger: Logger): Dispatcher => {
     new InitialisedReadModel(groupAuthorisations),
     new InitialisedReadModel(groups),
     new InitialisedReadModel(idsOfEvalutedArticlesLists),
+    new InitialisedReadModel(listPromotions),
     new InitialisedReadModel(lists),
     new InitialisedReadModel(users),
   ];
