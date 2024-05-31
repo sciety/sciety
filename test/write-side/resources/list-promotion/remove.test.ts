@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { remove } from '../../../../src/write-side/resources/list-promotion/remove';
-import { arbitraryListPromotionRemovedEvent } from '../../../domain-events/list-promotion-resource-events.helper';
+import { arbitraryListPromotionCreatedEvent, arbitraryListPromotionRemovedEvent } from '../../../domain-events/list-promotion-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryRemoveListPromotionCommand } from '../../commands/remove-list-promotion-command.helper';
 
@@ -14,7 +14,7 @@ describe('remove', () => {
 
   describe.each([
     [[listPromotionCreated]],
-    // [[listPromotionCreated, arbitraryListPromotionRemovedEvent()]],
+    [[listPromotionCreated, arbitraryListPromotionRemovedEvent()]],
   ])('when the list is promoted', (events) => {
     beforeEach(() => {
       result = pipe(
@@ -34,9 +34,9 @@ describe('remove', () => {
   });
 
   describe.each([
-    // [[]],
+    [[]],
     [[listPromotionCreated, listPromotionRemoved]],
-    // [[arbitraryListPromotionCreatedEvent()]],
+    [[arbitraryListPromotionCreatedEvent()]],
     [[listPromotionCreated, listPromotionRemoved, arbitraryListPromotionRemovedEvent()]],
   ])('when the list is not promoted', (events: ReadonlyArray<DomainEvent>) => {
     beforeEach(() => {
