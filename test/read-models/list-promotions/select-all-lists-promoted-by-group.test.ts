@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { EventOfType } from '../../../src/domain-events';
+import { handleEvent, initialState } from '../../../src/read-models/list-promotions/handle-event';
 import { selectAllListsPromotedByGroup } from '../../../src/read-models/list-promotions/select-all-lists-promoted-by-group';
-import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { GroupId } from '../../../src/types/group-id';
 import { ListId } from '../../../src/types/list-id';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
