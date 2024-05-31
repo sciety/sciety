@@ -66,6 +66,13 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       }
       readmodel.byPromotingGroupId[event.byGroup].set(list.id, list);
     }
+  } else if (isEventOfType('ListPromotionRemoved')(event)) {
+    const list = readmodel.byListId[event.listId];
+    if (list !== undefined) {
+      if (readmodel.byPromotingGroupId[event.byGroup] !== undefined) {
+        readmodel.byPromotingGroupId[event.byGroup].delete(list.id);
+      }
+    }
   }
   return readmodel;
 };

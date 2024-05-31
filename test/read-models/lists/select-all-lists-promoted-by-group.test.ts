@@ -68,7 +68,7 @@ describe('select-all-lists-promoted-by-group', () => {
     );
     const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
 
-    it.failing('returns no lists', () => {
+    it('returns no lists', () => {
       expect(result).toStrictEqual([]);
     });
   });
