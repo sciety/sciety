@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../../src/domain-events';
 import { create } from '../../../../src/write-side/resources/list-promotion';
-import { arbitraryListPromotionCreatedEvent } from '../../../domain-events/list-promotion-resource-events.helper';
+import { arbitraryListPromotionCreatedEvent, arbitraryListPromotionRemovedEvent } from '../../../domain-events/list-promotion-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryPromoteListCommand } from '../../commands/promote-list-command.helper';
 
@@ -95,6 +95,31 @@ describe('create', () => {
   });
 
   describe('when the list is not currently promoted by the group, but was promoted in the past', () => {
-    it.todo('raises ListPromotionCreated event');
+    beforeEach(() => {
+      result = pipe(
+        [
+          {
+            ...arbitraryListPromotionCreatedEvent(),
+            byGroup: command.forGroup,
+            listId: command.listId,
+          },
+          {
+            ...arbitraryListPromotionRemovedEvent(),
+            byGroup: command.forGroup,
+            listId: command.listId,
+          },
+        ],
+        create(command),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it.failing('raises ListPromotionCreated event', () => {
+      expect(result).toHaveLength(1);
+      expect(result[0]).toBeDomainEvent('ListPromotionCreated', {
+        byGroup: command.forGroup,
+        listId: command.listId,
+      });
+    });
   });
 });
