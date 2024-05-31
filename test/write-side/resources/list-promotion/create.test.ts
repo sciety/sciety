@@ -8,6 +8,16 @@ import { arbitraryPromoteListCommand } from '../../commands/promote-list-command
 
 describe('create', () => {
   const command = arbitraryPromoteListCommand();
+  const listPromoted = {
+    ...arbitraryListPromotionCreatedEvent(),
+    byGroup: command.forGroup,
+    listId: command.listId,
+  };
+  const listPromotionRemoved = {
+    ...arbitraryListPromotionRemovedEvent(),
+    byGroup: command.forGroup,
+    listId: command.listId,
+  };
   let result: ReadonlyArray<DomainEvent>;
 
   describe('when given the id of a list that the group has never before promoted', () => {
@@ -32,11 +42,7 @@ describe('create', () => {
     beforeEach(() => {
       result = pipe(
         [
-          {
-            ...arbitraryListPromotionCreatedEvent(),
-            listId: command.listId,
-            byGroup: command.forGroup,
-          },
+          listPromoted,
         ],
         create(command),
         E.getOrElseW(shouldNotBeCalled),
@@ -50,12 +56,13 @@ describe('create', () => {
 
   describe('when given the id of a list that a different group has already promoted', () => {
     beforeEach(() => {
+      const otherGroupPromotedList = {
+        ...arbitraryListPromotionCreatedEvent(),
+        listId: command.listId,
+      };
       result = pipe(
         [
-          {
-            ...arbitraryListPromotionCreatedEvent(),
-            listId: command.listId,
-          },
+          otherGroupPromotedList,
         ],
         create(command),
         E.getOrElseW(shouldNotBeCalled),
@@ -72,13 +79,15 @@ describe('create', () => {
   });
 
   describe('when the group has already promoted a different list', () => {
+    const otherListPromoted = {
+      ...arbitraryListPromotionCreatedEvent(),
+      byGroup: command.forGroup,
+    };
+
     beforeEach(() => {
       result = pipe(
         [
-          {
-            ...arbitraryListPromotionCreatedEvent(),
-            byGroup: command.forGroup,
-          },
+          otherListPromoted,
         ],
         create(command),
         E.getOrElseW(shouldNotBeCalled),
@@ -98,16 +107,8 @@ describe('create', () => {
     beforeEach(() => {
       result = pipe(
         [
-          {
-            ...arbitraryListPromotionCreatedEvent(),
-            byGroup: command.forGroup,
-            listId: command.listId,
-          },
-          {
-            ...arbitraryListPromotionRemovedEvent(),
-            byGroup: command.forGroup,
-            listId: command.listId,
-          },
+          listPromoted,
+          listPromotionRemoved,
         ],
         create(command),
         E.getOrElseW(shouldNotBeCalled),
