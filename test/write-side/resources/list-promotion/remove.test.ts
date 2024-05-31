@@ -20,7 +20,7 @@ describe('remove', () => {
       );
     });
 
-    it.failing('removes the promotion', () => {
+    it('removes the promotion', () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toBeDomainEvent('ListPromotionRemoved', {
         byGroup: command.forGroup,
