@@ -74,7 +74,21 @@ describe('select-all-lists-promoted-by-group', () => {
   });
 
   describe('when a list has been promoted, demoted and promoted again by a group', () => {
-    it.todo('returns that list');
+    const readModel = pipe(
+      [
+        groupJoined,
+        listCreated,
+        listPromotedByGroup(groupJoined.groupId, listCreated.listId),
+        listPromotionRemovedByGroup(groupJoined.groupId, listCreated.listId),
+        listPromotedByGroup(groupJoined.groupId, listCreated.listId),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
+
+    it('returns that list', () => {
+      expect(result[0].id).toStrictEqual(listCreated.listId);
+    });
   });
 
   describe('when two lists have been promoted by a group', () => {
