@@ -1,25 +1,22 @@
-import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as RM from 'fp-ts/ReadonlyMap';
-import { pipe } from 'fp-ts/function';
-import { Eq as stringEq } from 'fp-ts/string';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ReadModel } from './handle-event';
+import { RawUserInput } from '../../read-side';
 import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
+import { ListOwnerId } from '../../types/list-owner-id';
+import { ListEntry } from '../lists/list';
 
 type PromotedList = {
   id: ListId,
+  name: string,
+  description: RawUserInput,
+  entries: ReadonlyArray<ListEntry>,
+  updatedAt: Date,
+  ownerId: ListOwnerId,
 };
 
 export const selectAllListsPromotedByGroup = (
   readModel: ReadModel,
 ) => (
   groupId: GroupId,
-): ReadonlyArray<PromotedList> => pipe(
-  readModel,
-  RM.lookup(stringEq)(groupId),
-  O.map(RA.map((listId) => ({
-    id: listId,
-  }))),
-  O.getOrElseW(() => []),
-);
+): ReadonlyArray<PromotedList> => [];
