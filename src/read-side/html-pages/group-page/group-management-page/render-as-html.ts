@@ -4,6 +4,12 @@ import { inputFieldNames } from '../../../../standards';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
 
+const renderFeaturedLists = () => ` 
+<ul>
+  <li><a href="#listurl">List name</a></li>
+</ul>
+`;
+
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.pageHeading,
   content: toHtmlFragment(`
@@ -19,9 +25,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   </p>
   <section>
     <h2>Currently featured lists</h2>
-    <ul>
-      <li><a href="#listurl">List name</a></li>
-    </ul>
+   ${renderFeaturedLists()}
   </section>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
     <h2>Feature a list</h2>
