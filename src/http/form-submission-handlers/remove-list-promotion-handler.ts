@@ -8,7 +8,8 @@ import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Queries } from '../../read-models';
-import { removeListPromotionCommandCodec } from '../../write-side/commands';
+import { UserId } from '../../types/user-id';
+import { RemoveListPromotionCommand, removeListPromotionCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listPromotion from '../../write-side/resources/list-promotion';
@@ -32,6 +33,10 @@ type Dependencies = EnsureUserIsLoggedInDependencies
 & Queries
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
 
+const isAuthorised = (
+  dependencies: Dependencies, loggedInUser: UserId, command: RemoveListPromotionCommand,
+) => dependencies.isUserAdminOfGroup(loggedInUser, command.forGroup);
+
 export const removeListPromotionHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const loggedInUserId = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
   if (O.isNone(loggedInUserId)) {
@@ -46,11 +51,13 @@ export const removeListPromotionHandler = (dependencies: Dependencies): Middlewa
   if (E.isLeft(formBody)) {
     return;
   }
-  if (!dependencies.isUserAdminOfGroup(loggedInUserId.value, formBody.right.forGroup)) {
+
+  const command = toCommand(formBody.right);
+
+  if (!isAuthorised(dependencies, loggedInUserId.value, command)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
   }
-  const command = toCommand(formBody.right);
 
   const commandResult = await pipe(
     command,
