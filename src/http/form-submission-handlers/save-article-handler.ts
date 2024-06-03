@@ -1,7 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
@@ -15,9 +13,10 @@ import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
 import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
 import { UserId } from '../../types/user-id';
-import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import * as list from '../../write-side/resources/list';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
 type Dependencies =
@@ -83,15 +82,14 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
     return;
   }
 
-  await pipe(
+  const commandResult = await pipe(
     command,
-    addArticleToListCommandHandler(dependencies),
-    TE.getOrElseW((error) => {
-      dependencies.logger('error', 'saveArticleHandler failed', { error });
-      return T.of(error);
-    }),
-    T.map(() => undefined),
+    executeResourceAction(dependencies, list.addArticle),
   )();
 
-  context.redirect(`/lists/${listId}`);
+  if (E.isRight(commandResult)) {
+    context.redirect(`/lists/${listId}`);
+    return;
+  }
+  sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'An unexpected error occurred.');
 };
