@@ -7,9 +7,11 @@ import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
 import { renderListItems } from '../../shared-components/list-items';
 
+const renderFeaturedList = (list: ViewModel['featuredLists'][number]) => `<a href="#listurl">${list.name}</a>`;
+
 const renderFeaturedLists = (featuredLists: ViewModel['featuredLists']) => pipe(
   featuredLists,
-  RA.map((list) => `<a href="#listurl">${list.name}</a>`),
+  RA.map((renderFeaturedList)),
   RA.map(toHtmlFragment),
   renderListItems,
   (items) => `<ul>${items}</ul>`,
