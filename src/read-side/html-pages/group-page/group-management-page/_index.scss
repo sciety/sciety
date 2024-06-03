@@ -1,5 +1,17 @@
 @use 'list';
+@use 'functions';
+@use 'button';
 
-.group-management__featured_list {
-	@include list.basics()
+.currently-featured-list {
+	@include list.basics();
+}
+
+.currently-featured-list__item {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: functions.px-to-rem(8px);
+
+	button {
+		@include button.secondary();
+	}
 }

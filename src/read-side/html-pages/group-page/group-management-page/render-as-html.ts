@@ -27,8 +27,8 @@ const renderFeaturedLists = (viewModel: ViewModel) => pipe(
   viewModel.featuredLists,
   RA.map((renderFeaturedList(viewModel.successRedirectPath, viewModel.groupId))),
   RA.map(toHtmlFragment),
-  renderListItems,
-  (items) => `<ul class="group-management__featured_list">${items}</ul>`,
+  (items) => renderListItems(items, 'currently-featured-list__item'),
+  (items) => `<ul class="currently-featured-list">${items}</ul>`,
 );
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
