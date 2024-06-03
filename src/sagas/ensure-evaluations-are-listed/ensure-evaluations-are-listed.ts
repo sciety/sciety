@@ -4,8 +4,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
-import { addArticleToListCommandHandler } from '../../write-side/command-handlers/add-article-to-list-command-handler';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import * as list from '../../write-side/resources/list';
 
 type Dependencies = Queries & DependenciesForCommands & {
   logger: Logger,
@@ -18,7 +19,7 @@ export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Pr
     RA.head,
     O.match(
       () => TE.right('no-events-created' as const),
-      (missingArticle) => addArticleToListCommandHandler(dependencies)({
+      (missingArticle) => executeResourceAction(dependencies, list.addArticle)({
         listId: missingArticle.listId,
         articleId: missingArticle.articleId,
       }),
