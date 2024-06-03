@@ -5,4 +5,5 @@ export type ViewModel = {
   groupId: GroupId,
   successRedirectPath: string,
   groupHomePageHref: string,
+  featuredLists: ReadonlyArray<unknown>,
 };

@@ -32,5 +32,6 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
     groupId: group.id,
     successRedirectPath: constructGroupPageHref(group),
     groupHomePageHref: constructGroupPageHref(group),
+    featuredLists: [],
   })),
 );
