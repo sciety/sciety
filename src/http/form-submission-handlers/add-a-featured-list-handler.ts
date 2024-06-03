@@ -8,6 +8,7 @@ import { Middleware } from 'koa';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Queries } from '../../read-models';
+import { inputFieldNames } from '../../standards/input-field-names';
 import { UserId } from '../../types/user-id';
 import { PromoteListCommand, promoteListCommandCodec } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
@@ -18,7 +19,7 @@ import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-respons
 const formBodyCodec = t.intersection([
   promoteListCommandCodec,
   t.strict({
-    successRedirectPath: tt.NonEmptyString,
+    [inputFieldNames.successRedirectPath]: tt.NonEmptyString,
   }),
 ]);
 

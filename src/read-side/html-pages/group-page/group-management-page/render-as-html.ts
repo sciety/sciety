@@ -18,7 +18,7 @@ const renderFeaturedList = (
   <form action="${pathToSubmitRemoveListPromotion()}" method="post">
     <input type="hidden" name="listId" value="${list.id}" />
     <input type="hidden" name="forGroup" value="${groupId}" />
-    <input type="hidden" name="successRedirectPath" value="${successRedirectPath}" />
+    <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${successRedirectPath}" />
     <button type="submit">Unfeature</button>
   </form>
 `;
@@ -59,7 +59,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <p class="standard-form__sub_heading_secondary_text">Choose a list to feature on your group page.</p>
       <section>
         <input type="hidden" name="forGroup" value="${viewModel.groupId}">
-        <input type="hidden" name="successRedirectPath" value="${viewModel.successRedirectPath}">
+        <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${viewModel.successRedirectPath}">
         <label for="listId" class="standard-form__sub_heading">List Id</label>
         <input type="text" id="listId" name="${inputFieldNames.listId}" class="standard-form__full_width_text_input" value="">
       </section>

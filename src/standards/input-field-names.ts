@@ -4,4 +4,5 @@ export const inputFieldNames = {
   listName: 'name' as const,
   success: 'success' as const,
   annotationContent: 'annotationContent' as const,
+  successRedirectPath: 'successRedirectPath' as const,
 };
