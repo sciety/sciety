@@ -2,11 +2,15 @@
 @use 'functions';
 @use 'button';
 
-.currently-featured-list {
-	@include list.basics();
+.currently-featured-lists {
+	margin-bottom: functions.px-to-rem(16px);
+
+	ul {
+		@include list.basics();
+	}
 }
 
-.currently-featured-list__item {
+.currently-featured-lists__item {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: functions.px-to-rem(8px);

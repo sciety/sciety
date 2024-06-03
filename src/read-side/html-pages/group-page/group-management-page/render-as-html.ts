@@ -27,8 +27,8 @@ const renderFeaturedLists = (viewModel: ViewModel) => pipe(
   viewModel.featuredLists,
   RA.map((renderFeaturedList(viewModel.successRedirectPath, viewModel.groupId))),
   RA.map(toHtmlFragment),
-  (items) => renderListItems(items, 'currently-featured-list__item'),
-  (items) => `<ul class="currently-featured-list">${items}</ul>`,
+  (items) => renderListItems(items, 'currently-featured-lists__item'),
+  (items) => `<ul>${items}</ul>`,
 );
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
@@ -44,9 +44,15 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   <p>
     <a href="${viewModel.groupHomePageHref}">View public group page</a>
   </p>
-  <section>
+  <section class="currently-featured-lists">
     <h2>Currently featured lists</h2>
-   ${renderFeaturedLists(viewModel)}
+   ${pipe(
+    viewModel.featuredLists,
+    RA.match(
+      () => '<p>Currently no featured lists</p>',
+      () => renderFeaturedLists(viewModel),
+    ),
+  )}
   </section>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
     <h2>Feature a list</h2>
