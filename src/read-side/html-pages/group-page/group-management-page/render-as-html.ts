@@ -20,7 +20,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   <section>
     <h2>Currently featured lists</h2>
     <ul>
-      <li>A list</li>
+      <li><a href="#listurl">List name</a></li>
     </ul>
   </section>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
