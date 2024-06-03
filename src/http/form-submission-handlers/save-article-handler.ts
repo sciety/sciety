@@ -14,6 +14,7 @@ import { inputFieldNames } from '../../standards';
 import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';
 import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
+import { UserId } from '../../types/user-id';
 import { addArticleToListCommandHandler } from '../../write-side/command-handlers';
 import { AddArticleToListCommand } from '../../write-side/commands';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
@@ -27,6 +28,18 @@ type Dependencies =
   {
     logger: Logger,
   };
+
+const isAuthorised = (
+  dependencies: Dependencies, loggedInUser: UserId, command: AddArticleToListCommand,
+) => {
+  const result = checkUserOwnsList(dependencies, command.listId, loggedInUser);
+  if (E.isLeft(result)) {
+    dependencies.logger('error', result.left.message, result.left.payload);
+    dependencies.logger('error', 'saveArticleHandler failed', { error: result.left });
+    return false;
+  }
+  return true;
+};
 
 const saveArticleHandlerFormBodyCodec = t.strict({
   [inputFieldNames.articleId]: articleIdCodec,
@@ -63,15 +76,12 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
 
   const listId = formBody.right[inputFieldNames.listId];
 
-  const logEntry = checkUserOwnsList(dependencies, listId, loggedInUserId.value);
-  if (E.isLeft(logEntry)) {
-    dependencies.logger('error', logEntry.left.message, logEntry.left.payload);
-    dependencies.logger('error', 'saveArticleHandler failed', { error: logEntry.left });
+  const command: AddArticleToListCommand = toCommand(formBody.right);
+
+  if (!isAuthorised(dependencies, loggedInUserId.value, command)) {
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
   }
-
-  const command: AddArticleToListCommand = toCommand(formBody.right);
 
   await pipe(
     command,
