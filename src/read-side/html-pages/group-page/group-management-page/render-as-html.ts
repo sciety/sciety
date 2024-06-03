@@ -1,13 +1,19 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from './view-model';
-import { pathToSubmitAddAFeaturedList } from '../../../../http/form-submission-handlers/submit-paths';
+import {
+  pathToSubmitAddAFeaturedList,
+  pathToSubmitRemoveListPromotion,
+} from '../../../../http/form-submission-handlers/submit-paths';
 import { inputFieldNames } from '../../../../standards';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
 import { renderListItems } from '../../shared-components/list-items';
 
-const renderFeaturedList = (list: ViewModel['featuredLists'][number]) => `<a href="#listurl">${list.name}</a>`;
+const renderFeaturedList = (list: ViewModel['featuredLists'][number]) => `
+  <a href="#listurl">${list.name}</a>
+  <form action="${pathToSubmitRemoveListPromotion()}" method="post"><button type="submit">Unfeature</button></form>
+`;
 
 const renderFeaturedLists = (featuredLists: ViewModel['featuredLists']) => pipe(
   featuredLists,
