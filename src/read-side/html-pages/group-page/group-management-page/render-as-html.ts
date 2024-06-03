@@ -10,14 +10,19 @@ import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
 import { renderListItems } from '../../shared-components/list-items';
 
-const renderFeaturedList = (list: ViewModel['featuredLists'][number]) => `
+const renderFeaturedList = (successRedirectPath: ViewModel['successRedirectPath']) => (list: ViewModel['featuredLists'][number]) => `
   <a href="#listurl">${list.name}</a>
-  <form action="${pathToSubmitRemoveListPromotion()}" method="post"><button type="submit">Unfeature</button></form>
+  <form action="${pathToSubmitRemoveListPromotion()}" method="post">
+    <input type="hidden" name="listId" value=${list.id}/>
+    <input type="hidden" name="forGroup" value=${list.ownerId.value}/>
+    <input type="hidden" name="successRedirectPath" value=${successRedirectPath}/>
+    <button type="submit">Unfeature</button>
+  </form>
 `;
 
-const renderFeaturedLists = (featuredLists: ViewModel['featuredLists']) => pipe(
-  featuredLists,
-  RA.map((renderFeaturedList)),
+const renderFeaturedLists = (viewModel: ViewModel) => pipe(
+  viewModel.featuredLists,
+  RA.map((renderFeaturedList(viewModel.successRedirectPath))),
   RA.map(toHtmlFragment),
   renderListItems,
   (items) => `<ul>${items}</ul>`,
@@ -38,7 +43,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   </p>
   <section>
     <h2>Currently featured lists</h2>
-   ${renderFeaturedLists(viewModel.featuredLists)}
+   ${renderFeaturedLists(viewModel)}
   </section>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
     <h2>Feature a list</h2>
