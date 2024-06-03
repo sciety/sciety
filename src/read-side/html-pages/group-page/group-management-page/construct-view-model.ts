@@ -8,6 +8,7 @@ import * as DE from '../../../../types/data-error';
 import { Group } from '../../../../types/group';
 import { UserId } from '../../../../types/user-id';
 import { constructGroupPageHref } from '../../../paths';
+import { constructGroupManagementPageHref } from '../../../paths/construct-group-page-href';
 
 const checkUserIsAdminOfGroup = (dependencies: Dependencies, userId: UserId, group: Group) => pipe(
   dependencies.isUserAdminOfGroup(userId, group.id),
@@ -30,7 +31,7 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
   E.map((group) => ({
     pageHeading: `Group management details for ${group.name}`,
     groupId: group.id,
-    successRedirectPath: constructGroupPageHref(group),
+    successRedirectPath: constructGroupManagementPageHref(group),
     groupHomePageHref: constructGroupPageHref(group),
     featuredLists: dependencies.selectAllListsPromotedByGroup(group.id),
   })),
