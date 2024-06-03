@@ -10,19 +10,22 @@ import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
 import { renderListItems } from '../../shared-components/list-items';
 
-const renderFeaturedList = (successRedirectPath: ViewModel['successRedirectPath']) => (list: ViewModel['featuredLists'][number]) => `
+const renderFeaturedList = (
+  successRedirectPath: ViewModel['successRedirectPath'],
+  groupId: ViewModel['groupId'],
+) => (list: ViewModel['featuredLists'][number]) => `
   <a href="#listurl">${list.name}</a>
   <form action="${pathToSubmitRemoveListPromotion()}" method="post">
-    <input type="hidden" name="listId" value=${list.id}/>
-    <input type="hidden" name="forGroup" value=${list.ownerId.value}/>
-    <input type="hidden" name="successRedirectPath" value=${successRedirectPath}/>
+    <input type="hidden" name="listId" value="${list.id}" />
+    <input type="hidden" name="forGroup" value="${groupId}" />
+    <input type="hidden" name="successRedirectPath" value="${successRedirectPath}" />
     <button type="submit">Unfeature</button>
   </form>
 `;
 
 const renderFeaturedLists = (viewModel: ViewModel) => pipe(
   viewModel.featuredLists,
-  RA.map((renderFeaturedList(viewModel.successRedirectPath))),
+  RA.map((renderFeaturedList(viewModel.successRedirectPath, viewModel.groupId))),
   RA.map(toHtmlFragment),
   renderListItems,
   (items) => `<ul>${items}</ul>`,
