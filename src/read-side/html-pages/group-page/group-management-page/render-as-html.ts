@@ -1,14 +1,19 @@
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { ViewModel } from './view-model';
 import { pathToSubmitAddAFeaturedList } from '../../../../http/form-submission-handlers/submit-paths';
 import { inputFieldNames } from '../../../../standards';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
+import { renderListItems } from '../../shared-components/list-items';
 
-const renderFeaturedLists = () => ` 
-<ul>
-  <li><a href="#listurl">List name</a></li>
-</ul>
-`;
+const renderFeaturedLists = (featuredLists: ViewModel['featuredLists']) => pipe(
+  featuredLists,
+  RA.map((list) => `<a href="#listurl">${list.name}</a>`),
+  RA.map(toHtmlFragment),
+  renderListItems,
+  (items) => `<ul>${items}</ul>`,
+);
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.pageHeading,
@@ -25,7 +30,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   </p>
   <section>
     <h2>Currently featured lists</h2>
-   ${renderFeaturedLists()}
+   ${renderFeaturedLists(viewModel.featuredLists)}
   </section>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
     <h2>Feature a list</h2>
