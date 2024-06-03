@@ -5,4 +5,5 @@ export const inputFieldNames = {
   success: 'success' as const,
   annotationContent: 'annotationContent' as const,
   successRedirectPath: 'successRedirectPath' as const,
+  forGroup: 'forGroup' as const,
 };
