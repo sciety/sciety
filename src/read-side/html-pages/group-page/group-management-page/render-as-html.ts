@@ -17,16 +17,22 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   <p>
     <a href="${viewModel.groupHomePageHref}">View public group page</a>
   </p>
+  <section>
+    <h2>Currently featured lists</h2>
+    <ul>
+      <li>A list</li>
+    </ul>
+  </section>
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
-  <h2>Featured Lists</h2>
-  <p class="standard-form__sub_heading_secondary_text">Choose a list to feature on your group page.</p>
-    <section>
-      <input type="hidden" name="forGroup" value="${viewModel.groupId}">
-      <input type="hidden" name="successRedirectPath" value="${viewModel.successRedirectPath}">
-      <label for="listId" class="standard-form__sub_heading">List Id</label>
-      <input type="text" id="listId" name="${inputFieldNames.listId}" class="standard-form__full_width_text_input" value="">
-    </section>
-    <button type="submit">Save</button><a href="#" class="standard-form__cancel">Cancel</a>
+    <h2>Feature a list</h2>
+    <p class="standard-form__sub_heading_secondary_text">Choose a list to feature on your group page.</p>
+      <section>
+        <input type="hidden" name="forGroup" value="${viewModel.groupId}">
+        <input type="hidden" name="successRedirectPath" value="${viewModel.successRedirectPath}">
+        <label for="listId" class="standard-form__sub_heading">List Id</label>
+        <input type="text" id="listId" name="${inputFieldNames.listId}" class="standard-form__full_width_text_input" value="">
+      </section>
+      <button type="submit">Save</button><a href="#" class="standard-form__cancel">Cancel</a>
   </form>
   `),
 });
