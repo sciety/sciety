@@ -34,6 +34,17 @@ const saveArticleHandlerFormBodyCodec = t.strict({
   annotation: unsafeUserInputCodec,
 }, 'saveArticleHandlerFormBodyCodec');
 
+type FormBody = t.TypeOf<typeof saveArticleHandlerFormBodyCodec>;
+
+const fromFormInputToOptionalProperty = (value: UnsafeUserInput) => (
+  value.length === 0 ? undefined : value
+);
+const toCommand = (formBody: FormBody) => ({
+  articleId: formBody[inputFieldNames.articleId],
+  listId: formBody[inputFieldNames.listId],
+  annotation: fromFormInputToOptionalProperty(formBody.annotation),
+});
+
 export const saveArticleHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const loggedInUserId = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to save an article.');
   if (O.isNone(loggedInUserId)) {
@@ -50,7 +61,6 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
     return;
   }
 
-  const articleId = formBody.right[inputFieldNames.articleId];
   const listId = formBody.right[inputFieldNames.listId];
 
   const logEntry = checkUserOwnsList(dependencies, listId, loggedInUserId.value);
@@ -61,15 +71,7 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
     return;
   }
 
-  const fromFormInputToOptionalProperty = (value: UnsafeUserInput) => (
-    value.length === 0 ? undefined : value
-  );
-
-  const command: AddArticleToListCommand = {
-    articleId,
-    listId,
-    annotation: fromFormInputToOptionalProperty(formBody.right.annotation),
-  };
+  const command: AddArticleToListCommand = toCommand(formBody.right);
 
   await pipe(
     command,

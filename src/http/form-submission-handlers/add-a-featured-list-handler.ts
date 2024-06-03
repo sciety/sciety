@@ -21,6 +21,13 @@ const formBodyCodec = t.intersection([
   }),
 ]);
 
+type FormBody = t.TypeOf<typeof formBodyCodec>;
+
+const toCommand = (formBody: FormBody) => ({
+  forGroup: formBody.forGroup,
+  listId: formBody.listId,
+});
+
 type Dependencies = EnsureUserIsLoggedInDependencies
 & Queries
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
@@ -43,10 +50,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.FORBIDDEN, 'You do not have permission to do that.');
     return;
   }
-  const command = {
-    forGroup: formBody.right.forGroup,
-    listId: formBody.right.listId,
-  };
+  const command = toCommand(formBody.right);
 
   const commandResult = await pipe(
     command,

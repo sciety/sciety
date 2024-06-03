@@ -27,6 +27,7 @@ const toCommand = (formBody: FormBody) => ({
   forGroup: formBody.forGroup,
   listId: formBody.listId,
 });
+
 type Dependencies = EnsureUserIsLoggedInDependencies
 & Queries
 & DecodeFormSubmissionDependencies & DependenciesForCommands;
