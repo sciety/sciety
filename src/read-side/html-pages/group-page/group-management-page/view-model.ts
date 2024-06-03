@@ -1,3 +1,4 @@
+import { List } from '../../../../read-models/lists';
 import { GroupId } from '../../../../types/group-id';
 
 export type ViewModel = {
@@ -5,5 +6,5 @@ export type ViewModel = {
   groupId: GroupId,
   successRedirectPath: string,
   groupHomePageHref: string,
-  featuredLists: ReadonlyArray<unknown>,
+  featuredLists: ReadonlyArray<List>,
 };
