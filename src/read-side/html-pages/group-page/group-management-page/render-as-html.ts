@@ -14,7 +14,7 @@ const renderFeaturedList = (
   successRedirectPath: ViewModel['successRedirectPath'],
   groupId: ViewModel['groupId'],
 ) => (list: ViewModel['featuredLists'][number]) => `
-  <a href="#listurl">${list.name}</a>
+  ${list.name}
   <form action="${pathToSubmitRemoveListPromotion()}" method="post">
     <input type="hidden" name="listId" value="${list.id}" />
     <input type="hidden" name="forGroup" value="${groupId}" />
@@ -28,7 +28,7 @@ const renderFeaturedLists = (viewModel: ViewModel) => pipe(
   RA.map((renderFeaturedList(viewModel.successRedirectPath, viewModel.groupId))),
   RA.map(toHtmlFragment),
   renderListItems,
-  (items) => `<ul>${items}</ul>`,
+  (items) => `<ul class="group-management__featured_list">${items}</ul>`,
 );
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({

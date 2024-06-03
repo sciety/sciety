@@ -1,0 +1,5 @@
+@use 'list';
+
+.group-management__featured_list {
+	@include list.basics()
+}
