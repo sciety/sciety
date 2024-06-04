@@ -31,7 +31,7 @@ const environmentCodec = t.strict({
   INGESTION_TARGET_APP: tt.NonEmptyString,
   SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
   INGEST_DAYS: tt.withFallback(tt.NumberFromString, 5),
-  PREREVIEW_BEARER_TOKEN: tt.withFallback(t.string, 'bogus-prereview-bearer-token'),
+  PREREVIEW_BEARER_TOKEN: tt.NonEmptyString,
 });
 
 const validateEnvironment = (env: unknown): E.Either<void, Omit<Config, 'groupsToIngest'>> => pipe(

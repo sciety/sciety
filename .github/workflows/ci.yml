@@ -97,6 +97,7 @@ jobs:
             --set googleTagManagerId='GTM-NX7CQB4' \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
+            --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
             --wait \
             helm/sciety
@@ -107,6 +108,7 @@ jobs:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
+          PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
           AUTH0_CLIENT_ID_STAGING: ${{ secrets.AUTH0_CLIENT_ID_STAGING }}
           AUTH0_CLIENT_SECRET_STAGING: ${{ secrets.AUTH0_CLIENT_SECRET_STAGING }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
@@ -133,6 +135,7 @@ jobs:
             --set postgresqlSecretName=hive-prod-rds-postgres \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
+            --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
             --wait \
             helm/sciety
@@ -143,6 +146,7 @@ jobs:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
+          PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}

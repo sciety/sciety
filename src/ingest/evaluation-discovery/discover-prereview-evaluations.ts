@@ -116,9 +116,8 @@ const deprecatedIdentifyCandidates = (fetchData: FetchData) => pipe(
   )),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const identifyCandidates = (fetchData: FetchData, bearerToken: string) => pipe(
-  fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
+  fetchData<unknown>('https://prereview.org/sciety-list', { Accept: 'application/json', Authorization: `Bearer ${bearerToken}` }),
   TE.chainEitherK(flow(
     preReviewResponse.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),

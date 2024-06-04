@@ -30,6 +30,8 @@ spec:
                 value: "https://{{ .Values.hostname }}"
               - name: PRELIGHTS_FEED_KEY
                 value: {{ .Values.prelightsFeedKey }}
+              - name: PREREVIEW_BEARER_TOKEN
+                value: {{ .Values.prereviewBearerToken }}
               - name: EXPERIMENT_ENABLED
                 value: "{{ .Values.experimentEnabled }}"
             volumeMounts:
