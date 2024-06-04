@@ -86,7 +86,18 @@ const identifyCandidates = (fetchData: FetchData) => pipe(
   )),
 );
 
-export const discoverPrereviewEvaluations = (): DiscoverPublishedEvaluations => () => (dependencies) => pipe(
+export const discoverPrereviewEvaluationsFromDeprecatedApi = (): DiscoverPublishedEvaluations => (
+) => (dependencies) => pipe(
+  identifyCandidates(dependencies.fetchData),
+  TE.map(RA.map(toEvaluationOrSkip)),
+  TE.map((parts) => ({
+    understood: RA.rights(parts),
+    skipped: RA.lefts(parts),
+  })),
+);
+
+export const discoverPrereviewEvaluations = (): DiscoverPublishedEvaluations => (
+) => (dependencies) => pipe(
   identifyCandidates(dependencies.fetchData),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({
