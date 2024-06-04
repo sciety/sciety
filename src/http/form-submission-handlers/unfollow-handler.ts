@@ -13,18 +13,16 @@ type Dependencies = DependenciesForCommands & {
   logger: Logger,
 };
 
-const requestCodec = t.type({
-  body: t.type({
-    editorialcommunityid: GroupIdFromStringCodec,
-  }),
+const formBodyCodec = t.strict({
+  editorialcommunityid: GroupIdFromStringCodec,
 });
 
 export const unfollowHandler = (dependencies: Dependencies): Middleware => async (context, next) => {
   await pipe(
-    context.request,
-    requestCodec.decode,
+    context.request.body,
+    formBodyCodec.decode,
     O.fromEither,
-    O.map((req) => req.body.editorialcommunityid),
+    O.map((formBody) => formBody.editorialcommunityid),
     O.match(
       () => context.throw(StatusCodes.BAD_REQUEST),
       async (groupId) => pipe(
