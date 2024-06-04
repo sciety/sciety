@@ -10,7 +10,7 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const runDiscovery = (stubbedResponse: unknown) => pipe(
   ({ fetchData: <D>() => TE.right(stubbedResponse as unknown as D) }),
-  discoverPrereviewEvaluations()(arbitraryIngestDays()),
+  discoverPrereviewEvaluations(arbitraryString())(arbitraryIngestDays()),
 );
 
 describe('discover-prereview-evaluations', () => {

@@ -9,7 +9,7 @@ import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-preli
 import { GroupIngestionConfiguration } from './update-all';
 
 // addArticleToEvaluatedArticlesList policy needs to be updated BEFORE adding a new group to this configuration
-export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = [
+export const groupIngestionConfigurations = (prereviewBearerToken: string): Array<GroupIngestionConfiguration> => [
   {
     id: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
     name: 'Arcadia Science',
@@ -78,7 +78,7 @@ export const groupIngestionConfigurations: Array<GroupIngestionConfiguration> = 
   {
     id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
     name: 'PREreview',
-    discoverPublishedEvaluations: discoverPrereviewEvaluations(),
+    discoverPublishedEvaluations: discoverPrereviewEvaluations(prereviewBearerToken),
   },
   {
     id: '5142a5bc-6b18-42b1-9a8d-7342d7d17e94',

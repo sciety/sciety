@@ -72,6 +72,7 @@ export type Config = {
   bearerToken: string,
   groupsToIngest: ReadonlyArray<GroupIngestionConfiguration>,
   ingestDays: number,
+  preReviewBearerToken: string,
 };
 
 const send = (config: Config) => (evaluationCommand: EvaluationCommand) => pipe(

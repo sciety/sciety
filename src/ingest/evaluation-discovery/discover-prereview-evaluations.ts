@@ -116,7 +116,8 @@ const deprecatedIdentifyCandidates = (fetchData: FetchData) => pipe(
   )),
 );
 
-const identifyCandidates = (fetchData: FetchData) => pipe(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const identifyCandidates = (fetchData: FetchData, bearerToken: string) => pipe(
   fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
   TE.chainEitherK(flow(
     preReviewResponse.decode,
@@ -134,9 +135,9 @@ export const discoverPrereviewEvaluationsFromDeprecatedApi = (): DiscoverPublish
   })),
 );
 
-export const discoverPrereviewEvaluations = (): DiscoverPublishedEvaluations => (
+export const discoverPrereviewEvaluations = (bearerToken: string): DiscoverPublishedEvaluations => (
 ) => (dependencies) => pipe(
-  identifyCandidates(dependencies.fetchData),
+  identifyCandidates(dependencies.fetchData, bearerToken),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((parts) => ({
     understood: RA.rights(parts),

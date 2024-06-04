@@ -31,6 +31,7 @@ const environmentCodec = t.strict({
   INGESTION_TARGET_APP: tt.NonEmptyString,
   SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
   INGEST_DAYS: tt.withFallback(tt.NumberFromString, 5),
+  PREREVIEW_BEARER_TOKEN: tt.withFallback(t.string, 'bogus-prereview-bearer-token'),
 });
 
 const validateEnvironment = (env: unknown): E.Either<void, Omit<Config, 'groupsToIngest'>> => pipe(
@@ -43,6 +44,7 @@ const validateEnvironment = (env: unknown): E.Either<void, Omit<Config, 'groupsT
     targetApp: environment.INGESTION_TARGET_APP,
     bearerToken: environment.SCIETY_TEAM_API_BEARER_TOKEN,
     ingestDays: environment.INGEST_DAYS,
+    preReviewBearerToken: environment.PREREVIEW_BEARER_TOKEN,
   })),
 );
 
@@ -52,6 +54,7 @@ void (async (): Promise<unknown> => pipe(
   E.map((environment) => ({
     ...environment,
     groupsToIngest: pipe(
+      environment.preReviewBearerToken,
       groupIngestionConfigurations,
       RA.filter(shouldUpdate),
       RA.filter(shouldNotExclude),
