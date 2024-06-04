@@ -1,6 +1,5 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { CreateList, Logger } from '../../shared-ports';
@@ -27,17 +26,11 @@ export const createListHandler = (dependencies: Dependencies): Middleware => asy
     description: '',
   };
 
-  await pipe(
-    command,
-    dependencies.createList,
-    TE.match(
-      (errorMessage) => {
-        dependencies.logger('error', 'Command handler failed', { errorMessage });
-        context.redirect('back');
-      },
-      () => {
-        context.redirect(`/lists/${command.listId}/edit-details`);
-      },
-    ),
-  )();
+  const commandResult = await dependencies.createList(command)();
+  if (E.isRight(commandResult)) {
+    context.redirect(`/lists/${command.listId}/edit-details`);
+    return;
+  }
+  dependencies.logger('error', 'Command handler failed', { errorMessage: commandResult.left });
+  context.redirect('back');
 };
