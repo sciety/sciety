@@ -1,16 +1,17 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { arbitraryIngestDays } from './ingest-days.helper';
-import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
+import { discoverPrereviewEvaluationsFromDeprecatedApi } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
-import { arbitraryDate } from '../../helpers';
+import * as AID from '../../../src/types/article-id';
+import { arbitraryDate, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const runDiscovery = (stubbedResponse: unknown) => pipe(
-  ({ fetchData: <D>() => TE.right(stubbedResponse as unknown as D) }),
-  discoverPrereviewEvaluations()(arbitraryIngestDays()),
+  ({ fetchData: <D>() => TE.right({ data: stubbedResponse } as unknown as D) }),
+  discoverPrereviewEvaluationsFromDeprecatedApi()(arbitraryIngestDays()),
 );
 
 describe('discover-prereview-evaluations', () => {
@@ -41,16 +42,15 @@ describe('discover-prereview-evaluations', () => {
     const reviewDoi2 = arbitraryArticleId();
     const response = [
       {
-        preprint: articleId.value,
-        createdAt: date1.toString(),
-        doi: reviewDoi1.value,
-        authors: [],
-      },
-      {
-        preprint: articleId.value,
-        createdAt: date2.toString(),
-        doi: reviewDoi2.value,
-        authors: [],
+        handle: articleId.value,
+        fullReviews: [
+          {
+            createdAt: date1.toString(), doi: reviewDoi1.value, isPublished: true, authors: [],
+          },
+          {
+            createdAt: date2.toString(), doi: reviewDoi2.value, isPublished: true, authors: [],
+          },
+        ],
       },
     ];
     let result: DiscoveredPublishedEvaluations;
@@ -62,7 +62,7 @@ describe('discover-prereview-evaluations', () => {
       )();
     });
 
-    it.failing('returns the reviews', async () => {
+    it('returns the reviews', async () => {
       const expectedEvaluation1 = constructPublishedEvaluation({
         paperExpressionDoi: articleId.value,
         publishedOn: date1,
@@ -80,27 +80,25 @@ describe('discover-prereview-evaluations', () => {
       ]);
     });
 
-    it.failing('returns no skipped items', async () => {
+    it('returns no skipped items', async () => {
       expect(result.skipped).toHaveLength(0);
     });
   });
 
-  describe.skip('when the response includes a biorxiv preprint with a review that lacks a DOI', () => {
+  describe('when the response includes a biorxiv preprint with a review that lacks a DOI', () => {
     const articleId = arbitraryArticleId();
     const date1 = arbitraryDate();
     const date2 = arbitraryDate();
     const reviewDoi1 = arbitraryArticleId();
     const response = [
       {
-        preprint: articleId.value,
-        createdAt: date1.toString(),
-        doi: reviewDoi1.value,
-        authors: [],
-      },
-      {
-        preprint: articleId.value,
-        createdAt: date2.toString(),
-        authors: [],
+        handle: articleId.value,
+        fullReviews: [
+          {
+            createdAt: date1.toString(), doi: reviewDoi1.value, isPublished: true, authors: [],
+          },
+          { createdAt: date2.toString(), isPublished: true, authors: [] },
+        ],
       },
     ];
     let result: DiscoveredPublishedEvaluations;
@@ -126,6 +124,37 @@ describe('discover-prereview-evaluations', () => {
 
     it('returns one skipped item for the DOI-less review', async () => {
       expect(result.skipped[0].reason).toBe('review has no DOI');
+    });
+  });
+
+  describe('when the response includes an unpublished review', () => {
+    const articleId = arbitraryArticleId('10.1234');
+    const response = [
+      {
+        handle: articleId.value,
+        fullReviews: [
+          {
+            createdAt: arbitraryDate().toString(), doi: `10.1234/${arbitraryWord()}`, isPublished: false, authors: [],
+          },
+        ],
+      },
+    ];
+    let result: DiscoveredPublishedEvaluations;
+
+    beforeEach(async () => {
+      result = await pipe(
+        runDiscovery(response),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns a skipped item', async () => {
+      expect(result.skipped).toStrictEqual([
+        {
+          item: AID.toString(articleId),
+          reason: 'is not published',
+        },
+      ]);
     });
   });
 });
