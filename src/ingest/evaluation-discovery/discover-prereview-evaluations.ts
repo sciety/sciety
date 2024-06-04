@@ -10,6 +10,7 @@ import * as AID from '../../types/article-id';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
+import { SkippedEvaluation } from '../types/skipped-evaluation';
 
 const preReviewPreprint = t.type({
   handle: t.union([AID.articleIdCodec, t.string]),
@@ -37,7 +38,7 @@ type Review = {
   authors: ReadonlyArray<string>,
 };
 
-const toEvaluationOrSkip = (preprint: Review) => pipe(
+const deprecatedToEvaluationOrSkip = (preprint: Review) => pipe(
   preprint,
   E.right,
   E.filterOrElse(
@@ -58,6 +59,18 @@ const toEvaluationOrSkip = (preprint: Review) => pipe(
     evaluationLocator: `doi:${p.reviewDoi.value.value}`,
     authors: p.authors,
   })),
+);
+const toEvaluationOrSkip = (preprint: Review) => pipe(
+  preprint,
+  E.right,
+  E.filterOrElse(
+    (p): p is Review & { handle: AID.ArticleId } => AID.isArticleId(p.handle),
+    () => ({ item: preprint.handle as string, reason: 'article has no DOI' }),
+  ),
+  () => E.left({
+    item: 'unknown',
+    reason: 'not-implemented',
+  } satisfies SkippedEvaluation),
 );
 
 const toIndividualReviews = (preprint: PreReviewPreprint): ReadonlyArray<Review> => pipe(
@@ -89,7 +102,7 @@ const identifyCandidates = (fetchData: FetchData) => pipe(
 export const discoverPrereviewEvaluationsFromDeprecatedApi = (): DiscoverPublishedEvaluations => (
 ) => (dependencies) => pipe(
   identifyCandidates(dependencies.fetchData),
-  TE.map(RA.map(toEvaluationOrSkip)),
+  TE.map(RA.map(deprecatedToEvaluationOrSkip)),
   TE.map((parts) => ({
     understood: RA.rights(parts),
     skipped: RA.lefts(parts),
