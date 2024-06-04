@@ -1,4 +1,6 @@
 import Router from '@koa/router';
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { createConfigurePostMiddleware } from './create-configure-post-middleware';
 import { CollectedPorts } from '../../infrastructure';
 import {
@@ -31,63 +33,68 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts, expect
   const configurePostMiddleware = createConfigurePostMiddleware(adapters, expectedToken);
 
   const config = [{
-    endpoint: '/api/add-article-to-list',
+    endpoint: 'add-article-to-list',
     handler: configurePostMiddleware(addArticleToListCommandCodec, listResource.addArticle),
   },
   {
-    endpoint: '/api/add-group',
+    endpoint: 'add-group',
     handler: configurePostMiddleware(addGroupCommandCodec, groupResource.create),
   },
   {
-    endpoint: '/api/assign-group-admin',
+    endpoint: 'assign-group-admin',
     handler: configurePostMiddleware(assignUserAsGroupAdminCommandCodec, groupAuthorisation.assign),
   },
   {
-    endpoint: '/api/create-user',
+    endpoint: 'create-user',
     handler: configurePostMiddleware(createUserAccountCommandCodec, userResource.create),
   },
   {
-    endpoint: '/api/edit-list-details',
+    endpoint: 'edit-list-details',
     handler: configurePostMiddleware(editListDetailsCommandCodec, listResource.update),
   },
   {
-    endpoint: '/api/erase-evaluation',
+    endpoint: 'erase-evaluation',
     handler: configurePostMiddleware(eraseEvaluationCommandCodec, evaluationResource.erase),
   },
   {
-    endpoint: '/api/promote-list',
+    endpoint: 'promote-list',
     handler: configurePostMiddleware(promoteListCommandCodec, listPromotionResource.create),
   },
   {
-    endpoint: '/api/remove-list-promotion',
+    endpoint: 'remove-list-promotion',
     handler: configurePostMiddleware(removeListPromotionCommandCodec, listPromotionResource.remove),
   },
   {
-    endpoint: '/api/record-evaluation-publication',
+    endpoint: 'record-evaluation-publication',
     handler: configurePostMiddleware(recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication),
   },
   {
-    endpoint: '/api/record-evaluation-removal',
+    endpoint: 'record-evaluation-removal',
     handler: configurePostMiddleware(recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval),
   },
   {
-    endpoint: '/api/remove-article-from-list',
+    endpoint: 'remove-article-from-list',
     handler: configurePostMiddleware(removeArticleFromListCommandCodec, listResource.removeArticle),
   },
   {
-    endpoint: '/api/update-evaluation',
+    endpoint: 'update-evaluation',
     handler: configurePostMiddleware(updateEvaluationCommandCodec, evaluationResource.update),
   },
   {
-    endpoint: '/api/update-group-details',
+    endpoint: 'update-group-details',
     handler: configurePostMiddleware(updateGroupDetailsCommandCodec, groupResource.update),
   },
   {
-    endpoint: '/api/update-user-details',
+    endpoint: 'update-user-details',
     handler: configurePostMiddleware(updateUserDetailsCommandCodec, userResource.update),
   },
   ];
-  config.forEach((route) => {
-    router.post(route.endpoint, route.handler);
-  });
+  pipe(
+    config,
+    RA.map((route) => ({
+      ...route,
+      endpoint: `/api/${route.endpoint}`,
+    })),
+    RA.map((route) => router.post(route.endpoint, route.handler)),
+  );
 };
