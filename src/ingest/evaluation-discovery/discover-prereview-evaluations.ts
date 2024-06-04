@@ -24,9 +24,22 @@ const preReviewPreprint = t.type({
   })),
 });
 
-const preReviewResponse = t.type({
+const deprecatedPreReviewResponse = t.type({
   data: t.readonlyArray(preReviewPreprint),
 });
+
+const preReviewReview = t.type({
+  createdAt: tt.DateFromISOString,
+  doi: AID.articleIdCodec,
+  preprint: t.union([AID.articleIdCodec, t.string]),
+  authors: t.readonlyArray(t.type({
+    name: t.string,
+  })),
+});
+
+type PreReviewReview = t.TypeOf<typeof preReviewReview>;
+
+const preReviewResponse = t.readonlyArray(preReviewReview);
 
 type PreReviewPreprint = t.TypeOf<typeof preReviewPreprint>;
 
@@ -60,13 +73,8 @@ const deprecatedToEvaluationOrSkip = (preprint: Review) => pipe(
     authors: p.authors,
   })),
 );
-const toEvaluationOrSkip = (preprint: Review) => pipe(
+const toEvaluationOrSkip = (preprint: PreReviewReview) => pipe(
   preprint,
-  E.right,
-  E.filterOrElse(
-    (p): p is Review & { handle: AID.ArticleId } => AID.isArticleId(p.handle),
-    () => ({ item: preprint.handle as string, reason: 'article has no DOI' }),
-  ),
   () => E.left({
     item: 'unknown',
     reason: 'not-implemented',
@@ -87,10 +95,10 @@ const toIndividualReviews = (preprint: PreReviewPreprint): ReadonlyArray<Review>
   })),
 );
 
-const identifyCandidates = (fetchData: FetchData) => pipe(
+const deprecatedIdentifyCandidates = (fetchData: FetchData) => pipe(
   fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
   TE.chainEitherK(flow(
-    preReviewResponse.decode,
+    deprecatedPreReviewResponse.decode,
     E.mapLeft((errors) => PR.failure(errors).join('\n')),
   )),
   TE.map(flow(
@@ -99,9 +107,17 @@ const identifyCandidates = (fetchData: FetchData) => pipe(
   )),
 );
 
+const identifyCandidates = (fetchData: FetchData) => pipe(
+  fetchData<unknown>('https://www.prereview.org/api/v2/preprints', { Accept: 'application/json' }),
+  TE.chainEitherK(flow(
+    preReviewResponse.decode,
+    E.mapLeft((errors) => PR.failure(errors).join('\n')),
+  )),
+);
+
 export const discoverPrereviewEvaluationsFromDeprecatedApi = (): DiscoverPublishedEvaluations => (
 ) => (dependencies) => pipe(
-  identifyCandidates(dependencies.fetchData),
+  deprecatedIdentifyCandidates(dependencies.fetchData),
   TE.map(RA.map(deprecatedToEvaluationOrSkip)),
   TE.map((parts) => ({
     understood: RA.rights(parts),
