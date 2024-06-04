@@ -30,22 +30,13 @@ export const createListHandler = (dependencies: Dependencies): Middleware => asy
   await pipe(
     command,
     dependencies.createList,
-    TE.bimap(
-      (errorMessage) => ({
-        message: 'Command handler failed',
-        payload: {
-          errorMessage,
-        },
-      }),
-      () => command.listId,
-    ),
     TE.match(
-      (error) => {
-        dependencies.logger('error', error.message, error.payload);
+      (errorMessage) => {
+        dependencies.logger('error', 'Command handler failed', { errorMessage });
         context.redirect('back');
       },
-      (listId) => {
-        context.redirect(`/lists/${listId}/edit-details`);
+      () => {
+        context.redirect(`/lists/${command.listId}/edit-details`);
       },
     ),
   )();
