@@ -3,7 +3,7 @@ import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discover
 import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
 import { discoverEvaluationsFromHypothesisUser } from './evaluation-discovery/discover-evaluations-from-hypothesis-user';
 import { discoverPciEvaluations } from './evaluation-discovery/discover-pci-evaluations';
-import { discoverPrereviewEvaluations, discoverPrereviewEvaluationsFromDeprecatedApi } from './evaluation-discovery/discover-prereview-evaluations';
+import { discoverPrereviewEvaluations } from './evaluation-discovery/discover-prereview-evaluations';
 import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover-rapid-reviews-evaluations';
 import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations';
 import { GroupIngestionConfiguration } from './update-all';
@@ -69,11 +69,6 @@ export const groupIngestionConfigurations = (prereviewBearerToken: string): Arra
     id: 'f97bd177-5cb6-4296-8573-078318755bf2',
     name: 'preLights',
     discoverPublishedEvaluations: fetchPrelightsEvaluations(),
-  },
-  {
-    id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
-    name: 'PREreview deprecated API',
-    discoverPublishedEvaluations: discoverPrereviewEvaluationsFromDeprecatedApi(),
   },
   {
     id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
