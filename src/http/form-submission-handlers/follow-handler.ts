@@ -32,10 +32,8 @@ const validate = (dependencies: Dependencies) => (groupId: GroupId.GroupId) => p
   })),
 );
 
-const requestCodec = t.type({
-  body: t.type({
-    [groupProperty]: GroupIdFromStringCodec,
-  }),
+const formBodyCodec = t.type({
+  [groupProperty]: GroupIdFromStringCodec,
 });
 
 export const followHandler = (dependencies: Dependencies): Middleware => async (context) => {
@@ -46,9 +44,9 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
   }
 
   await pipe(
-    context.request,
-    requestCodec.decode,
-    E.map((request) => request.body[groupProperty]),
+    context.request.body,
+    formBodyCodec.decode,
+    E.map((request) => request[groupProperty]),
     TE.fromEither,
     TE.chainEitherKW(validate(dependencies)),
     TE.fold(
