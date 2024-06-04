@@ -38,35 +38,56 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts, expect
     endpoint: '/api/add-group',
     handler: configurePostMiddleware(addGroupCommandCodec, groupResource.create),
   },
+  {
+    endpoint: '/api/assign-group-admin',
+    handler: configurePostMiddleware(assignUserAsGroupAdminCommandCodec, groupAuthorisation.assign),
+  },
+  {
+    endpoint: '/api/create-user',
+    handler: configurePostMiddleware(createUserAccountCommandCodec, userResource.create),
+  },
+  {
+    endpoint: '/api/edit-list-details',
+    handler: configurePostMiddleware(editListDetailsCommandCodec, listResource.update),
+  },
+  {
+    endpoint: '/api/erase-evaluation',
+    handler: configurePostMiddleware(eraseEvaluationCommandCodec, evaluationResource.erase),
+  },
+  {
+    endpoint: '/api/promote-list',
+    handler: configurePostMiddleware(promoteListCommandCodec, listPromotionResource.create),
+  },
+  {
+    endpoint: '/api/remove-list-promotion',
+    handler: configurePostMiddleware(removeListPromotionCommandCodec, listPromotionResource.remove),
+  },
+  {
+    endpoint: '/api/record-evaluation-publication',
+    handler: configurePostMiddleware(recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication),
+  },
+  {
+    endpoint: '/api/record-evaluation-removal',
+    handler: configurePostMiddleware(recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval),
+  },
+  {
+    endpoint: '/api/remove-article-from-list',
+    handler: configurePostMiddleware(removeArticleFromListCommandCodec, listResource.removeArticle),
+  },
+  {
+    endpoint: '/api/update-evaluation',
+    handler: configurePostMiddleware(updateEvaluationCommandCodec, evaluationResource.update),
+  },
+  {
+    endpoint: '/api/update-group-details',
+    handler: configurePostMiddleware(updateGroupDetailsCommandCodec, groupResource.update),
+  },
+  {
+    endpoint: '/api/update-user-details',
+    handler: configurePostMiddleware(updateUserDetailsCommandCodec, userResource.update),
+  },
   ];
   config.forEach((route) => {
     router.post(route.endpoint, route.handler);
   });
-
-  router.post('/api/assign-group-admin', configurePostMiddleware(assignUserAsGroupAdminCommandCodec, groupAuthorisation.assign));
-
-  router.post(
-    '/api/create-user',
-    configurePostMiddleware(createUserAccountCommandCodec, userResource.create),
-  );
-
-  router.post('/api/edit-list-details', configurePostMiddleware(editListDetailsCommandCodec, listResource.update));
-
-  router.post('/api/erase-evaluation', configurePostMiddleware(eraseEvaluationCommandCodec, evaluationResource.erase));
-
-  router.post('/api/promote-list', configurePostMiddleware(promoteListCommandCodec, listPromotionResource.create));
-
-  router.post('/api/remove-list-promotion', configurePostMiddleware(removeListPromotionCommandCodec, listPromotionResource.remove));
-
-  router.post('/api/record-evaluation-publication', configurePostMiddleware(recordEvaluationPublicationCommandCodec, evaluationResource.recordPublication));
-
-  router.post('/api/record-evaluation-removal', configurePostMiddleware(recordEvaluationRemovalCommandCodec, evaluationResource.recordRemoval));
-
-  router.post('/api/remove-article-from-list', configurePostMiddleware(removeArticleFromListCommandCodec, listResource.removeArticle));
-
-  router.post('/api/update-evaluation', configurePostMiddleware(updateEvaluationCommandCodec, evaluationResource.update));
-
-  router.post('/api/update-group-details', configurePostMiddleware(updateGroupDetailsCommandCodec, groupResource.update));
-
-  router.post('/api/update-user-details', configurePostMiddleware(updateUserDetailsCommandCodec, userResource.update));
 };
