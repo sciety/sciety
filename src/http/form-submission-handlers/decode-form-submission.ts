@@ -17,16 +17,12 @@ export const decodeFormSubmission = <C>(
 ): E.Either<unknown, C> => {
   const decodedForm = codec.decode(context.request.body);
   if (E.isLeft(decodedForm)) {
-    dependencies.logger(
-      'error',
-      'Failed to decode a form submission',
-      {
-        codec: codec.name,
-        codecDecodingError: PR.failure(decodedForm.left),
-        requestBody: context.request.body,
-        loggedInUserId,
-      },
-    );
+    dependencies.logger('error', 'Failed to decode a form submission', {
+      codec: codec.name,
+      codecDecodingError: PR.failure(decodedForm.left),
+      requestBody: context.request.body,
+      loggedInUserId,
+    });
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Form submission failed unexpectedly.');
   }
   return decodedForm;
