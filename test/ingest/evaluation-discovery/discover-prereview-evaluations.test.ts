@@ -4,7 +4,7 @@ import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
-import { arbitraryDate } from '../../helpers';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 
@@ -76,6 +76,43 @@ describe('discover-prereview-evaluations', () => {
       expect(result.understood).toStrictEqual([
         expectedEvaluation1,
         expectedEvaluation2,
+      ]);
+    });
+
+    it('returns no skipped items', async () => {
+      expect(result.skipped).toHaveLength(0);
+    });
+  });
+
+  describe('when the response includes a review with authors', () => {
+    const authorName1 = arbitraryString();
+    const authorName2 = arbitraryString();
+    const response = [
+      {
+        preprint: arbitraryArticleId().value,
+        createdAt: arbitraryDate().toString(),
+        doi: arbitraryArticleId().value,
+        authors: [
+          {
+            name: authorName1,
+          },
+          {
+            name: authorName2,
+          },
+        ],
+      },
+    ];
+
+    beforeEach(async () => {
+      result = await pipe(
+        runDiscovery(response),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('returns the reviews', async () => {
+      expect(result.understood[0].authors).toStrictEqual([
+        authorName1, authorName2,
       ]);
     });
 
