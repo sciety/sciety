@@ -38,7 +38,7 @@ const requestCodec = t.type({
   }),
 });
 
-export const followHandler = (dependencies: Dependencies): Middleware => async (context, next) => {
+export const followHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const loggedInUserId = getAuthenticatedUserIdFromContext(context);
   if (O.isNone(loggedInUserId)) {
     context.redirect('/log-in');
@@ -65,7 +65,6 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
             groupId: params.groupId,
           },
           executeResourceAction(dependencies, follow),
-          T.chain(() => next),
         );
       },
     ),
