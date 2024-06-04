@@ -9,7 +9,7 @@ import * as tt from 'io-ts-types';
 import * as AID from '../../types/article-id';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
-import { constructPublishedEvaluation } from '../types/published-evaluation';
+import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
 import { SkippedEvaluation } from '../types/skipped-evaluation';
 
 const preReviewPreprint = t.type({
@@ -75,10 +75,15 @@ const deprecatedToEvaluationOrSkip = (preprint: Review) => pipe(
 );
 const toEvaluationOrSkip = (item: PreReviewReview) => pipe(
   AID.isArticleId(item.preprint)
-    ? E.left({
-      item: 'unknown',
-      reason: 'not-implemented',
-    } satisfies SkippedEvaluation)
+    ? E.right({
+      publishedOn: item.createdAt,
+      paperExpressionDoi: item.preprint.value,
+      evaluationLocator: `doi:${item.doi.value}`,
+      authors: pipe(
+        item.authors,
+        RA.map((author) => author.name),
+      ),
+    } satisfies PublishedEvaluation)
     : E.left({
       item: item.doi.value,
       reason: 'evaluated preprint does not have a DOI',

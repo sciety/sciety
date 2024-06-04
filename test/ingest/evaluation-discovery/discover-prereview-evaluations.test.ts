@@ -61,7 +61,7 @@ describe('discover-prereview-evaluations', () => {
       )();
     });
 
-    it.failing('returns the reviews', async () => {
+    it('returns the reviews', async () => {
       const expectedEvaluation1 = constructPublishedEvaluation({
         paperExpressionDoi: articleId.value,
         publishedOn: date1,
@@ -79,7 +79,7 @@ describe('discover-prereview-evaluations', () => {
       ]);
     });
 
-    it.failing('returns no skipped items', async () => {
+    it('returns no skipped items', async () => {
       expect(result.skipped).toHaveLength(0);
     });
   });
