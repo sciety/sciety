@@ -132,7 +132,7 @@ describe('discover-prereview-evaluations', () => {
     const reviewDoi1 = arbitraryArticleId();
     const response = [
       {
-        preprint: 'not a DOI',
+        preprint: 'evaluated preprint does not have a DOI',
         createdAt: date1.toString(),
         doi: reviewDoi1.value,
         authors: [],
@@ -146,8 +146,8 @@ describe('discover-prereview-evaluations', () => {
       )();
     });
 
-    it.failing('returns one skipped item', () => {
-      expect(result.skipped[0].reason).toBe('preprint has no DOI');
+    it('returns one skipped item', () => {
+      expect(result.skipped[0].reason).toBe('evaluated preprint does not have a DOI');
     });
   });
 });

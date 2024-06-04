@@ -73,12 +73,16 @@ const deprecatedToEvaluationOrSkip = (preprint: Review) => pipe(
     authors: p.authors,
   })),
 );
-const toEvaluationOrSkip = (preprint: PreReviewReview) => pipe(
-  preprint,
-  () => E.left({
-    item: 'unknown',
-    reason: 'not-implemented',
-  } satisfies SkippedEvaluation),
+const toEvaluationOrSkip = (item: PreReviewReview) => pipe(
+  AID.isArticleId(item.preprint)
+    ? E.left({
+      item: 'unknown',
+      reason: 'not-implemented',
+    } satisfies SkippedEvaluation)
+    : E.left({
+      item: item.doi.value,
+      reason: 'evaluated preprint does not have a DOI',
+    } satisfies SkippedEvaluation),
 );
 
 const toIndividualReviews = (preprint: PreReviewPreprint): ReadonlyArray<Review> => pipe(
