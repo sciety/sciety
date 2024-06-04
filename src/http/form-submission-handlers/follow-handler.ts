@@ -39,6 +39,12 @@ const requestCodec = t.type({
 });
 
 export const followHandler = (dependencies: Dependencies): Middleware => async (context, next) => {
+  const loggedInUserId = getAuthenticatedUserIdFromContext(context);
+  if (O.isNone(loggedInUserId)) {
+    context.redirect('/log-in');
+    return;
+  }
+
   await pipe(
     context.request,
     requestCodec.decode,
@@ -51,23 +57,17 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
         sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong; we\'re looking into it.');
         return T.of(undefined);
       },
-      (params) => pipe(
-        getAuthenticatedUserIdFromContext(context),
-        O.match(
-          () => {
-            context.redirect('/log-in');
-            return T.of(undefined);
+      (params) => {
+        context.redirect('back');
+        return pipe(
+          {
+            userId: loggedInUserId.value,
+            groupId: params.groupId,
           },
-          (userId) => {
-            context.redirect('back');
-            return pipe(
-              { userId, groupId: params.groupId },
-              executeResourceAction(dependencies, follow),
-              T.chain(() => next),
-            );
-          },
-        ),
-      ),
+          executeResourceAction(dependencies, follow),
+          T.chain(() => next),
+        );
+      },
     ),
   )();
 };
