@@ -30,9 +30,18 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts, expect
 
   const configurePostMiddleware = createConfigurePostMiddleware(adapters, expectedToken);
 
-  router.post('/api/add-article-to-list', configurePostMiddleware(addArticleToListCommandCodec, listResource.addArticle));
-
-  router.post('/api/add-group', configurePostMiddleware(addGroupCommandCodec, groupResource.create));
+  const config = [{
+    endpoint: '/api/add-article-to-list',
+    handler: configurePostMiddleware(addArticleToListCommandCodec, listResource.addArticle),
+  },
+  {
+    endpoint: '/api/add-group',
+    handler: configurePostMiddleware(addGroupCommandCodec, groupResource.create),
+  },
+  ];
+  config.forEach((route) => {
+    router.post(route.endpoint, route.handler);
+  });
 
   router.post('/api/assign-group-admin', configurePostMiddleware(assignUserAsGroupAdminCommandCodec, groupAuthorisation.assign));
 
