@@ -10,7 +10,7 @@ import { Logger } from '../../shared-ports';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { unfollowCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
+import { Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 
 type Dependencies = DependenciesForCommands
@@ -47,23 +47,12 @@ export const unfollowHandler = (dependencies: Dependencies): Middleware => async
 
   const groupId = formBody.right.editorialcommunityid;
 
-  pipe(
-    getAuthenticatedUserIdFromContext(context),
-    O.match(
-      () => {
-        dependencies.logger('error', 'Logged in user not found', { context });
-        context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-      },
-      async (userId) => {
-        context.redirect('back');
-        await pipe(
-          {
-            userId,
-            groupId,
-          },
-          unfollowCommandHandler(dependencies),
-        )();
-      },
-    ),
-  );
+  context.redirect('back');
+  await pipe(
+    {
+      userId: loggedInUserId.value,
+      groupId,
+    },
+    unfollowCommandHandler(dependencies),
+  )();
 };
