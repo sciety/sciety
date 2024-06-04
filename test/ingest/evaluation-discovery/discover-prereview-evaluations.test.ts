@@ -14,9 +14,9 @@ const runDiscovery = (stubbedResponse: unknown) => pipe(
 );
 
 describe('discover-prereview-evaluations', () => {
-  describe('when the response includes no preprints', () => {
-    let result: DiscoveredPublishedEvaluations;
+  let result: DiscoveredPublishedEvaluations;
 
+  describe('when the response includes no preprints', () => {
     beforeEach(async () => {
       result = await pipe(
         runDiscovery([]),
@@ -53,7 +53,6 @@ describe('discover-prereview-evaluations', () => {
         authors: [],
       },
     ];
-    let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(
@@ -103,7 +102,6 @@ describe('discover-prereview-evaluations', () => {
         authors: [],
       },
     ];
-    let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(
@@ -126,6 +124,30 @@ describe('discover-prereview-evaluations', () => {
 
     it('returns one skipped item for the DOI-less review', async () => {
       expect(result.skipped[0].reason).toBe('review has no DOI');
+    });
+  });
+
+  describe('when the response includes a preprint that lacks a DOI', () => {
+    const date1 = arbitraryDate();
+    const reviewDoi1 = arbitraryArticleId();
+    const response = [
+      {
+        preprint: 'not a DOI',
+        createdAt: date1.toString(),
+        doi: reviewDoi1.value,
+        authors: [],
+      },
+    ];
+
+    beforeEach(async () => {
+      result = await pipe(
+        runDiscovery(response),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.failing('returns one skipped item', () => {
+      expect(result.skipped[0].reason).toBe('preprint has no DOI');
     });
   });
 });
