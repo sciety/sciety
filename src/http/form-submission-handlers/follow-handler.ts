@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
+import { decodeFormSubmission } from './decode-form-submission';
 import { Queries } from '../../read-models';
 import { Logger } from '../../shared-ports';
 import * as DE from '../../types/data-error';
@@ -42,13 +43,20 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
     context.redirect('/log-in');
     return;
   }
+  const formBody = decodeFormSubmission(
+    dependencies,
+    context,
+    formBodyCodec,
+    loggedInUserId.value,
+  );
+  if (E.isLeft(formBody)) {
+    return;
+  }
 
   await pipe(
-    context.request.body,
-    formBodyCodec.decode,
-    E.map((request) => request[groupProperty]),
+    formBody.right[groupProperty],
+    validate(dependencies),
     TE.fromEither,
-    TE.chainEitherKW(validate(dependencies)),
     TE.fold(
       () => {
         dependencies.logger('error', 'Problem with /follow', { error: StatusCodes.BAD_REQUEST });
