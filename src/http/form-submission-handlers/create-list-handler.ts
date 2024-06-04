@@ -20,25 +20,24 @@ export const createListHandler = (dependencies: Dependencies): Middleware => asy
     return;
   }
 
+  const command: CreateListCommand = {
+    listId: LID.generate(),
+    ownerId: LOID.fromUserId(loggedInUserId.value),
+    name: 'Untitled',
+    description: '',
+  };
+
   await pipe(
-    {
-      listId: LID.generate(),
-      ownerId: LOID.fromUserId(loggedInUserId.value),
-      name: 'Untitled',
-      description: '',
-    } satisfies CreateListCommand,
-    (command) => pipe(
-      command,
-      dependencies.createList,
-      TE.bimap(
-        (errorMessage) => ({
-          message: 'Command handler failed',
-          payload: {
-            errorMessage,
-          },
-        }),
-        () => command.listId,
-      ),
+    command,
+    dependencies.createList,
+    TE.bimap(
+      (errorMessage) => ({
+        message: 'Command handler failed',
+        payload: {
+          errorMessage,
+        },
+      }),
+      () => command.listId,
     ),
     TE.match(
       (error) => {
