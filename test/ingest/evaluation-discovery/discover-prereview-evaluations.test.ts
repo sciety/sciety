@@ -84,49 +84,6 @@ describe('discover-prereview-evaluations', () => {
     });
   });
 
-  describe.skip('when the response includes a biorxiv preprint with a review that lacks a DOI', () => {
-    const articleId = arbitraryArticleId();
-    const date1 = arbitraryDate();
-    const date2 = arbitraryDate();
-    const reviewDoi1 = arbitraryArticleId();
-    const response = [
-      {
-        preprint: articleId.value,
-        createdAt: date1.toString(),
-        doi: reviewDoi1.value,
-        authors: [],
-      },
-      {
-        preprint: articleId.value,
-        createdAt: date2.toString(),
-        authors: [],
-      },
-    ];
-
-    beforeEach(async () => {
-      result = await pipe(
-        runDiscovery(response),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
-
-    it('returns the valid review', async () => {
-      const expectedEvaluation = constructPublishedEvaluation({
-        paperExpressionDoi: articleId.value,
-        publishedOn: date1,
-        evaluationLocator: `doi:${reviewDoi1.value}`,
-      });
-
-      expect(result.understood).toStrictEqual([
-        expectedEvaluation,
-      ]);
-    });
-
-    it('returns one skipped item for the DOI-less review', async () => {
-      expect(result.skipped[0].reason).toBe('review has no DOI');
-    });
-  });
-
   describe('when the response includes a preprint that lacks a DOI', () => {
     const date1 = arbitraryDate();
     const reviewDoi1 = arbitraryArticleId();
