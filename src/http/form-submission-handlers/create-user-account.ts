@@ -15,7 +15,7 @@ import { sendHtmlResponse } from '../send-html-response';
 
 type Dependencies = GetLoggedInScietyUserDependencies & ValidateAndExecuteCommandDependencies;
 
-export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
+export const createUserAccount = (dependencies: Dependencies): Middleware => async (context) => {
   await pipe(
     validateAndExecuteCommand(context, dependencies),
     TE.bimap(
@@ -37,5 +37,4 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
       () => redirectToAuthenticationDestination(context),
     ),
   )();
-  await next();
 };
