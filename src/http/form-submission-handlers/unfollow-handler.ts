@@ -23,41 +23,39 @@ const formBodyCodec = t.strict({
 type FormBody = t.TypeOf<typeof formBodyCodec>;
 
 export const unfollowHandler = (dependencies: Dependencies): Middleware => async (context) => {
-  const formBody = formBodyCodec.decode(context.request.body);
-  if (E.isLeft(formBody)) {
+  const decoded = formBodyCodec.decode(context.request.body);
+  if (E.isLeft(decoded)) {
     dependencies.logger('error', 'Failed to decode a form submission', {
       codec: formBodyCodec.name,
-      codecDecodingError: PR.failure(formBody.left),
+      codecDecodingError: PR.failure(decoded.left),
       requestBody: context.request.body,
     });
     sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'Form submission failed unexpectedly.');
   }
+  const formBody = decoded as E.Either<unknown, FormBody>;
+  if (E.isLeft(formBody)) {
+    return;
+  }
 
-  await pipe(
-    formBody as E.Either<unknown, FormBody>,
-    O.fromEither,
-    O.map((body) => body.editorialcommunityid),
+  const groupId = formBody.right.editorialcommunityid;
+
+  pipe(
+    getAuthenticatedUserIdFromContext(context),
     O.match(
-      () => context.throw(StatusCodes.BAD_REQUEST),
-      async (groupId) => pipe(
-        getAuthenticatedUserIdFromContext(context),
-        O.match(
-          () => {
-            dependencies.logger('error', 'Logged in user not found', { context });
-            context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
+      () => {
+        dependencies.logger('error', 'Logged in user not found', { context });
+        context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
+      },
+      async (userId) => {
+        context.redirect('back');
+        await pipe(
+          {
+            userId,
+            groupId,
           },
-          async (userId) => {
-            context.redirect('back');
-            await pipe(
-              {
-                userId,
-                groupId,
-              },
-              unfollowCommandHandler(dependencies),
-            )();
-          },
-        ),
-      ),
+          unfollowCommandHandler(dependencies),
+        )();
+      },
     ),
   );
 };
