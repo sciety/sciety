@@ -2,11 +2,11 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { Configuration, generateConfigurationFromEnvironment } from './generate-configuration-from-environment';
 import { groupIngestionConfigurations } from './group-ingestion-configurations';
 import { GroupIngestionConfiguration, updateAll } from './update-all';
-import { Environment, validateEnvironment } from './validate-environment';
 
-const shouldUpdate = (pattern: Environment['ingestOnly']) => (group: GroupIngestionConfiguration) => {
+const shouldUpdate = (pattern: Configuration['ingestOnly']) => (group: GroupIngestionConfiguration) => {
   if (pattern) {
     return group.name.toLowerCase().includes(pattern.toLowerCase())
       || group.id.toLowerCase().includes(pattern.toLowerCase());
@@ -14,7 +14,7 @@ const shouldUpdate = (pattern: Environment['ingestOnly']) => (group: GroupIngest
   return true;
 };
 
-const shouldNotExclude = (pattern: Environment['ingestExcept']) => (group: GroupIngestionConfiguration) => {
+const shouldNotExclude = (pattern: Configuration['ingestExcept']) => (group: GroupIngestionConfiguration) => {
   if (pattern) {
     return !(group.name.toLowerCase().includes(pattern.toLowerCase())
       || group.id.toLowerCase().includes(pattern.toLowerCase()));
@@ -22,7 +22,7 @@ const shouldNotExclude = (pattern: Environment['ingestExcept']) => (group: Group
   return true;
 };
 
-const selectGroupsToIngest = (environment: Environment) => pipe(
+const selectGroupsToIngest = (environment: Configuration) => pipe(
   environment,
   groupIngestionConfigurations,
   RA.filter(shouldUpdate(environment.ingestOnly)),
@@ -31,7 +31,7 @@ const selectGroupsToIngest = (environment: Environment) => pipe(
 
 void (async (): Promise<unknown> => pipe(
   process.env,
-  validateEnvironment,
+  generateConfigurationFromEnvironment,
   TE.fromEither,
   TE.chain((environment) => updateAll(environment, selectGroupsToIngest(environment))),
   TE.match(

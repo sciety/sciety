@@ -4,7 +4,7 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
 
-export type Environment = {
+export type Configuration = {
   targetApp: string,
   bearerToken: string,
   ingestDays: number,
@@ -30,7 +30,7 @@ const environmentCodec = t.strict({
   EXPERIMENT_ENABLED: t.string,
 });
 
-export const validateEnvironment = (env: unknown): E.Either<void, Environment> => pipe(
+export const generateConfigurationFromEnvironment = (env: unknown): E.Either<void, Configuration> => pipe(
   env,
   environmentCodec.decode,
   E.mapLeft((errors) => {

@@ -10,8 +10,8 @@ import { pipe } from 'fp-ts/function';
 import { v4 } from 'uuid';
 import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
 import { fetchData } from './fetch-data';
+import { Configuration } from './generate-configuration-from-environment';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
-import { Environment } from './validate-environment';
 
 export type GroupIngestionConfiguration = {
   id: string,
@@ -35,7 +35,7 @@ const report = (level: LevelName, message: string) => (payload: Record<string, u
 };
 
 const reportSkippedItems = (
-  ingestDebug: Environment['ingestDebug'],
+  ingestDebug: Configuration['ingestDebug'],
   group: GroupIngestionConfiguration,
 ) => (
   discoveredPublishedEvaluations: DiscoveredPublishedEvaluations,
@@ -69,7 +69,7 @@ axiosRetry(axios, {
   },
 });
 
-const send = (environment: Environment) => (evaluationCommand: EvaluationCommand) => pipe(
+const send = (environment: Configuration) => (evaluationCommand: EvaluationCommand) => pipe(
   TE.tryCatch(
     async () => axios.post(`${environment.targetApp}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
       headers: {
@@ -100,7 +100,7 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 
 const sendRecordEvaluationCommands = (
   group: GroupIngestionConfiguration,
-  environment: Environment,
+  environment: Configuration,
 ) => (discoveredPublishedEvaluations: DiscoveredPublishedEvaluations) => pipe(
   discoveredPublishedEvaluations.understood,
   RA.map((evaluation) => ({
@@ -134,7 +134,7 @@ const sendRecordEvaluationCommands = (
 );
 
 const updateGroup = (
-  environment: Environment,
+  environment: Configuration,
 ) => (
   group: GroupIngestionConfiguration,
 ): TE.TaskEither<unknown, void> => pipe(
@@ -158,7 +158,7 @@ const updateGroup = (
 type GroupsToIngest = ReadonlyArray<GroupIngestionConfiguration>;
 
 export const updateAll = (
-  environment: Environment,
+  environment: Configuration,
   groupsToIngest: GroupsToIngest,
 ): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
   groupsToIngest,

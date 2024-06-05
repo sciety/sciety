@@ -3,7 +3,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Environment } from './validate-environment';
+import { Configuration } from './generate-configuration-from-environment';
 
 axiosRetry(axios, {
   retries: 3,
@@ -13,7 +13,7 @@ axiosRetry(axios, {
   },
 });
 
-const axiosGet = async <D>(ingestDebug: Environment['ingestDebug'], url: string, additionalHeaders: Record<string, string>) => {
+const axiosGet = async <D>(ingestDebug: Configuration['ingestDebug'], url: string, additionalHeaders: Record<string, string>) => {
   const startTime = performance.now();
   const headers = {
     'User-Agent': 'Sciety (http://sciety.org; mailto:team@sciety.org)',
@@ -30,7 +30,7 @@ const axiosGet = async <D>(ingestDebug: Environment['ingestDebug'], url: string,
 export type FetchData = <D>(url: string, headers?: Record<string, string>) => TE.TaskEither<string, D>;
 
 export const fetchData = (
-  environment: Environment,
+  environment: Configuration,
 ): FetchData => <D>(
   url: string,
   headers = {},

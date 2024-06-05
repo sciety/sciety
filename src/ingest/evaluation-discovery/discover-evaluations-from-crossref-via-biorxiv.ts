@@ -4,9 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { Dependencies, DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
+import { Configuration } from '../generate-configuration-from-environment';
 import * as CR from '../third-parties/crossref';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
-import { Environment } from '../validate-environment';
 
 type BiorxivItem = {
   biorxiv_doi: string,
@@ -26,7 +26,7 @@ type CrossrefReview = CR.CrossrefItem & {
   biorxivDoi: string,
 };
 
-const getReviews = (fetchData: FetchData, crossrefApiBearerToken: Environment['crossrefApiBearerToken'], reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => pipe(
+const getReviews = (fetchData: FetchData, crossrefApiBearerToken: Configuration['crossrefApiBearerToken'], reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => pipe(
   biorxivItem.published_doi,
   CR.fetchReviewsBy(fetchData, crossrefApiBearerToken, reviewDoiPrefix),
   TE.map(RA.map((item) => ({
@@ -64,7 +64,7 @@ const fetchPaginatedData = (
 
 const identifyCandidates = (
   dependencies: Dependencies,
-  crossrefApiBearerToken: Environment['crossrefApiBearerToken'],
+  crossrefApiBearerToken: Configuration['crossrefApiBearerToken'],
   doiPrefix: string,
   reviewDoiPrefix: string,
   ingestDays: number,
@@ -80,7 +80,7 @@ const identifyCandidates = (
 };
 
 export const discoverEvaluationsFromCrossrefViaBiorxiv = (
-  crossrefApiBearerToken: Environment['crossrefApiBearerToken'],
+  crossrefApiBearerToken: Configuration['crossrefApiBearerToken'],
   doiPrefix: string,
   reviewDoiPrefix: string,
 ): DiscoverPublishedEvaluations => (ingestDays) => (dependencies) => pipe(

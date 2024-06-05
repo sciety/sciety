@@ -7,9 +7,9 @@ import { discoverEvaluationsFromHypothesisUser } from './evaluation-discovery/di
 import { discoverPciEvaluations } from './evaluation-discovery/discover-pci-evaluations';
 import { discoverPrereviewEvaluations } from './evaluation-discovery/discover-prereview-evaluations';
 import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover-rapid-reviews-evaluations';
+import { Configuration } from './generate-configuration-from-environment';
 import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations';
 import { GroupIngestionConfiguration } from './update-all';
-import { Environment } from './validate-environment';
 
 const stubbedDiscoverPublishEvaluation: DiscoverPublishedEvaluations = () => () => TE.right({
   understood: [],
@@ -17,7 +17,7 @@ const stubbedDiscoverPublishEvaluation: DiscoverPublishedEvaluations = () => () 
 });
 
 // addArticleToEvaluatedArticlesList policy needs to be updated BEFORE adding a new group to this configuration
-export const groupIngestionConfigurations = (environment: Environment): Array<GroupIngestionConfiguration> => [
+export const groupIngestionConfigurations = (environment: Configuration): Array<GroupIngestionConfiguration> => [
   {
     id: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
     name: 'Arcadia Science',
