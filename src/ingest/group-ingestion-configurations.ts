@@ -139,6 +139,8 @@ export const groupIngestionConfigurations = (environment: Environment): Array<Gr
   {
     id: '4d6a8908-22a9-45c8-bd56-3c7140647709',
     name: 'Access Microbiology',
-    discoverPublishedEvaluations: discoverEvaluationsForAccessMicrobiologyViaCrossref,
+    discoverPublishedEvaluations: environment.experimentEnabled
+      ? discoverEvaluationsForAccessMicrobiologyViaCrossref
+      : discoverEvaluationsForAccessMicrobiologyViaCrossref,
   },
 ];

@@ -14,6 +14,7 @@ export type Environment = {
   ingestOnly: string | undefined,
   ingestExcept: string | undefined,
   ingestDebug: boolean,
+  experimentEnabled: boolean,
 };
 
 const environmentCodec = t.strict({
@@ -26,6 +27,7 @@ const environmentCodec = t.strict({
   INGEST_ONLY: t.union([t.string, t.undefined]),
   INGEST_EXCEPT: t.union([t.string, t.undefined]),
   INGEST_DEBUG: t.union([t.string, t.undefined]),
+  EXPERIMENT_ENABLED: t.string,
 });
 
 export const validateEnvironment = (env: unknown): E.Either<void, Environment> => pipe(
@@ -44,5 +46,6 @@ export const validateEnvironment = (env: unknown): E.Either<void, Environment> =
     ingestOnly: environment.INGEST_ONLY,
     ingestExcept: environment.INGEST_EXCEPT,
     ingestDebug: environment.INGEST_DEBUG !== undefined && environment.INGEST_DEBUG.length > 0,
+    experimentEnabled: environment.EXPERIMENT_ENABLED === 'true',
   })),
 );
