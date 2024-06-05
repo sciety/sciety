@@ -49,8 +49,12 @@ axiosRetry(axios, {
   retryCondition: () => true,
   retryDelay: exponentialDelay,
   onRetry: (retryCount: number, error) => {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    process.stderr.write(`Retrying retryCount: ${retryCount}, error: ${error}, url: ${error.config?.url}, data: ${error.config?.data}\n`);
+    report('warn', 'Retrying HTTP request')({
+      retryCount,
+      error,
+      url: error.config?.url,
+      data: error.config?.data,
+    });
   },
 });
 
