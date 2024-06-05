@@ -14,8 +14,7 @@ const shouldUpdate = (pattern: Environment['ingestOnly']) => (group: GroupIngest
   return true;
 };
 
-const shouldNotExclude = (group: GroupIngestionConfiguration) => {
-  const pattern = process.env.INGEST_EXCEPT;
+const shouldNotExclude = (pattern: Environment['ingestExcept']) => (group: GroupIngestionConfiguration) => {
   if (pattern) {
     return !(group.name.toLowerCase().includes(pattern.toLowerCase())
       || group.id.toLowerCase().includes(pattern.toLowerCase()));
@@ -27,7 +26,7 @@ const selectGroupsToIngest = (environment: Environment) => pipe(
   environment,
   groupIngestionConfigurations,
   RA.filter(shouldUpdate(environment.ingestOnly)),
-  RA.filter(shouldNotExclude),
+  RA.filter(shouldNotExclude(environment.ingestExcept)),
 );
 
 void (async (): Promise<unknown> => pipe(

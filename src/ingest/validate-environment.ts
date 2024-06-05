@@ -10,6 +10,7 @@ export type Environment = {
   ingestDays: number,
   preReviewBearerToken: string,
   ingestOnly: string | undefined,
+  ingestExcept: string | undefined,
 };
 
 const environmentCodec = t.strict({
@@ -18,6 +19,7 @@ const environmentCodec = t.strict({
   INGEST_DAYS: tt.withFallback(tt.NumberFromString, 5),
   PREREVIEW_BEARER_TOKEN: tt.NonEmptyString,
   INGEST_ONLY: t.union([t.string, t.undefined]),
+  INGEST_EXCEPT: t.union([t.string, t.undefined]),
 });
 
 export const validateEnvironment = (env: unknown): E.Either<void, Environment> => pipe(
@@ -32,5 +34,6 @@ export const validateEnvironment = (env: unknown): E.Either<void, Environment> =
     ingestDays: environment.INGEST_DAYS,
     preReviewBearerToken: environment.PREREVIEW_BEARER_TOKEN,
     ingestOnly: environment.INGEST_ONLY,
+    ingestExcept: environment.INGEST_EXCEPT,
   })),
 );
