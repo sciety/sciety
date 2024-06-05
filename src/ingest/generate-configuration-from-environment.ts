@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
+import { report } from './report';
 
 export type Configuration = {
   targetApp: string,
@@ -34,7 +35,9 @@ export const generateConfigurationFromEnvironment = (env: unknown): E.Either<voi
   env,
   environmentCodec.decode,
   E.mapLeft((errors) => {
-    process.stderr.write(`Incorrect environment configuration: ${formatValidationErrors(errors).join('\n')}\n`);
+    report('error', 'Incorrect environment configuration')({
+      errors: formatValidationErrors(errors),
+    });
   }),
   E.map((environment) => ({
     targetApp: environment.INGESTION_TARGET_APP,
