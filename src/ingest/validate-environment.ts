@@ -11,6 +11,7 @@ export type Environment = {
   preReviewBearerToken: string,
   ingestOnly: string | undefined,
   ingestExcept: string | undefined,
+  ingestDebug: boolean,
 };
 
 const environmentCodec = t.strict({
@@ -20,6 +21,7 @@ const environmentCodec = t.strict({
   PREREVIEW_BEARER_TOKEN: tt.NonEmptyString,
   INGEST_ONLY: t.union([t.string, t.undefined]),
   INGEST_EXCEPT: t.union([t.string, t.undefined]),
+  INGEST_DEBUG: t.union([t.string, t.undefined]),
 });
 
 export const validateEnvironment = (env: unknown): E.Either<void, Environment> => pipe(
@@ -35,5 +37,6 @@ export const validateEnvironment = (env: unknown): E.Either<void, Environment> =
     preReviewBearerToken: environment.PREREVIEW_BEARER_TOKEN,
     ingestOnly: environment.INGEST_ONLY,
     ingestExcept: environment.INGEST_EXCEPT,
+    ingestDebug: environment.INGEST_DEBUG !== undefined && environment.INGEST_DEBUG.length > 0,
   })),
 );

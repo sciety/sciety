@@ -35,11 +35,12 @@ const report = (level: LevelName, message: string) => (payload: Record<string, u
 };
 
 const reportSkippedItems = (
+  ingestDebug: Environment['ingestDebug'],
   group: GroupIngestionConfiguration,
 ) => (
   discoveredPublishedEvaluations: DiscoveredPublishedEvaluations,
 ) => {
-  if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
+  if (ingestDebug) {
     pipe(
       discoveredPublishedEvaluations.skipped,
       RA.map((skippedItem) => ({ item: skippedItem.item, reason: skippedItem.reason, groupName: group.name })),
@@ -145,7 +146,7 @@ const updateGroup = (
       cause: 'Could not discover any published evaluations',
       error,
     }),
-    reportSkippedItems(group),
+    reportSkippedItems(environment.ingestDebug, group),
   ),
   TE.chainW(sendRecordEvaluationCommands(group, environment)),
   TE.bimap(
