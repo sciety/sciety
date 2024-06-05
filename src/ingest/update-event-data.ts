@@ -31,7 +31,7 @@ void (async (): Promise<unknown> => pipe(
   E.map((environment) => ({
     ...environment,
     groupsToIngest: pipe(
-      environment.preReviewBearerToken,
+      environment,
       groupIngestionConfigurations,
       RA.filter(shouldUpdate),
       RA.filter(shouldNotExclude),
