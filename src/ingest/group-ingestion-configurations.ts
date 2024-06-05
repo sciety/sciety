@@ -64,7 +64,7 @@ export const groupIngestionConfigurations = (environment: Environment): Array<Gr
   {
     id: '53ed5364-a016-11ea-bb37-0242ac130002',
     name: 'PeerJ',
-    discoverPublishedEvaluations: discoverEvaluationsFromCrossrefViaBiorxiv('10.7717', '10.7287'),
+    discoverPublishedEvaluations: discoverEvaluationsFromCrossrefViaBiorxiv(environment.crossrefApiBearerToken, '10.7717', '10.7287'),
   },
   {
     id: 'f97bd177-5cb6-4296-8573-078318755bf2',
