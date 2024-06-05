@@ -69,7 +69,7 @@ export const groupIngestionConfigurations = (environment: Environment): Array<Gr
   {
     id: 'f97bd177-5cb6-4296-8573-078318755bf2',
     name: 'preLights',
-    discoverPublishedEvaluations: fetchPrelightsEvaluations(),
+    discoverPublishedEvaluations: fetchPrelightsEvaluations(environment.prelightsFeedKey),
   },
   {
     id: '10360d97-bf52-4aef-b2fa-2f60d319edd7',
