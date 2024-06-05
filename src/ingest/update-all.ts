@@ -11,6 +11,7 @@ import { v4 } from 'uuid';
 import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
 import { fetchData } from './fetch-data';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
+import { Environment } from './validate-environment';
 
 export type GroupIngestionConfiguration = {
   id: string,
@@ -67,12 +68,8 @@ axiosRetry(axios, {
   },
 });
 
-export type Config = {
-  targetApp: string,
-  bearerToken: string,
+type Config = Environment & {
   groupsToIngest: ReadonlyArray<GroupIngestionConfiguration>,
-  ingestDays: number,
-  preReviewBearerToken: string,
 };
 
 const send = (config: Config) => (evaluationCommand: EvaluationCommand) => pipe(

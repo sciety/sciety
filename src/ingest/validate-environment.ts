@@ -3,7 +3,13 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
-import { Config } from './update-all';
+
+export type Environment = {
+  targetApp: string,
+  bearerToken: string,
+  ingestDays: number,
+  preReviewBearerToken: string,
+};
 
 const environmentCodec = t.strict({
   INGESTION_TARGET_APP: tt.NonEmptyString,
@@ -12,7 +18,7 @@ const environmentCodec = t.strict({
   PREREVIEW_BEARER_TOKEN: tt.NonEmptyString,
 });
 
-export const validateEnvironment = (env: unknown): E.Either<void, Omit<Config, 'groupsToIngest'>> => pipe(
+export const validateEnvironment = (env: unknown): E.Either<void, Environment> => pipe(
   env,
   environmentCodec.decode,
   E.mapLeft((errors) => {
