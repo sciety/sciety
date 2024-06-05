@@ -68,15 +68,11 @@ axiosRetry(axios, {
   },
 });
 
-type Config = Environment & {
-  groupsToIngest: ReadonlyArray<GroupIngestionConfiguration>,
-};
-
-const send = (config: Config) => (evaluationCommand: EvaluationCommand) => pipe(
+const send = (environment: Environment) => (evaluationCommand: EvaluationCommand) => pipe(
   TE.tryCatch(
-    async () => axios.post(`${config.targetApp}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
+    async () => axios.post(`${environment.targetApp}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
       headers: {
-        Authorization: `Bearer ${config.bearerToken}`,
+        Authorization: `Bearer ${environment.bearerToken}`,
         'Content-Type': 'application/json',
       },
       timeout: 10000,
@@ -103,7 +99,7 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 
 const sendRecordEvaluationCommands = (
   group: GroupIngestionConfiguration,
-  config: Config,
+  environment: Environment,
 ) => (discoveredPublishedEvaluations: DiscoveredPublishedEvaluations) => pipe(
   discoveredPublishedEvaluations.understood,
   RA.map((evaluation) => ({
@@ -114,7 +110,7 @@ const sendRecordEvaluationCommands = (
     authors: evaluation.authors,
     evaluationType: evaluation.evaluationType,
   })),
-  T.traverseSeqArray(send(config)),
+  T.traverseSeqArray(send(environment)),
   T.map((array) => {
     const leftsCount = RA.lefts(array).length;
     const lefts = pipe(
@@ -136,9 +132,13 @@ const sendRecordEvaluationCommands = (
   }),
 );
 
-const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE.TaskEither<unknown, void> => pipe(
+const updateGroup = (
+  environment: Environment,
+) => (
+  group: GroupIngestionConfiguration,
+): TE.TaskEither<unknown, void> => pipe(
   { fetchData },
-  group.discoverPublishedEvaluations(config.ingestDays),
+  group.discoverPublishedEvaluations(environment.ingestDays),
   TE.bimap(
     (error) => ({
       groupName: group.name,
@@ -147,15 +147,20 @@ const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE
     }),
     reportSkippedItems(group),
   ),
-  TE.chainW(sendRecordEvaluationCommands(group, config)),
+  TE.chainW(sendRecordEvaluationCommands(group, environment)),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
   ),
 );
 
-export const updateAll = (config: Config): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
-  config.groupsToIngest,
-  T.traverseSeqArray(updateGroup(config)),
+type GroupsToIngest = ReadonlyArray<GroupIngestionConfiguration>;
+
+export const updateAll = (
+  environment: Environment,
+  groupsToIngest: GroupsToIngest,
+): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
+  groupsToIngest,
+  T.traverseSeqArray(updateGroup(environment)),
   T.map(E.sequenceArray),
 );

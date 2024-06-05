@@ -1,11 +1,10 @@
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { groupIngestionConfigurations } from './group-ingestion-configurations';
 import { GroupIngestionConfiguration, updateAll } from './update-all';
-import { validateEnvironment } from './validate-environment';
+import { Environment, validateEnvironment } from './validate-environment';
 
 const shouldUpdate = (group: GroupIngestionConfiguration) => {
   const pattern = process.env.INGEST_ONLY;
@@ -25,20 +24,18 @@ const shouldNotExclude = (group: GroupIngestionConfiguration) => {
   return true;
 };
 
+const selectGroupsToIngest = (environment: Environment) => pipe(
+  environment,
+  groupIngestionConfigurations,
+  RA.filter(shouldUpdate),
+  RA.filter(shouldNotExclude),
+);
+
 void (async (): Promise<unknown> => pipe(
   process.env,
   validateEnvironment,
-  E.map((environment) => ({
-    ...environment,
-    groupsToIngest: pipe(
-      environment,
-      groupIngestionConfigurations,
-      RA.filter(shouldUpdate),
-      RA.filter(shouldNotExclude),
-    ),
-  })),
   TE.fromEither,
-  TE.chain(updateAll),
+  TE.chain((environment) => updateAll(environment, selectGroupsToIngest(environment))),
   TE.match(
     () => 1,
     () => 0,
