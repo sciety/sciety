@@ -1,3 +1,5 @@
+import * as TE from 'fp-ts/TaskEither';
+import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
 import { discoverEvaluationsForAccessMicrobiologyViaCrossref } from './evaluation-discovery/discover-evaluations-for-access-microbiology-via-crossref';
 import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discovery/discover-evaluations-from-crossref-via-biorxiv';
 import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
@@ -8,6 +10,11 @@ import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover
 import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations';
 import { GroupIngestionConfiguration } from './update-all';
 import { Environment } from './validate-environment';
+
+const stubbedDiscoverPublishEvaluation: DiscoverPublishedEvaluations = () => () => TE.right({
+  understood: [],
+  skipped: [],
+});
 
 // addArticleToEvaluatedArticlesList policy needs to be updated BEFORE adding a new group to this configuration
 export const groupIngestionConfigurations = (environment: Environment): Array<GroupIngestionConfiguration> => [
@@ -141,6 +148,6 @@ export const groupIngestionConfigurations = (environment: Environment): Array<Gr
     name: 'Access Microbiology',
     discoverPublishedEvaluations: environment.experimentEnabled
       ? discoverEvaluationsForAccessMicrobiologyViaCrossref
-      : discoverEvaluationsForAccessMicrobiologyViaCrossref,
+      : stubbedDiscoverPublishEvaluation,
   },
 ];

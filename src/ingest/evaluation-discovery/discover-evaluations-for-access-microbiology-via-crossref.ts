@@ -70,7 +70,7 @@ export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublis
   TE.map((response) => response.message.items),
   TE.map(RA.map(toEvaluation)),
   TE.map((evaluations) => ({
-    understood: process.env.EXPERIMENT_ENABLED === 'true' ? evaluations : [],
+    understood: evaluations,
     skipped: [],
   })),
 );
