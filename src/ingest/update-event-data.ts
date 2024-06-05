@@ -6,8 +6,7 @@ import { groupIngestionConfigurations } from './group-ingestion-configurations';
 import { GroupIngestionConfiguration, updateAll } from './update-all';
 import { Environment, validateEnvironment } from './validate-environment';
 
-const shouldUpdate = (group: GroupIngestionConfiguration) => {
-  const pattern = process.env.INGEST_ONLY;
+const shouldUpdate = (pattern: Environment['ingestOnly']) => (group: GroupIngestionConfiguration) => {
   if (pattern) {
     return group.name.toLowerCase().includes(pattern.toLowerCase())
       || group.id.toLowerCase().includes(pattern.toLowerCase());
@@ -27,7 +26,7 @@ const shouldNotExclude = (group: GroupIngestionConfiguration) => {
 const selectGroupsToIngest = (environment: Environment) => pipe(
   environment,
   groupIngestionConfigurations,
-  RA.filter(shouldUpdate),
+  RA.filter(shouldUpdate(environment.ingestOnly)),
   RA.filter(shouldNotExclude),
 );
 

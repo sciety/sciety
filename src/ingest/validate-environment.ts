@@ -9,6 +9,7 @@ export type Environment = {
   bearerToken: string,
   ingestDays: number,
   preReviewBearerToken: string,
+  ingestOnly: string | undefined,
 };
 
 const environmentCodec = t.strict({
@@ -16,6 +17,7 @@ const environmentCodec = t.strict({
   SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
   INGEST_DAYS: tt.withFallback(tt.NumberFromString, 5),
   PREREVIEW_BEARER_TOKEN: tt.NonEmptyString,
+  INGEST_ONLY: t.union([t.string, t.undefined]),
 });
 
 export const validateEnvironment = (env: unknown): E.Either<void, Environment> => pipe(
@@ -29,5 +31,6 @@ export const validateEnvironment = (env: unknown): E.Either<void, Environment> =
     bearerToken: environment.SCIETY_TEAM_API_BEARER_TOKEN,
     ingestDays: environment.INGEST_DAYS,
     preReviewBearerToken: environment.PREREVIEW_BEARER_TOKEN,
+    ingestOnly: environment.INGEST_ONLY,
   })),
 );
