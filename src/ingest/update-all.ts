@@ -7,31 +7,16 @@ import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { v4 } from 'uuid';
 import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
 import { fetchData } from './fetch-data';
 import { Configuration } from './generate-configuration-from-environment';
+import { report } from './report';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
 
 export type EvaluationDiscoveryProcess = {
   groupId: string,
   name: string,
   discoverPublishedEvaluations: DiscoverPublishedEvaluations,
-};
-
-type LevelName = 'error' | 'warn' | 'info' | 'debug';
-
-const correlationId = v4();
-
-const report = (level: LevelName, message: string) => (payload: Record<string, unknown>) => {
-  const thingToLog = {
-    timestamp: new Date(),
-    level,
-    correlationId,
-    message,
-    payload,
-  };
-  process.stderr.write(`${JSON.stringify(thingToLog)}\n`);
 };
 
 const reportSkippedItems = (
