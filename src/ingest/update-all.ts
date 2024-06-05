@@ -13,8 +13,8 @@ import { fetchData } from './fetch-data';
 import { Configuration } from './generate-configuration-from-environment';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
 
-export type GroupIngestionConfiguration = {
-  id: string,
+export type EvaluationDiscoveryProcess = {
+  groupId: string,
   name: string,
   discoverPublishedEvaluations: DiscoverPublishedEvaluations,
 };
@@ -36,7 +36,7 @@ const report = (level: LevelName, message: string) => (payload: Record<string, u
 
 const reportSkippedItems = (
   ingestDebug: Configuration['ingestDebug'],
-  group: GroupIngestionConfiguration,
+  group: EvaluationDiscoveryProcess,
 ) => (
   discoveredPublishedEvaluations: DiscoveredPublishedEvaluations,
 ) => {
@@ -99,12 +99,12 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 );
 
 const sendRecordEvaluationCommands = (
-  group: GroupIngestionConfiguration,
+  group: EvaluationDiscoveryProcess,
   environment: Configuration,
 ) => (discoveredPublishedEvaluations: DiscoveredPublishedEvaluations) => pipe(
   discoveredPublishedEvaluations.understood,
   RA.map((evaluation) => ({
-    groupId: group.id,
+    groupId: group.groupId,
     expressionDoi: evaluation.paperExpressionDoi,
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.publishedOn,
@@ -133,35 +133,33 @@ const sendRecordEvaluationCommands = (
   }),
 );
 
-const updateGroup = (
+const recordDiscoveredEvaluations = (
   environment: Configuration,
 ) => (
-  group: GroupIngestionConfiguration,
+  process: EvaluationDiscoveryProcess,
 ): TE.TaskEither<unknown, void> => pipe(
   { fetchData: fetchData(environment) },
-  group.discoverPublishedEvaluations(environment.ingestDays),
+  process.discoverPublishedEvaluations(environment.ingestDays),
   TE.bimap(
     (error) => ({
-      groupName: group.name,
+      processName: process.name,
       cause: 'Could not discover any published evaluations',
       error,
     }),
-    reportSkippedItems(environment.ingestDebug, group),
+    reportSkippedItems(environment.ingestDebug, process),
   ),
-  TE.chainW(sendRecordEvaluationCommands(group, environment)),
+  TE.chainW(sendRecordEvaluationCommands(process, environment)),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
   ),
 );
 
-type GroupsToIngest = ReadonlyArray<GroupIngestionConfiguration>;
-
 export const updateAll = (
   environment: Configuration,
-  groupsToIngest: GroupsToIngest,
+  evaluationDiscoveryProcesses: ReadonlyArray<EvaluationDiscoveryProcess>,
 ): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
-  groupsToIngest,
-  T.traverseSeqArray(updateGroup(environment)),
+  evaluationDiscoveryProcesses,
+  T.traverseSeqArray(recordDiscoveredEvaluations(environment)),
   T.map(E.sequenceArray),
 );
