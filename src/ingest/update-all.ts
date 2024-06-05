@@ -138,7 +138,7 @@ const updateGroup = (
 ) => (
   group: GroupIngestionConfiguration,
 ): TE.TaskEither<unknown, void> => pipe(
-  { fetchData },
+  { fetchData: fetchData(environment) },
   group.discoverPublishedEvaluations(environment.ingestDays),
   TE.bimap(
     (error) => ({
