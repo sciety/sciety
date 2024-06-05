@@ -3,11 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
-import { formatValidationErrors } from 'io-ts-reporters';
-import * as tt from 'io-ts-types';
 import { groupIngestionConfigurations } from './group-ingestion-configurations';
-import { Config, GroupIngestionConfiguration, updateAll } from './update-all';
+import { GroupIngestionConfiguration, updateAll } from './update-all';
+import { validateEnvironment } from './validate-environment';
 
 const shouldUpdate = (group: GroupIngestionConfiguration) => {
   const pattern = process.env.INGEST_ONLY;
@@ -26,27 +24,6 @@ const shouldNotExclude = (group: GroupIngestionConfiguration) => {
   }
   return true;
 };
-
-const environmentCodec = t.strict({
-  INGESTION_TARGET_APP: tt.NonEmptyString,
-  SCIETY_TEAM_API_BEARER_TOKEN: tt.NonEmptyString,
-  INGEST_DAYS: tt.withFallback(tt.NumberFromString, 5),
-  PREREVIEW_BEARER_TOKEN: tt.NonEmptyString,
-});
-
-const validateEnvironment = (env: unknown): E.Either<void, Omit<Config, 'groupsToIngest'>> => pipe(
-  env,
-  environmentCodec.decode,
-  E.mapLeft((errors) => {
-    process.stderr.write(`Incorrect environment configuration: ${formatValidationErrors(errors).join('\n')}\n`);
-  }),
-  E.map((environment) => ({
-    targetApp: environment.INGESTION_TARGET_APP,
-    bearerToken: environment.SCIETY_TEAM_API_BEARER_TOKEN,
-    ingestDays: environment.INGEST_DAYS,
-    preReviewBearerToken: environment.PREREVIEW_BEARER_TOKEN,
-  })),
-);
 
 void (async (): Promise<unknown> => pipe(
   process.env,
