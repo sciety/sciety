@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { Dependencies, DiscoverPublishedEvaluations } from '../discover-published-evaluations';
+import { FetchData } from '../fetch-data';
 import * as CR from '../third-parties/crossref';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 
@@ -24,9 +25,9 @@ type CrossrefReview = CR.CrossrefItem & {
   biorxivDoi: string,
 };
 
-const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => pipe(
+const getReviews = (fetchData: FetchData, reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => pipe(
   biorxivItem.published_doi,
-  CR.fetchReviewsBy(reviewDoiPrefix),
+  CR.fetchReviewsBy(fetchData, reviewDoiPrefix),
   TE.map(RA.map((item) => ({
     ...item,
     biorxivDoi: biorxivItem.biorxiv_doi,
@@ -71,7 +72,7 @@ const identifyCandidates = (
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
     fetchPaginatedData(dependencies, baseUrl, 0),
-    TE.chain(TE.traverseSeqArray(getReviews(reviewDoiPrefix))),
+    TE.chain(TE.traverseSeqArray(getReviews(dependencies.fetchData, reviewDoiPrefix))),
     TE.map(RA.flatten),
   );
 };

@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchData } from '../../fetch-data';
+import { FetchData } from '../../fetch-data';
 
 export type CrossrefItem = {
   DOI: string,
@@ -26,11 +26,11 @@ const headers: Record<string, string> = (process.env.CROSSREF_API_BEARER_TOKEN !
   : { };
 
 type FetchReviews =
-(reviewDoiPrefix: string) =>
+(fetchData: FetchData, reviewDoiPrefix: string) =>
 (articleDoi: string) =>
 TE.TaskEither<string, ReadonlyArray<CrossrefItem>>;
 
-export const fetchReviewsBy: FetchReviews = (reviewDoiPrefix) => (articleDoi) => pipe(
+export const fetchReviewsBy: FetchReviews = (fetchData, reviewDoiPrefix) => (articleDoi) => pipe(
   fetchData<CrossrefResponse>(crossrefReviewsUrl(reviewDoiPrefix, articleDoi), headers),
   TE.map((response) => response.message.items),
 );
