@@ -109,16 +109,17 @@ const sendRecordEvaluationCommands = (
       RA.reduce({}, countUniques),
     );
     const rightsCount = RA.rights(array).length;
-    const summaryOfRequests = {
+    const summary = {
       groupName: group.name,
       lefts,
       leftsTotal: leftsCount,
       rightsTotal: rightsCount,
+      skippedTotal: discoveredPublishedEvaluations.skipped.length,
     };
     if (leftsCount > 0) {
-      return E.left(summaryOfRequests);
+      return E.left(summary);
     }
-    return E.right(summaryOfRequests);
+    return E.right(summary);
   }),
 );
 
