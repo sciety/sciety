@@ -58,6 +58,7 @@ jobs:
             INGEST_DEBUG=true \
             PREREVIEW_BEARER_TOKEN=bogus \
             PRELIGHTS_FEED_KEY=bogus \
+            CROSSREF_API_BEARER_TOKEN=bogus \
             ingest-evaluations
 
       - name: Server smoke test
