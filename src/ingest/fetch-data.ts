@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Configuration } from './generate-configuration-from-environment';
+import { report } from './report';
 
 const axiosGet = async <D>(ingestDebug: Configuration['ingestDebug'], url: string, additionalHeaders: Record<string, string>) => {
   const startTime = performance.now();
@@ -13,7 +14,10 @@ const axiosGet = async <D>(ingestDebug: Configuration['ingestDebug'], url: strin
   return axios.get<D>(url, { headers }).finally(() => {
     if (ingestDebug) {
       const endTime = performance.now();
-      process.stdout.write(`Fetched ${url} (${Math.round(endTime - startTime)}ms)\n`);
+      report('debug', 'Fetched URL for ingestion')({
+        url,
+        durationMs: Math.round(endTime - startTime),
+      });
     }
   });
 };
