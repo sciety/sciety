@@ -5,17 +5,16 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import * as tt from 'io-ts-types';
-import * as AID from '../../types/article-id';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
 import { PublishedEvaluation } from '../types/published-evaluation';
 
 const preReviewReview = t.type({
   createdAt: tt.DateFromISOString,
-  doi: AID.articleIdCodec,
-  preprint: t.string,
+  doi: tt.NonEmptyString,
+  preprint: tt.NonEmptyString,
   authors: t.readonlyArray(t.type({
-    name: t.string,
+    name: tt.NonEmptyString,
   })),
 });
 
@@ -26,7 +25,7 @@ const preReviewResponse = t.readonlyArray(preReviewReview);
 const toEvaluationOrSkip = (item: PreReviewReview) => E.right({
   publishedOn: item.createdAt,
   paperExpressionDoi: item.preprint,
-  evaluationLocator: `doi:${item.doi.value}`,
+  evaluationLocator: `doi:${item.doi}`,
   authors: pipe(
     item.authors,
     RA.map((author) => author.name),
