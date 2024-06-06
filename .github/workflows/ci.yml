@@ -162,7 +162,7 @@ jobs:
         if: failure() && github.ref == 'refs/heads/main'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: voxmedia/github-action-slack-notify-build@v1
+        uses: zuplo/github-action-slack-notify-build@v2
         with:
           channel: sciety-general
           status: FAILED
