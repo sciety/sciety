@@ -61,7 +61,7 @@ describe('discover-prereview-evaluations', () => {
       )();
     });
 
-    it.failing('returns the reviews', async () => {
+    it('returns the reviews', async () => {
       const expectedEvaluation1 = constructPublishedEvaluation({
         paperExpressionDoi: preprintDoi,
         publishedOn: date1,

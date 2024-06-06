@@ -24,7 +24,7 @@ const preReviewResponse = t.readonlyArray(preReviewReview);
 
 const toEvaluationOrSkip = (item: PreReviewReview) => E.right({
   publishedOn: item.createdAt,
-  paperExpressionDoi: item.preprint,
+  paperExpressionDoi: item.preprint.replace(/^doi:/, ''),
   evaluationLocator: `doi:${item.doi}`,
   authors: pipe(
     item.authors,
