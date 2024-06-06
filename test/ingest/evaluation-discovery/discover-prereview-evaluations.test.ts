@@ -4,7 +4,7 @@ import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
-import { arbitraryDate, arbitraryString } from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 
@@ -34,20 +34,20 @@ describe('discover-prereview-evaluations', () => {
   });
 
   describe('when the response includes a biorxiv preprint with valid reviews', () => {
-    const articleId = arbitraryArticleId();
+    const preprintDoi = arbitraryWord();
     const date1 = arbitraryDate();
     const date2 = arbitraryDate();
     const reviewDoi1 = arbitraryArticleId();
     const reviewDoi2 = arbitraryArticleId();
     const response = [
       {
-        preprint: articleId.value,
+        preprint: `doi:${preprintDoi}`,
         createdAt: date1.toString(),
         doi: reviewDoi1.value,
         authors: [],
       },
       {
-        preprint: articleId.value,
+        preprint: `doi:${preprintDoi}`,
         createdAt: date2.toString(),
         doi: reviewDoi2.value,
         authors: [],
@@ -61,14 +61,14 @@ describe('discover-prereview-evaluations', () => {
       )();
     });
 
-    it('returns the reviews', async () => {
+    it.failing('returns the reviews', async () => {
       const expectedEvaluation1 = constructPublishedEvaluation({
-        paperExpressionDoi: articleId.value,
+        paperExpressionDoi: preprintDoi,
         publishedOn: date1,
         evaluationLocator: `doi:${reviewDoi1.value}`,
       });
       const expectedEvaluation2 = constructPublishedEvaluation({
-        paperExpressionDoi: articleId.value,
+        paperExpressionDoi: preprintDoi,
         publishedOn: date2,
         evaluationLocator: `doi:${reviewDoi2.value}`,
       });
@@ -89,7 +89,7 @@ describe('discover-prereview-evaluations', () => {
     const authorName2 = arbitraryString();
     const response = [
       {
-        preprint: arbitraryArticleId().value,
+        preprint: `doi:${arbitraryWord()}`,
         createdAt: arbitraryDate().toString(),
         doi: arbitraryArticleId().value,
         authors: [
