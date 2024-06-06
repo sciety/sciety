@@ -4,7 +4,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { expressionDoiCodec } from '../../types/expression-doi';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
 
@@ -32,7 +31,7 @@ const crossrefResponseCodec = t.strict({
       published: publishedDateCodec,
       relation: t.strict({
         'is-review-of': t.tuple([t.strict({
-          id: expressionDoiCodec,
+          id: t.string,
         })]),
       }),
     })),
