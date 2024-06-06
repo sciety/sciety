@@ -12,6 +12,7 @@ coverage/
 /feature-test/screenshots/*.png
 /node_modules/
 /.env
+/generated.env
 /.gcp-ncrc-key.json
 *.log
 .mk-*

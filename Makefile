@@ -305,3 +305,6 @@ connect-to-cache-dev:
 
 helm-dry-run:
 	helm install --debug --dry-run --set hostname=example.sciety.org sciety--example ./helm/sciety
+
+generated.env:
+	aws secretsmanager get-secret-value --secret-id sciety-team-api | jq -r .SecretString | jq -r '"SCIETY_TEAM_API_BEARER_TOKEN=\(.bearerToken)\n"' >> generated.env
