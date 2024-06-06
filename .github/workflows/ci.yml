@@ -52,7 +52,14 @@ jobs:
 
       - name: Ingestion smoke test
         run: |
-          make IMAGE_TAG=${IMAGE_TAG} INGEST_ONLY=non-existent-group INGEST_DEBUG=true PREREVIEW_BEARER_TOKEN=bogus ingest-evaluations
+          make \
+            IMAGE_TAG=${IMAGE_TAG} \
+            INGEST_ONLY=non-existent-group \
+            INGEST_DEBUG=true \
+            PREREVIEW_BEARER_TOKEN=bogus \
+            PRELIGHTS_FEED_KEY=bogus \
+            CROSSREF_API_BEARER_TOKEN=bogus \
+            ingest-evaluations
 
       - name: Server smoke test
         run: |
