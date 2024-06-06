@@ -120,28 +120,4 @@ describe('discover-prereview-evaluations', () => {
       expect(result.skipped).toHaveLength(0);
     });
   });
-
-  describe('when the response includes a preprint that lacks a DOI', () => {
-    const date1 = arbitraryDate();
-    const reviewDoi1 = arbitraryArticleId();
-    const response = [
-      {
-        preprint: 'evaluated preprint does not have a DOI',
-        createdAt: date1.toString(),
-        doi: reviewDoi1.value,
-        authors: [],
-      },
-    ];
-
-    beforeEach(async () => {
-      result = await pipe(
-        runDiscovery(response),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
-
-    it('returns one skipped item', () => {
-      expect(result.skipped[0].reason).toBe('evaluated preprint does not have a DOI');
-    });
-  });
 });

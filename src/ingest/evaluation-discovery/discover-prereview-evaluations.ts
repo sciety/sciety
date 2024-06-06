@@ -9,12 +9,11 @@ import * as AID from '../../types/article-id';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
 import { PublishedEvaluation } from '../types/published-evaluation';
-import { SkippedEvaluation } from '../types/skipped-evaluation';
 
 const preReviewReview = t.type({
   createdAt: tt.DateFromISOString,
   doi: AID.articleIdCodec,
-  preprint: t.union([AID.articleIdCodec, t.string]),
+  preprint: t.string,
   authors: t.readonlyArray(t.type({
     name: t.string,
   })),
@@ -24,22 +23,15 @@ type PreReviewReview = t.TypeOf<typeof preReviewReview>;
 
 const preReviewResponse = t.readonlyArray(preReviewReview);
 
-const toEvaluationOrSkip = (item: PreReviewReview) => pipe(
-  AID.isArticleId(item.preprint)
-    ? E.right({
-      publishedOn: item.createdAt,
-      paperExpressionDoi: item.preprint.value,
-      evaluationLocator: `doi:${item.doi.value}`,
-      authors: pipe(
-        item.authors,
-        RA.map((author) => author.name),
-      ),
-    } satisfies PublishedEvaluation)
-    : E.left({
-      item: item.doi.value,
-      reason: 'evaluated preprint does not have a DOI',
-    } satisfies SkippedEvaluation),
-);
+const toEvaluationOrSkip = (item: PreReviewReview) => E.right({
+  publishedOn: item.createdAt,
+  paperExpressionDoi: item.preprint,
+  evaluationLocator: `doi:${item.doi.value}`,
+  authors: pipe(
+    item.authors,
+    RA.map((author) => author.name),
+  ),
+} satisfies PublishedEvaluation);
 
 const identifyCandidates = (fetchData: FetchData, bearerToken: string) => pipe(
   fetchData<unknown>('https://prereview.org/sciety-list', { Accept: 'application/json', Authorization: `Bearer ${bearerToken}` }),
