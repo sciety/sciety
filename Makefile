@@ -308,3 +308,6 @@ helm-dry-run:
 
 generated.env:
 	aws secretsmanager get-secret-value --secret-id sciety-team-api | jq -r .SecretString | jq -r '"SCIETY_TEAM_API_BEARER_TOKEN=\(.bearerToken)\n"' >> generated.env
+	aws secretsmanager get-secret-value --secret-id crossref-api | jq -r .SecretString | jq -r '"CROSSREF_API_BEARER_TOKEN=\(.bearerToken)\n"' >> generated.env
+	aws secretsmanager get-secret-value --secret-id prelights-feed | jq -r .SecretString | jq -r '"PRELIGHTS_FEED_KEY=\(.key)\n"' >> generated.env
+	aws secretsmanager get-secret-value --secret-id prereview-api | jq -r .SecretString | jq -r '"PREREVIEW_BEARER_TOKEN=\(.bearerToken)\n"' >> generated.env
