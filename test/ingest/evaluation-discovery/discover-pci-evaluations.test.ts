@@ -93,37 +93,4 @@ describe('discover-pci-evaluations', () => {
       }));
     });
   });
-
-  describe('when the doi is malformed', () => {
-    it('returns 0 evaluations and 1 skipped item', async () => {
-      const evaluationId = 'https: //doi.org/10.24072/pci.evolbiol.100133';
-      const pciXmlResponse = `
-        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <links>
-          <link providerId="PCIArchaeology">
-            <resource>
-              <doi>${evaluationId}</doi>
-              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
-            </resource>
-            <doi>${arbitraryArticleId().value}</doi>
-          </link>
-        </links>
-      `;
-
-      const result = await pipe(
-        discover(pciXmlResponse),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-
-      expect(result).toStrictEqual({
-        understood: [],
-        skipped: [
-          {
-            item: evaluationId,
-            reason: 'malformed evaluation doi',
-          },
-        ],
-      });
-    });
-  });
 });

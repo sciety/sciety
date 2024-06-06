@@ -5,7 +5,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
-import * as AID from '../../types/article-id';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 
@@ -40,25 +39,19 @@ const identifyCandidates = (since: Date) => (feed: string) => {
 };
 
 const toEvaluationOrSkip = (candidate: Candidate) => {
-  const bioAndmedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
-  const [, articleDoi] = bioAndmedrxivDoiRegex.exec(candidate.articleId) ?? [];
+  const bioAndMedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.1101\/(?:[^%"#?\s])+)\s*$/;
+  const [, articleDoi] = bioAndMedrxivDoiRegex.exec(candidate.articleId) ?? [];
   if (articleDoi) {
     return pipe(
       candidate.reviewId,
       S.replace('https://doi.org/', ''),
       S.replace('http://dx.doi.org/', ''),
-      AID.articleIdCodec.decode,
-      E.bimap(
-        () => ({
-          item: candidate.reviewId,
-          reason: 'malformed evaluation doi',
-        }),
-        (validatedEvaluationDoi) => constructPublishedEvaluation({
-          publishedOn: new Date(candidate.date),
-          paperExpressionDoi: articleDoi,
-          evaluationLocator: AID.toString(validatedEvaluationDoi),
-        }),
-      ),
+      (reviewId) => constructPublishedEvaluation({
+        publishedOn: new Date(candidate.date),
+        paperExpressionDoi: articleDoi,
+        evaluationLocator: `doi:${reviewId}`,
+      }),
+      E.right,
     );
   }
 
