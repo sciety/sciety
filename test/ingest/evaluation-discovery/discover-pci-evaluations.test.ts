@@ -33,11 +33,12 @@ describe('discover-pci-evaluations', () => {
       result = await discover(pciXmlResponse)();
     });
 
-    it('returns no evaluations and no skipped items', () => {
-      expect(result).toStrictEqual({
-        understood: [],
-        skipped: [],
-      });
+    it('returns no evaluations', () => {
+      expect(result.understood).toHaveLength(0);
+    });
+
+    it('returns no skipped items', () => {
+      expect(result.skipped).toHaveLength(0);
     });
   });
 
@@ -65,19 +66,18 @@ describe('discover-pci-evaluations', () => {
           result = await discover(pciXmlResponse)();
         });
 
-        it('returns 1 published evaluation and no skipped items', async () => {
+        it('returns 1 published evaluation', async () => {
           const expectedEvaluation = constructPublishedEvaluation({
             paperExpressionDoi: biorxivPaperDoi,
             publishedOn: publishedDateThatFallsIntoIngestionWindow,
             evaluationLocator: `doi:${evaluationDoi}`,
           });
 
-          expect(result).toStrictEqual({
-            understood: [
-              expectedEvaluation,
-            ],
-            skipped: [],
-          });
+          expect(result.understood).toStrictEqual([expectedEvaluation]);
+        });
+
+        it('returns 0 skipped items', async () => {
+          expect(result.skipped).toHaveLength(0);
         });
       });
 
@@ -100,16 +100,17 @@ describe('discover-pci-evaluations', () => {
           result = await discover(pciXmlResponse)();
         });
 
-        it('returns 0 evaluations and 1 skipped item', async () => {
-          expect(result).toStrictEqual({
-            understood: [],
-            skipped: [
-              {
-                item: nonBiorxivPaperDoi,
-                reason: 'not a biorxiv|medrxiv DOI',
-              },
-            ],
-          });
+        it('returns 0 evaluations', async () => {
+          expect(result.understood).toHaveLength(0);
+        });
+
+        it('returns 1 skipped item', async () => {
+          expect(result.skipped).toStrictEqual([
+            {
+              item: nonBiorxivPaperDoi,
+              reason: 'not a biorxiv|medrxiv DOI',
+            },
+          ]);
         });
       });
     });
@@ -139,16 +140,17 @@ describe('discover-pci-evaluations', () => {
         result = await discover(pciXmlResponse)();
       });
 
-      it.skip('returns 0 evaluations and 1 skipped item', () => {
-        expect(result).toStrictEqual({
-          understood: [],
-          skipped: [
-            {
-              item: valueThatCannotBeParsedIntoADoi,
-              reason: 'not parseable into a DOI',
-            },
-          ],
-        });
+      it.skip('returns 0 evaluations', () => {
+        expect(result.understood).toHaveLength(0);
+      });
+
+      it.skip('returns 1 skipped item', () => {
+        expect(result.skipped).toStrictEqual([
+          {
+            item: valueThatCannotBeParsedIntoADoi,
+            reason: 'not parseable into a DOI',
+          },
+        ]);
       });
     });
 
@@ -182,24 +184,25 @@ describe('discover-pci-evaluations', () => {
         result = await discover(pciXmlResponse)();
       });
 
-      it('returns 1 evaluation and 0 skipped items', async () => {
+      it('returns 1 evaluation', async () => {
         const expectedEvaluation = constructPublishedEvaluation({
           paperExpressionDoi: doiParsedFromUrl,
           publishedOn: publishedDateThatFallsIntoIngestionWindow,
           evaluationLocator: `doi:${evaluationDoi}`,
         });
 
-        expect(result).toStrictEqual({
-          understood: [
-            expectedEvaluation,
-          ],
-          skipped: [],
-        });
+        expect(result.understood).toStrictEqual([expectedEvaluation]);
+      });
+
+      it('returns 0 skipped items', async () => {
+        expect(result.skipped).toHaveLength(0);
       });
     });
   });
 
   describe('when there is an evaluation that does not fall into the ingestion window', () => {
-    it.todo('returns 0 published evaluations and 0 skipped items');
+    it.todo('returns 0 published evaluations');
+
+    it.todo('returns 0 skipped items');
   });
 });
