@@ -19,6 +19,19 @@ const discover = (xml: string) => pipe(
   TE.getOrElse(shouldNotBeCalled),
 );
 
+const constructPciXmlResponseForOneItem = (evaluationDoi: string, publishedDate: Date, paperReference: string) => `
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <links>
+    <link providerId="PCIArchaeology">
+      <resource>
+        <doi>${evaluationDoi}</doi>
+        <date>${publishedDate.toISOString()}</date>
+      </resource>
+      <doi>${paperReference}</doi>
+    </link>
+  </links>
+  `;
+
 describe('discover-pci-evaluations', () => {
   describe('when there are no evaluations', () => {
     const pciXmlResponse = `
@@ -42,18 +55,11 @@ describe('discover-pci-evaluations', () => {
     describe('and the paper being evaluated is expressed with a DOI', () => {
       describe('and is a biorxiv paper', () => {
         const biorxivPaperDoi = arbitraryArticleId().value;
-        const pciXmlResponse = `
-          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-          <links>
-            <link providerId="PCIArchaeology">
-              <resource>
-                <doi>${evaluationDoi}</doi>
-                <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
-              </resource>
-              <doi>${biorxivPaperDoi}</doi>
-            </link>
-          </links>
-        `;
+        const pciXmlResponse = constructPciXmlResponseForOneItem(
+          evaluationDoi,
+          publishedDateThatFallsIntoIngestionWindow,
+          biorxivPaperDoi,
+        );
 
         it('returns 1 published evaluation and no skipped items', async () => {
           const expectedEvaluation = constructPublishedEvaluation({
@@ -73,18 +79,11 @@ describe('discover-pci-evaluations', () => {
 
       describe('but is not a biorxiv paper', () => {
         const nonBiorxivPaperDoi = '10.5281/zenodo.5118675';
-        const pciXmlResponse = `
-          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-          <links>
-            <link providerId="PCIArchaeology">
-              <resource>
-                <doi>${evaluationDoi}</doi>
-                <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
-              </resource>
-              <doi>${nonBiorxivPaperDoi}</doi>
-            </link>
-          </links>
-        `;
+        const pciXmlResponse = constructPciXmlResponseForOneItem(
+          evaluationDoi,
+          publishedDateThatFallsIntoIngestionWindow,
+          nonBiorxivPaperDoi,
+        );
 
         it('returns 0 evaluations and 1 skipped item', async () => {
           expect(await discover(pciXmlResponse)()).toStrictEqual({
@@ -108,18 +107,11 @@ describe('discover-pci-evaluations', () => {
         ['https://osf.io/preprints/socarxiv/2f8ph/'],
       ],
     )('and the paper being evaluated is expressed with a value (%s) that cannot be parsed into a DOI', (valueThatCannotBeParsedIntoADoi) => {
-      const pciXmlResponse = `
-        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <links>
-          <link providerId="PCIArchaeology">
-            <resource>
-              <doi>${evaluationDoi}</doi>
-              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
-            </resource>
-            <doi>${valueThatCannotBeParsedIntoADoi}</doi>
-          </link>
-        </links>
-      `;
+      const pciXmlResponse = constructPciXmlResponseForOneItem(
+        evaluationDoi,
+        publishedDateThatFallsIntoIngestionWindow,
+        valueThatCannotBeParsedIntoADoi,
+      );
 
       let result: DiscoveredPublishedEvaluations;
 
