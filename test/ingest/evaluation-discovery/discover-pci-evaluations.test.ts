@@ -100,8 +100,44 @@ describe('discover-pci-evaluations', () => {
       });
     });
 
-    describe('and the paper being evaluated is expressed with a value that cannot be parsed into a DOI', () => {
-      it.todo('returns 0 evaluations and 1 skipped item');
+    describe.each(
+      [
+        ['https://arxiv.org/abs/2101.01564'],
+      ],
+    )('and the paper being evaluated is expressed with a value (%s) that cannot be parsed into a DOI', (valueThatCannotBeParsedIntoADoi) => {
+      const pciXmlResponse = `
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <links>
+          <link providerId="PCIArchaeology">
+            <resource>
+              <doi>${evaluationDoi}</doi>
+              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
+            </resource>
+            <doi>${valueThatCannotBeParsedIntoADoi}</doi>
+          </link>
+        </links>
+      `;
+
+      let result: DiscoveredPublishedEvaluations;
+
+      beforeEach(async () => {
+        result = await pipe(
+          discover(pciXmlResponse),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it.skip('returns 0 evaluations and 1 skipped item', () => {
+        expect(result).toStrictEqual({
+          understood: [],
+          skipped: [
+            {
+              item: valueThatCannotBeParsedIntoADoi,
+              reason: 'not parseable into a DOI',
+            },
+          ],
+        });
+      });
     });
 
     describe.each(
