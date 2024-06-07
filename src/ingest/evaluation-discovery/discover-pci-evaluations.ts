@@ -39,7 +39,7 @@ const identifyCandidates = (since: Date) => (feed: string) => {
 };
 
 const toEvaluationOrSkip = (candidate: Candidate) => {
-  const bioAndMedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:dx\.)?doi\.org\/))?(10\.[0-9]+\/(?:[^%"#?\s])+)\s*$/;
+  const bioAndMedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:(?:dx|www)\.)?doi\.org\/))?(10\.[0-9]+\/(?:[^%"#?\s])+)\s*$/;
   const [, articleDoi] = bioAndMedrxivDoiRegex.exec(candidate.articleId) ?? [];
   if (articleDoi) {
     return pipe(
