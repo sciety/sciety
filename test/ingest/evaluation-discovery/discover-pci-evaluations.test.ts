@@ -185,6 +185,25 @@ describe('discover-pci-evaluations', () => {
         expect(result.skipped).toHaveLength(0);
       });
     });
+
+    describe.each([
+      [
+        '10.24072/pci.evolbiol.100090',
+        '10.24072/pci.evolbiol.100090',
+      ],
+      [
+        'https://doi.org/10.24072/pci.zool.100130',
+        '10.24072/pci.zool.100130',
+      ],
+      [
+        'http://dx.doi.org/10.24072/pci.evolbiol.100032',
+        '10.24072/pci.evolbiol.100032',
+      ],
+    ])('and the evaluation is expressed with a value (%s) that can be parsed into an evaluation locator', () => {
+      it.todo('returns 1 published evaluation');
+
+      it.todo('returns 0 skipped items');
+    });
   });
 
   describe('when there is an evaluation that does not fall into the ingestion window', () => {
