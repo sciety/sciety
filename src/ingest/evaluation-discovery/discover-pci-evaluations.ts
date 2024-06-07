@@ -38,9 +38,13 @@ const identifyCandidates = (since: Date) => (feed: string) => {
   return candidates;
 };
 
+/**
+ * @deprecated extend and use supportedArticleIdFromLink instead.
+ */
+const linkContainingDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:(?:dx|www)\.)?doi\.org\/))?(10\.[0-9]+\/(?:[^%"#?\s])+)\s*$/;
+
 const toEvaluationOrSkip = (candidate: Candidate) => {
-  const bioAndMedrxivDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:(?:dx|www)\.)?doi\.org\/))?(10\.[0-9]+\/(?:[^%"#?\s])+)\s*$/;
-  const [, articleDoi] = bioAndMedrxivDoiRegex.exec(candidate.articleId) ?? [];
+  const [, articleDoi] = linkContainingDoiRegex.exec(candidate.articleId) ?? [];
   if (articleDoi) {
     return pipe(
       candidate.reviewId,
