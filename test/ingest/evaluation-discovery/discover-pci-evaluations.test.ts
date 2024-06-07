@@ -35,26 +35,27 @@ describe('discover-pci-evaluations', () => {
     });
   });
 
-  describe('when there is a valid evaluation', () => {
-    it('returns 1 evaluation and no skipped items', async () => {
-      const articleId = arbitraryArticleId().value;
-      const reviewId = arbitraryArticleId().value;
-      const pciXmlResponse = `
+  describe('when there is an evaluation that falls into ingestion window and the paper being evaluated is a biorxiv paper, expressed with a doi', () => {
+    const biorxivPaperDoi = arbitraryArticleId().value;
+    const evaluationDoi = arbitraryArticleId().value;
+    const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <links>
           <link providerId="PCIArchaeology">
             <resource>
-              <doi>${reviewId}</doi>
+              <doi>${evaluationDoi}</doi>
               <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
             </resource>
-            <doi>${articleId}</doi>
+            <doi>${biorxivPaperDoi}</doi>
           </link>
         </links>
       `;
+
+    it('returns 1 published evaluation and no skipped items', async () => {
       const expectedEvaluation = constructPublishedEvaluation({
-        paperExpressionDoi: articleId,
+        paperExpressionDoi: biorxivPaperDoi,
         publishedOn: publishedDateThatFallsIntoIngestionWindow,
-        evaluationLocator: `doi:${reviewId}`,
+        evaluationLocator: `doi:${evaluationDoi}`,
       });
 
       expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
