@@ -9,7 +9,6 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const ingestDays = 10;
-const publishedDateThatFallsIntoIngestionWindow = ingestionWindowStartDate(8);
 
 const discover = (xml: string) => pipe(
   {
@@ -36,10 +35,12 @@ describe('discover-pci-evaluations', () => {
   });
 
   describe('when there is an evaluation that falls into the ingestion window', () => {
+    const evaluationDoi = arbitraryArticleId().value;
+    const publishedDateThatFallsIntoIngestionWindow = ingestionWindowStartDate(ingestDays - 2);
+
     describe('and the paper being evaluated is expressed with a DOI', () => {
       describe('and is a biorxiv paper', () => {
         const biorxivPaperDoi = arbitraryArticleId().value;
-        const evaluationDoi = arbitraryArticleId().value;
         const pciXmlResponse = `
           <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
           <links>
@@ -76,7 +77,7 @@ describe('discover-pci-evaluations', () => {
           <links>
             <link providerId="PCIArchaeology">
               <resource>
-                <doi>10.24072/pci.archaeo.100011</doi>
+                <doi>${evaluationDoi}</doi>
                 <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
               </resource>
               <doi>${nonBiorxivPaperDoi}</doi>
