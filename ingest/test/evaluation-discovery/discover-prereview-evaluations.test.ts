@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { arbitraryIngestDays } from './ingest-days.helper';
-import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
-import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
-import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
-import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { discoverPrereviewEvaluations } from '../../src/evaluation-discovery/discover-prereview-evaluations';
+import { DiscoveredPublishedEvaluations } from '../../src/types/discovered-published-evaluations';
+import { constructPublishedEvaluation } from '../../src/types/published-evaluation';
+import { arbitraryArticleId } from '../article-id.helper';
+import { arbitraryDate, arbitraryString, arbitraryWord } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 const runDiscovery = (stubbedResponse: unknown) => pipe(
   ({ fetchData: <D>() => TE.right(stubbedResponse as unknown as D) }),

@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { supportedArticleIdFromLink } from '../../src/ingest/supported-article-id-from-link';
+import { supportedArticleIdFromLink } from '../src/supported-article-id-from-link';
 
 describe('supported-article-id-from-link', () => {
   describe('when the input is supported', () => {

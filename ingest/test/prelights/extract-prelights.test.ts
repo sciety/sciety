@@ -1,10 +1,10 @@
 import { pipe } from 'fp-ts/function';
-import { extractPrelights } from '../../../src/ingest/third-parties/prelights/extract-prelights';
-import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
+import { extractPrelights } from '../../src/third-parties/prelights/extract-prelights';
+import { constructPublishedEvaluation } from '../../src/types/published-evaluation';
+import { arbitraryArticleId } from '../article-id.helper';
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
-} from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+} from '../helpers';
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi', () => {
