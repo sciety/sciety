@@ -36,10 +36,11 @@ describe('discover-pci-evaluations', () => {
   });
 
   describe('when there is an evaluation that falls into the ingestion window', () => {
-    describe('and the paper being evaluated is expressed with a DOI, and is a biorxiv paper', () => {
-      const biorxivPaperDoi = arbitraryArticleId().value;
-      const evaluationDoi = arbitraryArticleId().value;
-      const pciXmlResponse = `
+    describe('and the paper being evaluated is expressed with a DOI', () => {
+      describe('and is a biorxiv paper', () => {
+        const biorxivPaperDoi = arbitraryArticleId().value;
+        const evaluationDoi = arbitraryArticleId().value;
+        const pciXmlResponse = `
           <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
           <links>
             <link providerId="PCIArchaeology">
@@ -52,25 +53,25 @@ describe('discover-pci-evaluations', () => {
           </links>
         `;
 
-      it('returns 1 published evaluation and no skipped items', async () => {
-        const expectedEvaluation = constructPublishedEvaluation({
-          paperExpressionDoi: biorxivPaperDoi,
-          publishedOn: publishedDateThatFallsIntoIngestionWindow,
-          evaluationLocator: `doi:${evaluationDoi}`,
+        it('returns 1 published evaluation and no skipped items', async () => {
+          const expectedEvaluation = constructPublishedEvaluation({
+            paperExpressionDoi: biorxivPaperDoi,
+            publishedOn: publishedDateThatFallsIntoIngestionWindow,
+            evaluationLocator: `doi:${evaluationDoi}`,
+          });
+
+          expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
+            understood: [
+              expectedEvaluation,
+            ],
+            skipped: [],
+          }));
         });
-
-        expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
-          understood: [
-            expectedEvaluation,
-          ],
-          skipped: [],
-        }));
       });
-    });
 
-    describe('and the paper being evaluated is expressed with a DOI, but is not a biorxiv paper', () => {
-      const nonBiorxivPaperDoi = '10.5281/zenodo.5118675';
-      const pciXmlResponse = `
+      describe('but is not a biorxiv paper', () => {
+        const nonBiorxivPaperDoi = '10.5281/zenodo.5118675';
+        const pciXmlResponse = `
           <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
           <links>
             <link providerId="PCIArchaeology">
@@ -83,16 +84,17 @@ describe('discover-pci-evaluations', () => {
           </links>
         `;
 
-      it('returns 0 evaluations and 1 skipped item', async () => {
-        expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
-          understood: [],
-          skipped: [
-            {
-              item: nonBiorxivPaperDoi,
-              reason: 'not a biorxiv|medrxiv DOI',
-            },
-          ],
-        }));
+        it('returns 0 evaluations and 1 skipped item', async () => {
+          expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
+            understood: [],
+            skipped: [
+              {
+                item: nonBiorxivPaperDoi,
+                reason: 'not a biorxiv|medrxiv DOI',
+              },
+            ],
+          }));
+        });
       });
     });
 
