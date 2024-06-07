@@ -57,7 +57,7 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
 
   return E.left({
     item: candidate.articleId,
-    reason: 'not a biorxiv|medrxiv DOI',
+    reason: 'not parseable into a DOI',
   });
 };
 

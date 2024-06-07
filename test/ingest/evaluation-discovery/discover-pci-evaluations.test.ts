@@ -137,7 +137,7 @@ describe('discover-pci-evaluations', () => {
         expect(result.understood).toHaveLength(0);
       });
 
-      it.skip('returns 1 skipped item', () => {
+      it('returns 1 skipped item', () => {
         expect(result.skipped).toStrictEqual([
           {
             item: valueThatCannotBeParsedIntoADoi,
