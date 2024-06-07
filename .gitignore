@@ -6,11 +6,12 @@ coverage/
 /.jest-non-taiko-feature-test/
 /.stylelint/
 /build/
+/ingest/build/
 /backstop_data/bitmaps_test/
 /backstop_data/html_report/
 /data/exploratory-test-from-*.csv*
 /feature-test/screenshots/*.png
-/node_modules/
+node_modules/
 /.env
 /.gcp-ncrc-key.json
 *.log
