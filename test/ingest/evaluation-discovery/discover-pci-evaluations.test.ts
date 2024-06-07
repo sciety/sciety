@@ -132,7 +132,7 @@ describe('discover-pci-evaluations', () => {
         result = await discover(pciXmlResponse);
       });
 
-      it.skip('returns 0 evaluations', () => {
+      it('returns 0 evaluations', () => {
         expect(result.understood).toHaveLength(0);
       });
 
