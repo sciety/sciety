@@ -10,14 +10,14 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const ingestDays = 10;
 
-const discover = (xml: string) => pipe(
+const discover = async (xml: string) => pipe(
   {
     fetchData: <D>() => TE.right(xml as unknown as D),
     fetchGoogleSheet: shouldNotBeCalled,
   },
   discoverPciEvaluations(arbitraryUri())(ingestDays),
   TE.getOrElse(shouldNotBeCalled),
-);
+)();
 
 const constructPciXmlResponseForOneItem = (evaluationDoi: string, publishedDate: Date, paperReference: string) => `
   <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -44,7 +44,7 @@ describe('discover-pci-evaluations', () => {
     `;
 
     beforeEach(async () => {
-      result = await discover(pciXmlResponse)();
+      result = await discover(pciXmlResponse);
     });
 
     it('returns no evaluations', () => {
@@ -69,7 +69,7 @@ describe('discover-pci-evaluations', () => {
         );
 
         beforeEach(async () => {
-          result = await discover(pciXmlResponse)();
+          result = await discover(pciXmlResponse);
         });
 
         it('returns 1 published evaluation', async () => {
@@ -96,7 +96,7 @@ describe('discover-pci-evaluations', () => {
         );
 
         beforeEach(async () => {
-          result = await discover(pciXmlResponse)();
+          result = await discover(pciXmlResponse);
         });
 
         it('returns 0 evaluations', async () => {
@@ -129,7 +129,7 @@ describe('discover-pci-evaluations', () => {
       );
 
       beforeEach(async () => {
-        result = await discover(pciXmlResponse)();
+        result = await discover(pciXmlResponse);
       });
 
       it.skip('returns 0 evaluations', () => {
@@ -166,7 +166,7 @@ describe('discover-pci-evaluations', () => {
       );
 
       beforeEach(async () => {
-        result = await discover(pciXmlResponse)();
+        result = await discover(pciXmlResponse);
       });
 
       it('returns 1 evaluation', async () => {
@@ -193,7 +193,7 @@ describe('discover-pci-evaluations', () => {
         evaluationDoi,
         publishedDateThatFallsOutsideOfIngestionWindow,
         arbitraryWord(),
-      ))();
+      ));
     });
 
     it('returns 0 published evaluations', () => {
