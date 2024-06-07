@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery/discover-pci-evaluations';
@@ -17,6 +16,7 @@ const discover = (xml: string) => pipe(
     fetchGoogleSheet: shouldNotBeCalled,
   },
   discoverPciEvaluations(arbitraryUri())(ingestDays),
+  TE.getOrElse(shouldNotBeCalled),
 );
 
 describe('discover-pci-evaluations', () => {
@@ -28,10 +28,10 @@ describe('discover-pci-evaluations', () => {
     `;
 
     it('returns no evaluations and no skipped items', async () => {
-      expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
+      expect(await discover(pciXmlResponse)()).toStrictEqual({
         understood: [],
         skipped: [],
-      }));
+      });
     });
   });
 
@@ -62,12 +62,12 @@ describe('discover-pci-evaluations', () => {
             evaluationLocator: `doi:${evaluationDoi}`,
           });
 
-          expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
+          expect(await discover(pciXmlResponse)()).toStrictEqual({
             understood: [
               expectedEvaluation,
             ],
             skipped: [],
-          }));
+          });
         });
       });
 
@@ -87,7 +87,7 @@ describe('discover-pci-evaluations', () => {
         `;
 
         it('returns 0 evaluations and 1 skipped item', async () => {
-          expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
+          expect(await discover(pciXmlResponse)()).toStrictEqual({
             understood: [],
             skipped: [
               {
@@ -95,7 +95,7 @@ describe('discover-pci-evaluations', () => {
                 reason: 'not a biorxiv|medrxiv DOI',
               },
             ],
-          }));
+          });
         });
       });
     });
@@ -124,10 +124,7 @@ describe('discover-pci-evaluations', () => {
       let result: DiscoveredPublishedEvaluations;
 
       beforeEach(async () => {
-        result = await pipe(
-          discover(pciXmlResponse),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await discover(pciXmlResponse)();
       });
 
       it.skip('returns 0 evaluations and 1 skipped item', () => {
@@ -172,10 +169,7 @@ describe('discover-pci-evaluations', () => {
       let result: DiscoveredPublishedEvaluations;
 
       beforeEach(async () => {
-        result = await pipe(
-          discover(pciXmlResponse),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await discover(pciXmlResponse)();
       });
 
       it('returns 1 evaluation and 0 skipped items', async () => {
