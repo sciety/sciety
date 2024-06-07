@@ -108,6 +108,10 @@ describe('discover-pci-evaluations', () => {
       [
         // ['https://www.doi.org/10.1101/2023.09.05.556367', '10.1101/2023.09.05.556367'],
         ['https://doi.org/10.1101/2023.11.19.567721', '10.1101/2023.11.19.567721'],
+        // ['https://doi.org/10.5281/zenodo.10086186', '10.5281/zenodo.10086186'],
+        // ['https://doi.org/10.32942/X2BS3S', '10.32942/X2BS3S'],
+        // ['https://doi.org/10.31219/osf.io/mr8hu', '10.31219/osf.io/mr8hu'],
+        // ['https://doi.org/10.20944/preprints202004.0186.v5', '10.20944/preprints202004.0186.v5'],
       ],
     )('and the paper being evaluated is expressed with a value (%s) that can be parsed into a DOI', (valueThatCanBeParsedIntoADoi, doiParsedFromUrl) => {
       const pciXmlResponse = `
