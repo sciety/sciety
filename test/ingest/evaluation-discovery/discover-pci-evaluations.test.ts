@@ -87,29 +87,30 @@ describe('discover-pci-evaluations', () => {
         });
       });
 
-      describe('but is not a biorxiv paper', () => {
-        const nonBiorxivPaperDoi = '10.5281/zenodo.5118675';
+      describe('and is a zenodo paper', () => {
+        const zenodoPaperDoi = '10.5281/zenodo.5118675';
         const pciXmlResponse = constructPciXmlResponseForOneItem(
           evaluationDoi,
           publishedDateThatFallsIntoIngestionWindow,
-          nonBiorxivPaperDoi,
+          zenodoPaperDoi,
         );
 
         beforeEach(async () => {
           result = await discover(pciXmlResponse);
         });
 
-        it('returns 0 evaluations', async () => {
-          expect(result.understood).toHaveLength(0);
+        it('returns 1 evaluation', async () => {
+          const expectedEvaluation = constructPublishedEvaluation({
+            paperExpressionDoi: zenodoPaperDoi,
+            publishedOn: publishedDateThatFallsIntoIngestionWindow,
+            evaluationLocator: `doi:${evaluationDoi}`,
+          });
+
+          expect(result.understood).toStrictEqual([expectedEvaluation]);
         });
 
-        it('returns 1 skipped item', async () => {
-          expect(result.skipped).toStrictEqual([
-            {
-              item: nonBiorxivPaperDoi,
-              reason: 'not a biorxiv|medrxiv DOI',
-            },
-          ]);
+        it('returns 0 skipped item', async () => {
+          expect(result.skipped).toHaveLength(0);
         });
       });
     });
@@ -150,7 +151,7 @@ describe('discover-pci-evaluations', () => {
       [
         // ['https://www.doi.org/10.1101/2023.09.05.556367', '10.1101/2023.09.05.556367'],
         ['https://doi.org/10.1101/2023.11.19.567721', '10.1101/2023.11.19.567721'],
-        // ['https://doi.org/10.5281/zenodo.10086186', '10.5281/zenodo.10086186'],
+        ['https://doi.org/10.5281/zenodo.10086186', '10.5281/zenodo.10086186'],
         // ['https://doi.org/10.32942/X2BS3S', '10.32942/X2BS3S'],
         // ['https://doi.org/10.31219/osf.io/mr8hu', '10.31219/osf.io/mr8hu'],
         // ['https://doi.org/10.20944/preprints202004.0186.v5', '10.20944/preprints202004.0186.v5'],
