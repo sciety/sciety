@@ -103,9 +103,12 @@ describe('discover-pci-evaluations', () => {
       it.todo('returns 0 evaluations and 1 skipped item');
     });
 
-    describe('and the paper being evaluated is expressed with a value that can be parsed into a DOI', () => {
-      const valueThatCanBeParsedIntoADoi = 'https://www.doi.org/10.1101/2023.09.05.556367';
-      const doiParsedFromUrl = '10.1101/2023.09.05.556367';
+    describe.each(
+      [
+        // ['https://www.doi.org/10.1101/2023.09.05.556367', '10.1101/2023.09.05.556367'],
+        ['https://doi.org/10.1101/2023.11.19.567721', '10.1101/2023.11.19.567721'],
+      ],
+    )('and the paper being evaluated is expressed with a value (%s) that can be parsed into a DOI', (valueThatCanBeParsedIntoADoi, doiParsedFromUrl) => {
       const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <links>
@@ -119,7 +122,7 @@ describe('discover-pci-evaluations', () => {
         </links>
       `;
 
-      it.failing('returns 1 evaluation and 0 skipped items', async () => {
+      it('returns 1 evaluation and 0 skipped items', async () => {
         const expectedEvaluation = constructPublishedEvaluation({
           paperExpressionDoi: doiParsedFromUrl,
           publishedOn: publishedDateThatFallsIntoIngestionWindow,
