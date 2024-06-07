@@ -103,6 +103,9 @@ describe('discover-pci-evaluations', () => {
     describe.each(
       [
         ['https://arxiv.org/abs/2101.01564'],
+        ['https://hal.archives-ouvertes.fr/hal-03295242'],
+        ['https://zenodo.org/record/7983163'],
+        ['https://osf.io/preprints/socarxiv/2f8ph/'],
       ],
     )('and the paper being evaluated is expressed with a value (%s) that cannot be parsed into a DOI', (valueThatCannotBeParsedIntoADoi) => {
       const pciXmlResponse = `
@@ -148,6 +151,9 @@ describe('discover-pci-evaluations', () => {
         // ['https://doi.org/10.32942/X2BS3S', '10.32942/X2BS3S'],
         // ['https://doi.org/10.31219/osf.io/mr8hu', '10.31219/osf.io/mr8hu'],
         // ['https://doi.org/10.20944/preprints202004.0186.v5', '10.20944/preprints202004.0186.v5'],
+        // ['https://www.biorxiv.org/content/10.1101/2021.08.18.456759', '10.1101/2021.08.18.456759'],
+        ['10.1101/131136 ', '10.1101/131136'],
+        // ['https://www.biorxiv.org/content/10.1101/2022.05.17.492258v4', '10.1101/2022.05.17.492258'],
       ],
     )('and the paper being evaluated is expressed with a value (%s) that can be parsed into a DOI', (valueThatCanBeParsedIntoADoi, doiParsedFromUrl) => {
       const pciXmlResponse = `
