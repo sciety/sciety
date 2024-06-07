@@ -10,14 +10,14 @@ import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const ingestDays = 10;
 
-const discover = (xml: string) => pipe(
+const discover = async (xml: string) => pipe(
   {
     fetchData: <D>() => TE.right(xml as unknown as D),
     fetchGoogleSheet: shouldNotBeCalled,
   },
   discoverPciEvaluations(arbitraryUri())(ingestDays),
   TE.getOrElse(shouldNotBeCalled),
-);
+)();
 
 const constructPciXmlResponseForOneItem = (evaluationDoi: string, publishedDate: Date, paperReference: string) => `
   <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -41,7 +41,7 @@ describe('discover-pci-evaluations', () => {
     `;
 
     it('returns no evaluations and no skipped items', async () => {
-      expect(await discover(pciXmlResponse)()).toStrictEqual({
+      expect(await discover(pciXmlResponse)).toStrictEqual({
         understood: [],
         skipped: [],
       });
@@ -68,7 +68,7 @@ describe('discover-pci-evaluations', () => {
             evaluationLocator: `doi:${evaluationDoi}`,
           });
 
-          expect(await discover(pciXmlResponse)()).toStrictEqual({
+          expect(await discover(pciXmlResponse)).toStrictEqual({
             understood: [
               expectedEvaluation,
             ],
@@ -86,7 +86,7 @@ describe('discover-pci-evaluations', () => {
         );
 
         it('returns 0 evaluations and 1 skipped item', async () => {
-          expect(await discover(pciXmlResponse)()).toStrictEqual({
+          expect(await discover(pciXmlResponse)).toStrictEqual({
             understood: [],
             skipped: [
               {
@@ -116,7 +116,7 @@ describe('discover-pci-evaluations', () => {
       let result: DiscoveredPublishedEvaluations;
 
       beforeEach(async () => {
-        result = await discover(pciXmlResponse)();
+        result = await discover(pciXmlResponse);
       });
 
       it.skip('returns 0 evaluations and 1 skipped item', () => {
@@ -161,7 +161,7 @@ describe('discover-pci-evaluations', () => {
       let result: DiscoveredPublishedEvaluations;
 
       beforeEach(async () => {
-        result = await discover(pciXmlResponse)();
+        result = await discover(pciXmlResponse);
       });
 
       it('returns 1 evaluation and 0 skipped items', async () => {
