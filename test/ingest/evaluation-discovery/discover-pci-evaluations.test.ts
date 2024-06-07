@@ -99,12 +99,40 @@ describe('discover-pci-evaluations', () => {
       });
     });
 
-    describe('and the paper being evaluated is not expressed with a value that can be parsed into a DOI', () => {
+    describe('and the paper being evaluated is expressed with a value that cannot be parsed into a DOI', () => {
       it.todo('returns 0 evaluations and 1 skipped item');
     });
 
     describe('and the paper being evaluated is expressed with a value that can be parsed into a DOI', () => {
-      it.todo('returns 1 evaluation and 0 skipped items');
+      const valueThatCanBeParsedIntoADoi = 'https://www.doi.org/10.1101/2023.09.05.556367';
+      const doiParsedFromUrl = '10.1101/2023.09.05.556367';
+      const pciXmlResponse = `
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <links>
+          <link providerId="PCIArchaeology">
+            <resource>
+              <doi>${evaluationDoi}</doi>
+              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
+            </resource>
+            <doi>${valueThatCanBeParsedIntoADoi}</doi>
+          </link>
+        </links>
+      `;
+
+      it.failing('returns 1 evaluation and 0 skipped items', async () => {
+        const expectedEvaluation = constructPublishedEvaluation({
+          paperExpressionDoi: doiParsedFromUrl,
+          publishedOn: publishedDateThatFallsIntoIngestionWindow,
+          evaluationLocator: `doi:${evaluationDoi}`,
+        });
+
+        expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
+          understood: [
+            expectedEvaluation,
+          ],
+          skipped: [],
+        }));
+      });
     });
   });
 
