@@ -35,7 +35,7 @@ describe('discover-pci-evaluations', () => {
     });
   });
 
-  describe('when there is an evaluation that falls into ingestion window and the paper being evaluated is a biorxiv paper, expressed with a doi', () => {
+  describe('when there is an evaluation that falls into ingestion window and the paper being evaluated is expressed with a DOI, and is a biorxiv paper', () => {
     const biorxivPaperDoi = arbitraryArticleId().value;
     const evaluationDoi = arbitraryArticleId().value;
     const pciXmlResponse = `
@@ -67,10 +67,9 @@ describe('discover-pci-evaluations', () => {
     });
   });
 
-  describe('when there is an invalid evaluation', () => {
-    it('returns 0 evaluations and 1 skipped item', async () => {
-      const articleId = '10.5281/zenodo.5118675';
-      const pciXmlResponse = `
+  describe('when there is an evaluation that falls into ingestion window and the paper being evaluated is expressed with a DOI, but is not a biorxiv paper', () => {
+    const nonBiorxivPaperDoi = '10.5281/zenodo.5118675';
+    const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <links>
           <link providerId="PCIArchaeology">
@@ -78,16 +77,17 @@ describe('discover-pci-evaluations', () => {
               <doi>10.24072/pci.archaeo.100011</doi>
               <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
             </resource>
-            <doi>${articleId}</doi>
+            <doi>${nonBiorxivPaperDoi}</doi>
           </link>
         </links>
       `;
 
+    it('returns 0 evaluations and 1 skipped item', async () => {
       expect(await discover(pciXmlResponse)()).toStrictEqual(E.right({
         understood: [],
         skipped: [
           {
-            item: articleId,
+            item: nonBiorxivPaperDoi,
             reason: 'not a biorxiv|medrxiv DOI',
           },
         ],
