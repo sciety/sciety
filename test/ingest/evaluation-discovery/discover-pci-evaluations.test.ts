@@ -4,7 +4,7 @@ import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery
 import { ingestionWindowStartDate } from '../../../src/ingest/evaluation-discovery/ingestion-window-start-date';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
-import { arbitraryUri } from '../../helpers';
+import { arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryArticleId } from '../../types/article-id.helper';
 
@@ -19,7 +19,21 @@ const discover = (xml: string) => pipe(
   TE.getOrElse(shouldNotBeCalled),
 );
 
+const constructPciXmlResponseForOneItem = (evaluationDoi: string, publishedDate: Date, paperReference: string) => `
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <links>
+    <link providerId="PCIArchaeology">
+      <resource>
+        <doi>${evaluationDoi}</doi>
+        <date>${publishedDate.toISOString()}</date>
+      </resource>
+      <doi>${paperReference}</doi>
+    </link>
+  </links>
+  `;
+
 describe('discover-pci-evaluations', () => {
+  const evaluationDoi = arbitraryArticleId().value;
   let result: DiscoveredPublishedEvaluations;
 
   describe('when there are no evaluations', () => {
@@ -43,24 +57,16 @@ describe('discover-pci-evaluations', () => {
   });
 
   describe('when there is an evaluation that falls into the ingestion window', () => {
-    const evaluationDoi = arbitraryArticleId().value;
     const publishedDateThatFallsIntoIngestionWindow = ingestionWindowStartDate(ingestDays - 2);
 
     describe('and the paper being evaluated is expressed with a DOI', () => {
       describe('and is a biorxiv paper', () => {
         const biorxivPaperDoi = arbitraryArticleId().value;
-        const pciXmlResponse = `
-          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-          <links>
-            <link providerId="PCIArchaeology">
-              <resource>
-                <doi>${evaluationDoi}</doi>
-                <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
-              </resource>
-              <doi>${biorxivPaperDoi}</doi>
-            </link>
-          </links>
-        `;
+        const pciXmlResponse = constructPciXmlResponseForOneItem(
+          evaluationDoi,
+          publishedDateThatFallsIntoIngestionWindow,
+          biorxivPaperDoi,
+        );
 
         beforeEach(async () => {
           result = await discover(pciXmlResponse)();
@@ -83,18 +89,11 @@ describe('discover-pci-evaluations', () => {
 
       describe('but is not a biorxiv paper', () => {
         const nonBiorxivPaperDoi = '10.5281/zenodo.5118675';
-        const pciXmlResponse = `
-          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-          <links>
-            <link providerId="PCIArchaeology">
-              <resource>
-                <doi>${evaluationDoi}</doi>
-                <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
-              </resource>
-              <doi>${nonBiorxivPaperDoi}</doi>
-            </link>
-          </links>
-        `;
+        const pciXmlResponse = constructPciXmlResponseForOneItem(
+          evaluationDoi,
+          publishedDateThatFallsIntoIngestionWindow,
+          nonBiorxivPaperDoi,
+        );
 
         beforeEach(async () => {
           result = await discover(pciXmlResponse)();
@@ -123,18 +122,11 @@ describe('discover-pci-evaluations', () => {
         ['https://osf.io/preprints/socarxiv/2f8ph/'],
       ],
     )('and the paper being evaluated is expressed with a value (%s) that cannot be parsed into a DOI', (valueThatCannotBeParsedIntoADoi) => {
-      const pciXmlResponse = `
-        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <links>
-          <link providerId="PCIArchaeology">
-            <resource>
-              <doi>${evaluationDoi}</doi>
-              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
-            </resource>
-            <doi>${valueThatCannotBeParsedIntoADoi}</doi>
-          </link>
-        </links>
-      `;
+      const pciXmlResponse = constructPciXmlResponseForOneItem(
+        evaluationDoi,
+        publishedDateThatFallsIntoIngestionWindow,
+        valueThatCannotBeParsedIntoADoi,
+      );
 
       beforeEach(async () => {
         result = await discover(pciXmlResponse)();
@@ -167,18 +159,11 @@ describe('discover-pci-evaluations', () => {
         // ['https://www.biorxiv.org/content/10.1101/2022.05.17.492258v4', '10.1101/2022.05.17.492258'],
       ],
     )('and the paper being evaluated is expressed with a value (%s) that can be parsed into a DOI', (valueThatCanBeParsedIntoADoi, doiParsedFromUrl) => {
-      const pciXmlResponse = `
-        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <links>
-          <link providerId="PCIArchaeology">
-            <resource>
-              <doi>${evaluationDoi}</doi>
-              <date>${publishedDateThatFallsIntoIngestionWindow.toISOString()}</date>
-            </resource>
-            <doi>${valueThatCanBeParsedIntoADoi}</doi>
-          </link>
-        </links>
-      `;
+      const pciXmlResponse = constructPciXmlResponseForOneItem(
+        evaluationDoi,
+        publishedDateThatFallsIntoIngestionWindow,
+        valueThatCanBeParsedIntoADoi,
+      );
 
       beforeEach(async () => {
         result = await discover(pciXmlResponse)();
@@ -201,8 +186,22 @@ describe('discover-pci-evaluations', () => {
   });
 
   describe('when there is an evaluation that does not fall into the ingestion window', () => {
-    it.todo('returns 0 published evaluations');
+    const publishedDateThatFallsOutsideOfIngestionWindow = new Date('1970-01-01');
 
-    it.todo('returns 0 skipped items');
+    beforeEach(async () => {
+      result = await discover(constructPciXmlResponseForOneItem(
+        evaluationDoi,
+        publishedDateThatFallsOutsideOfIngestionWindow,
+        arbitraryWord(),
+      ))();
+    });
+
+    it('returns 0 published evaluations', () => {
+      expect(result.understood).toHaveLength(0);
+    });
+
+    it('returns 0 skipped items', () => {
+      expect(result.skipped).toHaveLength(0);
+    });
   });
 });
