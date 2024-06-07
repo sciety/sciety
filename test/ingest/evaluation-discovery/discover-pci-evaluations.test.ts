@@ -94,4 +94,12 @@ describe('discover-pci-evaluations', () => {
       }));
     });
   });
+
+  describe('when there is an evaluation that falls into the ingestion window and the paper being evaluated is not expressed with a value that can be parsed into a DOI', () => {
+    it.todo('returns 0 evaluations and 1 skipped item');
+  });
+
+  describe('when there is an evaluation that falls into the ingestion window and the paper being evaluated is expressed with a value that can be parsed into a DOI', () => {
+    it.todo('returns 1 evaluation and 0 skipped items');
+  });
 });
