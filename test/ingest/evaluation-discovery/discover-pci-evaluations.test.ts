@@ -189,20 +189,34 @@ describe('discover-pci-evaluations', () => {
     describe.each([
       [
         '10.24072/pci.evolbiol.100090',
-        '10.24072/pci.evolbiol.100090',
+        'doi:10.24072/pci.evolbiol.100090',
       ],
       [
         'https://doi.org/10.24072/pci.zool.100130',
-        '10.24072/pci.zool.100130',
+        'doi:10.24072/pci.zool.100130',
       ],
       [
         'http://dx.doi.org/10.24072/pci.evolbiol.100032',
-        '10.24072/pci.evolbiol.100032',
+        'doi:10.24072/pci.evolbiol.100032',
       ],
-    ])('and the evaluation is expressed with a value (%s) that can be parsed into an evaluation locator', () => {
-      it.todo('returns 1 published evaluation');
+    ])('and the evaluation is expressed with a value (%s) that can be parsed into an evaluation locator', (parseableToEvaluationLocator, expectedEvaluationLocator) => {
+      const pciXmlResponse = constructPciXmlResponseForOneItem(
+        parseableToEvaluationLocator,
+        publishedDateThatFallsIntoIngestionWindow,
+        arbitraryArticleId().value,
+      );
 
-      it.todo('returns 0 skipped items');
+      beforeEach(async () => {
+        result = await discover(pciXmlResponse);
+      });
+
+      it('returns 1 published evaluation', () => {
+        expect(result.understood[0].evaluationLocator).toStrictEqual(expectedEvaluationLocator);
+      });
+
+      it('returns 0 skipped items', () => {
+        expect(result.skipped).toHaveLength(0);
+      });
     });
   });
 
