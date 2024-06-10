@@ -17,7 +17,7 @@ describe('extract-prelights', () => {
         guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
         category: '<a name = "highlight">highlight</a>',
         pubDate,
-        preprintDoi: preprintDoi.value,
+        preprintDoi: preprintDoi,
         author,
       }],
       extractPrelights,
@@ -26,7 +26,7 @@ describe('extract-prelights', () => {
     it('records the evaluation', () => {
       const expectedEvaluation = constructPublishedEvaluation({
         publishedOn: pubDate,
-        paperExpressionDoi: preprintDoi.value,
+        paperExpressionDoi: preprintDoi,
         evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
         authors: [author],
       });
@@ -93,7 +93,7 @@ describe('extract-prelights', () => {
         guid,
         category: '<a name = "highlight">highlight</a>',
         pubDate: arbitraryDate(),
-        preprintDoi: arbitraryArticleId('10.1234').value,
+        preprintDoi: arbitraryArticleId('10.1234'),
         author: arbitraryString(),
       }],
       extractPrelights,

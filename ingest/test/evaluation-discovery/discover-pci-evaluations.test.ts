@@ -37,8 +37,8 @@ describe('discover-pci-evaluations', () => {
 
   describe('when there is a valid evaluation', () => {
     it('returns 1 evaluation and no skipped items', async () => {
-      const articleId = arbitraryArticleId().value;
-      const reviewId = arbitraryArticleId().value;
+      const articleId = arbitraryArticleId();
+      const reviewId = arbitraryArticleId();
       const pciXmlResponse = `
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <links>

@@ -32,7 +32,7 @@ describe('discover-rapid-reviews-evaluations', () => {
 
   describe('when there is a valid Crossref review', () => {
     it('returns 1 evaluation and no skipped items', async () => {
-      const articleDoi = arbitraryArticleId().value;
+      const articleDoi = arbitraryArticleId();
       const date = arbitraryDate();
       const reviewUrl = arbitraryUri();
       const items = [
@@ -63,7 +63,7 @@ describe('discover-rapid-reviews-evaluations', () => {
   });
 
   describe('when there is a valid Crossref review that is not by Rapid Reviews Infectious Diseases', () => {
-    const articleDoi = arbitraryArticleId().value;
+    const articleDoi = arbitraryArticleId();
     const date = arbitraryDate();
     const reviewUrl = arbitraryUri();
     let result: DiscoveredPublishedEvaluations;
@@ -101,7 +101,7 @@ describe('discover-rapid-reviews-evaluations', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId() }] },
         author: [
           { given: 'Fred', family: 'Blogs' },
           { given: 'Joe', family: 'Smith' },
@@ -135,7 +135,7 @@ describe('discover-rapid-reviews-evaluations', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId() }] },
         resource: {
           primary: {
             URL: arbitraryPrimaryUrl,
@@ -164,7 +164,7 @@ describe('discover-rapid-reviews-evaluations', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId() }] },
         author: [],
         resource: {
           primary: {
@@ -195,7 +195,7 @@ describe('discover-rapid-reviews-evaluations', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId() }] },
         author: [{ family: familyName }],
         resource: {
           primary: {
@@ -229,7 +229,7 @@ describe('discover-rapid-reviews-evaluations', () => {
       {
         URL: arbitraryUri(),
         created: { 'date-time': arbitraryDate().toString() },
-        relation: { 'is-review-of': [{ id: arbitraryArticleId().value }] },
+        relation: { 'is-review-of': [{ id: arbitraryArticleId() }] },
         author: [{
           given: givenName,
           family: familyName,

@@ -43,13 +43,13 @@ describe('discover-prereview-evaluations', () => {
       {
         preprint: `doi:${preprintDoi}`,
         createdAt: date1.toString(),
-        doi: reviewDoi1.value,
+        doi: reviewDoi1,
         authors: [],
       },
       {
         preprint: `doi:${preprintDoi}`,
         createdAt: date2.toString(),
-        doi: reviewDoi2.value,
+        doi: reviewDoi2,
         authors: [],
       },
     ];
@@ -65,12 +65,12 @@ describe('discover-prereview-evaluations', () => {
       const expectedEvaluation1 = constructPublishedEvaluation({
         paperExpressionDoi: preprintDoi,
         publishedOn: date1,
-        evaluationLocator: `doi:${reviewDoi1.value}`,
+        evaluationLocator: `doi:${reviewDoi1}`,
       });
       const expectedEvaluation2 = constructPublishedEvaluation({
         paperExpressionDoi: preprintDoi,
         publishedOn: date2,
-        evaluationLocator: `doi:${reviewDoi2.value}`,
+        evaluationLocator: `doi:${reviewDoi2}`,
       });
 
       expect(result.understood).toStrictEqual([
@@ -91,7 +91,7 @@ describe('discover-prereview-evaluations', () => {
       {
         preprint: `doi:${arbitraryWord()}`,
         createdAt: arbitraryDate().toString(),
-        doi: arbitraryArticleId().value,
+        doi: arbitraryArticleId(),
         authors: [
           {
             name: authorName1,

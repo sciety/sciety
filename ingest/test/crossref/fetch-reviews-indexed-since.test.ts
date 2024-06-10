@@ -19,7 +19,7 @@ describe('fetch-all-reviews-by', () => {
 
   describe('when there is a review', () => {
     it('returns the review', async () => {
-      const articleDoi = arbitraryArticleId().value;
+      const articleDoi = arbitraryArticleId();
       const date = arbitraryDate();
       const reviewUrl = arbitraryUri();
       const givenName1 = arbitraryWord();
