@@ -87,6 +87,7 @@ backstop-approve: node_modules
 
 build:
 	$(DOCKER_COMPOSE) build app
+	$(DOCKER_COMPOSE) build ingestion
 
 install: node_modules git-lfs
 
