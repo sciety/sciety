@@ -5,23 +5,24 @@ import { pathToSubmitAddAFeaturedList } from '../../../../http/form-submission-h
 import { List } from '../../../../read-models/lists';
 import { inputFieldNames } from '../../../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderListItems } from '../../shared-components/list-items';
 
-const renderFormForAParticularList = (viewModel: ViewModel) => (list: List) => `
-<form action="${pathToSubmitAddAFeaturedList()}" method="post" >
-  <input type="hidden" name="${inputFieldNames.forGroup}" value="${viewModel.groupId}">
-  <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${viewModel.successRedirectPath}">
-  <p>${list.name}</p>
-  <input type="hidden" id="listId" name="${inputFieldNames.listId}" value="${list.id}">
-  <button type="submit">Save</button>
-</form>
-`;
+const renderFormForAParticularList = (viewModel: ViewModel) => (list: List) => toHtmlFragment(`
+  ${list.name}
+  <form action="${pathToSubmitAddAFeaturedList()}" method="post" >
+    <input type="hidden" name="${inputFieldNames.forGroup}" value="${viewModel.groupId}">
+    <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${viewModel.successRedirectPath}">
+    <input type="hidden" id="listId" name="${inputFieldNames.listId}" value="${list.id}">
+    <button type="submit">Feature</button>
+  </form>
+`);
 
 export const renderFeatureAList = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.listsThatCanBeFeatured,
   RA.map(renderFormForAParticularList(viewModel)),
   RA.match(
     () => '<p>No lists available for featuring.</p>',
-    (items) => items.join('\n'),
+    (items) => `<ul class="list-names-with-actions">${renderListItems(items, 'currently-featured-lists__item')}</ul>`,
   ),
   (forms) => toHtmlFragment(`
     <h2>Feature a list</h2>
