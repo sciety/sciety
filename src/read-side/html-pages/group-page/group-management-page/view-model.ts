@@ -7,4 +7,5 @@ export type ViewModel = {
   successRedirectPath: string,
   groupHomePageHref: string,
   featuredLists: ReadonlyArray<List>,
+  listsThatCanBeFeatured: ReadonlyArray<List>,
 };
