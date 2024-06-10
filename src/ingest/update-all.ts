@@ -51,7 +51,7 @@ axiosRetry(axios, {
   onRetry: (retryCount: number, error) => {
     report('warn', 'Retrying HTTP request')({
       retryCount,
-      error,
+      error: error.message,
       url: error.config?.url,
       data: error.config?.data,
     });
