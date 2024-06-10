@@ -2,8 +2,12 @@
 @use 'functions';
 @use 'button';
 
-.currently-featured-lists {
+.group-management-section {
 	margin-bottom: functions.px-to-rem(16px);
+
+ &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .list-names-with-actions {
