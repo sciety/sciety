@@ -12,6 +12,7 @@
 
 .list-names-with-actions {
 	@include list.basics();
+	margin-bottom: 0;
 
 	li {
 		display: flex;
