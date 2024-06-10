@@ -4,22 +4,18 @@
 
 .currently-featured-lists {
 	margin-bottom: functions.px-to-rem(16px);
-
-	ul {
-		@include list.basics();
-	}
 }
 
-.currently-featured-lists__item {
-	display: flex;
+.list-names-with-actions {
+	@include list.basics();
+
+	li {
+		display: flex;
 	justify-content: space-between;
 	margin-bottom: functions.px-to-rem(8px);
 
 	button {
 		@include button.secondary();
 	}
-}
-
-.list-names-with-actions {
-	@include list.basics();
+	}
 }

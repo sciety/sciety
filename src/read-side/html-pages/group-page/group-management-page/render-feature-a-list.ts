@@ -22,7 +22,7 @@ export const renderFeatureAList = (viewModel: ViewModel): HtmlFragment => pipe(
   RA.map(renderFormForAParticularList(viewModel)),
   RA.match(
     () => '<p>No lists available for featuring.</p>',
-    (items) => `<ul class="list-names-with-actions">${renderListItems(items, 'currently-featured-lists__item')}</ul>`,
+    (items) => `<ul class="list-names-with-actions">${renderListItems(items)}</ul>`,
   ),
   (forms) => toHtmlFragment(`
     <h2>Feature a list</h2>
