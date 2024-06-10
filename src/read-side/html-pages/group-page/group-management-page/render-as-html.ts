@@ -18,7 +18,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <a href="${viewModel.groupHomePageHref}">View public group page</a>
   </p>
   <section class="group-management-section">
-    ${renderCurrentlyFeaturedLists(viewModel)}
+    ${renderCurrentlyFeaturedLists(viewModel.featuredLists)}
   </section>
   <section class="group-management-section">
     ${renderFeatureAList(viewModel)}

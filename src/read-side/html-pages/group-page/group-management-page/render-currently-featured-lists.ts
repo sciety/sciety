@@ -8,29 +8,26 @@ import { inputFieldNames } from '../../../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderListItems } from '../../shared-components/list-items';
 
-const renderFeaturedList = (
-  successRedirectPath: ViewModel['successRedirectPath'],
-  groupId: ViewModel['groupId'],
-) => (list: ViewModel['featuredLists'][number]) => `
-    ${list.name}
+const renderFeaturedList = (listWithUnfeatureAction: ViewModel['featuredLists'][number]) => `
+    ${listWithUnfeatureAction.listName}
     <form action="${pathToSubmitRemoveListPromotion()}" method="post">
-      <input type="hidden" name="${inputFieldNames.listId}" value="${list.id}" />
-      <input type="hidden" name="${inputFieldNames.forGroup}" value="${groupId}" />
-      <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${successRedirectPath}" />
+      <input type="hidden" name="${inputFieldNames.listId}" value="${listWithUnfeatureAction.listId}" />
+      <input type="hidden" name="${inputFieldNames.forGroup}" value="${listWithUnfeatureAction.forGroup}" />
+      <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${listWithUnfeatureAction.successRedirectPath}" />
       <button type="submit">Unfeature</button>
     </form>
   `;
 
-const renderForms = (viewModel: ViewModel) => pipe(
-  viewModel.featuredLists,
-  RA.map((renderFeaturedList(viewModel.successRedirectPath, viewModel.groupId))),
+const renderForms = (viewModel: ViewModel['featuredLists']) => pipe(
+  viewModel,
+  RA.map((renderFeaturedList)),
   RA.map(toHtmlFragment),
   (items) => renderListItems(items),
   (items) => `<ul class="list-names-with-actions">${items}</ul>`,
 );
 
-export const renderCurrentlyFeaturedLists = (viewModel: ViewModel): HtmlFragment => pipe(
-  viewModel.featuredLists,
+export const renderCurrentlyFeaturedLists = (viewModel: ViewModel['featuredLists']): HtmlFragment => pipe(
+  viewModel,
   RA.match(
     () => '<p>Currently no featured lists</p>',
     () => renderForms(viewModel),

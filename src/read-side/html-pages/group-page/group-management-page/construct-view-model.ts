@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { identity } from 'io-ts';
 import { Dependencies } from './dependencies';
@@ -33,7 +34,15 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
     groupId: group.id,
     successRedirectPath: constructGroupManagementPageHref(group),
     groupHomePageHref: constructGroupPageHref(group),
-    featuredLists: dependencies.selectAllListsPromotedByGroup(group.id),
+    featuredLists: pipe(
+      dependencies.selectAllListsPromotedByGroup(group.id),
+      RA.map((list) => ({
+        listName: list.name,
+        listId: list.id,
+        forGroup: group.id,
+        successRedirectPath: constructGroupManagementPageHref(group),
+      })),
+    ),
     listsThatCanBeFeatured: dependencies.getNonEmptyUserLists(),
   })),
 );
