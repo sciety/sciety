@@ -115,7 +115,7 @@ ingest-evaluations: build
 		-e INGEST_EXCEPT=${INGEST_EXCEPT} \
 		-e INGEST_ONLY=${INGEST_ONLY} \
 		-e INGEST_DAYS=${INGEST_DAYS} \
-		app \
+		ingestion \
 		npx ts-node src/ingest/update-event-data
 
 trigger-ingestion:

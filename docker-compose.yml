@@ -61,3 +61,41 @@ services:
   cache:
     image: redis
     restart: unless-stopped
+
+  ingestion:
+    build:
+      context: ./ingest/
+    environment:
+      ALLOW_SITE_CRAWLERS: 'true'
+      APP_CACHE: 'redis'
+      APP_ORIGIN: 'http://localhost:${APP_PORT:-8080}'
+      APP_SECRET: 'secret'
+      CACHE_HOST: 'cache'
+      USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
+      USE_STUB_AVATARS: '${USE_STUB_AVATARS:-false}'
+      USE_STUB_LOGIN: '${USE_STUB_LOGIN:-false}'
+      CROSSREF_API_BEARER_TOKEN:
+      DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
+      EXPERIMENT_ENABLED: 'true'
+      FATHOM_SITE_ID:
+      GOOGLE_TAG_MANAGER_ID:
+      SCIETY_API: 'http://app'
+      SCIETY_TEAM_API_BEARER_TOKEN: 'secret'
+      INGEST_DEBUG:
+      INGEST_EXCEPT:
+      INGEST_ONLY:
+      INGEST_DAYS:
+      LOG_LEVEL:
+      PGUSER: 'user'
+      PGHOST: 'db'
+      PGPASSWORD: 'secret'
+      PGDATABASE: 'sciety'
+      PGSSLMODE: 'allow'
+      PRELIGHTS_FEED_KEY:
+      PREREVIEW_BEARER_TOKEN: '${PREREVIEW_BEARER_TOKEN}'
+      AUTH0_CLIENT_ID: '${AUTH0_CLIENT_ID:-auth0-client-id}'
+      AUTH0_DOMAIN: 'dev-sqa2k3wwnhpxk36d.eu.auth0.com'
+      AUTH0_CLIENT_SECRET: '${AUTH0_CLIENT_SECRET:-auth0-client-secret}'
+      AUTH0_CALLBACK_URL: 'http://localhost:${APP_PORT:-8080}/auth0/callback'
+      DISPLAY_LAST_SERVER_STARTUP: 
+    restart: 'false'
