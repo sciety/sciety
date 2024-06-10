@@ -6,7 +6,6 @@ import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discov
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
 import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const runDiscovery = (stubbedResponse: unknown) => pipe(
   ({ fetchData: <D>() => TE.right(stubbedResponse as unknown as D) }),
@@ -37,19 +36,19 @@ describe('discover-prereview-evaluations', () => {
     const preprintDoi = arbitraryWord();
     const date1 = arbitraryDate();
     const date2 = arbitraryDate();
-    const reviewDoi1 = arbitraryArticleId();
-    const reviewDoi2 = arbitraryArticleId();
+    const reviewDoi1 = arbitraryWord();
+    const reviewDoi2 = arbitraryWord();
     const response = [
       {
         preprint: `doi:${preprintDoi}`,
         createdAt: date1.toString(),
-        doi: reviewDoi1.value,
+        doi: reviewDoi1,
         authors: [],
       },
       {
         preprint: `doi:${preprintDoi}`,
         createdAt: date2.toString(),
-        doi: reviewDoi2.value,
+        doi: reviewDoi2,
         authors: [],
       },
     ];
@@ -65,12 +64,12 @@ describe('discover-prereview-evaluations', () => {
       const expectedEvaluation1 = constructPublishedEvaluation({
         paperExpressionDoi: preprintDoi,
         publishedOn: date1,
-        evaluationLocator: `doi:${reviewDoi1.value}`,
+        evaluationLocator: `doi:${reviewDoi1}`,
       });
       const expectedEvaluation2 = constructPublishedEvaluation({
         paperExpressionDoi: preprintDoi,
         publishedOn: date2,
-        evaluationLocator: `doi:${reviewDoi2.value}`,
+        evaluationLocator: `doi:${reviewDoi2}`,
       });
 
       expect(result.understood).toStrictEqual([
@@ -91,7 +90,7 @@ describe('discover-prereview-evaluations', () => {
       {
         preprint: `doi:${arbitraryWord()}`,
         createdAt: arbitraryDate().toString(),
-        doi: arbitraryArticleId().value,
+        doi: arbitraryWord(),
         authors: [
           {
             name: authorName1,
