@@ -7,14 +7,12 @@ import { inputFieldNames } from '../../../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 const renderFormForAParticularList = (viewModel: ViewModel) => (list: List) => `
-<form action="${pathToSubmitAddAFeaturedList()}" method="post" class="standard-form">
-  <section>
-      <input type="hidden" name="${inputFieldNames.forGroup}" value="${viewModel.groupId}">
-      <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${viewModel.successRedirectPath}">
-      <p class="standard-form__sub_heading">${list.name}</p>
-      <input type="hidden" id="listId" name="${inputFieldNames.listId}" class="standard-form__full_width_text_input" value="${list.id}">
-    </section>
-    <button type="submit">Save</button><a href="#" class="standard-form__cancel">Cancel</a>
+<form action="${pathToSubmitAddAFeaturedList()}" method="post" >
+  <input type="hidden" name="${inputFieldNames.forGroup}" value="${viewModel.groupId}">
+  <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${viewModel.successRedirectPath}">
+  <p>${list.name}</p>
+  <input type="hidden" id="listId" name="${inputFieldNames.listId}" value="${list.id}">
+  <button type="submit">Save</button>
 </form>
 `;
 
