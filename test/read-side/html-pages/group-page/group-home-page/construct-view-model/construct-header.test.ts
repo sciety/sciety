@@ -7,17 +7,17 @@ import { TestFramework, createTestFramework } from '../../../../../framework';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
 import { arbitraryAddGroupCommand } from '../../../../../write-side/commands/add-group-command.helper';
 import { arbitraryCreateListCommand } from '../../../../../write-side/commands/create-list-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-header', () => {
   let framework: TestFramework;
+  let result: ViewModel['header'];
 
   beforeEach(() => {
     framework = createTestFramework();
   });
 
   describe('when the group has multiple lists', () => {
-    let result: ViewModel['header'];
-
     beforeEach(async () => {
       const addGroupCommand = arbitraryAddGroupCommand();
       await framework.commandHelpers.addGroup(addGroupCommand);
@@ -43,8 +43,6 @@ describe('construct-header', () => {
   });
 
   describe('when the group has only one list', () => {
-    let result: ViewModel['header'];
-
     beforeEach(async () => {
       const addGroupCommand = arbitraryAddGroupCommand();
       await framework.commandHelpers.addGroup(addGroupCommand);
@@ -62,7 +60,30 @@ describe('construct-header', () => {
   });
 
   describe('when the user is an admin', () => {
-    it.todo('displays a link to the management page');
+    beforeEach(async () => {
+      const addGroupCommand = arbitraryAddGroupCommand();
+      const createUserCommand = arbitraryCreateUserAccountCommand();
+      const assignUserAdminCommand = {
+        groupId: addGroupCommand.groupId,
+        userId: createUserCommand.userId,
+      };
+
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.createUserAccount(createUserCommand);
+      await framework.commandHelpers.assignUserAsGroupAdmin(assignUserAdminCommand);
+      result = pipe(
+        addGroupCommand.groupId,
+        framework.queries.getGroup,
+        O.getOrElseW(shouldNotBeCalled),
+        constructHeader(framework.dependenciesForViews, O.some(
+          { handle: createUserCommand.handle, id: createUserCommand.userId },
+        )),
+      );
+    });
+
+    it('displays a link to the management page', () => {
+      expect(O.isSome(result.managementPageHref)).toBe(true);
+    });
   });
 
   describe('when the user is not an admin', () => {
