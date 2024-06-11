@@ -32,5 +32,5 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
   groupAboutPageHref: `/groups/${group.slug}/about`,
   groupListsPageHref: constructGroupListsPageHref(group, dependencies),
   groupFollowersPageHref: `/groups/${group.slug}/followers`,
-  managementPageHref: constructGroupManagementPageHref(group),
+  managementPageHref: O.some(constructGroupManagementPageHref(group)),
 });

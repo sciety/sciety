@@ -21,7 +21,7 @@ export type PageHeaderViewModel = {
   groupAboutPageHref: string,
   groupListsPageHref: O.Option<string>,
   groupFollowersPageHref: string,
-  managementPageHref: string,
+  managementPageHref: O.Option<string>,
 };
 
 export type ViewModel = {

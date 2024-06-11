@@ -24,7 +24,13 @@ const renderManagementLink = (href: PageHeaderViewModel['managementPageHref']) =
   if (process.env.EXPERIMENT_ENABLED !== 'true') {
     return '';
   }
-  return `<a href="${href}">Manage this group</a>`;
+  return pipe(
+    href,
+    O.match(
+      () => '',
+      (value) => `<a href="${value}">Manage this group</a>`,
+    ),
+  );
 };
 
 export const renderGroupPageActions = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
