@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructViewModel } from '../../../../../src/read-side/html-pages/group-page/group-management-page/construct-view-model';
-import { TestFramework, createTestFramework } from '../../../../framework';
-import { arbitraryWord } from '../../../../helpers';
-import { arbitraryUserId } from '../../../../types/user-id.helper';
-import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { constructViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-management-page/construct-view-model/construct-view-model';
+import { TestFramework, createTestFramework } from '../../../../../framework';
+import { arbitraryWord } from '../../../../../helpers';
+import { arbitraryUserId } from '../../../../../types/user-id.helper';
+import { arbitraryAddGroupCommand } from '../../../../../write-side/commands/add-group-command.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
