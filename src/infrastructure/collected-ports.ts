@@ -7,11 +7,21 @@ import { GetAllEvents } from '../shared-ports/get-all-events';
 import { RecordSubjectArea } from '../shared-ports/record-subject-area';
 import { ExternalQueries } from '../third-parties';
 
-export type CollectedPorts = Queries & ExternalQueries & {
-  addArticleToList: AddArticleToList,
+type EventStore = {
   commitEvents: CommitEvents,
-  createList: CreateList,
   getAllEvents: GetAllEvents,
-  logger: Logger,
+};
+
+type CommandHandlersForSagas = {
+  addArticleToList: AddArticleToList,
+  createList: CreateList,
   recordSubjectArea: RecordSubjectArea,
+};
+
+export type CollectedPorts = Queries
+& ExternalQueries
+& EventStore
+& CommandHandlersForSagas
+& {
+  logger: Logger,
 };
