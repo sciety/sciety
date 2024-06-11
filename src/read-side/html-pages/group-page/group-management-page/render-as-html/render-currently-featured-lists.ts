@@ -1,12 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ViewModel } from './view-model';
 import {
   pathToSubmitRemoveListPromotion,
-} from '../../../../http/form-submission-handlers/submit-paths';
-import { inputFieldNames } from '../../../../standards';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { renderListItems } from '../../shared-components/list-items';
+} from '../../../../../http/form-submission-handlers/submit-paths';
+import { inputFieldNames } from '../../../../../standards';
+import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
+import { renderListItems } from '../../../shared-components/list-items';
+import { ViewModel } from '../view-model';
 
 const renderFeaturedList = (listWithUnfeatureAction: ViewModel['featuredLists'][number]) => `
     ${listWithUnfeatureAction.listName}
