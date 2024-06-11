@@ -5,7 +5,7 @@ import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
-import { constructGroupManagementPageHref } from '../../../../paths/construct-group-page-href';
+import { constructGroupManagementPageHref, constructGroupPagePath } from '../../../../paths/construct-group-page-href';
 import { calculateListCount } from '../../common-components/calculate-list-count';
 import { ViewModel } from '../view-model';
 
@@ -36,7 +36,7 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
   group,
   isFollowing: checkFollowingStatus(user, dependencies, group.id),
   followerCount: RA.size(dependencies.getFollowers(group.id)),
-  groupAboutPageHref: `/groups/${group.slug}/about`,
+  groupAboutPageHref: constructGroupPagePath.about.href(group),
   groupListsPageHref: constructGroupListsPageHref(group, dependencies),
   groupFollowersPageHref: `/groups/${group.slug}/followers`,
   managementPageHref: showManagementLinkToAdmins(dependencies, user, group),

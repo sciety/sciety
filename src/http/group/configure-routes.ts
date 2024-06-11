@@ -8,6 +8,7 @@ import * as GHP from '../../read-side/html-pages/group-page/group-home-page';
 import * as GLP from '../../read-side/html-pages/group-page/group-lists-page';
 import * as GMP from '../../read-side/html-pages/group-page/group-management-page';
 import { groupPagePathSpecification, groupSubPagePathSpecification } from '../../read-side/paths';
+import { constructGroupPagePath } from '../../read-side/paths/construct-group-page-href';
 import { pageHandler, pageHandlerWithLoggedInUser } from '../page-handler';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
@@ -28,7 +29,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    groupSubPagePathSpecification('about'),
+    constructGroupPagePath.about.spec,
     pageHandler(adapters, createPageFromParams(
       GAP.paramsCodec,
       GAP.constructAndRenderPage(adapters),
