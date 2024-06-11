@@ -21,7 +21,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    groupSubPagePathSpecification('lists'),
+    groupSubPagePathSpecification('/lists'),
     pageHandler(adapters, createPageFromParams(
       GLP.paramsCodec,
       GLP.constructAndRenderPage(adapters),
@@ -45,7 +45,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    groupSubPagePathSpecification('feed'),
+    groupSubPagePathSpecification('/feed'),
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
       context.redirect(`/groups/${context.params.slug}`);
