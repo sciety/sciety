@@ -55,7 +55,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    groupSubPagePathSpecification('management'),
+    constructGroupPagePath.management.spec,
     pageHandlerWithLoggedInUser(adapters, GMP.page(adapters)),
   );
 };

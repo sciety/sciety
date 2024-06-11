@@ -5,7 +5,7 @@ import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
-import { constructGroupManagementPageHref, constructGroupPagePath } from '../../../../paths/construct-group-page-href';
+import { constructGroupPagePath } from '../../../../paths/construct-group-page-href';
 import { calculateListCount } from '../../common-components/calculate-list-count';
 import { ViewModel } from '../view-model';
 
@@ -29,7 +29,7 @@ const showManagementLinkToAdmins = (dependencies: Dependencies, user: Params['us
   user,
   O.map(({ id }) => id),
   O.filter((userId) => dependencies.isUserAdminOfGroup(userId, group.id)),
-  O.map(() => constructGroupManagementPageHref(group)),
+  O.map(() => constructGroupPagePath.management.href(group)),
 );
 
 export const constructHeader = (dependencies: Dependencies, user: Params['user']) => (group: Group): ViewModel['header'] => ({
