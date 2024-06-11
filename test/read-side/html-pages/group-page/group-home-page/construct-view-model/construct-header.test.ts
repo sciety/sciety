@@ -5,6 +5,7 @@ import { ViewModel } from '../../../../../../src/read-side/html-pages/group-page
 import * as LOID from '../../../../../../src/types/list-owner-id';
 import { TestFramework, createTestFramework } from '../../../../../framework';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
+import { arbitraryGroupId } from '../../../../../types/group-id.helper';
 import { arbitraryAddGroupCommand } from '../../../../../write-side/commands/add-group-command.helper';
 import { arbitraryCreateListCommand } from '../../../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../../../write-side/commands/create-user-account-command.helper';
@@ -88,7 +89,28 @@ describe('construct-header', () => {
     });
 
     describe('has no admin', () => {
-      it.todo('does not display a link to the management page');
+      beforeEach(async () => {
+        const createUserCommand = arbitraryCreateUserAccountCommand();
+        const assignUserAdminCommand = {
+          groupId: arbitraryGroupId(),
+          userId: createUserCommand.userId,
+        };
+
+        await framework.commandHelpers.createUserAccount(createUserCommand);
+        await framework.commandHelpers.assignUserAsGroupAdmin(assignUserAdminCommand);
+        result = pipe(
+          addGroupCommand.groupId,
+          framework.queries.getGroup,
+          O.getOrElseW(shouldNotBeCalled),
+          constructHeader(framework.dependenciesForViews, O.some(
+            { handle: createUserCommand.handle, id: createUserCommand.userId },
+          )),
+        );
+      });
+
+      it.failing('does not display a link to the management page', () => {
+        expect(O.isNone(result.managementPageHref)).toBe(true);
+      });
     });
   });
 });
