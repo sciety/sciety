@@ -2,9 +2,7 @@ import { Group } from '../../types/group';
 
 export const constructGroupPageHref = (group: Group): string => `/groups/${group.slug}`;
 
-const constructGroupManagementPageHref = (group: Group): string => `/groups/${group.slug}/management`;
-
-const constructGroupAboutPageHref = (group: Group): string => `/groups/${group.slug}/about`;
+const constructGroupSubPageHref = (subPagePathSegment: string) => (group: Group): string => `/groups/${group.slug}/${subPagePathSegment}`;
 
 export const groupPagePathSpecification = '/groups/:slug';
 
@@ -13,10 +11,14 @@ export const groupSubPagePathSpecification = (subPagePathSegment: string): strin
 export const constructGroupPagePath = {
   about: {
     spec: groupSubPagePathSpecification('about'),
-    href: constructGroupAboutPageHref,
+    href: constructGroupSubPageHref('about'),
   },
   management: {
     spec: groupSubPagePathSpecification('management'),
-    href: constructGroupManagementPageHref,
+    href: constructGroupSubPageHref('management'),
+  },
+  followers: {
+    spec: groupSubPagePathSpecification('followers'),
+    href: constructGroupSubPageHref('followers'),
   },
 };
