@@ -1,18 +1,16 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { Logger } from '../../logger';
-import { CommandHandler } from '../../types/command-handler';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { CreateListCommand } from '../../write-side/commands';
-import { Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import * as list from '../../write-side/resources/list';
 
-type Dependencies = GetLoggedInScietyUserDependencies & EnsureUserIsLoggedInDependencies & {
-  logger: Logger,
-  createList: CommandHandler<CreateListCommand>,
-};
+type Dependencies = DependenciesForCommands & EnsureUserIsLoggedInDependencies;
 
 export const createListHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const loggedInUserId = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
@@ -27,7 +25,10 @@ export const createListHandler = (dependencies: Dependencies): Middleware => asy
     description: '',
   };
 
-  const commandResult = await dependencies.createList(command)();
+  const commandResult = await pipe(
+    command,
+    executeResourceAction(dependencies, list.create),
+  )();
   if (E.isRight(commandResult)) {
     context.redirect(`/lists/${command.listId}/edit-details`);
     return;
