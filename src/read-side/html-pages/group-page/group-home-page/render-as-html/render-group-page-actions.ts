@@ -20,11 +20,11 @@ const renderGroupFollowersLink = (groupFollowersPageHref: PageHeaderViewModel['g
   </a>
 `;
 
-const renderManagementLink = () => {
+const renderManagementLink = (href: PageHeaderViewModel['managementPageHref']) => {
   if (process.env.EXPERIMENT_ENABLED !== 'true') {
     return '';
   }
-  return '<a href="#">Manage this group</a>';
+  return `<a href="${href}">Manage this group</a>`;
 };
 
 export const renderGroupPageActions = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
@@ -33,6 +33,6 @@ export const renderGroupPageActions = (viewmodel: PageHeaderViewModel): HtmlFrag
     ${renderAboutLink(viewmodel.groupAboutPageHref)}
     ${renderGroupListsLink(viewmodel.groupListsPageHref)}
     ${renderGroupFollowersLink(viewmodel.groupFollowersPageHref, viewmodel.followerCount)}
-    ${renderManagementLink()}
+    ${renderManagementLink(viewmodel.managementPageHref)}
   </div>
 `);
