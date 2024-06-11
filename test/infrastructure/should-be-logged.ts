@@ -1,6 +1,6 @@
-import { shouldBeLogged } from '../../src/shared-ports/log-level';
+import { shouldBeLogged } from '../../src/infrastructure/logger/should-be-logged';
 
-describe('log-level', () => {
+describe('should-be-logged', () => {
   describe('when configured level is info and the requested level is debug', () => {
     it('is not logged', () => {
       expect(shouldBeLogged('debug', 'info')).toBe(false);
