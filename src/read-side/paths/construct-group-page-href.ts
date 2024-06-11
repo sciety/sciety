@@ -2,7 +2,7 @@ import { Group } from '../../types/group';
 
 const constructGroupSubPageHref = (subPagePathSegment: string) => (group: Pick<Group, 'slug'>): string => `/groups/${group.slug}${subPagePathSegment}`;
 
-export const groupSubPagePathSpecification = (subPagePathSegment: string): string => `/groups/:slug${subPagePathSegment}`;
+const groupSubPagePathSpecification = (subPagePathSegment: string): string => `/groups/:slug${subPagePathSegment}`;
 
 export const constructGroupPagePath = {
   home: {
@@ -24,5 +24,10 @@ export const constructGroupPagePath = {
   lists: {
     spec: groupSubPagePathSpecification('/lists'),
     href: constructGroupSubPageHref('/lists'),
+  },
+  /** @deprecated */
+  feed: {
+    spec: groupSubPagePathSpecification('/feed'),
+    href: constructGroupSubPageHref('/feed'),
   },
 };
