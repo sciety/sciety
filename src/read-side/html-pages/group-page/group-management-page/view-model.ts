@@ -1,4 +1,3 @@
-import { List } from '../../../../read-models/lists';
 import { GroupId } from '../../../../types/group-id';
 import { ListId } from '../../../../types/list-id';
 
@@ -9,11 +8,13 @@ export type CurrentlyFeaturedLists = ReadonlyArray<{
   successRedirectPath: string,
 }>;
 
+export type ListThatCanBeFeatured = { name: string, id: ListId };
+
 export type ViewModel = {
   pageHeading: string,
   groupId: GroupId,
   successRedirectPath: string,
   groupHomePageHref: string,
   currentlyFeaturedLists: CurrentlyFeaturedLists,
-  listsThatCanBeFeatured: ReadonlyArray<List>,
+  listsThatCanBeFeatured: ReadonlyArray<ListThatCanBeFeatured>,
 };

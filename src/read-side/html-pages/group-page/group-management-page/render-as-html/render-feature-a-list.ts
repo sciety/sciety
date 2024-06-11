@@ -1,13 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { pathToSubmitAddAFeaturedList } from '../../../../../http/form-submission-handlers/submit-paths';
-import { List } from '../../../../../read-models/lists';
 import { inputFieldNames } from '../../../../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/list-items';
-import { ViewModel } from '../view-model';
+import { ListThatCanBeFeatured, ViewModel } from '../view-model';
 
-const renderFormForAParticularList = (viewModel: ViewModel) => (list: List) => toHtmlFragment(`
+const renderFormForAParticularList = (viewModel: ViewModel) => (list: ListThatCanBeFeatured) => toHtmlFragment(`
   ${list.name}
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" >
     <input type="hidden" name="${inputFieldNames.forGroup}" value="${viewModel.groupId}">
