@@ -1,14 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import {
-  pathToSubmitRemoveListPromotion,
-} from '../../../../../http/form-submission-handlers/submit-paths';
+import { pathToSubmitRemoveListPromotion } from '../../../../../http/form-submission-handlers/submit-paths';
 import { inputFieldNames } from '../../../../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/list-items';
-import { ViewModel } from '../view-model';
+import { CurrentlyFeaturedLists } from '../view-model';
 
-const renderFeaturedList = (listWithUnfeatureAction: ViewModel['featuredLists'][number]) => `
+const renderFeaturedList = (listWithUnfeatureAction: CurrentlyFeaturedLists[number]) => `
     ${listWithUnfeatureAction.listName}
     <form action="${pathToSubmitRemoveListPromotion()}" method="post">
       <input type="hidden" name="${inputFieldNames.listId}" value="${listWithUnfeatureAction.listId}" />
@@ -18,7 +16,7 @@ const renderFeaturedList = (listWithUnfeatureAction: ViewModel['featuredLists'][
     </form>
   `;
 
-const renderForms = (viewModel: ViewModel['featuredLists']) => pipe(
+const renderForms = (viewModel: CurrentlyFeaturedLists) => pipe(
   viewModel,
   RA.map((renderFeaturedList)),
   RA.map(toHtmlFragment),
@@ -26,7 +24,7 @@ const renderForms = (viewModel: ViewModel['featuredLists']) => pipe(
   (items) => `<ul class="list-names-with-actions">${items}</ul>`,
 );
 
-export const renderCurrentlyFeaturedLists = (viewModel: ViewModel['featuredLists']): HtmlFragment => pipe(
+export const renderCurrentlyFeaturedLists = (viewModel: CurrentlyFeaturedLists): HtmlFragment => pipe(
   viewModel,
   RA.match(
     () => '<p>Currently no featured lists</p>',

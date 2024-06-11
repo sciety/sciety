@@ -34,7 +34,7 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
     groupId: group.id,
     successRedirectPath: constructGroupManagementPageHref(group),
     groupHomePageHref: constructGroupPageHref(group),
-    featuredLists: pipe(
+    currentlyFeaturedLists: pipe(
       dependencies.selectAllListsPromotedByGroup(group.id),
       RA.map((list) => ({
         listName: list.name,
