@@ -19,11 +19,20 @@ const renderGroupFollowersLink = (groupFollowersPageHref: PageHeaderViewModel['g
     <span class="visually-hidden">This group has ${followerCount} </span>Followers<span aria-hidden="true"> (${followerCount})</span>
   </a>
 `;
+
+const renderManagementLink = () => {
+  if (process.env.EXPERIMENT_ENABLED !== 'true') {
+    return '';
+  }
+  return '<a href="#">Manage this group</a>';
+};
+
 export const renderGroupPageActions = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
   <div class="group-page-actions">
     ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
     ${renderAboutLink(viewmodel.groupAboutPageHref)}
     ${renderGroupListsLink(viewmodel.groupListsPageHref)}
     ${renderGroupFollowersLink(viewmodel.groupFollowersPageHref, viewmodel.followerCount)}
+    ${renderManagementLink()}
   </div>
 `);
