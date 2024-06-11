@@ -92,6 +92,7 @@ export const createInfrastructure = (
       const commandHandlerAdapters = {
         getAllEvents,
         commitEvents: commitEventsWithoutListeners,
+        logger: partialAdapters.logger,
       };
 
       const redisClient = await createRedisClient(partialAdapters.logger);

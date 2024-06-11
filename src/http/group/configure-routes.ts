@@ -1,6 +1,6 @@
 import Router from '@koa/router';
 import { StatusCodes } from 'http-status-codes';
-import { CollectedPorts } from '../../infrastructure';
+import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { createPageFromParams } from '../../read-side/html-pages/create-page-from-params';
 import * as GAP from '../../read-side/html-pages/group-page/group-about-page';
 import * as GFP from '../../read-side/html-pages/group-page/group-followers-page';
@@ -10,7 +10,7 @@ import * as GMP from '../../read-side/html-pages/group-page/group-management-pag
 import { constructGroupPagePath } from '../../read-side/paths';
 import { pageHandler, pageHandlerWithLoggedInUser } from '../page-handler';
 
-export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
+export const configureRoutes = (router: Router, adapters: DependenciesForViews): void => {
   router.get(
     constructGroupPagePath.home.spec,
     pageHandler(adapters, createPageFromParams(

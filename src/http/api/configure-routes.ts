@@ -2,7 +2,7 @@ import Router from '@koa/router';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { createConfigurePostMiddleware } from './create-configure-post-middleware';
-import { CollectedPorts } from '../../infrastructure';
+import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import {
   addArticleToListCommandCodec,
   addGroupCommandCodec,
@@ -19,6 +19,7 @@ import {
   updateUserDetailsCommandCodec,
 } from '../../write-side/commands';
 import { createUserAccountCommandCodec } from '../../write-side/commands/create-user-account';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import * as evaluationResource from '../../write-side/resources/evaluation';
 import * as groupResource from '../../write-side/resources/group';
 import * as groupAuthorisation from '../../write-side/resources/group-authorisation';
@@ -27,7 +28,11 @@ import * as listPromotionResource from '../../write-side/resources/list-promotio
 import * as userResource from '../../write-side/resources/user';
 import { ownedBy } from '../owned-by-api';
 
-export const configureRoutes = (router: Router, adapters: CollectedPorts, expectedToken: string): void => {
+export const configureRoutes = (
+  router: Router,
+  adapters: DependenciesForViews & DependenciesForCommands,
+  expectedToken: string,
+): void => {
   router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
 
   const configurePostMiddleware = createConfigurePostMiddleware(adapters, expectedToken);
