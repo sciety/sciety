@@ -19,8 +19,6 @@ export type ListsThatCanBeFeatured = ReadonlyArray<ListThatCanBeFeatured>;
 
 export type ViewModel = {
   pageHeading: string,
-  groupId: GroupId,
-  successRedirectPath: string,
   groupHomePageHref: string,
   currentlyFeaturedLists: CurrentlyFeaturedLists,
   listsThatCanBeFeatured: ListsThatCanBeFeatured,
