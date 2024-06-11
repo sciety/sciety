@@ -2,9 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
-import {
-  RecordSubjectArea,
-} from '../../shared-ports';
+import { RecordSubjectArea } from '../../shared-ports/record-subject-area';
 import { ExternalQueries } from '../../third-parties';
 import { ArticleId } from '../../types/article-id';
 import * as EDOI from '../../types/expression-doi';

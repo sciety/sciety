@@ -2,9 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
-import {
-  AddArticleToList,
-} from '../../shared-ports';
+import { AddArticleToList } from '../../shared-ports/add-article-to-list';
 
 type Ports = Pick<Queries, 'getOneArticleReadyToBeListed'> & {
   logger: Logger,

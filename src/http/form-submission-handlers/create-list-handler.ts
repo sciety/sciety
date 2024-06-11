@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { Middleware } from 'koa';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Logger } from '../../logger';
-import { CreateList } from '../../shared-ports';
+import { CreateList } from '../../shared-ports/create-list';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
 import { CreateListCommand } from '../../write-side/commands';
