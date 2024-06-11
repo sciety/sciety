@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent } from '../domain-events';
 import { Logger } from '../logger';
-import { CommitEvents } from '../shared-ports';
+import { CommitEvents } from '../shared-ports/commit-events';
 import { CommandResult } from '../types/command-result';
 import { ErrorMessage } from '../types/error-message';
 

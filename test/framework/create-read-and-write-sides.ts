@@ -1,7 +1,7 @@
 import { createInMemoryEventStore } from './create-in-memory-event-store';
 import { dispatcher, Queries } from '../../src/read-models';
-import { GetAllEvents, CommitEvents } from '../../src/shared-ports';
-
+import { CommitEvents } from '../../src/shared-ports/commit-events';
+import { GetAllEvents } from '../../src/shared-ports/get-all-events';
 import { dummyLogger } from '../dummy-logger';
 
 export type ReadAndWriteSides = {
