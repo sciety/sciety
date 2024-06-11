@@ -13,8 +13,9 @@ import { createApplicationServer } from './http/server';
 import {
   CollectedPorts, createInfrastructure, replaceError,
 } from './infrastructure';
+import { Logger } from './logger';
 import { startSagas } from './sagas';
-import { defaultLogLevel, Logger } from './shared-ports';
+import { defaultLogLevel } from './shared-ports';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {

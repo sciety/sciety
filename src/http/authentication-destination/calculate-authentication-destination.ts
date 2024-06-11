@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 
 export const defaultDestination = '/';
 

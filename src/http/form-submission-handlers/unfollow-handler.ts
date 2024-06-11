@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { decodeFormSubmission } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { unfollowCommandHandler } from '../../write-side/command-handlers';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';

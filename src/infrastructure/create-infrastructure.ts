@@ -14,8 +14,8 @@ import {
 import { persistEvents } from './persist-events';
 import { stubAdapters } from './stub-adapters';
 import { sort as sortEvents } from '../domain-events';
+import { Logger } from '../logger';
 import { dispatcher } from '../read-models';
-import { Logger } from '../shared-ports';
 import { instantiate } from '../third-parties';
 import {
   createListCommandHandler,

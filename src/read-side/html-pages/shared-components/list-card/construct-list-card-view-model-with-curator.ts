@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ListCardViewModel } from './render-list-card';
+import { Logger } from '../../../../logger';
 import { Queries } from '../../../../read-models';
 import { List } from '../../../../read-models/lists';
-import { Logger } from '../../../../shared-ports';
 import { constructUserAvatarSrc } from '../../../paths';
 
 type Dependencies = Queries & {

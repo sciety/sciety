@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { ParameterizedContext } from 'koa';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { UserId } from '../../types/user-id';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendDefaultErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 

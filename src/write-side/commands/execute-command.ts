@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { validateInputShape } from './validate-input-shape';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { GenericCommand } from '../../types/command-handler';
 import { CommandResult } from '../../types/command-result';
 import { ErrorMessage } from '../../types/error-message';

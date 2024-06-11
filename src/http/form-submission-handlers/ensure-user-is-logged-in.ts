@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
+import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
-import { Logger } from '../../shared-ports';
 import { UserId } from '../../types/user-id';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendDefaultErrorHtmlResponseDependencies } from '../send-default-error-html-response';

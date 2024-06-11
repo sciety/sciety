@@ -6,7 +6,7 @@ import { identity, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import { acmiJatsCodec, isSubArticleWithBody, SubArticleWithBody } from './acmi-jats';
-import { Logger } from '../../../shared-ports';
+import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { SanitisedHtmlFragment, sanitise } from '../../../types/sanitised-html-fragment';

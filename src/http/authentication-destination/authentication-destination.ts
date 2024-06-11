@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import { calculateAuthenticationDestination } from './calculate-authentication-destination';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 
 const contextCodec = t.type({
   session: t.type({

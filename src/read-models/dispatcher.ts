@@ -15,7 +15,7 @@ import { lists } from './lists';
 import { Queries } from './queries';
 import { users } from './users';
 import { DomainEvent } from '../domain-events';
-import { Logger } from '../shared-ports';
+import { Logger } from '../logger';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
 

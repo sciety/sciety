@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import { Logger } from '../shared-ports';
+import { Logger } from '../logger';
 
 export const createRedisClient = async (logger: Logger): Promise<ReturnType<typeof createClient> | undefined> => {
   let redisClient: ReturnType<typeof createClient> | undefined;

@@ -7,7 +7,7 @@ import { Middleware } from 'koa';
 import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
 import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { inputFieldNames } from '../../standards';
 import { articleIdCodec } from '../../types/article-id';
 import { listIdCodec } from '../../types/list-id';

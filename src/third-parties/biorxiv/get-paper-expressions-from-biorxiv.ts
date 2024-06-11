@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { ResponseWithVersions } from './biorxiv-details-api-response';
 import { fetchArticleDetails } from './fetch-article-details';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { ArticleId } from '../../types/article-id';
 import * as DE from '../../types/data-error';
 import * as EDOI from '../../types/expression-doi';

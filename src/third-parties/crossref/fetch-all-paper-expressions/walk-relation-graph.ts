@@ -8,7 +8,7 @@ import { fetchIndividualWork } from './fetch-individual-work';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { QueryCrossrefService } from './query-crossref-service';
 import { State } from './state';
-import { Logger } from '../../../shared-ports';
+import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
 
 const update = (collectedWorks: State['collectedWorks'], newlyFetchedWork: CrossrefWork) => {

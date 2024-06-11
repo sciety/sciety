@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
 import { UserId } from '../../types/user-id';
 import { decodeAndLogFailures } from '../decode-and-log-failures';

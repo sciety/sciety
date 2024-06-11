@@ -8,7 +8,7 @@ import { Pool } from 'pg';
 import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
 import { upgradeLegacyEventIfNecessary } from './upgrade-legacy-event-if-necessary';
 import { DomainEvent } from '../domain-events';
-import { Logger } from '../shared-ports';
+import { Logger } from '../logger';
 
 const waitForTableToExist = async (pool: Pool, logger: Logger) => {
   logger('debug', 'Waiting for events table to exist');

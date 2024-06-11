@@ -12,7 +12,8 @@ import { createClient } from 'redis';
 import { cachedGetter, ResponseBodyCachePredicate } from './cached-getter';
 import { generateUrlBasedKey } from './generate-url-based-key';
 import { redisStorage } from './redis-storage';
-import { Logger, LogLevel } from '../../shared-ports';
+import { Logger } from '../../logger';
+import { LogLevel } from '../../shared-ports';
 import { logAndTransformToDataError } from '../log-and-transform-to-data-error';
 import { QueryExternalService } from '../query-external-service';
 

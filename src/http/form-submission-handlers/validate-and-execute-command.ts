@@ -7,7 +7,7 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { CommandResult } from '../../types/command-result';
 import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 import { userHandleCodec } from '../../types/user-handle';

@@ -7,7 +7,7 @@ import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from
 import { decodeFormSubmission } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Payload } from '../../infrastructure/logger';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
