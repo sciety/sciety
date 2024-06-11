@@ -60,4 +60,12 @@ describe('construct-header', () => {
       expect(O.isNone(result.groupListsPageHref)).toBe(true);
     });
   });
+
+  describe('when the user is an admin', () => {
+    it.todo('displays a link to the management page');
+  });
+
+  describe('when the user is not an admin', () => {
+    it.todo('does not display a link to the management page');
+  });
 });
