@@ -305,6 +305,3 @@ connect-to-cache-dev:
 
 helm-dry-run:
 	helm install --debug --dry-run --set hostname=example.sciety.org sciety--example ./helm/sciety
-
-madge-next: 
-	npx madge@7.0.0 --circular --extensions ts src test feature-test
