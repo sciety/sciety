@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
-import { PageHeaderViewModel } from './render-as-html/render-page-header';
+import * as O from 'fp-ts/Option';
+import { Group } from '../../../../types/group';
 import { ListCardViewModel } from '../../shared-components/list-card';
 import { PaginationControlsViewModel } from '../../shared-components/pagination';
 import { PaperActivitySummaryCardViewModel, PaperActivityErrorCardViewModel } from '../../shared-components/paper-activity-summary-card';
@@ -12,6 +13,15 @@ export type OrderedArticleCards = PaginationControlsViewModel & {
 };
 
 type Feed = NoActivity | OrderedArticleCards;
+
+export type PageHeaderViewModel = {
+  group: Group,
+  isFollowing: boolean,
+  followerCount: number,
+  groupAboutPageHref: string,
+  groupListsPageHref: O.Option<string>,
+  groupFollowersPageHref: string,
+};
 
 export type ViewModel = {
   header: PageHeaderViewModel,

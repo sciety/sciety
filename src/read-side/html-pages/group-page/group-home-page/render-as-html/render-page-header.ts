@@ -2,17 +2,8 @@ import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderFollowToggle } from './render-follow-toggle';
-import { Group } from '../../../../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
-
-export type PageHeaderViewModel = {
-  group: Group,
-  isFollowing: boolean,
-  followerCount: number,
-  groupAboutPageHref: string,
-  groupListsPageHref: O.Option<string>,
-  groupFollowersPageHref: string,
-};
+import { PageHeaderViewModel } from '../view-model';
 
 const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
   group.largeLogoPath,
