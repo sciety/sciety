@@ -5,6 +5,7 @@ import { constructListsThatCanBeFeatured } from '../../../../../../src/read-side
 import { Group } from '../../../../../../src/types/group';
 import { ListId } from '../../../../../../src/types/list-id';
 import * as LOID from '../../../../../../src/types/list-owner-id';
+import { CreateListCommand } from '../../../../../../src/write-side/commands';
 import { TestFramework, createTestFramework } from '../../../../../framework';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
 import { arbitraryArticleId } from '../../../../../types/article-id.helper';
@@ -34,9 +35,9 @@ describe('construct-lists-that-can-be-featured', () => {
 
     describe('given a user list that is populated', () => {
       const listOwnerId = LOID.fromUserId(arbitraryUserId());
-      const createListCommand = {
+      const createListCommand: CreateListCommand = {
         ...arbitraryCreateListCommand(),
-        listOwnerId,
+        ownerId: listOwnerId,
       };
       const userListId = createListCommand.listId;
 
@@ -59,7 +60,7 @@ describe('construct-lists-that-can-be-featured', () => {
           );
         });
 
-        it.skip('is included', () => {
+        it('is included', () => {
           expect(availableListIds).toContain(userListId);
         });
       });
