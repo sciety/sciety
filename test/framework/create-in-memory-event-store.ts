@@ -1,9 +1,9 @@
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent } from '../../src/domain-events';
+import { CommitEvents } from '../../src/event-store/commit-events';
+import { GetAllEvents } from '../../src/event-store/get-all-events';
 import { commitEvents } from '../../src/infrastructure/commit-events';
-import { CommitEvents } from '../../src/shared-ports/commit-events';
-import { GetAllEvents } from '../../src/shared-ports/get-all-events';
 import { dummyLogger } from '../dummy-logger';
 
 type DispatchToAllReadModels = (events: ReadonlyArray<DomainEvent>) => void;
