@@ -15,7 +15,7 @@ import * as PH from '../../types/publishing-history';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { DependenciesForViews } from '../dependencies-for-views';
 import { detectLanguage } from '../html-pages/shared-components/lang-attribute';
-import { constructGroupPagePath } from '../paths/construct-group-page-href';
+import { constructGroupPagePath } from '../paths';
 
 type PartialCurationStatement = {
   evaluationLocator: EvaluationLocator,

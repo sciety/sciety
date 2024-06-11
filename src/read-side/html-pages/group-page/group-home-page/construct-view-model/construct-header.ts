@@ -5,7 +5,7 @@ import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
-import { constructGroupPagePath } from '../../../../paths/construct-group-page-href';
+import { constructGroupPagePath } from '../../../../paths';
 import { calculateListCount } from '../../common-components/calculate-list-count';
 import { ViewModel } from '../view-model';
 

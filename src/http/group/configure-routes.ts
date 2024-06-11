@@ -7,7 +7,7 @@ import * as GFP from '../../read-side/html-pages/group-page/group-followers-page
 import * as GHP from '../../read-side/html-pages/group-page/group-home-page';
 import * as GLP from '../../read-side/html-pages/group-page/group-lists-page';
 import * as GMP from '../../read-side/html-pages/group-page/group-management-page';
-import { constructGroupPagePath } from '../../read-side/paths/construct-group-page-href';
+import { constructGroupPagePath } from '../../read-side/paths';
 import { pageHandler, pageHandlerWithLoggedInUser } from '../page-handler';
 
 export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {

@@ -5,7 +5,7 @@ import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 import { Queries } from '../../../../read-models';
 import { Logger } from '../../../../shared-ports';
 import * as GID from '../../../../types/group-id';
-import { constructGroupPagePath } from '../../../paths/construct-group-page-href';
+import { constructGroupPagePath } from '../../../paths';
 
 export type ConstructGroupLinkDependencies = Queries & { logger: Logger };
 

@@ -8,7 +8,7 @@ import { Params } from './params';
 import * as DE from '../../../../../types/data-error';
 import { Group } from '../../../../../types/group';
 import { UserId } from '../../../../../types/user-id';
-import { constructGroupPagePath } from '../../../../paths/construct-group-page-href';
+import { constructGroupPagePath } from '../../../../paths';
 import { ViewModel } from '../view-model';
 
 const checkUserIsAdminOfGroup = (dependencies: Dependencies, userId: UserId, group: Group) => pipe(

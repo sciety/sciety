@@ -5,7 +5,7 @@ import { Dependencies } from './dependencies';
 import { List } from '../../../../../read-models/lists';
 import { Group } from '../../../../../types/group';
 import * as LOID from '../../../../../types/list-owner-id';
-import { constructGroupPagePath } from '../../../../paths/construct-group-page-href';
+import { constructGroupPagePath } from '../../../../paths';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
 import { ViewModel } from '../view-model';
 

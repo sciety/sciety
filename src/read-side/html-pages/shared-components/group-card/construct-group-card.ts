@@ -11,7 +11,7 @@ import { toHtmlFragment } from '../../../../types/html-fragment';
 import * as LOID from '../../../../types/list-owner-id';
 import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
 import { sanitise } from '../../../../types/sanitised-html-fragment';
-import { constructGroupPagePath } from '../../../paths/construct-group-page-href';
+import { constructGroupPagePath } from '../../../paths';
 
 type Dependencies = Queries;
 
