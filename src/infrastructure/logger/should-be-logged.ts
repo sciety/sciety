@@ -1,4 +1,4 @@
-import { LogLevel, LogLevelRanking } from '../../shared-ports/log-level';
+import { LogLevel, LogLevelRanking } from '../../logger/log-level';
 
 export const shouldBeLogged = (
   requestedLevel: LogLevel,

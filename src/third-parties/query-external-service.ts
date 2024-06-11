@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { LogLevel } from '../shared-ports';
+import { LogLevel } from '../logger';
 import * as DE from '../types/data-error';
 
 type Headers = Record<string, string>;

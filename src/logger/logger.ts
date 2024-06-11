@@ -1,4 +1,4 @@
-import { LogLevel } from '../shared-ports/log-level';
+import { LogLevel } from './log-level';
 
 type Payload = Record<string, unknown>;
 

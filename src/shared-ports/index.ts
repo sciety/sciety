@@ -8,7 +8,6 @@ import { ExternalQueries } from '../third-parties';
 
 export { GetAllEvents } from './get-all-events';
 export { CommitEvents } from './commit-events';
-export { LogLevel, defaultLogLevel } from './log-level';
 export { AddArticleToList } from './add-article-to-list';
 export { CreateList } from './create-list';
 export { RecordSubjectArea } from './record-subject-area';
