@@ -1,6 +1,7 @@
 import { Serializer } from './serializer';
+import { Logger } from '../../logger';
 import {
-  Logger, shouldBeLogged,
+  shouldBeLogged,
 } from '../../shared-ports';
 
 export const streamLogger = (
