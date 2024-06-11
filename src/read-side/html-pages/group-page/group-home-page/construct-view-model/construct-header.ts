@@ -38,6 +38,6 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
   followerCount: RA.size(dependencies.getFollowers(group.id)),
   groupAboutPageHref: constructGroupPagePath.about.href(group),
   groupListsPageHref: constructGroupListsPageHref(group, dependencies),
-  groupFollowersPageHref: `/groups/${group.slug}/followers`,
+  groupFollowersPageHref: constructGroupPagePath.followers.href(group),
   managementPageHref: showManagementLinkToAdmins(dependencies, user, group),
 });

@@ -37,7 +37,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    groupSubPagePathSpecification('followers'),
+    constructGroupPagePath.followers.spec,
     pageHandler(adapters, createPageFromParams(
       GFP.paramsCodec,
       GFP.constructAndRenderPage(adapters),
