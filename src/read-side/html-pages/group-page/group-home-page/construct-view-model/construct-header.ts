@@ -25,6 +25,13 @@ const checkFollowingStatus = (user: Params['user'], dependencies: Dependencies, 
   ),
 );
 
+const showManagementLinkToAdmins = (dependencies: Dependencies, user: Params['user'], group: Group) => pipe(
+  user,
+  O.map(({ id }) => id),
+  O.filter((userId) => dependencies.isUserAdminOfGroup(userId, group.id)),
+  O.map(() => constructGroupManagementPageHref(group)),
+);
+
 export const constructHeader = (dependencies: Dependencies, user: Params['user']) => (group: Group): ViewModel['header'] => ({
   group,
   isFollowing: checkFollowingStatus(user, dependencies, group.id),
@@ -32,10 +39,5 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
   groupAboutPageHref: `/groups/${group.slug}/about`,
   groupListsPageHref: constructGroupListsPageHref(group, dependencies),
   groupFollowersPageHref: `/groups/${group.slug}/followers`,
-  managementPageHref: pipe(
-    user,
-    O.map(({ id }) => id),
-    O.filter((userId) => dependencies.isUserAdminOfGroup(userId, group.id)),
-    O.map(() => constructGroupManagementPageHref(group)),
-  ),
+  managementPageHref: showManagementLinkToAdmins(dependencies, user, group),
 });
