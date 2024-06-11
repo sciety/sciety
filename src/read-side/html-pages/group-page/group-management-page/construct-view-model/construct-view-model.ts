@@ -43,6 +43,14 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
         successRedirectPath: constructGroupManagementPageHref(group),
       })),
     ),
-    listsThatCanBeFeatured: dependencies.getNonEmptyUserLists(),
+    listsThatCanBeFeatured: pipe(
+      dependencies.getNonEmptyUserLists(),
+      RA.map((list) => ({
+        listName: list.name,
+        listId: list.id,
+        forGroup: group.id,
+        successRedirectPath: constructGroupManagementPageHref(group),
+      })),
+    ),
   })),
 );

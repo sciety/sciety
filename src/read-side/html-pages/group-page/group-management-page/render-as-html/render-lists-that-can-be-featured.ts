@@ -4,21 +4,21 @@ import { pathToSubmitAddAFeaturedList } from '../../../../../http/form-submissio
 import { inputFieldNames } from '../../../../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
 import { renderListItems } from '../../../shared-components/list-items';
-import { ListThatCanBeFeatured, ViewModel } from '../view-model';
+import { ListsThatCanBeFeatured, ListThatCanBeFeatured } from '../view-model';
 
-const renderFormForAParticularList = (viewModel: ViewModel) => (list: ListThatCanBeFeatured) => toHtmlFragment(`
-  ${list.name}
+const renderFormForAParticularList = (viewModel: ListThatCanBeFeatured) => toHtmlFragment(`
+  ${viewModel.listName}
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" >
-    <input type="hidden" name="${inputFieldNames.forGroup}" value="${viewModel.groupId}">
+    <input type="hidden" name="${inputFieldNames.forGroup}" value="${viewModel.forGroup}">
     <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${viewModel.successRedirectPath}">
-    <input type="hidden" id="listId" name="${inputFieldNames.listId}" value="${list.id}">
+    <input type="hidden" id="listId" name="${inputFieldNames.listId}" value="${viewModel.listId}">
     <button type="submit">Feature</button>
   </form>
 `);
 
-export const renderFeatureAList = (viewModel: ViewModel): HtmlFragment => pipe(
-  viewModel.listsThatCanBeFeatured,
-  RA.map(renderFormForAParticularList(viewModel)),
+export const renderListsThatCanBeFeatured = (viewModel: ListsThatCanBeFeatured): HtmlFragment => pipe(
+  viewModel,
+  RA.map(renderFormForAParticularList),
   RA.match(
     () => '<p>No lists available for featuring.</p>',
     (items) => `<ul class="list-names-with-actions">${renderListItems(items)}</ul>`,

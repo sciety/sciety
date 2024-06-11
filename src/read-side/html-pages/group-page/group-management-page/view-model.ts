@@ -8,7 +8,14 @@ export type CurrentlyFeaturedLists = ReadonlyArray<{
   successRedirectPath: string,
 }>;
 
-export type ListThatCanBeFeatured = { name: string, id: ListId };
+export type ListThatCanBeFeatured = {
+  listName: string,
+  listId: ListId,
+  forGroup: GroupId,
+  successRedirectPath: string,
+};
+
+export type ListsThatCanBeFeatured = ReadonlyArray<ListThatCanBeFeatured>;
 
 export type ViewModel = {
   pageHeading: string,
@@ -16,5 +23,5 @@ export type ViewModel = {
   successRedirectPath: string,
   groupHomePageHref: string,
   currentlyFeaturedLists: CurrentlyFeaturedLists,
-  listsThatCanBeFeatured: ReadonlyArray<ListThatCanBeFeatured>,
+  listsThatCanBeFeatured: ListsThatCanBeFeatured,
 };

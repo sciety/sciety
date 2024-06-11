@@ -1,5 +1,5 @@
 import { renderCurrentlyFeaturedLists } from './render-currently-featured-lists';
-import { renderFeatureAList } from './render-feature-a-list';
+import { renderListsThatCanBeFeatured } from './render-lists-that-can-be-featured';
 import { toHtmlFragment } from '../../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../../html-page';
 import { ViewModel } from '../view-model';
@@ -21,7 +21,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     ${renderCurrentlyFeaturedLists(viewModel.currentlyFeaturedLists)}
   </section>
   <section class="group-management-section">
-    ${renderFeatureAList(viewModel)}
+    ${renderListsThatCanBeFeatured(viewModel.listsThatCanBeFeatured)}
   </section>
   `),
 });
