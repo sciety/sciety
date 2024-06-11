@@ -14,7 +14,7 @@ const constructGroupListsPageHref = (group: Group, dependencies: Dependencies) =
   calculateListCount(dependencies),
   (listCount) => (listCount === 1
     ? O.none
-    : O.some(`/groups/${group.slug}/lists`)),
+    : O.some(constructGroupPagePath.lists.href(group))),
 );
 
 const checkFollowingStatus = (user: Params['user'], dependencies: Dependencies, groupId: GroupId) => pipe(

@@ -23,4 +23,8 @@ export const constructGroupPagePath = {
     spec: groupSubPagePathSpecification('/followers'),
     href: constructGroupSubPageHref('/followers'),
   },
+  lists: {
+    spec: groupSubPagePathSpecification('/lists'),
+    href: constructGroupSubPageHref('/lists'),
+  },
 };

@@ -21,7 +21,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   );
 
   router.get(
-    groupSubPagePathSpecification('/lists'),
+    constructGroupPagePath.lists.spec,
     pageHandler(adapters, createPageFromParams(
       GLP.paramsCodec,
       GLP.constructAndRenderPage(adapters),
