@@ -17,76 +17,78 @@ describe('construct-header', () => {
     framework = createTestFramework();
   });
 
-  describe('when the group has multiple lists', () => {
+  describe('when a group', () => {
+    const addGroupCommand = arbitraryAddGroupCommand();
+
     beforeEach(async () => {
-      const addGroupCommand = arbitraryAddGroupCommand();
       await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.createList({
-        ...arbitraryCreateListCommand(),
-        ownerId: LOID.fromGroupId(addGroupCommand.groupId),
+    });
+
+    describe('has multiple lists', () => {
+      beforeEach(async () => {
+        await framework.commandHelpers.createList({
+          ...arbitraryCreateListCommand(),
+          ownerId: LOID.fromGroupId(addGroupCommand.groupId),
+        });
+        await framework.commandHelpers.createList({
+          ...arbitraryCreateListCommand(),
+          ownerId: LOID.fromGroupId(addGroupCommand.groupId),
+        });
+        result = pipe(
+          addGroupCommand.groupId,
+          framework.queries.getGroup,
+          O.getOrElseW(shouldNotBeCalled),
+          constructHeader(framework.dependenciesForViews, O.none),
+        );
       });
-      await framework.commandHelpers.createList({
-        ...arbitraryCreateListCommand(),
-        ownerId: LOID.fromGroupId(addGroupCommand.groupId),
+
+      it('displays a link to the group lists sub page', () => {
+        expect(O.isSome(result.groupListsPageHref)).toBe(true);
       });
-      result = pipe(
-        addGroupCommand.groupId,
-        framework.queries.getGroup,
-        O.getOrElseW(shouldNotBeCalled),
-        constructHeader(framework.dependenciesForViews, O.none),
-      );
     });
 
-    it('displays a link to the group lists sub page', () => {
-      expect(O.isSome(result.groupListsPageHref)).toBe(true);
-    });
-  });
+    describe('has only one list', () => {
+      beforeEach(async () => {
+        result = pipe(
+          addGroupCommand.groupId,
+          framework.queries.getGroup,
+          O.getOrElseW(shouldNotBeCalled),
+          constructHeader(framework.dependenciesForViews, O.none),
+        );
+      });
 
-  describe('when the group has only one list', () => {
-    beforeEach(async () => {
-      const addGroupCommand = arbitraryAddGroupCommand();
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      result = pipe(
-        addGroupCommand.groupId,
-        framework.queries.getGroup,
-        O.getOrElseW(shouldNotBeCalled),
-        constructHeader(framework.dependenciesForViews, O.none),
-      );
+      it('does not display a link to the group lists sub page', () => {
+        expect(O.isNone(result.groupListsPageHref)).toBe(true);
+      });
     });
 
-    it('does not display a link to the group lists sub page', () => {
-      expect(O.isNone(result.groupListsPageHref)).toBe(true);
-    });
-  });
+    describe('has the current user as an admin', () => {
+      beforeEach(async () => {
+        const createUserCommand = arbitraryCreateUserAccountCommand();
+        const assignUserAdminCommand = {
+          groupId: addGroupCommand.groupId,
+          userId: createUserCommand.userId,
+        };
 
-  describe('when the user is an admin', () => {
-    beforeEach(async () => {
-      const addGroupCommand = arbitraryAddGroupCommand();
-      const createUserCommand = arbitraryCreateUserAccountCommand();
-      const assignUserAdminCommand = {
-        groupId: addGroupCommand.groupId,
-        userId: createUserCommand.userId,
-      };
+        await framework.commandHelpers.createUserAccount(createUserCommand);
+        await framework.commandHelpers.assignUserAsGroupAdmin(assignUserAdminCommand);
+        result = pipe(
+          addGroupCommand.groupId,
+          framework.queries.getGroup,
+          O.getOrElseW(shouldNotBeCalled),
+          constructHeader(framework.dependenciesForViews, O.some(
+            { handle: createUserCommand.handle, id: createUserCommand.userId },
+          )),
+        );
+      });
 
-      await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.createUserAccount(createUserCommand);
-      await framework.commandHelpers.assignUserAsGroupAdmin(assignUserAdminCommand);
-      result = pipe(
-        addGroupCommand.groupId,
-        framework.queries.getGroup,
-        O.getOrElseW(shouldNotBeCalled),
-        constructHeader(framework.dependenciesForViews, O.some(
-          { handle: createUserCommand.handle, id: createUserCommand.userId },
-        )),
-      );
+      it('displays a link to the management page', () => {
+        expect(O.isSome(result.managementPageHref)).toBe(true);
+      });
     });
 
-    it('displays a link to the management page', () => {
-      expect(O.isSome(result.managementPageHref)).toBe(true);
+    describe('has no admin', () => {
+      it.todo('does not display a link to the management page');
     });
-  });
-
-  describe('when the user is not an admin', () => {
-    it.todo('does not display a link to the management page');
   });
 });
