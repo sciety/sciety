@@ -32,5 +32,10 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
   groupAboutPageHref: `/groups/${group.slug}/about`,
   groupListsPageHref: constructGroupListsPageHref(group, dependencies),
   groupFollowersPageHref: `/groups/${group.slug}/followers`,
-  managementPageHref: O.some(constructGroupManagementPageHref(group)),
+  managementPageHref: pipe(
+    user,
+    O.map(({ id }) => id),
+    O.filter((userId) => dependencies.isUserAdminOfGroup(userId, group.id)),
+    O.map(() => constructGroupManagementPageHref(group)),
+  ),
 });

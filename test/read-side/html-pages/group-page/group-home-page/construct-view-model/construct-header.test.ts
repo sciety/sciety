@@ -108,7 +108,7 @@ describe('construct-header', () => {
         );
       });
 
-      it.failing('does not display a link to the management page', () => {
+      it('does not display a link to the management page', () => {
         expect(O.isNone(result.managementPageHref)).toBe(true);
       });
     });
