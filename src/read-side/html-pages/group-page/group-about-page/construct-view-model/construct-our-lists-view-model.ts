@@ -5,6 +5,7 @@ import { Dependencies } from './dependencies';
 import { List } from '../../../../../read-models/lists';
 import { Group } from '../../../../../types/group';
 import * as LOID from '../../../../../types/list-owner-id';
+import { constructGroupPagePath } from '../../../../paths/construct-group-page-href';
 import { sortByDefaultListOrdering } from '../../../sort-by-default-list-ordering';
 import { ViewModel } from '../view-model';
 
@@ -13,7 +14,7 @@ const maxLists = 3;
 const truncatedView = <T>(lists: ReadonlyArray<T>, groupSlug: string) => (
   {
     lists: RA.takeLeft(maxLists)(lists),
-    allListsUrl: O.some(`/groups/${groupSlug}/lists`),
+    allListsUrl: O.some(constructGroupPagePath.lists.href({ slug: groupSlug })),
   }
 );
 

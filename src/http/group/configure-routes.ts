@@ -48,7 +48,7 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
     groupSubPagePathSpecification('/feed'),
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
-      context.redirect(`/groups/${context.params.slug}`);
+      context.redirect(constructGroupPagePath.home.href({ slug: context.params.slug }));
 
       await next();
     },
