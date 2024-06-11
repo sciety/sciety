@@ -31,8 +31,6 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
   E.chainW((group) => checkUserIsAdminOfGroup(dependencies, userId, group)),
   E.map((group) => ({
     pageHeading: `Group management details for ${group.name}`,
-    groupId: group.id,
-    successRedirectPath: constructGroupManagementPageHref(group),
     groupHomePageHref: constructGroupPageHref(group),
     currentlyFeaturedLists: pipe(
       dependencies.selectAllListsPromotedByGroup(group.id),
