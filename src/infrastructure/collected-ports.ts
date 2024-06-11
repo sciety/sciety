@@ -1,22 +1,23 @@
 import { Logger } from '../logger';
 import { Queries } from '../read-models';
-import { AddArticleToList } from '../shared-ports/add-article-to-list';
 import { CommitEvents } from '../shared-ports/commit-events';
 import { GetAllEvents } from '../shared-ports/get-all-events';
-import { RecordSubjectArea } from '../shared-ports/record-subject-area';
 import { ExternalQueries } from '../third-parties';
 import { CommandHandler } from '../types/command-handler';
-import { CreateListCommand } from '../write-side/commands';
+import { AddArticleToListCommand, CreateListCommand, RecordSubjectAreaCommand } from '../write-side/commands';
 
 type EventStore = {
   commitEvents: CommitEvents,
   getAllEvents: GetAllEvents,
 };
 
+/**
+ * @deprecated sagas should use DependenciesForCommands and executeResourceAction instead
+ */
 type CommandHandlersForSagas = {
-  addArticleToList: AddArticleToList,
+  addArticleToList: CommandHandler<AddArticleToListCommand>,
   createList: CommandHandler<CreateListCommand>,
-  recordSubjectArea: RecordSubjectArea,
+  recordSubjectArea: CommandHandler<RecordSubjectAreaCommand>,
 };
 
 export type CollectedPorts = Queries
