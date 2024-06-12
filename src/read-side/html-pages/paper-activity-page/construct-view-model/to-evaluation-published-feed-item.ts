@@ -10,6 +10,8 @@ import { constructGroupPagePath } from '../../../paths';
 import { detectLanguage } from '../../shared-components/lang-attribute';
 import { EvaluationPublishedFeedItem } from '../view-model';
 
+const constructGroupDetails = () => O.none;
+
 export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
   evaluation: RecordedEvaluation,
 ): T.Task<EvaluationPublishedFeedItem> => pipe(
@@ -59,6 +61,7 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
     sourceHref,
     publishedAt: evaluation.publishedAt,
     ...groupDetails,
+    groupDetails: constructGroupDetails(),
     digest: O.map(sanitise)(evaluationDigest.digest),
     digestLanguageCode: evaluationDigest.digestLanguageCode,
   })),

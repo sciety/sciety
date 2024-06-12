@@ -13,6 +13,12 @@ import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
 import { LanguageCode } from '../shared-components/lang-attribute';
 import { PaperActivitySummaryCardViewModel } from '../shared-components/paper-activity-summary-card';
 
+type GroupDetails = {
+  groupName: string,
+  groupHref: string,
+  groupAvatarSrc: string,
+};
+
 export type EvaluationPublishedFeedItem = {
   type: 'evaluation-published',
   id: EL.EvaluationLocator,
@@ -21,6 +27,7 @@ export type EvaluationPublishedFeedItem = {
   groupName: string,
   groupHref: O.Option<string>,
   groupAvatarSrc: string,
+  groupDetails: O.Option<GroupDetails>,
   digest: O.Option<SanitisedHtmlFragment>,
   digestLanguageCode: O.Option<LanguageCode>,
 };

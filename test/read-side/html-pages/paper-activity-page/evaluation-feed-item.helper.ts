@@ -17,6 +17,11 @@ export const arbitrary = (): EvaluationPublishedFeedItem => ({
   groupHref: O.some(arbitraryWord()),
   groupName: 'group 1',
   groupAvatarSrc: '/avatar',
+  groupDetails: O.some({
+    groupHref: arbitraryWord(),
+    groupName: 'group 1',
+    groupAvatarSrc: '/avatar',
+  }),
   digest: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
   digestLanguageCode: O.none,
 });
