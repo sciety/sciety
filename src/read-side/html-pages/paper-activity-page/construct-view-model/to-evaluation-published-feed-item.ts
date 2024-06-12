@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
 import { sanitise } from '../../../../types/sanitised-html-fragment';
+import { constructGroupPagePath } from '../../../paths';
 import { detectLanguage } from '../../shared-components/lang-attribute';
 import { EvaluationPublishedFeedItem } from '../view-model';
 
@@ -23,7 +24,7 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
         }),
         (group) => ({
           groupName: group.name,
-          groupHref: `/groups/${group.slug}`,
+          groupHref: constructGroupPagePath.home.href(group),
           groupAvatarSrc: group.avatarPath,
         }),
       ),
