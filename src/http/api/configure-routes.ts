@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { createConfigurePostMiddleware } from './create-configure-post-middleware';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
+import { DependenciesForCommands } from '../../write-side';
 import {
   addArticleToListCommandCodec,
   addGroupCommandCodec,
@@ -19,7 +20,6 @@ import {
   updateUserDetailsCommandCodec,
 } from '../../write-side/commands';
 import { createUserAccountCommandCodec } from '../../write-side/commands/create-user-account';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import * as evaluationResource from '../../write-side/resources/evaluation';
 import * as groupResource from '../../write-side/resources/group';
 import * as groupAuthorisation from '../../write-side/resources/group-authorisation';

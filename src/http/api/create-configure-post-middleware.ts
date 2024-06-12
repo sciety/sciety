@@ -6,8 +6,8 @@ import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
 import { GenericCommand } from '../../types/command-handler';
+import { DependenciesForCommands } from '../../write-side';
 import { executeCommand } from '../../write-side/commands';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { ResourceAction } from '../../write-side/resources/resource-action';
 
 const executeAndRespond = <C extends GenericCommand>(

@@ -5,8 +5,8 @@ import { Middleware } from 'koa';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
+import { DependenciesForCommands } from '../../write-side';
 import { CreateListCommand } from '../../write-side/commands';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as list from '../../write-side/resources/list';
 

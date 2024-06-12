@@ -7,8 +7,8 @@ import { decodeFormSubmission } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Logger } from '../../logger';
 import { GroupIdFromStringCodec } from '../../types/group-id';
+import { DependenciesForCommands } from '../../write-side';
 import { unfollowCommandHandler } from '../../write-side/command-handlers';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 
 type Dependencies = DependenciesForCommands & EnsureUserIsLoggedInDependencies & {
   logger: Logger,

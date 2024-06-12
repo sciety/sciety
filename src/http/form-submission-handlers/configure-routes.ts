@@ -19,7 +19,7 @@ import {
 } from './submit-paths';
 import { unfollowHandler } from './unfollow-handler';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { DependenciesForCommands } from '../../write-side';
 import { requireLoggedInUser } from '../require-logged-in-user';
 
 type Dependencies = DependenciesForCommands & DependenciesForViews;

@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { DependenciesForCommands } from '../../write-side';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as list from '../../write-side/resources/list';
 

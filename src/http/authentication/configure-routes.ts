@@ -15,7 +15,7 @@ import {
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { createPageFromParams } from '../../read-side/html-pages/create-page-from-params';
 import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../read-side/html-pages/create-user-account-form-page';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
+import { DependenciesForCommands } from '../../write-side';
 import { saveAuthenticationDestination } from '../authentication-destination';
 import { catchErrors } from '../catch-errors';
 import { createUserAccount } from '../form-submission-handlers/create-user-account';

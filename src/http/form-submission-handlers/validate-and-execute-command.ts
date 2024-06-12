@@ -10,8 +10,8 @@ import { ParameterizedContext } from 'koa';
 import { CommandResult } from '../../types/command-result';
 import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 import { userHandleCodec } from '../../types/user-handle';
+import { DependenciesForCommands } from '../../write-side';
 import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';

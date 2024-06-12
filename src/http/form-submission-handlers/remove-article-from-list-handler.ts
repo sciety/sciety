@@ -6,9 +6,9 @@ import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
 import { Logger } from '../../logger';
+import { DependenciesForCommands } from '../../write-side';
 import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
 type Dependencies = DependenciesForCommands & CheckUserOwnsListDependencies & {

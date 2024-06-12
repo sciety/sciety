@@ -48,7 +48,7 @@ import { statusGroups } from '../read-side/non-html-views/status-groups';
 import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import * as EDOI from '../types/expression-doi';
-import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
+import { DependenciesForCommands } from '../write-side';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 

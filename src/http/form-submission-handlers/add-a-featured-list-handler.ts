@@ -10,8 +10,8 @@ import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies 
 import { Queries } from '../../read-models';
 import { inputFieldNames } from '../../standards/input-field-names';
 import { UserId } from '../../types/user-id';
+import { DependenciesForCommands } from '../../write-side';
 import { PromoteListCommand, promoteListCommandCodec } from '../../write-side/commands';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listPromotion from '../../write-side/resources/list-promotion';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';

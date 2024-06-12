@@ -9,8 +9,8 @@ import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies 
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Queries } from '../../read-models';
 import { UserId } from '../../types/user-id';
+import { DependenciesForCommands } from '../../write-side';
 import { RemoveListPromotionCommand, removeListPromotionCommandCodec } from '../../write-side/commands';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listPromotion from '../../write-side/resources/list-promotion';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
