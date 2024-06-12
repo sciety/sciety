@@ -13,7 +13,7 @@ const avatar = (groupDetails: EvaluationPublishedFeedItem['groupDetails']) => pi
   groupDetails,
   O.match(
     () => '/static/images/sciety-logo.jpg',
-    (details) => details.groupAvatarSrc,
+    (details) => details.avatarSrc,
   ),
   (src) => `
     <img class="activity-feed__item__avatar" src="${src}" alt="">
@@ -22,8 +22,8 @@ const avatar = (groupDetails: EvaluationPublishedFeedItem['groupDetails']) => pi
 );
 
 const wrapInALinkToTheGroupHomePage = (details: GroupDetails) => `
-<a href="${details.groupHref}">
-  ${htmlEscape(details.groupName)}
+<a href="${details.href}">
+  ${htmlEscape(details.name)}
 </a>
 `;
 

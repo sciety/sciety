@@ -15,9 +15,9 @@ const constructGroupDetails = (dependencies: Dependencies, groupId: GroupId) => 
   groupId,
   dependencies.getGroup,
   O.map((group) => ({
-    groupName: group.name,
-    groupHref: constructGroupPagePath.home.href(group),
-    groupAvatarSrc: group.avatarPath,
+    name: group.name,
+    href: constructGroupPagePath.home.href(group),
+    avatarSrc: group.avatarPath,
   })),
 );
 

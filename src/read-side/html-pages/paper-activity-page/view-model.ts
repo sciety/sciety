@@ -14,9 +14,9 @@ import { LanguageCode } from '../shared-components/lang-attribute';
 import { PaperActivitySummaryCardViewModel } from '../shared-components/paper-activity-summary-card';
 
 export type GroupDetails = {
-  groupName: string,
-  groupHref: string,
-  groupAvatarSrc: string,
+  name: string,
+  href: string,
+  avatarSrc: string,
 };
 
 export type EvaluationPublishedFeedItem = {

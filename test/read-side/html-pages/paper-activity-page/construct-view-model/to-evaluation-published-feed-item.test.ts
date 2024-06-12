@@ -118,15 +118,15 @@ describe('to-evaluation-published-feed-item', () => {
     });
 
     it('links to the group home page', () => {
-      expect(result.groupHref).toStrictEqual(constructGroupPagePath.home.href(addGroupCommand));
+      expect(result.href).toStrictEqual(constructGroupPagePath.home.href(addGroupCommand));
     });
 
     it('displays the group name', () => {
-      expect(result.groupName).toStrictEqual(addGroupCommand.name);
+      expect(result.name).toStrictEqual(addGroupCommand.name);
     });
 
     it('displays the group avatar', () => {
-      expect(result.groupAvatarSrc).toStrictEqual(addGroupCommand.avatarPath);
+      expect(result.avatarSrc).toStrictEqual(addGroupCommand.avatarPath);
     });
   });
 

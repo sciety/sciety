@@ -15,9 +15,9 @@ export const arbitrary = (): EvaluationPublishedFeedItem => ({
   sourceHref: O.some(arbitraryUrl()),
   publishedAt: new Date(),
   groupDetails: O.some({
-    groupHref: arbitraryWord(),
-    groupName: 'group 1',
-    groupAvatarSrc: '/avatar',
+    href: arbitraryWord(),
+    name: 'group 1',
+    avatarSrc: '/avatar',
   }),
   digest: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
   digestLanguageCode: O.none,
