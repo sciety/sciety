@@ -1,33 +1,25 @@
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
 import { Group } from '../../types/group';
 
 const constructGroupSubPageHref = (subPagePathSegment: string) => (group: Pick<Group, 'slug'>): string => `/groups/${group.slug}${subPagePathSegment}`;
 
 const groupSubPagePathSpecification = (subPagePathSegment: string): string => `/groups/:slug${subPagePathSegment}`;
 
-export const constructGroupPagePath = {
-  home: {
-    spec: groupSubPagePathSpecification(''),
-    href: constructGroupSubPageHref(''),
-  },
-  about: {
-    spec: groupSubPagePathSpecification('/about'),
-    href: constructGroupSubPageHref('/about'),
-  },
-  management: {
-    spec: groupSubPagePathSpecification('/management'),
-    href: constructGroupSubPageHref('/management'),
-  },
-  followers: {
-    spec: groupSubPagePathSpecification('/followers'),
-    href: constructGroupSubPageHref('/followers'),
-  },
-  lists: {
-    spec: groupSubPagePathSpecification('/lists'),
-    href: constructGroupSubPageHref('/lists'),
-  },
+const pageSuffixes: Record<string, string> = {
+  home: '',
+  about: '/about',
+  management: '/management',
+  followers: '/followers',
+  lists: '/lists',
   /** @deprecated */
-  feed: {
-    spec: groupSubPagePathSpecification('/feed'),
-    href: constructGroupSubPageHref('/feed'),
-  },
+  feed: '/feed',
 };
+
+export const constructGroupPagePath = pipe(
+  pageSuffixes,
+  R.map((suffix) => ({
+    spec: groupSubPagePathSpecification(suffix),
+    href: constructGroupSubPageHref(suffix),
+  })),
+);
