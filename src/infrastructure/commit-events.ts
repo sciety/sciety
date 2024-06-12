@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { DomainEvent } from '../domain-events';
-import { CommitEvents } from '../event-store/commit-events';
+import { CommitEvents } from '../event-store';
 import { Logger } from '../logger';
 import { CommandResult } from '../types/command-result';
 import { ErrorMessage } from '../types/error-message';

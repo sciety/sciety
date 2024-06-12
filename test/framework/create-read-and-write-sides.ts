@@ -1,12 +1,9 @@
 import { createInMemoryEventStore } from './create-in-memory-event-store';
-import { CommitEvents } from '../../src/event-store/commit-events';
-import { GetAllEvents } from '../../src/event-store/get-all-events';
+import { EventStore } from '../../src/event-store';
 import { dispatcher, Queries } from '../../src/read-models';
 import { dummyLogger } from '../dummy-logger';
 
-export type ReadAndWriteSides = {
-  commitEvents: CommitEvents,
-  getAllEvents: GetAllEvents,
+export type ReadAndWriteSides = EventStore & {
   queries: Queries,
 };
 

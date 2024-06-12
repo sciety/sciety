@@ -1,4 +1,7 @@
-import { GetAllEvents } from '../../../../event-store/get-all-events';
+/**
+ * @deprecated html-page dependencies should use Queries rather than GetAllEvents
+ */
+import { GetAllEvents } from '../../../../event-store';
 import { Logger } from '../../../../logger';
 import { Queries } from '../../../../read-models';
 

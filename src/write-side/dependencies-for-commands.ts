@@ -1,9 +1,6 @@
-import { CommitEvents } from '../event-store/commit-events';
-import { GetAllEvents } from '../event-store/get-all-events';
+import { EventStore } from '../event-store';
 import { Logger } from '../logger';
 
-export type DependenciesForCommands = {
-  getAllEvents: GetAllEvents,
-  commitEvents: CommitEvents,
+export type DependenciesForCommands = EventStore & {
   logger: Logger,
 };
