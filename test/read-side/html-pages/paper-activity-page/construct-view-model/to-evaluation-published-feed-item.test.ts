@@ -3,11 +3,14 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { toEvaluationPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/to-evaluation-published-feed-item';
-import { EvaluationPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
+import { EvaluationPublishedFeedItem, GroupDetails } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
+import { constructGroupPagePath } from '../../../../../src/read-side/paths/construct-group-page-path';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitrarySanitisedHtmlFragment, arbitraryUrl } from '../../../../helpers';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryDataError } from '../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../types/recorded-evaluation.helper';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 
 describe('to-evaluation-published-feed-item', () => {
   let framework: TestFramework;
@@ -90,8 +93,23 @@ describe('to-evaluation-published-feed-item', () => {
     });
   });
 
-  describe('when the group that has published the evaluation has joined Sciety', () => {
-    it.todo('links to the group home page');
+  describe.skip('when the group that has published the evaluation has joined Sciety', () => {
+    const addGroupCommand = arbitraryAddGroupCommand();
+    let result: GroupDetails;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      result = await pipe(
+        arbitraryRecordedEvaluation(),
+        toEvaluationPublishedFeedItem(framework.dependenciesForViews),
+        T.map((feedItem) => feedItem.groupDetails),
+        T.map(O.getOrElseW(shouldNotBeCalled)),
+      )();
+    });
+
+    it('links to the group home page', () => {
+      expect(result.groupHref).toStrictEqual(constructGroupPagePath.home.href(addGroupCommand));
+    });
 
     it.todo('displays the group name');
 

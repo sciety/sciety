@@ -13,7 +13,7 @@ import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
 import { LanguageCode } from '../shared-components/lang-attribute';
 import { PaperActivitySummaryCardViewModel } from '../shared-components/paper-activity-summary-card';
 
-type GroupDetails = {
+export type GroupDetails = {
   groupName: string,
   groupHref: string,
   groupAvatarSrc: string,
