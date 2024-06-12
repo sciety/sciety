@@ -19,7 +19,7 @@ export type EvaluationPublishedFeedItem = {
   sourceHref: O.Option<URL>,
   publishedAt: Date,
   groupName: string,
-  groupHref: string,
+  groupHref: O.Option<string>,
   groupAvatarSrc: string,
   digest: O.Option<SanitisedHtmlFragment>,
   digestLanguageCode: O.Option<LanguageCode>,

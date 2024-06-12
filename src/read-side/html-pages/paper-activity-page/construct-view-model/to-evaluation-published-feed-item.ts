@@ -19,12 +19,12 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
       O.match(
         () => ({
           groupName: 'A group',
-          groupHref: `/groups/${evaluation.groupId}`,
+          groupHref: O.none,
           groupAvatarSrc: '/static/images/sciety-logo.jpg',
         }),
         (group) => ({
           groupName: group.name,
-          groupHref: constructGroupPagePath.home.href(group),
+          groupHref: O.some(constructGroupPagePath.home.href(group)),
           groupAvatarSrc: group.avatarPath,
         }),
       ),

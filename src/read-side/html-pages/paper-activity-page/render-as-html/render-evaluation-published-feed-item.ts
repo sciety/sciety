@@ -9,23 +9,35 @@ import { templateDate } from '../../shared-components/date';
 import { renderLangAttribute } from '../../shared-components/lang-attribute';
 import { EvaluationPublishedFeedItem } from '../view-model';
 
-const avatar = (review: EvaluationPublishedFeedItem) => toHtmlFragment(`
-  <img class="activity-feed__item__avatar" src="${review.groupAvatarSrc}" alt="">
+const avatar = (feedItem: EvaluationPublishedFeedItem) => toHtmlFragment(`
+  <img class="activity-feed__item__avatar" src="${feedItem.groupAvatarSrc}" alt="">
 `);
 
-const eventMetadata = (review: EvaluationPublishedFeedItem) => toHtmlFragment(`
+const wrapInALinkToTheGroupHomePage = (groupName: string) => (groupHref: string) => `
+<a href="${groupHref}">
+  ${groupName}
+</a>
+`;
+
+const foo = (feedItem: EvaluationPublishedFeedItem) => pipe(
+  feedItem.groupHref,
+  O.match(
+    () => htmlEscape(feedItem.groupName),
+    wrapInALinkToTheGroupHomePage(htmlEscape(feedItem.groupName)),
+  ),
+);
+
+const eventMetadata = (feedItem: EvaluationPublishedFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
-      <a href="${review.groupHref}">
-        ${htmlEscape(review.groupName)}
-      </a>
+      ${foo(feedItem)}
     </div>
-    ${templateDate(review.publishedAt, 'activity-feed__item__date')}
+    ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
   </div>
 `);
 
 const appendSourceLink = flow(
-  (review: EvaluationPublishedFeedItem) => review.sourceHref,
+  (feedItem: EvaluationPublishedFeedItem) => feedItem.sourceHref,
   O.map(flow(
     (source) => `
       <div data-read-original-source>
@@ -38,15 +50,15 @@ const appendSourceLink = flow(
   )),
 );
 
-const renderWhenDigestAvailable = (teaserChars: number, review: EvaluationPublishedFeedItem, digest: string) => {
+const renderWhenDigestAvailable = (teaserChars: number, feedItem: EvaluationPublishedFeedItem, digest: string) => {
   const teaserText = clip(digest, teaserChars, { html: true });
   const digestAndSourceLink = `
-    <div${renderLangAttribute(review.digestLanguageCode)}>${digest}</div>
-    ${pipe(review, appendSourceLink, O.getOrElse(constant('')))}
+    <div${renderLangAttribute(feedItem.digestLanguageCode)}>${digest}</div>
+    ${pipe(feedItem, appendSourceLink, O.getOrElse(constant('')))}
   `;
   let feedItemBody = `
     <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
-      <div class="hidden" data-teaser${renderLangAttribute(review.digestLanguageCode)}>
+      <div class="hidden" data-teaser${renderLangAttribute(feedItem.digestLanguageCode)}>
         ${teaserText}
       </div>
       <div data-full-text>
@@ -65,18 +77,18 @@ const renderWhenDigestAvailable = (teaserChars: number, review: EvaluationPublis
     `;
   }
   return `
-    <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(review.id)}">
+    <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
       <header class="activity-feed__item__header">
-        ${avatar(review)}
-        ${eventMetadata(review)}
+        ${avatar(feedItem)}
+        ${eventMetadata(feedItem)}
       </header>
       ${feedItemBody}
     </article>
   `;
 };
 
-const renderSourceLinkWhenDigestMissing = (review: EvaluationPublishedFeedItem) => pipe(
-  review,
+const renderSourceLinkWhenDigestMissing = (feedItem: EvaluationPublishedFeedItem) => pipe(
+  feedItem,
   appendSourceLink,
   O.getOrElse(constant(missingDigestAndSourceLink)),
 );
