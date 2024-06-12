@@ -99,6 +99,18 @@ describe('to-evaluation-published-feed-item', () => {
   });
 
   describe('when the group that has published the evaluation has not joined Sciety', () => {
-    it.todo('does not display any group details');
+    let result: EvaluationPublishedFeedItem['groupDetails'];
+
+    beforeEach(async () => {
+      result = await pipe(
+        arbitraryRecordedEvaluation(),
+        toEvaluationPublishedFeedItem(framework.dependenciesForViews),
+        T.map((feedItem) => feedItem.groupDetails),
+      )();
+    });
+
+    it('does not display any group details', () => {
+      expect(result).toStrictEqual(O.none);
+    });
   });
 });
