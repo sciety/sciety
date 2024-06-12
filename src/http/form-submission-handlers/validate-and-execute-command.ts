@@ -7,7 +7,6 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
-import { Logger } from '../../logger';
 import { CommandResult } from '../../types/command-result';
 import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 import { userHandleCodec } from '../../types/user-handle';
@@ -17,9 +16,7 @@ import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
-export type Dependencies = DependenciesForCommands & {
-  logger: Logger,
-};
+export type Dependencies = DependenciesForCommands;
 
 const createUserAccountFormCodec = t.type({
   fullName: sanitisedUserInputCodec({ maxInputLength: 30 }),

@@ -12,15 +12,18 @@ import {
   completeAuthenticationJourney,
   stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0, Config as LoginMiddlewaresConfig,
 } from './login-middlewares';
-import { CollectedPorts } from '../../infrastructure';
+import { Queries } from '../../read-models';
 import { createPageFromParams } from '../../read-side/html-pages/create-page-from-params';
 import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../read-side/html-pages/create-user-account-form-page';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { saveAuthenticationDestination } from '../authentication-destination';
 import { catchErrors } from '../catch-errors';
 import { createUserAccount } from '../form-submission-handlers/create-user-account';
 import { pageHandler } from '../page-handler';
 
 export type Config = LoginMiddlewaresConfig;
+
+type Dependencies = Queries & DependenciesForCommands;
 
 const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';
@@ -34,14 +37,14 @@ const retrieveApplicationHostname = (config: Config) => pipe(
 
 const configureAuth0Routes = (
   router: Router,
-  adapters: CollectedPorts,
+  dependencies: Dependencies,
   shouldUseStubAdapters: boolean,
   config: Config,
 ) => {
   router.get(
     '/create-account-form',
     pageHandler(
-      adapters,
+      dependencies,
       createPageFromParams(createUserAccountFormPageParamsCodec, createUserAccountFormPage),
       createUserAccountFormPageLayout,
     ),
@@ -50,30 +53,30 @@ const configureAuth0Routes = (
   router.post(
     '/forms/create-user-account',
     bodyParser({ enableTypes: ['form'] }),
-    createUserAccount(adapters),
+    createUserAccount(dependencies),
   );
 
   router.get(
     signUpRoute,
-    saveAuthenticationDestination(adapters.logger, retrieveApplicationHostname(config)),
+    saveAuthenticationDestination(dependencies.logger, retrieveApplicationHostname(config)),
     shouldUseStubAdapters ? stubSignUpAuth0 : signUpAuth0,
   );
 
   router.get(
     logInRoute,
-    saveAuthenticationDestination(adapters.logger, retrieveApplicationHostname(config)),
+    saveAuthenticationDestination(dependencies.logger, retrieveApplicationHostname(config)),
     shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
   );
 
   router.get(
     '/auth0/callback',
     catchErrors(
-      adapters,
+      dependencies,
       'Detected Auth0 callback error',
       'Something went wrong, please try again.',
     ),
     shouldUseStubAdapters ? stubLogInAuth0 : logInAuth0,
-    completeAuthenticationJourney(adapters),
+    completeAuthenticationJourney(dependencies),
   );
 
   router.get(logOutRoute, shouldUseStubAdapters ? stubLogOutAuth0 : logOutAuth0(config));
@@ -116,8 +119,8 @@ const configureAuth0Routes = (
   }
 };
 
-export const configureRoutes = (router: Router, adapters: CollectedPorts, config: Config): void => {
+export const configureRoutes = (router: Router, dependencies: Dependencies, config: Config): void => {
   const shouldUseStubAdapters = process.env.USE_STUB_LOGIN === 'true';
 
-  configureAuth0Routes(router, adapters, shouldUseStubAdapters, config);
+  configureAuth0Routes(router, dependencies, shouldUseStubAdapters, config);
 };
