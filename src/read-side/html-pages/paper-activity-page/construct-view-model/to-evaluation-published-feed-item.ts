@@ -25,22 +25,6 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
   evaluation: RecordedEvaluation,
 ): T.Task<EvaluationPublishedFeedItem> => pipe(
   {
-    groupDetails: pipe(
-      dependencies.getGroup(evaluation.groupId),
-      O.match(
-        () => ({
-          groupName: 'A group',
-          groupHref: O.none,
-          groupAvatarSrc: '/static/images/sciety-logo.jpg',
-        }),
-        (group) => ({
-          groupName: group.name,
-          groupHref: O.some(constructGroupPagePath.home.href(group)),
-          groupAvatarSrc: group.avatarPath,
-        }),
-      ),
-      T.of,
-    ),
     sourceHref: pipe(
       evaluation.evaluationLocator,
       dependencies.fetchEvaluationHumanReadableOriginalUrl,
@@ -62,14 +46,11 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
     ),
   },
   sequenceS(T.ApplyPar),
-  T.map(({
-    groupDetails, evaluationDigest, sourceHref,
-  }) => ({
+  T.map(({ evaluationDigest, sourceHref }) => ({
     type: 'evaluation-published' as const,
     id: evaluation.evaluationLocator,
     sourceHref,
     publishedAt: evaluation.publishedAt,
-    ...groupDetails,
     groupDetails: constructGroupDetails(dependencies, evaluation.groupId),
     digest: O.map(sanitise)(evaluationDigest.digest),
     digestLanguageCode: evaluationDigest.digestLanguageCode,
