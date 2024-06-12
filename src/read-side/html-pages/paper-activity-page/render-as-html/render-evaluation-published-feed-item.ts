@@ -9,9 +9,17 @@ import { templateDate } from '../../shared-components/date';
 import { renderLangAttribute } from '../../shared-components/lang-attribute';
 import { EvaluationPublishedFeedItem } from '../view-model';
 
-const avatar = (feedItem: EvaluationPublishedFeedItem) => toHtmlFragment(`
-  <img class="activity-feed__item__avatar" src="${feedItem.groupAvatarSrc}" alt="">
-`);
+const avatar = (groupDetails: EvaluationPublishedFeedItem['groupDetails']) => pipe(
+  groupDetails,
+  O.match(
+    () => '/static/images/sciety-logo.jpg',
+    (details) => details.groupAvatarSrc,
+  ),
+  (src) => `
+    <img class="activity-feed__item__avatar" src="${src}" alt="">
+  `,
+  toHtmlFragment,
+);
 
 const wrapInALinkToTheGroupHomePage = (groupName: string) => (groupHref: string) => `
 <a href="${groupHref}">
@@ -79,7 +87,7 @@ const renderWhenDigestAvailable = (teaserChars: number, feedItem: EvaluationPubl
   return `
     <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
       <header class="activity-feed__item__header">
-        ${avatar(feedItem)}
+        ${avatar(feedItem.groupDetails)}
         ${eventMetadata(feedItem)}
       </header>
       ${feedItemBody}
@@ -102,7 +110,7 @@ export const renderEvaluationPublishedFeedItem = (
     () => `
       <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
         <header class="activity-feed__item__header">
-          ${avatar(feedItem)}
+          ${avatar(feedItem.groupDetails)}
           ${eventMetadata(feedItem)}
         </header>
         <div class="activity-feed__item__body">
