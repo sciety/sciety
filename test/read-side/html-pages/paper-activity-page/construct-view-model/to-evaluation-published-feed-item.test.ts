@@ -5,12 +5,14 @@ import { pipe } from 'fp-ts/function';
 import { toEvaluationPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/to-evaluation-published-feed-item';
 import { EvaluationPublishedFeedItem, GroupDetails } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
 import { constructGroupPagePath } from '../../../../../src/read-side/paths/construct-group-page-path';
+import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands/record-evaluation-publication';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitrarySanitisedHtmlFragment, arbitraryUrl } from '../../../../helpers';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryDataError } from '../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../types/recorded-evaluation.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('to-evaluation-published-feed-item', () => {
   let framework: TestFramework;
@@ -93,14 +95,22 @@ describe('to-evaluation-published-feed-item', () => {
     });
   });
 
-  describe.skip('when the group that has published the evaluation has joined Sciety', () => {
+  describe('when the group that has published the evaluation has joined Sciety', () => {
     const addGroupCommand = arbitraryAddGroupCommand();
+    const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: addGroupCommand.groupId,
+    };
     let result: GroupDetails;
 
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
+      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
+      const recordedEvaluation = framework.queries.getEvaluationsOfMultipleExpressions([
+        recordEvaluationPublicationCommand.expressionDoi,
+      ])[0];
       result = await pipe(
-        arbitraryRecordedEvaluation(),
+        recordedEvaluation,
         toEvaluationPublishedFeedItem(framework.dependenciesForViews),
         T.map((feedItem) => feedItem.groupDetails),
         T.map(O.getOrElseW(shouldNotBeCalled)),

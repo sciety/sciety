@@ -4,13 +4,22 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
+import { GroupId } from '../../../../types/group-id';
 import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
 import { sanitise } from '../../../../types/sanitised-html-fragment';
 import { constructGroupPagePath } from '../../../paths';
 import { detectLanguage } from '../../shared-components/lang-attribute';
 import { EvaluationPublishedFeedItem } from '../view-model';
 
-const constructGroupDetails = () => O.none;
+const constructGroupDetails = (dependencies: Dependencies, groupId: GroupId) => pipe(
+  groupId,
+  dependencies.getGroup,
+  O.map((group) => ({
+    groupName: group.name,
+    groupHref: constructGroupPagePath.home.href(group),
+    groupAvatarSrc: group.avatarPath,
+  })),
+);
 
 export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
   evaluation: RecordedEvaluation,
@@ -61,7 +70,7 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
     sourceHref,
     publishedAt: evaluation.publishedAt,
     ...groupDetails,
-    groupDetails: constructGroupDetails(),
+    groupDetails: constructGroupDetails(dependencies, evaluation.groupId),
     digest: O.map(sanitise)(evaluationDigest.digest),
     digestLanguageCode: evaluationDigest.digestLanguageCode,
   })),
