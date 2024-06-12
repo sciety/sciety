@@ -18,18 +18,22 @@ import {
   pathToSubmitRemoveListPromotion,
 } from './submit-paths';
 import { unfollowHandler } from './unfollow-handler';
-import { CollectedPorts } from '../../infrastructure';
+import { Queries } from '../../read-models';
+import { ExternalQueries } from '../../third-parties';
+import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { requireLoggedInUser } from '../require-logged-in-user';
 
-export const configureRoutes = (router: Router, adapters: CollectedPorts): void => {
+type Dependencies = Queries & DependenciesForCommands & ExternalQueries;
+
+export const configureRoutes = (router: Router, dependencies: Dependencies): void => {
   const formHandlerRoutes = [
-    { path: pathToSubmitEditListDetails(), handler: editListDetailsHandler(adapters) },
-    { path: pathToSubmitAddAFeaturedList(), handler: addAFeaturedListHandler(adapters) },
-    { path: pathToSubmitRemoveListPromotion(), handler: removeListPromotionHandler(adapters) },
-    { path: pathToSubmitCreateList(), handler: createListHandler(adapters) },
-    { path: pathToSubmitCreateAnnotation(), handler: createAnnotationHandler(adapters) },
-    { path: pathToSubmitFollow(), handler: followHandler(adapters) },
-    { path: pathToSubmitSaveArticle(), handler: saveArticleHandler(adapters) },
+    { path: pathToSubmitEditListDetails(), handler: editListDetailsHandler(dependencies) },
+    { path: pathToSubmitAddAFeaturedList(), handler: addAFeaturedListHandler(dependencies) },
+    { path: pathToSubmitRemoveListPromotion(), handler: removeListPromotionHandler(dependencies) },
+    { path: pathToSubmitCreateList(), handler: createListHandler(dependencies) },
+    { path: pathToSubmitCreateAnnotation(), handler: createAnnotationHandler(dependencies) },
+    { path: pathToSubmitFollow(), handler: followHandler(dependencies) },
+    { path: pathToSubmitSaveArticle(), handler: saveArticleHandler(dependencies) },
   ];
 
   formHandlerRoutes.forEach((route) => {
@@ -41,15 +45,15 @@ export const configureRoutes = (router: Router, adapters: CollectedPorts): void 
   });
 
   const formHandlerRoutesWithAuthentication = [
-    { path: '/forms/remove-article-from-list', handler: removeArticleFromListHandler(adapters) },
-    { path: '/unfollow', handler: unfollowHandler(adapters) },
+    { path: '/forms/remove-article-from-list', handler: removeArticleFromListHandler(dependencies) },
+    { path: '/unfollow', handler: unfollowHandler(dependencies) },
   ];
 
   formHandlerRoutesWithAuthentication.forEach((route) => {
     router.post(
       route.path,
       bodyParser({ enableTypes: ['form'] }),
-      requireLoggedInUser(adapters),
+      requireLoggedInUser(dependencies),
       route.handler,
     );
   });
