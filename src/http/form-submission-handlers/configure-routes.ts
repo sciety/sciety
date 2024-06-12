@@ -18,12 +18,11 @@ import {
   pathToSubmitRemoveListPromotion,
 } from './submit-paths';
 import { unfollowHandler } from './unfollow-handler';
-import { Queries } from '../../read-models';
-import { ExternalQueries } from '../../third-parties';
+import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { requireLoggedInUser } from '../require-logged-in-user';
 
-type Dependencies = Queries & DependenciesForCommands & ExternalQueries;
+type Dependencies = DependenciesForCommands & DependenciesForViews;
 
 export const configureRoutes = (router: Router, dependencies: Dependencies): void => {
   const formHandlerRoutes = [

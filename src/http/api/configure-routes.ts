@@ -30,12 +30,12 @@ import { ownedBy } from '../owned-by-api';
 
 export const configureRoutes = (
   router: Router,
-  adapters: DependenciesForViews & DependenciesForCommands,
+  dependencies: DependenciesForCommands & DependenciesForViews,
   expectedToken: string,
 ): void => {
-  router.get('/api/lists/owned-by/:ownerId', ownedBy(adapters));
+  router.get('/api/lists/owned-by/:ownerId', ownedBy(dependencies));
 
-  const configurePostMiddleware = createConfigurePostMiddleware(adapters, expectedToken);
+  const configurePostMiddleware = createConfigurePostMiddleware(dependencies, expectedToken);
 
   const config = [{
     endpoint: 'add-article-to-list',

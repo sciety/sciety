@@ -12,7 +12,7 @@ import {
   completeAuthenticationJourney,
   stubLogInAuth0, stubSignUpAuth0, logOutAuth0, stubLogOutAuth0, Config as LoginMiddlewaresConfig,
 } from './login-middlewares';
-import { Queries } from '../../read-models';
+import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { createPageFromParams } from '../../read-side/html-pages/create-page-from-params';
 import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../read-side/html-pages/create-user-account-form-page';
 import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
@@ -23,7 +23,7 @@ import { pageHandler } from '../page-handler';
 
 export type Config = LoginMiddlewaresConfig;
 
-type Dependencies = Queries & DependenciesForCommands;
+type Dependencies = DependenciesForCommands & DependenciesForViews;
 
 const signUpRoute = '/sign-up';
 const logInRoute = '/log-in';

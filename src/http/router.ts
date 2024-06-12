@@ -18,7 +18,7 @@ import { pageHandler, pageHandlerWithLoggedInUser } from './page-handler';
 import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
-import { Queries } from '../read-models';
+import { DependenciesForViews } from '../read-side/dependencies-for-views';
 import { aboutPage } from '../read-side/html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../read-side/html-pages/action-failed';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../read-side/html-pages/create-annotation-form-page';
@@ -47,13 +47,12 @@ import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';
 import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
-import { ExternalQueries } from '../third-parties';
 import * as EDOI from '../types/expression-doi';
 import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 
-type Dependencies = Queries & DependenciesForCommands & ExternalQueries;
+type Dependencies = DependenciesForCommands & DependenciesForViews;
 
 export const createRouter = (dependencies: Dependencies, config: Config): Router => {
   const router = new Router();
