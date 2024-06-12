@@ -10,36 +10,36 @@ import * as GMP from '../../read-side/html-pages/group-page/group-management-pag
 import { constructGroupPagePath } from '../../read-side/paths';
 import { pageHandler, pageHandlerWithLoggedInUser } from '../page-handler';
 
-export const configureRoutes = (router: Router, adapters: DependenciesForViews): void => {
+export const configureRoutes = (router: Router, dependencies: DependenciesForViews): void => {
   router.get(
     constructGroupPagePath.home.spec,
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       GHP.paramsCodec,
-      GHP.constructAndRenderPage(adapters),
+      GHP.constructAndRenderPage(dependencies),
     )),
   );
 
   router.get(
     constructGroupPagePath.lists.spec,
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       GLP.paramsCodec,
-      GLP.constructAndRenderPage(adapters),
+      GLP.constructAndRenderPage(dependencies),
     )),
   );
 
   router.get(
     constructGroupPagePath.about.spec,
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       GAP.paramsCodec,
-      GAP.constructAndRenderPage(adapters),
+      GAP.constructAndRenderPage(dependencies),
     )),
   );
 
   router.get(
     constructGroupPagePath.followers.spec,
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       GFP.paramsCodec,
-      GFP.constructAndRenderPage(adapters),
+      GFP.constructAndRenderPage(dependencies),
     )),
   );
 
@@ -55,6 +55,6 @@ export const configureRoutes = (router: Router, adapters: DependenciesForViews):
 
   router.get(
     constructGroupPagePath.management.spec,
-    pageHandlerWithLoggedInUser(adapters, GMP.page(adapters)),
+    pageHandlerWithLoggedInUser(dependencies, GMP.page(dependencies)),
   );
 };
