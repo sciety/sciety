@@ -6,6 +6,9 @@ import { isFollowing } from '../../http/form-submission-handlers/is-following';
 import { FollowCommand } from '../commands';
 import { ResourceAction } from '../resources/resource-action';
 
+/**
+ * @deprecated should be substituted with executeResourceAction
+ */
 export const follow: ResourceAction<FollowCommand> = (command) => (events) => pipe(
   events,
   isFollowing(command.userId, command.groupId),

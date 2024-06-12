@@ -15,6 +15,9 @@ type UnfollowCommand = {
 
 type UnfollowCommandHandler = CommandHandler<UnfollowCommand>;
 
+/**
+ * @deprecated should be substituted with executeResourceAction
+ */
 export const unfollowCommandHandler = (
   dependencies: DependenciesForCommands,
 ): UnfollowCommandHandler => (command) => pipe(
