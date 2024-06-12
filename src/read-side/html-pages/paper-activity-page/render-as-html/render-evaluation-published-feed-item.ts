@@ -7,7 +7,7 @@ import * as EL from '../../../../types/evaluation-locator';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { templateDate } from '../../shared-components/date';
 import { renderLangAttribute } from '../../shared-components/lang-attribute';
-import { EvaluationPublishedFeedItem } from '../view-model';
+import { EvaluationPublishedFeedItem, GroupDetails } from '../view-model';
 
 const avatar = (groupDetails: EvaluationPublishedFeedItem['groupDetails']) => pipe(
   groupDetails,
@@ -21,24 +21,24 @@ const avatar = (groupDetails: EvaluationPublishedFeedItem['groupDetails']) => pi
   toHtmlFragment,
 );
 
-const wrapInALinkToTheGroupHomePage = (groupName: string) => (groupHref: string) => `
-<a href="${groupHref}">
-  ${groupName}
+const wrapInALinkToTheGroupHomePage = (details: GroupDetails) => `
+<a href="${details.groupHref}">
+  ${htmlEscape(details.groupName)}
 </a>
 `;
 
-const foo = (feedItem: EvaluationPublishedFeedItem) => pipe(
-  feedItem.groupHref,
+const renderGroupNameAndLink = (groupDetails: EvaluationPublishedFeedItem['groupDetails']) => pipe(
+  groupDetails,
   O.match(
-    () => htmlEscape(feedItem.groupName),
-    wrapInALinkToTheGroupHomePage(htmlEscape(feedItem.groupName)),
+    () => 'A group',
+    (details) => wrapInALinkToTheGroupHomePage(details),
   ),
 );
 
 const eventMetadata = (feedItem: EvaluationPublishedFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__meta">
     <div class="activity-feed__item__title">
-      ${foo(feedItem)}
+      ${renderGroupNameAndLink(feedItem.groupDetails)}
     </div>
     ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
   </div>
