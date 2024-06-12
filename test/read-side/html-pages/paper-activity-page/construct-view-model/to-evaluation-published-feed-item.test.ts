@@ -89,4 +89,16 @@ describe('to-evaluation-published-feed-item', () => {
       expect(fullText).toStrictEqual(O.none);
     });
   });
+
+  describe('when the group that has published the evaluation has joined Sciety', () => {
+    it.todo('links to the group home page');
+
+    it.todo('displays the group name');
+
+    it.todo('displays the group avatar');
+  });
+
+  describe('when the group that has published the evaluation has not joined Sciety', () => {
+    it.todo('does not display any group details');
+  });
 });
