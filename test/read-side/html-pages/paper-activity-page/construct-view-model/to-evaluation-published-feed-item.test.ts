@@ -121,9 +121,13 @@ describe('to-evaluation-published-feed-item', () => {
       expect(result.groupHref).toStrictEqual(constructGroupPagePath.home.href(addGroupCommand));
     });
 
-    it.todo('displays the group name');
+    it('displays the group name', () => {
+      expect(result.groupName).toStrictEqual(addGroupCommand.name);
+    });
 
-    it.todo('displays the group avatar');
+    it('displays the group avatar', () => {
+      expect(result.groupAvatarSrc).toStrictEqual(addGroupCommand.avatarPath);
+    });
   });
 
   describe('when the group that has published the evaluation has not joined Sciety', () => {
