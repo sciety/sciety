@@ -18,7 +18,7 @@ import { pageHandler, pageHandlerWithLoggedInUser } from './page-handler';
 import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
-import { CollectedPorts } from '../infrastructure';
+import { Queries } from '../read-models';
 import { aboutPage } from '../read-side/html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../read-side/html-pages/action-failed';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../read-side/html-pages/create-annotation-form-page';
@@ -47,49 +47,53 @@ import { applicationStatus } from '../read-side/non-html-views/status';
 import { statusGroups } from '../read-side/non-html-views/status-groups';
 import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
+import { ExternalQueries } from '../third-parties';
 import * as EDOI from '../types/expression-doi';
+import { DependenciesForCommands } from '../write-side/dependencies-for-commands';
 
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 
-export const createRouter = (adapters: CollectedPorts, config: Config): Router => {
+type Dependencies = Queries & DependenciesForCommands & ExternalQueries;
+
+export const createRouter = (dependencies: Dependencies, config: Config): Router => {
   const router = new Router();
 
   // PAGES
 
   router.get(
     '/',
-    pageHandler(adapters, () => TE.right(homePage(adapters)), homePageLayout),
+    pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
   );
 
   router.get(
     '/my-feed',
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       myFeedParams,
-      myFeedPage(adapters),
+      myFeedPage(dependencies),
     )),
   );
 
   router.get(
     '/sciety-feed',
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       scietyFeedCodec,
-      scietyFeedPage(adapters)(20),
+      scietyFeedPage(dependencies)(20),
     )),
   );
 
   router.get(
     '/about',
-    pageHandler(adapters, () => aboutPage({})),
+    pageHandler(dependencies, () => aboutPage({})),
   );
 
   router.get(
     '/lists/:listId/subscribe',
-    pageHandler(adapters, subscribeToListPage(adapters)),
+    pageHandler(dependencies, subscribeToListPage(dependencies)),
   );
 
   router.get(
     '/action-failed',
-    pageHandler(adapters,
+    pageHandler(dependencies,
       createPageFromParams(
         actionFailedPageParamsCodec,
         actionFailedPage,
@@ -108,23 +112,23 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/users/:handle/lists',
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       userListsPageParams,
-      userListsPage(adapters),
+      userListsPage(dependencies),
     )),
   );
 
   router.get(
     '/users/:handle/following',
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       userFollowingPageParams,
-      userFollowingPage(adapters),
+      userFollowingPage(dependencies),
     )),
   );
 
   router.get(
     '/users/:handle/avatar',
-    redirectToAvatarImageUrl(adapters),
+    redirectToAvatarImageUrl(dependencies),
   );
 
   router.get(
@@ -133,11 +137,11 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
       context.response.set('X-Robots-Tag', 'noindex');
       await next();
     },
-    pageHandler(adapters, flow(
+    pageHandler(dependencies, flow(
       searchResultsPageParams.decode,
       E.fold(
         () => TE.right(searchPage),
-        searchResultsPage(adapters)(20),
+        searchResultsPage(dependencies)(20),
       ),
     )),
   );
@@ -176,59 +180,59 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     paperActivityPagePathSpecification,
-    pageHandler(adapters, paperActivityPage(adapters), fullWidthPageLayout),
+    pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
   );
 
   router.get(
     '/evaluations/:reviewid/content',
-    htmlFragmentHandler(evaluationContent(adapters)),
+    htmlFragmentHandler(evaluationContent(dependencies)),
   );
 
   router.get(
     '/groups',
-    pageHandler(adapters, () => groupsPage(adapters)),
+    pageHandler(dependencies, () => groupsPage(dependencies)),
   );
 
   router.get(
     '/lists',
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       listsPageParamsCodec,
-      listsPage(adapters),
+      listsPage(dependencies),
     )),
   );
 
   router.get(
     '/lists/:id',
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       listPageParams,
-      listPage(adapters),
+      listPage(dependencies),
     ), fullWidthPageLayout),
   );
 
   router.get(
     '/lists/:id/feed.atom',
-    listFeed(adapters),
+    listFeed(dependencies),
   );
 
   router.get(
     '/lists/:id/edit-details',
-    pageHandler(adapters, createPageFromParams(
+    pageHandler(dependencies, createPageFromParams(
       editListDetailsFormPageParamsCodec,
-      editListDetailsFormPage(adapters),
+      editListDetailsFormPage(dependencies),
     )),
   );
 
   router.get(
     '/save-article',
-    pageHandlerWithLoggedInUser(adapters, saveArticleFormPage(adapters)),
+    pageHandlerWithLoggedInUser(dependencies, saveArticleFormPage(dependencies)),
   );
 
   router.get(
     '/annotations/create-annotation-form',
-    requireLoggedInUser(adapters),
-    pageHandler(adapters, createPageFromParams(
+    requireLoggedInUser(dependencies),
+    pageHandler(dependencies, createPageFromParams(
       createAnnotationFormPageParamsCodec,
-      createAnnotationFormPage(adapters),
+      createAnnotationFormPage(dependencies),
     )),
   );
 
@@ -241,35 +245,35 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/legal',
-    pageHandler(adapters, () => pipe(legalPage, TE.right)),
+    pageHandler(dependencies, () => pipe(legalPage, TE.right)),
   );
 
   router.get(
     '/style-guide',
-    pageHandler(adapters, () => pipe(indexPage, TE.right)),
+    pageHandler(dependencies, () => pipe(indexPage, TE.right)),
   );
 
   router.get(
     '/style-guide/reference',
-    pageHandler(adapters, () => pipe(referencePage, TE.right)),
+    pageHandler(dependencies, () => pipe(referencePage, TE.right)),
   );
 
   router.get(
     '/style-guide/shared-components',
-    pageHandler(adapters, () => pipe(sharedComponentsPage, TE.right)),
+    pageHandler(dependencies, () => pipe(sharedComponentsPage, TE.right)),
   );
 
-  api.configureRoutes(router, adapters, config.SCIETY_TEAM_API_BEARER_TOKEN);
+  api.configureRoutes(router, dependencies, config.SCIETY_TEAM_API_BEARER_TOKEN);
 
-  formSubmissionHandlers.configureRoutes(router, adapters);
+  formSubmissionHandlers.configureRoutes(router, dependencies);
 
-  authentication.configureRoutes(router, adapters, config);
+  authentication.configureRoutes(router, dependencies, config);
 
-  group.configureRoutes(router, adapters);
+  group.configureRoutes(router, dependencies);
 
   // DOCMAPS
   router.get('/docmaps/v1/index', async (context, next) => {
-    const response = await docmapIndex(adapters)(context.query)();
+    const response = await docmapIndex(dependencies)(context.query)();
 
     context.response.status = response.status;
     context.response.body = response.body;
@@ -280,7 +284,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   router.get('/docmaps/v1/articles/:doi(.+).docmap.json', async (context, next) => {
     const response = await pipe(
       context.params.doi,
-      generateDocmaps(adapters),
+      generateDocmaps(dependencies),
       TE.foldW(
         (error) => T.of({
           body: { message: error.message },
@@ -308,13 +312,13 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
   // OBSERVABILITY
 
   router.get('/status', async (context, next) => {
-    context.response.body = applicationStatus(adapters);
+    context.response.body = applicationStatus(dependencies);
     context.response.status = StatusCodes.OK;
     await next();
   });
 
   router.get('/status/groups', async (context, next) => {
-    context.response.body = statusGroups(adapters);
+    context.response.body = statusGroups(dependencies);
     context.response.status = StatusCodes.OK;
     await next();
   });
@@ -327,7 +331,7 @@ export const createRouter = (adapters: CollectedPorts, config: Config): Router =
 
   router.get(
     '/static/:file(.+)',
-    loadStaticFile(adapters),
+    loadStaticFile(dependencies),
   );
 
   return router;
