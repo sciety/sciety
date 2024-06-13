@@ -59,7 +59,7 @@ describe('construct-lists-that-can-be-featured', () => {
           );
         });
 
-        it.failing('is included', () => {
+        it('is included', () => {
           expect(availableListIds).toContain(listId);
         });
       });
