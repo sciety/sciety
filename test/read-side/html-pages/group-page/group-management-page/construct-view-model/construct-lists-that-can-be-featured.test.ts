@@ -20,6 +20,7 @@ describe('construct-lists-that-can-be-featured', () => {
   });
 
   describe('given a group', () => {
+    const currentUserId = arbitraryUserId();
     let group: Group;
 
     beforeEach(async () => {
@@ -33,7 +34,6 @@ describe('construct-lists-that-can-be-featured', () => {
     });
 
     describe('given a list owned by the current user', () => {
-      const currentUserId = arbitraryUserId();
       const listOwnerId = LOID.fromUserId(currentUserId);
       const createListCommand: CreateListCommand = {
         ...arbitraryCreateListCommand(),
@@ -54,7 +54,7 @@ describe('construct-lists-that-can-be-featured', () => {
 
         beforeEach(() => {
           availableListIds = pipe(
-            constructListsThatCanBeFeatured(framework.dependenciesForViews, group),
+            constructListsThatCanBeFeatured(framework.dependenciesForViews, group, currentUserId),
             RA.map((listThatCanBeFeatured) => listThatCanBeFeatured.listId),
           );
         });
@@ -74,14 +74,27 @@ describe('construct-lists-that-can-be-featured', () => {
     });
 
     describe('given a list owned by a different user', () => {
-      it.todo('is not included');
+      const listOwnerId = LOID.fromUserId(arbitraryUserId());
+      const createListCommand: CreateListCommand = {
+        ...arbitraryCreateListCommand(),
+        ownerId: listOwnerId,
+      };
+      let availableListIds: ReadonlyArray<ListId>;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createList(createListCommand);
+        availableListIds = pipe(
+          constructListsThatCanBeFeatured(framework.dependenciesForViews, group, currentUserId),
+          RA.map((listThatCanBeFeatured) => listThatCanBeFeatured.listId),
+        );
+      });
+
+      it('is not included', () => {
+        expect(availableListIds).toHaveLength(0);
+      });
     });
 
-    describe('given a list owned by the group', () => {
-      it.todo('is not included');
-    });
-
-    describe('given a list owned by a different group', () => {
+    describe('given a list owned by a group', () => {
       it.todo('is not included');
     });
   });

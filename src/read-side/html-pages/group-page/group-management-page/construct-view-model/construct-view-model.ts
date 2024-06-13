@@ -33,6 +33,6 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
     pageHeading: `Group management details for ${group.name}`,
     groupHomePageHref: constructGroupPagePath.home.href(group),
     currentlyFeaturedLists: constructCurrentlyFeaturedLists(dependencies, group),
-    listsThatCanBeFeatured: constructListsThatCanBeFeatured(dependencies, group),
+    listsThatCanBeFeatured: constructListsThatCanBeFeatured(dependencies, group, userId),
   })),
 );
