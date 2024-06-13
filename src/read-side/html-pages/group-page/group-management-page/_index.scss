@@ -3,7 +3,7 @@
 @use 'button';
 
 .group-management-section {
-	margin-bottom: functions.px-to-rem(16px);
+  margin-bottom: functions.px-to-rem(16px);
 
  &:last-child {
     margin-bottom: 0;
@@ -11,16 +11,16 @@
 }
 
 .list-names-with-actions {
-	@include list.basics();
-	margin-bottom: 0;
+  @include list.basics();
+  margin-bottom: 0;
 
-	li {
-		display: flex;
-	justify-content: space-between;
-	margin-bottom: functions.px-to-rem(8px);
+  li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: functions.px-to-rem(8px);
 
-	button {
-		@include button.secondary();
-	}
-	}
+    button {
+      @include button.secondary();
+    }
+  }
 }
