@@ -145,7 +145,24 @@ describe('construct-lists-that-can-be-featured', () => {
     });
 
     describe('given a list owned by a group', () => {
-      it.todo('is not included');
+      const listOwnerId = LOID.fromGroupId(arbitraryGroupId());
+      const createListCommand: CreateListCommand = {
+        ...arbitraryCreateListCommand(),
+        ownerId: listOwnerId,
+      };
+      let availableListIds: ReadonlyArray<ListId>;
+
+      beforeEach(async () => {
+        await framework.commandHelpers.createList(createListCommand);
+        availableListIds = pipe(
+          constructListsThatCanBeFeatured(framework.dependenciesForViews, group, currentUserId),
+          RA.map((listThatCanBeFeatured) => listThatCanBeFeatured.listId),
+        );
+      });
+
+      it('is not included', () => {
+        expect(availableListIds).toHaveLength(0);
+      });
     });
   });
 });
