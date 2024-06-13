@@ -81,7 +81,24 @@ describe('construct-lists-that-can-be-featured', () => {
       });
 
       describe('and was featured by this group, but is no longer featured', () => {
-        it.todo('is included');
+        let availableListIds: ReadonlyArray<ListId>;
+
+        beforeEach(async () => {
+          const command: PromoteListCommand = {
+            forGroup: group.id,
+            listId,
+          };
+          await framework.commandHelpers.promoteList(command);
+          await framework.commandHelpers.unpromoteList(command);
+          availableListIds = pipe(
+            constructListsThatCanBeFeatured(framework.dependenciesForViews, group, currentUserId),
+            RA.map((listThatCanBeFeatured) => listThatCanBeFeatured.listId),
+          );
+        });
+
+        it('is included', () => {
+          expect(availableListIds).toContain(listId);
+        });
       });
 
       describe('and is currently featured only by a different group', () => {
