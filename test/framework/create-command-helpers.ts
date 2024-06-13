@@ -17,6 +17,7 @@ import {
   RemoveArticleFromListCommand,
   RemoveListPromotionCommand,
   UpdateEvaluationCommand,
+  UpdateGroupDetailsCommand,
 } from '../../src/write-side/commands';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
 import * as evaluation from '../../src/write-side/resources/evaluation';
@@ -45,7 +46,7 @@ export type CommandHelpers = {
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   unpromoteList: (command: RemoveListPromotionCommand) => Promise<unknown>,
   updateEvaluation: (command: UpdateEvaluationCommand) => Promise<unknown>,
-  updateGroupDetails: (groupId: GroupId, largeLogoPath: string) => Promise<unknown>,
+  updateGroupDetails: (command: UpdateGroupDetailsCommand) => Promise<unknown>,
   updateUserDetails: (userId: UserId, avatarUrl?: string, displayName?: string) => Promise<unknown>,
 };
 
@@ -83,13 +84,7 @@ export const createCommandHelpers = (
   ),
   unpromoteList: invoke(executeResourceAction(dependencies, listPromotionResource.remove), 'unpromoteList'),
   updateEvaluation: invoke(executeResourceAction(dependencies, evaluation.update), 'updateEvaluation'),
-  updateGroupDetails: async (groupId, largeLogoPath) => pipe(
-    {
-      groupId,
-      largeLogoPath,
-    },
-    invoke(executeResourceAction(dependencies, group.update), 'updateGroupDetails'),
-  ),
+  updateGroupDetails: invoke(executeResourceAction(dependencies, group.update), 'updateGroupDetails'),
   updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
     {
       userId,
