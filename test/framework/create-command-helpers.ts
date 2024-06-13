@@ -13,6 +13,7 @@ import {
   AnnotateArticleInListCommand,
   AssignUserAsGroupAdminCommand,
   CreateUserAccountCommand,
+  PromoteListCommand,
   RecordEvaluationPublicationCommand,
   UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
@@ -25,6 +26,7 @@ import {
 import * as group from '../../src/write-side/resources/group';
 import * as groupAuthorisation from '../../src/write-side/resources/group-authorisation';
 import * as listResource from '../../src/write-side/resources/list';
+import * as listPromotionResource from '../../src/write-side/resources/list-promotion';
 import * as user from '../../src/write-side/resources/user';
 import { abortTest } from '../abort-test';
 
@@ -36,6 +38,7 @@ export type CommandHelpers = {
   createList: (command: CreateListCommand) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
+  promoteList: (command: PromoteListCommand) => Promise<unknown>,
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
   removeArticleFromList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
@@ -72,6 +75,7 @@ export const createCommandHelpers = (
     { userId, groupId },
     invoke(executeResourceAction(dependencies, follow), 'followGroup'),
   ),
+  promoteList: invoke(executeResourceAction(dependencies, listPromotionResource.create), 'promoteList'),
   recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
   removeArticleFromList: async (articleId, listId) => pipe(
     {
