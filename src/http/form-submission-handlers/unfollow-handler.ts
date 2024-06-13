@@ -33,11 +33,14 @@ export const unfollowHandler = (dependencies: Dependencies): Middleware => async
     return;
   }
 
-  await pipe(
-    {
-      userId: loggedInUserId.value,
-      groupId: formBody.right.editorialcommunityid,
-    },
+  const command = {
+    userId: loggedInUserId.value,
+    groupId: formBody.right.editorialcommunityid,
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const commandResult = await pipe(
+    command,
     unfollowCommandHandler(dependencies),
   )();
   context.redirect('back');
