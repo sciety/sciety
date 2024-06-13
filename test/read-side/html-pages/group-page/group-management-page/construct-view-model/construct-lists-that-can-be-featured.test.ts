@@ -8,7 +8,6 @@ import * as LOID from '../../../../../../src/types/list-owner-id';
 import { CreateListCommand } from '../../../../../../src/write-side/commands';
 import { TestFramework, createTestFramework } from '../../../../../framework';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../../../types/article-id.helper';
 import { arbitraryUserId } from '../../../../../types/user-id.helper';
 import { arbitraryAddGroupCommand } from '../../../../../write-side/commands/add-group-command.helper';
 import { arbitraryCreateListCommand } from '../../../../../write-side/commands/create-list-command.helper';
@@ -33,17 +32,17 @@ describe('construct-lists-that-can-be-featured', () => {
       );
     });
 
-    describe('given a user list that is populated', () => {
-      const listOwnerId = LOID.fromUserId(arbitraryUserId());
+    describe('given a list owned by the current user', () => {
+      const currentUserId = arbitraryUserId();
+      const listOwnerId = LOID.fromUserId(currentUserId);
       const createListCommand: CreateListCommand = {
         ...arbitraryCreateListCommand(),
         ownerId: listOwnerId,
       };
-      const userListId = createListCommand.listId;
+      const listId = createListCommand.listId;
 
       beforeEach(async () => {
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList(arbitraryArticleId(), userListId);
       });
 
       describe('and is currently featured by this group', () => {
@@ -60,8 +59,8 @@ describe('construct-lists-that-can-be-featured', () => {
           );
         });
 
-        it('is included', () => {
-          expect(availableListIds).toContain(userListId);
+        it.failing('is included', () => {
+          expect(availableListIds).toContain(listId);
         });
       });
 
@@ -74,7 +73,7 @@ describe('construct-lists-that-can-be-featured', () => {
       });
     });
 
-    describe('given a user list that is empty', () => {
+    describe('given a list owned by a different user', () => {
       it.todo('is not included');
     });
 
