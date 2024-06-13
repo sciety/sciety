@@ -41,7 +41,7 @@ describe('sciety-feed-page', () => {
     await framework.commandHelpers.createList(createListCommand);
     await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
     await framework.commandHelpers.removeArticleFromList({ articleId, listId: createListCommand.listId });
-    await framework.commandHelpers.unfollowGroup(userId, addGroupCommand.groupId);
+    await framework.commandHelpers.unfollowGroup({ userId, groupId: addGroupCommand.groupId });
     const viewModel = await pipe(
       { page: 1 },
       constructViewModel({

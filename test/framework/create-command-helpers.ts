@@ -2,10 +2,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
-import { GroupId } from '../../src/types/group-id';
-import { UserId } from '../../src/types/user-id';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers';
 import { follow } from '../../src/write-side/command-handlers/follow-command-handler';
+import { UnfollowCommand } from '../../src/write-side/command-handlers/unfollow-command-handler';
 import {
   AddArticleToListCommand,
   AddGroupCommand,
@@ -44,7 +43,7 @@ export type CommandHelpers = {
   promoteList: (command: PromoteListCommand) => Promise<unknown>,
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
   removeArticleFromList: (command: RemoveArticleFromListCommand) => Promise<unknown>,
-  unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
+  unfollowGroup: (command: UnfollowCommand) => Promise<unknown>,
   unpromoteList: (command: RemoveListPromotionCommand) => Promise<unknown>,
   updateEvaluation: (command: UpdateEvaluationCommand) => Promise<unknown>,
   updateGroupDetails: (command: UpdateGroupDetailsCommand) => Promise<unknown>,
@@ -73,13 +72,7 @@ export const createCommandHelpers = (
   promoteList: invoke(executeResourceAction(dependencies, listPromotionResource.create), 'promoteList'),
   recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
   removeArticleFromList: invoke(executeResourceAction(dependencies, listResource.removeArticle), 'removeArticleFromList'),
-  unfollowGroup: async (userId, groupId) => pipe(
-    {
-      userId,
-      groupId,
-    },
-    invoke(unfollowCommandHandler(dependencies), 'unfollowGroup'),
-  ),
+  unfollowGroup: invoke(unfollowCommandHandler(dependencies), 'unfollowGroup'),
   unpromoteList: invoke(executeResourceAction(dependencies, listPromotionResource.remove), 'unpromoteList'),
   updateEvaluation: invoke(executeResourceAction(dependencies, evaluation.update), 'updateEvaluation'),
   updateGroupDetails: invoke(executeResourceAction(dependencies, group.update), 'updateGroupDetails'),

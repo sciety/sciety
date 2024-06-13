@@ -8,7 +8,7 @@ import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 
-type UnfollowCommand = {
+export type UnfollowCommand = {
   userId: UserId,
   groupId: GroupId,
 };
