@@ -19,6 +19,9 @@
   ],
   "misMatchThreshold": 0,
   "onReadyScript": "puppet/onReady.js",
+  "resembleOutputOptions": {
+    "usePreciseMatching": true
+  },
   "scenarios": [
     {
       "label": "Home page",
