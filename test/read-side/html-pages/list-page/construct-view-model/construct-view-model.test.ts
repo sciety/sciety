@@ -110,7 +110,7 @@ describe('construct-view-model', () => {
         const listId = await createList();
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
-        await framework.commandHelpers.removeArticleFromList(new ArticleId(expressionDoi1), listId);
+        await framework.commandHelpers.removeArticleFromList({ articleId: new ArticleId(expressionDoi1), listId });
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
         result = await pipe(
           {
@@ -143,7 +143,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
         await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi3), listId);
-        await framework.commandHelpers.removeArticleFromList(new ArticleId(expressionDoi3), listId);
+        await framework.commandHelpers.removeArticleFromList({ articleId: new ArticleId(expressionDoi3), listId });
         result = await pipe(
           {
             page: 1,

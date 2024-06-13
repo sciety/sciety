@@ -15,6 +15,7 @@ import {
   CreateUserAccountCommand,
   PromoteListCommand,
   RecordEvaluationPublicationCommand,
+  RemoveArticleFromListCommand,
   RemoveListPromotionCommand,
   UpdateEvaluationCommand,
 } from '../../src/write-side/commands';
@@ -41,7 +42,7 @@ export type CommandHelpers = {
   followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   promoteList: (command: PromoteListCommand) => Promise<unknown>,
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
-  removeArticleFromList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
+  removeArticleFromList: (command: RemoveArticleFromListCommand) => Promise<unknown>,
   unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
   unpromoteList: (command: RemoveListPromotionCommand) => Promise<unknown>,
   updateEvaluation: (command: UpdateEvaluationCommand) => Promise<unknown>,
@@ -79,13 +80,7 @@ export const createCommandHelpers = (
   ),
   promoteList: invoke(executeResourceAction(dependencies, listPromotionResource.create), 'promoteList'),
   recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
-  removeArticleFromList: async (articleId, listId) => pipe(
-    {
-      articleId,
-      listId,
-    },
-    invoke(executeResourceAction(dependencies, listResource.removeArticle), 'removeArticleFromList'),
-  ),
+  removeArticleFromList: invoke(executeResourceAction(dependencies, listResource.removeArticle), 'removeArticleFromList'),
   unfollowGroup: async (userId, groupId) => pipe(
     {
       userId,
