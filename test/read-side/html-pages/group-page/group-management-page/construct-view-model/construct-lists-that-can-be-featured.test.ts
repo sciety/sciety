@@ -5,7 +5,7 @@ import { constructListsThatCanBeFeatured } from '../../../../../../src/read-side
 import { Group } from '../../../../../../src/types/group';
 import { ListId } from '../../../../../../src/types/list-id';
 import * as LOID from '../../../../../../src/types/list-owner-id';
-import { CreateListCommand } from '../../../../../../src/write-side/commands';
+import { CreateListCommand, PromoteListCommand } from '../../../../../../src/write-side/commands';
 import { TestFramework, createTestFramework } from '../../../../../framework';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
 import { arbitraryUserId } from '../../../../../types/user-id.helper';
@@ -46,7 +46,23 @@ describe('construct-lists-that-can-be-featured', () => {
       });
 
       describe('and is currently featured by this group', () => {
-        it.todo('is not included');
+        let availableListIds: ReadonlyArray<ListId>;
+
+        beforeEach(async () => {
+          const promoteListCommand: PromoteListCommand = {
+            forGroup: group.id,
+            listId,
+          };
+          await framework.commandHelpers.promoteList(promoteListCommand);
+          availableListIds = pipe(
+            constructListsThatCanBeFeatured(framework.dependenciesForViews, group, currentUserId),
+            RA.map((listThatCanBeFeatured) => listThatCanBeFeatured.listId),
+          );
+        });
+
+        it.failing('is not included', () => {
+          expect(availableListIds).toHaveLength(0);
+        });
       });
 
       describe('and is not currently featured by this group', () => {
