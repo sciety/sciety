@@ -18,7 +18,7 @@ export type UnfollowCommand = {
 
 type UnfollowCommandHandler = CommandHandler<UnfollowCommand>;
 
-const unfollow: ResourceAction<UnfollowCommand> = (command) => (events) => pipe(
+export const unfollow: ResourceAction<UnfollowCommand> = (command) => (events) => pipe(
   events,
   isFollowing(command.userId, command.groupId),
   B.fold(
@@ -30,6 +30,7 @@ const unfollow: ResourceAction<UnfollowCommand> = (command) => (events) => pipe(
   ),
   E.right,
 );
+
 /**
  * @deprecated should be substituted with executeResourceAction
  */
