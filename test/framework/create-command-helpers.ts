@@ -1,14 +1,13 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ArticleId } from '../../src/types/article-id';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
 import { GroupId } from '../../src/types/group-id';
-import { ListId } from '../../src/types/list-id';
 import { UserId } from '../../src/types/user-id';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers';
 import { follow } from '../../src/write-side/command-handlers/follow-command-handler';
 import {
+  AddArticleToListCommand,
   AddGroupCommand,
   AnnotateArticleInListCommand,
   AssignUserAsGroupAdminCommand,
@@ -33,7 +32,7 @@ import * as user from '../../src/write-side/resources/user';
 import { abortTest } from '../abort-test';
 
 export type CommandHelpers = {
-  addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
+  addArticleToList: (command: AddArticleToListCommand) => Promise<unknown>,
   addGroup: (command: AddGroupCommand) => Promise<unknown>,
   assignUserAsGroupAdmin: (command: AssignUserAsGroupAdminCommand) => Promise<unknown>,
   createAnnotation: (command: AnnotateArticleInListCommand) => Promise<unknown>,
@@ -62,13 +61,7 @@ const invoke = <C extends GenericCommand>(
 export const createCommandHelpers = (
   dependencies: DependenciesForExecuteResourceAction,
 ): CommandHelpers => ({
-  addArticleToList: async (articleId, listId) => pipe(
-    {
-      articleId,
-      listId,
-    },
-    invoke(executeResourceAction(dependencies, listResource.addArticle), 'addArticleToList'),
-  ),
+  addArticleToList: invoke(executeResourceAction(dependencies, listResource.addArticle), 'addArticleToList'),
   addGroup: invoke(executeResourceAction(dependencies, group.create), 'addGroup'),
   assignUserAsGroupAdmin: invoke(executeResourceAction(dependencies, groupAuthorisation.assign), 'assignUserAsGroupAdmin'),
   createAnnotation: invoke(executeResourceAction(dependencies, listResource.annotate), 'createAnnotation'),

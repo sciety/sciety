@@ -49,7 +49,7 @@ describe('construct-annotation', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createUserAccount(createUserAccountCommand);
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+        await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
           articleId,
@@ -80,7 +80,7 @@ describe('construct-annotation', () => {
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+        await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
           articleId,
@@ -106,7 +106,7 @@ describe('construct-annotation', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList(articleId, createListCommand.listId);
+        await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
           articleId,

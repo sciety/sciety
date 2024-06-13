@@ -101,7 +101,9 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createList(command);
-      await framework.commandHelpers.addArticleToList(new ArticleId(inputExpressionDoi), command.listId);
+      await framework.commandHelpers.addArticleToList(
+        { articleId: new ArticleId(inputExpressionDoi), listId: command.listId },
+      );
       successfulViewModel = await pipe(
         inputExpressionDoi,
         constructViewModel({

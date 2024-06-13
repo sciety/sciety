@@ -65,8 +65,8 @@ describe('construct-feed', () => {
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
-      await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
+      await framework.commandHelpers.addArticleToList({ articleId: article1, listId: groupEvaluatedArticlesList });
+      await framework.commandHelpers.addArticleToList({ articleId: article2, listId: groupEvaluatedArticlesList });
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
       paperActivityHrefs = getPaperActivityHrefs(orderedArticleCards);
@@ -92,10 +92,10 @@ describe('construct-feed', () => {
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.addArticleToList(article1, groupEvaluatedArticlesList);
-      await framework.commandHelpers.addArticleToList(article2, groupEvaluatedArticlesList);
-      await framework.commandHelpers.addArticleToList(article3, groupEvaluatedArticlesList);
-      await framework.commandHelpers.addArticleToList(article4, groupEvaluatedArticlesList);
+      await framework.commandHelpers.addArticleToList({ articleId: article1, listId: groupEvaluatedArticlesList });
+      await framework.commandHelpers.addArticleToList({ articleId: article2, listId: groupEvaluatedArticlesList });
+      await framework.commandHelpers.addArticleToList({ articleId: article3, listId: groupEvaluatedArticlesList });
+      await framework.commandHelpers.addArticleToList({ articleId: article4, listId: groupEvaluatedArticlesList });
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
       paperActivityHrefs = getPaperActivityHrefs(orderedArticleCards);
