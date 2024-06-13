@@ -11,8 +11,8 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <h1>${viewModel.pageHeading}</h1>
   </header>
   <p>
-    From here you can manage your group pages on Sciety.
-    You are able to see this page as you are a designated representative for a Sciety group.
+    From here you can manage your public group pages on Sciety.
+    You are able to see this page as you are a designated administrator for a Sciety group.
   </p>
   <p>
     <a href="${viewModel.groupHomePageHref}">View public group page</a>
