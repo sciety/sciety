@@ -18,9 +18,9 @@ describe('sciety-feed-page', () => {
 
   it('displays at most a page of cards at a time', async () => {
     await framework.commandHelpers.addGroup(addGroupCommand);
-    await framework.commandHelpers.followGroup(arbitraryUserId(), addGroupCommand.groupId);
-    await framework.commandHelpers.followGroup(arbitraryUserId(), addGroupCommand.groupId);
-    await framework.commandHelpers.followGroup(arbitraryUserId(), addGroupCommand.groupId);
+    await framework.commandHelpers.followGroup({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
+    await framework.commandHelpers.followGroup({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
+    await framework.commandHelpers.followGroup({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
     const viewModel = await pipe(
       { page: 1 },
       constructViewModel({

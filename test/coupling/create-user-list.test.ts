@@ -28,7 +28,9 @@ describe('create user list', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       await framework.commandHelpers.addGroup(addGroupCommand);
-      await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
+      await framework.commandHelpers.followGroup(
+        { userId: createUserAccountCommand.userId, groupId: addGroupCommand.groupId },
+      );
     });
 
     describe('when the user creates a new list', () => {
