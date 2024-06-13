@@ -80,7 +80,7 @@ describe('construct-lists-that-can-be-featured', () => {
         });
       });
 
-      describe('and was featured by this group, but is not longer featured', () => {
+      describe('and was featured by this group, but is no longer featured', () => {
         it.todo('is included');
       });
 
