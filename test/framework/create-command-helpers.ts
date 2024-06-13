@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
 import { unfollowCommandHandler } from '../../src/write-side/command-handlers';
-import { follow } from '../../src/write-side/command-handlers/follow-command-handler';
 import { UnfollowCommand } from '../../src/write-side/command-handlers/unfollow-command-handler';
 import {
   AddArticleToListCommand,
@@ -27,6 +26,7 @@ import {
 } from '../../src/write-side/resources/execute-resource-action';
 import * as group from '../../src/write-side/resources/group';
 import * as groupAuthorisation from '../../src/write-side/resources/group-authorisation';
+import * as groupFollowResource from '../../src/write-side/resources/group-follow';
 import * as listResource from '../../src/write-side/resources/list';
 import * as listPromotionResource from '../../src/write-side/resources/list-promotion';
 import * as user from '../../src/write-side/resources/user';
@@ -68,7 +68,7 @@ export const createCommandHelpers = (
   createAnnotation: invoke(executeResourceAction(dependencies, listResource.annotate), 'createAnnotation'),
   createList: invoke(executeResourceAction(dependencies, listResource.create), 'createList'),
   createUserAccount: invoke(executeResourceAction(dependencies, user.create), 'createUserAccount'),
-  followGroup: invoke(executeResourceAction(dependencies, follow), 'followGroup'),
+  followGroup: invoke(executeResourceAction(dependencies, groupFollowResource.follow), 'followGroup'),
   promoteList: invoke(executeResourceAction(dependencies, listPromotionResource.create), 'promoteList'),
   recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
   removeArticleFromList: invoke(executeResourceAction(dependencies, listResource.removeArticle), 'removeArticleFromList'),

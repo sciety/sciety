@@ -9,9 +9,9 @@ import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { DependenciesForCommands } from '../../write-side';
-import { follow } from '../../write-side/command-handlers/follow-command-handler';
 import { FollowCommand } from '../../write-side/commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import { follow } from '../../write-side/resources/group-follow';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
 
