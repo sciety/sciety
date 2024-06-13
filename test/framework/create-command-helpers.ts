@@ -2,8 +2,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
-import { unfollowCommandHandler } from '../../src/write-side/command-handlers';
-import { UnfollowCommand } from '../../src/write-side/command-handlers/unfollow-command-handler';
 import {
   AddArticleToListCommand,
   AddGroupCommand,
@@ -14,6 +12,7 @@ import {
   RecordEvaluationPublicationCommand,
   RemoveArticleFromListCommand,
   RemoveListPromotionCommand,
+  UnfollowCommand,
   UpdateEvaluationCommand,
   UpdateGroupDetailsCommand,
   UpdateUserDetailsCommand,
@@ -72,7 +71,7 @@ export const createCommandHelpers = (
   promoteList: invoke(executeResourceAction(dependencies, listPromotionResource.create), 'promoteList'),
   recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
   removeArticleFromList: invoke(executeResourceAction(dependencies, listResource.removeArticle), 'removeArticleFromList'),
-  unfollowGroup: invoke(unfollowCommandHandler(dependencies), 'unfollowGroup'),
+  unfollowGroup: invoke(executeResourceAction(dependencies, groupFollowResource.unfollow), 'unfollowGroup'),
   unpromoteList: invoke(executeResourceAction(dependencies, listPromotionResource.remove), 'unpromoteList'),
   updateEvaluation: invoke(executeResourceAction(dependencies, evaluation.update), 'updateEvaluation'),
   updateGroupDetails: invoke(executeResourceAction(dependencies, group.update), 'updateGroupDetails'),
