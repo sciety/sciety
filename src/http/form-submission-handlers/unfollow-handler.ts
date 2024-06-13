@@ -8,8 +8,8 @@ import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies 
 import { Logger } from '../../logger';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { DependenciesForCommands } from '../../write-side';
-import { unfollow } from '../../write-side/command-handlers/unfollow-command-handler';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import * as groupFollowResource from '../../write-side/resources/group-follow';
 
 type Dependencies = DependenciesForCommands & EnsureUserIsLoggedInDependencies & {
   logger: Logger,
@@ -42,7 +42,7 @@ export const unfollowHandler = (dependencies: Dependencies): Middleware => async
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const commandResult = await pipe(
     command,
-    executeResourceAction(dependencies, unfollow),
+    executeResourceAction(dependencies, groupFollowResource.unfollow),
   )();
   context.redirect('back');
 };
