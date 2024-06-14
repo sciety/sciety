@@ -22,6 +22,10 @@ spec:
           resources:
             requests:
               cpu: 1.0
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}--publicEnvVars
+                optional: true
           env:
             - name: ALLOW_SITE_CRAWLERS
               value: "{{ .Values.allowSiteCrawlers }}"
