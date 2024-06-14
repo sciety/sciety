@@ -4,6 +4,7 @@
 @use 'layout';
 @use 'list';
 @use '../../../../sass/curation-statement';
+@use '../../shared-components/standard-separator';
 
 @use 'local-settings';
 
@@ -76,7 +77,7 @@
 }
 
 .curation-statement {
-  border-top: 1px solid settings.$colour-furniture;
+  @include standard-separator.top();
   padding-top: 3rem;
   margin-bottom: 3rem;
 

@@ -1,5 +1,8 @@
 @use 'settings';
 
+@mixin top {
+  border-top: settings.$border-width solid settings.$colour-furniture;
+}
 @mixin bottom {
   border-bottom: settings.$border-width solid settings.$colour-furniture;
 }

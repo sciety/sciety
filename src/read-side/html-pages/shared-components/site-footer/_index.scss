@@ -8,6 +8,7 @@
 @use 'layout';
 @use 'list';
 @use '../../../../sass/states';
+@use '../standard-separator';
 
 $_outer-vertical-spacing: functions.px-to-rem(32px);
 
@@ -17,8 +18,8 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
     margin-left: auto;
     margin-right: auto;
   }
-
-  border-top: 1px solid settings.$colour-furniture;
+  @include standard-separator.top();
+  
   padding-top: $_outer-vertical-spacing;
   margin-bottom: $_outer-vertical-spacing;
   max-width: functions.px-to-rem(1200px);
