@@ -1,6 +1,11 @@
 @use 'list';
 @use 'functions';
 @use 'button';
+@use '../../standard-separator';
+
+.management-of-featured-lists {
+  @include standard-separator.top(1rem);
+}
 
 .group-management-section {
   margin-bottom: functions.px-to-rem(16px);
