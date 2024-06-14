@@ -128,7 +128,7 @@ dev-sql:
 staging-sql:
 	kubectl run psql \
 	--rm -it --image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
 	--env=PGUSER=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
 	--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
@@ -137,7 +137,7 @@ staging-sql:
 prod-sql:
 	kubectl run psql \
 	--rm -it --image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+	--env=PGHOST=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
 	--env=PGUSER=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
 	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
@@ -160,7 +160,7 @@ download-exploratory-test-from-prod:
 		--image=amazon/aws-cli:2.4.23 \
 		--command=true \
 		--restart=Never \
-		--env=PGHOST=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+		--env=PGHOST=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGHOST') \
 		--env=PGDATABASE=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
 		--env=PGUSER=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
 		--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
@@ -178,7 +178,7 @@ download-exploratory-test-from-staging:
 		--image=amazon/aws-cli:2.4.23 \
 		--command=true \
 		--restart=Never \
-		--env=PGHOST=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+		--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 		--env=PGDATABASE=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
 		--env=PGUSER=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
 		--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
@@ -206,7 +206,7 @@ exploratory-test-from-prod: node_modules clean-db build
 replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from-prod
 	kubectl run psql \
 	--image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-host"'| base64 -d) \
+	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-database"'| base64 -d) \
 	--env=PGUSER=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-username"'| base64 -d) \
 	--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
