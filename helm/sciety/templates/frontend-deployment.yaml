@@ -24,7 +24,7 @@ spec:
               cpu: 1.0
           envFrom:
             - configMapRef:
-                name: {{ .Release.Name }}--publicEnvVars
+                name: {{ .Release.Name }}--public-env-vars
                 optional: true
           env:
             - name: ALLOW_SITE_CRAWLERS
