@@ -1,8 +1,10 @@
 @use 'settings';
 
-@mixin top {
+@mixin top($distance) {
   border-top: settings.$border-width solid settings.$colour-furniture;
+  padding-top: $distance;
 }
-@mixin bottom {
+@mixin bottom($distance) {
   border-bottom: settings.$border-width solid settings.$colour-furniture;
+  padding-bottom: $distance;
 }

@@ -18,9 +18,8 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
     margin-left: auto;
     margin-right: auto;
   }
-  @include standard-separator.top();
+  @include standard-separator.top($_outer-vertical-spacing);
   
-  padding-top: $_outer-vertical-spacing;
   margin-bottom: $_outer-vertical-spacing;
   max-width: functions.px-to-rem(1200px);
   display: flex;

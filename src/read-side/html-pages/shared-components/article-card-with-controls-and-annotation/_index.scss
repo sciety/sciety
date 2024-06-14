@@ -17,8 +17,7 @@ $_triangle-size: 32px;
 
   .article-card-content {
     @include breakpoints.two-column-display {
-      @include standard-separator.bottom();
-      padding-bottom: 2.5rem;
+      @include standard-separator.bottom(2.5rem);
     }
   }
 }

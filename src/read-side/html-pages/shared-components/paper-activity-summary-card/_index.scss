@@ -12,11 +12,10 @@ $_footer-icon-separation: 16px;
 $_card-padding: 16px;
 
 .article-card {
-  @include standard-separator.bottom();
+  @include standard-separator.bottom(2.5rem);
   position: relative;
   background-color: settings.$colour-white;
   padding-top: 2rem;
-  padding-bottom: 2.5rem;
 }
 
 .article-card-content {
