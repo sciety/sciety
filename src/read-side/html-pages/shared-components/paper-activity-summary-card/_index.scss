@@ -5,17 +5,14 @@
 @use 'breakpoints';
 @use 'list';
 @use 'card-authors';
+@use '../standard-separator';
 
 $_optional-controls-icon-size: 24px;
 $_footer-icon-separation: 16px;
 $_card-padding: 16px;
 
-@mixin standard-separator-bottom {
-  border-bottom: settings.$border-width solid settings.$colour-furniture;
-}
-
 .article-card {
-  @include standard-separator-bottom();
+  @include standard-separator.bottom();
   position: relative;
   background-color: settings.$colour-white;
   padding-top: 2rem;

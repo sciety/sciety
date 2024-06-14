@@ -2,6 +2,7 @@
 @use 'settings';
 @use 'functions';
 @use 'breakpoints';
+@use '../standard-separator';
 
 $_triangle-size: 32px;
 
@@ -16,8 +17,8 @@ $_triangle-size: 32px;
 
   .article-card-content {
     @include breakpoints.two-column-display {
+      @include standard-separator.bottom();
       padding-bottom: 2.5rem;
-      border-bottom: settings.$border-width solid settings.$colour-furniture;
     }
   }
 }
