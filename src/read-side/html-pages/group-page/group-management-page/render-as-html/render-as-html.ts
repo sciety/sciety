@@ -17,13 +17,13 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
       <a href="${viewModel.groupHomePageHref}">View public group page</a>
     </p>
   </header>
-  <section class="management-of-featured-lists">
+  <section class="group-management-of-featured-lists">
     <h2>Featured lists</h2>
     <p>Featuring a list on your group home page lets you highlight your review and curation activity to readers.</p>
-    <section class="group-management-section">
+    <section class="group-management-of-featured-lists__sub-section">
       ${renderCurrentlyFeaturedLists(viewModel.currentlyFeaturedLists)}
     </section>
-    <section class="group-management-section">
+    <section class="group-management-of-featured-lists__sub-section">
       ${renderListsThatCanBeFeatured(viewModel.listsThatCanBeFeatured)}
     </section>
   </section>

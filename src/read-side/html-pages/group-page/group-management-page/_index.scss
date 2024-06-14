@@ -4,11 +4,11 @@
 @use 'layout';
 @use '../../standard-separator';
 
-.management-of-featured-lists {
+.group-management-of-featured-lists {
   @include standard-separator.top(layout.$vertical-spacing-coupled-to-page-header);
 }
 
-.group-management-section {
+.group-management-of-featured-lists__sub-section {
   margin-bottom: functions.px-to-rem(16px);
 
  &:last-child {
