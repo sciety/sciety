@@ -2,7 +2,7 @@
 
 .page-header {
   @include layout.page-header-top-space();
-  margin-bottom: 3rem;
+  @include layout.page-header-bottom-space();
 
   p {
     margin-bottom: 0.5rem;

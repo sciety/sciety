@@ -2,6 +2,8 @@
 @use 'functions';
 @use 'breakpoints';
 
+$vertical-spacing-coupled-to-page-header: 3rem;
+
 @mixin visually-hidden() {
   border: 0;
   clip: rect(0 0 0 0);
@@ -50,6 +52,10 @@
   @include breakpoints.not-narrow {
     padding-top: 2.5rem;
   }
+}
+
+@mixin page-header-bottom-space() {
+  margin-bottom: $vertical-spacing-coupled-to-page-header;
 }
 
 @mixin column-two() {

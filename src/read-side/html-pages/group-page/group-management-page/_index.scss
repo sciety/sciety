@@ -1,10 +1,11 @@
 @use 'list';
 @use 'functions';
 @use 'button';
+@use 'layout';
 @use '../../standard-separator';
 
 .management-of-featured-lists {
-  @include standard-separator.top(1rem);
+  @include standard-separator.top(layout.$vertical-spacing-coupled-to-page-header);
 }
 
 .group-management-section {

@@ -9,14 +9,14 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   content: toHtmlFragment(`
   <header class="page-header">
     <h1>${viewModel.pageHeading}</h1>
+    <p>
+      From here you can manage your public group pages on Sciety.
+      You are able to see this page as you are a designated administrator for a Sciety group.
+    </p>
+    <p>
+      <a href="${viewModel.groupHomePageHref}">View public group page</a>
+    </p>
   </header>
-  <p>
-    From here you can manage your public group pages on Sciety.
-    You are able to see this page as you are a designated administrator for a Sciety group.
-  </p>
-  <p>
-    <a href="${viewModel.groupHomePageHref}">View public group page</a>
-  </p>
   <section class="management-of-featured-lists">
     <h2>Featured lists</h2>
     <p>Featuring a list on your group home page lets you highlight your review and curation activity to readers.</p>
