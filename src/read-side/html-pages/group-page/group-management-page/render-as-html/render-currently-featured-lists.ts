@@ -30,7 +30,7 @@ export const renderCurrentlyFeaturedLists = (viewModel: CurrentlyFeaturedLists):
     () => '<p>Currently no featured lists</p>',
     () => renderForms(viewModel),
   ),
-  (content) => `<h2>Currently featured lists</h2>
+  (content) => `<h3>Currently featured lists</h3>
       ${content}
     `,
   toHtmlFragment,

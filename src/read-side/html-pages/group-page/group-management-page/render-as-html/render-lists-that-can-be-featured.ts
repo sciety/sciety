@@ -24,8 +24,7 @@ export const renderListsThatCanBeFeatured = (viewModel: ListsThatCanBeFeatured):
     (items) => `<ul class="list-names-with-actions">${renderListItems(items)}</ul>`,
   ),
   (forms) => toHtmlFragment(`
-    <h2>Feature a list</h2>
-    <p class="standard-form__sub_heading_secondary_text">Choose a list to feature on your group page.</p>
+    <h3>Feature a list</h3>
     ${forms}
   `),
 );
