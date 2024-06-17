@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { toContentWrappedInLayout } from '../content-wrapped-in-layout';
+import { mobileMenu } from '../mobile-menu/mobile-menu';
 import { PageLayout } from '../page-layout';
 import { siteFooter } from '../shared-components/site-footer';
 import { siteHeader } from '../shared-components/site-header';
@@ -13,8 +14,9 @@ export const homePageLayout: PageLayout = (user) => (page) => pipe(
       ${page.content}
     </main>
 
-    ${siteFooter(user)}
+    ${siteFooter}
   </div>
+  ${mobileMenu(user)}
 `,
   toContentWrappedInLayout,
 );

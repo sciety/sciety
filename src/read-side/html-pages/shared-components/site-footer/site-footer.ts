@@ -1,16 +1,12 @@
-import * as O from 'fp-ts/Option';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { UserDetails } from '../../../../types/user-details';
-import { mobileMenu } from '../../mobile-menu/mobile-menu';
+import { toHtmlFragment } from '../../../../types/html-fragment';
 
-export const siteFooter = (user: O.Option<UserDetails>): HtmlFragment => toHtmlFragment(`
+export const siteFooter = toHtmlFragment(`
   <footer>
     <div class="pre-footer">
       <div class="pre-footer__slogan">Stay updated. Get involved.</div>
       <a href="/subscribe-to-mailing-list" class="pre-footer__call_to_action">Subscribe to our newsletter</a>
     </div>
     <div class="main-footer">
-      ${mobileMenu(user)}
       <ul class="main-footer__navigation">
         <li class="main-footer__navigation_item">
           <a href="/sciety-feed" class="main-footer__link">Feed</a>

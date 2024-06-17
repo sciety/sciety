@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/function';
 import { siteFooter } from './site-footer';
 import { siteHeader } from './site-header';
 import { toContentWrappedInLayout } from '../content-wrapped-in-layout';
+import { mobileMenu } from '../mobile-menu/mobile-menu';
 import { PageLayout } from '../page-layout';
 
 export const fullWidthPageLayout: PageLayout = (user) => (page) => pipe(
@@ -14,8 +15,9 @@ export const fullWidthPageLayout: PageLayout = (user) => (page) => pipe(
           ${page.content}
         </div>
       </main>
-      ${siteFooter(user)}
+      ${siteFooter}
     </div>
+    ${mobileMenu(user)}
   `,
   toContentWrappedInLayout,
 );
