@@ -1,6 +1,6 @@
 @use 'settings';;
 @use 'functions';
-@use 'states';
+@use 'link';
 @use 'typography';
 
 @mixin _focus() {
@@ -40,7 +40,7 @@ p {
 
 
   a:link {
-    @include states.link {
+    @include link.state {
       text-decoration: underline;
     }
   }

@@ -5,7 +5,7 @@
 @use 'button';
 @use 'typography';
 @use 'list';
-@use 'states';
+@use 'link';
 @use 'breakpoints';
 @use 'avatar';
 
@@ -81,7 +81,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   &:visited {
     color: settings.$colour-white;
 
-    @include states.link() {
+    @include link.state() {
       background-color: settings.$colour-furniture;
       color: settings.$colour-brand;
       ;

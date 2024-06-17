@@ -3,7 +3,7 @@
 @use 'layout';
 @use 'list';
 @use 'settings';
-@use 'states';
+@use 'link';
 @use 'typography';
 
 .activity-feed__list {
@@ -60,13 +60,13 @@ p.activity-feed__item__title {
   color: settings.$colour-accent;
   margin-bottom: 1rem;
 
-  @include states.link {
+  @include link.state {
     text-decoration: underline;
   }
 }
 
 .activity-feed__item__read_original_source:link {
-  @include states.link {
+  @include link.state {
     text-decoration: underline;
   }
 }
@@ -105,7 +105,7 @@ p.activity-feed__item__title {
   a:visited {
     font-weight: bold;
 
-    @include states.link {
+    @include link.state {
       text-decoration: underline;
     }
   }

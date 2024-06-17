@@ -4,7 +4,7 @@
 @use 'functions';
 @use 'layout';
 @use 'settings';
-@use 'states';
+@use 'link';
 @use 'typography';
 @use 'list';
 @use 'schemed-colours';
@@ -120,7 +120,7 @@ $_left-links-width-not-narrow: 280px;
   &:visited {
     color: var(--colour-text-navigation-link);
 
-    @include states.link() {
+    @include link.state() {
       background-color: settings.$colour-furniture;
       color: settings.$colour-brand;
       ;
