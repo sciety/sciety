@@ -3,6 +3,22 @@
 @use 'states';
 @use 'typography';
 
+@mixin _focus() {
+  &:focus-visible {
+    outline-style: none;
+    box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
+  }
+
+  &:focus {
+    outline-style: none;
+    box-shadow: 0 0 0 settings.$focus-width settings.$colour-focus;
+
+    &:not(:focus-visible) {
+      box-shadow: none;
+    }
+  }
+}
+
 html {
   font-size: unset;
 }
@@ -107,7 +123,7 @@ a[href],
 button,
 input,
 textarea {
-  @include states.focus();
+  @include _focus();
 }
 
 input,

@@ -1,7 +1,6 @@
 @use 'sass:color';
 @use 'functions';
 @use 'settings';
-@use '../sass/states';
 @use 'typography';
 
 @mixin _link($text, $background, $background-hover) {
