@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { wrapWithHeaderAndFooter } from './standard-page-layout/standard-page-layout';
+import { wrapWithHeaderAndFooter } from './wrap-with-header-and-footer';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { toContentWrappedInLayout } from '../content-wrapped-in-layout';
 import { PageLayout } from '../page-layout';

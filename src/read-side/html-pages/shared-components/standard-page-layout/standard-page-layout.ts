@@ -1,22 +1,8 @@
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { UserDetails } from '../../../../types/user-details';
+import { toHtmlFragment } from '../../../../types/html-fragment';
 import { toContentWrappedInLayout } from '../../content-wrapped-in-layout';
-import { mobileMenu } from '../../mobile-menu/mobile-menu';
 import { PageLayout } from '../../page-layout';
-import { siteFooter } from '../site-footer';
-import { siteHeader } from '../site-header';
-
-export const wrapWithHeaderAndFooter = (pageContainerClass: string, user: O.Option<UserDetails>) => (main: HtmlFragment): HtmlFragment => toHtmlFragment(`
-  <div class="${pageContainerClass}">
-    ${siteHeader(user)}
-
-    ${main}
-    ${siteFooter}
-  </div>
-  ${mobileMenu(user)}
-`);
+import { wrapWithHeaderAndFooter } from '../wrap-with-header-and-footer';
 
 export const standardPageLayout: PageLayout = (user) => (page) => pipe(
   `
