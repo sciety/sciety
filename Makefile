@@ -264,7 +264,7 @@ $(MK_LINTED_SASS): node_modules $(SASS_SOURCES) $(TS_SOURCES)
 	npx stylelint 'src/**/*.scss' --cache --cache-location $(STYLELINT_CACHE)
 	npx sass-unused 'src/**/*.scss'
 	rm -f .purgecss/{full,purged}.css
-	npx sass --load-path=src/shared-sass --no-source-map src/read-side/html-pages/style.scss:.purgecss/full.css
+	npx sass --load-path=src/read-side/html-pages/shared-sass --no-source-map src/read-side/html-pages/style.scss:.purgecss/full.css
 	npx purgecss --config purgecss.config.js --css .purgecss/full.css --output .purgecss/purged.css
 	diff .purgecss/full.css .purgecss/purged.css
 	rm -f .purgecss/{full,purged}.css
