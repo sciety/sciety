@@ -64,11 +64,6 @@ spec:
                 secretKeyRef:
                   name: "{{ .Values.postgresqlSecretName }}"
                   key: postgresql-password
-            - name: PGHOST
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Values.postgresqlSecretName }}"
-                  key: postgresql-host
             - name: PGPORT
               valueFrom:
                 secretKeyRef:
