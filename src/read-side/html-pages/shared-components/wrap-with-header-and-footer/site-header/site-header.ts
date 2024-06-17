@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { ColourSchemes } from './colour-schemes';
 import { utilityBar } from './utility-bar';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { UserDetails } from '../../../../types/user-details';
+import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
+import { UserDetails } from '../../../../../types/user-details';
 
 const schemedImages = {
   light: {
