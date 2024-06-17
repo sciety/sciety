@@ -1,8 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../../../types/html-fragment';
-import { toContentWrappedInLayout } from '../content-wrapped-in-layout';
 import { PageLayout } from '../page-layout';
-import { wrapWithHeaderAndFooter } from '../shared-components/wrap-with-header-and-footer';
+import { commonLayout } from '../shared-components/common-layout';
 
 export const createUserAccountFormPageLayout: PageLayout = (user) => (page) => pipe(
   `
@@ -13,6 +12,5 @@ export const createUserAccountFormPageLayout: PageLayout = (user) => (page) => p
   </main>
   `,
   toHtmlFragment,
-  wrapWithHeaderAndFooter('create-user-account-form-page__container', user),
-  toContentWrappedInLayout,
+  commonLayout('create-user-account-form-page__container', user),
 );

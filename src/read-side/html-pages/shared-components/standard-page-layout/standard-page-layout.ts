@@ -1,8 +1,7 @@
 import { pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../../../../types/html-fragment';
-import { toContentWrappedInLayout } from '../../content-wrapped-in-layout';
 import { PageLayout } from '../../page-layout';
-import { wrapWithHeaderAndFooter } from '../wrap-with-header-and-footer';
+import { commonLayout } from '../common-layout';
 
 export const standardPageLayout: PageLayout = (user) => (page) => pipe(
   `
@@ -15,6 +14,5 @@ export const standardPageLayout: PageLayout = (user) => (page) => pipe(
   </main>
   `,
   toHtmlFragment,
-  wrapWithHeaderAndFooter('standard-page-container', user),
-  toContentWrappedInLayout,
+  commonLayout('standard-page-container', user),
 );
