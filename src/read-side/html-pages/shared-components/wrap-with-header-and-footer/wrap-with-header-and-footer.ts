@@ -1,8 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { mobileMenu } from './mobile-menu';
 import { siteFooter } from './site-footer';
-import { siteHeader } from './site-header';
-import { ColourSchemes } from './site-header/colour-schemes';
+import { ColourSchemes, siteHeader } from './site-header';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { UserDetails } from '../../../../types/user-details';
 
