@@ -36,15 +36,32 @@ export const configureRoutes = (
   dependencies: DependenciesForCommands & DependenciesForViews,
   expectedToken: string,
 ): void => {
-  router.get('/api/lists/owned-by/:ownerId', routeForNonHtmlView(ownedBy(dependencies)));
-
-  router.get('/api/status', routeForNonHtmlView(applicationStatus(dependencies)));
-
-  router.get('/api/groups', routeForNonHtmlView(groups(dependencies)));
+  const getEndpointsConfig = [
+    {
+      endpoint: 'lists/owned-by/:ownerId',
+      handler: ownedBy,
+    },
+    {
+      endpoint: 'status',
+      handler: applicationStatus,
+    },
+    {
+      endpoint: 'groups',
+      handler: groups,
+    },
+  ];
+  pipe(
+    getEndpointsConfig,
+    RA.map((route) => ({
+      ...route,
+      endpoint: `/api/${route.endpoint}`,
+    })),
+    RA.map((route) => router.get(route.endpoint, routeForNonHtmlView(route.handler(dependencies)))),
+  );
 
   const configurePostMiddleware = createConfigurePostMiddleware(dependencies, expectedToken);
 
-  const config = [{
+  const postEndpointsConfig = [{
     endpoint: 'add-article-to-list',
     handler: configurePostMiddleware(addArticleToListCommandCodec, listResource.addArticle),
   },
@@ -102,7 +119,7 @@ export const configureRoutes = (
   },
   ];
   pipe(
-    config,
+    postEndpointsConfig,
     RA.map((route) => ({
       ...route,
       endpoint: `/api/${route.endpoint}`,
