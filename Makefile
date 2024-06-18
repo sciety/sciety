@@ -131,7 +131,7 @@ staging-sql:
 	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
 	--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
 	-- psql
 
 prod-sql:
@@ -140,7 +140,7 @@ prod-sql:
 	--env=PGHOST=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGDATABASE') \
 	--env=PGUSER=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
+	--env=PGPASSWORD=$$(kubectl get secret sciety--prod--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
 	-- psql
 
 taiko: export TARGET = fast
@@ -163,7 +163,7 @@ download-exploratory-test-from-prod:
 		--env=PGHOST=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGHOST') \
 		--env=PGDATABASE=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGDATABASE') \
 		--env=PGUSER=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGUSER') \
-		--env=PGPASSWORD=$$(kubectl get secret hive-prod-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d) \
+		--env=PGPASSWORD=$$(kubectl get secret sciety--prod--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
 		--env=AWS_ACCESS_KEY_ID=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."id"'| base64 -d) \
 		--env=AWS_SECRET_ACCESS_KEY=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."secret"'| base64 -d) \
 		-- \
@@ -181,7 +181,7 @@ download-exploratory-test-from-staging:
 		--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 		--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
 		--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-		--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+		--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
 		--env=AWS_ACCESS_KEY_ID=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."id"'| base64 -d) \
 		--env=AWS_SECRET_ACCESS_KEY=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."secret"'| base64 -d) \
 		-- \
@@ -209,7 +209,7 @@ replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from
 	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
 	--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl get secret hive-staging-rds-postgres -o json | jq -r '.data."postgresql-password"'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
 	-- sleep 600
 	kubectl wait --for condition=Ready pod psql
 	kubectl exec psql -- psql -c "DELETE FROM events"
