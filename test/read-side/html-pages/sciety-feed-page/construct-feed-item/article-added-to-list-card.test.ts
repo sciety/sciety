@@ -36,7 +36,7 @@ describe('article-added-to-list-card', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createUserAccount(createuserAccountCommand);
         userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createuserAccountCommand.userId))[0];
-        await framework.commandHelpers.addArticleToList(arbitraryArticleId(), userList.id);
+        await framework.commandHelpers.addArticleToList({ articleId: arbitraryArticleId(), listId: userList.id });
 
         viewModel = pipe(
           constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList.id, date }),

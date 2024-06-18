@@ -3,6 +3,7 @@ import { identity, pipe } from 'fp-ts/function';
 import { rawUserInput } from '../../../../src/read-side';
 import { constructViewModel } from '../../../../src/read-side/html-pages/edit-list-details-form-page/construct-view-model';
 import { ViewModel } from '../../../../src/read-side/html-pages/edit-list-details-form-page/render-edit-list-details-form-page';
+import * as DE from '../../../../src/types/data-error';
 import { TestFramework, createTestFramework } from '../../../framework/create-test-framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
@@ -43,7 +44,7 @@ describe('construct-view-model', () => {
 
   describe('when the list does not exist', () => {
     const listId = arbitraryListId();
-    let result: 'no-such-list';
+    let result: DE.DataError;
 
     beforeEach(() => {
       result = pipe(
@@ -57,7 +58,7 @@ describe('construct-view-model', () => {
     });
 
     it('fails with an appropriate message', () => {
-      expect(result).toBe('no-such-list');
+      expect(DE.isNotFound(result)).toBe(true);
     });
   });
 });

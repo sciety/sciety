@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { deriveFullTextsOfEvaluations, lookupFullText } from './derive-full-texts-of-evaluations';
 import { toJatsXmlUrlOfPublisher } from './to-jats-xml-url-of-publisher';
-import { Logger } from '../../../shared-ports';
+import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
 import { QueryExternalService } from '../../query-external-service';
 import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';

@@ -4,31 +4,27 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
+import { GroupId } from '../../../../types/group-id';
 import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
 import { sanitise } from '../../../../types/sanitised-html-fragment';
+import { constructGroupPagePath } from '../../../paths';
 import { detectLanguage } from '../../shared-components/lang-attribute';
 import { EvaluationPublishedFeedItem } from '../view-model';
+
+const constructGroupDetails = (dependencies: Dependencies, groupId: GroupId) => pipe(
+  groupId,
+  dependencies.getGroup,
+  O.map((group) => ({
+    name: group.name,
+    href: constructGroupPagePath.home.href(group),
+    avatarSrc: group.avatarPath,
+  })),
+);
 
 export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
   evaluation: RecordedEvaluation,
 ): T.Task<EvaluationPublishedFeedItem> => pipe(
   {
-    groupDetails: pipe(
-      dependencies.getGroup(evaluation.groupId),
-      O.match(
-        () => ({
-          groupName: 'A group',
-          groupHref: `/groups/${evaluation.groupId}`,
-          groupAvatarSrc: '/static/images/sciety-logo.jpg',
-        }),
-        (group) => ({
-          groupName: group.name,
-          groupHref: `/groups/${group.slug}`,
-          groupAvatarSrc: group.avatarPath,
-        }),
-      ),
-      T.of,
-    ),
     sourceHref: pipe(
       evaluation.evaluationLocator,
       dependencies.fetchEvaluationHumanReadableOriginalUrl,
@@ -50,14 +46,12 @@ export const toEvaluationPublishedFeedItem = (dependencies: Dependencies) => (
     ),
   },
   sequenceS(T.ApplyPar),
-  T.map(({
-    groupDetails, evaluationDigest, sourceHref,
-  }) => ({
+  T.map(({ evaluationDigest, sourceHref }) => ({
     type: 'evaluation-published' as const,
     id: evaluation.evaluationLocator,
     sourceHref,
     publishedAt: evaluation.publishedAt,
-    ...groupDetails,
+    groupDetails: constructGroupDetails(dependencies, evaluation.groupId),
     digest: O.map(sanitise)(evaluationDigest.digest),
     digestLanguageCode: evaluationDigest.digestLanguageCode,
   })),

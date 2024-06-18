@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { CompleteHtmlDocument } from './complete-html-document';
+import { ErrorPageViewModel } from './construct-error-page-view-model';
 import { HtmlPage, toHtmlPage } from './html-page';
 import { PageLayout } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
@@ -9,14 +10,13 @@ import { ClientClassification } from './shared-components/head';
 import { standardPageLayout } from './shared-components/standard-page-layout';
 import { wrapInHtmlDocument } from './wrap-in-html-document';
 import * as DE from '../../types/data-error';
-import { ErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { UserDetails } from '../../types/user-details';
 
 const toErrorResponse = (
   user: O.Option<UserDetails>,
   clientClassification: ClientClassification,
 ) => (
-  error: ErrorPageBodyViewModel,
+  error: ErrorPageViewModel,
 ): HtmlResponse => pipe(
   renderOopsMessage(error.message),
   (content) => toHtmlPage({
@@ -53,7 +53,7 @@ type ConstructHtmlResponse = (
   userDetails: O.Option<UserDetails>,
   pageLayout: PageLayout,
   clientClassification: ClientClassification)
-=> (renderedPage: E.Either<ErrorPageBodyViewModel, HtmlPage>)
+=> (renderedPage: E.Either<ErrorPageViewModel, HtmlPage>)
 => HtmlResponse;
 
 export const constructHtmlResponse: ConstructHtmlResponse = (

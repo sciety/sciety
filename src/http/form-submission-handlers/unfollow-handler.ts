@@ -1,53 +1,48 @@
 import { Middleware } from '@koa/router';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
-import { Logger } from '../../shared-ports';
+import { decodeFormSubmission } from './decode-form-submission';
+import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
+import { Logger } from '../../logger';
 import { GroupIdFromStringCodec } from '../../types/group-id';
-import { unfollowCommandHandler } from '../../write-side/command-handlers';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { DependenciesForCommands } from '../../write-side';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import * as groupFollowResource from '../../write-side/resources/group-follow';
 
-type Dependencies = GetLoggedInScietyUserDependencies & DependenciesForCommands & {
+type Dependencies = DependenciesForCommands & EnsureUserIsLoggedInDependencies & {
   logger: Logger,
 };
 
-const requestCodec = t.type({
-  body: t.type({
-    editorialcommunityid: GroupIdFromStringCodec,
-  }),
+const formBodyCodec = t.strict({
+  editorialcommunityid: GroupIdFromStringCodec,
 });
 
-export const unfollowHandler = (dependencies: Dependencies): Middleware => async (context, next) => {
-  await pipe(
-    context.request,
-    requestCodec.decode,
-    O.fromEither,
-    O.map((req) => req.body.editorialcommunityid),
-    O.match(
-      () => context.throw(StatusCodes.BAD_REQUEST),
-      async (groupId) => pipe(
-        getLoggedInScietyUser(dependencies, context),
-        O.match(
-          () => {
-            dependencies.logger('error', 'Logged in user not found', { context });
-            context.response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-          },
-          async (userDetails) => {
-            context.redirect('back');
-            await pipe(
-              {
-                userId: userDetails.id,
-                groupId,
-              },
-              unfollowCommandHandler(dependencies),
-            )();
-          },
-        ),
-      ),
-    ),
+export const unfollowHandler = (dependencies: Dependencies): Middleware => async (context) => {
+  const loggedInUserId = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to unfollow a group.');
+  if (O.isNone(loggedInUserId)) {
+    return;
+  }
+  const formBody = decodeFormSubmission(
+    dependencies,
+    context,
+    formBodyCodec,
+    loggedInUserId.value,
   );
+  if (E.isLeft(formBody)) {
+    return;
+  }
 
-  await next();
+  const command = {
+    userId: loggedInUserId.value,
+    groupId: formBody.right.editorialcommunityid,
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const commandResult = await pipe(
+    command,
+    executeResourceAction(dependencies, groupFollowResource.unfollow),
+  )();
+  context.redirect('back');
 };

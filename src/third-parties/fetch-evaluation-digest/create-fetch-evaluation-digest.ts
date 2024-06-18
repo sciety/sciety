@@ -8,7 +8,7 @@ import { fetchNcrcEvaluationDigest } from './ncrc';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRapidReviewsEvaluationDigest } from './rapid-reviews';
 import { fetchZenodoRecord } from './zenodo';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { ExternalQueries } from '../external-queries';
 import { QueryExternalService } from '../query-external-service';
 

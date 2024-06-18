@@ -19,19 +19,6 @@ $_clear-button-inline-size: 48px;
   position: relative;
 }
 
-.search-form__text {
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
-  height: $_text-input-height;
-  width: 100%;
-  padding-top: functions.px-to-rem(17px);
-  padding-bottom: functions.px-to-rem(17px);
-  padding-left: functions.px-to-rem(12px);
-  padding-right: functions.px-to-rem($_clear-button-inline-size);
-  margin-bottom: functions.px-to-rem(8px);
-  color: settings.$colour-text-primary;
-}
-
 .search-form__checkbox_label {
   @include typography.body();
   display: inline-block;

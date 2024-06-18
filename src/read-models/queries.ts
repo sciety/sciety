@@ -5,6 +5,7 @@ import { evaluatedArticlesLists } from './evaluated-articles-lists';
 import { evaluations } from './evaluations';
 import { followings } from './followings';
 import { groupActivity } from './group-activity';
+import { groupAuthorisations } from './group-authorisations';
 import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { lists } from './lists';
@@ -18,6 +19,7 @@ const queries = {
   ...evaluatedArticlesLists.queries,
   ...followings.queries,
   ...groupActivity.queries,
+  ...groupAuthorisations.queries,
   ...groups.queries,
   ...idsOfEvalutedArticlesLists.queries,
   ...lists.queries,

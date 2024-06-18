@@ -1,0 +1,32 @@
+@use 'list';
+@use 'functions';
+@use 'button';
+@use 'layout';
+@use 'standard-separator';
+
+.group-management-of-featured-lists {
+  @include standard-separator.top(layout.$vertical-spacing-coupled-to-page-header);
+}
+
+.group-management-of-featured-lists__sub-section {
+  margin-bottom: functions.px-to-rem(16px);
+
+ &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.list-names-with-actions {
+  @include list.basics();
+  margin-bottom: 0;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: functions.px-to-rem(8px);
+
+    button {
+      @include button.secondary();
+    }
+  }
+}

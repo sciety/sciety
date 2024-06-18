@@ -6,3 +6,8 @@ export const arbitraryListPromotionCreatedEvent = (): EventOfType<'ListPromotion
   byGroup: arbitraryGroupId(),
   listId: arbitraryListId(),
 });
+
+export const arbitraryListPromotionRemovedEvent = (): EventOfType<'ListPromotionRemoved'> => constructEvent('ListPromotionRemoved')({
+  byGroup: arbitraryGroupId(),
+  listId: arbitraryListId(),
+});

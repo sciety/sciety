@@ -10,6 +10,9 @@ type RemoveArticleFromListCommandHandler = (
   dependencies: DependenciesForCommands
 ) => CommandHandler<RemoveArticleFromListCommand>;
 
+/**
+ * @deprecated should be substituted with executeResourceAction
+ */
 export const removeArticleFromListCommandHandler: RemoveArticleFromListCommandHandler = (
   dependencies,
 ) => (

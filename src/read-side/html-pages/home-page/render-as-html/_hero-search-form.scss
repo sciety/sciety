@@ -7,7 +7,7 @@
 
 $_input-height: 48px;
 $_search-icon-size: functions.px-to-rem(24px);
-$_search-input-width: 320px;
+$_search-input-width: 416px;
 $_search-button-width: 76px;
 $_search-button-width-with-separation: $_search-button-width + settings.$default-form-element-separation;
 $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-width-with-separation;
@@ -61,7 +61,7 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
   padding-right: functions.px-to-rem(settings.$default-form-gutter);
   color: settings.$colour-text-primary;
   margin-bottom: functions.px-to-rem(10px);
-  width: functions.px-to-rem($_search-input-width);
+  width: 100%;
 
   @include breakpoints.not-narrow() {
     margin-right: functions.px-to-rem(settings.$default-form-element-separation);

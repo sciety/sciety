@@ -1,5 +1,5 @@
 import { Payload } from './types';
-import { LogLevel } from '../../shared-ports/log-level';
+import { LogLevel } from '../../logger/log-level';
 
 type Entry = {
   timestamp: Date,

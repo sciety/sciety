@@ -28,9 +28,13 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addGroup1);
-        await framework.commandHelpers.updateGroupDetails(addGroup1.groupId, group1LogoPath);
+        await framework.commandHelpers.updateGroupDetails(
+          { groupId: addGroup1.groupId, largeLogoPath: group1LogoPath },
+        );
         await framework.commandHelpers.addGroup(addGroup2);
-        await framework.commandHelpers.updateGroupDetails(addGroup2.groupId, group2LogoPath);
+        await framework.commandHelpers.updateGroupDetails(
+          { groupId: addGroup2.groupId, largeLogoPath: group2LogoPath },
+        );
         groups = pipe(
           constructViewModel(framework.dependenciesForViews, [
             { groupId: addGroup1.groupId },
@@ -52,9 +56,13 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addExistingGroup);
-        await framework.commandHelpers.updateGroupDetails(addExistingGroup.groupId, arbitraryString());
+        await framework.commandHelpers.updateGroupDetails(
+          { groupId: addExistingGroup.groupId, largeLogoPath: arbitraryString() },
+        );
         await framework.commandHelpers.addGroup(addNotSelectedGroup);
-        await framework.commandHelpers.updateGroupDetails(addNotSelectedGroup.groupId, arbitraryString());
+        await framework.commandHelpers.updateGroupDetails(
+          { groupId: addNotSelectedGroup.groupId, largeLogoPath: arbitraryString() },
+        );
         viewModel = constructViewModel(framework.dependenciesForViews, [
           { groupId: addExistingGroup.groupId },
           { groupId: arbitraryGroupId() },

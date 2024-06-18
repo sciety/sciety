@@ -8,7 +8,7 @@ import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { constructNcrcEvaluationDigest, NcrcReview } from './construct-ncrc-evaluation-digest';
 import { sheetId } from './sheet-id';
-import { Logger } from '../../../shared-ports';
+import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
 import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 import Params$Resource$Spreadsheets$Values$Get = sheets_v4.Params$Resource$Spreadsheets$Values$Get;

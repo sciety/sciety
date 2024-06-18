@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 
 export const defaultDestination = '/';
 
@@ -21,7 +21,7 @@ export const calculateAuthenticationDestination = (
   O.filter(isHostedBy(applicationHostname)),
   O.map(urlToString),
   O.getOrElse(() => {
-    logger('error', "Can't use the referer as an authentication destination", { referer });
+    logger('debug', 'No internal referer, using the homepage as the authentication destination', { referer });
     return defaultDestination;
   }),
 );

@@ -49,7 +49,9 @@ describe('my-feed acceptance', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
-        await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
+        await framework.commandHelpers.followGroup(
+          { userId: createUserAccountCommand.userId, groupId: addGroupCommand.groupId },
+        );
       });
 
       it('displays the calls to action to follow other groups or return later', async () => {
@@ -80,7 +82,9 @@ describe('my-feed acceptance', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
         };
-        await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
+        await framework.commandHelpers.followGroup(
+          { userId: createUserAccountCommand.userId, groupId: addGroupCommand.groupId },
+        );
         await framework.commandHelpers.recordEvaluationPublication(command);
         const html = await myFeed(defaultDependencies)(createUserAccountCommand.userId, 20, 1)();
 
@@ -100,7 +104,9 @@ describe('my-feed acceptance', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
         };
-        await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
+        await framework.commandHelpers.followGroup(
+          { userId: createUserAccountCommand.userId, groupId: addGroupCommand.groupId },
+        );
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluation1);
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluation2);
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluation3);
@@ -117,7 +123,9 @@ describe('my-feed acceptance', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: addGroupCommand.groupId,
         };
-        await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
+        await framework.commandHelpers.followGroup(
+          { userId: createUserAccountCommand.userId, groupId: addGroupCommand.groupId },
+        );
         await framework.commandHelpers.recordEvaluationPublication(recordEvaluation);
         const dependencies = {
           ...defaultDependencies,
@@ -139,7 +147,9 @@ describe('my-feed acceptance', () => {
             ...arbitraryRecordEvaluationPublicationCommand(),
             groupId: addGroupCommand.groupId,
           };
-          await framework.commandHelpers.followGroup(createUserAccountCommand.userId, addGroupCommand.groupId);
+          await framework.commandHelpers.followGroup(
+            { userId: createUserAccountCommand.userId, groupId: addGroupCommand.groupId },
+          );
           await framework.commandHelpers.recordEvaluationPublication(recordEvaluation);
           const dependencies = {
             ...defaultDependencies,

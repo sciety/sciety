@@ -3,6 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { Dependencies, DiscoverPublishedEvaluations } from '../discover-published-evaluations';
+import { FetchData } from '../fetch-data';
+import { Configuration } from '../generate-configuration-from-environment';
 import * as CR from '../third-parties/crossref';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 
@@ -24,9 +26,9 @@ type CrossrefReview = CR.CrossrefItem & {
   biorxivDoi: string,
 };
 
-const getReviews = (reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => pipe(
+const getReviews = (fetchData: FetchData, crossrefApiBearerToken: Configuration['crossrefApiBearerToken'], reviewDoiPrefix: string) => (biorxivItem: BiorxivItem) => pipe(
   biorxivItem.published_doi,
-  CR.fetchReviewsBy(reviewDoiPrefix),
+  CR.fetchReviewsBy(fetchData, crossrefApiBearerToken, reviewDoiPrefix),
   TE.map(RA.map((item) => ({
     ...item,
     biorxivDoi: biorxivItem.biorxiv_doi,
@@ -62,6 +64,7 @@ const fetchPaginatedData = (
 
 const identifyCandidates = (
   dependencies: Dependencies,
+  crossrefApiBearerToken: Configuration['crossrefApiBearerToken'],
   doiPrefix: string,
   reviewDoiPrefix: string,
   ingestDays: number,
@@ -71,16 +74,17 @@ const identifyCandidates = (
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
     fetchPaginatedData(dependencies, baseUrl, 0),
-    TE.chain(TE.traverseSeqArray(getReviews(reviewDoiPrefix))),
+    TE.chain(TE.traverseSeqArray(getReviews(dependencies.fetchData, crossrefApiBearerToken, reviewDoiPrefix))),
     TE.map(RA.flatten),
   );
 };
 
 export const discoverEvaluationsFromCrossrefViaBiorxiv = (
+  crossrefApiBearerToken: Configuration['crossrefApiBearerToken'],
   doiPrefix: string,
   reviewDoiPrefix: string,
 ): DiscoverPublishedEvaluations => (ingestDays) => (dependencies) => pipe(
-  identifyCandidates(dependencies, doiPrefix, reviewDoiPrefix, ingestDays),
+  identifyCandidates(dependencies, crossrefApiBearerToken, doiPrefix, reviewDoiPrefix, ingestDays),
   TE.map(RA.map(toEvaluation)),
   TE.map((evaluations) => ({
     understood: evaluations,

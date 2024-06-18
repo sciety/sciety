@@ -1,35 +1,52 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { ReadAndWriteSides } from './create-read-and-write-sides';
-import { ArticleId } from '../../src/types/article-id';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
-import { GroupId } from '../../src/types/group-id';
-import { ListId } from '../../src/types/list-id';
-import { UserId } from '../../src/types/user-id';
 import {
+  AddArticleToListCommand,
   AddGroupCommand,
   AnnotateArticleInListCommand,
-  CreateUserAccountCommand,
+  AssignUserAsGroupAdminCommand,
+  CreateUserAccountCommand, FollowCommand,
+  PromoteListCommand,
   RecordEvaluationPublicationCommand,
+  RemoveArticleFromListCommand,
+  RemoveListPromotionCommand,
+  UnfollowCommand,
   UpdateEvaluationCommand,
+  UpdateGroupDetailsCommand,
+  UpdateUserDetailsCommand,
 } from '../../src/write-side/commands';
 import { CreateListCommand } from '../../src/write-side/commands/create-list';
+import * as evaluation from '../../src/write-side/resources/evaluation';
+import {
+  Dependencies as DependenciesForExecuteResourceAction,
+  executeResourceAction,
+} from '../../src/write-side/resources/execute-resource-action';
+import * as group from '../../src/write-side/resources/group';
+import * as groupAuthorisation from '../../src/write-side/resources/group-authorisation';
+import * as groupFollowResource from '../../src/write-side/resources/group-follow';
+import * as listResource from '../../src/write-side/resources/list';
+import * as listPromotionResource from '../../src/write-side/resources/list-promotion';
+import * as user from '../../src/write-side/resources/user';
 import { abortTest } from '../abort-test';
 
 export type CommandHelpers = {
-  addArticleToList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
+  addArticleToList: (command: AddArticleToListCommand) => Promise<unknown>,
   addGroup: (command: AddGroupCommand) => Promise<unknown>,
+  assignUserAsGroupAdmin: (command: AssignUserAsGroupAdminCommand) => Promise<unknown>,
   createAnnotation: (command: AnnotateArticleInListCommand) => Promise<unknown>,
   createList: (command: CreateListCommand) => Promise<unknown>,
   createUserAccount: (command: CreateUserAccountCommand) => Promise<unknown>,
-  followGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
+  followGroup: (command: FollowCommand) => Promise<unknown>,
+  promoteList: (command: PromoteListCommand) => Promise<unknown>,
   recordEvaluationPublication: (command: RecordEvaluationPublicationCommand) => Promise<unknown>,
-  removeArticleFromList: (articleId: ArticleId, listId: ListId) => Promise<unknown>,
-  unfollowGroup: (userId: UserId, groupId: GroupId) => Promise<unknown>,
+  removeArticleFromList: (command: RemoveArticleFromListCommand) => Promise<unknown>,
+  unfollowGroup: (command: UnfollowCommand) => Promise<unknown>,
+  unpromoteList: (command: RemoveListPromotionCommand) => Promise<unknown>,
   updateEvaluation: (command: UpdateEvaluationCommand) => Promise<unknown>,
-  updateGroupDetails: (groupId: GroupId, largeLogoPath: string) => Promise<unknown>,
-  updateUserDetails: (userId: UserId, avatarUrl?: string, displayName?: string) => Promise<unknown>,
+  updateGroupDetails: (command: UpdateGroupDetailsCommand) => Promise<unknown>,
+  updateUserDetails: (command: UpdateUserDetailsCommand) => Promise<unknown>,
 };
 
 const invoke = <C extends GenericCommand>(
@@ -41,51 +58,22 @@ const invoke = <C extends GenericCommand>(
     TE.getOrElse(abortTest(`${name} helper`)),
   )();
 
-export const createCommandHelpers = (commandHandlers: ReadAndWriteSides['commandHandlers']): CommandHelpers => ({
-  addArticleToList: async (articleId, listId) => pipe(
-    {
-      articleId,
-      listId,
-    },
-    invoke(commandHandlers.addArticleToList, 'addArticleToList'),
-  ),
-  addGroup: invoke(commandHandlers.addGroup, 'addGroup'),
-  createAnnotation: invoke(commandHandlers.createAnnotation, 'createAnnotation'),
-  createList: invoke(commandHandlers.createList, 'createList'),
-  createUserAccount: invoke(commandHandlers.createUserAccount, 'createUserAccount'),
-  followGroup: async (userId, groupId) => pipe(
-    { userId, groupId },
-    invoke(commandHandlers.followGroup, 'followGroup'),
-  ),
-  recordEvaluationPublication: invoke(commandHandlers.recordEvaluationPublication, 'recordEvaluationPublication'),
-  removeArticleFromList: async (articleId, listId) => pipe(
-    {
-      articleId,
-      listId,
-    },
-    invoke(commandHandlers.removeArticleFromList, 'removeArticleFromList'),
-  ),
-  unfollowGroup: async (userId, groupId) => pipe(
-    {
-      userId,
-      groupId,
-    },
-    invoke(commandHandlers.unfollowGroup, 'unfollowGroup'),
-  ),
-  updateEvaluation: invoke(commandHandlers.updateEvaluation, 'updateEvaluation'),
-  updateGroupDetails: async (groupId, largeLogoPath) => pipe(
-    {
-      groupId,
-      largeLogoPath,
-    },
-    invoke(commandHandlers.updateGroupDetails, 'updateGroupDetails'),
-  ),
-  updateUserDetails: async (userId, avatarUrl, displayName) => pipe(
-    {
-      userId,
-      avatarUrl,
-      displayName,
-    },
-    invoke(commandHandlers.updateUserDetails, 'updateUserDetails'),
-  ),
+export const createCommandHelpers = (
+  dependencies: DependenciesForExecuteResourceAction,
+): CommandHelpers => ({
+  addArticleToList: invoke(executeResourceAction(dependencies, listResource.addArticle), 'addArticleToList'),
+  addGroup: invoke(executeResourceAction(dependencies, group.create), 'addGroup'),
+  assignUserAsGroupAdmin: invoke(executeResourceAction(dependencies, groupAuthorisation.assign), 'assignUserAsGroupAdmin'),
+  createAnnotation: invoke(executeResourceAction(dependencies, listResource.annotate), 'createAnnotation'),
+  createList: invoke(executeResourceAction(dependencies, listResource.create), 'createList'),
+  createUserAccount: invoke(executeResourceAction(dependencies, user.create), 'createUserAccount'),
+  followGroup: invoke(executeResourceAction(dependencies, groupFollowResource.follow), 'followGroup'),
+  promoteList: invoke(executeResourceAction(dependencies, listPromotionResource.create), 'promoteList'),
+  recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
+  removeArticleFromList: invoke(executeResourceAction(dependencies, listResource.removeArticle), 'removeArticleFromList'),
+  unfollowGroup: invoke(executeResourceAction(dependencies, groupFollowResource.unfollow), 'unfollowGroup'),
+  unpromoteList: invoke(executeResourceAction(dependencies, listPromotionResource.remove), 'unpromoteList'),
+  updateEvaluation: invoke(executeResourceAction(dependencies, evaluation.update), 'updateEvaluation'),
+  updateGroupDetails: invoke(executeResourceAction(dependencies, group.update), 'updateGroupDetails'),
+  updateUserDetails: invoke(executeResourceAction(dependencies, user.update), 'updateUserDetails'),
 });

@@ -14,9 +14,11 @@ export const arbitrary = (): EvaluationPublishedFeedItem => ({
   id: arbitraryEvaluationLocator(),
   sourceHref: O.some(arbitraryUrl()),
   publishedAt: new Date(),
-  groupHref: arbitraryWord(),
-  groupName: 'group 1',
-  groupAvatarSrc: '/avatar',
+  groupDetails: O.some({
+    href: arbitraryWord(),
+    name: 'group 1',
+    avatarSrc: '/avatar',
+  }),
   digest: pipe(arbitraryString(), toHtmlFragment, sanitise, O.some),
   digestLanguageCode: O.none,
 });

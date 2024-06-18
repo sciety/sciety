@@ -5,13 +5,13 @@ import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import bodyParser from 'koa-bodyparser';
 import compose from 'koa-compose';
-import { CollectedPorts } from '../../infrastructure';
 import { GenericCommand } from '../../types/command-handler';
+import { DependenciesForCommands } from '../../write-side';
 import { executeCommand } from '../../write-side/commands';
 import { ResourceAction } from '../../write-side/resources/resource-action';
 
 const executeAndRespond = <C extends GenericCommand>(
-  dependencies: CollectedPorts,
+  dependencies: DependenciesForCommands,
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
   expectedToken: string,
@@ -42,7 +42,7 @@ const executeAndRespond = <C extends GenericCommand>(
   };
 
 export const createConfigurePostMiddleware = (
-  ports: CollectedPorts,
+  ports: DependenciesForCommands,
   expectedToken: string,
 ) => <C extends GenericCommand>(
   codec: t.Decoder<unknown, C>,

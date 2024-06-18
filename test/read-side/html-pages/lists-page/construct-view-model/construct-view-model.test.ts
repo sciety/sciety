@@ -30,9 +30,9 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), initialUserList.id);
+      await framework.commandHelpers.addArticleToList({ articleId: arbitraryArticleId(), listId: initialUserList.id });
       await framework.commandHelpers.createList(command);
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), command.listId);
+      await framework.commandHelpers.addArticleToList({ articleId: arbitraryArticleId(), listId: command.listId });
 
       viewmodel = pipe(
         { page: 1 },
@@ -61,7 +61,9 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createListCommand.listId);
+        await framework.commandHelpers.addArticleToList(
+          { articleId: arbitraryArticleId(), listId: createListCommand.listId },
+        );
 
         viewmodel = pipe(
           { page: 1 },

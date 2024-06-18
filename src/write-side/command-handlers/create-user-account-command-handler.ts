@@ -6,6 +6,9 @@ import { CreateUserAccountCommand } from '../commands/create-user-account';
 import { DependenciesForCommands } from '../dependencies-for-commands';
 import { create } from '../resources/user';
 
+/**
+ * @deprecated should be substituted with executeResourceAction
+ */
 export const createUserAccountCommandHandler = (
   dependencies: DependenciesForCommands,
 ): CommandHandler<CreateUserAccountCommand> => (command) => pipe(

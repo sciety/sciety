@@ -7,38 +7,25 @@ import * as R from 'fp-ts/Record';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { v4 } from 'uuid';
 import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
 import { fetchData } from './fetch-data';
+import { Configuration } from './generate-configuration-from-environment';
+import { report } from './report';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
 
-export type GroupIngestionConfiguration = {
-  id: string,
+export type EvaluationDiscoveryProcess = {
+  groupId: string,
   name: string,
   discoverPublishedEvaluations: DiscoverPublishedEvaluations,
 };
 
-type LevelName = 'error' | 'warn' | 'info' | 'debug';
-
-const correlationId = v4();
-
-const report = (level: LevelName, message: string) => (payload: Record<string, unknown>) => {
-  const thingToLog = {
-    timestamp: new Date(),
-    level,
-    correlationId,
-    message,
-    payload,
-  };
-  process.stderr.write(`${JSON.stringify(thingToLog)}\n`);
-};
-
 const reportSkippedItems = (
-  group: GroupIngestionConfiguration,
+  ingestDebug: Configuration['ingestDebug'],
+  group: EvaluationDiscoveryProcess,
 ) => (
   discoveredPublishedEvaluations: DiscoveredPublishedEvaluations,
 ) => {
-  if (process.env.INGEST_DEBUG && process.env.INGEST_DEBUG.length > 0) {
+  if (ingestDebug) {
     pipe(
       discoveredPublishedEvaluations.skipped,
       RA.map((skippedItem) => ({ item: skippedItem.item, reason: skippedItem.reason, groupName: group.name })),
@@ -62,23 +49,20 @@ axiosRetry(axios, {
   retryCondition: () => true,
   retryDelay: exponentialDelay,
   onRetry: (retryCount: number, error) => {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    process.stderr.write(`Retrying retryCount: ${retryCount}, error: ${error}, url: ${error.config?.url}, data: ${error.config?.data}\n`);
+    report('warn', 'Retrying HTTP request')({
+      retryCount,
+      error: error.message,
+      url: error.config?.url,
+      data: error.config?.data,
+    });
   },
 });
 
-export type Config = {
-  targetApp: string,
-  bearerToken: string,
-  groupsToIngest: ReadonlyArray<GroupIngestionConfiguration>,
-  ingestDays: number,
-};
-
-const send = (config: Config) => (evaluationCommand: EvaluationCommand) => pipe(
+const send = (environment: Configuration) => (evaluationCommand: EvaluationCommand) => pipe(
   TE.tryCatch(
-    async () => axios.post(`${config.targetApp}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
+    async () => axios.post(`${environment.targetApp}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
       headers: {
-        Authorization: `Bearer ${config.bearerToken}`,
+        Authorization: `Bearer ${environment.bearerToken}`,
         'Content-Type': 'application/json',
       },
       timeout: 10000,
@@ -104,19 +88,19 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 );
 
 const sendRecordEvaluationCommands = (
-  group: GroupIngestionConfiguration,
-  config: Config,
+  group: EvaluationDiscoveryProcess,
+  environment: Configuration,
 ) => (discoveredPublishedEvaluations: DiscoveredPublishedEvaluations) => pipe(
   discoveredPublishedEvaluations.understood,
   RA.map((evaluation) => ({
-    groupId: group.id,
+    groupId: group.groupId,
     expressionDoi: evaluation.paperExpressionDoi,
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.publishedOn,
     authors: evaluation.authors,
     evaluationType: evaluation.evaluationType,
   })),
-  T.traverseSeqArray(send(config)),
+  T.traverseSeqArray(send(environment)),
   T.map((array) => {
     const leftsCount = RA.lefts(array).length;
     const lefts = pipe(
@@ -125,39 +109,47 @@ const sendRecordEvaluationCommands = (
       RA.reduce({}, countUniques),
     );
     const rightsCount = RA.rights(array).length;
-    const summaryOfRequests = {
+    const summary = {
       groupName: group.name,
       lefts,
       leftsTotal: leftsCount,
       rightsTotal: rightsCount,
+      skippedTotal: discoveredPublishedEvaluations.skipped.length,
     };
     if (leftsCount > 0) {
-      return E.left(summaryOfRequests);
+      return E.left(summary);
     }
-    return E.right(summaryOfRequests);
+    return E.right(summary);
   }),
 );
 
-const updateGroup = (config: Config) => (group: GroupIngestionConfiguration): TE.TaskEither<unknown, void> => pipe(
-  { fetchData },
-  group.discoverPublishedEvaluations(config.ingestDays),
+const recordDiscoveredEvaluations = (
+  environment: Configuration,
+) => (
+  process: EvaluationDiscoveryProcess,
+): TE.TaskEither<unknown, void> => pipe(
+  { fetchData: fetchData(environment) },
+  process.discoverPublishedEvaluations(environment.ingestDays),
   TE.bimap(
     (error) => ({
-      groupName: group.name,
+      processName: process.name,
       cause: 'Could not discover any published evaluations',
       error,
     }),
-    reportSkippedItems(group),
+    reportSkippedItems(environment.ingestDebug, process),
   ),
-  TE.chainW(sendRecordEvaluationCommands(group, config)),
+  TE.chainW(sendRecordEvaluationCommands(process, environment)),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
   ),
 );
 
-export const updateAll = (config: Config): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
-  config.groupsToIngest,
-  T.traverseSeqArray(updateGroup(config)),
+export const updateAll = (
+  environment: Configuration,
+  evaluationDiscoveryProcesses: ReadonlyArray<EvaluationDiscoveryProcess>,
+): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
+  evaluationDiscoveryProcesses,
+  T.traverseSeqArray(recordDiscoveredEvaluations(environment)),
   T.map(E.sequenceArray),
 );

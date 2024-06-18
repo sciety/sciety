@@ -7,28 +7,19 @@ import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
 import * as DE from '../../../types/data-error';
-import { toErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { ConstructPage } from '../construct-page';
+import { constructErrorPageViewModel } from '../construct-error-page-view-model';
+import { ConstructLoggedInPage } from '../construct-page';
 
 export const saveArticleFormPage = (
   dependencies: Dependencies,
-): ConstructPage => (
-  input,
-) => pipe(
+): ConstructLoggedInPage => (userId, input) => pipe(
   input,
   paramsCodec.decode,
   E.mapLeft((errors) => {
     dependencies.logger('warn', 'saveArticleFormPage params codec failed', { errors: formatValidationErrors(errors) });
-    return errors;
+    return DE.notFound;
   }),
   TE.fromEither,
-  TE.chainW(constructViewModel(dependencies)),
-  TE.bimap(
-    () => toErrorPageBodyViewModel({
-      type: DE.unavailable,
-      message: toHtmlFragment('Sorry, something went wrong. Please try again later.'),
-    }),
-    renderAsHtml,
-  ),
+  TE.chainW(constructViewModel(dependencies, userId)),
+  TE.bimap(constructErrorPageViewModel, renderAsHtml),
 );

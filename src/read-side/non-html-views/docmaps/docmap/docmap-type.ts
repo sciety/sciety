@@ -62,6 +62,10 @@ type Publisher = {
   },
 };
 
+type Steps = {
+  readonly [key: string]: Step,
+};
+
 export type Docmap = {
   '@context': string,
   id: string,
@@ -70,5 +74,5 @@ export type Docmap = {
   updated: string,
   publisher: Publisher,
   'first-step': '_:b0',
-  steps: Record<string, Step>,
+  steps: Steps,
 };

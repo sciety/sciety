@@ -22,6 +22,10 @@ spec:
           resources:
             requests:
               cpu: 1.0
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}--public-env-vars
+                optional: true
           env:
             - name: ALLOW_SITE_CRAWLERS
               value: "{{ .Values.allowSiteCrawlers }}"
@@ -45,31 +49,11 @@ spec:
               value: "https://{{ .Values.hostname }}"
             - name: SCIETY_TEAM_API_BEARER_TOKEN
               value: {{ .Values.ingestionAuthBearerToken }}
-            - name: PGDATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Values.postgresqlSecretName }}"
-                  key: postgresql-database
-            - name: PGUSER
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Values.postgresqlSecretName }}"
-                  key: postgresql-username
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
                   name: "{{ .Values.postgresqlSecretName }}"
                   key: postgresql-password
-            - name: PGHOST
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Values.postgresqlSecretName }}"
-                  key: postgresql-host
-            - name: PGPORT
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Values.postgresqlSecretName }}"
-                  key: postgresql-port
             - name: AUTH0_CLIENT_ID
               value: {{ .Values.auth0ClientId }}
             - name: AUTH0_CLIENT_SECRET

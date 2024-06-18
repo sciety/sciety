@@ -5,13 +5,13 @@ import * as t from 'io-ts';
 import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
+import { DependenciesForCommands } from '../../write-side';
 import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
-type Dependencies = DependenciesForCommands & CheckUserOwnsListDependencies & GetLoggedInScietyUserDependencies & {
+type Dependencies = DependenciesForCommands & CheckUserOwnsListDependencies & {
   logger: Logger,
 };
 
@@ -33,7 +33,7 @@ const requestCodec = t.type({
 });
 
 export const removeArticleFromListHandler = (dependencies: Dependencies): Middleware => async (context) => {
-  const user = getLoggedInScietyUser(dependencies, context);
+  const userId = getAuthenticatedUserIdFromContext(context);
   const formRequest = requestCodec.decode(context.request);
   if (E.isLeft(formRequest)) {
     context.redirect('/action-failed');
@@ -55,13 +55,13 @@ export const removeArticleFromListHandler = (dependencies: Dependencies): Middle
 
   logCodecSuccess(dependencies, command.right);
 
-  if (O.isNone(user)) {
-    dependencies.logger('error', 'Logged in user not found', { command });
+  if (O.isNone(userId)) {
+    dependencies.logger('error', 'User not authenticated', { command });
     context.redirect('/action-failed');
     return;
   }
 
-  const ownershipCheckResult = checkUserOwnsList(dependencies, command.right.listId, user.value.id);
+  const ownershipCheckResult = checkUserOwnsList(dependencies, command.right.listId, userId.value);
   if (E.isLeft(ownershipCheckResult)) {
     dependencies.logger('error', ownershipCheckResult.left.message, ownershipCheckResult.left.payload);
     context.redirect('/action-failed');

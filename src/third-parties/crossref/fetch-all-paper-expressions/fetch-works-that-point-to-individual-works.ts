@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { CrossrefWork, crossrefWorkCodec } from './crossref-work';
 import { QueryCrossrefService } from './query-crossref-service';
-import { Logger } from '../../../shared-ports';
+import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
 import { decodeAndLogFailures } from '../../decode-and-log-failures';
 

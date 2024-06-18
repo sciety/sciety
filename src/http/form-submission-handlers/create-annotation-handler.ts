@@ -13,12 +13,12 @@ import {
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
 import { Queries } from '../../read-models';
+import { toErrorPageViewModel } from '../../read-side/html-pages/construct-error-page-view-model';
 import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec, Dependencies as CreateAnnotationFormPageDependencies } from '../../read-side/html-pages/create-annotation-form-page';
 import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
 import { standardPageLayout } from '../../read-side/html-pages/shared-components/standard-page-layout';
 import { inputFieldNames } from '../../standards';
-import { toErrorPageBodyViewModel } from '../../types/error-page-body-view-model';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
@@ -50,10 +50,10 @@ const redisplayFormPage = (
   params: Params,
   user: O.Option<UserDetails>,
 ) => pipe(
-  createAnnotationFormPage(dependencies)(params, 'article-not-in-list'),
+  createAnnotationFormPage(dependencies, 'article-not-in-list')(params),
   TE.map(prependErrorToTitleForAccessibility),
   TE.mapLeft(
-    (errorPageBodyViewModel) => toErrorPageBodyViewModel({
+    (errorPageBodyViewModel) => toErrorPageViewModel({
       type: errorPageBodyViewModel.type,
       message: toHtmlFragment(`Something went wrong when you submitted your annotation. ${errorPageBodyViewModel.message}`),
     }),
@@ -64,7 +64,10 @@ const redisplayFormPage = (
 type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
 
 export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) => async (context) => {
-  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to annotate a list.');
+  const loggedInUser = pipe(
+    ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to annotate a list.'),
+    O.chain((id) => dependencies.lookupUser(id)),
+  );
   if (O.isNone(loggedInUser)) {
     return;
   }

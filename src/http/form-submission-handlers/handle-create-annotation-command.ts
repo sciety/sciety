@@ -1,9 +1,9 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { CommandResult } from '../../types/command-result';
+import { DependenciesForCommands } from '../../write-side';
 import { annotateArticleInListCommandCodec } from '../../write-side/commands';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listResource from '../../write-side/resources/list';
 

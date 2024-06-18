@@ -13,14 +13,18 @@ import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
 import { LanguageCode } from '../shared-components/lang-attribute';
 import { PaperActivitySummaryCardViewModel } from '../shared-components/paper-activity-summary-card';
 
+export type GroupDetails = {
+  name: string,
+  href: string,
+  avatarSrc: string,
+};
+
 export type EvaluationPublishedFeedItem = {
   type: 'evaluation-published',
   id: EL.EvaluationLocator,
   sourceHref: O.Option<URL>,
   publishedAt: Date,
-  groupName: string,
-  groupHref: string,
-  groupAvatarSrc: string,
+  groupDetails: O.Option<GroupDetails>,
   digest: O.Option<SanitisedHtmlFragment>,
   digestLanguageCode: O.Option<LanguageCode>,
 };

@@ -3,25 +3,23 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies, constructViewModel } from './construct-view-model';
 import { Params } from './params';
 import { renderPage } from './render-page';
-import { toErrorPage } from './to-error-page';
 import { UnrecoverableError } from './view-model';
-import { ErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
+import { ErrorPageViewModel, constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { HtmlPage, toHtmlPage } from '../html-page';
 
-type CreateAnnotationFormPage = (dependencies: Dependencies)
-=> (params: Params, unrecoverableError?: UnrecoverableError)
-=> TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
+type CreateAnnotationFormPage = (dependencies: Dependencies, unrecoverableError?: UnrecoverableError)
+=> (params: Params)
+=> TE.TaskEither<ErrorPageViewModel, HtmlPage>;
 
 export const createAnnotationFormPage: CreateAnnotationFormPage = (
-  dependencies,
+  dependencies, unrecoverableError,
 ) => (
   params,
-  unrecoverableError,
 ) => pipe(
   params,
   ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies, unrecoverableError),
   TE.bimap(
-    toErrorPage,
+    constructErrorPageViewModel,
     (viewModel) => toHtmlPage({
       title: viewModel.pageHeading,
       content: renderPage(viewModel),

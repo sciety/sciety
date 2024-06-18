@@ -7,7 +7,7 @@ import { getPaperExpressionsFromBiorxiv, expandMonolithicBiorxivOrMedrxivExpress
 import { fetchAllPaperExpressions as fetchAllPaperExpressionsFromCrossref } from './crossref';
 import { ExternalQueries } from './external-queries';
 import { QueryExternalService } from './query-external-service';
-import { Logger } from '../shared-ports';
+import { Logger } from '../logger';
 import * as DE from '../types/data-error';
 import { ExpressionDoi } from '../types/expression-doi';
 import * as PH from '../types/publishing-history';

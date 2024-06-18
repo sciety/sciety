@@ -1,6 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchData } from '../../fetch-data';
+import { FetchData } from '../../fetch-data';
+import { Configuration } from '../../generate-configuration-from-environment';
 
 export type CrossrefItem = {
   DOI: string,
@@ -21,16 +22,20 @@ const crossrefReviewsUrl = (reviewDoiPrefix: string, articleDoi: string) => (
   `https://api.crossref.org/prefixes/${reviewDoiPrefix}/works?rows=1000&filter=type:peer-review,relation.object:${articleDoi}`
 );
 
-const headers: Record<string, string> = (process.env.CROSSREF_API_BEARER_TOKEN !== undefined)
-  ? { 'Crossref-Plus-API-Token': `Bearer ${process.env.CROSSREF_API_BEARER_TOKEN}` }
-  : { };
+const headers = (crossrefApiBearerToken: Configuration['crossrefApiBearerToken']): Record<string, string> => ({ 'Crossref-Plus-API-Token': `Bearer ${crossrefApiBearerToken}` });
 
 type FetchReviews =
-(reviewDoiPrefix: string) =>
+(fetchData: FetchData, crossrefBearerToken: Configuration['crossrefApiBearerToken'], reviewDoiPrefix: string) =>
 (articleDoi: string) =>
 TE.TaskEither<string, ReadonlyArray<CrossrefItem>>;
 
-export const fetchReviewsBy: FetchReviews = (reviewDoiPrefix) => (articleDoi) => pipe(
-  fetchData<CrossrefResponse>(crossrefReviewsUrl(reviewDoiPrefix, articleDoi), headers),
+export const fetchReviewsBy: FetchReviews = (
+  fetchData,
+  crossrefApiBearerToken,
+  reviewDoiPrefix,
+) => (
+  articleDoi,
+) => pipe(
+  fetchData<CrossrefResponse>(crossrefReviewsUrl(reviewDoiPrefix, articleDoi), headers(crossrefApiBearerToken)),
   TE.map((response) => response.message.items),
 );

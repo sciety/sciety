@@ -10,6 +10,9 @@ type AddArticleToListCommandHandler = (
   dependencies: DependenciesForCommands
 ) => CommandHandler<AddArticleToListCommand>;
 
+/**
+ * @deprecated should be substituted with executeResourceAction
+ */
 export const addArticleToListCommandHandler: AddArticleToListCommandHandler = (
   dependencies,
 ) => (

@@ -1,57 +1,38 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
-import { Payload } from '../../infrastructure/logger';
-import { CreateList, Logger } from '../../shared-ports';
+import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import * as LID from '../../types/list-id';
 import * as LOID from '../../types/list-owner-id';
+import { DependenciesForCommands } from '../../write-side';
 import { CreateListCommand } from '../../write-side/commands';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies } from '../authentication-and-logging-in-of-sciety-users';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import * as list from '../../write-side/resources/list';
 
-type Dependencies = GetLoggedInScietyUserDependencies & {
-  logger: Logger,
-  createList: CreateList,
-};
+type Dependencies = DependenciesForCommands & EnsureUserIsLoggedInDependencies;
 
 export const createListHandler = (dependencies: Dependencies): Middleware => async (context) => {
-  await pipe(
-    getLoggedInScietyUser(dependencies, context),
-    O.map((userDetails) => userDetails.id),
-    E.fromOption(() => ({
-      message: 'No authenticated user',
-      payload: { formBody: context.request.body },
-      errorType: 'codec-failed' as const,
-    })),
-    TE.fromEither,
-    TE.map((userId): CreateListCommand => ({
-      listId: LID.generate(),
-      ownerId: LOID.fromUserId(userId),
-      name: 'Untitled',
-      description: '',
-    })),
-    TE.chainW((command) => pipe(
-      command,
-      dependencies.createList,
-      TE.bimap(
-        (errorMessage) => ({
-          message: 'Command handler failed',
-          payload: {
-            errorMessage,
-          },
-        }),
-        () => command.listId,
-      ),
-    )),
-    TE.match(
-      (error: { errorType?: string, message: string, payload: Payload }) => {
-        dependencies.logger('error', error.message, error.payload);
-        context.redirect('back');
-      },
-      (listId) => {
-        context.redirect(`/lists/${listId}/edit-details`);
-      },
-    ),
+  const loggedInUserId = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to feature a list.');
+  if (O.isNone(loggedInUserId)) {
+    return;
+  }
+
+  const command: CreateListCommand = {
+    listId: LID.generate(),
+    ownerId: LOID.fromUserId(loggedInUserId.value),
+    name: 'Untitled',
+    description: '',
+  };
+
+  const commandResult = await pipe(
+    command,
+    executeResourceAction(dependencies, list.create),
   )();
+  if (E.isRight(commandResult)) {
+    context.redirect(`/lists/${command.listId}/edit-details`);
+    return;
+  }
+  dependencies.logger('error', 'Command handler failed', { errorMessage: commandResult.left });
+  context.redirect('back');
 };

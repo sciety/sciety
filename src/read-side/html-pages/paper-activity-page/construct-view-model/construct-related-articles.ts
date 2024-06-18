@@ -15,12 +15,12 @@ const buildRelatedArticleCards = (
 ) => (recommendedPapers: ReadonlyArray<ExpressionDoi>) => pipe(
   recommendedPapers,
   TE.traverseArray(constructPaperActivitySummaryCard(dependencies)),
-  TE.mapLeft((error) => {
-    dependencies.logger('error', 'at least one paper activity summary card could not be constructed', {
-      error,
+  TE.mapLeft((relatedArticleError) => {
+    dependencies.logger('error', 'at least one related article paper activity summary card could not be constructed', {
+      relatedArticleError,
       paperExpressionDoi: PH.getLatestExpression(history).expressionDoi,
     });
-    return error;
+    return relatedArticleError;
   }),
 );
 

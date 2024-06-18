@@ -1,0 +1,14 @@
+@use 'settings';
+
+$_colour: settings.$colour-furniture;
+$_style: solid;
+$_width: settings.$border-width;
+
+@mixin top($distance) {
+  border-top: $_width $_style $_colour;
+  padding-top: $distance;
+}
+@mixin bottom($distance) {
+  border-bottom: $_width $_style $_colour;
+  padding-bottom: $distance;
+}

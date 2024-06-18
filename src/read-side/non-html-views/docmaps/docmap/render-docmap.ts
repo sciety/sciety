@@ -55,7 +55,7 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   publisher: {
     id: viewModel.group.homepage,
     name: viewModel.group.name,
-    logo: `https://sciety.org${viewModel.group.avatarPath}`,
+    logo: viewModel.group.avatarPath,
     homepage: viewModel.group.homepage,
     account: {
       id: publisherAccountId(viewModel.group),

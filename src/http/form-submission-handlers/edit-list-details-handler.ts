@@ -7,9 +7,9 @@ import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from
 import { decodeFormSubmission } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Payload } from '../../infrastructure/logger';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
+import { DependenciesForCommands } from '../../write-side';
 import { EditListDetailsCommand, editListDetailsCommandCodec } from '../../write-side/commands/edit-list-details';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listResource from '../../write-side/resources/list';
 
@@ -29,7 +29,10 @@ const handleCommand = (dependencies: Dependencies) => (command: EditListDetailsC
 );
 
 export const editListDetailsHandler = (dependencies: Dependencies): Middleware => async (context) => {
-  const loggedInUser = ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to edit a list.');
+  const loggedInUser = pipe(
+    ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to edit a list.'),
+    O.chain((id) => dependencies.lookupUser(id)),
+  );
   if (O.isNone(loggedInUser)) {
     return;
   }

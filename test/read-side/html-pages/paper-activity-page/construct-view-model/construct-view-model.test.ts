@@ -87,7 +87,7 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), list.id);
+        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi), listId: list.id });
         containingList = await pipe(
           {
             latestExpressionDoi: expressionDoi,
@@ -120,7 +120,9 @@ describe('construct-view-model', () => {
           ownerId: LOID.fromUserId(createUserAccountCommand.userId),
         };
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), createListCommand.listId);
+        await framework.commandHelpers.addArticleToList(
+          { articleId: new ArticleId(expressionDoi), listId: createListCommand.listId },
+        );
         containingList = await pipe(
           {
             latestExpressionDoi: expressionDoi,

@@ -1,18 +1,9 @@
 import { htmlEscape } from 'escape-goat';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderFollowToggle } from './render-follow-toggle';
-import { Group } from '../../../../../types/group';
+import { renderGroupPageActions } from './render-group-page-actions';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
-
-export type PageHeaderViewModel = {
-  group: Group,
-  isFollowing: boolean,
-  followerCount: number,
-  groupAboutPageHref: string,
-  groupListsPageHref: O.Option<string>,
-  groupFollowersPageHref: string,
-};
+import { PageHeaderViewModel } from '../view-model';
 
 const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
   group.largeLogoPath,
@@ -26,24 +17,6 @@ const renderPageHeaderIdentity = (group: PageHeaderViewModel['group']) => pipe(
   ),
 );
 
-const renderAboutLink = (groupAboutPageHref: PageHeaderViewModel['groupAboutPageHref']) => `
-    <a href="${groupAboutPageHref}" class="group-page-actions__secondary_button">About</a>
-`;
-
-const renderGroupListsLink = (groupListsPageHref: PageHeaderViewModel['groupListsPageHref']) => pipe(
-  groupListsPageHref,
-  O.match(
-    () => '',
-    (href) => `<a href="${href}" class="group-page-actions__secondary_button">Lists</a>`,
-  ),
-);
-
-const renderGroupFollowersLink = (groupFollowersPageHref: PageHeaderViewModel['groupFollowersPageHref'], followerCount: PageHeaderViewModel['followerCount']) => `
-  <a href="${groupFollowersPageHref}">
-    <span class="visually-hidden">This group has ${followerCount} </span>Followers<span aria-hidden="true"> (${followerCount})</span>
-  </a>
-`;
-
 export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
   <header class="page-header">
     <div class="page-header__identity">
@@ -52,11 +25,6 @@ export const renderPageHeader = (viewmodel: PageHeaderViewModel): HtmlFragment =
     <p class="group-page-short-description">
       ${htmlEscape(viewmodel.group.shortDescription)}
     </p>
-    <div class="group-page-actions">
-      ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
-      ${renderAboutLink(viewmodel.groupAboutPageHref)}
-      ${renderGroupListsLink(viewmodel.groupListsPageHref)}
-      ${renderGroupFollowersLink(viewmodel.groupFollowersPageHref, viewmodel.followerCount)}
-    </div>
+    ${renderGroupPageActions(viewmodel)}
   </header>
 `);

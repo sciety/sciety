@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandDependencies } from './validate-and-execute-command';
@@ -15,27 +14,25 @@ import { sendHtmlResponse } from '../send-html-response';
 
 type Dependencies = GetLoggedInScietyUserDependencies & ValidateAndExecuteCommandDependencies;
 
-export const createUserAccount = (dependencies: Dependencies): Middleware => async (context, next) => {
-  await pipe(
-    validateAndExecuteCommand(context, dependencies),
-    TE.bimap(
-      (formDetails) => {
-        const htmlResponse = pipe(
-          {
-            errorSummary: O.some(''),
-          },
-          renderFormPage(formDetails.fullName, formDetails.handle),
-          E.right,
-          constructHtmlResponse(
-            getLoggedInScietyUser(dependencies, context),
-            createUserAccountFormPageLayout,
-            detectClientClassification(context),
-          ),
-        );
-        sendHtmlResponse(context)(htmlResponse);
+export const createUserAccount = (dependencies: Dependencies): Middleware => async (context) => {
+  const result = await validateAndExecuteCommand(context, dependencies)();
+  if (E.isLeft(result)) {
+    const formDetails = result.left;
+    const htmlResponse = pipe(
+      {
+        errorSummary: O.some(''),
       },
-      () => redirectToAuthenticationDestination(context),
-    ),
-  )();
-  await next();
+      renderFormPage(formDetails.fullName, formDetails.handle),
+      E.right,
+      constructHtmlResponse(
+        getLoggedInScietyUser(dependencies, context),
+        createUserAccountFormPageLayout,
+        detectClientClassification(context),
+      ),
+    );
+    sendHtmlResponse(context)(htmlResponse);
+    return;
+  }
+
+  redirectToAuthenticationDestination(context);
 };

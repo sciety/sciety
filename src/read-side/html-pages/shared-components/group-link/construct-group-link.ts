@@ -2,10 +2,10 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { GroupLinkAsTextViewModel } from './group-link-as-text-view-model';
 import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
+import { Logger } from '../../../../logger';
 import { Queries } from '../../../../read-models';
-import { Logger } from '../../../../shared-ports';
 import * as GID from '../../../../types/group-id';
-import { constructGroupPageHref } from '../../../paths';
+import { constructGroupPagePath } from '../../../paths';
 
 export type ConstructGroupLinkDependencies = Queries & { logger: Logger };
 
@@ -19,7 +19,7 @@ export const constructGroupLink = (
     return O.none;
   }),
   O.map((foundGroup) => ({
-    href: constructGroupPageHref(foundGroup),
+    href: constructGroupPagePath.home.href(foundGroup),
     groupName: foundGroup.name,
     logoSrc: foundGroup.largeLogoPath,
   })),

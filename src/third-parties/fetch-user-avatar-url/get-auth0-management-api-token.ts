@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
 
 const managementApiTokenCodec = t.type({

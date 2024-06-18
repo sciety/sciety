@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Group } from '../../../../types/group';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { constructGroupPagePath } from '../../../paths';
 
 export type ViewModel = {
   title: string,
@@ -30,6 +31,6 @@ export const renderPageHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFr
     <p class="group-page-short-description">
       ${htmlEscape(viewmodel.group.shortDescription)}
     </p>
-    <a href="/groups/${viewmodel.group.slug}" class="group-sub-page-back-link">Back to ${viewmodel.group.name}'s group page</a>
+    <a href="${constructGroupPagePath.home.href(viewmodel.group)}" class="group-sub-page-back-link">Back to ${viewmodel.group.name}'s group page</a>
   </header>
 `);

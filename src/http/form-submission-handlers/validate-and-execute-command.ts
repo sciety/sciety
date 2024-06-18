@@ -7,19 +7,16 @@ import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
 import { ParameterizedContext } from 'koa';
-import { Logger } from '../../shared-ports';
 import { CommandResult } from '../../types/command-result';
 import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 import { userHandleCodec } from '../../types/user-handle';
+import { DependenciesForCommands } from '../../write-side';
 import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler';
-import { DependenciesForCommands } from '../../write-side/dependencies-for-commands';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
 
-export type Dependencies = DependenciesForCommands & {
-  logger: Logger,
-};
+export type Dependencies = DependenciesForCommands;
 
 const createUserAccountFormCodec = t.type({
   fullName: sanitisedUserInputCodec({ maxInputLength: 30 }),

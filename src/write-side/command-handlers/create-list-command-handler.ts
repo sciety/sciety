@@ -10,6 +10,9 @@ type CreateListCommandHandler = (
   dependencies: DependenciesForCommands
 ) => CommandHandler<CreateListCommand>;
 
+/**
+ * @deprecated should be substituted with executeResourceAction
+ */
 export const createListCommandHandler: CreateListCommandHandler = (
   dependencies,
 ) => (

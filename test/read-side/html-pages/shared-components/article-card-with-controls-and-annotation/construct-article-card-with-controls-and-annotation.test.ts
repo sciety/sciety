@@ -32,7 +32,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createList(createListCommand);
-      await framework.commandHelpers.addArticleToList(articleId, listId);
+      await framework.commandHelpers.addArticleToList({ articleId, listId });
     });
 
     describe('when the user is allowed to edit the list', () => {

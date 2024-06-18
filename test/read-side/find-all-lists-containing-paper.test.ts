@@ -42,7 +42,7 @@ describe('find-all-lists-containing-paper', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createList(createList);
-      await framework.commandHelpers.addArticleToList(articleId, createList.listId);
+      await framework.commandHelpers.addArticleToList({ articleId, listId: createList.listId });
       result = pipe(
         arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: expressionDoi }),
         findAllListsContainingPaper(framework.dependenciesForViews),
@@ -77,8 +77,12 @@ describe('find-all-lists-containing-paper', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createList(createList1);
       await framework.commandHelpers.createList(createList2);
-      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), createList1.listId);
-      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), createList2.listId);
+      await framework.commandHelpers.addArticleToList(
+        { articleId: new ArticleId(expressionDoi), listId: createList1.listId },
+      );
+      await framework.commandHelpers.addArticleToList(
+        { articleId: new ArticleId(expressionDoi2), listId: createList2.listId },
+      );
       result = pipe(
         publishingHistory,
         findAllListsContainingPaper(framework.dependenciesForViews),
@@ -113,8 +117,12 @@ describe('find-all-lists-containing-paper', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createList(createList1);
-      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi), createList1.listId);
-      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), createList1.listId);
+      await framework.commandHelpers.addArticleToList(
+        { articleId: new ArticleId(expressionDoi), listId: createList1.listId },
+      );
+      await framework.commandHelpers.addArticleToList(
+        { articleId: new ArticleId(expressionDoi2), listId: createList1.listId },
+      );
       result = pipe(
         publishingHistory,
         findAllListsContainingPaper(framework.dependenciesForViews),

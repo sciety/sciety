@@ -6,6 +6,7 @@ import { Dependencies } from './dependencies';
 import { findFollowers } from './find-followers';
 import { Params } from './params';
 import * as DE from '../../../../../types/data-error';
+import { constructGroupPagePath } from '../../../../paths';
 import { paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
 
@@ -27,7 +28,7 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
       },
       followerCount: pageOfFollowers.numberOfOriginalItems,
       followers: augmentWithUserDetails(dependencies)(pageOfFollowers.items),
-      pagination: constructDefaultPaginationControls(`/groups/${group.slug}/followers`, pageOfFollowers),
+      pagination: constructDefaultPaginationControls(constructGroupPagePath.followers.href(group), pageOfFollowers),
     } satisfies ViewModel)),
   )),
   TE.fromEither,

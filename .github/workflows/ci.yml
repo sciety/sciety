@@ -52,7 +52,14 @@ jobs:
 
       - name: Ingestion smoke test
         run: |
-          make IMAGE_TAG=${IMAGE_TAG} INGEST_ONLY=non-existent-group INGEST_DEBUG=true ingest-evaluations
+          make \
+            IMAGE_TAG=${IMAGE_TAG} \
+            INGEST_ONLY=non-existent-group \
+            INGEST_DEBUG=true \
+            PREREVIEW_BEARER_TOKEN=bogus \
+            PRELIGHTS_FEED_KEY=bogus \
+            CROSSREF_API_BEARER_TOKEN=bogus \
+            ingest-evaluations
 
       - name: Server smoke test
         run: |
@@ -66,14 +73,15 @@ jobs:
         run: |
           make taiko
 
-      - name: Push Image to Docker Hub
+      - name: Push Image to GHCR
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
-          docker push sciety/sciety:${IMAGE_TAG}
+          echo "${GHCR_PASSWORD}" | docker login ghcr.io --username "${GHCR_USERNAME}" --password-stdin
+          docker tag sciety/sciety:${IMAGE_TAG} ghcr.io/sciety/sciety:${IMAGE_TAG}
+          docker push ghcr.io/sciety/sciety:${IMAGE_TAG}
         env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+          GHCR_USERNAME: ${{ github.actor }}
+          GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to staging
         if: github.ref == 'refs/heads/main'
@@ -96,6 +104,7 @@ jobs:
             --set googleTagManagerId='GTM-NX7CQB4' \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
+            --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
             --wait \
             helm/sciety
@@ -106,6 +115,7 @@ jobs:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
+          PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
           AUTH0_CLIENT_ID_STAGING: ${{ secrets.AUTH0_CLIENT_ID_STAGING }}
           AUTH0_CLIENT_SECRET_STAGING: ${{ secrets.AUTH0_CLIENT_SECRET_STAGING }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
@@ -132,6 +142,7 @@ jobs:
             --set postgresqlSecretName=hive-prod-rds-postgres \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
+            --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
             --wait \
             helm/sciety
@@ -142,6 +153,7 @@ jobs:
           CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
+          PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
@@ -150,9 +162,9 @@ jobs:
         if: failure() && github.ref == 'refs/heads/main'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: voxmedia/github-action-slack-notify-build@v1
+        uses: zuplo/github-action-slack-notify-build@v2
         with:
-          channel: sciety-commits
+          channel: sciety-general
           status: FAILED
           color: danger
 
@@ -182,7 +194,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           cd deployment
-          TAG=${IMAGE_TAG} yq -i '.spec.values.images.frontend.tag = strenv(TAG)' manifests/sciety--demo.yaml
+          TAG=${IMAGE_TAG} yq -i '.spec.values.images.frontend.tag = strenv(TAG)' manifests/sciety-demo/helm-release.yaml
           git add .
           git config user.email "team@sciety.org"
           git config user.name "Deployment update bot"

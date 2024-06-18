@@ -8,7 +8,7 @@ import { containsUnrecoverableError } from './contains-unrecoverable-error';
 import {
   getAbstract, getAuthors, getTitle,
 } from './parse-crossref-article';
-import { Logger } from '../../shared-ports';
+import { Logger } from '../../logger';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
 import { ExpressionDoi } from '../../types/expression-doi';

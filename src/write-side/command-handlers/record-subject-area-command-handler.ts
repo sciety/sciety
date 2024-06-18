@@ -10,6 +10,9 @@ type RecordSubjectAreaCommandHandler = (
   dependencies: DependenciesForCommands
 ) => CommandHandler<RecordSubjectAreaCommand>;
 
+/**
+ * @deprecated should be substituted with executeResourceAction
+ */
 export const recordSubjectAreaCommandHandler: RecordSubjectAreaCommandHandler = (
   dependencies,
 ) => (

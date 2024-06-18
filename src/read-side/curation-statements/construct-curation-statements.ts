@@ -15,7 +15,7 @@ import * as PH from '../../types/publishing-history';
 import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { DependenciesForViews } from '../dependencies-for-views';
 import { detectLanguage } from '../html-pages/shared-components/lang-attribute';
-import { constructGroupPageHref } from '../paths';
+import { constructGroupPagePath } from '../paths';
 
 type PartialCurationStatement = {
   evaluationLocator: EvaluationLocator,
@@ -32,7 +32,7 @@ const addGroupInformation = (dependencies: DependenciesForViews) => (statement: 
     ...statement,
     groupName: group.name,
     groupLogoSrc: group.largeLogoPath,
-    groupPageHref: constructGroupPageHref(group),
+    groupPageHref: constructGroupPagePath.home.href(group),
   })),
 );
 

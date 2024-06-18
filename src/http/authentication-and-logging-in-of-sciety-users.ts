@@ -38,6 +38,11 @@ export const getAuthenticatedUserIdFromContext = (
   O.map((contextWithPassportUser) => contextWithPassportUser.state.user.id),
 );
 
+/**
+ * @deprecated
+ * Replace with call to getAuthenticatedUserIdFromContext.
+ * If you require user details, use the query for lookupUser.
+ */
 export const getLoggedInScietyUser = (
   dependencies: Dependencies,
   context: ParameterizedContext,

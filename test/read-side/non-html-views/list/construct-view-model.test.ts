@@ -30,8 +30,8 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       const listId = await createList();
-      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi1), listId);
-      await framework.commandHelpers.addArticleToList(new ArticleId(expressionDoi2), listId);
+      await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi1), listId });
+      await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi2), listId });
       orderedHrefs = await pipe(
         { id: listId },
         constructViewModel(framework.dependenciesForViews),

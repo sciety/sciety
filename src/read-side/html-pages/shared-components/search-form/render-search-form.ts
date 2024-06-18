@@ -8,7 +8,7 @@ export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFra
       Search articles by DOI, author or keyword.
     </div>
     <div class="search-form__positioning_context">
-      ${htmlEscape`<input value="${query}" id="searchText" name="query" class="search-form__text">`}
+      ${htmlEscape`<input value="${query}" id="searchText" name="query" class="standard-form__full_width_text_input">`}
       <section>
         <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter"${evaluatedOnly ? ' checked' : ''}>
         <label for="searchEvaluatedOnlyFilter" class="search-form__checkbox_label">Search only evaluated articles</label>

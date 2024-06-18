@@ -4,11 +4,11 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import * as DE from '../../../types/data-error';
-import { ErrorPageBodyViewModel, toErrorPageBodyViewModel } from '../../../types/error-page-body-view-model';
 import { toHtmlFragment } from '../../../types/html-fragment';
+import { ErrorPageViewModel, toErrorPageViewModel } from '../construct-error-page-view-model';
 import { HtmlPage } from '../html-page';
 
-type ActionFailedPage = TE.TaskEither<ErrorPageBodyViewModel, HtmlPage>;
+type ActionFailedPage = TE.TaskEither<ErrorPageViewModel, HtmlPage>;
 
 const actionFailedErrorTypeCodec = t.literal('codec-failed');
 
@@ -28,7 +28,7 @@ const generateErrorMessage = (errorType: O.Option<string>) => pipe(
 );
 
 export const actionFailedPage = (params: Params): ActionFailedPage => TE.left(
-  toErrorPageBodyViewModel({
+  toErrorPageViewModel({
     type: DE.unavailable,
     message: generateErrorMessage(params.errorType),
   }),

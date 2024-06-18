@@ -1,0 +1,76 @@
+@use 'settings';
+@use 'functions';
+@use 'breakpoints';
+
+$vertical-spacing-coupled-to-page-header: 3rem;
+
+@mixin visually-hidden() {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  user-select: none;
+}
+
+@mixin visually-unhidden() {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: unset;
+  position: static;
+  width: auto;
+  user-select: unset;
+}
+
+@mixin page-content-horizontal-margins() {
+  margin-left: functions.px-to-rem(settings.$default-gutter);
+  margin-right: functions.px-to-rem(settings.$default-gutter);
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@mixin allow-edge-to-edge-content-when-narrow() {
+  margin-left: settings.$default-gutter * -1;
+  margin-right: settings.$default-gutter * -1;
+
+  @include breakpoints.not-narrow {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@mixin page-header-top-space() {
+  padding-top: 1rem;
+
+  @include breakpoints.not-narrow {
+    padding-top: 2.5rem;
+  }
+}
+
+@mixin page-header-bottom-space() {
+  margin-bottom: $vertical-spacing-coupled-to-page-header;
+}
+
+@mixin column-two() {
+  @include breakpoints.two-column-display {
+    grid-column: 9 / 13;
+    grid-row: 2;
+  }
+}
+
+@mixin page-container() {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  main {
+    flex-grow: 1;
+  }
+}

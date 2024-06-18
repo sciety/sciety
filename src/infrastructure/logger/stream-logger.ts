@@ -1,7 +1,6 @@
 import { Serializer } from './serializer';
-import {
-  Logger, shouldBeLogged,
-} from '../../shared-ports';
+import { shouldBeLogged } from './should-be-logged';
+import { Logger } from '../../logger';
 
 export const streamLogger = (
   stream: NodeJS.WritableStream,

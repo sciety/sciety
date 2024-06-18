@@ -2,6 +2,7 @@
 @use 'settings';
 @use 'functions';
 @use 'breakpoints';
+@use 'standard-separator';
 
 $_triangle-size: 32px;
 
@@ -16,8 +17,7 @@ $_triangle-size: 32px;
 
   .article-card-content {
     @include breakpoints.two-column-display {
-      padding-bottom: 2.5rem;
-      border-bottom: settings.$border-width solid settings.$colour-furniture;
+      @include standard-separator.bottom(2.5rem);
     }
   }
 }
@@ -50,9 +50,9 @@ $_triangle-size: 32px;
     }
   }
 
-	p {
-		word-wrap: break-word;
-	}
+  p {
+    word-wrap: break-word;
+  }
 
   p:last-child {
     margin-bottom: 0;

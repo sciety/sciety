@@ -11,6 +11,7 @@ export type ErrorViewModel = {
 const renderErrorMessage = DE.match({
   notFound: () => 'The title and authors for this article are not available from our external data provider yet:',
   unavailable: () => 'We couldn\'t get details of this article at this time:',
+  notAuthorised: () => 'You aren\'t permitted to do that.',
 });
 
 export const renderErrorAsHtml = (viewModel: ErrorViewModel): HtmlFragment => (

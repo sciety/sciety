@@ -30,7 +30,9 @@ services:
       PGHOST: 'db'
       PGPASSWORD: 'secret'
       PGDATABASE: 'sciety'
+      PGSSLMODE: 'allow'
       PRELIGHTS_FEED_KEY:
+      PREREVIEW_BEARER_TOKEN: '${PREREVIEW_BEARER_TOKEN}'
       AUTH0_CLIENT_ID: '${AUTH0_CLIENT_ID:-auth0-client-id}'
       AUTH0_DOMAIN: 'dev-sqa2k3wwnhpxk36d.eu.auth0.com'
       AUTH0_CLIENT_SECRET: '${AUTH0_CLIENT_SECRET:-auth0-client-secret}'

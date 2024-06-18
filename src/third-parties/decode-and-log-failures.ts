@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { Logger } from '../shared-ports';
+import { Logger } from '../logger';
 
 const logCodecFailure = (
   logger: Logger,

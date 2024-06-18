@@ -4,20 +4,18 @@ import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
-import * as AID from '../../../src/types/article-id';
-import { arbitraryDate, arbitraryWord } from '../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 
 const runDiscovery = (stubbedResponse: unknown) => pipe(
-  ({ fetchData: <D>() => TE.right({ data: stubbedResponse } as unknown as D) }),
-  discoverPrereviewEvaluations()(arbitraryIngestDays()),
+  ({ fetchData: <D>() => TE.right(stubbedResponse as unknown as D) }),
+  discoverPrereviewEvaluations(arbitraryString())(arbitraryIngestDays()),
 );
 
 describe('discover-prereview-evaluations', () => {
-  describe('when the response includes no preprints', () => {
-    let result: DiscoveredPublishedEvaluations;
+  let result: DiscoveredPublishedEvaluations;
 
+  describe('when the response includes no preprints', () => {
     beforeEach(async () => {
       result = await pipe(
         runDiscovery([]),
@@ -35,25 +33,25 @@ describe('discover-prereview-evaluations', () => {
   });
 
   describe('when the response includes a biorxiv preprint with valid reviews', () => {
-    const articleId = arbitraryArticleId();
+    const preprintDoi = arbitraryWord();
     const date1 = arbitraryDate();
     const date2 = arbitraryDate();
-    const reviewDoi1 = arbitraryArticleId();
-    const reviewDoi2 = arbitraryArticleId();
+    const reviewDoi1 = arbitraryWord();
+    const reviewDoi2 = arbitraryWord();
     const response = [
       {
-        handle: articleId.value,
-        fullReviews: [
-          {
-            createdAt: date1.toString(), doi: reviewDoi1.value, isPublished: true, authors: [],
-          },
-          {
-            createdAt: date2.toString(), doi: reviewDoi2.value, isPublished: true, authors: [],
-          },
-        ],
+        preprint: `doi:${preprintDoi}`,
+        createdAt: date1.toString(),
+        doi: reviewDoi1,
+        authors: [],
+      },
+      {
+        preprint: `doi:${preprintDoi}`,
+        createdAt: date2.toString(),
+        doi: reviewDoi2,
+        authors: [],
       },
     ];
-    let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(
@@ -64,14 +62,14 @@ describe('discover-prereview-evaluations', () => {
 
     it('returns the reviews', async () => {
       const expectedEvaluation1 = constructPublishedEvaluation({
-        paperExpressionDoi: articleId.value,
+        paperExpressionDoi: preprintDoi,
         publishedOn: date1,
-        evaluationLocator: `doi:${reviewDoi1.value}`,
+        evaluationLocator: `doi:${reviewDoi1}`,
       });
       const expectedEvaluation2 = constructPublishedEvaluation({
-        paperExpressionDoi: articleId.value,
+        paperExpressionDoi: preprintDoi,
         publishedOn: date2,
-        evaluationLocator: `doi:${reviewDoi2.value}`,
+        evaluationLocator: `doi:${reviewDoi2}`,
       });
 
       expect(result.understood).toStrictEqual([
@@ -85,23 +83,24 @@ describe('discover-prereview-evaluations', () => {
     });
   });
 
-  describe('when the response includes a biorxiv preprint with a review that lacks a DOI', () => {
-    const articleId = arbitraryArticleId();
-    const date1 = arbitraryDate();
-    const date2 = arbitraryDate();
-    const reviewDoi1 = arbitraryArticleId();
+  describe('when the response includes a review with authors', () => {
+    const authorName1 = arbitraryString();
+    const authorName2 = arbitraryString();
     const response = [
       {
-        handle: articleId.value,
-        fullReviews: [
+        preprint: `doi:${arbitraryWord()}`,
+        createdAt: arbitraryDate().toString(),
+        doi: arbitraryWord(),
+        authors: [
           {
-            createdAt: date1.toString(), doi: reviewDoi1.value, isPublished: true, authors: [],
+            name: authorName1,
           },
-          { createdAt: date2.toString(), isPublished: true, authors: [] },
+          {
+            name: authorName2,
+          },
         ],
       },
     ];
-    let result: DiscoveredPublishedEvaluations;
 
     beforeEach(async () => {
       result = await pipe(
@@ -110,51 +109,14 @@ describe('discover-prereview-evaluations', () => {
       )();
     });
 
-    it('returns the valid review', async () => {
-      const expectedEvaluation = constructPublishedEvaluation({
-        paperExpressionDoi: articleId.value,
-        publishedOn: date1,
-        evaluationLocator: `doi:${reviewDoi1.value}`,
-      });
-
-      expect(result.understood).toStrictEqual([
-        expectedEvaluation,
+    it('returns the reviews', async () => {
+      expect(result.understood[0].authors).toStrictEqual([
+        authorName1, authorName2,
       ]);
     });
 
-    it('returns one skipped item for the DOI-less review', async () => {
-      expect(result.skipped[0].reason).toBe('review has no DOI');
-    });
-  });
-
-  describe('when the response includes an unpublished review', () => {
-    const articleId = arbitraryArticleId('10.1234');
-    const response = [
-      {
-        handle: articleId.value,
-        fullReviews: [
-          {
-            createdAt: arbitraryDate().toString(), doi: `10.1234/${arbitraryWord()}`, isPublished: false, authors: [],
-          },
-        ],
-      },
-    ];
-    let result: DiscoveredPublishedEvaluations;
-
-    beforeEach(async () => {
-      result = await pipe(
-        runDiscovery(response),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
-
-    it('returns a skipped item', async () => {
-      expect(result.skipped).toStrictEqual([
-        {
-          item: AID.toString(articleId),
-          reason: 'is not published',
-        },
-      ]);
+    it('returns no skipped items', async () => {
+      expect(result.skipped).toHaveLength(0);
     });
   });
 });

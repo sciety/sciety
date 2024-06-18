@@ -14,8 +14,8 @@ import {
 import { persistEvents } from './persist-events';
 import { stubAdapters } from './stub-adapters';
 import { sort as sortEvents } from '../domain-events';
+import { Logger } from '../logger';
 import { dispatcher } from '../read-models';
-import { Logger } from '../shared-ports';
 import { instantiate } from '../third-parties';
 import {
   createListCommandHandler,
@@ -54,7 +54,7 @@ export const createInfrastructure = (
   },
   TE.right,
   TE.map((adapters) => {
-    adapters.logger('info', 'Database connection pool and logger available');
+    adapters.logger('info', 'Database connection pool and logger available', { databaseHost: process.env.PGHOST });
     return adapters;
   }),
   TE.chainFirst(createEventsTable),
@@ -92,6 +92,7 @@ export const createInfrastructure = (
       const commandHandlerAdapters = {
         getAllEvents,
         commitEvents: commitEventsWithoutListeners,
+        logger: partialAdapters.logger,
       };
 
       const redisClient = await createRedisClient(partialAdapters.logger);

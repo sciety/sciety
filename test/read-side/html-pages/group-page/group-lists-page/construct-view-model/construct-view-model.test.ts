@@ -38,9 +38,13 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
       await framework.commandHelpers.createList(createMiddleList);
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createMiddleList.listId);
+      await framework.commandHelpers.addArticleToList(
+        { articleId: arbitraryArticleId(), listId: createMiddleList.listId },
+      );
       await framework.commandHelpers.createList(createMostRecentlyUpdatedList);
-      await framework.commandHelpers.addArticleToList(arbitraryArticleId(), createMostRecentlyUpdatedList.listId);
+      await framework.commandHelpers.addArticleToList(
+        { articleId: arbitraryArticleId(), listId: createMostRecentlyUpdatedList.listId },
+      );
 
       const viewModel = await pipe(
         {

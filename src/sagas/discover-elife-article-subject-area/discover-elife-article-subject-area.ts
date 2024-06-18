@@ -1,16 +1,16 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
-import {
-  Logger, RecordSubjectArea,
-} from '../../shared-ports';
 import { ExternalQueries } from '../../third-parties';
 import { ArticleId } from '../../types/article-id';
+import { CommandHandler } from '../../types/command-handler';
 import * as EDOI from '../../types/expression-doi';
+import { RecordSubjectAreaCommand } from '../../write-side/commands';
 
 export type Ports = Pick<Queries, 'getOneArticleIdInEvaluatedState'> & ExternalQueries & {
   logger: Logger,
-  recordSubjectArea: RecordSubjectArea,
+  recordSubjectArea: CommandHandler<RecordSubjectAreaCommand>,
 };
 
 const buildRecordSubjectAreaCommand = (adapters: Ports) => (expressionDoi: EDOI.ExpressionDoi) => pipe(

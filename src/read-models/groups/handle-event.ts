@@ -33,6 +33,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     if (event.largeLogoPath !== undefined) {
       readmodel[event.groupId].largeLogoPath = O.some(event.largeLogoPath);
     }
+    if (event.avatarPath !== undefined) {
+      readmodel[event.groupId].avatarPath = event.avatarPath;
+    }
   }
   return readmodel;
 };

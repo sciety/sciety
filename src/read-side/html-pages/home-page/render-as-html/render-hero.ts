@@ -3,7 +3,7 @@ import { ViewModel } from '../view-model';
 
 const renderSearchForm = () => `
   <form class="home-page-hero-search-form" action="/search" method="get">
-    <label for="searchText" class="home-page-hero-search-form__label">Search for keywords, authors or DOIs</label>
+    <label for="searchText" class="home-page-hero-search-form__label">Start your search using keywords, author names or DOIs</label>
     <div class="home-page-hero-search-form__visible_interactive_elements">
       <input id="searchText" name="query" class="home-page-hero-search-form__text">
       <button type="submit" class="home-page-hero-search-form__button">Search</button>
@@ -21,7 +21,7 @@ export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
         ${viewModel.pageHeading}
       </h1>
       <p class="home-page-hero__content_byline">
-        Find preprints recommended and reviewed by trusted groups of researchers.
+        Join the global network discovering and highlighting important new studies.
       </p>
 
       <section class="home-page-hero__section">

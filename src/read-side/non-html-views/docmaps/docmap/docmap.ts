@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
@@ -28,5 +29,5 @@ export const docmap = (
     decodedParams.doi,
     generateDocmaps(ports),
   )),
-  TE.map((state) => toNonHtmlViewRepresentation(state, 'application/ld+json')),
+  TE.map((state) => toNonHtmlViewRepresentation(state as Json, 'application/ld+json')),
 );
