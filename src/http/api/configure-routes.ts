@@ -1,8 +1,11 @@
 import Router from '@koa/router';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { StatusCodes } from 'http-status-codes';
 import { createConfigurePostMiddleware } from './create-configure-post-middleware';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
+import { groups } from '../../read-side/non-html-views/api/groups';
+import { applicationStatus } from '../../read-side/non-html-views/api/status';
 import { DependenciesForCommands } from '../../write-side';
 import {
   addArticleToListCommandCodec,
@@ -34,6 +37,18 @@ export const configureRoutes = (
   expectedToken: string,
 ): void => {
   router.get('/api/lists/owned-by/:ownerId', ownedBy(dependencies));
+
+  router.get('/status', async (context, next) => {
+    context.response.body = applicationStatus(dependencies);
+    context.response.status = StatusCodes.OK;
+    await next();
+  });
+
+  router.get('/status/groups', async (context, next) => {
+    context.response.body = groups(dependencies);
+    context.response.status = StatusCodes.OK;
+    await next();
+  });
 
   const configurePostMiddleware = createConfigurePostMiddleware(dependencies, expectedToken);
 

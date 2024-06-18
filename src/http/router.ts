@@ -40,8 +40,6 @@ import { referencePage, sharedComponentsPage, indexPage } from '../read-side/htm
 import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
-import { groups } from '../read-side/non-html-views/api/groups';
-import { applicationStatus } from '../read-side/non-html-views/api/status';
 import { generateDocmaps, docmapIndex } from '../read-side/non-html-views/docmaps';
 import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
@@ -305,20 +303,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     const staticFolder = path.resolve(__dirname, '../../static');
     await send(context, 'docmaps-v1-api-docs.html', { root: staticFolder });
 
-    await next();
-  });
-
-  // OBSERVABILITY
-
-  router.get('/status', async (context, next) => {
-    context.response.body = applicationStatus(dependencies);
-    context.response.status = StatusCodes.OK;
-    await next();
-  });
-
-  router.get('/status/groups', async (context, next) => {
-    context.response.body = groups(dependencies);
-    context.response.status = StatusCodes.OK;
     await next();
   });
 
