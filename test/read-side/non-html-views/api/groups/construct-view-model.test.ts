@@ -1,11 +1,15 @@
+import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../../src/read-side/non-html-views/api/groups/construct-view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
+import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 
 describe('construct-view-model', () => {
+  const addGroupCommand = arbitraryAddGroupCommand();
   let framework: TestFramework;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     framework = createTestFramework();
+    await framework.commandHelpers.addGroup(addGroupCommand);
   });
 
   describe('when the group has admins', () => {
@@ -17,7 +21,10 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const viewModel = constructViewModel(framework.dependenciesForViews);
+      const viewModel = pipe(
+        framework.dependenciesForViews,
+        constructViewModel,
+      );
     });
 
     it('lists no admins', () => {
