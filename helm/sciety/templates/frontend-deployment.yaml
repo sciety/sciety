@@ -50,11 +50,6 @@ spec:
               value: "https://{{ .Values.hostname }}"
             - name: SCIETY_TEAM_API_BEARER_TOKEN
               value: {{ .Values.ingestionAuthBearerToken }}
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Values.postgresqlSecretName }}"
-                  key: postgresql-password
             - name: AUTH0_CLIENT_ID
               value: {{ .Values.auth0ClientId }}
             - name: AUTH0_CLIENT_SECRET

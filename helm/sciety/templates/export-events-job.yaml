@@ -27,11 +27,6 @@ spec:
                 - secretRef:
                     name: {{ .Release.Name }}--secret-env-vars
               env:
-                - name: PGPASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: "{{ .Values.postgresqlSecretName }}"
-                      key: postgresql-password
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
