@@ -100,7 +100,6 @@ jobs:
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET_STAGING} \
             --set auth0Domain='sciety-staging.eu.auth0.com' \
             --set auth0CallbackUrl='https://staging.sciety.org/auth0/callback' \
-            --set postgresqlSecretName=hive-staging-rds-postgres \
             --set googleTagManagerId='GTM-NX7CQB4' \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
@@ -139,7 +138,6 @@ jobs:
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET} \
             --set auth0Domain='sciety.eu.auth0.com' \
             --set auth0CallbackUrl='https://sciety.org/auth0/callback' \
-            --set postgresqlSecretName=hive-prod-rds-postgres \
             --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
             --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
