@@ -40,11 +40,11 @@ import { referencePage, sharedComponentsPage, indexPage } from '../read-side/htm
 import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
+import { groups } from '../read-side/non-html-views/api/groups';
+import { applicationStatus } from '../read-side/non-html-views/api/status';
 import { generateDocmaps, docmapIndex } from '../read-side/non-html-views/docmaps';
 import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
-import { applicationStatus } from '../read-side/non-html-views/status';
-import { statusGroups } from '../read-side/non-html-views/status-groups';
 import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import * as EDOI from '../types/expression-doi';
@@ -317,7 +317,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   });
 
   router.get('/status/groups', async (context, next) => {
-    context.response.body = statusGroups(dependencies);
+    context.response.body = groups(dependencies);
     context.response.status = StatusCodes.OK;
     await next();
   });

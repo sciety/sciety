@@ -1,7 +1,7 @@
 import { Json } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Queries } from '../../../read-models';
+import { Queries } from '../../../../read-models';
 
 export const constructViewModel = (queries: Queries): Json => ({
   data: {
