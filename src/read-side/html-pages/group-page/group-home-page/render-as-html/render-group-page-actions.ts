@@ -20,18 +20,13 @@ const renderGroupFollowersLink = (groupFollowersPageHref: PageHeaderViewModel['g
   </a>
 `;
 
-const renderManagementLink = (href: PageHeaderViewModel['managementPageHref']) => {
-  if (process.env.EXPERIMENT_ENABLED !== 'true') {
-    return '';
-  }
-  return pipe(
-    href,
-    O.match(
-      () => '',
-      (value) => `<a href="${value}">Manage this group</a>`,
-    ),
-  );
-};
+const renderManagementLink = (href: PageHeaderViewModel['managementPageHref']) => pipe(
+  href,
+  O.match(
+    () => '',
+    (value) => `<a href="${value}">Manage this group</a>`,
+  ),
+);
 
 export const renderGroupPageActions = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
   <div class="group-page-actions">
