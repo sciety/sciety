@@ -1,12 +1,9 @@
-import { Json } from 'fp-ts/Json';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model';
+import { renderAsJson } from './render-as-json';
 import { Queries } from '../../../../read-models';
 import { NonHtmlView } from '../../non-html-view';
-import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
-
-const renderAsJson = (viewModel: Json): NonHtmlViewRepresentation => toNonHtmlViewRepresentation(viewModel, 'application/json');
 
 export const groups = (queries: Queries): NonHtmlView => () => pipe(
   constructViewModel(queries),
