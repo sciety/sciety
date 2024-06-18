@@ -26,31 +26,11 @@ spec:
                     name: {{ .Release.Name }}--public-env-vars
                     optional: true
               env:
-                - name: PGDATABASE
-                  valueFrom:
-                    secretKeyRef:
-                      name: "{{ .Values.postgresqlSecretName }}"
-                      key: postgresql-database
-                - name: PGUSER
-                  valueFrom:
-                    secretKeyRef:
-                      name: "{{ .Values.postgresqlSecretName }}"
-                      key: postgresql-username
                 - name: PGPASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: "{{ .Values.postgresqlSecretName }}"
                       key: postgresql-password
-                - name: PGHOST
-                  valueFrom:
-                    secretKeyRef:
-                      name: "{{ .Values.postgresqlSecretName }}"
-                      key: postgresql-host
-                - name: PGPORT
-                  valueFrom:
-                    secretKeyRef:
-                      name: "{{ .Values.postgresqlSecretName }}"
-                      key: postgresql-port
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
