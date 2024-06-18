@@ -1,3 +1,5 @@
+import * as O from 'fp-ts/Option';
+
 type GroupStatus = {
   id: string,
   name: string,
@@ -6,9 +8,7 @@ type GroupStatus = {
   shortDescription: string,
   homepage: string,
   slug: string,
-  largeLogoPath: string,
+  largeLogoPath: O.Option<string>,
 };
 
-export type ViewModel = {
-  groups: ReadonlyArray<GroupStatus>,
-};
+export type ViewModel = ReadonlyArray<GroupStatus>;
