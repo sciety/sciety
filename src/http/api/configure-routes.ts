@@ -38,13 +38,13 @@ export const configureRoutes = (
 ): void => {
   router.get('/api/lists/owned-by/:ownerId', ownedBy(dependencies));
 
-  router.get('/status', async (context, next) => {
+  router.get('/api/status', async (context, next) => {
     context.response.body = applicationStatus(dependencies);
     context.response.status = StatusCodes.OK;
     await next();
   });
 
-  router.get('/status/groups', async (context, next) => {
+  router.get('/api/groups', async (context, next) => {
     context.response.body = groups(dependencies);
     context.response.status = StatusCodes.OK;
     await next();
