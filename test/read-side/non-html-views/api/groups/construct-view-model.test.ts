@@ -1,6 +1,10 @@
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../../src/read-side/non-html-views/api/groups/construct-view-model';
+import { ViewModel } from '../../../../../src/read-side/non-html-views/api/groups/view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
+import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 
 describe('construct-view-model', () => {
@@ -16,19 +20,20 @@ describe('construct-view-model', () => {
     it.todo('lists all of the admins');
   });
 
-  describe.skip('when the group has no admins', () => {
-    let admins: ReadonlyArray<unknown>;
+  describe('when the group has no admins', () => {
+    let groupStatus: ViewModel[number];
 
     beforeEach(async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const viewModel = pipe(
+      groupStatus = pipe(
         framework.dependenciesForViews,
         constructViewModel,
+        RA.findFirst((status) => status.id === addGroupCommand.groupId),
+        O.getOrElseW(shouldNotBeCalled),
       );
     });
 
     it('lists no admins', () => {
-      expect(admins).toHaveLength(0);
+      expect(groupStatus.admins).toHaveLength(0);
     });
   });
 });

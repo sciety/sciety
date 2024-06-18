@@ -9,6 +9,7 @@ type GroupStatus = {
   homepage: string,
   slug: string,
   largeLogoPath: O.Option<string>,
+  admins: ReadonlyArray<string>,
 };
 
 export type ViewModel = ReadonlyArray<GroupStatus>;
