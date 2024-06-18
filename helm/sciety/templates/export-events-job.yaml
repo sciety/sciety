@@ -24,7 +24,6 @@ spec:
               envFrom:
                 - configMapRef:
                     name: {{ .Release.Name }}--public-env-vars
-                    optional: true
               env:
                 - name: PGPASSWORD
                   valueFrom:
