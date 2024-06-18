@@ -25,6 +25,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}--public-env-vars
+            - secretRef:
+                name: {{ .Release.Name }}--secret-env-vars
           env:
             - name: ALLOW_SITE_CRAWLERS
               value: "{{ .Values.allowSiteCrawlers }}"
