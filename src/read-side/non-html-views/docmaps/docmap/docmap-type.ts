@@ -27,10 +27,15 @@ type Editor = {
   role: 'editor',
 };
 
+type ContentItem = {
+  'type': 'web-page' | 'web-content',
+  url: string,
+};
+
 type Output = {
   type: 'review-article' | 'evaluation-summary' | 'reply',
   published: string,
-  content: ReadonlyArray<unknown>,
+  content: ReadonlyArray<ContentItem>,
 };
 
 type Action = {

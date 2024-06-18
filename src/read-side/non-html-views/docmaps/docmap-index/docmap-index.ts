@@ -1,4 +1,3 @@
-import { Json } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -24,5 +23,5 @@ export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
     internalErrorResponse.status,
   )),
   TE.map(RA.map(renderDocmap)),
-  TE.map((docmaps) => toNonHtmlViewRepresentation({ articles: docmaps } as Json, 'application/ld+json')),
+  TE.map((docmaps) => toNonHtmlViewRepresentation({ articles: docmaps }, 'application/ld+json')),
 );

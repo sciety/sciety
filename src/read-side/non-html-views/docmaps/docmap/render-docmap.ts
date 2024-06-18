@@ -30,15 +30,15 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluat
       published: evaluation.publishedAt.toISOString(),
       content: [
         {
-          type: 'web-page',
+          type: 'web-page' as const,
           url: evaluation.sourceUrl.toString(),
         },
         {
-          type: 'web-page',
+          type: 'web-page' as const,
           url: `https://sciety.org${constructPaperActivityPageHref(expressionDoi)}#${EL.serialize(evaluation.evaluationLocator)}`,
         },
         {
-          type: 'web-content',
+          type: 'web-content' as const,
           url: `https://sciety.org/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`,
         },
       ],
