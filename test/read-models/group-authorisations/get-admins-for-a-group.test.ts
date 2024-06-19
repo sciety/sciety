@@ -54,22 +54,26 @@ describe('get-admins-for-a-group', () => {
   describe('when multiple users have been assigned as admins of the group', () => {
     const userId1 = arbitraryUserId();
     const userId2 = arbitraryUserId();
-    const userId3 = arbitraryUserId();
-    const readModel = pipe(
+    const result = runQuery(
       [
-        constructEvent('UserAssignedAsAdminOfGroup')({
+        {
+          ...arbitraryUserAssignedAsAdminOfGroupEvent(),
           userId: userId1,
           groupId,
-        }),
-        constructEvent('UserAssignedAsAdminOfGroup')({
+        },
+        {
+          ...arbitraryUserAssignedAsAdminOfGroupEvent(),
           userId: userId2,
           groupId,
-        }),
+        },
       ],
-      RA.reduce(initialState(), handleEvent),
     );
 
-    it.todo('returns all those users as the admins');
+    it('returns all those users as the admins', () => {
+      expect(result).toHaveLength(2);
+      expect(result).toContain(userId1);
+      expect(result).toContain(userId2);
+    });
   });
 
   describe('when the same user has been assigned as admin to this group and another group', () => {
