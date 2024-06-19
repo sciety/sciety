@@ -5,8 +5,8 @@ import { constructViewModel } from '../../../../../src/read-side/non-html-views/
 import { ViewModel } from '../../../../../src/read-side/non-html-views/api/groups/view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { arbitraryUserId } from '../../../../types/user-id.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryAssignUserAsGroupAdmin } from '../../../../write-side/commands/assign-user-as-group-admin-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
@@ -25,6 +25,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       await framework.commandHelpers.assignUserAsGroupAdmin({
+        ...arbitraryAssignUserAsGroupAdmin(),
         userId: createUserAccountCommand.userId,
         groupId: addGroupCommand.groupId,
       });
@@ -44,7 +45,7 @@ describe('construct-view-model', () => {
   describe('when the group has admins that do not have user accounts', () => {
     beforeEach(async () => {
       await framework.commandHelpers.assignUserAsGroupAdmin({
-        userId: arbitraryUserId(),
+        ...arbitraryAssignUserAsGroupAdmin(),
         groupId: addGroupCommand.groupId,
       });
       groupStatus = pipe(
