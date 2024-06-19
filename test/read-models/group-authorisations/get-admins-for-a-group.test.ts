@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, constructEvent } from '../../../src/domain-events';
+import { DomainEvent } from '../../../src/domain-events';
 import { getAdminsForAGroup } from '../../../src/read-models/group-authorisations/get-admins-for-a-group';
 import { handleEvent, initialState } from '../../../src/read-models/group-authorisations/handle-event';
 import { arbitraryUserAssignedAsAdminOfGroupEvent } from '../../domain-events/group-authorisation-resource-events.helper';
@@ -78,23 +78,23 @@ describe('get-admins-for-a-group', () => {
 
   describe('when the same user has been assigned as admin to this group and another group', () => {
     const userId = arbitraryUserId();
-    const groupId1 = arbitraryGroupId();
-    const groupId2 = arbitraryGroupId();
 
-    const readModel = pipe(
+    const result = runQuery(
       [
-        constructEvent('UserAssignedAsAdminOfGroup')({
+        {
+          ...arbitraryUserAssignedAsAdminOfGroupEvent(),
           userId,
-          groupId: groupId1,
-        }),
-        constructEvent('UserAssignedAsAdminOfGroup')({
+          groupId,
+        },
+        {
+          ...arbitraryUserAssignedAsAdminOfGroupEvent(),
           userId,
-          groupId: groupId2,
-        }),
+        },
       ],
-      RA.reduce(initialState(), handleEvent),
     );
 
-    it.todo('returns that user as an admin');
+    it('returns that user as an admin', () => {
+      expect(result).toStrictEqual([userId]);
+    });
   });
 });
