@@ -12,6 +12,12 @@ export const renderAsJson = (viewModel: ViewModel): NonHtmlViewRepresentation =>
       groupStatus.largeLogoPath,
       O.getOrElse(() => ''),
     ),
+    admins: pipe(
+      groupStatus.admins,
+      RA.map(O.getOrElseW(() => ({
+        error: 'User not found',
+      }))),
+    ),
   })),
   (groupStatuses) => ({
     groups: groupStatuses,

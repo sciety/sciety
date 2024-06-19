@@ -36,7 +36,7 @@ describe('construct-view-model', () => {
     });
 
     it.failing('lists all of the admins', () => {
-      expect(groupStatus.admins).toStrictEqual([createUserAccountCommand.handle]);
+      expect(groupStatus.admins).toStrictEqual([O.some(createUserAccountCommand.handle)]);
     });
   });
 
