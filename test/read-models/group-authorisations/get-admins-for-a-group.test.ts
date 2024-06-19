@@ -34,7 +34,7 @@ describe('get-admins-for-a-group', () => {
       }),
     ]);
 
-    it.failing('returns that user as an admin', () => {
+    it('returns that user as an admin', () => {
       expect(result).toStrictEqual([userId]);
     });
   });
