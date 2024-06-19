@@ -5,6 +5,7 @@ import { constructViewModel } from '../../../../../src/read-side/non-html-views/
 import { ViewModel } from '../../../../../src/read-side/non-html-views/api/groups/view-model';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
+import { arbitraryUserId } from '../../../../types/user-id.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
@@ -18,7 +19,7 @@ describe('construct-view-model', () => {
     await framework.commandHelpers.addGroup(addGroupCommand);
   });
 
-  describe('when the group has admins', () => {
+  describe('when the group has admins that have user accounts', () => {
     const createUserAccountCommand = arbitraryCreateUserAccountCommand();
 
     beforeEach(async () => {
@@ -37,6 +38,25 @@ describe('construct-view-model', () => {
 
     it.failing('lists all of the admins', () => {
       expect(groupStatus.admins).toStrictEqual([O.some(createUserAccountCommand.handle)]);
+    });
+  });
+
+  describe('when the group has admins that do not have user accounts', () => {
+    beforeEach(async () => {
+      await framework.commandHelpers.assignUserAsGroupAdmin({
+        userId: arbitraryUserId(),
+        groupId: addGroupCommand.groupId,
+      });
+      groupStatus = pipe(
+        framework.dependenciesForViews,
+        constructViewModel,
+        RA.findFirst((status) => status.id === addGroupCommand.groupId),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it.failing('lists all of the admins', () => {
+      expect(groupStatus.admins).toStrictEqual([O.none]);
     });
   });
 
