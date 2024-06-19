@@ -2,20 +2,23 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
+import { getAdminsForAGroup } from '../../../src/read-models/group-authorisations/get-admins-for-a-group';
 import { handleEvent, initialState } from '../../../src/read-models/group-authorisations/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-admins-for-a-group', () => {
   describe('when no user has been assigned as an admin of the group', () => {
-    const userId = arbitraryUserId();
     const groupId = arbitraryGroupId();
     const readModel = pipe(
       [],
       RA.reduce(initialState(), handleEvent),
     );
+    const result = getAdminsForAGroup(readModel)(groupId);
 
-    it.todo('returns no admins');
+    it('returns no admins', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 
   describe('when a user has been assigned as an admin of the group', () => {
