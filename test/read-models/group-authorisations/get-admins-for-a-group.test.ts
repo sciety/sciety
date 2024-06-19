@@ -1,20 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
+import { DomainEvent, constructEvent } from '../../../src/domain-events';
 import { getAdminsForAGroup } from '../../../src/read-models/group-authorisations/get-admins-for-a-group';
 import { handleEvent, initialState } from '../../../src/read-models/group-authorisations/handle-event';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
 describe('get-admins-for-a-group', () => {
-  describe('when no user has been assigned as an admin of the group', () => {
-    const groupId = arbitraryGroupId();
+  const groupId = arbitraryGroupId();
+  const runQuery = (events: ReadonlyArray<DomainEvent>) => {
     const readModel = pipe(
-      [],
+      events,
       RA.reduce(initialState(), handleEvent),
     );
-    const result = getAdminsForAGroup(readModel)(groupId);
+    return getAdminsForAGroup(readModel)(groupId);
+  };
+
+  describe('when no user has been assigned as an admin of the group', () => {
+    const result = runQuery([]);
 
     it('returns no admins', () => {
       expect(result).toHaveLength(0);
@@ -23,18 +27,16 @@ describe('get-admins-for-a-group', () => {
 
   describe('when a user has been assigned as an admin of the group', () => {
     const userId = arbitraryUserId();
-    const groupId = arbitraryGroupId();
-    const readModel = pipe(
-      [
-        constructEvent('UserAssignedAsAdminOfGroup')({
-          userId,
-          groupId,
-        }),
-      ],
-      RA.reduce(initialState(), handleEvent),
-    );
+    const result = runQuery([
+      constructEvent('UserAssignedAsAdminOfGroup')({
+        userId,
+        groupId,
+      }),
+    ]);
 
-    it.todo('returns that user as an admin');
+    it.failing('returns that user as an admin', () => {
+      expect(result).toStrictEqual([userId]);
+    });
   });
 
   describe('when a user has been assigned as an admin of another group', () => {
@@ -45,7 +47,6 @@ describe('get-admins-for-a-group', () => {
     const userId1 = arbitraryUserId();
     const userId2 = arbitraryUserId();
     const userId3 = arbitraryUserId();
-    const groupId = arbitraryGroupId();
     const readModel = pipe(
       [
         constructEvent('UserAssignedAsAdminOfGroup')({
