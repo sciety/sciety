@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { Queries } from '../../../../read-models';
 
 export const constructViewModel = (queries: Queries): Json => ({
-  data: {
+  readModels: {
     annotations: queries.annotationsStatus(),
     evaluations: queries.evaluationsStatus(),
     followings: queries.followingsStatus(),
