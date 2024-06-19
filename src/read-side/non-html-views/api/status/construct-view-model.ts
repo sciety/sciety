@@ -1,23 +1,23 @@
 import { Json } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Queries } from '../../../../read-models';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 
-export const constructViewModel = (queries: Queries): Json => ({
+export const constructViewModel = (dependencies: DependenciesForViews): Json => ({
   readModels: {
-    annotations: queries.annotationsStatus(),
-    evaluations: queries.evaluationsStatus(),
-    followings: queries.followingsStatus(),
+    annotations: dependencies.annotationsStatus(),
+    evaluations: dependencies.evaluationsStatus(),
+    followings: dependencies.followingsStatus(),
     groups: {
-      total: queries.getAllGroups().length,
+      total: dependencies.getAllGroups().length,
     },
-    lists: queries.listsStatus(),
-    users: queries.usersStatus(),
+    lists: dependencies.listsStatus(),
+    users: dependencies.usersStatus(),
   },
   sagaWorkQueues: {
-    elifeArticleStates: queries.elifeArticleStatus(),
+    elifeArticleStates: dependencies.elifeArticleStatus(),
     unlistedArticles: pipe(
-      queries.getUnlistedEvaluatedArticles(),
+      dependencies.getUnlistedEvaluatedArticles(),
       RA.map((missingArticle) => ({
         articleId: missingArticle.articleId.value,
         listId: missingArticle.listId,

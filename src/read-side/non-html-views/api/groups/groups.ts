@@ -2,11 +2,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model';
 import { renderAsJson } from './render-as-json';
-import { Queries } from '../../../../read-models';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 import { NonHtmlView } from '../../non-html-view';
 
-export const groups = (queries: Queries): NonHtmlView => () => pipe(
-  constructViewModel(queries),
+export const groups = (dependencies: DependenciesForViews): NonHtmlView => () => pipe(
+  constructViewModel(dependencies),
   renderAsJson,
   TE.right,
 );
