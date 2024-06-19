@@ -12,6 +12,12 @@ import { arbitraryCreateUserAccountCommand } from '../../../../write-side/comman
 describe('construct-view-model', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
   let framework: TestFramework;
+  const getViewModel = () => pipe(
+    framework.dependenciesForViews,
+    constructViewModel,
+    RA.findFirst((status) => status.id === addGroupCommand.groupId),
+    O.getOrElseW(shouldNotBeCalled),
+  );
   let groupStatus: ViewModel[number];
 
   beforeEach(async () => {
@@ -29,12 +35,7 @@ describe('construct-view-model', () => {
         userId: createUserAccountCommand.userId,
         groupId: addGroupCommand.groupId,
       });
-      groupStatus = pipe(
-        framework.dependenciesForViews,
-        constructViewModel,
-        RA.findFirst((status) => status.id === addGroupCommand.groupId),
-        O.getOrElseW(shouldNotBeCalled),
-      );
+      groupStatus = getViewModel();
     });
 
     it('lists all of the admins', () => {
@@ -48,12 +49,7 @@ describe('construct-view-model', () => {
         ...arbitraryAssignUserAsGroupAdmin(),
         groupId: addGroupCommand.groupId,
       });
-      groupStatus = pipe(
-        framework.dependenciesForViews,
-        constructViewModel,
-        RA.findFirst((status) => status.id === addGroupCommand.groupId),
-        O.getOrElseW(shouldNotBeCalled),
-      );
+      groupStatus = getViewModel();
     });
 
     it('lists all of the admins', () => {
@@ -63,12 +59,7 @@ describe('construct-view-model', () => {
 
   describe('when the group has no admins', () => {
     beforeEach(async () => {
-      groupStatus = pipe(
-        framework.dependenciesForViews,
-        constructViewModel,
-        RA.findFirst((status) => status.id === addGroupCommand.groupId),
-        O.getOrElseW(shouldNotBeCalled),
-      );
+      groupStatus = getViewModel();
     });
 
     it('lists no admins', () => {
