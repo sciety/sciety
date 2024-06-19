@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent, constructEvent } from '../../../src/domain-events';
 import { getAdminsForAGroup } from '../../../src/read-models/group-authorisations/get-admins-for-a-group';
 import { handleEvent, initialState } from '../../../src/read-models/group-authorisations/handle-event';
+import { arbitraryUserAssignedAsAdminOfGroupEvent } from '../../domain-events/group-authorisation-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
@@ -28,10 +29,11 @@ describe('get-admins-for-a-group', () => {
   describe('when a user has been assigned as an admin of the group', () => {
     const userId = arbitraryUserId();
     const result = runQuery([
-      constructEvent('UserAssignedAsAdminOfGroup')({
+      {
+        ...arbitraryUserAssignedAsAdminOfGroupEvent(),
         userId,
         groupId,
-      }),
+      },
     ]);
 
     it('returns that user as an admin', () => {
@@ -40,7 +42,13 @@ describe('get-admins-for-a-group', () => {
   });
 
   describe('when a user has been assigned as an admin of another group', () => {
-    it.todo('returns no admins');
+    const result = runQuery([
+      arbitraryUserAssignedAsAdminOfGroupEvent(),
+    ]);
+
+    it('returns no admins', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 
   describe('when multiple users have been assigned as admins of the group', () => {
