@@ -6,10 +6,12 @@ import { ViewModel } from '../../../../../src/read-side/non-html-views/api/group
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
+import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
 
 describe('construct-view-model', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
   let framework: TestFramework;
+  let groupStatus: ViewModel[number];
 
   beforeEach(async () => {
     framework = createTestFramework();
@@ -17,12 +19,28 @@ describe('construct-view-model', () => {
   });
 
   describe('when the group has admins', () => {
-    it.todo('lists all of the admins');
+    const createUserAccountCommand = arbitraryCreateUserAccountCommand();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.createUserAccount(createUserAccountCommand);
+      await framework.commandHelpers.assignUserAsGroupAdmin({
+        userId: createUserAccountCommand.userId,
+        groupId: addGroupCommand.groupId,
+      });
+      groupStatus = pipe(
+        framework.dependenciesForViews,
+        constructViewModel,
+        RA.findFirst((status) => status.id === addGroupCommand.groupId),
+        O.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it.failing('lists all of the admins', () => {
+      expect(groupStatus.admins).toStrictEqual([createUserAccountCommand.handle]);
+    });
   });
 
   describe('when the group has no admins', () => {
-    let groupStatus: ViewModel[number];
-
     beforeEach(async () => {
       groupStatus = pipe(
         framework.dependenciesForViews,
