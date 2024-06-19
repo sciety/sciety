@@ -2,7 +2,7 @@ import { ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 import { UserId } from '../../types/user-id';
 
-export const getAdminsForAGroup = (
+export const getAdminsForGroup = (
   readModel: ReadModel,
 ) => (
   groupId: GroupId,

@@ -7,7 +7,7 @@ import { DependenciesForViews } from '../../../dependencies-for-views';
 
 const constructGroupAdmins = (dependencies: DependenciesForViews, groupId: GroupId) => pipe(
   groupId,
-  dependencies.getAdminsForAGroup,
+  dependencies.getAdminsForGroup,
   RA.map((userId) => dependencies.lookupUser(userId)),
   RA.map(
     O.map((userDetails) => ({ userHandle: userDetails.handle })),

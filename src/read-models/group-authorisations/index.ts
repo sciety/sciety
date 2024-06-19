@@ -1,11 +1,11 @@
-import { getAdminsForAGroup } from './get-admins-for-a-group';
+import { getAdminsForGroup } from './get-admins-for-group';
 import { handleEvent, initialState } from './handle-event';
 import { isUserAdminOfGroup } from './is-user-admin-of-group';
 
 export const groupAuthorisations = {
   queries: {
     isUserAdminOfGroup,
-    getAdminsForAGroup,
+    getAdminsForGroup,
   },
   initialState,
   handleEvent,

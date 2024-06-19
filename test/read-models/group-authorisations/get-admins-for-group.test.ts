@@ -2,20 +2,20 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../src/domain-events';
-import { getAdminsForAGroup } from '../../../src/read-models/group-authorisations/get-admins-for-a-group';
+import { getAdminsForGroup } from '../../../src/read-models/group-authorisations/get-admins-for-group';
 import { handleEvent, initialState } from '../../../src/read-models/group-authorisations/handle-event';
 import { arbitraryUserAssignedAsAdminOfGroupEvent } from '../../domain-events/group-authorisation-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
-describe('get-admins-for-a-group', () => {
+describe('get-admins-for-group', () => {
   const groupId = arbitraryGroupId();
   const runQuery = (events: ReadonlyArray<DomainEvent>) => {
     const readModel = pipe(
       events,
       RA.reduce(initialState(), handleEvent),
     );
-    return getAdminsForAGroup(readModel)(groupId);
+    return getAdminsForGroup(readModel)(groupId);
   };
 
   describe('when no user has been assigned as an admin of the group', () => {
