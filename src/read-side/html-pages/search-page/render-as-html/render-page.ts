@@ -8,7 +8,7 @@ const renderSearchCategories = (viewModel: ViewModel) => pipe(
   viewModel,
   RA.map((category) => `<a href="${category.href}">${category.title}</a>`),
   (categories) => `
-    <section>
+    <section class="search-categories">
       ${categories.join('')}
     </section>
   `,

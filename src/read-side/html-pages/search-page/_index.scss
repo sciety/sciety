@@ -1,0 +1,7 @@
+@use 'functions';
+
+.search-categories {
+  display: flex;
+  flex-flow: row wrap;
+  gap: functions.px-to-rem(32px);
+}
