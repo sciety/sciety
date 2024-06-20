@@ -2,7 +2,7 @@ import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFragment => toHtmlFragment(`
-  <form action="/search" method="get" class="search-form standard-form">
+  <form action="/search" method="get" class="search-form">
     <label for="searchText" class="standard-form__sub_heading">Find preprints</label>
     <div class="standard-form__helper_text">
       Search articles by DOI, author or keyword.
