@@ -60,7 +60,7 @@ export const instantiate = (
       logger,
     ),
     fetchRecommendedPapers: createFetchRecommendedPapers(queryExternalService, logger),
-    fetchSearchCategories: fetchSearchCategories(logger),
+    fetchSearchCategories: fetchSearchCategories(queryExternalService, logger),
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
