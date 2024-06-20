@@ -2,9 +2,14 @@ import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderSearchForm } from '../../shared-components/search-form';
 
+const viewModel = {
+  title: 'Infectious Diseases (except HIV/AIDS)',
+  href: 'https://labs.sciety.org/categories/articles?category=Infectious%20Diseases%20(except%20HIV/AIDS)',
+};
+
 const renderSearchCategories = () => `
   <section>
-    <a href="https://labs.sciety.org/categories/articles?category=Infectious%20Diseases%20(except%20HIV/AIDS)">Infectious Diseases (except HIV/AIDS)</a>
+    <a href="${viewModel.href}">${viewModel.title}</a>
   </section>
 `;
 
