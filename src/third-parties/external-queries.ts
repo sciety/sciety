@@ -35,12 +35,15 @@ type SearchForPaperExpressions = (
   pageSize: number,
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>;
 
+type FetchSearchCategories = () => TE.TaskEither<DE.DataError, ReadonlyArray<string>>;
+
 export type ExternalQueries = {
   fetchEvaluationDigest: FetchEvaluationDigest,
   fetchEvaluationHumanReadableOriginalUrl: FetchEvaluationHumanReadableOriginalUrl,
   fetchExpressionFrontMatter: FetchExpressionFrontMatter,
   fetchPublishingHistory: FetchPublishingHistory,
   fetchRecommendedPapers: FetchRecommendedPapers,
+  fetchSearchCategories: FetchSearchCategories,
   fetchStaticFile: FetchStaticFile,
   fetchUserAvatarUrl: FetchUserAvatarUrl,
   getArticleSubjectArea: GetArticleSubjectArea,

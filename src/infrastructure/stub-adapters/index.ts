@@ -14,6 +14,7 @@ export const stubAdapters: ExternalQueries = {
   fetchEvaluationDigest: fetchEvaluation,
   fetchPublishingHistory,
   fetchRecommendedPapers,
+  fetchSearchCategories: () => TE.right(['Epidemiology']),
   fetchStaticFile,
   fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
   getArticleSubjectArea: () => TE.right({
