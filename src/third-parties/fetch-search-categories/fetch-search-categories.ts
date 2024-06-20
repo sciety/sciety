@@ -28,11 +28,13 @@ const scietyLabsCategoriesResponseCodec = t.type({
   })),
 });
 
+const url = 'https://labs.sciety.org/api/papers/v1/preprints/classifications?filter%5Bevaluated_only%5D=true';
+
 export const fetchSearchCategories = (logger: Logger): ExternalQueries['fetchSearchCategories'] => () => pipe(
   hardCodedResponse,
   TE.right,
   TE.chainEitherKW(flow(
-    decodeAndLogFailures(logger, scietyLabsCategoriesResponseCodec, { url: '' }),
+    decodeAndLogFailures(logger, scietyLabsCategoriesResponseCodec, { url }),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.map((response) => response.data),
