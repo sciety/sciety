@@ -39,7 +39,10 @@ describe('construct-view-model', () => {
     });
 
     it('lists all of the admins', () => {
-      expect(groupStatus.admins).toStrictEqual([O.some({ userHandle: createUserAccountCommand.handle })]);
+      expect(groupStatus.admins).toStrictEqual([O.some({
+        userHandle: createUserAccountCommand.handle,
+        userId: createUserAccountCommand.userId,
+      })]);
     });
   });
 

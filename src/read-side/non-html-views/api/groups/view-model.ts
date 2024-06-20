@@ -1,7 +1,9 @@
 import * as O from 'fp-ts/Option';
+import { UserId } from '../../../../types/user-id';
 
 type GroupAdmin = {
   userHandle: string,
+  userId: UserId,
 };
 
 type GroupStatus = {

@@ -10,7 +10,10 @@ const constructGroupAdmins = (dependencies: DependenciesForViews, groupId: Group
   dependencies.getAdminsForGroup,
   RA.map((userId) => dependencies.lookupUser(userId)),
   RA.map(
-    O.map((userDetails) => ({ userHandle: userDetails.handle })),
+    O.map((userDetails) => ({
+      userHandle: userDetails.handle,
+      userId: userDetails.id,
+    })),
   ),
 );
 
