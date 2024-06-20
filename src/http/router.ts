@@ -136,7 +136,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, flow(
       searchResultsPageParams.decode,
       E.fold(
-        () => TE.right(searchPage),
+        () => searchPage,
         searchResultsPage(dependencies)(20),
       ),
     )),
