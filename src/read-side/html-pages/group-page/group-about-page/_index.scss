@@ -2,7 +2,6 @@
 @use 'functions';
 @use 'breakpoints';
 
-
 .group-page-pref {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -19,18 +18,5 @@
 
   dd {
     margin-left: 0;
-  }
-}
-
-.our-lists__article_count {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.our-lists__updated_label {
-  display: block;
-
-  @include breakpoints.not-narrow {
-    display: inline;
   }
 }

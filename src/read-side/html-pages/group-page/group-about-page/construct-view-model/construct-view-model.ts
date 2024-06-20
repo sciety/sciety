@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructOurListsViewModel } from './construct-our-lists-view-model';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import * as DE from '../../../../../types/data-error';
@@ -21,14 +20,12 @@ export const constructViewModel: ConstructViewModel = (dependencies) => (params)
   E.map((group) => ({
     group,
     header: constructHeaderViewModel(group),
-    ourLists: constructOurListsViewModel(dependencies, group),
   })),
   TE.fromEither,
   TE.chain((partial) => pipe(
     dependencies.fetchStaticFile(`groups/${partial.group.descriptionPath}`),
     TE.map((markdown) => ({
       header: partial.header,
-      ourLists: partial.ourLists,
       markdown,
     })),
   )),
