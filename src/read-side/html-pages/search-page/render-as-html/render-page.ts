@@ -1,17 +1,28 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderSearchForm } from '../../shared-components/search-form';
 
-const viewModel = {
-  title: 'Infectious Diseases (except HIV/AIDS)',
-  href: 'https://labs.sciety.org/categories/articles?category=Infectious%20Diseases%20(except%20HIV/AIDS)',
-};
+const viewModel = [
+  {
+    title: 'Infectious Diseases (except HIV/AIDS)',
+    href: 'https://labs.sciety.org/categories/articles?category=Infectious%20Diseases%20(except%20HIV/AIDS)',
+  },
+  {
+    title: 'Epidemiology',
+    href: 'https://labs.sciety.org/categories/articles?category=Epidemiology',
+  },
+];
 
-const renderSearchCategories = () => `
-  <section>
-    <a href="${viewModel.href}">${viewModel.title}</a>
-  </section>
-`;
+const renderSearchCategories = () => pipe(
+  viewModel,
+  RA.map((category) => `<a href="${category.href}">${category.title}</a>`),
+  (categories) => `
+    <section>
+      ${categories.join('')}
+    </section>
+  `,
+);
 
 export const renderPage = (): HtmlFragment => pipe(
   `
