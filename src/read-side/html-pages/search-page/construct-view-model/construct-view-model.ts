@@ -1,12 +1,16 @@
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { ViewModel } from '../view-model';
 
-export const constructViewModel = (): ViewModel => [
-  {
-    title: 'Infectious Diseases (except HIV/AIDS)',
-    href: 'https://labs.sciety.org/categories/articles?category=Infectious%20Diseases%20(except%20HIV/AIDS)',
-  },
-  {
-    title: 'Epidemiology',
-    href: 'https://labs.sciety.org/categories/articles?category=Epidemiology',
-  },
+const titles = [
+  'Infectious Diseases (except HIV/AIDS)',
+  'Epidemiology',
 ];
+
+export const constructViewModel = (): ViewModel => pipe(
+  titles,
+  RA.map((title) => ({
+    title,
+    href: `https://labs.sciety.org/categories/articles?category=${title}`,
+  })),
+);
