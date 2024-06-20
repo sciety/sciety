@@ -3,11 +3,12 @@ import { pipe } from 'fp-ts/function';
 import { pathToSubmitAddAFeaturedList } from '../../../../../http/form-submission-handlers/submit-paths';
 import { inputFieldNames } from '../../../../../standards';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
+import { renderListCard } from '../../../shared-components/list-card';
 import { renderListItems } from '../../../shared-components/list-items';
 import { ListsThatCanBeFeatured, ListThatCanBeFeatured } from '../view-model';
 
 const renderFormForAParticularList = (viewModel: ListThatCanBeFeatured) => toHtmlFragment(`
-  ${viewModel.listName}
+  ${renderListCard(viewModel.listCard)}
   <form action="${pathToSubmitAddAFeaturedList()}" method="post" >
     <input type="hidden" name="${inputFieldNames.forGroup}" value="${viewModel.forGroup}">
     <input type="hidden" name="${inputFieldNames.successRedirectPath}" value="${viewModel.successRedirectPath}">

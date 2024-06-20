@@ -8,6 +8,7 @@ import { ListId } from '../../../../../types/list-id';
 import * as LOID from '../../../../../types/list-owner-id';
 import { UserId } from '../../../../../types/user-id';
 import { constructGroupPagePath } from '../../../../paths';
+import { constructListCardViewModelWithoutCurator } from '../../../shared-components/list-card';
 import { ListsThatCanBeFeatured } from '../view-model';
 
 const exclude = (
@@ -39,5 +40,6 @@ export const constructListsThatCanBeFeatured = (
     listId: list.id,
     forGroup: group.id,
     successRedirectPath: constructGroupPagePath.management.href(group),
+    listCard: constructListCardViewModelWithoutCurator(list),
   })),
 );
