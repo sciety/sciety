@@ -1,13 +1,7 @@
-import { toHtmlFragment } from '../../../../types/html-fragment';
+import { renderPage } from './render-page';
 import { HtmlPage, toHtmlPage } from '../../html-page';
-import { renderSearchForm } from '../../shared-components/search-form';
 
 export const renderAsHtml = (): HtmlPage => toHtmlPage({
   title: 'Search',
-  content: toHtmlFragment(`
-  <header class="page-header page-header--search-results">
-    <h1>Search Sciety</h1>
-  </header>
-  ${renderSearchForm('', true)}
-`),
+  content: renderPage(),
 });
