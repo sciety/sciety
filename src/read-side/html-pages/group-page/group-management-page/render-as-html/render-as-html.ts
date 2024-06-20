@@ -16,6 +16,9 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <p>
       <a href="${viewModel.groupHomePageHref}">View public group page</a>
     </p>
+    <p>
+      <a href="${viewModel.groupEngagementDashboardHref}">View group engagement dashboard</a>
+    </p>
   </header>
   <section class="group-management-of-featured-lists">
     <h2>Featured lists</h2>

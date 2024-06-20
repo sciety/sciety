@@ -32,6 +32,7 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
   E.map((group) => ({
     pageHeading: `Group management details for ${group.name}`,
     groupHomePageHref: constructGroupPagePath.home.href(group),
+    groupEngagementDashboardHref: `https://datastudio.google.com/reporting/b7e23806-11a3-487b-9fac-c53df161fe73?params=%7B%22group_id%22:%22${group.id}%22%7D`,
     currentlyFeaturedLists: constructCurrentlyFeaturedLists(dependencies, group),
     listsThatCanBeFeatured: constructListsThatCanBeFeatured(dependencies, group, userId),
   })),

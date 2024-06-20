@@ -20,6 +20,7 @@ export type ListsThatCanBeFeatured = ReadonlyArray<ListThatCanBeFeatured>;
 export type ViewModel = {
   pageHeading: string,
   groupHomePageHref: string,
+  groupEngagementDashboardHref: string,
   currentlyFeaturedLists: CurrentlyFeaturedLists,
   listsThatCanBeFeatured: ListsThatCanBeFeatured,
 };
