@@ -22,8 +22,13 @@
 
   li {
     display: flex;
+    gap: functions.px-to-rem(16px);
     justify-content: space-between;
     margin-bottom: functions.px-to-rem(8px);
+
+    article {
+      flex-grow: 1;
+    }
 
     button {
       @include button.secondary();
