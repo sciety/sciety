@@ -2,19 +2,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderSearchForm } from '../../shared-components/search-form';
+import { ViewModel } from '../view-model';
 
-const viewModel = [
-  {
-    title: 'Infectious Diseases (except HIV/AIDS)',
-    href: 'https://labs.sciety.org/categories/articles?category=Infectious%20Diseases%20(except%20HIV/AIDS)',
-  },
-  {
-    title: 'Epidemiology',
-    href: 'https://labs.sciety.org/categories/articles?category=Epidemiology',
-  },
-];
-
-const renderSearchCategories = () => pipe(
+const renderSearchCategories = (viewModel: ViewModel) => pipe(
   viewModel,
   RA.map((category) => `<a href="${category.href}">${category.title}</a>`),
   (categories) => `
@@ -24,13 +14,13 @@ const renderSearchCategories = () => pipe(
   `,
 );
 
-export const renderPage = (): HtmlFragment => pipe(
+export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   `
     <header class="page-header page-header--search-results">
       <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm('', true)}
-    ${process.env.EXPERIMENT_ENABLED === 'true' ? renderSearchCategories() : ''}
+    ${process.env.EXPERIMENT_ENABLED === 'true' ? renderSearchCategories(viewModel) : ''}
   `,
   toHtmlFragment,
 );
