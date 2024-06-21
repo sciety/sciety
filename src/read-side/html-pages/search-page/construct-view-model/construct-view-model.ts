@@ -8,7 +8,7 @@ import { Dependencies } from './dependencies';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 
-const constructSearchCategories = (dependencies: Dependencies) => pipe(
+const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
   dependencies.fetchSearchCategories(),
   TE.map(RA.map((title) => ({
     title,
@@ -21,10 +21,9 @@ const constructSearchCategories = (dependencies: Dependencies) => pipe(
 );
 
 export const constructViewModel = (dependencies: Dependencies): TE.TaskEither<DE.DataError, ViewModel> => pipe(
-  constructSearchCategories(dependencies),
-  T.map((categories) => pipe(
-    categories,
-    (componentViewModel) => ({ categories: componentViewModel }),
+  constructBrowseByCategory(dependencies),
+  T.map((browseByCategory) => pipe(
+    ({ browseByCategory }),
     E.right,
   )),
 );

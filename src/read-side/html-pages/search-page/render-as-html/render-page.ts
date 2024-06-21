@@ -6,7 +6,7 @@ import { renderListItems } from '../../shared-components/list-items';
 import { renderSearchForm } from '../../shared-components/search-form';
 import { ViewModel } from '../view-model';
 
-const renderSearchCategories = (viewModel: ViewModel['categories']) => pipe(
+const renderSearchCategories = (viewModel: ViewModel['browseByCategory']) => pipe(
   viewModel,
   O.match(
     () => '',
@@ -32,7 +32,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm('', true)}
-    ${renderSearchCategories(viewModel.categories)}
+    ${renderSearchCategories(viewModel.browseByCategory)}
   `,
   toHtmlFragment,
 );
