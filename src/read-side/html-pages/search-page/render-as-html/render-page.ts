@@ -10,9 +10,12 @@ const renderSearchCategories = (viewModel: ViewModel) => pipe(
   RA.map((category) => toHtmlFragment(`<a href="${category.href}">${category.title}</a>`)),
   renderListItems,
   (categories) => `
-    <ul role="list" class="search-categories">
-      ${categories}
-    </ul>
+    <section>
+    <h2>Browse by category</h2>
+      <ul role="list" class="search-categories">
+        ${categories}
+      </ul>
+    </section>
   `,
 );
 
