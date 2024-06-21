@@ -25,7 +25,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm('', true)}
-    ${process.env.EXPERIMENT_ENABLED === 'true' ? renderSearchCategories(viewModel) : ''}
+    ${renderSearchCategories(viewModel)}
   `,
   toHtmlFragment,
 );
