@@ -5,13 +5,17 @@
 @use 'settings';
 
 .search-categories {
+  grid-column: 1/-1;
+}
+
+.search-categories-list {
   @include list.basics();
   display: flex;
   flex-flow: row wrap;
   gap: functions.px-to-rem(32px);
 }
 
-.search-categories__link {
+.search-categories-list__link {
   @include button.link(
     $text: settings.$colour-text-primary,
     $background: settings.$colour-white,
