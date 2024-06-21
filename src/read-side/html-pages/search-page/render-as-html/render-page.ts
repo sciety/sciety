@@ -5,15 +5,15 @@ import { renderListItems } from '../../shared-components/list-items';
 import { renderSearchForm } from '../../shared-components/search-form';
 import { ViewModel } from '../view-model';
 
-const renderSearchCategories = (viewModel: ViewModel) => pipe(
-  viewModel,
+const renderSearchCategories = (categories: ViewModel['categories']) => pipe(
+  categories,
   RA.map((category) => toHtmlFragment(`<a href="${category.href}" class="search-categories-list__link">${category.title}</a>`)),
   renderListItems,
-  (categories) => `
+  (listContent) => `
     <section class="search-categories">
     <h2>Browse by category</h2>
       <ul role="list" class="search-categories-list">
-        ${categories}
+        ${listContent}
       </ul>
     </section>
   `,
@@ -25,7 +25,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <h1>Search Sciety</h1>
     </header>
     ${renderSearchForm('', true)}
-    ${renderSearchCategories(viewModel)}
+    ${renderSearchCategories(viewModel.categories)}
   `,
   toHtmlFragment,
 );

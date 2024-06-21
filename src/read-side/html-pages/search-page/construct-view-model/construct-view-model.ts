@@ -11,4 +11,5 @@ export const constructViewModel = (dependencies: Dependencies): TE.TaskEither<DE
     title,
     href: `https://labs.sciety.org/categories/articles?category=${title}`,
   }))),
+  TE.map((categories) => ({ categories })),
 );

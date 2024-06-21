@@ -3,4 +3,4 @@ type Category = {
   href: string,
 };
 
-export type ViewModel = ReadonlyArray<Category>;
+export type ViewModel = { categories: ReadonlyArray<Category> };
