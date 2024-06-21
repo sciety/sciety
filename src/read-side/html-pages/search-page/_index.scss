@@ -15,7 +15,7 @@
   @include button.link(
     $text: settings.$colour-text-primary,
     $background: settings.$colour-white,
-    $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
+    $background-hover: settings.$colour-background-grey,
     );
   border: 1px solid settings.$colour-furniture;
 }
