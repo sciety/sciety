@@ -14,7 +14,8 @@
 .search-categories__link {
   @include button.link(
     $text: settings.$colour-text-primary,
-    $background: settings.$colour-background-grey,
+    $background: settings.$colour-white,
     $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
     );
+  border: 1px solid settings.$colour-furniture;
 }
