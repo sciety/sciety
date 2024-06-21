@@ -15,6 +15,11 @@ $_clear-button-inline-size: 48px;
   margin-bottom: functions.px-to-rem(48px);
 }
 
+.search-form__label {
+  display: block;
+  margin-bottom: functions.px-to-rem(8px);
+}
+
 .search-form__positioning_context {
   position: relative;
 }
