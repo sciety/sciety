@@ -1,6 +1,8 @@
 @use 'functions';
+@use 'list';
 
 .search-categories {
+  @include list.basics();
   display: flex;
   flex-flow: row wrap;
   gap: functions.px-to-rem(32px);

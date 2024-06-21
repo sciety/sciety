@@ -1,16 +1,18 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderListItems } from '../../shared-components/list-items';
 import { renderSearchForm } from '../../shared-components/search-form';
 import { ViewModel } from '../view-model';
 
 const renderSearchCategories = (viewModel: ViewModel) => pipe(
   viewModel,
-  RA.map((category) => `<a href="${category.href}">${category.title}</a>`),
+  RA.map((category) => toHtmlFragment(`<a href="${category.href}">${category.title}</a>`)),
+  renderListItems,
   (categories) => `
-    <section class="search-categories">
-      ${categories.join('')}
-    </section>
+    <ul role="list" class="search-categories">
+      ${categories}
+    </ul>
   `,
 );
 
