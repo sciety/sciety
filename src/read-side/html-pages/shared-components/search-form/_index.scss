@@ -10,8 +10,6 @@ $_text-input-height: 3rem;
 $_clear-button-inline-size: 48px;
 
 .search-form {
-  @include layout.allow-edge-to-edge-content-when-narrow();
-
   margin-bottom: functions.px-to-rem(48px);
 }
 
