@@ -1,4 +1,7 @@
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
@@ -11,5 +14,10 @@ export const constructViewModel = (dependencies: Dependencies): TE.TaskEither<DE
     title,
     href: `https://labs.sciety.org/categories/articles?category=${title}`,
   }))),
-  TE.map((categories) => ({ categories })),
+  T.map((categories) => pipe(
+    categories,
+    O.fromEither,
+    (componentViewModel) => ({ categories: componentViewModel }),
+    E.right,
+  )),
 );
