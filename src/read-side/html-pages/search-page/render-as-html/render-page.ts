@@ -7,7 +7,7 @@ import { ViewModel } from '../view-model';
 
 const renderSearchCategories = (viewModel: ViewModel) => pipe(
   viewModel,
-  RA.map((category) => toHtmlFragment(`<a href="${category.href}">${category.title}</a>`)),
+  RA.map((category) => toHtmlFragment(`<a href="${category.href}" class="search-categories__link">${category.title}</a>`)),
   renderListItems,
   (categories) => `
     <section>

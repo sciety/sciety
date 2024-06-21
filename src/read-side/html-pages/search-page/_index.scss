@@ -1,9 +1,20 @@
+@use 'sass:color';
+@use 'button';
 @use 'functions';
 @use 'list';
+@use 'settings';
 
 .search-categories {
   @include list.basics();
   display: flex;
   flex-flow: row wrap;
   gap: functions.px-to-rem(32px);
+}
+
+.search-categories__link {
+  @include button.link(
+    $text: settings.$colour-text-primary,
+    $background: settings.$colour-background-grey,
+    $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
+    );
 }

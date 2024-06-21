@@ -3,7 +3,7 @@
 @use 'settings';
 @use 'typography';
 
-@mixin _link($text, $background, $background-hover) {
+@mixin link($text, $background, $background-hover) {
   @include typography.button();
 
   display: inline-block;
@@ -61,7 +61,7 @@
 }
 
 @mixin primary-link {
-  @include _link(
+  @include link(
     $text: settings.$colour-white,
     $background: settings.$colour-accent,
     $background-hover: settings.$colour-accent-hover,
@@ -77,7 +77,7 @@
 }
 
 @mixin secondary-link() {
-  @include _link(
+  @include link(
     $text: settings.$colour-text-primary,
     $background: settings.$colour-background-grey,
     $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
