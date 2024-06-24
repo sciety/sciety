@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
@@ -19,8 +18,6 @@ const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
 
 export const constructViewModel = (dependencies: Dependencies): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   constructBrowseByCategory(dependencies),
-  T.map((browseByCategory) => pipe(
-    ({ browseByCategory }),
-    E.right,
-  )),
+  T.map((browseByCategory) => ({ browseByCategory })),
+  TE.rightTask,
 );
