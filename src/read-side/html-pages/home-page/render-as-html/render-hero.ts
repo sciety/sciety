@@ -15,7 +15,7 @@ const renderSearchForm = () => `
 
 const renderBrowseByCategoryCallToAction = () => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return '<span>or</span><a class="home-page-hero-browse-by-category-cta" href="/search">Browse by subject category</a>';
+    return '<span>or</span><a class="home-page-hero-browse-by-category-cta" href="/search">Browse by category</a>';
   }
   return '';
 };
