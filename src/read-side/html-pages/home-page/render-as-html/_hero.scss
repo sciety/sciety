@@ -90,16 +90,19 @@ $_width-at-which-image-is-too-narrow: 1680px;
   }
 }
 
-.home-page-hero__ctas {
+.home-page-hero__section {
   @include _vertical-spacing-in-hero();
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: functions.px-to-rem(16px);
 
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.home-page-hero__ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: functions.px-to-rem(16px);
 }
 
 .home-page-hero-browse-by-category-link {

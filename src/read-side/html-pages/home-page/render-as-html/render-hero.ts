@@ -26,10 +26,12 @@ export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
         Join the global network discovering and highlighting important new studies.
       </p>
 
-      <section class="home-page-hero__ctas">
-        ${renderSearchForm()}
-        <span>or</span>
-        ${renderBrowseByCategoryLink()}
+      <section class="home-page-hero__section">
+        <div class="home-page-hero__ctas">
+          ${renderSearchForm()}
+          <span>or</span>
+          ${renderBrowseByCategoryLink()}
+        </div>
       </section>
     </div>
     <img class="home-page-hero__right_image" src="/static/images/home-page/sciety-pattern-right.svg" alt=""/>
