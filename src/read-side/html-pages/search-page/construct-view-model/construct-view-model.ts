@@ -7,11 +7,13 @@ import { Dependencies } from './dependencies';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 
+const constructScietyLabsCategoryUrl = (title: string) => `https://labs.sciety.org/categories/articles?category=${title}&from_sciety=true`;
+
 const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
   dependencies.fetchSearchCategories(),
   TE.map(RA.map((title) => ({
     title,
-    href: `https://labs.sciety.org/categories/articles?category=${title}`,
+    href: constructScietyLabsCategoryUrl(title),
   }))),
   T.map(O.fromEither),
 );
