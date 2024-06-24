@@ -13,12 +13,7 @@ const renderSearchForm = () => `
   </form>
 `;
 
-const renderBrowseByCategoryCallToAction = () => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return '<span>or</span><a class="home-page-hero-browse-by-category-cta" href="/search">Browse by category</a>';
-  }
-  return '';
-};
+const renderBrowseByCategoryCallToAction = () => '<span>or</span><a class="home-page-hero-browse-by-category-cta" href="/search">Browse by category</a>';
 
 export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <section class="home-page-hero-wrapper">
