@@ -43,7 +43,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@swc/cli": "^0.3.12",
+    "@swc/cli": "^0.3.14",
     "@swc/core": "^1.6.3",
     "@types/jest": "^29.5.12",
     "@types/koa": "^2.15.0",
