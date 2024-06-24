@@ -94,7 +94,8 @@ $_width-at-which-image-is-too-narrow: 1680px;
 .home-page-hero__section {
   @include _vertical-spacing-in-hero();
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
   &:last-child {
     margin-bottom: 0;
