@@ -13,6 +13,13 @@ const renderSearchForm = () => `
   </form>
 `;
 
+const renderBrowseByCategoryCallToAction = () => {
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    return '';
+  }
+  return '';
+};
+
 export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <section class="home-page-hero-wrapper">
     <img class="home-page-hero__left_image" src="/static/images/home-page/sciety-pattern-left.svg" alt=""/>
@@ -26,6 +33,7 @@ export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
 
       <section class="home-page-hero__section">
         ${renderSearchForm()}
+        ${renderBrowseByCategoryCallToAction()}
       </section>
     </div>
     <img class="home-page-hero__right_image" src="/static/images/home-page/sciety-pattern-right.svg" alt=""/>
