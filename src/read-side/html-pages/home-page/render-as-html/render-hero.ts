@@ -13,7 +13,7 @@ const renderSearchForm = () => `
   </form>
 `;
 
-const renderBrowseByCategoryCallToAction = () => '<span>or</span><a class="home-page-hero-browse-by-category-cta" href="/search">Browse by category</a>';
+const renderBrowseByCategoryLink = () => '<a class="home-page-hero-browse-by-category-link" href="/search">Browse by category</a>';
 
 export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <section class="home-page-hero-wrapper">
@@ -26,9 +26,10 @@ export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
         Join the global network discovering and highlighting important new studies.
       </p>
 
-      <section class="home-page-hero__section">
+      <section class="home-page-hero__ctas">
         ${renderSearchForm()}
-        ${renderBrowseByCategoryCallToAction()}
+        <span>or</span>
+        ${renderBrowseByCategoryLink()}
       </section>
     </div>
     <img class="home-page-hero__right_image" src="/static/images/home-page/sciety-pattern-right.svg" alt=""/>
