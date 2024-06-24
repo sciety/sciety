@@ -14,10 +14,7 @@ const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
     title,
     href: `https://labs.sciety.org/categories/articles?category=${title}`,
   }))),
-  T.map((categories) => pipe(
-    categories,
-    O.fromEither,
-  )),
+  T.map(O.fromEither),
 );
 
 export const constructViewModel = (dependencies: Dependencies): TE.TaskEither<DE.DataError, ViewModel> => pipe(
