@@ -4,18 +4,18 @@
 @use 'list';
 @use 'settings';
 
-.search-categories {
+.browse-by-category {
   grid-column: 1/-1;
 }
 
-.search-categories-list {
+.browse-by-category-list {
   @include list.basics();
   display: flex;
   flex-flow: row wrap;
   gap: functions.px-to-rem(32px);
 }
 
-.search-categories-list__link {
+.browse-by-category-list__link {
   @include button.link(
     $text: settings.$colour-text-primary,
     $background: settings.$colour-white,
