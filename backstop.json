@@ -64,6 +64,13 @@
       ]
     },
     {
+      "label": "Search page",
+      "url": "http://sciety-test-app-1/search",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "Article search",
       "url": "http://sciety-test-app-1/search?query=elephant+shark",
       "selectors": [
