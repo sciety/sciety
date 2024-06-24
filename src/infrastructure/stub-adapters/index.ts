@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { fetchEvaluation } from './fetch-evaluation';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { fetchRecommendedPapers } from './fetch-recommended-papers';
+import { fetchSearchCategories } from './fetch-search-categories';
 import { fetchStaticFile } from './fetch-static-file';
 import { localFetchPaperExpressionFrontMatter } from './local-fetch-paper-expression-front-matter';
 import { searchForPaperExpressions } from './search-for-paper-expressions';
@@ -14,7 +15,7 @@ export const stubAdapters: ExternalQueries = {
   fetchEvaluationDigest: fetchEvaluation,
   fetchPublishingHistory,
   fetchRecommendedPapers,
-  fetchSearchCategories: () => TE.right(['Epidemiology']),
+  fetchSearchCategories,
   fetchStaticFile,
   fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
   getArticleSubjectArea: () => TE.right({
