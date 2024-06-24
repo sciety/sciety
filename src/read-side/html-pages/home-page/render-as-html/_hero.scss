@@ -96,6 +96,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: functions.px-to-rem(16px);
 
   &:last-child {
     margin-bottom: 0;
