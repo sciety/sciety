@@ -15,7 +15,7 @@ const renderSearchForm = () => `
 
 const renderBrowseByCategoryCallToAction = () => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return '<a href="/search">Browse by subject category</a>';
+    return '<a class="home-page-hero-browse-by-category-cta" href="/search">Browse by subject category</a>';
   }
   return '';
 };

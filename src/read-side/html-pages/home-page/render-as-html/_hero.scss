@@ -1,6 +1,7 @@
 @use 'settings';
 @use 'functions';
 @use 'typography';
+@use 'link';
 @use 'breakpoints';
 @use 'button';
 @use 'hero-search-form';
@@ -98,4 +99,15 @@ $_width-at-which-image-is-too-narrow: 1680px;
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.home-page-hero-browse-by-category-cta {
+  &:link,
+  &:visited {
+    color: settings.$colour-white;
+
+    @include link.state() {
+      color: settings.$colour-accent-hover-on-dark-background;
+    }
+  };
 }
