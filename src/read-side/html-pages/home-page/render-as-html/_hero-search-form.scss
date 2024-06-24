@@ -47,7 +47,8 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
   margin-bottom: functions.px-to-rem(2px);
 
   @include breakpoints.not-narrow() {
-    padding-right: functions.px-to-rem($_search-button-width-with-separation);
+    padding-left: math.div(functions.px-to-rem($_search-button-width-with-separation), 2);
+    padding-right: math.div(functions.px-to-rem($_search-button-width-with-separation), 2);
   }
 }
 
