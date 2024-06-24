@@ -2,9 +2,9 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { PaperActivitySummaryCardViewModel } from '../../../../../src/read-side/html-pages/shared-components/paper-activity-summary-card';
-import { constructViewModel } from '../../../../../src/read-side/html-pages/shared-components/paper-activity-summary-card/construct-view-model';
-import { ErrorViewModel } from '../../../../../src/read-side/html-pages/shared-components/paper-activity-summary-card/render-error-as-html';
+import { ArticleCardViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card';
+import { constructViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card/construct-view-model';
+import { ErrorViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card/render-error-as-html';
 import { constructPaperActivityPageHref } from '../../../../../src/read-side/paths';
 import { ArticleId } from '../../../../../src/types/article-id';
 import * as DE from '../../../../../src/types/data-error';
@@ -28,7 +28,7 @@ describe('construct-view-model', () => {
   });
 
   describe('when all information is fetched successfully', () => {
-    let viewModel: PaperActivitySummaryCardViewModel;
+    let viewModel: ArticleCardViewModel;
 
     describe('when an article has not been evaluated', () => {
       const inputExpressionDoi = arbitraryExpressionDoi();
@@ -97,7 +97,7 @@ describe('construct-view-model', () => {
   describe('when an article appears in lists', () => {
     const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
     const command = arbitraryCreateListCommand();
-    let successfulViewModel: PaperActivitySummaryCardViewModel;
+    let successfulViewModel: ArticleCardViewModel;
 
     beforeEach(async () => {
       await framework.commandHelpers.createList(command);
@@ -122,7 +122,7 @@ describe('construct-view-model', () => {
 
   describe('when an article does not appear in any list', () => {
     const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
-    let successfulViewModel: PaperActivitySummaryCardViewModel;
+    let successfulViewModel: ArticleCardViewModel;
 
     beforeEach(async () => {
       successfulViewModel = await pipe(
@@ -142,7 +142,7 @@ describe('construct-view-model', () => {
   });
 
   describe('when fetching the front matter fails', () => {
-    let viewModel: E.Either<ErrorViewModel, PaperActivitySummaryCardViewModel>;
+    let viewModel: E.Either<ErrorViewModel, ArticleCardViewModel>;
 
     beforeEach(async () => {
       viewModel = await pipe(
@@ -162,7 +162,7 @@ describe('construct-view-model', () => {
   });
 
   describe('when fetching the publishing history fails', () => {
-    let viewModel: E.Either<ErrorViewModel, PaperActivitySummaryCardViewModel>;
+    let viewModel: E.Either<ErrorViewModel, ArticleCardViewModel>;
 
     beforeEach(async () => {
       viewModel = await pipe(

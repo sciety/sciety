@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { constructRelatedArticles } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/construct-related-articles';
-import { PaperActivitySummaryCardViewModel } from '../../../../../src/read-side/html-pages/shared-components/paper-activity-summary-card';
+import { ArticleCardViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card';
 import * as DE from '../../../../../src/types/data-error';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
@@ -11,7 +11,7 @@ import { arbitraryPublishingHistoryOnlyPreprints } from '../../../../types/publi
 
 describe('construct-related-articles', () => {
   let framework: TestFramework;
-  let relatedArticles: ReadonlyArray<PaperActivitySummaryCardViewModel>;
+  let relatedArticles: ReadonlyArray<ArticleCardViewModel>;
 
   describe('given there are more than 3 possible related articles', () => {
     beforeEach(async () => {
@@ -28,7 +28,7 @@ describe('construct-related-articles', () => {
   });
 
   describe('given there are 0 related articles', () => {
-    let result: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>;
+    let result: O.Option<ReadonlyArray<ArticleCardViewModel>>;
 
     beforeEach(async () => {
       framework = createTestFramework();
@@ -45,7 +45,7 @@ describe('construct-related-articles', () => {
   });
 
   describe('when the query fails', () => {
-    let result: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>;
+    let result: O.Option<ReadonlyArray<ArticleCardViewModel>>;
 
     beforeEach(async () => {
       framework = createTestFramework();

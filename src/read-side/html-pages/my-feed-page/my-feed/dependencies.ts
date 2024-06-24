@@ -3,8 +3,8 @@
  */
 import { GetAllEvents } from '../../../../event-store';
 import { Queries } from '../../../../read-models';
-import { ConstructPaperActivitySummaryCardViewModelDependencies } from '../../shared-components/paper-activity-summary-card';
+import { ConstructArticleCardViewModelDependencies } from '../../shared-components/article-card';
 
-export type Dependencies = Queries & ConstructPaperActivitySummaryCardViewModelDependencies & {
+export type Dependencies = Queries & ConstructArticleCardViewModelDependencies & {
   getAllEvents: GetAllEvents,
 };

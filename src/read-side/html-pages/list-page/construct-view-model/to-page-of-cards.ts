@@ -6,12 +6,12 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
+import { ArticleErrorCardViewModel } from '../../shared-components/article-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
   constructArticleCardWithControlsAndAnnotation,
 } from '../../shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems } from '../../shared-components/pagination';
-import { PaperActivityErrorCardViewModel } from '../../shared-components/paper-activity-summary-card';
 import { ContentWithPaginationViewModel } from '../view-model';
 
 export const toPageOfCards = (
@@ -27,7 +27,7 @@ export const toPageOfCards = (
   TE.chainTaskK(T.traverseArray(
     E.foldW(
       TE.left,
-      TE.right<PaperActivityErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel>,
+      TE.right<ArticleErrorCardViewModel, ArticleCardWithControlsAndAnnotationViewModel>,
     ),
   )),
 );

@@ -16,10 +16,10 @@ import {
 import { GroupId } from '../../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { UserId } from '../../../../types/user-id';
+import { renderArticleCard } from '../../shared-components/article-card';
 import { renderListItems } from '../../shared-components/list-items';
 import { renderListOfCards } from '../../shared-components/list-of-cards';
 import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../shared-components/pagination';
-import { renderPaperActivitySummaryCard } from '../../shared-components/paper-activity-summary-card';
 
 const renderAsSection = (contents: HtmlFragment): HtmlFragment => toHtmlFragment(`
   <section>
@@ -52,7 +52,7 @@ const constructArticleViewModels = (dependencies: Dependencies) => flow(
 );
 
 const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
-  RNEA.map(renderPaperActivitySummaryCard),
+  RNEA.map(renderArticleCard),
   (cards) => renderListItems(cards, 'my-feed__list_item'),
   renderListOfCards,
   (listOfCards) => `

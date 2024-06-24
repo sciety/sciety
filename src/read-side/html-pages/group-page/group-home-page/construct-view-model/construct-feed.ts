@@ -11,8 +11,8 @@ import * as EDOI from '../../../../../types/expression-doi';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
 import { constructGroupPagePath } from '../../../../paths';
+import { constructArticleCard } from '../../../shared-components/article-card';
 import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
-import { constructPaperActivitySummaryCard } from '../../../shared-components/paper-activity-summary-card';
 import { ViewModel } from '../view-model';
 
 const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
@@ -31,7 +31,7 @@ const toOrderedArticleCards = (
   pageOfArticleIds: PageOfItems<string>,
 ) => pipe(
   pageOfArticleIds.items,
-  T.traverseArray((articleId) => constructPaperActivitySummaryCard(dependencies)(EDOI.fromValidatedString(articleId))),
+  T.traverseArray((articleId) => constructArticleCard(dependencies)(EDOI.fromValidatedString(articleId))),
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,

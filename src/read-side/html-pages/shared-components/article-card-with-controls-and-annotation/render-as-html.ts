@@ -6,7 +6,7 @@ import { safelyRenderRawUserInput } from '../../../../shared-components/raw-user
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ListId } from '../../../../types/list-id';
-import { renderArticleCardContents } from '../paper-activity-summary-card/render-as-html';
+import { renderArticleCardContents } from '../article-card/render-as-html';
 
 const renderRemoveArticleForm = (expressionDoi: ExpressionDoi, listId: ListId) => toHtmlFragment(`
   <form method="post" action="/forms/remove-article-from-list">

@@ -9,9 +9,9 @@ import { HtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
 import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 import { CurationStatement } from '../../curation-statements';
+import { ArticleCardViewModel } from '../shared-components/article-card';
 import { GroupLinkWithLogoViewModel } from '../shared-components/group-link';
 import { LanguageCode } from '../shared-components/lang-attribute';
-import { PaperActivitySummaryCardViewModel } from '../shared-components/paper-activity-summary-card';
 
 export type GroupDetails = {
   name: string,
@@ -69,7 +69,7 @@ export type ViewModel = {
   feedItemsByDateDescending: ReadonlyArray<FeedItem>,
   userListManagement: O.Option<LoggedInUserListManagement>,
   listedIn: ReadonlyArray<{ listId: ListId, listName: string, listOwnerName: string, listHref: string }>,
-  relatedArticles: O.Option<ReadonlyArray<PaperActivitySummaryCardViewModel>>,
+  relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
   curationStatements: ReadonlyArray<CurationStatement>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
 };

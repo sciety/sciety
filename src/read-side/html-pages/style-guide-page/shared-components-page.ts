@@ -7,6 +7,8 @@ import * as LID from '../../../types/list-id';
 import { sanitise } from '../../../types/sanitised-html-fragment';
 import { rawUserInput } from '../../raw-user-input';
 import { HtmlPage, toHtmlPage } from '../html-page';
+import { renderArticleErrorCard } from '../shared-components/article-card';
+import { renderAsHtml } from '../shared-components/article-card/render-as-html';
 import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../shared-components/article-card-with-controls-and-annotation';
@@ -14,8 +16,6 @@ import { renderListCard } from '../shared-components/list-card';
 import { renderListItems } from '../shared-components/list-items';
 import { renderListOfCards } from '../shared-components/list-of-cards';
 import { renderPaginationControls } from '../shared-components/pagination';
-import { renderPaperActivityErrorCard } from '../shared-components/paper-activity-summary-card';
-import { renderAsHtml } from '../shared-components/paper-activity-summary-card/render-as-html';
 
 export const sharedComponentsPage: HtmlPage = toHtmlPage({
   title: 'Shared components',
@@ -186,7 +186,7 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
   })}
 
       <h3 class="_style-guide-heading">With error</h3>
-      ${renderPaperActivityErrorCard({
+      ${renderArticleErrorCard({
     href: '/articles/foo',
     error: DE.notFound,
     inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),

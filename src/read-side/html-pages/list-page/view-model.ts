@@ -3,16 +3,16 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { ListId } from '../../../types/list-id';
 import { RawUserInput } from '../../raw-user-input';
+import { ArticleErrorCardViewModel } from '../shared-components/article-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
 } from '../shared-components/article-card-with-controls-and-annotation';
 import { PageOfItems, LegacyPaginationControlsViewModel } from '../shared-components/pagination';
-import { PaperActivityErrorCardViewModel } from '../shared-components/paper-activity-summary-card';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
 type ArticlesViewModel = ReadonlyArray<E.Either<
-PaperActivityErrorCardViewModel,
+ArticleErrorCardViewModel,
 ArticleCardWithControlsAndAnnotationViewModel
 >>;
 

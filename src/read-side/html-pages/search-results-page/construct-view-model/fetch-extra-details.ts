@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { constructRelatedGroups } from './construct-related-groups';
 import { Dependencies } from './dependencies';
 import { SearchResults } from '../../../../types/search-results';
-import { constructPaperActivitySummaryCard } from '../../shared-components/paper-activity-summary-card';
+import { constructArticleCard } from '../../shared-components/article-card';
 import { ViewModel } from '../view-model';
 
 type LimitedSet = {
@@ -19,7 +19,7 @@ type LimitedSet = {
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,
-  T.traverseArray(constructPaperActivitySummaryCard(dependencies)),
+  T.traverseArray(constructArticleCard(dependencies)),
   T.map(RA.rights),
   T.map((paperActivitySummaryCards) => ({
     ...state,

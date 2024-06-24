@@ -5,13 +5,13 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { ExpressionActivity } from '../../../../types/expression-activity';
 import * as EDOI from '../../../../types/expression-doi';
-import { PaperActivitySummaryCardViewModel, constructPaperActivitySummaryCard } from '../../shared-components/paper-activity-summary-card';
+import { ArticleCardViewModel, constructArticleCard } from '../../shared-components/article-card';
 
 type PopulateArticleViewModelsSkippingFailures = (
   dependencies: Dependencies,
 ) => (
   activities: ReadonlyArray<ExpressionActivity>
-) => T.Task<ReadonlyArray<PaperActivitySummaryCardViewModel>>;
+) => T.Task<ReadonlyArray<ArticleCardViewModel>>;
 
 export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = (
   dependencies,
@@ -19,7 +19,7 @@ export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModel
   activities,
   RA.map((activity) => pipe(
     EDOI.fromValidatedString(activity.expressionDoi.value),
-    constructPaperActivitySummaryCard(dependencies),
+    constructArticleCard(dependencies),
     TO.fromTaskEither,
   )),
   T.sequenceArray,

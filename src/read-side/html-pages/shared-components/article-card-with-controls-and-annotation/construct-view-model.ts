@@ -7,12 +7,12 @@ import { Queries } from '../../../../read-models';
 import { inputFieldNames } from '../../../../standards';
 import * as EDOI from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
-import { ConstructPaperActivitySummaryCardViewModelDependencies } from '../paper-activity-summary-card';
-import { constructViewModel as defaultVariantConstructViewModel } from '../paper-activity-summary-card/construct-view-model';
-import { ErrorViewModel } from '../paper-activity-summary-card/render-error-as-html';
-import { ViewModel as DefaultVariantViewModel } from '../paper-activity-summary-card/view-model';
+import { ConstructArticleCardViewModelDependencies } from '../article-card';
+import { constructViewModel as defaultVariantConstructViewModel } from '../article-card/construct-view-model';
+import { ErrorViewModel } from '../article-card/render-error-as-html';
+import { ViewModel as DefaultVariantViewModel } from '../article-card/view-model';
 
-type Dependencies = ConstructPaperActivitySummaryCardViewModelDependencies & Queries;
+type Dependencies = ConstructArticleCardViewModelDependencies & Queries;
 
 const toArticleCardWithControlsAndAnnotationViewModel = (
   dependencies: Dependencies,
