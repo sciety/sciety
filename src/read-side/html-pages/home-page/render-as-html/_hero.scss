@@ -63,7 +63,6 @@ $_width-at-which-image-is-too-narrow: 1680px;
 
   @include breakpoints.site-header() {
     padding-top: functions.px-to-rem(193px);
-    padding-bottom: functions.px-to-rem(235px);
   }
 }
 
