@@ -105,6 +105,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
   &:link,
   &:visited {
     color: settings.$colour-white;
+    text-decoration: underline;
 
     @include link.state() {
       color: settings.$colour-accent-hover-on-dark-background;
