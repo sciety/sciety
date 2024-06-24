@@ -1,3 +1,3 @@
-import { ExternalQueries } from '../../../../third-parties';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 
-export type Dependencies = ExternalQueries;
+export type Dependencies = DependenciesForViews;
