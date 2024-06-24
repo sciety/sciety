@@ -4,6 +4,7 @@
 @use 'functions';
 @use 'breakpoints';
 @use 'button';
+@use 'link';
 
 $_input-height: 48px;
 $_search-icon-size: functions.px-to-rem(24px);
@@ -78,4 +79,24 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
   @include breakpoints.not-narrow() {
     height: functions.px-to-rem($_input-height - (2 * settings.$border-width));
   }
+}
+
+.home-page-hero__ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: functions.px-to-rem(16px);
+}
+
+.home-page-hero-browse-by-category-link {
+  &:link,
+  &:visited {
+    color: settings.$colour-white;
+    text-decoration: underline;
+    font-weight: bold;
+
+    @include link.state() {
+      color: settings.$colour-accent-hover-on-dark-background;
+    }
+  };
 }

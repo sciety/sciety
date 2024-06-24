@@ -1,10 +1,9 @@
 @use 'settings';
 @use 'functions';
 @use 'typography';
-@use 'link';
 @use 'breakpoints';
-@use 'button';
-@use 'hero-search-form';
+
+@use 'hero-ctas';
 
 $_width-at-which-image-is-too-narrow: 1680px;
 
@@ -96,24 +95,4 @@ $_width-at-which-image-is-too-narrow: 1680px;
   &:last-child {
     margin-bottom: 0;
   }
-}
-
-.home-page-hero__ctas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: functions.px-to-rem(16px);
-}
-
-.home-page-hero-browse-by-category-link {
-  &:link,
-  &:visited {
-    color: settings.$colour-white;
-    text-decoration: underline;
-    font-weight: bold;
-
-    @include link.state() {
-      color: settings.$colour-accent-hover-on-dark-background;
-    }
-  };
 }
