@@ -65,8 +65,8 @@ p.activity-feed__item__title {
   }
 }
 
-.activity-feed__item__read_original_source:link {
-  @include link.state {
+.activity-feed__item__read_original_source {
+  @include link.engaged-state {
     text-decoration: underline;
   }
 }
