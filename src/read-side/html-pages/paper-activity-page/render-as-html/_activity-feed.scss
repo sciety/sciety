@@ -101,11 +101,11 @@ p.activity-feed__item__title {
 }
 
 .activity-feed__item__title {
-  a:link,
-  a:visited {
-    font-weight: bold;
-
-    @include link.state {
+  a {
+    @include link.normal-state {
+      font-weight: bold;
+    }
+    @include link.engaged-state {
       text-decoration: underline;
     }
   }
