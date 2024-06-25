@@ -61,11 +61,17 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
   );
 
+  const simpleHtmlPage = {
+    endpoint: '/my-feed',
+    paramsCodec: myFeedParams,
+    page: myFeedPage,
+  };
+
   router.get(
-    '/my-feed',
+    simpleHtmlPage.endpoint,
     pageHandler(dependencies, createPageFromParams(
-      myFeedParams,
-      myFeedPage(dependencies),
+      simpleHtmlPage.paramsCodec,
+      simpleHtmlPage.page(dependencies),
     )),
   );
 
