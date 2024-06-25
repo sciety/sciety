@@ -1,6 +1,7 @@
 import { EventOfType, constructEvent } from '../../src/domain-events';
+import { ArticleId } from '../../src/types/article-id';
 import { arbitraryString } from '../helpers';
-import { arbitraryArticleId } from '../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 import { arbitraryListId } from '../types/list-id.helper';
 import { arbitraryListOwnerId } from '../types/list-owner-id.helper';
 import { arbitraryUnsafeUserInput } from '../types/unsafe-user-input.helper';
@@ -13,17 +14,17 @@ export const arbitraryListCreatedEvent = (): EventOfType<'ListCreated'> => const
 });
 
 export const arbitraryArticleAddedToListEvent = (): EventOfType<'ArticleAddedToList'> => constructEvent('ArticleAddedToList')({
-  articleId: arbitraryArticleId(),
+  articleId: new ArticleId(arbitraryExpressionDoi()),
   listId: arbitraryListId(),
 });
 
 export const arbitraryArticleRemovedFromListEvent = (): EventOfType<'ArticleRemovedFromList'> => constructEvent('ArticleRemovedFromList')({
-  articleId: arbitraryArticleId(),
+  articleId: new ArticleId(arbitraryExpressionDoi()),
   listId: arbitraryListId(),
 });
 
 export const arbitraryArticleInListAnnotatedEvent = (): EventOfType<'ArticleInListAnnotated'> => constructEvent('ArticleInListAnnotated')({
-  articleId: arbitraryArticleId(),
+  articleId: new ArticleId(arbitraryExpressionDoi()),
   listId: arbitraryListId(),
   content: arbitraryUnsafeUserInput(),
 });
