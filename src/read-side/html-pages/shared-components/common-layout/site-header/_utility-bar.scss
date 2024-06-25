@@ -88,15 +88,12 @@ $_avatar-height-coupled-to-buttons: 34px;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
 
-  &:link,
-  &:visited {
+  @include link.normal-state() {
     color: var(--colour-text-navigation-link);
-
-    @include link.state() {
-      background-color: settings.$colour-furniture;
-      color: settings.$colour-brand;
-      ;
-    }
+  }
+  @include link.engaged-state() {
+    background-color: settings.$colour-furniture;
+    color: settings.$colour-brand;
   }
 }
 
