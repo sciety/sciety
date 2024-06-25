@@ -240,12 +240,16 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     )),
   );
 
-  router.redirect('/blog', 'https://blog.sciety.org', StatusCodes.TEMPORARY_REDIRECT);
-
   const mailChimpUrl = 'https://us10.list-manage.com/contact-form?u=cdd934bce0d72af033c181267&form_id=4034dccf020ca9b50c404c32007ee091';
-  router.redirect('/contact-us', mailChimpUrl, StatusCodes.TEMPORARY_REDIRECT);
+  const temporaryRedirects = [
+    { from: '/blog', to: 'https://blog.sciety.org' },
+    { from: '/contact-us', to: mailChimpUrl },
+    { from: '/subscribe-to-mailing-list', to: 'http://eepurl.com/hBml3D' },
+  ];
 
-  router.redirect('/subscribe-to-mailing-list', 'http://eepurl.com/hBml3D', StatusCodes.TEMPORARY_REDIRECT);
+  temporaryRedirects.forEach((route) => {
+    router.redirect(route.from, route.to, StatusCodes.TEMPORARY_REDIRECT);
+  });
 
   router.get(
     '/legal',
