@@ -69,14 +69,12 @@ $_avatar-height-coupled-to-buttons: 34px;
   border-bottom: settings.$navigation-link-border-width solid transparent;
   display: block;
 
-  &:link,
-  &:visited {
+  @include link.normal-state() {
     color: var(--colour-text-navigation-link);
-
-    @include link.state() {
-      color: var(--colour-text-primary);
-      border-color: var(--colour-text-primary);
-    }
+  }
+  @include link.engaged-state() {
+    color: var(--colour-text-primary);
+    border-color: var(--colour-text-primary);
   }
 }
 
