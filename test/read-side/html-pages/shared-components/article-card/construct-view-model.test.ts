@@ -8,13 +8,11 @@ import { ErrorViewModel } from '../../../../../src/read-side/html-pages/shared-c
 import { constructPaperActivityPageHref } from '../../../../../src/read-side/paths';
 import { ArticleId } from '../../../../../src/types/article-id';
 import * as DE from '../../../../../src/types/data-error';
-import * as EDOI from '../../../../../src/types/expression-doi';
 import * as PH from '../../../../../src/types/publishing-history';
 import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands/record-evaluation-publication';
 import { dummyLogger } from '../../../../dummy-logger';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../../../types/publishing-history.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
@@ -62,7 +60,7 @@ describe('construct-view-model', () => {
     });
 
     describe('when an article has been evaluated', () => {
-      const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
+      const inputExpressionDoi = arbitraryExpressionDoi();
       const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         expressionDoi: inputExpressionDoi,
@@ -95,7 +93,7 @@ describe('construct-view-model', () => {
   });
 
   describe('when an article appears in lists', () => {
-    const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
+    const inputExpressionDoi = arbitraryExpressionDoi();
     const command = arbitraryCreateListCommand();
     let successfulViewModel: ArticleCardViewModel;
 
@@ -121,7 +119,7 @@ describe('construct-view-model', () => {
   });
 
   describe('when an article does not appear in any list', () => {
-    const inputExpressionDoi = EDOI.fromValidatedString(arbitraryArticleId().value);
+    const inputExpressionDoi = arbitraryExpressionDoi();
     let successfulViewModel: ArticleCardViewModel;
 
     beforeEach(async () => {
@@ -146,7 +144,7 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       viewModel = await pipe(
-        EDOI.fromValidatedString(arbitraryArticleId().value),
+        arbitraryExpressionDoi(),
         constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,
@@ -166,7 +164,7 @@ describe('construct-view-model', () => {
 
     beforeEach(async () => {
       viewModel = await pipe(
-        EDOI.fromValidatedString(arbitraryArticleId().value),
+        arbitraryExpressionDoi(),
         constructViewModel({
           ...framework.queries,
           ...framework.happyPathThirdParties,

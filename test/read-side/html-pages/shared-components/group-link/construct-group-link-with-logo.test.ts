@@ -2,17 +2,11 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { constructGroupLink } from '../../../../../src/read-side/html-pages/shared-components/group-link';
 import { GroupLinkWithLogoViewModel } from '../../../../../src/read-side/html-pages/shared-components/group-link/group-link-with-logo-view-model';
-import { toExpressionDoi } from '../../../../../src/types/article-id';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
-import {
-  arbitraryRecordEvaluationPublicationCommand,
-} from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('construct-group-link-with-logo', () => {
-  const articleId = arbitraryArticleId();
   const addGroupCommand = arbitraryAddGroupCommand();
   const linkToTheGroupsPage = `/groups/${addGroupCommand.slug}`;
   let result: GroupLinkWithLogoViewModel;
@@ -21,12 +15,6 @@ describe('construct-group-link-with-logo', () => {
   beforeEach(async () => {
     framework = createTestFramework();
     await framework.commandHelpers.addGroup(addGroupCommand);
-    await framework.commandHelpers.recordEvaluationPublication({
-      ...arbitraryRecordEvaluationPublicationCommand(),
-      expressionDoi: toExpressionDoi(articleId),
-      groupId: addGroupCommand.groupId,
-      evaluationType: undefined,
-    });
     result = pipe(
       addGroupCommand.groupId,
       constructGroupLink(framework.dependenciesForViews),
