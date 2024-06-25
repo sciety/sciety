@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { arbitraryArticleId } from './article-id.helper';
+import { arbitraryExpressionDoi } from './expression-doi.helper';
 import { ArticleId, articleIdCodec } from '../../src/types/article-id';
 import * as AID from '../../src/types/article-id';
 
@@ -16,7 +16,7 @@ describe('article-id', () => {
   });
 
   describe('toString()', () => {
-    const articleId = arbitraryArticleId();
+    const articleId = new ArticleId(arbitraryExpressionDoi());
 
     it('prefixes with "doi:"', () => {
       expect(AID.toString(articleId)).toBe(`doi:${articleId.value}`);
@@ -37,7 +37,7 @@ describe('article-id', () => {
   });
 
   it('encodes and decodes back to the same value', () => {
-    const doi = arbitraryArticleId();
+    const doi = new ArticleId(arbitraryExpressionDoi());
 
     expect(pipe(
       doi,
