@@ -116,15 +116,12 @@ $_left-links-width-not-narrow: 280px;
   background-color: settings.$colour-white;
   margin-left: functions.px-to-rem(settings.$click-target-separation);
 
-  &:link,
-  &:visited {
+  @include link.normal-state(){
     color: var(--colour-text-navigation-link);
-
-    @include link.state() {
-      background-color: settings.$colour-furniture;
-      color: settings.$colour-brand;
-      ;
-    }
+  }
+  @include link.engaged-state() {
+    background-color: settings.$colour-furniture;
+    color: settings.$colour-brand;
   }
 }
 
