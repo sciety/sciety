@@ -282,14 +282,13 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   // MISC
 
-  router.get('/ping', ping());
+  const miscellaneous = [
+    { endpoint: '/ping', handler: ping() },
+    { endpoint: '/robots.txt', handler: robots() },
+    { endpoint: '/static/:file(.+)', handler: loadStaticFile(dependencies) },
+  ];
 
-  router.get('/robots.txt', robots());
-
-  router.get(
-    '/static/:file(.+)',
-    loadStaticFile(dependencies),
-  );
+  miscellaneous.forEach((route) => router.get(route.endpoint, route.handler));
 
   return router;
 };
