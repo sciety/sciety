@@ -77,14 +77,11 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   border: settings.$border-width solid settings.$colour-furniture;
   padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
 
-  &:link,
-  &:visited {
+  @include link.normal-state() {
     color: settings.$colour-white;
-
-    @include link.state() {
-      background-color: settings.$colour-furniture;
-      color: settings.$colour-brand;
-      ;
-    }
+  }
+  @include link.engaged-state() {
+    background-color: settings.$colour-furniture;
+    color: settings.$colour-brand;
   }
 }
