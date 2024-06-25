@@ -3,10 +3,11 @@ import { pipe } from 'fp-ts/function';
 import { List } from '../../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../../src/read-side/html-pages/lists-page/view-model';
+import { ArticleId } from '../../../../../src/types/article-id';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { abortTest } from '../../../../abort-test';
 import { TestFramework, createTestFramework } from '../../../../framework';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
@@ -30,9 +31,15 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-      await framework.commandHelpers.addArticleToList({ articleId: arbitraryArticleId(), listId: initialUserList.id });
+      await framework.commandHelpers.addArticleToList({
+        articleId: new ArticleId(arbitraryExpressionDoi()),
+        listId: initialUserList.id,
+      });
       await framework.commandHelpers.createList(command);
-      await framework.commandHelpers.addArticleToList({ articleId: arbitraryArticleId(), listId: command.listId });
+      await framework.commandHelpers.addArticleToList({
+        articleId: new ArticleId(arbitraryExpressionDoi()),
+        listId: command.listId,
+      });
 
       viewmodel = pipe(
         { page: 1 },
@@ -62,7 +69,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(
-          { articleId: arbitraryArticleId(), listId: createListCommand.listId },
+          { articleId: new ArticleId(arbitraryExpressionDoi()), listId: createListCommand.listId },
         );
 
         viewmodel = pipe(
