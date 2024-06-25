@@ -127,85 +127,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  const simpleHtmlPages = [
-    {
-      endpoint: '/',
-      handler: pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
-    },
-    {
-      endpoint: '/about',
-      handler: pageHandler(dependencies, () => aboutPage({})),
-    },
-    {
-      endpoint: '/lists/:listId/subscribe',
-      handler: pageHandler(dependencies, subscribeToListPage(dependencies)),
-    },
-    {
-      endpoint: paperActivityPagePathSpecification,
-      handler: pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
-    },
-    {
-      endpoint: '/groups',
-      handler: pageHandler(dependencies, () => groupsPage(dependencies)),
-    },
-    {
-      endpoint: '/save-article',
-      handler: pageHandlerWithLoggedInUser(dependencies, saveArticleFormPage(dependencies)),
-    },
-  ];
-
-  simpleHtmlPages.forEach((route) => router.get(route.endpoint, route.handler));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  const htmlPagesWithExposedParamsCodecs = [
-    {
-      endpoint: '/my-feed',
-      handler: pageHandler(dependencies, createPageFromParams(myFeedParams, myFeedPage(dependencies))),
-    },
-    {
-      endpoint: '/lists/:id/edit-details',
-      handler: pageHandler(dependencies, createPageFromParams(
-        editListDetailsFormPageParamsCodec,
-        editListDetailsFormPage(dependencies),
-      )),
-    },
-    {
-      endpoint: '/lists',
-      handler: pageHandler(dependencies, createPageFromParams(listsPageParamsCodec, listsPage(dependencies))),
-    },
-    {
-      endpoint: '/lists/:id',
-      handler: pageHandler(dependencies, createPageFromParams(
-        listPageParams,
-        listPage(dependencies),
-      ), fullWidthPageLayout),
-    },
-    {
-      endpoint: '/users/:handle/lists',
-      handler: pageHandler(dependencies, createPageFromParams(userListsPageParams, userListsPage(dependencies))),
-    },
-    {
-      endpoint: '/users/:handle/following',
-      handler: pageHandler(dependencies, createPageFromParams(
-        userFollowingPageParams,
-        userFollowingPage(dependencies),
-      )),
-    },
-    {
-      endpoint: '/action-failed',
-      handler: pageHandler(dependencies, createPageFromParams(actionFailedPageParamsCodec, actionFailedPage)),
-    },
-    {
-      endpoint: '/sciety-feed',
-      handler: pageHandler(dependencies, createPageFromParams(scietyFeedCodec, scietyFeedPage(dependencies)(20))),
-    },
-  ];
-
-  htmlPagesWithExposedParamsCodecs.forEach((route) => router.get(route.endpoint, route.handler));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   const nonHtmlViews = [
     { endpoint: '/evaluations/:reviewid/content', handler: evaluationContent },
     { endpoint: '/lists/:id/feed.atom', handler: listFeed },
@@ -255,6 +176,77 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  const simpleHtmlPages = [
+    {
+      endpoint: '/',
+      handler: pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
+    },
+    {
+      endpoint: '/about',
+      handler: pageHandler(dependencies, () => aboutPage({})),
+    },
+    {
+      endpoint: '/lists/:listId/subscribe',
+      handler: pageHandler(dependencies, subscribeToListPage(dependencies)),
+    },
+    {
+      endpoint: paperActivityPagePathSpecification,
+      handler: pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
+    },
+    {
+      endpoint: '/groups',
+      handler: pageHandler(dependencies, () => groupsPage(dependencies)),
+    },
+    {
+      endpoint: '/save-article',
+      handler: pageHandlerWithLoggedInUser(dependencies, saveArticleFormPage(dependencies)),
+    },
+  ];
+
+  const htmlPagesWithExposedParamsCodecs = [
+    {
+      endpoint: '/my-feed',
+      handler: pageHandler(dependencies, createPageFromParams(myFeedParams, myFeedPage(dependencies))),
+    },
+    {
+      endpoint: '/lists/:id/edit-details',
+      handler: pageHandler(dependencies, createPageFromParams(
+        editListDetailsFormPageParamsCodec,
+        editListDetailsFormPage(dependencies),
+      )),
+    },
+    {
+      endpoint: '/lists',
+      handler: pageHandler(dependencies, createPageFromParams(listsPageParamsCodec, listsPage(dependencies))),
+    },
+    {
+      endpoint: '/lists/:id',
+      handler: pageHandler(dependencies, createPageFromParams(
+        listPageParams,
+        listPage(dependencies),
+      ), fullWidthPageLayout),
+    },
+    {
+      endpoint: '/users/:handle/lists',
+      handler: pageHandler(dependencies, createPageFromParams(userListsPageParams, userListsPage(dependencies))),
+    },
+    {
+      endpoint: '/users/:handle/following',
+      handler: pageHandler(dependencies, createPageFromParams(
+        userFollowingPageParams,
+        userFollowingPage(dependencies),
+      )),
+    },
+    {
+      endpoint: '/action-failed',
+      handler: pageHandler(dependencies, createPageFromParams(actionFailedPageParamsCodec, actionFailedPage)),
+    },
+    {
+      endpoint: '/sciety-feed',
+      handler: pageHandler(dependencies, createPageFromParams(scietyFeedCodec, scietyFeedPage(dependencies)(20))),
+    },
+  ];
+
   const miscellaneous = [
     { endpoint: '/ping', handler: ping() },
     { endpoint: '/robots.txt', handler: robots() },
@@ -262,7 +254,11 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     { endpoint: '/users/:handle/avatar', handler: redirectToAvatarImageUrl(dependencies) },
   ];
 
-  miscellaneous.forEach((route) => router.get(route.endpoint, route.handler));
+  [
+    ...simpleHtmlPages,
+    ...htmlPagesWithExposedParamsCodecs,
+    ...miscellaneous,
+  ].forEach((route) => router.get(route.endpoint, route.handler));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
