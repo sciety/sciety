@@ -121,8 +121,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // PAGES
-
   router.get(
     '/',
     pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
@@ -155,10 +153,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   router.get(
     '/lists/:id',
-    pageHandler(dependencies, createPageFromParams(
-      listPageParams,
-      listPage(dependencies),
-    ), fullWidthPageLayout),
+    pageHandler(dependencies, createPageFromParams(listPageParams, listPage(dependencies)), fullWidthPageLayout),
   );
 
   router.get(
@@ -168,69 +163,44 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  const simpleHtmlPages = [
+  const htmlPagesWithExposedParamsCodecs = [
     {
       endpoint: '/my-feed',
-      paramsCodec: myFeedParams,
-      page: myFeedPage,
+      handler: pageHandler(dependencies, createPageFromParams(myFeedParams, myFeedPage(dependencies))),
+    },
+    {
+      endpoint: '/lists/:id/edit-details',
+      handler: pageHandler(dependencies, createPageFromParams(
+        editListDetailsFormPageParamsCodec,
+        editListDetailsFormPage(dependencies),
+      )),
+    },
+    {
+      endpoint: '/lists',
+      handler: pageHandler(dependencies, createPageFromParams(listsPageParamsCodec, listsPage(dependencies))),
+    },
+    {
+      endpoint: '/users/:handle/lists',
+      handler: pageHandler(dependencies, createPageFromParams(userListsPageParams, userListsPage(dependencies))),
+    },
+    {
+      endpoint: '/users/:handle/following',
+      handler: pageHandler(dependencies, createPageFromParams(
+        userFollowingPageParams,
+        userFollowingPage(dependencies),
+      )),
+    },
+    {
+      endpoint: '/action-failed',
+      handler: pageHandler(dependencies, createPageFromParams(actionFailedPageParamsCodec, actionFailedPage)),
+    },
+    {
+      endpoint: '/sciety-feed',
+      handler: pageHandler(dependencies, createPageFromParams(scietyFeedCodec, scietyFeedPage(dependencies)(20))),
     },
   ];
 
-  simpleHtmlPages.forEach((route) => {
-    router.get(
-      route.endpoint,
-      pageHandler(dependencies, createPageFromParams(route.paramsCodec, route.page(dependencies))),
-    );
-  });
-
-  router.get(
-    '/lists/:id/edit-details',
-    pageHandler(dependencies, createPageFromParams(
-      editListDetailsFormPageParamsCodec,
-      editListDetailsFormPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/lists',
-    pageHandler(dependencies, createPageFromParams(
-      listsPageParamsCodec,
-      listsPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/users/:handle/lists',
-    pageHandler(dependencies, createPageFromParams(
-      userListsPageParams,
-      userListsPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/users/:handle/following',
-    pageHandler(dependencies, createPageFromParams(
-      userFollowingPageParams,
-      userFollowingPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/action-failed',
-    pageHandler(dependencies,
-      createPageFromParams(
-        actionFailedPageParamsCodec,
-        actionFailedPage,
-      )),
-  );
-
-  router.get(
-    '/sciety-feed',
-    pageHandler(dependencies, createPageFromParams(
-      scietyFeedCodec,
-      scietyFeedPage(dependencies)(20),
-    )),
-  );
+  htmlPagesWithExposedParamsCodecs.forEach((route) => router.get(route.endpoint, route.handler));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
