@@ -5,10 +5,11 @@ import { List } from '../../../../../src/read-models/lists';
 import { Dependencies } from '../../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model';
 import { articleAddedToListCard } from '../../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model/article-added-to-list-card';
 import { ScietyFeedCard } from '../../../../../src/read-side/html-pages/sciety-feed-page/view-model';
+import { ArticleId } from '../../../../../src/types/article-id';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import { arbitraryUserId } from '../../../../types/user-id.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
@@ -36,10 +37,13 @@ describe('article-added-to-list-card', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createUserAccount(createuserAccountCommand);
         userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createuserAccountCommand.userId))[0];
-        await framework.commandHelpers.addArticleToList({ articleId: arbitraryArticleId(), listId: userList.id });
+        await framework.commandHelpers.addArticleToList({
+          articleId: new ArticleId(arbitraryExpressionDoi()),
+          listId: userList.id,
+        });
 
         viewModel = pipe(
-          constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList.id, date }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: userList.id, date }),
           articleAddedToListCard(dependencies),
           O.getOrElseW(shouldNotBeCalled),
         );
@@ -72,7 +76,7 @@ describe('article-added-to-list-card', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createList(createListCommand);
         viewModel = pipe(
-          constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: createListCommand.listId, date }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: createListCommand.listId, date }),
           articleAddedToListCard(dependencies),
           O.getOrElseW(shouldNotBeCalled),
         );

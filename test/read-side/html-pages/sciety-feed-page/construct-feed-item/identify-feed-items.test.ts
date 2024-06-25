@@ -2,15 +2,16 @@ import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../../src/domain-events';
 import { identifyFeedItems } from '../../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model/identify-feed-items';
+import { ArticleId } from '../../../../../src/types/article-id';
 import { abortTest } from '../../../../abort-test';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import { arbitraryListId } from '../../../../types/list-id.helper';
 
 describe('identify-feed-items', () => {
   describe('when a single article is added to a list', () => {
     const events = [
-      constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: arbitraryListId() }),
+      constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: arbitraryListId() }),
     ];
     const result = pipe(
       events,
@@ -31,8 +32,8 @@ describe('identify-feed-items', () => {
 
     const result = pipe(
       [
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId, date: earlierDate }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId, date: laterDate }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId, date: earlierDate }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId, date: laterDate }),
       ],
       identifyFeedItems(20, 1),
       E.getOrElseW(abortTest('identifyFeedItems returned on the Left')),
@@ -64,9 +65,9 @@ describe('identify-feed-items', () => {
 
     const result = pipe(
       [
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: myListId, date: earlierDate }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: myListId, date: earlierDate }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: myListId, date: laterDate }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: myListId, date: earlierDate }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: myListId, date: earlierDate }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: myListId, date: laterDate }),
       ],
       identifyFeedItems(20, 1),
       E.match(shouldNotBeCalled, identity),
@@ -98,9 +99,9 @@ describe('identify-feed-items', () => {
     const date3 = new Date('2022-10-03');
 
     const events = [
-      constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: myList, date: date1 }),
-      constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: arbitraryListId(), date: date2 }),
-      constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: myList, date: date3 }),
+      constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: myList, date: date1 }),
+      constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: arbitraryListId(), date: date2 }),
+      constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: myList, date: date3 }),
     ];
     const result = pipe(
       events,
