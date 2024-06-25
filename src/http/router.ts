@@ -202,10 +202,16 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
   );
 
-  router.get(
-    '/evaluations/:reviewid/content',
-    routeForNonHtmlView(evaluationContent(dependencies)),
-  );
+  const nonHtmlViews = [
+    { endpoint: '/evaluations/:reviewid/content', handler: evaluationContent },
+    { endpoint: '/lists/:id/feed.atom', handler: listFeed },
+    { endpoint: '/docmaps/v1/index', handler: docmapIndex },
+    { endpoint: '/docmaps/v1/articles/:doi(.+).docmap.json', handler: docmap },
+  ];
+
+  nonHtmlViews.forEach((route) => {
+    router.get(route.endpoint, routeForNonHtmlView(route.handler(dependencies)));
+  });
 
   router.get(
     '/groups',
@@ -218,11 +224,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
       listPageParams,
       listPage(dependencies),
     ), fullWidthPageLayout),
-  );
-
-  router.get(
-    '/lists/:id/feed.atom',
-    routeForNonHtmlView(listFeed(dependencies)),
   );
 
   router.get(
@@ -276,9 +277,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   // DOCMAPS
   // context.query,
-  router.get('/docmaps/v1/index', routeForNonHtmlView(docmapIndex(dependencies)));
-
-  router.get('/docmaps/v1/articles/:doi(.+).docmap.json', routeForNonHtmlView(docmap(dependencies)));
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
