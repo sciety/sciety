@@ -72,14 +72,12 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
   border-bottom: settings.$navigation-link-border-width solid settings.$colour-white;
   padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
 
-  &:link,
-  &:visited {
+  @include link.normal-state() {
     color: settings.$colour-white;
-
-    @include link.state() {
-      color: settings.$colour-accent-hover-on-dark-background;
-      border-color: transparent;
-    }
+  }
+  @include link.engaged-state() {
+    color: settings.$colour-accent-hover-on-dark-background;
+    border-color: transparent;
   }
 }
 
@@ -87,16 +85,13 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
   @include typography.sizing(14px, 16px);
   color: settings.$colour-white;
 
-  a:link {
-    font-weight: normal;
-    text-decoration: underline;
-  }
-
-  a:link,
-  a:visited {
-    color: inherit;
-
-    @include link.state() {
+  a {
+    @include link.normal-state() {
+      font-weight: normal;
+      text-decoration: underline;
+      color: inherit;
+    }
+    @include link.engaged-state() {
       color: settings.$colour-accent-hover-on-dark-background;
     }
   }
