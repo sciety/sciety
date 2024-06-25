@@ -251,25 +251,16 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     router.redirect(route.from, route.to, StatusCodes.TEMPORARY_REDIRECT);
   });
 
-  router.get(
-    '/legal',
-    pageHandler(dependencies, () => pipe(legalPage, TE.right)),
-  );
+  const staticPages = [
+    { endpoint: '/legal', handler: legalPage },
+    { endpoint: '/style-guide', handler: indexPage },
+    { endpoint: '/style-guide/reference', handler: referencePage },
+    { endpoint: '/style-guide/shared-components', handler: sharedComponentsPage },
+  ];
 
-  router.get(
-    '/style-guide',
-    pageHandler(dependencies, () => pipe(indexPage, TE.right)),
-  );
-
-  router.get(
-    '/style-guide/reference',
-    pageHandler(dependencies, () => pipe(referencePage, TE.right)),
-  );
-
-  router.get(
-    '/style-guide/shared-components',
-    pageHandler(dependencies, () => pipe(sharedComponentsPage, TE.right)),
-  );
+  staticPages.forEach((route) => {
+    router.get(route.endpoint, pageHandler(dependencies, () => pipe(route.handler, TE.right)));
+  });
 
   api.configureRoutes(router, dependencies, config.SCIETY_TEAM_API_BEARER_TOKEN);
 
