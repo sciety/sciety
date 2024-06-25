@@ -143,11 +143,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   );
 
   router.get(
-    '/users/:handle/avatar',
-    redirectToAvatarImageUrl(dependencies),
-  );
-
-  router.get(
     paperActivityPagePathSpecification,
     pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
   );
@@ -265,6 +260,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     { endpoint: '/ping', handler: ping() },
     { endpoint: '/robots.txt', handler: robots() },
     { endpoint: '/static/:file(.+)', handler: loadStaticFile(dependencies) },
+    { endpoint: '/users/:handle/avatar', handler: redirectToAvatarImageUrl(dependencies) },
   ];
 
   miscellaneous.forEach((route) => router.get(route.endpoint, route.handler));
