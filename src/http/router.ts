@@ -61,19 +61,20 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
   );
 
-  const simpleHtmlPage = {
-    endpoint: '/my-feed',
-    paramsCodec: myFeedParams,
-    page: myFeedPage,
-  };
+  const simpleHtmlPages = [
+    {
+      endpoint: '/my-feed',
+      paramsCodec: myFeedParams,
+      page: myFeedPage,
+    },
+  ];
 
-  router.get(
-    simpleHtmlPage.endpoint,
-    pageHandler(dependencies, createPageFromParams(
-      simpleHtmlPage.paramsCodec,
-      simpleHtmlPage.page(dependencies),
-    )),
-  );
+  simpleHtmlPages.forEach((route) => {
+    router.get(
+      route.endpoint,
+      pageHandler(dependencies, createPageFromParams(route.paramsCodec, route.page(dependencies))),
+    );
+  });
 
   router.get(
     '/lists/:id/edit-details',
