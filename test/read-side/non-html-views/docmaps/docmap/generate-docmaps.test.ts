@@ -4,7 +4,6 @@ import { identity, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Docmap } from '../../../../../src/read-side/non-html-views/docmaps/docmap/docmap-type';
 import { generateDocmaps, Ports } from '../../../../../src/read-side/non-html-views/docmaps/docmap/generate-docmaps';
-import { toExpressionDoi } from '../../../../../src/types/article-id';
 import * as DE from '../../../../../src/types/data-error';
 import { EvaluationLocator } from '../../../../../src/types/evaluation-locator';
 import * as GID from '../../../../../src/types/group-id';
@@ -12,13 +11,13 @@ import { RecordEvaluationPublicationCommand } from '../../../../../src/write-sid
 import { abortTest } from '../../../../abort-test';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryNcrcId } from '../../../../types/evaluation-locator.helper';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('generate-docmaps', () => {
-  const articleId = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
   let framework: TestFramework;
@@ -37,7 +36,7 @@ describe('generate-docmaps', () => {
 
     beforeEach(async () => {
       response = await pipe(
-        arbitraryArticleId().value,
+        arbitraryExpressionDoi(),
         generateDocmaps(defaultAdapters),
         TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
@@ -72,7 +71,7 @@ describe('generate-docmaps', () => {
       await framework.commandHelpers.recordEvaluationPublication(command1);
       await framework.commandHelpers.recordEvaluationPublication(command2);
       response = await pipe(
-        articleId.value,
+        expressionDoi,
         generateDocmaps(defaultAdapters),
         TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
@@ -98,12 +97,12 @@ describe('generate-docmaps', () => {
       const command: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
       };
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(command);
       docmaps = await pipe(
-        articleId.value,
+        expressionDoi,
         generateDocmaps(defaultAdapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -126,19 +125,19 @@ describe('generate-docmaps', () => {
       const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup1.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
       };
       const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup2.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
       };
       await framework.commandHelpers.addGroup(addGroup1);
       await framework.commandHelpers.addGroup(addGroup2);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation1);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation2);
       docmaps = await pipe(
-        articleId.value,
+        expressionDoi,
         generateDocmaps(defaultAdapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -164,19 +163,19 @@ describe('generate-docmaps', () => {
       const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup1.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
       };
       const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroup2.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
       };
       await framework.commandHelpers.addGroup(addGroup1);
       await framework.commandHelpers.addGroup(addGroup2);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation1);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation2);
       docmaps = await pipe(
-        articleId.value,
+        expressionDoi,
         generateDocmaps(defaultAdapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -201,18 +200,18 @@ describe('generate-docmaps', () => {
       const recordEvaluation1: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
       };
       const recordEvaluation2: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
       };
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation1);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation2);
       docmaps = await pipe(
-        articleId.value,
+        expressionDoi,
         generateDocmaps(defaultAdapters),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -235,19 +234,19 @@ describe('generate-docmaps', () => {
       const recordGoodEvaluation: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
       };
       const recordBadEvaluation: RecordEvaluationPublicationCommand = {
         ...arbitraryRecordEvaluationPublicationCommand(),
         groupId: addGroupCommand.groupId,
-        expressionDoi: toExpressionDoi(articleId),
+        expressionDoi,
         evaluationLocator: failingReviewId,
       };
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(recordGoodEvaluation);
       await framework.commandHelpers.recordEvaluationPublication(recordBadEvaluation);
       response = await pipe(
-        articleId.value,
+        expressionDoi,
         generateDocmaps({
           ...defaultAdapters,
           fetchEvaluationHumanReadableOriginalUrl: (id: EvaluationLocator) => (
