@@ -39,8 +39,8 @@ p {
   margin-bottom: functions.px-to-rem(24px);
 
 
-  a:link {
-    @include link.state {
+  a {
+    @include link.engaged-state {
       text-decoration: underline;
     }
   }
