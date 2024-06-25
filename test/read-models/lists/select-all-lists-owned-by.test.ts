@@ -4,9 +4,10 @@ import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { selectAllListsOwnedBy } from '../../../src/read-models/lists/select-all-lists-owned-by';
 import { rawUserInput } from '../../../src/read-side';
+import { ArticleId } from '../../../src/types/article-id';
 import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
@@ -126,20 +127,20 @@ describe('select-all-lists-owned-by', () => {
   describe('when the owner owns a list where some articles have been removed', () => {
     const listCreated = arbitraryListCreatedEvent();
     const dateOfLastEvent = arbitraryDate();
-    const removedArticleId = arbitraryArticleId();
+    const removedExpressionDoi = arbitraryExpressionDoi();
     const readmodel = pipe(
       [
         listCreated,
         constructEvent('ArticleAddedToList')({
-          articleId: arbitraryArticleId(),
+          articleId: new ArticleId(arbitraryExpressionDoi()),
           listId: listCreated.listId,
         }),
         constructEvent('ArticleAddedToList')({
-          articleId: removedArticleId,
+          articleId: new ArticleId(removedExpressionDoi),
           listId: listCreated.listId,
         }),
         constructEvent('ArticleRemovedFromList')({
-          articleId: removedArticleId,
+          articleId: new ArticleId(removedExpressionDoi),
           listId: listCreated.listId,
           date: dateOfLastEvent,
         }),

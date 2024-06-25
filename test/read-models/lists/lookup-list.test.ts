@@ -12,7 +12,6 @@ import { ListId } from '../../../src/types/list-id';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
@@ -42,10 +41,8 @@ describe('lookup-list', () => {
     describe('and contains articles', () => {
       const name = arbitraryString();
       const description = arbitraryString();
-      const articleId1 = arbitraryArticleId();
-      const expressionDoi1 = EDOI.fromValidatedString(articleId1.value);
-      const articleId2 = arbitraryArticleId();
-      const expressionDoi2 = EDOI.fromValidatedString(articleId2.value);
+      const expressionDoi1 = arbitraryExpressionDoi();
+      const expressionDoi2 = arbitraryExpressionDoi();
       const readModel = pipe(
         [
           constructEvent('ListCreated')({
@@ -54,8 +51,8 @@ describe('lookup-list', () => {
             description,
             ownerId: arbitraryListOwnerId(),
           }),
-          constructEvent('ArticleAddedToList')({ articleId: articleId1, listId, date: new Date('2019') }),
-          constructEvent('ArticleAddedToList')({ articleId: articleId2, listId, date: new Date('2021') }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi1), listId, date: new Date('2019') }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi2), listId, date: new Date('2021') }),
         ],
         RA.reduce(initialState(), handleEvent),
       );

@@ -3,9 +3,10 @@ import { pipe } from 'fp-ts/function';
 import { EventOfType, constructEvent } from '../../../src/domain-events';
 import { getNonEmptyUserLists } from '../../../src/read-models/lists/get-non-empty-user-lists';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
+import { ArticleId } from '../../../src/types/article-id';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
 
@@ -23,8 +24,8 @@ describe('get-non-empty-user-lists', () => {
       [
         userList1CreatedEvent,
         userList2CreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList1CreatedEvent.listId }),
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: userList2CreatedEvent.listId }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: userList1CreatedEvent.listId }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: userList2CreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -70,7 +71,7 @@ describe('get-non-empty-user-lists', () => {
     const readModel = pipe(
       [
         groupListCreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId: arbitraryArticleId(), listId: groupListCreatedEvent.listId }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: groupListCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

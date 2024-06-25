@@ -5,51 +5,53 @@ import { constructEvent } from '../../../src/domain-events';
 import { getAnnotationContent } from '../../../src/read-models/annotations/get-annotation-content';
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { rawUserInput } from '../../../src/read-side';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
 
 describe('get-annotation-content', () => {
   const listId = arbitraryListId();
-  const articleId = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
   const content = arbitraryUnsafeUserInput();
 
   describe('when the article has been annotated in the list', () => {
     const readmodel = pipe(
       [
-        constructEvent('ArticleInListAnnotated')({ listId, articleId, content }),
+        constructEvent('ArticleInListAnnotated')({ listId, articleId: new ArticleId(expressionDoi), content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const annotationContent = getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi));
 
     it('returns the annotation content', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(rawUserInput(content)));
+      expect(annotationContent).toStrictEqual(O.some(rawUserInput(content)));
     });
   });
 
   describe('when the article has been annotated in a different list', () => {
     const readmodel = pipe(
       [
-        constructEvent('ArticleInListAnnotated')({ listId: arbitraryListId(), articleId, content }),
+        constructEvent('ArticleInListAnnotated')({ listId: arbitraryListId(), articleId: new ArticleId(expressionDoi), content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
     it('returns no annotation', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.none);
+      expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
     });
   });
 
   describe('when a different article has been annotated in the list', () => {
     const readmodel = pipe(
       [
-        constructEvent('ArticleInListAnnotated')({ listId, articleId: arbitraryArticleId(), content }),
+        constructEvent('ArticleInListAnnotated')({ listId, articleId: new ArticleId(arbitraryExpressionDoi()), content }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
     it('returns no annotation', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.none);
+      expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
     });
   });
 
@@ -60,38 +62,38 @@ describe('get-annotation-content', () => {
     );
 
     it('returns no annotation', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.none);
+      expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
     });
   });
 
   describe('an annotated article has been removed from its list', () => {
     const readmodel = pipe(
       [
-        constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('ArticleInListAnnotated')({ articleId, listId, content }),
-        constructEvent('ArticleRemovedFromList')({ articleId, listId }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+        constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(expressionDoi), listId, content }),
+        constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
     it('returns no annotation', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.none);
+      expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
     });
   });
 
   describe('an annotated article has been removed from its list and then re-added', () => {
     const readmodel = pipe(
       [
-        constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('ArticleInListAnnotated')({ articleId, listId, content }),
-        constructEvent('ArticleRemovedFromList')({ articleId, listId }),
-        constructEvent('ArticleAddedToList')({ articleId, listId }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+        constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(expressionDoi), listId, content }),
+        constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
 
     it('returns no annotation', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.none);
+      expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
     });
   });
 
@@ -99,17 +101,18 @@ describe('get-annotation-content', () => {
     const newContent = arbitraryUnsafeUserInput();
     const readmodel = pipe(
       [
-        constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('ArticleInListAnnotated')({ articleId, listId, content }),
-        constructEvent('ArticleRemovedFromList')({ articleId, listId }),
-        constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('ArticleInListAnnotated')({ articleId, listId, content: newContent }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+        constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(expressionDoi), listId, content }),
+        constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+        constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(expressionDoi), listId, content: newContent }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
+    const annotationContent = getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi));
 
     it('returns only the new annotation', () => {
-      expect(getAnnotationContent(readmodel)(listId, articleId)).toStrictEqual(O.some(rawUserInput(newContent)));
+      expect(annotationContent).toStrictEqual(O.some(rawUserInput(newContent)));
     });
   });
 });

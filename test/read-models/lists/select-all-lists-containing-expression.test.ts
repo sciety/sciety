@@ -7,7 +7,6 @@ import { ArticleId } from '../../../src/types/article-id';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 import { arbitraryUserId } from '../../types/user-id.helper';
@@ -80,11 +79,11 @@ describe('select-all-lists-containing-expression', () => {
   describe('when only other articles appear in lists', () => {
     const listCreatedEvent = arbitraryListCreatedEvent();
     const expressionDoi = arbitraryExpressionDoi();
-    const anotherArticleId = arbitraryArticleId();
+    const anotherExpressionDoi = arbitraryExpressionDoi();
     const readModel = pipe(
       [
         listCreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId: anotherArticleId, listId: listCreatedEvent.listId }),
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(anotherExpressionDoi), listId: listCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
