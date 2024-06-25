@@ -1,9 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model';
+import { ArticleId } from '../../../../src/types/article-id';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryUserId } from '../../../types/user-id.helper';
 import { arbitraryAddGroupCommand } from '../../../write-side/commands/add-group-command.helper';
 import { arbitraryCreateListCommand } from '../../../write-side/commands/create-list-command.helper';
@@ -34,7 +35,7 @@ describe('sciety-feed-page', () => {
   });
 
   it('does not display uninteresting events', async () => {
-    const articleId = arbitraryArticleId();
+    const articleId = new ArticleId(arbitraryExpressionDoi());
     const createListCommand = arbitraryCreateListCommand();
     const userId = arbitraryUserId();
     await framework.commandHelpers.addGroup(addGroupCommand);
