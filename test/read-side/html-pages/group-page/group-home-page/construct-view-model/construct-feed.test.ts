@@ -5,11 +5,12 @@ import { pipe } from 'fp-ts/function';
 import { constructFeed } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-feed';
 import { Dependencies } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/dependencies';
 import { OrderedArticleCards, ViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/view-model';
+import { ArticleId } from '../../../../../../src/types/article-id';
 import { ListId } from '../../../../../../src/types/list-id';
 import { dummyLogger } from '../../../../../dummy-logger';
 import { createTestFramework, TestFramework } from '../../../../../framework';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../../../../types/expression-doi.helper';
 import { arbitraryAddGroupCommand } from '../../../../../write-side/commands/add-group-command.helper';
 
 describe('construct-feed', () => {
@@ -59,14 +60,20 @@ describe('construct-feed', () => {
   });
 
   describe('when the group\'s evaluated articles list contains two articles', () => {
-    const article1 = arbitraryArticleId();
-    const article2 = arbitraryArticleId();
+    const expressionDoi1 = arbitraryExpressionDoi();
+    const expressionDoi2 = arbitraryExpressionDoi();
     let paperActivityHrefs: ReadonlyArray<string>;
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.addArticleToList({ articleId: article1, listId: groupEvaluatedArticlesList });
-      await framework.commandHelpers.addArticleToList({ articleId: article2, listId: groupEvaluatedArticlesList });
+      await framework.commandHelpers.addArticleToList({
+        articleId: new ArticleId(expressionDoi1),
+        listId: groupEvaluatedArticlesList,
+      });
+      await framework.commandHelpers.addArticleToList({
+        articleId: new ArticleId(expressionDoi2),
+        listId: groupEvaluatedArticlesList,
+      });
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
       paperActivityHrefs = getPaperActivityHrefs(orderedArticleCards);
@@ -74,8 +81,8 @@ describe('construct-feed', () => {
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(paperActivityHrefs[0]).toContain(article2.value);
-      expect(paperActivityHrefs[1]).toContain(article1.value);
+      expect(paperActivityHrefs[0]).toContain(expressionDoi2);
+      expect(paperActivityHrefs[1]).toContain(expressionDoi1);
     });
 
     it('does not have a next page link', () => {
@@ -84,18 +91,30 @@ describe('construct-feed', () => {
   });
 
   describe('when the group\'s evaluated articles list contains more than one page of articles', () => {
-    const article1 = arbitraryArticleId();
-    const article2 = arbitraryArticleId();
-    const article3 = arbitraryArticleId();
-    const article4 = arbitraryArticleId();
+    const expressionDoi1 = arbitraryExpressionDoi();
+    const expressionDoi2 = arbitraryExpressionDoi();
+    const expressionDoi3 = arbitraryExpressionDoi();
+    const expressionDoi4 = arbitraryExpressionDoi();
     let paperActivityHrefs: ReadonlyArray<string>;
     let nextPageHref: O.Option<string>;
 
     beforeEach(async () => {
-      await framework.commandHelpers.addArticleToList({ articleId: article1, listId: groupEvaluatedArticlesList });
-      await framework.commandHelpers.addArticleToList({ articleId: article2, listId: groupEvaluatedArticlesList });
-      await framework.commandHelpers.addArticleToList({ articleId: article3, listId: groupEvaluatedArticlesList });
-      await framework.commandHelpers.addArticleToList({ articleId: article4, listId: groupEvaluatedArticlesList });
+      await framework.commandHelpers.addArticleToList({
+        articleId: new ArticleId(expressionDoi1),
+        listId: groupEvaluatedArticlesList,
+      });
+      await framework.commandHelpers.addArticleToList({
+        articleId: new ArticleId(expressionDoi2),
+        listId: groupEvaluatedArticlesList,
+      });
+      await framework.commandHelpers.addArticleToList({
+        articleId: new ArticleId(expressionDoi3),
+        listId: groupEvaluatedArticlesList,
+      });
+      await framework.commandHelpers.addArticleToList({
+        articleId: new ArticleId(expressionDoi4),
+        listId: groupEvaluatedArticlesList,
+      });
 
       const orderedArticleCards = await getContentAsOrderedArticleCards();
       paperActivityHrefs = getPaperActivityHrefs(orderedArticleCards);
@@ -103,9 +122,9 @@ describe('construct-feed', () => {
     });
 
     it('has the most recently added article as the first article card', () => {
-      expect(paperActivityHrefs[0]).toContain(article4.value);
-      expect(paperActivityHrefs[1]).toContain(article3.value);
-      expect(paperActivityHrefs[2]).toContain(article2.value);
+      expect(paperActivityHrefs[0]).toContain(expressionDoi4);
+      expect(paperActivityHrefs[1]).toContain(expressionDoi3);
+      expect(paperActivityHrefs[2]).toContain(expressionDoi2);
     });
 
     it('does have a link to the next page', () => {
