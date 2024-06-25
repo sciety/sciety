@@ -127,35 +127,34 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  router.get(
-    '/',
-    pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
-  );
+  const simpleHtmlPages = [
+    {
+      endpoint: '/',
+      handler: pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
+    },
+    {
+      endpoint: '/about',
+      handler: pageHandler(dependencies, () => aboutPage({})),
+    },
+    {
+      endpoint: '/lists/:listId/subscribe',
+      handler: pageHandler(dependencies, subscribeToListPage(dependencies)),
+    },
+    {
+      endpoint: paperActivityPagePathSpecification,
+      handler: pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
+    },
+    {
+      endpoint: '/groups',
+      handler: pageHandler(dependencies, () => groupsPage(dependencies)),
+    },
+    {
+      endpoint: '/save-article',
+      handler: pageHandlerWithLoggedInUser(dependencies, saveArticleFormPage(dependencies)),
+    },
+  ];
 
-  router.get(
-    '/about',
-    pageHandler(dependencies, () => aboutPage({})),
-  );
-
-  router.get(
-    '/lists/:listId/subscribe',
-    pageHandler(dependencies, subscribeToListPage(dependencies)),
-  );
-
-  router.get(
-    paperActivityPagePathSpecification,
-    pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
-  );
-
-  router.get(
-    '/groups',
-    pageHandler(dependencies, () => groupsPage(dependencies)),
-  );
-
-  router.get(
-    '/save-article',
-    pageHandlerWithLoggedInUser(dependencies, saveArticleFormPage(dependencies)),
-  );
+  simpleHtmlPages.forEach((route) => router.get(route.endpoint, route.handler));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
