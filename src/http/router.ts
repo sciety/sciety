@@ -61,70 +61,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
   );
 
-  const simpleHtmlPages = [
-    {
-      endpoint: '/my-feed',
-      paramsCodec: myFeedParams,
-      page: myFeedPage,
-    },
-  ];
-
-  simpleHtmlPages.forEach((route) => {
-    router.get(
-      route.endpoint,
-      pageHandler(dependencies, createPageFromParams(route.paramsCodec, route.page(dependencies))),
-    );
-  });
-
-  router.get(
-    '/lists/:id/edit-details',
-    pageHandler(dependencies, createPageFromParams(
-      editListDetailsFormPageParamsCodec,
-      editListDetailsFormPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/lists',
-    pageHandler(dependencies, createPageFromParams(
-      listsPageParamsCodec,
-      listsPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/users/:handle/lists',
-    pageHandler(dependencies, createPageFromParams(
-      userListsPageParams,
-      userListsPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/users/:handle/following',
-    pageHandler(dependencies, createPageFromParams(
-      userFollowingPageParams,
-      userFollowingPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/action-failed',
-    pageHandler(dependencies,
-      createPageFromParams(
-        actionFailedPageParamsCodec,
-        actionFailedPage,
-      )),
-  );
-
-  router.get(
-    '/sciety-feed',
-    pageHandler(dependencies, createPageFromParams(
-      scietyFeedCodec,
-      scietyFeedPage(dependencies)(20),
-    )),
-  );
-
   router.get(
     '/about',
     pageHandler(dependencies, () => aboutPage({})),
@@ -202,17 +138,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
   );
 
-  const nonHtmlViews = [
-    { endpoint: '/evaluations/:reviewid/content', handler: evaluationContent },
-    { endpoint: '/lists/:id/feed.atom', handler: listFeed },
-    { endpoint: '/docmaps/v1/index', handler: docmapIndex },
-    { endpoint: '/docmaps/v1/articles/:doi(.+).docmap.json', handler: docmap },
-  ];
-
-  nonHtmlViews.forEach((route) => {
-    router.get(route.endpoint, routeForNonHtmlView(route.handler(dependencies)));
-  });
-
   router.get(
     '/groups',
     pageHandler(dependencies, () => groupsPage(dependencies)),
@@ -240,6 +165,87 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     )),
   );
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  const simpleHtmlPages = [
+    {
+      endpoint: '/my-feed',
+      paramsCodec: myFeedParams,
+      page: myFeedPage,
+    },
+  ];
+
+  simpleHtmlPages.forEach((route) => {
+    router.get(
+      route.endpoint,
+      pageHandler(dependencies, createPageFromParams(route.paramsCodec, route.page(dependencies))),
+    );
+  });
+
+  router.get(
+    '/lists/:id/edit-details',
+    pageHandler(dependencies, createPageFromParams(
+      editListDetailsFormPageParamsCodec,
+      editListDetailsFormPage(dependencies),
+    )),
+  );
+
+  router.get(
+    '/lists',
+    pageHandler(dependencies, createPageFromParams(
+      listsPageParamsCodec,
+      listsPage(dependencies),
+    )),
+  );
+
+  router.get(
+    '/users/:handle/lists',
+    pageHandler(dependencies, createPageFromParams(
+      userListsPageParams,
+      userListsPage(dependencies),
+    )),
+  );
+
+  router.get(
+    '/users/:handle/following',
+    pageHandler(dependencies, createPageFromParams(
+      userFollowingPageParams,
+      userFollowingPage(dependencies),
+    )),
+  );
+
+  router.get(
+    '/action-failed',
+    pageHandler(dependencies,
+      createPageFromParams(
+        actionFailedPageParamsCodec,
+        actionFailedPage,
+      )),
+  );
+
+  router.get(
+    '/sciety-feed',
+    pageHandler(dependencies, createPageFromParams(
+      scietyFeedCodec,
+      scietyFeedPage(dependencies)(20),
+    )),
+  );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  const nonHtmlViews = [
+    { endpoint: '/evaluations/:reviewid/content', handler: evaluationContent },
+    { endpoint: '/lists/:id/feed.atom', handler: listFeed },
+    { endpoint: '/docmaps/v1/index', handler: docmapIndex },
+    { endpoint: '/docmaps/v1/articles/:doi(.+).docmap.json', handler: docmap },
+  ];
+
+  nonHtmlViews.forEach((route) => {
+    router.get(route.endpoint, routeForNonHtmlView(route.handler(dependencies)));
+  });
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   const mailChimpUrl = 'https://us10.list-manage.com/contact-form?u=cdd934bce0d72af033c181267&form_id=4034dccf020ca9b50c404c32007ee091';
   const temporaryRedirects = [
     { from: '/blog', to: 'https://blog.sciety.org' },
@@ -250,6 +256,8 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   temporaryRedirects.forEach((route) => {
     router.redirect(route.from, route.to, StatusCodes.TEMPORARY_REDIRECT);
   });
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const staticPages = [
     { endpoint: '/legal', handler: legalPage },
@@ -262,6 +270,8 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     router.get(route.endpoint, pageHandler(dependencies, () => pipe(route.handler, TE.right)));
   });
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   api.configureRoutes(router, dependencies, config.SCIETY_TEAM_API_BEARER_TOKEN);
 
   formSubmissionHandlers.configureRoutes(router, dependencies);
@@ -270,6 +280,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   group.configureRoutes(router, dependencies);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DOCMAPS
   // context.query,
 
@@ -280,7 +291,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     await next();
   });
 
-  // MISC
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const miscellaneous = [
     { endpoint: '/ping', handler: ping() },
@@ -289,6 +300,8 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   ];
 
   miscellaneous.forEach((route) => router.get(route.endpoint, route.handler));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return router;
 };
