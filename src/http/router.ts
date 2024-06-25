@@ -152,11 +152,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   );
 
   router.get(
-    '/lists/:id',
-    pageHandler(dependencies, createPageFromParams(listPageParams, listPage(dependencies)), fullWidthPageLayout),
-  );
-
-  router.get(
     '/save-article',
     pageHandlerWithLoggedInUser(dependencies, saveArticleFormPage(dependencies)),
   );
@@ -178,6 +173,13 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     {
       endpoint: '/lists',
       handler: pageHandler(dependencies, createPageFromParams(listsPageParamsCodec, listsPage(dependencies))),
+    },
+    {
+      endpoint: '/lists/:id',
+      handler: pageHandler(dependencies, createPageFromParams(
+        listPageParams,
+        listPage(dependencies),
+      ), fullWidthPageLayout),
     },
     {
       endpoint: '/users/:handle/lists',
