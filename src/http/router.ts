@@ -119,6 +119,12 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     )),
   );
 
+  router.get('/docmaps/v1', async (context, next) => {
+    const staticFolder = path.resolve(__dirname, '../../static');
+    await send(context, 'docmaps-v1-api-docs.html', { root: staticFolder });
+    await next();
+  });
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   router.get(
@@ -252,17 +258,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   authentication.configureRoutes(router, dependencies, config);
 
   group.configureRoutes(router, dependencies);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DOCMAPS
-  // context.query,
-
-  router.get('/docmaps/v1', async (context, next) => {
-    const staticFolder = path.resolve(__dirname, '../../static');
-    await send(context, 'docmaps-v1-api-docs.html', { root: staticFolder });
-
-    await next();
-  });
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
