@@ -109,10 +109,14 @@ a:link {
   text-decoration: none;
 }
 
+a {
+  @include link.normal-state() {
+    color: settings.$colour-accent;
+  }
+}
+
 a:link,
 a:visited {
-  color: settings.$colour-accent;
-
   &:hover,
   &:active {
     color: settings.$colour-accent-hover;
