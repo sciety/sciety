@@ -3,22 +3,20 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructDocmapViewModel, Ports } from '../../../../../src/read-side/non-html-views/docmaps/docmap/construct-docmap-view-model';
 import { DocmapViewModel } from '../../../../../src/read-side/non-html-views/docmaps/docmap/view-model';
-import { toExpressionDoi } from '../../../../../src/types/article-id';
 import * as DE from '../../../../../src/types/data-error';
 import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryUrl } from '../../../../helpers';
-import { arbitraryArticleId } from '../../../../types/article-id.helper';
 import { arbitraryDataError } from '../../../../types/data-error.helper';
 import { arbitraryEvaluationLocator } from '../../../../types/evaluation-locator.helper';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import { arbitraryGroupId } from '../../../../types/group-id.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryUpdateEvaluationCommand } from '../../../../write-side/commands/update-evaluation-command.helper';
 
 const selectedGroupId = arbitraryGroupId();
-const articleId = arbitraryArticleId();
-const expressionDoi = toExpressionDoi(articleId);
+const expressionDoi = arbitraryExpressionDoi();
 
 describe('construct-docmap-view-model', () => {
   let framework: TestFramework;
