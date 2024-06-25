@@ -1,7 +1,8 @@
 import {
   click, currentURL, goto, openBrowser,
 } from 'taiko';
-import { arbitraryArticleId } from '../../test/types/article-id.helper';
+import { ArticleId } from '../../src/types/article-id';
+import { arbitraryExpressionDoi } from '../../test/types/expression-doi.helper';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../test/write-side/commands/create-user-account-command.helper';
 import * as api from '../helpers/api-helpers';
@@ -49,7 +50,7 @@ describe('login-via-call-to-action', () => {
 
   describe('when I am on the article page and I am not logged in', () => {
     describe('after clicking Log in to save this article', () => {
-      const articleId = arbitraryArticleId();
+      const articleId = new ArticleId(arbitraryExpressionDoi());
       const articlePage = `localhost:8080/articles/activity/${articleId.value}`;
 
       beforeEach(async () => {

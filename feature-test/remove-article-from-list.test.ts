@@ -7,7 +7,7 @@ import {
 } from 'taiko';
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
-import { arbitraryArticleId } from '../test/types/article-id.helper';
+import { arbitraryExpressionDoi } from '../test/types/expression-doi.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 
 describe('remove-article-from-list', () => {
@@ -27,8 +27,8 @@ describe('remove-article-from-list', () => {
     });
 
     describe('and has saved an article', () => {
-      const articleId = arbitraryArticleId().value;
-      const articlePage = `localhost:8080/articles/activity/${articleId}`;
+      const expressionDoi = arbitraryExpressionDoi();
+      const articlePage = `localhost:8080/articles/activity/${expressionDoi}`;
 
       beforeAll(async () => {
         await goto(articlePage);

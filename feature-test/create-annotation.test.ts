@@ -5,7 +5,7 @@ import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 import { inputFieldNames } from '../src/standards';
 import { arbitraryString } from '../test/helpers';
-import { arbitraryArticleId } from '../test/types/article-id.helper';
+import { arbitraryExpressionDoi } from '../test/types/expression-doi.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
 
 describe('create-annotation', () => {
@@ -26,7 +26,7 @@ describe('create-annotation', () => {
 
     describe('with an article on my list', () => {
       beforeEach(async () => {
-        await goto(`localhost:8080/articles/${arbitraryArticleId().value}`);
+        await goto(`localhost:8080/articles/${arbitraryExpressionDoi()}`);
         await click('Save this article');
         await click($('button[type="submit"]'));
       });

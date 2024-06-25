@@ -1,8 +1,9 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
+import { ArticleId } from '../../src/types/article-id';
 import { ListId } from '../../src/types/list-id';
-import { arbitraryArticleId } from '../../test/types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../test/types/expression-doi.helper';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
 import * as api from '../helpers/api-helpers';
 import { getIdOfFirstListOwnedByGroup } from '../helpers/get-first-list-owned-by.helper';
@@ -16,7 +17,7 @@ describe('add an article to a list', () => {
   afterEach(screenshotTeardown);
 
   describe('when an article is added to a list via the API', () => {
-    const articleId = arbitraryArticleId();
+    const articleId = new ArticleId(arbitraryExpressionDoi());
     let listId: ListId;
 
     beforeEach(async () => {
