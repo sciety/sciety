@@ -54,36 +54,16 @@ type Dependencies = DependenciesForCommands & DependenciesForViews;
 export const createRouter = (dependencies: Dependencies, config: Config): Router => {
   const router = new Router();
 
-  // PAGES
-
-  router.get(
-    '/',
-    pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
-  );
-
-  router.get(
-    '/about',
-    pageHandler(dependencies, () => aboutPage({})),
-  );
-
-  router.get(
-    '/lists/:listId/subscribe',
-    pageHandler(dependencies, subscribeToListPage(dependencies)),
-  );
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Routes with inline middleware
 
   router.get(
     '/users/:descriptor',
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
       context.redirect(`/users/${context.params.descriptor}/lists`);
-
       await next();
     },
-  );
-
-  router.get(
-    '/users/:handle/avatar',
-    redirectToAvatarImageUrl(dependencies),
   );
 
   router.get(
@@ -106,7 +86,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     async (context, next) => {
       context.status = StatusCodes.PERMANENT_REDIRECT;
       context.redirect('/search');
-
       await next();
     },
   );
@@ -118,7 +97,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
       context.redirect(constructPaperActivityPageHref(EDOI.fromValidatedString(context.params.expressionDoi)));
-
       await next();
     },
   );
@@ -128,9 +106,41 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
       context.redirect(constructPaperActivityPageHref(EDOI.fromValidatedString(context.params.expressionDoi)));
-
       await next();
     },
+  );
+
+  router.get(
+    '/annotations/create-annotation-form',
+    requireLoggedInUser(dependencies),
+    pageHandler(dependencies, createPageFromParams(
+      createAnnotationFormPageParamsCodec,
+      createAnnotationFormPage(dependencies),
+    )),
+  );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // PAGES
+
+  router.get(
+    '/',
+    pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
+  );
+
+  router.get(
+    '/about',
+    pageHandler(dependencies, () => aboutPage({})),
+  );
+
+  router.get(
+    '/lists/:listId/subscribe',
+    pageHandler(dependencies, subscribeToListPage(dependencies)),
+  );
+
+  router.get(
+    '/users/:handle/avatar',
+    redirectToAvatarImageUrl(dependencies),
   );
 
   router.get(
@@ -154,15 +164,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   router.get(
     '/save-article',
     pageHandlerWithLoggedInUser(dependencies, saveArticleFormPage(dependencies)),
-  );
-
-  router.get(
-    '/annotations/create-annotation-form',
-    requireLoggedInUser(dependencies),
-    pageHandler(dependencies, createPageFromParams(
-      createAnnotationFormPageParamsCodec,
-      createAnnotationFormPage(dependencies),
-    )),
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
