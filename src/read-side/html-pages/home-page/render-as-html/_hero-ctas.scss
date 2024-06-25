@@ -89,14 +89,12 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
 }
 
 .home-page-hero-browse-by-category-link {
-  &:link,
-  &:visited {
+  @include link.normal-state() {
     color: settings.$colour-white;
     text-decoration: underline;
     font-weight: bold;
-
-    @include link.state() {
-      color: settings.$colour-accent-hover-on-dark-background;
-    }
-  };
+  }
+  @include link.engaged-state() {
+    color: settings.$colour-accent-hover-on-dark-background;
+  }
 }

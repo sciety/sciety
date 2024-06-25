@@ -1,7 +1,26 @@
+// deprecated, use normal-state and engaged-state together
 @mixin state() {
   &:hover,
   &:active,
   &:focus {
     @content;
+  }
+}
+
+@mixin normal-state() {
+  &:link,
+  &:visited {
+    @content;
+  }
+}
+
+@mixin engaged-state() {
+  &:link,
+  &:visited {
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
   }
 }
