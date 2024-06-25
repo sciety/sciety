@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use 'functions';
+@use 'link';
 @use 'settings';
 @use 'typography';
 
@@ -13,11 +14,13 @@
   color: $text;
   background-color: $background;
 
-  &:link,
-  &:visited {
+  @include link.normal-state() {
     color: $text;
     background-color: $background;
+  }
 
+  &:link,
+  &:visited {
     &:active,
     &:hover {
       color: $text;
