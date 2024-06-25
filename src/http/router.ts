@@ -70,6 +70,47 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   );
 
   router.get(
+    '/lists/:id/edit-details',
+    pageHandler(dependencies, createPageFromParams(
+      editListDetailsFormPageParamsCodec,
+      editListDetailsFormPage(dependencies),
+    )),
+  );
+
+  router.get(
+    '/lists',
+    pageHandler(dependencies, createPageFromParams(
+      listsPageParamsCodec,
+      listsPage(dependencies),
+    )),
+  );
+
+  router.get(
+    '/users/:handle/lists',
+    pageHandler(dependencies, createPageFromParams(
+      userListsPageParams,
+      userListsPage(dependencies),
+    )),
+  );
+
+  router.get(
+    '/users/:handle/following',
+    pageHandler(dependencies, createPageFromParams(
+      userFollowingPageParams,
+      userFollowingPage(dependencies),
+    )),
+  );
+
+  router.get(
+    '/action-failed',
+    pageHandler(dependencies,
+      createPageFromParams(
+        actionFailedPageParamsCodec,
+        actionFailedPage,
+      )),
+  );
+
+  router.get(
     '/sciety-feed',
     pageHandler(dependencies, createPageFromParams(
       scietyFeedCodec,
@@ -88,15 +129,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   );
 
   router.get(
-    '/action-failed',
-    pageHandler(dependencies,
-      createPageFromParams(
-        actionFailedPageParamsCodec,
-        actionFailedPage,
-      )),
-  );
-
-  router.get(
     '/users/:descriptor',
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
@@ -104,22 +136,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
       await next();
     },
-  );
-
-  router.get(
-    '/users/:handle/lists',
-    pageHandler(dependencies, createPageFromParams(
-      userListsPageParams,
-      userListsPage(dependencies),
-    )),
-  );
-
-  router.get(
-    '/users/:handle/following',
-    pageHandler(dependencies, createPageFromParams(
-      userFollowingPageParams,
-      userFollowingPage(dependencies),
-    )),
   );
 
   router.get(
@@ -190,14 +206,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   );
 
   router.get(
-    '/lists',
-    pageHandler(dependencies, createPageFromParams(
-      listsPageParamsCodec,
-      listsPage(dependencies),
-    )),
-  );
-
-  router.get(
     '/lists/:id',
     pageHandler(dependencies, createPageFromParams(
       listPageParams,
@@ -208,14 +216,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   router.get(
     '/lists/:id/feed.atom',
     routeForNonHtmlView(listFeed(dependencies)),
-  );
-
-  router.get(
-    '/lists/:id/edit-details',
-    pageHandler(dependencies, createPageFromParams(
-      editListDetailsFormPageParamsCodec,
-      editListDetailsFormPage(dependencies),
-    )),
   );
 
   router.get(
