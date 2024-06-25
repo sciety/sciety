@@ -4,7 +4,7 @@
 @use 'settings';
 @use 'typography';
 
-@mixin link($text, $background, $background-hover) {
+@mixin _link($text, $background, $background-hover) {
   @include typography.button();
 
   display: inline-block;
@@ -64,7 +64,7 @@
 }
 
 @mixin primary-link {
-  @include link(
+  @include _link(
     $text: settings.$colour-white,
     $background: settings.$colour-accent,
     $background-hover: settings.$colour-accent-hover,
@@ -80,9 +80,18 @@
 }
 
 @mixin secondary-link() {
-  @include link(
+  @include _link(
     $text: settings.$colour-text-primary,
     $background: settings.$colour-background-grey,
     $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
     );
+}
+
+@mixin experimental-category-link() {
+  @include _link(
+    $text: settings.$colour-text-primary,
+    $background: settings.$colour-white,
+    $background-hover: settings.$colour-background-grey,
+    );
+  border: 1px solid settings.$colour-furniture;
 }

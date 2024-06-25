@@ -16,10 +16,5 @@
 }
 
 .browse-by-category-list__link {
-  @include button.link(
-    $text: settings.$colour-text-primary,
-    $background: settings.$colour-white,
-    $background-hover: settings.$colour-background-grey,
-    );
-  border: 1px solid settings.$colour-furniture;
+  @include button.experimental-category-link();
 }
