@@ -6,7 +6,7 @@ import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discov
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
 import { arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryArticleId } from '../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const ingestDays = 10;
 
@@ -33,7 +33,7 @@ const constructPciXmlResponseForOneItem = (evaluationDoi: string, publishedDate:
   `;
 
 describe('discover-pci-evaluations', () => {
-  const evaluationDoi = arbitraryArticleId().value;
+  const evaluationDoi = arbitraryExpressionDoi();
   let result: DiscoveredPublishedEvaluations;
 
   describe('when there are no evaluations', () => {
@@ -61,7 +61,7 @@ describe('discover-pci-evaluations', () => {
 
     describe('and the paper being evaluated is expressed with a DOI', () => {
       describe('and is a biorxiv paper', () => {
-        const biorxivPaperDoi = arbitraryArticleId().value;
+        const biorxivPaperDoi = arbitraryExpressionDoi();
         const pciXmlResponse = constructPciXmlResponseForOneItem(
           evaluationDoi,
           publishedDateThatFallsIntoIngestionWindow,
@@ -203,7 +203,7 @@ describe('discover-pci-evaluations', () => {
       const pciXmlResponse = constructPciXmlResponseForOneItem(
         parseableToEvaluationLocator,
         publishedDateThatFallsIntoIngestionWindow,
-        arbitraryArticleId().value,
+        arbitraryExpressionDoi(),
       );
 
       beforeEach(async () => {

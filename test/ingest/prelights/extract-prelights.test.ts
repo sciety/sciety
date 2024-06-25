@@ -4,20 +4,19 @@ import { constructPublishedEvaluation } from '../../../src/ingest/types/publishe
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
 } from '../../helpers';
-import { arbitraryArticleId } from '../../types/article-id.helper';
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi', () => {
     const postNumber = arbitraryNumber(1000, 100000);
     const pubDate = arbitraryDate();
-    const preprintDoi = arbitraryArticleId('10.1101');
+    const preprintDoi = `10.1101/${arbitraryWord()}`;
     const author = `${arbitraryString()}, ${arbitraryString()}`;
     const result = pipe(
       [{
         guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
         category: '<a name = "highlight">highlight</a>',
         pubDate,
-        preprintDoi: preprintDoi.value,
+        preprintDoi,
         author,
       }],
       extractPrelights,
@@ -26,7 +25,7 @@ describe('extract-prelights', () => {
     it('records the evaluation', () => {
       const expectedEvaluation = constructPublishedEvaluation({
         publishedOn: pubDate,
-        paperExpressionDoi: preprintDoi.value,
+        paperExpressionDoi: preprintDoi,
         evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
         authors: [author],
       });
@@ -93,7 +92,7 @@ describe('extract-prelights', () => {
         guid,
         category: '<a name = "highlight">highlight</a>',
         pubDate: arbitraryDate(),
-        preprintDoi: arbitraryArticleId('10.1234').value,
+        preprintDoi: `10.1234/${arbitraryWord()}`,
         author: arbitraryString(),
       }],
       extractPrelights,
