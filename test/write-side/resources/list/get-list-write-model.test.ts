@@ -1,16 +1,17 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
+import { ArticleId } from '../../../../src/types/article-id';
 import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 
 describe('get-list-write-model', () => {
   const listId = arbitraryListId();
-  const articleId = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
 
   describe('when the list exists', () => {
     const listName = arbitraryString();
@@ -25,8 +26,8 @@ describe('get-list-write-model', () => {
             description: listDescription,
             ownerId: arbitraryListOwnerId(),
           }),
-          constructEvent('ArticleAddedToList')({ articleId, listId }),
-          constructEvent('ArticleRemovedFromList')({ articleId, listId }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+          constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
         ],
         getListWriteModel(listId),
         E.getOrElseW(shouldNotBeCalled),

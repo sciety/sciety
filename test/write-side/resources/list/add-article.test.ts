@@ -1,17 +1,18 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
+import { ArticleId } from '../../../../src/types/article-id';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { addArticle } from '../../../../src/write-side/resources/list/add-article';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
 
 describe('add-article', () => {
   const listId = arbitraryListId();
-  const articleId = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
 
   describe('when the list exists', () => {
     describe('and the article is already in the list', () => {
@@ -21,11 +22,11 @@ describe('add-article', () => {
             ...arbitraryListCreatedEvent(),
             listId,
           },
-          constructEvent('ArticleAddedToList')({ articleId, listId }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
         ],
         addArticle({
           listId,
-          articleId,
+          articleId: new ArticleId(expressionDoi),
         }),
       );
 
@@ -45,7 +46,7 @@ describe('add-article', () => {
           ],
           addArticle({
             listId,
-            articleId,
+            articleId: new ArticleId(expressionDoi),
           }),
           E.getOrElseW(shouldNotBeCalled),
         );
@@ -56,7 +57,7 @@ describe('add-article', () => {
 
         it('succeeds, adding the article', () => {
           expect(result[0]).toBeDomainEvent('ArticleAddedToList', {
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             listId,
           });
         });
@@ -73,7 +74,7 @@ describe('add-article', () => {
           ],
           addArticle({
             listId,
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             annotation,
           }),
           E.getOrElseW(shouldNotBeCalled),
@@ -85,11 +86,11 @@ describe('add-article', () => {
 
         it('succeeds, adding the article and creating the annotation', () => {
           expect(result[0]).toBeDomainEvent('ArticleAddedToList', {
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             listId,
           });
           expect(result[1]).toBeDomainEvent('ArticleInListAnnotated', {
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             listId,
             content: annotation,
           });
@@ -107,7 +108,7 @@ describe('add-article', () => {
           ],
           addArticle({
             listId,
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             annotation: annotationTooLong,
           }),
         );
@@ -127,7 +128,7 @@ describe('add-article', () => {
           ],
           addArticle({
             listId,
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             annotation: toUnsafeUserInput(''),
           }),
         );

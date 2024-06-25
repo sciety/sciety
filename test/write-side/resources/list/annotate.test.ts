@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { ArticleId } from '../../../../src/types/article-id';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { AnnotateArticleInListCommand } from '../../../../src/write-side/commands';
 import { annotate } from '../../../../src/write-side/resources/list';
@@ -10,17 +11,17 @@ import {
   arbitraryArticleRemovedFromListEvent,
 } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleId } from '../../../types/article-id.helper';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
 
 describe('annotate', () => {
-  const articleId = arbitraryArticleId();
+  const expressionDoi = arbitraryExpressionDoi();
   const listId = arbitraryListId();
   const content = arbitraryUnsafeUserInput();
   const annotateArticleInListCommand: AnnotateArticleInListCommand = {
     annotationContent: content,
-    articleId,
+    articleId: new ArticleId(expressionDoi),
     listId,
   };
 
@@ -33,7 +34,7 @@ describe('annotate', () => {
     describe('and the article is in the list without an annotation', () => {
       const articleAddedToListEvent = {
         ...arbitraryArticleAddedToListEvent(),
-        articleId,
+        articleId: new ArticleId(expressionDoi),
         listId,
       };
 
@@ -47,7 +48,7 @@ describe('annotate', () => {
           relevantEvents,
           annotate({
             annotationContent: toUnsafeUserInput(''),
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             listId,
           }),
         );
@@ -70,7 +71,7 @@ describe('annotate', () => {
 
         it('succeeds, raising a relevant event', () => {
           expect(result[0]).toBeDomainEvent('ArticleInListAnnotated', {
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             listId,
             content,
           });
@@ -82,7 +83,7 @@ describe('annotate', () => {
           relevantEvents,
           annotate({
             annotationContent: arbitraryLongUnsafeUserInput(5000),
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             listId,
           }),
         );
@@ -98,12 +99,12 @@ describe('annotate', () => {
         listCreatedEvent,
         {
           ...arbitraryArticleAddedToListEvent(),
-          articleId,
+          articleId: new ArticleId(expressionDoi),
           listId,
         },
         {
           ...arbitraryArticleInListAnnotatedEvent(),
-          articleId,
+          articleId: new ArticleId(expressionDoi),
           listId,
         },
       ];
@@ -136,12 +137,12 @@ describe('annotate', () => {
           listCreatedEvent,
           {
             ...arbitraryArticleAddedToListEvent(),
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             listId,
           },
           {
             ...arbitraryArticleRemovedFromListEvent(),
-            articleId,
+            articleId: new ArticleId(expressionDoi),
             listId,
           },
         ],
