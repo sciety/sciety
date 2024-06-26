@@ -8,8 +8,7 @@
 }
 
 @mixin normal-state() {
-  &:link,
-  &:visited {
+  &:any-link {
     @content;
   }
 }

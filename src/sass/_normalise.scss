@@ -105,13 +105,10 @@ li {
   @include typography.body();
 }
 
-a:link {
-  text-decoration: none;
-}
-
 a {
   @include link.normal-state() {
     color: settings.$colour-accent;
+    text-decoration: none;
   }
   @include link.engaged-state() {
     color: settings.$colour-accent-hover;
