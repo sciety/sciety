@@ -57,8 +57,6 @@ $_width-at-which-image-is-too-narrow: 1680px;
   padding-right: functions.px-to-rem(settings.$default-gutter);
   padding-left: functions.px-to-rem(settings.$default-gutter);
   padding-top: functions.px-to-rem(20px);
-  max-width: fit-content;
-  justify-self: center;
 
   @include breakpoints.site-header() {
     padding-top: functions.px-to-rem(193px);
