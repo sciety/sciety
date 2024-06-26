@@ -1,7 +1,15 @@
+import { htmlEscape } from 'escape-goat';
+import { ViewModel } from './view-model';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../html-page';
 
-export const renderAsHtml = (): HtmlPage => toHtmlPage({
-  title: 'Category page',
-  content: toHtmlFragment('Category page'),
+export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
+  title: viewModel.pageHeading,
+  content: toHtmlFragment(
+    `
+    <header class="page-header">
+      <h1>${htmlEscape(viewModel.pageHeading)}</h1>
+    </header>
+  `,
+  ),
 });

@@ -18,6 +18,9 @@ export const categoryPage = (dependencies: Dependencies): ConstructPage => (inpu
     return DE.notFound;
   }),
   TE.fromEither,
+  TE.map((params) => ({
+    pageHeading: `${params.title}`,
+  })),
   TE.mapLeft(constructErrorPageViewModel),
   TE.map(renderAsHtml),
 );
