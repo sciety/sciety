@@ -1,6 +1,6 @@
 import { renderHomepageHeroCtas } from './render-homepage-hero-ctas';
-import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { ViewModel } from '../view-model';
+import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
+import { ViewModel } from '../../view-model';
 
 export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(`
   <section class="home-page-hero-wrapper">
