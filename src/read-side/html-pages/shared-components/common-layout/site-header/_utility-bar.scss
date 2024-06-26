@@ -101,8 +101,7 @@ $_avatar-height-coupled-to-buttons: 34px;
   display: flex;
   line-height: 1;
 
-  &:link,
-  &:visited {
+  &:any-link {
     color: var(--colour-text-primary);
 
     &:hover,

@@ -33,8 +33,7 @@ $_card-border-radius: settings.$border-radius;
 @mixin link () {
   color: settings.$colour-text-primary;
 
-  &:link,
-  &:visited {
+  &:any-link {
     color: settings.$colour-text-primary;
 
     &:active,

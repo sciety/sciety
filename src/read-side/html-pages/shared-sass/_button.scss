@@ -19,8 +19,7 @@
     background-color: $background;
   }
 
-  &:link,
-  &:visited {
+  &:any-link {
     &:active,
     &:hover {
       color: $text;

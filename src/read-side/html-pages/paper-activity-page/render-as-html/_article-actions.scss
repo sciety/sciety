@@ -59,8 +59,7 @@
   margin-bottom: functions.px-to-rem(24px);
 }
 
-.saved-to-list:link,
-.saved-to-list:visited {
+.saved-to-list:any-link {
   @include typography.subtle-link();
 }
 

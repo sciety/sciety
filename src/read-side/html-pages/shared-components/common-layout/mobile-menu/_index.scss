@@ -43,8 +43,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   margin-bottom: functions.px-to-rem(32px);
   font-weight: bold;
 
-  &:link,
-  &:visited {
+  &:any-link {
     color: settings.$colour-white;
 
     &:hover,

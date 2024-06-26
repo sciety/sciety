@@ -14,8 +14,7 @@
 }
 
 @mixin engaged-state() {
-  &:link,
-  &:visited {
+  &:any-link {
     &:hover,
     &:active,
     &:focus {
