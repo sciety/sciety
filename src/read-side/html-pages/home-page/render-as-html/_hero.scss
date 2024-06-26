@@ -16,26 +16,27 @@ $_width-at-which-image-is-too-narrow: 1680px;
 
 }
 
+@mixin _decorative-side-image() {
+  display: none;
+
+  @include breakpoints.site-header() {
+    display: unset;
+    opacity: 0.4;
+    overflow: hidden;
+  }
+}
+
 .home-page-hero-wrapper {
   background-color: settings.$colour-brand;
-
-  img {
-    display: none;
-  }
 
   @include breakpoints.site-header() {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-
-    img {
-      display: unset;
-      opacity: 0.4;
-      overflow: hidden;
-    }
   }
 }
 
 .home-page-hero__left_image {
+  @include _decorative-side-image();
   justify-self: end;
 
   @media screen and (min-width: functions.px-to-em($_width-at-which-image-is-too-narrow)) {
@@ -44,6 +45,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
 }
 
 .home-page-hero__right_image {
+  @include _decorative-side-image();
   justify-self: start;
 
   @media screen and (min-width: functions.px-to-em($_width-at-which-image-is-too-narrow)) {
