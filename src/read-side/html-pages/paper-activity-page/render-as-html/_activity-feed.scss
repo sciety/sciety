@@ -60,7 +60,9 @@ p.activity-feed__item__title {
   color: settings.$colour-accent;
   margin-bottom: 1rem;
 
-  @include link.state {
+  &:hover,
+  &:active,
+  &:focus {
     text-decoration: underline;
   }
 }

@@ -1,12 +1,3 @@
-// deprecated, use normal-state and engaged-state together
-@mixin state() {
-  &:hover,
-  &:active,
-  &:focus {
-    @content;
-  }
-}
-
 @mixin normal-state() {
   &:any-link {
     @content;
