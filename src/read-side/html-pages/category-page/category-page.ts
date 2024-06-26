@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
 import { renderAsHtml } from './render-as-html';
@@ -17,10 +18,8 @@ export const categoryPage = (dependencies: Dependencies): ConstructPage => (inpu
     dependencies.logger('warn', 'category-page params codec failed', { errors: formatValidationErrors(errors) });
     return DE.notFound;
   }),
+  E.map(constructViewModel),
+  E.mapLeft(constructErrorPageViewModel),
+  E.map(renderAsHtml),
   TE.fromEither,
-  TE.map((params) => ({
-    pageHeading: `${params.title}`,
-  })),
-  TE.mapLeft(constructErrorPageViewModel),
-  TE.map(renderAsHtml),
 );
