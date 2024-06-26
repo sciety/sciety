@@ -20,6 +20,7 @@ import { routeForNonHtmlView } from './route-for-non-html-view';
 import { DependenciesForViews } from '../read-side/dependencies-for-views';
 import { aboutPage } from '../read-side/html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../read-side/html-pages/action-failed';
+import { categoryPage } from '../read-side/html-pages/category-page';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../read-side/html-pages/create-annotation-form-page';
 import { createPageFromParams } from '../read-side/html-pages/create-page-from-params';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../read-side/html-pages/edit-list-details-form-page';
@@ -196,6 +197,10 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     {
       endpoint: '/groups',
       handler: pageHandler(dependencies, () => groupsPage(dependencies)),
+    },
+    {
+      endpoint: '/category',
+      handler: pageHandler(dependencies, categoryPage(dependencies)),
     },
     {
       endpoint: '/save-article',

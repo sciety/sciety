@@ -9,7 +9,7 @@ import { ViewModel } from '../view-model';
 
 const constructScietyLabsCategoryUrl = (title: string) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return `/categories?title=${encodeURIComponent(title)}`;
+    return `/category?title=${encodeURIComponent(title)}`;
   }
   return `https://labs.sciety.org/categories/articles?category=${title}&from_sciety=true`;
 };
