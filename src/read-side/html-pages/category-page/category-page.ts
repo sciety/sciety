@@ -4,11 +4,10 @@ import { pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
+import { renderAsHtml } from './render-as-html';
 import * as DE from '../../../types/data-error';
-import { toHtmlFragment } from '../../../types/html-fragment';
 import { constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { ConstructPage } from '../construct-page';
-import { toHtmlPage } from '../html-page';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const categoryPage = (dependencies: Dependencies): ConstructPage => (input) => pipe(
@@ -20,8 +19,5 @@ export const categoryPage = (dependencies: Dependencies): ConstructPage => (inpu
   }),
   TE.fromEither,
   TE.mapLeft(constructErrorPageViewModel),
-  TE.map(() => toHtmlPage({
-    title: 'Category page',
-    content: toHtmlFragment('Category page'),
-  })),
+  TE.map(renderAsHtml),
 );
