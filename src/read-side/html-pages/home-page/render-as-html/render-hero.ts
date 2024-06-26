@@ -12,7 +12,7 @@ export const renderHero = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
       <p class="home-page-hero__content_byline">
         Join the global network discovering and highlighting important new studies.
       </p>
-      <section class="home-page-hero__section">
+      <section>
         ${renderHomepageHeroCtas()}
       </section>
     </div>

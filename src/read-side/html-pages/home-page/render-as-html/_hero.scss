@@ -88,11 +88,3 @@ $_width-at-which-image-is-too-narrow: 1680px;
     margin-bottom: functions.px-to-rem(76px);
   }
 }
-
-.home-page-hero__section {
-  @include _vertical-spacing-in-hero();
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
