@@ -18,7 +18,6 @@ import { Logger } from '../logger';
 import { dispatcher } from '../read-models';
 import { instantiate } from '../third-parties';
 import {
-  createListCommandHandler,
   recordSubjectAreaCommandHandler,
 } from '../write-side/command-handlers';
 import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
@@ -108,7 +107,6 @@ export const createInfrastructure = (
         ...partialAdapters,
         getAllEvents,
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
-        createList: createListCommandHandler(commandHandlerAdapters),
         addArticleToList: addArticleToListCommandHandler(commandHandlerAdapters),
       };
 
