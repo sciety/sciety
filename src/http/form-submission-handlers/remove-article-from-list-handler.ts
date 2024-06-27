@@ -7,8 +7,9 @@ import { Middleware } from 'koa';
 import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
 import { Logger } from '../../logger';
 import { DependenciesForCommands } from '../../write-side';
-import { removeArticleFromListCommandHandler } from '../../write-side/command-handlers';
 import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import * as listResource from '../../write-side/resources/list';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
 type Dependencies = DependenciesForCommands & CheckUserOwnsListDependencies & {
@@ -68,7 +69,10 @@ export const removeArticleFromListHandler = (dependencies: Dependencies): Middle
     return;
   }
 
-  const commandResult = await removeArticleFromListCommandHandler(dependencies)(command.right)();
+  const commandResult = await pipe(
+    command.right,
+    executeResourceAction(dependencies, listResource.removeArticle),
+  )();
 
   if (E.isLeft(commandResult)) {
     context.redirect('/action-failed');
