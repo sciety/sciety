@@ -6,7 +6,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/list-page/construct-view-model/construct-view-model';
 import { hasContentWithPagination, ViewModel } from '../../../../../src/read-side/html-pages/list-page/view-model';
-import { ArticleId } from '../../../../../src/types/article-id';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
@@ -110,7 +109,7 @@ describe('construct-view-model', () => {
         const listId = await createList();
         await framework.commandHelpers.addArticleToList({ articleId: expressionDoi1, listId });
         await framework.commandHelpers.addArticleToList({ articleId: expressionDoi2, listId });
-        await framework.commandHelpers.removeArticleFromList({ articleId: new ArticleId(expressionDoi1), listId });
+        await framework.commandHelpers.removeArticleFromList({ articleId: expressionDoi1, listId });
         await framework.commandHelpers.addArticleToList({ articleId: expressionDoi1, listId });
         result = await pipe(
           {
@@ -143,7 +142,7 @@ describe('construct-view-model', () => {
         await framework.commandHelpers.addArticleToList({ articleId: expressionDoi1, listId });
         await framework.commandHelpers.addArticleToList({ articleId: expressionDoi2, listId });
         await framework.commandHelpers.addArticleToList({ articleId: expressionDoi3, listId });
-        await framework.commandHelpers.removeArticleFromList({ articleId: new ArticleId(expressionDoi3), listId });
+        await framework.commandHelpers.removeArticleFromList({ articleId: expressionDoi3, listId });
         result = await pipe(
           {
             page: 1,

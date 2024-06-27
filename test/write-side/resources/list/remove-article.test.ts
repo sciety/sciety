@@ -23,7 +23,7 @@ describe('remove-article', () => {
       ],
       removeArticle({
         listId,
-        articleId: new ArticleId(expressionDoi),
+        articleId: expressionDoi,
       }),
       E.getOrElseW(shouldNotBeCalled),
     );
@@ -49,7 +49,7 @@ describe('remove-article', () => {
       ],
       removeArticle({
         listId,
-        articleId: new ArticleId(expressionDoi),
+        articleId: expressionDoi,
       }),
       E.getOrElseW(shouldNotBeCalled),
     );

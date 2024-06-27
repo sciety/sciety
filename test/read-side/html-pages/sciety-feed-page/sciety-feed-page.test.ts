@@ -1,8 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../src/read-side/html-pages/sciety-feed-page/construct-view-model';
-import { ArticleId } from '../../../../src/types/article-id';
-import * as EDOI from '../../../../src/types/expression-doi';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
@@ -36,13 +34,13 @@ describe('sciety-feed-page', () => {
   });
 
   it('does not display uninteresting events', async () => {
-    const articleId = new ArticleId(arbitraryExpressionDoi());
+    const articleId = arbitraryExpressionDoi();
     const createListCommand = arbitraryCreateListCommand();
     const userId = arbitraryUserId();
     await framework.commandHelpers.addGroup(addGroupCommand);
     await framework.commandHelpers.createList(createListCommand);
     await framework.commandHelpers.addArticleToList({
-      articleId: EDOI.fromValidatedString(articleId.value),
+      articleId,
       listId: createListCommand.listId,
     });
     await framework.commandHelpers.removeArticleFromList({ articleId, listId: createListCommand.listId });
