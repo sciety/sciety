@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Docmap } from '../../../../../src/read-side/non-html-views/docmaps/docmap/docmap-type';
-import { generateDocmaps, Ports } from '../../../../../src/read-side/non-html-views/docmaps/docmap/generate-docmaps';
+import { generateDocmaps, Dependencies } from '../../../../../src/read-side/non-html-views/docmaps/docmap/generate-docmaps';
 import * as DE from '../../../../../src/types/data-error';
 import { EvaluationLocator } from '../../../../../src/types/evaluation-locator';
 import * as GID from '../../../../../src/types/group-id';
@@ -21,11 +21,11 @@ describe('generate-docmaps', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
   let framework: TestFramework;
-  let defaultAdapters: Ports;
+  let defaultDependencies: Dependencies;
 
   beforeEach(async () => {
     framework = createTestFramework();
-    defaultAdapters = {
+    defaultDependencies = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
     };
@@ -37,7 +37,7 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       response = await pipe(
         arbitraryExpressionDoi(),
-        generateDocmaps(defaultAdapters),
+        generateDocmaps(defaultDependencies),
         TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
     });
@@ -72,7 +72,7 @@ describe('generate-docmaps', () => {
       await framework.commandHelpers.recordEvaluationPublication(command2);
       response = await pipe(
         expressionDoi,
-        generateDocmaps(defaultAdapters),
+        generateDocmaps(defaultDependencies),
         TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
     });
@@ -103,7 +103,7 @@ describe('generate-docmaps', () => {
       await framework.commandHelpers.recordEvaluationPublication(command);
       docmaps = await pipe(
         expressionDoi,
-        generateDocmaps(defaultAdapters),
+        generateDocmaps(defaultDependencies),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -138,7 +138,7 @@ describe('generate-docmaps', () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation2);
       docmaps = await pipe(
         expressionDoi,
-        generateDocmaps(defaultAdapters),
+        generateDocmaps(defaultDependencies),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -176,7 +176,7 @@ describe('generate-docmaps', () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation2);
       docmaps = await pipe(
         expressionDoi,
-        generateDocmaps(defaultAdapters),
+        generateDocmaps(defaultDependencies),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -212,7 +212,7 @@ describe('generate-docmaps', () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluation2);
       docmaps = await pipe(
         expressionDoi,
-        generateDocmaps(defaultAdapters),
+        generateDocmaps(defaultDependencies),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -248,7 +248,7 @@ describe('generate-docmaps', () => {
       response = await pipe(
         expressionDoi,
         generateDocmaps({
-          ...defaultAdapters,
+          ...defaultDependencies,
           fetchEvaluationHumanReadableOriginalUrl: (id: EvaluationLocator) => (
             id === failingReviewId
               ? TE.left(DE.notFound)
@@ -274,7 +274,7 @@ describe('generate-docmaps', () => {
     beforeEach(async () => {
       response = await pipe(
         ('not-a-doi'),
-        generateDocmaps(defaultAdapters),
+        generateDocmaps(defaultDependencies),
         TE.match(identity, abortTest('generateDocmaps returned on the right')),
       )();
     });

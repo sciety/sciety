@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { Ports as DocmapPorts, constructDocmapViewModel } from './construct-docmap-view-model';
+import { Dependencies as DocmapDependencies, constructDocmapViewModel } from './construct-docmap-view-model';
 import { Docmap } from './docmap-type';
 import { renderDocmap } from './render-docmap';
 import { Queries } from '../../../../read-models';
@@ -12,10 +12,10 @@ import { articleIdCodec, ArticleId, toExpressionDoi } from '../../../../types/ar
 import * as EDOI from '../../../../types/expression-doi';
 import { supportedGroups } from '../supported-groups';
 
-export type Ports = DocmapPorts & Queries;
+export type Dependencies = DocmapDependencies & Queries;
 
-const getEvaluatingGroupIds = (ports: Ports) => (doi: ArticleId) => pipe(
-  ports.getEvaluationsOfExpression(EDOI.fromValidatedString(doi.value)),
+const getEvaluatingGroupIds = (dependencies: Dependencies) => (doi: ArticleId) => pipe(
+  dependencies.getEvaluationsOfExpression(EDOI.fromValidatedString(doi.value)),
   T.of,
   T.map(flow(
     RA.filter(({ expressionDoi }) => expressionDoi === doi.value),
@@ -30,11 +30,11 @@ const validateDoi = flow(
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Invalid DOI requested' })),
 );
 
-const getDocmapViewModels = (ports: Ports) => (articleId: ArticleId) => pipe(
+const getDocmapViewModels = (dependencies: Dependencies) => (articleId: ArticleId) => pipe(
   articleId,
-  getEvaluatingGroupIds(ports),
+  getEvaluatingGroupIds(dependencies),
   TE.rightTask,
-  TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(ports)({
+  TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(dependencies)({
     expressionDoi: toExpressionDoi(articleId),
     groupId,
   }))),
@@ -47,14 +47,14 @@ const errorOnEmpty = E.fromPredicate(
 );
 
 export const generateDocmaps = (
-  ports: Ports,
+  dependencies: Dependencies,
 ) => (
   candidateDoi: string,
 ): TE.TaskEither<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>> => pipe(
   candidateDoi,
   validateDoi,
   TE.fromEither,
-  TE.chainW(getDocmapViewModels(ports)),
+  TE.chainW(getDocmapViewModels(dependencies)),
   TE.map(RA.map(renderDocmap)),
   TE.chainEitherKW(errorOnEmpty),
 );

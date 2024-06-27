@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructDocmapViewModel, Ports } from '../../../../../src/read-side/non-html-views/docmaps/docmap/construct-docmap-view-model';
+import { constructDocmapViewModel, Dependencies } from '../../../../../src/read-side/non-html-views/docmaps/docmap/construct-docmap-view-model';
 import { DocmapViewModel } from '../../../../../src/read-side/non-html-views/docmaps/docmap/view-model';
 import * as DE from '../../../../../src/types/data-error';
 import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands';
@@ -20,11 +20,11 @@ const expressionDoi = arbitraryExpressionDoi();
 
 describe('construct-docmap-view-model', () => {
   let framework: TestFramework;
-  let defaultAdapters: Ports;
+  let defaultDependencies: Dependencies;
 
   beforeEach(async () => {
     framework = createTestFramework();
-    defaultAdapters = {
+    defaultDependencies = {
       ...framework.queries,
       ...framework.happyPathThirdParties,
     };
@@ -59,7 +59,7 @@ describe('construct-docmap-view-model', () => {
           viewModel = await pipe(
             { expressionDoi, groupId: addGroupCommand.groupId },
             constructDocmapViewModel({
-              ...defaultAdapters,
+              ...defaultDependencies,
               fetchEvaluationHumanReadableOriginalUrl: () => TE.right(humanReadableOriginalUrl),
             }),
             TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
@@ -87,7 +87,7 @@ describe('construct-docmap-view-model', () => {
           result = await pipe(
             { expressionDoi, groupId: addGroupCommand.groupId },
             constructDocmapViewModel({
-              ...defaultAdapters,
+              ...defaultDependencies,
               fetchEvaluationHumanReadableOriginalUrl: () => TE.left(externalQueryError),
             }),
           )();
@@ -123,7 +123,7 @@ describe('construct-docmap-view-model', () => {
       describe('and they have never been updated', () => {
         beforeEach(async () => {
           viewModel = await pipe(
-            constructDocmapViewModel(defaultAdapters)({ expressionDoi, groupId: addGroupCommand.groupId }),
+            constructDocmapViewModel(defaultDependencies)({ expressionDoi, groupId: addGroupCommand.groupId }),
             TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
           )();
         });
@@ -153,7 +153,7 @@ describe('construct-docmap-view-model', () => {
             issuedAt: laterUpdateDate,
           });
           viewModel = await pipe(
-            constructDocmapViewModel(defaultAdapters)({ expressionDoi, groupId: addGroupCommand.groupId }),
+            constructDocmapViewModel(defaultDependencies)({ expressionDoi, groupId: addGroupCommand.groupId }),
             TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
           )();
         });
@@ -191,7 +191,7 @@ describe('construct-docmap-view-model', () => {
         await framework.commandHelpers.recordEvaluationPublication(command);
         await framework.commandHelpers.updateEvaluation(updateEvaluationCommand);
         viewModel = await pipe(
-          constructDocmapViewModel(defaultAdapters)({ expressionDoi, groupId: addGroupCommand.groupId }),
+          constructDocmapViewModel(defaultDependencies)({ expressionDoi, groupId: addGroupCommand.groupId }),
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
         )();
       });
@@ -203,7 +203,7 @@ describe('construct-docmap-view-model', () => {
 
     describe('when there are no evaluations by the selected group', () => {
       it('returns an E.left of not-found', async () => {
-        const result = await constructDocmapViewModel(defaultAdapters)({
+        const result = await constructDocmapViewModel(defaultDependencies)({
           expressionDoi,
           groupId: selectedGroupId,
         })();
@@ -233,7 +233,7 @@ describe('construct-docmap-view-model', () => {
             expressionDoi,
             groupId: selectedGroupId,
           },
-          constructDocmapViewModel(defaultAdapters),
+          constructDocmapViewModel(defaultDependencies),
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
         )();
 
@@ -251,7 +251,7 @@ describe('construct-docmap-view-model', () => {
           expressionDoi,
           groupId: selectedGroupId,
         },
-        constructDocmapViewModel(defaultAdapters),
+        constructDocmapViewModel(defaultDependencies),
       )();
     });
 

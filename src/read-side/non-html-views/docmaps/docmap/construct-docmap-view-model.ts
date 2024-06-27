@@ -18,9 +18,9 @@ type DocmapIdentifier = {
   groupId: GroupId,
 };
 
-export type Ports = Queries & ExternalQueries;
+export type Dependencies = Queries & ExternalQueries;
 
-const extendWithSourceUrl = (adapters: Ports) => (evaluation: RecordedEvaluation) => pipe(
+const extendWithSourceUrl = (adapters: Dependencies) => (evaluation: RecordedEvaluation) => pipe(
   evaluation.evaluationLocator,
   adapters.fetchEvaluationHumanReadableOriginalUrl,
   TE.map((url) => ({
@@ -30,26 +30,26 @@ const extendWithSourceUrl = (adapters: Ports) => (evaluation: RecordedEvaluation
 );
 
 type ConstructDocmapViewModel = (
-  adapters: Ports
+  dependencies: Dependencies
 ) => (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapViewModel>;
 
-export const constructDocmapViewModel: ConstructDocmapViewModel = (adapters) => ({ expressionDoi, groupId }) => pipe(
+export const constructDocmapViewModel: ConstructDocmapViewModel = (dependencies) => (docmapIdentifier) => pipe(
   {
-    expressionDoi: TE.right(expressionDoi),
+    expressionDoi: TE.right(docmapIdentifier.expressionDoi),
     evaluations: pipe(
-      adapters.getEvaluationsOfExpression(expressionDoi),
+      dependencies.getEvaluationsOfExpression(docmapIdentifier.expressionDoi),
       TE.right,
-      TE.map(RA.filter((ev) => ev.groupId === groupId)),
-      TE.chainW(TE.traverseArray(extendWithSourceUrl(adapters))),
+      TE.map(RA.filter((ev) => ev.groupId === docmapIdentifier.groupId)),
+      TE.chainW(TE.traverseArray(extendWithSourceUrl(dependencies))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
         E.fromOption(() => DE.notFound),
       )),
     ),
     group: pipe(
-      adapters.getGroup(groupId),
+      dependencies.getGroup(docmapIdentifier.groupId),
       TE.fromOption(() => DE.notFound),
     ),
   },
