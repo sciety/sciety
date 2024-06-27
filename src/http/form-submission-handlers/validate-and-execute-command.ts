@@ -11,7 +11,7 @@ import { CommandResult } from '../../types/command-result';
 import { SanitisedUserInput, sanitisedUserInputCodec } from '../../types/sanitised-user-input';
 import { userHandleCodec } from '../../types/user-handle';
 import { DependenciesForCommands } from '../../write-side';
-import { createUserAccountCommandHandler } from '../../write-side/command-handlers/create-user-account-command-handler';
+import { create } from '../../write-side/resources/user';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 
 const defaultSignUpAvatarUrl = '/static/images/profile-dark.svg';
@@ -58,8 +58,9 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, de
   })),
   T.of,
   TE.chainW((command) => pipe(
-    command,
-    createUserAccountCommandHandler(dependencies),
+    dependencies.getAllEvents,
+    T.map(create(command)),
+    TE.chainW(dependencies.commitEvents),
     TE.mapLeft((error) => {
       dependencies.logger('error', 'createUserAccountCommandHandler failed', { error, command });
       return 'command-failed';
