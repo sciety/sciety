@@ -2,6 +2,7 @@ import { createActions, createCommandHelpers } from './create-command-helpers';
 import { createReadAndWriteSides } from './create-read-and-write-sides';
 import { createHappyPathThirdPartyAdapters } from './happy-path-third-party-adapters';
 import { Dependencies as DependenciesForExecuteResourceAction } from '../../src/write-side/resources/execute-resource-action';
+import * as groupFollowResource from '../../src/write-side/resources/group-follow';
 import * as listPromotionResource from '../../src/write-side/resources/list-promotion';
 import { abortTest } from '../abort-test';
 import { dummyLogger } from '../dummy-logger';
@@ -20,6 +21,7 @@ export const createTestFramework = () => {
     abortTest,
     commandHelpers: createCommandHelpers(dependenciesForExecuteResourceAction),
     writeResources: {
+      groupFollow: createActions(dependenciesForExecuteResourceAction, groupFollowResource.actions),
       listPromotion: createActions(dependenciesForExecuteResourceAction, listPromotionResource.actions),
     },
     happyPathThirdParties,

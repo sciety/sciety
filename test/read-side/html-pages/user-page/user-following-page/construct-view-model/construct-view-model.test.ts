@@ -33,13 +33,13 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addGroup(addGroup1);
       await framework.commandHelpers.addGroup(addGroup2);
       await framework.commandHelpers.addGroup(addGroup3);
-      await framework.commandHelpers.followGroup(
+      await framework.writeResources.groupFollow.follow(
         { userId: createUserAccountCommand.userId, groupId: addGroup1.groupId },
       );
-      await framework.commandHelpers.followGroup(
+      await framework.writeResources.groupFollow.follow(
         { userId: createUserAccountCommand.userId, groupId: addGroup2.groupId },
       );
-      await framework.commandHelpers.followGroup(
+      await framework.writeResources.groupFollow.follow(
         { userId: createUserAccountCommand.userId, groupId: addGroup3.groupId },
       );
     });

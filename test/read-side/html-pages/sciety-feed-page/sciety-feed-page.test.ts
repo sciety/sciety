@@ -18,9 +18,9 @@ describe('sciety-feed-page', () => {
 
   it('displays at most a page of cards at a time', async () => {
     await framework.commandHelpers.addGroup(addGroupCommand);
-    await framework.commandHelpers.followGroup({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
-    await framework.commandHelpers.followGroup({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
-    await framework.commandHelpers.followGroup({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
+    await framework.writeResources.groupFollow.follow({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
+    await framework.writeResources.groupFollow.follow({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
+    await framework.writeResources.groupFollow.follow({ userId: arbitraryUserId(), groupId: addGroupCommand.groupId });
     const viewModel = await pipe(
       { page: 1 },
       constructViewModel({
@@ -44,7 +44,7 @@ describe('sciety-feed-page', () => {
       listId: createListCommand.listId,
     });
     await framework.commandHelpers.removeArticleFromList({ articleId, listId: createListCommand.listId });
-    await framework.commandHelpers.unfollowGroup({ userId, groupId: addGroupCommand.groupId });
+    await framework.writeResources.groupFollow.unfollow({ userId, groupId: addGroupCommand.groupId });
     const viewModel = await pipe(
       { page: 1 },
       constructViewModel({
