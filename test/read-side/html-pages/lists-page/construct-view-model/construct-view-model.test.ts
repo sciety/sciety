@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { List } from '../../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../../src/read-side/html-pages/lists-page/view-model';
-import { ArticleId } from '../../../../../src/types/article-id';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { abortTest } from '../../../../abort-test';
 import { TestFramework, createTestFramework } from '../../../../framework';
@@ -32,12 +31,12 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(arbitraryExpressionDoi()),
+        articleId: arbitraryExpressionDoi(),
         listId: initialUserList.id,
       });
       await framework.commandHelpers.createList(command);
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(arbitraryExpressionDoi()),
+        articleId: arbitraryExpressionDoi(),
         listId: command.listId,
       });
 
@@ -69,7 +68,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(
-          { articleId: new ArticleId(arbitraryExpressionDoi()), listId: createListCommand.listId },
+          { articleId: arbitraryExpressionDoi(), listId: createListCommand.listId },
         );
 
         viewmodel = pipe(

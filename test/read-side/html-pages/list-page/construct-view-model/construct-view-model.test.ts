@@ -40,7 +40,7 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       const list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       const listId = list.id;
-      await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi), listId });
+      await framework.commandHelpers.addArticleToList({ articleId: expressionDoi, listId });
       viewModel = await pipe(
         {
           page: 1,
@@ -79,8 +79,8 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         const listId = await createList();
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi1), listId });
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi2), listId });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi1, listId });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi2, listId });
         result = await pipe(
           {
             page: 1,
@@ -108,10 +108,10 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         const listId = await createList();
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi1), listId });
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi2), listId });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi1, listId });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi2, listId });
         await framework.commandHelpers.removeArticleFromList({ articleId: new ArticleId(expressionDoi1), listId });
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi1), listId });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi1, listId });
         result = await pipe(
           {
             page: 1,
@@ -140,9 +140,9 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         const listId = await createList();
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi1), listId });
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi2), listId });
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi3), listId });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi1, listId });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi2, listId });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi3, listId });
         await framework.commandHelpers.removeArticleFromList({ articleId: new ArticleId(expressionDoi3), listId });
         result = await pipe(
           {

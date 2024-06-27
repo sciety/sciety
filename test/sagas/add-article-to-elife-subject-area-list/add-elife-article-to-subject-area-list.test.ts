@@ -8,12 +8,12 @@ import { arbitraryListId } from '../../types/list-id.helper';
 
 describe('add-elife-article-to-subject-area-list', () => {
   describe('when there is work to do', () => {
-    const articleId = new ArticleId(arbitraryExpressionDoi());
+    const articleId = arbitraryExpressionDoi();
     const listId = arbitraryListId();
     const adapters = {
       addArticleToList: jest.fn(() => TE.right('events-created' as const)),
       getOneArticleReadyToBeListed: () => O.some({
-        articleId,
+        articleId: new ArticleId(articleId),
         listId,
       }),
       logger: dummyLogger,

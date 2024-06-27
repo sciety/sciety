@@ -5,7 +5,6 @@ import { pipe } from 'fp-ts/function';
 import { List } from '../../../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-lists-page/construct-view-model/construct-view-model';
 import { ViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-lists-page/view-model';
-import { ArticleId } from '../../../../../../src/types/article-id';
 import * as LOID from '../../../../../../src/types/list-owner-id';
 import { createTestFramework, TestFramework } from '../../../../../framework';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
@@ -40,11 +39,11 @@ describe('construct-view-model', () => {
       initialGroupList = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
       await framework.commandHelpers.createList(createMiddleList);
       await framework.commandHelpers.addArticleToList(
-        { articleId: new ArticleId(arbitraryExpressionDoi()), listId: createMiddleList.listId },
+        { articleId: arbitraryExpressionDoi(), listId: createMiddleList.listId },
       );
       await framework.commandHelpers.createList(createMostRecentlyUpdatedList);
       await framework.commandHelpers.addArticleToList(
-        { articleId: new ArticleId(arbitraryExpressionDoi()), listId: createMostRecentlyUpdatedList.listId },
+        { articleId: arbitraryExpressionDoi(), listId: createMostRecentlyUpdatedList.listId },
       );
 
       const viewModel = await pipe(

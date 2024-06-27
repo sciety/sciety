@@ -2,7 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { findAllListsContainingPaper } from '../../src/read-side/find-all-lists-containing-paper';
-import { ArticleId } from '../../src/types/article-id';
 import { ListId } from '../../src/types/list-id';
 import * as PH from '../../src/types/publishing-history';
 import { TestFramework, createTestFramework } from '../framework';
@@ -15,7 +14,6 @@ import { arbitraryCreateListCommand } from '../write-side/commands/create-list-c
 describe('find-all-lists-containing-paper', () => {
   let framework: TestFramework;
   const expressionDoi = arbitraryExpressionDoi();
-  const articleId = new ArticleId(expressionDoi);
 
   beforeEach(() => {
     framework = createTestFramework();
@@ -42,7 +40,7 @@ describe('find-all-lists-containing-paper', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.createList(createList);
-      await framework.commandHelpers.addArticleToList({ articleId, listId: createList.listId });
+      await framework.commandHelpers.addArticleToList({ articleId: expressionDoi, listId: createList.listId });
       result = pipe(
         arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: expressionDoi }),
         findAllListsContainingPaper(framework.dependenciesForViews),
@@ -78,10 +76,10 @@ describe('find-all-lists-containing-paper', () => {
       await framework.commandHelpers.createList(createList1);
       await framework.commandHelpers.createList(createList2);
       await framework.commandHelpers.addArticleToList(
-        { articleId: new ArticleId(expressionDoi), listId: createList1.listId },
+        { articleId: expressionDoi, listId: createList1.listId },
       );
       await framework.commandHelpers.addArticleToList(
-        { articleId: new ArticleId(expressionDoi2), listId: createList2.listId },
+        { articleId: expressionDoi2, listId: createList2.listId },
       );
       result = pipe(
         publishingHistory,
@@ -118,10 +116,10 @@ describe('find-all-lists-containing-paper', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createList(createList1);
       await framework.commandHelpers.addArticleToList(
-        { articleId: new ArticleId(expressionDoi), listId: createList1.listId },
+        { articleId: expressionDoi, listId: createList1.listId },
       );
       await framework.commandHelpers.addArticleToList(
-        { articleId: new ArticleId(expressionDoi2), listId: createList1.listId },
+        { articleId: expressionDoi2, listId: createList1.listId },
       );
       result = pipe(
         publishingHistory,

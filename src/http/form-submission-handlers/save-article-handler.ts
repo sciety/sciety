@@ -9,7 +9,7 @@ import { decodeFormSubmission, Dependencies as DecodeFormSubmissionDependencies 
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Logger } from '../../logger';
 import { inputFieldNames } from '../../standards';
-import { articleIdCodec } from '../../types/article-id';
+import { canonicalExpressionDoiCodec } from '../../types/expression-doi';
 import { listIdCodec } from '../../types/list-id';
 import { UnsafeUserInput, unsafeUserInputCodec } from '../../types/unsafe-user-input';
 import { UserId } from '../../types/user-id';
@@ -41,7 +41,7 @@ const isAuthorised = (
 };
 
 const saveArticleHandlerFormBodyCodec = t.strict({
-  [inputFieldNames.articleId]: articleIdCodec,
+  [inputFieldNames.articleId]: canonicalExpressionDoiCodec,
   [inputFieldNames.listId]: listIdCodec,
   annotation: unsafeUserInputCodec,
 }, 'saveArticleHandlerFormBodyCodec');

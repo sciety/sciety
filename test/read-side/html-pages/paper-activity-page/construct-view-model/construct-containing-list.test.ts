@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { List } from '../../../../../src/read-models/lists';
 import { constructContainingList } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/construct-containing-list';
 import { ViewModel } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
-import { ArticleId } from '../../../../../src/types/article-id';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
@@ -30,7 +29,7 @@ describe('construct-containing-list', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-      await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi), listId: list.id });
+      await framework.commandHelpers.addArticleToList({ articleId: expressionDoi, listId: list.id });
       result = pipe(
         list,
         constructContainingList(framework.dependenciesForViews),
@@ -59,7 +58,7 @@ describe('construct-containing-list', () => {
         O.getOrElseW(shouldNotBeCalled),
       );
       await framework.commandHelpers.addArticleToList(
-        { articleId: new ArticleId(expressionDoi), listId: createListCommand.listId },
+        { articleId: expressionDoi, listId: createListCommand.listId },
       );
       result = pipe(
         list,
@@ -79,7 +78,7 @@ describe('construct-containing-list', () => {
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
-      await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi), listId: list.id });
+      await framework.commandHelpers.addArticleToList({ articleId: expressionDoi, listId: list.id });
       result = pipe(
         list,
         constructContainingList(framework.dependenciesForViews),

@@ -6,6 +6,7 @@ import { getListWriteModel } from './get-list-write-model';
 import { isAnnotationLengthValid } from './is-annotation-length-valid';
 import { ListWriteModel } from './list-write-model';
 import { constructEvent } from '../../../domain-events';
+import { ArticleId } from '../../../types/article-id';
 import { toErrorMessage } from '../../../types/error-message';
 import { AddArticleToListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
@@ -14,17 +15,17 @@ const constructEvents = (command: AddArticleToListCommand) => (
   command.annotation === undefined
     ? [
       constructEvent('ArticleAddedToList')({
-        articleId: command.articleId,
+        articleId: new ArticleId(command.articleId),
         listId: command.listId,
       }),
     ]
     : [
       constructEvent('ArticleAddedToList')({
-        articleId: command.articleId,
+        articleId: new ArticleId(command.articleId),
         listId: command.listId,
       }),
       constructEvent('ArticleInListAnnotated')({
-        articleId: command.articleId,
+        articleId: new ArticleId(command.articleId),
         listId: command.listId,
         content: command.annotation,
       }),
@@ -33,7 +34,7 @@ const constructEvents = (command: AddArticleToListCommand) => (
 
 const createAppropriateEvents = (command: AddArticleToListCommand) => (listResource: ListWriteModel) => pipe(
   listResource.articles,
-  RA.some((article) => article.articleId.value === command.articleId.value),
+  RA.some((article) => article.articleId.value === command.articleId),
   B.fold(
     () => constructEvents(command),
     () => [],

@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import { List } from '../../../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../../../src/read-side/html-pages/user-page/user-lists-page/construct-view-model';
 import { ViewModel } from '../../../../../../src/read-side/html-pages/user-page/user-lists-page/view-model';
-import { ArticleId } from '../../../../../../src/types/article-id';
 import { CandidateUserHandle } from '../../../../../../src/types/candidate-user-handle';
 import * as LOID from '../../../../../../src/types/list-owner-id';
 import { TestFramework, createTestFramework } from '../../../../../framework';
@@ -38,7 +37,7 @@ describe('construct-view-model', () => {
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.createList(command);
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(arbitraryExpressionDoi()),
+        articleId: arbitraryExpressionDoi(),
         listId: command.listId,
       });
     });
@@ -70,7 +69,7 @@ describe('construct-view-model', () => {
   describe('when the user saves an article to the default list for the first time', () => {
     beforeEach(async () => {
       const listId = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0].id;
-      await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(arbitraryExpressionDoi()), listId });
+      await framework.commandHelpers.addArticleToList({ articleId: arbitraryExpressionDoi(), listId });
       viewmodel = await pipe(
         pageParams,
         constructViewModel(framework.queries),

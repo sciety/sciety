@@ -5,7 +5,6 @@ import { identity, pipe } from 'fp-ts/function';
 import { List } from '../../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model';
 import { LoggedInUserListManagement, ViewModel } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
-import { ArticleId } from '../../../../../src/types/article-id';
 import * as DE from '../../../../../src/types/data-error';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../../src/write-side/commands';
@@ -87,7 +86,7 @@ describe('construct-view-model', () => {
 
       beforeEach(async () => {
         list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-        await framework.commandHelpers.addArticleToList({ articleId: new ArticleId(expressionDoi), listId: list.id });
+        await framework.commandHelpers.addArticleToList({ articleId: expressionDoi, listId: list.id });
         containingList = await pipe(
           {
             latestExpressionDoi: expressionDoi,
@@ -121,7 +120,7 @@ describe('construct-view-model', () => {
         };
         await framework.commandHelpers.createList(createListCommand);
         await framework.commandHelpers.addArticleToList(
-          { articleId: new ArticleId(expressionDoi), listId: createListCommand.listId },
+          { articleId: expressionDoi, listId: createListCommand.listId },
         );
         containingList = await pipe(
           {

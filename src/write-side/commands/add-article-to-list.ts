@@ -1,11 +1,11 @@
 import * as t from 'io-ts';
-import { articleIdCodec } from '../../types/article-id';
+import { canonicalExpressionDoiCodec } from '../../types/expression-doi';
 import { listIdCodec } from '../../types/list-id';
 import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
 
 export const addArticleToListCommandCodec = t.intersection([
   t.strict({
-    articleId: articleIdCodec,
+    articleId: canonicalExpressionDoiCodec,
     listId: listIdCodec,
   }),
   t.partial({

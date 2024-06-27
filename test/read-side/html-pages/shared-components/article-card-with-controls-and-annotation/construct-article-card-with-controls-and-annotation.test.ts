@@ -26,7 +26,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
 
   describe('given an article in a list', () => {
     const expressionDoi = arbitraryExpressionDoi();
-    const articleId = new ArticleId(expressionDoi);
+    const articleId = expressionDoi;
     const createListCommand = arbitraryCreateListCommand();
     const listId = createListCommand.listId;
 
@@ -61,7 +61,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
         beforeEach(async () => {
           await framework.commandHelpers.createAnnotation({
             annotationContent: arbitraryUnsafeUserInput(),
-            articleId,
+            articleId: new ArticleId(articleId),
             listId,
           });
           formHref = await pipe(

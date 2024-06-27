@@ -38,7 +38,7 @@ describe('article-added-to-list-card', () => {
         await framework.commandHelpers.createUserAccount(createuserAccountCommand);
         userList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createuserAccountCommand.userId))[0];
         await framework.commandHelpers.addArticleToList({
-          articleId: new ArticleId(arbitraryExpressionDoi()),
+          articleId: arbitraryExpressionDoi(),
           listId: userList.id,
         });
 

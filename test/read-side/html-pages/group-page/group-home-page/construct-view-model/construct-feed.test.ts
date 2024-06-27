@@ -5,7 +5,6 @@ import { pipe } from 'fp-ts/function';
 import { constructFeed } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-feed';
 import { Dependencies } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/dependencies';
 import { OrderedArticleCards, ViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/view-model';
-import { ArticleId } from '../../../../../../src/types/article-id';
 import { ListId } from '../../../../../../src/types/list-id';
 import { dummyLogger } from '../../../../../dummy-logger';
 import { createTestFramework, TestFramework } from '../../../../../framework';
@@ -67,11 +66,11 @@ describe('construct-feed', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(expressionDoi1),
+        articleId: expressionDoi1,
         listId: groupEvaluatedArticlesList,
       });
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(expressionDoi2),
+        articleId: expressionDoi2,
         listId: groupEvaluatedArticlesList,
       });
 
@@ -100,19 +99,19 @@ describe('construct-feed', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(expressionDoi1),
+        articleId: expressionDoi1,
         listId: groupEvaluatedArticlesList,
       });
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(expressionDoi2),
+        articleId: expressionDoi2,
         listId: groupEvaluatedArticlesList,
       });
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(expressionDoi3),
+        articleId: expressionDoi3,
         listId: groupEvaluatedArticlesList,
       });
       await framework.commandHelpers.addArticleToList({
-        articleId: new ArticleId(expressionDoi4),
+        articleId: expressionDoi4,
         listId: groupEvaluatedArticlesList,
       });
 

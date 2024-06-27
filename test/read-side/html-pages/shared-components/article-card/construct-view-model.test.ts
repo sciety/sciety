@@ -6,7 +6,6 @@ import { ArticleCardViewModel } from '../../../../../src/read-side/html-pages/sh
 import { constructViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card/construct-view-model';
 import { ErrorViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card/render-error-as-html';
 import { constructPaperActivityPageHref } from '../../../../../src/read-side/paths';
-import { ArticleId } from '../../../../../src/types/article-id';
 import * as DE from '../../../../../src/types/data-error';
 import * as PH from '../../../../../src/types/publishing-history';
 import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands/record-evaluation-publication';
@@ -100,7 +99,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createList(command);
       await framework.commandHelpers.addArticleToList(
-        { articleId: new ArticleId(inputExpressionDoi), listId: command.listId },
+        { articleId: inputExpressionDoi, listId: command.listId },
       );
       successfulViewModel = await pipe(
         inputExpressionDoi,

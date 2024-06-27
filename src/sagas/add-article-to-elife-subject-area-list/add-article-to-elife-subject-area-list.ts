@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
 import { CommandHandler } from '../../types/command-handler';
+import * as EDOI from '../../types/expression-doi';
 import { AddArticleToListCommand } from '../../write-side/commands';
 
 type Ports = Pick<Queries, 'getOneArticleReadyToBeListed'> & {
@@ -16,7 +17,10 @@ export const addArticleToElifeSubjectAreaList = async (adapters: Ports): Promise
     adapters.getOneArticleReadyToBeListed(),
     TE.fromOption(() => 'no work to do'),
     TE.chainW((command) => pipe(
-      command,
+      {
+        articleId: EDOI.fromValidatedString(command.articleId.value),
+        listId: command.listId,
+      },
       adapters.addArticleToList,
       TE.mapLeft(
         (error) => {

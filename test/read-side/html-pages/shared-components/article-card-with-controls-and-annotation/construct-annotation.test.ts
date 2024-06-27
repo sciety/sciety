@@ -35,7 +35,7 @@ describe('construct-annotation', () => {
 
   describe('when there is an annotation', () => {
     const expressionDoi = arbitraryExpressionDoi();
-    const articleId = new ArticleId(expressionDoi);
+    const articleId = expressionDoi;
     const content = arbitraryUnsafeUserInput();
     let result: Annotation;
 
@@ -52,7 +52,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId,
+          articleId: new ArticleId(articleId),
           listId: createListCommand.listId,
         });
         result = pipe(
@@ -83,7 +83,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId,
+          articleId: new ArticleId(articleId),
           listId: createListCommand.listId,
         });
         result = pipe(
@@ -109,7 +109,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId,
+          articleId: new ArticleId(articleId),
           listId: createListCommand.listId,
         });
         result = pipe(
