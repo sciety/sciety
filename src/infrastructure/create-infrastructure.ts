@@ -20,7 +20,6 @@ import { instantiate } from '../third-parties';
 import {
   createListCommandHandler,
   recordSubjectAreaCommandHandler,
-  removeArticleFromListCommandHandler,
 } from '../write-side/command-handlers';
 import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 
@@ -111,7 +110,6 @@ export const createInfrastructure = (
         recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         createList: createListCommandHandler(commandHandlerAdapters),
         addArticleToList: addArticleToListCommandHandler(commandHandlerAdapters),
-        removeArticleFromList: removeArticleFromListCommandHandler(commandHandlerAdapters),
       };
 
       const allAdapters = {
