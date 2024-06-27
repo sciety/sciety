@@ -29,6 +29,7 @@ import * as groupAuthorisation from '../../src/write-side/resources/group-author
 import * as groupFollowResource from '../../src/write-side/resources/group-follow';
 import * as listResource from '../../src/write-side/resources/list';
 import * as listPromotionResource from '../../src/write-side/resources/list-promotion';
+import { ResourceAction } from '../../src/write-side/resources/resource-action';
 import * as user from '../../src/write-side/resources/user';
 import { abortTest } from '../abort-test';
 
@@ -78,14 +79,16 @@ export const createCommandHelpers = (
   updateUserDetails: invoke('updateUserDetails')(executeResourceAction(dependencies)(user.update)),
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createActions = (dependencies: DependenciesForExecuteResourceAction) => Object.fromEntries(
-  Object.entries(listPromotionResource.actions).map(([name, action]) => [
-    name,
-    pipe(
-      action as UnionToIntersection<typeof listPromotionResource.actions[keyof typeof listPromotionResource.actions]>,
-      executeResourceAction(dependencies),
-      invoke(name),
-    ),
-  ]),
-);
+export const createActions = <C extends GenericCommand>(
+  dependencies: DependenciesForExecuteResourceAction,
+  resourceActions: { [s: string]: ResourceAction<C> },
+): { [k: string]: (cmd: C) => Promise<CommandResult> } => Object.fromEntries(
+    Object.entries(resourceActions).map(([name, action]) => [
+      name,
+      pipe(
+        action as UnionToIntersection<typeof resourceActions[keyof typeof resourceActions]>,
+        executeResourceAction(dependencies),
+        invoke(name),
+      ),
+    ]),
+  );
