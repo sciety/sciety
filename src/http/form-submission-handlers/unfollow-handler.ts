@@ -42,7 +42,7 @@ export const unfollowHandler = (dependencies: Dependencies): Middleware => async
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const commandResult = await pipe(
     command,
-    executeResourceAction(dependencies, groupFollowResource.unfollow),
+    executeResourceAction(dependencies)(groupFollowResource.unfollow),
   )();
   context.redirect('back');
 };

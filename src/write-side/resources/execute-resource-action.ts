@@ -8,8 +8,7 @@ import { DependenciesForCommands } from '../dependencies-for-commands';
 
 export type Dependencies = DependenciesForCommands & { logger: Logger };
 
-export const executeResourceAction = <C extends GenericCommand>(
-  dependencies: Dependencies,
+export const executeResourceAction = (dependencies: Dependencies) => <C extends GenericCommand>(
   resourceAction: ResourceAction<C>,
 ): CommandHandler<C> => (command: C) => pipe(
     dependencies.getAllEvents,

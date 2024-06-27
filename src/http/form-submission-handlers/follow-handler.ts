@@ -59,7 +59,7 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
 
   await pipe(
     command,
-    executeResourceAction(dependencies, follow),
+    executeResourceAction(dependencies)(follow),
   )();
   context.redirect('back');
 };

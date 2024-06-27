@@ -60,7 +60,7 @@ export const addAFeaturedListHandler = (dependencies: Dependencies): Middleware 
   }
   const commandResult = await pipe(
     command,
-    executeResourceAction(dependencies, listPromotion.create),
+    executeResourceAction(dependencies)(listPromotion.create),
   )();
 
   if (E.isRight(commandResult)) {

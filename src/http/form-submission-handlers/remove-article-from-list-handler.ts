@@ -71,7 +71,7 @@ export const removeArticleFromListHandler = (dependencies: Dependencies): Middle
 
   const commandResult = await pipe(
     command.right,
-    executeResourceAction(dependencies, listResource.removeArticle),
+    executeResourceAction(dependencies)(listResource.removeArticle),
   )();
 
   if (E.isLeft(commandResult)) {

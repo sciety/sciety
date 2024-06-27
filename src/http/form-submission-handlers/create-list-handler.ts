@@ -27,7 +27,7 @@ export const createListHandler = (dependencies: Dependencies): Middleware => asy
 
   const commandResult = await pipe(
     command,
-    executeResourceAction(dependencies, list.create),
+    executeResourceAction(dependencies)(list.create),
   )();
   if (E.isRight(commandResult)) {
     context.redirect(`/lists/${command.listId}/edit-details`);

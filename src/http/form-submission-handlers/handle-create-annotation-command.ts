@@ -19,5 +19,5 @@ export const handleCreateAnnotationCommand: HandleCreateAnnotationCommand = (dep
   input,
   annotateArticleInListCommandCodec.decode,
   TE.fromEither,
-  TE.chainW(executeResourceAction(dependencies, listResource.annotate)),
+  TE.chainW(executeResourceAction(dependencies)(listResource.annotate)),
 );

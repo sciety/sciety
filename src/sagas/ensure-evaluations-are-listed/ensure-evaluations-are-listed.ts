@@ -20,7 +20,7 @@ export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Pr
     RA.head,
     O.match(
       () => TE.right('no-events-created' as const),
-      (missingArticle) => executeResourceAction(dependencies, list.addArticle)({
+      (missingArticle) => executeResourceAction(dependencies)(list.addArticle)({
         listId: missingArticle.listId,
         articleId: EDOI.fromValidatedString(missingArticle.articleId.value),
       }),

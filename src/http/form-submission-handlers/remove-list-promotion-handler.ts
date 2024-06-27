@@ -61,7 +61,7 @@ export const removeListPromotionHandler = (dependencies: Dependencies): Middlewa
 
   const commandResult = await pipe(
     command,
-    executeResourceAction(dependencies, listPromotion.remove),
+    executeResourceAction(dependencies)(listPromotion.remove),
   )();
 
   if (E.isRight(commandResult)) {

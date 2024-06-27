@@ -84,7 +84,7 @@ export const saveArticleHandler = (dependencies: Dependencies): Middleware => as
 
   const commandResult = await pipe(
     command,
-    executeResourceAction(dependencies, list.addArticle),
+    executeResourceAction(dependencies)(list.addArticle),
   )();
 
   if (E.isRight(commandResult)) {
