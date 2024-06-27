@@ -20,9 +20,9 @@ type DocmapIdentifier = {
 
 export type Dependencies = Queries & ExternalQueries;
 
-const extendWithSourceUrl = (adapters: Dependencies) => (evaluation: RecordedEvaluation) => pipe(
+const extendWithSourceUrl = (dependencies: Dependencies) => (evaluation: RecordedEvaluation) => pipe(
   evaluation.evaluationLocator,
-  adapters.fetchEvaluationHumanReadableOriginalUrl,
+  dependencies.fetchEvaluationHumanReadableOriginalUrl,
   TE.map((url) => ({
     ...evaluation,
     sourceUrl: url,
