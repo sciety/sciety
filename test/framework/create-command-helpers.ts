@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { UnionToIntersection } from '../../src/read-models/initialised-read-model';
 import { CommandHandler, GenericCommand } from '../../src/types/command-handler';
 import { CommandResult } from '../../src/types/command-result';
 import {
@@ -31,7 +32,7 @@ import * as listPromotionResource from '../../src/write-side/resources/list-prom
 import * as user from '../../src/write-side/resources/user';
 import { abortTest } from '../abort-test';
 
-export type CommandHelpers = {
+type CommandHelpers = {
   addArticleToList: (command: AddArticleToListCommand) => Promise<unknown>,
   addGroup: (command: AddGroupCommand) => Promise<unknown>,
   assignUserAsGroupAdmin: (command: AssignUserAsGroupAdminCommand) => Promise<unknown>,
@@ -76,3 +77,15 @@ export const createCommandHelpers = (
   updateGroupDetails: invoke('updateGroupDetails')(executeResourceAction(dependencies)(group.update)),
   updateUserDetails: invoke('updateUserDetails')(executeResourceAction(dependencies)(user.update)),
 });
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const createActions = (dependencies: DependenciesForExecuteResourceAction) => Object.fromEntries(
+  Object.entries(listPromotionResource.actions).map(([name, action]) => [
+    name,
+    pipe(
+      action as UnionToIntersection<typeof listPromotionResource.actions[keyof typeof listPromotionResource.actions]>,
+      executeResourceAction(dependencies),
+      invoke(name),
+    ),
+  ]),
+);

@@ -3,7 +3,7 @@ import { EventStore } from '../../src/event-store';
 import { dispatcher, Queries } from '../../src/read-models';
 import { dummyLogger } from '../dummy-logger';
 
-export type ReadAndWriteSides = EventStore & {
+type ReadAndWriteSides = EventStore & {
   queries: Queries,
 };
 

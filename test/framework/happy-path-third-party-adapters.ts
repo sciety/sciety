@@ -16,7 +16,7 @@ import {
 import { arbitraryArticleServer } from '../types/article-server.helper';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 
-export type HappyPathThirdPartyAdapters = ExternalQueries;
+type HappyPathThirdPartyAdapters = ExternalQueries;
 
 export const createHappyPathThirdPartyAdapters = (): HappyPathThirdPartyAdapters => ({
   fetchExpressionFrontMatter: (paperExpressionLocator) => TE.right({

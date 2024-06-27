@@ -1,20 +1,12 @@
-import { CommandHelpers, createCommandHelpers } from './create-command-helpers';
-import { createReadAndWriteSides, ReadAndWriteSides } from './create-read-and-write-sides';
-import { createHappyPathThirdPartyAdapters, HappyPathThirdPartyAdapters } from './happy-path-third-party-adapters';
-import { Logger } from '../../src/logger';
-import { Queries } from '../../src/read-models';
+import { createActions, createCommandHelpers } from './create-command-helpers';
+import { createReadAndWriteSides } from './create-read-and-write-sides';
+import { createHappyPathThirdPartyAdapters } from './happy-path-third-party-adapters';
 import { Dependencies as DependenciesForExecuteResourceAction } from '../../src/write-side/resources/execute-resource-action';
-import { AbortTest, abortTest } from '../abort-test';
+import { abortTest } from '../abort-test';
 import { dummyLogger } from '../dummy-logger';
 
-export type TestFramework = ReadAndWriteSides & {
-  abortTest: AbortTest,
-  commandHelpers: CommandHelpers,
-  happyPathThirdParties: HappyPathThirdPartyAdapters,
-  dependenciesForViews: Queries & HappyPathThirdPartyAdapters & { logger: Logger },
-};
-
-export const createTestFramework = (): TestFramework => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const createTestFramework = () => {
   const framework = createReadAndWriteSides();
   const happyPathThirdParties = createHappyPathThirdPartyAdapters();
   const dependenciesForExecuteResourceAction: DependenciesForExecuteResourceAction = {
@@ -26,6 +18,9 @@ export const createTestFramework = (): TestFramework => {
     ...framework,
     abortTest,
     commandHelpers: createCommandHelpers(dependenciesForExecuteResourceAction),
+    writeResources: {
+      listPromotion: createActions(dependenciesForExecuteResourceAction),
+    },
     happyPathThirdParties,
     dependenciesForViews: {
       ...framework.queries,
@@ -34,3 +29,5 @@ export const createTestFramework = (): TestFramework => {
     },
   };
 };
+
+export type TestFramework = ReturnType<typeof createTestFramework>;

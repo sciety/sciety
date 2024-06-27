@@ -89,8 +89,8 @@ describe('construct-lists-that-can-be-featured', () => {
             forGroup: group.id,
             listId,
           };
-          await framework.commandHelpers.promoteList(command);
-          await framework.commandHelpers.unpromoteList(command);
+          await framework.writeResources.listPromotion.create(command);
+          await framework.writeResources.listPromotion.remove(command);
           availableListIds = pipe(
             constructListsThatCanBeFeatured(framework.dependenciesForViews, group, currentUserId),
             RA.map((listThatCanBeFeatured) => listThatCanBeFeatured.listId),
