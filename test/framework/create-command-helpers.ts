@@ -49,9 +49,8 @@ export type CommandHelpers = {
   updateUserDetails: (command: UpdateUserDetailsCommand) => Promise<unknown>,
 };
 
-const invoke = <C extends GenericCommand>(
+const invoke = (name: string) => <C extends GenericCommand>(
   handler: CommandHandler<C>,
-  name: string,
 ) => async (cmd: C): Promise<CommandResult> => pipe(
     cmd,
     handler,
@@ -61,19 +60,19 @@ const invoke = <C extends GenericCommand>(
 export const createCommandHelpers = (
   dependencies: DependenciesForExecuteResourceAction,
 ): CommandHelpers => ({
-  addArticleToList: invoke(executeResourceAction(dependencies)(listResource.addArticle), 'addArticleToList'),
-  addGroup: invoke(executeResourceAction(dependencies)(group.create), 'addGroup'),
-  assignUserAsGroupAdmin: invoke(executeResourceAction(dependencies)(groupAuthorisation.assign), 'assignUserAsGroupAdmin'),
-  createAnnotation: invoke(executeResourceAction(dependencies)(listResource.annotate), 'createAnnotation'),
-  createList: invoke(executeResourceAction(dependencies)(listResource.create), 'createList'),
-  createUserAccount: invoke(executeResourceAction(dependencies)(user.create), 'createUserAccount'),
-  followGroup: invoke(executeResourceAction(dependencies)(groupFollowResource.follow), 'followGroup'),
-  promoteList: invoke(executeResourceAction(dependencies)(listPromotionResource.create), 'promoteList'),
-  recordEvaluationPublication: invoke(executeResourceAction(dependencies)(evaluation.recordPublication), 'recordEvaluationPublication'),
-  removeArticleFromList: invoke(executeResourceAction(dependencies)(listResource.removeArticle), 'removeArticleFromList'),
-  unfollowGroup: invoke(executeResourceAction(dependencies)(groupFollowResource.unfollow), 'unfollowGroup'),
-  unpromoteList: invoke(executeResourceAction(dependencies)(listPromotionResource.remove), 'unpromoteList'),
-  updateEvaluation: invoke(executeResourceAction(dependencies)(evaluation.update), 'updateEvaluation'),
-  updateGroupDetails: invoke(executeResourceAction(dependencies)(group.update), 'updateGroupDetails'),
-  updateUserDetails: invoke(executeResourceAction(dependencies)(user.update), 'updateUserDetails'),
+  addArticleToList: invoke('addArticleToList')(executeResourceAction(dependencies)(listResource.addArticle)),
+  addGroup: invoke('addGroup')(executeResourceAction(dependencies)(group.create)),
+  assignUserAsGroupAdmin: invoke('assignUserAsGroupAdmin')(executeResourceAction(dependencies)(groupAuthorisation.assign)),
+  createAnnotation: invoke('createAnnotation')(executeResourceAction(dependencies)(listResource.annotate)),
+  createList: invoke('createList')(executeResourceAction(dependencies)(listResource.create)),
+  createUserAccount: invoke('createUserAccount')(executeResourceAction(dependencies)(user.create)),
+  followGroup: invoke('followGroup')(executeResourceAction(dependencies)(groupFollowResource.follow)),
+  promoteList: invoke('promoteList')(executeResourceAction(dependencies)(listPromotionResource.create)),
+  recordEvaluationPublication: invoke('recordEvaluationPublication')(executeResourceAction(dependencies)(evaluation.recordPublication)),
+  removeArticleFromList: invoke('removeArticleFromList')(executeResourceAction(dependencies)(listResource.removeArticle)),
+  unfollowGroup: invoke('unfollowGroup')(executeResourceAction(dependencies)(groupFollowResource.unfollow)),
+  unpromoteList: invoke('unpromoteList')(executeResourceAction(dependencies)(listPromotionResource.remove)),
+  updateEvaluation: invoke('updateEvaluation')(executeResourceAction(dependencies)(evaluation.update)),
+  updateGroupDetails: invoke('updateGroupDetails')(executeResourceAction(dependencies)(group.update)),
+  updateUserDetails: invoke('updateUserDetails')(executeResourceAction(dependencies)(user.update)),
 });
