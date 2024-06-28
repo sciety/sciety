@@ -1,12 +1,10 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { constructRelatedGroups } from './construct-related-groups';
 import { Dependencies } from './dependencies';
-import { ExpressionDoi } from '../../../../types/expression-doi';
 import { SearchResults } from '../../../../types/search-results';
-import { ArticleCardViewModel, constructArticleCard } from '../../shared-components/article-card';
+import { constructArticleCardStackWithSilentFailures } from '../../shared-components/article-list';
 import { ViewModel } from '../view-model';
 
 type LimitedSet = {
@@ -17,16 +15,6 @@ type LimitedSet = {
   pageNumber: number,
   numberOfPages: number,
 };
-
-export const constructArticleCardStackWithSilentFailures = (
-  dependencies: Dependencies,
-) => (
-  expressionDois: ReadonlyArray<ExpressionDoi>,
-): T.Task<ReadonlyArray<ArticleCardViewModel>> => pipe(
-  expressionDois,
-  T.traverseArray(constructArticleCard(dependencies)),
-  T.map(RA.rights),
-);
 
 export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
   state.itemsToDisplay,

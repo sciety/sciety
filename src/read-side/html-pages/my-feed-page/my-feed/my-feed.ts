@@ -18,10 +18,8 @@ import * as EDOI from '../../../../types/expression-doi';
 import { GroupId } from '../../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { UserId } from '../../../../types/user-id';
-import {
-  constructArticleCardStackWithSilentFailures,
-} from '../../search-results-page/construct-view-model/fetch-extra-details';
 import { renderArticleCard } from '../../shared-components/article-card';
+import { constructArticleCardStackWithSilentFailures } from '../../shared-components/article-list';
 import { renderListItems } from '../../shared-components/list-items';
 import { renderListOfCards } from '../../shared-components/list-of-cards';
 import { PageOfItems, paginate, renderLegacyPaginationControls } from '../../shared-components/pagination';
