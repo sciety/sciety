@@ -18,8 +18,8 @@ export const categoryPage = (dependencies: Dependencies): ConstructPage => (inpu
     dependencies.logger('warn', 'category-page params codec failed', { errors: formatValidationErrors(errors) });
     return DE.notFound;
   }),
-  E.map(constructViewModel),
-  E.mapLeft(constructErrorPageViewModel),
-  E.map(renderAsHtml),
   TE.fromEither,
+  TE.chain(constructViewModel),
+  TE.mapLeft(constructErrorPageViewModel),
+  TE.map(renderAsHtml),
 );
