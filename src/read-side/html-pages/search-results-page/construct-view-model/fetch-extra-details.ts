@@ -18,7 +18,7 @@ type LimitedSet = {
   numberOfPages: number,
 };
 
-const constructArticleCardStackWithSilentFailures = (
+export const constructArticleCardStackWithSilentFailures = (
   dependencies: Dependencies,
 ) => (
   expressionDois: ReadonlyArray<ExpressionDoi>,

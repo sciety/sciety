@@ -7,7 +7,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { constant, flow, pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { followedGroupsActivities } from './followed-groups-activities';
-import { populateArticleViewModelsSkippingFailures } from './populate-article-view-models-skipping-failures';
 import {
   feedTitle,
   followSomething,
@@ -19,6 +18,9 @@ import * as EDOI from '../../../../types/expression-doi';
 import { GroupId } from '../../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { UserId } from '../../../../types/user-id';
+import {
+  constructArticleCardStackWithSilentFailures,
+} from '../../search-results-page/construct-view-model/fetch-extra-details';
 import { renderArticleCard } from '../../shared-components/article-card';
 import { renderListItems } from '../../shared-components/list-items';
 import { renderListOfCards } from '../../shared-components/list-of-cards';
@@ -49,7 +51,7 @@ const getEvaluatedArticles = (dependencies: Dependencies) => (groups: ReadonlyAr
 const constructArticleViewModels = (dependencies: Dependencies) => (items: ReadonlyArray<ExpressionActivity>) => pipe(
   items,
   RA.map((item) => EDOI.fromValidatedString(item.expressionDoi.value)),
-  populateArticleViewModelsSkippingFailures(dependencies),
+  constructArticleCardStackWithSilentFailures(dependencies),
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('all-articles-failed'))),
 );
