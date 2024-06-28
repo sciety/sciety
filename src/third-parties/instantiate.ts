@@ -9,7 +9,7 @@ import { createFetchEvaluationDigest } from './fetch-evaluation-digest';
 import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchRecommendedPapers } from './fetch-recommended-papers';
-import { fetchSearchCategories } from './fetch-search-categories';
+import { fetchByCategory, fetchSearchCategories } from './fetch-search-categories';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchUserAvatarUrl } from './fetch-user-avatar-url';
 import { Logger } from '../logger';
@@ -61,6 +61,7 @@ export const instantiate = (
     ),
     fetchRecommendedPapers: createFetchRecommendedPapers(queryExternalService, logger),
     fetchSearchCategories: fetchSearchCategories(queryExternalService, logger),
+    fetchByCategory,
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
     getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),

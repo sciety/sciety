@@ -11,6 +11,8 @@ import { SearchResults } from '../types/search-results';
 import { SubjectArea } from '../types/subject-area';
 import { UserId } from '../types/user-id';
 
+type FetchByCategory = () => ReadonlyArray<ExpressionDoi>;
+
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
 
@@ -38,6 +40,7 @@ type SearchForPaperExpressions = (
 type FetchSearchCategories = () => TE.TaskEither<DE.DataError, ReadonlyArray<string>>;
 
 export type ExternalQueries = {
+  fetchByCategory: FetchByCategory,
   fetchEvaluationDigest: FetchEvaluationDigest,
   fetchEvaluationHumanReadableOriginalUrl: FetchEvaluationHumanReadableOriginalUrl,
   fetchExpressionFrontMatter: FetchExpressionFrontMatter,

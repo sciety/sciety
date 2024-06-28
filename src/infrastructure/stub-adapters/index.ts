@@ -8,8 +8,10 @@ import { fetchStaticFile } from './fetch-static-file';
 import { localFetchPaperExpressionFrontMatter } from './local-fetch-paper-expression-front-matter';
 import { searchForPaperExpressions } from './search-for-paper-expressions';
 import { ExternalQueries } from '../../third-parties';
+import { fetchByCategory } from '../../third-parties/fetch-search-categories';
 
 export const stubAdapters: ExternalQueries = {
+  fetchByCategory,
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
   fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL('https://example.com')),
   fetchEvaluationDigest: fetchEvaluation,
