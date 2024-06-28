@@ -7,7 +7,7 @@ import { Dependencies } from './dependencies';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 
-const constructScietyLabsCategoryUrl = (title: string) => {
+const constructCategoryHref = (title: string) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     return `/category?title=${encodeURIComponent(title)}`;
   }
@@ -18,7 +18,7 @@ const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
   dependencies.fetchSearchCategories(),
   TE.map(RA.map((title) => ({
     title,
-    href: constructScietyLabsCategoryUrl(title),
+    href: constructCategoryHref(title),
   }))),
   T.map(O.fromEither),
 );
