@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
@@ -16,6 +17,6 @@ export const constructViewModel = (
   TE.mapLeft(() => DE.notFound),
   TE.map((articleCardViewModel) => ({
     pageHeading: `${params.title}`,
-    categoryContent: articleCardViewModel,
+    categoryContent: [E.right(articleCardViewModel)],
   })),
 );

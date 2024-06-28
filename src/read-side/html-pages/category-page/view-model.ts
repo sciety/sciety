@@ -1,6 +1,6 @@
-import { ArticleCardViewModel } from '../shared-components/article-card';
+import { ArticlesListViewModel } from './render-articles-list';
 
 export type ViewModel = {
   pageHeading: string,
-  categoryContent: ArticleCardViewModel,
+  categoryContent: ArticlesListViewModel,
 };
