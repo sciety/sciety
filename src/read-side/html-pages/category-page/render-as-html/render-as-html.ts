@@ -1,8 +1,8 @@
 import { htmlEscape } from 'escape-goat';
 import { renderCategoryContent } from './render-category-content';
-import { ViewModel } from './view-model';
-import { toHtmlFragment } from '../../../types/html-fragment';
-import { HtmlPage, toHtmlPage } from '../html-page';
+import { toHtmlFragment } from '../../../../types/html-fragment';
+import { HtmlPage, toHtmlPage } from '../../html-page';
+import { ViewModel } from '../view-model';
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.pageHeading,

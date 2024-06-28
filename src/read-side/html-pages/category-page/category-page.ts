@@ -5,7 +5,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './dependencies';
 import { paramsCodec } from './params';
-import { renderAsHtml } from './render-as-html';
+import { renderAsHtml } from './render-as-html/render-as-html';
 import * as DE from '../../../types/data-error';
 import { constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { ConstructPage } from '../construct-page';
