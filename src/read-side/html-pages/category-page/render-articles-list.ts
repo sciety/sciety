@@ -9,7 +9,7 @@ import {
 import { renderArticleList } from '../shared-components/article-list';
 import { renderListItems } from '../shared-components/list-items';
 
-export type ArticlesListViewModel = ReadonlyArray<E.Either<
+type ArticlesListViewModel = ReadonlyArray<E.Either<
 ArticleErrorCardViewModel,
 ArticleCardViewModel
 >>;
