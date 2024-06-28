@@ -10,7 +10,6 @@ import * as DE from '../../../types/data-error';
 import { constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { ConstructPage } from '../construct-page';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const categoryPage = (dependencies: Dependencies): ConstructPage => (input) => pipe(
   input,
   paramsCodec.decode,
@@ -19,7 +18,7 @@ export const categoryPage = (dependencies: Dependencies): ConstructPage => (inpu
     return DE.notFound;
   }),
   TE.fromEither,
-  TE.chain(constructViewModel),
+  TE.chain(constructViewModel(dependencies)),
   TE.mapLeft(constructErrorPageViewModel),
   TE.map(renderAsHtml),
 );
