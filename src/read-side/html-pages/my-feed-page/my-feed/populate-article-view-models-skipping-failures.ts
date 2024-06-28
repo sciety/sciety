@@ -3,22 +3,21 @@ import * as T from 'fp-ts/Task';
 import * as TO from 'fp-ts/TaskOption';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { ExpressionActivity } from '../../../../types/expression-activity';
 import * as EDOI from '../../../../types/expression-doi';
 import { ArticleCardViewModel, constructArticleCard } from '../../shared-components/article-card';
 
 type PopulateArticleViewModelsSkippingFailures = (
   dependencies: Dependencies,
 ) => (
-  activities: ReadonlyArray<ExpressionActivity>
+  expressionDois: ReadonlyArray<EDOI.ExpressionDoi>
 ) => T.Task<ReadonlyArray<ArticleCardViewModel>>;
 
 export const populateArticleViewModelsSkippingFailures: PopulateArticleViewModelsSkippingFailures = (
   dependencies,
-) => (activities) => pipe(
-  activities,
-  RA.map((activity) => pipe(
-    EDOI.fromValidatedString(activity.expressionDoi.value),
+) => (expressionDois) => pipe(
+  expressionDois,
+  RA.map((expressionDoi) => pipe(
+    expressionDoi,
     constructArticleCard(dependencies),
     TO.fromTaskEither,
   )),

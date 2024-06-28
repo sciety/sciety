@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -13,6 +14,8 @@ import {
   noEvaluationsYet,
   troubleFetchingTryAgain,
 } from './static-content';
+import { ExpressionActivity } from '../../../../types/expression-activity';
+import * as EDOI from '../../../../types/expression-doi';
 import { GroupId } from '../../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { UserId } from '../../../../types/user-id';
@@ -43,10 +46,10 @@ const getEvaluatedArticles = (dependencies: Dependencies) => (groups: ReadonlyAr
   T.map(E.fromOption(constant('no-groups-evaluated'))),
 );
 
-const constructArticleViewModels = (dependencies: Dependencies) => flow(
-  populateArticleViewModelsSkippingFailures(
-    dependencies,
-  ),
+const constructArticleViewModels = (dependencies: Dependencies) => (items: ReadonlyArray<ExpressionActivity>) => pipe(
+  items,
+  RA.map((item) => EDOI.fromValidatedString(item.expressionDoi.value)),
+  populateArticleViewModelsSkippingFailures(dependencies),
   T.map(RNEA.fromReadonlyArray),
   T.map(E.fromOption(constant('all-articles-failed'))),
 );
