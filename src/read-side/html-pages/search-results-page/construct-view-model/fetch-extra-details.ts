@@ -4,8 +4,9 @@ import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { constructRelatedGroups } from './construct-related-groups';
 import { Dependencies } from './dependencies';
+import { ExpressionDoi } from '../../../../types/expression-doi';
 import { SearchResults } from '../../../../types/search-results';
-import { constructArticleCard } from '../../shared-components/article-card';
+import { ArticleCardViewModel, constructArticleCard } from '../../shared-components/article-card';
 import { ViewModel } from '../view-model';
 
 type LimitedSet = {
@@ -17,10 +18,19 @@ type LimitedSet = {
   numberOfPages: number,
 };
 
-export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
-  state.itemsToDisplay,
+const constructArticleCardStackWithSilentFailures = (
+  dependencies: Dependencies,
+) => (
+  expressionDois: ReadonlyArray<ExpressionDoi>,
+): T.Task<ReadonlyArray<ArticleCardViewModel>> => pipe(
+  expressionDois,
   T.traverseArray(constructArticleCard(dependencies)),
   T.map(RA.rights),
+);
+
+export const fetchExtraDetails = (dependencies: Dependencies) => (state: LimitedSet): T.Task<ViewModel> => pipe(
+  state.itemsToDisplay,
+  constructArticleCardStackWithSilentFailures(dependencies),
   T.map((paperActivitySummaryCards) => ({
     ...state,
     relatedGroups: pipe(
