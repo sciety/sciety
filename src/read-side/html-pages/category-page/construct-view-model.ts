@@ -1,4 +1,3 @@
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
@@ -11,10 +10,9 @@ export const constructViewModel = (
   dependencies: Dependencies,
 ) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   dependencies.fetchByCategory(),
-  constructArticleCardStackWithSilentFailures(dependencies),
-  T.map((articleCardViewModel) => ({
+  TE.chainTaskK(constructArticleCardStackWithSilentFailures(dependencies)),
+  TE.map((articleCardViewModel) => ({
     pageHeading: `${params.title}`,
     categoryContent: articleCardViewModel,
   })),
-  TE.rightTask,
 );
