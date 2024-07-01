@@ -71,6 +71,13 @@
       ]
     },
     {
+      "label": "Category page",
+      "url": "http://sciety-test-app-1/category?categoryName=Microbiology",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "Search results page",
       "url": "http://sciety-test-app-1/search?query=elephant+shark",
       "selectors": [
