@@ -9,9 +9,9 @@ import { createFetchEvaluationDigest } from './fetch-evaluation-digest';
 import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchRecommendedPapers } from './fetch-recommended-papers';
-import { fetchByCategory, fetchSearchCategories } from './fetch-search-categories';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchUserAvatarUrl } from './fetch-user-avatar-url';
+import { fetchByCategory, fetchSearchCategories } from './search-categories';
 import { Logger } from '../logger';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
