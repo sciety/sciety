@@ -44,6 +44,7 @@ import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
 import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
 import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
+import { categoryPagePathSpecification } from '../read-side/paths/construct-category-page-href';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import * as EDOI from '../types/expression-doi';
 import { DependenciesForCommands } from '../write-side';
@@ -199,7 +200,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
       handler: pageHandler(dependencies, () => groupsPage(dependencies)),
     },
     {
-      endpoint: '/category',
+      endpoint: categoryPagePathSpecification,
       handler: pageHandler(dependencies, categoryPage(dependencies)),
     },
     {
