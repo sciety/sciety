@@ -14,6 +14,7 @@ export const configureRoutes = (router: Router, dependencies: DependenciesForVie
   router.get(
     constructGroupPagePath.home.spec,
     pageHandler(dependencies, createPageFromParams(
+      dependencies.logger,
       GHP.paramsCodec,
       GHP.constructAndRenderPage(dependencies),
     )),
@@ -22,6 +23,7 @@ export const configureRoutes = (router: Router, dependencies: DependenciesForVie
   router.get(
     constructGroupPagePath.lists.spec,
     pageHandler(dependencies, createPageFromParams(
+      dependencies.logger,
       GLP.paramsCodec,
       GLP.constructAndRenderPage(dependencies),
     )),
@@ -30,6 +32,7 @@ export const configureRoutes = (router: Router, dependencies: DependenciesForVie
   router.get(
     constructGroupPagePath.about.spec,
     pageHandler(dependencies, createPageFromParams(
+      dependencies.logger,
       GAP.paramsCodec,
       GAP.constructAndRenderPage(dependencies),
     )),
@@ -38,6 +41,7 @@ export const configureRoutes = (router: Router, dependencies: DependenciesForVie
   router.get(
     constructGroupPagePath.followers.spec,
     pageHandler(dependencies, createPageFromParams(
+      dependencies.logger,
       GFP.paramsCodec,
       GFP.constructAndRenderPage(dependencies),
     )),

@@ -45,7 +45,7 @@ const configureAuth0Routes = (
     '/create-account-form',
     pageHandler(
       dependencies,
-      createPageFromParams(createUserAccountFormPageParamsCodec, createUserAccountFormPage),
+      createPageFromParams(dependencies.logger, createUserAccountFormPageParamsCodec, createUserAccountFormPage),
       createUserAccountFormPageLayout,
     ),
   );

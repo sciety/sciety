@@ -116,6 +116,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     '/annotations/create-annotation-form',
     requireLoggedInUser(dependencies),
     pageHandler(dependencies, createPageFromParams(
+      dependencies.logger,
       createAnnotationFormPageParamsCodec,
       createAnnotationFormPage(dependencies),
     )),
@@ -212,44 +213,67 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   const htmlPagesWithExposedParamsCodecs = [
     {
       endpoint: '/my-feed',
-      handler: pageHandler(dependencies, createPageFromParams(myFeedParams, myFeedPage(dependencies))),
+      handler: pageHandler(dependencies, createPageFromParams(
+        dependencies.logger,
+        myFeedParams,
+        myFeedPage(dependencies),
+      )),
     },
     {
       endpoint: '/lists/:id/edit-details',
       handler: pageHandler(dependencies, createPageFromParams(
+        dependencies.logger,
         editListDetailsFormPageParamsCodec,
         editListDetailsFormPage(dependencies),
       )),
     },
     {
       endpoint: '/lists',
-      handler: pageHandler(dependencies, createPageFromParams(listsPageParamsCodec, listsPage(dependencies))),
+      handler: pageHandler(dependencies, createPageFromParams(
+        dependencies.logger,
+        listsPageParamsCodec,
+        listsPage(dependencies),
+      )),
     },
     {
       endpoint: '/lists/:id',
       handler: pageHandler(dependencies, createPageFromParams(
+        dependencies.logger,
         listPageParams,
         listPage(dependencies),
       ), fullWidthPageLayout),
     },
     {
       endpoint: '/users/:handle/lists',
-      handler: pageHandler(dependencies, createPageFromParams(userListsPageParams, userListsPage(dependencies))),
+      handler: pageHandler(dependencies, createPageFromParams(
+        dependencies.logger,
+        userListsPageParams,
+        userListsPage(dependencies),
+      )),
     },
     {
       endpoint: '/users/:handle/following',
       handler: pageHandler(dependencies, createPageFromParams(
+        dependencies.logger,
         userFollowingPageParams,
         userFollowingPage(dependencies),
       )),
     },
     {
       endpoint: '/action-failed',
-      handler: pageHandler(dependencies, createPageFromParams(actionFailedPageParamsCodec, actionFailedPage)),
+      handler: pageHandler(dependencies, createPageFromParams(
+        dependencies.logger,
+        actionFailedPageParamsCodec,
+        actionFailedPage,
+      )),
     },
     {
       endpoint: '/sciety-feed',
-      handler: pageHandler(dependencies, createPageFromParams(scietyFeedCodec, scietyFeedPage(dependencies)(20))),
+      handler: pageHandler(dependencies, createPageFromParams(
+        dependencies.logger,
+        scietyFeedCodec,
+        scietyFeedPage(dependencies)(20),
+      )),
     },
   ];
 
