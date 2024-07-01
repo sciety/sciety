@@ -8,6 +8,8 @@ import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const responseWithValidDoi = { data: [{ attributes: { doi: arbitraryExpressionDoi() } }] };
 
+const responseWithInvalidDoi = { data: [{ attributes: { doi: arbitraryString() } }] };
+
 const dummyQueryExternalService = (queryResponse: unknown) => () => () => TE.right(queryResponse);
 
 const invokeFetchByCategory = async (category: string, queryResponse: unknown) => pipe(
@@ -30,6 +32,12 @@ describe('fetch-by-category', () => {
   });
 
   describe('when an item with an invalid doi syntax is returned', () => {
-    it.todo('is not included');
+    beforeEach(async () => {
+      result = await invokeFetchByCategory(arbitraryString(), responseWithInvalidDoi);
+    });
+
+    it.failing('is not included', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 });
