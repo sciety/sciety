@@ -36,7 +36,7 @@ describe('fetch-by-category', () => {
       result = await invokeFetchByCategory(arbitraryString(), responseWithInvalidDoi);
     });
 
-    it.failing('is not included', () => {
+    it('is not included', () => {
       expect(result).toHaveLength(0);
     });
   });

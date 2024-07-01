@@ -34,5 +34,7 @@ export const fetchByCategory = (
   )),
   TE.map((result) => result.data),
   TE.map(RA.map((item) => item.attributes.doi)),
-  TE.map(RA.map(EDOI.fromValidatedString)),
+  TE.map(RA.map(EDOI.canonicalExpressionDoiCodec.decode)),
+  TE.map(RA.separate),
+  TE.map((separated) => separated.right),
 );
