@@ -7,14 +7,14 @@ import * as DE from '../../../../../types/data-error';
 import { Group } from '../../../../../types/group';
 import { ViewModel } from '../view-model';
 
-type ConstructViewModel = (dependencies: Dependencies) => (params: Params) => TE.TaskEither<DE.DataError, ViewModel>;
+type ConstructViewModel<P, VM> = (dependencies: Dependencies) => (params: P) => TE.TaskEither<DE.DataError, VM>;
 
 const constructHeaderViewModel = (group: Group) => ({
   title: `About ${group.name}`,
   group,
 });
 
-export const constructViewModel: ConstructViewModel = (dependencies) => (params) => pipe(
+export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),
   E.fromOption(() => DE.notFound),
   E.map((group) => ({
