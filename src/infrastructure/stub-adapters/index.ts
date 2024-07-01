@@ -11,7 +11,7 @@ import { ExternalQueries } from '../../third-parties';
 import { fetchByCategory } from '../../third-parties/fetch-search-categories';
 
 export const stubAdapters: ExternalQueries = {
-  fetchByCategory,
+  fetchByCategory: fetchByCategory(),
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
   fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL('https://example.com')),
   fetchEvaluationDigest: fetchEvaluation,
