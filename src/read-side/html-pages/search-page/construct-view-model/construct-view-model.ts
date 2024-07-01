@@ -4,10 +4,11 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
+import { queryStringParameters } from '../../../../standards';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 
-const constructCategoryHref = (title: string) => `/category?title=${encodeURIComponent(title)}`;
+const constructCategoryHref = (title: string) => `/category?${queryStringParameters.title}=${encodeURIComponent(title)}`;
 
 const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
   dependencies.fetchSearchCategories(),
