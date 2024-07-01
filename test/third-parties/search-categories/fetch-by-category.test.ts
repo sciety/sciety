@@ -8,19 +8,20 @@ import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const responseWithValidDoi = { data: [{ attributes: { doi: arbitraryExpressionDoi() } }] };
 
+const dummyQueryExternalService = (queryResponse: unknown) => () => () => TE.right(queryResponse);
+
+const invokeFetchByCategory = async (category: string, queryResponse: unknown) => pipe(
+  category,
+  fetchByCategory(dummyQueryExternalService(queryResponse), dummyLogger),
+  TE.getOrElse(shouldNotBeCalled),
+)();
+
 describe('fetch-by-category', () => {
+  let result: Awaited<ReturnType<typeof invokeFetchByCategory>>;
+
   describe('when an item with a valid doi syntax is returned', () => {
-    const queryExternalService = () => () => TE.right(responseWithValidDoi);
-    const invokeFetchByCategory = async (category: string) => pipe(
-      category,
-      fetchByCategory(queryExternalService, dummyLogger),
-      TE.getOrElse(shouldNotBeCalled),
-    )();
-
-    let result: Awaited<ReturnType<typeof invokeFetchByCategory>>;
-
     beforeEach(async () => {
-      result = await invokeFetchByCategory(arbitraryString());
+      result = await invokeFetchByCategory(arbitraryString(), responseWithValidDoi);
     });
 
     it('is included', () => {
