@@ -22,7 +22,7 @@ describe('construct-and-render-page', () => {
           user: O.none,
           page: 1,
         },
-        constructAndRenderPage(framework.queries),
+        constructAndRenderPage(framework.dependenciesForViews),
         TE.mapLeft((error) => error.type),
       )();
 

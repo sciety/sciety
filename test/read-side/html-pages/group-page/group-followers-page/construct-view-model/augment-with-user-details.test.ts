@@ -24,7 +24,7 @@ describe('augment-with-user-details', () => {
       ];
       const results = pipe(
         followers,
-        augmentWithUserDetails(framework.queries),
+        augmentWithUserDetails(framework.dependenciesForViews),
       );
 
       expect(results).toHaveLength(0);
@@ -55,7 +55,7 @@ describe('augment-with-user-details', () => {
       ];
       const handles = pipe(
         followers,
-        augmentWithUserDetails(framework.queries),
+        augmentWithUserDetails(framework.dependenciesForViews),
         RA.map((user) => user.handle),
       );
 

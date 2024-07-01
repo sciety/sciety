@@ -1,13 +1,13 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { Dependencies } from './dependencies';
 import { Follower } from './follower';
+import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { constructUserAvatarSrc } from '../../../../paths';
 import { UserCardViewModel } from '../view-model';
 
 export const augmentWithUserDetails = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
 ) => (
   followers: ReadonlyArray<Follower>,
 ): ReadonlyArray<UserCardViewModel> => pipe(

@@ -81,7 +81,7 @@ describe('create user list', () => {
               user: O.none,
               page: 1,
             },
-            constructGroupFollowersPage(framework.queries),
+            constructGroupFollowersPage(framework.dependenciesForViews),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });

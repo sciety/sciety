@@ -51,7 +51,7 @@ describe('construct-view-model', () => {
           slug: addGroupCommand.slug,
           user: O.none,
         },
-        constructViewModel(framework.queries),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
 
