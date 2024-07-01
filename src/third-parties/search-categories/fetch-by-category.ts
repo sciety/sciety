@@ -23,8 +23,8 @@ const scietyLabsByCategoryResponseCodec = t.type({
 export const fetchByCategory = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): ExternalQueries['fetchByCategory'] => () => pipe(
-  'Epidemiology',
+): ExternalQueries['fetchByCategory'] => (category) => pipe(
+  category,
   buildUrl,
   queryExternalService(),
   TE.chainEitherKW(flow(

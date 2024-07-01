@@ -11,7 +11,7 @@ import { SearchResults } from '../types/search-results';
 import { SubjectArea } from '../types/subject-area';
 import { UserId } from '../types/user-id';
 
-type FetchByCategory = () => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
+type FetchByCategory = (category: string) => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
