@@ -1,9 +1,8 @@
 import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import { queryStringParameters } from '../../../standards';
 
 export const paramsCodec = t.type({
-  [queryStringParameters.categoryName]: tt.NonEmptyString,
+  [queryStringParameters.categoryName]: queryStringParameters.categoryNameCodec,
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
