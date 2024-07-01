@@ -7,12 +7,7 @@ import { Dependencies } from './dependencies';
 import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 
-const constructCategoryHref = (title: string) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return `/category?title=${encodeURIComponent(title)}`;
-  }
-  return `https://labs.sciety.org/categories/articles?category=${title}&from_sciety=true`;
-};
+const constructCategoryHref = (title: string) => `/category?title=${encodeURIComponent(title)}`;
 
 const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
   dependencies.fetchSearchCategories(),
