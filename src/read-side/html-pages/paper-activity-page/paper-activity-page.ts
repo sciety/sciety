@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -7,36 +6,13 @@ import { constructViewModel } from './construct-view-model';
 import { Dependencies } from './construct-view-model/dependencies';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
 import { renderAsHtml } from './render-as-html';
-import * as DE from '../../../types/data-error';
-import { ExpressionDoi, canonicalExpressionDoiCodec } from '../../../types/expression-doi';
+import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 import { userIdCodec } from '../../../types/user-id';
 import { constructPaperActivityPageHref } from '../../paths';
 import { constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { ConstructPage } from '../construct-page';
+import { decodePageParams } from '../decode-page-params';
 import { toRedirectTarget } from '../redirect-target';
-
-const canonicalParamsCodec = t.type({
-  expressionDoi: canonicalExpressionDoiCodec,
-  user: tt.optionFromNullable(t.type({ id: userIdCodec })),
-});
-
-const inputParamsCodec = t.type({
-  expressionDoi: t.string,
-});
-
-const decodeCombinedParams = (params: unknown) => pipe(
-  params,
-  canonicalParamsCodec.decode,
-  E.chain((canonicalParams) => pipe(
-    params,
-    inputParamsCodec.decode,
-    E.map((decodedInputParams) => decodedInputParams.expressionDoi),
-    E.map((inputExpressionDoi) => ({
-      ...canonicalParams,
-      inputExpressionDoi,
-    })),
-  )),
-);
 
 const redirectTo = (expressionDoi: ExpressionDoi) => pipe(
   expressionDoi,
@@ -44,24 +20,18 @@ const redirectTo = (expressionDoi: ExpressionDoi) => pipe(
   toRedirectTarget,
 );
 
-const isCanonicalExpressionDoi = (
-  input: { inputExpressionDoi: string, expressionDoi: ExpressionDoi },
-) => {
-  const canonicalForm = canonicalExpressionDoiCodec.decode(input.inputExpressionDoi);
-  if (E.isLeft(canonicalForm)) {
-    return false;
-  }
-  return canonicalForm.right === input.inputExpressionDoi;
-};
+const isRequestedExpressionDoiInCanonicalForm = (
+  input: { canonicalForm: ExpressionDoi, requestedExpressionDoi: ExpressionDoi },
+) => input.canonicalForm === input.requestedExpressionDoi;
 
 const isRequestedExpressionDoiTheLatest = (
-  input: { latestExpressionDoi: ExpressionDoi, expressionDoi: ExpressionDoi },
-) => input.latestExpressionDoi === input.expressionDoi;
+  input: { latestExpressionDoi: ExpressionDoi, requestedExpressionDoi: ExpressionDoi },
+) => input.latestExpressionDoi === input.requestedExpressionDoi;
 
 const extendWithLatestExpressionDoi = (
   dependencies: Dependencies,
-) => <A extends { expressionDoi: ExpressionDoi }>(input: A) => pipe(
-  input.expressionDoi,
+) => <A extends { canonicalForm: ExpressionDoi }>(input: A) => pipe(
+  input.canonicalForm,
   identifyLatestExpressionDoiOfTheSamePaper(dependencies),
   TE.mapLeft(constructErrorPageViewModel),
   TE.map((latestExpressionDoi) => ({
@@ -70,22 +40,35 @@ const extendWithLatestExpressionDoi = (
   })),
 );
 
+const rawParamsCodec = t.type({
+  expressionDoi: expressionDoiCodec,
+  user: tt.optionFromNullable(t.type({ id: userIdCodec })),
+});
+
+type RawParams = t.TypeOf<typeof rawParamsCodec>;
+
+const extendWithCanonicalForm = (input: RawParams) => ({
+  user: input.user,
+  canonicalForm: input.expressionDoi.toLowerCase() as ExpressionDoi,
+  requestedExpressionDoi: input.expressionDoi,
+});
+
 type PaperActivityPage = (dependencies: Dependencies) => ConstructPage;
 
 export const paperActivityPage: PaperActivityPage = (dependencies) => (params) => pipe(
   params,
-  decodeCombinedParams,
+  decodePageParams(dependencies.logger, rawParamsCodec),
   TE.fromEither,
-  TE.mapLeft(() => DE.notFound),
   TE.mapLeft(constructErrorPageViewModel),
+  TE.map(extendWithCanonicalForm),
   TE.filterOrElseW(
-    isCanonicalExpressionDoi,
-    (combinedParams) => redirectTo(combinedParams.expressionDoi),
+    isRequestedExpressionDoiInCanonicalForm,
+    ({ canonicalForm }) => redirectTo(canonicalForm),
   ),
   TE.chainW(extendWithLatestExpressionDoi(dependencies)),
   TE.filterOrElseW(
     isRequestedExpressionDoiTheLatest,
-    (combinedDecodedParams) => redirectTo(combinedDecodedParams.latestExpressionDoi),
+    ({ latestExpressionDoi }) => redirectTo(latestExpressionDoi),
   ),
   TE.chainW(flow(
     constructViewModel(dependencies),
