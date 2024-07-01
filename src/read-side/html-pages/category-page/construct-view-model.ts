@@ -9,10 +9,10 @@ import { constructArticleCardStackWithSilentFailures } from '../shared-component
 export const constructViewModel = (
   dependencies: Dependencies,
 ) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
-  dependencies.fetchByCategory(params.title),
+  dependencies.fetchByCategory(params.categoryName),
   TE.chainTaskK(constructArticleCardStackWithSilentFailures(dependencies)),
   TE.map((articleCardViewModel) => ({
-    pageHeading: `${params.title}`,
+    pageHeading: `${params.categoryName}`,
     categoryContent: articleCardViewModel,
   })),
 );
