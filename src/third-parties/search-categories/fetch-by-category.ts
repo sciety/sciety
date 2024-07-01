@@ -6,6 +6,10 @@ import * as EDOI from '../../types/expression-doi';
 import { ExternalQueries } from '../external-queries';
 import { QueryExternalService } from '../query-external-service';
 
+const categoryName = 'Epidemiology';
+
+const url = `https://labs.sciety.org/api/papers/v1/preprints?filter%5Bcategory%5D=${categoryName}&filter%5Bevaluated_only%5D=true&page%5Bsize%5D=10&page%5Bnumber%5D=1&fields%5Bpaper%5D=doi`;
+
 export const fetchByCategory = (
   queryExternalService: QueryExternalService,
   logger: Logger,
