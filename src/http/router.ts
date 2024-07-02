@@ -32,7 +32,6 @@ import { listsPage, paramsCodec as listsPageParamsCodec } from '../read-side/htm
 import { myFeedPage, myFeedParams } from '../read-side/html-pages/my-feed-page';
 import { paperActivityPage } from '../read-side/html-pages/paper-activity-page';
 import { saveArticleFormPage } from '../read-side/html-pages/save-article-form-page';
-import { scietyFeedCodec, scietyFeedPage } from '../read-side/html-pages/sciety-feed-page';
 import { searchPage } from '../read-side/html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../read-side/html-pages/search-results-page';
 import { fullWidthPageLayout } from '../read-side/html-pages/shared-components/full-width-page-layout';
@@ -265,14 +264,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
         dependencies.logger,
         actionFailedPageParamsCodec,
         actionFailedPage,
-      )),
-    },
-    {
-      endpoint: '/sciety-feed',
-      handler: pageHandler(dependencies, createPageFromParams(
-        dependencies.logger,
-        scietyFeedCodec,
-        scietyFeedPage(dependencies)(20),
       )),
     },
   ];
