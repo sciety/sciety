@@ -1,9 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { List } from '../../../../read-models/lists';
-import * as DE from '../../../../types/data-error';
 import { DependenciesForViews } from '../../../dependencies-for-views';
+import { ConstructViewModel } from '../../construct-view-model';
 import { constructListCardViewModelWithCurator } from '../../shared-components/list-card';
 import {
   PageOfItems,
@@ -21,11 +22,7 @@ const constructListCards = (pageOfItems: PageOfItems<List>, dependencies: Depend
 
 export type Dependencies = DependenciesForViews;
 
-export const constructViewModel = (
-  dependencies: Dependencies,
-) => (
-  params: Params,
-): E.Either<DE.DataError, ViewModel> => pipe(
+export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   dependencies.getNonEmptyUserLists(),
   sortByDefaultListOrdering,
   paginate(20, params.page),
@@ -33,4 +30,5 @@ export const constructViewModel = (
     listCards: constructListCards(pageOfItems, dependencies),
     pagination: constructDefaultPaginationControls('/lists', pageOfItems),
   })),
+  TE.fromEither,
 );

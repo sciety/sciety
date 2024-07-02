@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel, Dependencies } from './construct-view-model/construct-view-model';
@@ -12,7 +11,6 @@ export const listsPage = (
 ) => (params: Params): TE.TaskEither<ErrorPageViewModel, HtmlPage> => pipe(
   params,
   constructViewModel(dependencies),
-  E.map(renderAsHtml),
-  E.mapLeft(constructErrorPageViewModel),
-  TE.fromEither,
+  TE.map(renderAsHtml),
+  TE.mapLeft(constructErrorPageViewModel),
 );

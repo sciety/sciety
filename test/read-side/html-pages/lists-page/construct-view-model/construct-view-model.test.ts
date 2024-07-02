@@ -1,4 +1,4 @@
-import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { List } from '../../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/lists-page/construct-view-model/construct-view-model';
@@ -39,12 +39,11 @@ describe('construct-view-model', () => {
         articleId: arbitraryExpressionDoi(),
         listId: command.listId,
       });
-
-      viewmodel = pipe(
+      viewmodel = await pipe(
         { page: 1 },
         constructViewModel(framework.dependenciesForViews),
-        E.getOrElseW(abortTest('viewmodel construction returned on the left')),
-      );
+        TE.getOrElse(abortTest('viewmodel construction returned on the left')),
+      )();
     });
 
     it('returns two cards', () => {
@@ -71,11 +70,11 @@ describe('construct-view-model', () => {
           { articleId: arbitraryExpressionDoi(), listId: createListCommand.listId },
         );
 
-        viewmodel = pipe(
+        viewmodel = await pipe(
           { page: 1 },
           constructViewModel(framework.dependenciesForViews),
-          E.getOrElseW(abortTest('viewmodel construction returned on the left')),
-        );
+          TE.getOrElse(abortTest('viewmodel construction returned on the left')),
+        )();
       });
 
       it('still returns a list card', () => {
