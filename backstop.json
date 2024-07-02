@@ -35,13 +35,6 @@
       ]
     },
     {
-      "label": "Sciety feed",
-      "url": "http://sciety-test-app-1/sciety-feed",
-      "selectors": [
-        "main"
-      ]
-    },
-    {
       "label": "An article page",
       "url": "http://sciety-test-app-1/articles/10.1101/646810",
       "selectors": [

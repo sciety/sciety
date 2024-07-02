@@ -11,7 +11,7 @@ describe('calculate-authentication-destination', () => {
   describe('when a referer is provided', () => {
     describe('and it matches the application hostname', () => {
       it('uses the provided referer', () => {
-        expect(calculateAuthenticationDestination(dummyLogger, 'https://sciety.org/sciety-feed', 'sciety.org')).toBe('https://sciety.org/sciety-feed');
+        expect(calculateAuthenticationDestination(dummyLogger, 'https://sciety.org/about', 'sciety.org')).toBe('https://sciety.org/about');
       });
     });
 
