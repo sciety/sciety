@@ -17,7 +17,6 @@
 .create-user-account-form-wrapper {
   @include breakpoints.not-narrow {
     margin: 0 auto;
-    max-width: functions.px-to-rem(304px);
   }
 }
 
@@ -61,10 +60,10 @@
     border-bottom-left-radius: settings.$border-radius;
     line-height: normal;
     color: settings.$colour-text-secondary;
+    text-wrap:nowrap;
   }
 
   .create-user-account-form__input {
-    width: 100%;
     margin-bottom: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
