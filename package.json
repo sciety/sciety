@@ -11,7 +11,7 @@
     "@xmldom/xmldom": "^0.8.10",
     "axios": "^1.7.2",
     "axios-cache-interceptor": "^1.5.3",
-    "axios-retry": "4.4.0",
+    "axios-retry": "4.4.1",
     "cheerio": "^1.0.0-rc.12",
     "cls-rtracer": "^2.6.3",
     "escape-goat": "^3.0.0",
