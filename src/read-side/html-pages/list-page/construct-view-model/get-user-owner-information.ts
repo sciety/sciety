@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Dependencies } from './dependencies';
 import { UserId } from '../../../../types/user-id';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 import { constructUserAvatarSrc } from '../../../paths';
 
 type OwnerInfo = {
@@ -10,7 +10,7 @@ type OwnerInfo = {
   ownerAvatarSrc: string,
 };
 
-type GetUserOwnerInformation = (dependencies: Dependencies) => (userId: UserId) => O.Option<OwnerInfo>;
+type GetUserOwnerInformation = (dependencies: DependenciesForViews) => (userId: UserId) => O.Option<OwnerInfo>;
 
 export const getUserOwnerInformation: GetUserOwnerInformation = (dependencies) => (userId) => pipe(
   userId,

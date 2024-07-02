@@ -4,7 +4,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructContentWithPaginationViewModel } from './construct-content-with-pagination-view-model';
-import { Dependencies } from './dependencies';
 import { getOwnerInformation } from './get-owner-information';
 import { Params } from './params';
 import { userHasEditCapability } from './user-has-edit-capability';
@@ -13,6 +12,7 @@ import * as DE from '../../../../types/data-error';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
 import { UserId } from '../../../../types/user-id';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 import { ConstructViewModel } from '../../construct-view-model';
 import { ViewModel } from '../view-model';
 
@@ -22,7 +22,7 @@ const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
 );
 
 type ConstructContentViewModel = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
   params: Params,
   editCapability: boolean,
   listId: ListId,
@@ -50,7 +50,7 @@ const constructContentViewModel: ConstructContentViewModel = (
 );
 
 const constructImageSrc = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
   listId: ListId,
 ) => dependencies.lookupHardcodedListImage(listId);
 

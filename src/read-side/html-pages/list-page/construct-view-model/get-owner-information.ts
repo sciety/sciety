@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Dependencies } from './dependencies';
 import { getUserOwnerInformation } from './get-user-owner-information';
 import { ListOwnerId } from '../../../../types/list-owner-id';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 import { constructGroupPagePath } from '../../../paths';
 
 type OwnerInformation = {
@@ -11,7 +11,7 @@ type OwnerInformation = {
   ownerAvatarSrc: string,
 };
 
-type GetOwnerInformation = (dependencies: Dependencies) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
+type GetOwnerInformation = (dependencies: DependenciesForViews) => (ownerId: ListOwnerId) => O.Option<OwnerInformation>;
 
 export const getOwnerInformation: GetOwnerInformation = (dependencies) => (ownerId) => {
   switch (ownerId.tag) {

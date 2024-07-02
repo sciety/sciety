@@ -1,11 +1,11 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Dependencies } from './dependencies';
 import { toPageOfCards } from './to-page-of-cards';
 import * as DE from '../../../../types/data-error';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 import { paginate } from '../../shared-components/pagination';
 import { ContentWithPaginationViewModel } from '../view-model';
 
@@ -19,7 +19,7 @@ const constructPaginationControlsViewModel = (nextPageNumber: O.Option<number>, 
 });
 
 export const constructContentWithPaginationViewModel = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
   pageNumber: number,
   editCapability: boolean,
   listId: ListId,

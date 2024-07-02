@@ -3,9 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 import { ArticleErrorCardViewModel } from '../../shared-components/article-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
@@ -15,7 +15,7 @@ import { PageOfItems } from '../../shared-components/pagination';
 import { ContentWithPaginationViewModel } from '../view-model';
 
 export const toPageOfCards = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
   editCapability: boolean,
   listId: ListId,
 ) => (
