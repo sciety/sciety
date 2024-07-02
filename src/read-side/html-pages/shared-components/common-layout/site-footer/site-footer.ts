@@ -9,9 +9,6 @@ export const siteFooter = toHtmlFragment(`
     <div class="main-footer">
       <ul class="main-footer__navigation">
         <li class="main-footer__navigation_item">
-          <a href="/sciety-feed" class="main-footer__link">Feed</a>
-        </li>
-        <li class="main-footer__navigation_item">
           <a href="/blog" class="main-footer__link">Blog</a>
         </li>
         <li class="main-footer__navigation_item">
