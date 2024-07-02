@@ -1,5 +1,4 @@
 import { annotations } from './annotations';
-import { articleActivity } from './article-activity';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 import { evaluations } from './evaluations';
 import { followings } from './followings';
@@ -12,7 +11,6 @@ import { users } from './users';
 
 const queries = {
   ...annotations.queries,
-  ...articleActivity.queries,
   ...evaluations.queries,
   ...evaluatedArticlesLists.queries,
   ...followings.queries,

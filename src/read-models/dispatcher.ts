@@ -1,7 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { annotations } from './annotations';
-import { articleActivity } from './article-activity';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 import { evaluations } from './evaluations';
 import { followings } from './followings';
@@ -26,7 +25,6 @@ type Dispatcher = {
 export const dispatcher = (logger: Logger): Dispatcher => {
   const initialisedReadModels = [
     new InitialisedReadModel(annotations),
-    new InitialisedReadModel(articleActivity),
     new InitialisedReadModel(evaluations),
     new InitialisedReadModel(evaluatedArticlesLists),
     new InitialisedReadModel(followings),
