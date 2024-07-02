@@ -15,7 +15,6 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
     users: dependencies.usersStatus(),
   },
   sagaWorkQueues: {
-    elifeArticleStates: dependencies.elifeArticleStatus(),
     unlistedArticles: pipe(
       dependencies.getUnlistedEvaluatedArticles(),
       RA.map((missingArticle) => ({

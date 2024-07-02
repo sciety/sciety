@@ -1,6 +1,5 @@
 import { annotations } from './annotations';
 import { articleActivity } from './article-activity';
-import { elifeSubjectAreaLists } from './elife-subject-area-lists';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 import { evaluations } from './evaluations';
 import { followings } from './followings';
@@ -12,7 +11,6 @@ import { lists } from './lists';
 import { users } from './users';
 
 const queries = {
-  ...elifeSubjectAreaLists.queries,
   ...annotations.queries,
   ...articleActivity.queries,
   ...evaluations.queries,
