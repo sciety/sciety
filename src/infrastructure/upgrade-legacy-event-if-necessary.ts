@@ -1,9 +1,10 @@
+import * as O from 'fp-ts/Option';
 import {
   DomainEvent, CurrentOrLegacyDomainEvent, EventOfType,
   LegacyEventOfType,
 } from '../domain-events';
 
-export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): DomainEvent => {
+export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): O.Option<DomainEvent> => {
   const upgradeFunctions = {
     EvaluationRecorded: (legacyEvent: LegacyEventOfType<'EvaluationRecorded'>) => ({
       ...legacyEvent,
@@ -25,13 +26,16 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
     } satisfies EventOfType<'ArticleInListAnnotated'>),
   };
   if (event.type === 'EvaluationRecorded') {
-    return upgradeFunctions[event.type](event);
+    return O.some(upgradeFunctions[event.type](event));
   }
   if (event.type === 'CurationStatementRecorded') {
-    return upgradeFunctions[event.type](event);
+    return O.some(upgradeFunctions[event.type](event));
   }
   if (event.type === 'AnnotationCreated') {
-    return upgradeFunctions[event.type](event);
+    return O.some(upgradeFunctions[event.type](event));
   }
-  return event;
+  if (event.type === 'SubjectAreaRecorded') {
+    return O.none;
+  }
+  return O.some(event);
 };

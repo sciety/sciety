@@ -41,6 +41,7 @@ const decodeEvents = (
     E.mapLeft(formatValidationErrors),
   ),
   E.map(RA.map(upgradeLegacyEventIfNecessary)),
+  E.map(RA.compact),
 );
 
 export const getEventsFromDatabase = (

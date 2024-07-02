@@ -5,11 +5,13 @@ import {
   domainEventCodec,
 } from './domain-event';
 import { evaluationRecordedEventCodec } from './evaluation-publication-recorded-event';
+import { subjectAreaRecordedEventCodec } from './subject-area-recorded-event';
 
 const legacyDomainEventCodec = t.union([
   evaluationRecordedEventCodec,
   curationStatementRecordedEventCodec,
   annotationCreatedEventCodec,
+  subjectAreaRecordedEventCodec,
 ], 'type');
 
 type LegacyDomainEvent = t.TypeOf<typeof legacyDomainEventCodec>;
