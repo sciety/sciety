@@ -133,8 +133,8 @@ export const legalPage: HtmlPage = toHtmlPage({
 
       <address>
         eLife Sciences Publications, Ltd<br>
-        Westbrook Centre, Milton Road<br>
-        Cambridge CB4 1YG<br>
+        95 Regent Street<br>
+        Cambridge CB2 1AW<br>
         UK
       </address>
     </div>
