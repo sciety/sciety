@@ -46,7 +46,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         viewmodel = await pipe(
           pageParams,
-          constructViewModel(framework.queries),
+          constructViewModel(framework.dependenciesForViews),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -72,7 +72,7 @@ describe('construct-view-model', () => {
       await framework.commandHelpers.addArticleToList({ articleId: arbitraryExpressionDoi(), listId });
       viewmodel = await pipe(
         pageParams,
-        constructViewModel(framework.queries),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -86,7 +86,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       viewmodel = await pipe(
         pageParams,
-        constructViewModel(framework.queries),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });

@@ -52,7 +52,7 @@ describe('create user list', () => {
               handle: createUserAccountCommand.handle as string as CandidateUserHandle,
               user: O.none,
             },
-            constructUserListsPage({ ...framework.queries }),
+            constructUserListsPage(framework.dependenciesForViews),
             TE.getOrElse(shouldNotBeCalled),
           )();
         });
