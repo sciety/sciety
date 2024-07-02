@@ -41,7 +41,6 @@ import { userPage as userFollowingPage, userPageParams as userFollowingPageParam
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
 import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
 import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
-import { listFeed } from '../read-side/non-html-views/list/list-feed';
 import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { categoryPagePathSpecification } from '../read-side/paths/construct-category-page-href';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
@@ -131,7 +130,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   const nonHtmlViews = [
     { endpoint: '/evaluations/:reviewid/content', handler: evaluationContent },
-    { endpoint: '/lists/:id/feed.atom', handler: listFeed },
     { endpoint: '/docmaps/v1/index', handler: docmapIndex },
     { endpoint: '/docmaps/v1/articles/:doi(.+).docmap.json', handler: docmap },
   ];
