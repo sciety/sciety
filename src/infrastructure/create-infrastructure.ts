@@ -17,9 +17,6 @@ import { sort as sortEvents } from '../domain-events';
 import { Logger } from '../logger';
 import { dispatcher } from '../read-models';
 import { instantiate } from '../third-parties';
-import {
-  recordSubjectAreaCommandHandler,
-} from '../write-side/command-handlers';
 import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 
 type InfrastructureConfig = LoggerConfig & {
@@ -106,7 +103,6 @@ export const createInfrastructure = (
         ...externalQueries,
         ...partialAdapters,
         getAllEvents,
-        recordSubjectArea: recordSubjectAreaCommandHandler(commandHandlerAdapters),
         addArticleToList: addArticleToListCommandHandler(commandHandlerAdapters),
       };
 
