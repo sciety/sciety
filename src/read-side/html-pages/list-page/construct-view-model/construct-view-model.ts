@@ -13,6 +13,7 @@ import * as DE from '../../../../types/data-error';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { ListId } from '../../../../types/list-id';
 import { UserId } from '../../../../types/user-id';
+import { ConstructViewModel } from '../../construct-view-model';
 import { ViewModel } from '../view-model';
 
 const getLoggedInUserIdFromParam = (user: O.Option<{ id: UserId }>) => pipe(
@@ -53,9 +54,7 @@ const constructImageSrc = (
   listId: ListId,
 ) => dependencies.lookupHardcodedListImage(listId);
 
-export const constructViewModel = (
-  dependencies: Dependencies,
-) => (params: Params): TE.TaskEither<DE.DataError, ViewModel> => pipe(
+export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   params.id,
   dependencies.lookupList,
   O.map((list) => ({
