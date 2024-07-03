@@ -218,7 +218,7 @@ describe('select-all-lists-owned-by', () => {
     );
     const result = selectAllListsOwnedBy(readmodel)(ownerId);
 
-    it.failing('does not return the deleted list', () => {
+    it('does not return the deleted list', () => {
       expect(result).toHaveLength(1);
     });
   });

@@ -40,6 +40,8 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       description: rawUserInput(event.description),
       version: 0,
     };
+  } else if (isEventOfType('ListDeleted')(event)) {
+    delete readmodel.byListId[event.listId];
   } else if (isEventOfType('ArticleAddedToList')(event)) {
     const expressionDoi = toExpressionDoi(event.articleId);
     registerUpdateToList(readmodel, event.listId, event.date);
