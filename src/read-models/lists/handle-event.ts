@@ -1,4 +1,6 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-loops/no-loops */
+/* eslint-disable no-restricted-syntax */
 import { List, ListEntry } from './list';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { rawUserInput } from '../../read-side';
@@ -42,6 +44,15 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     };
   } else if (isEventOfType('ListDeleted')(event)) {
     delete readmodel.byListId[event.listId];
+
+    for (const groupId in readmodel.byPromotingGroupId) {
+      if (Object.hasOwn(readmodel.byPromotingGroupId, groupId)) {
+        const groupPromotions = readmodel.byPromotingGroupId[groupId as GroupId];
+        if (groupPromotions.get(event.listId) !== undefined) {
+          groupPromotions.delete(event.listId);
+        }
+      }
+    }
   } else if (isEventOfType('ArticleAddedToList')(event)) {
     const expressionDoi = toExpressionDoi(event.articleId);
     registerUpdateToList(readmodel, event.listId, event.date);

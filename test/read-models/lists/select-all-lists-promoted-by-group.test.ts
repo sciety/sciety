@@ -146,7 +146,7 @@ describe('select-all-lists-promoted-by-group', () => {
     );
     const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
 
-    it.failing('ignores that promotion', () => {
+    it('ignores that promotion', () => {
       expect(result).toHaveLength(1);
     });
   });
