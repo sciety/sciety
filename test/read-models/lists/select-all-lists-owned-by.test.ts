@@ -187,4 +187,8 @@ describe('select-all-lists-owned-by', () => {
       expect(result).toStrictEqual([]);
     });
   });
+
+  describe('when the owner owns a list that has been deleted', () => {
+    it.todo('does not return the deleted list');
+  });
 });
