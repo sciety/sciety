@@ -13,6 +13,11 @@ export const arbitraryListCreatedEvent = (): EventOfType<'ListCreated'> => const
   ownerId: arbitraryListOwnerId(),
 });
 
+// ts-unused-exports:disable-next-line
+export const arbitraryListDeletedEvent = (): EventOfType<'ListDeleted'> => constructEvent('ListDeleted')({
+  listId: arbitraryListId(),
+});
+
 export const arbitraryArticleAddedToListEvent = (): EventOfType<'ArticleAddedToList'> => constructEvent('ArticleAddedToList')({
   articleId: new ArticleId(arbitraryExpressionDoi()),
   listId: arbitraryListId(),
