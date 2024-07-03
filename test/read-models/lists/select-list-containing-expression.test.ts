@@ -52,6 +52,26 @@ describe('select-list-containing-article', () => {
     });
   });
 
+  describe('when the user has added an article to the list and then the list was deleted', () => {
+    const readModel = pipe(
+      [
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: LOID.fromUserId(userId),
+        }),
+        constructEvent('ArticleAddedToList')({ articleId, listId }),
+        constructEvent('ListDeleted')({ listId }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it('the query returns nothing', () => {
+      expect(selectListContainingExpression(readModel)(userId)(expressionDoi)).toStrictEqual(O.none);
+    });
+  });
+
   describe('when the user has added and removed an article', () => {
     const readModel = pipe(
       [
