@@ -7,7 +7,7 @@ import { GroupId } from '../../../src/types/group-id';
 import { ListId } from '../../../src/types/list-id';
 import { arbitraryGroupJoinedEvent } from '../../domain-events/group-resource-events.helper';
 import { arbitraryListPromotionCreatedEvent, arbitraryListPromotionRemovedEvent } from '../../domain-events/list-promotion-resource-events.helper';
-import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 
 const listPromotedByGroup = (groupId: GroupId, listId: ListId): EventOfType<'ListPromotionCreated'> => ({
@@ -124,6 +124,30 @@ describe('select-all-lists-promoted-by-group', () => {
 
     it('ignores that promotion', () => {
       expect(result).toStrictEqual([]);
+    });
+  });
+
+  describe('when the promoted list has been deleted', () => {
+    const list1Created = arbitraryListCreatedEvent();
+    const list2Created = arbitraryListCreatedEvent();
+    const readModel = pipe(
+      [
+        groupJoined,
+        list1Created,
+        list2Created,
+        listPromotedByGroup(groupJoined.groupId, list1Created.listId),
+        listPromotedByGroup(groupJoined.groupId, list2Created.listId),
+        {
+          ...arbitraryListDeletedEvent(),
+          listId: list1Created.listId,
+        },
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsPromotedByGroup(readModel)(groupJoined.groupId);
+
+    it.failing('ignores that promotion', () => {
+      expect(result).toHaveLength(1);
     });
   });
 });
