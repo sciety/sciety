@@ -5,7 +5,11 @@ import { handleEvent, initialState } from '../../../src/read-models/lists/handle
 import { selectAllListsOwnedBy } from '../../../src/read-models/lists/select-all-lists-owned-by';
 import { rawUserInput } from '../../../src/read-side';
 import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import {
+  arbitraryArticleAddedToListEvent,
+  arbitraryListCreatedEvent,
+  arbitraryListDeletedEvent,
+} from '../../domain-events/list-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
@@ -189,6 +193,33 @@ describe('select-all-lists-owned-by', () => {
   });
 
   describe('when the owner owns a list that has been deleted', () => {
-    it.todo('does not return the deleted list');
+    const listId = arbitraryListId();
+    const readmodel = pipe(
+      [
+        {
+          ...arbitraryListCreatedEvent(),
+          ownerId,
+        },
+        {
+          ...arbitraryListCreatedEvent(),
+          listId,
+          ownerId,
+        },
+        {
+          ...arbitraryArticleAddedToListEvent(),
+          listId,
+        },
+        {
+          ...arbitraryListDeletedEvent(),
+          listId,
+        },
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const result = selectAllListsOwnedBy(readmodel)(ownerId);
+
+    it.failing('does not return the deleted list', () => {
+      expect(result).toHaveLength(1);
+    });
   });
 });
