@@ -9,7 +9,7 @@ import { rawUserInput } from '../../../src/read-side';
 import { ArticleId } from '../../../src/types/article-id';
 import * as EDOI from '../../../src/types/expression-doi';
 import { ListId } from '../../../src/types/list-id';
-import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
@@ -211,6 +211,26 @@ describe('lookup-list', () => {
   describe('when the list does not exist', () => {
     const readModel = pipe(
       [],
+      RA.reduce(initialState(), handleEvent),
+    );
+
+    it('returns not found', () => {
+      expect(lookupList(readModel)(listId)).toStrictEqual(O.none);
+    });
+  });
+
+  describe('when the list has been deleted', () => {
+    const readModel = pipe(
+      [
+        {
+          ...arbitraryListCreatedEvent(),
+          listId,
+        },
+        {
+          ...arbitraryListDeletedEvent(),
+          listId,
+        },
+      ],
       RA.reduce(initialState(), handleEvent),
     );
 
