@@ -93,4 +93,23 @@ describe('select-all-lists-containing-expression', () => {
       expect(listIds).toStrictEqual([]);
     });
   });
+
+  describe('when the article is in a deleted list', () => {
+    const listCreatedEvent = arbitraryListCreatedEvent();
+    const expressionDoi = arbitraryExpressionDoi();
+    const anotherExpressionDoi = arbitraryExpressionDoi();
+    const readModel = pipe(
+      [
+        listCreatedEvent,
+        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(anotherExpressionDoi), listId: listCreatedEvent.listId }),
+        constructEvent('ListDeleted')({ listId: listCreatedEvent.listId }),
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
+    const listIds = selectAllListsContainingExpressionHelper(readModel, expressionDoi);
+
+    it('returns an empty result', () => {
+      expect(listIds).toStrictEqual([]);
+    });
+  });
 });
