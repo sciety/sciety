@@ -155,7 +155,7 @@ describe('annotate', () => {
     });
   });
 
-  describe('when the list does not exist', () => {
+  describe('when the list has never existed', () => {
     const result = pipe(
       [],
       annotate(annotateArticleInListCommand),
@@ -164,5 +164,9 @@ describe('annotate', () => {
     it('fails', () => {
       expect(E.isLeft(result)).toBe(true);
     });
+  });
+
+  describe('when the list existed and was then deleted', () => {
+    it.todo('fails');
   });
 });
