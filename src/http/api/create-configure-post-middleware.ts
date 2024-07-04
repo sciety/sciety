@@ -10,7 +10,7 @@ import { DependenciesForCommands } from '../../write-side';
 import { executeCommand } from '../../write-side/commands';
 import { ResourceAction } from '../../write-side/resources/resource-action';
 
-const executeAndRespond = <C extends GenericCommand>(
+export const executeAndRespond = <C extends GenericCommand>(
   dependencies: DependenciesForCommands,
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,

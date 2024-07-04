@@ -17,3 +17,4 @@ export { promoteListCommandCodec, PromoteListCommand } from './promote-list';
 export { removeListPromotionCommandCodec, RemoveListPromotionCommand } from './remove-list-promotion';
 export { assignUserAsGroupAdminCommandCodec, AssignUserAsGroupAdminCommand } from './assign-user-as-group-admin';
 export { UnfollowCommand } from './unfollow';
+export { deleteListCommandCodec, DeleteListCommand } from './delete-list';
