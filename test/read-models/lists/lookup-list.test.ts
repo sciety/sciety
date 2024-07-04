@@ -124,12 +124,12 @@ describe('lookup-list', () => {
       const description = arbitraryString();
       const readModel = pipe(
         [
-          constructEvent('ListCreated')({
+          {
+            ...arbitraryListCreatedEvent(),
             listId,
             name,
             description,
-            ownerId: arbitraryListOwnerId(),
-          }),
+          },
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -153,12 +153,11 @@ describe('lookup-list', () => {
       const dateOfLatestEvent = arbitraryDate();
       const readModel = pipe(
         [
-          constructEvent('ListCreated')({
+          {
+            ...arbitraryListCreatedEvent(),
             listId,
-            name: arbitraryString(),
             description,
-            ownerId: arbitraryListOwnerId(),
-          }),
+          },
           constructEvent('ListNameEdited')({ listId, name, date: dateOfLatestEvent }),
         ],
         RA.reduce(initialState(), handleEvent),
@@ -183,12 +182,11 @@ describe('lookup-list', () => {
       const dateOfLatestEvent = arbitraryDate();
       const readModel = pipe(
         [
-          constructEvent('ListCreated')({
+          {
+            ...arbitraryListCreatedEvent(),
             listId,
             name,
-            description: arbitraryString(),
-            ownerId: arbitraryListOwnerId(),
-          }),
+          },
           constructEvent('ListDescriptionEdited')({ listId, description, date: dateOfLatestEvent }),
         ],
         RA.reduce(initialState(), handleEvent),
