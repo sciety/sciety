@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
+import { constructEvent } from '../../../../src/domain-events';
 import { deleteList } from '../../../../src/write-side/resources/list';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -43,6 +44,19 @@ describe('delete', () => {
   });
 
   describe('when the list identified in the command existed but has been deleted', () => {
-    it.todo('fails with not-found');
+    const listCreatedEvent = arbitraryListCreatedEvent();
+    const listDeleteEvent = constructEvent('ListDeleted')({ listId: listCreatedEvent.listId });
+    const result = pipe(
+      [
+        listCreatedEvent,
+        listDeleteEvent,
+      ],
+      deleteList({ listId: listCreatedEvent.listId }),
+      E.getOrElseW(shouldNotBeCalled),
+    );
+
+    it.failing('fails with not-found', () => {
+      expect(result).toBe('not-found');
+    });
   });
 });
