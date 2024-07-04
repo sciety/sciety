@@ -94,7 +94,7 @@ export const createInfrastructure = (
       const allAdapters = {
         ...queries,
         ...externalQueries,
-        ...partialAdapters,
+        logger: partialAdapters.logger,
         getAllEvents,
         commitEvents: commitEventsWithoutListeners,
       };
