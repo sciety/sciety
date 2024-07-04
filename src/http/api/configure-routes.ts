@@ -1,7 +1,7 @@
 import Router from '@koa/router';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { createConfigurePostMiddleware, executeAndRespond } from './create-configure-post-middleware';
+import { createConfigurePostMiddleware } from './create-configure-post-middleware';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { groups } from '../../read-side/non-html-views/api/groups';
 import { applicationStatus } from '../../read-side/non-html-views/api/status';
@@ -128,6 +128,6 @@ export const configureRoutes = (
     RA.map((route) => router.post(route.endpoint, route.handler)),
   );
   router.delete(
-    '/api/lists/:listId', executeAndRespond(dependencies, deleteListCommandCodec, listResource.deleteList, expectedToken),
+    '/api/lists/:listId', configurePostMiddleware(deleteListCommandCodec, listResource.deleteList),
   );
 };

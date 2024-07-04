@@ -10,7 +10,7 @@ import { DependenciesForCommands } from '../../write-side';
 import { executeCommand } from '../../write-side/commands';
 import { ResourceAction } from '../../write-side/resources/resource-action';
 
-export const executeAndRespond = <C extends GenericCommand>(
+const executeAndRespond = <C extends GenericCommand>(
   dependencies: DependenciesForCommands,
   codec: t.Decoder<unknown, C>,
   resourceAction: ResourceAction<C>,
@@ -19,6 +19,7 @@ export const executeAndRespond = <C extends GenericCommand>(
     dependencies.logger('debug', 'Received command', {
       body: context.request.body,
       url: context.request.url,
+      params: context.params,
     });
 
     if (context.request.headers.authorization !== `Bearer ${expectedToken}`) {
@@ -28,7 +29,10 @@ export const executeAndRespond = <C extends GenericCommand>(
     }
 
     const commandResult = await pipe(
-      context.request.body,
+      {
+        ...context.request.body ?? {},
+        ...context.params,
+      },
       executeCommand(dependencies, codec, resourceAction),
     )();
     if (E.isLeft(commandResult)) {
