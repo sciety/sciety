@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { deleteList } from '../../../../src/write-side/resources/list';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryListId } from '../../../types/list-id.helper';
 
 describe('delete', () => {
   describe('when the list identified in the command exists', () => {
@@ -27,7 +28,18 @@ describe('delete', () => {
   });
 
   describe('no list with the given id ever existed', () => {
-    it.todo('fails with not-found');
+    const result = pipe(
+      [],
+      deleteList({ listId: arbitraryListId() }),
+      E.matchW(
+        identity,
+        () => [],
+      ),
+    );
+
+    it.failing('fails with not-found', () => {
+      expect(result).toBe('not-found');
+    });
   });
 
   describe('when the list identified in the command existed but has been deleted', () => {
