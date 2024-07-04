@@ -17,7 +17,6 @@ import { sort as sortEvents } from '../domain-events';
 import { Logger } from '../logger';
 import { dispatcher } from '../read-models';
 import { instantiate } from '../third-parties';
-import { addArticleToListCommandHandler } from '../write-side/command-handlers/add-article-to-list-command-handler';
 
 type InfrastructureConfig = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -84,12 +83,6 @@ export const createInfrastructure = (
         logger: partialAdapters.logger,
       });
 
-      const commandHandlerAdapters = {
-        getAllEvents,
-        commitEvents: commitEventsWithoutListeners,
-        logger: partialAdapters.logger,
-      };
-
       const redisClient = await createRedisClient(partialAdapters.logger);
 
       const externalQueries = instantiate(
@@ -103,7 +96,6 @@ export const createInfrastructure = (
         ...externalQueries,
         ...partialAdapters,
         getAllEvents,
-        addArticleToList: addArticleToListCommandHandler(commandHandlerAdapters),
       };
 
       const allAdapters = {
