@@ -148,6 +148,7 @@ describe('select-all-lists-promoted-by-group', () => {
 
     it('ignores that promotion', () => {
       expect(result).toHaveLength(1);
+      expect(result[0].id).toStrictEqual(list2Created.listId);
     });
   });
 });
