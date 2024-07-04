@@ -1,6 +1,8 @@
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { deleteList } from '../../../../src/write-side/resources/list';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('delete', () => {
   describe('when the list identified in the command exists', () => {
@@ -10,10 +12,10 @@ describe('delete', () => {
         listCreatedEvent,
       ],
       deleteList({ listId: listCreatedEvent.listId }),
-      // E.getOrElseW(shouldNotBeCalled),
+      E.getOrElseW(shouldNotBeCalled),
     );
 
-    it.failing('raises exactly one event', () => {
+    it('raises exactly one event', () => {
       expect(result).toHaveLength(1);
     });
 
