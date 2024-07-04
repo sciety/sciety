@@ -1,6 +1,21 @@
+import { pipe } from 'fp-ts/function';
+import { deleteList } from '../../../../src/write-side/resources/list';
+import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
+
 describe('delete', () => {
   describe('when the list identified in the command exists', () => {
-    it.todo('raises exactly one event');
+    const listCreatedEvent = arbitraryListCreatedEvent();
+    const result = pipe(
+      [
+        listCreatedEvent,
+      ],
+      deleteList({ listId: listCreatedEvent.listId }),
+      // E.getOrElseW(shouldNotBeCalled),
+    );
+
+    it.failing('raises exactly one event', () => {
+      expect(result).toHaveLength(1);
+    });
 
     it.todo('returns a ListDeleted event');
   });
