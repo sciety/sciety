@@ -19,7 +19,11 @@ describe('delete', () => {
       expect(result).toHaveLength(1);
     });
 
-    it.todo('returns a ListDeleted event');
+    it('returns a ListDeleted event', () => {
+      expect(result[0]).toBeDomainEvent('ListDeleted', {
+        listId: listCreatedEvent.listId,
+      });
+    });
   });
 
   describe('no list with the given id ever existed', () => {
