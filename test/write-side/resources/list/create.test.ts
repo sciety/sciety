@@ -15,7 +15,7 @@ describe('create', () => {
     description: arbitraryString(),
   };
 
-  describe('when the listId in the command does not yet exist', () => {
+  describe('when a list with the given listId has never been created', () => {
     const result = pipe(
       [],
       create(input),
@@ -36,7 +36,7 @@ describe('create', () => {
     });
   });
 
-  describe('when a command is received for an already existing listId', () => {
+  describe('when a list with the given listId has been created and not deleted', () => {
     const result = pipe(
       [
         constructEvent('ListCreated')({
@@ -52,5 +52,9 @@ describe('create', () => {
     it('returns no events', () => {
       expect(result).toStrictEqual(E.right([]));
     });
+  });
+
+  describe('when a list with the given listId has been created and then deleted', () => {
+    it.todo('returns no events');
   });
 });
