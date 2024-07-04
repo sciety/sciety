@@ -14,7 +14,6 @@ import { arbitraryDate, arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 
 const runQuery = (listId: ListId, readModel: ReadModel) => pipe(
   listId,
@@ -45,14 +44,22 @@ describe('lookup-list', () => {
       const expressionDoi2 = arbitraryExpressionDoi();
       const readModel = pipe(
         [
-          constructEvent('ListCreated')({
+          {
+            ...arbitraryListCreatedEvent(),
             listId,
             name,
             description,
-            ownerId: arbitraryListOwnerId(),
+          },
+          constructEvent('ArticleAddedToList')({
+            articleId: new ArticleId(expressionDoi1),
+            listId,
+            date: new Date('2019'),
           }),
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi1), listId, date: new Date('2019') }),
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi2), listId, date: new Date('2021') }),
+          constructEvent('ArticleAddedToList')({
+            articleId: new ArticleId(expressionDoi2),
+            listId,
+            date: new Date('2021'),
+          }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
@@ -103,9 +110,18 @@ describe('lookup-list', () => {
             ...arbitraryListCreatedEvent(),
             listId,
           },
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi1), listId }),
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi2), listId }),
-          constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi2), listId }),
+          constructEvent('ArticleAddedToList')({
+            articleId: new ArticleId(expressionDoi1),
+            listId,
+          }),
+          constructEvent('ArticleAddedToList')({
+            articleId: new ArticleId(expressionDoi2),
+            listId,
+          }),
+          constructEvent('ArticleRemovedFromList')({
+            articleId: new ArticleId(expressionDoi2),
+            listId,
+          }),
         ],
         RA.reduce(initialState(), handleEvent),
       );

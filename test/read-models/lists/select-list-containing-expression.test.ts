@@ -8,7 +8,7 @@ import { ArticleId } from '../../../src/types/article-id';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
 import * as LOID from '../../../src/types/list-owner-id';
 import { UserId } from '../../../src/types/user-id';
-import { arbitraryString } from '../../helpers';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
@@ -34,12 +34,11 @@ describe('select-list-containing-article', () => {
   describe('when the user has added an article to the list', () => {
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
+        {
+          ...arbitraryListCreatedEvent(),
           listId,
-          name: arbitraryString(),
-          description: arbitraryString(),
           ownerId: LOID.fromUserId(userId),
-        }),
+        },
         constructEvent('ArticleAddedToList')({ articleId, listId }),
       ],
       RA.reduce(initialState(), handleEvent),
@@ -55,12 +54,11 @@ describe('select-list-containing-article', () => {
   describe('when the user has added an article to the list and then the list was deleted', () => {
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
+        {
+          ...arbitraryListCreatedEvent(),
           listId,
-          name: arbitraryString(),
-          description: arbitraryString(),
           ownerId: LOID.fromUserId(userId),
-        }),
+        },
         constructEvent('ArticleAddedToList')({ articleId, listId }),
         constructEvent('ListDeleted')({ listId }),
       ],
@@ -75,12 +73,11 @@ describe('select-list-containing-article', () => {
   describe('when the user has added and removed an article', () => {
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
+        {
+          ...arbitraryListCreatedEvent(),
           listId,
-          name: arbitraryString(),
-          description: arbitraryString(),
           ownerId: LOID.fromUserId(userId),
-        }),
+        },
         constructEvent('ArticleAddedToList')({ articleId, listId }),
         constructEvent('ArticleRemovedFromList')({ articleId, listId }),
       ],
@@ -97,19 +94,17 @@ describe('select-list-containing-article', () => {
     const listId2 = arbitraryListId();
     const readModel = pipe(
       [
-        constructEvent('ListCreated')({
+        {
+          ...arbitraryListCreatedEvent(),
           listId,
-          name: arbitraryString(),
-          description: arbitraryString(),
           ownerId: LOID.fromUserId(userId),
-        }),
+        },
         constructEvent('ArticleAddedToList')({ articleId, listId }),
-        constructEvent('ListCreated')({
+        {
+          ...arbitraryListCreatedEvent(),
           listId: listId2,
-          name: arbitraryString(),
-          description: arbitraryString(),
           ownerId: LOID.fromUserId(userId2),
-        }),
+        },
         constructEvent('ArticleAddedToList')({ articleId, listId: listId2 }),
       ],
       RA.reduce(initialState(), handleEvent),
