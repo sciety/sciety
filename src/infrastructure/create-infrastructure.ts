@@ -91,15 +91,11 @@ export const createInfrastructure = (
         redisClient,
       );
 
-      const collectedAdapters = {
+      const allAdapters = {
         ...queries,
         ...externalQueries,
         ...partialAdapters,
         getAllEvents,
-      };
-
-      const allAdapters = {
-        ...collectedAdapters,
         commitEvents: commitEventsWithoutListeners,
       };
 
