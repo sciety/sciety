@@ -52,10 +52,13 @@ describe('delete', () => {
         listDeleteEvent,
       ],
       deleteList({ listId: listCreatedEvent.listId }),
-      E.getOrElseW(shouldNotBeCalled),
+      E.matchW(
+        identity,
+        shouldNotBeCalled,
+      ),
     );
 
-    it.failing('fails with not-found', () => {
+    it('fails with not-found', () => {
       expect(result).toBe('not-found');
     });
   });
