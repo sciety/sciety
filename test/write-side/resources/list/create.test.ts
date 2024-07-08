@@ -55,6 +55,21 @@ describe('create', () => {
   });
 
   describe('when a list with the given listId has been created and then deleted', () => {
-    it.todo('returns no events');
+    const result = pipe(
+      [
+        constructEvent('ListCreated')({
+          listId: input.listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: arbitraryListOwnerId(),
+        }),
+        constructEvent('ListDeleted')({ listId: input.listId }),
+      ],
+      create(input),
+    );
+
+    it('returns no events', () => {
+      expect(result).toStrictEqual(E.right([]));
+    });
   });
 });
