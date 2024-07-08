@@ -139,12 +139,4 @@ describe('add-article', () => {
       });
     });
   });
-
-  describe('when no list with the given id has ever existed', () => {
-    it.todo('fails with not-found');
-  });
-
-  describe('when a list with the given id existed and was then deleted', () => {
-    it.todo('fails with not-found');
-  });
 });

@@ -165,8 +165,4 @@ describe('annotate', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
-
-  describe('when the list existed and was then deleted', () => {
-    it.todo('fails');
-  });
 });
