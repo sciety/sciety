@@ -10,7 +10,7 @@ import { DependenciesForCommands } from '../../write-side';
 import {
   addArticleToListCommandCodec,
   addGroupCommandCodec,
-  assignUserAsGroupAdminCommandCodec,
+  assignUserAsGroupAdminCommandCodec, createListCommandCodec,
   deleteListCommandCodec,
   editListDetailsCommandCodec,
   eraseEvaluationCommandCodec,
@@ -77,6 +77,10 @@ export const configureRoutes = (
   {
     endpoint: 'create-user',
     handler: configurePostMiddleware(createUserAccountCommandCodec, userResource.create),
+  },
+  {
+    endpoint: 'create-list',
+    handler: configurePostMiddleware(createListCommandCodec, listResource.create),
   },
   {
     endpoint: 'edit-list-details',

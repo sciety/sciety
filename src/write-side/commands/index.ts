@@ -1,6 +1,6 @@
 export { removeArticleFromListCommandCodec, RemoveArticleFromListCommand } from './remove-article-from-list';
 export { addArticleToListCommandCodec, AddArticleToListCommand } from './add-article-to-list';
-export { CreateListCommand } from './create-list';
+export { createListCommandCodec, CreateListCommand } from './create-list';
 export { addGroupCommandCodec, AddGroupCommand } from './add-group';
 export { RecordEvaluationPublicationCommand, recordEvaluationPublicationCommandCodec } from './record-evaluation-publication';
 export { editListDetailsCommandCodec, EditListDetailsCommand } from './edit-list-details';
