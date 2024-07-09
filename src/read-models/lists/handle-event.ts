@@ -2,7 +2,7 @@
 /* eslint-disable no-loops/no-loops */
 /* eslint-disable no-restricted-syntax */
 import { List, ListEntry } from './list';
-import { DomainEvent, isEventOfType } from '../../domain-events';
+import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { rawUserInput } from '../../read-side';
 import { toExpressionDoi } from '../../types/article-id';
 import { ExpressionDoi } from '../../types/expression-doi';
@@ -40,6 +40,14 @@ export const initialState = (): ReadModel => ({
   usedListIds: [],
 });
 
+const handleArticleRemovedFromListEvent = (readModel: ReadModel, event: EventOfType<'ArticleRemovedFromList'>) => {
+  const listState = readModel.byListId[event.listId];
+  registerUpdateToList(readModel, event.listId, event.date);
+  if (listState !== undefined) {
+    listState.entries.delete(toExpressionDoi(event.articleId));
+  }
+};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ListCreated')(event)) {
     if (!readmodel.usedListIds.includes(event.listId)) {
@@ -74,11 +82,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       addedAtListVersion: listState.version,
     });
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
-    const listState = readmodel.byListId[event.listId];
-    registerUpdateToList(readmodel, event.listId, event.date);
-    if (listState !== undefined) {
-      listState.entries.delete(toExpressionDoi(event.articleId));
-    }
+    handleArticleRemovedFromListEvent(readmodel, event);
   } else if (isEventOfType('ListNameEdited')(event)) {
     const listState = readmodel.byListId[event.listId];
     registerUpdateToList(readmodel, event.listId, event.date);
