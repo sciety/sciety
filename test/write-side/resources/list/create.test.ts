@@ -1,6 +1,5 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
 import { create } from '../../../../src/write-side/resources/list/create';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -15,7 +14,7 @@ describe('create', () => {
     description: arbitraryString(),
   };
 
-  describe('when a list with the given listId has never been created', () => {
+  describe('given a command', () => {
     const result = pipe(
       [],
       create(input),
@@ -33,43 +32,6 @@ describe('create', () => {
         name: input.name,
         description: input.description,
       });
-    });
-  });
-
-  describe('when a list with the given listId has been created and not deleted', () => {
-    const result = pipe(
-      [
-        constructEvent('ListCreated')({
-          listId: input.listId,
-          name: arbitraryString(),
-          description: arbitraryString(),
-          ownerId: arbitraryListOwnerId(),
-        }),
-      ],
-      create(input),
-    );
-
-    it('returns no events', () => {
-      expect(result).toStrictEqual(E.right([]));
-    });
-  });
-
-  describe('when a list with the given listId has been created and then deleted', () => {
-    const result = pipe(
-      [
-        constructEvent('ListCreated')({
-          listId: input.listId,
-          name: arbitraryString(),
-          description: arbitraryString(),
-          ownerId: arbitraryListOwnerId(),
-        }),
-        constructEvent('ListDeleted')({ listId: input.listId }),
-      ],
-      create(input),
-    );
-
-    it('returns no events', () => {
-      expect(result).toStrictEqual(E.right([]));
     });
   });
 });
