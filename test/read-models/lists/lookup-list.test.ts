@@ -245,7 +245,7 @@ describe('lookup-list', () => {
 
     describe.each([
       ['created, deleted', [created, deleted]],
-      // ['created, deleted, created', [created, deleted, created]],
+      ['created, deleted, created', [created, deleted, created]],
     ])('%s', (_, events) => {
       const readModel = pipe(
         events,

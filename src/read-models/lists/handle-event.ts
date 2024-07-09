@@ -24,24 +24,29 @@ const registerUpdateToList = (readModel: ReadModel, listId: ListId, date: Date) 
 export type ReadModel = {
   byListId: Record<ListId, ListState>,
   byPromotingGroupId: Record<GroupId, Map<ListId, List>>,
+  usedListIds: Array<ListId>,
 };
 
 export const initialState = (): ReadModel => ({
   byListId: {},
   byPromotingGroupId: {},
+  usedListIds: [],
 });
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ListCreated')(event)) {
-    readmodel.byListId[event.listId] = {
-      id: event.listId,
-      ownerId: event.ownerId,
-      entries: [],
-      updatedAt: event.date,
-      name: event.name,
-      description: rawUserInput(event.description),
-      version: 0,
-    };
+    if (!readmodel.usedListIds.includes(event.listId)) {
+      readmodel.byListId[event.listId] = {
+        id: event.listId,
+        ownerId: event.ownerId,
+        entries: [],
+        updatedAt: event.date,
+        name: event.name,
+        description: rawUserInput(event.description),
+        version: 0,
+      };
+      readmodel.usedListIds.push(event.listId);
+    }
   } else if (isEventOfType('ListDeleted')(event)) {
     delete readmodel.byListId[event.listId];
 
