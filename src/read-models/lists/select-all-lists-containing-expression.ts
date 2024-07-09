@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
+import { ReadModel, toList } from './handle-event';
 import { List } from './list';
 import { ExpressionDoi } from '../../types/expression-doi';
 
@@ -16,5 +16,6 @@ export const selectAllListsContainingExpression = (
   readModel: ReadModel,
 ): SelectAllListsContainingExpression => (expressionDoi) => pipe(
   Object.values(readModel.byListId),
+  RA.map(toList),
   RA.filter(isListContaining(expressionDoi)),
 );
