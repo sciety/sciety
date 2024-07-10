@@ -40,6 +40,16 @@ export const initialState = (): ReadModel => ({
   usedListIds: [],
 });
 
+const handleArticleAddedToListEvent = (readmodel: ReadModel, event: EventOfType<'ArticleAddedToList'>) => {
+  const listState = readmodel.byListId[event.listId];
+  const expressionDoi = toExpressionDoi(event.articleId);
+  registerUpdateToList(readmodel, event.listId, event.date);
+  listState.entries.set(expressionDoi, {
+    expressionDoi,
+    addedAtListVersion: listState.version,
+  });
+};
+
 const handleArticleRemovedFromListEvent = (readModel: ReadModel, event: EventOfType<'ArticleRemovedFromList'>) => {
   const listState = readModel.byListId[event.listId];
   if (listState === undefined) {
@@ -77,13 +87,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       }
     }
   } else if (isEventOfType('ArticleAddedToList')(event)) {
-    const listState = readmodel.byListId[event.listId];
-    const expressionDoi = toExpressionDoi(event.articleId);
-    registerUpdateToList(readmodel, event.listId, event.date);
-    listState.entries.set(expressionDoi, {
-      expressionDoi,
-      addedAtListVersion: listState.version,
-    });
+    handleArticleAddedToListEvent(readmodel, event);
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     handleArticleRemovedFromListEvent(readmodel, event);
   } else if (isEventOfType('ListNameEdited')(event)) {
