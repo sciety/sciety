@@ -87,7 +87,7 @@ describe('handle-event', () => {
     });
   });
 
-  describe.skip('given a ListDescriptionEdited event', () => {
+  describe('given a ListDescriptionEdited event', () => {
     const listCreated = arbitraryListCreatedEvent();
     const listDescriptionEditedToTheSameValue = constructEvent('ListDescriptionEdited')({
       listId: listCreated.listId,

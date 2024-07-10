@@ -79,6 +79,18 @@ const handleListNameEditedEvent = (readModel: ReadModel, event: EventOfType<'Lis
   }
 };
 
+const handleListDescriptionEditedEvent = (readModel: ReadModel, event: EventOfType<'ListDescriptionEdited'>) => {
+  const listState = readModel.byListId[event.listId];
+  if (listState === undefined) {
+    return;
+  }
+  const listDescriptionFoundInListState = listState.description;
+  if (listDescriptionFoundInListState.content !== event.description) {
+    registerUpdateToList(readModel, event.listId, event.date);
+    listState.description.content = event.description;
+  }
+};
+
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ListCreated')(event)) {
     if (!readmodel.usedListIds.includes(event.listId)) {
@@ -111,9 +123,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isEventOfType('ListNameEdited')(event)) {
     handleListNameEditedEvent(readmodel, event);
   } else if (isEventOfType('ListDescriptionEdited')(event)) {
-    const listState = readmodel.byListId[event.listId];
-    registerUpdateToList(readmodel, event.listId, event.date);
-    listState.description = rawUserInput(event.description);
+    handleListDescriptionEditedEvent(readmodel, event);
   } else if (isEventOfType('ListPromotionCreated')(event)) {
     const listState = readmodel.byListId[event.listId];
     if (listState !== undefined) {
