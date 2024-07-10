@@ -87,6 +87,34 @@ describe('handle-event', () => {
     });
   });
 
+  describe.skip('given a ListDescriptionEdited event', () => {
+    const listCreated = arbitraryListCreatedEvent();
+    const listDescriptionEditedToTheSameValue = constructEvent('ListDescriptionEdited')({
+      listId: listCreated.listId,
+      description: listCreated.description,
+    });
+
+    describe.each([
+      ['when the description in the event matches the description the list has been created with', [listCreated]],
+      ['when the description in the event matches the description the list already has been update to', [listCreated, listDescriptionEditedToTheSameValue]],
+    ])('%s', (_, events) => {
+      const readModel = pipe(
+        events,
+        RA.reduce(initialState(), handleEvent),
+      );
+
+      const snapshot = structuredClone(readModel);
+
+      beforeEach(() => {
+        handleEvent(readModel, listDescriptionEditedToTheSameValue);
+      });
+
+      it('does not change the read model state', () => {
+        expect(JSON.stringify(readModel)).toStrictEqual(JSON.stringify(snapshot));
+      });
+    });
+  });
+
   describe('given an ArticleAddedToList event', () => {
     const listCreated = arbitraryListCreatedEvent();
     const articleAdded = {
