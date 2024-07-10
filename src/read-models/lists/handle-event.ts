@@ -42,12 +42,18 @@ export const initialState = (): ReadModel => ({
 
 const handleArticleAddedToListEvent = (readmodel: ReadModel, event: EventOfType<'ArticleAddedToList'>) => {
   const listState = readmodel.byListId[event.listId];
+  if (listState === undefined) {
+    return;
+  }
   const expressionDoi = toExpressionDoi(event.articleId);
-  registerUpdateToList(readmodel, event.listId, event.date);
-  listState.entries.set(expressionDoi, {
-    expressionDoi,
-    addedAtListVersion: listState.version,
-  });
+  const isExpressionAlreadyInList = listState.entries.has(expressionDoi);
+  if (!isExpressionAlreadyInList) {
+    registerUpdateToList(readmodel, event.listId, event.date);
+    listState.entries.set(expressionDoi, {
+      expressionDoi,
+      addedAtListVersion: listState.version,
+    });
+  }
 };
 
 const handleArticleRemovedFromListEvent = (readModel: ReadModel, event: EventOfType<'ArticleRemovedFromList'>) => {

@@ -43,7 +43,7 @@ describe('handle-event', () => {
     });
   });
 
-  describe.skip('given an ArticleAddedToList event', () => {
+  describe('given an ArticleAddedToList event', () => {
     const listCreated = arbitraryListCreatedEvent();
     const articleAdded = {
       ...arbitraryArticleAddedToListEvent(),
