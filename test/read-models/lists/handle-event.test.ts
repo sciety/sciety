@@ -61,12 +61,17 @@ describe('handle-event', () => {
 
   describe('given a ListNameEdited event', () => {
     const listCreated = arbitraryListCreatedEvent();
+    const listDeleted = constructEvent('ListDeleted')({ listId: listCreated.listId });
+    const otherListCreated = arbitraryListCreatedEvent();
     const listNameEditedToTheSameValue = constructEvent('ListNameEdited')({
       listId: listCreated.listId,
       name: listCreated.name,
     });
 
     describe.each([
+      ['when no lists exist', []],
+      ['when the list has been deleted', [listCreated, listDeleted]],
+      ['when the list mentioned in the event does not exist', [otherListCreated]],
       ['when the name in the event matches the name the list has been created with', [listCreated]],
       ['when the name in the event matches the name the list already has been update to', [listCreated, listNameEditedToTheSameValue]],
     ])('%s', (_, events) => {
@@ -89,12 +94,17 @@ describe('handle-event', () => {
 
   describe('given a ListDescriptionEdited event', () => {
     const listCreated = arbitraryListCreatedEvent();
+    const listDeleted = constructEvent('ListDeleted')({ listId: listCreated.listId });
+    const otherListCreated = arbitraryListCreatedEvent();
     const listDescriptionEditedToTheSameValue = constructEvent('ListDescriptionEdited')({
       listId: listCreated.listId,
       description: listCreated.description,
     });
 
     describe.each([
+      ['when no lists exist', []],
+      ['when the list has been deleted', [listCreated, listDeleted]],
+      ['when the list mentioned in the event does not exist', [otherListCreated]],
       ['when the description in the event matches the description the list has been created with', [listCreated]],
       ['when the description in the event matches the description the list already has been update to', [listCreated, listDescriptionEditedToTheSameValue]],
     ])('%s', (_, events) => {
