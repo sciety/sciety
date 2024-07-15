@@ -1,3 +1,11 @@
-import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
+import * as t from 'io-ts';
 
-export const unsafeAnnotationContentCodec = unsafeUserInputCodec;
+type UnsafeAnnotationContentBrand = {
+  readonly UnsafeAnnotationContent: unique symbol,
+};
+
+export const unsafeAnnotationContentCodec = t.brand(
+  t.string,
+  (input): input is t.Branded<string, UnsafeAnnotationContentBrand> => input.length > 0,
+  'UnsafeAnnotationContent',
+);

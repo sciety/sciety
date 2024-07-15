@@ -5,7 +5,7 @@ describe('unsafe-annotation-content', () => {
   describe('when decoding an empty string', () => {
     const result = unsafeAnnotationContentCodec.decode('');
 
-    it.failing('fails', () => {
+    it('fails', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
