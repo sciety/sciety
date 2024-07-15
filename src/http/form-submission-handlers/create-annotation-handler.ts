@@ -8,14 +8,12 @@ import * as t from 'io-ts';
 import { Middleware, ParameterizedContext } from 'koa';
 import {
   decodeFormSubmission,
-  Dependencies as DecodeFormSubmissionDependencies,
 } from './decode-form-submission';
-import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
-import { handleCreateAnnotationCommand, Dependencies as HandleCreateAnnotationCommandDependencies } from './handle-create-annotation-command';
-import { Queries } from '../../read-models';
+import { ensureUserIsLoggedIn } from './ensure-user-is-logged-in';
+import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { toErrorPageViewModel } from '../../read-side/html-pages/construct-error-page-view-model';
 import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
-import { createAnnotationFormPage, paramsCodec, Dependencies as CreateAnnotationFormPageDependencies } from '../../read-side/html-pages/create-annotation-form-page';
+import { createAnnotationFormPage, paramsCodec } from '../../read-side/html-pages/create-annotation-form-page';
 import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
 import { standardPageLayout } from '../../read-side/html-pages/shared-components/standard-page-layout';
 import { inputFieldNames } from '../../standards';
@@ -23,17 +21,15 @@ import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
 import { UserId } from '../../types/user-id';
+import { DependenciesForCommands } from '../../write-side';
 import { AnnotateArticleInListCommand, annotateArticleInListCommandCodec } from '../../write-side/commands';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
+import * as listResource from '../../write-side/resources/list';
 import { detectClientClassification } from '../detect-client-classification';
-import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
+import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 import { sendHtmlResponse } from '../send-html-response';
 
-type Dependencies = CreateAnnotationFormPageDependencies &
-Queries &
-EnsureUserIsLoggedInDependencies &
-DecodeFormSubmissionDependencies &
-HandleCreateAnnotationCommandDependencies &
-SendErrorHtmlResponseDependencies;
+type Dependencies = DependenciesForViews & DependenciesForCommands;
 
 const isUserAllowedToCreateAnnotation = (userId: UserId, listOwnerId: UserId | GroupId) => userId === listOwnerId;
 
@@ -97,7 +93,10 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
     return;
   }
 
-  const commandResult = await handleCreateAnnotationCommand(dependencies)(context.request.body)();
+  const commandResult = await pipe(
+    command.right,
+    executeResourceAction(dependencies, listResource.annotate),
+  )();
 
   if (E.isRight(commandResult)) {
     if (commandResult.right === 'events-created') {
