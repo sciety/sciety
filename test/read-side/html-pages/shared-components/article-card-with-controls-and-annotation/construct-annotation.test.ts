@@ -13,10 +13,10 @@ import { TestFramework, createTestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import { arbitraryListId } from '../../../../types/list-id.helper';
-import { arbitraryUnsafeUserInput } from '../../../../types/unsafe-user-input.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../../write-side/commands/create-user-account-command.helper';
+import { arbitraryUnsafeAnnotationContent } from '../../../../write-side/commands/unsafe-annotation-content.helper';
 
 describe('construct-annotation', () => {
   let framework: TestFramework;
@@ -36,7 +36,7 @@ describe('construct-annotation', () => {
   describe('when there is an annotation', () => {
     const expressionDoi = arbitraryExpressionDoi();
     const articleId = expressionDoi;
-    const content = arbitraryUnsafeUserInput();
+    const content = arbitraryUnsafeAnnotationContent();
     let result: Annotation;
 
     describe('on a list owned by a user', () => {
