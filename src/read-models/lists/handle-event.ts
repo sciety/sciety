@@ -66,27 +66,23 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       }
     }
   } else if (isEventOfType('ArticleAddedToList')(event)) {
-    const listState = readmodel.byListId[event.listId];
     const expressionDoi = toExpressionDoi(event.articleId);
     registerUpdateToList(readmodel, event.listId, event.date);
-    listState.entries.set(expressionDoi, {
+    readmodel.byListId[event.listId].entries.set(expressionDoi, {
       expressionDoi,
-      addedAtListVersion: listState.version,
+      addedAtListVersion: readmodel.byListId[event.listId].version,
     });
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
-    const listState = readmodel.byListId[event.listId];
     registerUpdateToList(readmodel, event.listId, event.date);
-    if (listState !== undefined) {
-      listState.entries.delete(toExpressionDoi(event.articleId));
+    if (readmodel.byListId[event.listId] !== undefined) {
+      readmodel.byListId[event.listId].entries.delete(toExpressionDoi(event.articleId));
     }
   } else if (isEventOfType('ListNameEdited')(event)) {
-    const listState = readmodel.byListId[event.listId];
     registerUpdateToList(readmodel, event.listId, event.date);
-    listState.name = event.name;
+    readmodel.byListId[event.listId].name = event.name;
   } else if (isEventOfType('ListDescriptionEdited')(event)) {
-    const listState = readmodel.byListId[event.listId];
     registerUpdateToList(readmodel, event.listId, event.date);
-    listState.description = rawUserInput(event.description);
+    readmodel.byListId[event.listId].description = rawUserInput(event.description);
   } else if (isEventOfType('ListPromotionCreated')(event)) {
     const listState = readmodel.byListId[event.listId];
     if (listState !== undefined) {
@@ -96,10 +92,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       readmodel.byPromotingGroupId[event.byGroup].set(listState.id, toList(listState));
     }
   } else if (isEventOfType('ListPromotionRemoved')(event)) {
-    const listState = readmodel.byListId[event.listId];
-    if (listState !== undefined) {
+    const list = readmodel.byListId[event.listId];
+    if (list !== undefined) {
       if (readmodel.byPromotingGroupId[event.byGroup] !== undefined) {
-        readmodel.byPromotingGroupId[event.byGroup].delete(listState.id);
+        readmodel.byPromotingGroupId[event.byGroup].delete(list.id);
       }
     }
   }
