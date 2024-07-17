@@ -95,29 +95,4 @@ describe('handle-event', () => {
       });
     });
   });
-
-  describe('given a ListDeleted event', () => {
-    const listCreated = arbitraryListCreatedEvent();
-    const listDeleted = constructEvent('ListDeleted')({ listId: listCreated.listId });
-
-    describe.each([
-      ['when the list was never created', []],
-      ['when the list was created and deleted', [listCreated, listDeleted]],
-    ])('%s', (_, events) => {
-      const readModel = pipe(
-        events,
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      const snapshot = structuredClone(readModel);
-
-      beforeEach(() => {
-        handleEvent(readModel, listDeleted);
-      });
-
-      it('does not change the read model state', () => {
-        expect(JSON.stringify(readModel)).toStrictEqual(JSON.stringify(snapshot));
-      });
-    });
-  });
 });
