@@ -4,7 +4,7 @@ import { constructEvent } from '../../../../src/domain-events';
 import { ArticleId } from '../../../../src/types/article-id';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { addArticle } from '../../../../src/write-side/resources/list/add-article';
-import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
+import { arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
@@ -155,6 +155,23 @@ describe('add-article', () => {
   });
 
   describe('when a list with the given id existed and was then deleted', () => {
-    it.todo('fails with not-found');
+    const listCreatedEvent = arbitraryListCreatedEvent();
+    const result = pipe(
+      [
+        listCreatedEvent,
+        {
+          ...arbitraryListDeletedEvent(),
+          listId: listCreatedEvent.listId,
+        },
+      ],
+      addArticle({
+        listId: listCreatedEvent.listId,
+        articleId: arbitraryExpressionDoi(),
+      }),
+    );
+
+    it.failing('fails', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });
