@@ -42,10 +42,9 @@ export const initialState = (): ReadModel => ({
 
 const handleArticleRemovedFromListEvent = (readModel: ReadModel, event: EventOfType<'ArticleRemovedFromList'>) => {
   const listState = readModel.byListId[event.listId];
+  registerUpdateToList(readModel, event.listId, event.date);
   if (listState !== undefined) {
-    if (listState.entries.delete(toExpressionDoi(event.articleId))) {
-      registerUpdateToList(readModel, event.listId, event.date);
-    }
+    listState.entries.delete(toExpressionDoi(event.articleId));
   }
 };
 
