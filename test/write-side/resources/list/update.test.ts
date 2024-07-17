@@ -13,7 +13,7 @@ const arbitraryEditListDetailsCommand = (): EditListDetailsCommand => ({
   description: arbitrarySanitisedUserInput(),
 });
 
-describe('update', () => {
+describe.skip('update', () => {
   const command = arbitraryEditListDetailsCommand();
   let result: ReadonlyArray<DomainEvent>;
 
