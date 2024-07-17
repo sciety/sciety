@@ -77,6 +77,21 @@ describe('annotate', () => {
           });
         });
       });
+
+      describe('when the annotation is too long', () => {
+        const result = pipe(
+          relevantEvents,
+          annotate({
+            annotationContent: arbitraryUnsafeAnnotationContent(5000),
+            articleId: new ArticleId(expressionDoi),
+            listId,
+          }),
+        );
+
+        it('fails', () => {
+          expect(E.isLeft(result)).toBe(true);
+        });
+      });
     });
 
     describe('and the article is in the list with an annotation', () => {
