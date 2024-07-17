@@ -10,5 +10,3 @@ export const unsafeAnnotationContentCodec = t.brand(
   && input.length <= 4000,
   'UnsafeAnnotationContent',
 );
-
-export type UnsafeAnnotationContent = t.TypeOf<typeof unsafeAnnotationContentCodec>;
