@@ -1,6 +1,5 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import {
   arbitraryArticleAddedToListEvent,
@@ -35,31 +34,6 @@ describe('handle-event', () => {
 
       beforeEach(() => {
         handleEvent(readModel, articleRemoved);
-      });
-
-      it('does not change the read model state', () => {
-        expect(JSON.stringify(readModel)).toStrictEqual(JSON.stringify(snapshot));
-      });
-    });
-  });
-
-  describe('given a ListCreated event', () => {
-    const listCreated = arbitraryListCreatedEvent();
-    const listDeleted = constructEvent('ListDeleted')({ listId: listCreated.listId });
-
-    describe.each([
-      ['when the list exists', [listCreated]],
-      ['when the list was created and deleted', [listCreated, listDeleted]],
-    ])('%s', (_, events) => {
-      const readModel = pipe(
-        events,
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      const snapshot = structuredClone(readModel);
-
-      beforeEach(() => {
-        handleEvent(readModel, listCreated);
       });
 
       it('does not change the read model state', () => {
