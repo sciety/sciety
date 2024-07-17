@@ -233,28 +233,23 @@ describe('lookup-list', () => {
     });
   });
 
-  describe('when the list has been', () => {
-    const created = {
-      ...arbitraryListCreatedEvent(),
-      listId,
-    };
-    const deleted = {
-      ...arbitraryListDeletedEvent(),
-      listId,
-    };
+  describe('when the list has been deleted', () => {
+    const readModel = pipe(
+      [
+        {
+          ...arbitraryListCreatedEvent(),
+          listId,
+        },
+        {
+          ...arbitraryListDeletedEvent(),
+          listId,
+        },
+      ],
+      RA.reduce(initialState(), handleEvent),
+    );
 
-    describe.each([
-      ['created, deleted', [created, deleted]],
-      // ['created, deleted, created', [created, deleted, created]],
-    ])('%s', (_, events) => {
-      const readModel = pipe(
-        events,
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      it('returns not found', () => {
-        expect(lookupList(readModel)(listId)).toStrictEqual(O.none);
-      });
+    it('returns not found', () => {
+      expect(lookupList(readModel)(listId)).toStrictEqual(O.none);
     });
   });
 });
