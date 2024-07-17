@@ -43,34 +43,6 @@ describe('handle-event', () => {
     });
   });
 
-  describe.skip('given an ArticleAddedToList event', () => {
-    const listCreated = arbitraryListCreatedEvent();
-    const articleAdded = {
-      ...arbitraryArticleAddedToListEvent(),
-      listId: listCreated.listId,
-    };
-
-    describe.each([
-      ['when the list does not exist', []],
-      ['when the article is already in the list', [listCreated, articleAdded]],
-    ])('%s', (_, events) => {
-      const readModel = pipe(
-        events,
-        RA.reduce(initialState(), handleEvent),
-      );
-
-      const snapshot = structuredClone(readModel);
-
-      beforeEach(() => {
-        handleEvent(readModel, articleAdded);
-      });
-
-      it('does not change the read model state', () => {
-        expect(JSON.stringify(readModel)).toStrictEqual(JSON.stringify(snapshot));
-      });
-    });
-  });
-
   describe('given a ListCreated event', () => {
     const listCreated = arbitraryListCreatedEvent();
     const listDeleted = constructEvent('ListDeleted')({ listId: listCreated.listId });
