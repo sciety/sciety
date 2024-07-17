@@ -67,18 +67,6 @@ const handleArticleRemovedFromListEvent = (readModel: ReadModel, event: EventOfT
   }
 };
 
-const handleListNameEditedEvent = (readModel: ReadModel, event: EventOfType<'ListNameEdited'>) => {
-  const listState = readModel.byListId[event.listId];
-  if (listState === undefined) {
-    return;
-  }
-  const listNameFoundInListState = listState.name;
-  if (listNameFoundInListState !== event.name) {
-    registerUpdateToList(readModel, event.listId, event.date);
-    listState.name = event.name;
-  }
-};
-
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('ListCreated')(event)) {
     if (!readmodel.usedListIds.includes(event.listId)) {
@@ -109,7 +97,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     handleArticleRemovedFromListEvent(readmodel, event);
   } else if (isEventOfType('ListNameEdited')(event)) {
-    handleListNameEditedEvent(readmodel, event);
+    const listState = readmodel.byListId[event.listId];
+    registerUpdateToList(readmodel, event.listId, event.date);
+    listState.name = event.name;
   } else if (isEventOfType('ListDescriptionEdited')(event)) {
     const listState = readmodel.byListId[event.listId];
     registerUpdateToList(readmodel, event.listId, event.date);
