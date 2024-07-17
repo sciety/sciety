@@ -5,7 +5,6 @@ import { List, ListEntry } from './list';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { rawUserInput } from '../../read-side';
 import { toExpressionDoi } from '../../types/article-id';
-import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 import { ListId } from '../../types/list-id';
 
@@ -13,13 +12,9 @@ type ListState = Pick<
 List,
 'id' | 'ownerId' | 'updatedAt' | 'name' | 'description'
 > & {
-  entries: Map<ExpressionDoi, ListEntry>,
+  entries: Array<ListEntry>,
   version: number,
 };
-
-export const toList = (
-  listState: ListState,
-): List => ({ ...listState, entries: Array.from(listState.entries.values()) });
 
 const registerUpdateToList = (readModel: ReadModel, listId: ListId, date: Date) => {
   if (readModel.byListId[listId] !== undefined) {
@@ -46,7 +41,7 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       readmodel.byListId[event.listId] = {
         id: event.listId,
         ownerId: event.ownerId,
-        entries: new Map(),
+        entries: [],
         updatedAt: event.date,
         name: event.name,
         description: rawUserInput(event.description),
@@ -68,14 +63,16 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
   } else if (isEventOfType('ArticleAddedToList')(event)) {
     const expressionDoi = toExpressionDoi(event.articleId);
     registerUpdateToList(readmodel, event.listId, event.date);
-    readmodel.byListId[event.listId].entries.set(expressionDoi, {
+    readmodel.byListId[event.listId].entries.push({
       expressionDoi,
       addedAtListVersion: readmodel.byListId[event.listId].version,
     });
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
     if (readmodel.byListId[event.listId] !== undefined) {
-      readmodel.byListId[event.listId].entries.delete(toExpressionDoi(event.articleId));
+      readmodel.byListId[event.listId].entries = readmodel.byListId[event.listId].entries.filter(
+        (entry) => entry.expressionDoi !== toExpressionDoi(event.articleId),
+      );
     }
   } else if (isEventOfType('ListNameEdited')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
@@ -84,12 +81,12 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     registerUpdateToList(readmodel, event.listId, event.date);
     readmodel.byListId[event.listId].description = rawUserInput(event.description);
   } else if (isEventOfType('ListPromotionCreated')(event)) {
-    const listState = readmodel.byListId[event.listId];
-    if (listState !== undefined) {
+    const list = readmodel.byListId[event.listId];
+    if (list !== undefined) {
       if (readmodel.byPromotingGroupId[event.byGroup] === undefined) {
         readmodel.byPromotingGroupId[event.byGroup] = new Map();
       }
-      readmodel.byPromotingGroupId[event.byGroup].set(listState.id, toList(listState));
+      readmodel.byPromotingGroupId[event.byGroup].set(list.id, list);
     }
   } else if (isEventOfType('ListPromotionRemoved')(event)) {
     const list = readmodel.byListId[event.listId];

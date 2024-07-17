@@ -13,7 +13,7 @@ export const listsStatus = (readModel: ReadModel) => (): Json => pipe(
     },
     ownedByUsers: pipe(
       left,
-      RA.partition((userList) => userList.entries.size > 0),
+      RA.partition((userList) => userList.entries.length > 0),
       (partitioned) => ({
         empty: partitioned.left.length,
         nonEmpty: partitioned.right.length,
