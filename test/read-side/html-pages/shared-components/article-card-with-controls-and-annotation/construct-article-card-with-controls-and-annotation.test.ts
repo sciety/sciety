@@ -6,8 +6,8 @@ import { ArticleCardWithControlsAndAnnotationViewModel, constructArticleCardWith
 import { ArticleId } from '../../../../../src/types/article-id';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
+import { arbitraryUnsafeUserInput } from '../../../../types/unsafe-user-input.helper';
 import { arbitraryCreateListCommand } from '../../../../write-side/commands/create-list-command.helper';
-import { arbitraryUnsafeAnnotationContent } from '../../../../write-side/commands/unsafe-annotation-content.helper';
 
 const mustBeOnTheRight = E.getOrElseW((left: unknown) => {
   throw new Error(`Must be on the right. Left was: ${JSON.stringify(left, null, 2)}`);
@@ -60,7 +60,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
 
         beforeEach(async () => {
           await framework.commandHelpers.createAnnotation({
-            annotationContent: arbitraryUnsafeAnnotationContent(),
+            annotationContent: arbitraryUnsafeUserInput(),
             articleId: new ArticleId(articleId),
             listId,
           });

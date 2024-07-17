@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { ArticleId } from '../../../../src/types/article-id';
+import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { AnnotateArticleInListCommand } from '../../../../src/write-side/commands';
-import { UnsafeAnnotationContent } from '../../../../src/write-side/commands/unsafe-annotation-content';
 import { annotate } from '../../../../src/write-side/resources/list';
 import {
   arbitraryListCreatedEvent,
@@ -13,12 +13,12 @@ import {
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
-import { arbitraryUnsafeAnnotationContent } from '../../commands/unsafe-annotation-content.helper';
+import { arbitraryLongUnsafeUserInput, arbitraryUnsafeUserInput } from '../../../types/unsafe-user-input.helper';
 
 describe('annotate', () => {
   const expressionDoi = arbitraryExpressionDoi();
   const listId = arbitraryListId();
-  const content = arbitraryUnsafeAnnotationContent();
+  const content = arbitraryUnsafeUserInput();
   const annotateArticleInListCommand: AnnotateArticleInListCommand = {
     annotationContent: content,
     articleId: new ArticleId(expressionDoi),
@@ -47,7 +47,7 @@ describe('annotate', () => {
         const result = pipe(
           relevantEvents,
           annotate({
-            annotationContent: '' as UnsafeAnnotationContent,
+            annotationContent: toUnsafeUserInput(''),
             articleId: new ArticleId(expressionDoi),
             listId,
           }),
@@ -82,7 +82,7 @@ describe('annotate', () => {
         const result = pipe(
           relevantEvents,
           annotate({
-            annotationContent: arbitraryUnsafeAnnotationContent(5000),
+            annotationContent: arbitraryLongUnsafeUserInput(5000),
             articleId: new ArticleId(expressionDoi),
             listId,
           }),

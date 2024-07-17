@@ -4,6 +4,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { UnsafeAnnotationContent, unsafeAnnotationContentCodec } from '../../../src/write-side/commands/unsafe-annotation-content';
 import { arbitraryWord } from '../../helpers';
 
+// ts-unused-exports:disable-next-line
 export const arbitraryUnsafeAnnotationContent = (length = 12): UnsafeAnnotationContent => pipe(
   arbitraryWord(length),
   unsafeAnnotationContentCodec.decode,
