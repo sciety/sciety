@@ -6,7 +6,6 @@ type UnsafeAnnotationContentBrand = {
 
 export const unsafeAnnotationContentCodec = t.brand(
   t.string,
-  (input): input is t.Branded<string, UnsafeAnnotationContentBrand> => input.length > 0
-  && input.length <= 4000,
+  (input): input is t.Branded<string, UnsafeAnnotationContentBrand> => input.length > 0,
   'UnsafeAnnotationContent',
 );
