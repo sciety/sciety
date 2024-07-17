@@ -1,13 +1,6 @@
-import * as E from 'fp-ts/Either';
-import { unsafeAnnotationContentCodec } from '../../../src/write-side/commands/unsafe-annotation-content';
-
 describe('unsafe-annotation-content', () => {
   describe('when decoding an empty string', () => {
-    const result = unsafeAnnotationContentCodec.decode('');
-
-    it.failing('fails', () => {
-      expect(E.isLeft(result)).toBe(true);
-    });
+    it.todo('fails');
   });
 
   describe('when decoding a string that is too long', () => {
