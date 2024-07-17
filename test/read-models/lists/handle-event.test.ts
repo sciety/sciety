@@ -8,7 +8,7 @@ import {
 } from '../../domain-events/list-resource-events.helper';
 
 describe('handle-event', () => {
-  describe.skip('given an ArticleRemovedFromList event', () => {
+  describe('given an ArticleRemovedFromList event', () => {
     const listCreated = arbitraryListCreatedEvent();
     const articleAdded = {
       ...arbitraryArticleAddedToListEvent(),
@@ -25,19 +25,15 @@ describe('handle-event', () => {
       ['when the article has never been in the list', [listCreated]],
       ['when the article was added and then removed from the list', [listCreated, articleAdded, articleRemoved]],
     ])('%s', (_, events) => {
-      const readModel = pipe(
+      const startingReadModelState = pipe(
         events,
         RA.reduce(initialState(), handleEvent),
       );
 
-      const snapshot = structuredClone(readModel);
-
-      beforeEach(() => {
-        handleEvent(readModel, articleRemoved);
-      });
+      const readModel = handleEvent(startingReadModelState, articleRemoved);
 
       it('does not change the read model state', () => {
-        expect(readModel).toStrictEqual(snapshot);
+        expect(readModel).toStrictEqual(startingReadModelState);
       });
     });
   });
