@@ -141,7 +141,17 @@ describe('add-article', () => {
   });
 
   describe('when no list with the given id has ever existed', () => {
-    it.todo('fails with not-found');
+    const result = pipe(
+      [],
+      addArticle({
+        listId: arbitraryListId(),
+        articleId: arbitraryExpressionDoi(),
+      }),
+    );
+
+    it('fails', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 
   describe('when a list with the given id existed and was then deleted', () => {
