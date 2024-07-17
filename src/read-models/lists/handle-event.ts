@@ -17,10 +17,8 @@ List,
 };
 
 const registerUpdateToList = (readModel: ReadModel, listId: ListId, date: Date) => {
-  if (readModel.byListId[listId] !== undefined) {
-    readModel.byListId[listId].version += 1;
-    readModel.byListId[listId].updatedAt = date;
-  }
+  readModel.byListId[listId].version += 1;
+  readModel.byListId[listId].updatedAt = date;
 };
 
 export type ReadModel = {
@@ -69,11 +67,9 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     });
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
-    if (readmodel.byListId[event.listId] !== undefined) {
-      readmodel.byListId[event.listId].entries = readmodel.byListId[event.listId].entries.filter(
-        (entry) => entry.expressionDoi !== toExpressionDoi(event.articleId),
-      );
-    }
+    readmodel.byListId[event.listId].entries = readmodel.byListId[event.listId].entries.filter(
+      (entry) => entry.expressionDoi !== toExpressionDoi(event.articleId),
+    );
   } else if (isEventOfType('ListNameEdited')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
     readmodel.byListId[event.listId].name = event.name;
