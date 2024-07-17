@@ -13,8 +13,7 @@ describe('handle-event', () => {
 
     describe.each([
       ['when the list does not exist', []],
-      ['when the article has never been in the list', [listCreated]],
-      // ['when the article was added and then removed from the list', [listCreated, articleAdded, articleRemoved]],
+      ['when the article is not in the list', [listCreated]],
     ])('%s', (_, events) => {
       const startingReadModelState = pipe(
         events,
