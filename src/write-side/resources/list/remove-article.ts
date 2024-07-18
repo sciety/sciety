@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import { doesListExist } from './does-list-exist';
 import {
   constructEvent,
@@ -22,10 +22,6 @@ type ListWriteModel = {
   name: string,
   description: string,
 };
-
-type GetListWriteModel = (listId: ListId)
-=> (events: ReadonlyArray<DomainEvent>)
-=> E.Either<ErrorMessage, ListWriteModel>;
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
@@ -88,13 +84,6 @@ const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, 
   return resource;
 };
 
-const localGetListWriteModel: GetListWriteModel = (listId) => (events) => pipe(
-  events,
-  filterToEventsRelevantToWriteModel,
-  RA.filter(isAnEventOfThisList(listId)),
-  RA.reduce(E.left(toErrorMessage('list-not-found')), updateListWriteModel),
-);
-
 const createAppropriateEvents = (command: RemoveArticleFromListCommand) => (listResource: ListWriteModel) => pipe(
   listResource.articles,
   RA.some((article) => article.articleId.value === command.articleId),
@@ -114,6 +103,10 @@ export const removeArticle: ResourceAction<RemoveArticleFromListCommand> = (comm
     doesListExist(command.listId),
     () => toErrorMessage('list-not-found'),
   ),
-  E.chain(localGetListWriteModel(command.listId)),
+  E.chain(flow(
+    filterToEventsRelevantToWriteModel,
+    RA.filter(isAnEventOfThisList(command.listId)),
+    RA.reduce(E.left(toErrorMessage('list-not-found')), updateListWriteModel),
+  )),
   E.map(createAppropriateEvents(command)),
 );
