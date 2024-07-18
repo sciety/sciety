@@ -68,7 +68,7 @@ describe('create', () => {
       create(input),
     );
 
-    it.failing('rejects the command', () => {
+    it('rejects the command', () => {
       expect(result).toStrictEqual(E.left('list-id-has-already-been-used'));
     });
   });
