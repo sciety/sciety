@@ -84,7 +84,7 @@ describe('remove-article', () => {
       }),
     );
 
-    it.failing('rejects the command with "list-not-found"', () => {
+    it('rejects the command with "list-not-found"', () => {
       expect(result).toStrictEqual(E.left('list-not-found'));
     });
   });

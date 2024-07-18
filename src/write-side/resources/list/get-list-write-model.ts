@@ -82,5 +82,5 @@ export const getListWriteModel: GetListWriteModel = (listId) => (events) => pipe
   events,
   filterToEventsRelevantToWriteModel,
   RA.filter(isAnEventOfThisList(listId)),
-  RA.reduce(E.left(toErrorMessage(`List with list id ${listId} not found`)), updateListWriteModel),
+  RA.reduce(E.left(toErrorMessage('list-not-found')), updateListWriteModel),
 );

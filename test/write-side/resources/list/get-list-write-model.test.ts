@@ -96,7 +96,7 @@ describe('get-list-write-model', () => {
     );
 
     it('fails', () => {
-      expect(result).toStrictEqual(E.left(expect.stringContaining(listId)));
+      expect(result).toStrictEqual(E.left('list-not-found'));
     });
   });
 });
