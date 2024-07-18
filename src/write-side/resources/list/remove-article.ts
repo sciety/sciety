@@ -10,7 +10,7 @@ import {
   filterByName,
 } from '../../../domain-events';
 import { ArticleId } from '../../../types/article-id';
-import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
+import { toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
 import { RemoveArticleFromListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
@@ -21,24 +21,21 @@ type ListWriteModel = {
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
-const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'ArticleAddedToList', 'ArticleRemovedFromList']);
+const filterToEventsRelevantToWriteModel = filterByName(['ArticleAddedToList', 'ArticleRemovedFromList']);
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
 const updateListWriteModel = (
   command: RemoveArticleFromListCommand,
-) => (resource: E.Either<ErrorMessage, ListWriteModel>, event: DomainEvent) => {
-  if (isEventOfType('ListCreated')(event)) {
-    return E.right({ articles: [] } satisfies ListWriteModel);
-  }
+) => (resource: ListWriteModel, event: DomainEvent) => {
   if (isEventOfType('ArticleAddedToList')(event)) {
     if (event.articleId.value === command.articleId) {
       pipe(
         resource,
-        E.map((listResource) => {
+        (listResource) => {
           listResource.articles.push(event.articleId);
           return undefined;
-        }),
+        },
       );
     }
   }
@@ -46,7 +43,7 @@ const updateListWriteModel = (
     if (event.articleId.value === command.articleId) {
       return pipe(
         resource,
-        E.map(() => ({ articles: [] })),
+        () => ({ articles: [] }),
       );
     }
   }
@@ -72,10 +69,10 @@ export const removeArticle: ResourceAction<RemoveArticleFromListCommand> = (comm
     doesListExist(command.listId),
     () => toErrorMessage('list-not-found'),
   ),
-  E.chain(flow(
+  E.map(flow(
     filterToEventsRelevantToWriteModel,
     RA.filter(isAnEventOfThisList(command.listId)),
-    RA.reduce(E.left(toErrorMessage('list-not-found')), updateListWriteModel(command)),
+    RA.reduce({ articles: [] }, updateListWriteModel(command)),
   )),
   E.map(createAppropriateEvents(command)),
 );
