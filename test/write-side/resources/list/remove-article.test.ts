@@ -112,4 +112,32 @@ describe('remove-article', () => {
       expect(result).toStrictEqual(E.left('list-not-found'));
     });
   });
+
+  describe('when the list existed, the article was added, and the list was later deleted', () => {
+    const result = pipe(
+      [
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: arbitraryListOwnerId(),
+        }),
+        constructEvent('ArticleAddedToList')({
+          listId,
+          articleId: new ArticleId(expressionDoi),
+        }),
+        constructEvent('ListDeleted')({
+          listId,
+        }),
+      ],
+      removeArticle({
+        listId,
+        articleId: expressionDoi,
+      }),
+    );
+
+    it.failing('rejects the command with "list-not-found"', () => {
+      expect(result).toStrictEqual(E.left('list-not-found'));
+    });
+  });
 });
