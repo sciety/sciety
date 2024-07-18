@@ -13,49 +13,45 @@ describe('remove-article', () => {
   const listId = arbitraryListId();
   const expressionDoi = arbitraryExpressionDoi();
 
-  describe('the article is in the list', () => {
-    const result = pipe(
-      [
-        constructEvent('ListCreated')({
-          listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+  describe('when the list exists', () => {
+    describe('and the article is in the list', () => {
+      const result = pipe(
+        [
+          constructEvent('ListCreated')({
+            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+          }),
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+        ],
+        removeArticle({
+          listId,
+          articleId: expressionDoi,
         }),
-        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
-      ],
-      removeArticle({
-        listId,
-        articleId: expressionDoi,
-      }),
-      E.getOrElseW(shouldNotBeCalled),
-    );
+        E.getOrElseW(shouldNotBeCalled),
+      );
 
-    it('raises exactly one event', () => {
-      expect(result).toHaveLength(1);
+      it('causes a state change in which the article is removed from the list', () => {
+        expect(result).toHaveLength(1);
+        expect(result[0]).toBeDomainEvent('ArticleRemovedFromList', {
+          articleId: new ArticleId(expressionDoi),
+          listId,
+        });
+      });
     });
 
-    it('succeeds and raises an event', () => {
-      expect(result[0]).toBeDomainEvent('ArticleRemovedFromList', {
-        articleId: new ArticleId(expressionDoi),
-        listId,
-      });
+    describe('and the article was never in the list', () => {
+      it.todo('rejects the command with "article-not-found"');
+    });
+
+    describe('and the article was in the list but has been removed', () => {
+      it.todo('accepts the command and causes no state change');
     });
   });
 
-  describe('the article is not in the list', () => {
-    const result = pipe(
-      [
-        constructEvent('ListCreated')({
-          listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
-        }),
-      ],
-      removeArticle({
-        listId,
-        articleId: expressionDoi,
-      }),
-      E.getOrElseW(shouldNotBeCalled),
-    );
+  describe('when the list never existed', () => {
+    it.todo('rejects the command with "list-not-found"');
+  });
 
-    it('succeeds and raises no events', () => {
-      expect(result).toHaveLength(0);
-    });
+  describe('when the list existed and was later deleted', () => {
+    it.todo('rejects the command with "list-not-found"');
   });
 });
