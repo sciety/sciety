@@ -78,6 +78,7 @@ const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, 
   return resource;
 };
 
+/** @deprecated use more targeted write models for individual scenarios */
 export const getListWriteModel: GetListWriteModel = (listId) => (events) => pipe(
   events,
   filterToEventsRelevantToWriteModel,
