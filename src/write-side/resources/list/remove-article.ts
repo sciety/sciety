@@ -15,7 +15,7 @@ import { ListId } from '../../../types/list-id';
 import { RemoveArticleFromListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
-type ListWriteModel = Array<ArticleId>;
+type ListWriteModel = boolean;
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
@@ -28,19 +28,19 @@ const updateListWriteModel = (
 ) => (resource: ListWriteModel, event: DomainEvent) => {
   if (isEventOfType('ArticleAddedToList')(event)) {
     if (event.articleId.value === command.articleId) {
-      return [event.articleId];
+      return true;
     }
   }
   if (isEventOfType('ArticleRemovedFromList')(event)) {
     if (event.articleId.value === command.articleId) {
-      return [];
+      return false;
     }
   }
   return resource;
 };
 
 const createAppropriateEvents = (command: RemoveArticleFromListCommand) => (listResource: ListWriteModel) => pipe(
-  listResource.length > 0,
+  listResource,
   B.fold(
     () => [],
     () => [constructEvent('ArticleRemovedFromList')({
@@ -60,7 +60,7 @@ export const removeArticle: ResourceAction<RemoveArticleFromListCommand> = (comm
   E.map(flow(
     filterToEventsRelevantToWriteModel,
     RA.filter(isAnEventOfThisList(command.listId)),
-    RA.reduce([], updateListWriteModel(command)),
+    RA.reduce(false, updateListWriteModel(command)),
   )),
   E.map(createAppropriateEvents(command)),
 );
