@@ -51,8 +51,7 @@ const updateListWriteModel = (
 };
 
 const createAppropriateEvents = (command: RemoveArticleFromListCommand) => (listResource: ListWriteModel) => pipe(
-  listResource.articles,
-  RA.some((article) => article.value === command.articleId),
+  listResource.articles.length > 0,
   B.fold(
     () => [],
     () => [constructEvent('ArticleRemovedFromList')({
