@@ -14,12 +14,14 @@ describe('remove-article', () => {
   const expressionDoi = arbitraryExpressionDoi();
 
   describe('when the list exists', () => {
+    const listCreatedEvent = constructEvent('ListCreated')({
+      listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+    });
+
     describe('and the article is in the list', () => {
       const result = pipe(
         [
-          constructEvent('ListCreated')({
-            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
-          }),
+          listCreatedEvent,
           constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
         ],
         removeArticle({
@@ -39,7 +41,20 @@ describe('remove-article', () => {
     });
 
     describe('and the article was never in the list', () => {
-      it.todo('rejects the command with "article-not-found"');
+      const result = pipe(
+        [
+          listCreatedEvent,
+        ],
+        removeArticle({
+          listId,
+          articleId: arbitraryExpressionDoi(),
+        }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+
+      it.failing('rejects the command with "article-not-found"', () => {
+        expect(result).toStrictEqual(E.left('article-not-found'));
+      });
     });
 
     describe('and the article was in the list but has been removed', () => {
