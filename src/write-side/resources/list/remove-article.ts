@@ -1,4 +1,3 @@
-import * as A from 'fp-ts/Array';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
@@ -10,7 +9,7 @@ import {
   DomainEvent,
   filterByName,
 } from '../../../domain-events';
-import { ArticleId, eqArticleId } from '../../../types/article-id';
+import { ArticleId } from '../../../types/article-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
 import { RemoveArticleFromListCommand } from '../../commands';
@@ -47,11 +46,7 @@ const updateListWriteModel = (
     if (event.articleId.value === command.articleId) {
       return pipe(
         resource,
-        E.map((listResource) => pipe(
-          listResource.articles,
-          A.filter((article) => !eqArticleId.equals(article.articleId, event.articleId)),
-          (ids) => ({ ...listResource, articles: ids } satisfies ListWriteModel),
-        )),
+        E.map(() => ({ articles: [] })),
       );
     }
   }
