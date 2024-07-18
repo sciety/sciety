@@ -58,7 +58,21 @@ describe('remove-article', () => {
     });
 
     describe('and the article was in the list but has been removed', () => {
-      it.todo('accepts the command and causes no state change');
+      const result = pipe(
+        [
+          listCreatedEvent,
+          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+          constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
+        ],
+        removeArticle({
+          listId,
+          articleId: expressionDoi,
+        }),
+      );
+
+      it('accepts the command and causes no state change', () => {
+        expect(result).toStrictEqual(E.right([]));
+      });
     });
   });
 
