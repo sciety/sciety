@@ -19,8 +19,6 @@ import { ResourceAction } from '../resource-action';
 
 type ListWriteModel = {
   articles: Array<{ articleId: ArticleId, annotated: boolean }>,
-  name: string,
-  description: string,
 };
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
@@ -31,7 +29,7 @@ const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.
 
 const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, event: DomainEvent) => {
   if (isEventOfType('ListCreated')(event)) {
-    return E.right({ articles: [], name: event.name, description: event.description } satisfies ListWriteModel);
+    return E.right({ articles: [] } satisfies ListWriteModel);
   }
   if (isEventOfType('ArticleAddedToList')(event)) {
     pipe(
@@ -67,18 +65,6 @@ const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, 
         A.filter((article) => !eqArticleId.equals(article.articleId, event.articleId)),
         (ids) => ({ ...listResource, articles: ids } satisfies ListWriteModel),
       )),
-    );
-  }
-  if (isEventOfType('ListNameEdited')(event)) {
-    return pipe(
-      resource,
-      E.map((listResource) => ({ ...listResource, name: event.name } satisfies ListWriteModel)),
-    );
-  }
-  if (isEventOfType('ListDescriptionEdited')(event)) {
-    return pipe(
-      resource,
-      E.map((listResource) => ({ ...listResource, description: event.description } satisfies ListWriteModel)),
     );
   }
   return resource;
