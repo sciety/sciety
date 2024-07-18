@@ -49,7 +49,7 @@ describe('create', () => {
       create(input),
     );
 
-    it('returns no events', () => {
+    it('accepts the command and does not cause a state change', () => {
       expect(result).toStrictEqual(E.right([]));
     });
   });
@@ -68,8 +68,8 @@ describe('create', () => {
       create(input),
     );
 
-    it('returns no events', () => {
-      expect(result).toStrictEqual(E.right([]));
+    it.failing('rejects the command', () => {
+      expect(result).toStrictEqual(E.left('list-id-has-already-been-used'));
     });
   });
 });
