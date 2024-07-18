@@ -49,7 +49,6 @@ describe('remove-article', () => {
           listId,
           articleId: arbitraryExpressionDoi(),
         }),
-        E.getOrElseW(shouldNotBeCalled),
       );
 
       it.failing('rejects the command with "article-not-found"', () => {
