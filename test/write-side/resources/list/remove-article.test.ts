@@ -76,7 +76,17 @@ describe('remove-article', () => {
   });
 
   describe('when the list never existed', () => {
-    it.todo('rejects the command with "list-not-found"');
+    const result = pipe(
+      [],
+      removeArticle({
+        listId: arbitraryListId(),
+        articleId: arbitraryExpressionDoi(),
+      }),
+    );
+
+    it.failing('rejects the command with "list-not-found"', () => {
+      expect(result).toStrictEqual(E.left('list-not-found'));
+    });
   });
 
   describe('when the list existed and was later deleted', () => {
