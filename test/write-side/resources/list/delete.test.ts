@@ -54,7 +54,7 @@ describe('delete', () => {
       deleteList({ listId: listCreatedEvent.listId }),
     );
 
-    it.failing('accepts the command and does not cause a state change', () => {
+    it('accepts the command and does not cause a state change', () => {
       expect(result).toStrictEqual(E.right([]));
     });
   });
