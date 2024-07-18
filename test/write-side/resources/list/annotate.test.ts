@@ -9,6 +9,7 @@ import {
   arbitraryArticleAddedToListEvent,
   arbitraryArticleInListAnnotatedEvent,
   arbitraryArticleRemovedFromListEvent,
+  arbitraryListDeletedEvent,
 } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
@@ -167,6 +168,27 @@ describe('annotate', () => {
   });
 
   describe('when the list existed and was then deleted', () => {
-    it.todo('fails');
+    const result = pipe(
+      [
+        {
+          ...arbitraryListCreatedEvent(),
+          listId,
+        },
+        {
+          ...arbitraryArticleAddedToListEvent(),
+          articleId: new ArticleId(expressionDoi),
+          listId,
+        },
+        {
+          ...arbitraryListDeletedEvent(),
+          listId,
+        },
+      ],
+      annotate(annotateArticleInListCommand),
+    );
+
+    it.failing('fails', () => {
+      expect(result).toStrictEqual(E.left('not-found'));
+    });
   });
 });
