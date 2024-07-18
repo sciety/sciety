@@ -8,20 +8,21 @@ import { toErrorMessage } from '../../../types/error-message';
 import { DeleteListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
-const foo = (events: ReadonlyArray<DomainEvent>, command: DeleteListCommand) => pipe(
+const attemptToDeleteList = (events: ReadonlyArray<DomainEvent>, command: DeleteListCommand) => pipe(
   events,
-  getListIdsThatHaveEverBeenUsed,
-  (listIdsInUse) => (listIdsInUse.includes(command.listId)
-    ? E.right([])
-    : E.left(toErrorMessage('not-found'))
+  doesListExist(command.listId),
+  B.fold(
+    () => [],
+    () => [constructEvent('ListDeleted')(command)],
   ),
+  E.right,
 );
 
 export const deleteList: ResourceAction<DeleteListCommand> = (command) => (events) => pipe(
   events,
-  doesListExist(command.listId),
-  B.fold(
-    () => foo(events, command),
-    () => E.right([constructEvent('ListDeleted')(command)]),
+  getListIdsThatHaveEverBeenUsed,
+  (allocatedListIds) => (allocatedListIds.includes(command.listId)
+    ? attemptToDeleteList(events, command)
+    : E.left(toErrorMessage('not-found'))
   ),
 );
