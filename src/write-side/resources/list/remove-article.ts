@@ -1,6 +1,5 @@
 import * as A from 'fp-ts/Array';
 import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as B from 'fp-ts/boolean';
 import { flow, pipe } from 'fp-ts/function';
@@ -18,12 +17,12 @@ import { RemoveArticleFromListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
 type ListWriteModel = {
-  articles: Array<{ articleId: ArticleId, annotated: boolean }>,
+  articles: Array<{ articleId: ArticleId }>,
 };
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
-const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'ArticleAddedToList', 'ArticleRemovedFromList', 'ArticleInListAnnotated']);
+const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'ArticleAddedToList', 'ArticleRemovedFromList']);
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
@@ -35,24 +34,7 @@ const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, 
     pipe(
       resource,
       E.map((listResource) => {
-        listResource.articles.push({ articleId: event.articleId, annotated: false } satisfies ListWriteModel['articles'][number]);
-        return undefined;
-      }),
-    );
-  }
-  if (isEventOfType('ArticleInListAnnotated')(event)) {
-    pipe(
-      resource,
-      E.map((listResource) => {
-        pipe(
-          listResource.articles,
-          A.findFirst((article) => eqArticleId.equals(article.articleId, event.articleId)),
-          O.map((article) => {
-            // eslint-disable-next-line no-param-reassign
-            article.annotated = true;
-            return undefined;
-          }),
-        );
+        listResource.articles.push({ articleId: event.articleId } satisfies ListWriteModel['articles'][number]);
         return undefined;
       }),
     );
