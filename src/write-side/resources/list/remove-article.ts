@@ -57,7 +57,11 @@ export const removeArticle: ResourceAction<RemoveArticleFromListCommand> = (comm
   E.map(flow(
     filterToEventsRelevantToWriteModel,
     RA.filter(isAnEventOfThisList(command.listId, command.articleId)),
-    RA.reduce(false, updateListWriteModel),
   )),
+  E.filterOrElse(
+    RA.isNonEmpty,
+    () => toErrorMessage('article-not-found'),
+  ),
+  E.map(RA.reduce(false, updateListWriteModel)),
   E.map(createAppropriateEvents(command)),
 );

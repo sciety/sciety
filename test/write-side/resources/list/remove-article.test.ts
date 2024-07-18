@@ -51,7 +51,7 @@ describe('remove-article', () => {
         }),
       );
 
-      it.failing('rejects the command with "article-not-found"', () => {
+      it('rejects the command with "article-not-found"', () => {
         expect(result).toStrictEqual(E.left('article-not-found'));
       });
     });
