@@ -17,18 +17,15 @@ describe('delete', () => {
       E.getOrElseW(shouldNotBeCalled),
     );
 
-    it('raises exactly one event', () => {
+    it('causes a state change in which the list is deleted', () => {
       expect(result).toHaveLength(1);
-    });
-
-    it('returns a ListDeleted event', () => {
       expect(result[0]).toBeDomainEvent('ListDeleted', {
         listId: listCreatedEvent.listId,
       });
     });
   });
 
-  describe('no list with the given id ever existed', () => {
+  describe('when no list with the given id ever existed', () => {
     const result = pipe(
       [],
       deleteList({ listId: arbitraryListId() }),
@@ -38,7 +35,7 @@ describe('delete', () => {
       ),
     );
 
-    it('fails with not-found', () => {
+    it('rejects the command with not-found', () => {
       expect(result).toBe('not-found');
     });
   });
