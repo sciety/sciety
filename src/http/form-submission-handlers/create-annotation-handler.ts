@@ -84,7 +84,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
   );
 
   if (O.isNone(listOwner)) {
-    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'List on which you are trying to comment does not exist.');
+    sendDefaultErrorHtmlResponse(dependencies, context, StatusCodes.BAD_REQUEST, 'You tried to comment on a list that does not exist.');
     return;
   }
 
