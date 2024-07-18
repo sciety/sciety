@@ -90,6 +90,26 @@ describe('remove-article', () => {
   });
 
   describe('when the list existed and was later deleted', () => {
-    it.todo('rejects the command with "list-not-found"');
+    const result = pipe(
+      [
+        constructEvent('ListCreated')({
+          listId,
+          name: arbitraryString(),
+          description: arbitraryString(),
+          ownerId: arbitraryListOwnerId(),
+        }),
+        constructEvent('ListDeleted')({
+          listId,
+        }),
+      ],
+      removeArticle({
+        listId,
+        articleId: arbitraryExpressionDoi(),
+      }),
+    );
+
+    it.failing('rejects the command with "list-not-found"', () => {
+      expect(result).toStrictEqual(E.left('list-not-found'));
+    });
   });
 });
