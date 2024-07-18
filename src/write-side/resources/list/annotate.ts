@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { doesListExist } from './does-list-exist';
 import { getListWriteModel } from './get-list-write-model';
 import { isAnnotationLengthValid } from './is-annotation-length-valid';
 import { ListWriteModel } from './list-write-model';
@@ -27,7 +28,12 @@ const isAnnotationValid = (command: AnnotateArticleInListCommand) => () => (
 
 export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) => (events) => pipe(
   events,
-  getListWriteModel(command.listId),
+  E.right,
+  E.filterOrElse(
+    doesListExist(command.listId),
+    () => toErrorMessage('not-found'),
+  ),
+  E.chain(getListWriteModel(command.listId)),
   E.chain(findRelevantArticle(command.articleId)),
   E.filterOrElseW(
     isAnnotationValid(command),

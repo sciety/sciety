@@ -187,7 +187,7 @@ describe('annotate', () => {
       annotate(annotateArticleInListCommand),
     );
 
-    it.failing('fails', () => {
+    it('fails', () => {
       expect(result).toStrictEqual(E.left('not-found'));
     });
   });
