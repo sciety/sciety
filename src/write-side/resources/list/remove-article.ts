@@ -41,7 +41,7 @@ const createAppropriateEvents = (command: RemoveArticleFromListCommand) => (list
   B.fold(
     () => [],
     () => [constructEvent('ArticleRemovedFromList')({
-      articleId: new ArticleId(command.expressionDoi),
+      articleId: new ArticleId(command.articleId),
       listId: command.listId,
     })],
   ),
@@ -56,7 +56,7 @@ export const removeArticle: ResourceAction<RemoveArticleFromListCommand> = (comm
   ),
   E.map(flow(
     filterToEventsRelevantToWriteModel,
-    RA.filter(isAnEventOfThisList(command.listId, command.expressionDoi)),
+    RA.filter(isAnEventOfThisList(command.listId, command.articleId)),
   )),
   E.filterOrElse(
     RA.isNonEmpty,
