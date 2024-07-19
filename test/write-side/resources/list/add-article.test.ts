@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { ArticleId } from '../../../../src/types/article-id';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { addArticle } from '../../../../src/write-side/resources/list/add-article';
