@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { DomainEvent } from '../../../../src/domain-events';
 import { EvaluationType } from '../../../../src/types/recorded-evaluation';
 import { UpdateEvaluationCommand } from '../../../../src/write-side/commands';
 import * as evaluationResource from '../../../../src/write-side/resources/evaluation';
@@ -23,17 +24,21 @@ describe('update', () => {
             evaluationLocator,
             [attributeToBeChanged]: newValue,
           };
-          const eventsRaised = pipe(
-            [
-              {
-                ...arbitraryEvaluationPublicationRecordedEvent(),
-                evaluationLocator,
-                evaluationType: undefined,
-              },
-            ],
-            evaluationResource.update(command),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                {
+                  ...arbitraryEvaluationPublicationRecordedEvent(),
+                  evaluationLocator,
+                  evaluationType: undefined,
+                },
+              ],
+              evaluationResource.update(command),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it('raises exactly one event', () => {
             expect(eventsRaised).toHaveLength(1);
@@ -58,21 +63,25 @@ describe('update', () => {
             evaluationLocator,
             [attributeToBeChanged]: newUpdateValue,
           };
-          const eventsRaised = pipe(
-            [
-              {
-                ...arbitraryEvaluationPublicationRecordedEvent(),
-                evaluationLocator,
-              },
-              {
-                ...arbitraryEvaluationUpdatedEvent(),
-                evaluationLocator,
-                [attributeToBeChanged]: previousUpdateValue,
-              },
-            ],
-            evaluationResource.update(command),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                {
+                  ...arbitraryEvaluationPublicationRecordedEvent(),
+                  evaluationLocator,
+                },
+                {
+                  ...arbitraryEvaluationUpdatedEvent(),
+                  evaluationLocator,
+                  [attributeToBeChanged]: previousUpdateValue,
+                },
+              ],
+              evaluationResource.update(command),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it('raises exactly one event', () => {
             expect(eventsRaised).toHaveLength(1);
@@ -95,22 +104,26 @@ describe('update', () => {
         ['evaluationType'],
       ])('%s', (attributeToBeChanged) => {
         describe('and this evaluation\'s details have never been updated', () => {
-          const eventsRaised = pipe(
-            [
-              {
-                ...arbitraryEvaluationPublicationRecordedEvent(),
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                {
+                  ...arbitraryEvaluationPublicationRecordedEvent(),
+                  evaluationLocator,
+                  evaluationType: 'review',
+                },
+              ],
+              evaluationResource.update({
+                ...arbitraryUpdateEvaluationCommand(),
                 evaluationLocator,
                 evaluationType: 'review',
-              },
-            ],
-            evaluationResource.update({
-              ...arbitraryUpdateEvaluationCommand(),
-              evaluationLocator,
-              evaluationType: 'review',
-              authors: undefined,
-            }),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+                authors: undefined,
+              }),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it('raises no events', () => {
             expect(eventsRaised).toStrictEqual([]);
@@ -118,27 +131,31 @@ describe('update', () => {
         });
 
         describe(`and this evaluation's ${attributeToBeChanged} has previously been updated`, () => {
-          const eventsRaised = pipe(
-            [
-              {
-                ...arbitraryEvaluationPublicationRecordedEvent(),
-                evaluationLocator,
-                evaluationType: 'curation-statement',
-              },
-              {
-                ...arbitraryEvaluationUpdatedEvent(),
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                {
+                  ...arbitraryEvaluationPublicationRecordedEvent(),
+                  evaluationLocator,
+                  evaluationType: 'curation-statement',
+                },
+                {
+                  ...arbitraryEvaluationUpdatedEvent(),
+                  evaluationLocator,
+                  evaluationType: 'review',
+                },
+              ],
+              evaluationResource.update({
+                ...arbitraryUpdateEvaluationCommand(),
                 evaluationLocator,
                 evaluationType: 'review',
-              },
-            ],
-            evaluationResource.update({
-              ...arbitraryUpdateEvaluationCommand(),
-              evaluationLocator,
-              evaluationType: 'review',
-              authors: undefined,
-            }),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+                authors: undefined,
+              }),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it('raises no events', () => {
             expect(eventsRaised).toStrictEqual([]);
@@ -159,17 +176,21 @@ describe('update', () => {
             evaluationType: 'review' as const,
             [unchangedAttribute]: unchangingValue,
           };
-          const eventsRaised = pipe(
-            [
-              evaluationPublicationRecorded,
-            ],
-            evaluationResource.update({
-              evaluationLocator,
-              [attributeToBeChanged]: newValue,
-              [unchangedAttribute]: unchangingValue,
-            } satisfies UpdateEvaluationCommand),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                evaluationPublicationRecorded,
+              ],
+              evaluationResource.update({
+                evaluationLocator,
+                [attributeToBeChanged]: newValue,
+                [unchangedAttribute]: unchangingValue,
+              } satisfies UpdateEvaluationCommand),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it('raises exactly one event', () => {
             expect(eventsRaised).toHaveLength(1);
@@ -192,23 +213,27 @@ describe('update', () => {
             evaluationType: 'review' as const,
             [unchangedAttribute]: unchangingValue,
           };
-          const eventsRaised = pipe(
-            [
-              evaluationPublicationRecorded,
-              {
-                ...arbitraryEvaluationUpdatedEvent(),
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                evaluationPublicationRecorded,
+                {
+                  ...arbitraryEvaluationUpdatedEvent(),
+                  evaluationLocator,
+                  [unchangedAttribute]: undefined,
+                  [attributeToBeChanged]: previousUpdateValue,
+                },
+              ],
+              evaluationResource.update({
                 evaluationLocator,
-                [unchangedAttribute]: undefined,
-                [attributeToBeChanged]: previousUpdateValue,
-              },
-            ],
-            evaluationResource.update({
-              evaluationLocator,
-              [attributeToBeChanged]: newValue,
-              [unchangedAttribute]: unchangingValue,
-            } satisfies UpdateEvaluationCommand),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+                [attributeToBeChanged]: newValue,
+                [unchangedAttribute]: unchangingValue,
+              } satisfies UpdateEvaluationCommand),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it('raises exactly one event', () => {
             expect(eventsRaised).toHaveLength(1);
@@ -228,20 +253,24 @@ describe('update', () => {
 
     describe('when passed an issuedAt', () => {
       const issuedAt = arbitraryDate();
-      const eventsRaised = pipe(
-        [
-          {
-            ...arbitraryEvaluationPublicationRecordedEvent(),
+      let eventsRaised: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        eventsRaised = pipe(
+          [
+            {
+              ...arbitraryEvaluationPublicationRecordedEvent(),
+              evaluationLocator,
+            },
+          ],
+          evaluationResource.update({
+            ...arbitraryUpdateEvaluationCommand(),
             evaluationLocator,
-          },
-        ],
-        evaluationResource.update({
-          ...arbitraryUpdateEvaluationCommand(),
-          evaluationLocator,
-          issuedAt,
-        }),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+            issuedAt,
+          }),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises exactly one event', () => {
         expect(eventsRaised).toHaveLength(1);
