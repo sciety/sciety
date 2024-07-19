@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { ArticleId } from '../../../../src/types/article-id';
 import { removeArticle } from '../../../../src/write-side/resources/list/remove-article';
 import { arbitraryString } from '../../../helpers';
@@ -19,17 +19,21 @@ describe('remove-article', () => {
     });
 
     describe('and the article is in the list', () => {
-      const result = pipe(
-        [
-          listCreatedEvent,
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
-        ],
-        removeArticle({
-          listId,
-          articleId: expressionDoi,
-        }),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      let result: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        result = pipe(
+          [
+            listCreatedEvent,
+            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+          ],
+          removeArticle({
+            listId,
+            articleId: expressionDoi,
+          }),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('causes a state change in which the article is removed from the list', () => {
         expect(result).toHaveLength(1);
