@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { EvaluationLocator } from '../../../../src/types/evaluation-locator';
 import { EvaluationType } from '../../../../src/types/recorded-evaluation';
 import { update } from '../../../../src/write-side/resources/evaluation';
@@ -50,13 +50,17 @@ describe('update', () => {
       });
 
       describe('and the command does not match the existing evaluation type', () => {
-        const generatedEvents = pipe(
-          [
-            evaluationRecordedWithType(evaluationLocator, 'review'),
-          ],
-          update(command),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        let generatedEvents: ReadonlyArray<DomainEvent>;
+
+        beforeEach(() => {
+          generatedEvents = pipe(
+            [
+              evaluationRecordedWithType(evaluationLocator, 'review'),
+            ],
+            update(command),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+        });
 
         it('raises exactly one event', () => {
           expect(generatedEvents).toHaveLength(1);
@@ -73,14 +77,18 @@ describe('update', () => {
 
     describe('when the evaluation type has already been updated in the EvaluationUpdated event', () => {
       describe('and the command does not match the existing evaluation type', () => {
-        const generatedEvents = pipe(
-          [
-            evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
-            evaluationUpdatedWithType(evaluationLocator, 'review'),
-          ],
-          update(command),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        let generatedEvents: ReadonlyArray<DomainEvent>;
+
+        beforeEach(() => {
+          generatedEvents = pipe(
+            [
+              evaluationRecordedWithType(evaluationLocator, 'curation-statement'),
+              evaluationUpdatedWithType(evaluationLocator, 'review'),
+            ],
+            update(command),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+        });
 
         it('raises exactly one event', () => {
           expect(generatedEvents).toHaveLength(1);
