@@ -74,20 +74,24 @@ describe('add-article', () => {
 
       describe('when an annotation is provided in the command', () => {
         const annotation = arbitraryUnsafeUserInput();
-        const result = pipe(
-          [
-            {
-              ...arbitraryListCreatedEvent(),
+        let result: ReadonlyArray<DomainEvent>;
+
+        beforeEach(() => {
+          result = pipe(
+            [
+              {
+                ...arbitraryListCreatedEvent(),
+                listId,
+              },
+            ],
+            addArticle({
               listId,
-            },
-          ],
-          addArticle({
-            listId,
-            articleId: expressionDoi,
-            annotation,
-          }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+              articleId: expressionDoi,
+              annotation,
+            }),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+        });
 
         it('raises exactly two events', () => {
           expect(result).toHaveLength(2);
