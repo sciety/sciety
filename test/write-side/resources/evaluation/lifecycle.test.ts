@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { DomainEvent } from '../../../../src/domain-events';
 import {
   erase, update, recordPublication, recordRemoval,
 } from '../../../../src/write-side/resources/evaluation';
@@ -18,11 +19,15 @@ describe('lifecycle', () => {
 
     describe('record publication', () => {
       const mostRecentCommand = arbitraryRecordEvaluationPublicationCommand();
-      const eventsRaised = pipe(
-        initialState,
-        A.last(recordPublication(mostRecentCommand)),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      let eventsRaised: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        eventsRaised = pipe(
+          initialState,
+          A.last(recordPublication(mostRecentCommand)),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises a single event', () => {
         expect(eventsRaised).toHaveLength(1);
@@ -97,11 +102,15 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      const eventsRaised = pipe(
-        initialState,
-        A.last(erase({ evaluationLocator: initialCommand.evaluationLocator })),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      let eventsRaised: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        eventsRaised = pipe(
+          initialState,
+          A.last(erase({ evaluationLocator: initialCommand.evaluationLocator })),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises a single event', () => {
         expect(eventsRaised).toHaveLength(1);
@@ -115,11 +124,15 @@ describe('lifecycle', () => {
     });
 
     describe('record removal', () => {
-      const eventsRaised = pipe(
-        initialState,
-        A.last(recordRemoval({ evaluationLocator: initialCommand.evaluationLocator })),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      let eventsRaised: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        eventsRaised = pipe(
+          initialState,
+          A.last(recordRemoval({ evaluationLocator: initialCommand.evaluationLocator })),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises a single event', () => {
         expect(eventsRaised).toHaveLength(1);
@@ -137,11 +150,15 @@ describe('lifecycle', () => {
         ...arbitraryUpdateEvaluationCommand(),
         evaluationLocator: initialCommand.evaluationLocator,
       };
-      const eventsRaised = pipe(
-        initialState,
-        A.last(update(mostRecentCommand)),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      let eventsRaised: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        eventsRaised = pipe(
+          initialState,
+          A.last(update(mostRecentCommand)),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises a single event', () => {
         expect(eventsRaised).toHaveLength(1);
@@ -175,11 +192,15 @@ describe('lifecycle', () => {
         ...arbitraryRecordEvaluationPublicationCommand(),
         evaluationLocator,
       };
-      const eventsRaised = pipe(
-        initialState,
-        A.last(recordPublication(mostRecentCommand)),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      let eventsRaised: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        eventsRaised = pipe(
+          initialState,
+          A.last(recordPublication(mostRecentCommand)),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises a single event', () => {
         expect(eventsRaised).toHaveLength(1);
@@ -259,11 +280,15 @@ describe('lifecycle', () => {
     });
 
     describe('erase', () => {
-      const eventsRaised = pipe(
-        initialState,
-        A.last(erase({ evaluationLocator })),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      let eventsRaised: ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        eventsRaised = pipe(
+          initialState,
+          A.last(erase({ evaluationLocator })),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises a single event', () => {
         expect(eventsRaised).toHaveLength(1);
