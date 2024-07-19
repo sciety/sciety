@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { ArticleId } from '../../../../src/types/article-id';
+import { ErrorMessage } from '../../../../src/types/error-message';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { addArticle } from '../../../../src/write-side/resources/list/add-article';
 import { arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../../domain-events/list-resource-events.helper';
@@ -16,19 +17,23 @@ describe('add-article', () => {
 
   describe('when the list exists', () => {
     describe('and the article is already in the list', () => {
-      const result = pipe(
-        [
-          {
-            ...arbitraryListCreatedEvent(),
+      let result: E.Either<ErrorMessage, ReadonlyArray<DomainEvent>>;
+
+      beforeEach(() => {
+        result = pipe(
+          [
+            {
+              ...arbitraryListCreatedEvent(),
+              listId,
+            },
+            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+          ],
+          addArticle({
             listId,
-          },
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
-        ],
-        addArticle({
-          listId,
-          articleId: expressionDoi,
-        }),
-      );
+            articleId: expressionDoi,
+          }),
+        );
+      });
 
       it('succeeds, doing nothing', () => {
         expect(result).toStrictEqual(E.right([]));
