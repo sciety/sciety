@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { assign } from '../../../../src/write-side/resources/group-authorisation/assign';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryGroupId } from '../../../types/group-id.helper';
@@ -13,11 +13,15 @@ describe('assign', () => {
   };
 
   describe('given an assignment that does not already exist', () => {
-    const result = pipe(
-      [],
-      assign(input),
-      E.getOrElseW(shouldNotBeCalled),
-    );
+    let result: ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      result = pipe(
+        [],
+        assign(input),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('assigns the user as admin of the group', () => {
       expect(result).toHaveLength(1);
@@ -25,13 +29,17 @@ describe('assign', () => {
   });
 
   describe('given an assignment that already exists', () => {
-    const result = pipe(
-      [
-        constructEvent('UserAssignedAsAdminOfGroup')(input),
-      ],
-      assign(input),
-      E.getOrElseW(shouldNotBeCalled),
-    );
+    let result: ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      result = pipe(
+        [
+          constructEvent('UserAssignedAsAdminOfGroup')(input),
+        ],
+        assign(input),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('succeeds and does nothing', () => {
       expect(result).toHaveLength(0);
