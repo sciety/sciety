@@ -42,19 +42,23 @@ describe('add-article', () => {
 
     describe('and the article is not in the list', () => {
       describe('when no annotation is provided in the command', () => {
-        const result = pipe(
-          [
-            {
-              ...arbitraryListCreatedEvent(),
+        let result: ReadonlyArray<DomainEvent>;
+
+        beforeEach(() => {
+          result = pipe(
+            [
+              {
+                ...arbitraryListCreatedEvent(),
+                listId,
+              },
+            ],
+            addArticle({
               listId,
-            },
-          ],
-          addArticle({
-            listId,
-            articleId: expressionDoi,
-          }),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+              articleId: expressionDoi,
+            }),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+        });
 
         it('raises exactly one event', () => {
           expect(result).toHaveLength(1);
