@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { create } from '../../../../src/write-side/resources/list/create';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -16,11 +16,15 @@ describe('create', () => {
   };
 
   describe('when a list with the given listId has never been created', () => {
-    const result = pipe(
-      [],
-      create(input),
-      E.getOrElseW(shouldNotBeCalled),
-    );
+    let result: ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      result = pipe(
+        [],
+        create(input),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('raises exactly one event', () => {
       expect(result).toHaveLength(1);
