@@ -21,16 +21,20 @@ describe('update', () => {
         const newValue = arbitraryString();
 
         describe('and this group\'s details have never been updated', () => {
-          const eventsRaised = pipe(
-            [
-              groupJoined,
-            ],
-            groupResource.update({
-              groupId: groupJoined.groupId,
-              [attributeToBeChanged]: newValue,
-            }),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                groupJoined,
+              ],
+              groupResource.update({
+                groupId: groupJoined.groupId,
+                [attributeToBeChanged]: newValue,
+              }),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it(`raises an event to update the group ${attributeToBeChanged}`, () => {
             expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
@@ -48,21 +52,25 @@ describe('update', () => {
         });
 
         describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
-          const eventsRaised = pipe(
-            [
-              groupJoined,
-              {
-                ...arbitraryGroupDetailsUpdatedEvent(),
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                groupJoined,
+                {
+                  ...arbitraryGroupDetailsUpdatedEvent(),
+                  groupId: groupJoined.groupId,
+                  [attributeToBeChanged]: arbitraryString(),
+                },
+              ],
+              groupResource.update({
                 groupId: groupJoined.groupId,
-                [attributeToBeChanged]: arbitraryString(),
-              },
-            ],
-            groupResource.update({
-              groupId: groupJoined.groupId,
-              [attributeToBeChanged]: newValue,
-            }),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+                [attributeToBeChanged]: newValue,
+              }),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it(`raises an event to update the group ${attributeToBeChanged}`, () => {
             expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
@@ -91,17 +99,21 @@ describe('update', () => {
         const newValue = arbitraryString();
 
         describe('and this group\'s details have never been updated', () => {
-          const eventsRaised = pipe(
-            [
-              groupJoined,
-            ],
-            groupResource.update({
-              groupId: groupJoined.groupId,
-              [attributeToBeChanged]: newValue,
-              [unchangedAttribute]: groupJoined[unchangedAttribute],
-            }),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                groupJoined,
+              ],
+              groupResource.update({
+                groupId: groupJoined.groupId,
+                [attributeToBeChanged]: newValue,
+                [unchangedAttribute]: groupJoined[unchangedAttribute],
+              }),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it(`raises an event to only update the group ${attributeToBeChanged}`, () => {
             expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
@@ -119,22 +131,26 @@ describe('update', () => {
         });
 
         describe(`and this group's ${attributeToBeChanged} has previously been updated`, () => {
-          const eventsRaised = pipe(
-            [
-              groupJoined,
-              {
-                ...arbitraryGroupDetailsUpdatedEvent(),
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                groupJoined,
+                {
+                  ...arbitraryGroupDetailsUpdatedEvent(),
+                  groupId: groupJoined.groupId,
+                  [attributeToBeChanged]: arbitraryString(),
+                },
+              ],
+              groupResource.update({
                 groupId: groupJoined.groupId,
-                [attributeToBeChanged]: arbitraryString(),
-              },
-            ],
-            groupResource.update({
-              groupId: groupJoined.groupId,
-              [attributeToBeChanged]: newValue,
-              [unchangedAttribute]: groupJoined[unchangedAttribute],
-            }),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+                [attributeToBeChanged]: newValue,
+                [unchangedAttribute]: groupJoined[unchangedAttribute],
+              }),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it(`raises an event to only update the group ${attributeToBeChanged}`, () => {
             expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
@@ -160,16 +176,20 @@ describe('update', () => {
         ['avatarPath' as const],
       ])('%s', (attributeToBeChanged) => {
         describe('and this group\'s details have never been updated', () => {
-          const eventsRaised = pipe(
-            [
-              groupJoined,
-            ],
-            groupResource.update({
-              groupId: groupJoined.groupId,
-              [attributeToBeChanged]: groupJoined[attributeToBeChanged],
-            }),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                groupJoined,
+              ],
+              groupResource.update({
+                groupId: groupJoined.groupId,
+                [attributeToBeChanged]: groupJoined[attributeToBeChanged],
+              }),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it('raises no events', () => {
             expect(eventsRaised).toStrictEqual([]);
@@ -184,17 +204,21 @@ describe('update', () => {
               [attributeToBeChanged]: arbitraryString(),
             },
           ];
-          const eventsRaised = pipe(
-            [
-              groupJoined,
-              ...moreEventsRelatingToOurGroup,
-            ],
-            groupResource.update({
-              groupId: groupJoined.groupId,
-              [attributeToBeChanged]: moreEventsRelatingToOurGroup[0][attributeToBeChanged],
-            }),
-            E.getOrElseW(shouldNotBeCalled),
-          );
+          let eventsRaised: ReadonlyArray<DomainEvent>;
+
+          beforeEach(() => {
+            eventsRaised = pipe(
+              [
+                groupJoined,
+                ...moreEventsRelatingToOurGroup,
+              ],
+              groupResource.update({
+                groupId: groupJoined.groupId,
+                [attributeToBeChanged]: moreEventsRelatingToOurGroup[0][attributeToBeChanged],
+              }),
+              E.getOrElseW(shouldNotBeCalled),
+            );
+          });
 
           it('raises no events', () => {
             expect(eventsRaised).toStrictEqual([]);
