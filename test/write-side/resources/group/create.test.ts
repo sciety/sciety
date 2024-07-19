@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { EventOfType } from '../../../../src/domain-events';
+import { DomainEvent, EventOfType } from '../../../../src/domain-events';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { create } from '../../../../src/write-side/resources/group/create';
 import {
@@ -15,11 +15,15 @@ describe('create', () => {
   const addGroupCommand = arbitraryAddGroupCommand();
 
   describe('when the group does not exist', () => {
-    const result = pipe(
-      [],
-      create(addGroupCommand),
-      E.getOrElseW(shouldNotBeCalled),
-    );
+    let result: ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      result = pipe(
+        [],
+        create(addGroupCommand),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('creates the group', () => {
       expect(result[0]).toBeDomainEvent('GroupJoined', {
