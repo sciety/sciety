@@ -3,7 +3,7 @@ import { canonicalExpressionDoiCodec } from '../../types/expression-doi';
 import { listIdCodec } from '../../types/list-id';
 
 export const removeArticleFromListCommandCodec = t.strict({
-  articleId: canonicalExpressionDoiCodec,
+  expressionDoi: canonicalExpressionDoiCodec,
   listId: listIdCodec,
 });
 
