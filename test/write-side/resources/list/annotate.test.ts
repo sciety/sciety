@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
+import { DomainEvent } from '../../../../src/domain-events';
 import { ArticleId } from '../../../../src/types/article-id';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { AnnotateArticleInListCommand } from '../../../../src/write-side/commands';
@@ -60,11 +61,15 @@ describe('annotate', () => {
       });
 
       describe('when the annotation is of an acceptable length', () => {
-        const result = pipe(
-          relevantEvents,
-          annotate(annotateArticleInListCommand),
-          E.getOrElseW(shouldNotBeCalled),
-        );
+        let result: ReadonlyArray<DomainEvent>;
+
+        beforeEach(() => {
+          result = pipe(
+            relevantEvents,
+            annotate(annotateArticleInListCommand),
+            E.getOrElseW(shouldNotBeCalled),
+          );
+        });
 
         it('raises exactly one event', () => {
           expect(result).toHaveLength(1);
