@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../../src/domain-events';
+import { ErrorMessage } from '../../../../src/types/error-message';
 import { deleteList } from '../../../../src/write-side/resources/list';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -9,13 +10,17 @@ import { arbitraryListId } from '../../../types/list-id.helper';
 describe('delete', () => {
   describe('when the list identified in the command exists', () => {
     const listCreatedEvent = arbitraryListCreatedEvent();
-    const result = pipe(
-      [
-        listCreatedEvent,
-      ],
-      deleteList({ listId: listCreatedEvent.listId }),
-      E.getOrElseW(shouldNotBeCalled),
-    );
+    let result: ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      result = pipe(
+        [
+          listCreatedEvent,
+        ],
+        deleteList({ listId: listCreatedEvent.listId }),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
 
     it('causes a state change in which the list is deleted', () => {
       expect(result).toHaveLength(1);
@@ -26,14 +31,18 @@ describe('delete', () => {
   });
 
   describe('when no list with the given id ever existed', () => {
-    const result = pipe(
-      [],
-      deleteList({ listId: arbitraryListId() }),
-      E.matchW(
-        identity,
-        shouldNotBeCalled,
-      ),
-    );
+    let result: ErrorMessage;
+
+    beforeEach(() => {
+      result = pipe(
+        [],
+        deleteList({ listId: arbitraryListId() }),
+        E.matchW(
+          identity,
+          shouldNotBeCalled,
+        ),
+      );
+    });
 
     it('rejects the command with not-found', () => {
       expect(result).toBe('not-found');
