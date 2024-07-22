@@ -17,39 +17,40 @@ const filterToRelevantEventTypes = filterByName(['ListCreated', 'ListNameEdited'
 
 type RelevantEvent = ReturnType<typeof filterToRelevantEventTypes>[number];
 
-type ListWriteModel = {
+type ListDetails = {
   name: string,
   description: string,
 };
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
-const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, event: DomainEvent) => {
+const buildListDetails = (resource: E.Either<ErrorMessage, ListDetails>, event: DomainEvent) => {
   if (isEventOfType('ListCreated')(event)) {
-    return E.right({ name: event.name, description: event.description } satisfies ListWriteModel);
+    return E.right({ name: event.name, description: event.description } satisfies ListDetails);
   }
   if (isEventOfType('ListNameEdited')(event)) {
     return pipe(
       resource,
-      E.map((listResource) => ({ ...listResource, name: event.name } satisfies ListWriteModel)),
+      E.map((listDetails) => ({ ...listDetails, name: event.name } satisfies ListDetails)),
     );
   }
   if (isEventOfType('ListDescriptionEdited')(event)) {
     return pipe(
       resource,
-      E.map((listResource) => ({ ...listResource, description: event.description } satisfies ListWriteModel)),
+      E.map((listDetails) => ({ ...listDetails, description: event.description } satisfies ListDetails)),
     );
   }
   return resource;
 };
-const handleEditingOfName = (listResource: ListWriteModel, command: EditListDetailsCommand) => (
-  (listResource.name === command.name)
+
+const handleEditingOfName = (listDetails: ListDetails, command: EditListDetailsCommand) => (
+  (listDetails.name === command.name)
     ? []
     : [constructEvent('ListNameEdited')({ listId: command.listId, name: command.name })]
 );
 
-const handleEditingOfDescription = (listResource: ListWriteModel, command: EditListDetailsCommand) => (
-  (listResource.description === command.description)
+const handleEditingOfDescription = (listDetails: ListDetails, command: EditListDetailsCommand) => (
+  (listDetails.description === command.description)
     ? []
     : [constructEvent('ListDescriptionEdited')({ listId: command.listId, description: command.description })]
 );
@@ -63,9 +64,9 @@ export const update: ResourceAction<EditListDetailsCommand> = (command) => (even
   ),
   E.map(filterToRelevantEventTypes),
   E.map(RA.filter(isAnEventOfThisList(command.listId))),
-  E.chain(RA.reduce(E.left(toErrorMessage('list-not-found')), updateListWriteModel)),
-  E.map((listResource) => [
-    ...handleEditingOfName(listResource, command),
-    ...handleEditingOfDescription(listResource, command),
+  E.chain(RA.reduce(E.left(toErrorMessage('list-not-found')), buildListDetails)),
+  E.map((listDetails) => [
+    ...handleEditingOfName(listDetails, command),
+    ...handleEditingOfDescription(listDetails, command),
   ]),
 );
