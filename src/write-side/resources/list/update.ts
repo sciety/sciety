@@ -17,9 +17,9 @@ import { ListId } from '../../../types/list-id';
 import { EditListDetailsCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
-const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'ArticleAddedToList', 'ArticleRemovedFromList', 'ListNameEdited', 'ListDescriptionEdited', 'ArticleInListAnnotated']);
+const filterToRelevantEventTypes = filterByName(['ListCreated', 'ArticleAddedToList', 'ArticleRemovedFromList', 'ListNameEdited', 'ListDescriptionEdited', 'ArticleInListAnnotated']);
 
-type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
+type RelevantEvent = ReturnType<typeof filterToRelevantEventTypes>[number];
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
@@ -96,7 +96,7 @@ export const update: ResourceAction<EditListDetailsCommand> = (command) => (even
     doesListExist(command.listId),
     () => toErrorMessage('list-not-found'),
   ),
-  E.map(filterToEventsRelevantToWriteModel),
+  E.map(filterToRelevantEventTypes),
   E.map(RA.filter(isAnEventOfThisList(command.listId))),
   E.chain(RA.reduce(E.left(toErrorMessage('list-not-found')), updateListWriteModel)),
   E.map((listResource) => [
