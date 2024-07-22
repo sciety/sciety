@@ -33,11 +33,8 @@ describe('update', () => {
           );
         });
 
-        it('raises exactly one event', () => {
+        it('causes a state change in which the user\'s display name is updated', () => {
           expect(events).toHaveLength(1);
-        });
-
-        it('raises an event to update display name', () => {
           expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
             userId: userCreatedAccountEvent.userId,
             displayName: newDisplayName,
@@ -59,7 +56,7 @@ describe('update', () => {
           );
         });
 
-        it('raises no events', () => {
+        it('accepts the command and causes no state change', () => {
           expect(events).toStrictEqual([]);
         });
       });
@@ -77,7 +74,7 @@ describe('update', () => {
           );
         });
 
-        it('raises no events', () => {
+        it('accepts the command and causes no state change', () => {
           expect(events).toStrictEqual([]);
         });
       });
@@ -106,11 +103,8 @@ describe('update', () => {
           );
         });
 
-        it('raises exactly one event', () => {
+        it('causes a state change in which the user\'s display name is updated', () => {
           expect(events).toHaveLength(1);
-        });
-
-        it('raises an event to update display name', () => {
           expect(events[0]).toBeDomainEvent('UserDetailsUpdated', {
             userId: userCreatedAccountEvent.userId,
             displayName: newDisplayName,
@@ -137,7 +131,7 @@ describe('update', () => {
         );
       });
 
-      it('fails', () => {
+      it('rejects the command', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
@@ -161,7 +155,7 @@ describe('update', () => {
         );
       });
 
-      it('fails', () => {
+      it('rejects the command', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
