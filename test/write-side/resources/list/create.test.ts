@@ -26,11 +26,8 @@ describe('create', () => {
       );
     });
 
-    it('raises exactly one event', () => {
+    it('causes a state change in which the list is created', () => {
       expect(result).toHaveLength(1);
-    });
-
-    it('returns a ListCreated event', () => {
       expect(result[0]).toBeDomainEvent('ListCreated', {
         listId: input.listId,
         ownerId: input.ownerId,
@@ -72,7 +69,7 @@ describe('create', () => {
       create(input),
     );
 
-    it('rejects the command', () => {
+    it('rejects the command with "list-id-has-already-been-used"', () => {
       expect(result).toStrictEqual(E.left('list-id-has-already-been-used'));
     });
   });
