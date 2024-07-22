@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
 import { update } from '../../../../src/write-side/resources/list';
+import { arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../../domain-events/list-resource-events.helper';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
@@ -153,6 +154,25 @@ describe('update', () => {
   });
 
   describe('when the list existed and was later deleted', () => {
-    it.todo('rejects the command with "list-not-found"');
+    const result = pipe(
+      [
+        {
+          ...arbitraryListCreatedEvent(),
+          listId,
+        },
+        {
+          ...arbitraryListDeletedEvent(),
+          listId,
+        },
+      ],
+      update({
+        ...arbitraryEditListDetailsCommand(),
+        listId,
+      }),
+    );
+
+    it.failing('rejects the command with "list-not-found"', () => {
+      expect(result).toStrictEqual(E.left('list-not-found'));
+    });
   });
 });
