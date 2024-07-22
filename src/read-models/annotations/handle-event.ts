@@ -32,5 +32,8 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
     delete listState[event.articleId.value];
     readmodel[event.listId] = listState;
   }
+  if (isEventOfType('ListDeleted')(event)) {
+    delete readmodel[event.listId];
+  }
   return readmodel;
 };

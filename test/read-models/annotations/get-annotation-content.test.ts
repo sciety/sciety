@@ -161,7 +161,7 @@ describe('get-annotation-content', () => {
           listDeletedEvent,
         ];
 
-        it.failing('returns no annotation', () => {
+        it('returns no annotation', () => {
           expect(runQuery(events)).toStrictEqual(O.none);
         });
       });
