@@ -37,7 +37,13 @@ describe('get-annotation-content', () => {
     };
 
     describe('and the requested article is not in this list', () => {
-      it.todo('returns no annotation');
+      const events = [
+        listCreatedEvent,
+      ];
+
+      it('returns no annotation', () => {
+        expect(runQuery(events)).toStrictEqual(O.none);
+      });
     });
 
     describe('and the requested article has been added to this list', () => {
