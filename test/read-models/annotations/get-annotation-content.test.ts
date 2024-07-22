@@ -6,8 +6,10 @@ import { getAnnotationContent } from '../../../src/read-models/annotations/get-a
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { rawUserInput } from '../../../src/read-side';
 import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryString } from '../../helpers';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
+import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
 
 describe('get-annotation-content', () => {
@@ -19,6 +21,10 @@ describe('get-annotation-content', () => {
     describe('when the article has been annotated in the list', () => {
       const readmodel = pipe(
         [
+          constructEvent('ListCreated')({
+            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+          }),
+          constructEvent('ArticleAddedToList')({ listId, articleId: new ArticleId(expressionDoi) }),
           constructEvent('ArticleInListAnnotated')({ listId, articleId: new ArticleId(expressionDoi), content }),
         ],
         RA.reduce(initialState(), handleEvent),
@@ -31,9 +37,20 @@ describe('get-annotation-content', () => {
     });
 
     describe('when the article has been annotated in a different list', () => {
+      const differentListId = arbitraryListId();
       const readmodel = pipe(
         [
-          constructEvent('ArticleInListAnnotated')({ listId: arbitraryListId(), articleId: new ArticleId(expressionDoi), content }),
+          constructEvent('ListCreated')({
+            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
+          }),
+          constructEvent('ListCreated')({
+            listId: differentListId,
+            name: arbitraryString(),
+            description: arbitraryString(),
+            ownerId: arbitraryListOwnerId(),
+          }),
+          constructEvent('ArticleAddedToList')({ listId: differentListId, articleId: new ArticleId(expressionDoi) }),
+          constructEvent('ArticleInListAnnotated')({ listId: differentListId, articleId: new ArticleId(expressionDoi), content }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
