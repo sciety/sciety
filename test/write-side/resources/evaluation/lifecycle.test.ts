@@ -29,11 +29,8 @@ describe('lifecycle', () => {
         );
       });
 
-      it('raises a single event', () => {
+      it('causes a state change in which the evaluation\'s publication is recorded', () => {
         expect(eventsRaised).toHaveLength(1);
-      });
-
-      it('raises the correct event', () => {
         expect(eventsRaised[0]).toBeDomainEvent('EvaluationPublicationRecorded', {
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.expressionDoi,
@@ -51,7 +48,7 @@ describe('lifecycle', () => {
         A.concat(erase({ evaluationLocator })),
       );
 
-      it('errors with does not exist', () => {
+      it('rejects the command with "Evaluation does not exist"', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -62,7 +59,7 @@ describe('lifecycle', () => {
         A.concat(recordRemoval({ evaluationLocator })),
       );
 
-      it('errors with does not exist', () => {
+      it('rejects the command with "Evaluation does not exist"', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -76,7 +73,7 @@ describe('lifecycle', () => {
         })),
       );
 
-      it('errors with does not exist', () => {
+      it('rejects the command with "Evaluation does not exist"', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -96,7 +93,7 @@ describe('lifecycle', () => {
         A.last(recordPublication(initialCommand)),
       );
 
-      it('succeeds with no new events', () => {
+      it('accepts the command and causes no state change', () => {
         expect(outcome).toStrictEqual(E.right([]));
       });
     });
@@ -112,11 +109,8 @@ describe('lifecycle', () => {
         );
       });
 
-      it('raises a single event', () => {
+      it('causes a state change in which the incorrect recording of the evaluation is erased', () => {
         expect(eventsRaised).toHaveLength(1);
-      });
-
-      it('raises the correct event', () => {
         expect(eventsRaised[0]).toBeDomainEvent('IncorrectlyRecordedEvaluationErased', {
           evaluationLocator: initialCommand.evaluationLocator,
         });
@@ -134,11 +128,8 @@ describe('lifecycle', () => {
         );
       });
 
-      it('raises a single event', () => {
+      it('causes a state change in which the removal of the evaluation is recorded', () => {
         expect(eventsRaised).toHaveLength(1);
-      });
-
-      it('raises the correct event', () => {
         expect(eventsRaised[0]).toBeDomainEvent('EvaluationRemovalRecorded', {
           evaluationLocator: initialCommand.evaluationLocator,
         });
@@ -160,11 +151,8 @@ describe('lifecycle', () => {
         );
       });
 
-      it('raises a single event', () => {
+      it('causes a state change in which the evaluation is updated', () => {
         expect(eventsRaised).toHaveLength(1);
-      });
-
-      it('raises the correct event', () => {
         expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
           evaluationLocator: mostRecentCommand.evaluationLocator,
           evaluationType: mostRecentCommand.evaluationType,
@@ -202,11 +190,8 @@ describe('lifecycle', () => {
         );
       });
 
-      it('raises a single event', () => {
+      it('causes a state change in which the publication of the evaluation is recorded', () => {
         expect(eventsRaised).toHaveLength(1);
-      });
-
-      it('raises the correct event', () => {
         expect(eventsRaised[0]).toBeDomainEvent('EvaluationPublicationRecorded', {
           groupId: mostRecentCommand.groupId,
           articleId: mostRecentCommand.expressionDoi,
@@ -224,7 +209,7 @@ describe('lifecycle', () => {
         A.last(erase({ evaluationLocator })),
       );
 
-      it('succeeds with no new events', () => {
+      it('accepts the command and causes no state change', () => {
         expect(outcome).toStrictEqual(E.right([]));
       });
     });
@@ -235,7 +220,7 @@ describe('lifecycle', () => {
         A.last(recordRemoval({ evaluationLocator })),
       );
 
-      it('errors with does not exist', () => {
+      it('rejects the command with "Evaluation does not exist"', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -249,7 +234,7 @@ describe('lifecycle', () => {
         })),
       );
 
-      it('errors with does not exist', () => {
+      it('rejects the command with "Evaluation does not exist"', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.doesNotExist));
       });
     });
@@ -274,7 +259,7 @@ describe('lifecycle', () => {
         A.last(recordPublication(initialRecordEvaluationPublicationCommand)),
       );
 
-      it('errors with previously removed, cannot record', () => {
+      it('rejects the command with "This evaluation has been removed and cannot be recorded again"', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemovedCannotRecord));
       });
     });
@@ -290,11 +275,8 @@ describe('lifecycle', () => {
         );
       });
 
-      it('raises a single event', () => {
+      it('causes a state change in which the incorrect recording of the evaluation is erased', () => {
         expect(eventsRaised).toHaveLength(1);
-      });
-
-      it('raises the correct event', () => {
         expect(eventsRaised[0]).toBeDomainEvent('IncorrectlyRecordedEvaluationErased', {
           evaluationLocator,
         });
@@ -307,7 +289,7 @@ describe('lifecycle', () => {
         A.last(recordRemoval({ evaluationLocator })),
       );
 
-      it('succeeds with no new events', () => {
+      it('accepts the command and causes no state change', () => {
         expect(outcome).toStrictEqual(E.right([]));
       });
     });
@@ -322,7 +304,7 @@ describe('lifecycle', () => {
         A.last(update(mostRecentCommand)),
       );
 
-      it('errors with previously removed, cannot update', () => {
+      it('rejects the command with "This evaluation has been removed and cannot be updated"', () => {
         expect(outcome).toStrictEqual(E.left(evaluationResourceError.previouslyRemovedCannotUpdate));
       });
     });
