@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { update } from '../../../../src/write-side/resources/list';
 import { arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../../domain-events/list-resource-events.helper';
 import { arbitraryString } from '../../../helpers';
@@ -16,6 +16,8 @@ describe('update', () => {
   const listDescription = arbitrarySanitisedUserInput();
 
   describe('when the list exists', () => {
+    let raisedEvents: ReadonlyArray<DomainEvent>;
+
     describe('when the new name is different from the current name', () => {
       const newName = arbitrarySanitisedUserInput();
       const command = {
@@ -24,18 +26,20 @@ describe('update', () => {
         listId,
       };
 
-      const raisedEvents = pipe(
-        [
-          constructEvent('ListCreated')({
-            listId,
-            name: arbitraryString(),
-            description: listDescription,
-            ownerId: arbitraryListOwnerId(),
-          }),
-        ],
-        update(command),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      beforeEach(() => {
+        raisedEvents = pipe(
+          [
+            constructEvent('ListCreated')({
+              listId,
+              name: arbitraryString(),
+              description: listDescription,
+              ownerId: arbitraryListOwnerId(),
+            }),
+          ],
+          update(command),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises exactly one event', () => {
         expect(raisedEvents).toHaveLength(1);
@@ -56,18 +60,20 @@ describe('update', () => {
         listId,
       };
 
-      const raisedEvents = pipe(
-        [
-          constructEvent('ListCreated')({
-            listId,
-            name: listName,
-            description: arbitraryString(),
-            ownerId: arbitraryListOwnerId(),
-          }),
-        ],
-        update(command),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      beforeEach(() => {
+        raisedEvents = pipe(
+          [
+            constructEvent('ListCreated')({
+              listId,
+              name: listName,
+              description: arbitraryString(),
+              ownerId: arbitraryListOwnerId(),
+            }),
+          ],
+          update(command),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises exactly one event', () => {
         expect(raisedEvents).toHaveLength(1);
@@ -81,13 +87,14 @@ describe('update', () => {
     });
 
     describe('when the new name and description are the same as the current details', () => {
-      it('raises no events', () => {
-        const command = {
-          name: listName,
-          description: listDescription,
-          listId,
-        };
-        const eventsToBeRaised = pipe(
+      const command = {
+        name: listName,
+        description: listDescription,
+        listId,
+      };
+
+      beforeEach(() => {
+        raisedEvents = pipe(
           [
             constructEvent('ListCreated')({
               listId,
@@ -99,8 +106,10 @@ describe('update', () => {
           update(command),
           E.getOrElseW(shouldNotBeCalled),
         );
+      });
 
-        expect(eventsToBeRaised).toStrictEqual([]);
+      it('raises no events', () => {
+        expect(raisedEvents).toStrictEqual([]);
       });
     });
 
@@ -113,18 +122,20 @@ describe('update', () => {
         listId,
       };
 
-      const raisedEvents = pipe(
-        [
-          constructEvent('ListCreated')({
-            listId,
-            name: arbitraryString(),
-            description: arbitraryString(),
-            ownerId: arbitraryListOwnerId(),
-          }),
-        ],
-        update(command),
-        E.getOrElseW(shouldNotBeCalled),
-      );
+      beforeEach(() => {
+        raisedEvents = pipe(
+          [
+            constructEvent('ListCreated')({
+              listId,
+              name: arbitraryString(),
+              description: arbitraryString(),
+              ownerId: arbitraryListOwnerId(),
+            }),
+          ],
+          update(command),
+          E.getOrElseW(shouldNotBeCalled),
+        );
+      });
 
       it('raises exactly two events', () => {
         expect(raisedEvents).toHaveLength(2);
