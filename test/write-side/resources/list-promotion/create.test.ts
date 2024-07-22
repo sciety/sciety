@@ -43,7 +43,7 @@ describe('create', () => {
       );
     });
 
-    it('raises exactly one ListPromotionCreated event', () => {
+    it('causes a state change in which the list is promoted by the group', () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toBeDomainEvent('ListPromotionCreated', {
         byGroup: command.forGroup,
@@ -63,7 +63,7 @@ describe('create', () => {
       );
     });
 
-    it('raises no events', () => {
+    it('accepts the command and causes no state change', () => {
       expect(result).toHaveLength(0);
     });
   });
