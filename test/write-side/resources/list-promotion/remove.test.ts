@@ -24,7 +24,7 @@ describe('remove', () => {
       );
     });
 
-    it('removes the promotion', () => {
+    it('causes a state change in which the list promotion is removed', () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toBeDomainEvent('ListPromotionRemoved', {
         byGroup: command.forGroup,
@@ -47,7 +47,7 @@ describe('remove', () => {
       );
     });
 
-    it('succeeds, doing nothing', () => {
+    it('accepts the command and causes no state change', () => {
       expect(result).toHaveLength(0);
     });
   });
