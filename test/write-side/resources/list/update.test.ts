@@ -138,4 +138,12 @@ describe('update', () => {
       });
     });
   });
+
+  describe('when the list never existed', () => {
+    it.todo('rejects the command with "list-not-found"');
+  });
+
+  describe('when the list existed and was later deleted', () => {
+    it.todo('rejects the command with "list-not-found"');
+  });
 });
