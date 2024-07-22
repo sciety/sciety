@@ -44,7 +44,7 @@ describe('update', () => {
           update(command),
         );
 
-        it('returns no events', () => {
+        it('accepts the command and causes no state change', () => {
           expect(generatedEvents).toStrictEqual(E.right([]));
         });
       });
@@ -62,11 +62,8 @@ describe('update', () => {
           );
         });
 
-        it('raises exactly one event', () => {
+        it('causes a state change updating the evaluation', () => {
           expect(generatedEvents).toHaveLength(1);
-        });
-
-        it('returns an EvaluationUpdated event', () => {
           expect(generatedEvents[0]).toBeDomainEvent('EvaluationUpdated', {
             evaluationLocator: command.evaluationLocator,
             evaluationType: command.evaluationType,
@@ -90,11 +87,8 @@ describe('update', () => {
           );
         });
 
-        it('raises exactly one event', () => {
+        it('causes a state change updating the evaluation', () => {
           expect(generatedEvents).toHaveLength(1);
-        });
-
-        it('returns an EvaluationUpdated event', () => {
           expect(generatedEvents[0]).toBeDomainEvent('EvaluationUpdated', {
             evaluationLocator: command.evaluationLocator,
             evaluationType: command.evaluationType,
@@ -112,7 +106,7 @@ describe('update', () => {
           update(command),
         );
 
-        it('returns no events', () => {
+        it('accepts the command and causes no state change', () => {
           expect(generatedEvents).toStrictEqual(E.right([]));
         });
       });
