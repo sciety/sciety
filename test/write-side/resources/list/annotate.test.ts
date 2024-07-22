@@ -55,7 +55,7 @@ describe('annotate', () => {
           }),
         );
 
-        it('fails', () => {
+        it('rejects the command', () => {
           expect(E.isLeft(result)).toBe(true);
         });
       });
@@ -71,11 +71,8 @@ describe('annotate', () => {
           );
         });
 
-        it('raises exactly one event', () => {
+        it('causes a state change in which the article is annotated', () => {
           expect(result).toHaveLength(1);
-        });
-
-        it('succeeds, raising a relevant event', () => {
           expect(result[0]).toBeDomainEvent('ArticleInListAnnotated', {
             articleId: new ArticleId(expressionDoi),
             listId,
@@ -94,7 +91,7 @@ describe('annotate', () => {
           }),
         );
 
-        it('fails', () => {
+        it('rejects the command', () => {
           expect(E.isLeft(result)).toBe(true);
         });
       });
@@ -119,7 +116,7 @@ describe('annotate', () => {
         annotate(annotateArticleInListCommand),
       );
 
-      it('succeeds, without raising any event', () => {
+      it('accepts the command and causes no state change', () => {
         expect(result).toStrictEqual(E.right([]));
       });
     });
@@ -132,8 +129,8 @@ describe('annotate', () => {
         annotate(annotateArticleInListCommand),
       );
 
-      it('fails', () => {
-        expect(E.isLeft(result)).toBe(true);
+      it('rejects the command with "Article not in list"', () => {
+        expect(result).toStrictEqual(E.left('Article not in list'));
       });
     });
 
@@ -155,8 +152,8 @@ describe('annotate', () => {
         annotate(annotateArticleInListCommand),
       );
 
-      it('fails', () => {
-        expect(E.isLeft(result)).toBe(true);
+      it('rejects the command with "Article not in list"', () => {
+        expect(result).toStrictEqual(E.left('Article not in list'));
       });
     });
   });
@@ -167,8 +164,8 @@ describe('annotate', () => {
       annotate(annotateArticleInListCommand),
     );
 
-    it('fails', () => {
-      expect(E.isLeft(result)).toBe(true);
+    it('rejects the command with "not found"', () => {
+      expect(result).toStrictEqual(E.left('not-found'));
     });
   });
 
@@ -192,7 +189,7 @@ describe('annotate', () => {
       annotate(annotateArticleInListCommand),
     );
 
-    it('fails', () => {
+    it('rejects the command with "not found"', () => {
       expect(result).toStrictEqual(E.left('not-found'));
     });
   });
