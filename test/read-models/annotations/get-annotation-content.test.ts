@@ -17,6 +17,14 @@ describe('get-annotation-content', () => {
   /** @deprecated roll out expressionDois in list resource events */
   const articleId = new ArticleId(expressionDoi);
   const content = arbitraryUnsafeUserInput();
+  const runQuery = (events: ReadonlyArray<DomainEvent>) => {
+    const readmodel = pipe(
+      events,
+      RA.reduce(initialState(), handleEvent),
+    );
+    const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
+    return annotationContent;
+  };
 
   describe('when the requested list exists', () => {
     const listCreatedEvent = {
@@ -32,14 +40,6 @@ describe('get-annotation-content', () => {
       const articleAddedToListEvent = constructEvent('ArticleAddedToList')({ listId, articleId });
       const articleAnnotatedEvent = constructEvent('ArticleInListAnnotated')({ articleId, listId, content });
       const articleRemovedFromListEvent = constructEvent('ArticleRemovedFromList')({ articleId, listId });
-      const runQuery = (events: ReadonlyArray<DomainEvent>) => {
-        const readmodel = pipe(
-          events,
-          RA.reduce(initialState(), handleEvent),
-        );
-        const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
-        return annotationContent;
-      };
 
       describe('and the requested article has been annotated in this list', () => {
         const events = [
@@ -146,7 +146,11 @@ describe('get-annotation-content', () => {
   });
 
   describe('when the list has never existed', () => {
-    it.todo('returns no annotation');
+    const events: ReadonlyArray<DomainEvent> = [];
+
+    it('returns no annotation', () => {
+      expect(runQuery(events)).toStrictEqual(O.none);
+    });
   });
 
   describe('when the list has been deleted', () => {
