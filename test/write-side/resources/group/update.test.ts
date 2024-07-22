@@ -36,7 +36,8 @@ describe('update', () => {
             );
           });
 
-          it(`raises an event to update the group ${attributeToBeChanged}`, () => {
+          it(`causes a state change in which only the group's ${attributeToBeChanged} is updated`, () => {
+            expect(eventsRaised).toHaveLength(1);
             expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
               name: undefined,
               shortDescription: undefined,
@@ -72,7 +73,8 @@ describe('update', () => {
             );
           });
 
-          it(`raises an event to update the group ${attributeToBeChanged}`, () => {
+          it(`causes a state change in which only the group's ${attributeToBeChanged} is updated`, () => {
+            expect(eventsRaised).toHaveLength(1);
             expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
               name: undefined,
               shortDescription: undefined,
@@ -115,7 +117,8 @@ describe('update', () => {
             );
           });
 
-          it(`raises an event to only update the group ${attributeToBeChanged}`, () => {
+          it(`causes a state change in which only the group's ${attributeToBeChanged} is updated`, () => {
+            expect(eventsRaised).toHaveLength(1);
             expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
               name: undefined,
               shortDescription: undefined,
@@ -152,7 +155,8 @@ describe('update', () => {
             );
           });
 
-          it(`raises an event to only update the group ${attributeToBeChanged}`, () => {
+          it(`causes a state change in which only the group's ${attributeToBeChanged} is updated`, () => {
+            expect(eventsRaised).toHaveLength(1);
             expect(eventsRaised[0]).toBeDomainEvent('GroupDetailsUpdated', {
               name: undefined,
               shortDescription: undefined,
@@ -191,7 +195,7 @@ describe('update', () => {
             );
           });
 
-          it('raises no events', () => {
+          it('accepts the command and causes no state change', () => {
             expect(eventsRaised).toStrictEqual([]);
           });
         });
@@ -220,7 +224,7 @@ describe('update', () => {
             );
           });
 
-          it('raises no events', () => {
+          it('accepts the command and causes no state change', () => {
             expect(eventsRaised).toStrictEqual([]);
           });
         });
@@ -246,7 +250,7 @@ describe('update', () => {
             ),
           );
 
-          it('returns an error', () => {
+          it('rejects the command', () => {
             expect(E.isLeft(result)).toBe(true);
           });
         });
@@ -269,7 +273,7 @@ describe('update', () => {
             }),
           );
 
-          it('returns an error', () => {
+          it('rejects the command', () => {
             expect(E.isLeft(result)).toBe(true);
           });
         });
@@ -293,7 +297,7 @@ describe('update', () => {
             }),
           );
 
-          it('returns an error', () => {
+          it('rejects the command', () => {
             expect(E.isLeft(result)).toBe(true);
           });
         });
@@ -310,7 +314,7 @@ describe('update', () => {
         groupResource.update({ groupId: arbitraryGroupId() }),
       );
 
-      it('returns an error', () => {
+      it('rejects the command with "no-such-group"', () => {
         expect(result).toStrictEqual(E.left('no-such-group'));
       });
     });
@@ -328,7 +332,7 @@ describe('update', () => {
       groupResource.update({ groupId }),
     );
 
-    it('returns an error', () => {
+    it('rejects the command with "bad-data"', () => {
       expect(result).toStrictEqual(E.left('bad-data'));
     });
   });
@@ -346,7 +350,7 @@ describe('update', () => {
       groupResource.update({ groupId: groupJoinedEvent.groupId }),
     );
 
-    it('returns an error', () => {
+    it('rejects the command with "bad-data"', () => {
       expect(result).toStrictEqual(E.left('bad-data'));
     });
   });
