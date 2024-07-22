@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { constructEvent } from '../../../src/domain-events';
+import { constructEvent, DomainEvent } from '../../../src/domain-events';
 import { getAnnotationContent } from '../../../src/read-models/annotations/get-annotation-content';
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { rawUserInput } from '../../../src/read-side';
@@ -30,65 +30,60 @@ describe('get-annotation-content', () => {
 
     describe('and the requested article has been added to this list', () => {
       const articleAddedToListEvent = constructEvent('ArticleAddedToList')({ listId, articleId });
-
-      describe('and the requested article has been annotated in this list', () => {
+      const runQuery = (events: ReadonlyArray<DomainEvent>) => {
         const readmodel = pipe(
-          [
-            listCreatedEvent,
-            articleAddedToListEvent,
-            constructEvent('ArticleInListAnnotated')({ listId, articleId, content }),
-          ],
+          events,
           RA.reduce(initialState(), handleEvent),
         );
         const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
+        return annotationContent;
+      };
+
+      describe('and the requested article has been annotated in this list', () => {
+        const events = [
+          listCreatedEvent,
+          articleAddedToListEvent,
+          constructEvent('ArticleInListAnnotated')({ listId, articleId, content }),
+        ];
 
         it('returns the annotation content', () => {
-          expect(annotationContent).toStrictEqual(O.some(rawUserInput(content)));
+          expect(runQuery(events)).toStrictEqual(O.some(rawUserInput(content)));
         });
       });
 
       describe('and the requested article has been annotated in a different list', () => {
         const differentListId = arbitraryListId();
-        const readmodel = pipe(
-          [
-            listCreatedEvent,
-            articleAddedToListEvent,
-            {
-              ...arbitraryListCreatedEvent(),
-              listId: differentListId,
-            },
-            constructEvent('ArticleAddedToList')({ listId: differentListId, articleId }),
-            constructEvent('ArticleInListAnnotated')({ listId: differentListId, articleId, content }),
-          ],
-          RA.reduce(initialState(), handleEvent),
-        );
-        const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
+        const events = [
+          listCreatedEvent,
+          articleAddedToListEvent,
+          {
+            ...arbitraryListCreatedEvent(),
+            listId: differentListId,
+          },
+          constructEvent('ArticleAddedToList')({ listId: differentListId, articleId }),
+          constructEvent('ArticleInListAnnotated')({ listId: differentListId, articleId, content }),
+        ];
 
         it('returns no annotation', () => {
-          expect(annotationContent).toStrictEqual(O.none);
+          expect(runQuery(events)).toStrictEqual(O.none);
         });
       });
 
-      describe('when a different article has been added to, and annotated in, this list', () => {
+      describe('and a different article has been added to, and annotated in, this list', () => {
         const differentArticleId = new ArticleId(arbitraryExpressionDoi());
-        const readmodel = pipe(
-          [
-            listCreatedEvent,
-            articleAddedToListEvent,
-            {
-              ...arbitraryArticleAddedToListEvent(),
-              listId,
-              articleId: differentArticleId,
-            },
-            constructEvent('ArticleInListAnnotated')({ listId, articleId: differentArticleId, content }),
-          ],
-          RA.reduce(initialState(), handleEvent),
-        );
-
-        const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
+        const events = [
+          listCreatedEvent,
+          articleAddedToListEvent,
+          {
+            ...arbitraryArticleAddedToListEvent(),
+            listId,
+            articleId: differentArticleId,
+          },
+          constructEvent('ArticleInListAnnotated')({ listId, articleId: differentArticleId, content }),
+        ];
 
         it('returns no annotation', () => {
-          expect(annotationContent).toStrictEqual(O.none);
+          expect(runQuery(events)).toStrictEqual(O.none);
         });
       });
 
