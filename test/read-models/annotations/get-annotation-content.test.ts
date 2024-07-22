@@ -6,7 +6,7 @@ import { getAnnotationContent } from '../../../src/read-models/annotations/get-a
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { rawUserInput } from '../../../src/read-side';
 import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
@@ -29,6 +29,10 @@ describe('get-annotation-content', () => {
   describe('when the requested list has been created', () => {
     const listCreatedEvent = {
       ...arbitraryListCreatedEvent(),
+      listId,
+    };
+    const listDeletedEvent = {
+      ...arbitraryListDeletedEvent(),
       listId,
     };
 
@@ -149,7 +153,14 @@ describe('get-annotation-content', () => {
     });
 
     describe('and the requested list has been deleted', () => {
-      it.todo('returns no annotation');
+      const events = [
+        listCreatedEvent,
+        listDeletedEvent,
+      ];
+
+      it('returns no annotation', () => {
+        expect(runQuery(events)).toStrictEqual(O.none);
+      });
     });
   });
 
