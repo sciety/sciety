@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { doesListExist } from './does-list-exist';
 import { ListWriteModel } from './list-write-model';
 import {
   constructEvent,
@@ -90,9 +91,14 @@ const handleEditingOfDescription = (listResource: ListWriteModel, command: EditL
 
 export const update: ResourceAction<EditListDetailsCommand> = (command) => (events) => pipe(
   events,
-  filterToEventsRelevantToWriteModel,
-  RA.filter(isAnEventOfThisList(command.listId)),
-  RA.reduce(E.left(toErrorMessage('list-not-found')), updateListWriteModel),
+  E.right,
+  E.filterOrElse(
+    doesListExist(command.listId),
+    () => toErrorMessage('list-not-found'),
+  ),
+  E.map(filterToEventsRelevantToWriteModel),
+  E.map(RA.filter(isAnEventOfThisList(command.listId))),
+  E.chain(RA.reduce(E.left(toErrorMessage('list-not-found')), updateListWriteModel)),
   E.map((listResource) => [
     ...handleEditingOfName(listResource, command),
     ...handleEditingOfDescription(listResource, command),
