@@ -68,7 +68,7 @@ describe('create', () => {
         create({ ...addGroupCommand, name: otherGroupJoinedEvent.name }),
       );
 
-      it('fails with no events raised', () => {
+      it('rejects the command', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
@@ -87,7 +87,7 @@ describe('create', () => {
         create({ ...addGroupCommand, name }),
       );
 
-      it('fails with no events raised', () => {
+      it('rejects the command', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
@@ -104,7 +104,7 @@ describe('create', () => {
         create({ ...addGroupCommand, slug: otherGroupJoinedEvent.slug }),
       );
 
-      it('fails with no events raised', () => {
+      it('rejects the command', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
@@ -123,7 +123,7 @@ describe('create', () => {
         create({ ...addGroupCommand, slug }),
       );
 
-      it('fails with no events raised', () => {
+      it('rejects the command', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
@@ -138,7 +138,7 @@ describe('create', () => {
       create({ ...arbitraryAddGroupCommand(), groupId: groupJoinedEvent.groupId }),
     );
 
-    it('fails with no events raised', () => {
+    it('rejects the command', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
