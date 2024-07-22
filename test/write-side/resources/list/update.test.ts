@@ -41,11 +41,8 @@ describe('update', () => {
         );
       });
 
-      it('raises exactly one event', () => {
+      it('causes a state change updating the list name', () => {
         expect(raisedEvents).toHaveLength(1);
-      });
-
-      it('raises an event with the new name', () => {
         expect(raisedEvents[0]).toBeDomainEvent('ListNameEdited', {
           name: newName,
         });
@@ -75,11 +72,8 @@ describe('update', () => {
         );
       });
 
-      it('raises exactly one event', () => {
+      it('causes a state change updating the list description', () => {
         expect(raisedEvents).toHaveLength(1);
-      });
-
-      it('raises an event with the new description', () => {
         expect(raisedEvents[0]).toBeDomainEvent('ListDescriptionEdited', {
           description: newDescription,
         });
@@ -108,7 +102,7 @@ describe('update', () => {
         );
       });
 
-      it('raises no events', () => {
+      it('accepts the command and causes no state change', () => {
         expect(raisedEvents).toStrictEqual([]);
       });
     });
@@ -137,11 +131,8 @@ describe('update', () => {
         );
       });
 
-      it('raises exactly two events', () => {
+      it('causes a state change updating both list name and description', () => {
         expect(raisedEvents).toHaveLength(2);
-      });
-
-      it('raises two events with the new details', () => {
         expect(raisedEvents[0]).toBeDomainEvent('ListNameEdited', {
           name: newName,
         });
