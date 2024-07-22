@@ -6,30 +6,34 @@ import { getAnnotationContent } from '../../../src/read-models/annotations/get-a
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { rawUserInput } from '../../../src/read-side';
 import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryString } from '../../helpers';
+import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
-import { arbitraryListOwnerId } from '../../types/list-owner-id.helper';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
 
 describe('get-annotation-content', () => {
   const listId = arbitraryListId();
   const expressionDoi = arbitraryExpressionDoi();
+  /** @deprecated roll out expressionDois in list resource events */
+  const articleId = new ArticleId(expressionDoi);
   const content = arbitraryUnsafeUserInput();
 
   describe('when the list exists', () => {
+    const listCreatedEvent = {
+      ...arbitraryListCreatedEvent(),
+      listId,
+    };
+
     describe('when the article has been annotated in the list', () => {
       const readmodel = pipe(
         [
-          constructEvent('ListCreated')({
-            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
-          }),
-          constructEvent('ArticleAddedToList')({ listId, articleId: new ArticleId(expressionDoi) }),
-          constructEvent('ArticleInListAnnotated')({ listId, articleId: new ArticleId(expressionDoi), content }),
+          listCreatedEvent,
+          constructEvent('ArticleAddedToList')({ listId, articleId }),
+          constructEvent('ArticleInListAnnotated')({ listId, articleId, content }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
-      const annotationContent = getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi));
+      const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
 
       it('returns the annotation content', () => {
         expect(annotationContent).toStrictEqual(O.some(rawUserInput(content)));
@@ -40,23 +44,20 @@ describe('get-annotation-content', () => {
       const differentListId = arbitraryListId();
       const readmodel = pipe(
         [
-          constructEvent('ListCreated')({
-            listId, name: arbitraryString(), description: arbitraryString(), ownerId: arbitraryListOwnerId(),
-          }),
-          constructEvent('ListCreated')({
+          listCreatedEvent,
+          {
+            ...arbitraryListCreatedEvent(),
             listId: differentListId,
-            name: arbitraryString(),
-            description: arbitraryString(),
-            ownerId: arbitraryListOwnerId(),
-          }),
-          constructEvent('ArticleAddedToList')({ listId: differentListId, articleId: new ArticleId(expressionDoi) }),
-          constructEvent('ArticleInListAnnotated')({ listId: differentListId, articleId: new ArticleId(expressionDoi), content }),
+          },
+          constructEvent('ArticleAddedToList')({ listId: differentListId, articleId }),
+          constructEvent('ArticleInListAnnotated')({ listId: differentListId, articleId, content }),
         ],
         RA.reduce(initialState(), handleEvent),
       );
+      const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
 
       it('returns no annotation', () => {
-        expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
+        expect(annotationContent).toStrictEqual(O.none);
       });
     });
 
