@@ -26,7 +26,7 @@ describe('get-annotation-content', () => {
     return annotationContent;
   };
 
-  describe('when the requested list exists', () => {
+  describe('when the requested list has been created', () => {
     const listCreatedEvent = {
       ...arbitraryListCreatedEvent(),
       listId,
@@ -142,6 +142,14 @@ describe('get-annotation-content', () => {
           expect(runQuery(events)).toStrictEqual(O.some(rawUserInput(newContent)));
         });
       });
+
+      describe('and the requested article was annotated and this list was deleted', () => {
+        it.todo('returns no annotation');
+      });
+    });
+
+    describe('and the requested list has been deleted', () => {
+      it.todo('returns no annotation');
     });
   });
 
@@ -151,9 +159,5 @@ describe('get-annotation-content', () => {
     it('returns no annotation', () => {
       expect(runQuery(events)).toStrictEqual(O.none);
     });
-  });
-
-  describe('when the list has been deleted', () => {
-    it.todo('returns no annotation');
   });
 });
