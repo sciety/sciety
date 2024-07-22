@@ -24,7 +24,7 @@ type ListDetails = {
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
-const buildListDetails = (resource: E.Either<ErrorMessage, ListDetails>, event: DomainEvent) => {
+const handleEvent = (resource: E.Either<ErrorMessage, ListDetails>, event: DomainEvent) => {
   if (isEventOfType('ListCreated')(event)) {
     return E.right({ name: event.name, description: event.description } satisfies ListDetails);
   }
@@ -64,7 +64,7 @@ export const update: ResourceAction<EditListDetailsCommand> = (command) => (even
   ),
   E.map(filterToRelevantEventTypes),
   E.map(RA.filter(isAnEventOfThisList(command.listId))),
-  E.chain(RA.reduce(E.left(toErrorMessage('list-not-found')), buildListDetails)),
+  E.chain(RA.reduce(E.left(toErrorMessage('list-details-not-found')), handleEvent)),
   E.map((listDetails) => [
     ...handleEditingOfName(listDetails, command),
     ...handleEditingOfDescription(listDetails, command),
