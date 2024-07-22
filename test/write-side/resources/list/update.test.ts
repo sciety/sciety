@@ -1,12 +1,19 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
+import { EditListDetailsCommand } from '../../../../src/write-side/commands';
 import { update } from '../../../../src/write-side/resources/list';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
+
+const arbitraryEditListDetailsCommand = (): EditListDetailsCommand => ({
+  listId: arbitraryListId(),
+  name: arbitrarySanitisedUserInput(),
+  description: arbitrarySanitisedUserInput(),
+});
 
 describe('update', () => {
   const listId = arbitraryListId();
@@ -140,7 +147,15 @@ describe('update', () => {
   });
 
   describe('when the list never existed', () => {
-    it.todo('rejects the command with "list-not-found"');
+    const command = arbitraryEditListDetailsCommand();
+    const result = pipe(
+      [],
+      update(command),
+    );
+
+    it('rejects the command with "list-not-found"', () => {
+      expect(result).toStrictEqual(E.left('list-not-found'));
+    });
   });
 
   describe('when the list existed and was later deleted', () => {
