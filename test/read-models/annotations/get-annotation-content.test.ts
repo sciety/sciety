@@ -127,22 +127,19 @@ describe('get-annotation-content', () => {
         });
       });
 
-      describe('an annotated article was removed from its list, re-added and re-annotated', () => {
+      describe('and the requested article was annotated and removed from this list, re-added and re-annotated', () => {
         const newContent = arbitraryUnsafeUserInput();
-        const readmodel = pipe(
-          [
-            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
-            constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(expressionDoi), listId, content }),
-            constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
-            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
-            constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(expressionDoi), listId, content: newContent }),
-          ],
-          RA.reduce(initialState(), handleEvent),
-        );
-        const annotationContent = getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi));
+        const events = [
+          listCreatedEvent,
+          articleAddedToListEvent,
+          articleAnnotatedEvent,
+          articleRemovedFromListEvent,
+          constructEvent('ArticleAddedToList')({ articleId, listId }),
+          constructEvent('ArticleInListAnnotated')({ articleId, listId, content: newContent }),
+        ];
 
         it('returns only the new annotation', () => {
-          expect(annotationContent).toStrictEqual(O.some(rawUserInput(newContent)));
+          expect(runQuery(events)).toStrictEqual(O.some(rawUserInput(newContent)));
         });
       });
     });
