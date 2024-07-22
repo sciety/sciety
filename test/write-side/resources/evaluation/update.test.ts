@@ -40,11 +40,8 @@ describe('update', () => {
             );
           });
 
-          it('raises exactly one event', () => {
+          it(`causes a state change in which only the evaluation's ${attributeToBeChanged} is updated`, () => {
             expect(eventsRaised).toHaveLength(1);
-          });
-
-          it(`raises an event to update the evaluation ${attributeToBeChanged}`, () => {
             expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
               evaluationType: undefined,
               evaluationLocator: command.evaluationLocator,
@@ -83,11 +80,8 @@ describe('update', () => {
             );
           });
 
-          it('raises exactly one event', () => {
+          it(`causes a state change in which only the evaluation's ${attributeToBeChanged} is updated`, () => {
             expect(eventsRaised).toHaveLength(1);
-          });
-
-          it(`raises an event to update the evaluation ${attributeToBeChanged}`, () => {
             expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
               evaluationType: undefined,
               authors: undefined,
@@ -125,7 +119,7 @@ describe('update', () => {
             );
           });
 
-          it('raises no events', () => {
+          it('accepts the command and causes no state change', () => {
             expect(eventsRaised).toStrictEqual([]);
           });
         });
@@ -157,7 +151,7 @@ describe('update', () => {
             );
           });
 
-          it('raises no events', () => {
+          it('accepts the command and causes no state change', () => {
             expect(eventsRaised).toStrictEqual([]);
           });
         });
@@ -192,11 +186,8 @@ describe('update', () => {
             );
           });
 
-          it('raises exactly one event', () => {
+          it(`causes a state change in which only the evaluation's ${attributeToBeChanged} is updated`, () => {
             expect(eventsRaised).toHaveLength(1);
-          });
-
-          it(`raises an event to only update the ${attributeToBeChanged}`, () => {
             expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
               evaluationType: undefined,
               authors: undefined,
@@ -235,11 +226,8 @@ describe('update', () => {
             );
           });
 
-          it('raises exactly one event', () => {
+          it(`causes a state change in which only the evaluation's ${attributeToBeChanged} is updated`, () => {
             expect(eventsRaised).toHaveLength(1);
-          });
-
-          it(`raises an event to only update the ${attributeToBeChanged}`, () => {
             expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
               evaluationType: undefined,
               authors: undefined,
@@ -272,11 +260,8 @@ describe('update', () => {
         );
       });
 
-      it('raises exactly one event', () => {
+      it('causes a state change in which the evaluation is updated, the date of such update being the date supplied in the command', () => {
         expect(eventsRaised).toHaveLength(1);
-      });
-
-      it('raises an event with issuedAt as the date', () => {
         expect(eventsRaised[0]).toBeDomainEvent('EvaluationUpdated', {
           date: issuedAt,
         });
