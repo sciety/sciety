@@ -52,7 +52,14 @@ describe('get-annotation-content', () => {
       });
 
       describe('and the requested article has not been annotated in this list', () => {
-        it.todo('returns no annotation');
+        const events = [
+          listCreatedEvent,
+          articleAddedToListEvent,
+        ];
+
+        it('returns no annotation', () => {
+          expect(runQuery(events)).toStrictEqual(O.none);
+        });
       });
 
       describe('and the requested article has been annotated in a different list', () => {
