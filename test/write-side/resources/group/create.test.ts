@@ -25,7 +25,7 @@ describe('create', () => {
       );
     });
 
-    it('creates the group', () => {
+    it('causes a state change in which the group is created', () => {
       expect(result[0]).toBeDomainEvent('GroupJoined', {
         groupId: addGroupCommand.groupId,
         name: addGroupCommand.name,
@@ -38,18 +38,22 @@ describe('create', () => {
       });
     });
 
-    it('creates a list owned by the group', () => {
+    it('causes a state change in which a list owned by the group is created', () => {
       expect(result[1]).toBeDomainEvent('ListCreated', {
         ownerId: LOID.fromGroupId(addGroupCommand.groupId),
         description: expect.stringContaining(addGroupCommand.name),
       });
     });
 
-    it('identifies the list as the target for ingestion', () => {
+    it('causes a state change win which the list is identified as the target for ingestion', () => {
       expect(result[2]).toBeDomainEvent('EvaluatedArticlesListSpecified', {
         groupId: addGroupCommand.groupId,
         listId: (result[1] as EventOfType<'ListCreated'>).listId,
       });
+    });
+
+    it('causes no other state change', () => {
+      expect(result).toHaveLength(3);
     });
   });
 
