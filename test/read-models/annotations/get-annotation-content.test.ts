@@ -6,7 +6,7 @@ import { getAnnotationContent } from '../../../src/read-models/annotations/get-a
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { rawUserInput } from '../../../src/read-side';
 import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
@@ -24,14 +24,14 @@ describe('get-annotation-content', () => {
       listId,
     };
 
-    describe('and the article is not in this list', () => {
+    describe('and the requested article is not in this list', () => {
       it.todo('returns no annotation');
     });
 
-    describe('and the article has been added to this list', () => {
+    describe('and the requested article has been added to this list', () => {
       const articleAddedToListEvent = constructEvent('ArticleAddedToList')({ listId, articleId });
 
-      describe('and the article has been annotated in this list', () => {
+      describe('and the requested article has been annotated in this list', () => {
         const readmodel = pipe(
           [
             listCreatedEvent,
@@ -47,7 +47,7 @@ describe('get-annotation-content', () => {
         });
       });
 
-      describe('and the article has been annotated in a different list', () => {
+      describe('and the requested article has been annotated in a different list', () => {
         const differentListId = arbitraryListId();
         const readmodel = pipe(
           [
@@ -69,16 +69,26 @@ describe('get-annotation-content', () => {
         });
       });
 
-      describe('when a different article has been annotated in the list', () => {
+      describe('when a different article has been added to, and annotated in, this list', () => {
+        const differentArticleId = new ArticleId(arbitraryExpressionDoi());
         const readmodel = pipe(
           [
-            constructEvent('ArticleInListAnnotated')({ listId, articleId: new ArticleId(arbitraryExpressionDoi()), content }),
+            listCreatedEvent,
+            articleAddedToListEvent,
+            {
+              ...arbitraryArticleAddedToListEvent(),
+              listId,
+              articleId: differentArticleId,
+            },
+            constructEvent('ArticleInListAnnotated')({ listId, articleId: differentArticleId, content }),
           ],
           RA.reduce(initialState(), handleEvent),
         );
 
+        const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
+
         it('returns no annotation', () => {
-          expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
+          expect(annotationContent).toStrictEqual(O.none);
         });
       });
 
