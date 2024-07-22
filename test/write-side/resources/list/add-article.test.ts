@@ -30,7 +30,7 @@ describe('add-article', () => {
         }),
       );
 
-      it('succeeds, doing nothing', () => {
+      it('accepts the command and causes no state change', () => {
         expect(result).toStrictEqual(E.right([]));
       });
     });
@@ -55,11 +55,8 @@ describe('add-article', () => {
           );
         });
 
-        it('raises exactly one event', () => {
+        it('causes a state change in which the article is added to the list', () => {
           expect(result).toHaveLength(1);
-        });
-
-        it('succeeds, adding the article', () => {
           expect(result[0]).toBeDomainEvent('ArticleAddedToList', {
             articleId: new ArticleId(expressionDoi),
             listId,
@@ -88,11 +85,8 @@ describe('add-article', () => {
           );
         });
 
-        it('raises exactly two events', () => {
+        it('causes a state change in which both the article is added to the list, and that article is annotated in the list', () => {
           expect(result).toHaveLength(2);
-        });
-
-        it('succeeds, adding the article and creating the annotation', () => {
           expect(result[0]).toBeDomainEvent('ArticleAddedToList', {
             articleId: new ArticleId(expressionDoi),
             listId,
@@ -121,7 +115,8 @@ describe('add-article', () => {
           }),
         );
 
-        it('fails', () => {
+        it('rejects the command with "Annotation too long"', () => {
+          expect(result).toStrictEqual(E.left('Annotation too long'));
           expect(E.isLeft(result)).toBe(true);
         });
       });
@@ -141,7 +136,7 @@ describe('add-article', () => {
           }),
         );
 
-        it('fails', () => {
+        it('rejects the command', () => {
           expect(E.isLeft(result)).toBe(true);
         });
       });
@@ -157,7 +152,7 @@ describe('add-article', () => {
       }),
     );
 
-    it('fails', () => {
+    it('rejects the command', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
@@ -178,7 +173,7 @@ describe('add-article', () => {
       }),
     );
 
-    it('fails', () => {
+    it('rejects the command', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
