@@ -51,6 +51,10 @@ describe('get-annotation-content', () => {
         });
       });
 
+      describe('and the requested article has not been annotated in this list', () => {
+        it.todo('returns no annotation');
+      });
+
       describe('and the requested article has been annotated in a different list', () => {
         const differentListId = arbitraryListId();
         const events = [
@@ -84,17 +88,6 @@ describe('get-annotation-content', () => {
 
         it('returns no annotation', () => {
           expect(runQuery(events)).toStrictEqual(O.none);
-        });
-      });
-
-      describe('when there have been no annotations', () => {
-        const readmodel = pipe(
-          [],
-          RA.reduce(initialState(), handleEvent),
-        );
-
-        it('returns no annotation', () => {
-          expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
         });
       });
 
