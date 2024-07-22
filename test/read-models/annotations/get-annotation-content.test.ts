@@ -148,7 +148,16 @@ describe('get-annotation-content', () => {
       });
 
       describe('and the requested article was annotated and this list was deleted', () => {
-        it.todo('returns no annotation');
+        const events = [
+          listCreatedEvent,
+          articleAddedToListEvent,
+          articleAnnotatedEvent,
+          listDeletedEvent,
+        ];
+
+        it.failing('returns no annotation', () => {
+          expect(runQuery(events)).toStrictEqual(O.none);
+        });
       });
     });
 
