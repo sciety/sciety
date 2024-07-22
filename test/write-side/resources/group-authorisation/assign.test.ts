@@ -23,8 +23,12 @@ describe('assign', () => {
       );
     });
 
-    it('assigns the user as admin of the group', () => {
+    it('creates a state change in which the user is assigned as an admin of the group', () => {
       expect(result).toHaveLength(1);
+      expect(result[0]).toBeDomainEvent('UserAssignedAsAdminOfGroup', {
+        groupId: input.groupId,
+        userId: input.userId,
+      });
     });
   });
 
@@ -41,7 +45,7 @@ describe('assign', () => {
       );
     });
 
-    it('succeeds and does nothing', () => {
+    it('accepts the command and causes no state change', () => {
       expect(result).toHaveLength(0);
     });
   });
