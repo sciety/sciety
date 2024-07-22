@@ -18,20 +18,20 @@ describe('get-annotation-content', () => {
   const articleId = new ArticleId(expressionDoi);
   const content = arbitraryUnsafeUserInput();
 
-  describe('when the list exists', () => {
+  describe('when the requested list exists', () => {
     const listCreatedEvent = {
       ...arbitraryListCreatedEvent(),
       listId,
     };
 
-    describe('and the article is not in the list', () => {
+    describe('and the article is not in this list', () => {
       it.todo('returns no annotation');
     });
 
-    describe('and the article has been added to the list', () => {
+    describe('and the article has been added to this list', () => {
       const articleAddedToListEvent = constructEvent('ArticleAddedToList')({ listId, articleId });
 
-      describe('and the article has been annotated in the list', () => {
+      describe('and the article has been annotated in this list', () => {
         const readmodel = pipe(
           [
             listCreatedEvent,
