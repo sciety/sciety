@@ -1,19 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
-import { EditListDetailsCommand } from '../../../../src/write-side/commands';
 import { update } from '../../../../src/write-side/resources/list';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
 import { arbitrarySanitisedUserInput } from '../../../types/sanitised-user-input.helper';
-
-const arbitraryEditListDetailsCommand = (): EditListDetailsCommand => ({
-  listId: arbitraryListId(),
-  name: arbitrarySanitisedUserInput(),
-  description: arbitrarySanitisedUserInput(),
-});
+import { arbitraryEditListDetailsCommand } from '../../commands/edit-list-details-command.helper';
 
 describe('update', () => {
   const listId = arbitraryListId();
