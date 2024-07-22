@@ -30,6 +30,8 @@ describe('get-annotation-content', () => {
 
     describe('and the requested article has been added to this list', () => {
       const articleAddedToListEvent = constructEvent('ArticleAddedToList')({ listId, articleId });
+      const articleAnnotatedEvent = constructEvent('ArticleInListAnnotated')({ articleId, listId, content });
+      const articleRemovedFromListEvent = constructEvent('ArticleRemovedFromList')({ articleId, listId });
       const runQuery = (events: ReadonlyArray<DomainEvent>) => {
         const readmodel = pipe(
           events,
@@ -98,34 +100,30 @@ describe('get-annotation-content', () => {
         });
       });
 
-      describe('an annotated article has been removed from its list', () => {
-        const readmodel = pipe(
-          [
-            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
-            constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(expressionDoi), listId, content }),
-            constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
-          ],
-          RA.reduce(initialState(), handleEvent),
-        );
+      describe('and the requested article has been annotated and then removed from this list', () => {
+        const events = [
+          listCreatedEvent,
+          articleAddedToListEvent,
+          articleAnnotatedEvent,
+          articleRemovedFromListEvent,
+        ];
 
         it('returns no annotation', () => {
-          expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
+          expect(runQuery(events)).toStrictEqual(O.none);
         });
       });
 
-      describe('an annotated article has been removed from its list and then re-added', () => {
-        const readmodel = pipe(
-          [
-            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
-            constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(expressionDoi), listId, content }),
-            constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
-            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
-          ],
-          RA.reduce(initialState(), handleEvent),
-        );
+      describe('and the requested article has been annotated, then removed and then re-added from this list', () => {
+        const events = [
+          listCreatedEvent,
+          articleAddedToListEvent,
+          articleAnnotatedEvent,
+          articleRemovedFromListEvent,
+          constructEvent('ArticleAddedToList')({ articleId, listId }),
+        ];
 
         it('returns no annotation', () => {
-          expect(getAnnotationContent(readmodel)(listId, new ArticleId(expressionDoi))).toStrictEqual(O.none);
+          expect(runQuery(events)).toStrictEqual(O.none);
         });
       });
 
