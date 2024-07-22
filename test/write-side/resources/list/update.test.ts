@@ -1,8 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../../src/domain-events';
-import { executeCommand } from '../../../../src/write-side/resources/list/execute-command';
-import { getListWriteModel } from '../../../../src/write-side/resources/list/get-list-write-model';
+import { update } from '../../../../src/write-side/resources/list';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
@@ -32,8 +31,7 @@ describe('update', () => {
             ownerId: arbitraryListOwnerId(),
           }),
         ],
-        getListWriteModel(listId),
-        E.map(executeCommand(command)),
+        update(command),
         E.getOrElseW(shouldNotBeCalled),
       );
 
@@ -65,8 +63,7 @@ describe('update', () => {
             ownerId: arbitraryListOwnerId(),
           }),
         ],
-        getListWriteModel(listId),
-        E.map(executeCommand(command)),
+        update(command),
         E.getOrElseW(shouldNotBeCalled),
       );
 
@@ -97,8 +94,7 @@ describe('update', () => {
               ownerId: arbitraryListOwnerId(),
             }),
           ],
-          getListWriteModel(listId),
-          E.map(executeCommand(command)),
+          update(command),
           E.getOrElseW(shouldNotBeCalled),
         );
 
@@ -124,8 +120,7 @@ describe('update', () => {
             ownerId: arbitraryListOwnerId(),
           }),
         ],
-        getListWriteModel(listId),
-        E.map(executeCommand(command)),
+        update(command),
         E.getOrElseW(shouldNotBeCalled),
       );
 
