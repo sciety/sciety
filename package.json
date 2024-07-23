@@ -33,7 +33,7 @@
     "passport-auth0": "^1.4.4",
     "passport-local": "^1.0.0",
     "pg": "^8.12.0",
-    "redis": "^4.6.14",
+    "redis": "^4.6.15",
     "remarkable": "^2.0.1",
     "sanitize-html": "^2.13.0",
     "serialize-error": "^8.1.0",
