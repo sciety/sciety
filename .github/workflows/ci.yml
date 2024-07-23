@@ -157,7 +157,7 @@ jobs:
           HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
 
       - name: Notify Slack
-        if: failure() && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: zuplo/github-action-slack-notify-build@v2
