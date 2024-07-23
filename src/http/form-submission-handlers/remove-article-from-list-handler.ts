@@ -44,7 +44,7 @@ export const removeArticleFromListHandler = (dependencies: Dependencies): Middle
 
   const command = removeArticleFromListCommandCodec.decode(
     {
-      expressionDoi: formRequest.right.body[inputFieldNames.expressionDoi],
+      articleId: formRequest.right.body[inputFieldNames.expressionDoi],
       listId: formRequest.right.body[inputFieldNames.listId],
     },
   );
