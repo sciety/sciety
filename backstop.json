@@ -57,8 +57,8 @@
       ]
     },
     {
-      "label": "Search page",
-      "url": "http://sciety-test-app-1/search",
+      "label": "Explore page",
+      "url": "http://sciety-test-app-1/explore",
       "selectors": [
         "main"
       ]
