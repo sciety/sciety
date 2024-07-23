@@ -19,6 +19,9 @@ const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
 
 export const constructViewModel = (dependencies: Dependencies): TE.TaskEither<DE.DataError, ViewModel> => pipe(
   constructBrowseByCategory(dependencies),
-  T.map((browseByCategory) => ({ browseByCategory })),
+  T.map((browseByCategory) => ({
+    pageHeading: 'Explore evaluated preprints',
+    browseByCategory,
+  })),
   TE.rightTask,
 );

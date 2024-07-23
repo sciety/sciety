@@ -5,4 +5,7 @@ type Category = {
   href: string,
 };
 
-export type ViewModel = { browseByCategory: O.Option<ReadonlyArray<Category>> };
+export type ViewModel = {
+  pageHeading: string,
+  browseByCategory: O.Option<ReadonlyArray<Category>>,
+};
