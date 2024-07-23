@@ -1,4 +1,5 @@
 import { toHtmlFragment } from '../../../../types/html-fragment';
+import { explorePageHref } from '../../../paths';
 
 const staticMessage = (message: string) => toHtmlFragment(`<p>${message}</p>`);
 
@@ -7,7 +8,7 @@ export const noArticlesMessageForReader = staticMessage(
 );
 
 export const noArticlesMessageForOwner = staticMessage(
-  'This list is currently empty. <a href="/search">Search for evaluated preprints</a> to add them to your list.',
+  `This list is currently empty. <a href="${explorePageHref}">Search for evaluated preprints</a> to add them to your list.`,
 );
 
 export const noArticlesCanBeFetchedMessage = staticMessage(

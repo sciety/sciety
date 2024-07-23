@@ -1,6 +1,7 @@
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
+import { explorePageHref } from '../../../../paths';
 
-const renderExploreReviewedPreprintsLink = () => '<a class="home-page-hero-explore-reviewed-preprints-link" href="/search">Explore Reviewed Preprints</a>';
+const renderExploreReviewedPreprintsLink = () => `<a class="home-page-hero-explore-reviewed-preprints-link" href="${explorePageHref}">Explore Reviewed Preprints</a>`;
 
 const renderBrowseReviewingGroupsLink = () => '<a class="home-page-hero-browse-reviewing-groups-link" href="/groups">Browse Reviewing Groups</a>';
 
