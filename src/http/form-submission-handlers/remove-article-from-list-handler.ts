@@ -6,6 +6,7 @@ import * as PR from 'io-ts/PathReporter';
 import { Middleware } from 'koa';
 import { checkUserOwnsList, Dependencies as CheckUserOwnsListDependencies } from './check-user-owns-list';
 import { Logger } from '../../logger';
+import { inputFieldNames } from '../../standards';
 import { DependenciesForCommands } from '../../write-side';
 import { RemoveArticleFromListCommand, removeArticleFromListCommandCodec } from '../../write-side/commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
@@ -28,7 +29,7 @@ const logCodecSuccess = (dependencies: Dependencies, command: RemoveArticleFromL
 
 const requestCodec = t.type({
   body: t.type({
-    articleid: t.unknown,
+    [inputFieldNames.articleId]: t.unknown,
     listid: t.unknown,
   }),
 });
@@ -43,7 +44,7 @@ export const removeArticleFromListHandler = (dependencies: Dependencies): Middle
 
   const command = removeArticleFromListCommandCodec.decode(
     {
-      articleId: formRequest.right.body.articleid,
+      articleId: formRequest.right.body[inputFieldNames.articleId],
       listId: formRequest.right.body.listid,
     },
   );

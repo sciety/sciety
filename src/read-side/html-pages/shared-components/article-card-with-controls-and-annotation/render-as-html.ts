@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ViewModel } from './view-model';
 import { safelyRenderRawUserInput } from '../../../../shared-components/raw-user-input-renderers';
+import { inputFieldNames } from '../../../../standards';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { ListId } from '../../../../types/list-id';
@@ -10,7 +11,7 @@ import { renderArticleCardContents } from '../article-card/render-as-html';
 
 const renderRemoveArticleForm = (expressionDoi: ExpressionDoi, listId: ListId) => toHtmlFragment(`
   <form method="post" action="/forms/remove-article-from-list">
-    <input type="hidden" name="articleid" value="${expressionDoi}">
+    <input type="hidden" name="${inputFieldNames.articleId}" value="${expressionDoi}">
     <input type="hidden" name="listid" value="${listId}">
     <button aria-label="Remove this article from the list" class="saved-articles-control--remove">
     Remove article
