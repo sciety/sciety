@@ -29,7 +29,7 @@ const logCodecSuccess = (dependencies: Dependencies, command: RemoveArticleFromL
 
 const requestCodec = t.type({
   body: t.type({
-    [inputFieldNames.articleId]: t.unknown,
+    [inputFieldNames.expressionDoi]: t.unknown,
     [inputFieldNames.listId]: t.unknown,
   }),
 });
@@ -44,7 +44,7 @@ export const removeArticleFromListHandler = (dependencies: Dependencies): Middle
 
   const command = removeArticleFromListCommandCodec.decode(
     {
-      articleId: formRequest.right.body[inputFieldNames.articleId],
+      articleId: formRequest.right.body[inputFieldNames.expressionDoi],
       listId: formRequest.right.body[inputFieldNames.listId],
     },
   );

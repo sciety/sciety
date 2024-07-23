@@ -1,5 +1,6 @@
 export const inputFieldNames = {
   articleId: 'articleId' as const,
+  expressionDoi: 'expressionDoi' as const,
   listId: 'listId' as const,
   listName: 'name' as const,
   success: 'success' as const,
