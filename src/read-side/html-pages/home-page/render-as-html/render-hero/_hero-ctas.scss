@@ -1,85 +1,5 @@
-@use 'sass:math';
-
-@use 'settings';
-@use 'functions';
-@use 'breakpoints';
 @use 'button';
-@use 'link';
-
-$_input-height: 48px;
-$_search-icon-size: functions.px-to-rem(24px);
-$_search-input-width: 416px;
-$_search-button-width: 76px;
-$_search-button-width-with-separation: $_search-button-width + settings.$default-form-element-separation;
-$_search-form-width-on-wide-screens: $_search-input-width + $_search-button-width-with-separation;
-
-.home-page-hero-search-form__visible_interactive_elements {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-grow: 1;
-  max-width: functions.px-to-rem($_search-input-width);
-
-  &::before{
-    content: '';
-    display: block;
-    position: absolute;
-    left: functions.px-to-rem(16px);
-    top: functions.px-to-rem(13px);
-    width: $_search-icon-size;
-    height: $_search-icon-size;
-    background-image: url('/static/images/search-icon.svg');
-    background-repeat: no-repeat;
-    z-index: 2;
-  }
-
-  @include breakpoints.not-narrow() {
-    flex-direction: row;
-    flex-grow: 0;
-    max-width: functions.px-to-rem($_search-form-width-on-wide-screens);
-  }
-}
-
-.home-page-hero-search-form__label {
-  display: block;
-  font-size: functions.px-to-rem(14px);
-  text-align: center;
-  margin-bottom: functions.px-to-rem(2px);
-
-  @include breakpoints.not-narrow() {
-    padding-left: math.div(functions.px-to-rem($_search-button-width-with-separation), 2);
-    padding-right: math.div(functions.px-to-rem($_search-button-width-with-separation), 2);
-  }
-}
-
-.home-page-hero-search-form__text {
-  height: functions.px-to-rem($_input-height);
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-radius: settings.$border-radius;
-  padding-top: functions.px-to-rem(17px);
-  padding-bottom: functions.px-to-rem(17px);
-  padding-left: functions.px-to-rem(46px);
-  padding-right: functions.px-to-rem(settings.$default-form-gutter);
-  color: settings.$colour-text-primary;
-  margin-bottom: functions.px-to-rem(10px);
-  width: 100%;
-
-  @include breakpoints.not-narrow() {
-    margin-right: functions.px-to-rem(settings.$default-form-element-separation);
-    margin-bottom: 0;
-  }
-}
-
-.home-page-hero-search-form__button {
-  @include button.primary();
-  cursor: pointer;
-  max-width: functions.px-to-rem($_search-button-width);
-
-  @include breakpoints.not-narrow() {
-    height: functions.px-to-rem($_input-height - (2 * settings.$border-width));
-  }
-}
+@use 'functions';
 
 .home-page-hero__ctas {
   display: flex;
@@ -88,13 +8,10 @@ $_search-form-width-on-wide-screens: $_search-input-width + $_search-button-widt
   gap: functions.px-to-rem(16px);
 }
 
-.home-page-hero-browse-by-category-link {
-  @include link.normal-state() {
-    color: settings.$colour-white;
-    text-decoration: underline;
-    font-weight: bold;
-  }
-  @include link.engaged-state() {
-    color: settings.$colour-accent-hover-on-dark-background;
-  }
+.home-page-hero-explore-reviewed-preprints-link {
+  @include button.primary-link();
+}
+
+.home-page-hero-browse-reviewing-groups-link {
+  @include button.secondary-link();
 }
