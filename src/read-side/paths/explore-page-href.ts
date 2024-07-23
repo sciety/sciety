@@ -1,1 +1,1 @@
-export const explorePageHref = '/search';
+export const explorePageHref = '/explore';

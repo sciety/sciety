@@ -41,7 +41,7 @@ import { userPage as userFollowingPage, userPageParams as userFollowingPageParam
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
 import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
 import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
-import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
+import { constructPaperActivityPageHref, explorePageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { categoryPagePathSpecification } from '../read-side/paths/construct-category-page-href';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import * as EDOI from '../types/expression-doi';
@@ -64,6 +64,15 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
       context.redirect(`/users/${context.params.descriptor}/lists`);
       await next();
     },
+  );
+
+  router.get(
+    explorePageHref,
+    async (context, next) => {
+      context.response.set('X-Robots-Tag', 'noindex');
+      await next();
+    },
+    pageHandler(dependencies, () => explorePage(dependencies)),
   );
 
   router.get(
