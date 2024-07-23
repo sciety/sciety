@@ -41,7 +41,7 @@ const isAuthorised = (
 };
 
 const saveArticleHandlerFormBodyCodec = t.strict({
-  [inputFieldNames.articleId]: canonicalExpressionDoiCodec,
+  [inputFieldNames.expressionDoi]: canonicalExpressionDoiCodec,
   [inputFieldNames.listId]: listIdCodec,
   annotation: unsafeUserInputCodec,
 }, 'saveArticleHandlerFormBodyCodec');
@@ -52,7 +52,7 @@ const fromFormInputToOptionalProperty = (value: UnsafeUserInput) => (
   value.length === 0 ? undefined : value
 );
 const toCommand = (formBody: FormBody) => ({
-  articleId: formBody[inputFieldNames.articleId],
+  articleId: formBody[inputFieldNames.expressionDoi],
   listId: formBody[inputFieldNames.listId],
   annotation: fromFormInputToOptionalProperty(formBody.annotation),
 });
