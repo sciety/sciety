@@ -29,7 +29,7 @@ describe('remove-article', () => {
           ],
           removeArticle({
             listId,
-            articleId: expressionDoi,
+            expressionDoi,
           }),
           E.getOrElseW(shouldNotBeCalled),
         );
@@ -51,7 +51,7 @@ describe('remove-article', () => {
         ],
         removeArticle({
           listId,
-          articleId: arbitraryExpressionDoi(),
+          expressionDoi: arbitraryExpressionDoi(),
         }),
       );
 
@@ -69,7 +69,7 @@ describe('remove-article', () => {
         ],
         removeArticle({
           listId,
-          articleId: expressionDoi,
+          expressionDoi,
         }),
       );
 
@@ -84,7 +84,7 @@ describe('remove-article', () => {
       [],
       removeArticle({
         listId: arbitraryListId(),
-        articleId: arbitraryExpressionDoi(),
+        expressionDoi: arbitraryExpressionDoi(),
       }),
     );
 
@@ -108,7 +108,7 @@ describe('remove-article', () => {
       ],
       removeArticle({
         listId,
-        articleId: arbitraryExpressionDoi(),
+        expressionDoi: arbitraryExpressionDoi(),
       }),
     );
 
@@ -136,7 +136,7 @@ describe('remove-article', () => {
       ],
       removeArticle({
         listId,
-        articleId: expressionDoi,
+        expressionDoi,
       }),
     );
 
