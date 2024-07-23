@@ -7,10 +7,10 @@ import { ViewModel } from '../view-model';
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   `
-    <header class="page-header page-header--search-results">
+    <header class="page-header">
       <h1>Search results</h1>
     </header>
-    <section>
+    <section class="search-results-page-search-form">
       ${renderSearchForm(viewModel.query, viewModel.evaluatedOnly)}
     </section>
     <section class="search-results">

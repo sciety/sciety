@@ -28,10 +28,10 @@ const renderBrowseByCategory = (viewModel: ViewModel['browseByCategory']) => pip
 
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   `
-    <header class="page-header page-header--search-results">
+    <header class="page-header">
       <h1>${viewModel.pageHeading}</h1>
     </header>
-    <section>
+    <section class="search-page-search-form">
       <h2>Search</h2>
       ${renderSearchForm('', true)}
     </section>

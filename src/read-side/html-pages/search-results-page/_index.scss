@@ -9,9 +9,8 @@
 
 $_common-space-beneath: 0.5rem;
 
-.page-header.page-header--search-results {
-  margin-top: 0;
-  margin-bottom: 0;
+.search-results-page-search-form {
+  margin-bottom: layout.$vertical-spacing-coupled-to-page-header;
 }
 
 .related-groups {
