@@ -26,7 +26,7 @@ describe('add-article', () => {
         ],
         addArticle({
           listId,
-          articleId: expressionDoi,
+          expressionDoi,
         }),
       );
 
@@ -49,7 +49,7 @@ describe('add-article', () => {
             ],
             addArticle({
               listId,
-              articleId: expressionDoi,
+              expressionDoi,
             }),
             E.getOrElseW(shouldNotBeCalled),
           );
@@ -78,7 +78,7 @@ describe('add-article', () => {
             ],
             addArticle({
               listId,
-              articleId: expressionDoi,
+              expressionDoi,
               annotation,
             }),
             E.getOrElseW(shouldNotBeCalled),
@@ -110,7 +110,7 @@ describe('add-article', () => {
           ],
           addArticle({
             listId,
-            articleId: expressionDoi,
+            expressionDoi,
             annotation: annotationTooLong,
           }),
         );
@@ -131,7 +131,7 @@ describe('add-article', () => {
           ],
           addArticle({
             listId,
-            articleId: expressionDoi,
+            expressionDoi,
             annotation: toUnsafeUserInput(''),
           }),
         );
@@ -148,7 +148,7 @@ describe('add-article', () => {
       [],
       addArticle({
         listId: arbitraryListId(),
-        articleId: arbitraryExpressionDoi(),
+        expressionDoi: arbitraryExpressionDoi(),
       }),
     );
 
@@ -169,7 +169,7 @@ describe('add-article', () => {
       ],
       addArticle({
         listId: listCreatedEvent.listId,
-        articleId: arbitraryExpressionDoi(),
+        expressionDoi: arbitraryExpressionDoi(),
       }),
     );
 

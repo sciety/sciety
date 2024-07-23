@@ -37,7 +37,7 @@ describe('construct-view-model', () => {
       initialUserList = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
       await framework.commandHelpers.createList(command);
       await framework.commandHelpers.addArticleToList({
-        articleId: arbitraryExpressionDoi(),
+        expressionDoi: arbitraryExpressionDoi(),
         listId: command.listId,
       });
     });
@@ -69,7 +69,7 @@ describe('construct-view-model', () => {
   describe('when the user saves an article to the default list for the first time', () => {
     beforeEach(async () => {
       const listId = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0].id;
-      await framework.commandHelpers.addArticleToList({ articleId: arbitraryExpressionDoi(), listId });
+      await framework.commandHelpers.addArticleToList({ expressionDoi: arbitraryExpressionDoi(), listId });
       viewmodel = await pipe(
         pageParams,
         constructViewModel(framework.dependenciesForViews),

@@ -66,11 +66,11 @@ describe('construct-feed', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.addArticleToList({
-        articleId: expressionDoi1,
+        expressionDoi: expressionDoi1,
         listId: groupEvaluatedArticlesList,
       });
       await framework.commandHelpers.addArticleToList({
-        articleId: expressionDoi2,
+        expressionDoi: expressionDoi2,
         listId: groupEvaluatedArticlesList,
       });
 
@@ -99,19 +99,19 @@ describe('construct-feed', () => {
 
     beforeEach(async () => {
       await framework.commandHelpers.addArticleToList({
-        articleId: expressionDoi1,
+        expressionDoi: expressionDoi1,
         listId: groupEvaluatedArticlesList,
       });
       await framework.commandHelpers.addArticleToList({
-        articleId: expressionDoi2,
+        expressionDoi: expressionDoi2,
         listId: groupEvaluatedArticlesList,
       });
       await framework.commandHelpers.addArticleToList({
-        articleId: expressionDoi3,
+        expressionDoi: expressionDoi3,
         listId: groupEvaluatedArticlesList,
       });
       await framework.commandHelpers.addArticleToList({
-        articleId: expressionDoi4,
+        expressionDoi: expressionDoi4,
         listId: groupEvaluatedArticlesList,
       });
 

@@ -35,7 +35,6 @@ describe('construct-annotation', () => {
 
   describe('when there is an annotation', () => {
     const expressionDoi = arbitraryExpressionDoi();
-    const articleId = expressionDoi;
     const content = arbitraryUnsafeUserInput();
     let result: Annotation;
 
@@ -49,10 +48,10 @@ describe('construct-annotation', () => {
       beforeEach(async () => {
         await framework.commandHelpers.createUserAccount(createUserAccountCommand);
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
+        await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId: new ArticleId(articleId),
+          articleId: new ArticleId(expressionDoi),
           listId: createListCommand.listId,
         });
         result = pipe(
@@ -80,10 +79,10 @@ describe('construct-annotation', () => {
       beforeEach(async () => {
         await framework.commandHelpers.addGroup(addGroupCommand);
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
+        await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId: new ArticleId(articleId),
+          articleId: new ArticleId(expressionDoi),
           listId: createListCommand.listId,
         });
         result = pipe(
@@ -106,10 +105,10 @@ describe('construct-annotation', () => {
 
       beforeEach(async () => {
         await framework.commandHelpers.createList(createListCommand);
-        await framework.commandHelpers.addArticleToList({ articleId, listId: createListCommand.listId });
+        await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId: new ArticleId(articleId),
+          articleId: new ArticleId(expressionDoi),
           listId: createListCommand.listId,
         });
         result = pipe(

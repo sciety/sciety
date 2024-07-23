@@ -29,7 +29,7 @@ describe('construct-containing-list', () => {
     beforeEach(async () => {
       await framework.commandHelpers.createUserAccount(createUserAccountCommand);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromUserId(createUserAccountCommand.userId))[0];
-      await framework.commandHelpers.addArticleToList({ articleId: expressionDoi, listId: list.id });
+      await framework.commandHelpers.addArticleToList({ expressionDoi, listId: list.id });
       result = pipe(
         list,
         constructContainingList(framework.dependenciesForViews),
@@ -58,7 +58,7 @@ describe('construct-containing-list', () => {
         O.getOrElseW(shouldNotBeCalled),
       );
       await framework.commandHelpers.addArticleToList(
-        { articleId: expressionDoi, listId: createListCommand.listId },
+        { expressionDoi, listId: createListCommand.listId },
       );
       result = pipe(
         list,
@@ -78,7 +78,7 @@ describe('construct-containing-list', () => {
     beforeEach(async () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
-      await framework.commandHelpers.addArticleToList({ articleId: expressionDoi, listId: list.id });
+      await framework.commandHelpers.addArticleToList({ expressionDoi, listId: list.id });
       result = pipe(
         list,
         constructContainingList(framework.dependenciesForViews),

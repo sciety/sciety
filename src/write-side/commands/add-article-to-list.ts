@@ -5,7 +5,7 @@ import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
 
 export const addArticleToListCommandCodec = t.intersection([
   t.strict({
-    articleId: canonicalExpressionDoiCodec,
+    expressionDoi: canonicalExpressionDoiCodec,
     listId: listIdCodec,
   }),
   t.partial({

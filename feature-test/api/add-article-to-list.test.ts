@@ -1,7 +1,6 @@
 import {
   $, goto, openBrowser,
 } from 'taiko';
-import { ArticleId } from '../../src/types/article-id';
 import { ListId } from '../../src/types/list-id';
 import { arbitraryExpressionDoi } from '../../test/types/expression-doi.helper';
 import { arbitraryAddGroupCommand } from '../../test/write-side/commands/add-group-command.helper';
@@ -17,19 +16,19 @@ describe('add an article to a list', () => {
   afterEach(screenshotTeardown);
 
   describe('when an article is added to a list via the API', () => {
-    const articleId = new ArticleId(arbitraryExpressionDoi());
+    const expressionDoi = arbitraryExpressionDoi();
     let listId: ListId;
 
     beforeEach(async () => {
       const command = arbitraryAddGroupCommand();
       await api.addGroup(command);
       listId = await getIdOfFirstListOwnedByGroup(command.groupId);
-      await api.addArticleToList(articleId, listId);
+      await api.addArticleToList(expressionDoi, listId);
     });
 
     it('displays the article', async () => {
       await goto(`localhost:8080/lists/${listId}`);
-      const articleIsDisplayed = await $(`.article-card [href="/articles/activity/${articleId.value}"]`).exists();
+      const articleIsDisplayed = await $(`.article-card [href="/articles/activity/${expressionDoi}"]`).exists();
 
       expect(articleIsDisplayed).toBe(true);
     });

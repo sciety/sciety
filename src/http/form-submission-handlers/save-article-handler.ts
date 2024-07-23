@@ -52,7 +52,7 @@ const fromFormInputToOptionalProperty = (value: UnsafeUserInput) => (
   value.length === 0 ? undefined : value
 );
 const toCommand = (formBody: FormBody) => ({
-  articleId: formBody[inputFieldNames.expressionDoi],
+  expressionDoi: formBody[inputFieldNames.expressionDoi],
   listId: formBody[inputFieldNames.listId],
   annotation: fromFormInputToOptionalProperty(formBody.annotation),
 });

@@ -32,7 +32,7 @@ describe('remove an article from a list', () => {
         largeLogoPath: arbitraryString(),
       });
       listId = await getIdOfFirstListOwnedByGroup(groupId);
-      await callApi('api/add-article-to-list', { articleId: expressionDoi, listId });
+      await callApi('api/add-article-to-list', { expressionDoi, listId });
       await callApi('api/remove-article-from-list', { expressionDoi, listId });
     });
 

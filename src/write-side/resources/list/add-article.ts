@@ -16,17 +16,17 @@ const constructEvents = (command: AddArticleToListCommand) => (
   command.annotation === undefined
     ? [
       constructEvent('ArticleAddedToList')({
-        articleId: new ArticleId(command.articleId),
+        articleId: new ArticleId(command.expressionDoi),
         listId: command.listId,
       }),
     ]
     : [
       constructEvent('ArticleAddedToList')({
-        articleId: new ArticleId(command.articleId),
+        articleId: new ArticleId(command.expressionDoi),
         listId: command.listId,
       }),
       constructEvent('ArticleInListAnnotated')({
-        articleId: new ArticleId(command.articleId),
+        articleId: new ArticleId(command.expressionDoi),
         listId: command.listId,
         content: command.annotation,
       }),
@@ -35,7 +35,7 @@ const constructEvents = (command: AddArticleToListCommand) => (
 
 const createAppropriateEvents = (command: AddArticleToListCommand) => (listResource: ListWriteModel) => pipe(
   listResource.articles,
-  RA.some((article) => article.articleId.value === command.articleId),
+  RA.some((article) => article.articleId.value === command.expressionDoi),
   B.fold(
     () => constructEvents(command),
     () => [],
