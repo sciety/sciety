@@ -31,7 +31,10 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     <header class="page-header page-header--search-results">
       <h1>Search Sciety</h1>
     </header>
-    ${renderSearchForm('', true)}
+    <section>
+      <h2>Find preprints</h2>
+      ${renderSearchForm('', true)}
+    </section>
     ${renderBrowseByCategory(viewModel.browseByCategory)}
   `,
   toHtmlFragment,

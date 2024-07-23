@@ -10,7 +10,10 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     <header class="page-header page-header--search-results">
       <h1>Search Sciety</h1>
     </header>
-    ${renderSearchForm(viewModel.query, viewModel.evaluatedOnly)}
+    <section>
+      <h2>Find preprints</h2>
+      ${renderSearchForm(viewModel.query, viewModel.evaluatedOnly)}
+    </section>
     <section class="search-results">
       ${renderSearchResults(viewModel)}
     </section>
