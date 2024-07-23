@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { renderNextLinkOrCallsToAction } from './render-next-link-or-calls-to-action';
 import { articleServers } from '../../../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { searchResultsPagePath } from '../../../paths';
 
 const articleServersSeparatedByComma = `<b>${articleServers.biorxiv.name}</b>, <b>${articleServers.medrxiv.name}</b>, <b>${articleServers.researchsquare.name}</b>, <b>${articleServers.scielopreprints.name}</b>`;
 
@@ -34,7 +35,7 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationViewM
 
 export const buildBasePath = (viewModel: PaginationViewModel): O.Option<string> => pipe(
   viewModel.nextCursor,
-  O.map((cursor) => `/search?query=${encodeURIComponent(viewModel.query)}&cursor=${encodeURIComponent(cursor)}${viewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
+  O.map((cursor) => `${searchResultsPagePath}?query=${encodeURIComponent(viewModel.query)}&cursor=${encodeURIComponent(cursor)}${viewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
 );
 
 const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => `

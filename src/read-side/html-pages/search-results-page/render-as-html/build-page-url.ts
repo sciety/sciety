@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { searchResultsPagePath } from '../../../paths';
 
 type UrlParams = {
   query: string,
@@ -17,4 +18,4 @@ type BuildPageUrl = (urlParams: UrlParams) => string;
 
 export const buildPageUrl: BuildPageUrl = ({
   query, evaluatedOnly,
-}) => `/search?${renderQuery(query)}${renderEvaluatedOnly(evaluatedOnly)}`;
+}) => `${searchResultsPagePath}?${renderQuery(query)}${renderEvaluatedOnly(evaluatedOnly)}`;
