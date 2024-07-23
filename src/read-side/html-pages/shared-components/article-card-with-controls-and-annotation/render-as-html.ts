@@ -12,7 +12,7 @@ import { renderArticleCardContents } from '../article-card/render-as-html';
 const renderRemoveArticleForm = (expressionDoi: ExpressionDoi, listId: ListId) => toHtmlFragment(`
   <form method="post" action="/forms/remove-article-from-list">
     <input type="hidden" name="${inputFieldNames.articleId}" value="${expressionDoi}">
-    <input type="hidden" name="listid" value="${listId}">
+    <input type="hidden" name="${inputFieldNames.listId}" value="${listId}">
     <button aria-label="Remove this article from the list" class="saved-articles-control--remove">
     Remove article
     </button>
