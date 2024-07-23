@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
+import { queryStringParameters } from '../../../../standards';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { UserId } from '../../../../types/user-id';
 import { ViewModel } from '../view-model';
@@ -14,7 +15,7 @@ export const constructUserListManagement = (user: O.Option<{ id: UserId }>, depe
       dependencies.selectListContainingExpression(u.id),
       O.matchW(
         () => E.left({
-          saveArticleHref: `/save-article?articleId=${expressionDoi}`,
+          saveArticleHref: `/save-article?${queryStringParameters.articleId}=${expressionDoi}`,
         }),
         (list) => E.right({
           listId: list.id,

@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
-import { articleIdCodec } from '../../../types/article-id';
+import { queryStringParameters } from '../../../standards';
 
 export const paramsCodec = t.strict({
-  articleId: articleIdCodec,
+  [queryStringParameters.articleId]: queryStringParameters.articleIdCodec,
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
