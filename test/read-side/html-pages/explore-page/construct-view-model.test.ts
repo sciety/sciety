@@ -6,6 +6,7 @@ import { DependenciesForViews } from '../../../../src/read-side/dependencies-for
 import { constructViewModel } from '../../../../src/read-side/html-pages/explore-page/construct-view-model/construct-view-model';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryDataError } from '../../../types/data-error.helper';
 
 describe('construct-view-model', () => {
   let framework: TestFramework;
@@ -32,7 +33,7 @@ describe('construct-view-model', () => {
       categories = await getCategories(dependencies);
     });
 
-    it('returns them in alphabetical order', () => {
+    it('displays them in alphabetical order', () => {
       expect(categories).toStrictEqual(O.some(['A', 'B', 'C']));
     });
   });
@@ -46,12 +47,22 @@ describe('construct-view-model', () => {
       categories = await getCategories(dependencies);
     });
 
-    it('returns an empty array', () => {
+    it('displays an empty categories section and list', () => {
       expect(categories).toStrictEqual(O.some([]));
     });
   });
 
   describe('when the dependency fails', () => {
-    it.todo('???');
+    beforeEach(async () => {
+      const dependencies = {
+        ...framework.dependenciesForViews,
+        fetchSearchCategories: () => TE.left(arbitraryDataError()),
+      };
+      categories = await getCategories(dependencies);
+    });
+
+    it('does not display the section', () => {
+      expect(categories).toStrictEqual(O.none);
+    });
   });
 });
