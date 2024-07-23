@@ -3,8 +3,9 @@
 
 .home-page-hero__ctas {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: functions.px-to-rem(16px);
 }
 
