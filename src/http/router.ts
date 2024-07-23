@@ -67,15 +67,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   );
 
   router.get(
-    explorePageHref,
-    async (context, next) => {
-      context.response.set('X-Robots-Tag', 'noindex');
-      await next();
-    },
-    pageHandler(dependencies, () => explorePage(dependencies)),
-  );
-
-  router.get(
     '/search',
     async (context, next) => {
       context.response.set('X-Robots-Tag', 'noindex');
@@ -204,6 +195,10 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     {
       endpoint: '/save-article',
       handler: pageHandlerWithLoggedInUser(dependencies, saveArticleFormPage(dependencies)),
+    },
+    {
+      endpoint: explorePageHref,
+      handler: pageHandler(dependencies, () => explorePage(dependencies)),
     },
   ];
 
