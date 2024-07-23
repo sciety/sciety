@@ -16,7 +16,7 @@ describe('remove an article from a list', () => {
   afterEach(screenshotTeardown);
 
   describe('when an article is removed from a list via the API', () => {
-    const articleId = '10.1101/813451';
+    const expressionDoi = '10.1101/813451';
     let listId: string;
 
     beforeEach(async () => {
@@ -32,13 +32,13 @@ describe('remove an article from a list', () => {
         largeLogoPath: arbitraryString(),
       });
       listId = await getIdOfFirstListOwnedByGroup(groupId);
-      await callApi('api/add-article-to-list', { articleId, listId });
-      await callApi('api/remove-article-from-list', { articleId, listId });
+      await callApi('api/add-article-to-list', { articleId: expressionDoi, listId });
+      await callApi('api/remove-article-from-list', { expressionDoi, listId });
     });
 
     it('does not display the article', async () => {
       await goto(`localhost:8080/lists/${listId}`);
-      const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${articleId}"]`).exists();
+      const articleIsDisplayed = await $(`.article-card__link[href="/articles/activity/${expressionDoi}"]`).exists();
 
       expect(articleIsDisplayed).toBe(false);
     });
