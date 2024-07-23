@@ -2,6 +2,7 @@
 @use 'functions';
 @use 'link';
 @use 'typography';
+@use 'breakpoints';
 
 @mixin _separate-area-when-focused() {
   &:focus-visible {
@@ -52,9 +53,15 @@ p + ol {
 }
 
 h1 {
-  @include typography.heading-1();
+  @include typography.heading-base();
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
+
+  font-size: functions.px-to-rem(26px);
+
+  @include breakpoints.not-narrow() {
+    font-size: functions.px-to-rem(32px);
+  }
 }
 
 h2 {

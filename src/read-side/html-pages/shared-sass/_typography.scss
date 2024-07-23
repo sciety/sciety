@@ -60,15 +60,6 @@
   line-height: 1.2;
 }
 
-@mixin heading-1 () {
-  @include heading-base();
-  font-size: functions.px-to-rem(26px);
-
-  @include breakpoints.not-narrow() {
-    font-size: functions.px-to-rem(32px);
-  }
-}
-
 @mixin heading-2 () {
   @include heading-base();
   font-size: functions.px-to-rem(20px);
