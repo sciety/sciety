@@ -162,7 +162,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: zuplo/github-action-slack-notify-build@v2
         with:
-          channel: sciety-general
+          channel: sciety-ensemble-plus
           status: FAILED
           color: danger
 
