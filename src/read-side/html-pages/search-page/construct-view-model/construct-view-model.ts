@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { Dependencies } from './dependencies';
 import * as DE from '../../../../types/data-error';
 import { constructCategoryPageHref } from '../../../paths';
@@ -10,6 +11,7 @@ import { ViewModel } from '../view-model';
 
 const constructBrowseByCategory = (dependencies: Dependencies) => pipe(
   dependencies.fetchSearchCategories(),
+  TE.map(RA.sort(S.Ord)),
   TE.map(RA.map((title) => ({
     title,
     href: constructCategoryPageHref(title),
