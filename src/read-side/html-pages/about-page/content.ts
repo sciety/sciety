@@ -1,3 +1,5 @@
+import { explorePageHref } from '../../paths';
+
 const scietyEvaluationGraphsSourceHref = 'https://lookerstudio.google.com/reporting/b09cf3e8-88c7-4928-b639-2c48dc786191/page/p_kr9n81etoc';
 
 export const blogLinks = `
@@ -10,7 +12,7 @@ export const blogLinks = `
 
 export const callToAction = `
 <div class="about-page-call-to-action">
-  <a href="/search">Find evaluated preprints today</a>
+  <a href="${explorePageHref}">Find evaluated preprints today</a>
 </div>
 `;
 
