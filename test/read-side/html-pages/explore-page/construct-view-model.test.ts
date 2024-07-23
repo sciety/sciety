@@ -23,7 +23,7 @@ describe('construct-view-model', () => {
 
   let categories: Awaited<ReturnType<typeof getCategories>>;
 
-  describe('when there are categories', () => {
+  describe('when the dependency returns some categories', () => {
     beforeEach(async () => {
       const dependencies = {
         ...framework.dependenciesForViews,
@@ -37,7 +37,7 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when there are no categories available', () => {
+  describe('when the dependency returns no categories', () => {
     beforeEach(async () => {
       const dependencies = {
         ...framework.dependenciesForViews,
@@ -49,5 +49,9 @@ describe('construct-view-model', () => {
     it('returns an empty array', () => {
       expect(categories).toStrictEqual(O.some([]));
     });
+  });
+
+  describe('when the dependency fails', () => {
+    it.todo('???');
   });
 });
