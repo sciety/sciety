@@ -13,7 +13,7 @@ export const renderGroups = (viewModel: GroupsViewModel): HtmlFragment => pipe(
   renderListItems,
   (listContent) => `
 <section class="home-page-groups">
-  <h2 class="home-page-groups__title">Groups reviewing preprints on Sciety</h2>
+  <h2 class="home-page-groups__title">Groups evaluating preprints on Sciety</h2>
   <ul class="home-page-groups-list">
   ${listContent}
   </ul>
