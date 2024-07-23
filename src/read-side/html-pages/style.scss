@@ -10,11 +10,11 @@
 @use 'paper-activity-page/render-as-html';
 @use 'create-user-account-form-page';
 @use 'edit-list-details-form-page';
+@use 'explore-page';
 @use 'group-page';
 @use 'home-page';
 @use 'list-page';
 @use 'my-feed-page';
-@use 'search-page';
 @use 'search-results-page';
 @use 'user-page';
 @use '../../sass/supplementary';

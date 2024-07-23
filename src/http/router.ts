@@ -24,6 +24,7 @@ import { categoryPage } from '../read-side/html-pages/category-page';
 import { createAnnotationFormPage, paramsCodec as createAnnotationFormPageParamsCodec } from '../read-side/html-pages/create-annotation-form-page';
 import { createPageFromParams } from '../read-side/html-pages/create-page-from-params';
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../read-side/html-pages/edit-list-details-form-page';
+import { page as explorePage } from '../read-side/html-pages/explore-page';
 import { groupsPage } from '../read-side/html-pages/groups-page';
 import { homePage, homePageLayout } from '../read-side/html-pages/home-page';
 import { legalPage } from '../read-side/html-pages/legal-page';
@@ -32,7 +33,6 @@ import { listsPage, paramsCodec as listsPageParamsCodec } from '../read-side/htm
 import { myFeedPage, myFeedParams } from '../read-side/html-pages/my-feed-page';
 import { paperActivityPage } from '../read-side/html-pages/paper-activity-page';
 import { saveArticleFormPage } from '../read-side/html-pages/save-article-form-page';
-import { searchPage } from '../read-side/html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../read-side/html-pages/search-results-page';
 import { fullWidthPageLayout } from '../read-side/html-pages/shared-components/full-width-page-layout';
 import { referencePage, sharedComponentsPage, indexPage } from '../read-side/html-pages/style-guide-page';
@@ -75,7 +75,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, flow(
       searchResultsPageParams.decode,
       E.fold(
-        () => searchPage(dependencies),
+        () => explorePage(dependencies),
         searchResultsPage(dependencies)(20),
       ),
     )),
