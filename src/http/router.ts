@@ -41,7 +41,7 @@ import { userPage as userFollowingPage, userPageParams as userFollowingPageParam
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
 import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
 import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
-import { constructPaperActivityPageHref, explorePageHref, paperActivityPagePathSpecification } from '../read-side/paths';
+import { constructPaperActivityPageHref, paperActivityPagePathSpecification } from '../read-side/paths';
 import { categoryPagePathSpecification } from '../read-side/paths/construct-category-page-href';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import * as EDOI from '../types/expression-doi';
@@ -79,15 +79,6 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
         searchResultsPage(dependencies)(20),
       ),
     )),
-  );
-
-  router.get(
-    '/articles',
-    async (context, next) => {
-      context.status = StatusCodes.PERMANENT_REDIRECT;
-      context.redirect(explorePageHref);
-      await next();
-    },
   );
 
   const doesNotBeginWithActivity = '10\\..+';
