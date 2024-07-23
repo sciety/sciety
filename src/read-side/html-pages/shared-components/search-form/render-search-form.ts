@@ -1,8 +1,10 @@
 import { htmlEscape } from 'escape-goat';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
+const searchResultsPagePath = '/search';
+
 export const renderSearchForm = (query: string, evaluatedOnly: boolean): HtmlFragment => toHtmlFragment(`
-  <form action="/search" method="get" class="search-form">
+  <form action="${searchResultsPagePath}" method="get" class="search-form">
     <label for="searchText" class="search-form__label">
       Search articles by DOI, author or keyword.
     </label>
