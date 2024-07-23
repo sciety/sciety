@@ -1,11 +1,11 @@
-import { ArticleId } from '../../../types/article-id';
+import { ExpressionDoi } from '../../../types/expression-doi';
 import { HtmlFragment } from '../../../types/html-fragment';
 import { ListId } from '../../../types/list-id';
 
 export type ViewModel = {
   article: {
     name: HtmlFragment,
-    id: ArticleId,
+    id: ExpressionDoi,
   },
   userLists: ReadonlyArray<{
     id: ListId,

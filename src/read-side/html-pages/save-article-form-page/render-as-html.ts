@@ -53,7 +53,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <h1>${viewModel.pageHeading}</h1>
   </header>
   <form class="standard-form" method="post" action="${pathToSubmitSaveArticle()}">
-    <input type="hidden" name="${inputFieldNames.expressionDoi}" value="${viewModel.article.id.value}">
+    <input type="hidden" name="${inputFieldNames.expressionDoi}" value="${viewModel.article.id}">
     ${renderDependingOnUserListCount(viewModel.userLists, viewModel.article.name)}
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Why are you saving this article? <span class="standard-form__sub_heading_secondary_text">(optional)</span></label>

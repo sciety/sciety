@@ -15,7 +15,7 @@ export const constructUserListManagement = (user: O.Option<{ id: UserId }>, depe
       dependencies.selectListContainingExpression(u.id),
       O.matchW(
         () => E.left({
-          saveArticleHref: `/save-article?${queryStringParameters.articleId}=${expressionDoi}`,
+          saveArticleHref: `/save-article?${queryStringParameters.expressionDoi}=${expressionDoi}`,
         }),
         (list) => E.right({
           listId: list.id,

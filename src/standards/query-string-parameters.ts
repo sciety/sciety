@@ -1,9 +1,9 @@
 import * as tt from 'io-ts-types';
-import { articleIdCodec } from '../types/article-id';
+import { canonicalExpressionDoiCodec } from '../types/expression-doi';
 
 export const queryStringParameters = {
-  articleId: 'articleId' as const,
-  articleIdCodec,
+  expressionDoi: 'expressionDoi' as const,
+  expressionDoiCodec: canonicalExpressionDoiCodec,
   page: 'page' as const,
   pageCodec: tt.withFallback(tt.NumberFromString, 1),
   categoryName: 'categoryName' as const,

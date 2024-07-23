@@ -5,7 +5,6 @@ import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { ViewModel } from './view-model';
 import * as DE from '../../../types/data-error';
-import * as EDOI from '../../../types/expression-doi';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import * as LOID from '../../../types/list-owner-id';
 import { UserId } from '../../../types/user-id';
@@ -18,8 +17,7 @@ type ConstructViewModel = (
 export const constructViewModel: ConstructViewModel = (dependencies, userId) => (params) => pipe(
   {
     frontMatter: pipe(
-      params.articleId.value,
-      EDOI.fromValidatedString,
+      params.expressionDoi,
       dependencies.fetchExpressionFrontMatter,
     ),
     userLists: pipe(
@@ -33,7 +31,7 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
   TE.map((partial) => ({
     article: {
       name: partial.frontMatter.title,
-      id: params.articleId,
+      id: params.expressionDoi,
     },
     userLists: partial.userLists,
     pageHeading: toHtmlFragment('Save an article to your list'),
