@@ -34,7 +34,7 @@ describe('single-login', () => {
     ['Groups page', '/groups'],
     ['Home page', '/'],
     ['Legal page', '/legal'],
-    ['Search page', '/search'],
+    ['Explore page', '/explore'],
     ['Search results page', '/search?category=articles&query=covid&evaluatedOnly=true'],
     ['User page, lists tab', `/users/${createUserAccountCommand.handle}/lists`],
     ['User page, following tab', `/users/${createUserAccountCommand.handle}/lists`],
