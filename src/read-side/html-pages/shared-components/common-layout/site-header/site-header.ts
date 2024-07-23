@@ -32,7 +32,7 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
       </li>
       <li>
         <a href="/search" class="site-header__search_link">
-          <img src="/static/images/search-icon.svg" alt="" class="site-header__search_icon"><span class="site-header__search_label">Search</span>
+          <img src="/static/images/search-icon.svg" alt="" class="site-header__search_icon"><span class="site-header__search_label">Explore</span>
         </a>
       </li>
     </ul>
