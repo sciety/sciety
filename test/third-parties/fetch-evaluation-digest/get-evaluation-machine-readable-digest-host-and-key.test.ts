@@ -30,4 +30,19 @@ describe('get-evaluation-machine-readable-digest-host-and-key', () => {
       expect(result.host).toBe(host);
     });
   });
+
+  describe('given an evaluation locator such as doi:10.24072/pci.evolbiol.100048', () => {
+    let result: O.Option<DigestHostAndKey>;
+
+    beforeEach(() => {
+      result = pipe(
+        toEvaluationLocator('doi:10.24072/pci.evolbiol.100048'),
+        getEvaluationMachineReadableDigestHostAndKey,
+      );
+    });
+
+    it.failing('does not return the host nor the key', () => {
+      expect(result).toStrictEqual(O.none);
+    });
+  });
 });
