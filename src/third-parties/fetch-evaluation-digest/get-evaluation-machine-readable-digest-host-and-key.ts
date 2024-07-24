@@ -18,6 +18,9 @@ const extractHost = (evaluationLocator: EvaluationLocator): O.Option<DigestHost>
       if (evaluationLocatorKey.startsWith('10.5281/')) {
         return O.some('zenodo');
       }
+      if (evaluationLocatorKey.startsWith('10.1099/')) {
+        return O.some('access-microbiology');
+      }
       return O.none;
     case 'rapidreviews':
       return O.some('rapid-reviews');
