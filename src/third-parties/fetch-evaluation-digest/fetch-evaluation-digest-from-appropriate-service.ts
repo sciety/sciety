@@ -4,7 +4,19 @@ import { pipe } from 'fp-ts/function';
 import { EvaluationDigestFetcher } from './evaluation-digest-fetcher';
 import * as DE from '../../types/data-error';
 import * as EL from '../../types/evaluation-locator';
+import { EvaluationLocator } from '../../types/evaluation-locator';
 import { ExternalQueries } from '../external-queries';
+
+type DigestHostAndKey = {
+  host: string,
+  key: string,
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getEvaluationMachineReadableDigestHostAndKey = (evaluationLocator: EvaluationLocator): DigestHostAndKey => ({
+  host: 'foo',
+  key: 'bar',
+});
 
 export const fetchEvaluationDigestFromAppropriateService = (fetchers: Record<string, EvaluationDigestFetcher>): ExternalQueries['fetchEvaluationDigest'] => (id) => pipe(
   fetchers,
