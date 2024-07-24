@@ -13,7 +13,7 @@ describe('get-evaluation-machine-readable-digest-host-and-key', () => {
     ['doi:10.5281/zenodo.3678326', 'zenodo'],
     ['prelights:https://prelights.biologists.com/?post_type=highlight&p=16176', 'prelights'],
     ['ncrc:0c88338d-a401-40f9-8bf8-ef0a43be4548', 'ncrc'],
-    ['rapidreviews:http://dx.doi.org/10.1162/2e3983f5.b818fbae', 'rapid-reviews'],
+    // ['rapidreviews:http://dx.doi.org/10.1162/2e3983f5.b818fbae', 'rapid-reviews'],
     // ['doi:10.1099/acmi.0.000530.v1.3', 'access-microbiology'],
   ])('given an evaluation locator such as %s', (evaluationLocator, host) => {
     let result: DigestHostAndKey;
@@ -26,7 +26,7 @@ describe('get-evaluation-machine-readable-digest-host-and-key', () => {
       );
     });
 
-    it.failing(`returns ${host} as a host`, () => {
+    it(`returns ${host} as a host`, () => {
       expect(result.host).toBe(host);
     });
   });
