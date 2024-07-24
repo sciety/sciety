@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -15,7 +16,10 @@ type DigestHostAndKey = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getEvaluationMachineReadableDigestHostAndKey = (evaluationLocator: EvaluationLocator): DigestHostAndKey => ({
+const getEvaluationMachineReadableDigestHostAndKey = (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+  evaluationLocator: EvaluationLocator,
+): O.Option<DigestHostAndKey> => O.some({
   host: 'access-microbiology',
   key: 'bar',
 });
