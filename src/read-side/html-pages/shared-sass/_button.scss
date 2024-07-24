@@ -20,15 +20,9 @@
   }
 
   @include link.engaged-state() {
+    background-color: $background-hover;
     color: $text;
     text-decoration: none;
-  }
-
-  &:any-link {
-    &:active,
-    &:hover {
-      background-color: $background-hover;
-    }
   }
 }
 
