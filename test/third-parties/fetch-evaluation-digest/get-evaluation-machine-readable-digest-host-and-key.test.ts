@@ -8,19 +8,22 @@ import { toEvaluationLocator } from '../../../src/types/evaluation-locator';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('get-evaluation-machine-readable-digest-host-and-key', () => {
-  describe('when the service is hypothesis', () => {
+  describe.each([
+    ['hypothesis:123', 'hypothesis'],
+    ['doi:10.5281/zenodo.3678326', 'zenodo'],
+  ])('given an evaluation locator such as %s', (evaluationLocator, host) => {
     let result: DigestHostAndKey;
 
     beforeEach(() => {
       result = pipe(
-        toEvaluationLocator('hypothesis:123'),
+        toEvaluationLocator(evaluationLocator),
         getEvaluationMachineReadableDigestHostAndKey,
         O.getOrElseW(shouldNotBeCalled),
       );
     });
 
-    it.failing('returns hypothesis as a host', () => {
-      expect(result.host).toBe('hypothesis');
+    it.failing(`returns ${host} as a host`, () => {
+      expect(result.host).toBe(host);
     });
   });
 });
