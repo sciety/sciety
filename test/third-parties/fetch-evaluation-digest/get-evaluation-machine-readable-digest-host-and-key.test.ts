@@ -41,7 +41,7 @@ describe('get-evaluation-machine-readable-digest-host-and-key', () => {
       );
     });
 
-    it.failing('does not return the host nor the key', () => {
+    it('does not return the host nor the key', () => {
       expect(result).toStrictEqual(O.none);
     });
   });

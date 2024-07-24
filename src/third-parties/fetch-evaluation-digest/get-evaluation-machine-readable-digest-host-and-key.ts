@@ -1,4 +1,5 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as EL from '../../types/evaluation-locator';
 
@@ -9,23 +10,30 @@ export type DigestHostAndKey = {
   key: string,
 };
 
-const extractHost = (evaluationLocator: EvaluationLocator): DigestHost => {
+const extractHost = (evaluationLocator: EvaluationLocator): O.Option<DigestHost> => {
   const service = EL.service(evaluationLocator);
+  const evaluationLocatorKey = EL.key(evaluationLocator);
   switch (service) {
     case 'doi':
-      return 'zenodo';
+      if (evaluationLocatorKey.startsWith('10.5281/')) {
+        return O.some('zenodo');
+      }
+      return O.none;
     case 'rapidreviews':
-      return 'rapid-reviews';
+      return O.some('rapid-reviews');
     default:
-      return service;
+      return O.some(service);
   }
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getEvaluationMachineReadableDigestHostAndKey = (
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
   evaluationLocator: EvaluationLocator,
-): O.Option<DigestHostAndKey> => O.some({
-  host: extractHost(evaluationLocator),
-  key: 'bar',
-});
+): O.Option<DigestHostAndKey> => pipe(
+  evaluationLocator,
+  extractHost,
+  O.map((host) => ({
+    host,
+    key: 'bar',
+  })),
+);
