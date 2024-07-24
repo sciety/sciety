@@ -4,6 +4,9 @@
   }
 }
 
+// Prefer the :focus pseudo class over :focus-visible pseudo class,
+// because it maintains the :hover state of a link when the user right clicks.
+// Always style the :active pseudo class to be defensive against browser default styles.
 @mixin engaged-state() {
   &:any-link {
     &:hover,
