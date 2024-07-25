@@ -23,7 +23,7 @@ describe('annotate', () => {
   const content = arbitraryUnsafeUserInput();
   const annotateArticleInListCommand: AnnotateArticleInListCommand = {
     annotationContent: content,
-    articleId: new ArticleId(expressionDoi),
+    expressionDoi: new ArticleId(expressionDoi),
     listId,
   };
 
@@ -50,7 +50,7 @@ describe('annotate', () => {
           relevantEvents,
           annotate({
             annotationContent: toUnsafeUserInput(''),
-            articleId: new ArticleId(expressionDoi),
+            expressionDoi: new ArticleId(expressionDoi),
             listId,
           }),
         );
@@ -86,7 +86,7 @@ describe('annotate', () => {
           relevantEvents,
           annotate({
             annotationContent: arbitraryLongUnsafeUserInput(5000),
-            articleId: new ArticleId(expressionDoi),
+            expressionDoi: new ArticleId(expressionDoi),
             listId,
           }),
         );

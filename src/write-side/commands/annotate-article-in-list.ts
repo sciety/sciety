@@ -6,7 +6,7 @@ import { unsafeUserInputCodec } from '../../types/unsafe-user-input';
 
 export const annotateArticleInListCommandCodec = t.type({
   [inputFieldNames.annotationContent]: unsafeUserInputCodec,
-  [inputFieldNames.articleId]: articleIdCodec,
+  [inputFieldNames.expressionDoi]: articleIdCodec,
   [inputFieldNames.listId]: listIdCodec,
 }, 'annotateArticleInListCommandCodec');
 

@@ -4,7 +4,7 @@ import { articleIdCodec } from '../../../types/article-id';
 import { listIdCodec } from '../../../types/list-id';
 
 export const paramsCodec = t.type({
-  [inputFieldNames.articleId]: articleIdCodec,
+  [inputFieldNames.expressionDoi]: articleIdCodec,
   [inputFieldNames.listId]: listIdCodec,
 });
 

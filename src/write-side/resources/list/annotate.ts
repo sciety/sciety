@@ -14,7 +14,7 @@ import { ResourceAction } from '../resource-action';
 const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['articles'][number]) => (
   article.annotated
     ? []
-    : [constructEvent('ArticleInListAnnotated')({ articleId: command.articleId, listId: command.listId, content: command.annotationContent })]
+    : [constructEvent('ArticleInListAnnotated')({ articleId: command.expressionDoi, listId: command.listId, content: command.annotationContent })]
 );
 
 const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteModel) => pipe(
@@ -34,7 +34,7 @@ export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) 
     () => toErrorMessage('not-found'),
   ),
   E.chain(getListWriteModel(command.listId)),
-  E.chain(findRelevantArticle(command.articleId)),
+  E.chain(findRelevantArticle(command.expressionDoi)),
   E.filterOrElseW(
     isAnnotationValid(command),
     () => toErrorMessage('Annotation too long'),

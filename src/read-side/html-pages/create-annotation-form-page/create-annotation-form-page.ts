@@ -17,7 +17,7 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = (
   params,
 ) => pipe(
   params,
-  ({ articleId, listId }) => constructViewModel(articleId, listId, dependencies, unrecoverableError),
+  ({ expressionDoi, listId }) => constructViewModel(expressionDoi, listId, dependencies, unrecoverableError),
   TE.bimap(
     constructErrorPageViewModel,
     (viewModel) => toHtmlPage({

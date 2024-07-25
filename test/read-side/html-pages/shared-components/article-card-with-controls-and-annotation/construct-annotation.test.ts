@@ -51,7 +51,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId: new ArticleId(expressionDoi),
+          expressionDoi: new ArticleId(expressionDoi),
           listId: createListCommand.listId,
         });
         result = pipe(
@@ -82,7 +82,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId: new ArticleId(expressionDoi),
+          expressionDoi: new ArticleId(expressionDoi),
           listId: createListCommand.listId,
         });
         result = pipe(
@@ -108,7 +108,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          articleId: new ArticleId(expressionDoi),
+          expressionDoi: new ArticleId(expressionDoi),
           listId: createListCommand.listId,
         });
         result = pipe(

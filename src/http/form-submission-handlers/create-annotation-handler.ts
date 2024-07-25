@@ -109,7 +109,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
   const htmlResponse = await redisplayFormPage(
     dependencies,
     context,
-    { listId: command.right.listId, articleId: command.right.articleId },
+    { listId: command.right.listId, expressionDoi: command.right.expressionDoi },
     loggedInUser,
   )();
   sendHtmlResponse(context)(htmlResponse);
