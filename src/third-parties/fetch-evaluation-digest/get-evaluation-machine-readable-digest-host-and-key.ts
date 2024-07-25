@@ -37,6 +37,6 @@ export const getEvaluationMachineReadableDigestHostAndKey = (
   extractHost,
   O.map((host) => ({
     host,
-    key: 'bar',
+    key: EL.key(evaluationLocator),
   })),
 );

@@ -30,7 +30,7 @@ describe('get-evaluation-machine-readable-digest-host-and-key', () => {
       expect(result.host).toBe(host);
     });
 
-    it.failing(`returns ${key} as a key`, () => {
+    it(`returns ${key} as a key`, () => {
       expect(result.key).toBe(key);
     });
   });
