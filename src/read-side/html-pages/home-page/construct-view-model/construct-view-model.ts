@@ -19,7 +19,7 @@ const constructGroups = (dependencies: Dependencies, groupsToHighlight: GroupsTo
 );
 
 export const constructViewModel = (dependencies: Dependencies, groupsToHighlight: GroupsToHighlight): ViewModel => ({
-  pageHeading: 'The latest research, curated by experts',
+  pageHeading: 'The latest research, evaluated by experts',
   groups: constructGroups(dependencies, groupsToHighlight),
   curationTeasers: constructCurationTeasers(dependencies),
 });
