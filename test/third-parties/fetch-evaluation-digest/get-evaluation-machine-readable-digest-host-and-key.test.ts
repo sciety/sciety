@@ -9,13 +9,13 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('get-evaluation-machine-readable-digest-host-and-key', () => {
   describe.each([
-    ['hypothesis:123', 'hypothesis'],
-    ['doi:10.5281/zenodo.3678326', 'zenodo'],
-    ['prelights:https://prelights.biologists.com/?post_type=highlight&p=16176', 'prelights'],
-    ['ncrc:0c88338d-a401-40f9-8bf8-ef0a43be4548', 'ncrc'],
-    ['rapidreviews:http://dx.doi.org/10.1162/2e3983f5.b818fbae', 'rapid-reviews'],
-    ['doi:10.1099/acmi.0.000530.v1.3', 'access-microbiology'],
-  ])('given an evaluation locator such as %s', (evaluationLocator, host) => {
+    ['hypothesis:123', 'hypothesis', '123'],
+    ['doi:10.5281/zenodo.3678326', 'zenodo', '10.5281/zenodo.3678326'],
+    ['prelights:https://prelights.biologists.com/?post_type=highlight&p=16176', 'prelights', 'https://prelights.biologists.com/?post_type=highlight&p=16176'],
+    ['ncrc:0c88338d-a401-40f9-8bf8-ef0a43be4548', 'ncrc', '0c88338d-a401-40f9-8bf8-ef0a43be4548'],
+    ['rapidreviews:http://dx.doi.org/10.1162/2e3983f5.b818fbae', 'rapid-reviews', 'http://dx.doi.org/10.1162/2e3983f5.b818fbae'],
+    ['doi:10.1099/acmi.0.000530.v1.3', 'access-microbiology', '10.1099/acmi.0.000530.v1.3'],
+  ])('given an evaluation locator such as %s', (evaluationLocator, host, key) => {
     let result: DigestHostAndKey;
 
     beforeEach(() => {
@@ -28,6 +28,10 @@ describe('get-evaluation-machine-readable-digest-host-and-key', () => {
 
     it(`returns ${host} as a host`, () => {
       expect(result.host).toBe(host);
+    });
+
+    it.failing(`returns ${key} as a key`, () => {
+      expect(result.key).toBe(key);
     });
   });
 
