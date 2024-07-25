@@ -62,7 +62,7 @@
     "@typescript-eslint/parser": "^7.17.0",
     "backstopjs": "^6.2.2",
     "browserslist": "^4.23.2",
-    "dependency-cruiser": "16.3.9",
+    "dependency-cruiser": "16.3.10",
     "esbuild": "^0.23.0",
     "esbuild-jest": "^0.5.0",
     "eslint": "^8.57.0",
