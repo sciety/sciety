@@ -11,6 +11,7 @@ const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-734
 const elifeGroupId = GID.fromValidatedString('b560187e-f2fb-4ff9-a861-a204f3fc0fb0');
 const lifeScienceEditorsGroupId = GID.fromValidatedString('1480d2dd-463f-4834-8e81-d89c8ae2b86f');
 const lifeScienceEditorsFoundationGroupId = GID.fromValidatedString('f2c9eafa-6e24-4549-819c-09179e642b08');
+const accessMicrobiologyGroupId = GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709');
 
 const supportedGroups = [
   arcadiaScienceGroupId,
@@ -26,6 +27,7 @@ const supportedGroups = [
 ];
 if (process.env.EXPERIMENT_ENABLED === 'true') {
   supportedGroups.push(elifeGroupId);
+  supportedGroups.push(accessMicrobiologyGroupId);
 }
 
 export { supportedGroups };
