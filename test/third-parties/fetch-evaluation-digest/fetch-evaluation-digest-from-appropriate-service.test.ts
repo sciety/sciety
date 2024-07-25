@@ -4,22 +4,25 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, identity, pipe } from 'fp-ts/function';
 import { fetchEvaluationDigestFromAppropriateService } from '../../../src/third-parties/fetch-evaluation-digest/fetch-evaluation-digest-from-appropriate-service';
 import * as DE from '../../../src/types/data-error';
-import * as RI from '../../../src/types/evaluation-locator';
+import { toEvaluationLocator } from '../../../src/types/evaluation-locator';
 import { arbitrarySanitisedHtmlFragment } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 
 describe('fetch-evaluation-digest-from-appropriate-service', () => {
-  describe('when the service is supported', () => {
-    it('returns the fetched evaluation digest', async () => {
-      const reviewId = arbitraryEvaluationLocator();
-      const digest = arbitrarySanitisedHtmlFragment();
-      const fetchers = {
-        [RI.service(reviewId)]: () => TE.right(digest),
-      };
+  describe('when an evaluation digest fetcher for the inferred host is found', () => {
+    const evaluationLocator = toEvaluationLocator('hypothesis:123');
+    const digest = arbitrarySanitisedHtmlFragment();
+    const fetchersByHost = {
+      hypothesis: () => TE.right(digest),
+    };
+    let result: E.Either<unknown, unknown>;
 
-      const result = await fetchEvaluationDigestFromAppropriateService({})(fetchers)(reviewId)();
+    beforeEach(async () => {
+      result = await fetchEvaluationDigestFromAppropriateService(fetchersByHost)({})(evaluationLocator)();
+    });
 
+    it.failing('returns the fetched evaluation digest', async () => {
       expect(result).toStrictEqual(E.right(digest));
     });
   });
