@@ -9,10 +9,10 @@
   gap: functions.px-to-rem(16px);
 }
 
-.home-page-hero-explore-reviewed-preprints-link {
+.home-page-hero-explore-evaluated-preprints-link {
   @include button.primary-link();
 }
 
-.home-page-hero-browse-reviewing-groups-link {
+.home-page-hero-browse-evaluating-groups-link {
   @include button.secondary-link();
 }
