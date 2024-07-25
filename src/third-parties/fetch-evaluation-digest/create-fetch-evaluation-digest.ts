@@ -26,5 +26,7 @@ export const createFetchEvaluationDigest = (queryExternalService: QueryExternalS
     prelights: fetchPrelightsHighlight(queryExternalService, logger),
     rapidreviews: fetchRapidReviewsEvaluationDigest(queryExternalService, logger),
   },
-  fetchEvaluationDigestFromAppropriateService,
+  fetchEvaluationDigestFromAppropriateService({
+    'hypothesis': fetchHypothesisAnnotation(queryExternalService, logger),
+  }),
 );

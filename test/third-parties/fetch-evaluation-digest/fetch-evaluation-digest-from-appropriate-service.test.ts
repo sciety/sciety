@@ -18,7 +18,7 @@ describe('fetch-evaluation-digest-from-appropriate-service', () => {
         [RI.service(reviewId)]: () => TE.right(digest),
       };
 
-      const result = await fetchEvaluationDigestFromAppropriateService(fetchers)(reviewId)();
+      const result = await fetchEvaluationDigestFromAppropriateService({})(fetchers)(reviewId)();
 
       expect(result).toStrictEqual(E.right(digest));
     });
@@ -31,7 +31,7 @@ describe('fetch-evaluation-digest-from-appropriate-service', () => {
       const id = arbitraryEvaluationLocator();
       const result = await pipe(
         id,
-        fetchEvaluationDigestFromAppropriateService(fetchers),
+        fetchEvaluationDigestFromAppropriateService({})(fetchers),
         T.map(flow(
           E.matchW(
             identity,
