@@ -26,12 +26,5 @@ export const createFetchEvaluationDigest = (queryExternalService: QueryExternalS
     prelights: fetchPrelightsHighlight(queryExternalService, logger),
     rapidreviews: fetchRapidReviewsEvaluationDigest(queryExternalService, logger),
   },
-  fetchEvaluationDigestFromAppropriateService({
-    'hypothesis': fetchHypothesisAnnotation(queryExternalService, logger),
-    'zenodo': fetchZenodoRecord(queryExternalService, logger),
-    'access-microbiology': fetchAccessMicrobiologyEvaluationDigest(queryExternalService, logger),
-    'ncrc': fetchNcrcEvaluationDigest(logger),
-    'prelights': fetchPrelightsHighlight(queryExternalService, logger),
-    'rapid-reviews': fetchRapidReviewsEvaluationDigest(queryExternalService, logger),
-  }),
+  fetchEvaluationDigestFromAppropriateService,
 );
