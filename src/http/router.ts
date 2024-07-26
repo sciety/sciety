@@ -125,7 +125,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const nonHtmlViews = [
-    { endpoint: '/evaluations/:reviewid/content', handler: evaluationContent },
+    { endpoint: '/evaluations/:reviewid(.+)/content', handler: evaluationContent },
     { endpoint: '/docmaps/v1/index', handler: docmapIndex },
     { endpoint: '/docmaps/v1/articles/:doi(.+).docmap.json', handler: docmap },
   ];
