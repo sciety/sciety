@@ -38,7 +38,7 @@ type ConstructDocmapViewModel = (
 export const constructDocmapViewModel: ConstructDocmapViewModel = (dependencies) => (docmapIdentifier) => pipe(
   {
     expressionDoi: TE.right(docmapIdentifier.expressionDoi),
-    evaluations: pipe(
+    actions: pipe(
       dependencies.getEvaluationsOfExpression(docmapIdentifier.expressionDoi),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === docmapIdentifier.groupId)),
@@ -57,8 +57,8 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (dependencies)
   TE.map((partial) => ({
     ...partial,
     updatedAt: pipe(
-      partial.evaluations,
-      RNEA.map((evaluation) => evaluation.updatedAt),
+      partial.actions,
+      RNEA.map((action) => action.updatedAt),
       RNEA.max(D.Ord),
     ),
   })),

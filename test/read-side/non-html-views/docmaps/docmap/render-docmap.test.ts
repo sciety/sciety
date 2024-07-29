@@ -3,8 +3,8 @@
 /* eslint-disable jest/require-hook */
 import { URL } from 'url';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
+import { Action } from '../../../../../src/read-side/non-html-views/docmaps/docmap/action';
 import { Docmap } from '../../../../../src/read-side/non-html-views/docmaps/docmap/docmap-type';
-import { Evaluation } from '../../../../../src/read-side/non-html-views/docmaps/docmap/evaluation';
 import { anonymous } from '../../../../../src/read-side/non-html-views/docmaps/docmap/peer-reviewer';
 import { publisherAccountId } from '../../../../../src/read-side/non-html-views/docmaps/docmap/publisher-account-id';
 import { renderDocmap } from '../../../../../src/read-side/non-html-views/docmaps/docmap/render-docmap';
@@ -40,7 +40,7 @@ describe('render-docmap', () => {
     const result = renderDocmap({
       expressionDoi,
       group,
-      evaluations: [
+      actions: [
         {
           sourceUrl: arbitraryUrl(),
           evaluationLocator: arbitraryEvaluationLocator(),
@@ -63,7 +63,7 @@ describe('render-docmap', () => {
       const anotherDocmap = renderDocmap({
         expressionDoi,
         group,
-        evaluations: [
+        actions: [
           {
             sourceUrl: arbitraryUrl(),
             evaluationLocator: arbitraryEvaluationLocator(),
@@ -117,7 +117,7 @@ describe('render-docmap', () => {
     const laterEvaluationLocator = arbitraryEvaluationLocator();
     const firstStep = '_:b0';
     const authorName = arbitraryString();
-    const evaluations: RNEA.ReadonlyNonEmptyArray<Evaluation> = [
+    const evaluations: RNEA.ReadonlyNonEmptyArray<Action> = [
       {
         sourceUrl: new URL(`https://evaluations.example.com/${earlierEvaluationLocator}`),
         evaluationLocator: earlierEvaluationLocator,
@@ -136,7 +136,7 @@ describe('render-docmap', () => {
     const result = renderDocmap({
       expressionDoi,
       group: arbitraryGroup(),
-      evaluations,
+      actions: evaluations,
       updatedAt: new Date(),
     });
 

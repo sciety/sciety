@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as EL from '../../../../types/evaluation-locator';
 
-export type Evaluation = {
+export type Action = {
   sourceUrl: URL,
   evaluationLocator: EL.EvaluationLocator,
   recordedAt: Date,

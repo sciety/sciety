@@ -75,7 +75,7 @@ describe('construct-docmap-view-model', () => {
         });
 
         it('includes a source URL', () => {
-          expect(viewModel.evaluations[0].sourceUrl).toStrictEqual(humanReadableOriginalUrl);
+          expect(viewModel.actions[0].sourceUrl).toStrictEqual(humanReadableOriginalUrl);
         });
       });
 
@@ -129,7 +129,7 @@ describe('construct-docmap-view-model', () => {
         });
 
         it('returns all evaluations', () => {
-          expect(viewModel.evaluations).toHaveLength(2);
+          expect(viewModel.actions).toHaveLength(2);
         });
 
         it('the updatedAt is when the most recently recorded evaluation was recorded', () => {
@@ -159,7 +159,7 @@ describe('construct-docmap-view-model', () => {
         });
 
         it('returns all of the evaluations', () => {
-          expect(viewModel.evaluations).toHaveLength(2);
+          expect(viewModel.actions).toHaveLength(2);
         });
 
         it('the updatedAt is when the most recently updated evaluation was updated', () => {
@@ -237,7 +237,7 @@ describe('construct-docmap-view-model', () => {
           TE.getOrElse(framework.abortTest('generateDocmapViewModel')),
         )();
 
-        expect(viewModel.evaluations[0].evaluationLocator).toStrictEqual(recordEvaluationByThisGroup.evaluationLocator);
+        expect(viewModel.actions[0].evaluationLocator).toStrictEqual(recordEvaluationByThisGroup.evaluationLocator);
       });
     });
   });

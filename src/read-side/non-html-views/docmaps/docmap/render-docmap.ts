@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import { pipe } from 'fp-ts/function';
+import { Action } from './action';
 import { Docmap } from './docmap-type';
-import { Evaluation } from './evaluation';
 import { anonymous, peerReviewer } from './peer-reviewer';
 import { publisherAccountId } from './publisher-account-id';
 import { DocmapViewModel } from './view-model';
@@ -16,10 +16,10 @@ const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
 }];
 
 const constructWebContentUrl = (
-  evaluationLocator: Evaluation['evaluationLocator'],
+  evaluationLocator: Action['evaluationLocator'],
 ) => `https://sciety.org/evaluations/${EL.serialize(evaluationLocator)}/content`;
 
-const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluation) => ({
+const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Action) => ({
   participants: pipe(
     evaluation.authors,
     RA.match(
@@ -54,7 +54,7 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
   '@context': 'https://w3id.org/docmaps/context.jsonld',
   id: `https://sciety.org/docmaps/v1/articles/${viewModel.expressionDoi}/${viewModel.group.slug}.docmap.json`,
   type: 'docmap',
-  created: RNEA.head(viewModel.evaluations).recordedAt.toISOString(),
+  created: RNEA.head(viewModel.actions).recordedAt.toISOString(),
   updated: viewModel.updatedAt.toISOString(),
   publisher: {
     id: viewModel.group.homepage,
@@ -72,7 +72,7 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
       assertions: [],
       inputs: renderInputs(viewModel.expressionDoi),
       actions: pipe(
-        viewModel.evaluations,
+        viewModel.actions,
         RA.map(createAction(viewModel.expressionDoi)),
       ),
     },
