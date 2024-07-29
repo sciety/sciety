@@ -11,7 +11,7 @@ import { arbitraryDataError } from '../../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../../types/recorded-evaluation.helper';
 
 describe('construct-action', () => {
-  const appOrigin = 'https://example.com';
+  const appOrigin = arbitraryUrl().origin;
   let framework: TestFramework;
   let defaultDependencies: DependenciesForViews;
 
@@ -43,7 +43,7 @@ describe('construct-action', () => {
     });
 
     it('constructs webContentUrl, using the appOrigin', () => {
-      expect(action.webContentUrl.hostname).toBe('example.com');
+      expect(action.webContentUrl.origin).toBe(appOrigin);
     });
   });
 
