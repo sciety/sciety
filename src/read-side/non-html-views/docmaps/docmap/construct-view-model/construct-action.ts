@@ -9,7 +9,7 @@ import { Action } from '../action';
 
 export const constructAction = (
   dependencies: DependenciesForViews,
-  appOrigin: URL,
+  webContentBase: URL,
 ) => (
   evaluation: RecordedEvaluation,
 ): TE.TaskEither<DE.DataError, Action> => pipe(
@@ -18,6 +18,9 @@ export const constructAction = (
   TE.map((url) => ({
     ...evaluation,
     sourceUrl: url,
-    webContentUrl: new URL(`/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`, appOrigin),
+    webContentUrl: new URL(
+      `/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`,
+      webContentBase,
+    ),
   })),
 );

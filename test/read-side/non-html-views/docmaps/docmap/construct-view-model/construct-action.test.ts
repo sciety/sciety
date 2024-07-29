@@ -42,8 +42,8 @@ describe('construct-action', () => {
       expect(action.sourceUrl).toStrictEqual(humanReadableOriginalUrl);
     });
 
-    it.failing('constructs webContentUrl, using the appOrigin', () => {
-      expect(action.webContentUrl.toString()).toStrictEqual(expect.stringContaining(webContentBase.toString()));
+    it.failing('uses the webContentBase to construct the webContentUrl,', () => {
+      expect(action.webContentUrl.toString()).toContain(webContentBase.toString());
     });
   });
 
