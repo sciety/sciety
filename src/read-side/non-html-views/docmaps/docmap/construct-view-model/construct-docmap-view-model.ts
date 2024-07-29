@@ -6,18 +6,18 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { constructAction } from './construct-action';
-import { Dependencies } from './dependencies';
-import { DocmapViewModel } from './view-model';
-import * as DE from '../../../../types/data-error';
-import * as EDOI from '../../../../types/expression-doi';
-import { GroupId } from '../../../../types/group-id';
+import * as DE from '../../../../../types/data-error';
+import * as EDOI from '../../../../../types/expression-doi';
+import { GroupId } from '../../../../../types/group-id';
+import { Dependencies } from '../dependencies';
+import { DocmapViewModel } from '../view-model';
 
 type DocmapIdentifier = {
   expressionDoi: EDOI.ExpressionDoi,
   groupId: GroupId,
 };
 
-export { Dependencies } from './dependencies';
+export { Dependencies } from '../dependencies';
 
 type ConstructDocmapViewModel = (
   dependencies: Dependencies

@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { Dependencies as DocmapDependencies, constructDocmapViewModel } from './construct-docmap-view-model';
+import { Dependencies as DocmapDependencies, constructDocmapViewModel } from './construct-view-model/construct-docmap-view-model';
 import { Docmap } from './docmap-type';
 import { renderDocmap } from './render-docmap';
 import { Queries } from '../../../../read-models';

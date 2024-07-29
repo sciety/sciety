@@ -1,11 +1,11 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { Action } from './action';
-import { Dependencies } from './dependencies';
-import * as DE from '../../../../types/data-error';
-import * as EL from '../../../../types/evaluation-locator';
-import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
+import * as DE from '../../../../../types/data-error';
+import * as EL from '../../../../../types/evaluation-locator';
+import { RecordedEvaluation } from '../../../../../types/recorded-evaluation';
+import { Action } from '../action';
+import { Dependencies } from '../dependencies';
 
 export const constructAction = (
   dependencies: Dependencies,

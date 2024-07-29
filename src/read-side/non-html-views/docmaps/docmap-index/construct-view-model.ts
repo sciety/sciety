@@ -7,7 +7,7 @@ import { filterByParams } from './filter-by-params';
 import { identifyAllPossibleIndexEntries } from './identify-all-possible-index-entries';
 import { Params } from './params';
 import { DocmapIndexViewModel } from './view-model';
-import { constructDocmapViewModel } from '../docmap/construct-docmap-view-model';
+import { constructDocmapViewModel } from '../docmap/construct-view-model/construct-docmap-view-model';
 import { supportedGroups } from '../supported-groups';
 
 type ConstructDocmapIndexViewModel = (dependencies: Dependencies)
