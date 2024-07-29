@@ -7,6 +7,8 @@ import { RecordedEvaluation } from '../../../../../types/recorded-evaluation';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { Action } from '../action';
 
+const appOrigin = 'https://sciety.org';
+
 export const constructAction = (
   dependencies: DependenciesForViews,
 ) => (
@@ -17,6 +19,6 @@ export const constructAction = (
   TE.map((url) => ({
     ...evaluation,
     sourceUrl: url,
-    webContentUrl: new URL(`https://sciety.org/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`),
+    webContentUrl: new URL(`${appOrigin}/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`),
   })),
 );
