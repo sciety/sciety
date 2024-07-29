@@ -11,6 +11,7 @@ import { arbitraryDataError } from '../../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../../types/recorded-evaluation.helper';
 
 describe('construct-action', () => {
+  const appOrigin = 'https://example.com';
   let framework: TestFramework;
   let defaultDependencies: DependenciesForViews;
 
@@ -26,10 +27,13 @@ describe('construct-action', () => {
     beforeEach(async () => {
       action = await pipe(
         arbitraryRecordedEvaluation(),
-        constructAction({
-          ...defaultDependencies,
-          fetchEvaluationHumanReadableOriginalUrl: () => TE.right(humanReadableOriginalUrl),
-        }),
+        constructAction(
+          {
+            ...defaultDependencies,
+            fetchEvaluationHumanReadableOriginalUrl: () => TE.right(humanReadableOriginalUrl),
+          },
+          appOrigin,
+        ),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -38,8 +42,8 @@ describe('construct-action', () => {
       expect(action.sourceUrl).toStrictEqual(humanReadableOriginalUrl);
     });
 
-    it('constructs webContentUrl by hardcoding sciety.org', () => {
-      expect(action.webContentUrl.hostname).toBe('sciety.org');
+    it('constructs webContentUrl, using the appOrigin', () => {
+      expect(action.webContentUrl.hostname).toBe('example.com');
     });
   });
 
@@ -50,10 +54,13 @@ describe('construct-action', () => {
     beforeEach(async () => {
       result = await pipe(
         arbitraryRecordedEvaluation(),
-        constructAction({
-          ...defaultDependencies,
-          fetchEvaluationHumanReadableOriginalUrl: () => TE.left(dataError),
-        }),
+        constructAction(
+          {
+            ...defaultDependencies,
+            fetchEvaluationHumanReadableOriginalUrl: () => TE.left(dataError),
+          },
+          appOrigin,
+        ),
       )();
     });
 

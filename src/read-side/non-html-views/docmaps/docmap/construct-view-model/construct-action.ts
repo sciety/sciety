@@ -7,10 +7,9 @@ import { RecordedEvaluation } from '../../../../../types/recorded-evaluation';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { Action } from '../action';
 
-const appOrigin = 'https://sciety.org';
-
 export const constructAction = (
   dependencies: DependenciesForViews,
+  appOrigin: string,
 ) => (
   evaluation: RecordedEvaluation,
 ): TE.TaskEither<DE.DataError, Action> => pipe(

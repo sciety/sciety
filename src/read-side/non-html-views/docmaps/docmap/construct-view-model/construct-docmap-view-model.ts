@@ -12,6 +12,8 @@ import { GroupId } from '../../../../../types/group-id';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { DocmapViewModel } from '../view-model';
 
+const appOrigin = 'https://sciety.org';
+
 type DocmapIdentifier = {
   expressionDoi: EDOI.ExpressionDoi,
   groupId: GroupId,
@@ -30,7 +32,7 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (dependencies)
       dependencies.getEvaluationsOfExpression(docmapIdentifier.expressionDoi),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === docmapIdentifier.groupId)),
-      TE.chainW(TE.traverseArray(constructAction(dependencies))),
+      TE.chainW(TE.traverseArray(constructAction(dependencies, appOrigin))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
         E.fromOption(() => DE.notFound),
