@@ -36,7 +36,9 @@ describe('construct-action', () => {
       expect(action.sourceUrl).toStrictEqual(humanReadableOriginalUrl);
     });
 
-    it.todo('constructs webContentUrl by hardcoding sciety.org');
+    it('constructs webContentUrl by hardcoding sciety.org', () => {
+      expect(action.webContentUrl.hostname).toBe('sciety.org');
+    });
   });
 
   describe('when the human readable original url can not be fetched', () => {
