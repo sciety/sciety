@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DependenciesForViews } from '../../../../../../src/read-side/dependencies-for-views';
@@ -6,6 +7,7 @@ import { constructAction } from '../../../../../../src/read-side/non-html-views/
 import { TestFramework, createTestFramework } from '../../../../../framework';
 import { arbitraryUrl } from '../../../../../helpers';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
+import { arbitraryDataError } from '../../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../../types/recorded-evaluation.helper';
 
 describe('construct-action', () => {
@@ -42,6 +44,21 @@ describe('construct-action', () => {
   });
 
   describe('when the human readable original url can not be fetched', () => {
-    it.todo('returns on the left');
+    const dataError = arbitraryDataError();
+    let result: E.Either<unknown, unknown>;
+
+    beforeEach(async () => {
+      result = await pipe(
+        arbitraryRecordedEvaluation(),
+        constructAction({
+          ...defaultDependencies,
+          fetchEvaluationHumanReadableOriginalUrl: () => TE.left(dataError),
+        }),
+      )();
+    });
+
+    it('returns the left from the fetcher', () => {
+      expect(result).toStrictEqual(E.left(dataError));
+    });
   });
 });
