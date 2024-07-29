@@ -15,13 +15,9 @@ const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   url: `https://doi.org/${expressionDoi}`,
 }];
 
-const constructWebContentUrl = (
-  evaluationLocator: Action['evaluationLocator'],
-) => `https://sciety.org/evaluations/${EL.serialize(evaluationLocator)}/content`;
-
-const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Action) => ({
+const createAction = (expressionDoi: EDOI.ExpressionDoi) => (action: Action) => ({
   participants: pipe(
-    evaluation.authors,
+    action.authors,
     RA.match(
       () => [peerReviewer(anonymous)],
       RA.map(peerReviewer),
@@ -31,19 +27,19 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Action)
   outputs: [
     {
       type: 'review-article' as const,
-      published: evaluation.publishedAt.toISOString(),
+      published: action.publishedAt.toISOString(),
       content: [
         {
           type: 'web-page' as const,
-          url: evaluation.sourceUrl.toString(),
+          url: action.sourceUrl.toString(),
         },
         {
           type: 'web-page' as const,
-          url: `https://sciety.org${constructPaperActivityPageHref(expressionDoi)}#${EL.serialize(evaluation.evaluationLocator)}`,
+          url: `https://sciety.org${constructPaperActivityPageHref(expressionDoi)}#${EL.serialize(action.evaluationLocator)}`,
         },
         {
           type: 'web-content' as const,
-          url: constructWebContentUrl(evaluation.evaluationLocator),
+          url: action.webContentUrl.toString(),
         },
       ],
     },

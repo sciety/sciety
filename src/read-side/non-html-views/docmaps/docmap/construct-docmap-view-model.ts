@@ -10,6 +10,7 @@ import { DocmapViewModel } from './view-model';
 import { Queries } from '../../../../read-models';
 import { ExternalQueries } from '../../../../third-parties';
 import * as DE from '../../../../types/data-error';
+import * as EL from '../../../../types/evaluation-locator';
 import * as EDOI from '../../../../types/expression-doi';
 import { GroupId } from '../../../../types/group-id';
 import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
@@ -27,7 +28,7 @@ const constructAction = (dependencies: Dependencies) => (evaluation: RecordedEva
   TE.map((url) => ({
     ...evaluation,
     sourceUrl: url,
-    webContentUrl: new URL('https://example.com'),
+    webContentUrl: new URL(`https://sciety.org/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`),
   })),
 );
 
