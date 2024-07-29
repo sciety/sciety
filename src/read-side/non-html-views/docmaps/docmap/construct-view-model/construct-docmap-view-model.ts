@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as D from 'fp-ts/Date';
 import * as E from 'fp-ts/Either';
@@ -12,8 +11,6 @@ import * as EDOI from '../../../../../types/expression-doi';
 import { GroupId } from '../../../../../types/group-id';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { DocmapViewModel } from '../view-model';
-
-const webContentBase = new URL('https://sciety.org/');
 
 type DocmapIdentifier = {
   expressionDoi: EDOI.ExpressionDoi,
@@ -33,7 +30,7 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (dependencies)
       dependencies.getEvaluationsOfExpression(docmapIdentifier.expressionDoi),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === docmapIdentifier.groupId)),
-      TE.chainW(TE.traverseArray(constructAction(dependencies, webContentBase))),
+      TE.chainW(TE.traverseArray(constructAction(dependencies))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
         E.fromOption(() => DE.notFound),

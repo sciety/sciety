@@ -1,15 +1,13 @@
-import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as DE from '../../../../../types/data-error';
-import * as EL from '../../../../../types/evaluation-locator';
 import { RecordedEvaluation } from '../../../../../types/recorded-evaluation';
+import { constructEvaluationContentUrl } from '../../../../construct-evaluation-content-url';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { Action } from '../action';
 
 export const constructAction = (
   dependencies: DependenciesForViews,
-  webContentBase: URL,
 ) => (
   evaluation: RecordedEvaluation,
 ): TE.TaskEither<DE.DataError, Action> => pipe(
@@ -18,9 +16,6 @@ export const constructAction = (
   TE.map((url) => ({
     ...evaluation,
     sourceUrl: url,
-    webContentUrl: new URL(
-      `./evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`,
-      webContentBase,
-    ),
+    webContentUrl: constructEvaluationContentUrl(evaluation.evaluationLocator),
   })),
 );

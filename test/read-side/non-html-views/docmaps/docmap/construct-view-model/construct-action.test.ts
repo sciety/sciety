@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -12,7 +11,6 @@ import { arbitraryDataError } from '../../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../../types/recorded-evaluation.helper';
 
 describe('construct-action', () => {
-  const webContentBase = new URL(`${arbitraryUrl().toString()}/`);
   let framework: TestFramework;
   let defaultDependencies: DependenciesForViews;
 
@@ -33,7 +31,6 @@ describe('construct-action', () => {
             ...defaultDependencies,
             fetchEvaluationHumanReadableOriginalUrl: () => TE.right(humanReadableOriginalUrl),
           },
-          webContentBase,
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -41,10 +38,6 @@ describe('construct-action', () => {
 
     it('the provided url is used as the sourceUrl', () => {
       expect(action.sourceUrl).toStrictEqual(humanReadableOriginalUrl);
-    });
-
-    it('uses the webContentBase to construct the webContentUrl,', () => {
-      expect(action.webContentUrl.toString()).toContain(webContentBase.toString());
     });
   });
 
@@ -60,7 +53,6 @@ describe('construct-action', () => {
             ...defaultDependencies,
             fetchEvaluationHumanReadableOriginalUrl: () => TE.left(dataError),
           },
-          webContentBase,
         ),
       )();
     });
