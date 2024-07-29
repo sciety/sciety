@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructDocmapViewModel, Dependencies } from '../../../../../../src/read-side/non-html-views/docmaps/docmap/construct-view-model/construct-docmap-view-model';
+import { DependenciesForViews } from '../../../../../../src/read-side/dependencies-for-views';
+import { constructDocmapViewModel } from '../../../../../../src/read-side/non-html-views/docmaps/docmap/construct-view-model/construct-docmap-view-model';
 import { DocmapViewModel } from '../../../../../../src/read-side/non-html-views/docmaps/docmap/view-model';
 import * as DE from '../../../../../../src/types/data-error';
 import { RecordEvaluationPublicationCommand } from '../../../../../../src/write-side/commands';
@@ -20,14 +21,11 @@ const expressionDoi = arbitraryExpressionDoi();
 
 describe('construct-docmap-view-model', () => {
   let framework: TestFramework;
-  let defaultDependencies: Dependencies;
+  let defaultDependencies: DependenciesForViews;
 
   beforeEach(async () => {
     framework = createTestFramework();
-    defaultDependencies = {
-      ...framework.queries,
-      ...framework.happyPathThirdParties,
-    };
+    defaultDependencies = framework.dependenciesForViews;
   });
 
   describe('when the selected group exists', () => {

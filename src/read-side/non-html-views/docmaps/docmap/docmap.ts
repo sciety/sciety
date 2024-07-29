@@ -3,7 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import * as t from 'io-ts';
-import { Dependencies, generateDocmaps } from './generate-docmaps';
+import { generateDocmaps } from './generate-docmaps';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 import { NonHtmlViewError, toNonHtmlViewError } from '../../non-html-view-error';
 import { NonHtmlViewParams } from '../../non-html-view-params';
 import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
@@ -13,7 +14,7 @@ const paramsCodec = t.strict({
 });
 
 export const docmap = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
 ) => (
   params: NonHtmlViewParams,
 ): TE.TaskEither<NonHtmlViewError, NonHtmlViewRepresentation> => pipe(

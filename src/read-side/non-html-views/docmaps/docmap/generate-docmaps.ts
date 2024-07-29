@@ -4,17 +4,15 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
-import { Dependencies as DocmapDependencies, constructDocmapViewModel } from './construct-view-model/construct-docmap-view-model';
+import { constructDocmapViewModel } from './construct-view-model/construct-docmap-view-model';
 import { Docmap } from './docmap-type';
 import { renderDocmap } from './render-docmap';
-import { Queries } from '../../../../read-models';
 import { articleIdCodec, ArticleId, toExpressionDoi } from '../../../../types/article-id';
 import * as EDOI from '../../../../types/expression-doi';
+import { DependenciesForViews } from '../../../dependencies-for-views';
 import { supportedGroups } from '../supported-groups';
 
-export type Dependencies = DocmapDependencies & Queries;
-
-const getEvaluatingGroupIds = (dependencies: Dependencies) => (doi: ArticleId) => pipe(
+const getEvaluatingGroupIds = (dependencies: DependenciesForViews) => (doi: ArticleId) => pipe(
   dependencies.getEvaluationsOfExpression(EDOI.fromValidatedString(doi.value)),
   T.of,
   T.map(flow(
@@ -30,7 +28,7 @@ const validateDoi = flow(
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Invalid DOI requested' })),
 );
 
-const getDocmapViewModels = (dependencies: Dependencies) => (articleId: ArticleId) => pipe(
+const getDocmapViewModels = (dependencies: DependenciesForViews) => (articleId: ArticleId) => pipe(
   articleId,
   getEvaluatingGroupIds(dependencies),
   TE.rightTask,
@@ -47,7 +45,7 @@ const errorOnEmpty = E.fromPredicate(
 );
 
 export const generateDocmaps = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
 ) => (
   candidateDoi: string,
 ): TE.TaskEither<{ status: StatusCodes, message: string }, ReadonlyArray<Docmap>> => pipe(

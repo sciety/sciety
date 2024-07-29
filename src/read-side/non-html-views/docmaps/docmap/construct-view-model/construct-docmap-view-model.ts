@@ -9,7 +9,7 @@ import { constructAction } from './construct-action';
 import * as DE from '../../../../../types/data-error';
 import * as EDOI from '../../../../../types/expression-doi';
 import { GroupId } from '../../../../../types/group-id';
-import { Dependencies } from '../dependencies';
+import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { DocmapViewModel } from '../view-model';
 
 type DocmapIdentifier = {
@@ -17,10 +17,8 @@ type DocmapIdentifier = {
   groupId: GroupId,
 };
 
-export { Dependencies } from '../dependencies';
-
 type ConstructDocmapViewModel = (
-  dependencies: Dependencies
+  dependencies: DependenciesForViews
 ) => (
   docmapIdentifier: DocmapIdentifier
 ) => TE.TaskEither<DE.DataError, DocmapViewModel>;

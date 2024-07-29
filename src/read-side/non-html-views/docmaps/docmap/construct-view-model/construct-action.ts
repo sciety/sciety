@@ -4,11 +4,11 @@ import { pipe } from 'fp-ts/function';
 import * as DE from '../../../../../types/data-error';
 import * as EL from '../../../../../types/evaluation-locator';
 import { RecordedEvaluation } from '../../../../../types/recorded-evaluation';
+import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { Action } from '../action';
-import { Dependencies } from '../dependencies';
 
 export const constructAction = (
-  dependencies: Dependencies,
+  dependencies: DependenciesForViews,
 ) => (
   evaluation: RecordedEvaluation,
 ): TE.TaskEither<DE.DataError, Action> => pipe(

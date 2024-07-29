@@ -1,27 +1,22 @@
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import { DependenciesForViews } from '../../../../../src/read-side/dependencies-for-views';
 import { docmapIndex } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index';
-import { Dependencies } from '../../../../../src/read-side/non-html-views/docmaps/docmap-index/dependencies';
 import { NonHtmlViewError } from '../../../../../src/read-side/non-html-views/non-html-view-error';
 import * as GID from '../../../../../src/types/group-id';
 import { abortTest } from '../../../../abort-test';
-import { dummyLogger } from '../../../../dummy-logger';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('docmap-index', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   let framework: TestFramework;
-  let defaultDependencies: Dependencies;
+  let defaultDependencies: DependenciesForViews;
 
   beforeEach(async () => {
     framework = createTestFramework();
-    defaultDependencies = {
-      ...framework.queries,
-      ...framework.happyPathThirdParties,
-      logger: dummyLogger,
-    };
+    defaultDependencies = framework.dependenciesForViews;
   });
 
   describe('when any docmap fails to generate', () => {

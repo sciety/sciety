@@ -2,8 +2,9 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { identity, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
+import { DependenciesForViews } from '../../../../../src/read-side/dependencies-for-views';
 import { Docmap } from '../../../../../src/read-side/non-html-views/docmaps/docmap/docmap-type';
-import { generateDocmaps, Dependencies } from '../../../../../src/read-side/non-html-views/docmaps/docmap/generate-docmaps';
+import { generateDocmaps } from '../../../../../src/read-side/non-html-views/docmaps/docmap/generate-docmaps';
 import * as DE from '../../../../../src/types/data-error';
 import { EvaluationLocator } from '../../../../../src/types/evaluation-locator';
 import * as GID from '../../../../../src/types/group-id';
@@ -21,14 +22,11 @@ describe('generate-docmaps', () => {
   const ncrcGroupId = GID.fromValidatedString('62f9b0d0-8d43-4766-a52a-ce02af61bc6a');
   const rapidReviewsGroupId = GID.fromValidatedString('5142a5bc-6b18-42b1-9a8d-7342d7d17e94');
   let framework: TestFramework;
-  let defaultDependencies: Dependencies;
+  let defaultDependencies: DependenciesForViews;
 
   beforeEach(async () => {
     framework = createTestFramework();
-    defaultDependencies = {
-      ...framework.queries,
-      ...framework.happyPathThirdParties,
-    };
+    defaultDependencies = framework.dependenciesForViews;
   });
 
   describe('when the article hasn\'t been evaluated', () => {
