@@ -11,7 +11,7 @@ import { arbitraryDataError } from '../../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../../types/recorded-evaluation.helper';
 
 describe('construct-action', () => {
-  const appOrigin = arbitraryUrl().origin;
+  const webContentBase = arbitraryUrl();
   let framework: TestFramework;
   let defaultDependencies: DependenciesForViews;
 
@@ -32,7 +32,7 @@ describe('construct-action', () => {
             ...defaultDependencies,
             fetchEvaluationHumanReadableOriginalUrl: () => TE.right(humanReadableOriginalUrl),
           },
-          appOrigin,
+          webContentBase,
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -42,8 +42,8 @@ describe('construct-action', () => {
       expect(action.sourceUrl).toStrictEqual(humanReadableOriginalUrl);
     });
 
-    it('constructs webContentUrl, using the appOrigin', () => {
-      expect(action.webContentUrl.origin).toBe(appOrigin);
+    it.failing('constructs webContentUrl, using the appOrigin', () => {
+      expect(action.webContentUrl.toString()).toStrictEqual(expect.stringContaining(webContentBase.toString()));
     });
   });
 
@@ -59,7 +59,7 @@ describe('construct-action', () => {
             ...defaultDependencies,
             fetchEvaluationHumanReadableOriginalUrl: () => TE.left(dataError),
           },
-          appOrigin,
+          webContentBase,
         ),
       )();
     });

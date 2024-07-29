@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as D from 'fp-ts/Date';
 import * as E from 'fp-ts/Either';
@@ -12,7 +13,7 @@ import { GroupId } from '../../../../../types/group-id';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { DocmapViewModel } from '../view-model';
 
-const appOrigin = 'https://sciety.org';
+const appOrigin = new URL('https://sciety.org');
 
 type DocmapIdentifier = {
   expressionDoi: EDOI.ExpressionDoi,
