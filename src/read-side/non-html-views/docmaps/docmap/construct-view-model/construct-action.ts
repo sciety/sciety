@@ -19,7 +19,7 @@ export const constructAction = (
     ...evaluation,
     sourceUrl: url,
     webContentUrl: new URL(
-      `/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`,
+      `./evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`,
       webContentBase,
     ),
   })),

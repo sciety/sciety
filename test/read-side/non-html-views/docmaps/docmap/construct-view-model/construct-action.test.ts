@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -11,7 +12,7 @@ import { arbitraryDataError } from '../../../../../types/data-error.helper';
 import { arbitraryRecordedEvaluation } from '../../../../../types/recorded-evaluation.helper';
 
 describe('construct-action', () => {
-  const webContentBase = arbitraryUrl();
+  const webContentBase = new URL(`${arbitraryUrl().toString()}/`);
   let framework: TestFramework;
   let defaultDependencies: DependenciesForViews;
 
@@ -42,7 +43,7 @@ describe('construct-action', () => {
       expect(action.sourceUrl).toStrictEqual(humanReadableOriginalUrl);
     });
 
-    it.failing('uses the webContentBase to construct the webContentUrl,', () => {
+    it('uses the webContentBase to construct the webContentUrl,', () => {
       expect(action.webContentUrl.toString()).toContain(webContentBase.toString());
     });
   });

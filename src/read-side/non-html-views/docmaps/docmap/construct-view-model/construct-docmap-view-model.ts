@@ -13,7 +13,7 @@ import { GroupId } from '../../../../../types/group-id';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { DocmapViewModel } from '../view-model';
 
-const webContentBase = new URL('https://sciety.org');
+const webContentBase = new URL('https://sciety.org/');
 
 type DocmapIdentifier = {
   expressionDoi: EDOI.ExpressionDoi,
