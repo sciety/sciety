@@ -15,6 +15,10 @@ const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   url: `https://doi.org/${expressionDoi}`,
 }];
 
+const constructWebContentUrl = (
+  evaluationLocator: Evaluation['evaluationLocator'],
+) => `https://sciety.org/evaluations/${EL.serialize(evaluationLocator)}/content`;
+
 const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluation) => ({
   participants: pipe(
     evaluation.authors,
@@ -39,7 +43,7 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (evaluation: Evaluat
         },
         {
           type: 'web-content' as const,
-          url: `https://sciety.org/evaluations/${EL.serialize(evaluation.evaluationLocator)}/content`,
+          url: constructWebContentUrl(evaluation.evaluationLocator),
         },
       ],
     },
