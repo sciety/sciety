@@ -7,4 +7,5 @@ export type Action = {
   recordedAt: Date,
   publishedAt: Date,
   authors: ReadonlyArray<string>,
+  webContentUrl: URL,
 };

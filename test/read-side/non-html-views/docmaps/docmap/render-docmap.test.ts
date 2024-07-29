@@ -43,6 +43,7 @@ describe('render-docmap', () => {
       actions: [
         {
           sourceUrl: arbitraryUrl(),
+          webContentUrl: arbitraryUrl(),
           evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: earlierEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
@@ -50,6 +51,7 @@ describe('render-docmap', () => {
         },
         {
           sourceUrl: arbitraryUrl(),
+          webContentUrl: arbitraryUrl(),
           evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: laterEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
@@ -66,6 +68,7 @@ describe('render-docmap', () => {
         actions: [
           {
             sourceUrl: arbitraryUrl(),
+            webContentUrl: arbitraryUrl(),
             evaluationLocator: arbitraryEvaluationLocator(),
             recordedAt: arbitraryDate(),
             publishedAt: arbitraryDate(),
@@ -120,6 +123,7 @@ describe('render-docmap', () => {
     const evaluations: RNEA.ReadonlyNonEmptyArray<Action> = [
       {
         sourceUrl: new URL(`https://evaluations.example.com/${earlierEvaluationLocator}`),
+        webContentUrl: arbitraryUrl(),
         evaluationLocator: earlierEvaluationLocator,
         recordedAt: arbitraryDate(),
         publishedAt: earlierEvaluationPublishedDate,
@@ -127,6 +131,7 @@ describe('render-docmap', () => {
       },
       {
         sourceUrl: new URL(`https://evaluations.example.com/${laterEvaluationLocator}`),
+        webContentUrl: arbitraryUrl(),
         evaluationLocator: laterEvaluationLocator,
         recordedAt: arbitraryDate(),
         publishedAt: laterEvaluationPublishedDate,

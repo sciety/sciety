@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { sequenceS } from 'fp-ts/Apply';
 import * as D from 'fp-ts/Date';
 import * as E from 'fp-ts/Either';
@@ -20,12 +21,13 @@ type DocmapIdentifier = {
 
 export type Dependencies = Queries & ExternalQueries;
 
-const extendWithSourceUrl = (dependencies: Dependencies) => (evaluation: RecordedEvaluation) => pipe(
+const constructAction = (dependencies: Dependencies) => (evaluation: RecordedEvaluation) => pipe(
   evaluation.evaluationLocator,
   dependencies.fetchEvaluationHumanReadableOriginalUrl,
   TE.map((url) => ({
     ...evaluation,
     sourceUrl: url,
+    webContentUrl: new URL('https://example.com'),
   })),
 );
 
@@ -42,7 +44,7 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (dependencies)
       dependencies.getEvaluationsOfExpression(docmapIdentifier.expressionDoi),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === docmapIdentifier.groupId)),
-      TE.chainW(TE.traverseArray(extendWithSourceUrl(dependencies))),
+      TE.chainW(TE.traverseArray(constructAction(dependencies))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
         E.fromOption(() => DE.notFound),
