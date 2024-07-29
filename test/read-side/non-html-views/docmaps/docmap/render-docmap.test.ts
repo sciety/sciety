@@ -48,6 +48,7 @@ describe('render-docmap', () => {
           recordedAt: earlierEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
+          updatedAt: arbitraryDate(),
         },
         {
           sourceUrl: arbitraryUrl(),
@@ -56,6 +57,7 @@ describe('render-docmap', () => {
           recordedAt: laterEvaluationRecordedDate,
           publishedAt: arbitraryDate(),
           authors: [],
+          updatedAt: arbitraryDate(),
         },
       ],
       updatedAt: new Date(),
@@ -73,6 +75,7 @@ describe('render-docmap', () => {
             recordedAt: arbitraryDate(),
             publishedAt: arbitraryDate(),
             authors: [],
+            updatedAt: arbitraryDate(),
           },
         ],
         updatedAt: new Date(),
@@ -128,6 +131,7 @@ describe('render-docmap', () => {
         recordedAt: arbitraryDate(),
         publishedAt: earlierEvaluationPublishedDate,
         authors: [],
+        updatedAt: arbitraryDate(),
       },
       {
         sourceUrl: new URL(`https://evaluations.example.com/${laterEvaluationLocator}`),
@@ -136,6 +140,7 @@ describe('render-docmap', () => {
         recordedAt: arbitraryDate(),
         publishedAt: laterEvaluationPublishedDate,
         authors: [authorName],
+        updatedAt: arbitraryDate(),
       },
     ];
     const result = renderDocmap({
