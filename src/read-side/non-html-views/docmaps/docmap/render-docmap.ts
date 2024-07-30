@@ -15,7 +15,7 @@ const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   url: `https://doi.org/${expressionDoi}`,
 }];
 
-const createAction = (expressionDoi: EDOI.ExpressionDoi) => (action: Action) => ({
+const renderAction = (expressionDoi: EDOI.ExpressionDoi) => (action: Action) => ({
   participants: pipe(
     action.authors,
     RA.match(
@@ -69,7 +69,7 @@ export const renderDocmap = (viewModel: DocmapViewModel): Docmap => ({
       inputs: renderInputs(viewModel.expressionDoi),
       actions: pipe(
         viewModel.actions,
-        RA.map(createAction(viewModel.expressionDoi)),
+        RA.map(renderAction(viewModel.expressionDoi)),
       ),
     },
   },
