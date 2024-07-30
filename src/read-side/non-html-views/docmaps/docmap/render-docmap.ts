@@ -31,7 +31,7 @@ const createAction = (expressionDoi: EDOI.ExpressionDoi) => (action: Action) => 
       content: [
         {
           type: 'web-page' as const,
-          url: action.sourceUrl.toString(),
+          url: action.webPageOriginalUrl.toString(),
         },
         {
           type: 'web-page' as const,

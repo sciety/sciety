@@ -18,7 +18,7 @@ export const constructAction = (
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.publishedAt,
     recordedAt: evaluation.recordedAt,
-    sourceUrl: url,
+    webPageOriginalUrl: url,
     updatedAt: evaluation.updatedAt,
     webContentUrl: constructEvaluationContentUrl(evaluation.evaluationLocator),
   })),

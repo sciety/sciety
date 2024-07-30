@@ -73,7 +73,7 @@ describe('construct-docmap-view-model', () => {
         });
 
         it('includes a source URL', () => {
-          expect(viewModel.actions[0].sourceUrl).toStrictEqual(humanReadableOriginalUrl);
+          expect(viewModel.actions[0].webPageOriginalUrl).toStrictEqual(humanReadableOriginalUrl);
         });
       });
 

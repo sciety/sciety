@@ -42,7 +42,7 @@ describe('render-docmap', () => {
       group,
       actions: [
         {
-          sourceUrl: arbitraryUrl(),
+          webPageOriginalUrl: arbitraryUrl(),
           webContentUrl: arbitraryUrl(),
           evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: earlierEvaluationRecordedDate,
@@ -51,7 +51,7 @@ describe('render-docmap', () => {
           updatedAt: arbitraryDate(),
         },
         {
-          sourceUrl: arbitraryUrl(),
+          webPageOriginalUrl: arbitraryUrl(),
           webContentUrl: arbitraryUrl(),
           evaluationLocator: arbitraryEvaluationLocator(),
           recordedAt: laterEvaluationRecordedDate,
@@ -69,7 +69,7 @@ describe('render-docmap', () => {
         group,
         actions: [
           {
-            sourceUrl: arbitraryUrl(),
+            webPageOriginalUrl: arbitraryUrl(),
             webContentUrl: arbitraryUrl(),
             evaluationLocator: arbitraryEvaluationLocator(),
             recordedAt: arbitraryDate(),
@@ -125,7 +125,7 @@ describe('render-docmap', () => {
     const authorName = arbitraryString();
     const evaluations: RNEA.ReadonlyNonEmptyArray<Action> = [
       {
-        sourceUrl: new URL(`https://evaluations.example.com/${earlierEvaluationLocator}`),
+        webPageOriginalUrl: new URL(`https://evaluations.example.com/${earlierEvaluationLocator}`),
         webContentUrl: arbitraryUrl(),
         evaluationLocator: earlierEvaluationLocator,
         recordedAt: arbitraryDate(),
@@ -134,7 +134,7 @@ describe('render-docmap', () => {
         updatedAt: arbitraryDate(),
       },
       {
-        sourceUrl: new URL(`https://evaluations.example.com/${laterEvaluationLocator}`),
+        webPageOriginalUrl: new URL(`https://evaluations.example.com/${laterEvaluationLocator}`),
         webContentUrl: arbitraryUrl(),
         evaluationLocator: laterEvaluationLocator,
         recordedAt: arbitraryDate(),

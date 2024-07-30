@@ -37,7 +37,7 @@ describe('construct-action', () => {
     });
 
     it('the provided url is used as the sourceUrl', () => {
-      expect(action.sourceUrl).toStrictEqual(humanReadableOriginalUrl);
+      expect(action.webPageOriginalUrl).toStrictEqual(humanReadableOriginalUrl);
     });
   });
 

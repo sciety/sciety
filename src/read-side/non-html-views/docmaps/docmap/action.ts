@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as EL from '../../../../types/evaluation-locator';
 
 export type Action = {
-  sourceUrl: URL,
+  webPageOriginalUrl: URL,
   evaluationLocator: EL.EvaluationLocator,
   recordedAt: Date,
   publishedAt: Date,
