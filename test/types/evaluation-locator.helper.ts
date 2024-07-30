@@ -3,7 +3,7 @@ import { EvaluationLocator } from '../../src/types/evaluation-locator';
 import { arbitraryNumber, arbitraryWord } from '../helpers';
 
 const arbitraryReviewDoi = (): EvaluationLocator => (
-  `doi:${arbitraryWord(20)}` as EvaluationLocator
+  `doi:10.${arbitraryNumber(1000, 9999)}/${arbitraryWord(20)}` as EvaluationLocator
 );
 
 const arbitraryHypothesisAnnotationId = (): EvaluationLocator => (
