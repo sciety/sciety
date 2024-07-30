@@ -7,11 +7,13 @@ import { Logger } from '../logger';
 const logCodecFailure = (
   logger: Logger,
   codec: string,
+  inputReceivedByCodec: unknown,
   payload: Record<string, unknown> = {},
 ) => (errors: t.Errors): t.Errors => {
-  const formattedErrors = formatValidationErrors(errors);
+  const formattedErrors = formatValidationErrors(errors, { truncateLongTypes: false });
   logger('error', 'Codec failure', {
     codec,
+    inputReceivedByCodec,
     errors: formattedErrors,
     ...payload,
   });
@@ -31,5 +33,5 @@ export const decodeAndLogFailures: DecodeAndLogFailures = (
 ) => (input) => pipe(
   input,
   codec.decode,
-  E.mapLeft(logCodecFailure(logger, codec.name, payload)),
+  E.mapLeft(logCodecFailure(logger, codec.name, input, payload)),
 );
