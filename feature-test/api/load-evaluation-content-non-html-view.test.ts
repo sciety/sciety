@@ -1,4 +1,5 @@
-import { goto, openBrowser } from 'taiko';
+import axios from 'axios';
+import { openBrowser } from 'taiko';
 import { screenshotTeardown } from '../utilities';
 
 describe('load-evaluation-content-non-html-view', () => {
@@ -9,8 +10,8 @@ describe('load-evaluation-content-non-html-view', () => {
   afterEach(screenshotTeardown);
 
   it('evaluation paths containing evaluation locators resolve correctly', async () => {
-    const response = await goto('http://localhost:8080/evaluations/doi:10.1101/123/content');
+    const response = await axios.get('http://localhost:8080/evaluations/doi:10.1101/123/content');
 
-    expect(response.status.code).toBe(200);
+    expect(response.status).toBe(200);
   });
 });
