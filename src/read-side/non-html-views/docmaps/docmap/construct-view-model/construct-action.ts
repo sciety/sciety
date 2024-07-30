@@ -14,7 +14,7 @@ export const constructAction = (
   evaluation.evaluationLocator,
   dependencies.fetchEvaluationHumanReadableOriginalUrl,
   TE.map((url) => ({
-    authors: evaluation.authors,
+    participants: evaluation.authors,
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.publishedAt,
     recordedAt: evaluation.recordedAt,

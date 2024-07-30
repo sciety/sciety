@@ -17,7 +17,7 @@ const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
 
 const renderAction = (expressionDoi: EDOI.ExpressionDoi) => (action: Action) => ({
   participants: pipe(
-    action.authors,
+    action.participants,
     RA.match(
       () => [peerReviewer(anonymous)],
       RA.map(peerReviewer),
