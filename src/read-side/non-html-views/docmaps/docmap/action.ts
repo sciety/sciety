@@ -4,6 +4,7 @@ import * as EL from '../../../../types/evaluation-locator';
 export type Action = {
   webPageOriginalUrl: URL,
   evaluationLocator: EL.EvaluationLocator,
+  // @deprecated not part of an action property of a docmap, introduce a `created` property on the DocmapViewModel
   recordedAt: Date,
   publishedAt: Date,
   authors: ReadonlyArray<string>,
