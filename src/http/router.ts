@@ -17,6 +17,7 @@ import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { routeForNonHtmlView } from './route-for-non-html-view';
+import { evaluationContentPathSpecification } from '../read-side/construct-evaluation-content-url';
 import { DependenciesForViews } from '../read-side/dependencies-for-views';
 import { aboutPage } from '../read-side/html-pages/about-page';
 import { actionFailedPage, actionFailedPageParamsCodec } from '../read-side/html-pages/action-failed';
@@ -125,7 +126,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const nonHtmlViews = [
-    { endpoint: '/evaluations/:reviewid(.+)/content', handler: evaluationContent },
+    { endpoint: evaluationContentPathSpecification, handler: evaluationContent },
     { endpoint: '/docmaps/v1/index', handler: docmapIndex },
     { endpoint: '/docmaps/v1/articles/:doi(.+).docmap.json', handler: docmap },
   ];
