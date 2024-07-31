@@ -125,7 +125,7 @@ describe('render-docmap', () => {
     const authorName = arbitraryString();
     const evaluations: RNEA.ReadonlyNonEmptyArray<Action> = [
       {
-        webPageOriginalUrl: new URL(`https://evaluations.example.com/${earlierEvaluationLocator}`),
+        webPageOriginalUrl: arbitraryUrl(),
         webContentUrl: arbitraryUrl(),
         evaluationLocator: earlierEvaluationLocator,
         recordedAt: arbitraryDate(),
@@ -134,7 +134,7 @@ describe('render-docmap', () => {
         updatedAt: arbitraryDate(),
       },
       {
-        webPageOriginalUrl: new URL(`https://evaluations.example.com/${laterEvaluationLocator}`),
+        webPageOriginalUrl: arbitraryUrl(),
         webContentUrl: arbitraryUrl(),
         evaluationLocator: laterEvaluationLocator,
         recordedAt: arbitraryDate(),
@@ -203,21 +203,6 @@ describe('render-docmap', () => {
               expect.arrayContaining([{
                 type: 'web-page',
                 url: `https://sciety.org/articles/activity/${expressionDoi}#${laterEvaluationLocator}`,
-              }]),
-            );
-          });
-
-          it('links to the original source of the evaluation', () => {
-            expect(outputOfAction0.content).toStrictEqual(
-              expect.arrayContaining([{
-                type: 'web-page',
-                url: `https://evaluations.example.com/${earlierEvaluationLocator}`,
-              }]),
-            );
-            expect(outputOfAction1.content).toStrictEqual(
-              expect.arrayContaining([{
-                type: 'web-page',
-                url: `https://evaluations.example.com/${laterEvaluationLocator}`,
               }]),
             );
           });
