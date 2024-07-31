@@ -60,7 +60,7 @@ const toHumanFriendlyErrorMessage = (
 export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
   dependencies,
 ) => pipe(
-  'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000',
+  'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000&offset=1000',
   dependencies.fetchData,
   TE.chainEitherK(flow(
     crossrefResponseCodec.decode,
