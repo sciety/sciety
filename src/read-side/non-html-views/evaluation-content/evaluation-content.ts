@@ -16,7 +16,7 @@ export const evaluationContent = (dependencies: Dependencies) => (params: NonHtm
   params,
   paramsCodec.decode,
   TE.fromEither,
-  TE.chainW(({ reviewid }) => dependencies.fetchEvaluationDigest(reviewid)),
+  TE.chainW(({ evaluationLocator }) => dependencies.fetchEvaluationDigest(evaluationLocator)),
   TE.bimap(
     () => toNonHtmlViewError('Could not fetch evaluation'),
     (digest) => toNonHtmlViewRepresentation(toHtmlFragment(digest), 'text/html'),
