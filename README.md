@@ -62,16 +62,16 @@ make test
 
 #### Slow tests
 
-Browser-based tests live in `feature-test/` and use Taiko. We use them for user journeys.
+Browser-based tests live in `feature-test/` and use Taiko or Axios. We use them for user journeys or API calls.
 
 ```shell
-make taiko
+make feature-test
 ```
 
 To run just one test file, execute:
 
 ```shell
-make taiko TEST=[file-name].ts
+make feature-test TEST=[file-name].ts
 ```
 
 Visual regression tests are defined in `backstop.json`. They rely on approved screenshots in `backstop_data/` stored with Git LFS.

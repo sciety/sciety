@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod
+.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -143,15 +143,15 @@ prod-sql:
 	--env=PGPASSWORD=$$(kubectl get secret sciety--prod--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
 	-- psql
 
-taiko: export TARGET = fast
-taiko: export USE_STUB_ADAPTERS = true
-taiko: export USE_STUB_AVATARS = true
-taiko: export USE_STUB_LOGIN = true
-taiko: export DISPLAY_LAST_SERVER_STARTUP = false
-taiko: node_modules clean-db build
+feature-test: export TARGET = fast
+feature-test: export USE_STUB_ADAPTERS = true
+feature-test: export USE_STUB_AVATARS = true
+feature-test: export USE_STUB_LOGIN = true
+feature-test: export DISPLAY_LAST_SERVER_STARTUP = false
+feature-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
-	npx jest ${TEST} --testTimeout=300000 --cache-directory=.jest-taiko --roots ./feature-test/
+	npx jest ${TEST} --testTimeout=300000 --cache-directory=.jest-feature-test --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
 download-exploratory-test-from-prod:

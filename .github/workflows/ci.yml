@@ -69,9 +69,9 @@ jobs:
         run: |
           make IMAGE_TAG=${IMAGE_TAG} backstop-test
 
-      - name: Taiko
+      - name: Feature test
         run: |
-          make taiko
+          make feature-test
 
       - name: Push Image to GHCR
         if: github.ref == 'refs/heads/main'

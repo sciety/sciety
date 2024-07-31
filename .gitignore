@@ -2,8 +2,7 @@ coverage/
 /.eslint/
 .eslint-cache
 /.jest/
-/.jest-taiko/
-/.jest-non-taiko-feature-test/
+/.jest-feature-test/
 /.stylelint/
 /build/
 /backstop_data/bitmaps_test/
