@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
+import { Dependencies, DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
 
 const publishedDateCodec = t.strict({
@@ -57,10 +57,8 @@ const toHumanFriendlyErrorMessage = (
   (formattedErrors) => `acmi: could not decode crossref response ${formattedErrors.join(', ')}`,
 );
 
-export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
-  dependencies,
-) => pipe(
-  'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000&offset=1000',
+const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string) => pipe(
+  url,
   dependencies.fetchData,
   TE.chainEitherK(flow(
     crossrefResponseCodec.decode,
@@ -68,6 +66,13 @@ export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublis
   )),
   TE.map((response) => response.message.items),
   TE.map(RA.map(toEvaluation)),
+);
+
+export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
+  dependencies,
+) => pipe(
+  'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000&offset=1000',
+  getEvaluationsFromCrossref(dependencies),
   TE.map((evaluations) => ({
     understood: evaluations,
     skipped: [],
