@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -19,10 +20,15 @@ const toHumanFriendlyErrorMessage = (
   (formattedErrors) => `acmi: could not decode crossref response to determine pages to select ${formattedErrors.join(', ')}`,
 );
 
-const constructSelectedPage = (totalResults: number, pageSize: number) => [
-  { rows: pageSize, offset: 0 },
-  { rows: pageSize, offset: 1000 },
-];
+const constructSelectedPage = (totalResults: number, pageSize: number) => {
+  const numberOfPagesToSelect = Math.ceil(totalResults / pageSize);
+  return pipe(
+    RNEA.range(0, numberOfPagesToSelect - 1),
+    RNEA.map((offsetIndex) => ({
+      rows: pageSize, offset: offsetIndex * pageSize,
+    })),
+  );
+};
 
 export type SelectedPage = { rows: number, offset: number };
 

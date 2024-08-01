@@ -31,8 +31,8 @@ describe('determine-pages-to-select', () => {
       )();
     });
 
-    it.failing('selects one page of offset 0', () => {
-      expect(result).toStrictEqual(expect.objectContaining({ offset: 0 }));
+    it('selects one page of offset 0', () => {
+      expect(result).toStrictEqual([expect.objectContaining({ offset: 0 })]);
     });
   });
 
