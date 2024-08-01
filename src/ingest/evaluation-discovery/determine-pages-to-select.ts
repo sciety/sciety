@@ -21,7 +21,7 @@ const toHumanFriendlyErrorMessage = (
 
 export type SelectedPage = { rows: number, offset: number };
 
-export const determinePagesToSelect = (
+export const determinePagesToSelect = (pageSize: number) => (
   dependencies: Dependencies,
 ): TE.TaskEither<string, ReadonlyArray<SelectedPage>> => pipe(
   'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of',
@@ -33,7 +33,7 @@ export const determinePagesToSelect = (
   TE.map(({ message }) => (message['total-results'] === 0
     ? []
     : [
-      { rows: 1000, offset: 0 },
-      { rows: 1000, offset: 1000 },
+      { rows: pageSize, offset: 0 },
+      { rows: pageSize, offset: 1000 },
     ])),
 );

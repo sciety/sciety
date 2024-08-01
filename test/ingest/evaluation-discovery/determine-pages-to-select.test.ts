@@ -11,7 +11,8 @@ describe('determine-pages-to-select', () => {
   describe('when the total number of items is 0', () => {
     beforeEach(async () => {
       result = await pipe(
-        determinePagesToSelect({ fetchData: fetchData({ message: { 'total-results': 0 } }) }),
+        { fetchData: fetchData({ message: { 'total-results': 0 } }) },
+        determinePagesToSelect(10),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -24,7 +25,8 @@ describe('determine-pages-to-select', () => {
   describe('when the total number of items is less than the page size', () => {
     beforeEach(async () => {
       result = await pipe(
-        determinePagesToSelect({ fetchData: fetchData({ message: { 'total-results': 800 } }) }),
+        { fetchData: fetchData({ message: { 'total-results': 800 } }) },
+        determinePagesToSelect(1000),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });

@@ -75,7 +75,7 @@ export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublis
   dependencies,
 ) => pipe(
   dependencies,
-  determinePagesToSelect,
+  determinePagesToSelect(1000),
   TE.map(RA.map(buildQueryUrl)),
   TE.chain(RA.traverse(TE.ApplicativePar)(getEvaluationsFromCrossref(dependencies))),
   TE.map(RA.flatten),
