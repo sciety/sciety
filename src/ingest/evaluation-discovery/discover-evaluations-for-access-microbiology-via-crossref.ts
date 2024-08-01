@@ -69,15 +69,20 @@ const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string)
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const queryOffsetValues = (dependencies: Dependencies) => [0, 1000];
+const determinePagesToSelect = (dependencies: Dependencies) => [
+  { rows: 1000, offset: 0 },
+  { rows: 1000, offset: 1000 },
+];
 
-const buildQueryUrl = (offset: number) => `https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000&offset=${offset}`;
+type SelectedPage = { rows: number, offset: number };
+
+const buildQueryUrl = (selectedPage: SelectedPage) => `https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=${selectedPage.rows}&offset=${selectedPage.offset}`;
 
 export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
   dependencies,
 ) => pipe(
   dependencies,
-  queryOffsetValues,
+  determinePagesToSelect,
   RA.map(buildQueryUrl),
   RA.traverse(TE.ApplicativePar)(getEvaluationsFromCrossref(dependencies)),
   TE.map(RA.flatten),
