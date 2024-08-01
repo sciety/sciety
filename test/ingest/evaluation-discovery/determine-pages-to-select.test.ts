@@ -37,7 +37,20 @@ describe('determine-pages-to-select', () => {
   });
 
   describe('when the total number of items is greater than the page size, but less than twice the page size', () => {
-    it.todo('selects two pages of offset 0 and 1000');
+    beforeEach(async () => {
+      result = await pipe(
+        { fetchData: fetchData({ message: { 'total-results': 1800 } }) },
+        determinePagesToSelect(1000),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it('selects two pages of offset 0 and 1000', () => {
+      expect(result).toStrictEqual([
+        expect.objectContaining({ offset: 0 }),
+        expect.objectContaining({ offset: 1000 }),
+      ]);
+    });
   });
 
   describe('when the API call fails', () => {
