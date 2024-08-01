@@ -19,6 +19,11 @@ const toHumanFriendlyErrorMessage = (
   (formattedErrors) => `acmi: could not decode crossref response to determine pages to select ${formattedErrors.join(', ')}`,
 );
 
+const constructSelectedPage = (totalResults: number, pageSize: number) => [
+  { rows: pageSize, offset: 0 },
+  { rows: pageSize, offset: 1000 },
+];
+
 export type SelectedPage = { rows: number, offset: number };
 
 export const determinePagesToSelect = (pageSize: number) => (
@@ -32,8 +37,5 @@ export const determinePagesToSelect = (pageSize: number) => (
   )),
   TE.map(({ message }) => (message['total-results'] === 0
     ? []
-    : [
-      { rows: pageSize, offset: 0 },
-      { rows: pageSize, offset: 1000 },
-    ])),
+    : constructSelectedPage(message['total-results'], pageSize))),
 );
