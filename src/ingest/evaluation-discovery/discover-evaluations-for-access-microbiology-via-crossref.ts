@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { determinePagesToSelect, SelectedPage } from './determine-pages-to-select';
 import { Dependencies, DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
 
@@ -67,14 +68,6 @@ const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string)
   TE.map((response) => response.message.items),
   TE.map(RA.map(toEvaluation)),
 );
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const determinePagesToSelect = (dependencies: Dependencies) => [
-  { rows: 1000, offset: 0 },
-  { rows: 1000, offset: 1000 },
-];
-
-type SelectedPage = { rows: number, offset: number };
 
 const buildQueryUrl = (selectedPage: SelectedPage) => `https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=${selectedPage.rows}&offset=${selectedPage.offset}`;
 
