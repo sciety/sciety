@@ -68,12 +68,14 @@ const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string)
   TE.map(RA.map(toEvaluation)),
 );
 
+const buildQueryUrl = (offset: number) => `https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000&offset=${offset}`;
+
 export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
   dependencies,
 ) => pipe(
   [
-    'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000',
-    'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000&offset=1000',
+    buildQueryUrl(0),
+    buildQueryUrl(1000),
   ],
   RA.traverse(TE.ApplicativePar)(getEvaluationsFromCrossref(dependencies)),
   TE.map(RA.flatten),
