@@ -16,7 +16,7 @@ describe('determine-pages-to-select', () => {
       )();
     });
 
-    it.failing('selects no pages', () => {
+    it('selects no pages', () => {
       expect(result).toHaveLength(0);
     });
   });

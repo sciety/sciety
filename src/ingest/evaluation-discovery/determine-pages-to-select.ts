@@ -30,8 +30,10 @@ export const determinePagesToSelect = (
     determinePagesToSelectCodec.decode,
     E.mapLeft(toHumanFriendlyErrorMessage),
   )),
-  TE.map(() => [
-    { rows: 1000, offset: 0 },
-    { rows: 1000, offset: 1000 },
-  ]),
+  TE.map(({ message }) => (message['total-results'] === 0
+    ? []
+    : [
+      { rows: 1000, offset: 0 },
+      { rows: 1000, offset: 1000 },
+    ])),
 );
