@@ -22,7 +22,16 @@ describe('determine-pages-to-select', () => {
   });
 
   describe('when the total number of items is less than the page size', () => {
-    it.todo('selects one page of offset 0');
+    beforeEach(async () => {
+      result = await pipe(
+        determinePagesToSelect({ fetchData: fetchData({ message: { 'total-results': 800 } }) }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.failing('selects one page of offset 0', () => {
+      expect(result).toStrictEqual(expect.objectContaining({ offset: 0 }));
+    });
   });
 
   describe('when the total number of items is greater than the page size, but less than twice the page size', () => {
