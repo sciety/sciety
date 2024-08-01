@@ -68,13 +68,15 @@ const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string)
   TE.map(RA.map(toEvaluation)),
 );
 
-const queryOffsetValues = [0, 1000];
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const queryOffsetValues = (dependencies: Dependencies) => [0, 1000];
 
 const buildQueryUrl = (offset: number) => `https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=1000&offset=${offset}`;
 
 export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
   dependencies,
 ) => pipe(
+  dependencies,
   queryOffsetValues,
   RA.map(buildQueryUrl),
   RA.traverse(TE.ApplicativePar)(getEvaluationsFromCrossref(dependencies)),
