@@ -1,10 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { convertHypothesisAnnotationToEvaluation } from '../../../src/ingest/third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
+import { convertHypothesisAnnotationToEvaluation } from '../../../../src/ingest/third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
 import {
   arbitraryNumber, arbitraryDate, arbitraryString, arbitraryWord,
-} from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
+} from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('convert-hypothesis-annotation-to-evaluation', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
