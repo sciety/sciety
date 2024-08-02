@@ -1,11 +1,17 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { Dependencies } from '../../../../src/ingest/discover-published-evaluations';
 import { SelectedPage, determinePagesToSelect } from '../../../../src/ingest/evaluation-discovery/discover-evaluations-for-access-microbiology/determine-pages-to-select';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const stubbedFetchData = (stubbedResponse: unknown) => <D>() => TE.right(stubbedResponse as unknown as D);
+
+const invokeDeterminePagesToSelect = async (fetchDataImplementation: Dependencies['fetchData']) => pipe(
+  { fetchData: fetchDataImplementation },
+  determinePagesToSelect(1000),
+)();
 
 describe('determine-pages-to-select', () => {
   let selectedPages: ReadonlyArray<SelectedPage>;
@@ -57,13 +63,11 @@ describe('determine-pages-to-select', () => {
 
   describe('when the API call fails', () => {
     const failureMessage = arbitraryString();
+    const fetchDataImplementation = () => TE.left(failureMessage);
     let result: E.Either<unknown, unknown>;
 
     beforeEach(async () => {
-      result = await pipe(
-        { fetchData: () => TE.left(failureMessage) },
-        determinePagesToSelect(1000),
-      )();
+      result = await invokeDeterminePagesToSelect(fetchDataImplementation);
     });
 
     it('returns on the left', () => {
