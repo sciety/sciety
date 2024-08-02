@@ -5,7 +5,7 @@ import { SelectedPage, determinePagesToSelect } from '../../../../src/ingest/eva
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
-const fetchData = (stubbedResponse: unknown) => <D>() => TE.right(stubbedResponse as unknown as D);
+const stubbedFetchData = (stubbedResponse: unknown) => <D>() => TE.right(stubbedResponse as unknown as D);
 
 describe('determine-pages-to-select', () => {
   let selectedPages: ReadonlyArray<SelectedPage>;
@@ -13,7 +13,7 @@ describe('determine-pages-to-select', () => {
   describe('when the total number of items is 0', () => {
     beforeEach(async () => {
       selectedPages = await pipe(
-        { fetchData: fetchData({ message: { 'total-results': 0 } }) },
+        { fetchData: stubbedFetchData({ message: { 'total-results': 0 } }) },
         determinePagesToSelect(10),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -27,7 +27,7 @@ describe('determine-pages-to-select', () => {
   describe('when the total number of items is less than the page size', () => {
     beforeEach(async () => {
       selectedPages = await pipe(
-        { fetchData: fetchData({ message: { 'total-results': 800 } }) },
+        { fetchData: stubbedFetchData({ message: { 'total-results': 800 } }) },
         determinePagesToSelect(1000),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -41,7 +41,7 @@ describe('determine-pages-to-select', () => {
   describe('when the total number of items is greater than the page size, but less than twice the page size', () => {
     beforeEach(async () => {
       selectedPages = await pipe(
-        { fetchData: fetchData({ message: { 'total-results': 1800 } }) },
+        { fetchData: stubbedFetchData({ message: { 'total-results': 1800 } }) },
         determinePagesToSelect(1000),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -71,7 +71,18 @@ describe('determine-pages-to-select', () => {
     });
   });
 
-  describe('when the API response cannot be understood', () => {
-    it.todo('returns on the left');
+  describe('when the API response cannot be decoded', () => {
+    let result: E.Either<unknown, unknown>;
+
+    beforeEach(async () => {
+      result = await pipe(
+        { fetchData: stubbedFetchData({ foo: 'bar' }) },
+        determinePagesToSelect(1000),
+      )();
+    });
+
+    it('returns on the left', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });
