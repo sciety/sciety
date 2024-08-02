@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { crossrefWorksApiUrlFilteredForMicrobiologySociety } from './crossref-works-api-filtered-for-microbiology-society-url';
 import { Dependencies } from '../discover-published-evaluations';
 
 const determinePagesToSelectCodec = t.strict({
@@ -35,7 +36,7 @@ export type SelectedPage = { rows: number, offset: number };
 export const determinePagesToSelect = (pageSize: number) => (
   dependencies: Dependencies,
 ): TE.TaskEither<string, ReadonlyArray<SelectedPage>> => pipe(
-  'https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of',
+  crossrefWorksApiUrlFilteredForMicrobiologySociety,
   dependencies.fetchData,
   TE.chainEitherK(flow(
     determinePagesToSelectCodec.decode,

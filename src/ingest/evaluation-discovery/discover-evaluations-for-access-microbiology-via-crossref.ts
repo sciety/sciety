@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe, flow } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
+import { crossrefWorksApiUrlFilteredForMicrobiologySociety } from './crossref-works-api-filtered-for-microbiology-society-url';
 import { determinePagesToSelect, SelectedPage } from './determine-pages-to-select';
 import { Dependencies, DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
@@ -69,7 +70,7 @@ const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string)
   TE.map(RA.map(toEvaluation)),
 );
 
-const buildQueryUrl = (selectedPage: SelectedPage) => `https://api.crossref.org/works?filter=prefix:10.1099,type:peer-review,relation.type:is-review-of&sort=published&order=asc&rows=${selectedPage.rows}&offset=${selectedPage.offset}`;
+const buildQueryUrl = (selectedPage: SelectedPage) => `${crossrefWorksApiUrlFilteredForMicrobiologySociety}&sort=published&order=asc&rows=${selectedPage.rows}&offset=${selectedPage.offset}`;
 
 export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
   dependencies,
