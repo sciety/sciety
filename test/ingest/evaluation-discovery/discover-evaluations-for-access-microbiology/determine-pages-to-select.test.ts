@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { SelectedPage, determinePagesToSelect } from '../../../src/ingest/evaluation-discovery/determine-pages-to-select';
-import { arbitraryString } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
+import { SelectedPage, determinePagesToSelect } from '../../../../src/ingest/evaluation-discovery/discover-evaluations-for-access-microbiology/determine-pages-to-select';
+import { arbitraryString } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const fetchData = (stubbedResponse: unknown) => <D>() => TE.right(stubbedResponse as unknown as D);
 

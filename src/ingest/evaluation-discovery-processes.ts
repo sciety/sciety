@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
-import { discoverEvaluationsForAccessMicrobiologyViaCrossref } from './evaluation-discovery/discover-evaluations-for-access-microbiology-via-crossref';
+import { discoverEvaluationsForAccessMicrobiology } from './evaluation-discovery/discover-evaluations-for-access-microbiology';
 import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discovery/discover-evaluations-from-crossref-via-biorxiv';
 import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
 import { discoverEvaluationsFromHypothesisUser } from './evaluation-discovery/discover-evaluations-from-hypothesis-user';
@@ -147,7 +147,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     groupId: '4d6a8908-22a9-45c8-bd56-3c7140647709',
     name: 'Access Microbiology',
     discoverPublishedEvaluations: environment.experimentEnabled
-      ? discoverEvaluationsForAccessMicrobiologyViaCrossref
+      ? discoverEvaluationsForAccessMicrobiology
       : stubbedDiscoverPublishEvaluation,
   },
 ];

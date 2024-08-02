@@ -5,7 +5,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { getCrossrefWorksApiUrlFilteredForMicrobiologySociety } from './get-crossref-works-api-filtered-for-microbiology-society-url';
-import { Dependencies } from '../discover-published-evaluations';
+import { Dependencies } from '../../discover-published-evaluations';
 
 const determinePagesToSelectCodec = t.strict({
   message: t.strict({
