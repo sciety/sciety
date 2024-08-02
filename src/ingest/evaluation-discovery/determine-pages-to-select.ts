@@ -36,7 +36,7 @@ export type SelectedPage = { rows: number, offset: number };
 export const determinePagesToSelect = (pageSize: number) => (
   dependencies: Dependencies,
 ): TE.TaskEither<string, ReadonlyArray<SelectedPage>> => pipe(
-  crossrefWorksApiUrlFilteredForMicrobiologySociety,
+  crossrefWorksApiUrlFilteredForMicrobiologySociety.toString(),
   dependencies.fetchData,
   TE.chainEitherK(flow(
     determinePagesToSelectCodec.decode,
