@@ -13,16 +13,19 @@ const invokeDeterminePagesToSelect = async (fetchDataImplementation: Dependencie
   determinePagesToSelect(1000),
 )();
 
+const invokeDeterminePagesToSelectAndEnsureIsOnTheRight = async (fetchDataImplementation: Dependencies['fetchData']) => pipe(
+  await invokeDeterminePagesToSelect(fetchDataImplementation),
+  E.getOrElseW(shouldNotBeCalled),
+);
+
 describe('determine-pages-to-select', () => {
   let selectedPages: ReadonlyArray<SelectedPage>;
 
   describe('when the total number of items is 0', () => {
+    const fetchDataImplementation = stubbedFetchData({ message: { 'total-results': 0 } });
+
     beforeEach(async () => {
-      selectedPages = await pipe(
-        { fetchData: stubbedFetchData({ message: { 'total-results': 0 } }) },
-        determinePagesToSelect(10),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      selectedPages = await invokeDeterminePagesToSelectAndEnsureIsOnTheRight(fetchDataImplementation);
     });
 
     it('selects no pages', () => {
