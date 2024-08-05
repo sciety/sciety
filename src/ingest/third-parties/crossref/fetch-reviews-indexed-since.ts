@@ -1,9 +1,8 @@
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as PR from 'io-ts/PathReporter';
 import * as tt from 'io-ts-types';
+import { decodeAndReportFailures } from '../../evaluation-discovery/decode-and-report-failures';
 import { FetchData } from '../../fetch-data';
 
 const crossrefReviewFromJson = t.type({
@@ -29,11 +28,11 @@ const crossrefReviewFromJson = t.type({
 
 export type CrossrefReview = t.TypeOf<typeof crossrefReviewFromJson>;
 
-const crossrefReviewsFromJson = t.type({
+const crossrefReviewsFromJsonCodec = t.type({
   message: t.type({
     items: t.array(crossrefReviewFromJson),
   }),
-});
+}, 'crossrefReviewsFromJsonCodec');
 
 type FetchReviewsIndexedSince = (f: FetchData)
 => (r: string, since: Date)
@@ -42,9 +41,6 @@ type FetchReviewsIndexedSince = (f: FetchData)
 export const fetchReviewsIndexedSince: FetchReviewsIndexedSince = (fetchData) => (prefix, since) => pipe(
   `https://api.crossref.org/prefixes/${prefix}/works?filter=type:peer-review,from-index-date:${since.toISOString().split('T')[0]}&rows=1000`,
   (url) => fetchData<JSON>(url),
-  TE.chainEitherK(flow(
-    crossrefReviewsFromJson.decode,
-    E.mapLeft((errors) => PR.failure(errors).join('\n')),
-  )),
+  TE.chainEitherK(decodeAndReportFailures(crossrefReviewsFromJsonCodec)),
   TE.map((data) => data.message.items),
 );
