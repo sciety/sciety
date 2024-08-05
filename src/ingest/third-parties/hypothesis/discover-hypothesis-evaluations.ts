@@ -32,7 +32,7 @@ const fetchPaginatedData = (
   )),
 );
 
-export const processServer = (
+export const discoverHypothesisEvaluations = (
   owner: string,
   startDate: Date,
   fetchData: FetchData,

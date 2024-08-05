@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { processServer } from '../../../../src/ingest/third-parties/hypothesis/process-server';
+import { discoverHypothesisEvaluations } from '../../../../src/ingest/third-parties/hypothesis/discover-hypothesis-evaluations';
 import { arbitraryDate, arbitraryWord } from '../../../helpers';
 
 const arbitraryAnnotation = () => ({
@@ -20,13 +20,13 @@ const emptyPage = TE.right({
   rows: [],
 });
 
-describe('process-server', () => {
+describe('discover-hypothesis-evaluations', () => {
   describe('when there is one page of annotations', () => {
     it('returns the annotations from that page', async () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(populatedPage)
         .mockReturnValueOnce(emptyPage);
-      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
+      const result = await discoverHypothesisEvaluations(arbitraryWord(), arbitraryDate(), fetchData)();
 
       expect(pipe(
         result,
@@ -39,7 +39,7 @@ describe('process-server', () => {
     it('returns an empty array', async () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(emptyPage);
-      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
+      const result = await discoverHypothesisEvaluations(arbitraryWord(), arbitraryDate(), fetchData)();
 
       expect(result).toStrictEqual(E.right([]));
     });
@@ -49,7 +49,7 @@ describe('process-server', () => {
     it('returns an error', async () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(TE.left('bad thing occurred'));
-      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
+      const result = await discoverHypothesisEvaluations(arbitraryWord(), arbitraryDate(), fetchData)();
 
       expect(result).toStrictEqual(E.left('bad thing occurred'));
     });
@@ -60,7 +60,7 @@ describe('process-server', () => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(populatedPage)
         .mockReturnValueOnce(TE.left('bad thing occurred'));
-      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
+      const result = await discoverHypothesisEvaluations(arbitraryWord(), arbitraryDate(), fetchData)();
 
       expect(result).toStrictEqual(E.left('bad thing occurred'));
     });
@@ -75,7 +75,7 @@ describe('process-server', () => {
     ])('returns an error', async (response) => {
       const fetchData = jest.fn()
         .mockReturnValueOnce(TE.right(response));
-      const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
+      const result = await discoverHypothesisEvaluations(arbitraryWord(), arbitraryDate(), fetchData)();
 
       expect(E.isLeft(result)).toBe(true);
     });

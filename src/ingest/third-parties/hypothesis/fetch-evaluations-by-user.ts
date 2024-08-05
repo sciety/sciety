@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
-import { processServer } from './process-server';
+import { discoverHypothesisEvaluations } from './discover-hypothesis-evaluations';
 import { FetchData } from '../../fetch-data';
 
 export const fetchEvaluationsByUserSince = (
   startDate: Date,
   fetchData: FetchData,
 ) => (userId: string): TE.TaskEither<string, ReadonlyArray<Annotation>> => pipe(
-  processServer(`user=${userId}`, startDate, fetchData),
+  discoverHypothesisEvaluations(`user=${userId}`, startDate, fetchData),
 );
