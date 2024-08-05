@@ -3,8 +3,8 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { formatValidationErrors } from 'io-ts-reporters';
 import { getCrossrefWorksApiUrlFilteredForMicrobiologySociety } from './get-crossref-works-api-filtered-for-microbiology-society-url';
+import { toHumanFriendlyErrorMessage } from './to-human-friendly-error-message';
 import { Dependencies } from '../../discover-published-evaluations';
 
 const determinePagesToSelectCodec = t.strict({
@@ -12,14 +12,6 @@ const determinePagesToSelectCodec = t.strict({
     'total-results': t.number,
   }),
 });
-
-const toHumanFriendlyErrorMessage = (
-  errors: t.Errors,
-) => pipe(
-  errors,
-  formatValidationErrors,
-  (formattedErrors) => `acmi: could not decode crossref response to determine pages to select ${formattedErrors.join(', ')}`,
-);
 
 const constructSelectedPage = (totalResults: number, pageSize: number) => {
   const numberOfPagesToSelect = Math.ceil(totalResults / pageSize);
@@ -40,7 +32,7 @@ export const determinePagesToSelect = (pageSize: number) => (
   dependencies.fetchData,
   TE.chainEitherK(flow(
     determinePagesToSelectCodec.decode,
-    E.mapLeft(toHumanFriendlyErrorMessage),
+    E.mapLeft(toHumanFriendlyErrorMessage('determinePagesToSelectCodec')),
   )),
   TE.map(({ message }) => (message['total-results'] === 0
     ? []
