@@ -9,7 +9,7 @@ import { DiscoverPublishedEvaluations } from '../discover-published-evaluations'
 import { FetchData } from '../fetch-data';
 import { PublishedEvaluation } from '../types/published-evaluation';
 
-const preReviewReview = t.type({
+const preReviewReviewCodec = t.type({
   createdAt: tt.DateFromISOString,
   doi: tt.NonEmptyString,
   preprint: tt.NonEmptyString,
@@ -18,9 +18,9 @@ const preReviewReview = t.type({
   })),
 });
 
-type PreReviewReview = t.TypeOf<typeof preReviewReview>;
+type PreReviewReview = t.TypeOf<typeof preReviewReviewCodec>;
 
-const preReviewResponseCodec = t.readonlyArray(preReviewReview, 'preReviewResponseCodec');
+const preReviewResponseCodec = t.readonlyArray(preReviewReviewCodec, 'preReviewResponseCodec');
 
 const toEvaluationOrSkip = (item: PreReviewReview) => E.right({
   publishedOn: item.createdAt,
