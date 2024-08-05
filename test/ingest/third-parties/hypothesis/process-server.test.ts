@@ -77,7 +77,7 @@ describe('process-server', () => {
         .mockReturnValueOnce(TE.right(response));
       const result = await processServer(arbitraryWord(), arbitraryDate(), fetchData)();
 
-      expect(result).toStrictEqual(E.left(expect.stringMatching('Invalid value')));
+      expect(E.isLeft(result)).toBe(true);
     });
   });
 });

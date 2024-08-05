@@ -1,11 +1,10 @@
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
-import * as PR from 'io-ts/PathReporter';
+import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
-import { responseFromJson } from './response';
+import { hypothesisResponseCodec } from './response';
+import { decodeAndReportFailures } from '../../decode-and-report-failures';
 import { FetchData } from '../../fetch-data';
 
 const latestDateOf = (items: ReadonlyArray<Annotation>) => (
@@ -19,10 +18,7 @@ const fetchPaginatedData = (
   pageNumber: number,
 ): TE.TaskEither<string, ReadonlyArray<Annotation>> => pipe(
   fetchData<unknown>(`${baseUrl}${offset}`),
-  TE.chainEitherK(flow(
-    responseFromJson.decode,
-    E.mapLeft((error) => PR.failure(error).join('\n')),
-  )),
+  TE.chainEitherK(decodeAndReportFailures(hypothesisResponseCodec)),
   TE.map((response) => response.rows),
   TE.chain(RA.match(
     () => TE.right([]),
