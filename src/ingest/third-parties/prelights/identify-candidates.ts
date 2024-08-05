@@ -3,9 +3,9 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import * as PR from 'io-ts/PathReporter';
 import * as tt from 'io-ts-types';
 import { Prelight } from './extract-prelights';
+import { decodeAndReportFailures } from '../../decode-and-report-failures';
 
 const itemCodec = t.type({
   pubDate: tt.DateFromISOString,
@@ -26,7 +26,7 @@ const prelightsFeedCodec = t.type({
       t.partial({ item: t.array(itemCodec) }),
     ]),
   }),
-});
+}, 'prelightsFeedCodec');
 
 type FeedItem = t.TypeOf<typeof itemCodec>;
 
@@ -46,12 +46,9 @@ const parser = new XMLParser({
 
 export const identifyCandidates = (responseBody: string): E.Either<string, ReadonlyArray<Prelight>> => pipe(
   parser.parse(responseBody),
-  prelightsFeedCodec.decode,
-  E.bimap(
-    (errors) => PR.failure(errors).join('\n'),
-    flow(
-      (feed) => feed.rss.channel.item ?? [],
-      RA.chain(toIndividualPrelights),
-    ),
-  ),
+  decodeAndReportFailures(prelightsFeedCodec),
+  E.map(flow(
+    (feed) => feed.rss.channel.item ?? [],
+    RA.chain(toIndividualPrelights),
+  )),
 );
