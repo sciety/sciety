@@ -1,11 +1,10 @@
-import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe, flow } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { decodeAndReportFailures } from './decode-and-report-failures';
 import { determinePagesToSelect, SelectedPage } from './determine-pages-to-select';
 import { getCrossrefWorksApiUrlFilteredForMicrobiologySociety } from './get-crossref-works-api-filtered-for-microbiology-society-url';
-import { toHumanFriendlyErrorMessage } from './to-human-friendly-error-message';
 import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../../types/published-evaluation';
 
@@ -54,10 +53,7 @@ const toEvaluation = (
 const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string) => pipe(
   url,
   dependencies.fetchData,
-  TE.chainEitherK(flow(
-    crossrefResponseCodec.decode,
-    E.mapLeft(toHumanFriendlyErrorMessage(crossrefResponseCodec.name)),
-  )),
+  TE.chainEitherK(decodeAndReportFailures(crossrefResponseCodec)),
   TE.map((response) => response.message.items),
   TE.map(RA.map(toEvaluation)),
 );
