@@ -10,7 +10,7 @@ const toHumanFriendlyErrorMessage = (
 ): string => pipe(
   errors,
   formatValidationErrors,
-  (formattedErrors) => `acmi: could not decode crossref response, ${codecName} failed with: ${formattedErrors.join(', ')}`,
+  (formattedErrors) => `Could not decode external response, ${codecName} failed with: ${formattedErrors.join(', ')}`,
 );
 
 export const decodeAndReportFailures = <T>(
