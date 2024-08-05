@@ -38,7 +38,7 @@ const crossrefResponseCodec = t.strict({
       }),
     })),
   }),
-});
+}, 'crossrefResponseCodec');
 
 type CrossrefResponse = t.TypeOf<typeof crossrefResponseCodec>;
 
@@ -56,7 +56,7 @@ const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string)
   dependencies.fetchData,
   TE.chainEitherK(flow(
     crossrefResponseCodec.decode,
-    E.mapLeft(toHumanFriendlyErrorMessage('crossrefResponseCodec')),
+    E.mapLeft(toHumanFriendlyErrorMessage(crossrefResponseCodec.name)),
   )),
   TE.map((response) => response.message.items),
   TE.map(RA.map(toEvaluation)),

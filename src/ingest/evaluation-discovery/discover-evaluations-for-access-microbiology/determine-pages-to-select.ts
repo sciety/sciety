@@ -11,7 +11,7 @@ const determinePagesToSelectCodec = t.strict({
   message: t.strict({
     'total-results': t.number,
   }),
-});
+}, 'determinePagesToSelectCodec');
 
 const constructSelectedPage = (totalResults: number, pageSize: number) => {
   const numberOfPagesToSelect = Math.ceil(totalResults / pageSize);
@@ -32,7 +32,7 @@ export const determinePagesToSelect = (pageSize: number) => (
   dependencies.fetchData,
   TE.chainEitherK(flow(
     determinePagesToSelectCodec.decode,
-    E.mapLeft(toHumanFriendlyErrorMessage('determinePagesToSelectCodec')),
+    E.mapLeft(toHumanFriendlyErrorMessage(determinePagesToSelectCodec.name)),
   )),
   TE.map(({ message }) => (message['total-results'] === 0
     ? []
