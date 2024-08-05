@@ -4,9 +4,9 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { determinePagesToSelect, SelectedPage } from './determine-pages-to-select';
 import { getCrossrefWorksApiUrlFilteredForMicrobiologySociety } from './get-crossref-works-api-filtered-for-microbiology-society-url';
+import { decodeAndReportFailures } from '../../decode-and-report-failures';
 import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../../types/published-evaluation';
-import { decodeAndReportFailures } from '../decode-and-report-failures';
 
 const publishedDateCodec = t.strict({
   'date-parts': t.tuple([

@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { decodeAndReportFailures } from './decode-and-report-failures';
+import { decodeAndReportFailures } from '../decode-and-report-failures';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
 import { PublishedEvaluation } from '../types/published-evaluation';
