@@ -69,7 +69,7 @@ const buildQueryUrl = (pageSize: number) => (selectedPage: SelectedPage) => {
 
 const pageSize = 1000;
 
-export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
+export const discoverAccessMicrobiologyEvaluations: DiscoverPublishedEvaluations = () => (
   dependencies,
 ) => pipe(
   dependencies,

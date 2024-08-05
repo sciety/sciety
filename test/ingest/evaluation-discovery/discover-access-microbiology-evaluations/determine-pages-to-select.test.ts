@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from '../../../../src/ingest/discover-published-evaluations';
-import { SelectedPage, determinePagesToSelect } from '../../../../src/ingest/evaluation-discovery/discover-evaluations-for-access-microbiology/determine-pages-to-select';
+import { SelectedPage, determinePagesToSelect } from '../../../../src/ingest/evaluation-discovery/discover-access-microbiology-evaluations/determine-pages-to-select';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
