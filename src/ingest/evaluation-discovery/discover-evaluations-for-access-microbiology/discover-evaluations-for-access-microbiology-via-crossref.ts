@@ -70,21 +70,23 @@ const getEvaluationsFromCrossref = (dependencies: Dependencies) => (url: string)
   TE.map(RA.map(toEvaluation)),
 );
 
-const buildQueryUrl = (selectedPage: SelectedPage) => {
+const buildQueryUrl = (pageSize: number) => (selectedPage: SelectedPage) => {
   const queryUrl = getCrossrefWorksApiUrlFilteredForMicrobiologySociety();
   queryUrl.searchParams.set('sort', 'published');
   queryUrl.searchParams.set('order', 'asc');
-  queryUrl.searchParams.set('rows', selectedPage.rows.toString());
+  queryUrl.searchParams.set('rows', pageSize.toString());
   queryUrl.searchParams.set('offset', selectedPage.offset.toString());
   return queryUrl.href;
 };
+
+const pageSize = 1000;
 
 export const discoverEvaluationsForAccessMicrobiologyViaCrossref: DiscoverPublishedEvaluations = () => (
   dependencies,
 ) => pipe(
   dependencies,
-  determinePagesToSelect(1000),
-  TE.map(RA.map(buildQueryUrl)),
+  determinePagesToSelect(pageSize),
+  TE.map(RA.map(buildQueryUrl(pageSize))),
   TE.chain(RA.traverse(TE.ApplicativePar)(getEvaluationsFromCrossref(dependencies))),
   TE.map(RA.flatten),
   TE.map((evaluations) => ({

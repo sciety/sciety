@@ -26,12 +26,12 @@ const constructSelectedPage = (totalResults: number, pageSize: number) => {
   return pipe(
     RNEA.range(0, numberOfPagesToSelect - 1),
     RNEA.map((offsetIndex) => ({
-      rows: pageSize, offset: offsetIndex * pageSize,
+      offset: offsetIndex * pageSize,
     })),
   );
 };
 
-export type SelectedPage = { rows: number, offset: number };
+export type SelectedPage = { offset: number };
 
 export const determinePagesToSelect = (pageSize: number) => (
   dependencies: Dependencies,
