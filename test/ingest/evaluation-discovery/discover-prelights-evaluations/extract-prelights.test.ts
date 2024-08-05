@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { extractPrelights } from '../../../../src/ingest/third-parties/prelights/extract-prelights';
+import { extractPrelights } from '../../../../src/ingest/evaluation-discovery/discover-prelights-evaluations/extract-prelights';
 import { constructPublishedEvaluation } from '../../../../src/ingest/types/published-evaluation';
 import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,

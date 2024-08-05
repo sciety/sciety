@@ -5,10 +5,10 @@ import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discover
 import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
 import { discoverEvaluationsFromHypothesisUser } from './evaluation-discovery/discover-evaluations-from-hypothesis-user';
 import { discoverPciEvaluations } from './evaluation-discovery/discover-pci-evaluations';
+import { discoverPrelightsEvaluations } from './evaluation-discovery/discover-prelights-evaluations';
 import { discoverPrereviewEvaluations } from './evaluation-discovery/discover-prereview-evaluations';
 import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover-rapid-reviews-evaluations';
 import { Configuration } from './generate-configuration-from-environment';
-import { fetchPrelightsEvaluations } from './third-parties/prelights/fetch-prelights-evaluations';
 import { EvaluationDiscoveryProcess } from './update-all';
 
 const stubbedDiscoverPublishEvaluation: DiscoverPublishedEvaluations = () => () => TE.right({
@@ -76,7 +76,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
   {
     groupId: 'f97bd177-5cb6-4296-8573-078318755bf2',
     name: 'preLights',
-    discoverPublishedEvaluations: fetchPrelightsEvaluations(environment.prelightsFeedKey),
+    discoverPublishedEvaluations: discoverPrelightsEvaluations(environment.prelightsFeedKey),
   },
   {
     groupId: '10360d97-bf52-4aef-b2fa-2f60d319edd7',

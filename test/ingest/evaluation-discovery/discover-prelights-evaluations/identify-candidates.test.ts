@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { identifyCandidates } from '../../../../src/ingest/third-parties/prelights/identify-candidates';
+import { identifyCandidates } from '../../../../src/ingest/evaluation-discovery/discover-prelights-evaluations/identify-candidates';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 
 describe('identify-candidates', () => {

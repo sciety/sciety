@@ -4,7 +4,7 @@ import { extractPrelights } from './extract-prelights';
 import { identifyCandidates } from './identify-candidates';
 import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 
-export const fetchPrelightsEvaluations = (
+export const discoverPrelightsEvaluations = (
   prelightsFeedKey: string,
 ): DiscoverPublishedEvaluations => () => (dependencies) => pipe(
   prelightsFeedKey,
