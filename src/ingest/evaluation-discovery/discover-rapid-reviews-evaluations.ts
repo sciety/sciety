@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as CR from './crossref';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { FetchData } from '../fetch-data';
-import * as CR from '../third-parties/crossref';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 
 const shortIngestionWindowStartDateToAvoidMissingEvaluationsDueToNonPagingFetcher = (

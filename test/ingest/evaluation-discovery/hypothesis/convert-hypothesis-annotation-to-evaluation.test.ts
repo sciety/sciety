@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { convertHypothesisAnnotationToEvaluation } from '../../../../src/ingest/third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
+import { convertHypothesisAnnotationToEvaluation } from '../../../../src/ingest/evaluation-discovery/hypothesis/convert-hypothesis-annotation-to-evaluation';
 import {
   arbitraryNumber, arbitraryDate, arbitraryString, arbitraryWord,
 } from '../../../helpers';

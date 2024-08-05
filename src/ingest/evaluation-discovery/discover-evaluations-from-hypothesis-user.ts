@@ -1,11 +1,11 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as Hyp from './hypothesis';
+import { convertHypothesisAnnotationToEvaluation } from './hypothesis/convert-hypothesis-annotation-to-evaluation';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
-import * as Hyp from '../third-parties/hypothesis';
-import { convertHypothesisAnnotationToEvaluation } from '../third-parties/hypothesis/convert-hypothesis-annotation-to-evaluation';
 
 export const discoverEvaluationsFromHypothesisUser = (
   publisherUserId: string,
