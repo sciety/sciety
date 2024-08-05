@@ -34,12 +34,10 @@ describe('determine-pages-to-select', () => {
   });
 
   describe('when the total number of items is less than the page size', () => {
+    const fetchDataImplementation = stubbedFetchData({ message: { 'total-results': 800 } });
+
     beforeEach(async () => {
-      selectedPages = await pipe(
-        { fetchData: stubbedFetchData({ message: { 'total-results': 800 } }) },
-        determinePagesToSelect(1000),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      selectedPages = await invokeDeterminePagesToSelectAndEnsureIsOnTheRight(fetchDataImplementation);
     });
 
     it('selects one page of offset 0', () => {
@@ -48,12 +46,10 @@ describe('determine-pages-to-select', () => {
   });
 
   describe('when the total number of items is greater than the page size, but less than twice the page size', () => {
+    const fetchDataImplementation = stubbedFetchData({ message: { 'total-results': 1800 } });
+
     beforeEach(async () => {
-      selectedPages = await pipe(
-        { fetchData: stubbedFetchData({ message: { 'total-results': 1800 } }) },
-        determinePagesToSelect(1000),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
+      selectedPages = await invokeDeterminePagesToSelectAndEnsureIsOnTheRight(fetchDataImplementation);
     });
 
     it('selects two pages of offset 0 and 1000', () => {
@@ -80,12 +76,10 @@ describe('determine-pages-to-select', () => {
 
   describe('when the API response cannot be decoded', () => {
     let result: E.Either<unknown, unknown>;
+    const fetchDataImplementation = stubbedFetchData({ foo: 'bar' });
 
     beforeEach(async () => {
-      result = await pipe(
-        { fetchData: stubbedFetchData({ foo: 'bar' }) },
-        determinePagesToSelect(1000),
-      )();
+      result = await invokeDeterminePagesToSelect(fetchDataImplementation);
     });
 
     it('returns on the left', () => {
