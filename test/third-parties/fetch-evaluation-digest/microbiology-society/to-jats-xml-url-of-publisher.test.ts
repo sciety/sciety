@@ -11,7 +11,7 @@ describe('to-jats-xml-url-of-publisher', () => {
   ])('given an ACMI evaluation DOI: %s', (acmiEvaluationDoi, url) => {
     const inferredUrl = toJatsXmlUrlOfPublisher(acmiEvaluationDoi);
 
-    it('returns an inferred url', () => {
+    it(`returns the inferred url: ${url}`, () => {
       expect(inferredUrl).toStrictEqual(O.some(url));
     });
   });
