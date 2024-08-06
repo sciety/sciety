@@ -23,7 +23,7 @@ const fetchEvaluationDigestFromPublisherJatsXmlEndpoint = (
   TE.chainEitherKW(lookupFullText(key)),
 );
 
-export const fetchAccessMicrobiologyEvaluationDigest = (
+export const fetchMicrobiologySocietyEvaluationDigest = (
   queryExternalService: QueryExternalService,
   logger: Logger,
 ): EvaluationDigestFetcher => (key: string) => pipe(

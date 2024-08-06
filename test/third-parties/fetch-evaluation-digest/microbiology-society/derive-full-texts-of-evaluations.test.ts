@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { deriveFullTextsOfEvaluations } from '../../../../src/third-parties/fetch-evaluation-digest/access-microbiology/derive-full-texts-of-evaluations';
+import { deriveFullTextsOfEvaluations } from '../../../../src/third-parties/fetch-evaluation-digest/microbiology-society/derive-full-texts-of-evaluations';
 import { SanitisedHtmlFragment } from '../../../../src/types/sanitised-html-fragment';
 import { abortTest } from '../../../abort-test';
 import { dummyLogger } from '../../../dummy-logger';
