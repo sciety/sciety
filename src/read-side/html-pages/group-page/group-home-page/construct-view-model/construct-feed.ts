@@ -10,6 +10,7 @@ import * as DE from '../../../../../types/data-error';
 import * as EDOI from '../../../../../types/expression-doi';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
+import * as LOID from '../../../../../types/list-id';
 import { constructGroupPagePath } from '../../../../paths';
 import { constructArticleCard } from '../../../shared-components/article-card';
 import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
@@ -24,12 +25,17 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
   E.fromOption(() => DE.notFound),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getFeedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => E.right([]);
+const getFeedArticleIdsFromHardcodedAcmiList = (dependencies: Dependencies) => pipe(
+  O.some(LOID.fromValidatedString('53fd6f10-af16-4bf4-8473-707ca8daee97')),
+  O.chain((listId) => dependencies.lookupList(listId)),
+  O.map((list) => list.entries),
+  O.map(toExpressionDoisByMostRecentlyAdded),
+  E.fromOption(() => DE.notFound),
+);
 
 const decideHowToBuildFeed = (dependencies: Dependencies) => (groupId: GroupId) => {
   if (groupId === '4d6a8908-22a9-45c8-bd56-3c7140647709') {
-    return getFeedArticleIds(dependencies)(groupId);
+    return getFeedArticleIdsFromHardcodedAcmiList(dependencies);
   }
   return getEvaluatedArticleIds(dependencies)(groupId);
 };
