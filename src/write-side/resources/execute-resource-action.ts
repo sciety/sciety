@@ -19,4 +19,5 @@ export const executeResourceAction = <C extends GenericCommand>(
       dependencies.logger('error', 'Command execution failed', { command });
       return errors;
     }),
+    (foo) => foo,
   );

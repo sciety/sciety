@@ -16,10 +16,15 @@ type Dependencies = Queries & DependenciesForCommands & {
 
 const listPapers = (dependencies: Dependencies) => (
   missingArticle: MissingArticle,
-) => executeResourceAction(dependencies, list.addArticle)({
-  listId: missingArticle.listId,
-  expressionDoi: EDOI.fromValidatedString(missingArticle.articleId.value),
-});
+) => {
+  if (missingArticle.listId === '53fd6f10-af16-4bf4-8473-707ca8daee97') {
+    return TE.right('no-events-created');
+  }
+  return executeResourceAction(dependencies, list.addArticle)({
+    listId: missingArticle.listId,
+    expressionDoi: EDOI.fromValidatedString(missingArticle.articleId.value),
+  });
+};
 
 export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Promise<void> => {
   dependencies.logger('info', 'ensureEvaluationsAreListed starting');

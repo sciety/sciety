@@ -32,6 +32,7 @@ const evaluatedArticlesListIdsByGroupId = {
   [Gid.fromValidatedString('bc1f956b-12e8-4f5c-aadc-70f91347bd18')]: Lid.fromValidatedString('f8459240-f79c-4bb2-bb55-b43eae25e4f6'),
   [Gid.fromValidatedString('bc1f956b-12e8-4f5c-aadc-70f91347bd18')]: Lid.fromValidatedString('f8459240-f79c-4bb2-bb55-b43eae25e4f6'),
   [Gid.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827')]: Lid.fromValidatedString('f524583f-ab45-4f07-8b44-6b0767b2d79a'),
+  [Gid.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')]: Lid.fromValidatedString('53fd6f10-af16-4bf4-8473-707ca8daee97'), // ACMI
 };
 
 export type ArticleState = {
