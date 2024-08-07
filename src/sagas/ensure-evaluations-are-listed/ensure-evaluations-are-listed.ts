@@ -4,6 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
+import { MissingArticle } from '../../read-models/evaluated-articles-lists/get-unlisted-evaluated-articles';
 import * as EDOI from '../../types/expression-doi';
 import { DependenciesForCommands } from '../../write-side';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
@@ -13,6 +14,13 @@ type Dependencies = Queries & DependenciesForCommands & {
   logger: Logger,
 };
 
+const listPapers = (dependencies: Dependencies) => (
+  missingArticle: MissingArticle,
+) => executeResourceAction(dependencies, list.addArticle)({
+  listId: missingArticle.listId,
+  expressionDoi: EDOI.fromValidatedString(missingArticle.articleId.value),
+});
+
 export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Promise<void> => {
   dependencies.logger('info', 'ensureEvaluationsAreListed starting');
   await pipe(
@@ -20,10 +28,7 @@ export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Pr
     RA.head,
     O.match(
       () => TE.right('no-events-created' as const),
-      (missingArticle) => executeResourceAction(dependencies, list.addArticle)({
-        listId: missingArticle.listId,
-        expressionDoi: EDOI.fromValidatedString(missingArticle.articleId.value),
-      }),
+      listPapers(dependencies),
     ),
   )();
   dependencies.logger('info', 'ensureEvaluationsAreListed finished');

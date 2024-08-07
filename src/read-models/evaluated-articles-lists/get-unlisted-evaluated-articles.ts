@@ -24,7 +24,7 @@ const listsFromWhichTheArticleIsMissing = (groupsToEvaluatedArticlesLists: ReadM
   RA.filter(doesNotContainTheArticle(a)),
 );
 
-type MissingArticle = {
+export type MissingArticle = {
   articleId: ArticleId,
   listId: ListId,
 };
