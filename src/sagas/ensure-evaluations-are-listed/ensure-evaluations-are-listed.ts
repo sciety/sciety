@@ -9,6 +9,7 @@ import * as EDOI from '../../types/expression-doi';
 import { DependenciesForCommands } from '../../write-side';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as list from '../../write-side/resources/list';
+import { listAcmiPapers } from '../list-acmi-papers';
 
 type Dependencies = Queries & DependenciesForCommands & {
   logger: Logger,
@@ -18,7 +19,7 @@ const listPapers = (dependencies: Dependencies) => (
   missingArticle: MissingArticle,
 ) => {
   if (missingArticle.listId === '53fd6f10-af16-4bf4-8473-707ca8daee97') {
-    return TE.right('no-events-created');
+    return listAcmiPapers();
   }
   return executeResourceAction(dependencies, list.addArticle)({
     listId: missingArticle.listId,

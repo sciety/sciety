@@ -1,4 +1,4 @@
-describe('populate-acmi-unique-evaluated-articles-list.test', () => {
+describe('list-acmi-papers', () => {
   describe('given an unlisted evaluated acmi article', () => {
     describe('when there is no version of the article already in the list', () => {
       it.todo('adds the article to the list');
