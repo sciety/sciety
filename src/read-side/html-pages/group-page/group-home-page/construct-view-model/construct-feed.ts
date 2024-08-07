@@ -24,6 +24,16 @@ const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId
   E.fromOption(() => DE.notFound),
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getFeedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => E.right([]);
+
+const decideHowToBuildFeed = (dependencies: Dependencies) => (groupId: GroupId) => {
+  if (groupId === '4d6a8908-22a9-45c8-bd56-3c7140647709') {
+    return getFeedArticleIds(dependencies)(groupId);
+  }
+  return getEvaluatedArticleIds(dependencies)(groupId);
+};
+
 const toOrderedArticleCards = (
   dependencies: Dependencies,
   group: Group,
@@ -68,7 +78,7 @@ export const constructFeed = (
   page: number,
 ): TE.TaskEither<DE.DataError, ViewModel['feed']> => pipe(
   group.id,
-  getEvaluatedArticleIds(dependencies),
+  decideHowToBuildFeed(dependencies),
   TE.fromEither,
   TE.chainTaskK(toPageOfFeedContent(dependencies, group, pageSize, page)),
 );
