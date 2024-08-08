@@ -132,6 +132,6 @@ export const configureRoutes = (
     RA.map((route) => router.post(route.endpoint, route.handler)),
   );
   router.delete(
-    '/api/lists/:listId', configurePostMiddleware(deleteListCommandCodec, listResource.deleteList),
+    '/api/lists/:listId', configurePostMiddleware(deleteListCommandCodec, listResource.delete_),
   );
 };

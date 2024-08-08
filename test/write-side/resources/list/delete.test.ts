@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import { identity, pipe } from 'fp-ts/function';
 import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { ErrorMessage } from '../../../../src/types/error-message';
-import { deleteList } from '../../../../src/write-side/resources/list';
+import { delete_ } from '../../../../src/write-side/resources/list';
 import { arbitraryListCreatedEvent } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
@@ -17,7 +17,7 @@ describe('delete', () => {
         [
           listCreatedEvent,
         ],
-        deleteList({ listId: listCreatedEvent.listId }),
+        delete_({ listId: listCreatedEvent.listId }),
         E.getOrElseW(shouldNotBeCalled),
       );
     });
@@ -36,7 +36,7 @@ describe('delete', () => {
     beforeEach(() => {
       result = pipe(
         [],
-        deleteList({ listId: arbitraryListId() }),
+        delete_({ listId: arbitraryListId() }),
         E.matchW(
           identity,
           shouldNotBeCalled,
@@ -57,7 +57,7 @@ describe('delete', () => {
         listCreatedEvent,
         listDeleteEvent,
       ],
-      deleteList({ listId: listCreatedEvent.listId }),
+      delete_({ listId: listCreatedEvent.listId }),
     );
 
     it('accepts the command and does not cause a state change', () => {

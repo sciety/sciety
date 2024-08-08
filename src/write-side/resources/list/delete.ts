@@ -18,7 +18,8 @@ const attemptToDeleteList = (events: ReadonlyArray<DomainEvent>, command: Delete
   E.right,
 );
 
-export const deleteList: ResourceAction<DeleteListCommand> = (command) => (events) => pipe(
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const delete_: ResourceAction<DeleteListCommand> = (command) => (events) => pipe(
   events,
   getListIdsThatHaveEverBeenUsed,
   (allocatedListIds) => (allocatedListIds.includes(command.listId)
