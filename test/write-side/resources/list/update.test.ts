@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { constructEvent, DomainEvent } from '../../../../src/domain-events';
 import { update } from '../../../../src/write-side/resources/list';
 import { arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../../domain-events/list-resource-events.helper';
-import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryListOwnerId } from '../../../types/list-owner-id.helper';
@@ -29,12 +28,11 @@ describe('update', () => {
       beforeEach(() => {
         raisedEvents = pipe(
           [
-            constructEvent('ListCreated')({
+            {
+              ...arbitraryListCreatedEvent(),
               listId,
-              name: arbitraryString(),
               description: listDescription,
-              ownerId: arbitraryListOwnerId(),
-            }),
+            },
           ],
           update(command),
           E.getOrElseW(shouldNotBeCalled),
@@ -60,12 +58,11 @@ describe('update', () => {
       beforeEach(() => {
         raisedEvents = pipe(
           [
-            constructEvent('ListCreated')({
+            {
+              ...arbitraryListCreatedEvent(),
               listId,
               name: listName,
-              description: arbitraryString(),
-              ownerId: arbitraryListOwnerId(),
-            }),
+            },
           ],
           update(command),
           E.getOrElseW(shouldNotBeCalled),
@@ -119,12 +116,10 @@ describe('update', () => {
       beforeEach(() => {
         raisedEvents = pipe(
           [
-            constructEvent('ListCreated')({
+            {
+              ...arbitraryListCreatedEvent(),
               listId,
-              name: arbitraryString(),
-              description: arbitraryString(),
-              ownerId: arbitraryListOwnerId(),
-            }),
+            },
           ],
           update(command),
           E.getOrElseW(shouldNotBeCalled),
