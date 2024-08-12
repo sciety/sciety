@@ -28,14 +28,24 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
 };
 
+const hasIntersection = (
+  paperExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
+  knownEvaluatedPapers: ReadModel['papersEvaluatedByGroupId'][GroupId],
+) => {
+  const intersection = paperExpressionDois.filter((expression) => knownEvaluatedPapers.includes(expression));
+  return intersection.length > 0;
+};
+
 const updateKnownEvaluatedPapers = (
   knownEvaluatedPapers: ReadModel['papersEvaluatedByGroupId'][GroupId],
-  expressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
-  expressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
+  paperExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
+  queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
-  expressionDois.forEach((expressionDoi) => {
-    if (expressionsWithoutPaperSnapshot.delete(expressionDoi)) {
-      knownEvaluatedPapers.push(expressionDoi);
+  paperExpressionDois.forEach((paperExpressionDoi) => {
+    const paperExpressionWasInQueue = queueOfExpressionsWithoutPaperSnapshot.delete(paperExpressionDoi);
+    const noExpressionOfThePaperIsInEvaluatedPapers = !hasIntersection(paperExpressionDois, knownEvaluatedPapers);
+    if (paperExpressionWasInQueue && noExpressionOfThePaperIsInEvaluatedPapers) {
+      knownEvaluatedPapers.push(paperExpressionDoi);
     }
   });
 };

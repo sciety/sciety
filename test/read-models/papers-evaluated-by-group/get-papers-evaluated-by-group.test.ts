@@ -99,7 +99,7 @@ describe('get-papers-evaluated-by-group', () => {
       },
     ] satisfies ReadonlyArray<DomainEvent>;
 
-    it.failing('returns only one expression', () => {
+    it('returns only one expression', () => {
       expect(runQuery(events, groupId)).toHaveLength(1);
       expect([expressionDoi, expressionDoiOfMoreRecentlyRecordedEvaluation]).toContain(runQuery(events, groupId)[0]);
     });
