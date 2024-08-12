@@ -3,7 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { GroupId } from '../../../src/types/group-id';
+import { arbitraryPaperSnapshotRecordedEvent } from '../../domain-events/arbitrary-paper-snapshot-event.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
 type ReadModel = unknown;
@@ -23,8 +25,9 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
 };
 
 describe('get-papers-evaluated-by-group', () => {
+  const groupId = arbitraryGroupId();
+
   describe('tbd', () => {
-    const groupId = arbitraryGroupId();
     const events = [
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
@@ -35,6 +38,26 @@ describe('get-papers-evaluated-by-group', () => {
 
     it('tbd', () => {
       expect(result).toStrictEqual([]);
+    });
+  });
+
+  describe('foo', () => {
+    const expressionDoi = arbitraryExpressionDoi();
+    const events = [
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoi,
+      } satisfies EventOfType<'EvaluationPublicationRecorded'>,
+      {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: [expressionDoi],
+      },
+    ];
+    const result = runQuery(events, groupId);
+
+    it.failing('foo', () => {
+      expect(result).toStrictEqual([expressionDoi]);
     });
   });
 });
