@@ -122,4 +122,31 @@ describe('get-papers-evaluated-by-group', () => {
       expect([expressionDoiA, expressionDoiB, expressionDoiC]).toContain(runQuery(events, groupId)[0]);
     });
   });
+
+  describe('when two groups evaluate different expressions that belong to the same paper', () => {
+    const anotherGroupId = arbitraryGroupId();
+    const events = [
+      evaluationRecordedAgainstExpressionDoiA,
+      paperSnapshotWithExpressionDoisAB,
+      {
+        ...evaluationRecordedAgainstExpressionDoiC,
+        groupId: anotherGroupId,
+      },
+      paperSnapshotWithExpressionDoisABC,
+    ];
+
+    it('returns only one expression for the first group', () => {
+      const result = runQuery(events, anotherGroupId);
+
+      expect(result).toHaveLength(1);
+      expect([expressionDoiA, expressionDoiB, expressionDoiC]).toContain(result[0]);
+    });
+
+    it('returns only one expression for the other group', () => {
+      const result = runQuery(events, groupId);
+
+      expect(result).toHaveLength(1);
+      expect([expressionDoiA, expressionDoiB, expressionDoiC]).toContain(result[0]);
+    });
+  });
 });
