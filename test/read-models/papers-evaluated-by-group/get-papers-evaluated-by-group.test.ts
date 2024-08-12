@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, EventOfType } from '../../../src/domain-events';
+import { DomainEvent } from '../../../src/domain-events';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryPaperSnapshotRecordedEvent } from '../../domain-events/arbitrary-paper-snapshot-event.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
@@ -27,37 +27,35 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
 describe('get-papers-evaluated-by-group', () => {
   const groupId = arbitraryGroupId();
 
-  describe('tbd', () => {
+  describe('when an evaluation has been recorded, but no corresponding paper snapshot is available', () => {
     const events = [
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
-      } satisfies EventOfType<'EvaluationPublicationRecorded'>,
-    ];
-    const result = runQuery(events, groupId);
+      },
+    ] satisfies ReadonlyArray<DomainEvent>;
 
-    it('tbd', () => {
-      expect(result).toStrictEqual([]);
+    it('does not return anything', () => {
+      expect(runQuery(events, groupId)).toStrictEqual([]);
     });
   });
 
-  describe('foo', () => {
+  describe('when an evaluation has been recorded and a corresponding paper snapshot is available', () => {
     const expressionDoi = arbitraryExpressionDoi();
     const events = [
       {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
         articleId: expressionDoi,
-      } satisfies EventOfType<'EvaluationPublicationRecorded'>,
+      },
       {
         ...arbitraryPaperSnapshotRecordedEvent(),
         expressionDois: [expressionDoi],
       },
-    ];
-    const result = runQuery(events, groupId);
+    ] satisfies ReadonlyArray<DomainEvent>;
 
-    it.failing('foo', () => {
-      expect(result).toStrictEqual([expressionDoi]);
+    it.failing('returns the evaluated expression DOI', () => {
+      expect(runQuery(events, groupId)).toStrictEqual([expressionDoi]);
     });
   });
 });
