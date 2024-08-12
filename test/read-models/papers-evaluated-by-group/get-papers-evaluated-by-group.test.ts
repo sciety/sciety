@@ -54,4 +54,28 @@ describe('get-papers-evaluated-by-group', () => {
       expect(runQuery(events, groupId)).toStrictEqual([expressionDoi]);
     });
   });
+
+  describe('when an expression has been evaluated, a paper snapshot recorded and the expression is evaluated again', () => {
+    const expressionDoi = arbitraryExpressionDoi();
+    const events = [
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoi,
+      },
+      {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: [expressionDoi],
+      },
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoi,
+      },
+    ] satisfies ReadonlyArray<DomainEvent>;
+
+    it('returns the evaluated expression DOI', () => {
+      expect(runQuery(events, groupId)).toStrictEqual([expressionDoi]);
+    });
+  });
 });
