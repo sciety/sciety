@@ -84,4 +84,17 @@ describe('get-papers-evaluated-by-group', () => {
       expect([expressionDoiA, expressionDoiB]).toContain(runQuery(events, groupId)[0]);
     });
   });
+
+  describe('when another expression of an already added paper is evaluated', () => {
+    const events = [
+      evaluationRecordedAgainstExpressionDoiA,
+      paperSnapshotWithExpressionDoiAandB,
+      evaluationRecordedAgainstExpressionDoiB,
+    ] satisfies ReadonlyArray<DomainEvent>;
+
+    it('returns only one expression', () => {
+      expect(runQuery(events, groupId)).toHaveLength(1);
+      expect([expressionDoiA, expressionDoiB]).toContain(runQuery(events, groupId)[0]);
+    });
+  });
 });
