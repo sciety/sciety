@@ -22,6 +22,7 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
 
 describe('get-papers-evaluated-by-group', () => {
   const groupId = arbitraryGroupId();
+  const anotherGroupId = arbitraryGroupId();
   const expressionDoiA = arbitraryExpressionDoi();
   const expressionDoiB = arbitraryExpressionDoi();
   const expressionDoiC = arbitraryExpressionDoi();
@@ -123,8 +124,23 @@ describe('get-papers-evaluated-by-group', () => {
     });
   });
 
+  describe('when the paper snapshot has been recorded and another group evaluates the paper', () => {
+    const events = [
+      evaluationRecordedAgainstExpressionDoiA,
+      paperSnapshotWithExpressionDoisAB,
+      {
+        ...evaluationRecordedAgainstExpressionDoiA,
+        groupId: anotherGroupId,
+      },
+    ] satisfies ReadonlyArray<DomainEvent>;
+
+    it.failing('returns only one expression the other group', () => {
+      expect(runQuery(events, anotherGroupId)).toHaveLength(1);
+      expect([expressionDoiA, expressionDoiB]).toContain(runQuery(events, anotherGroupId)[0]);
+    });
+  });
+
   describe('when two groups evaluate different expressions that belong to the same paper', () => {
-    const anotherGroupId = arbitraryGroupId();
     const events = [
       evaluationRecordedAgainstExpressionDoiA,
       paperSnapshotWithExpressionDoisAB,
