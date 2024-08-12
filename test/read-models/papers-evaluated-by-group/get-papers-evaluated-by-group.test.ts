@@ -1,20 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../src/domain-events';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryPaperSnapshotRecordedEvent } from '../../domain-events/arbitrary-paper-snapshot-event.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
-type ReadModel = unknown;
+type ReadModel = {
+  byGroupId: Record<GroupId, ReadonlyArray<ExpressionDoi>>,
+};
 
-const initialState = () => ({});
+const initialState = () => ({
+  byGroupId: {},
+});
 
 const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => readmodel;
 
-const getPapersEvaluatedByGroup = (readModel: ReadModel) => (groupId: GroupId) => [];
+const getPapersEvaluatedByGroup = (readModel: ReadModel) => (groupId: GroupId) => pipe(
+  readModel.byGroupId,
+  R.lookup(groupId),
+  O.getOrElseW(() => []),
+);
 
 const runQuery = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
   const readModel = pipe(
