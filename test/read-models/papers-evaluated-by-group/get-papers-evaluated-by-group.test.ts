@@ -78,4 +78,30 @@ describe('get-papers-evaluated-by-group', () => {
       expect(runQuery(events, groupId)).toStrictEqual([expressionDoi]);
     });
   });
+
+  describe('when two expressions have been evaluated and belong to the same paper according to a snapshot', () => {
+    const expressionDoi = arbitraryExpressionDoi();
+    const expressionDoiOfMoreRecentlyRecordedEvaluation = arbitraryExpressionDoi();
+    const events = [
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoi,
+      },
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoiOfMoreRecentlyRecordedEvaluation,
+      },
+      {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: [expressionDoi, expressionDoiOfMoreRecentlyRecordedEvaluation],
+      },
+    ] satisfies ReadonlyArray<DomainEvent>;
+
+    it.failing('returns only one expression', () => {
+      expect(runQuery(events, groupId)).toHaveLength(1);
+      expect([expressionDoi, expressionDoiOfMoreRecentlyRecordedEvaluation]).toContain(runQuery(events, groupId)[0]);
+    });
+  });
 });
