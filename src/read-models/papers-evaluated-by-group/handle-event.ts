@@ -28,17 +28,26 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
 };
 
+const updateKnownEvaluatedPapers = (
+  knownEvaluatedPapers: ReadModel['papersEvaluatedByGroupId'][GroupId],
+  expressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
+  expressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
+) => {
+  expressionDois.forEach((expressionDoi) => {
+    if (expressionsWithoutPaperSnapshot.delete(expressionDoi)) {
+      knownEvaluatedPapers.push(expressionDoi);
+    }
+  });
+};
+
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   for (
     const [groupId, expressionsWithoutPaperSnapshot]
     of Object.entries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
   ) {
     ensureGroupIdExists(readmodel, groupId as GroupId);
-    event.expressionDois.forEach((expressionDoi) => {
-      if (expressionsWithoutPaperSnapshot.delete(expressionDoi)) {
-        readmodel.papersEvaluatedByGroupId[groupId as GroupId].push(expressionDoi);
-      }
-    });
+    const knownEvaluatedPapers = readmodel.papersEvaluatedByGroupId[groupId as GroupId];
+    updateKnownEvaluatedPapers(knownEvaluatedPapers, event.expressionDois, expressionsWithoutPaperSnapshot);
   }
 };
 
