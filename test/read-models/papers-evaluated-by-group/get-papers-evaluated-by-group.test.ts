@@ -22,13 +22,26 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
 
 describe('get-papers-evaluated-by-group', () => {
   const groupId = arbitraryGroupId();
+  const expressionDoiA = arbitraryExpressionDoi();
+  const expressionDoiB = arbitraryExpressionDoi();
+  const evaluationRecordedAgainstExpressionDoiA = {
+    ...arbitraryEvaluationPublicationRecordedEvent(),
+    groupId,
+    articleId: expressionDoiA,
+  };
+  const evaluationRecordedAgainstExpressionDoiB = {
+    ...arbitraryEvaluationPublicationRecordedEvent(),
+    groupId,
+    articleId: expressionDoiB,
+  };
+  const paperSnapshotWithExpressionDoiAandB = {
+    ...arbitraryPaperSnapshotRecordedEvent(),
+    expressionDois: [expressionDoiA, expressionDoiB],
+  };
 
   describe('when an evaluation has been recorded, but no corresponding paper snapshot is available', () => {
     const events = [
-      {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-      },
+      evaluationRecordedAgainstExpressionDoiA,
     ] satisfies ReadonlyArray<DomainEvent>;
 
     it('does not return anything', () => {
@@ -37,71 +50,38 @@ describe('get-papers-evaluated-by-group', () => {
   });
 
   describe('when an evaluation has been recorded and a corresponding paper snapshot is available', () => {
-    const expressionDoi = arbitraryExpressionDoi();
     const events = [
-      {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-        articleId: expressionDoi,
-      },
-      {
-        ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: [expressionDoi],
-      },
+      evaluationRecordedAgainstExpressionDoiA,
+      paperSnapshotWithExpressionDoiAandB,
     ] satisfies ReadonlyArray<DomainEvent>;
 
     it('returns the evaluated expression DOI', () => {
-      expect(runQuery(events, groupId)).toStrictEqual([expressionDoi]);
+      expect(runQuery(events, groupId)).toStrictEqual([expressionDoiA]);
     });
   });
 
   describe('when an expression has been evaluated, a paper snapshot recorded and the expression is evaluated again', () => {
-    const expressionDoi = arbitraryExpressionDoi();
     const events = [
-      {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-        articleId: expressionDoi,
-      },
-      {
-        ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: [expressionDoi],
-      },
-      {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-        articleId: expressionDoi,
-      },
+      evaluationRecordedAgainstExpressionDoiA,
+      paperSnapshotWithExpressionDoiAandB,
+      evaluationRecordedAgainstExpressionDoiA,
     ] satisfies ReadonlyArray<DomainEvent>;
 
     it('returns the evaluated expression DOI', () => {
-      expect(runQuery(events, groupId)).toStrictEqual([expressionDoi]);
+      expect(runQuery(events, groupId)).toStrictEqual([expressionDoiA]);
     });
   });
 
   describe('when two expressions have been evaluated and belong to the same paper according to a snapshot', () => {
-    const expressionDoi = arbitraryExpressionDoi();
-    const expressionDoiOfMoreRecentlyRecordedEvaluation = arbitraryExpressionDoi();
     const events = [
-      {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-        articleId: expressionDoi,
-      },
-      {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-        articleId: expressionDoiOfMoreRecentlyRecordedEvaluation,
-      },
-      {
-        ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: [expressionDoi, expressionDoiOfMoreRecentlyRecordedEvaluation],
-      },
+      evaluationRecordedAgainstExpressionDoiA,
+      evaluationRecordedAgainstExpressionDoiB,
+      paperSnapshotWithExpressionDoiAandB,
     ] satisfies ReadonlyArray<DomainEvent>;
 
     it('returns only one expression', () => {
       expect(runQuery(events, groupId)).toHaveLength(1);
-      expect([expressionDoi, expressionDoiOfMoreRecentlyRecordedEvaluation]).toContain(runQuery(events, groupId)[0]);
+      expect([expressionDoiA, expressionDoiB]).toContain(runQuery(events, groupId)[0]);
     });
   });
 });
