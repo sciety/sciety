@@ -7,11 +7,13 @@ import { GroupId } from '../../types/group-id';
 export type ReadModel = {
   papersEvaluatedByGroupId: Record<GroupId, Array<ExpressionDoi>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
+  paperSnapshots: Array<Array<ExpressionDoi>>,
 };
 
 export const initialState = (): ReadModel => ({
   papersEvaluatedByGroupId: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
+  paperSnapshots: [[]],
 });
 
 const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
