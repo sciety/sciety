@@ -18,3 +18,4 @@ export { removeListPromotionCommandCodec, RemoveListPromotionCommand } from './r
 export { assignUserAsGroupAdminCommandCodec, AssignUserAsGroupAdminCommand } from './assign-user-as-group-admin';
 export { UnfollowCommand } from './unfollow';
 export { deleteListCommandCodec, DeleteListCommand } from './delete-list';
+export { RecordPaperSnapshotCommand } from './record-paper-snapshot';
