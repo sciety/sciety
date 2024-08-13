@@ -134,11 +134,18 @@ describe('get-papers-evaluated-by-group', () => {
       },
     ] satisfies ReadonlyArray<DomainEvent>;
 
-    it.failing('returns that both groups have evaluated the paper', () => {
-      expect(runQuery(events, anotherGroupId)).toHaveLength(1);
-      expect([expressionDoiA, expressionDoiB]).toContain(runQuery(events, anotherGroupId)[0]);
-      expect(runQuery(events, groupId)).toHaveLength(1);
-      expect([expressionDoiA, expressionDoiB]).toContain(runQuery(events, groupId)[0]);
+    it('returns a single expression DOI of the evaluated paper for the first group', () => {
+      const result = runQuery(events, groupId);
+
+      expect(result).toHaveLength(1);
+      expect([expressionDoiA, expressionDoiB]).toContain(result[0]);
+    });
+
+    it.failing('returns a single expression DOI of the evaluated paper for the other group', () => {
+      const result = runQuery(events, anotherGroupId);
+
+      expect(result).toHaveLength(1);
+      expect([expressionDoiA, expressionDoiB]).toContain(result[0]);
     });
   });
 
@@ -153,14 +160,14 @@ describe('get-papers-evaluated-by-group', () => {
       paperSnapshotWithExpressionDoisABC,
     ];
 
-    it('returns only one expression for the first group', () => {
+    it('returns a single expression DOI of the evaluated paper for the first group', () => {
       const result = runQuery(events, anotherGroupId);
 
       expect(result).toHaveLength(1);
       expect([expressionDoiA, expressionDoiB, expressionDoiC]).toContain(result[0]);
     });
 
-    it('returns only one expression for the other group', () => {
+    it('returns a single expression DOI of the evaluated paper for the other group', () => {
       const result = runQuery(events, groupId);
 
       expect(result).toHaveLength(1);
