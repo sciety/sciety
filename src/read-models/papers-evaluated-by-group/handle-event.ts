@@ -7,13 +7,13 @@ import { GroupId } from '../../types/group-id';
 export type ReadModel = {
   papersEvaluatedByGroupId: Record<GroupId, Array<ExpressionDoi>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
-  paperSnapshots: Array<Array<ExpressionDoi>>,
+  paperSnapshots: Record<ExpressionDoi, Array<ExpressionDoi>>,
 };
 
 export const initialState = (): ReadModel => ({
   papersEvaluatedByGroupId: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
-  paperSnapshots: [[]],
+  paperSnapshots: {},
 });
 
 const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
@@ -25,17 +25,29 @@ const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
   }
 };
 
-const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
-  ensureGroupIdExists(readmodel, event.groupId);
-  readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
-};
-
 const hasIntersection = (
   paperExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
   knownEvaluatedPapers: ReadModel['papersEvaluatedByGroupId'][GroupId],
 ) => {
   const intersection = paperExpressionDois.filter((expression) => knownEvaluatedPapers.includes(expression));
   return intersection.length > 0;
+};
+
+const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
+  ensureGroupIdExists(readmodel, event.groupId);
+  const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshots).includes(event.articleId);
+  if (!isPartOfKnownSnapshot) {
+    readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
+    return;
+  }
+  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshots[event.articleId];
+  const noExpressionOfThePaperIsInEvaluatedPapersForThatGroup = !hasIntersection(
+    latestSnapshotForEvaluatedExpression,
+    readmodel.papersEvaluatedByGroupId[event.groupId],
+  );
+  if (noExpressionOfThePaperIsInEvaluatedPapersForThatGroup) {
+    readmodel.papersEvaluatedByGroupId[event.groupId].push(event.articleId);
+  }
 };
 
 const updateKnownEvaluatedPapers = (
