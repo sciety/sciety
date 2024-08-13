@@ -141,7 +141,7 @@ describe('get-papers-evaluated-by-group', () => {
       expect([expressionDoiA, expressionDoiB]).toContain(result[0]);
     });
 
-    it.failing('returns a single expression DOI of the evaluated paper for the other group', () => {
+    it('returns a single expression DOI of the evaluated paper for the other group', () => {
       const result = runQuery(events, anotherGroupId);
 
       expect(result).toHaveLength(1);

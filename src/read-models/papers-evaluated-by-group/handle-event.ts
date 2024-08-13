@@ -7,7 +7,7 @@ import { GroupId } from '../../types/group-id';
 export type ReadModel = {
   papersEvaluatedByGroupId: Record<GroupId, Array<ExpressionDoi>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
-  paperSnapshots: Record<ExpressionDoi, Array<ExpressionDoi>>,
+  paperSnapshots: Record<ExpressionDoi, ReadonlyArray<ExpressionDoi>>,
 };
 
 export const initialState = (): ReadModel => ({
@@ -65,6 +65,9 @@ const updateKnownEvaluatedPapers = (
 };
 
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
+  event.expressionDois.forEach((expression) => {
+    readmodel.paperSnapshots[expression] = event.expressionDois;
+  });
   for (
     const [groupId, expressionsWithoutPaperSnapshot]
     of Object.entries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
