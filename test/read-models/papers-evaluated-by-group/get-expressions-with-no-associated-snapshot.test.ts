@@ -52,7 +52,7 @@ describe('get-expressions-with-no-associated-snapshot', () => {
       evaluationRecordedAgainstExpressionDoiA,
     ] satisfies ReadonlyArray<DomainEvent>;
 
-    it.failing('returns the expression doi', () => {
+    it('returns the expression doi', () => {
       expect(runQuery(events)).toStrictEqual([expressionDoiA]);
     });
   });
