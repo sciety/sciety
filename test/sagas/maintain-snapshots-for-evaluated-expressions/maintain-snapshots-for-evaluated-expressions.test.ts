@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DependenciesForViews } from '../../../src/read-side/dependencies-for-views';
-import { DependenciesForCommands } from '../../../src/write-side';
+import { maintainSnapshotsForEvaluatedExpressions } from '../../../src/sagas/maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
 import { createTestFramework, TestFramework } from '../../framework';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
-
-type Dependencies = DependenciesForViews & DependenciesForCommands;
-
-const maintainSnapshotsForEvaluatedExpressions = async (
-  dependencies: Dependencies,
-): Promise<void> => undefined;
 
 describe('maintain-snapshots-for-evaluated-expressions', () => {
   let framework: TestFramework;
@@ -41,7 +34,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
         expect(papersEvaluatedByGroup[0]).toStrictEqual([recordEvaluationPublicationCommand.expressionDoi]);
       });
 
-      it.failing('empties the queue', () => {
+      it.failing('causes the queue to be empty', () => {
         const queue = framework.queries.getExpressionsWithNoAssociatedSnapshot();
 
         expect(queue).toStrictEqual([]);
