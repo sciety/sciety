@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DependenciesForViews } from '../../../src/read-side/dependencies-for-views';
-import { ExpressionDoi } from '../../../src/types/expression-doi';
 import { DependenciesForCommands } from '../../../src/write-side';
 import { createTestFramework, TestFramework } from '../../framework';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
@@ -34,8 +33,6 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
         });
       });
 
-      const queue: ReadonlyArray<ExpressionDoi> = []; // need to implement as a query;
-
       it.failing('records a snapshot that allows the paper to be considered evaluated by groups', () => {
         const papersEvaluatedByGroup = framework.queries.getPapersEvaluatedByGroup(
           recordEvaluationPublicationCommand.groupId,
@@ -45,6 +42,8 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
       });
 
       it('empties the queue', () => {
+        const queue = framework.queries.getExpressionsWithNoAssociatedSnapshot();
+
         expect(queue).toStrictEqual([]);
       });
     });
