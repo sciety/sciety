@@ -40,15 +40,15 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
         });
       });
 
-      it.failing('records a snapshot that allows the paper to be considered evaluated by groups', () => {
+      it('records a snapshot that allows the paper to be considered evaluated by groups', () => {
         const papersEvaluatedByGroup = framework.queries.getPapersEvaluatedByGroup(
           recordEvaluationPublicationCommand.groupId,
         );
 
-        expect(papersEvaluatedByGroup[0]).toStrictEqual([recordEvaluationPublicationCommand.expressionDoi]);
+        expect(papersEvaluatedByGroup[0]).toStrictEqual(recordEvaluationPublicationCommand.expressionDoi);
       });
 
-      it.failing('causes the queue to be empty', () => {
+      it('causes the queue to be empty', () => {
         const queue = framework.queries.getExpressionsWithNoAssociatedSnapshot();
 
         expect(queue).toStrictEqual([]);

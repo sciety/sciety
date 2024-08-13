@@ -18,7 +18,7 @@ export const maintainSnapshotsForEvaluatedExpressions = async (
     TE.fromOption(() => 'no evaluated expressions missing from snapshots'),
     TE.chainW(dependencies.fetchPublishingHistory),
     TE.map(PH.getAllExpressionDois),
-    TE.map((expressions) => executeResourceAction(dependencies, paperSnapshot.record)({
+    TE.chainW((expressions) => executeResourceAction(dependencies, paperSnapshot.record)({
       expressionDois: expressions,
     })),
   )();
