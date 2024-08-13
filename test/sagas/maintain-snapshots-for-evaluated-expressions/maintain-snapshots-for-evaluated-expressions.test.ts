@@ -37,7 +37,9 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
       const queue: ReadonlyArray<ExpressionDoi> = []; // need to implement as a query;
 
       it.failing('records a snapshot that allows the paper to be considered evaluated by groups', () => {
-        const papersEvaluatedByGroup: ReadonlyArray<ExpressionDoi> = []; // need to wire up existing query to framework
+        const papersEvaluatedByGroup = framework.queries.getPapersEvaluatedByGroup(
+          recordEvaluationPublicationCommand.groupId,
+        );
 
         expect(papersEvaluatedByGroup[0]).toStrictEqual([recordEvaluationPublicationCommand.expressionDoi]);
       });

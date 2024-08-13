@@ -10,6 +10,7 @@ import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { InitialisedReadModel, UnionToIntersection } from './initialised-read-model';
 import { lists } from './lists';
+import { papersEvaluatedByGroup } from './papers-evaluated-by-group';
 import { Queries } from './queries';
 import { users } from './users';
 import { DomainEvent } from '../domain-events';
@@ -33,6 +34,7 @@ export const dispatcher = (logger: Logger): Dispatcher => {
     new InitialisedReadModel(groups),
     new InitialisedReadModel(idsOfEvalutedArticlesLists),
     new InitialisedReadModel(lists),
+    new InitialisedReadModel(papersEvaluatedByGroup),
     new InitialisedReadModel(users),
   ];
 

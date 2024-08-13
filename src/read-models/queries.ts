@@ -7,6 +7,7 @@ import { groupAuthorisations } from './group-authorisations';
 import { groups } from './groups';
 import { idsOfEvalutedArticlesLists } from './ids-of-evaluated-articles-lists';
 import { lists } from './lists';
+import { papersEvaluatedByGroup } from './papers-evaluated-by-group';
 import { users } from './users';
 
 const queries = {
@@ -20,6 +21,7 @@ const queries = {
   ...idsOfEvalutedArticlesLists.queries,
   ...lists.queries,
   ...users.queries,
+  ...papersEvaluatedByGroup.queries,
 };
 
 export type Queries = { [K in keyof typeof queries]: ReturnType<typeof queries[K]> };
