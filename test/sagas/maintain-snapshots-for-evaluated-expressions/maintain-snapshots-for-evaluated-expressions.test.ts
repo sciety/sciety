@@ -1,6 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { maintainSnapshotsForEvaluatedExpressions } from '../../../src/sagas/maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
+import * as PH from '../../../src/types/publishing-history';
 import { createTestFramework, TestFramework } from '../../framework';
+import { shouldNotBeCalled } from '../../should-not-be-called';
+import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('maintain-snapshots-for-evaluated-expressions', () => {
@@ -19,10 +24,19 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
 
     describe('and no associated snapshots exist', () => {
       beforeEach(async () => {
+        const publishingHistory = pipe(
+          [
+            { ...arbitraryPaperExpression(), expressionDoi: recordEvaluationPublicationCommand.expressionDoi },
+          ],
+          PH.fromExpressions,
+          E.getOrElseW(shouldNotBeCalled),
+        );
+
         await maintainSnapshotsForEvaluatedExpressions({
           ...framework.dependenciesForViews,
           getAllEvents: framework.getAllEvents,
           commitEvents: framework.commitEvents,
+          fetchPublishingHistory: () => TE.right(publishingHistory),
         });
       });
 
