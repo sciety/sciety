@@ -60,6 +60,19 @@ describe('get-expressions-with-no-associated-snapshot', () => {
     });
   });
 
+  describe('when an evaluation has been recorded against an expression, but the evaluating group should not be considered', () => {
+    const events = [
+      {
+        ...evaluationRecordedAgainstExpressionDoiA,
+        groupId: arbitraryGroupId(),
+      },
+    ] satisfies ReadonlyArray<DomainEvent>;
+
+    it.failing('returns empty', () => {
+      expect(runQuery(events)).toStrictEqual([]);
+    });
+  });
+
   describe('when an evaluation has been recorded against an expression which is part of a subsequently recorded paper snapshot', () => {
     const events = [
       evaluationRecordedAgainstExpressionDoiA,
