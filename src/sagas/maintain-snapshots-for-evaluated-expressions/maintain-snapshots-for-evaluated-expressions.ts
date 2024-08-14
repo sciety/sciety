@@ -1,6 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { v4 as uuidV4 } from 'uuid';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import * as PH from '../../types/publishing-history';
 import { DependenciesForCommands } from '../../write-side';
@@ -12,7 +13,8 @@ type Dependencies = DependenciesForViews & DependenciesForCommands;
 export const maintainSnapshotsForEvaluatedExpressions = async (
   dependencies: Dependencies,
 ): Promise<void> => {
-  dependencies.logger('info', 'maintainSnapshotsForEvaluatedExpressions starting');
+  const iterationId = uuidV4();
+  dependencies.logger('info', 'maintainSnapshotsForEvaluatedExpressions starting', { iterationId });
   await pipe(
     dependencies.getExpressionsWithNoAssociatedSnapshot(),
     RA.head,
@@ -21,7 +23,7 @@ export const maintainSnapshotsForEvaluatedExpressions = async (
       expressionDoi,
       dependencies.fetchPublishingHistory,
       TE.mapLeft((error) => {
-        dependencies.logger('warn', 'maintainSnapshotsForEvaluatedExpressions fetchPublishingHistory fail', { error, expressionDoi });
+        dependencies.logger('warn', 'maintainSnapshotsForEvaluatedExpressions fetchPublishingHistory fail', { error, expressionDoi, iterationId });
         return error;
       }),
     )),
@@ -30,5 +32,5 @@ export const maintainSnapshotsForEvaluatedExpressions = async (
       expressionDois: expressions,
     })),
   )();
-  dependencies.logger('info', 'maintainSnapshotsForEvaluatedExpresssions finished');
+  dependencies.logger('info', 'maintainSnapshotsForEvaluatedExpresssions finished', { iterationId });
 };
