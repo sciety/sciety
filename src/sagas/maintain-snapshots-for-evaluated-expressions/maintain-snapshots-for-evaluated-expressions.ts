@@ -17,11 +17,14 @@ export const maintainSnapshotsForEvaluatedExpressions = async (
     dependencies.getExpressionsWithNoAssociatedSnapshot(),
     RA.head,
     TE.fromOption(() => 'no evaluated expressions missing from snapshots'),
-    TE.chainW(dependencies.fetchPublishingHistory),
-    TE.mapLeft((error) => {
-      dependencies.logger('warn', 'maintainSnapshotsForEvaluatedExpressions fetchPublishingHistory fail', { error });
-      return error;
-    }),
+    TE.chainW((expressionDoi) => pipe(
+      expressionDoi,
+      dependencies.fetchPublishingHistory,
+      TE.mapLeft((error) => {
+        dependencies.logger('warn', 'maintainSnapshotsForEvaluatedExpressions fetchPublishingHistory fail', { error, expressionDoi });
+        return error;
+      }),
+    )),
     TE.map(PH.getAllExpressionDois),
     TE.chainW((expressions) => executeResourceAction(dependencies, paperSnapshot.record)({
       expressionDois: expressions,
