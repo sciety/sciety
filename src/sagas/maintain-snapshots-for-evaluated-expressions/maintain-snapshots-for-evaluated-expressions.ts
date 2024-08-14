@@ -32,5 +32,5 @@ export const maintainSnapshotsForEvaluatedExpressions = async (
       expressionDois: expressions,
     })),
   )();
-  dependencies.logger('info', 'maintainSnapshotsForEvaluatedExpresssions finished', { iterationId });
+  dependencies.logger('info', 'maintainSnapshotsForEvaluatedExpressions finished', { iterationId });
 };
