@@ -10,6 +10,7 @@ import * as DE from '../../../../../types/data-error';
 import * as EDOI from '../../../../../types/expression-doi';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
+import * as GID from '../../../../../types/group-id';
 import { constructGroupPagePath } from '../../../../paths';
 import { constructArticleCard } from '../../../shared-components/article-card';
 import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
@@ -61,6 +62,13 @@ const toPageOfFeedContent = (
   TE.toUnion,
 );
 
+const getExpressionDoisForFeed = (dependencies: Dependencies) => (groupId: GroupId) => {
+  if (process.env.EXPERIMENT_ENABLED === 'true' && groupId === GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')) {
+    return E.right(dependencies.getPapersEvaluatedByGroup(groupId));
+  }
+  return getEvaluatedArticleIds(dependencies)(groupId);
+};
+
 export const constructFeed = (
   dependencies: Dependencies,
   group: Group,
@@ -68,7 +76,7 @@ export const constructFeed = (
   page: number,
 ): TE.TaskEither<DE.DataError, ViewModel['feed']> => pipe(
   group.id,
-  getEvaluatedArticleIds(dependencies),
+  getExpressionDoisForFeed(dependencies),
   TE.fromEither,
   TE.chainTaskK(toPageOfFeedContent(dependencies, group, pageSize, page)),
 );
