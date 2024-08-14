@@ -60,4 +60,26 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
       });
     });
   });
+
+  describe('when an evaluation publication was recorded for a group that is not considered', () => {
+    const recordEvaluationPublicationCommand = arbitraryRecordEvaluationPublicationCommand();
+
+    beforeEach(async () => {
+      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
+
+      await maintainSnapshotsForEvaluatedExpressions({
+        ...framework.dependenciesForViews,
+        getAllEvents: framework.getAllEvents,
+        commitEvents: framework.commitEvents,
+      });
+    });
+
+    it('does nothing', () => {
+      const papersEvaluatedByGroup = framework.queries.getPapersEvaluatedByGroup(
+        recordEvaluationPublicationCommand.groupId,
+      );
+
+      expect(papersEvaluatedByGroup).toStrictEqual([]);
+    });
+  });
 });
