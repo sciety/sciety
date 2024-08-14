@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { maintainSnapshotsForEvaluatedExpressions } from '../../../src/sagas/maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
+import * as GID from '../../../src/types/group-id';
 import * as PH from '../../../src/types/publishing-history';
 import { createTestFramework, TestFramework } from '../../framework';
 import { shouldNotBeCalled } from '../../should-not-be-called';
@@ -15,8 +16,12 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
     framework = createTestFramework();
   });
 
-  describe('when an evaluation publication was recorded', () => {
-    const recordEvaluationPublicationCommand = arbitraryRecordEvaluationPublicationCommand();
+  describe('when an evaluation publication was recorded for a considered group', () => {
+    const accessMicrobiologyGroupId = GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709');
+    const recordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: accessMicrobiologyGroupId,
+    };
 
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
@@ -40,7 +45,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
         });
       });
 
-      it('records a snapshot that allows the paper to be considered evaluated by groups', () => {
+      it('records a snapshot that allows the paper to be regarded as evaluated by that group', () => {
         const papersEvaluatedByGroup = framework.queries.getPapersEvaluatedByGroup(
           recordEvaluationPublicationCommand.groupId,
         );

@@ -83,7 +83,9 @@ export const handleEvent = (
   consideredGroupIds: ReadonlyArray<GroupId>,
 ) => (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    handleEvaluationPublicationRecorded(event, readmodel);
+    if (consideredGroupIds.includes(event.groupId)) {
+      handleEvaluationPublicationRecorded(event, readmodel);
+    }
   }
   if (isEventOfType('PaperSnapshotRecorded')(event)) {
     handlePaperSnapshotRecorded(event, readmodel);

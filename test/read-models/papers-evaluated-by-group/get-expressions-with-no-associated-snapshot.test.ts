@@ -68,7 +68,7 @@ describe('get-expressions-with-no-associated-snapshot', () => {
       },
     ] satisfies ReadonlyArray<DomainEvent>;
 
-    it.failing('returns empty', () => {
+    it('returns empty', () => {
       expect(runQuery(events)).toStrictEqual([]);
     });
   });
