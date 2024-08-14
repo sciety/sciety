@@ -79,7 +79,6 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
 };
 
 export const handleEvent = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   consideredGroupIds: ReadonlyArray<GroupId>,
 ) => (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
