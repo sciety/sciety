@@ -22,5 +22,6 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
         listId: missingArticle.listId,
       })),
     ),
+    evaluatedExpressionWithoutSnapshots: dependencies.getExpressionsWithNoAssociatedSnapshot(),
   },
 });
