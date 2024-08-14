@@ -10,16 +10,19 @@ import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
+const groupId = arbitraryGroupId();
+const anotherGroupId = arbitraryGroupId();
+const consideredGroupIds = [groupId, anotherGroupId];
+
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readModel = pipe(
     events,
-    RA.reduce(initialState(), handleEvent),
+    RA.reduce(initialState(), handleEvent(consideredGroupIds)),
   );
   return getExpressionsWithNoAssociatedSnapshot(readModel)();
 };
 
 describe('get-expressions-with-no-associated-snapshot', () => {
-  const groupId = arbitraryGroupId();
   const expressionDoiA = arbitraryExpressionDoi();
   const expressionDoiB = arbitraryExpressionDoi();
   const expressionDoiC = arbitraryExpressionDoi();
@@ -124,7 +127,7 @@ describe('get-expressions-with-no-associated-snapshot', () => {
       paperSnapshotWithExpressionDoisAB,
       {
         ...evaluationRecordedAgainstExpressionDoiA,
-        groupId: arbitraryGroupId(),
+        groupId: anotherGroupId,
       },
     ] satisfies ReadonlyArray<DomainEvent>;
 
@@ -139,7 +142,7 @@ describe('get-expressions-with-no-associated-snapshot', () => {
       paperSnapshotWithExpressionDoisAB,
       {
         ...evaluationRecordedAgainstExpressionDoiC,
-        groupId: arbitraryGroupId(),
+        groupId: anotherGroupId,
       },
       paperSnapshotWithExpressionDoisABC,
     ];

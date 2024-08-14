@@ -9,17 +9,19 @@ import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
-const runQuery = (events: ReadonlyArray<DomainEvent>, groupId: GroupId) => {
+const groupId = arbitraryGroupId();
+const anotherGroupId = arbitraryGroupId();
+const consideredGroupIds = [groupId, anotherGroupId];
+
+const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) => {
   const readModel = pipe(
     events,
-    RA.reduce(initialState(), handleEvent),
+    RA.reduce(initialState(), handleEvent(consideredGroupIds)),
   );
-  return getPapersEvaluatedByGroup(readModel)(groupId);
+  return getPapersEvaluatedByGroup(readModel)(queriedGroupId);
 };
 
 describe('get-papers-evaluated-by-group', () => {
-  const groupId = arbitraryGroupId();
-  const anotherGroupId = arbitraryGroupId();
   const expressionDoiA = arbitraryExpressionDoi();
   const expressionDoiB = arbitraryExpressionDoi();
   const expressionDoiC = arbitraryExpressionDoi();
