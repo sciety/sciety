@@ -15,6 +15,15 @@ import { constructArticleCard } from '../../../shared-components/article-card';
 import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
 
+const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
+  groupId,
+  dependencies.getEvaluatedArticlesListIdForGroup,
+  O.chain((listId) => dependencies.lookupList(listId)),
+  O.map((list) => list.entries),
+  O.map(toExpressionDoisByMostRecentlyAdded),
+  E.fromOption(() => DE.notFound),
+);
+
 const toOrderedArticleCards = (
   dependencies: Dependencies,
   group: Group,
@@ -59,7 +68,7 @@ export const constructFeed = (
   page: number,
 ): TE.TaskEither<DE.DataError, ViewModel['feed']> => pipe(
   group.id,
-  dependencies.getPapersEvaluatedByGroup,
-  TE.right,
+  getEvaluatedArticleIds(dependencies),
+  TE.fromEither,
   TE.chainTaskK(toPageOfFeedContent(dependencies, group, pageSize, page)),
 );
