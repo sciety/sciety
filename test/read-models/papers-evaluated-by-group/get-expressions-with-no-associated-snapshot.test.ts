@@ -50,7 +50,7 @@ describe('get-expressions-with-no-associated-snapshot', () => {
     expressionDois: [expressionDoiA, expressionDoiB, expressionDoiC],
   };
 
-  describe('when an evaluation has been recorded against an expression, but no corresponding paper snapshot is available', () => {
+  describe('when an evaluation has been recorded, but no corresponding paper snapshot is available', () => {
     const events = [
       evaluationRecordedAgainstExpressionDoiA,
     ] satisfies ReadonlyArray<DomainEvent>;
@@ -60,7 +60,7 @@ describe('get-expressions-with-no-associated-snapshot', () => {
     });
   });
 
-  describe('when an evaluation has been recorded against an expression, but the evaluating group should not be considered', () => {
+  describe('when an evaluation has been recorded, but the evaluating group should not be considered', () => {
     const events = [
       {
         ...evaluationRecordedAgainstExpressionDoiA,
@@ -73,7 +73,7 @@ describe('get-expressions-with-no-associated-snapshot', () => {
     });
   });
 
-  describe('when an evaluation has been recorded against an expression which is part of a subsequently recorded paper snapshot', () => {
+  describe('when an evaluation has been recorded, then a corresponding paper snapshot recorded', () => {
     const events = [
       evaluationRecordedAgainstExpressionDoiA,
       paperSnapshotWithExpressionDoisAB,
@@ -84,7 +84,7 @@ describe('get-expressions-with-no-associated-snapshot', () => {
     });
   });
 
-  describe('when an expression has been evaluated, a paper snapshot recorded and the expression is evaluated again', () => {
+  describe('when an evaluation has been recorded, then a corresponding paper snapshot recorded, and the expression is evaluated again', () => {
     const events = [
       evaluationRecordedAgainstExpressionDoiA,
       paperSnapshotWithExpressionDoisAB,
