@@ -71,6 +71,18 @@ describe('get-expressions-with-no-associated-snapshot', () => {
         expect(runQuery(events)).toStrictEqual([]);
       });
     });
+
+    describe('then a corresponding paper snapshot recorded, and then the expression is evaluated again', () => {
+      const events = [
+        evaluationRecordedAgainstExpressionDoiA,
+        paperSnapshotWithExpressionDoisAB,
+        evaluationRecordedAgainstExpressionDoiA,
+      ] satisfies ReadonlyArray<DomainEvent>;
+
+      it('returns empty', () => {
+        expect(runQuery(events)).toStrictEqual([]);
+      });
+    });
   });
 
   describe('when an evaluation has been recorded, but the evaluating group should not be considered', () => {
@@ -79,18 +91,6 @@ describe('get-expressions-with-no-associated-snapshot', () => {
         ...evaluationRecordedAgainstExpressionDoiA,
         groupId: arbitraryGroupId(),
       },
-    ] satisfies ReadonlyArray<DomainEvent>;
-
-    it('returns empty', () => {
-      expect(runQuery(events)).toStrictEqual([]);
-    });
-  });
-
-  describe('when an evaluation has been recorded, then a corresponding paper snapshot recorded, and the expression is evaluated again', () => {
-    const events = [
-      evaluationRecordedAgainstExpressionDoiA,
-      paperSnapshotWithExpressionDoisAB,
-      evaluationRecordedAgainstExpressionDoiA,
     ] satisfies ReadonlyArray<DomainEvent>;
 
     it('returns empty', () => {
