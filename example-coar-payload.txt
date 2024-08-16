@@ -12,7 +12,6 @@
   "object": {
     // The object describes the resource which is the main focus of this notification.
     "id": "https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625",
-    "ietf:cite-as": "https://doi.org/10.1101/2021.01.22.21250328",
     "type": "sorg:WebPage"
   },
 // Optional  
