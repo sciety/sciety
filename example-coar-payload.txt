@@ -10,18 +10,14 @@
   },
   "id": "urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f",
   "object": {
-    // The object describes the resource which is the main focus of this notification.
     "id": "https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625",
     "type": "sorg:WebPage"
   },
-// Optional  
-//   "context": {
-//     // When the object describes the result of some service acting on a resource, 
-//     // the context may be used to refer to that second resource.
-//     "id": "https://www.medrxiv.org/content/10.1101/2021.01.22.21250328v2",
-//     "ietf:cite-as": "https://doi.org/10.1101/2021.01.22.21250328",
-//     "type": "sorg:ScholarlyArticle"
-//   },
+  "context": {
+    "id": "https://sciety.org/articles/activity/10.1101/2024.04.03.24305276",
+    "ietf:cite-as": "https://doi.org/10.1101/2024.04.03.24305276",
+    "type": "sorg:ScholarlyArticle"
+  },
   "origin": {
     "id": "https://sciety.org",
     "inbox": "https://sciety.org/inbox/",
