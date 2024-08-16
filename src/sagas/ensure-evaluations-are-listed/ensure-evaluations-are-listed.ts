@@ -14,7 +14,7 @@ type Dependencies = Queries & DependenciesForCommands & {
 };
 
 export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Promise<void> => {
-  dependencies.logger('info', 'ensureEvaluationsAreListed starting');
+  dependencies.logger('debug', 'ensureEvaluationsAreListed starting');
   await pipe(
     dependencies.getUnlistedEvaluatedArticles(),
     RA.head,
@@ -26,5 +26,5 @@ export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Pr
       }),
     ),
   )();
-  dependencies.logger('info', 'ensureEvaluationsAreListed finished');
+  dependencies.logger('debug', 'ensureEvaluationsAreListed finished');
 };

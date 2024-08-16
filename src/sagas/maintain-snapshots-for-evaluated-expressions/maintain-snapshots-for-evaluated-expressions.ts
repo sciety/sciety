@@ -14,7 +14,7 @@ export const maintainSnapshotsForEvaluatedExpressions = async (
   dependencies: Dependencies,
 ): Promise<void> => {
   const iterationId = uuidV4();
-  dependencies.logger('info', 'maintainSnapshotsForEvaluatedExpressions starting', { iterationId });
+  dependencies.logger('debug', 'maintainSnapshotsForEvaluatedExpressions starting', { iterationId });
   await pipe(
     dependencies.getExpressionsWithNoAssociatedSnapshot(),
     RA.head,
@@ -32,5 +32,5 @@ export const maintainSnapshotsForEvaluatedExpressions = async (
       expressionDois: expressions,
     })),
   )();
-  dependencies.logger('info', 'maintainSnapshotsForEvaluatedExpressions finished', { iterationId });
+  dependencies.logger('debug', 'maintainSnapshotsForEvaluatedExpressions finished', { iterationId });
 };
