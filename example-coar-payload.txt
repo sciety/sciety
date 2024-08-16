@@ -28,8 +28,8 @@
     "type": "Service"
   },
   "target": {
-    "id": "https://kotahi.community/metaror/system",
-    "inbox": "https://kotahi.community/metaror/inbox/",
+    "id": "https://coar-notify-inbox.fly.dev",
+    "inbox": "https://coar-notify-inbox.fly.dev/inbox",
     "type": "Service"
   },
   "type": [
