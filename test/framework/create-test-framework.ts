@@ -3,6 +3,7 @@ import { createReadAndWriteSides, ReadAndWriteSides } from './create-read-and-wr
 import { createHappyPathThirdPartyAdapters, HappyPathThirdPartyAdapters } from './happy-path-third-party-adapters';
 import { Logger } from '../../src/logger';
 import { Queries } from '../../src/read-models';
+import { DependenciesForCommands } from '../../src/write-side';
 import { Dependencies as DependenciesForExecuteResourceAction } from '../../src/write-side/resources/execute-resource-action';
 import { AbortTest, abortTest } from '../abort-test';
 import { dummyLogger } from '../dummy-logger';
@@ -12,6 +13,7 @@ export type TestFramework = ReadAndWriteSides & {
   commandHelpers: CommandHelpers,
   happyPathThirdParties: HappyPathThirdPartyAdapters,
   dependenciesForViews: Queries & HappyPathThirdPartyAdapters & { logger: Logger },
+  dependenciesForCommands: DependenciesForCommands,
 };
 
 export const createTestFramework = (): TestFramework => {
@@ -30,6 +32,11 @@ export const createTestFramework = (): TestFramework => {
     dependenciesForViews: {
       ...framework.queries,
       ...happyPathThirdParties,
+      logger: dummyLogger,
+    },
+    dependenciesForCommands: {
+      commitEvents: framework.commitEvents,
+      getAllEvents: framework.getAllEvents,
       logger: dummyLogger,
     },
   };

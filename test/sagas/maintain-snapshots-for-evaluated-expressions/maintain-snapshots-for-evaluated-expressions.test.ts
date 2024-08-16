@@ -39,8 +39,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
 
         await maintainSnapshotsForEvaluatedExpressions({
           ...framework.dependenciesForViews,
-          getAllEvents: framework.getAllEvents,
-          commitEvents: framework.commitEvents,
+          ...framework.dependenciesForCommands,
           fetchPublishingHistory: () => TE.right(publishingHistory),
         });
       });
@@ -69,8 +68,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
 
       await maintainSnapshotsForEvaluatedExpressions({
         ...framework.dependenciesForViews,
-        getAllEvents: framework.getAllEvents,
-        commitEvents: framework.commitEvents,
+        ...framework.dependenciesForCommands,
       });
     });
 
