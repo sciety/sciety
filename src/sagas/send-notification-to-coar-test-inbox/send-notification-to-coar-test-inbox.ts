@@ -4,6 +4,7 @@ import { pipe, identity } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { constructHeadersWithUserAgent } from '../../third-parties/construct-headers-with-user-agent';
+import { logResponseTime } from '../../third-parties/log-response-time';
 import { DependenciesForCommands } from '../../write-side';
 
 const data = {
@@ -47,11 +48,13 @@ export const sendNotificationToCoarTestInbox = async (
   dependencies: Dependencies,
 ): Promise<void> => {
   const iterationId = uuidV4();
+  const startTime = new Date();
+  const url = 'https://coar-notify-inbox.fly.dev/inbox/';
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
     TE.tryCatch(
-      async () => axios.post('https://coar-notify-inbox.fly.dev/inbox/', data, {
+      async () => axios.post(url, data, {
         headers: constructHeadersWithUserAgent({
           'Content-Type': 'application/json',
         }),
@@ -59,6 +62,7 @@ export const sendNotificationToCoarTestInbox = async (
       identity,
     ),
     TE.mapLeft((error) => dependencies.logger('error', 'POST request failed in sendNotificationToCoarTestInbox', { error })),
+    TE.map((response) => logResponseTime(dependencies.logger, startTime, response, url)),
   )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
 };
