@@ -10,11 +10,11 @@ import { constructHeadersWithUserAgent } from '../../third-parties/construct-hea
 import { logResponseTime } from '../../third-parties/log-response-time';
 import { DependenciesForCommands } from '../../write-side';
 
-const hardcodedNotificationId = 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f';
-
-const hardcodedNotificationObjectId = new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625');
-
-const hardcodedNotificationContextId = new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276');
+const hardcodedCoarNotificationModel: CoarNotificationModel = {
+  id: 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f',
+  objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625'),
+  contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276'),
+};
 
 type CoarNotificationModel = {
   id: string,
@@ -85,11 +85,7 @@ export const sendNotificationToCoarTestInbox = async (
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
-    {
-      id: hardcodedNotificationId,
-      objectId: hardcodedNotificationObjectId,
-      contextId: hardcodedNotificationContextId,
-    },
+    hardcodedCoarNotificationModel,
     renderCoarNotification,
     postData(url, dependencies),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
