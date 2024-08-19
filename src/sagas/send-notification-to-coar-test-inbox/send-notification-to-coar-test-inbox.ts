@@ -48,7 +48,9 @@ export const sendNotificationToCoarTestInbox = async (
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await axios.post('https://coar-notify-inbox.fly.dev/inbox/', data, {
-    headers: constructHeadersWithUserAgent({}),
+    headers: constructHeadersWithUserAgent({
+      'Content-Type': 'application/json',
+    }),
   });
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
 };
