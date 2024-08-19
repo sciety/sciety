@@ -15,6 +15,8 @@ const hardcodedCoarNotificationModel: CoarNotificationModel = {
   objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625'),
   contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276'),
   contextCiteAs: new URL('https://doi.org/10.1101/2024.04.03.24305276'),
+  targetId: new URL('https://coar-notify-inbox.fly.dev'),
+  targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
 };
 
 type CoarNotificationModel = {
@@ -22,6 +24,8 @@ type CoarNotificationModel = {
   objectId: URL,
   contextId: URL,
   contextCiteAs: URL,
+  targetId: URL,
+  targetInbox: URL,
 };
 
 const renderCoarNotification = (notification: CoarNotificationModel) => ({
@@ -50,8 +54,8 @@ const renderCoarNotification = (notification: CoarNotificationModel) => ({
     type: 'Service',
   },
   target: {
-    id: 'https://coar-notify-inbox.fly.dev',
-    inbox: 'https://coar-notify-inbox.fly.dev/inbox',
+    id: notification.targetId.toString(),
+    inbox: notification.targetInbox.toString(),
     type: 'Service',
   },
   type: [
