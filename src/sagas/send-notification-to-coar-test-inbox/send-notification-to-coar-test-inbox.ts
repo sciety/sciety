@@ -60,6 +60,7 @@ export const sendNotificationToCoarTestInbox = async (
         headers: constructHeadersWithUserAgent({
           'Content-Type': 'application/json',
         }),
+        timeout: 30 * 1000,
       }),
       identity,
     ),
