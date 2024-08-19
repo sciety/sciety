@@ -12,7 +12,7 @@ export const startSagas = (ports: CollectedPorts) => async (): Promise<void> => 
     setInterval(async () => maintainSnapshotsForEvaluatedExpressions(ports), 5 * 1000);
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    setInterval(async () => sendNotificationToCoarTestInbox(ports), 10 * 60 * 1000);
+    setTimeout(async () => sendNotificationToCoarTestInbox(ports), 5 * 1000);
   }
   ports.logger('info', 'Sagas started');
 };
