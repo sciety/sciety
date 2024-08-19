@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Json } from 'fp-ts/Json';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, identity } from 'fp-ts/function';
@@ -8,7 +9,7 @@ import { constructHeadersWithUserAgent } from '../../third-parties/construct-hea
 import { logResponseTime } from '../../third-parties/log-response-time';
 import { DependenciesForCommands } from '../../write-side';
 
-const data = {
+const hardcodedCoarNotification = {
   '@context': [
     'https://www.w3.org/ns/activitystreams',
     'https://purl.org/coar/notify',
@@ -46,7 +47,7 @@ const data = {
 
 type Dependencies = DependenciesForViews & DependenciesForCommands;
 
-const postData = (url: string, dependencies: Dependencies) => {
+const postData = (url: string, dependencies: Dependencies, data: Json) => {
   const startTime = new Date();
   return pipe(
     TE.tryCatch(
@@ -70,6 +71,6 @@ export const sendNotificationToCoarTestInbox = async (
   const url = 'https://coar-notify-inbox.fly.dev/inbox/';
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
-  await postData(url, dependencies)();
+  await postData(url, dependencies, hardcodedCoarNotification)();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
 };
