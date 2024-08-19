@@ -4,15 +4,11 @@ import {
 } from 'axios-cache-interceptor';
 import { Logger } from '../../logger';
 import { constructHeadersWithUserAgent } from '../construct-headers-with-user-agent';
+import { logResponseTime } from '../log-response-time';
 
 const shouldCacheAccordingToStatusCode = (status: number) => [
   200, 203, 300, 301, 302, 404, 405, 410, 414, 501,
 ].includes(status);
-
-const logResponseTime = (logger: Logger, startTime: Date, response: CacheAxiosResponse | undefined, url: string) => {
-  const durationInMs = new Date().getTime() - startTime.getTime();
-  logger('debug', 'Response time', { url, durationInMs, responseStatus: response ? response.status : 'not-available-because-request-failed' });
-};
 
 export type ResponseBodyCachePredicate = (responseBody: unknown, url: string) => boolean;
 
