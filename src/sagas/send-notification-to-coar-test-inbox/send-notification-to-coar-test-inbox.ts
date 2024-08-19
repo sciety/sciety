@@ -60,7 +60,7 @@ const postData = (url: string, dependencies: Dependencies, data: Json) => {
       identity,
     ),
     T.tap((result) => T.of(logResponseTime(dependencies.logger, startTime, result, url))),
-    TE.mapLeft((error) => dependencies.logger('error', 'POST request failed in sendNotificationToCoarTestInbox', { error })),
+    TE.mapLeft((error) => dependencies.logger('error', 'POST request failed', { error })),
   );
 };
 
@@ -71,6 +71,9 @@ export const sendNotificationToCoarTestInbox = async (
   const url = 'https://coar-notify-inbox.fly.dev/inbox/';
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
-  await postData(url, dependencies, hardcodedCoarNotification)();
+  await pipe(
+    postData(url, dependencies, hardcodedCoarNotification),
+    TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
+  )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
 };
