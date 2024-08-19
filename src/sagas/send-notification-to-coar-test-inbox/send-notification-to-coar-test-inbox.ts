@@ -83,17 +83,24 @@ const postData = (url: string, dependencies: Dependencies) => (data: Json) => {
   );
 };
 
+const sendCoarNotification = (dependencies: Dependencies) => (coarNotificationModel: CoarNotificationModel) => {
+  const url = 'https://coar-notify-inbox.fly.dev/inbox/';
+  return pipe(
+    coarNotificationModel,
+    renderCoarNotification,
+    postData(url, dependencies),
+  );
+};
+
 export const sendNotificationToCoarTestInbox = async (
   dependencies: Dependencies,
 ): Promise<void> => {
   const iterationId = uuidV4();
-  const url = 'https://coar-notify-inbox.fly.dev/inbox/';
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
     hardcodedCoarNotificationModel,
-    renderCoarNotification,
-    postData(url, dependencies),
+    sendCoarNotification(dependencies),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
   )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
