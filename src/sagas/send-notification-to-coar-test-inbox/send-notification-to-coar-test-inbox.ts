@@ -9,7 +9,9 @@ import { constructHeadersWithUserAgent } from '../../third-parties/construct-hea
 import { logResponseTime } from '../../third-parties/log-response-time';
 import { DependenciesForCommands } from '../../write-side';
 
-const renderCoarNotification = () => ({
+const hardcodedNotificationId = 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f';
+
+const renderCoarNotification = (notificationId: string) => ({
   '@context': [
     'https://www.w3.org/ns/activitystreams',
     'https://purl.org/coar/notify',
@@ -19,7 +21,7 @@ const renderCoarNotification = () => ({
     name: 'Sciety',
     type: 'Organization',
   },
-  id: 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f',
+  id: notificationId,
   object: {
     id: 'https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625',
     type: 'sorg:WebPage',
@@ -72,7 +74,7 @@ export const sendNotificationToCoarTestInbox = async (
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
-    postData(url, dependencies, renderCoarNotification()),
+    postData(url, dependencies, renderCoarNotification(hardcodedNotificationId)),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
   )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
