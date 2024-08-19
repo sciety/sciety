@@ -9,7 +9,7 @@ import { constructHeadersWithUserAgent } from '../../third-parties/construct-hea
 import { logResponseTime } from '../../third-parties/log-response-time';
 import { DependenciesForCommands } from '../../write-side';
 
-const hardcodedCoarNotification = {
+const renderCoarNotification = () => ({
   '@context': [
     'https://www.w3.org/ns/activitystreams',
     'https://purl.org/coar/notify',
@@ -43,7 +43,7 @@ const hardcodedCoarNotification = {
     'Announce',
     'coar-notify:IngestAction',
   ],
-};
+});
 
 type Dependencies = DependenciesForViews & DependenciesForCommands;
 
@@ -72,7 +72,7 @@ export const sendNotificationToCoarTestInbox = async (
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
-    postData(url, dependencies, hardcodedCoarNotification),
+    postData(url, dependencies, renderCoarNotification()),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
   )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
