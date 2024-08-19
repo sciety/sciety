@@ -14,7 +14,13 @@ const hardcodedNotificationId = 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f';
 
 const hardcodedNotificationObjectId = new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625');
 
-type CoarNotificationModel = { notificationId: string, notificationObjectId: URL };
+const hardcodedNotificationContextId = new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276');
+
+type CoarNotificationModel = {
+  id: string,
+  objectId: URL,
+  contextId: URL,
+};
 
 const renderCoarNotification = (notification: CoarNotificationModel) => ({
   '@context': [
@@ -26,13 +32,13 @@ const renderCoarNotification = (notification: CoarNotificationModel) => ({
     name: 'Sciety',
     type: 'Organization',
   },
-  id: notification.notificationId,
+  id: notification.id,
   object: {
-    id: notification.notificationObjectId.toString(),
+    id: notification.objectId.toString(),
     type: 'sorg:WebPage',
   },
   context: {
-    id: 'https://sciety.org/articles/activity/10.1101/2024.04.03.24305276',
+    id: notification.contextId.toString(),
     'ietf:cite-as': 'https://doi.org/10.1101/2024.04.03.24305276',
     type: 'sorg:ScholarlyArticle',
   },
@@ -80,8 +86,9 @@ export const sendNotificationToCoarTestInbox = async (
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
     {
-      notificationId: hardcodedNotificationId,
-      notificationObjectId: hardcodedNotificationObjectId,
+      id: hardcodedNotificationId,
+      objectId: hardcodedNotificationObjectId,
+      contextId: hardcodedNotificationContextId,
     },
     renderCoarNotification,
     postData(url, dependencies),
