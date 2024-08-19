@@ -14,12 +14,14 @@ const hardcodedCoarNotificationModel: CoarNotificationModel = {
   id: 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f',
   objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625'),
   contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276'),
+  contextCiteAs: new URL('https://doi.org/10.1101/2024.04.03.24305276'),
 };
 
 type CoarNotificationModel = {
   id: string,
   objectId: URL,
   contextId: URL,
+  contextCiteAs: URL,
 };
 
 const renderCoarNotification = (notification: CoarNotificationModel) => ({
@@ -39,7 +41,7 @@ const renderCoarNotification = (notification: CoarNotificationModel) => ({
   },
   context: {
     id: notification.contextId.toString(),
-    'ietf:cite-as': 'https://doi.org/10.1101/2024.04.03.24305276',
+    'ietf:cite-as': notification.contextCiteAs.toString(),
     type: 'sorg:ScholarlyArticle',
   },
   origin: {
