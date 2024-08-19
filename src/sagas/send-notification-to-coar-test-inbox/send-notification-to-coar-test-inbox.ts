@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import axios from 'axios';
 import { Json } from 'fp-ts/Json';
 import * as T from 'fp-ts/Task';
@@ -11,7 +12,11 @@ import { DependenciesForCommands } from '../../write-side';
 
 const hardcodedNotificationId = 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f';
 
-const renderCoarNotification = (notificationId: string) => ({
+const hardcodedNotificationObjectId = new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625');
+
+type CoarNotificationModel = { notificationId: string, notificationObjectId: URL };
+
+const renderCoarNotification = (notification: CoarNotificationModel) => ({
   '@context': [
     'https://www.w3.org/ns/activitystreams',
     'https://purl.org/coar/notify',
@@ -21,9 +26,9 @@ const renderCoarNotification = (notificationId: string) => ({
     name: 'Sciety',
     type: 'Organization',
   },
-  id: notificationId,
+  id: notification.notificationId,
   object: {
-    id: 'https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625',
+    id: notification.notificationObjectId.toString(),
     type: 'sorg:WebPage',
   },
   context: {
@@ -74,7 +79,10 @@ export const sendNotificationToCoarTestInbox = async (
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
-    hardcodedNotificationId,
+    {
+      notificationId: hardcodedNotificationId,
+      notificationObjectId: hardcodedNotificationObjectId,
+    },
     renderCoarNotification,
     postData(url, dependencies),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
