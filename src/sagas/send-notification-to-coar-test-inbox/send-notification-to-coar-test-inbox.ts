@@ -43,7 +43,22 @@ const data = {
     'coar-notify:IngestAction',
   ],
 };
+
 type Dependencies = DependenciesForViews & DependenciesForCommands;
+
+const postData = (url: string, dependencies: Dependencies, startTime: Date) => pipe(
+  TE.tryCatch(
+    async () => axios.post(url, data, {
+      headers: constructHeadersWithUserAgent({
+        'Content-Type': 'application/json',
+      }),
+      timeout: 30 * 1000,
+    }),
+    identity,
+  ),
+  T.tap((result) => T.of(logResponseTime(dependencies.logger, startTime, result, url))),
+  TE.mapLeft((error) => dependencies.logger('error', 'POST request failed in sendNotificationToCoarTestInbox', { error })),
+);
 
 export const sendNotificationToCoarTestInbox = async (
   dependencies: Dependencies,
@@ -53,18 +68,6 @@ export const sendNotificationToCoarTestInbox = async (
   const url = 'https://coar-notify-inbox.fly.dev/inbox/';
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
-  await pipe(
-    TE.tryCatch(
-      async () => axios.post(url, data, {
-        headers: constructHeadersWithUserAgent({
-          'Content-Type': 'application/json',
-        }),
-        timeout: 30 * 1000,
-      }),
-      identity,
-    ),
-    T.tap((result) => T.of(logResponseTime(dependencies.logger, startTime, result, url))),
-    TE.mapLeft((error) => dependencies.logger('error', 'POST request failed in sendNotificationToCoarTestInbox', { error })),
-  )();
+  await postData(url, dependencies, startTime)();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
 };
