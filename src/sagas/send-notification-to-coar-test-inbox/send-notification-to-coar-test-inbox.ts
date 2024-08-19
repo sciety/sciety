@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, identity } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
@@ -61,8 +63,13 @@ export const sendNotificationToCoarTestInbox = async (
       }),
       identity,
     ),
+    T.tap((result) => pipe(
+      result,
+      E.getOrElseW(() => undefined),
+      (response) => logResponseTime(dependencies.logger, startTime, response, url),
+      T.of,
+    )),
     TE.mapLeft((error) => dependencies.logger('error', 'POST request failed in sendNotificationToCoarTestInbox', { error })),
-    TE.map((response) => logResponseTime(dependencies.logger, startTime, response, url)),
   )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
 };
