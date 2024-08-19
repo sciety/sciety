@@ -49,7 +49,7 @@ const renderCoarNotification = (notificationId: string) => ({
 
 type Dependencies = DependenciesForViews & DependenciesForCommands;
 
-const postData = (url: string, dependencies: Dependencies, data: Json) => {
+const postData = (url: string, dependencies: Dependencies) => (data: Json) => {
   const startTime = new Date();
   return pipe(
     TE.tryCatch(
@@ -74,7 +74,9 @@ export const sendNotificationToCoarTestInbox = async (
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
-    postData(url, dependencies, renderCoarNotification(hardcodedNotificationId)),
+    hardcodedNotificationId,
+    renderCoarNotification,
+    postData(url, dependencies),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
   )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
