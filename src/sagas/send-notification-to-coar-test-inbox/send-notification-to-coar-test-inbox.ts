@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe, identity } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { constructHeadersWithUserAgent } from '../../third-parties/construct-headers-with-user-agent';
@@ -47,10 +49,16 @@ export const sendNotificationToCoarTestInbox = async (
   const iterationId = uuidV4();
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
-  await axios.post('https://coar-notify-inbox.fly.dev/inbox/', data, {
-    headers: constructHeadersWithUserAgent({
-      'Content-Type': 'application/json',
-    }),
-  });
+  await pipe(
+    TE.tryCatch(
+      async () => axios.post('https://coar-notify-inbox.fly.dev/inbox/', data, {
+        headers: constructHeadersWithUserAgent({
+          'Content-Type': 'application/json',
+        }),
+      }),
+      identity,
+    ),
+    TE.mapLeft((error) => dependencies.logger('error', 'POST request failed in sendNotificationToCoarTestInbox', { error })),
+  )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
 };
