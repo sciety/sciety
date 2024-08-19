@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidV4 } from 'uuid';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
+import { constructHeadersWithUserAgent } from '../../third-parties/construct-headers-with-user-agent';
 import { DependenciesForCommands } from '../../write-side';
 
 const data = {
@@ -44,7 +45,10 @@ export const sendNotificationToCoarTestInbox = async (
   dependencies: Dependencies,
 ): Promise<void> => {
   const iterationId = uuidV4();
+
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
-  await axios.post('https://coar-notify-inbox.fly.dev/inbox/', data);
+  await axios.post('https://coar-notify-inbox.fly.dev/inbox/', data, {
+    headers: constructHeadersWithUserAgent({}),
+  });
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
 };
