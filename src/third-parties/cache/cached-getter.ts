@@ -2,6 +2,7 @@ import {
   AxiosCacheInstance,
   CacheAxiosResponse,
 } from 'axios-cache-interceptor';
+import * as E from 'fp-ts/Either';
 import { Logger } from '../../logger';
 import { constructHeadersWithUserAgent } from '../construct-headers-with-user-agent';
 import { logResponseTime } from '../log-response-time';
@@ -35,12 +36,12 @@ export const cachedGetter = (
       logger('debug', 'Axios cache hit', cacheLoggingPayload);
     } else {
       logger('debug', 'Axios cache miss', cacheLoggingPayload);
-      logResponseTime(logger, startTime, response, url);
+      logResponseTime(logger, startTime, E.right(response), url);
     }
     return response.data;
   } catch (error: unknown) {
     logger('debug', 'Error from cachedAxios.get', cacheLoggingPayload);
-    logResponseTime(logger, startTime, response, url);
+    logResponseTime(logger, startTime, E.left(undefined), url);
     throw error;
   }
 };
