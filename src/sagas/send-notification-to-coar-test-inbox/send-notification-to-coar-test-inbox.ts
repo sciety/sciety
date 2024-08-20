@@ -5,31 +5,32 @@ import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
 import * as paths from '../../read-side/paths';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
+import { EvaluationLocator, toEvaluationLocator } from '../../types/evaluation-locator';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as EDOI from '../../types/expression-doi';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 type RecordedEvaluation = {
   id: string,
-  objectId: URL,
   expressionDoi: ExpressionDoi,
+  evaluationLocator: EvaluationLocator,
 };
 
 const hardcodedRecordedEvaluations = [
   {
     id: 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f',
-    objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625'),
     expressionDoi: EDOI.fromValidatedString('10.1101/2024.04.03.24305276'),
+    evaluationLocator: toEvaluationLocator('doi:10.5281/zenodo.13274625'),
   },
   {
     id: 'urn:uuid:bcebd78d-a869-4d4c-aaa5-eef703e9e583',
-    objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.12958884'),
     expressionDoi: EDOI.fromValidatedString('10.1101/2024.04.03.24305276'),
+    evaluationLocator: toEvaluationLocator('doi:10.5281/zenodo.12958884'),
   },
   {
     id: 'urn:uuid:13ecd429-3611-4842-ad44-140195444152',
-    objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.05.07.592993#doi:10.5281/zenodo.11644732'),
     expressionDoi: EDOI.fromValidatedString('10.1101/2024.05.07.592993'),
+    evaluationLocator: toEvaluationLocator('doi:10.5281/zenodo.11644732'),
   },
 ] satisfies ReadonlyArray<RecordedEvaluation>;
 
@@ -37,6 +38,7 @@ const constructCoarNotificationModel = (
   recordedEvaluation: RecordedEvaluation,
 ): CoarNotificationModel => ({
   ...recordedEvaluation,
+  objectId: new URL(`https://sciety.org${paths.constructPaperActivityPageFocusedOnEvaluationHref(recordedEvaluation.expressionDoi, recordedEvaluation.evaluationLocator)}`),
   contextId: new URL(`https://sciety.org${paths.constructPaperActivityPageHref(recordedEvaluation.expressionDoi)}`),
   contextCiteAs: new URL(`https://doi.org/${recordedEvaluation.expressionDoi}`),
   targetId: new URL('https://coar-notify-inbox.fly.dev'),
