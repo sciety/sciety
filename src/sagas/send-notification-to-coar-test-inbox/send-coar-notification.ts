@@ -2,10 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { CoarNotificationModel } from './coar-notification-model';
 import { postData } from './post-data';
-import { DependenciesForViews } from '../../read-side/dependencies-for-views';
-import { DependenciesForCommands } from '../../write-side';
-
-type Dependencies = DependenciesForViews & DependenciesForCommands;
+import { Logger } from '../../logger';
 
 const renderCoarNotification = (notification: CoarNotificationModel) => ({
   '@context': [
@@ -43,14 +40,14 @@ const renderCoarNotification = (notification: CoarNotificationModel) => ({
   ],
 });
 
-export const sendCoarNotification = (dependencies: Dependencies) => (
+export const sendCoarNotification = (logger: Logger) => (
   coarNotificationModel: CoarNotificationModel,
 ): TE.TaskEither<void, void> => {
   const inboxUrl = coarNotificationModel.targetInbox.toString();
   return pipe(
     coarNotificationModel,
     renderCoarNotification,
-    postData(inboxUrl, dependencies),
+    postData(logger, inboxUrl),
     TE.map(() => undefined),
   );
 };

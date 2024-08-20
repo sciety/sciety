@@ -26,7 +26,7 @@ export const sendNotificationToCoarTestInbox = async (
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
     hardcodedCoarNotificationModel,
-    sendCoarNotification(dependencies),
+    sendCoarNotification(dependencies.logger),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
   )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
