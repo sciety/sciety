@@ -38,8 +38,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
         );
 
         await maintainSnapshotsForEvaluatedExpressions({
-          ...framework.dependenciesForViews,
-          ...framework.dependenciesForCommands,
+          ...framework.dependenciesForSagas,
           fetchPublishingHistory: () => TE.right(publishingHistory),
         });
       });
@@ -66,10 +65,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
 
-      await maintainSnapshotsForEvaluatedExpressions({
-        ...framework.dependenciesForViews,
-        ...framework.dependenciesForCommands,
-      });
+      await maintainSnapshotsForEvaluatedExpressions(framework.dependenciesForSagas);
     });
 
     it('does nothing', () => {
