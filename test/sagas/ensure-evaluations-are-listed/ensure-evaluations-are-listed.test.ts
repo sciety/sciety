@@ -27,6 +27,7 @@ describe('ensure-evaluations-are-listed', () => {
 
       await ensureEvaluationsAreListed({
         ...framework.queries,
+        ...framework.happyPathThirdParties,
         getAllEvents: framework.getAllEvents,
         commitEvents: framework.commitEvents,
         logger: dummyLogger,

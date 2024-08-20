@@ -1,4 +1,11 @@
-import { DependenciesForViews } from '../read-side/dependencies-for-views';
+import { Logger } from '../logger';
+import { Queries } from '../read-models';
+import { ExternalQueries } from '../third-parties';
 import { DependenciesForCommands } from '../write-side';
 
-export type DependenciesForSagas = DependenciesForViews & DependenciesForCommands;
+export type DependenciesForSagas = Queries
+& ExternalQueries
+& DependenciesForCommands
+& {
+  logger: Logger,
+};
