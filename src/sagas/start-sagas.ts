@@ -11,6 +11,10 @@ const runPeriodically = (saga: Saga, seconds: number): void => {
   setInterval(saga, seconds * 1000);
 };
 
+const runOnceAfter = (saga: Saga, seconds: number): void => {
+  setTimeout(saga, seconds * 1000);
+};
+
 export const startSagas = (dependencies: DependenciesForSagas) => async (): Promise<void> => {
   dependencies.logger('info', 'Starting sagas');
   runPeriodically(async () => ensureEvaluationsAreListed(dependencies), 317);
@@ -18,7 +22,7 @@ export const startSagas = (dependencies: DependenciesForSagas) => async (): Prom
     runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    setTimeout(async () => sendNotificationToCoarTestInbox(dependencies), 5 * 1000);
+    runOnceAfter(async () => sendNotificationToCoarTestInbox(dependencies), 5);
   }
   dependencies.logger('info', 'Sagas started');
 };
