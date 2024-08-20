@@ -84,11 +84,11 @@ const postData = (url: string, dependencies: Dependencies) => (data: Json) => {
 };
 
 const sendCoarNotification = (dependencies: Dependencies) => (coarNotificationModel: CoarNotificationModel) => {
-  const url = 'https://coar-notify-inbox.fly.dev/inbox/';
+  const inboxUrl = coarNotificationModel.targetInbox.toString();
   return pipe(
     coarNotificationModel,
     renderCoarNotification,
-    postData(url, dependencies),
+    postData(inboxUrl, dependencies),
   );
 };
 
