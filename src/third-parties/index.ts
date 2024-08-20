@@ -1,3 +1,3 @@
 export { ExternalQueries } from './external-queries';
 export { ExternalNotifications } from './external-notifications';
-export { instantiate } from './instantiate';
+export { instantiateExternalQueries } from './instantiate-external-queries';

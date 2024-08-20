@@ -28,7 +28,7 @@ const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | un
     };
 };
 
-export const instantiate = (
+export const instantiateExternalQueries = (
   logger: Logger,
   crossrefApiBearerToken: O.Option<string>,
   redisClient: ReturnType<typeof createClient> | undefined,

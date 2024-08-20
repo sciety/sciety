@@ -16,7 +16,7 @@ import { stubAdapters } from './stub-adapters';
 import { sort as sortEvents } from '../domain-events';
 import { Logger } from '../logger';
 import { dispatcher } from '../read-models';
-import { instantiate } from '../third-parties';
+import { instantiateExternalQueries } from '../third-parties';
 import { sendCoarNotification } from '../third-parties/send-coar-notification/send-coar-notification';
 
 type InfrastructureConfig = LoggerConfig & {
@@ -86,7 +86,7 @@ export const createInfrastructure = (
 
       const redisClient = await createRedisClient(partialAdapters.logger);
 
-      const externalQueries = instantiate(
+      const externalQueries = instantiateExternalQueries(
         partialAdapters.logger,
         config.crossrefApiBearerToken,
         redisClient,
