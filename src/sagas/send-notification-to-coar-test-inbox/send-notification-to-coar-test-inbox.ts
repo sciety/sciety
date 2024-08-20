@@ -6,6 +6,15 @@ import { v4 as uuidV4 } from 'uuid';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
 
+type RecordedEvaluation = {
+  id: string,
+  objectId: URL,
+  contextId: URL,
+  contextCiteAs: URL,
+  targetId: URL,
+  targetInbox: URL,
+};
+
 const hardcodedCoarNotificationModels = [
   {
     id: 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f',
@@ -31,11 +40,11 @@ const hardcodedCoarNotificationModels = [
     targetId: new URL('https://coar-notify-inbox.fly.dev'),
     targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
   },
-];
+] satisfies ReadonlyArray<RecordedEvaluation>;
 
 const constructCoarNotificationModel = (
-  hardcodedRecordedEvaluation: CoarNotificationModel,
-): CoarNotificationModel => hardcodedRecordedEvaluation;
+  recordedEvaluation: RecordedEvaluation,
+): CoarNotificationModel => recordedEvaluation;
 
 type Dependencies = DependenciesForSagas;
 
