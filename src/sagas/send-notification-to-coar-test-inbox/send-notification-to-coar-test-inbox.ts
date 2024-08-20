@@ -1,13 +1,9 @@
 import { URL } from 'url';
-import axios from 'axios';
-import { Json } from 'fp-ts/Json';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe, identity } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
+import { postData } from './post-data';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
-import { constructHeadersWithUserAgent } from '../../third-parties/construct-headers-with-user-agent';
-import { logResponseTime } from '../../third-parties/log-response-time';
 import { DependenciesForCommands } from '../../write-side';
 
 const hardcodedCoarNotificationModel: CoarNotificationModel = {
@@ -65,23 +61,6 @@ const renderCoarNotification = (notification: CoarNotificationModel) => ({
 });
 
 type Dependencies = DependenciesForViews & DependenciesForCommands;
-
-const postData = (url: string, dependencies: Dependencies) => (data: Json) => {
-  const startTime = new Date();
-  return pipe(
-    TE.tryCatch(
-      async () => axios.post(url, data, {
-        headers: constructHeadersWithUserAgent({
-          'Content-Type': 'application/json',
-        }),
-        timeout: 30 * 1000,
-      }),
-      identity,
-    ),
-    T.tap((result) => T.of(logResponseTime(dependencies.logger, startTime, result, url))),
-    TE.mapLeft((error) => dependencies.logger('error', 'POST request failed', { error })),
-  );
-};
 
 const sendCoarNotification = (dependencies: Dependencies) => (
   coarNotificationModel: CoarNotificationModel,
