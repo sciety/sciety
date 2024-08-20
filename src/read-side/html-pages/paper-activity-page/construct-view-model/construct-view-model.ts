@@ -8,7 +8,7 @@ import { constructRelatedArticles } from './construct-related-articles';
 import { constructUserListManagement } from './construct-user-list-management';
 import { feedSummary } from './feed-summary';
 import { getFeedItemsByDateDescending } from './get-feed-items-by-date-descending';
-import { CanonicalExpressionDoi, ExpressionDoi } from '../../../../types/expression-doi';
+import { CanonicalExpressionDoi, toDoiUrl } from '../../../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../../../types/expression-front-matter';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { UserId } from '../../../../types/user-id';
@@ -19,8 +19,6 @@ import { constructReviewingGroups } from '../../../reviewing-groups';
 import { ConstructViewModel } from '../../construct-view-model';
 import { detectLanguage } from '../../shared-components/lang-attribute';
 import { ViewModel } from '../view-model';
-
-const toExpressionFullTextHref = (expressionDoi: ExpressionDoi) => `https://doi.org/${expressionDoi}`;
 
 const constructAbstract = (abstract: ExpressionFrontMatter['abstract']) => pipe(
   abstract,
@@ -72,7 +70,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     titleLanguageCode: detectLanguage(partial.frontMatter.title),
     ...constructAbstract(partial.frontMatter.abstract),
     userListManagement: constructUserListManagement(params.user, dependencies, params.latestExpressionDoi),
-    expressionFullTextHref: toExpressionFullTextHref(params.latestExpressionDoi),
+    expressionFullTextHref: toDoiUrl(params.latestExpressionDoi),
     feedItemsByDateDescending: partial.feedItemsByDateDescending,
     ...feedSummary(partial.feedItemsByDateDescending),
     listedIn: pipe(

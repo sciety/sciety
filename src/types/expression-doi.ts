@@ -15,6 +15,8 @@ export const isValidDoi = (value: string): boolean => doiRegex.test(value);
 
 export const hasPrefix = (prefix: string) => (doi: ExpressionDoi): boolean => doi.startsWith(`${prefix}/`);
 
+export const toDoiUrl = (expressionDoi: ExpressionDoi): string => `https://doi.org/${expressionDoi}`;
+
 export const expressionDoiCodec = new t.Type<ExpressionDoi, string, unknown>(
   'expressionDoi',
   isDoi,

@@ -12,7 +12,7 @@ import { constructPaperActivityPageHref } from '../../../paths';
 
 const renderInputs = (expressionDoi: EDOI.ExpressionDoi) => [{
   doi: expressionDoi,
-  url: `https://doi.org/${expressionDoi}`,
+  url: EDOI.toDoiUrl(expressionDoi),
 }];
 
 const renderAction = (expressionDoi: EDOI.ExpressionDoi) => (action: Action) => ({
