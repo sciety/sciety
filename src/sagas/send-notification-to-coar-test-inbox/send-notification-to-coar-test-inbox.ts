@@ -2,7 +2,8 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
-import { postData } from './post-data';
+import { CoarNotificationModel } from './coar-notification-model';
+import { sendCoarNotification } from './send-coar-notification';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { DependenciesForCommands } from '../../write-side';
 
@@ -15,64 +16,7 @@ const hardcodedCoarNotificationModel: CoarNotificationModel = {
   targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
 };
 
-type CoarNotificationModel = {
-  id: string,
-  objectId: URL,
-  contextId: URL,
-  contextCiteAs: URL,
-  targetId: URL,
-  targetInbox: URL,
-};
-
-const renderCoarNotification = (notification: CoarNotificationModel) => ({
-  '@context': [
-    'https://www.w3.org/ns/activitystreams',
-    'https://purl.org/coar/notify',
-  ],
-  actor: {
-    id: 'https://sciety.org',
-    name: 'Sciety',
-    type: 'Organization',
-  },
-  id: notification.id,
-  object: {
-    id: notification.objectId.toString(),
-    type: 'sorg:WebPage',
-  },
-  context: {
-    id: notification.contextId.toString(),
-    'ietf:cite-as': notification.contextCiteAs.toString(),
-    type: 'sorg:ScholarlyArticle',
-  },
-  origin: {
-    id: 'https://sciety.org',
-    inbox: 'https://sciety.org/inbox/',
-    type: 'Service',
-  },
-  target: {
-    id: notification.targetId.toString(),
-    inbox: notification.targetInbox.toString(),
-    type: 'Service',
-  },
-  type: [
-    'Announce',
-    'coar-notify:IngestAction',
-  ],
-});
-
 type Dependencies = DependenciesForViews & DependenciesForCommands;
-
-const sendCoarNotification = (dependencies: Dependencies) => (
-  coarNotificationModel: CoarNotificationModel,
-): TE.TaskEither<void, void> => {
-  const inboxUrl = coarNotificationModel.targetInbox.toString();
-  return pipe(
-    coarNotificationModel,
-    renderCoarNotification,
-    postData(inboxUrl, dependencies),
-    TE.map(() => undefined),
-  );
-};
 
 export const sendNotificationToCoarTestInbox = async (
   dependencies: Dependencies,
