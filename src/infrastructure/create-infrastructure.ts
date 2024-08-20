@@ -16,8 +16,7 @@ import { stubAdapters } from './stub-adapters';
 import { sort as sortEvents } from '../domain-events';
 import { Logger } from '../logger';
 import { dispatcher } from '../read-models';
-import { instantiateExternalQueries } from '../third-parties';
-import { sendCoarNotification } from '../third-parties/send-coar-notification/send-coar-notification';
+import { instantiateExternalNotifications, instantiateExternalQueries } from '../third-parties';
 
 type InfrastructureConfig = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -91,14 +90,15 @@ export const createInfrastructure = (
         config.crossrefApiBearerToken,
         redisClient,
       );
+      const externalNotifications = instantiateExternalNotifications(partialAdapters.logger);
 
       const allAdapters = {
         ...queries,
         ...externalQueries,
+        ...externalNotifications,
         logger: partialAdapters.logger,
         getAllEvents,
         commitEvents: commitEventsWithoutListeners,
-        sendCoarNotification: sendCoarNotification(partialAdapters.logger),
       };
 
       if (config.useStubAdapters) {
