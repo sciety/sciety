@@ -70,9 +70,9 @@ const renderCoarNotification = (notification: CoarNotificationModel): CoarNotifi
   ],
 });
 
-export const sendCoarNotification = (logger: Logger) => (
-  coarNotificationModel: CoarNotificationModel,
-): TE.TaskEither<void, void> => {
+type SendCoarNotification = (coarNotificationModel: CoarNotificationModel) => TE.TaskEither<void, void>;
+
+export const sendCoarNotification = (logger: Logger): SendCoarNotification => (coarNotificationModel) => {
   const inboxUrl = coarNotificationModel.targetInbox.toString();
   return pipe(
     coarNotificationModel,
