@@ -83,12 +83,15 @@ const postData = (url: string, dependencies: Dependencies) => (data: Json) => {
   );
 };
 
-const sendCoarNotification = (dependencies: Dependencies) => (coarNotificationModel: CoarNotificationModel) => {
+const sendCoarNotification = (dependencies: Dependencies) => (
+  coarNotificationModel: CoarNotificationModel,
+): TE.TaskEither<void, void> => {
   const inboxUrl = coarNotificationModel.targetInbox.toString();
   return pipe(
     coarNotificationModel,
     renderCoarNotification,
     postData(inboxUrl, dependencies),
+    TE.map(() => undefined),
   );
 };
 
