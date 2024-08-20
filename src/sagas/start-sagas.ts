@@ -5,11 +5,17 @@ import {
 } from './maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
 import { sendNotificationToCoarTestInbox } from './send-notification-to-coar-test-inbox';
 
+type Saga = () => Promise<void>;
+
+const runPeriodically = (saga: Saga, seconds: number): void => {
+  setInterval(saga, seconds * 1000);
+};
+
 export const startSagas = (dependencies: DependenciesForSagas) => async (): Promise<void> => {
   dependencies.logger('info', 'Starting sagas');
-  setInterval(async () => ensureEvaluationsAreListed(dependencies), 317 * 1000);
+  runPeriodically(async () => ensureEvaluationsAreListed(dependencies), 317);
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    setInterval(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5 * 1000);
+    runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     setTimeout(async () => sendNotificationToCoarTestInbox(dependencies), 5 * 1000);
