@@ -1,7 +1,9 @@
 import { URL } from 'url';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
+import { CoarNotificationModel } from '../../types/coar-notification-model';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 const hardcodedCoarNotificationModels = [
@@ -31,6 +33,10 @@ const hardcodedCoarNotificationModels = [
   },
 ];
 
+const constructCoarNotificationModel = (
+  hardcodedRecordedEvaluation: CoarNotificationModel,
+): CoarNotificationModel => hardcodedRecordedEvaluation;
+
 type Dependencies = DependenciesForSagas;
 
 export const sendNotificationToCoarTestInbox = async (
@@ -41,6 +47,7 @@ export const sendNotificationToCoarTestInbox = async (
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
     hardcodedCoarNotificationModels,
+    RA.map(constructCoarNotificationModel),
     TE.traverseArray(dependencies.sendCoarNotification),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
   )();
