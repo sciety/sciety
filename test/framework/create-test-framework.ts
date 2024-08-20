@@ -1,3 +1,4 @@
+import * as TE from 'fp-ts/TaskEither';
 import { CommandHelpers, createCommandHelpers } from './create-command-helpers';
 import { createReadAndWriteSides, ReadAndWriteSides } from './create-read-and-write-sides';
 import { createHappyPathThirdPartyAdapters, HappyPathThirdPartyAdapters } from './happy-path-third-party-adapters';
@@ -46,6 +47,7 @@ export const createTestFramework = (): TestFramework => {
       ...framework.queries,
       ...happyPathThirdParties,
       ...dependenciesForCommands,
+      sendCoarNotification: () => TE.right(undefined),
     },
   };
 };

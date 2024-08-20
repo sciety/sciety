@@ -2,7 +2,6 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
-import { sendCoarNotification } from '../../third-parties/send-coar-notification/send-coar-notification';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
 
@@ -25,7 +24,7 @@ export const sendNotificationToCoarTestInbox = async (
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
     hardcodedCoarNotificationModel,
-    sendCoarNotification(dependencies.logger),
+    dependencies.sendCoarNotification,
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
   )();
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });

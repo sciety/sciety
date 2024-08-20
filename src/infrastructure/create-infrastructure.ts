@@ -17,6 +17,7 @@ import { sort as sortEvents } from '../domain-events';
 import { Logger } from '../logger';
 import { dispatcher } from '../read-models';
 import { instantiate } from '../third-parties';
+import { sendCoarNotification } from '../third-parties/send-coar-notification/send-coar-notification';
 
 type InfrastructureConfig = LoggerConfig & {
   crossrefApiBearerToken: O.Option<string>,
@@ -97,6 +98,7 @@ export const createInfrastructure = (
         logger: partialAdapters.logger,
         getAllEvents,
         commitEvents: commitEventsWithoutListeners,
+        sendCoarNotification: sendCoarNotification(partialAdapters.logger),
       };
 
       if (config.useStubAdapters) {
