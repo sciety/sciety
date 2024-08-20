@@ -8,9 +8,9 @@ import { fetchSearchCategories } from './fetch-search-categories';
 import { fetchStaticFile } from './fetch-static-file';
 import { localFetchPaperExpressionFrontMatter } from './local-fetch-paper-expression-front-matter';
 import { searchForPaperExpressions } from './search-for-paper-expressions';
-import { ExternalQueries } from '../../third-parties';
+import { ExternalNotifications, ExternalQueries } from '../../third-parties';
 
-export const stubAdapters: ExternalQueries = {
+export const stubAdapters: ExternalQueries & ExternalNotifications = {
   fetchByCategory,
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
   fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL('https://example.com')),
@@ -25,4 +25,5 @@ export const stubAdapters: ExternalQueries = {
     server: 'biorxiv',
   }),
   searchForPaperExpressions,
+  sendCoarNotification: () => TE.right(undefined),
 };
