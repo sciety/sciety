@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CoarNotificationModel } from './coar-notification-model';
 import { postData } from './post-data';
 import { Logger } from '../../logger';
+import { CoarNotificationModel } from '../../types/coar-notification-model';
 
 type CoarNotification = {
   '@context': ReadonlyArray<string>,

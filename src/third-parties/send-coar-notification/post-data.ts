@@ -4,8 +4,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, identity } from 'fp-ts/function';
 import { Logger } from '../../logger';
-import { constructHeadersWithUserAgent } from '../../third-parties/construct-headers-with-user-agent';
-import { logResponseTime } from '../../third-parties/log-response-time';
+import { constructHeadersWithUserAgent } from '../construct-headers-with-user-agent';
+import { logResponseTime } from '../log-response-time';
 
 export const postData = (
   logger: Logger,

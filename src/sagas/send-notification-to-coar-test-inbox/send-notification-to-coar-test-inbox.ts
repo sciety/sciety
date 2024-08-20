@@ -2,9 +2,9 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
-import { CoarNotificationModel } from './coar-notification-model';
-import { sendCoarNotification } from './send-coar-notification';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
+import { sendCoarNotification } from '../../third-parties/send-coar-notification/send-coar-notification';
+import { CoarNotificationModel } from '../../types/coar-notification-model';
 import { DependenciesForCommands } from '../../write-side';
 
 const hardcodedCoarNotificationModel: CoarNotificationModel = {
