@@ -1,7 +1,7 @@
-import * as TE from 'fp-ts/TaskEither';
 import { CommandHelpers, createCommandHelpers } from './create-command-helpers';
+import { createHappyPathExternalNotifications } from './create-happy-path-external-notifications';
+import { createHappyPathExternalQueries } from './create-happy-path-external-queries';
 import { createReadAndWriteSides, ReadAndWriteSides } from './create-read-and-write-sides';
-import { createHappyPathExternalQueries } from './happy-path-external-queries';
 import { DependenciesForViews } from '../../src/read-side/dependencies-for-views';
 import { DependenciesForSagas } from '../../src/sagas/dependencies-for-sagas';
 import { DependenciesForCommands } from '../../src/write-side';
@@ -20,6 +20,7 @@ export type TestFramework = ReadAndWriteSides & {
 export const createTestFramework = (): TestFramework => {
   const framework = createReadAndWriteSides();
   const happyPathExternalQueries = createHappyPathExternalQueries();
+  const happyPathExternalNotifications = createHappyPathExternalNotifications();
   const dependenciesForExecuteResourceAction: DependenciesForExecuteResourceAction = {
     getAllEvents: framework.getAllEvents,
     commitEvents: framework.commitEvents,
@@ -43,8 +44,8 @@ export const createTestFramework = (): TestFramework => {
     dependenciesForSagas: {
       ...framework.queries,
       ...happyPathExternalQueries,
+      ...happyPathExternalNotifications,
       ...dependenciesForCommands,
-      sendCoarNotification: () => TE.right(undefined),
     },
   };
 };
