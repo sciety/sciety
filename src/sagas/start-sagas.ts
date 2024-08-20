@@ -16,7 +16,7 @@ const runOnceAfter = (saga: Saga, seconds: number): void => {
 };
 
 export const startSagas = (dependencies: DependenciesForSagas) => async (): Promise<void> => {
-  dependencies.logger('info', 'Starting sagas');
+  dependencies.logger('info', 'Scheduling sagas');
   runPeriodically(async () => ensureEvaluationsAreListed(dependencies), 317);
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
@@ -24,5 +24,5 @@ export const startSagas = (dependencies: DependenciesForSagas) => async (): Prom
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     runOnceAfter(async () => sendNotificationToCoarTestInbox(dependencies), 5);
   }
-  dependencies.logger('info', 'Sagas started');
+  dependencies.logger('info', 'Sagas scheduled');
 };
