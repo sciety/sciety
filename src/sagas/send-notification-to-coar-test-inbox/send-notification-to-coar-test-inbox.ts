@@ -11,7 +11,6 @@ type RecordedEvaluation = {
   objectId: URL,
   contextId: URL,
   contextCiteAs: URL,
-  targetId: URL,
 };
 
 const hardcodedRecordedEvaluations = [
@@ -20,21 +19,18 @@ const hardcodedRecordedEvaluations = [
     objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625'),
     contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276'),
     contextCiteAs: new URL('https://doi.org/10.1101/2024.04.03.24305276'),
-    targetId: new URL('https://coar-notify-inbox.fly.dev'),
   },
   {
     id: 'urn:uuid:bcebd78d-a869-4d4c-aaa5-eef703e9e583',
     objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.12958884'),
     contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276'),
     contextCiteAs: new URL('https://doi.org/10.1101/2024.04.03.24305276'),
-    targetId: new URL('https://coar-notify-inbox.fly.dev'),
   },
   {
     id: 'urn:uuid:13ecd429-3611-4842-ad44-140195444152',
     objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.05.07.592993#doi:10.5281/zenodo.11644732'),
     contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.05.07.592993'),
     contextCiteAs: new URL('https://doi.org/10.1101/2024.05.07.592993'),
-    targetId: new URL('https://coar-notify-inbox.fly.dev'),
   },
 ] satisfies ReadonlyArray<RecordedEvaluation>;
 
@@ -42,6 +38,7 @@ const constructCoarNotificationModel = (
   recordedEvaluation: RecordedEvaluation,
 ): CoarNotificationModel => ({
   ...recordedEvaluation,
+  targetId: new URL('https://coar-notify-inbox.fly.dev'),
   targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
 });
 
