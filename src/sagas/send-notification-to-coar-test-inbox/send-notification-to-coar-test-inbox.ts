@@ -12,17 +12,15 @@ type RecordedEvaluation = {
   contextId: URL,
   contextCiteAs: URL,
   targetId: URL,
-  targetInbox: URL,
 };
 
-const hardcodedCoarNotificationModels = [
+const hardcodedRecordedEvaluations = [
   {
     id: 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f',
     objectId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276#doi:10.5281/zenodo.13274625'),
     contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276'),
     contextCiteAs: new URL('https://doi.org/10.1101/2024.04.03.24305276'),
     targetId: new URL('https://coar-notify-inbox.fly.dev'),
-    targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
   },
   {
     id: 'urn:uuid:bcebd78d-a869-4d4c-aaa5-eef703e9e583',
@@ -30,7 +28,6 @@ const hardcodedCoarNotificationModels = [
     contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.04.03.24305276'),
     contextCiteAs: new URL('https://doi.org/10.1101/2024.04.03.24305276'),
     targetId: new URL('https://coar-notify-inbox.fly.dev'),
-    targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
   },
   {
     id: 'urn:uuid:13ecd429-3611-4842-ad44-140195444152',
@@ -38,13 +35,15 @@ const hardcodedCoarNotificationModels = [
     contextId: new URL('https://sciety.org/articles/activity/10.1101/2024.05.07.592993'),
     contextCiteAs: new URL('https://doi.org/10.1101/2024.05.07.592993'),
     targetId: new URL('https://coar-notify-inbox.fly.dev'),
-    targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
   },
 ] satisfies ReadonlyArray<RecordedEvaluation>;
 
 const constructCoarNotificationModel = (
   recordedEvaluation: RecordedEvaluation,
-): CoarNotificationModel => recordedEvaluation;
+): CoarNotificationModel => ({
+  ...recordedEvaluation,
+  targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
+});
 
 type Dependencies = DependenciesForSagas;
 
@@ -55,7 +54,7 @@ export const sendNotificationToCoarTestInbox = async (
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
-    hardcodedCoarNotificationModels,
+    hardcodedRecordedEvaluations,
     RA.map(constructCoarNotificationModel),
     TE.traverseArray(dependencies.sendCoarNotification),
     TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
