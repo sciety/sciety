@@ -4,7 +4,37 @@ import { CoarNotificationModel } from './coar-notification-model';
 import { postData } from './post-data';
 import { Logger } from '../../logger';
 
-const renderCoarNotification = (notification: CoarNotificationModel) => ({
+type CoarNotification = {
+  '@context': ReadonlyArray<string>,
+  actor: {
+    id: string,
+    name: string,
+    type: string,
+  },
+  id: string,
+  object: {
+    id: string,
+    type: string,
+  },
+  context: {
+    id: string,
+    'ietf:cite-as': string,
+    type: string,
+  },
+  origin: {
+    id: string,
+    inbox: string,
+    type: string,
+  },
+  target: {
+    id: string,
+    inbox: string,
+    type: string,
+  },
+  type: ReadonlyArray<string>,
+};
+
+const renderCoarNotification = (notification: CoarNotificationModel): CoarNotification => ({
   '@context': [
     'https://www.w3.org/ns/activitystreams',
     'https://purl.org/coar/notify',
