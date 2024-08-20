@@ -6,7 +6,6 @@ import { constructFeed } from '../../../../../../src/read-side/html-pages/group-
 import { Dependencies } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/dependencies';
 import { OrderedArticleCards, ViewModel } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/view-model';
 import { ListId } from '../../../../../../src/types/list-id';
-import { dummyLogger } from '../../../../../dummy-logger';
 import { createTestFramework, TestFramework } from '../../../../../framework';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../../../types/expression-doi.helper';
@@ -46,11 +45,7 @@ describe('construct-feed', () => {
 
   beforeEach(async () => {
     framework = createTestFramework();
-    dependencies = {
-      ...framework.queries,
-      ...framework.happyPathThirdParties,
-      logger: dummyLogger,
-    };
+    dependencies = framework.dependenciesForViews;
     await framework.commandHelpers.addGroup(addGroupCommand);
     groupEvaluatedArticlesList = pipe(
       framework.queries.getEvaluatedArticlesListIdForGroup(addGroupCommand.groupId),

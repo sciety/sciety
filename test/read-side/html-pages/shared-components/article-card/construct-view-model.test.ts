@@ -9,7 +9,6 @@ import { constructPaperActivityPageHref } from '../../../../../src/read-side/pat
 import * as DE from '../../../../../src/types/data-error';
 import * as PH from '../../../../../src/types/publishing-history';
 import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands/record-evaluation-publication';
-import { dummyLogger } from '../../../../dummy-logger';
 import { createTestFramework, TestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
@@ -36,10 +35,8 @@ describe('construct-view-model', () => {
         viewModel = await pipe(
           inputExpressionDoi,
           constructViewModel({
-            ...framework.queries,
-            ...framework.happyPathThirdParties,
+            ...framework.dependenciesForViews,
             fetchPublishingHistory: () => TE.right(publishingHistory),
-            logger: dummyLogger,
           }),
           TE.getOrElse(shouldNotBeCalled),
         )();
@@ -70,12 +67,10 @@ describe('construct-view-model', () => {
         viewModel = await pipe(
           inputExpressionDoi,
           constructViewModel({
-            ...framework.queries,
-            ...framework.happyPathThirdParties,
+            ...framework.dependenciesForViews,
             fetchPublishingHistory: () => TE.right(
               arbitraryPublishingHistoryOnlyPreprints({ earliestExpressionDoi: inputExpressionDoi }),
             ),
-            logger: dummyLogger,
           }),
           TE.getOrElse(shouldNotBeCalled),
         )();
@@ -103,11 +98,7 @@ describe('construct-view-model', () => {
       );
       successfulViewModel = await pipe(
         inputExpressionDoi,
-        constructViewModel({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
-          logger: dummyLogger,
-        }),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -124,11 +115,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       successfulViewModel = await pipe(
         inputExpressionDoi,
-        constructViewModel({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
-          logger: dummyLogger,
-        }),
+        constructViewModel(framework.dependenciesForViews),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -145,10 +132,8 @@ describe('construct-view-model', () => {
       viewModel = await pipe(
         arbitraryExpressionDoi(),
         constructViewModel({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
+          ...framework.dependenciesForViews,
           fetchExpressionFrontMatter: () => TE.left(DE.unavailable),
-          logger: dummyLogger,
         }),
       )();
     });
@@ -165,10 +150,8 @@ describe('construct-view-model', () => {
       viewModel = await pipe(
         arbitraryExpressionDoi(),
         constructViewModel({
-          ...framework.queries,
-          ...framework.happyPathThirdParties,
+          ...framework.dependenciesForViews,
           fetchPublishingHistory: () => TE.left(DE.notFound),
-          logger: dummyLogger,
         }),
       )();
     });

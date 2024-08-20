@@ -13,7 +13,6 @@ import { dummyLogger } from '../dummy-logger';
 export type TestFramework = ReadAndWriteSides & {
   abortTest: AbortTest,
   commandHelpers: CommandHelpers,
-  happyPathThirdParties: HappyPathThirdPartyAdapters,
   dependenciesForViews: Queries & HappyPathThirdPartyAdapters & { logger: Logger },
   dependenciesForCommands: DependenciesForCommands,
   dependenciesForSagas: DependenciesForSagas,
@@ -36,7 +35,6 @@ export const createTestFramework = (): TestFramework => {
     ...framework,
     abortTest,
     commandHelpers: createCommandHelpers(dependenciesForExecuteResourceAction),
-    happyPathThirdParties,
     dependenciesForViews: {
       ...framework.queries,
       ...happyPathThirdParties,
