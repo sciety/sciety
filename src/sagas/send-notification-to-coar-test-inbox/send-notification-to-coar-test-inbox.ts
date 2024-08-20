@@ -2,10 +2,9 @@ import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
-import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { sendCoarNotification } from '../../third-parties/send-coar-notification/send-coar-notification';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
-import { DependenciesForCommands } from '../../write-side';
+import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 const hardcodedCoarNotificationModel: CoarNotificationModel = {
   id: 'urn:uuid:94ecae35-dcfd-4182-8550-22c7164fe23f',
@@ -16,7 +15,7 @@ const hardcodedCoarNotificationModel: CoarNotificationModel = {
   targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
 };
 
-type Dependencies = DependenciesForViews & DependenciesForCommands;
+type Dependencies = DependenciesForSagas;
 
 export const sendNotificationToCoarTestInbox = async (
   dependencies: Dependencies,

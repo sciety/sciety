@@ -2,13 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
-import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import * as PH from '../../types/publishing-history';
-import { DependenciesForCommands } from '../../write-side';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as paperSnapshot from '../../write-side/resources/paper-snapshot';
+import { DependenciesForSagas } from '../dependencies-for-sagas';
 
-type Dependencies = DependenciesForViews & DependenciesForCommands;
+type Dependencies = DependenciesForSagas;
 
 export const maintainSnapshotsForEvaluatedExpressions = async (
   dependencies: Dependencies,
