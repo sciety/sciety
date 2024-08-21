@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { v4 } from 'uuid';
-import { PendingEvaluation } from '../../read-models/evaluations-for-notifications/get-pending-evaluations';
+import { PendingEvaluation } from '../../read-models/evaluations-for-notifications';
 import * as paths from '../../standards/paths';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
 import { toDoiUrl } from '../../types/expression-doi';

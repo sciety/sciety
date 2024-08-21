@@ -7,3 +7,5 @@ export const evaluationsForNotifications = {
   initialState,
   handleEvent,
 };
+
+export { PendingEvaluation } from './get-pending-evaluations';
