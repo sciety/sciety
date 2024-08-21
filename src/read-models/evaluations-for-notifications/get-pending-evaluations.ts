@@ -3,6 +3,7 @@ import { DomainEvent } from '../../domain-events';
 import { EvaluationLocator, toEvaluationLocator } from '../../types/evaluation-locator';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as EDOI from '../../types/expression-doi';
+import { GroupId } from '../../types/group-id';
 
 export type PendingEvaluation = {
   expressionDoi: ExpressionDoi,
@@ -13,7 +14,9 @@ type ReadModel = unknown;
 
 export const initialState = (): ReadModel => ({});
 
-export const handleEvent = (readModel: ReadModel, event: DomainEvent): ReadModel => readModel;
+export const handleEvent = (
+  consideredGroupIds: ReadonlyArray<GroupId>,
+) => (readModel: ReadModel, event: DomainEvent): ReadModel => readModel;
 
 export const getPendingEvaluations = (readModel: ReadModel) => (): ReadonlyArray<PendingEvaluation> => [
   {
