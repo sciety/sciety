@@ -1,9 +1,12 @@
+import { URL } from 'url';
 import { DependenciesForSagas } from './dependencies-for-sagas';
 import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed';
 import {
   maintainSnapshotsForEvaluatedExpressions,
 } from './maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
 import { sendNotificationToCoarTestInbox } from './send-notification-to-coar-test-inbox';
+
+const scietyUiOrigin = new URL('https://sciety.org');
 
 type Saga = () => Promise<void>;
 
@@ -22,7 +25,7 @@ export const startSagas = (dependencies: DependenciesForSagas) => async (): Prom
     runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    runOnceAfter(async () => sendNotificationToCoarTestInbox(dependencies), 5);
+    runOnceAfter(async () => sendNotificationToCoarTestInbox(dependencies, scietyUiOrigin), 5);
   }
   dependencies.logger('info', 'Sagas scheduled');
 };

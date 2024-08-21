@@ -7,12 +7,11 @@ import { constructCoarNotificationModel } from './construct-coar-notification-mo
 import { getPendingEvaluations } from './get-pending-evaluations';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
 
-const scietyUiOrigin = new URL('https://sciety.org');
-
 type Dependencies = DependenciesForSagas;
 
 export const sendNotificationToCoarTestInbox = async (
   dependencies: Dependencies,
+  scietyUiOrigin: URL,
 ): Promise<void> => {
   const iterationId = uuidV4();
 
