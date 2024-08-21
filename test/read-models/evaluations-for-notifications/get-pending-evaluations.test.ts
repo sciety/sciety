@@ -45,6 +45,14 @@ describe('get-pending-evaluations', () => {
   });
 
   describe('given activity by a group that is not considered', () => {
-    it.todo('returns no evaluations');
+    const evaluationPublicationRecorded = arbitraryEvaluationPublicationRecordedEvent();
+    const events = [
+      evaluationPublicationRecorded,
+    ] satisfies ReadonlyArray<DomainEvent>;
+    const result = runQuery(events);
+
+    it.failing('returns no evaluations', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 });
