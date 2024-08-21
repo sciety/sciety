@@ -1,4 +1,3 @@
-import { performance } from 'perf_hooks';
 import { URL } from 'url';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
@@ -7,13 +6,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { DomainEvent } from './domain-events';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
-import {
-  CollectedPorts, createInfrastructure, replaceError,
-} from './infrastructure';
+import { createInfrastructure, replaceError } from './infrastructure';
 import { defaultLogLevel, Logger } from './logger';
 import { startSagas } from './sagas';
 
@@ -29,28 +25,6 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
 });
 
 const scietyUiOrigin = new URL('https://sciety.org');
-
-type NoopPolicy = (event: DomainEvent) => T.Task<void>;
-
-const noopPolicy: NoopPolicy = () => T.of(undefined);
-
-type ExecuteBackgroundPolicies = (ports: CollectedPorts) => T.Task<void>;
-
-const executeBackgroundPolicies: ExecuteBackgroundPolicies = (ports) => async () => {
-  const events = await ports.getAllEvents();
-  // const amountOfEventsToProcess = events.length;
-  const amountOfEventsToProcess = 0;
-  const start = performance.now();
-  // eslint-disable-next-line no-loops/no-loops
-  for (let i = 0; i < amountOfEventsToProcess; i += 1) {
-    await noopPolicy(events[i])();
-    await new Promise((resolve) => {
-      setTimeout(resolve, 0);
-    });
-  }
-  const stop = performance.now();
-  ports.logger('info', 'All background policies have completed', { eventsLength: events.length, processedEventsCount: amountOfEventsToProcess, durationInMs: stop - start });
-};
 
 void pipe(
   createInfrastructure({
@@ -98,6 +72,5 @@ void pipe(
     },
     ({ server, adapters }) => { server.listen(80); return adapters; },
   ),
-  T.chainFirst(executeBackgroundPolicies),
   T.chain((dependenciesForSagas) => startSagas(dependenciesForSagas, scietyUiOrigin)),
 )();
