@@ -16,9 +16,13 @@ describe('construct-coar-notification-model', () => {
         expect(coarNotification.objectId.hash).toContain(evaluationLocator);
       });
 
-      it.todo('that contains the expression DOI');
+      it('that is specific to the expression DOI', () => {
+        expect(coarNotification.objectId.pathname).toContain(expressionDoi);
+      });
 
-      it.todo('that is a URL on https://sciety.org');
+      it('that is a URL on https://sciety.org', () => {
+        expect(coarNotification.objectId.host).toBe('sciety.org');
+      });
     });
   });
 });
