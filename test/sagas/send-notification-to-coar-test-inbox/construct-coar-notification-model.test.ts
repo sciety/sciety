@@ -24,6 +24,7 @@ describe('construct-coar-notification-model', () => {
 
       it('that is a URL on the Sciety UI', () => {
         expect(coarNotification.objectId.host).toBe(scietyUiOrigin.host);
+        expect(coarNotification.objectId.protocol).toBe(scietyUiOrigin.protocol);
       });
     });
 
@@ -34,6 +35,7 @@ describe('construct-coar-notification-model', () => {
 
       it('that is a URL on the Sciety UI', () => {
         expect(coarNotification.contextId.host).toBe(scietyUiOrigin.host);
+        expect(coarNotification.contextId.protocol).toBe(scietyUiOrigin.protocol);
       });
     });
 
@@ -44,6 +46,7 @@ describe('construct-coar-notification-model', () => {
 
       it('that is a URL on https://doi.org', () => {
         expect(coarNotification.contextCiteAs.host).toBe('doi.org');
+        expect(coarNotification.contextCiteAs.protocol).toBe('https:');
       });
     });
   });
