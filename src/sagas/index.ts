@@ -1,1 +1,1 @@
-export { startSagas } from './start-sagas';
+export { scheduleSagas } from './schedule-sagas';

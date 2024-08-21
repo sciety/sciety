@@ -11,7 +11,7 @@ import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import { createInfrastructure, replaceError } from './infrastructure';
 import { defaultLogLevel, Logger } from './logger';
-import { startSagas } from './sagas';
+import { scheduleSagas } from './sagas';
 
 const terminusOptions = (logger: Logger): TerminusOptions => ({
   onShutdown: async () => {
@@ -77,7 +77,7 @@ void pipe(
       };
     },
   ),
-  T.chain(({ dependenciesForSagas, config }) => startSagas(
+  T.chain(({ dependenciesForSagas, config }) => scheduleSagas(
     dependenciesForSagas,
     new URL(config.APP_ORIGIN),
   )),

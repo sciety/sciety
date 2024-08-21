@@ -17,7 +17,7 @@ const runOnceAfter = (saga: Saga, seconds: number): void => {
   setTimeout(saga, seconds * 1000);
 };
 
-export const startSagas = (
+export const scheduleSagas = (
   dependencies: DependenciesForSagas,
   scietyUiOrigin: URL,
 ): T.Task<void> => async () => {
