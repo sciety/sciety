@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { annotations } from './annotations';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 import { evaluations } from './evaluations';
+import { evaluationsForNotifications } from './evaluations-for-notifications';
 import { followings } from './followings';
 import { groupActivity } from './group-activity';
 import { groupAuthorisations } from './group-authorisations';
@@ -27,6 +28,7 @@ export const dispatcher = (logger: Logger): Dispatcher => {
   const initialisedReadModels = [
     new InitialisedReadModel(annotations),
     new InitialisedReadModel(evaluations),
+    new InitialisedReadModel(evaluationsForNotifications),
     new InitialisedReadModel(evaluatedArticlesLists),
     new InitialisedReadModel(followings),
     new InitialisedReadModel(groupActivity),

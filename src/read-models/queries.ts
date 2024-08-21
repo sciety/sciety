@@ -1,6 +1,7 @@
 import { annotations } from './annotations';
 import { evaluatedArticlesLists } from './evaluated-articles-lists';
 import { evaluations } from './evaluations';
+import { evaluationsForNotifications } from './evaluations-for-notifications';
 import { followings } from './followings';
 import { groupActivity } from './group-activity';
 import { groupAuthorisations } from './group-authorisations';
@@ -14,6 +15,7 @@ const queries = {
   ...annotations.queries,
   ...evaluations.queries,
   ...evaluatedArticlesLists.queries,
+  ...evaluationsForNotifications.queries,
   ...followings.queries,
   ...groupActivity.queries,
   ...groupAuthorisations.queries,
