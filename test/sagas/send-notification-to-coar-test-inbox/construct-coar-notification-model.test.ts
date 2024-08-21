@@ -24,5 +24,15 @@ describe('construct-coar-notification-model', () => {
         expect(coarNotification.objectId.host).toBe('sciety.org');
       });
     });
+
+    describe('constructs a contextId', () => {
+      it('that is specific to the expression DOI', () => {
+        expect(coarNotification.contextId.pathname).toContain(expressionDoi);
+      });
+
+      it('that is a URL on https://sciety.org', () => {
+        expect(coarNotification.contextId.host).toBe('sciety.org');
+      });
+    });
   });
 });
