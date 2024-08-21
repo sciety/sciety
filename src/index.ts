@@ -24,8 +24,6 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
   useExit0: true,
 });
 
-const scietyUiOrigin = new URL('https://sciety.org');
-
 void pipe(
   createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
@@ -62,6 +60,7 @@ void pipe(
     E.map((server) => ({
       server,
       adapters,
+      config,
     })),
   )),
   TE.match(
@@ -70,7 +69,16 @@ void pipe(
       process.stderr.write(`Error object: ${JSON.stringify(error, replaceError, 2)}\n`);
       return process.exit(1);
     },
-    ({ server, adapters }) => { server.listen(80); return adapters; },
+    ({ server, adapters, config }) => {
+      server.listen(80);
+      return {
+        dependenciesForSagas: adapters,
+        config,
+      };
+    },
   ),
-  T.chain((dependenciesForSagas) => startSagas(dependenciesForSagas, scietyUiOrigin)),
+  T.chain(({ dependenciesForSagas, config }) => startSagas(
+    dependenciesForSagas,
+    new URL(config.APP_ORIGIN),
+  )),
 )();
