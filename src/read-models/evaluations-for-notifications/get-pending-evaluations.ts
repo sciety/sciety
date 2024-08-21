@@ -18,10 +18,12 @@ export const handleEvent = (
   consideredGroupIds: ReadonlyArray<GroupId>,
 ) => (readModel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    readModel.push({
-      expressionDoi: event.articleId,
-      evaluationLocator: event.evaluationLocator,
-    });
+    if (consideredGroupIds.includes(event.groupId)) {
+      readModel.push({
+        expressionDoi: event.articleId,
+        evaluationLocator: event.evaluationLocator,
+      });
+    }
   }
   return readModel;
 };
