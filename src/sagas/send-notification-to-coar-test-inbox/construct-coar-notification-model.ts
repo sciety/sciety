@@ -13,5 +13,5 @@ export const constructCoarNotificationModel = (
   contextId: new URL(`https://sciety.org${paths.constructPaperActivityPageHref(pendingEvaluation.expressionDoi)}`),
   contextCiteAs: new URL(toDoiUrl(pendingEvaluation.expressionDoi)),
   targetId: new URL('https://coar-notify-inbox.fly.dev'),
-  targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox'),
+  targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox/'),
 });
