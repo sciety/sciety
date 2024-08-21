@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { constructCoarNotificationModel } from '../../../src/sagas/send-notification-to-coar-test-inbox/construct-coar-notification-model';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
@@ -6,7 +7,8 @@ describe('construct-coar-notification-model', () => {
   describe('given a pending evaluation', () => {
     const evaluationLocator = arbitraryEvaluationLocator();
     const expressionDoi = arbitraryExpressionDoi();
-    const coarNotification = constructCoarNotificationModel({
+    const scietyUiOrigin = new URL('https://example.com');
+    const coarNotification = constructCoarNotificationModel(scietyUiOrigin)({
       evaluationLocator,
       expressionDoi,
     });
@@ -20,8 +22,8 @@ describe('construct-coar-notification-model', () => {
         expect(coarNotification.objectId.pathname).toContain(expressionDoi);
       });
 
-      it('that is a URL on https://sciety.org', () => {
-        expect(coarNotification.objectId.host).toBe('sciety.org');
+      it('that is a URL on the Sciety UI', () => {
+        expect(coarNotification.objectId.host).toBe(scietyUiOrigin.host);
       });
     });
 
@@ -30,8 +32,8 @@ describe('construct-coar-notification-model', () => {
         expect(coarNotification.contextId.pathname).toContain(expressionDoi);
       });
 
-      it('that is a URL on https://sciety.org', () => {
-        expect(coarNotification.contextId.host).toBe('sciety.org');
+      it('that is a URL on the Sciety UI', () => {
+        expect(coarNotification.contextId.host).toBe(scietyUiOrigin.host);
       });
     });
 

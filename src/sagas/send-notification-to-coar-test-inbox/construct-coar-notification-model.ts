@@ -5,9 +5,9 @@ import * as paths from '../../standards/paths';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
 import { toDoiUrl } from '../../types/expression-doi';
 
-const scietyUiOrigin = new URL('https://sciety.org');
-
 export const constructCoarNotificationModel = (
+  scietyUiOrigin: URL,
+) => (
   pendingEvaluation: PendingEvaluation,
 ): CoarNotificationModel => ({
   id: `urn:uuid:${v4()}`,
