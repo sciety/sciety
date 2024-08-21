@@ -34,5 +34,15 @@ describe('construct-coar-notification-model', () => {
         expect(coarNotification.contextId.host).toBe('sciety.org');
       });
     });
+
+    describe('constructs contextCiteAs', () => {
+      it('that is specific to the expression DOI', () => {
+        expect(coarNotification.contextCiteAs.pathname).toContain(expressionDoi);
+      });
+
+      it('that is a URL on https://doi.org', () => {
+        expect(coarNotification.contextCiteAs.host).toBe('doi.org');
+      });
+    });
   });
 });
