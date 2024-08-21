@@ -1,4 +1,5 @@
 import { performance } from 'perf_hooks';
+import { URL } from 'url';
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
@@ -26,6 +27,8 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
   signals: ['SIGINT', 'SIGTERM'],
   useExit0: true,
 });
+
+const scietyUiOrigin = new URL('https://sciety.org');
 
 type NoopPolicy = (event: DomainEvent) => T.Task<void>;
 
@@ -96,5 +99,5 @@ void pipe(
     ({ server, adapters }) => { server.listen(80); return adapters; },
   ),
   T.chainFirst(executeBackgroundPolicies),
-  T.chain(startSagas),
+  T.chain((dependenciesForSagas) => startSagas(dependenciesForSagas, scietyUiOrigin)),
 )();
