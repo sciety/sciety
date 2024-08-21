@@ -3,12 +3,12 @@ import { pipe } from 'fp-ts/function';
 import { missingAvatarFallback, unknownAuthor } from './static-content';
 import { ViewModel } from './view-model';
 import { Queries } from '../../../../read-models';
+import { constructUserAvatarSrc } from '../../../../standards/paths';
 import { ArticleId } from '../../../../types/article-id';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { GroupId } from '../../../../types/group-id';
 import { ListId } from '../../../../types/list-id';
 import { UserId } from '../../../../types/user-id';
-import { constructUserAvatarSrc } from '../../../paths';
 
 const getGroupName = (dependencies: Queries, groupId: GroupId) => pipe(
   groupId,

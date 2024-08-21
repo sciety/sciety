@@ -2,8 +2,8 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Follower } from './follower';
+import { constructUserAvatarSrc } from '../../../../../standards/paths';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
-import { constructUserAvatarSrc } from '../../../../paths';
 import { UserCardViewModel } from '../view-model';
 
 export const augmentWithUserDetails = (

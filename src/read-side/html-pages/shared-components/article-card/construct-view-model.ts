@@ -7,6 +7,7 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { ErrorViewModel } from './render-error-as-html';
 import { ViewModel } from './view-model';
+import { constructPaperActivityPageHref } from '../../../../standards/paths';
 import * as DE from '../../../../types/data-error';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { toHtmlFragment } from '../../../../types/html-fragment';
@@ -16,7 +17,6 @@ import { constructEvaluationHistory } from '../../../construct-evaluation-histor
 import { constructFrontMatter } from '../../../construct-front-matter';
 import { CurationStatement, constructCurationStatements } from '../../../curation-statements';
 import { findAllListsContainingPaper } from '../../../find-all-lists-containing-paper';
-import { constructPaperActivityPageHref } from '../../../paths';
 import { constructReviewingGroups } from '../../../reviewing-groups';
 
 const transformIntoCurationStatementViewModel = (

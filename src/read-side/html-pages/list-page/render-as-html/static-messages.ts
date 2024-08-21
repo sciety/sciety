@@ -1,5 +1,5 @@
+import { explorePageHref } from '../../../../standards/paths';
 import { toHtmlFragment } from '../../../../types/html-fragment';
-import { explorePageHref } from '../../../paths';
 
 const staticMessage = (message: string) => toHtmlFragment(`<p>${message}</p>`);
 

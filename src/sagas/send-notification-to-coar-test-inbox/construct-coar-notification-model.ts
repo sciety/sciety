@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { v4 } from 'uuid';
 import { PendingEvaluation } from './get-pending-evaluations';
-import * as paths from '../../read-side/paths';
+import * as paths from '../../standards/paths';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
 import { toDoiUrl } from '../../types/expression-doi';
 

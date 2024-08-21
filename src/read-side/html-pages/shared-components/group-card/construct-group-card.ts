@@ -5,13 +5,13 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { GroupCardViewModel } from './view-model';
 import { Queries } from '../../../../read-models';
+import { constructGroupPagePath } from '../../../../standards/paths';
 import * as DE from '../../../../types/data-error';
 import { GroupId } from '../../../../types/group-id';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import * as LOID from '../../../../types/list-owner-id';
 import { RecordedEvaluation } from '../../../../types/recorded-evaluation';
 import { sanitise } from '../../../../types/sanitised-html-fragment';
-import { constructGroupPagePath } from '../../../paths';
 
 type Dependencies = Queries;
 

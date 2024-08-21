@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import { constructPaperActivityPageHref } from '../../../../standards/paths';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { GroupId } from '../../../../types/group-id';
 import { HtmlFragment } from '../../../../types/html-fragment';
-import { constructPaperActivityPageHref } from '../../../paths';
 import { Dependencies } from '../dependencies';
 import { ViewModel } from '../view-model';
 

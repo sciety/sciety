@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { toEvaluationPublishedFeedItem } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/to-evaluation-published-feed-item';
 import { EvaluationPublishedFeedItem, GroupDetails } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
-import { constructGroupPagePath } from '../../../../../src/read-side/paths/construct-group-page-path';
+import { constructGroupPagePath } from '../../../../../src/standards/paths';
 import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands/record-evaluation-publication';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitrarySanitisedHtmlFragment, arbitraryUrl } from '../../../../helpers';

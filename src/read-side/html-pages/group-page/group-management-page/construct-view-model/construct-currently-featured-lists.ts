@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
+import { constructGroupPagePath } from '../../../../../standards/paths';
 import { Group } from '../../../../../types/group';
-import { constructGroupPagePath } from '../../../../paths';
 import { CurrentlyFeaturedLists } from '../view-model';
 
 export const constructCurrentlyFeaturedLists = (

@@ -5,7 +5,7 @@ import { HtmlPage } from '../../../../src/read-side/html-pages/html-page';
 import { Dependencies } from '../../../../src/read-side/html-pages/paper-activity-page/construct-view-model/dependencies';
 import { paperActivityPage } from '../../../../src/read-side/html-pages/paper-activity-page/paper-activity-page';
 import { toRedirectTarget } from '../../../../src/read-side/html-pages/redirect-target';
-import { constructPaperActivityPageHref } from '../../../../src/read-side/paths';
+import { constructPaperActivityPageHref } from '../../../../src/standards/paths';
 import * as EDOI from '../../../../src/types/expression-doi';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { shouldNotBeCalled } from '../../../should-not-be-called';

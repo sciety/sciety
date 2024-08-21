@@ -4,8 +4,8 @@ import { GroupLinkAsTextViewModel } from './group-link-as-text-view-model';
 import { GroupLinkWithLogoViewModel } from './group-link-with-logo-view-model';
 import { Logger } from '../../../../logger';
 import { Queries } from '../../../../read-models';
+import { constructGroupPagePath } from '../../../../standards/paths';
 import * as GID from '../../../../types/group-id';
-import { constructGroupPagePath } from '../../../paths';
 
 export type ConstructGroupLinkDependencies = Queries & { logger: Logger };
 

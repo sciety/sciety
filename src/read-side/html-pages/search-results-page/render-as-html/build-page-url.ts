@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { searchResultsPagePath } from '../../../paths';
+import { searchResultsPagePath } from '../../../../standards/paths';
 
 type UrlParams = {
   query: string,

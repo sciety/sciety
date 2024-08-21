@@ -1,5 +1,5 @@
+import { explorePageHref } from '../../../../../standards/paths';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
-import { explorePageHref } from '../../../../paths';
 
 const renderExploreEvaluatedPreprintsLink = () => `<a class="home-page-hero-explore-evaluated-preprints-link" href="${explorePageHref}">Explore evaluated preprints</a>`;
 

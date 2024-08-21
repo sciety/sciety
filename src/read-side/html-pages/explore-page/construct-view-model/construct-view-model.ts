@@ -5,8 +5,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { Dependencies } from './dependencies';
+import { constructCategoryPageHref } from '../../../../standards/paths';
 import * as DE from '../../../../types/data-error';
-import { constructCategoryPageHref } from '../../../paths';
 import { ViewModel } from '../view-model';
 
 const constructBrowseByCategory = (dependencies: Dependencies) => pipe(

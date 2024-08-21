@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { getUserOwnerInformation } from './get-user-owner-information';
+import { constructGroupPagePath } from '../../../../standards/paths';
 import { ListOwnerId } from '../../../../types/list-owner-id';
 import { DependenciesForViews } from '../../../dependencies-for-views';
-import { constructGroupPagePath } from '../../../paths';
 
 type OwnerInformation = {
   ownerName: string,

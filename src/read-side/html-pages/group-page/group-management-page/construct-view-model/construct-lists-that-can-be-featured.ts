@@ -2,12 +2,12 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { List } from '../../../../../read-models/lists';
+import { constructGroupPagePath } from '../../../../../standards/paths';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
 import { ListId } from '../../../../../types/list-id';
 import * as LOID from '../../../../../types/list-owner-id';
 import { UserId } from '../../../../../types/user-id';
-import { constructGroupPagePath } from '../../../../paths';
 import { constructListCardViewModelWithoutCurator } from '../../../shared-components/list-card';
 import { ListsThatCanBeFeatured } from '../view-model';
 

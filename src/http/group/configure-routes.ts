@@ -7,7 +7,7 @@ import * as GFP from '../../read-side/html-pages/group-page/group-followers-page
 import * as GHP from '../../read-side/html-pages/group-page/group-home-page';
 import * as GLP from '../../read-side/html-pages/group-page/group-lists-page';
 import * as GMP from '../../read-side/html-pages/group-page/group-management-page';
-import { constructGroupPagePath } from '../../read-side/paths';
+import { constructGroupPagePath } from '../../standards/paths';
 import { pageHandler, pageHandlerWithLoggedInUser } from '../page-handler';
 
 export const configureRoutes = (router: Router, dependencies: DependenciesForViews): void => {

@@ -4,7 +4,7 @@ import { ListCardViewModel } from './render-list-card';
 import { Logger } from '../../../../logger';
 import { Queries } from '../../../../read-models';
 import { List } from '../../../../read-models/lists';
-import { constructUserAvatarSrc } from '../../../paths';
+import { constructUserAvatarSrc } from '../../../../standards/paths';
 
 type Dependencies = Queries & {
   logger: Logger,

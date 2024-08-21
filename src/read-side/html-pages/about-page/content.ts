@@ -1,4 +1,4 @@
-import { explorePageHref } from '../../paths';
+import { explorePageHref } from '../../../standards/paths';
 
 const scietyEvaluationGraphsSourceHref = 'https://lookerstudio.google.com/reporting/b09cf3e8-88c7-4928-b639-2c48dc786191/page/p_kr9n81etoc';
 

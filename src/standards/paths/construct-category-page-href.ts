@@ -1,4 +1,4 @@
-import { queryStringParameters } from '../../standards';
+import { queryStringParameters } from '..';
 
 export const categoryPagePathSpecification = '/category';
 

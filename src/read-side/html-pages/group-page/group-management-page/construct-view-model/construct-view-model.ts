@@ -5,10 +5,10 @@ import { constructCurrentlyFeaturedLists } from './construct-currently-featured-
 import { constructListsThatCanBeFeatured } from './construct-lists-that-can-be-featured';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
+import { constructGroupPagePath } from '../../../../../standards/paths';
 import * as DE from '../../../../../types/data-error';
 import { Group } from '../../../../../types/group';
 import { UserId } from '../../../../../types/user-id';
-import { constructGroupPagePath } from '../../../../paths';
 import { ViewModel } from '../view-model';
 
 const checkUserIsAdminOfGroup = (dependencies: Dependencies, userId: UserId, group: Group) => pipe(

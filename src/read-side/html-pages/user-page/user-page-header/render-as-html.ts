@@ -1,7 +1,7 @@
 import { htmlEscape } from 'escape-goat';
+import { constructUserAvatarSrc } from '../../../../standards/paths';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { UserDetails } from '../../../../types/user-details';
-import { constructUserAvatarSrc } from '../../../paths';
 
 export const renderAsHtml = (viewmodel: UserDetails): HtmlFragment => toHtmlFragment(`
   <header class="page-header page-header--user page-header__identity">

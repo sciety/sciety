@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { ArticleCardViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card/construct-view-model';
 import { ErrorViewModel } from '../../../../../src/read-side/html-pages/shared-components/article-card/render-error-as-html';
-import { constructPaperActivityPageHref } from '../../../../../src/read-side/paths';
+import { constructPaperActivityPageHref } from '../../../../../src/standards/paths';
 import * as DE from '../../../../../src/types/data-error';
 import * as PH from '../../../../../src/types/publishing-history';
 import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands/record-evaluation-publication';

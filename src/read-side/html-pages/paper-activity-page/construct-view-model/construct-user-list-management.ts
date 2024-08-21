@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { queryStringParameters } from '../../../../standards';
+import { saveArticlePageHref } from '../../../../standards/paths';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { UserId } from '../../../../types/user-id';
-import { saveArticlePageHref } from '../../../paths';
 import { ViewModel } from '../view-model';
 
 export const constructUserListManagement = (user: O.Option<{ id: UserId }>, dependencies: Dependencies, expressionDoi: ExpressionDoi): ViewModel['userListManagement'] => pipe(

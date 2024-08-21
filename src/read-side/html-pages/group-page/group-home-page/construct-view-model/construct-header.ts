@@ -3,9 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
+import { constructGroupPagePath } from '../../../../../standards/paths';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
-import { constructGroupPagePath } from '../../../../paths';
 import { calculateListCount } from '../../common-components/calculate-list-count';
 import { ViewModel } from '../view-model';
 
