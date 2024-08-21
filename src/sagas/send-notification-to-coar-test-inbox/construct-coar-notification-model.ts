@@ -12,7 +12,7 @@ export const constructCoarNotificationModel = (
 ): CoarNotificationModel => ({
   id: `urn:uuid:${v4()}`,
   objectId: new URL(`${scietyUiOrigin.origin}${paths.constructPaperActivityPageFocusedOnEvaluationHref(pendingEvaluation.expressionDoi, pendingEvaluation.evaluationLocator)}`),
-  contextId: new URL(`https://sciety.org${paths.constructPaperActivityPageHref(pendingEvaluation.expressionDoi)}`),
+  contextId: new URL(`${scietyUiOrigin.origin}${paths.constructPaperActivityPageHref(pendingEvaluation.expressionDoi)}`),
   contextCiteAs: new URL(toDoiUrl(pendingEvaluation.expressionDoi)),
   targetId: new URL('https://coar-notify-inbox.fly.dev'),
   targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox/'),
