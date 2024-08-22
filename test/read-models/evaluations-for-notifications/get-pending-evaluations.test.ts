@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../../../src/domain-events';
+import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { getPendingEvaluations, handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/get-pending-evaluations';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -74,9 +74,9 @@ describe('get-pending-evaluations', () => {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
       };
-      const evaluationPublicationRecorded2 = {
+      const evaluationPublicationRecorded2: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
-        anotherGroupId,
+        groupId: anotherGroupId,
       };
       const events = [
         evaluationPublicationRecorded1,
@@ -84,7 +84,7 @@ describe('get-pending-evaluations', () => {
       ] satisfies ReadonlyArray<DomainEvent>;
       const result = runQuery(events);
 
-      it.failing('returns the evaluations', () => {
+      it('returns the evaluations', () => {
         expect(result).toHaveLength(2);
         expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
         expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
