@@ -29,112 +29,114 @@ describe('get-pending-evaluations', () => {
     });
 
     describe('when an evaluation publication has been recorded', () => {
-      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-      };
-      const events = [
-        evaluationPublicationRecorded,
-      ];
-      const result = runQuery(events);
+      describe('and nothing else happened', () => {
+        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+        ];
+        const result = runQuery(events);
 
-      it('returns the evaluation', () => {
-        expect(result).toHaveLength(1);
-        expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
-        expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
+        it('returns the evaluation', () => {
+          expect(result).toHaveLength(1);
+          expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
+          expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
+        });
       });
-    });
 
-    describe('when an evaluation publication has been recorded and then erased', () => {
-      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-      };
-      const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
-        ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
-        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-      };
-      const events = [
-        evaluationPublicationRecorded,
-        evaluationErased,
-      ];
-      const result = runQuery(events);
+      describe('and its removal has been recorded', () => {
+        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+        };
+        const evaluationRemoved: EventOfType<'EvaluationRemovalRecorded'> = {
+          ...arbitraryEvaluationRemovalRecordedEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+          evaluationRemoved,
+        ];
+        const result = runQuery(events);
 
-      it('returns no evaluations', () => {
-        expect(result).toHaveLength(0);
+        it('returns no evaluations', () => {
+          expect(result).toHaveLength(0);
+        });
       });
-    });
 
-    describe('when an evaluation publication and removal have been recorded', () => {
-      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-      };
-      const evaluationRemoved: EventOfType<'EvaluationRemovalRecorded'> = {
-        ...arbitraryEvaluationRemovalRecordedEvent(),
-        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-      };
-      const events = [
-        evaluationPublicationRecorded,
-        evaluationRemoved,
-      ];
-      const result = runQuery(events);
+      describe('and the recording was erased', () => {
+        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+        };
+        const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
+          ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+          evaluationErased,
+        ];
+        const result = runQuery(events);
 
-      it('returns no evaluations', () => {
-        expect(result).toHaveLength(0);
+        it('returns no evaluations', () => {
+          expect(result).toHaveLength(0);
+        });
       });
-    });
 
-    describe('when an evaluation publication has been recorded after its erasure', () => {
-      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-      };
-      const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
-        ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
-        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-      };
-      const evaluationPublicationRecordedAgain: EventOfType<'EvaluationPublicationRecorded'> = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId: anotherGroupId,
-        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-      };
-      const events = [
-        evaluationPublicationRecorded,
-        evaluationErased,
-        evaluationPublicationRecordedAgain,
-      ];
-      const result = runQuery(events);
+      describe('and the recording was erased, and the publication recorded again', () => {
+        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+        };
+        const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
+          ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const evaluationPublicationRecordedAgain: EventOfType<'EvaluationPublicationRecorded'> = {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId: anotherGroupId,
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+          evaluationErased,
+          evaluationPublicationRecordedAgain,
+        ];
+        const result = runQuery(events);
 
-      it('returns the evaluation', () => {
-        expect(result).toHaveLength(1);
-        expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
-        expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
+        it('returns the evaluation', () => {
+          expect(result).toHaveLength(1);
+          expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
+          expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
+        });
       });
-    });
 
-    describe('when an evaluation has been erased after its publication and removal', () => {
-      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-      };
-      const evaluationRemovalRecorded: EventOfType<'EvaluationRemovalRecorded'> = {
-        ...arbitraryEvaluationRemovalRecordedEvent(),
-        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-      };
-      const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
-        ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
-        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-      };
-      const events = [
-        evaluationPublicationRecorded,
-        evaluationRemovalRecorded,
-        evaluationErased,
-      ];
-      const result = runQuery(events);
+      describe('and its removal has been recorded, and the recordings were erased', () => {
+        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+        };
+        const evaluationRemovalRecorded: EventOfType<'EvaluationRemovalRecorded'> = {
+          ...arbitraryEvaluationRemovalRecordedEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
+          ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+          evaluationRemovalRecorded,
+          evaluationErased,
+        ];
+        const result = runQuery(events);
 
-      it('returns no evaluations', () => {
-        expect(result).toHaveLength(0);
+        it('returns no evaluations', () => {
+          expect(result).toHaveLength(0);
+        });
       });
     });
 
