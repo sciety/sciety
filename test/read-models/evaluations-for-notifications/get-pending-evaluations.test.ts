@@ -112,6 +112,31 @@ describe('get-pending-evaluations', () => {
       });
     });
 
+    describe('when an evaluation has been erased after its publication and removal', () => {
+      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+      };
+      const evaluationRemovalRecorded: EventOfType<'EvaluationRemovalRecorded'> = {
+        ...arbitraryEvaluationRemovalRecordedEvent(),
+        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+      };
+      const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
+        ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
+        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+      };
+      const events = [
+        evaluationPublicationRecorded,
+        evaluationRemovalRecorded,
+        evaluationErased,
+      ];
+      const result = runQuery(events);
+
+      it('returns no evaluations', () => {
+        expect(result).toHaveLength(0);
+      });
+    });
+
     describe('when two evaluation publications by the same group have been recorded', () => {
       const evaluationPublicationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
