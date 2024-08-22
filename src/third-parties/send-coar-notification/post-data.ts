@@ -14,6 +14,7 @@ export const postData = (
   data: Json,
 ): TE.TaskEither<void, AxiosResponse> => {
   const startTime = new Date();
+  logger('info', 'Preparing to POST', { data });
   return pipe(
     TE.tryCatch(
       async () => axios.post(url, data, {
