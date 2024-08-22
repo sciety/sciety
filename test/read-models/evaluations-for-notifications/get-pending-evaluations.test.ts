@@ -28,7 +28,7 @@ describe('get-pending-evaluations', () => {
       ] satisfies ReadonlyArray<DomainEvent>;
       const result = runQuery(events);
 
-      it.failing('returns the evaluation', () => {
+      it('returns the evaluation', () => {
         expect(result).toHaveLength(1);
         expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
         expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
@@ -51,7 +51,7 @@ describe('get-pending-evaluations', () => {
     ] satisfies ReadonlyArray<DomainEvent>;
     const result = runQuery(events);
 
-    it.failing('returns no evaluations', () => {
+    it('returns no evaluations', () => {
       expect(result).toHaveLength(0);
     });
   });
