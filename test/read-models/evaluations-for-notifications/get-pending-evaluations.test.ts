@@ -36,7 +36,27 @@ describe('get-pending-evaluations', () => {
     });
 
     describe('when two evaluation publications have been recorded', () => {
-      it.todo('returns the evaluations');
+      const evaluationPublicationRecorded1 = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+      };
+      const evaluationPublicationRecorded2 = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+      };
+      const events = [
+        evaluationPublicationRecorded1,
+        evaluationPublicationRecorded2,
+      ] satisfies ReadonlyArray<DomainEvent>;
+      const result = runQuery(events);
+
+      it('returns the evaluations', () => {
+        expect(result).toHaveLength(2);
+        expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
+        expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
+        expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
+        expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
+      });
     });
 
     describe('when no evaluation publications have been recorded', () => {
