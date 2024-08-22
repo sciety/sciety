@@ -35,6 +35,10 @@ export const handleEvent = (
     const evaluationLocator = event.evaluationLocator;
     removePendingEvaluation(readModel, evaluationLocator);
   }
+  if (isEventOfType('EvaluationRemovalRecorded')(event)) {
+    const evaluationLocator = event.evaluationLocator;
+    removePendingEvaluation(readModel, evaluationLocator);
+  }
   return readModel;
 };
 

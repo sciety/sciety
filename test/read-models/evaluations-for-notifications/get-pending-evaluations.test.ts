@@ -64,7 +64,7 @@ describe('get-pending-evaluations', () => {
       });
     });
 
-    describe('when an evaluation publication has been recorded and then removed', () => {
+    describe('when an evaluation publication and removal have been recorded', () => {
       const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
@@ -79,7 +79,7 @@ describe('get-pending-evaluations', () => {
       ];
       const result = runQuery(events);
 
-      it.failing('returns no evaluations', () => {
+      it('returns no evaluations', () => {
         expect(result).toHaveLength(0);
       });
     });
