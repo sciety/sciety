@@ -15,13 +15,14 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
     users: dependencies.usersStatus(),
   },
   sagaWorkQueues: {
-    unlistedArticles: pipe(
+    ensureEvaluationsAreListed: pipe(
       dependencies.getUnlistedEvaluatedArticles(),
       RA.map((missingArticle) => ({
         articleId: missingArticle.articleId.value,
         listId: missingArticle.listId,
       })),
     ),
-    evaluatedExpressionWithoutSnapshots: dependencies.getExpressionsWithNoAssociatedSnapshot(),
+    maintainSnapshotsForEvaluatedExpressions: dependencies.getExpressionsWithNoAssociatedSnapshot(),
+    sendNotificationToCoarTestInbox: dependencies.getPendingEvaluations(),
   },
 });
