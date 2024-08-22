@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { getPendingEvaluations, handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/get-pending-evaluations';
-import { arbitraryEvaluationPublicationRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
+import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const groupId = arbitraryGroupId();
@@ -60,6 +60,26 @@ describe('get-pending-evaluations', () => {
       const result = runQuery(events);
 
       it('returns no evaluations', () => {
+        expect(result).toHaveLength(0);
+      });
+    });
+
+    describe('when an evaluation publication has been recorded and then removed', () => {
+      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+      };
+      const evaluationRemoved: EventOfType<'EvaluationRemovalRecorded'> = {
+        ...arbitraryEvaluationRemovalRecordedEvent(),
+        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+      };
+      const events = [
+        evaluationPublicationRecorded,
+        evaluationRemoved,
+      ];
+      const result = runQuery(events);
+
+      it.failing('returns no evaluations', () => {
         expect(result).toHaveLength(0);
       });
     });
