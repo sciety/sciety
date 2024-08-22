@@ -64,6 +64,34 @@ describe('get-pending-evaluations', () => {
       });
     });
 
+    describe('when an evaluation publication has been recorded after its erasure', () => {
+      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+      };
+      const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
+        ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
+        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+      };
+      const evaluationPublicationRecordedAgain: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: anotherGroupId,
+        evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+      };
+      const events = [
+        evaluationPublicationRecorded,
+        evaluationErased,
+        evaluationPublicationRecordedAgain,
+      ];
+      const result = runQuery(events);
+
+      it('returns the evaluation', () => {
+        expect(result).toHaveLength(1);
+        expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
+        expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
+      });
+    });
+
     describe('when two evaluation publications by the same group have been recorded', () => {
       const evaluationPublicationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
