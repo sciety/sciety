@@ -20,8 +20,7 @@ const runQuery = (events: ReadonlyArray<DomainEvent>) => {
 describe('get-pending-evaluations', () => {
   describe('given activity by considered groups', () => {
     describe('when no evaluation publications have been recorded', () => {
-      const events = [] satisfies ReadonlyArray<DomainEvent>;
-      const result = runQuery(events);
+      const result = runQuery([]);
 
       it('returns no evaluations', () => {
         expect(result).toHaveLength(0);
@@ -29,13 +28,13 @@ describe('get-pending-evaluations', () => {
     });
 
     describe('when an evaluation publication has been recorded', () => {
-      const evaluationPublicationRecorded = {
+      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
       };
       const events = [
         evaluationPublicationRecorded,
-      ] satisfies ReadonlyArray<DomainEvent>;
+      ];
       const result = runQuery(events);
 
       it('returns the evaluation', () => {
@@ -46,18 +45,18 @@ describe('get-pending-evaluations', () => {
     });
 
     describe('when two evaluation publications by the same group have been recorded', () => {
-      const evaluationPublicationRecorded1 = {
+      const evaluationPublicationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
       };
-      const evaluationPublicationRecorded2 = {
+      const evaluationPublicationRecorded2: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
       };
       const events = [
         evaluationPublicationRecorded1,
         evaluationPublicationRecorded2,
-      ] satisfies ReadonlyArray<DomainEvent>;
+      ];
       const result = runQuery(events);
 
       it('returns the evaluations', () => {
@@ -70,7 +69,7 @@ describe('get-pending-evaluations', () => {
     });
 
     describe('when two evaluation publications by two different groups have been recorded', () => {
-      const evaluationPublicationRecorded1 = {
+      const evaluationPublicationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
       };
@@ -81,7 +80,7 @@ describe('get-pending-evaluations', () => {
       const events = [
         evaluationPublicationRecorded1,
         evaluationPublicationRecorded2,
-      ] satisfies ReadonlyArray<DomainEvent>;
+      ];
       const result = runQuery(events);
 
       it('returns the evaluations', () => {
@@ -98,7 +97,7 @@ describe('get-pending-evaluations', () => {
     const evaluationPublicationRecorded = arbitraryEvaluationPublicationRecordedEvent();
     const events = [
       evaluationPublicationRecorded,
-    ] satisfies ReadonlyArray<DomainEvent>;
+    ];
     const result = runQuery(events);
 
     it('returns no evaluations', () => {
