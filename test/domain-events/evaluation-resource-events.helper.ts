@@ -15,6 +15,10 @@ export const arbitraryEvaluationPublicationRecordedEvent = (): EventOfType<'Eval
   evaluationType: arbitraryEvaluationType(),
 });
 
+export const arbitraryIncorrectlyRecordedEvaluationErasedEvent = (): EventOfType<'IncorrectlyRecordedEvaluationErased'> => constructEvent('IncorrectlyRecordedEvaluationErased')({
+  evaluationLocator: arbitraryEvaluationLocator(),
+});
+
 export const arbitraryEvaluationRemovalRecordedEvent = (): EventOfType<'EvaluationRemovalRecorded'> => constructEvent('EvaluationRemovalRecorded')({
   evaluationLocator: arbitraryEvaluationLocator(),
   reason: 'published-on-incorrect-article',
