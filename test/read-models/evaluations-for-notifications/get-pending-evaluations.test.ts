@@ -18,6 +18,15 @@ const runQuery = (events: ReadonlyArray<DomainEvent>) => {
 
 describe('get-pending-evaluations', () => {
   describe('given activity by considered groups', () => {
+    describe('when no evaluation publications have been recorded', () => {
+      const events = [] satisfies ReadonlyArray<DomainEvent>;
+      const result = runQuery(events);
+
+      it('returns no evaluations', () => {
+        expect(result).toHaveLength(0);
+      });
+    });
+
     describe('when an evaluation publication has been recorded', () => {
       const evaluationPublicationRecorded = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
@@ -57,10 +66,6 @@ describe('get-pending-evaluations', () => {
         expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
         expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
       });
-    });
-
-    describe('when no evaluation publications have been recorded', () => {
-      it.todo('returns no evaluations');
     });
   });
 
