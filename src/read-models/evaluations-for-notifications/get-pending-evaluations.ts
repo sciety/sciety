@@ -24,6 +24,13 @@ export const handleEvent = (
       });
     }
   }
+  if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
+    const evaluationLocator = event.evaluationLocator;
+    const i = readModel.findIndex((pendingEvaluation) => pendingEvaluation.evaluationLocator === evaluationLocator);
+    if (i > -1) {
+      readModel.splice(i, 1);
+    }
+  }
   return readModel;
 };
 

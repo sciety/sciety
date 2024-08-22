@@ -59,7 +59,7 @@ describe('get-pending-evaluations', () => {
       ];
       const result = runQuery(events);
 
-      it.failing('returns no evaluations', () => {
+      it('returns no evaluations', () => {
         expect(result).toHaveLength(0);
       });
     });
