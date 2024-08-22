@@ -13,6 +13,13 @@ type ReadModel = Array<PendingEvaluation>;
 
 export const initialState = (): ReadModel => [];
 
+const removePendingEvaluation = (readModel: ReadModel, evaluationLocator: EvaluationLocator) => {
+  const index = readModel.findIndex((pendingEvaluation) => pendingEvaluation.evaluationLocator === evaluationLocator);
+  if (index > -1) {
+    readModel.splice(index, 1);
+  }
+};
+
 export const handleEvent = (
   consideredGroupIds: ReadonlyArray<GroupId>,
 ) => (readModel: ReadModel, event: DomainEvent): ReadModel => {
@@ -26,10 +33,7 @@ export const handleEvent = (
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    const i = readModel.findIndex((pendingEvaluation) => pendingEvaluation.evaluationLocator === evaluationLocator);
-    if (i > -1) {
-      readModel.splice(i, 1);
-    }
+    removePendingEvaluation(readModel, evaluationLocator);
   }
   return readModel;
 };
