@@ -1,7 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
-import { getPendingEvaluations, handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/get-pending-evaluations';
+import { getPendingEvaluations } from '../../../src/read-models/evaluations-for-notifications/get-pending-evaluations';
+import { handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
