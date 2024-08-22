@@ -29,11 +29,12 @@ describe('get-pending-evaluations', () => {
     });
 
     describe('when an evaluation publication has been recorded', () => {
+      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+      };
+
       describe('and nothing else happened', () => {
-        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId,
-        };
         const events = [
           evaluationPublicationRecorded,
         ];
@@ -47,10 +48,6 @@ describe('get-pending-evaluations', () => {
       });
 
       describe('and its removal has been recorded', () => {
-        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId,
-        };
         const evaluationRemoved: EventOfType<'EvaluationRemovalRecorded'> = {
           ...arbitraryEvaluationRemovalRecordedEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
@@ -67,10 +64,6 @@ describe('get-pending-evaluations', () => {
       });
 
       describe('and the recording was erased', () => {
-        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId,
-        };
         const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
           ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
@@ -87,10 +80,6 @@ describe('get-pending-evaluations', () => {
       });
 
       describe('and the recording was erased, and the publication recorded again', () => {
-        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId,
-        };
         const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
           ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
@@ -115,10 +104,6 @@ describe('get-pending-evaluations', () => {
       });
 
       describe('and its removal has been recorded, and the recordings were erased', () => {
-        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId,
-        };
         const evaluationRemovalRecorded: EventOfType<'EvaluationRemovalRecorded'> = {
           ...arbitraryEvaluationRemovalRecordedEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
