@@ -19,12 +19,12 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
     } satisfies EventOfType<'EvaluationUpdated'>),
     AnnotationCreated: (legacyEvent: LegacyEventOfType<'AnnotationCreated'>) => ({
       id: legacyEvent.id,
-      type: 'ArticleInListAnnotated',
+      type: 'ExpressionInListAnnotated',
       date: legacyEvent.date,
       content: legacyEvent.content,
-      articleId: legacyEvent.target.articleId,
+      expressionDoi: EDOI.fromValidatedString(legacyEvent.target.articleId.value),
       listId: legacyEvent.target.listId,
-    } satisfies EventOfType<'ArticleInListAnnotated'>),
+    } satisfies EventOfType<'ExpressionInListAnnotated'>),
     ArticleAddedToList: (legacyEvent: LegacyEventOfType<'ArticleAddedToList'>) => ({
       id: legacyEvent.id,
       type: 'ExpressionAddedToList',
@@ -32,6 +32,11 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
       expressionDoi: EDOI.fromValidatedString(legacyEvent.articleId.value),
       listId: legacyEvent.listId,
     } satisfies EventOfType<'ExpressionAddedToList'>),
+    ArticleInListAnnotated: (legacyEvent: LegacyEventOfType<'ArticleInListAnnotated'>) => ({
+      ...legacyEvent,
+      type: 'ExpressionInListAnnotated',
+      expressionDoi: EDOI.fromValidatedString(legacyEvent.articleId.value),
+    } satisfies EventOfType<'ExpressionInListAnnotated'>),
   };
   if (event.type === 'EvaluationRecorded') {
     return O.some(upgradeFunctions[event.type](event));
@@ -46,6 +51,9 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
     return O.none;
   }
   if (event.type === 'ArticleAddedToList') {
+    return O.some(upgradeFunctions[event.type](event));
+  }
+  if (event.type === 'ArticleInListAnnotated') {
     return O.some(upgradeFunctions[event.type](event));
   }
   return O.some(event);

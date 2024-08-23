@@ -1,11 +1,11 @@
 import * as t from 'io-ts';
-import { articleInListAnnotatedEventCodec } from './article-in-list-annotated-event';
 import { articleRemovedFromListEventCodec } from './article-removed-from-list-event';
 import { evaluatedArticlesListSpecifiedEventCodec } from './evaluated-articles-list-specified-event';
 import { evaluationPublicationRecordedEventCodec } from './evaluation-publication-recorded-event';
 import { evaluationRemovalRecordedEventCodec } from './evaluation-removal-recorded-event';
 import { evaluationUpdatedEventCodec } from './evaluation-updated-event';
 import { expressionAddedToListEventCodec } from './expression-added-to-list-event';
+import { expressionInListAnnotatedEventCodec } from './expression-in-list-annotated-event';
 import { groupDetailsUpdatedEventCodec } from './group-details-updated-event';
 import { groupJoinedEventCodec } from './group-joined-event';
 import { incorrectlyRecordedEvaluationErasedEventCodec } from './incorrectly-recorded-evaluation-erased-event';
@@ -29,9 +29,9 @@ import { userUnfollowedEditorialCommunityEventCodec } from './user-unfollowed-ed
 import { userUnsavedArticleEventCodec } from './user-unsaved-article-event';
 
 export const domainEventCodec = t.union([
-  articleInListAnnotatedEventCodec,
   articleRemovedFromListEventCodec,
   expressionAddedToListEventCodec,
+  expressionInListAnnotatedEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
   evaluationPublicationRecordedEventCodec,
   evaluationRemovalRecordedEventCodec,
