@@ -3,7 +3,8 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../src/domain-events';
 import { annotationsStatus } from '../../../src/read-models/annotations/annotations-status';
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
-import { arbitraryArticleAddedToListEvent, arbitraryArticleInListAnnotatedEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { ArticleId } from '../../../src/types/article-id';
+import { arbitraryArticleInListAnnotatedEvent, arbitraryExpressionAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -17,18 +18,18 @@ const runQuery = (events: ReadonlyArray<DomainEvent>) => {
 describe('annotations-status', () => {
   describe('when one article has been annotated on one list', () => {
     const listCreated = arbitraryListCreatedEvent();
-    const articleAdded = {
-      ...arbitraryArticleAddedToListEvent(),
+    const expressionAdded = {
+      ...arbitraryExpressionAddedToListEvent(),
       listId: listCreated.listId,
     };
     const articleAnnotated = {
       ...arbitraryArticleInListAnnotatedEvent(),
       listId: listCreated.listId,
-      articleId: articleAdded.articleId,
+      articleId: new ArticleId(expressionAdded.expressionDoi),
     };
     const events = [
       listCreated,
-      articleAdded,
+      expressionAdded,
       articleAnnotated,
     ];
 

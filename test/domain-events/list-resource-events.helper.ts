@@ -18,8 +18,14 @@ export const arbitraryListDeletedEvent = (): EventOfType<'ListDeleted'> => const
   listId: arbitraryListId(),
 });
 
+/** @deprecated use arbitraryExpressionAddedToListEvent instead */
 export const arbitraryArticleAddedToListEvent = (): EventOfType<'ArticleAddedToList'> => constructEvent('ArticleAddedToList')({
   articleId: new ArticleId(arbitraryExpressionDoi()),
+  listId: arbitraryListId(),
+});
+
+export const arbitraryExpressionAddedToListEvent = (): EventOfType<'ExpressionAddedToList'> => constructEvent('ExpressionAddedToList')({
+  expressionDoi: arbitraryExpressionDoi(),
   listId: arbitraryListId(),
 });
 
