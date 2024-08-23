@@ -6,7 +6,7 @@ import { selectAllListsOwnedBy } from '../../../src/read-models/lists/select-all
 import { rawUserInput } from '../../../src/read-side';
 import { ArticleId } from '../../../src/types/article-id';
 import {
-  arbitraryArticleAddedToListEvent,
+  arbitraryExpressionAddedToListEvent,
   arbitraryListCreatedEvent,
   arbitraryListDeletedEvent,
 } from '../../domain-events/list-resource-events.helper';
@@ -64,11 +64,11 @@ describe('select-all-lists-owned-by', () => {
       [
         listCreated,
         {
-          ...arbitraryArticleAddedToListEvent(),
+          ...arbitraryExpressionAddedToListEvent(),
           listId: listCreated.listId,
         },
         {
-          ...arbitraryArticleAddedToListEvent(),
+          ...arbitraryExpressionAddedToListEvent(),
           listId: listCreated.listId,
           date: dateOfLastEvent,
         },
@@ -179,7 +179,7 @@ describe('select-all-lists-owned-by', () => {
           listId: anotherListId,
         },
         {
-          ...arbitraryArticleAddedToListEvent(),
+          ...arbitraryExpressionAddedToListEvent(),
           listId: anotherListId,
         },
       ],
@@ -206,7 +206,7 @@ describe('select-all-lists-owned-by', () => {
           ownerId,
         },
         {
-          ...arbitraryArticleAddedToListEvent(),
+          ...arbitraryExpressionAddedToListEvent(),
           listId,
         },
         {

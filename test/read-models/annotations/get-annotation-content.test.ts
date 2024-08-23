@@ -6,7 +6,8 @@ import { getAnnotationContent } from '../../../src/read-models/annotations/get-a
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { rawUserInput } from '../../../src/read-side';
 import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryArticleAddedToListEvent, arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../domain-events/list-resource-events.helper';
+import * as EDOI from '../../../src/types/expression-doi';
+import { arbitraryExpressionAddedToListEvent, arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryListId } from '../../types/list-id.helper';
 import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
@@ -98,9 +99,9 @@ describe('get-annotation-content', () => {
           listCreatedEvent,
           articleAddedToListEvent,
           {
-            ...arbitraryArticleAddedToListEvent(),
+            ...arbitraryExpressionAddedToListEvent(),
             listId,
-            articleId: differentArticleId,
+            expressionDoi: EDOI.fromValidatedString(differentArticleId.value),
           },
           constructEvent('ArticleInListAnnotated')({ listId, articleId: differentArticleId, content }),
         ];
