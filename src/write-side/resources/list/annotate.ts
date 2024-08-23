@@ -8,13 +8,18 @@ import { ListWriteModel } from './list-write-model';
 import { constructEvent } from '../../../domain-events';
 import { ArticleId } from '../../../types/article-id';
 import { toErrorMessage } from '../../../types/error-message';
+import * as EDOI from '../../../types/expression-doi';
 import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
 const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['expressions'][number]) => (
   article.annotated
     ? []
-    : [constructEvent('ArticleInListAnnotated')({ articleId: command.expressionDoi, listId: command.listId, content: command.annotationContent })]
+    : [constructEvent('ExpressionInListAnnotated')({
+      expressionDoi: EDOI.fromValidatedString(command.expressionDoi.value),
+      listId: command.listId,
+      content: command.annotationContent,
+    })]
 );
 
 const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteModel) => pipe(

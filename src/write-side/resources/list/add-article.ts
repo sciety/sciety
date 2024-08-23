@@ -7,7 +7,6 @@ import { getListWriteModel } from './get-list-write-model';
 import { isAnnotationLengthValid } from './is-annotation-length-valid';
 import { ListWriteModel } from './list-write-model';
 import { constructEvent } from '../../../domain-events';
-import { ArticleId } from '../../../types/article-id';
 import { toErrorMessage } from '../../../types/error-message';
 import { AddArticleToListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
@@ -25,8 +24,8 @@ const constructEvents = (command: AddArticleToListCommand) => (
         expressionDoi: command.expressionDoi,
         listId: command.listId,
       }),
-      constructEvent('ArticleInListAnnotated')({
-        articleId: new ArticleId(command.expressionDoi),
+      constructEvent('ExpressionInListAnnotated')({
+        expressionDoi: command.expressionDoi,
         listId: command.listId,
         content: command.annotation,
       }),

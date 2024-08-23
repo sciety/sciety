@@ -18,7 +18,14 @@ type GetListWriteModel = (listId: ListId)
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
-const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'ExpressionAddedToList', 'ArticleRemovedFromList', 'ListNameEdited', 'ListDescriptionEdited', 'ArticleInListAnnotated']);
+const filterToEventsRelevantToWriteModel = filterByName([
+  'ListCreated',
+  'ExpressionAddedToList',
+  'ArticleRemovedFromList',
+  'ListNameEdited',
+  'ListDescriptionEdited',
+  'ExpressionInListAnnotated',
+]);
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
@@ -35,13 +42,13 @@ const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, 
       }),
     );
   }
-  if (isEventOfType('ArticleInListAnnotated')(event)) {
+  if (isEventOfType('ExpressionInListAnnotated')(event)) {
     pipe(
       resource,
       E.map((listResource) => {
         pipe(
           listResource.expressions,
-          A.findFirst((expression) => expression.expressionDoi === event.articleId.value),
+          A.findFirst((expression) => expression.expressionDoi === event.expressionDoi),
           O.map((expression) => {
             // eslint-disable-next-line no-param-reassign
             expression.annotated = true;
