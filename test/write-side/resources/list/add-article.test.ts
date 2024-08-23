@@ -22,7 +22,7 @@ describe('add-article', () => {
             ...arbitraryListCreatedEvent(),
             listId,
           },
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+          constructEvent('ExpressionAddedToList')({ expressionDoi, listId }),
         ],
         addArticle({
           listId,
@@ -57,8 +57,8 @@ describe('add-article', () => {
 
         it('causes a state change in which the article is added to the list', () => {
           expect(result).toHaveLength(1);
-          expect(result[0]).toBeDomainEvent('ArticleAddedToList', {
-            articleId: new ArticleId(expressionDoi),
+          expect(result[0]).toBeDomainEvent('ExpressionAddedToList', {
+            expressionDoi,
             listId,
           });
         });
@@ -87,8 +87,8 @@ describe('add-article', () => {
 
         it('causes a state change in which both the article is added to the list, and that article is annotated in the list', () => {
           expect(result).toHaveLength(2);
-          expect(result[0]).toBeDomainEvent('ArticleAddedToList', {
-            articleId: new ArticleId(expressionDoi),
+          expect(result[0]).toBeDomainEvent('ExpressionAddedToList', {
+            expressionDoi,
             listId,
           });
           expect(result[1]).toBeDomainEvent('ArticleInListAnnotated', {

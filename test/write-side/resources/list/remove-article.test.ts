@@ -25,7 +25,7 @@ describe('remove-article', () => {
         result = pipe(
           [
             listCreatedEvent,
-            constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+            constructEvent('ExpressionAddedToList')({ expressionDoi, listId }),
           ],
           removeArticle({
             listId,
@@ -64,7 +64,7 @@ describe('remove-article', () => {
       const result = pipe(
         [
           listCreatedEvent,
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+          constructEvent('ExpressionAddedToList')({ expressionDoi, listId }),
           constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
         ],
         removeArticle({
@@ -126,9 +126,9 @@ describe('remove-article', () => {
           description: arbitraryString(),
           ownerId: arbitraryListOwnerId(),
         }),
-        constructEvent('ArticleAddedToList')({
+        constructEvent('ExpressionAddedToList')({
           listId,
-          articleId: new ArticleId(expressionDoi),
+          expressionDoi,
         }),
         constructEvent('ListDeleted')({
           listId,

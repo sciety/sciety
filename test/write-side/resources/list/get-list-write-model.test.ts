@@ -26,7 +26,7 @@ describe('get-list-write-model', () => {
             description: listDescription,
             ownerId: arbitraryListOwnerId(),
           }),
-          constructEvent('ArticleAddedToList')({ articleId: new ArticleId(expressionDoi), listId }),
+          constructEvent('ExpressionAddedToList')({ expressionDoi, listId }),
           constructEvent('ArticleRemovedFromList')({ articleId: new ArticleId(expressionDoi), listId }),
         ],
         getListWriteModel(listId),
