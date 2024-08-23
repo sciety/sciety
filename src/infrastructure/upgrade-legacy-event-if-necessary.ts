@@ -3,6 +3,7 @@ import {
   DomainEvent, CurrentOrLegacyDomainEvent, EventOfType,
   LegacyEventOfType,
 } from '../domain-events';
+import * as EDOI from '../types/expression-doi';
 
 export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): O.Option<DomainEvent> => {
   const upgradeFunctions = {
@@ -24,6 +25,13 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
       articleId: legacyEvent.target.articleId,
       listId: legacyEvent.target.listId,
     } satisfies EventOfType<'ArticleInListAnnotated'>),
+    ArticleAddedToList: (legacyEvent: LegacyEventOfType<'ArticleAddedToList'>) => ({
+      id: legacyEvent.id,
+      type: 'ExpressionAddedToList',
+      date: legacyEvent.date,
+      expressionDoi: EDOI.fromValidatedString(legacyEvent.articleId.value),
+      listId: legacyEvent.listId,
+    } satisfies EventOfType<'ExpressionAddedToList'>),
   };
   if (event.type === 'EvaluationRecorded') {
     return O.some(upgradeFunctions[event.type](event));
@@ -36,6 +44,9 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
   }
   if (event.type === 'SubjectAreaRecorded') {
     return O.none;
+  }
+  if (event.type === 'ArticleAddedToList') {
+    return O.some(upgradeFunctions[event.type](event));
   }
   return O.some(event);
 };
