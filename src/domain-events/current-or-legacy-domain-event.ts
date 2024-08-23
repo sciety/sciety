@@ -1,5 +1,4 @@
 import * as t from 'io-ts';
-import { articleAddedToListEventCodec } from './article-added-to-list-event';
 import { annotationCreatedEventCodec } from './article-in-list-annotated-event';
 import { curationStatementRecordedEventCodec } from './curation-statement-recorded-event';
 import {
@@ -13,7 +12,6 @@ const legacyDomainEventCodec = t.union([
   curationStatementRecordedEventCodec,
   annotationCreatedEventCodec,
   subjectAreaRecordedEventCodec,
-  articleAddedToListEventCodec,
 ], 'type');
 
 type LegacyDomainEvent = t.TypeOf<typeof legacyDomainEventCodec>;
