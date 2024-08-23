@@ -50,12 +50,12 @@ export const initialState = (): ReadModel => ({
 });
 
 export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel => {
-  if (isEventOfType('ArticleAddedToList')(event)) {
-    const a = readmodel.articles.get(toExpressionDoi(event.articleId));
+  if (isEventOfType('ExpressionAddedToList')(event)) {
+    const a = readmodel.articles.get(event.expressionDoi);
     if (a !== undefined) {
       a.listedIn.push(event.listId);
     } else {
-      readmodel.articles.set(toExpressionDoi(event.articleId), {
+      readmodel.articles.set(event.expressionDoi, {
         listedIn: [event.listId],
         evaluatedBy: [],
       });

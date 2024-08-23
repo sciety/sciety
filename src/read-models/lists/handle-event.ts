@@ -53,11 +53,10 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
         }
       }
     }
-  } else if (isEventOfType('ArticleAddedToList')(event)) {
-    const expressionDoi = toExpressionDoi(event.articleId);
+  } else if (isEventOfType('ExpressionAddedToList')(event)) {
     registerUpdateToList(readmodel, event.listId, event.date);
     readmodel.byListId[event.listId].entries.push({
-      expressionDoi,
+      expressionDoi: event.expressionDoi,
       addedAtListVersion: readmodel.byListId[event.listId].version,
     });
   } else if (isEventOfType('ArticleRemovedFromList')(event)) {
