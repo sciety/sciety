@@ -7,10 +7,10 @@ import { AnnotateArticleInListCommand } from '../../../../src/write-side/command
 import { annotate } from '../../../../src/write-side/resources/list';
 import {
   arbitraryListCreatedEvent,
+  arbitraryArticleAddedToListEvent,
   arbitraryArticleInListAnnotatedEvent,
   arbitraryArticleRemovedFromListEvent,
   arbitraryListDeletedEvent,
-  arbitraryExpressionAddedToListEvent,
 } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
@@ -34,15 +34,15 @@ describe('annotate', () => {
     };
 
     describe('and the article is in the list without an annotation', () => {
-      const expressionAddedToListEvent = {
-        ...arbitraryExpressionAddedToListEvent(),
-        expressionDoi,
+      const articleAddedToListEvent = {
+        ...arbitraryArticleAddedToListEvent(),
+        articleId: new ArticleId(expressionDoi),
         listId,
       };
 
       const relevantEvents = [
         listCreatedEvent,
-        expressionAddedToListEvent,
+        articleAddedToListEvent,
       ];
 
       describe('when the annotation is an empty string', () => {
@@ -101,8 +101,8 @@ describe('annotate', () => {
       const relevantEvents = [
         listCreatedEvent,
         {
-          ...arbitraryExpressionAddedToListEvent(),
-          expressionDoi,
+          ...arbitraryArticleAddedToListEvent(),
+          articleId: new ArticleId(expressionDoi),
           listId,
         },
         {
@@ -139,8 +139,8 @@ describe('annotate', () => {
         [
           listCreatedEvent,
           {
-            ...arbitraryExpressionAddedToListEvent(),
-            expressionDoi,
+            ...arbitraryArticleAddedToListEvent(),
+            articleId: new ArticleId(expressionDoi),
             listId,
           },
           {
@@ -177,8 +177,8 @@ describe('annotate', () => {
           listId,
         },
         {
-          ...arbitraryExpressionAddedToListEvent(),
-          expressionDoi,
+          ...arbitraryArticleAddedToListEvent(),
+          articleId: new ArticleId(expressionDoi),
           listId,
         },
         {
