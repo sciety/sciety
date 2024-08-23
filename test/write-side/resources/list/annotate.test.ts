@@ -7,10 +7,10 @@ import { AnnotateArticleInListCommand } from '../../../../src/write-side/command
 import { annotate } from '../../../../src/write-side/resources/list';
 import {
   arbitraryListCreatedEvent,
-  arbitraryArticleInListAnnotatedEvent,
   arbitraryArticleRemovedFromListEvent,
   arbitraryListDeletedEvent,
   arbitraryExpressionAddedToListEvent,
+  arbitraryExpressionInListAnnotatedEvent,
 } from '../../../domain-events/list-resource-events.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
@@ -73,8 +73,8 @@ describe('annotate', () => {
 
         it('causes a state change in which the article is annotated', () => {
           expect(result).toHaveLength(1);
-          expect(result[0]).toBeDomainEvent('ArticleInListAnnotated', {
-            articleId: new ArticleId(expressionDoi),
+          expect(result[0]).toBeDomainEvent('ExpressionInListAnnotated', {
+            expressionDoi,
             listId,
             content,
           });
@@ -106,8 +106,8 @@ describe('annotate', () => {
           listId,
         },
         {
-          ...arbitraryArticleInListAnnotatedEvent(),
-          articleId: new ArticleId(expressionDoi),
+          ...arbitraryExpressionInListAnnotatedEvent(),
+          expressionDoi,
           listId,
         },
       ];

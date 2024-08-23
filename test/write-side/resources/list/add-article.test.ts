@@ -1,7 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { constructEvent, DomainEvent } from '../../../../src/domain-events';
-import { ArticleId } from '../../../../src/types/article-id';
 import { toUnsafeUserInput } from '../../../../src/types/unsafe-user-input';
 import { addArticle } from '../../../../src/write-side/resources/list/add-article';
 import { arbitraryListCreatedEvent, arbitraryListDeletedEvent } from '../../../domain-events/list-resource-events.helper';
@@ -91,8 +90,8 @@ describe('add-article', () => {
             expressionDoi,
             listId,
           });
-          expect(result[1]).toBeDomainEvent('ArticleInListAnnotated', {
-            articleId: new ArticleId(expressionDoi),
+          expect(result[1]).toBeDomainEvent('ExpressionInListAnnotated', {
+            expressionDoi,
             listId,
             content: annotation,
           });
