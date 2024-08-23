@@ -6,7 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
 import { Pool } from 'pg';
 import { EventRow, currentOrLegacyDomainEventsCodec, selectAllEvents } from './events-table';
-import { upgradeLegacyEventIfNecessary } from './upgrade-legacy-event-if-necessary';
+import { upcastLegacyEventIfNecessary } from './upcast-legacy-event-if-necessary';
 import { DomainEvent } from '../domain-events';
 import { Logger } from '../logger';
 
@@ -40,7 +40,7 @@ const decodeEvents = (
     currentOrLegacyDomainEventsCodec.decode,
     E.mapLeft(formatValidationErrors),
   ),
-  E.map(RA.map(upgradeLegacyEventIfNecessary)),
+  E.map(RA.map(upcastLegacyEventIfNecessary)),
   E.map(RA.compact),
 );
 

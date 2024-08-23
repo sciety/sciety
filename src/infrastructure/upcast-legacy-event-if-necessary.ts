@@ -5,8 +5,8 @@ import {
 } from '../domain-events';
 import * as EDOI from '../types/expression-doi';
 
-export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): O.Option<DomainEvent> => {
-  const upgradeFunctions = {
+export const upcastLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): O.Option<DomainEvent> => {
+  const upcastFunctions = {
     EvaluationRecorded: (legacyEvent: LegacyEventOfType<'EvaluationRecorded'>) => ({
       ...legacyEvent,
       type: 'EvaluationPublicationRecorded' as const,
@@ -39,22 +39,22 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
     } satisfies EventOfType<'ExpressionInListAnnotated'>),
   };
   if (event.type === 'EvaluationRecorded') {
-    return O.some(upgradeFunctions[event.type](event));
+    return O.some(upcastFunctions[event.type](event));
   }
   if (event.type === 'CurationStatementRecorded') {
-    return O.some(upgradeFunctions[event.type](event));
+    return O.some(upcastFunctions[event.type](event));
   }
   if (event.type === 'AnnotationCreated') {
-    return O.some(upgradeFunctions[event.type](event));
+    return O.some(upcastFunctions[event.type](event));
   }
   if (event.type === 'SubjectAreaRecorded') {
     return O.none;
   }
   if (event.type === 'ArticleAddedToList') {
-    return O.some(upgradeFunctions[event.type](event));
+    return O.some(upcastFunctions[event.type](event));
   }
   if (event.type === 'ArticleInListAnnotated') {
-    return O.some(upgradeFunctions[event.type](event));
+    return O.some(upcastFunctions[event.type](event));
   }
   return O.some(event);
 };
