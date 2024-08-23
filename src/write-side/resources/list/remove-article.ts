@@ -20,17 +20,14 @@ type ListWriteModel = boolean;
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
-const filterToEventsRelevantToWriteModel = filterByName(['ExpressionAddedToList', 'ArticleRemovedFromList']);
+const filterToEventsRelevantToWriteModel = filterByName(['ArticleAddedToList', 'ArticleRemovedFromList']);
 
 const isAnEventOfThisList = (listId: ListId, expressionDoi: ExpressionDoi) => (event: RelevantEvent) => (
-  event.listId === listId && (
-    (event.type === 'ExpressionAddedToList' && event.expressionDoi === expressionDoi)
-    || (event.type === 'ArticleRemovedFromList' && event.articleId.value === expressionDoi)
-  )
+  event.listId === listId && event.articleId.value === expressionDoi
 );
 
 const updateListWriteModel = (resource: ListWriteModel, event: DomainEvent) => {
-  if (isEventOfType('ExpressionAddedToList')(event)) {
+  if (isEventOfType('ArticleAddedToList')(event)) {
     return true;
   }
   if (isEventOfType('ArticleRemovedFromList')(event)) {
