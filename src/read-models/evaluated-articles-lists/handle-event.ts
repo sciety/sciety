@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { DomainEvent, isEventOfType } from '../../domain-events';
-import { toExpressionDoi } from '../../types/article-id';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 import * as Gid from '../../types/group-id';

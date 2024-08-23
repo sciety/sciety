@@ -15,14 +15,14 @@ import { ResourceAction } from '../resource-action';
 const constructEvents = (command: AddArticleToListCommand) => (
   command.annotation === undefined
     ? [
-      constructEvent('ArticleAddedToList')({
-        articleId: new ArticleId(command.expressionDoi),
+      constructEvent('ExpressionAddedToList')({
+        expressionDoi: command.expressionDoi,
         listId: command.listId,
       }),
     ]
     : [
-      constructEvent('ArticleAddedToList')({
-        articleId: new ArticleId(command.expressionDoi),
+      constructEvent('ExpressionAddedToList')({
+        expressionDoi: command.expressionDoi,
         listId: command.listId,
       }),
       constructEvent('ArticleInListAnnotated')({

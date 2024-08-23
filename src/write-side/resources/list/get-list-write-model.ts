@@ -9,7 +9,7 @@ import {
   DomainEvent,
   filterByName,
 } from '../../../domain-events';
-import { eqArticleId } from '../../../types/article-id';
+import { ArticleId, eqArticleId } from '../../../types/article-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
 
@@ -19,7 +19,7 @@ type GetListWriteModel = (listId: ListId)
 
 type RelevantEvent = ReturnType<typeof filterToEventsRelevantToWriteModel>[number];
 
-const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'ArticleAddedToList', 'ArticleRemovedFromList', 'ListNameEdited', 'ListDescriptionEdited', 'ArticleInListAnnotated']);
+const filterToEventsRelevantToWriteModel = filterByName(['ListCreated', 'ExpressionAddedToList', 'ArticleRemovedFromList', 'ListNameEdited', 'ListDescriptionEdited', 'ArticleInListAnnotated']);
 
 const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.listId === listId;
 
@@ -27,11 +27,11 @@ const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, 
   if (isEventOfType('ListCreated')(event)) {
     return E.right({ articles: [], name: event.name, description: event.description } satisfies ListWriteModel);
   }
-  if (isEventOfType('ArticleAddedToList')(event)) {
+  if (isEventOfType('ExpressionAddedToList')(event)) {
     pipe(
       resource,
       E.map((listResource) => {
-        listResource.articles.push({ articleId: event.articleId, annotated: false } satisfies ListWriteModel['articles'][number]);
+        listResource.articles.push({ articleId: new ArticleId(event.expressionDoi), annotated: false } satisfies ListWriteModel['articles'][number]);
         return undefined;
       }),
     );
