@@ -34,8 +34,8 @@ const constructEvents = (command: AddArticleToListCommand) => (
 );
 
 const createAppropriateEvents = (command: AddArticleToListCommand) => (listResource: ListWriteModel) => pipe(
-  listResource.articles,
-  RA.some((article) => article.articleId.value === command.expressionDoi),
+  listResource.expressions,
+  RA.some((expression) => expression.expressionDoi === command.expressionDoi),
   B.fold(
     () => constructEvents(command),
     () => [],

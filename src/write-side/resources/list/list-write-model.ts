@@ -1,7 +1,7 @@
-import { ArticleId } from '../../../types/article-id';
+import { ExpressionDoi } from '../../../types/expression-doi';
 
 export type ListWriteModel = {
-  articles: Array<{ articleId: ArticleId, annotated: boolean }>,
+  expressions: Array<{ expressionDoi: ExpressionDoi, annotated: boolean }>,
   name: string,
   description: string,
 };

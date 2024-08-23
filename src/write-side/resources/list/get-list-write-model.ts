@@ -9,7 +9,6 @@ import {
   DomainEvent,
   filterByName,
 } from '../../../domain-events';
-import { ArticleId, eqArticleId } from '../../../types/article-id';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { ListId } from '../../../types/list-id';
 
@@ -25,13 +24,13 @@ const isAnEventOfThisList = (listId: ListId) => (event: RelevantEvent) => event.
 
 const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, event: DomainEvent) => {
   if (isEventOfType('ListCreated')(event)) {
-    return E.right({ articles: [], name: event.name, description: event.description } satisfies ListWriteModel);
+    return E.right({ expressions: [], name: event.name, description: event.description } satisfies ListWriteModel);
   }
   if (isEventOfType('ExpressionAddedToList')(event)) {
     pipe(
       resource,
       E.map((listResource) => {
-        listResource.articles.push({ articleId: new ArticleId(event.expressionDoi), annotated: false } satisfies ListWriteModel['articles'][number]);
+        listResource.expressions.push({ expressionDoi: event.expressionDoi, annotated: false } satisfies ListWriteModel['expressions'][number]);
         return undefined;
       }),
     );
@@ -41,11 +40,11 @@ const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, 
       resource,
       E.map((listResource) => {
         pipe(
-          listResource.articles,
-          A.findFirst((article) => eqArticleId.equals(article.articleId, event.articleId)),
-          O.map((article) => {
+          listResource.expressions,
+          A.findFirst((expression) => expression.expressionDoi === event.articleId.value),
+          O.map((expression) => {
             // eslint-disable-next-line no-param-reassign
-            article.annotated = true;
+            expression.annotated = true;
             return undefined;
           }),
         );
@@ -57,9 +56,9 @@ const updateListWriteModel = (resource: E.Either<ErrorMessage, ListWriteModel>, 
     return pipe(
       resource,
       E.map((listResource) => pipe(
-        listResource.articles,
-        A.filter((article) => !eqArticleId.equals(article.articleId, event.articleId)),
-        (ids) => ({ ...listResource, articles: ids } satisfies ListWriteModel),
+        listResource.expressions,
+        A.filter((expression) => expression.expressionDoi !== event.articleId.value),
+        (ids) => ({ ...listResource, expressions: ids } satisfies ListWriteModel),
       )),
     );
   }

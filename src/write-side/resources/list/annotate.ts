@@ -11,15 +11,15 @@ import { toErrorMessage } from '../../../types/error-message';
 import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
-const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['articles'][number]) => (
+const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (article: ListWriteModel['expressions'][number]) => (
   article.annotated
     ? []
     : [constructEvent('ArticleInListAnnotated')({ articleId: command.expressionDoi, listId: command.listId, content: command.annotationContent })]
 );
 
 const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteModel) => pipe(
-  listResource.articles,
-  RA.findFirst((article) => article.articleId.value === articleId.value),
+  listResource.expressions,
+  RA.findFirst((expression) => expression.expressionDoi === articleId.value),
   E.fromOption(() => toErrorMessage('Article not in list')),
 );
 const isAnnotationValid = (command: AnnotateArticleInListCommand) => () => (

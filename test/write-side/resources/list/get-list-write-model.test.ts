@@ -31,7 +31,7 @@ describe('get-list-write-model', () => {
         ],
         getListWriteModel(listId),
         E.getOrElseW(shouldNotBeCalled),
-        (resource) => resource.articles,
+        (resource) => resource.expressions,
       );
 
       it('the article id is not in the resource', () => {
