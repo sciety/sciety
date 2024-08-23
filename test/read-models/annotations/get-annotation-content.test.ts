@@ -48,14 +48,14 @@ describe('get-annotation-content', () => {
     });
 
     describe('and the requested article has been added to this list', () => {
-      const articleAddedToListEvent = constructEvent('ArticleAddedToList')({ listId, articleId });
+      const expressionAddedToListEvent = constructEvent('ExpressionAddedToList')({ listId, expressionDoi });
       const articleAnnotatedEvent = constructEvent('ArticleInListAnnotated')({ articleId, listId, content });
       const articleRemovedFromListEvent = constructEvent('ArticleRemovedFromList')({ articleId, listId });
 
       describe('and the requested article has been annotated in this list', () => {
         const events = [
           listCreatedEvent,
-          articleAddedToListEvent,
+          expressionAddedToListEvent,
           constructEvent('ArticleInListAnnotated')({ listId, articleId, content }),
         ];
 
@@ -67,7 +67,7 @@ describe('get-annotation-content', () => {
       describe('and the requested article has not been annotated in this list', () => {
         const events = [
           listCreatedEvent,
-          articleAddedToListEvent,
+          expressionAddedToListEvent,
         ];
 
         it('returns no annotation', () => {
@@ -79,12 +79,12 @@ describe('get-annotation-content', () => {
         const differentListId = arbitraryListId();
         const events = [
           listCreatedEvent,
-          articleAddedToListEvent,
+          expressionAddedToListEvent,
           {
             ...arbitraryListCreatedEvent(),
             listId: differentListId,
           },
-          constructEvent('ArticleAddedToList')({ listId: differentListId, articleId }),
+          constructEvent('ExpressionAddedToList')({ listId: differentListId, expressionDoi }),
           constructEvent('ArticleInListAnnotated')({ listId: differentListId, articleId, content }),
         ];
 
@@ -97,7 +97,7 @@ describe('get-annotation-content', () => {
         const differentArticleId = new ArticleId(arbitraryExpressionDoi());
         const events = [
           listCreatedEvent,
-          articleAddedToListEvent,
+          expressionAddedToListEvent,
           {
             ...arbitraryExpressionAddedToListEvent(),
             listId,
@@ -114,7 +114,7 @@ describe('get-annotation-content', () => {
       describe('and the requested article has been annotated and then removed from this list', () => {
         const events = [
           listCreatedEvent,
-          articleAddedToListEvent,
+          expressionAddedToListEvent,
           articleAnnotatedEvent,
           articleRemovedFromListEvent,
         ];
@@ -127,10 +127,10 @@ describe('get-annotation-content', () => {
       describe('and the requested article has been annotated, then removed and then re-added from this list', () => {
         const events = [
           listCreatedEvent,
-          articleAddedToListEvent,
+          expressionAddedToListEvent,
           articleAnnotatedEvent,
           articleRemovedFromListEvent,
-          constructEvent('ArticleAddedToList')({ articleId, listId }),
+          constructEvent('ExpressionAddedToList')({ expressionDoi, listId }),
         ];
 
         it('returns no annotation', () => {
@@ -142,10 +142,10 @@ describe('get-annotation-content', () => {
         const newContent = arbitraryUnsafeUserInput();
         const events = [
           listCreatedEvent,
-          articleAddedToListEvent,
+          expressionAddedToListEvent,
           articleAnnotatedEvent,
           articleRemovedFromListEvent,
-          constructEvent('ArticleAddedToList')({ articleId, listId }),
+          constructEvent('ExpressionAddedToList')({ expressionDoi, listId }),
           constructEvent('ArticleInListAnnotated')({ articleId, listId, content: newContent }),
         ];
 
@@ -157,7 +157,7 @@ describe('get-annotation-content', () => {
       describe('and the requested article was annotated and this list was deleted', () => {
         const events = [
           listCreatedEvent,
-          articleAddedToListEvent,
+          expressionAddedToListEvent,
           articleAnnotatedEvent,
           listDeletedEvent,
         ];

@@ -135,12 +135,12 @@ describe('select-all-lists-owned-by', () => {
     const readmodel = pipe(
       [
         listCreated,
-        constructEvent('ArticleAddedToList')({
-          articleId: new ArticleId(arbitraryExpressionDoi()),
+        constructEvent('ExpressionAddedToList')({
+          expressionDoi: arbitraryExpressionDoi(),
           listId: listCreated.listId,
         }),
-        constructEvent('ArticleAddedToList')({
-          articleId: new ArticleId(removedExpressionDoi),
+        constructEvent('ExpressionAddedToList')({
+          expressionDoi: removedExpressionDoi,
           listId: listCreated.listId,
         }),
         constructEvent('ArticleRemovedFromList')({

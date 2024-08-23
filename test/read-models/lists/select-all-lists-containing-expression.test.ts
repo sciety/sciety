@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
 import { ReadModel, handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
 import { selectAllListsContainingExpression } from '../../../src/read-models/lists/select-all-lists-containing-expression';
-import { ArticleId } from '../../../src/types/article-id';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
@@ -31,11 +30,10 @@ describe('select-all-lists-containing-expression', () => {
   describe('when the article appears in one list', () => {
     const listCreatedEvent = arbitraryListCreatedEvent();
     const expressionDoi = arbitraryExpressionDoi();
-    const articleId = new ArticleId(expressionDoi);
     const readModel = pipe(
       [
         listCreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId, listId: listCreatedEvent.listId }),
+        constructEvent('ExpressionAddedToList')({ expressionDoi, listId: listCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -57,13 +55,12 @@ describe('select-all-lists-containing-expression', () => {
       listOwnerId: LOID.fromGroupId(arbitraryGroupId()),
     };
     const expressionDoi = arbitraryExpressionDoi();
-    const articleId = new ArticleId(expressionDoi);
     const readModel = pipe(
       [
         userListCreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId, listId: userListCreatedEvent.listId }),
+        constructEvent('ExpressionAddedToList')({ expressionDoi, listId: userListCreatedEvent.listId }),
         groupListCreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId, listId: groupListCreatedEvent.listId }),
+        constructEvent('ExpressionAddedToList')({ expressionDoi, listId: groupListCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -83,7 +80,7 @@ describe('select-all-lists-containing-expression', () => {
     const readModel = pipe(
       [
         listCreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(anotherExpressionDoi), listId: listCreatedEvent.listId }),
+        constructEvent('ExpressionAddedToList')({ expressionDoi: anotherExpressionDoi, listId: listCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -101,7 +98,7 @@ describe('select-all-lists-containing-expression', () => {
     const readModel = pipe(
       [
         listCreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(anotherExpressionDoi), listId: listCreatedEvent.listId }),
+        constructEvent('ExpressionAddedToList')({ expressionDoi: anotherExpressionDoi, listId: listCreatedEvent.listId }),
         constructEvent('ListDeleted')({ listId: listCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),

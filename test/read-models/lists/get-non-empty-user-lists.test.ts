@@ -3,7 +3,6 @@ import { pipe } from 'fp-ts/function';
 import { EventOfType, constructEvent } from '../../../src/domain-events';
 import { getNonEmptyUserLists } from '../../../src/read-models/lists/get-non-empty-user-lists';
 import { handleEvent, initialState } from '../../../src/read-models/lists/handle-event';
-import { ArticleId } from '../../../src/types/article-id';
 import * as LOID from '../../../src/types/list-owner-id';
 import { arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
@@ -24,8 +23,8 @@ describe('get-non-empty-user-lists', () => {
       [
         userList1CreatedEvent,
         userList2CreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: userList1CreatedEvent.listId }),
-        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: userList2CreatedEvent.listId }),
+        constructEvent('ExpressionAddedToList')({ expressionDoi: arbitraryExpressionDoi(), listId: userList1CreatedEvent.listId }),
+        constructEvent('ExpressionAddedToList')({ expressionDoi: arbitraryExpressionDoi(), listId: userList2CreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );
@@ -71,7 +70,7 @@ describe('get-non-empty-user-lists', () => {
     const readModel = pipe(
       [
         groupListCreatedEvent,
-        constructEvent('ArticleAddedToList')({ articleId: new ArticleId(arbitraryExpressionDoi()), listId: groupListCreatedEvent.listId }),
+        constructEvent('ExpressionAddedToList')({ expressionDoi: arbitraryExpressionDoi(), listId: groupListCreatedEvent.listId }),
       ],
       RA.reduce(initialState(), handleEvent),
     );

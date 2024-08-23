@@ -50,13 +50,13 @@ describe('lookup-list', () => {
             name,
             description,
           },
-          constructEvent('ArticleAddedToList')({
-            articleId: new ArticleId(expressionDoi1),
+          constructEvent('ExpressionAddedToList')({
+            expressionDoi: expressionDoi1,
             listId,
             date: new Date('2019'),
           }),
-          constructEvent('ArticleAddedToList')({
-            articleId: new ArticleId(expressionDoi2),
+          constructEvent('ExpressionAddedToList')({
+            expressionDoi: expressionDoi2,
             listId,
             date: new Date('2021'),
           }),
@@ -110,12 +110,12 @@ describe('lookup-list', () => {
             ...arbitraryListCreatedEvent(),
             listId,
           },
-          constructEvent('ArticleAddedToList')({
-            articleId: new ArticleId(expressionDoi1),
+          constructEvent('ExpressionAddedToList')({
+            expressionDoi: expressionDoi1,
             listId,
           }),
-          constructEvent('ArticleAddedToList')({
-            articleId: new ArticleId(expressionDoi2),
+          constructEvent('ExpressionAddedToList')({
+            expressionDoi: expressionDoi2,
             listId,
           }),
           constructEvent('ArticleRemovedFromList')({
