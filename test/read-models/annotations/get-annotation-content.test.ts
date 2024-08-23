@@ -49,14 +49,14 @@ describe('get-annotation-content', () => {
 
     describe('and the requested article has been added to this list', () => {
       const expressionAddedToListEvent = constructEvent('ExpressionAddedToList')({ listId, expressionDoi });
-      const articleAnnotatedEvent = constructEvent('ArticleInListAnnotated')({ articleId, listId, content });
+      const articleAnnotatedEvent = constructEvent('ExpressionInListAnnotated')({ expressionDoi, listId, content });
       const articleRemovedFromListEvent = constructEvent('ArticleRemovedFromList')({ articleId, listId });
 
       describe('and the requested article has been annotated in this list', () => {
         const events = [
           listCreatedEvent,
           expressionAddedToListEvent,
-          constructEvent('ArticleInListAnnotated')({ listId, articleId, content }),
+          constructEvent('ExpressionInListAnnotated')({ listId, expressionDoi, content }),
         ];
 
         it('returns the annotation content', () => {
@@ -85,7 +85,7 @@ describe('get-annotation-content', () => {
             listId: differentListId,
           },
           constructEvent('ExpressionAddedToList')({ listId: differentListId, expressionDoi }),
-          constructEvent('ArticleInListAnnotated')({ listId: differentListId, articleId, content }),
+          constructEvent('ExpressionInListAnnotated')({ listId: differentListId, expressionDoi, content }),
         ];
 
         it('returns no annotation', () => {
@@ -94,7 +94,8 @@ describe('get-annotation-content', () => {
       });
 
       describe('and a different article has been added to, and annotated in, this list', () => {
-        const differentArticleId = new ArticleId(arbitraryExpressionDoi());
+        const differentExpressionDoi = arbitraryExpressionDoi();
+        const differentArticleId = new ArticleId(differentExpressionDoi);
         const events = [
           listCreatedEvent,
           expressionAddedToListEvent,
@@ -103,7 +104,7 @@ describe('get-annotation-content', () => {
             listId,
             expressionDoi: EDOI.fromValidatedString(differentArticleId.value),
           },
-          constructEvent('ArticleInListAnnotated')({ listId, articleId: differentArticleId, content }),
+          constructEvent('ExpressionInListAnnotated')({ listId, expressionDoi: differentExpressionDoi, content }),
         ];
 
         it('returns no annotation', () => {
@@ -146,7 +147,7 @@ describe('get-annotation-content', () => {
           articleAnnotatedEvent,
           articleRemovedFromListEvent,
           constructEvent('ExpressionAddedToList')({ expressionDoi, listId }),
-          constructEvent('ArticleInListAnnotated')({ articleId, listId, content: newContent }),
+          constructEvent('ExpressionInListAnnotated')({ expressionDoi, listId, content: newContent }),
         ];
 
         it('returns only the new annotation', () => {

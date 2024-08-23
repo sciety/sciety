@@ -28,8 +28,8 @@ export const arbitraryArticleRemovedFromListEvent = (): EventOfType<'ArticleRemo
   listId: arbitraryListId(),
 });
 
-export const arbitraryArticleInListAnnotatedEvent = (): EventOfType<'ArticleInListAnnotated'> => constructEvent('ArticleInListAnnotated')({
-  articleId: new ArticleId(arbitraryExpressionDoi()),
+export const arbitraryExpressionInListAnnotatedEvent = (): EventOfType<'ExpressionInListAnnotated'> => constructEvent('ExpressionInListAnnotated')({
+  expressionDoi: arbitraryExpressionDoi(),
   listId: arbitraryListId(),
   content: arbitraryUnsafeUserInput(),
 });

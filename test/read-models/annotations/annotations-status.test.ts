@@ -4,7 +4,7 @@ import { DomainEvent } from '../../../src/domain-events';
 import { annotationsStatus } from '../../../src/read-models/annotations/annotations-status';
 import { handleEvent, initialState } from '../../../src/read-models/annotations/handle-event';
 import { ArticleId } from '../../../src/types/article-id';
-import { arbitraryArticleInListAnnotatedEvent, arbitraryExpressionAddedToListEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
+import { arbitraryExpressionAddedToListEvent, arbitraryExpressionInListAnnotatedEvent, arbitraryListCreatedEvent } from '../../domain-events/list-resource-events.helper';
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readmodel = pipe(
@@ -23,7 +23,7 @@ describe('annotations-status', () => {
       listId: listCreated.listId,
     };
     const articleAnnotated = {
-      ...arbitraryArticleInListAnnotatedEvent(),
+      ...arbitraryExpressionInListAnnotatedEvent(),
       listId: listCreated.listId,
       articleId: new ArticleId(expressionAdded.expressionDoi),
     };
