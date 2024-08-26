@@ -4,6 +4,7 @@ import { Dependencies, constructViewModel } from './construct-view-model';
 import { Params } from './params';
 import { renderPage } from './render-page';
 import { UnrecoverableError } from './view-model';
+import { ArticleId } from '../../../types/article-id';
 import { ErrorPageViewModel, constructErrorPageViewModel } from '../construct-error-page-view-model';
 import { HtmlPage, toHtmlPage } from '../html-page';
 
@@ -17,7 +18,12 @@ export const createAnnotationFormPage: CreateAnnotationFormPage = (
   params,
 ) => pipe(
   params,
-  ({ expressionDoi, listId }) => constructViewModel(expressionDoi, listId, dependencies, unrecoverableError),
+  ({ expressionDoi, listId }) => constructViewModel(
+    new ArticleId(expressionDoi),
+    listId,
+    dependencies,
+    unrecoverableError,
+  ),
   TE.bimap(
     constructErrorPageViewModel,
     (viewModel) => toHtmlPage({

@@ -1,10 +1,10 @@
 import * as t from 'io-ts';
 import { inputFieldNames } from '../../../standards';
-import { articleIdCodec } from '../../../types/article-id';
+import { expressionDoiCodec } from '../../../types/expression-doi';
 import { listIdCodec } from '../../../types/list-id';
 
 export const paramsCodec = t.type({
-  [inputFieldNames.expressionDoi]: articleIdCodec,
+  [inputFieldNames.expressionDoi]: expressionDoiCodec,
   [inputFieldNames.listId]: listIdCodec,
 });
 
