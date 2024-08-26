@@ -8,6 +8,7 @@ import { ListWriteModel } from './list-write-model';
 import { constructEvent } from '../../../domain-events';
 import { ArticleId } from '../../../types/article-id';
 import { toErrorMessage } from '../../../types/error-message';
+import { ExpressionDoi } from '../../../types/expression-doi';
 import { AnnotateArticleInListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
@@ -17,9 +18,9 @@ const createAppropriateEvents = (command: AnnotateArticleInListCommand) => (arti
     : [constructEvent('ArticleInListAnnotated')({ articleId: new ArticleId(command.expressionDoi), listId: command.listId, content: command.annotationContent })]
 );
 
-const findRelevantArticle = (articleId: ArticleId) => (listResource: ListWriteModel) => pipe(
+const findRelevantArticle = (expressionDoi: ExpressionDoi) => (listResource: ListWriteModel) => pipe(
   listResource.articles,
-  RA.findFirst((article) => article.articleId.value === articleId.value),
+  RA.findFirst((article) => article.articleId.value === expressionDoi),
   E.fromOption(() => toErrorMessage('Article not in list')),
 );
 const isAnnotationValid = (command: AnnotateArticleInListCommand) => () => (
@@ -34,7 +35,7 @@ export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) 
     () => toErrorMessage('not-found'),
   ),
   E.chain(getListWriteModel(command.listId)),
-  E.chain(findRelevantArticle(new ArticleId(command.expressionDoi))),
+  E.chain(findRelevantArticle(command.expressionDoi)),
   E.filterOrElseW(
     isAnnotationValid(command),
     () => toErrorMessage('Annotation too long'),
