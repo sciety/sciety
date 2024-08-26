@@ -17,6 +17,7 @@ import { createAnnotationFormPage, paramsCodec } from '../../read-side/html-page
 import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
 import { standardPageLayout } from '../../read-side/html-pages/shared-components/standard-page-layout';
 import { inputFieldNames } from '../../standards';
+import { ArticleId } from '../../types/article-id';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { UserDetails } from '../../types/user-details';
@@ -109,7 +110,7 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
   const htmlResponse = await redisplayFormPage(
     dependencies,
     context,
-    { listId: command.right.listId, expressionDoi: command.right.expressionDoi },
+    { listId: command.right.listId, expressionDoi: new ArticleId(command.right.expressionDoi) },
     loggedInUser,
   )();
   sendHtmlResponse(context)(htmlResponse);

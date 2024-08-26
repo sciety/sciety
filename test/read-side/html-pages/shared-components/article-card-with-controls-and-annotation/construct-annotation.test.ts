@@ -7,7 +7,6 @@ import {
 } from '../../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/construct-annotation';
 import { unknownAuthor } from '../../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/static-content';
 import { Annotation } from '../../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation/view-model';
-import { ArticleId } from '../../../../../src/types/article-id';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
@@ -51,7 +50,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          expressionDoi: new ArticleId(expressionDoi),
+          expressionDoi,
           listId: createListCommand.listId,
         });
         result = pipe(
@@ -82,7 +81,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          expressionDoi: new ArticleId(expressionDoi),
+          expressionDoi,
           listId: createListCommand.listId,
         });
         result = pipe(
@@ -108,7 +107,7 @@ describe('construct-annotation', () => {
         await framework.commandHelpers.addArticleToList({ expressionDoi, listId: createListCommand.listId });
         await framework.commandHelpers.createAnnotation({
           annotationContent: content,
-          expressionDoi: new ArticleId(expressionDoi),
+          expressionDoi,
           listId: createListCommand.listId,
         });
         result = pipe(

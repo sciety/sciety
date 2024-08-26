@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { ArticleCardWithControlsAndAnnotationViewModel, constructArticleCardWithControlsAndAnnotation } from '../../../../../src/read-side/html-pages/shared-components/article-card-with-controls-and-annotation';
-import { ArticleId } from '../../../../../src/types/article-id';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 import { arbitraryUnsafeUserInput } from '../../../../types/unsafe-user-input.helper';
@@ -60,7 +59,7 @@ describe('construct-article-card-with-controls-and-annotation', () => {
         beforeEach(async () => {
           await framework.commandHelpers.createAnnotation({
             annotationContent: arbitraryUnsafeUserInput(),
-            expressionDoi: new ArticleId(expressionDoi),
+            expressionDoi,
             listId,
           });
           formHref = await pipe(
