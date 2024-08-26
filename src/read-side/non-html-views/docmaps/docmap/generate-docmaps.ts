@@ -7,16 +7,15 @@ import { StatusCodes } from 'http-status-codes';
 import { constructDocmapViewModel } from './construct-view-model/construct-docmap-view-model';
 import { Docmap } from './docmap-type';
 import { renderDocmap } from './render-docmap';
-import { ArticleId } from '../../../../types/article-id';
 import * as EDOI from '../../../../types/expression-doi';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 import { supportedGroups } from '../supported-groups';
 
-const getEvaluatingGroupIds = (dependencies: DependenciesForViews) => (doi: ArticleId) => pipe(
-  dependencies.getEvaluationsOfExpression(EDOI.fromValidatedString(doi.value)),
+const getEvaluatingGroupIds = (dependencies: DependenciesForViews) => (doi: EDOI.ExpressionDoi) => pipe(
+  dependencies.getEvaluationsOfExpression(doi),
   T.of,
   T.map(flow(
-    RA.filter(({ expressionDoi }) => expressionDoi === doi.value),
+    RA.filter(({ expressionDoi }) => expressionDoi === doi),
     RA.filter(({ groupId }) => supportedGroups.includes(groupId)),
     RA.map(({ groupId }) => groupId),
     (groupIds) => [...new Set(groupIds)],
@@ -29,7 +28,7 @@ const validateDoi = flow(
 );
 
 const getDocmapViewModels = (dependencies: DependenciesForViews) => (articleId: EDOI.ExpressionDoi) => pipe(
-  new ArticleId(articleId),
+  articleId,
   getEvaluatingGroupIds(dependencies),
   TE.rightTask,
   TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(dependencies)({
