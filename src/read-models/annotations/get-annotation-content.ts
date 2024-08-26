@@ -7,10 +7,10 @@ import { RawUserInput } from '../../read-side';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { ListId } from '../../types/list-id';
 
-type GetAnnotationContent = (listId: ListId, articleId: ExpressionDoi) => O.Option<RawUserInput>;
+type GetAnnotationContent = (listId: ListId, expressionDoi: ExpressionDoi) => O.Option<RawUserInput>;
 
-export const getAnnotationContent = (readModel: ReadModel): GetAnnotationContent => (listId, articleId) => pipe(
+export const getAnnotationContent = (readModel: ReadModel): GetAnnotationContent => (listId, expressionDoi) => pipe(
   readModel,
   R.lookup(listId),
-  O.chain(R.lookup(articleId)),
+  O.chain(R.lookup(expressionDoi)),
 );
