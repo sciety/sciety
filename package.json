@@ -90,7 +90,7 @@
     "stylelint-order": "^6.0.4",
     "taiko": "^1.4.0",
     "ts-unused-exports": "^10.1.0",
-    "tsx": "^4.16.2",
+    "tsx": "^4.18.0",
     "typescript": "^5.5.4"
   },
   "scripts": {
