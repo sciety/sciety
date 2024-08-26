@@ -27,12 +27,12 @@ const validateDoi = flow(
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Invalid DOI requested' })),
 );
 
-const getDocmapViewModels = (dependencies: DependenciesForViews) => (articleId: EDOI.ExpressionDoi) => pipe(
-  articleId,
+const getDocmapViewModels = (dependencies: DependenciesForViews) => (expressionDoi: EDOI.ExpressionDoi) => pipe(
+  expressionDoi,
   getEvaluatingGroupIds(dependencies),
   TE.rightTask,
   TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(dependencies)({
-    expressionDoi: articleId,
+    expressionDoi,
     groupId,
   }))),
   TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
