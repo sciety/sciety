@@ -15,8 +15,8 @@ import { ListId } from '../../../types/list-id';
 
 export type Dependencies = Queries & ExternalQueries;
 
-const getArticleTitle = (dependencies: Dependencies, articleId: ExpressionDoi) => pipe(
-  articleId,
+const getArticleTitle = (dependencies: Dependencies, expressionDoi: ExpressionDoi) => pipe(
+  expressionDoi,
   dependencies.fetchExpressionFrontMatter,
   TE.map((frontMatter) => frontMatter.title),
 );
@@ -30,19 +30,19 @@ const getListName = (dependencies: Dependencies, listId: ListId) => pipe(
 );
 
 export const constructViewModel = (
-  articleId: ExpressionDoi,
+  expressionDoi: ExpressionDoi,
   listId: ListId,
   dependencies: Dependencies,
   unrecoverableError?: UnrecoverableError,
 ): TE.TaskEither<DataError, ViewModel> => pipe(
   {
-    articleTitle: getArticleTitle(dependencies, articleId),
+    articleTitle: getArticleTitle(dependencies, expressionDoi),
     listName: getListName(dependencies, listId),
   },
   sequenceS(TE.ApplyPar),
   TE.map((partial) => ({
     ...partial,
-    expressionDoi: articleId,
+    expressionDoi,
     listId,
     pageHeading: toHtmlFragment('Share your thoughts'),
     unrecoverableError: O.fromNullable(unrecoverableError),
