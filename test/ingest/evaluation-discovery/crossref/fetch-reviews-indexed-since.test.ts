@@ -1,12 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import * as TE from 'fp-ts/TaskEither';
 import * as CR from '../../../../src/ingest/evaluation-discovery/crossref';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../../helpers';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { stubbedFetchData } from '../discover-access-microbiology-evaluations/determine-pages-to-select.test';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
-  const fetchData = <D>() => TE.right({ message: { items } } as unknown as D);
+  const fetchData = stubbedFetchData({ message: { items } });
   return CR.fetchReviewsIndexedSince(fetchData)(arbitraryWord(), arbitraryDate());
 };
 
