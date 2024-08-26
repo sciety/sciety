@@ -22,7 +22,7 @@ describe('get-annotation-content', () => {
       events,
       RA.reduce(initialState(), handleEvent),
     );
-    const annotationContent = getAnnotationContent(readmodel)(listId, articleId);
+    const annotationContent = getAnnotationContent(readmodel)(listId, expressionDoi);
     return annotationContent;
   };
 

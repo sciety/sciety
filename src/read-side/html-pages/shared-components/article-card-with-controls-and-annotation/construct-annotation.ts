@@ -4,7 +4,6 @@ import { missingAvatarFallback, unknownAuthor } from './static-content';
 import { ViewModel } from './view-model';
 import { Queries } from '../../../../read-models';
 import { constructUserAvatarSrc } from '../../../../standards/paths';
-import { ArticleId } from '../../../../types/article-id';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import { GroupId } from '../../../../types/group-id';
 import { ListId } from '../../../../types/list-id';
@@ -63,7 +62,7 @@ const getAnnotationAuthorAvatarPath = (dependencies: Queries, listId: ListId) =>
 );
 
 export const constructAnnotation = (dependencies: Queries) => (listId: ListId, expressionDoi: ExpressionDoi): ViewModel['annotation'] => pipe(
-  dependencies.getAnnotationContent(listId, new ArticleId(expressionDoi)),
+  dependencies.getAnnotationContent(listId, expressionDoi),
   O.map((content) => ({
     content,
     author: pipe(
