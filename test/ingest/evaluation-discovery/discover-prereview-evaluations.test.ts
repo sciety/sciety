@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { stubbedFetchData } from './discover-access-microbiology-evaluations/determine-pages-to-select.test';
+import { stubbedFetchData } from './fetch-data.helper';
 import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverPrereviewEvaluations } from '../../../src/ingest/evaluation-discovery/discover-prereview-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';

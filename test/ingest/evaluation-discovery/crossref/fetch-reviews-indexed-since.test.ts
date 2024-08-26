@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as CR from '../../../../src/ingest/evaluation-discovery/crossref';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../../helpers';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-import { stubbedFetchData } from '../discover-access-microbiology-evaluations/determine-pages-to-select.test';
+import { stubbedFetchData } from '../fetch-data.helper';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
   const fetchData = stubbedFetchData({ message: { items } });

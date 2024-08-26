@@ -5,11 +5,7 @@ import { Dependencies } from '../../../../src/ingest/discover-published-evaluati
 import { SelectedPage, determinePagesToSelect } from '../../../../src/ingest/evaluation-discovery/discover-access-microbiology-evaluations/determine-pages-to-select';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-
-// eslint-disable-next-line jest/no-export
-export const stubbedFetchData = (
-  stubbedResponse: unknown,
-) => <D>(): TE.TaskEither<never, D> => TE.right(stubbedResponse as unknown as D);
+import { stubbedFetchData } from '../fetch-data.helper';
 
 const invokeDeterminePagesToSelect = async (fetchDataImplementation: Dependencies['fetchData']) => pipe(
   { fetchData: fetchDataImplementation },
