@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function';
 import { List } from '../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../src/read-side/html-pages/create-annotation-form-page/construct-view-model';
 import { ViewModel } from '../../../../src/read-side/html-pages/create-annotation-form-page/view-model';
-import { ArticleId } from '../../../../src/types/article-id';
 import * as DE from '../../../../src/types/data-error';
 import * as LOID from '../../../../src/types/list-owner-id';
 import { TestFramework, createTestFramework } from '../../../framework';
@@ -37,7 +36,7 @@ describe('construct-view-model', () => {
       userList = await setUpAUserList();
       viewModel = await pipe(
         constructViewModel(
-          new ArticleId(arbitraryExpressionDoi()),
+          arbitraryExpressionDoi(),
           userList.id,
           {
             ...framework.dependenciesForViews,
@@ -64,7 +63,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       const userList = await setUpAUserList();
       result = await constructViewModel(
-        new ArticleId(arbitraryExpressionDoi()),
+        arbitraryExpressionDoi(),
         userList.id,
         {
           ...framework.dependenciesForViews,
@@ -82,7 +81,7 @@ describe('construct-view-model', () => {
     beforeEach(async () => {
       result = await pipe(
         constructViewModel(
-          new ArticleId(arbitraryExpressionDoi()),
+          arbitraryExpressionDoi(),
           arbitraryListId(),
           framework.dependenciesForViews,
         ),
