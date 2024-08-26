@@ -23,17 +23,17 @@ export const constructContentWithPaginationViewModel = (
   pageNumber: number,
   editCapability: boolean,
   listId: ListId,
-) => (articleIds: ReadonlyArray<ExpressionDoi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
-  articleIds,
+) => (expressionDoi: ReadonlyArray<ExpressionDoi>): TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ContentWithPaginationViewModel> => pipe(
+  expressionDoi,
   paginate(20, pageNumber),
   TE.fromEither,
-  TE.chainW((pageOfArticles) => pipe(
-    pageOfArticles,
+  TE.chainW((pageOfExpressionDois) => pipe(
+    pageOfExpressionDois,
     toPageOfCards(dependencies, editCapability, listId),
     TE.map((articles) => ({
       articles,
-      pagination: pageOfArticles,
-      ...constructPaginationControlsViewModel(pageOfArticles.forwardPage, `/lists/${listId}`),
+      pagination: pageOfExpressionDois,
+      ...constructPaginationControlsViewModel(pageOfExpressionDois.forwardPage, `/lists/${listId}`),
     })),
   )),
 );
