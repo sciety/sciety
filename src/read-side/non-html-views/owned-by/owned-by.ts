@@ -20,7 +20,7 @@ const constructViewModel = (lists: ReadonlyArray<List>) => pipe(
       list.description,
       renderRawUserInputForJsonApi,
     ),
-    articleIds: [...toExpressionDoisByMostRecentlyAdded(list.entries)],
+    expressionDois: [...toExpressionDoisByMostRecentlyAdded(list.entries)],
   })),
 );
 

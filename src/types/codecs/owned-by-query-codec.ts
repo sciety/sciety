@@ -7,7 +7,7 @@ export const listCodec = t.type({
   id: listIdCodec,
   name: t.string,
   description: t.string,
-  articleIds: t.array(t.string),
+  expressionDois: t.array(t.string),
   updatedAt: tt.DateFromISOString,
   ownerId: LOID.fromStringCodec,
 });
