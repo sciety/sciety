@@ -16,7 +16,7 @@ import { constructArticleCard } from '../../../shared-components/article-card';
 import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
 
-const getEvaluatedArticleIds = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
+const getEvaluatedExpressionDois = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,
   dependencies.getEvaluatedArticlesListIdForGroup,
   O.chain((listId) => dependencies.lookupList(listId)),
@@ -29,14 +29,14 @@ const toOrderedArticleCards = (
   dependencies: Dependencies,
   group: Group,
 ) => (
-  pageOfArticleIds: PageOfItems<string>,
+  pageOfExpressionDois: PageOfItems<string>,
 ) => pipe(
-  pageOfArticleIds.items,
-  T.traverseArray((articleId) => constructArticleCard(dependencies)(EDOI.fromValidatedString(articleId))),
+  pageOfExpressionDois.items,
+  T.traverseArray((expressionDoi) => constructArticleCard(dependencies)(EDOI.fromValidatedString(expressionDoi))),
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,
-    ...constructDefaultPaginationControls(constructGroupPagePath.home.href(group), pageOfArticleIds),
+    ...constructDefaultPaginationControls(constructGroupPagePath.home.href(group), pageOfExpressionDois),
     backwardPageLabel: 'Newer',
     forwardPageLabel: 'Older',
   })),
@@ -47,8 +47,8 @@ const toPageOfFeedContent = (
   group: Group,
   pageSize: number,
   page: number,
-) => (articleIds: ReadonlyArray<string>) => pipe(
-  articleIds,
+) => (expressionDois: ReadonlyArray<string>) => pipe(
+  expressionDois,
   E.fromPredicate(
     RA.isNonEmpty,
     () => ({ tag: 'no-activity-yet' as const }),
@@ -66,7 +66,7 @@ const getExpressionDoisForFeed = (dependencies: Dependencies) => (groupId: Group
   if (process.env.EXPERIMENT_ENABLED === 'true' && groupId === GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')) {
     return E.right(dependencies.getPapersEvaluatedByGroup(groupId));
   }
-  return getEvaluatedArticleIds(dependencies)(groupId);
+  return getEvaluatedExpressionDois(dependencies)(groupId);
 };
 
 export const constructFeed = (
