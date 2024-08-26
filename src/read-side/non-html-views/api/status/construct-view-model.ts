@@ -18,7 +18,7 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
     ensureEvaluationsAreListed: pipe(
       dependencies.getUnlistedEvaluatedArticles(),
       RA.map((missingArticle) => ({
-        articleId: missingArticle.articleId.value,
+        articleId: missingArticle.expressionDoi.value,
         listId: missingArticle.listId,
       })),
     ),

@@ -4,7 +4,7 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { ArticleState, ReadModel } from './handle-event';
-import { ArticleId } from '../../types/article-id';
+import { ArticleId as ExpressionDoi } from '../../types/article-id';
 import { ListId } from '../../types/list-id';
 
 const hasBeenEvaluated = (a: ArticleState): boolean => a.evaluatedBy.length > 0;
@@ -25,7 +25,7 @@ const listsFromWhichTheArticleIsMissing = (groupsToEvaluatedArticlesLists: ReadM
 );
 
 type MissingArticle = {
-  articleId: ArticleId,
+  expressionDoi: ExpressionDoi,
   listId: ListId,
 };
 
@@ -35,7 +35,7 @@ const toMissingArticleObjects = (
 ): ReadonlyArray<MissingArticle> => pipe(
   listIds,
   RA.map((listId) => ({
-    articleId: new ArticleId(expressionDoi),
+    expressionDoi: new ExpressionDoi(expressionDoi),
     listId,
   })),
 );

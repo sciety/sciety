@@ -18,7 +18,7 @@ export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Pr
       () => TE.right('no-events-created' as const),
       (missingArticle) => executeResourceAction(dependencies, list.addArticle)({
         listId: missingArticle.listId,
-        expressionDoi: EDOI.fromValidatedString(missingArticle.articleId.value),
+        expressionDoi: EDOI.fromValidatedString(missingArticle.expressionDoi.value),
       }),
     ),
   )();
