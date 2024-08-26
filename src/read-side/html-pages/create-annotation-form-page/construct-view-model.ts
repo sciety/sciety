@@ -43,7 +43,7 @@ export const constructViewModel = (
   sequenceS(TE.ApplyPar),
   TE.map((partial) => ({
     ...partial,
-    articleId: EDOI.fromValidatedString(articleId.value),
+    expressionDoi: EDOI.fromValidatedString(articleId.value),
     listId,
     pageHeading: toHtmlFragment('Share your thoughts'),
     unrecoverableError: O.fromNullable(unrecoverableError),

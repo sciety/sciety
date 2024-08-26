@@ -22,7 +22,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => toHtmlFragment
     <p>Add a public comment to share with others what's interesting or important about this article.</p>
   </header>
   <form class="standard-form" method="POST" action="${pathToSubmitCreateAnnotation()}">
-    <input type="hidden" name="${inputFieldNames.expressionDoi}" value="${viewModel.articleId}">
+    <input type="hidden" name="${inputFieldNames.expressionDoi}" value="${viewModel.expressionDoi}">
     <input type="hidden" name="${inputFieldNames.listId}" value="${viewModel.listId}">
     <dl>
       <dt>Article</dt>

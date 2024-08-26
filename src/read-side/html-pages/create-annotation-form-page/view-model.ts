@@ -7,7 +7,7 @@ import { SanitisedHtmlFragment } from '../../../types/sanitised-html-fragment';
 export type UnrecoverableError = 'article-not-in-list';
 
 export type ViewModel = {
-  articleId: ExpressionDoi,
+  expressionDoi: ExpressionDoi,
   listId: ListId,
   articleTitle: SanitisedHtmlFragment,
   listName: string,
