@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { constructDocmapViewModel } from './construct-view-model/construct-docmap-view-model';
 import { Docmap } from './docmap-type';
 import { renderDocmap } from './render-docmap';
-import { articleIdCodec, ArticleId, toExpressionDoi } from '../../../../types/article-id';
+import { ArticleId } from '../../../../types/article-id';
 import * as EDOI from '../../../../types/expression-doi';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 import { supportedGroups } from '../supported-groups';
@@ -24,16 +24,16 @@ const getEvaluatingGroupIds = (dependencies: DependenciesForViews) => (doi: Arti
 );
 
 const validateDoi = flow(
-  articleIdCodec.decode,
+  EDOI.expressionDoiCodec.decode,
   E.mapLeft(() => ({ status: StatusCodes.BAD_REQUEST, message: 'Invalid DOI requested' })),
 );
 
-const getDocmapViewModels = (dependencies: DependenciesForViews) => (articleId: ArticleId) => pipe(
-  articleId,
+const getDocmapViewModels = (dependencies: DependenciesForViews) => (articleId: EDOI.ExpressionDoi) => pipe(
+  new ArticleId(articleId),
   getEvaluatingGroupIds(dependencies),
   TE.rightTask,
   TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(dependencies)({
-    expressionDoi: toExpressionDoi(articleId),
+    expressionDoi: articleId,
     groupId,
   }))),
   TE.mapLeft(() => ({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Failed to generate docmaps' })),
