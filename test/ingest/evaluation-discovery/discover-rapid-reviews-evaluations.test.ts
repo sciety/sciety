@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { stubbedFetchData } from './discover-access-microbiology-evaluations/determine-pages-to-select.test';
 import { arbitraryIngestDays } from './ingest-days.helper';
 import { discoverRapidReviewsEvaluations } from '../../../src/ingest/evaluation-discovery/discover-rapid-reviews-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
@@ -12,7 +13,7 @@ import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
   {
-    fetchData: <D>() => TE.right({ message: { items: crossrefResponseItems } } as unknown as D),
+    fetchData: stubbedFetchData({ message: { items: crossrefResponseItems } }),
     fetchGoogleSheet: shouldNotBeCalled,
   },
   discoverRapidReviewsEvaluations()(arbitraryIngestDays()),
