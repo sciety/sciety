@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { ExpressionDoi } from '../../types/expression-doi';
@@ -6,6 +7,8 @@ import { GroupId } from '../../types/group-id';
 export type PendingEvaluation = {
   expressionDoi: ExpressionDoi,
   evaluationLocator: EvaluationLocator,
+  targetId: URL,
+  targetInbox: URL,
 };
 
 export type ReadModel = Array<PendingEvaluation>;
@@ -27,6 +30,8 @@ export const handleEvent = (
       readModel.push({
         expressionDoi: event.articleId,
         evaluationLocator: event.evaluationLocator,
+        targetId: new URL('https://coar-notify-inbox.fly.dev'),
+        targetInbox: new URL('https://coar-notify-inbox.fly.dev/inbox/'),
       });
     }
   }

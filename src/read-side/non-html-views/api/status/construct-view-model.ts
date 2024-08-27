@@ -23,6 +23,13 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
       })),
     ),
     maintainSnapshotsForEvaluatedExpressions: dependencies.getExpressionsWithNoAssociatedSnapshot(),
-    sendNotificationToCoarTestInbox: dependencies.getPendingEvaluations(),
+    sendNotificationToCoarTestInbox: pipe(
+      dependencies.getPendingEvaluations(),
+      RA.map((pendingEvaluation) => ({
+        ...pendingEvaluation,
+        targetId: pendingEvaluation.targetId.toString(),
+        targetInbox: pendingEvaluation.targetInbox.toString(),
+      })),
+    ),
   },
 });
