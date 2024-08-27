@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { discoverHypothesisEvaluations } from '../../../../src/ingest/evaluation-discovery/hypothesis/discover-hypothesis-evaluations';
 import { arbitraryDate, arbitraryWord } from '../../../helpers';
+import { stubbedFetchData } from '../fetch-data.helper';
 
 const arbitraryAnnotation = () => ({
   id: arbitraryWord(),
@@ -37,9 +38,13 @@ describe('discover-hypothesis-evaluations', () => {
 
   describe('when there are no annotations', () => {
     it('returns an empty array', async () => {
-      const fetchData = jest.fn()
-        .mockReturnValueOnce(emptyPage);
-      const result = await discoverHypothesisEvaluations(arbitraryWord(), arbitraryDate(), fetchData)();
+      // const fetchData = jest.fn()
+      //   .mockReturnValueOnce(emptyPage);
+      const result = await discoverHypothesisEvaluations(
+        arbitraryWord(),
+        arbitraryDate(),
+        stubbedFetchData(emptyPage),
+      )();
 
       expect(result).toStrictEqual(E.right([]));
     });
