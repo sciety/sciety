@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { containsUnrecoverableError } from './contains-unrecoverable-error';
+import { detectUnrecoverableError } from './detect-unrecoverable-error';
 import {
   getAbstract, getAuthors, getTitle,
 } from './parse-crossref-article';
@@ -33,8 +33,9 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
   try {
     const parsedXml = parser.parseFromString(document, 'text/xml');
 
-    if (containsUnrecoverableError(parsedXml)) {
-      logger('error', 'crossref/fetch-expression-front-matter: Unrecoverable error', { expressionDoi, document });
+    const unrecoverableError = detectUnrecoverableError(parsedXml);
+    if (O.isSome(unrecoverableError)) {
+      logger('error', 'crossref/fetch-expression-front-matter: Unrecoverable error', { expressionDoi, document, reason: unrecoverableError.value });
       return E.left(DE.unavailable);
     }
 

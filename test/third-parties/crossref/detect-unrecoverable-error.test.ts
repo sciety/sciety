@@ -1,8 +1,9 @@
 import { DOMParser } from '@xmldom/xmldom';
-import { containsUnrecoverableError } from '../../../src/third-parties/crossref/contains-unrecoverable-error';
+import * as O from 'fp-ts/Option';
+import { detectUnrecoverableError } from '../../../src/third-parties/crossref/detect-unrecoverable-error';
 import { arbitraryString } from '../../helpers';
 
-describe('contains-unrecoverable-error', () => {
+describe('detect-unrecoverable-error', () => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
@@ -12,19 +13,19 @@ describe('contains-unrecoverable-error', () => {
   describe('when the document', () => {
     describe('does not contain a <crossref> tag', () => {
       const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n      </doi_record>\r\n</doi_records>';
-      const result = containsUnrecoverableError(parser.parseFromString(input, 'text/xml'));
+      const result = detectUnrecoverableError(parser.parseFromString(input, 'text/xml'));
 
       it('detects an unrecoverable error', () => {
-        expect(result).toBe(true);
+        expect(result).toStrictEqual(O.some('missing-crossref-xml-element'));
       });
     });
 
     describe('contains a <crossref> tag with its only child an <error> tag', () => {
       const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n    <crossref>\r\n      <error>doi:10.21203/rs.3.rs-3869684/v1</error>\r\n    </crossref>\r\n  </doi_record>\r\n</doi_records>';
-      const result = containsUnrecoverableError(parser.parseFromString(input, 'text/xml'));
+      const result = detectUnrecoverableError(parser.parseFromString(input, 'text/xml'));
 
       it('detects an unrecoverable error', () => {
-        expect(result).toBe(true);
+        expect(result).toStrictEqual(O.some('contains-error-xml-element'));
       });
     });
 
@@ -43,10 +44,10 @@ describe('contains-unrecoverable-error', () => {
           </doi_record>
         </doi_records>
       `;
-      const result = containsUnrecoverableError(parser.parseFromString(input, 'text/xml'));
+      const result = detectUnrecoverableError(parser.parseFromString(input, 'text/xml'));
 
       it('does not detect an unrecoverable error', () => {
-        expect(result).toBe(false);
+        expect(result).toStrictEqual(O.none);
       });
     });
   });
