@@ -1,3 +1,4 @@
+/* eslint-disable jest/max-expects */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
@@ -101,6 +102,8 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
+          expect(result[0].targetId).toStrictEqual(targetId);
+          expect(result[0].targetInbox).toStrictEqual(targetInbox);
         });
       });
 
@@ -137,8 +140,12 @@ describe('get-pending-notifications', () => {
         expect(result).toHaveLength(2);
         expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
         expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
+        expect(result[0].targetId).toStrictEqual(targetId);
+        expect(result[0].targetInbox).toStrictEqual(targetInbox);
         expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
         expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
+        expect(result[1].targetId).toStrictEqual(targetId);
+        expect(result[1].targetInbox).toStrictEqual(targetInbox);
       });
     });
 
@@ -161,8 +168,12 @@ describe('get-pending-notifications', () => {
         expect(result).toHaveLength(2);
         expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
         expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
+        expect(result[0].targetId).toStrictEqual(targetId);
+        expect(result[0].targetInbox).toStrictEqual(targetInbox);
         expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
         expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
+        expect(result[1].targetId).toStrictEqual(targetId);
+        expect(result[1].targetInbox).toStrictEqual(targetInbox);
       });
     });
   });
