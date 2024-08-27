@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
@@ -52,6 +53,8 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
+          expect(result[0].targetId).toStrictEqual(new URL('https://coar-notify-inbox.fly.dev'));
+          expect(result[0].targetInbox).toStrictEqual(new URL('https://coar-notify-inbox.fly.dev/inbox/'));
         });
       });
 
