@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
-import { getPendingEvaluations } from '../../../src/read-models/evaluations-for-notifications/get-pending-evaluations';
+import { getPendingNotifications } from '../../../src/read-models/evaluations-for-notifications/get-pending-evaluations';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -15,15 +15,15 @@ const runQuery = (events: ReadonlyArray<DomainEvent>) => {
     events,
     RA.reduce(initialState(), handleEvent(consideredGroupIds)),
   );
-  return getPendingEvaluations(readModel)();
+  return getPendingNotifications(readModel)();
 };
 
-describe('get-pending-evaluations', () => {
+describe('get-pending-notifications', () => {
   describe('given activity by considered groups', () => {
     describe('when no evaluation publications have been recorded', () => {
       const result = runQuery([]);
 
-      it('returns no evaluations', () => {
+      it('returns no notifications', () => {
         expect(result).toHaveLength(0);
       });
     });
@@ -48,7 +48,7 @@ describe('get-pending-evaluations', () => {
         ];
         const result = runQuery(events);
 
-        it('returns the evaluation', () => {
+        it('returns one notification', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
@@ -62,7 +62,7 @@ describe('get-pending-evaluations', () => {
         ];
         const result = runQuery(events);
 
-        it('returns no evaluations', () => {
+        it('returns no notifications', () => {
           expect(result).toHaveLength(0);
         });
       });
@@ -74,7 +74,7 @@ describe('get-pending-evaluations', () => {
         ];
         const result = runQuery(events);
 
-        it('returns no evaluations', () => {
+        it('returns no notifications', () => {
           expect(result).toHaveLength(0);
         });
       });
@@ -92,7 +92,7 @@ describe('get-pending-evaluations', () => {
         ];
         const result = runQuery(events);
 
-        it('returns the evaluation', () => {
+        it('returns one notification', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
@@ -107,7 +107,7 @@ describe('get-pending-evaluations', () => {
         ];
         const result = runQuery(events);
 
-        it('returns no evaluations', () => {
+        it('returns no notifications', () => {
           expect(result).toHaveLength(0);
         });
       });
@@ -128,7 +128,7 @@ describe('get-pending-evaluations', () => {
       ];
       const result = runQuery(events);
 
-      it('returns the evaluations', () => {
+      it('returns two notifications', () => {
         expect(result).toHaveLength(2);
         expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
         expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
@@ -152,7 +152,7 @@ describe('get-pending-evaluations', () => {
       ];
       const result = runQuery(events);
 
-      it('returns the evaluations', () => {
+      it('returns two notifications', () => {
         expect(result).toHaveLength(2);
         expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
         expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
@@ -169,7 +169,7 @@ describe('get-pending-evaluations', () => {
     ];
     const result = runQuery(events);
 
-    it('returns no evaluations', () => {
+    it('returns no notifications', () => {
       expect(result).toHaveLength(0);
     });
   });

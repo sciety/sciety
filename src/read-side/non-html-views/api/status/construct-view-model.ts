@@ -24,7 +24,7 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
     ),
     maintainSnapshotsForEvaluatedExpressions: dependencies.getExpressionsWithNoAssociatedSnapshot(),
     sendNotificationToCoarTestInbox: pipe(
-      dependencies.getPendingEvaluations(),
+      dependencies.getPendingNotifications(),
       RA.map((pendingEvaluation) => ({
         ...pendingEvaluation,
         targetId: pendingEvaluation.targetId.toString(),

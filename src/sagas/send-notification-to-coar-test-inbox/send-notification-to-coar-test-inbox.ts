@@ -16,7 +16,7 @@ export const sendNotificationToCoarTestInbox = async (
 
   dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
   await pipe(
-    dependencies.getPendingEvaluations(),
+    dependencies.getPendingNotifications(),
     RA.takeLeft(3),
     RA.map(constructCoarNotificationModel(scietyUiOrigin)),
     TE.traverseArray(dependencies.sendCoarNotification),

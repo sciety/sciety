@@ -4,14 +4,14 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 
-export type PendingEvaluation = {
+export type PendingNotification = {
   expressionDoi: ExpressionDoi,
   evaluationLocator: EvaluationLocator,
   targetId: URL,
   targetInbox: URL,
 };
 
-export type ReadModel = Array<PendingEvaluation>;
+export type ReadModel = Array<PendingNotification>;
 
 export const initialState = (): ReadModel => [];
 
