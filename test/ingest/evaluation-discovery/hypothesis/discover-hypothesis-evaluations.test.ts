@@ -37,13 +37,15 @@ describe('discover-hypothesis-evaluations', () => {
   });
 
   describe('when there are no annotations', () => {
-    it.failing('returns an empty array', async () => {
+    it('returns an empty array', async () => {
       // const fetchData = jest.fn()
       //   .mockReturnValueOnce(emptyPage);
       const result = await discoverHypothesisEvaluations(
         arbitraryWord(),
         arbitraryDate(),
-        stubbedFetchData(emptyPage),
+        stubbedFetchData({
+          rows: [],
+        }),
       )();
 
       expect(result).toStrictEqual(E.right([]));
