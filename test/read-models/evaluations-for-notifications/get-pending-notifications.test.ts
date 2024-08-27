@@ -1,20 +1,22 @@
-import { URL } from 'url';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { getPendingNotifications } from '../../../src/read-models/evaluations-for-notifications/get-pending-evaluations';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
+import { arbitraryUrl } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const groupId = arbitraryGroupId();
 const anotherGroupId = arbitraryGroupId();
 const consideredGroupIds = [groupId, anotherGroupId];
+const targetId = arbitraryUrl();
+const targetInbox = arbitraryUrl();
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readModel = pipe(
     events,
-    RA.reduce(initialState(), handleEvent(consideredGroupIds)),
+    RA.reduce(initialState(), handleEvent(consideredGroupIds, targetId, targetInbox)),
   );
   return getPendingNotifications(readModel)();
 };
@@ -53,8 +55,8 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
-          expect(result[0].targetId).toStrictEqual(new URL('https://coar-notify-inbox.fly.dev'));
-          expect(result[0].targetInbox).toStrictEqual(new URL('https://coar-notify-inbox.fly.dev/inbox/'));
+          expect(result[0].targetId).toStrictEqual(targetId);
+          expect(result[0].targetInbox).toStrictEqual(targetInbox);
         });
       });
 
