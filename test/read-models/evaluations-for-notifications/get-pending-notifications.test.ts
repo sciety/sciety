@@ -23,7 +23,7 @@ const runQuery = (events: ReadonlyArray<DomainEvent>) => {
 };
 
 describe('get-pending-notifications', () => {
-  describe('given activity by considered groups', () => {
+  describe('given activity by groups configured for a single target', () => {
     describe('when no evaluation publications have been recorded', () => {
       const result = runQuery([]);
 
@@ -178,7 +178,7 @@ describe('get-pending-notifications', () => {
     });
   });
 
-  describe('given activity by a group that is not considered', () => {
+  describe('given activity by a group that is not configured for any target', () => {
     const evaluationPublicationRecorded = arbitraryEvaluationPublicationRecordedEvent();
     const events = [
       evaluationPublicationRecorded,
