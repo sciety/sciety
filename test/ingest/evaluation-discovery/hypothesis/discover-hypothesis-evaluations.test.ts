@@ -86,9 +86,13 @@ describe('discover-hypothesis-evaluations', () => {
       [{ rows: [{}] }],
       [{ rows: [{ id: arbitraryWord() }] }],
     ])('returns an error', async (response) => {
-      const fetchData = jest.fn()
-        .mockReturnValueOnce(TE.right(response));
-      const result = await discoverHypothesisEvaluations(arbitraryWord(), arbitraryDate(), fetchData)();
+      // const fetchData = jest.fn()
+      //   .mockReturnValueOnce(TE.right(response));
+      const result = await discoverHypothesisEvaluations(
+        arbitraryWord(),
+        arbitraryDate(),
+        stubbedFetchData(response),
+      )();
 
       expect(E.isLeft(result)).toBe(true);
     });
