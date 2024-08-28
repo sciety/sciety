@@ -174,6 +174,14 @@ describe('get-pending-notifications', () => {
     });
   });
 
+  describe('given activity by a group configured for two targets', () => {
+    describe('when an evaluation publication has been recorded', () => {
+      describe('and nothing else happened', () => {
+        it.todo('returns two notifications');
+      });
+    });
+  });
+
   describe('given activity by a group that is not configured for any target', () => {
     const evaluationPublicationRecorded = arbitraryEvaluationPublicationRecordedEvent();
     const events = [
