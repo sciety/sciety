@@ -179,7 +179,25 @@ describe('get-pending-notifications', () => {
       });
 
       describe('and one notification has been delivered', () => {
-        it.todo('returns the remaining notification');
+        const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
+          ...arbitraryCoarNotificationDeliveredEvent(),
+          evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
+        };
+        const events = [
+          evaluationPublicationRecorded1,
+          evaluationPublicationRecorded2,
+          coarNotificationDelivered,
+        ];
+        const result = runQuery(events);
+
+        it('returns the remaining notification', () => {
+          expect(result).toHaveLength(1);
+          expect(result[0]).toStrictEqual({
+            evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
+            expressionDoi: evaluationPublicationRecorded2.articleId,
+            target,
+          });
+        });
       });
 
       describe('when both notifications have been delivered', () => {
