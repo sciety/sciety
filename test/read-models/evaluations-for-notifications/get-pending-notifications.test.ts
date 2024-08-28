@@ -1,4 +1,3 @@
-/* eslint-disable jest/max-expects */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
@@ -155,12 +154,16 @@ describe('get-pending-notifications', () => {
 
       it('returns two notifications', () => {
         expect(result).toHaveLength(2);
-        expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
-        expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
-        expect(result[0].target).toStrictEqual(target);
-        expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
-        expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
-        expect(result[1].target).toStrictEqual(target);
+        expect(result[0]).toStrictEqual({
+          evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
+          expressionDoi: evaluationPublicationRecorded1.articleId,
+          target,
+        });
+        expect(result[1]).toStrictEqual({
+          evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
+          expressionDoi: evaluationPublicationRecorded2.articleId,
+          target,
+        });
       });
     });
 
@@ -181,12 +184,16 @@ describe('get-pending-notifications', () => {
 
       it('returns two notifications', () => {
         expect(result).toHaveLength(2);
-        expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
-        expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
-        expect(result[0].target).toStrictEqual(target);
-        expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
-        expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
-        expect(result[1].target).toStrictEqual(targetOfAnotherGroup);
+        expect(result[0]).toStrictEqual({
+          evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
+          expressionDoi: evaluationPublicationRecorded1.articleId,
+          target,
+        });
+        expect(result[1]).toStrictEqual({
+          evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
+          expressionDoi: evaluationPublicationRecorded2.articleId,
+          target: targetOfAnotherGroup,
+        });
       });
     });
   });
@@ -205,12 +212,16 @@ describe('get-pending-notifications', () => {
 
         it('returns two notifications', () => {
           expect(result).toHaveLength(2);
-          expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
-          expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
-          expect(result[0].target).toStrictEqual(multipleTargetsCase1);
-          expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
-          expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
-          expect(result[1].target).toStrictEqual(multipleTargetsCase2);
+          expect(result[0]).toStrictEqual({
+            evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+            expressionDoi: evaluationPublicationRecorded.articleId,
+            target: multipleTargetsCase1,
+          });
+          expect(result[1]).toStrictEqual({
+            evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+            expressionDoi: evaluationPublicationRecorded.articleId,
+            target: multipleTargetsCase2,
+          });
         });
       });
     });
