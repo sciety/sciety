@@ -130,7 +130,10 @@ describe('get-pending-notifications', () => {
       });
 
       describe('and the notification has been delivered', () => {
-        const coarNotificationDelivered = arbitraryCoarNotificationDeliveredEvent();
+        const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
+          ...arbitraryCoarNotificationDeliveredEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
         const events = [
           evaluationPublicationRecorded,
           coarNotificationDelivered,
