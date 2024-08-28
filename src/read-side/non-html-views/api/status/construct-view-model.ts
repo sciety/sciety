@@ -28,8 +28,8 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
       RA.map((pendingNotification) => ({
         ...pendingNotification,
         target: {
-          id: pendingNotification.target.id.toString(),
-          inbox: pendingNotification.target.inbox.toString(),
+          id: pendingNotification.target.id.href,
+          inbox: pendingNotification.target.inbox.href,
         },
       })),
     ),

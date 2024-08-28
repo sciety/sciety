@@ -46,12 +46,12 @@ const renderCoarNotification = (notification: CoarNotificationModel): CoarNotifi
   },
   id: notification.id,
   object: {
-    id: notification.objectId.toString(),
+    id: notification.objectId.href,
     type: 'sorg:WebPage',
   },
   context: {
-    id: notification.contextId.toString(),
-    'ietf:cite-as': notification.contextCiteAs.toString(),
+    id: notification.contextId.href,
+    'ietf:cite-as': notification.contextCiteAs.href,
     type: 'sorg:ScholarlyArticle',
   },
   origin: {
@@ -60,8 +60,8 @@ const renderCoarNotification = (notification: CoarNotificationModel): CoarNotifi
     type: 'Service',
   },
   target: {
-    id: notification.targetId.toString(),
-    inbox: notification.targetInbox.toString(),
+    id: notification.targetId.href,
+    inbox: notification.targetInbox.href,
     type: 'Service',
   },
   type: [
@@ -73,7 +73,7 @@ const renderCoarNotification = (notification: CoarNotificationModel): CoarNotifi
 export type SendCoarNotification = (coarNotificationModel: CoarNotificationModel) => TE.TaskEither<void, void>;
 
 export const sendCoarNotification = (logger: Logger): SendCoarNotification => (coarNotificationModel) => {
-  const inboxUrl = coarNotificationModel.targetInbox.toString();
+  const inboxUrl = coarNotificationModel.targetInbox.href;
   return pipe(
     coarNotificationModel,
     renderCoarNotification,
