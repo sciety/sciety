@@ -19,7 +19,6 @@ export const evaluationsForNotifications = {
     new Map([
       [preReviewGroupId, testTarget],
     ]),
-    testTarget,
   ),
 };
 

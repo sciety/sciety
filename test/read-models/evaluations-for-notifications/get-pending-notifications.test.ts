@@ -28,7 +28,7 @@ const consideredGroupIds = new Map([
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readModel = pipe(
     events,
-    RA.reduce(initialState(), handleEvent(consideredGroupIds, target)),
+    RA.reduce(initialState(), handleEvent(consideredGroupIds)),
   );
   return getPendingNotifications(readModel)();
 };
