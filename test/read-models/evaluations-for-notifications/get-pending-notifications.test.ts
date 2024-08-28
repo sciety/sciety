@@ -15,14 +15,22 @@ const target = {
   id: arbitraryUrl(),
   inbox: arbitraryUrl(),
 };
-const anotherTarget = {
+const targetOfAnotherGroup = {
+  id: arbitraryUrl(),
+  inbox: arbitraryUrl(),
+};
+const multipleTargetsCase1 = {
+  id: arbitraryUrl(),
+  inbox: arbitraryUrl(),
+};
+const multipleTargetsCase2 = {
   id: arbitraryUrl(),
   inbox: arbitraryUrl(),
 };
 const consideredGroupIds = new Map([
   [groupId, target],
-  [anotherGroupId, target],
-  [groupWithTwoTargetsId, target],
+  [anotherGroupId, targetOfAnotherGroup],
+  [groupWithTwoTargetsId, multipleTargetsCase1],
 ]);
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
@@ -34,7 +42,7 @@ const runQuery = (events: ReadonlyArray<DomainEvent>) => {
 };
 
 describe('get-pending-notifications', () => {
-  describe('given activity by groups configured for a single target', () => {
+  describe('given activity by groups configured for different targets', () => {
     describe('when no evaluation publications have been recorded', () => {
       const result = runQuery([]);
 
@@ -112,7 +120,7 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
-          expect(result[0].target).toStrictEqual(target);
+          expect(result[0].target).toStrictEqual(targetOfAnotherGroup);
         });
       });
 
@@ -178,7 +186,7 @@ describe('get-pending-notifications', () => {
         expect(result[0].target).toStrictEqual(target);
         expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
         expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
-        expect(result[1].target).toStrictEqual(target);
+        expect(result[1].target).toStrictEqual(targetOfAnotherGroup);
       });
     });
   });
@@ -199,10 +207,10 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(2);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
-          expect(result[0].target).toStrictEqual(target);
+          expect(result[0].target).toStrictEqual(multipleTargetsCase1);
           expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
           expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
-          expect(result[1].target).toStrictEqual(anotherTarget);
+          expect(result[1].target).toStrictEqual(multipleTargetsCase2);
         });
       });
     });
