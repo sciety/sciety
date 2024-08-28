@@ -33,15 +33,15 @@ const runQuery = (events: ReadonlyArray<DomainEvent>) => {
 };
 
 describe('get-pending-notifications', () => {
-  describe('given activity by groups configured for different targets', () => {
-    describe('when no evaluation publications have been recorded', () => {
-      const result = runQuery([]);
+  describe('given no evaluation publications have been recorded', () => {
+    const result = runQuery([]);
 
-      it('returns no notifications', () => {
-        expect(result).toHaveLength(0);
-      });
+    it('returns no notifications', () => {
+      expect(result).toHaveLength(0);
     });
+  });
 
+  describe('given activity by a group configured for one target', () => {
     describe('when an evaluation publication has been recorded', () => {
       const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
@@ -97,7 +97,7 @@ describe('get-pending-notifications', () => {
       describe('and the recording was erased, and the publication recorded again', () => {
         const evaluationPublicationRecordedAgain: EventOfType<'EvaluationPublicationRecorded'> = {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: anotherGroupId,
+          groupId,
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
         };
         const events = [
@@ -111,7 +111,7 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
-          expect(result[0].target).toStrictEqual(targetOfAnotherGroup);
+          expect(result[0].target).toStrictEqual(target);
         });
       });
 
@@ -158,36 +158,6 @@ describe('get-pending-notifications', () => {
         });
       });
     });
-
-    describe('when two evaluation publications by two different groups have been recorded', () => {
-      const evaluationPublicationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-      };
-      const evaluationPublicationRecorded2: EventOfType<'EvaluationPublicationRecorded'> = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId: anotherGroupId,
-      };
-      const events = [
-        evaluationPublicationRecorded1,
-        evaluationPublicationRecorded2,
-      ];
-      const result = runQuery(events);
-
-      it('returns two notifications', () => {
-        expect(result).toHaveLength(2);
-        expect(result[0]).toStrictEqual({
-          evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
-          expressionDoi: evaluationPublicationRecorded1.articleId,
-          target,
-        });
-        expect(result[1]).toStrictEqual({
-          evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
-          expressionDoi: evaluationPublicationRecorded2.articleId,
-          target: targetOfAnotherGroup,
-        });
-      });
-    });
   });
 
   describe('given activity by a group configured for two targets', () => {
@@ -214,6 +184,38 @@ describe('get-pending-notifications', () => {
             expressionDoi: evaluationPublicationRecorded.articleId,
             target: multipleTargetsCase2,
           });
+        });
+      });
+    });
+  });
+
+  describe('given activity by groups configured for different targets', () => {
+    describe('when two evaluation publications by two different groups have been recorded', () => {
+      const evaluationPublicationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+      };
+      const evaluationPublicationRecorded2: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: anotherGroupId,
+      };
+      const events = [
+        evaluationPublicationRecorded1,
+        evaluationPublicationRecorded2,
+      ];
+      const result = runQuery(events);
+
+      it('returns two notifications', () => {
+        expect(result).toHaveLength(2);
+        expect(result[0]).toStrictEqual({
+          evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
+          expressionDoi: evaluationPublicationRecorded1.articleId,
+          target,
+        });
+        expect(result[1]).toStrictEqual({
+          evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
+          expressionDoi: evaluationPublicationRecorded2.articleId,
+          target: targetOfAnotherGroup,
         });
       });
     });
