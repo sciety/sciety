@@ -8,4 +8,5 @@ export const coarNotificationDeliveredEventCodec = t.type({
   type: t.literal('CoarNotificationDelivered'),
   date: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
+  targetId: t.string,
 });
