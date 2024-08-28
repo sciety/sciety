@@ -226,11 +226,12 @@ describe('get-pending-notifications', () => {
 
   describe('given activity by a group configured for two targets', () => {
     describe('when an evaluation publication has been recorded', () => {
+      const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: groupWithTwoTargetsId,
+      };
+
       describe('and nothing else happened', () => {
-        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId: groupWithTwoTargetsId,
-        };
         const events = [
           evaluationPublicationRecorded,
         ];
@@ -251,7 +252,28 @@ describe('get-pending-notifications', () => {
         });
       });
 
-      describe('and one notification has been delivered', () => {
+      describe('and the notification referring to the first target has been delivered', () => {
+        const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
+          ...arbitraryCoarNotificationDeliveredEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+          coarNotificationDelivered,
+        ];
+        const result = runQuery(events);
+
+        it('returns the remaining notification', () => {
+          expect(result).toHaveLength(1);
+          expect(result[0]).toStrictEqual({
+            evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+            expressionDoi: evaluationPublicationRecorded.articleId,
+            target: multipleTargetsCase2,
+          });
+        });
+      });
+
+      describe('and the notification referring to the second target has been delivered', () => {
         it.todo('returns the remaining notification');
       });
 
