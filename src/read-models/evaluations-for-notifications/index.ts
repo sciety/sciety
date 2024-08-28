@@ -10,8 +10,10 @@ export const evaluationsForNotifications = {
   initialState,
   handleEvent: handleEvent(
     [GID.fromValidatedString('10360d97-bf52-4aef-b2fa-2f60d319edd7')],
-    new URL('https://coar-notify-inbox.fly.dev'),
-    new URL('https://coar-notify-inbox.fly.dev/inbox/'),
+    {
+      id: new URL('https://coar-notify-inbox.fly.dev'),
+      inbox: new URL('https://coar-notify-inbox.fly.dev/inbox/'),
+    },
   ),
 };
 

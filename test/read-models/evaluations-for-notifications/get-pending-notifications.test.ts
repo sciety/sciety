@@ -11,13 +11,15 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 const groupId = arbitraryGroupId();
 const anotherGroupId = arbitraryGroupId();
 const consideredGroupIds = [groupId, anotherGroupId];
-const targetId = arbitraryUrl();
-const targetInbox = arbitraryUrl();
+const target = {
+  id: arbitraryUrl(),
+  inbox: arbitraryUrl(),
+};
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readModel = pipe(
     events,
-    RA.reduce(initialState(), handleEvent(consideredGroupIds, targetId, targetInbox)),
+    RA.reduce(initialState(), handleEvent(consideredGroupIds, target)),
   );
   return getPendingNotifications(readModel)();
 };
@@ -56,8 +58,7 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
-          expect(result[0].target.id).toStrictEqual(targetId);
-          expect(result[0].target.inbox).toStrictEqual(targetInbox);
+          expect(result[0].target).toStrictEqual(target);
         });
       });
 
@@ -102,8 +103,7 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(1);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
-          expect(result[0].target.id).toStrictEqual(targetId);
-          expect(result[0].target.inbox).toStrictEqual(targetInbox);
+          expect(result[0].target).toStrictEqual(target);
         });
       });
 
@@ -140,12 +140,10 @@ describe('get-pending-notifications', () => {
         expect(result).toHaveLength(2);
         expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
         expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
-        expect(result[0].target.id).toStrictEqual(targetId);
-        expect(result[0].target.inbox).toStrictEqual(targetInbox);
+        expect(result[0].target).toStrictEqual(target);
         expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
         expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
-        expect(result[1].target.id).toStrictEqual(targetId);
-        expect(result[1].target.inbox).toStrictEqual(targetInbox);
+        expect(result[1].target).toStrictEqual(target);
       });
     });
 
@@ -168,12 +166,10 @@ describe('get-pending-notifications', () => {
         expect(result).toHaveLength(2);
         expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded1.evaluationLocator);
         expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded1.articleId);
-        expect(result[0].target.id).toStrictEqual(targetId);
-        expect(result[0].target.inbox).toStrictEqual(targetInbox);
+        expect(result[0].target).toStrictEqual(target);
         expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded2.evaluationLocator);
         expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded2.articleId);
-        expect(result[1].target.id).toStrictEqual(targetId);
-        expect(result[1].target.inbox).toStrictEqual(targetInbox);
+        expect(result[1].target).toStrictEqual(target);
       });
     });
   });
