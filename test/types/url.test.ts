@@ -1,6 +1,17 @@
+import { pipe } from 'fp-ts/function';
+import { urlCodec } from '../../src/types/url';
+import { arbitraryUrl } from '../helpers';
+
 describe('urlCodec', () => {
   describe('given an URL object', () => {
-    it.todo('encodes to a string');
+    const input = arbitraryUrl();
+
+    it.failing('encodes to a string', () => {
+      expect(pipe(
+        input,
+        urlCodec.encode,
+      )).toBe(input.href);
+    });
   });
 
   describe('given a string containing a valid url', () => {
