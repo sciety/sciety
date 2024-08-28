@@ -2,31 +2,23 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { getPendingNotifications } from '../../../src/read-models/evaluations-for-notifications/get-pending-notifications';
-import { handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
+import { Target, handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryUrl } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
+const arbitraryTarget = (): Target => ({
+  id: arbitraryUrl(),
+  inbox: arbitraryUrl(),
+});
 const groupId = arbitraryGroupId();
 const anotherGroupId = arbitraryGroupId();
 const groupWithTwoTargetsId = arbitraryGroupId();
-const target = {
-  id: arbitraryUrl(),
-  inbox: arbitraryUrl(),
-};
-const targetOfAnotherGroup = {
-  id: arbitraryUrl(),
-  inbox: arbitraryUrl(),
-};
-const multipleTargetsCase1 = {
-  id: arbitraryUrl(),
-  inbox: arbitraryUrl(),
-};
-const multipleTargetsCase2 = {
-  id: arbitraryUrl(),
-  inbox: arbitraryUrl(),
-};
-const consideredGroupIds = new Map([
+const target = arbitraryTarget();
+const targetOfAnotherGroup = arbitraryTarget();
+const multipleTargetsCase1 = arbitraryTarget();
+const multipleTargetsCase2 = arbitraryTarget();
+const consideredGroups = new Map([
   [groupId, [target]],
   [anotherGroupId, [targetOfAnotherGroup]],
   [groupWithTwoTargetsId, [multipleTargetsCase1, multipleTargetsCase2]],
@@ -35,7 +27,7 @@ const consideredGroupIds = new Map([
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readModel = pipe(
     events,
-    RA.reduce(initialState(), handleEvent(consideredGroupIds)),
+    RA.reduce(initialState(), handleEvent(consideredGroups)),
   );
   return getPendingNotifications(readModel)();
 };

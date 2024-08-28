@@ -4,7 +4,7 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 
-type Target = {
+export type Target = {
   id: URL,
   inbox: URL,
 };
