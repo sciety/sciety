@@ -127,6 +127,10 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(0);
         });
       });
+
+      describe('and the notification has been delivered', () => {
+        it.todo('returns no notifications');
+      });
     });
 
     describe('when two evaluation publications by the same group have been recorded', () => {
@@ -138,24 +142,35 @@ describe('get-pending-notifications', () => {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
       };
-      const events = [
-        evaluationPublicationRecorded1,
-        evaluationPublicationRecorded2,
-      ];
-      const result = runQuery(events);
 
-      it('returns two notifications', () => {
-        expect(result).toHaveLength(2);
-        expect(result[0]).toStrictEqual({
-          evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
-          expressionDoi: evaluationPublicationRecorded1.articleId,
-          target,
+      describe('and nothing else has happened', () => {
+        const events = [
+          evaluationPublicationRecorded1,
+          evaluationPublicationRecorded2,
+        ];
+        const result = runQuery(events);
+
+        it('returns two notifications', () => {
+          expect(result).toHaveLength(2);
+          expect(result[0]).toStrictEqual({
+            evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
+            expressionDoi: evaluationPublicationRecorded1.articleId,
+            target,
+          });
+          expect(result[1]).toStrictEqual({
+            evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
+            expressionDoi: evaluationPublicationRecorded2.articleId,
+            target,
+          });
         });
-        expect(result[1]).toStrictEqual({
-          evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
-          expressionDoi: evaluationPublicationRecorded2.articleId,
-          target,
-        });
+      });
+
+      describe('and one notification has been delivered', () => {
+        it.todo('returns the remaining notification');
+      });
+
+      describe('when both notifications have been delivered', () => {
+        it.todo('returns no notifications');
       });
     });
   });
@@ -185,6 +200,14 @@ describe('get-pending-notifications', () => {
             target: multipleTargetsCase2,
           });
         });
+      });
+
+      describe('and one notification has been delivered', () => {
+        it.todo('returns the remaining notification');
+      });
+
+      describe('when both notifications have been delivered', () => {
+        it.todo('returns no notifications');
       });
     });
   });
