@@ -301,7 +301,26 @@ describe('get-pending-notifications', () => {
       });
 
       describe('when both notifications have been delivered', () => {
-        it.todo('returns no notifications');
+        const coarNotificationDeliveredForTarget1: EventOfType<'CoarNotificationDelivered'> = {
+          ...arbitraryCoarNotificationDeliveredEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+          targetId: multipleTargetsCase1.id.href,
+        };
+        const coarNotificationDeliveredForTarget2: EventOfType<'CoarNotificationDelivered'> = {
+          ...arbitraryCoarNotificationDeliveredEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+          targetId: multipleTargetsCase2.id.href,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+          coarNotificationDeliveredForTarget2,
+          coarNotificationDeliveredForTarget1,
+        ];
+        const result = runQuery(events);
+
+        it('returns no notifications', () => {
+          expect(result).toHaveLength(0);
+        });
       });
     });
   });
