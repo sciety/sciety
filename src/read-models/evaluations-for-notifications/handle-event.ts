@@ -15,20 +15,15 @@ export type PendingNotification = {
   target: Target,
 };
 
-export type ReadModel = Array<PendingNotification>;
+export type ReadModel = Map<EvaluationLocator, Array<PendingNotification>>;
 
-export const initialState = (): ReadModel => [];
+export const initialState = (): ReadModel => new Map();
 
 const removeFirstPendingNotificationMatchingEvaluation = (
   readModel: ReadModel,
   evaluationLocator: EvaluationLocator,
 ) => {
-  const index = readModel.findIndex(
-    (pendingNotification) => pendingNotification.evaluationLocator === evaluationLocator,
-  );
-  if (index > -1) {
-    readModel.splice(index, 1);
-  }
+  readModel.delete(evaluationLocator);
 };
 
 const removePendingNotificationMatchingEvaluationAndTarget = (
@@ -36,12 +31,14 @@ const removePendingNotificationMatchingEvaluationAndTarget = (
   evaluationLocator: EvaluationLocator,
   targetId: Target['id'],
 ) => {
-  const index = readModel.findIndex(
-    (pendingNotification) => pendingNotification.evaluationLocator === evaluationLocator
-    && pendingNotification.target.id.href === targetId.href,
-  );
-  if (index > -1) {
-    readModel.splice(index, 1);
+  const notifications = readModel.get(evaluationLocator);
+  if (notifications !== undefined) {
+    const index = notifications.findIndex(
+      (pendingNotification) => pendingNotification.target.id.href === targetId.href,
+    );
+    if (index > -1) {
+      notifications.splice(index, 1);
+    }
   }
 };
 
@@ -51,13 +48,15 @@ export const handleEvent = (
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     const targets = consideredGroups.get(event.groupId);
     if (targets !== undefined) {
+      const notifications: Array<PendingNotification> = [];
       targets.forEach((target) => {
-        readModel.push({
+        notifications.push({
           expressionDoi: event.articleId,
           evaluationLocator: event.evaluationLocator,
           target,
         });
       });
+      readModel.set(event.evaluationLocator, notifications);
     }
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {

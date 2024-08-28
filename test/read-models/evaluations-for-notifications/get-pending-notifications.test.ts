@@ -334,7 +334,7 @@ describe('get-pending-notifications', () => {
         ];
         const result = runQuery(events);
 
-        it.failing('returns no notifications', () => {
+        it('returns no notifications', () => {
           expect(result).toHaveLength(0);
         });
       });
