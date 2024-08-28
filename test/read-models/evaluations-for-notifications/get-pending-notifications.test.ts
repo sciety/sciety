@@ -324,7 +324,19 @@ describe('get-pending-notifications', () => {
       });
 
       describe('and the recording was erased', () => {
-        it.todo('returns no notifications');
+        const evaluationErased: EventOfType<'IncorrectlyRecordedEvaluationErased'> = {
+          ...arbitraryIncorrectlyRecordedEvaluationErasedEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+          evaluationErased,
+        ];
+        const result = runQuery(events);
+
+        it.failing('returns no notifications', () => {
+          expect(result).toHaveLength(0);
+        });
       });
 
       describe('and its removal has been recorded', () => {
