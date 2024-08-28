@@ -28,9 +28,9 @@ const multipleTargetsCase2 = {
   inbox: arbitraryUrl(),
 };
 const consideredGroupIds = new Map([
-  [groupId, target],
-  [anotherGroupId, targetOfAnotherGroup],
-  [groupWithTwoTargetsId, multipleTargetsCase1],
+  [groupId, [target]],
+  [anotherGroupId, [targetOfAnotherGroup]],
+  [groupWithTwoTargetsId, [multipleTargetsCase1, multipleTargetsCase2]],
 ]);
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
@@ -203,7 +203,7 @@ describe('get-pending-notifications', () => {
         ];
         const result = runQuery(events);
 
-        it.failing('returns two notifications', () => {
+        it('returns two notifications', () => {
           expect(result).toHaveLength(2);
           expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
           expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);

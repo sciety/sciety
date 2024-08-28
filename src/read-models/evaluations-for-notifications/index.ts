@@ -17,7 +17,7 @@ export const evaluationsForNotifications = {
   initialState,
   handleEvent: handleEvent(
     new Map([
-      [preReviewGroupId, testTarget],
+      [preReviewGroupId, [testTarget]],
     ]),
   ),
 };
