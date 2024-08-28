@@ -14,6 +14,6 @@ export const constructCoarNotificationModel = (
   objectId: new URL(`${scietyUiOrigin.origin}${paths.constructPaperActivityPageFocusedOnEvaluationHref(pendingNotification.expressionDoi, pendingNotification.evaluationLocator)}`),
   contextId: new URL(`${scietyUiOrigin.origin}${paths.constructPaperActivityPageHref(pendingNotification.expressionDoi)}`),
   contextCiteAs: new URL(toDoiUrl(pendingNotification.expressionDoi)),
-  targetId: pendingNotification.targetId,
-  targetInbox: pendingNotification.targetInbox,
+  targetId: pendingNotification.target.id,
+  targetInbox: pendingNotification.target.inbox,
 });

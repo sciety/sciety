@@ -4,11 +4,15 @@ import { EvaluationLocator } from '../../types/evaluation-locator';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 
+type Target = {
+  id: URL,
+  inbox: URL,
+};
+
 export type PendingNotification = {
   expressionDoi: ExpressionDoi,
   evaluationLocator: EvaluationLocator,
-  targetId: URL,
-  targetInbox: URL,
+  target: Target,
 };
 
 export type ReadModel = Array<PendingNotification>;
@@ -32,8 +36,10 @@ export const handleEvent = (
       readModel.push({
         expressionDoi: event.articleId,
         evaluationLocator: event.evaluationLocator,
-        targetId,
-        targetInbox,
+        target: {
+          id: targetId,
+          inbox: targetInbox,
+        },
       });
     }
   }

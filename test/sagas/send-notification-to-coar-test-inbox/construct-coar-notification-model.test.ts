@@ -12,8 +12,10 @@ describe('construct-coar-notification-model', () => {
     const coarNotification = constructCoarNotificationModel(scietyUiOrigin)({
       evaluationLocator,
       expressionDoi,
-      targetId: arbitraryUrl(),
-      targetInbox: arbitraryUrl(),
+      target: {
+        id: arbitraryUrl(),
+        inbox: arbitraryUrl(),
+      },
     });
 
     describe('constructs an objectId', () => {
