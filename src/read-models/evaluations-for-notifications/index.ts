@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { getPendingNotifications } from './get-pending-evaluations';
+import { getPendingNotifications } from './get-pending-notifications';
 import { handleEvent, initialState } from './handle-event';
 import * as GID from '../../types/group-id';
 
