@@ -322,6 +322,14 @@ describe('get-pending-notifications', () => {
           expect(result).toHaveLength(0);
         });
       });
+
+      describe('and the recording was erased', () => {
+        it.todo('returns no notifications');
+      });
+
+      describe('and its removal has been recorded', () => {
+        it.todo('returns no notifications');
+      });
     });
   });
 
