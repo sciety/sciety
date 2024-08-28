@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { getPendingNotifications } from '../../../src/read-models/evaluations-for-notifications/get-pending-notifications';
 import { Target, handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
+import { arbitraryCoarNotificationDeliveredEvent } from '../../domain-events/arbitrary-coar-notification-delivered-event.helper';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryUrl } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
@@ -129,7 +130,16 @@ describe('get-pending-notifications', () => {
       });
 
       describe('and the notification has been delivered', () => {
-        it.todo('returns no notifications');
+        const coarNotificationDelivered = arbitraryCoarNotificationDeliveredEvent();
+        const events = [
+          evaluationPublicationRecorded,
+          coarNotificationDelivered,
+        ];
+        const result = runQuery(events);
+
+        it.failing('returns no notifications', () => {
+          expect(result).toHaveLength(0);
+        });
       });
     });
 

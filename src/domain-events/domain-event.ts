@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import { articleAddedToListEventCodec } from './article-added-to-list-event';
 import { articleInListAnnotatedEventCodec } from './article-in-list-annotated-event';
 import { articleRemovedFromListEventCodec } from './article-removed-from-list-event';
+import { coarNotificationDeliveredEventCodec } from './coar-notification-delivered-event';
 import { evaluatedArticlesListSpecifiedEventCodec } from './evaluated-articles-list-specified-event';
 import { evaluationPublicationRecordedEventCodec } from './evaluation-publication-recorded-event';
 import { evaluationRemovalRecordedEventCodec } from './evaluation-removal-recorded-event';
@@ -32,6 +33,7 @@ export const domainEventCodec = t.union([
   articleAddedToListEventCodec,
   articleInListAnnotatedEventCodec,
   articleRemovedFromListEventCodec,
+  coarNotificationDeliveredEventCodec,
   evaluatedArticlesListSpecifiedEventCodec,
   evaluationPublicationRecordedEventCodec,
   evaluationRemovalRecordedEventCodec,
