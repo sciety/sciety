@@ -12,17 +12,17 @@ const arbitraryTarget = (): Target => ({
   id: arbitraryUrl(),
   inbox: arbitraryUrl(),
 });
-const groupId = arbitraryGroupId();
-const anotherGroupId = arbitraryGroupId();
+const groupAId = arbitraryGroupId();
+const groupBId = arbitraryGroupId();
 const groupWithTwoTargetsId = arbitraryGroupId();
-const target = arbitraryTarget();
-const targetOfAnotherGroup = arbitraryTarget();
-const multipleTargetsCase1 = arbitraryTarget();
-const multipleTargetsCase2 = arbitraryTarget();
+const targetForGroupA = arbitraryTarget();
+const targetForGroupB = arbitraryTarget();
+const target1 = arbitraryTarget();
+const target2 = arbitraryTarget();
 const consideredGroups = new Map([
-  [groupId, [target]],
-  [anotherGroupId, [targetOfAnotherGroup]],
-  [groupWithTwoTargetsId, [multipleTargetsCase1, multipleTargetsCase2]],
+  [groupAId, [targetForGroupA]],
+  [groupBId, [targetForGroupB]],
+  [groupWithTwoTargetsId, [target1, target2]],
 ]);
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
@@ -46,7 +46,7 @@ describe('get-pending-notifications', () => {
     describe('when an evaluation publication has been recorded', () => {
       const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
+        groupId: groupAId,
       };
       const evaluationRemovalRecorded: EventOfType<'EvaluationRemovalRecorded'> = {
         ...arbitraryEvaluationRemovalRecordedEvent(),
@@ -68,7 +68,7 @@ describe('get-pending-notifications', () => {
           expect(result[0]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
             expressionDoi: evaluationPublicationRecorded.articleId,
-            target,
+            target: targetForGroupA,
           });
         });
       });
@@ -100,7 +100,7 @@ describe('get-pending-notifications', () => {
       describe('and the recording was erased, and the publication recorded again', () => {
         const evaluationPublicationRecordedAgain: EventOfType<'EvaluationPublicationRecorded'> = {
           ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId,
+          groupId: groupAId,
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
         };
         const events = [
@@ -115,7 +115,7 @@ describe('get-pending-notifications', () => {
           expect(result[0]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecordedAgain.evaluationLocator,
             expressionDoi: evaluationPublicationRecordedAgain.articleId,
-            target,
+            target: targetForGroupA,
           });
         });
       });
@@ -137,7 +137,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: target.id.href,
+          targetId: targetForGroupA.id.href,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -154,11 +154,11 @@ describe('get-pending-notifications', () => {
     describe('when two evaluation publications by the same group have been recorded', () => {
       const evaluationPublicationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
+        groupId: groupAId,
       };
       const evaluationPublicationRecorded2: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
+        groupId: groupAId,
       };
 
       describe('and nothing else has happened', () => {
@@ -173,12 +173,12 @@ describe('get-pending-notifications', () => {
           expect(result[0]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
             expressionDoi: evaluationPublicationRecorded1.articleId,
-            target,
+            target: targetForGroupA,
           });
           expect(result[1]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
             expressionDoi: evaluationPublicationRecorded2.articleId,
-            target,
+            target: targetForGroupA,
           });
         });
       });
@@ -187,7 +187,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
-          targetId: target.id.href,
+          targetId: targetForGroupA.id.href,
         };
         const events = [
           evaluationPublicationRecorded1,
@@ -201,7 +201,7 @@ describe('get-pending-notifications', () => {
           expect(result[0]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
             expressionDoi: evaluationPublicationRecorded2.articleId,
-            target,
+            target: targetForGroupA,
           });
         });
       });
@@ -210,12 +210,12 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered1: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
-          targetId: target.id.href,
+          targetId: targetForGroupA.id.href,
         };
         const coarNotificationDelivered2: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
-          targetId: target.id.href,
+          targetId: targetForGroupA.id.href,
         };
         const events = [
           evaluationPublicationRecorded1,
@@ -250,12 +250,12 @@ describe('get-pending-notifications', () => {
           expect(result[0]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
             expressionDoi: evaluationPublicationRecorded.articleId,
-            target: multipleTargetsCase1,
+            target: target1,
           });
           expect(result[1]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
             expressionDoi: evaluationPublicationRecorded.articleId,
-            target: multipleTargetsCase2,
+            target: target2,
           });
         });
       });
@@ -264,7 +264,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: multipleTargetsCase1.id.href,
+          targetId: target1.id.href,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -277,7 +277,7 @@ describe('get-pending-notifications', () => {
           expect(result[0]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
             expressionDoi: evaluationPublicationRecorded.articleId,
-            target: multipleTargetsCase2,
+            target: target2,
           });
         });
       });
@@ -286,7 +286,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: multipleTargetsCase2.id.href,
+          targetId: target2.id.href,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -299,7 +299,7 @@ describe('get-pending-notifications', () => {
           expect(result[0]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
             expressionDoi: evaluationPublicationRecorded.articleId,
-            target: multipleTargetsCase1,
+            target: target1,
           });
         });
       });
@@ -308,12 +308,12 @@ describe('get-pending-notifications', () => {
         const coarNotificationDeliveredForTarget1: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: multipleTargetsCase1.id.href,
+          targetId: target1.id.href,
         };
         const coarNotificationDeliveredForTarget2: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: multipleTargetsCase2.id.href,
+          targetId: target2.id.href,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -366,11 +366,11 @@ describe('get-pending-notifications', () => {
     describe('when two evaluation publications by two different groups have been recorded', () => {
       const evaluationPublicationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
+        groupId: groupAId,
       };
       const evaluationPublicationRecorded2: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId: anotherGroupId,
+        groupId: groupBId,
       };
       const events = [
         evaluationPublicationRecorded1,
@@ -383,12 +383,12 @@ describe('get-pending-notifications', () => {
         expect(result[0]).toStrictEqual({
           evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
           expressionDoi: evaluationPublicationRecorded1.articleId,
-          target,
+          target: targetForGroupA,
         });
         expect(result[1]).toStrictEqual({
           evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
           expressionDoi: evaluationPublicationRecorded2.articleId,
-          target: targetOfAnotherGroup,
+          target: targetForGroupB,
         });
       });
     });
