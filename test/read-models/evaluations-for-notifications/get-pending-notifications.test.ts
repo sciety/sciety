@@ -133,6 +133,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+          targetId: target.id.href,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -182,6 +183,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
+          targetId: target.id.href,
         };
         const events = [
           evaluationPublicationRecorded1,
@@ -204,10 +206,12 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered1: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
+          targetId: target.id.href,
         };
         const coarNotificationDelivered2: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
+          targetId: target.id.href,
         };
         const events = [
           evaluationPublicationRecorded1,
@@ -256,6 +260,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+          targetId: multipleTargetsCase1.id.href,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -277,6 +282,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+          targetId: multipleTargetsCase2.id.href,
         };
         const events = [
           evaluationPublicationRecorded,
