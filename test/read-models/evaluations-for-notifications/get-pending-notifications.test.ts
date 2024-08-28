@@ -340,7 +340,20 @@ describe('get-pending-notifications', () => {
       });
 
       describe('and its removal has been recorded', () => {
-        it.todo('returns no notifications');
+        const evaluationRemovalRecorded: EventOfType<'EvaluationRemovalRecorded'> = {
+          ...arbitraryEvaluationRemovalRecordedEvent(),
+          evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+          evaluationRemovalRecorded,
+        ];
+
+        const result = runQuery(events);
+
+        it('returns no notifications', () => {
+          expect(result).toHaveLength(0);
+        });
       });
     });
   });
