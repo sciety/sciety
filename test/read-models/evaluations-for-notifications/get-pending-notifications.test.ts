@@ -11,7 +11,6 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 const groupId = arbitraryGroupId();
 const anotherGroupId = arbitraryGroupId();
 const groupWithTwoTargetsId = arbitraryGroupId();
-const consideredGroupIds = [groupId, anotherGroupId, groupWithTwoTargetsId];
 const target = {
   id: arbitraryUrl(),
   inbox: arbitraryUrl(),
@@ -20,6 +19,11 @@ const anotherTarget = {
   id: arbitraryUrl(),
   inbox: arbitraryUrl(),
 };
+const consideredGroupIds = new Map([
+  [groupId, target],
+  [anotherGroupId, target],
+  [groupWithTwoTargetsId, target],
+]);
 
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readModel = pipe(

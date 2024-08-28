@@ -27,11 +27,11 @@ const removePendingEvaluation = (readModel: ReadModel, evaluationLocator: Evalua
 };
 
 export const handleEvent = (
-  consideredGroupIds: ReadonlyArray<GroupId>,
+  consideredGroupIds: ReadonlyMap<GroupId, Target>,
   target: Target,
 ) => (readModel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
-    if (consideredGroupIds.includes(event.groupId)) {
+    if (consideredGroupIds.has(event.groupId)) {
       readModel.push({
         expressionDoi: event.articleId,
         evaluationLocator: event.evaluationLocator,
