@@ -65,9 +65,11 @@ describe('get-pending-notifications', () => {
 
         it('returns one notification', () => {
           expect(result).toHaveLength(1);
-          expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
-          expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
-          expect(result[0].target).toStrictEqual(target);
+          expect(result[0]).toStrictEqual({
+            evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
+            expressionDoi: evaluationPublicationRecorded.articleId,
+            target,
+          });
         });
       });
 
@@ -110,9 +112,11 @@ describe('get-pending-notifications', () => {
 
         it('returns one notification', () => {
           expect(result).toHaveLength(1);
-          expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecordedAgain.evaluationLocator);
-          expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecordedAgain.articleId);
-          expect(result[0].target).toStrictEqual(target);
+          expect(result[0]).toStrictEqual({
+            evaluationLocator: evaluationPublicationRecordedAgain.evaluationLocator,
+            expressionDoi: evaluationPublicationRecordedAgain.articleId,
+            target,
+          });
         });
       });
 
