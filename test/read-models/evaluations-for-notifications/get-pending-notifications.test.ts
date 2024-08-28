@@ -10,8 +10,13 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const groupId = arbitraryGroupId();
 const anotherGroupId = arbitraryGroupId();
-const consideredGroupIds = [groupId, anotherGroupId];
+const groupWithTwoTargetsId = arbitraryGroupId();
+const consideredGroupIds = [groupId, anotherGroupId, groupWithTwoTargetsId];
 const target = {
+  id: arbitraryUrl(),
+  inbox: arbitraryUrl(),
+};
+const anotherTarget = {
   id: arbitraryUrl(),
   inbox: arbitraryUrl(),
 };
@@ -177,7 +182,24 @@ describe('get-pending-notifications', () => {
   describe('given activity by a group configured for two targets', () => {
     describe('when an evaluation publication has been recorded', () => {
       describe('and nothing else happened', () => {
-        it.todo('returns two notifications');
+        const evaluationPublicationRecorded: EventOfType<'EvaluationPublicationRecorded'> = {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId: groupWithTwoTargetsId,
+        };
+        const events = [
+          evaluationPublicationRecorded,
+        ];
+        const result = runQuery(events);
+
+        it.failing('returns two notifications', () => {
+          expect(result).toHaveLength(2);
+          expect(result[0].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
+          expect(result[0].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
+          expect(result[0].target).toStrictEqual(target);
+          expect(result[1].evaluationLocator).toStrictEqual(evaluationPublicationRecorded.evaluationLocator);
+          expect(result[1].expressionDoi).toStrictEqual(evaluationPublicationRecorded.articleId);
+          expect(result[1].target).toStrictEqual(anotherTarget);
+        });
       });
     });
   });
