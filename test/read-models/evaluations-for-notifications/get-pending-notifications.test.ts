@@ -290,7 +290,7 @@ describe('get-pending-notifications', () => {
         ];
         const result = runQuery(events);
 
-        it.failing('returns the remaining notification', () => {
+        it('returns the remaining notification', () => {
           expect(result).toHaveLength(1);
           expect(result[0]).toStrictEqual({
             evaluationLocator: evaluationPublicationRecorded.evaluationLocator,

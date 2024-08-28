@@ -19,9 +19,26 @@ export type ReadModel = Array<PendingNotification>;
 
 export const initialState = (): ReadModel => [];
 
-const removePendingNotification = (readModel: ReadModel, evaluationLocator: EvaluationLocator) => {
+const removeFirstPendingNotificationMatchingEvaluation = (
+  readModel: ReadModel,
+  evaluationLocator: EvaluationLocator,
+) => {
   const index = readModel.findIndex(
     (pendingNotification) => pendingNotification.evaluationLocator === evaluationLocator,
+  );
+  if (index > -1) {
+    readModel.splice(index, 1);
+  }
+};
+
+const removePendingNotificationMatchingEvaluationAndTarget = (
+  readModel: ReadModel,
+  evaluationLocator: EvaluationLocator,
+  targetId: Target['id'],
+) => {
+  const index = readModel.findIndex(
+    (pendingNotification) => pendingNotification.evaluationLocator === evaluationLocator
+    && pendingNotification.target.id.href === targetId.href,
   );
   if (index > -1) {
     readModel.splice(index, 1);
@@ -45,15 +62,15 @@ export const handleEvent = (
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removePendingNotification(readModel, evaluationLocator);
+    removeFirstPendingNotificationMatchingEvaluation(readModel, evaluationLocator);
   }
   if (isEventOfType('EvaluationRemovalRecorded')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removePendingNotification(readModel, evaluationLocator);
+    removeFirstPendingNotificationMatchingEvaluation(readModel, evaluationLocator);
   }
   if (isEventOfType('CoarNotificationDelivered')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removePendingNotification(readModel, evaluationLocator);
+    removePendingNotificationMatchingEvaluationAndTarget(readModel, evaluationLocator, new URL(event.targetId));
   }
   return readModel;
 };
