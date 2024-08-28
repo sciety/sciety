@@ -19,8 +19,10 @@ export type ReadModel = Array<PendingNotification>;
 
 export const initialState = (): ReadModel => [];
 
-const removePendingEvaluation = (readModel: ReadModel, evaluationLocator: EvaluationLocator) => {
-  const index = readModel.findIndex((pendingEvaluation) => pendingEvaluation.evaluationLocator === evaluationLocator);
+const removePendingNotification = (readModel: ReadModel, evaluationLocator: EvaluationLocator) => {
+  const index = readModel.findIndex(
+    (pendingNotification) => pendingNotification.evaluationLocator === evaluationLocator,
+  );
   if (index > -1) {
     readModel.splice(index, 1);
   }
@@ -43,11 +45,15 @@ export const handleEvent = (
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removePendingEvaluation(readModel, evaluationLocator);
+    removePendingNotification(readModel, evaluationLocator);
   }
   if (isEventOfType('EvaluationRemovalRecorded')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removePendingEvaluation(readModel, evaluationLocator);
+    removePendingNotification(readModel, evaluationLocator);
+  }
+  if (isEventOfType('CoarNotificationDelivered')(event)) {
+    const evaluationLocator = event.evaluationLocator;
+    removePendingNotification(readModel, evaluationLocator);
   }
   return readModel;
 };
