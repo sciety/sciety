@@ -8,19 +8,19 @@ import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 type Dependencies = DependenciesForSagas;
 
-export const sendNotificationToCoarTestInbox = async (
+export const sendNotificationsToCoarInboxes = async (
   dependencies: Dependencies,
   scietyUiOrigin: URL,
 ): Promise<void> => {
   const iterationId = uuidV4();
 
-  dependencies.logger('debug', 'sendNotificationToCoarTestInbox starting', { iterationId });
+  dependencies.logger('debug', 'sendNotificationsToCoarInboxes starting', { iterationId });
   await pipe(
     dependencies.getPendingNotifications(),
     RA.takeLeft(3),
     RA.map(constructCoarNotificationModel(scietyUiOrigin)),
     TE.traverseArray(dependencies.sendCoarNotification),
-    TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationToCoarTestInbox failed', { iterationId }))),
+    TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId }))),
   )();
-  dependencies.logger('debug', 'sendNotificationToCoarTestInbox finished', { iterationId });
+  dependencies.logger('debug', 'sendNotificationsToCoarInboxes finished', { iterationId });
 };

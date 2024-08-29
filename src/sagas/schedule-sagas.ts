@@ -5,7 +5,7 @@ import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed';
 import {
   maintainSnapshotsForEvaluatedExpressions,
 } from './maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
-import { sendNotificationToCoarTestInbox } from './send-notification-to-coar-test-inbox';
+import { sendNotificationsToCoarInboxes } from './send-notifications-to-coar-inboxes';
 
 type Saga = () => Promise<void>;
 
@@ -27,7 +27,7 @@ export const scheduleSagas = (
     runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    runOnceAfter(async () => sendNotificationToCoarTestInbox(dependencies, scietyUiOrigin), 5);
+    runOnceAfter(async () => sendNotificationsToCoarInboxes(dependencies, scietyUiOrigin), 5);
   }
   dependencies.logger('info', 'Sagas scheduled');
 };
