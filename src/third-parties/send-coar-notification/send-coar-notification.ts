@@ -60,7 +60,7 @@ const renderCoarNotification = (notification: CoarNotificationModel): CoarNotifi
     type: 'Service',
   },
   target: {
-    id: notification.targetId.href,
+    id: notification.targetId,
     inbox: notification.targetInbox.href,
     type: 'Service',
   },

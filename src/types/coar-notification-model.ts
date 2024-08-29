@@ -5,6 +5,6 @@ export type CoarNotificationModel = {
   objectId: URL,
   contextId: URL,
   contextCiteAs: URL,
-  targetId: URL,
+  targetId: string,
   targetInbox: URL,
 };
