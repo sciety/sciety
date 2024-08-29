@@ -6,7 +6,7 @@ describe('urlCodec', () => {
   describe('given an URL object', () => {
     const input = arbitraryUrl();
 
-    it.failing('encodes to a string', () => {
+    it('encodes to a string', () => {
       expect(pipe(
         input,
         urlCodec.encode,
