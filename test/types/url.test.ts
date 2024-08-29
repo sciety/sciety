@@ -27,6 +27,15 @@ describe('urlCodec', () => {
         E.getOrElseW(shouldNotBeCalled),
       )).toStrictEqual(new URL(input));
     });
+
+    it.failing('encodes back to the same value', () => {
+      expect(pipe(
+        input,
+        urlCodec.decode,
+        E.map(urlCodec.encode),
+        E.getOrElseW(shouldNotBeCalled),
+      )).toStrictEqual(input);
+    });
   });
 
   describe('given a string containing an invalid url', () => {
