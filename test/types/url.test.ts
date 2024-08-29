@@ -30,9 +30,9 @@ describe('urlCodec', () => {
   });
 
   describe('given a string containing an invalid url', () => {
-    it.failing('fails to decode', () => {
-      const result = urlCodec.decode(arbitraryString());
+    const result = urlCodec.decode(arbitraryString());
 
+    it('fails to decode', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
