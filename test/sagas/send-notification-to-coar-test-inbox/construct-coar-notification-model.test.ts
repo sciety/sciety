@@ -1,6 +1,6 @@
 import { URL } from 'url';
 import { constructCoarNotificationModel } from '../../../src/sagas/send-notification-to-coar-test-inbox/construct-coar-notification-model';
-import { arbitraryUrl } from '../../helpers';
+import { arbitraryString, arbitraryUrl } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
@@ -13,7 +13,7 @@ describe('construct-coar-notification-model', () => {
       evaluationLocator,
       expressionDoi,
       target: {
-        id: arbitraryUrl(),
+        id: arbitraryString(),
         inbox: arbitraryUrl(),
       },
     });

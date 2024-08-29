@@ -28,7 +28,7 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
       RA.map((pendingNotification) => ({
         ...pendingNotification,
         target: {
-          id: pendingNotification.target.id.href,
+          id: pendingNotification.target.id,
           inbox: pendingNotification.target.inbox.href,
         },
       })),

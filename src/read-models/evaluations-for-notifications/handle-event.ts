@@ -5,7 +5,7 @@ import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 
 export type Target = {
-  id: URL,
+  id: string,
   inbox: URL,
 };
 
@@ -34,7 +34,7 @@ const removePendingNotificationMatchingEvaluationAndTarget = (
   const notifications = readModel.get(evaluationLocator);
   if (notifications !== undefined) {
     const index = notifications.findIndex(
-      (pendingNotification) => pendingNotification.target.id.href === targetId.href,
+      (pendingNotification) => pendingNotification.target.id === targetId,
     );
     if (index > -1) {
       notifications.splice(index, 1);
@@ -69,7 +69,7 @@ export const handleEvent = (
   }
   if (isEventOfType('CoarNotificationDelivered')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removePendingNotificationMatchingEvaluationAndTarget(readModel, evaluationLocator, new URL(event.targetId));
+    removePendingNotificationMatchingEvaluationAndTarget(readModel, evaluationLocator, event.targetId);
   }
   return readModel;
 };

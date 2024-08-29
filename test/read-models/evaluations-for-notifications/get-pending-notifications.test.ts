@@ -5,11 +5,11 @@ import { getPendingNotifications } from '../../../src/read-models/evaluations-fo
 import { Target, handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
 import { arbitraryCoarNotificationDeliveredEvent } from '../../domain-events/arbitrary-coar-notification-delivered-event.helper';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
-import { arbitraryUrl } from '../../helpers';
+import { arbitraryString, arbitraryUrl } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const arbitraryTarget = (): Target => ({
-  id: arbitraryUrl(),
+  id: arbitraryString(),
   inbox: arbitraryUrl(),
 });
 const groupAId = arbitraryGroupId();
@@ -137,7 +137,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: targetForGroupA.id.href,
+          targetId: targetForGroupA.id,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -187,7 +187,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
-          targetId: targetForGroupA.id.href,
+          targetId: targetForGroupA.id,
         };
         const events = [
           evaluationPublicationRecorded1,
@@ -210,12 +210,12 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered1: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded1.evaluationLocator,
-          targetId: targetForGroupA.id.href,
+          targetId: targetForGroupA.id,
         };
         const coarNotificationDelivered2: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded2.evaluationLocator,
-          targetId: targetForGroupA.id.href,
+          targetId: targetForGroupA.id,
         };
         const events = [
           evaluationPublicationRecorded1,
@@ -264,7 +264,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: target1.id.href,
+          targetId: target1.id,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -286,7 +286,7 @@ describe('get-pending-notifications', () => {
         const coarNotificationDelivered: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: target2.id.href,
+          targetId: target2.id,
         };
         const events = [
           evaluationPublicationRecorded,
@@ -308,12 +308,12 @@ describe('get-pending-notifications', () => {
         const coarNotificationDeliveredForTarget1: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: target1.id.href,
+          targetId: target1.id,
         };
         const coarNotificationDeliveredForTarget2: EventOfType<'CoarNotificationDelivered'> = {
           ...arbitraryCoarNotificationDeliveredEvent(),
           evaluationLocator: evaluationPublicationRecorded.evaluationLocator,
-          targetId: target2.id.href,
+          targetId: target2.id,
         };
         const events = [
           evaluationPublicationRecorded,
