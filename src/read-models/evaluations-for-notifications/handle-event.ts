@@ -69,7 +69,7 @@ export const handleEvent = (
   }
   if (isEventOfType('CoarNotificationDelivered')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removePendingNotificationMatchingEvaluationAndTarget(readModel, evaluationLocator, new URL(event.targetId));
+    removePendingNotificationMatchingEvaluationAndTarget(readModel, evaluationLocator, event.targetId);
   }
   return readModel;
 };
