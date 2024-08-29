@@ -20,7 +20,7 @@ describe('urlCodec', () => {
   describe('given a string containing a valid url', () => {
     const input = 'https://example.com';
 
-    it.failing('decodes to an URL object', () => {
+    it('decodes to an URL object', () => {
       expect(pipe(
         input,
         urlCodec.decode,
