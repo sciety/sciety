@@ -2,7 +2,7 @@ import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { urlCodec } from '../../src/types/url';
-import { arbitraryUrl } from '../helpers';
+import { arbitraryDate, arbitraryUrl } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('urlCodec', () => {
@@ -31,5 +31,13 @@ describe('urlCodec', () => {
 
   describe('given a string containing an invalid url', () => {
     it.todo('fails to decode');
+  });
+
+  describe('given a non-string value', () => {
+    const result = urlCodec.decode(arbitraryDate());
+
+    it('fails to decode', () => {
+      expect(E.isLeft(result)).toBe(true);
+    });
   });
 });
