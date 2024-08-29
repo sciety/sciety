@@ -19,7 +19,7 @@ export type ReadModel = Map<EvaluationLocator, Array<PendingNotification>>;
 
 export const initialState = (): ReadModel => new Map();
 
-const removeFirstPendingNotificationMatchingEvaluation = (
+const removeAllPendingNotificationsMatchingEvaluation = (
   readModel: ReadModel,
   evaluationLocator: EvaluationLocator,
 ) => {
@@ -61,11 +61,11 @@ export const handleEvent = (
   }
   if (isEventOfType('IncorrectlyRecordedEvaluationErased')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removeFirstPendingNotificationMatchingEvaluation(readModel, evaluationLocator);
+    removeAllPendingNotificationsMatchingEvaluation(readModel, evaluationLocator);
   }
   if (isEventOfType('EvaluationRemovalRecorded')(event)) {
     const evaluationLocator = event.evaluationLocator;
-    removeFirstPendingNotificationMatchingEvaluation(readModel, evaluationLocator);
+    removeAllPendingNotificationsMatchingEvaluation(readModel, evaluationLocator);
   }
   if (isEventOfType('CoarNotificationDelivered')(event)) {
     const evaluationLocator = event.evaluationLocator;
