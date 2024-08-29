@@ -1,6 +1,9 @@
+import { URL } from 'url';
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { urlCodec } from '../../src/types/url';
 import { arbitraryUrl } from '../helpers';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 describe('urlCodec', () => {
   describe('given an URL object', () => {
@@ -15,7 +18,15 @@ describe('urlCodec', () => {
   });
 
   describe('given a string containing a valid url', () => {
-    it.todo('decodes to an URL object');
+    const input = 'https://example.com';
+
+    it.failing('decodes to an URL object', () => {
+      expect(pipe(
+        input,
+        urlCodec.decode,
+        E.getOrElseW(shouldNotBeCalled),
+      )).toStrictEqual(new URL(input));
+    });
   });
 
   describe('given a string containing an invalid url', () => {
