@@ -1,3 +1,4 @@
+import { DependenciesForSagas } from '../../../src/sagas/dependencies-for-sagas';
 import { sendNotificationsToCoarInboxes } from '../../../src/sagas/send-notifications-to-coar-inboxes';
 import { createTestFramework, TestFramework } from '../../framework';
 import { arbitraryUrl } from '../../helpers';
@@ -10,17 +11,23 @@ describe('send-notifications-to-coar-inboxes', () => {
   });
 
   describe('when there are no pending notifications', () => {
-    const sendCoarNotification = {};
-    const commitEvents = {};
+    let sendCoarNotification: DependenciesForSagas['sendCoarNotification'];
+    let commitEvents: DependenciesForSagas['commitEvents'];
 
     beforeEach(async () => {
+      sendCoarNotification = jest.fn(framework.dependenciesForSagas.sendCoarNotification);
+      commitEvents = jest.fn(framework.commitEvents);
       await sendNotificationsToCoarInboxes(
-        framework.dependenciesForSagas,
+        {
+          ...framework.dependenciesForSagas,
+          sendCoarNotification,
+          commitEvents,
+        },
         arbitraryUrl(),
       );
     });
 
-    it.failing('does nothing', () => {
+    it('does nothing', () => {
       expect(sendCoarNotification).not.toHaveBeenCalled();
       expect(commitEvents).not.toHaveBeenCalled();
     });
