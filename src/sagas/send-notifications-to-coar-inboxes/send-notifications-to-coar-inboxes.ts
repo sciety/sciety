@@ -17,7 +17,7 @@ export const sendNotificationsToCoarInboxes = async (
 
   dependencies.logger('debug', 'sendNotificationsToCoarInboxes starting', { iterationId });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const issueCommand = (coarNotificationModel: CoarNotificationModel) => 'not-implemented-yet';
+  const issueCommand = (coarNotificationModel: CoarNotificationModel): TE.TaskEither<unknown, unknown> => TE.left('not-implemented-yet');
   await pipe(
     dependencies.getPendingNotifications(),
     RA.head,
@@ -27,7 +27,7 @@ export const sendNotificationsToCoarInboxes = async (
       coarNotificationModel,
       TE.right,
       TE.tap(dependencies.sendCoarNotification),
-      TE.map(issueCommand),
+      TE.chain(issueCommand),
       TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId }))),
     )),
   )();
