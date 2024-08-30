@@ -20,18 +20,17 @@ export const sendNotificationsToCoarInboxes = async (
   await pipe(
     dependencies.getPendingNotifications(),
     RA.head,
-    TE.fromOption(() => 'no pending notifications'),
-    TE.chainW((pendingNotification) => pipe(
+    TE.fromOption(() => 'no pending notifications' as const),
+    TE.tap((pendingNotification) => pipe(
       pendingNotification,
-      TE.right,
-      TE.tap(() => pipe(
-        pendingNotification,
-        constructCoarNotificationModel(scietyUiOrigin),
-        dependencies.sendCoarNotification,
-      )),
-      TE.chainW(executeResourceAction(dependencies, coarNotification.recordDelivery)),
-      TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId }))),
+      constructCoarNotificationModel(scietyUiOrigin),
+      dependencies.sendCoarNotification,
     )),
+    TE.chainW(executeResourceAction(dependencies, coarNotification.recordDelivery)),
+    TE.tapError((left) => (
+      left === 'no pending notifications'
+        ? TE.right(undefined)
+        : TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId })))),
   )();
   dependencies.logger('debug', 'sendNotificationsToCoarInboxes finished', { iterationId });
 };
