@@ -5,9 +5,18 @@ import { pipe } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
 import { constructCoarNotificationModel } from './construct-coar-notification-model';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
+import * as coarNotification from '../../write-side/resources/coar-notification';
+import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 type Dependencies = DependenciesForSagas;
+
+const issueCommand = (
+  dependencies: Dependencies,
+) => (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+  coarNotificationModel: CoarNotificationModel,
+): TE.TaskEither<unknown, unknown> => executeResourceAction(dependencies, coarNotification.recordDelivery)({});
 
 export const sendNotificationsToCoarInboxes = async (
   dependencies: Dependencies,
@@ -16,8 +25,6 @@ export const sendNotificationsToCoarInboxes = async (
   const iterationId = uuidV4();
 
   dependencies.logger('debug', 'sendNotificationsToCoarInboxes starting', { iterationId });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const issueCommand = (coarNotificationModel: CoarNotificationModel): TE.TaskEither<unknown, unknown> => TE.left('not-implemented-yet');
   await pipe(
     dependencies.getPendingNotifications(),
     RA.head,
@@ -27,7 +34,7 @@ export const sendNotificationsToCoarInboxes = async (
       coarNotificationModel,
       TE.right,
       TE.tap(dependencies.sendCoarNotification),
-      TE.chain(issueCommand),
+      TE.chain(issueCommand(dependencies)),
       TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId }))),
     )),
   )();
