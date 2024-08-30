@@ -55,7 +55,11 @@ describe('send-notifications-to-coar-inboxes', () => {
         expect(sendCoarNotification).toHaveBeenCalledTimes(1);
       });
 
-      it.todo('records the notification as delivered');
+      it.failing('the notification is no longer in the queue', () => {
+        const queue = framework.queries.getPendingNotifications();
+
+        expect(queue).toStrictEqual([]);
+      });
     });
 
     describe('and the target rejects the notification', () => {
