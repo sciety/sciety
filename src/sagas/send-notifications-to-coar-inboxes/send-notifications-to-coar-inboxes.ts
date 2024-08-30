@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { pipe, flow } from 'fp-ts/function';
 import { v4 as uuidV4 } from 'uuid';
 import { constructCoarNotificationModel } from './construct-coar-notification-model';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
@@ -17,10 +17,13 @@ export const sendNotificationsToCoarInboxes = async (
   dependencies.logger('debug', 'sendNotificationsToCoarInboxes starting', { iterationId });
   await pipe(
     dependencies.getPendingNotifications(),
-    RA.takeLeft(3),
-    RA.map(constructCoarNotificationModel(scietyUiOrigin)),
-    TE.traverseArray(dependencies.sendCoarNotification),
-    TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId }))),
+    RA.head,
+    TE.fromOption(() => 'no pending notifications'),
+    TE.map(constructCoarNotificationModel(scietyUiOrigin)),
+    TE.chainW(flow(
+      dependencies.sendCoarNotification,
+      TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId }))),
+    )),
   )();
   dependencies.logger('debug', 'sendNotificationsToCoarInboxes finished', { iterationId });
 };
