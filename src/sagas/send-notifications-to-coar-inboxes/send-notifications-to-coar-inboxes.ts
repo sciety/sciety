@@ -26,7 +26,13 @@ export const sendNotificationsToCoarInboxes = async (
       constructCoarNotificationModel(scietyUiOrigin),
       dependencies.sendCoarNotification,
     )),
-    TE.chainW(executeResourceAction(dependencies, coarNotification.recordDelivery)),
+    TE.chainW((pendingNotification) => pipe(
+      {
+        evaluationLocator: pendingNotification.evaluationLocator,
+        targetId: pendingNotification.target.id,
+      },
+      executeResourceAction(dependencies, coarNotification.recordDelivery),
+    )),
     TE.tapError((left) => (
       left === 'no pending notifications'
         ? TE.right(undefined)
