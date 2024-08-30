@@ -25,8 +25,9 @@ export const sendNotificationsToCoarInboxes = async (
     TE.map(constructCoarNotificationModel(scietyUiOrigin)),
     TE.chainW((coarNotificationModel) => pipe(
       coarNotificationModel,
-      dependencies.sendCoarNotification,
-      TE.map(() => issueCommand(coarNotificationModel)),
+      TE.right,
+      TE.tap(dependencies.sendCoarNotification),
+      TE.map(issueCommand),
       TE.tapError(() => TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId }))),
     )),
   )();
