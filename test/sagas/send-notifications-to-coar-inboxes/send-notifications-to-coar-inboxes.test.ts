@@ -1,22 +1,23 @@
+import { preReviewGroupId } from '../../../src/read-models/evaluations-for-notifications';
 import { DependenciesForSagas } from '../../../src/sagas/dependencies-for-sagas';
 import { sendNotificationsToCoarInboxes } from '../../../src/sagas/send-notifications-to-coar-inboxes';
 import { createTestFramework, TestFramework } from '../../framework';
 import { arbitraryUrl } from '../../helpers';
+import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('send-notifications-to-coar-inboxes', () => {
   let framework: TestFramework;
+  let sendCoarNotification: DependenciesForSagas['sendCoarNotification'];
+  let commitEvents: DependenciesForSagas['commitEvents'];
 
   beforeEach(() => {
     framework = createTestFramework();
+    sendCoarNotification = jest.fn(framework.dependenciesForSagas.sendCoarNotification);
+    commitEvents = jest.fn(framework.commitEvents);
   });
 
   describe('when there are no pending notifications', () => {
-    let sendCoarNotification: DependenciesForSagas['sendCoarNotification'];
-    let commitEvents: DependenciesForSagas['commitEvents'];
-
     beforeEach(async () => {
-      sendCoarNotification = jest.fn(framework.dependenciesForSagas.sendCoarNotification);
-      commitEvents = jest.fn(framework.commitEvents);
       await sendNotificationsToCoarInboxes(
         {
           ...framework.dependenciesForSagas,
@@ -35,6 +36,25 @@ describe('send-notifications-to-coar-inboxes', () => {
 
   describe('when there is one pending notification', () => {
     describe('and the target accepts the notification', () => {
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: preReviewGroupId,
+        });
+        await sendNotificationsToCoarInboxes(
+          {
+            ...framework.dependenciesForSagas,
+            sendCoarNotification,
+            commitEvents,
+          },
+          arbitraryUrl(),
+        );
+      });
+
+      it('sends the notification to an inbox', () => {
+        expect(sendCoarNotification).toHaveBeenCalledTimes(1);
+      });
+
       it.todo('records the notification as delivered');
     });
 
