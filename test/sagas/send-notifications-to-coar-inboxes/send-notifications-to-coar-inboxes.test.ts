@@ -35,7 +35,7 @@ describe('send-notifications-to-coar-inboxes', () => {
   });
 
   describe('when there is one pending notification', () => {
-    describe('and the target accepts the notification', () => {
+    describe('and sendNotification returns a right', () => {
       beforeEach(async () => {
         await framework.commandHelpers.recordEvaluationPublication({
           ...arbitraryRecordEvaluationPublicationCommand(),
@@ -62,7 +62,7 @@ describe('send-notifications-to-coar-inboxes', () => {
       });
     });
 
-    describe('and the target rejects the notification', () => {
+    describe('and sendNotification returns a left', () => {
       it.todo('leaves the notification as pending');
     });
   });
