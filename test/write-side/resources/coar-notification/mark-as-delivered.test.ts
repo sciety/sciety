@@ -1,20 +1,13 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../../src/domain-events';
-import { MarkCoarNotificationAsDeliveredCommand } from '../../../../src/write-side/commands';
 import { markAsDelivered } from '../../../../src/write-side/resources/coar-notification/mark-as-delivered';
 import { arbitraryCoarNotificationDeliveredEvent } from '../../../domain-events/coar-notification-resource-events.helper';
-import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-
-const arbitraryRecordCoarNotificationDeliveryCommand = (): MarkCoarNotificationAsDeliveredCommand => ({
-  evaluationLocator: arbitraryEvaluationLocator(),
-  targetId: arbitraryString(),
-});
+import { arbitraryMarkCoarNotificationAsDeliveredCommand } from '../../commands/mark-coar-notification-as-delivered-command.helper';
 
 describe('mark-as-delivered', () => {
-  const command = arbitraryRecordCoarNotificationDeliveryCommand();
+  const command = arbitraryMarkCoarNotificationAsDeliveredCommand();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const recordedDeliveryForTheSameEvaluationButDifferentInbox = {
     ...arbitraryCoarNotificationDeliveredEvent(),
