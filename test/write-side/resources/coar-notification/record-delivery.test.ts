@@ -15,7 +15,7 @@ const arbitraryRecordCoarNotificationDeliveryCommand = (): RecordCoarNotificatio
 describe('record-delivery', () => {
   const command = arbitraryRecordCoarNotificationDeliveryCommand();
 
-  describe.skip('given a delivery that has not been recorded yet', () => {
+  describe('given a delivery that has not been recorded yet', () => {
     const events: ReadonlyArray<DomainEvent> = [];
     let result: ReadonlyArray<DomainEvent>;
 

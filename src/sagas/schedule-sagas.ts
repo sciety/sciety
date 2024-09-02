@@ -26,7 +26,8 @@ export const scheduleSagas = (
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
+  // eslint-disable-next-line no-constant-condition
+  if (false) {
     runOnceAfter(async () => ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin), 5);
   }
   dependencies.logger('info', 'Sagas scheduled');

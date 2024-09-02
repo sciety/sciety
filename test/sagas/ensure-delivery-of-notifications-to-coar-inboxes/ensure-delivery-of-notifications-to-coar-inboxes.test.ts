@@ -55,7 +55,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
         expect(sendCoarNotification).toHaveBeenCalledTimes(1);
       });
 
-      it.failing('the notification is no longer in the queue', () => {
+      it('the notification is no longer in the queue', () => {
         const queue = framework.queries.getPendingNotifications();
 
         expect(queue).toStrictEqual([]);
