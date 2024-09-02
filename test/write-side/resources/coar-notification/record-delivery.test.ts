@@ -14,11 +14,17 @@ const arbitraryRecordCoarNotificationDeliveryCommand = (): RecordCoarNotificatio
 
 describe('record-delivery', () => {
   const command = arbitraryRecordCoarNotificationDeliveryCommand();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const recordedDeliveryForTheSameEvaluationButDifferentInbox = constructEvent('CoarNotificationDelivered')({
+    evaluationLocator: command.evaluationLocator,
+    targetId: arbitraryString(),
+  });
   let result: ReadonlyArray<DomainEvent>;
 
-  describe('given a delivery that has not been recorded yet', () => {
-    const events: ReadonlyArray<DomainEvent> = [];
-
+  describe.each([
+    [[]],
+    // [[recordedDeliveryForTheSameEvaluationButDifferentInbox]],
+  ])('given a delivery that has not been recorded yet', (events) => {
     beforeEach(() => {
       result = pipe(
         events,
