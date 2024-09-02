@@ -5,18 +5,18 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { listIdCodec } from '../types/list-id';
 import { unsafeUserInputCodec } from '../types/unsafe-user-input';
 
-export const annotationCreatedEventCodec = t.type({
+export const annotationCreatedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('AnnotationCreated'),
   date: tt.DateFromISOString,
   content: unsafeUserInputCodec,
-  target: t.type({
+  target: t.strict({
     articleId: articleIdCodec,
     listId: listIdCodec,
   }),
 });
 
-export const articleInListAnnotatedEventCodec = t.type({
+export const articleInListAnnotatedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('ArticleInListAnnotated'),
   date: tt.DateFromISOString,
