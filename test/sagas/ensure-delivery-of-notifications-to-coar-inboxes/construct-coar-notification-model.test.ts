@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { constructCoarNotificationModel } from '../../../src/sagas/send-notifications-to-coar-inboxes/construct-coar-notification-model';
+import { constructCoarNotificationModel } from '../../../src/sagas/ensure-delivery-of-notifications-to-coar-inboxes/construct-coar-notification-model';
 import { arbitraryString, arbitraryUrl } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';

@@ -1,11 +1,11 @@
 import { URL } from 'url';
 import * as T from 'fp-ts/Task';
 import { DependenciesForSagas } from './dependencies-for-sagas';
+import { ensureDeliveryOfNotificationsToCoarInboxes } from './ensure-delivery-of-notifications-to-coar-inboxes';
 import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed';
 import {
   maintainSnapshotsForEvaluatedExpressions,
 } from './maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
-import { sendNotificationsToCoarInboxes } from './send-notifications-to-coar-inboxes';
 
 type Saga = () => Promise<void>;
 
@@ -27,7 +27,7 @@ export const scheduleSagas = (
     runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    runOnceAfter(async () => sendNotificationsToCoarInboxes(dependencies, scietyUiOrigin), 5);
+    runOnceAfter(async () => ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin), 5);
   }
   dependencies.logger('info', 'Sagas scheduled');
 };

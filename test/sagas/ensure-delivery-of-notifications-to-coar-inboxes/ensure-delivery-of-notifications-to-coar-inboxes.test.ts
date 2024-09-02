@@ -1,11 +1,11 @@
 import { preReviewGroupId } from '../../../src/read-models/evaluations-for-notifications';
 import { DependenciesForSagas } from '../../../src/sagas/dependencies-for-sagas';
-import { sendNotificationsToCoarInboxes } from '../../../src/sagas/send-notifications-to-coar-inboxes';
+import { ensureDeliveryOfNotificationsToCoarInboxes } from '../../../src/sagas/ensure-delivery-of-notifications-to-coar-inboxes';
 import { createTestFramework, TestFramework } from '../../framework';
 import { arbitraryUrl } from '../../helpers';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
-describe('send-notifications-to-coar-inboxes', () => {
+describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
   let framework: TestFramework;
   let sendCoarNotification: DependenciesForSagas['sendCoarNotification'];
   let commitEvents: DependenciesForSagas['commitEvents'];
@@ -18,7 +18,7 @@ describe('send-notifications-to-coar-inboxes', () => {
 
   describe('when there are no pending notifications', () => {
     beforeEach(async () => {
-      await sendNotificationsToCoarInboxes(
+      await ensureDeliveryOfNotificationsToCoarInboxes(
         {
           ...framework.dependenciesForSagas,
           sendCoarNotification,
@@ -41,7 +41,7 @@ describe('send-notifications-to-coar-inboxes', () => {
           ...arbitraryRecordEvaluationPublicationCommand(),
           groupId: preReviewGroupId,
         });
-        await sendNotificationsToCoarInboxes(
+        await ensureDeliveryOfNotificationsToCoarInboxes(
           {
             ...framework.dependenciesForSagas,
             sendCoarNotification,

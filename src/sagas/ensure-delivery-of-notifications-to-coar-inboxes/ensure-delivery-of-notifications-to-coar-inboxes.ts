@@ -10,7 +10,7 @@ import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 type Dependencies = DependenciesForSagas;
 
-export const sendNotificationsToCoarInboxes = async (
+export const ensureDeliveryOfNotificationsToCoarInboxes = async (
   dependencies: Dependencies,
   scietyUiOrigin: URL,
 ): Promise<void> => {
