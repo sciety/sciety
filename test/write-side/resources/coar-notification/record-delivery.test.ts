@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../../../../src/domain-events';
+import { DomainEvent, constructEvent } from '../../../../src/domain-events';
 import { RecordCoarNotificationDeliveryCommand } from '../../../../src/write-side/commands';
 import { recordDelivery } from '../../../../src/write-side/resources/coar-notification/record-delivery';
 import { arbitraryString } from '../../../helpers';
@@ -14,10 +14,10 @@ const arbitraryRecordCoarNotificationDeliveryCommand = (): RecordCoarNotificatio
 
 describe('record-delivery', () => {
   const command = arbitraryRecordCoarNotificationDeliveryCommand();
+  let result: ReadonlyArray<DomainEvent>;
 
   describe('given a delivery that has not been recorded yet', () => {
     const events: ReadonlyArray<DomainEvent> = [];
-    let result: ReadonlyArray<DomainEvent>;
 
     beforeEach(() => {
       result = pipe(
@@ -37,6 +37,18 @@ describe('record-delivery', () => {
   });
 
   describe('given a delivery that has already been recorded', () => {
-    it.todo('accepts the command and causes no state change');
+    const events = [constructEvent('CoarNotificationDelivered')(command)];
+
+    beforeEach(() => {
+      result = pipe(
+        events,
+        recordDelivery(command),
+        E.getOrElseW(shouldNotBeCalled),
+      );
+    });
+
+    it.failing('accepts the command and causes no state change', () => {
+      expect(result).toHaveLength(0);
+    });
   });
 });
