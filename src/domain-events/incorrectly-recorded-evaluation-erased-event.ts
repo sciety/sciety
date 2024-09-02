@@ -5,7 +5,7 @@ import { evaluationLocatorCodec } from '../types/evaluation-locator';
 
 const eventType = 'IncorrectlyRecordedEvaluationErased';
 
-export const incorrectlyRecordedEvaluationErasedEventCodec = t.type({
+export const incorrectlyRecordedEvaluationErasedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal(eventType),
   date: tt.DateFromISOString,

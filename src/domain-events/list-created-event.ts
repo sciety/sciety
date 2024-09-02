@@ -4,7 +4,7 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { listIdCodec } from '../types/list-id';
 import * as LOID from '../types/list-owner-id';
 
-export const listCreatedEventCodec = t.type({
+export const listCreatedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('ListCreated'),
   date: tt.DateFromISOString,

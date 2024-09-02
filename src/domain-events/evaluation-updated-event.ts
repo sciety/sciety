@@ -5,7 +5,7 @@ import { evaluationTypeCodec } from './types/evaluation-type';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { evaluationLocatorCodec } from '../types/evaluation-locator';
 
-export const evaluationUpdatedEventCodec = t.type({
+export const evaluationUpdatedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('EvaluationUpdated'),
   date: tt.DateFromISOString,
