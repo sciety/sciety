@@ -66,4 +66,10 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
       it.todo('leaves the notification as pending');
     });
   });
+
+  describe('when there are multiple pending notifications', () => {
+    it.todo('sends one notification to an inbox');
+
+    it.todo('removes only the delivered notification from the queue');
+  });
 });
