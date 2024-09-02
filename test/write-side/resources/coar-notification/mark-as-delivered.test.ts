@@ -8,7 +8,6 @@ import { arbitraryMarkCoarNotificationAsDeliveredCommand } from '../../commands/
 
 describe('mark-as-delivered', () => {
   const command = arbitraryMarkCoarNotificationAsDeliveredCommand();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const recordedDeliveryForTheSameEvaluationButDifferentInbox = {
     ...arbitraryCoarNotificationDeliveredEvent(),
     evaluationLocator: command.evaluationLocator,
@@ -17,7 +16,7 @@ describe('mark-as-delivered', () => {
 
   describe.each([
     [[]],
-    // [[recordedDeliveryForTheSameEvaluationButDifferentInbox]],
+    [[recordedDeliveryForTheSameEvaluationButDifferentInbox]],
   ])('given a delivery that has not been recorded yet', (events) => {
     beforeEach(() => {
       result = pipe(
