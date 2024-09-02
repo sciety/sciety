@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { getPendingNotifications } from '../../../src/read-models/evaluations-for-notifications/get-pending-notifications';
 import { Target, handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
-import { arbitraryCoarNotificationDeliveredEvent } from '../../domain-events/arbitrary-coar-notification-delivered-event.helper';
+import { arbitraryCoarNotificationDeliveredEvent } from '../../domain-events/coar-notification-resource-events.helper';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryString, arbitraryUrl } from '../../helpers';
 import { arbitraryGroupId } from '../../types/group-id.helper';

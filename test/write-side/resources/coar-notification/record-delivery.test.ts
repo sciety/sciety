@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent, constructEvent } from '../../../../src/domain-events';
+import { DomainEvent, EventOfType } from '../../../../src/domain-events';
 import { RecordCoarNotificationDeliveryCommand } from '../../../../src/write-side/commands';
 import { recordDelivery } from '../../../../src/write-side/resources/coar-notification/record-delivery';
+import { arbitraryCoarNotificationDeliveredEvent } from '../../../domain-events/coar-notification-resource-events.helper';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
@@ -15,10 +16,10 @@ const arbitraryRecordCoarNotificationDeliveryCommand = (): RecordCoarNotificatio
 describe('record-delivery', () => {
   const command = arbitraryRecordCoarNotificationDeliveryCommand();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const recordedDeliveryForTheSameEvaluationButDifferentInbox = constructEvent('CoarNotificationDelivered')({
+  const recordedDeliveryForTheSameEvaluationButDifferentInbox = {
+    ...arbitraryCoarNotificationDeliveredEvent(),
     evaluationLocator: command.evaluationLocator,
-    targetId: arbitraryString(),
-  });
+  } satisfies EventOfType<'CoarNotificationDelivered'>;
   let result: ReadonlyArray<DomainEvent>;
 
   describe.each([
@@ -43,7 +44,11 @@ describe('record-delivery', () => {
   });
 
   describe('given a delivery that has already been recorded', () => {
-    const events = [constructEvent('CoarNotificationDelivered')(command)];
+    const matchingDeliveryRecorded = {
+      ...arbitraryCoarNotificationDeliveredEvent(),
+      ...command,
+    } satisfies EventOfType<'CoarNotificationDelivered'>;
+    const events = [matchingDeliveryRecorded];
 
     beforeEach(() => {
       result = pipe(
