@@ -12,7 +12,6 @@ describe('mark-as-delivered', () => {
     ...arbitraryCoarNotificationDeliveredEvent(),
     evaluationLocator: command.evaluationLocator,
   } satisfies EventOfType<'CoarNotificationDelivered'>;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const notificationDeliveredForDifferentEvaluationButTheSameInbox = {
     ...arbitraryCoarNotificationDeliveredEvent(),
     targetId: command.targetId,
@@ -22,7 +21,7 @@ describe('mark-as-delivered', () => {
   describe.each([
     [[]],
     [[notificationDeliveredForTheSameEvaluationButDifferentInbox]],
-    // [[notificationDeliveredForDifferentEvaluationButTheSameInbox]],
+    [[notificationDeliveredForDifferentEvaluationButTheSameInbox]],
   ])('given a delivery that has not been recorded yet', (events) => {
     beforeEach(() => {
       result = pipe(

@@ -9,7 +9,7 @@ const isRecordOfMatchingDelivery = (
   command: MarkCoarNotificationAsDeliveredCommand,
 ) => (
   event: EventOfType<'CoarNotificationDelivered'>,
-) => command.targetId === event.targetId;
+) => command.targetId === event.targetId && command.evaluationLocator === event.evaluationLocator;
 
 export const markAsDelivered: ResourceAction<MarkCoarNotificationAsDeliveredCommand> = (command) => (events) => pipe(
   events,
