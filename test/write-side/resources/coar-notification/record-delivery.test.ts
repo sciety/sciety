@@ -47,7 +47,7 @@ describe('record-delivery', () => {
       );
     });
 
-    it.failing('accepts the command and causes no state change', () => {
+    it('accepts the command and causes no state change', () => {
       expect(result).toHaveLength(0);
     });
   });
