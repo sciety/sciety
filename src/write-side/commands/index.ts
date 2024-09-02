@@ -19,4 +19,4 @@ export { assignUserAsGroupAdminCommandCodec, AssignUserAsGroupAdminCommand } fro
 export { UnfollowCommand } from './unfollow';
 export { deleteListCommandCodec, DeleteListCommand } from './delete-list';
 export { RecordPaperSnapshotCommand } from './record-paper-snapshot';
-export { RecordCoarNotificationDeliveryCommand } from './record-coar-notification-delivery';
+export { MarkCoarNotificationAsDeliveredCommand } from './mark-coar-notification-as-delivered';

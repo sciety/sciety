@@ -1,1 +1,1 @@
-export { recordDelivery } from './record-delivery';
+export { markAsDelivered } from './mark-as-delivered';

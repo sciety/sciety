@@ -31,7 +31,7 @@ export const ensureDeliveryOfNotificationsToCoarInboxes = async (
         evaluationLocator: pendingNotification.evaluationLocator,
         targetId: pendingNotification.target.id,
       },
-      executeResourceAction(dependencies, coarNotification.recordDelivery),
+      executeResourceAction(dependencies, coarNotification.markAsDelivered),
     )),
     TE.tapError((left) => (
       left === 'no pending notifications'
