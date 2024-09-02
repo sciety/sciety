@@ -4,7 +4,7 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromStringCodec } from '../types/group-id';
 import { listIdCodec } from '../types/list-id';
 
-export const evaluatedArticlesListSpecifiedEventCodec = t.type({
+export const evaluatedArticlesListSpecifiedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('EvaluatedArticlesListSpecified'),
   date: tt.DateFromISOString,

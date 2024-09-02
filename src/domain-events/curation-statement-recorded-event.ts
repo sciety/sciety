@@ -5,7 +5,7 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { evaluationLocatorCodec } from '../types/evaluation-locator';
 import { GroupIdFromStringCodec } from '../types/group-id';
 
-export const curationStatementRecordedEventCodec = t.type({
+export const curationStatementRecordedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('CurationStatementRecorded'),
   date: tt.DateFromISOString,

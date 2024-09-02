@@ -18,12 +18,12 @@ const commonFields = {
   evaluationType: evaluationTypeCodec,
 };
 
-export const evaluationRecordedEventCodec = t.type({
+export const evaluationRecordedEventCodec = t.strict({
   type: t.literal('EvaluationRecorded'),
   ...commonFields,
 });
 
-export const evaluationPublicationRecordedEventCodec = t.type({
+export const evaluationPublicationRecordedEventCodec = t.strict({
   type: t.literal('EvaluationPublicationRecorded'),
   ...commonFields,
 });
