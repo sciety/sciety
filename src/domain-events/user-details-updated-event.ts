@@ -3,7 +3,7 @@ import * as tt from 'io-ts-types';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { userIdCodec } from '../types/user-id';
 
-export const userDetailsUpdatedEventCodec = t.type({
+export const userDetailsUpdatedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('UserDetailsUpdated'),
   date: tt.DateFromISOString,

@@ -4,7 +4,7 @@ import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { GroupIdFromStringCodec } from '../types/group-id';
 import { userIdCodec } from '../types/user-id';
 
-export const userAssignedAsAdminOfGroupEventCodec = t.type({
+export const userAssignedAsAdminOfGroupEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('UserAssignedAsAdminOfGroup'),
   date: tt.DateFromISOString,

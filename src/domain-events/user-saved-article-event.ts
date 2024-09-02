@@ -4,7 +4,7 @@ import { articleIdCodec } from '../types/article-id';
 import { EventIdFromString } from '../types/codecs/EventIdFromString';
 import { userIdCodec } from '../types/user-id';
 
-export const userSavedArticleEventCodec = t.type({
+export const userSavedArticleEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('UserSavedArticle'),
   date: tt.DateFromISOString,
