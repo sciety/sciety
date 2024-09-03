@@ -4,13 +4,13 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { ResponseWithVersions } from './biorxiv-details-api-response';
+import { ColdSpringHarborServer } from './cold-spring-harbor-server';
 import { fetchArticleDetails } from './fetch-article-details';
 import { Logger } from '../../../logger';
 import { ArticleId } from '../../../types/article-id';
 import * as DE from '../../../types/data-error';
 import * as EDOI from '../../../types/expression-doi';
 import { PaperExpression } from '../../../types/paper-expression';
-import { ColdSpringHarborServer } from '../../cold-spring-harbor-server';
 import { QueryExternalService } from '../../query-external-service';
 
 type Dependencies = {

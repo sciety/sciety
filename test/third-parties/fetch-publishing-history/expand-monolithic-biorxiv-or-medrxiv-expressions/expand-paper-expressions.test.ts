@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { ColdSpringHarborServer } from '../../../../src/third-parties/fetch-publishing-history/expand-monolithic-biorxiv-or-medrxiv-expressions/cold-spring-harbor-server';
 import {
   GetExpressionsFromBiorxiv,
   expandPaperExpressions,
@@ -11,7 +12,14 @@ import { arbitraryNumber } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryDataError } from '../../../types/data-error.helper';
 import { arbitraryPaperExpression } from '../../../types/paper-expression.helper';
-import { arbitraryColdSpringHarborArticleServer } from '../../cold-spring-harbor-article-server.helper';
+
+const arbitraryColdSpringHarborArticleServer = (): ColdSpringHarborServer => {
+  const articleServers: ReadonlyArray<ColdSpringHarborServer> = [
+    'biorxiv',
+    'medrxiv',
+  ];
+  return articleServers[arbitraryNumber(0, articleServers.length - 1)];
+};
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),
