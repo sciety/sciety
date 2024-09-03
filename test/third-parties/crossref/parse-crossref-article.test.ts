@@ -1,9 +1,8 @@
 import { DOMParser } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import {
-  getAbstract, getAuthors, getServer, getTitle,
+  getAbstract, getAuthors, getTitle,
 } from '../../../src/third-parties/crossref/parse-crossref-article';
-import { arbitraryUri } from '../../helpers';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -184,39 +183,6 @@ describe('parse-crossref-article', () => {
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<section>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('Lorem ipsum')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('</section>')));
-    });
-  });
-
-  describe('parsing the server', () => {
-    it.each([
-      ['medrxiv', 'http://medrxiv.org/lookup/doi/10.1101/2021.01.15.21249880'],
-      ['biorxiv', 'http://biorxiv.org/lookup/doi/10.1101/2020.07.04.187583'],
-      ['researchsquare', 'https://www.researchsquare.com/article/rs-955726/v1'],
-      ['scielopreprints', 'https://preprints.scielo.org/index.php/scielo/preprint/view/3564/version/3775'],
-    ])('detects %s correctly', (expectedServer, resourceUrl) => {
-      const response = crossrefResponseWith(`
-          <doi_data>
-            <resource>${resourceUrl}</resource>
-          </doi_data>
-        `);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const server = getServer(doc);
-
-      expect(server).toStrictEqual(O.some(expectedServer));
-    });
-
-    describe('when the resource is not supported', () => {
-      it('returns O.none', () => {
-        const response = crossrefResponseWith(`
-          <doi_data>
-            <resource>${arbitraryUri()}</resource>
-          </doi_data>
-        `);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const server = getServer(doc);
-
-        expect(server).toStrictEqual(O.none);
-      });
     });
   });
 

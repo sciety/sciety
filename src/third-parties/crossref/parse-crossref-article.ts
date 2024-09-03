@@ -1,7 +1,6 @@
 import { XMLSerializer } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
-import { flow, pipe } from 'fp-ts/function';
-import { identifyExpressionServer } from './fetch-all-paper-expressions/identify-expression-server';
+import { pipe } from 'fp-ts/function';
 import { getElement } from './get-element';
 import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -79,16 +78,6 @@ export const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   }
   return O.none;
 };
-
-export const getServer = flow(
-  (doc: Document) => {
-    const doiDataElement = getElement(doc, 'doi_data');
-    const resourceElement = doiDataElement?.getElementsByTagName('resource')[0];
-    return resourceElement?.textContent;
-  },
-  O.fromNullable,
-  O.chain(identifyExpressionServer),
-);
 
 const personAuthor = (person: Element) => {
   const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
