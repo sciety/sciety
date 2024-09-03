@@ -37,12 +37,15 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
   });
 
   describe('when there is one pending notification', () => {
+    beforeEach(async () => {
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        groupId: preReviewGroupId,
+      });
+    });
+
     describe('and sendNotification returns a right', () => {
       beforeEach(async () => {
-        await framework.commandHelpers.recordEvaluationPublication({
-          ...arbitraryRecordEvaluationPublicationCommand(),
-          groupId: preReviewGroupId,
-        });
         await ensureDeliveryOfNotificationsToCoarInboxes(
           {
             ...framework.dependenciesForSagas,
@@ -66,10 +69,6 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
 
     describe('and sendNotification returns a left', () => {
       beforeEach(async () => {
-        await framework.commandHelpers.recordEvaluationPublication({
-          ...arbitraryRecordEvaluationPublicationCommand(),
-          groupId: preReviewGroupId,
-        });
         await ensureDeliveryOfNotificationsToCoarInboxes(
           {
             ...framework.dependenciesForSagas,
