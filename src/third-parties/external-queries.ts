@@ -8,7 +8,6 @@ import { ExpressionFrontMatter } from '../types/expression-front-matter';
 import { PublishingHistory } from '../types/publishing-history';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { SearchResults } from '../types/search-results';
-import { SubjectArea } from '../types/subject-area';
 import { UserId } from '../types/user-id';
 
 type FetchByCategory = (category: string) => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
@@ -31,8 +30,6 @@ type FetchPublishingHistory = (
 
 type FetchUserAvatarUrl = (userId: UserId) => TE.TaskEither<DE.DataError, string>;
 
-type GetArticleSubjectArea = (expressionDoi: ExpressionDoi) => TE.TaskEither<DE.DataError, SubjectArea>;
-
 type SearchForPaperExpressions = (
   pageSize: number,
 ) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>;
@@ -49,6 +46,5 @@ export type ExternalQueries = {
   fetchSearchCategories: FetchSearchCategories,
   fetchStaticFile: FetchStaticFile,
   fetchUserAvatarUrl: FetchUserAvatarUrl,
-  getArticleSubjectArea: GetArticleSubjectArea,
   searchForPaperExpressions: SearchForPaperExpressions,
 };

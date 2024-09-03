@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { createClient } from 'redis';
-import { getBiorxivOrMedrxivCategory } from './biorxiv/get-biorxiv-or-medrxiv-category';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
@@ -65,7 +64,6 @@ export const instantiateExternalQueries = (
     fetchByCategory: fetchByCategory(queryExternalService, logger),
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
-    getArticleSubjectArea: getBiorxivOrMedrxivCategory({ queryExternalService, logger }),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
   };
 };

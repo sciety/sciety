@@ -10,8 +10,6 @@ const biorxivArticleVersion = t.type({
   server: t.union([t.literal('biorxiv'), t.literal('medrxiv')]),
 });
 
-export type BiorxivArticleVersion = t.TypeOf<typeof biorxivArticleVersion>;
-
 export const responseWithVersions = t.type({
   collection: tt.readonlyNonEmptyArray(biorxivArticleVersion),
 });

@@ -20,10 +20,6 @@ export const stubAdapters: ExternalQueries & ExternalNotifications = {
   fetchSearchCategories,
   fetchStaticFile,
   fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
-  getArticleSubjectArea: () => TE.right({
-    value: 'Biology',
-    server: 'biorxiv',
-  }),
   searchForPaperExpressions,
   sendCoarNotification: () => TE.right(undefined),
 };

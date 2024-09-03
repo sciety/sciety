@@ -51,7 +51,6 @@ export const createHappyPathExternalQueries = (): ExternalQueries => ({
     E.mapLeft(() => DE.notFound),
     T.of,
   ),
-  getArticleSubjectArea: () => TE.right({ value: arbitraryString(), server: arbitraryArticleServer() }),
   searchForPaperExpressions: () => () => TE.right({
     items: [],
     total: 0,
