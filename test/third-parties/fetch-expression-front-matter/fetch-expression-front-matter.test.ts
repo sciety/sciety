@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchExpressionFrontMatter } from '../../../src/third-parties/crossref/fetch-expression-front-matter';
+import { fetchExpressionFrontMatter } from '../../../src/third-parties/fetch-expression-front-matter/fetch-expression-front-matter';
 import * as DE from '../../../src/types/data-error';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
