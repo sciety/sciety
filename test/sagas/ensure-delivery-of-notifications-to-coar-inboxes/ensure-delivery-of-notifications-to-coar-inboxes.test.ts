@@ -1,3 +1,4 @@
+import * as TE from 'fp-ts/TaskEither';
 import { preReviewGroupId } from '../../../src/read-models/evaluations-for-notifications';
 import { DependenciesForSagas } from '../../../src/sagas/dependencies-for-sagas';
 import { ensureDeliveryOfNotificationsToCoarInboxes } from '../../../src/sagas/ensure-delivery-of-notifications-to-coar-inboxes';
@@ -64,7 +65,26 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
     });
 
     describe('and sendNotification returns a left', () => {
-      it.todo('leaves the notification as pending');
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication({
+          ...arbitraryRecordEvaluationPublicationCommand(),
+          groupId: preReviewGroupId,
+        });
+        await ensureDeliveryOfNotificationsToCoarInboxes(
+          {
+            ...framework.dependenciesForSagas,
+            sendCoarNotification: () => TE.left(undefined),
+            commitEvents,
+          },
+          arbitraryUrl(),
+        );
+      });
+
+      it('leaves the notification as pending', () => {
+        const queue = framework.queries.getPendingNotifications();
+
+        expect(queue).toHaveLength(1);
+      });
     });
   });
 
