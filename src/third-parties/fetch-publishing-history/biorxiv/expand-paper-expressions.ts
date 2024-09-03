@@ -55,7 +55,7 @@ const replaceRelevantExpressions = (
   TE.map(RA.flatten),
 );
 
-export const expandMonolithicBiorxivOrMedrxivExpressions = (
+export const expandPaperExpressions = (
   getExpressionsFromBiorxiv: GetExpressionsFromBiorxiv,
 ) => (
   expressionsFromCrossref: ReadonlyArray<PaperExpression>,

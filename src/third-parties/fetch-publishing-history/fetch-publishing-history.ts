@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { getPaperExpressionsFromBiorxiv, expandMonolithicBiorxivOrMedrxivExpressions } from './biorxiv';
+import { expandMonolithicBiorxivOrMedrxivExpressions } from './biorxiv';
 import { fetchAllPaperExpressionsFromCrossref } from './fetch-all-paper-expressions-from-crossref';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
@@ -50,9 +50,7 @@ export const fetchPublishingHistory = (
   ),
   TE.chainTaskK((paperExpressions) => pipe(
     paperExpressions,
-    expandMonolithicBiorxivOrMedrxivExpressions(
-      getPaperExpressionsFromBiorxiv({ queryExternalService, logger }),
-    ),
+    expandMonolithicBiorxivOrMedrxivExpressions(queryExternalService, logger),
     TE.getOrElse(() => T.of(paperExpressions)),
   )),
   TE.chainEitherKW((expressions) => pipe(

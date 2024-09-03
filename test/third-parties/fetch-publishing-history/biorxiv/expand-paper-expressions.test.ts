@@ -3,8 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   GetExpressionsFromBiorxiv,
-  expandMonolithicBiorxivOrMedrxivExpressions,
-} from '../../../../src/third-parties/fetch-publishing-history/biorxiv/expand-monolithic-biorxiv-or-medrxiv-expressions';
+  expandPaperExpressions,
+} from '../../../../src/third-parties/fetch-publishing-history/biorxiv/expand-paper-expressions';
 import { ArticleServer } from '../../../../src/types/article-server';
 import { PaperExpression } from '../../../../src/types/paper-expression';
 import { arbitraryNumber } from '../../../helpers';
@@ -38,7 +38,7 @@ describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
     beforeEach(async () => {
       expressions = await pipe(
         [],
-        expandMonolithicBiorxivOrMedrxivExpressions(shouldNotBeCalled),
+        expandPaperExpressions(shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -54,7 +54,7 @@ describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
     beforeEach(async () => {
       expressions = await pipe(
         inputExpressions,
-        expandMonolithicBiorxivOrMedrxivExpressions(shouldNotBeCalled),
+        expandPaperExpressions(shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -73,7 +73,7 @@ describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
     beforeEach(async () => {
       expressions = await pipe(
         inputExpressions,
-        expandMonolithicBiorxivOrMedrxivExpressions(shouldNotBeCalled),
+        expandPaperExpressions(shouldNotBeCalled),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -93,7 +93,7 @@ describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
     beforeEach(async () => {
       expressions = await pipe(
         [monolithicExpression],
-        expandMonolithicBiorxivOrMedrxivExpressions(getExpressionsFromBiorxiv),
+        expandPaperExpressions(getExpressionsFromBiorxiv),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -132,7 +132,7 @@ describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
     beforeEach(async () => {
       expressions = await pipe(
         [monolithicExpression1, monolithicExpression2],
-        expandMonolithicBiorxivOrMedrxivExpressions(getExpressionsFromBiorxiv),
+        expandPaperExpressions(getExpressionsFromBiorxiv),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
@@ -159,7 +159,7 @@ describe('expand-monolithic-biorxiv-or-medrxiv-expressions', () => {
           monolithicExpression,
           ...expressionsFromIrrelevantServer,
         ],
-        expandMonolithicBiorxivOrMedrxivExpressions(getExpressionsFromBiorxiv),
+        expandPaperExpressions(getExpressionsFromBiorxiv),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
