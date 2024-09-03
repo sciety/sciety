@@ -36,7 +36,7 @@ export const ensureDeliveryOfNotificationsToCoarInboxes = async (
     TE.tapError((left) => (
       left === 'no pending notifications'
         ? TE.right(undefined)
-        : TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId })))),
+        : TE.right(dependencies.logger('error', 'sendNotificationsToCoarInboxes failed', { iterationId, left })))),
   )();
   dependencies.logger('debug', 'sendNotificationsToCoarInboxes finished', { iterationId });
 };
