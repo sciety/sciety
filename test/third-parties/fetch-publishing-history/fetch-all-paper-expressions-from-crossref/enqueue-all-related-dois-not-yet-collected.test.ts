@@ -1,7 +1,7 @@
-import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions/crossref-work';
+import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import {
   enqueueAllRelatedDoisNotYetCollected,
-} from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions/enqueue-all-related-dois-not-yet-collected';
+} from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/enqueue-all-related-dois-not-yet-collected';
 import { arbitraryString } from '../../../helpers';
 
 describe('enqueue-all-related-dois-not-yet-collected', () => {

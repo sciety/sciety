@@ -1,5 +1,5 @@
 import * as O from 'fp-ts/Option';
-import { identifyExpressionServer } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions/identify-expression-server';
+import { identifyExpressionServer } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/identify-expression-server';
 import { arbitraryUri } from '../../../helpers';
 
 describe('identify expression server', () => {

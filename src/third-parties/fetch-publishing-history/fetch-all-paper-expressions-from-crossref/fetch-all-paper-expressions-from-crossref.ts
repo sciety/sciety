@@ -19,10 +19,10 @@ const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: Pa
   return expression;
 };
 
-type FetchAllPaperExpressions = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
+type FetchAllPaperExpressionsFromCrossref = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
-export const fetchAllPaperExpressions: FetchAllPaperExpressions = (
+export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromCrossref = (
   queryCrossrefService,
   logger,
   doi,
