@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import {
   GetExpressionsFromBiorxiv,
   expandPaperExpressions,
-} from '../../../../src/third-parties/fetch-publishing-history/biorxiv/expand-paper-expressions';
+} from '../../../../src/third-parties/fetch-publishing-history/expand-monolithic-biorxiv-or-medrxiv-expressions/expand-paper-expressions';
 import { ArticleServer } from '../../../../src/types/article-server';
 import { PaperExpression } from '../../../../src/types/paper-expression';
 import { arbitraryNumber } from '../../../helpers';

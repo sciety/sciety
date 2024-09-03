@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { expandMonolithicBiorxivOrMedrxivExpressions } from './biorxiv';
+import { expandMonolithicBiorxivOrMedrxivExpressions } from './expand-monolithic-biorxiv-or-medrxiv-expressions';
 import { fetchAllPaperExpressionsFromCrossref } from './fetch-all-paper-expressions-from-crossref';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
