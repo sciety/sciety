@@ -2,8 +2,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { preReviewGroupId } from '../../../src/read-models/evaluations-for-notifications';
 import { DependenciesForSagas } from '../../../src/sagas/dependencies-for-sagas';
 import { ensureDeliveryOfNotificationsToCoarInboxes } from '../../../src/sagas/ensure-delivery-of-notifications-to-coar-inboxes';
+import { toErrorMessage } from '../../../src/types/error-message';
 import { createTestFramework, TestFramework } from '../../framework';
-import { arbitraryUrl } from '../../helpers';
+import { arbitraryString, arbitraryUrl } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
@@ -72,7 +73,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
         await ensureDeliveryOfNotificationsToCoarInboxes(
           {
             ...framework.dependenciesForSagas,
-            sendCoarNotification: () => TE.left(undefined),
+            sendCoarNotification: () => TE.left(toErrorMessage(arbitraryString())),
             commitEvents,
           },
           arbitraryUrl(),

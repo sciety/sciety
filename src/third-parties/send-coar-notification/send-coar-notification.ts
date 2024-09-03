@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function';
 import { postData } from './post-data';
 import { Logger } from '../../logger';
 import { CoarNotificationModel } from '../../types/coar-notification-model';
+import { ErrorMessage } from '../../types/error-message';
 
 type CoarNotification = {
   '@context': ReadonlyArray<string>,
@@ -70,7 +71,7 @@ const renderCoarNotification = (notification: CoarNotificationModel): CoarNotifi
   ],
 });
 
-export type SendCoarNotification = (coarNotificationModel: CoarNotificationModel) => TE.TaskEither<void, void>;
+export type SendCoarNotification = (coarNotificationModel: CoarNotificationModel) => TE.TaskEither<ErrorMessage, void>;
 
 export const sendCoarNotification = (logger: Logger): SendCoarNotification => (coarNotificationModel) => {
   const inboxUrl = coarNotificationModel.targetInbox.href;
