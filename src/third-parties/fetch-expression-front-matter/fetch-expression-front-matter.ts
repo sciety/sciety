@@ -4,12 +4,12 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import { detectUnrecoverableError } from './detect-unrecoverable-error';
 import { Logger } from '../../logger';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
-import { detectUnrecoverableError } from '../crossref/detect-unrecoverable-error';
 import {
   getAbstract, getAuthors, getTitle,
 } from '../crossref/parse-crossref-article';

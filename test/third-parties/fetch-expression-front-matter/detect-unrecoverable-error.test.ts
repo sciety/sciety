@@ -1,6 +1,6 @@
 import { DOMParser } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
-import { detectUnrecoverableError } from '../../../src/third-parties/crossref/detect-unrecoverable-error';
+import { detectUnrecoverableError } from '../../../src/third-parties/fetch-expression-front-matter/detect-unrecoverable-error';
 import { arbitraryString } from '../../helpers';
 
 describe('detect-unrecoverable-error', () => {
