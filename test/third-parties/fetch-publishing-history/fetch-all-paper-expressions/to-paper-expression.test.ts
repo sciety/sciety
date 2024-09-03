@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { CrossrefWork } from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/crossref-work';
-import { toPaperExpression } from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/to-paper-expression';
+import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions/crossref-work';
+import { toPaperExpression } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions/to-paper-expression';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 

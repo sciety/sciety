@@ -1,4 +1,4 @@
-import * as crossrefDate from '../../../../src/third-parties/crossref/fetch-all-paper-expressions/date-stamp';
+import * as crossrefDate from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions/date-stamp';
 
 describe('toDate', () => {
   describe('when the date specifies a year, a month and a day', () => {
