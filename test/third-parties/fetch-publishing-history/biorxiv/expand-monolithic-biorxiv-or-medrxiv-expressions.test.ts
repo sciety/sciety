@@ -4,14 +4,14 @@ import { pipe } from 'fp-ts/function';
 import {
   GetExpressionsFromBiorxiv,
   expandMonolithicBiorxivOrMedrxivExpressions,
-} from '../../../src/third-parties/biorxiv/expand-monolithic-biorxiv-or-medrxiv-expressions';
-import { ArticleServer } from '../../../src/types/article-server';
-import { PaperExpression } from '../../../src/types/paper-expression';
-import { arbitraryNumber } from '../../helpers';
-import { shouldNotBeCalled } from '../../should-not-be-called';
-import { arbitraryDataError } from '../../types/data-error.helper';
-import { arbitraryPaperExpression } from '../../types/paper-expression.helper';
-import { arbitraryColdSpringHarborArticleServer } from '../cold-spring-harbor-article-server.helper';
+} from '../../../../src/third-parties/fetch-publishing-history/biorxiv/expand-monolithic-biorxiv-or-medrxiv-expressions';
+import { ArticleServer } from '../../../../src/types/article-server';
+import { PaperExpression } from '../../../../src/types/paper-expression';
+import { arbitraryNumber } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryDataError } from '../../../types/data-error.helper';
+import { arbitraryPaperExpression } from '../../../types/paper-expression.helper';
+import { arbitraryColdSpringHarborArticleServer } from '../../cold-spring-harbor-article-server.helper';
 
 const granularExpressionMatching = (expression: PaperExpression) => ({
   ...arbitraryPaperExpression(),

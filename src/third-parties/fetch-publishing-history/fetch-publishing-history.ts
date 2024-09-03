@@ -3,12 +3,12 @@ import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { getPaperExpressionsFromBiorxiv, expandMonolithicBiorxivOrMedrxivExpressions } from './biorxiv';
 import { fetchAllPaperExpressionsFromCrossref } from './fetch-all-paper-expressions-from-crossref';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
 import { ExpressionDoi } from '../../types/expression-doi';
 import * as PH from '../../types/publishing-history';
-import { getPaperExpressionsFromBiorxiv, expandMonolithicBiorxivOrMedrxivExpressions } from '../biorxiv';
 import { ExternalQueries } from '../external-queries';
 import { QueryExternalService } from '../query-external-service';
 

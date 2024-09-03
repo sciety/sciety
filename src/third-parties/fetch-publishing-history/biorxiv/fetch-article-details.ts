@@ -4,12 +4,12 @@ import { flow, pipe } from 'fp-ts/function';
 import {
   biorxivDetailsApiResponse, ResponseWithVersions, responseWithVersions,
 } from './biorxiv-details-api-response';
-import { Logger } from '../../logger';
-import { ArticleId } from '../../types/article-id';
-import * as DE from '../../types/data-error';
-import { ColdSpringHarborServer } from '../cold-spring-harbor-server';
-import { decodeAndLogFailures } from '../decode-and-log-failures';
-import { QueryExternalService } from '../query-external-service';
+import { Logger } from '../../../logger';
+import { ArticleId } from '../../../types/article-id';
+import * as DE from '../../../types/data-error';
+import { ColdSpringHarborServer } from '../../cold-spring-harbor-server';
+import { decodeAndLogFailures } from '../../decode-and-log-failures';
+import { QueryExternalService } from '../../query-external-service';
 
 type Dependencies = {
   queryExternalService: QueryExternalService,
