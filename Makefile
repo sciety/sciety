@@ -59,6 +59,7 @@ backstop-test: export TARGET = fast
 backstop-test: export USE_STUB_ADAPTERS = true
 backstop-test: export USE_STUB_AVATARS = true
 backstop-test: export USE_STUB_LOGIN = true
+backstop-test: export DISABLE_SAGAS = true
 backstop-test: export DISABLE_COOKIEBOT = true
 backstop-test: export COMPOSE_PROJECT_NAME=sciety-test
 backstop-test: export DISPLAY_LAST_SERVER_STARTUP = false

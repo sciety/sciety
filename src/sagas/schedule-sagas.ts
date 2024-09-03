@@ -17,6 +17,9 @@ export const scheduleSagas = (
   dependencies: DependenciesForSagas,
   scietyUiOrigin: URL,
 ): T.Task<void> => async () => {
+  if (process.env.DISABLE_SAGAS === 'true') {
+    return;
+  }
   dependencies.logger('info', 'Scheduling sagas');
   runPeriodically(async () => ensureEvaluationsAreListed(dependencies), 317);
   if (process.env.EXPERIMENT_ENABLED === 'true') {
