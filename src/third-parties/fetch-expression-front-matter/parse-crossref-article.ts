@@ -1,10 +1,10 @@
 import { XMLSerializer } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { getElement } from './get-element';
 import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { getElement } from '../crossref/get-element';
 
 export const getAbstract = (
   doc: Document,

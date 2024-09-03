@@ -2,7 +2,7 @@ import { DOMParser } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import {
   getAbstract, getAuthors, getTitle,
-} from '../../../src/third-parties/crossref/parse-crossref-article';
+} from '../../../src/third-parties/fetch-expression-front-matter/parse-crossref-article';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
