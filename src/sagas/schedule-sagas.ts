@@ -13,10 +13,6 @@ const runPeriodically = (saga: Saga, seconds: number): void => {
   setInterval(saga, seconds * 1000);
 };
 
-const runOnceAfter = (saga: Saga, seconds: number): void => {
-  setTimeout(saga, seconds * 1000);
-};
-
 export const scheduleSagas = (
   dependencies: DependenciesForSagas,
   scietyUiOrigin: URL,
@@ -26,9 +22,8 @@ export const scheduleSagas = (
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
-  // eslint-disable-next-line no-constant-condition
-  if (false) {
-    runOnceAfter(async () => ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin), 5);
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    runPeriodically(async () => ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin), 5);
   }
   dependencies.logger('info', 'Sagas scheduled');
 };
