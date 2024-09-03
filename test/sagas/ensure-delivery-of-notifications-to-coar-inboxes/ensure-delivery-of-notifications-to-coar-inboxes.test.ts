@@ -3,6 +3,7 @@ import { DependenciesForSagas } from '../../../src/sagas/dependencies-for-sagas'
 import { ensureDeliveryOfNotificationsToCoarInboxes } from '../../../src/sagas/ensure-delivery-of-notifications-to-coar-inboxes';
 import { createTestFramework, TestFramework } from '../../framework';
 import { arbitraryUrl } from '../../helpers';
+import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
 
 describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
@@ -68,8 +69,39 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
   });
 
   describe('when there are multiple pending notifications', () => {
-    it.todo('sends one notification to an inbox');
+    const evaluationA = arbitraryEvaluationLocator();
+    const evaluationB = arbitraryEvaluationLocator();
 
-    it.todo('removes only the delivered notification from the queue');
+    beforeEach(async () => {
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        groupId: preReviewGroupId,
+        evaluationLocator: evaluationA,
+      });
+      await framework.commandHelpers.recordEvaluationPublication({
+        ...arbitraryRecordEvaluationPublicationCommand(),
+        groupId: preReviewGroupId,
+        evaluationLocator: evaluationB,
+      });
+      await ensureDeliveryOfNotificationsToCoarInboxes(
+        {
+          ...framework.dependenciesForSagas,
+          sendCoarNotification,
+          commitEvents,
+        },
+        arbitraryUrl(),
+      );
+    });
+
+    it('sends one notification to an inbox', () => {
+      expect(sendCoarNotification).toHaveBeenCalledTimes(1);
+    });
+
+    it('removes only the delivered notification from the queue', () => {
+      const queue = framework.queries.getPendingNotifications();
+
+      expect(queue).toHaveLength(1);
+      expect(queue[0].evaluationLocator).toStrictEqual(evaluationB);
+    });
   });
 });
