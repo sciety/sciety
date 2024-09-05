@@ -43,7 +43,7 @@ describe('record', () => {
       it('causes a state change in which a paper snapshot is recorded', () => {
         expect(result).toHaveLength(1);
         expect(result[0]).toBeDomainEvent('PaperSnapshotRecorded', {
-          expressionDois: Array.from(command.expressionDois),
+          expressionDois: command.expressionDois,
         });
       });
     });

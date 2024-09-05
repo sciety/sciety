@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../../../src/domain-events';
+import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { getPapersEvaluatedByGroup } from '../../../src/read-models/papers-evaluated-by-group/get-papers-evaluated-by-group';
 import { initialState, handleEvent } from '../../../src/read-models/papers-evaluated-by-group/handle-event';
 import { GroupId } from '../../../src/types/group-id';
@@ -40,13 +40,13 @@ describe('get-papers-evaluated-by-group', () => {
     groupId,
     articleId: expressionDoiC,
   };
-  const paperSnapshotWithExpressionDoisAB = {
+  const paperSnapshotWithExpressionDoisAB: EventOfType<'PaperSnapshotRecorded'> = {
     ...arbitraryPaperSnapshotRecordedEvent(),
-    expressionDois: [expressionDoiA, expressionDoiB],
+    expressionDois: new Set([expressionDoiA, expressionDoiB]),
   };
-  const paperSnapshotWithExpressionDoisABC = {
+  const paperSnapshotWithExpressionDoisABC: EventOfType<'PaperSnapshotRecorded'> = {
     ...arbitraryPaperSnapshotRecordedEvent(),
-    expressionDois: [expressionDoiA, expressionDoiB, expressionDoiC],
+    expressionDois: new Set([expressionDoiA, expressionDoiB, expressionDoiC]),
   };
 
   describe('given activity by considered groups', () => {

@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { DomainEvent } from '../../../src/domain-events';
+import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import {
   getExpressionsWithNoAssociatedSnapshot,
 } from '../../../src/read-models/papers-evaluated-by-group/get-expressions-with-no-associated-snapshot';
@@ -41,13 +41,13 @@ describe('get-expressions-with-no-associated-snapshot', () => {
     groupId,
     articleId: expressionDoiC,
   };
-  const paperSnapshotWithExpressionDoisAB = {
+  const paperSnapshotWithExpressionDoisAB: EventOfType<'PaperSnapshotRecorded'> = {
     ...arbitraryPaperSnapshotRecordedEvent(),
-    expressionDois: [expressionDoiA, expressionDoiB],
+    expressionDois: new Set([expressionDoiA, expressionDoiB]),
   };
-  const paperSnapshotWithExpressionDoisABC = {
+  const paperSnapshotWithExpressionDoisABC: EventOfType<'PaperSnapshotRecorded'> = {
     ...arbitraryPaperSnapshotRecordedEvent(),
-    expressionDois: [expressionDoiA, expressionDoiB, expressionDoiC],
+    expressionDois: new Set([expressionDoiA, expressionDoiB, expressionDoiC]),
   };
 
   describe('when an evaluation has been recorded, and the evaluating group should be considered', () => {

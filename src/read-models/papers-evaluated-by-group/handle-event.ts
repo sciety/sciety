@@ -29,7 +29,9 @@ const hasIntersection = (
   paperExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
   knownEvaluatedPapers: ReadModel['papersEvaluatedByGroupId'][GroupId],
 ) => {
-  const intersection = paperExpressionDois.filter((expression) => knownEvaluatedPapers.includes(expression));
+  const intersection = Array.from(paperExpressionDois).filter(
+    (expression) => knownEvaluatedPapers.includes(expression),
+  );
   return intersection.length > 0;
 };
 
@@ -40,7 +42,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
     return;
   }
-  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshots[event.articleId];
+  const latestSnapshotForEvaluatedExpression = new Set(readmodel.paperSnapshots[event.articleId]);
   const noExpressionOfThePaperIsInEvaluatedPapersForThatGroup = !hasIntersection(
     latestSnapshotForEvaluatedExpression,
     readmodel.papersEvaluatedByGroupId[event.groupId],
@@ -66,7 +68,7 @@ const updateKnownEvaluatedPapers = (
 
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   event.expressionDois.forEach((expression) => {
-    readmodel.paperSnapshots[expression] = event.expressionDois;
+    readmodel.paperSnapshots[expression] = Array.from(event.expressionDois);
   });
   for (
     const [groupId, expressionsWithoutPaperSnapshot]
