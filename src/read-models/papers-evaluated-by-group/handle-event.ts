@@ -4,14 +4,16 @@ import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 
+type PaperSnapshotRepresentative = ExpressionDoi;
+
 export type ReadModel = {
-  expressionsEvaluatedByGroupId: Record<GroupId, Array<ExpressionDoi>>,
+  paperSnapshotRepresentatives: Record<GroupId, Array<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshots: Record<ExpressionDoi, ReadonlyArray<ExpressionDoi>>,
 };
 
 export const initialState = (): ReadModel => ({
-  expressionsEvaluatedByGroupId: {},
+  paperSnapshotRepresentatives: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
   paperSnapshots: {},
 });
@@ -20,17 +22,17 @@ const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
   if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set<ExpressionDoi>();
   }
-  if (!(groupId in readmodel.expressionsEvaluatedByGroupId)) {
-    readmodel.expressionsEvaluatedByGroupId[groupId] = [];
+  if (!(groupId in readmodel.paperSnapshotRepresentatives)) {
+    readmodel.paperSnapshotRepresentatives[groupId] = [];
   }
 };
 
 const hasIntersection = (
   paperExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
-  knownEvaluatedExpressionDois: ReadModel['expressionsEvaluatedByGroupId'][GroupId],
+  paperSnapshotRepresentatives: ReadModel['paperSnapshotRepresentatives'][GroupId],
 ) => {
   const intersection = Array.from(paperExpressionDois).filter(
-    (expressionDoi) => knownEvaluatedExpressionDois.includes(expressionDoi),
+    (expressionDoi) => paperSnapshotRepresentatives.includes(expressionDoi),
   );
   return intersection.length > 0;
 };
@@ -43,17 +45,17 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     return;
   }
   const latestSnapshotForEvaluatedExpression = new Set(readmodel.paperSnapshots[event.articleId]);
-  const noExpressionOfThePaperIsInEvaluatedPapersForThatGroup = !hasIntersection(
+  const noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup = !hasIntersection(
     latestSnapshotForEvaluatedExpression,
-    readmodel.expressionsEvaluatedByGroupId[event.groupId],
+    readmodel.paperSnapshotRepresentatives[event.groupId],
   );
-  if (noExpressionOfThePaperIsInEvaluatedPapersForThatGroup) {
-    readmodel.expressionsEvaluatedByGroupId[event.groupId].push(event.articleId);
+  if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
+    readmodel.paperSnapshotRepresentatives[event.groupId].push(event.articleId);
   }
 };
 
 const updateKnownEvaluatedPapers = (
-  knownEvaluatedPapers: ReadModel['expressionsEvaluatedByGroupId'][GroupId],
+  knownEvaluatedPapers: ReadModel['paperSnapshotRepresentatives'][GroupId],
   paperExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
   queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
@@ -75,7 +77,7 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     of Object.entries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
   ) {
     ensureGroupIdExists(readmodel, groupId as GroupId);
-    const knownEvaluatedPapers = readmodel.expressionsEvaluatedByGroupId[groupId as GroupId];
+    const knownEvaluatedPapers = readmodel.paperSnapshotRepresentatives[groupId as GroupId];
     updateKnownEvaluatedPapers(knownEvaluatedPapers, event.expressionDois, expressionsWithoutPaperSnapshot);
   }
 };
