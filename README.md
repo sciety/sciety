@@ -48,7 +48,7 @@ Before running `make dev` you have to create a `.env` file based on `.env.exampl
 
 You'll need to re-run `make dev` after modifying the `.env` file.
 
-If you've been added to the appropriate `GCP` organisation, you can run `make .gcp-ncrc-key.json` to create the necessary credential file (used for the content of the NCRC group). 
+Use [the GCP console](https://console.cloud.google.com/iam-admin/serviceaccounts/details/104048143259449897526/keys?project=sciety) to create a GCP key. This is used to access NCRC evaluations and needs to be stored in a file named `.gcp-ncrc-key.json`.
 
 ### Running the tests
 

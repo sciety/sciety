@@ -34,9 +34,6 @@ prod: .env build
 .env:
 	test -f .env
 
-.gcp-ncrc-key.json:
-	gcloud iam service-accounts keys create ./.gcp-ncrc-key.json --iam-account ncrc-sheet@sciety.iam.gserviceaccount.com
-
 watch-typescript: node_modules
 	npm run watch:typescript
 
