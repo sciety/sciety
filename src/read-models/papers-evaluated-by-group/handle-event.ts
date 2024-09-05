@@ -21,16 +21,16 @@ const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set<ExpressionDoi>();
   }
   if (!(groupId in readmodel.expressionsEvaluatedByGroupId)) {
-    readmodel.expressionsEvaluatedByGroupId[groupId as GroupId] = [];
+    readmodel.expressionsEvaluatedByGroupId[groupId] = [];
   }
 };
 
 const hasIntersection = (
   paperExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
-  knownEvaluatedPapers: ReadModel['expressionsEvaluatedByGroupId'][GroupId],
+  knownEvaluatedExpressionDois: ReadModel['expressionsEvaluatedByGroupId'][GroupId],
 ) => {
   const intersection = Array.from(paperExpressionDois).filter(
-    (expression) => knownEvaluatedPapers.includes(expression),
+    (expressionDoi) => knownEvaluatedExpressionDois.includes(expressionDoi),
   );
   return intersection.length > 0;
 };
