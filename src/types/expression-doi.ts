@@ -1,6 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as Ord from 'fp-ts/Ord';
 import { flow, pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 
 export type ExpressionDoi = string & { readonly ExpressionDoi: unique symbol };
@@ -53,3 +55,6 @@ export const canonicalExpressionDoiCodec = new t.Type<ExpressionDoi, string, unk
 );
 
 export type CanonicalExpressionDoi = t.TypeOf<typeof canonicalExpressionDoiCodec>;
+
+// ts-unused-exports:disable-next-line
+export const alphanumerical: Ord.Ord<ExpressionDoi> = S.Ord;
