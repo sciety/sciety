@@ -23,7 +23,7 @@ describe('record', () => {
         );
       });
 
-      it.failing('rejects the command', () => {
+      it('rejects the command', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
