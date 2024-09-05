@@ -28,7 +28,7 @@ export const maintainSnapshotsForEvaluatedExpressions = async (
     )),
     TE.map(PH.getAllExpressionDois),
     TE.chainW((expressions) => executeResourceAction(dependencies, paperSnapshot.record)({
-      expressionDois: expressions,
+      expressionDois: new Set(expressions),
     })),
   )();
   dependencies.logger('debug', 'maintainSnapshotsForEvaluatedExpressions finished', { iterationId });

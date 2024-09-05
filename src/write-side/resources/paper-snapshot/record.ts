@@ -9,6 +9,6 @@ export const record: ResourceAction<RecordPaperSnapshotCommand> = (
 ) => (
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
   events,
-) => (command.expressionDois.length > 0
-  ? E.right([constructEvent('PaperSnapshotRecorded')(command)])
+) => (command.expressionDois.size > 0
+  ? E.right([constructEvent('PaperSnapshotRecorded')({ expressionDois: Array.from(command.expressionDois) })])
   : E.left(toErrorMessage('')));

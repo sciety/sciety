@@ -12,7 +12,7 @@ describe('record', () => {
 
     describe('when no expression dois are provided in the command', () => {
       const command: RecordPaperSnapshotCommand = {
-        expressionDois: [],
+        expressionDois: new Set(),
       };
       let result: E.Either<unknown, unknown>;
 
@@ -43,7 +43,7 @@ describe('record', () => {
       it('causes a state change in which a paper snapshot is recorded', () => {
         expect(result).toHaveLength(1);
         expect(result[0]).toBeDomainEvent('PaperSnapshotRecorded', {
-          expressionDois: command.expressionDois,
+          expressionDois: Array.from(command.expressionDois),
         });
       });
     });
