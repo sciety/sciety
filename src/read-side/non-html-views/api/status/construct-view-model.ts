@@ -12,6 +12,7 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
       total: dependencies.getAllGroups().length,
     },
     lists: dependencies.listsStatus(),
+    papersEvaluatedByGroup: dependencies.papersEvaluatedByGroupStatus(),
     users: dependencies.usersStatus(),
   },
   sagaWorkQueues: {
