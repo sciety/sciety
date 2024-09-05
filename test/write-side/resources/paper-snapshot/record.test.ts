@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../../src/domain-events';
+import { RecordPaperSnapshotCommand } from '../../../../src/write-side/commands';
 import { record } from '../../../../src/write-side/resources/paper-snapshot/record';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryRecordPaperSnapshotCommand } from '../../commands/record-paper-snapshot-command.helper';
@@ -10,7 +11,21 @@ describe('record', () => {
     const events: ReadonlyArray<DomainEvent> = [];
 
     describe('when no expression dois are provided in the command', () => {
-      it.todo('rejects the command');
+      const command: RecordPaperSnapshotCommand = {
+        expressionDois: [],
+      };
+      let result: E.Either<unknown, unknown>;
+
+      beforeEach(() => {
+        result = pipe(
+          events,
+          record(command),
+        );
+      });
+
+      it.failing('rejects the command', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
     });
 
     describe('when a set of expression dois is provided in the command', () => {
