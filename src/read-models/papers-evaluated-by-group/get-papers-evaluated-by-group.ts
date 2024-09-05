@@ -10,7 +10,7 @@ export const getPapersEvaluatedByGroup = (
 ) => (
   groupId: GroupId,
 ): ReadonlyArray<ExpressionDoi> => pipe(
-  readModel.papersEvaluatedByGroupId,
+  readModel.expressionsEvaluatedByGroupId,
   R.lookup(groupId),
   O.getOrElseW(() => []),
 );
