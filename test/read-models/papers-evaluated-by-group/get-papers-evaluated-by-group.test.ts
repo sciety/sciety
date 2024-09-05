@@ -25,17 +25,17 @@ describe('get-papers-evaluated-by-group', () => {
   const expressionDoiA = arbitraryExpressionDoi();
   const expressionDoiB = arbitraryExpressionDoi();
   const expressionDoiC = arbitraryExpressionDoi();
-  const evaluationRecordedAgainstExpressionDoiA = {
+  const evaluationRecordedAgainstExpressionDoiA: EventOfType<'EvaluationPublicationRecorded'> = {
     ...arbitraryEvaluationPublicationRecordedEvent(),
     groupId,
     articleId: expressionDoiA,
   };
-  const evaluationRecordedAgainstExpressionDoiB = {
+  const evaluationRecordedAgainstExpressionDoiB: EventOfType<'EvaluationPublicationRecorded'> = {
     ...arbitraryEvaluationPublicationRecordedEvent(),
     groupId,
     articleId: expressionDoiB,
   };
-  const evaluationRecordedAgainstExpressionDoiC = {
+  const evaluationRecordedAgainstExpressionDoiC: EventOfType<'EvaluationPublicationRecorded'> = {
     ...arbitraryEvaluationPublicationRecordedEvent(),
     groupId,
     articleId: expressionDoiC,
