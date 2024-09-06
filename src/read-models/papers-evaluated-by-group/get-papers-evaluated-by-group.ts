@@ -12,5 +12,6 @@ export const getPapersEvaluatedByGroup = (
 ): ReadonlyArray<ExpressionDoi> => pipe(
   readModel.paperSnapshotRepresentatives,
   R.lookup(groupId),
+  O.map((representatives) => Array.from(representatives)),
   O.getOrElseW(() => []),
 );

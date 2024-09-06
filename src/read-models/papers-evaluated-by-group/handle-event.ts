@@ -9,7 +9,7 @@ type PaperSnapshotRepresentative = ExpressionDoi;
 type PaperSnapshot = EventOfType<'PaperSnapshotRecorded'>['expressionDois'];
 
 export type ReadModel = {
-  paperSnapshotRepresentatives: Record<GroupId, Array<PaperSnapshotRepresentative>>,
+  paperSnapshotRepresentatives: Record<GroupId, Set<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
 };
@@ -25,7 +25,7 @@ const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set<ExpressionDoi>();
   }
   if (!(groupId in readmodel.paperSnapshotRepresentatives)) {
-    readmodel.paperSnapshotRepresentatives[groupId] = [];
+    readmodel.paperSnapshotRepresentatives[groupId] = new Set();
   }
 };
 
@@ -34,7 +34,7 @@ const hasIntersection = (
   paperSnapshotRepresentatives: ReadModel['paperSnapshotRepresentatives'][GroupId],
 ) => {
   const intersection = Array.from(paperSnapshot).filter(
-    (expressionDoi) => paperSnapshotRepresentatives.includes(expressionDoi),
+    (expressionDoi) => paperSnapshotRepresentatives.has(expressionDoi),
   );
   return intersection.length > 0;
 };
@@ -52,7 +52,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     readmodel.paperSnapshotRepresentatives[event.groupId],
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
-    readmodel.paperSnapshotRepresentatives[event.groupId].push(event.articleId);
+    readmodel.paperSnapshotRepresentatives[event.groupId].add(event.articleId);
   }
 };
 
@@ -68,7 +68,7 @@ const updatePaperSnapshotRepresentatives = (
       paperSnapshotRepresentatives,
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
-      paperSnapshotRepresentatives.push(expressionDoi);
+      paperSnapshotRepresentatives.add(expressionDoi);
     }
   });
 };
