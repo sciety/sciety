@@ -1,9 +1,6 @@
-import { Json } from 'fp-ts/Json';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 
-export const papersEvaluatedByGroupStatus = (readmodel: ReadModel) => (): Json => pipe(
+export const papersEvaluatedByGroupStatus = (readmodel: ReadModel) => (): unknown => pipe(
   readmodel,
-  JSON.stringify,
-  JSON.parse,
-) as Json;
+);
