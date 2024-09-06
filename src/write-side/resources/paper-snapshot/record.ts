@@ -1,9 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
+import { getEq } from 'fp-ts/Set';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { filterByName, constructEvent, DomainEvent } from '../../../domain-events';
 import { toErrorMessage } from '../../../types/error-message';
+import { eqExpressionDoi } from '../../../types/expression-doi';
 import { RecordPaperSnapshotCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
@@ -20,7 +22,7 @@ const decideWhetherToChangeState = (
 ) => pipe(
   events,
   filterByName(['PaperSnapshotRecorded']),
-  RA.some((event) => event.expressionDois === command.expressionDois),
+  RA.some((event) => getEq(eqExpressionDoi).equals(event.expressionDois, command.expressionDois)),
   B.fold(
     () => changeState(command),
     () => [],

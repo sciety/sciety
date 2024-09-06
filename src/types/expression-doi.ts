@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import { flow, pipe } from 'fp-ts/function';
@@ -58,3 +59,5 @@ export type CanonicalExpressionDoi = t.TypeOf<typeof canonicalExpressionDoiCodec
 
 // ts-unused-exports:disable-next-line
 export const alphanumerical: Ord.Ord<ExpressionDoi> = S.Ord;
+
+export const eqExpressionDoi: Eq.Eq<ExpressionDoi> = S.Eq;
