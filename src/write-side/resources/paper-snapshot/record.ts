@@ -20,7 +20,7 @@ const decideWhetherToChangeState = (
 ) => pipe(
   events,
   filterByName(['PaperSnapshotRecorded']),
-  RA.some(() => false),
+  RA.some((event) => event.expressionDois === command.expressionDois),
   B.fold(
     () => changeState(command),
     () => [],
