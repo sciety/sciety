@@ -48,4 +48,10 @@ describe('record', () => {
       });
     });
   });
+
+  describe('when there is a paper snapshot', () => {
+    describe('when the same set of expression dois is provided in the command', () => {
+      it.todo('accepts the command and causes no state change');
+    });
+  });
 });
