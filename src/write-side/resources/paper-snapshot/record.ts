@@ -1,6 +1,8 @@
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import { constructEvent, DomainEvent } from '../../../domain-events';
+import { filterByName, constructEvent, DomainEvent } from '../../../domain-events';
 import { toErrorMessage } from '../../../types/error-message';
 import { RecordPaperSnapshotCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
@@ -12,11 +14,18 @@ const changeState = (command: RecordPaperSnapshotCommand) => [
 ];
 
 const decideWhetherToChangeState = (
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
   events: ReadonlyArray<DomainEvent>,
 ) => (
   command: RecordPaperSnapshotCommand,
-) => changeState(command);
+) => pipe(
+  events,
+  filterByName(['PaperSnapshotRecorded']),
+  RA.some(() => false),
+  B.fold(
+    () => changeState(command),
+    () => [],
+  ),
+);
 
 export const record: ResourceAction<RecordPaperSnapshotCommand> = (
   command,
