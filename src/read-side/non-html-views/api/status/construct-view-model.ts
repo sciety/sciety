@@ -1,9 +1,8 @@
-import { Json } from 'fp-ts/Json';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 
-export const constructViewModel = (dependencies: DependenciesForViews): Json => ({
+export const constructViewModel = (dependencies: DependenciesForViews): unknown => ({
   readModels: {
     annotations: dependencies.annotationsStatus(),
     evaluations: dependencies.evaluationsStatus(),
@@ -24,15 +23,6 @@ export const constructViewModel = (dependencies: DependenciesForViews): Json => 
       })),
     ),
     maintainSnapshotsForEvaluatedExpressions: dependencies.getExpressionsWithNoAssociatedSnapshot(),
-    sendNotificationToCoarTestInbox: pipe(
-      dependencies.getPendingNotifications(),
-      RA.map((pendingNotification) => ({
-        ...pendingNotification,
-        target: {
-          id: pendingNotification.target.id,
-          inbox: pendingNotification.target.inbox.href,
-        },
-      })),
-    ),
+    sendNotificationToCoarTestInbox: dependencies.getPendingNotifications(),
   },
 });
