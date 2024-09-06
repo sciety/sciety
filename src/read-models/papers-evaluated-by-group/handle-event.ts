@@ -22,7 +22,7 @@ export const initialState = (): ReadModel => ({
 
 const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
   if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
-    readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set<ExpressionDoi>();
+    readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
   }
   if (!(groupId in readmodel.paperSnapshotRepresentatives)) {
     readmodel.paperSnapshotRepresentatives[groupId] = new Set();
