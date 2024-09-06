@@ -57,7 +57,6 @@ export const canonicalExpressionDoiCodec = new t.Type<ExpressionDoi, string, unk
 
 export type CanonicalExpressionDoi = t.TypeOf<typeof canonicalExpressionDoiCodec>;
 
-// ts-unused-exports:disable-next-line
 export const alphanumerical: Ord.Ord<ExpressionDoi> = S.Ord;
 
 export const eqExpressionDoi: Eq.Eq<ExpressionDoi> = S.Eq;
