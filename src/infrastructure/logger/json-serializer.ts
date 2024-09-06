@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { flow } from 'fp-ts/function';
-import { replaceError } from './replace-error';
+import { replacer } from './replacer';
 import { Serializer } from './serializer';
 import { Payload } from './types';
 
@@ -36,6 +36,6 @@ export const jsonSerializer = (prettyPrint = false): Serializer => flow(
     payload: filterAxiosGarbageInPayload(entry.payload),
   }),
   (entry) => (
-    JSON.stringify(entry, replaceError, prettyPrint ? 2 : undefined)
+    JSON.stringify(entry, replacer, prettyPrint ? 2 : undefined)
   ),
 );

@@ -9,7 +9,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
-import { createInfrastructure, replaceError } from './infrastructure';
+import { createInfrastructure, replacer } from './infrastructure';
 import { defaultLogLevel, Logger } from './logger';
 import { scheduleSagas } from './sagas';
 
@@ -66,7 +66,7 @@ void pipe(
   TE.match(
     (error) => {
       process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
-      process.stderr.write(`Error object: ${JSON.stringify(error, replaceError, 2)}\n`);
+      process.stderr.write(`Error object: ${JSON.stringify(error, replacer, 2)}\n`);
       return process.exit(1);
     },
     ({ server, adapters, config }) => {
