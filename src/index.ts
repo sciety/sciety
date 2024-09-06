@@ -24,6 +24,11 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
   useExit0: true,
 });
 
+const logCatastrophicFailure = (error: unknown) => {
+  process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
+  process.stderr.write(`Error object: ${JSON.stringify(error, replacer, 2)}\n`);
+};
+
 void pipe(
   createInfrastructure({
     crossrefApiBearerToken: O.fromNullable(process.env.CROSSREF_API_BEARER_TOKEN),
@@ -65,8 +70,7 @@ void pipe(
   )),
   TE.match(
     (error) => {
-      process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
-      process.stderr.write(`Error object: ${JSON.stringify(error, replacer, 2)}\n`);
+      logCatastrophicFailure(error);
       return process.exit(1);
     },
     ({ server, adapters, config }) => {
