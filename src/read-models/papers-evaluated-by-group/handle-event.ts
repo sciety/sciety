@@ -6,10 +6,12 @@ import { GroupId } from '../../types/group-id';
 
 type PaperSnapshotRepresentative = ExpressionDoi;
 
+type PaperSnapshot = ReadonlyArray<ExpressionDoi>;
+
 export type ReadModel = {
   paperSnapshotRepresentatives: Record<GroupId, Array<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
-  paperSnapshots: Record<ExpressionDoi, ReadonlyArray<ExpressionDoi>>,
+  paperSnapshots: Record<ExpressionDoi, PaperSnapshot>,
 };
 
 export const initialState = (): ReadModel => ({
@@ -28,10 +30,10 @@ const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
 };
 
 const hasIntersection = (
-  paperExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
+  paperSnapshot: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
   paperSnapshotRepresentatives: ReadModel['paperSnapshotRepresentatives'][GroupId],
 ) => {
-  const intersection = Array.from(paperExpressionDois).filter(
+  const intersection = Array.from(paperSnapshot).filter(
     (expressionDoi) => paperSnapshotRepresentatives.includes(expressionDoi),
   );
   return intersection.length > 0;
