@@ -58,7 +58,7 @@ describe('record', () => {
 
     describe('when the same set of expression dois is provided in the command', () => {
       const command: RecordPaperSnapshotCommand = {
-        expressionDois: previousPaperSnapshotRecordedEvent.expressionDois,
+        expressionDois: new Set(previousPaperSnapshotRecordedEvent.expressionDois),
       };
       let result: ReadonlyArray<DomainEvent>;
 
@@ -70,7 +70,7 @@ describe('record', () => {
         );
       });
 
-      it.skip('accepts the command and causes no state change', () => {
+      it.failing('accepts the command and causes no state change', () => {
         expect(result).toHaveLength(0);
       });
     });
