@@ -1,6 +1,10 @@
-import { replacer } from './replacer';
+import { createLogger } from './create-logger';
+import { defaultLogLevel } from '../../logger/log-level';
 
 export const logCatastrophicFailure = (error: unknown): void => {
-  process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
-  process.stderr.write(`Error object: ${JSON.stringify(error, replacer, 2)}\n`);
+  const logger = createLogger({
+    logLevel: defaultLogLevel,
+    prettyLog: !!process.env.PRETTY_LOG,
+  });
+  logger('error', 'Unable to start', { error });
 };
