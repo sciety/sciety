@@ -9,7 +9,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import { environmentVariablesCodec } from './http/environment-variables-codec';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
-import { createInfrastructure, replacer } from './infrastructure';
+import { createInfrastructure, logCatastrophicFailure } from './infrastructure';
 import { defaultLogLevel, Logger } from './logger';
 import { scheduleSagas } from './sagas';
 
@@ -23,11 +23,6 @@ const terminusOptions = (logger: Logger): TerminusOptions => ({
   signals: ['SIGINT', 'SIGTERM'],
   useExit0: true,
 });
-
-const logCatastrophicFailure = (error: unknown) => {
-  process.stderr.write(`Unable to start:\n${JSON.stringify(error, null, 2)}\n`);
-  process.stderr.write(`Error object: ${JSON.stringify(error, replacer, 2)}\n`);
-};
 
 void pipe(
   createInfrastructure({
