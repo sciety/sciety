@@ -26,26 +26,26 @@ type Dispatcher = {
 
 export const dispatcher = (logger: Logger): Dispatcher => {
   const initialisedReadModels = [
-    new InitialisedReadModel(annotations),
-    new InitialisedReadModel(evaluations),
-    new InitialisedReadModel(evaluationsForNotifications),
-    new InitialisedReadModel(evaluatedArticlesLists),
-    new InitialisedReadModel(followings),
-    new InitialisedReadModel(groupActivity),
-    new InitialisedReadModel(groupAuthorisations),
-    new InitialisedReadModel(groups),
-    new InitialisedReadModel(idsOfEvalutedArticlesLists),
-    new InitialisedReadModel(lists),
-    new InitialisedReadModel(papersEvaluatedByGroup),
-    new InitialisedReadModel(users),
+    new InitialisedReadModel(annotations, 'annotations'),
+    new InitialisedReadModel(evaluations, 'evaluations'),
+    new InitialisedReadModel(evaluationsForNotifications, 'evaluationsForNotifications'),
+    new InitialisedReadModel(evaluatedArticlesLists, 'evaluatedArticlesLists'),
+    new InitialisedReadModel(followings, 'followings'),
+    new InitialisedReadModel(groupActivity, 'groupActivity'),
+    new InitialisedReadModel(groupAuthorisations, 'groupAuthorisations'),
+    new InitialisedReadModel(groups, 'groups'),
+    new InitialisedReadModel(idsOfEvalutedArticlesLists, 'idsOfEvaluatedArticlesLists'),
+    new InitialisedReadModel(lists, 'lists'),
+    new InitialisedReadModel(papersEvaluatedByGroup, 'papersEvaluatedByGroup'),
+    new InitialisedReadModel(users, 'users'),
   ];
 
   const dispatchToAllReadModels: DispatchToAllReadModels = (events) => {
     pipe(
       initialisedReadModels,
-      RA.mapWithIndex((index, readModel) => {
+      RA.map((readModel) => {
         const result = readModel.dispatch(events);
-        logger('debug', 'Events handled by read model', { index });
+        logger('debug', 'Events handled by read model', { name: readModel.getName() });
         return result;
       }),
     );

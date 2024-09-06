@@ -7,11 +7,17 @@ export class InitialisedReadModel<S, Q > {
 
   private handleEvent: (state: S, e: DomainEvent) => S;
 
+  private name: string;
+
   dispatch(events: ReadonlyArray<DomainEvent>): void {
     this.state = pipe(
       events,
       RA.reduce(this.state, this.handleEvent),
     );
+  }
+
+  getName(): string {
+    return this.name;
   }
 
   queries: Q;
@@ -22,6 +28,7 @@ export class InitialisedReadModel<S, Q > {
       handleEvent: (s: S, e: DomainEvent) => S,
       queries: { [K in keyof Q]: (state: S) => Q[K] },
     },
+    name: string,
   ) {
     this.state = readModel.initialState();
     this.handleEvent = readModel.handleEvent;
@@ -32,6 +39,7 @@ export class InitialisedReadModel<S, Q > {
         this.queries[k] = readModel.queries[k](this.state);
       }
     }
+    this.name = name;
   }
 }
 
