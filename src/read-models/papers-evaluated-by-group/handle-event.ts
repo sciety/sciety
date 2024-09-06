@@ -11,13 +11,13 @@ type PaperSnapshot = EventOfType<'PaperSnapshotRecorded'>['expressionDois'];
 export type ReadModel = {
   paperSnapshotRepresentatives: Record<GroupId, Array<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
-  paperSnapshots: Record<ExpressionDoi, PaperSnapshot>,
+  paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
 };
 
 export const initialState = (): ReadModel => ({
   paperSnapshotRepresentatives: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
-  paperSnapshots: {},
+  paperSnapshotsByEveryMember: {},
 });
 
 const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
@@ -41,12 +41,12 @@ const hasIntersection = (
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   ensureGroupIdExists(readmodel, event.groupId);
-  const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshots).includes(event.articleId);
+  const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
     return;
   }
-  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshots[event.articleId];
+  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
   const noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup = !hasIntersection(
     latestSnapshotForEvaluatedExpression,
     readmodel.paperSnapshotRepresentatives[event.groupId],
@@ -74,8 +74,8 @@ const updatePaperSnapshotRepresentatives = (
 };
 
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
-  event.expressionDois.forEach((expression) => {
-    readmodel.paperSnapshots[expression] = event.expressionDois;
+  event.expressionDois.forEach((member) => {
+    readmodel.paperSnapshotsByEveryMember[member] = event.expressionDois;
   });
   for (
     const [groupId, expressionsWithoutPaperSnapshot]
