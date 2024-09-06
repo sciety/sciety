@@ -6,7 +6,7 @@ import { GroupId } from '../../types/group-id';
 
 type PaperSnapshotRepresentative = ExpressionDoi;
 
-type PaperSnapshot = ReadonlyArray<ExpressionDoi>;
+type PaperSnapshot = Set<ExpressionDoi>;
 
 export type ReadModel = {
   paperSnapshotRepresentatives: Record<GroupId, Array<PaperSnapshotRepresentative>>,
@@ -46,7 +46,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
     return;
   }
-  const latestSnapshotForEvaluatedExpression = new Set(readmodel.paperSnapshots[event.articleId]);
+  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshots[event.articleId];
   const noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup = !hasIntersection(
     latestSnapshotForEvaluatedExpression,
     readmodel.paperSnapshotRepresentatives[event.groupId],
@@ -75,7 +75,7 @@ const updatePaperSnapshotRepresentatives = (
 
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   event.expressionDois.forEach((expression) => {
-    readmodel.paperSnapshots[expression] = Array.from(event.expressionDois);
+    readmodel.paperSnapshots[expression] = event.expressionDois;
   });
   for (
     const [groupId, expressionsWithoutPaperSnapshot]
