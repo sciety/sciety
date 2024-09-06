@@ -6,7 +6,11 @@ import { DependenciesForViews } from '../../../dependencies-for-views';
 import { NonHtmlView } from '../../non-html-view';
 import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
 
-const renderAsJson = (viewModel: Json): NonHtmlViewRepresentation => toNonHtmlViewRepresentation(viewModel, 'application/json');
+const renderAsJson = (viewModel: Json): NonHtmlViewRepresentation => pipe(
+  viewModel,
+  JSON.stringify,
+  (representation) => toNonHtmlViewRepresentation(representation, 'application/json'),
+);
 
 export const applicationStatus = (dependencies: DependenciesForViews): NonHtmlView => () => pipe(
   constructViewModel(dependencies),
