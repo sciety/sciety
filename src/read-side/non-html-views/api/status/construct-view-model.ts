@@ -1,5 +1,3 @@
-import * as RA from 'fp-ts/ReadonlyArray';
-import { pipe } from 'fp-ts/function';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 
 export const constructViewModel = (dependencies: DependenciesForViews): unknown => ({
@@ -15,13 +13,7 @@ export const constructViewModel = (dependencies: DependenciesForViews): unknown 
     users: dependencies.usersStatus(),
   },
   sagaWorkQueues: {
-    ensureEvaluationsAreListed: pipe(
-      dependencies.getUnlistedEvaluatedArticles(),
-      RA.map((missingArticle) => ({
-        expressionDoi: missingArticle.expressionDoi.value,
-        listId: missingArticle.listId,
-      })),
-    ),
+    ensureEvaluationsAreListed: dependencies.getUnlistedEvaluatedArticles(),
     maintainSnapshotsForEvaluatedExpressions: dependencies.getExpressionsWithNoAssociatedSnapshot(),
     sendNotificationToCoarTestInbox: dependencies.getPendingNotifications(),
   },

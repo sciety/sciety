@@ -1,13 +1,17 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from './construct-view-model';
+import { ArticleId } from '../../../../types/article-id';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 import { NonHtmlView } from '../../non-html-view';
 import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
 
-export const replacer = (_key: string, value: unknown): unknown => {
+const replacer = (_key: string, value: unknown): unknown => {
   if (value instanceof Set) {
     return Array.from(value.values());
+  }
+  if (value instanceof ArticleId) {
+    return value.value;
   }
   return value;
 };
