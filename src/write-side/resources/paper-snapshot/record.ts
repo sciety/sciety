@@ -4,11 +4,15 @@ import { toErrorMessage } from '../../../types/error-message';
 import { RecordPaperSnapshotCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
+const causeStateChange = (command: RecordPaperSnapshotCommand) => [
+  constructEvent('PaperSnapshotRecorded')({ expressionDois: command.expressionDois }),
+];
+
 export const record: ResourceAction<RecordPaperSnapshotCommand> = (
   command,
 ) => (
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
   events,
 ) => (command.expressionDois.size > 0
-  ? E.right([constructEvent('PaperSnapshotRecorded')({ expressionDois: command.expressionDois })])
+  ? E.right(causeStateChange(command))
   : E.left(toErrorMessage('')));
