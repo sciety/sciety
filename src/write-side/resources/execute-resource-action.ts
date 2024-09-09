@@ -21,7 +21,10 @@ export const executeResourceAction = <C extends GenericCommand>(
         durationInMs: new Date().getTime() - startTime.getTime(),
       }))),
       TE.mapLeft((errors) => {
-        dependencies.logger('error', 'Command execution failed', { command });
+        dependencies.logger('error', 'Command execution failed', {
+          command,
+          durationInMs: new Date().getTime() - startTime.getTime(),
+        });
         return errors;
       }),
     );
