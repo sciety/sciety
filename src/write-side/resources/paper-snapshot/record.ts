@@ -40,6 +40,6 @@ const decideWhetherToChangeState = (
 export const record: ResourceAction<RecordPaperSnapshotCommand> = (command) => (events) => pipe(
   command,
   E.right,
-  E.filterOrElse(validateCommand, () => toErrorMessage('')),
+  E.filterOrElse(validateCommand, () => toErrorMessage('Failed to record a paper snapshot')),
   E.map(decideWhetherToChangeState(events)),
 );
