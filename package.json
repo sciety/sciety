@@ -98,7 +98,6 @@
     "build:css": "sass --load-path=src/read-side/html-pages/shared-sass --no-source-map src/read-side/html-pages/style.scss:static/style.css",
     "build:js": "tsc",
     "watch:typescript": "tsc --noEmit --watch",
-    "test": "jest --colors",
     "test:coverage": "jest --colors --coverage"
   }
 }

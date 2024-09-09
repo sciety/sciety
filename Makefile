@@ -41,7 +41,7 @@ unused-exports: node_modules
 	npx ts-unused-exports tsconfig.json --silent
 
 test: node_modules
-	npm run test
+	npx jest --colors
 
 test-coverage: export TARGET = dev
 test-coverage: build
