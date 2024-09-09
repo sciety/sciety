@@ -11,12 +11,18 @@ export type Dependencies = DependenciesForCommands & { logger: Logger };
 export const executeResourceAction = <C extends GenericCommand>(
   dependencies: Dependencies,
   resourceAction: ResourceAction<C>,
-): CommandHandler<C> => (command: C) => pipe(
-    dependencies.getAllEvents,
-    T.map(resourceAction(command)),
-    TE.chainW(dependencies.commitEvents),
-    TE.mapLeft((errors) => {
-      dependencies.logger('error', 'Command execution failed', { command });
-      return errors;
-    }),
-  );
+): CommandHandler<C> => (command: C) => {
+    const startTime = new Date();
+    return pipe(
+      dependencies.getAllEvents,
+      T.map(resourceAction(command)),
+      TE.chainW(dependencies.commitEvents),
+      TE.tap(() => TE.right(dependencies.logger('debug', 'Resource action completed', {
+        durationInMs: new Date().getTime() - startTime.getTime(),
+      }))),
+      TE.mapLeft((errors) => {
+        dependencies.logger('error', 'Command execution failed', { command });
+        return errors;
+      }),
+    );
+  };
