@@ -40,9 +40,8 @@ watch-typescript: node_modules
 unused-exports: node_modules
 	npx ts-unused-exports tsconfig.json --silent
 
-test: export TARGET = dev
-test: build
-	${DOCKER_COMPOSE} run --rm app npm run test
+test: node_modules
+	npm run test
 
 test-coverage: export TARGET = dev
 test-coverage: build
