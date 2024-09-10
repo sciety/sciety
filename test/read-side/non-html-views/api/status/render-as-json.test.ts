@@ -19,4 +19,12 @@ describe('render-as-json', () => {
       expect(typeof result.state).toBe('string');
     });
   });
+
+  describe('given an object', () => {
+    const result = renderAsJson({ example: 42 });
+
+    it('renders a string', () => {
+      expect(typeof result.state).toBe('string');
+    });
+  });
 });
