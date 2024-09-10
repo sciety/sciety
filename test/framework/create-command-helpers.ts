@@ -10,6 +10,7 @@ import {
   CreateUserAccountCommand, FollowCommand,
   PromoteListCommand,
   RecordEvaluationPublicationCommand,
+  RecordPaperSnapshotCommand,
   RemoveArticleFromListCommand,
   RemoveListPromotionCommand,
   UnfollowCommand,
@@ -28,6 +29,7 @@ import * as groupAuthorisation from '../../src/write-side/resources/group-author
 import * as groupFollowResource from '../../src/write-side/resources/group-follow';
 import * as listResource from '../../src/write-side/resources/list';
 import * as listPromotionResource from '../../src/write-side/resources/list-promotion';
+import * as paperSnapshot from '../../src/write-side/resources/paper-snapshot';
 import * as user from '../../src/write-side/resources/user';
 import { abortTest } from '../abort-test';
 
@@ -47,6 +49,7 @@ export type CommandHelpers = {
   updateEvaluation: (command: UpdateEvaluationCommand) => Promise<unknown>,
   updateGroupDetails: (command: UpdateGroupDetailsCommand) => Promise<unknown>,
   updateUserDetails: (command: UpdateUserDetailsCommand) => Promise<unknown>,
+  recordPaperSnapshot: (command: RecordPaperSnapshotCommand) => Promise<unknown>,
 };
 
 const invoke = <C extends GenericCommand>(
@@ -70,6 +73,7 @@ export const createCommandHelpers = (
   followGroup: invoke(executeResourceAction(dependencies, groupFollowResource.follow), 'followGroup'),
   promoteList: invoke(executeResourceAction(dependencies, listPromotionResource.create), 'promoteList'),
   recordEvaluationPublication: invoke(executeResourceAction(dependencies, evaluation.recordPublication), 'recordEvaluationPublication'),
+  recordPaperSnapshot: invoke(executeResourceAction(dependencies, paperSnapshot.record), 'recordPaperSnapshot'),
   removeArticleFromList: invoke(executeResourceAction(dependencies, listResource.removeArticle), 'removeArticleFromList'),
   unfollowGroup: invoke(executeResourceAction(dependencies, groupFollowResource.unfollow), 'unfollowGroup'),
   unpromoteList: invoke(executeResourceAction(dependencies, listPromotionResource.remove), 'unpromoteList'),
