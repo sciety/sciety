@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
+import { constructSortedFeed } from './construct-sorted-feed';
 import { Dependencies } from './dependencies';
 import { toExpressionDoisByMostRecentlyAdded } from '../../../../../read-models/lists';
 import { constructGroupPagePath } from '../../../../../standards/paths';
@@ -64,7 +65,7 @@ const toPageOfFeedContent = (
 
 const getExpressionDoisForFeed = (dependencies: Dependencies) => (groupId: GroupId) => {
   if (process.env.EXPERIMENT_ENABLED === 'true' && groupId === GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')) {
-    return E.right(dependencies.getPapersEvaluatedByGroup(groupId));
+    return E.right(constructSortedFeed(dependencies, groupId));
   }
   return getEvaluatedExpressionDois(dependencies)(groupId);
 };
