@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { getEq } from 'fp-ts/Set';
+import { getEq } from 'fp-ts/ReadonlySet';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import {

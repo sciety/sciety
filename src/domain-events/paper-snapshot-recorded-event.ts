@@ -7,5 +7,5 @@ export const paperSnapshotRecordedEventCodec = t.strict({
   id: EventIdFromString,
   type: t.literal('PaperSnapshotRecorded'),
   date: tt.DateFromISOString,
-  expressionDois: tt.setFromArray(expressionDoiCodec, alphanumerical),
+  expressionDois: tt.readonlySetFromArray(expressionDoiCodec, alphanumerical),
 });

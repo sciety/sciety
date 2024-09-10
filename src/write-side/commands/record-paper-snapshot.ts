@@ -3,7 +3,7 @@ import * as tt from 'io-ts-types';
 import { alphanumerical, expressionDoiCodec } from '../../types/expression-doi';
 
 const recordPaperSnapshotCommandCodec = t.strict({
-  expressionDois: tt.setFromArray(expressionDoiCodec, alphanumerical),
+  expressionDois: tt.readonlySetFromArray(expressionDoiCodec, alphanumerical),
 });
 
 export type RecordPaperSnapshotCommand = t.TypeOf<typeof recordPaperSnapshotCommandCodec>;
