@@ -1,4 +1,4 @@
-import { EvaluationType, evaluationTypes } from '../../src/types/recorded-evaluation';
+import { EvaluationType, evaluationTypes } from '../../src/types/evaluation-type';
 import { arbitraryNumber } from '../helpers';
 
 export const arbitraryEvaluationType = (): EvaluationType => (

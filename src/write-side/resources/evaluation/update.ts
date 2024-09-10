@@ -8,7 +8,7 @@ import {
 } from '../../../domain-events';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
-import { EvaluationType } from '../../../types/recorded-evaluation';
+import { EvaluationType } from '../../../types/evaluation-type';
 import { UpdateEvaluationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
