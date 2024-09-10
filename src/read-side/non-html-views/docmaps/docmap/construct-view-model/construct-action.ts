@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { RecordedEvaluation } from '../../../../../read-models/evaluations/recorded-evaluation';
 import * as DE from '../../../../../types/data-error';
-import { RecordedEvaluation } from '../../../../../types/recorded-evaluation';
 import { constructEvaluationContentUrl } from '../../../../construct-evaluation-content-url';
 import { DependenciesForViews } from '../../../../dependencies-for-views';
 import { Action } from '../action';

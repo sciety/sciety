@@ -6,7 +6,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as RM from 'fp-ts/ReadonlyMap';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
+import { RecordedEvaluation } from './recorded-evaluation';
 
 const byDate: Ord.Ord<RecordedEvaluation> = pipe(
   D.Ord,

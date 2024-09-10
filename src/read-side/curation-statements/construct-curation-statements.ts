@@ -9,11 +9,11 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { CurationStatement } from './curation-statement';
+import { RecordedEvaluation } from '../../read-models/evaluations/recorded-evaluation';
 import { constructGroupPagePath } from '../../standards/paths';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as GID from '../../types/group-id';
 import * as PH from '../../types/publishing-history';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
 import { DependenciesForViews } from '../dependencies-for-views';
 import { detectLanguage } from '../html-pages/shared-components/lang-attribute';
 

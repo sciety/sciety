@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
-import { EvaluationLocator } from './evaluation-locator';
-import { EvaluationType } from './evaluation-type';
-import { ExpressionDoi } from './expression-doi';
-import { GroupId } from './group-id';
+import { EvaluationLocator } from '../../types/evaluation-locator';
+import { EvaluationType } from '../../types/evaluation-type';
+import { ExpressionDoi } from '../../types/expression-doi';
+import { GroupId } from '../../types/group-id';
 
 export type RecordedEvaluation = {
   expressionDoi: ExpressionDoi,

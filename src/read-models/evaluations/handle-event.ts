@@ -2,10 +2,10 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { RecordedEvaluation } from './recorded-evaluation';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { ExpressionDoi } from '../../types/expression-doi';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 type RecordedEvaluationsForExpression = Array<RecordedEvaluation>;
 

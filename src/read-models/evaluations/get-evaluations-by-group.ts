@@ -1,8 +1,8 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
+import { RecordedEvaluation } from './recorded-evaluation';
 import { GroupId } from '../../types/group-id';
-import { RecordedEvaluation } from '../../types/recorded-evaluation';
 
 type GetEvaluationsByGroup = (groupId: GroupId) => ReadonlyArray<RecordedEvaluation>;
 

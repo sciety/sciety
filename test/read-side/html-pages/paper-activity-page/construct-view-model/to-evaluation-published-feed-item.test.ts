@@ -8,9 +8,9 @@ import { constructGroupPagePath } from '../../../../../src/standards/paths';
 import { RecordEvaluationPublicationCommand } from '../../../../../src/write-side/commands/record-evaluation-publication';
 import { TestFramework, createTestFramework } from '../../../../framework';
 import { arbitrarySanitisedHtmlFragment, arbitraryUrl } from '../../../../helpers';
+import { arbitraryRecordedEvaluation } from '../../../../read-models/evaluations/recorded-evaluation.helper';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryDataError } from '../../../../types/data-error.helper';
-import { arbitraryRecordedEvaluation } from '../../../../types/recorded-evaluation.helper';
 import { arbitraryAddGroupCommand } from '../../../../write-side/commands/add-group-command.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../../write-side/commands/record-evaluation-publication-command.helper';
 

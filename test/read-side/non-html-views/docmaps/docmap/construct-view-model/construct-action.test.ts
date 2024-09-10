@@ -6,9 +6,9 @@ import { Action } from '../../../../../../src/read-side/non-html-views/docmaps/d
 import { constructAction } from '../../../../../../src/read-side/non-html-views/docmaps/docmap/construct-view-model/construct-action';
 import { TestFramework, createTestFramework } from '../../../../../framework';
 import { arbitraryUrl } from '../../../../../helpers';
+import { arbitraryRecordedEvaluation } from '../../../../../read-models/evaluations/recorded-evaluation.helper';
 import { shouldNotBeCalled } from '../../../../../should-not-be-called';
 import { arbitraryDataError } from '../../../../../types/data-error.helper';
-import { arbitraryRecordedEvaluation } from '../../../../../types/recorded-evaluation.helper';
 
 describe('construct-action', () => {
   let framework: TestFramework;
