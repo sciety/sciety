@@ -1,5 +1,4 @@
 import { URL } from 'url';
-import { Json } from 'fp-ts/Json';
 import { pipe } from 'fp-ts/function';
 import { ArticleId } from '../../../../types/article-id';
 import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
@@ -11,9 +10,11 @@ type StatusDataRecord = {
 // eslint-disable-next-line @typescript-eslint/ban-types
 type StatusDataArray = {} & ReadonlyArray<StatusData>;
 
-export type StatusData = boolean | number | string | null | StatusDataArray | StatusDataRecord | ArticleId | URL;
+type JsonFriendlyScalar = boolean | number | string | null;
 
-const replacer = (_key: string, value: StatusData): Json | StatusDataRecord | StatusDataArray => {
+export type StatusData = JsonFriendlyScalar | StatusDataArray | StatusDataRecord | ArticleId | URL;
+
+const replacer = (_key: string, value: StatusData): JsonFriendlyScalar | StatusDataRecord | StatusDataArray => {
   if (value instanceof ArticleId) {
     return value.value;
   }
