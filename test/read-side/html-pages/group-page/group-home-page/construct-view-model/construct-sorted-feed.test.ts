@@ -1,5 +1,6 @@
 import { constructSortedFeed } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-sorted-feed';
 import * as GID from '../../../../../../src/types/group-id';
+import { RecordEvaluationPublicationCommand } from '../../../../../../src/write-side/commands';
 import { createTestFramework, TestFramework } from '../../../../../framework';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryRecordPaperSnapshotCommand } from '../../../../../write-side/commands/record-paper-snapshot-command.helper';
@@ -47,8 +48,39 @@ describe('construct-sorted-feed', () => {
   });
 
   describe('when the group has evaluated two papers', () => {
-    it.todo('returns the most recently evaluated first');
+    const recordEarlierEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: acmiGroupId,
+      publishedAt: new Date('1997-01-01'),
+    };
+    const recordLaterEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: acmiGroupId,
+      publishedAt: new Date('2007-01-01'),
+    };
+    const recordPaperSnapshotForEarlierEvaluationCommand = {
+      ...arbitraryRecordPaperSnapshotCommand(),
+      expressionDois: new Set([recordEarlierEvaluationPublicationCommand.expressionDoi]),
+    };
+    const recordPaperSnapshotForLaterEvaluationCommand = {
+      ...arbitraryRecordPaperSnapshotCommand(),
+      expressionDois: new Set([recordLaterEvaluationPublicationCommand.expressionDoi]),
+    };
 
-    it.todo('returns the least recently evaluated second');
+    beforeEach(async () => {
+      await framework.commandHelpers.recordEvaluationPublication(recordLaterEvaluationPublicationCommand);
+      await framework.commandHelpers.recordEvaluationPublication(recordEarlierEvaluationPublicationCommand);
+      await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForEarlierEvaluationCommand);
+      await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForLaterEvaluationCommand);
+      result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
+    });
+
+    it.failing('returns the most recently evaluated first', () => {
+      expect(result[0]).toStrictEqual(recordLaterEvaluationPublicationCommand.expressionDoi);
+    });
+
+    it.failing('returns the least recently evaluated second', () => {
+      expect(result[1]).toStrictEqual(recordEarlierEvaluationPublicationCommand.expressionDoi);
+    });
   });
 });
