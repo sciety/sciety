@@ -1,6 +1,26 @@
+import { constructSortedFeed } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-sorted-feed';
+import { createTestFramework, TestFramework } from '../../../../../framework';
+import { arbitraryAddGroupCommand } from '../../../../../write-side/commands/add-group-command.helper';
+
 describe('construct-sorted-feed', () => {
+  let framework: TestFramework;
+
+  beforeEach(() => {
+    framework = createTestFramework();
+  });
+
   describe('when the group has not evaluated any papers', () => {
-    it.todo('returns an empty array');
+    const addGroupCommand = arbitraryAddGroupCommand();
+    let result: ReturnType<typeof constructSortedFeed>;
+
+    beforeEach(async () => {
+      await framework.commandHelpers.addGroup(addGroupCommand);
+      result = constructSortedFeed(framework.dependenciesForViews, addGroupCommand.groupId);
+    });
+
+    it('returns an empty array', () => {
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe('when the group has evaluated one paper', () => {
