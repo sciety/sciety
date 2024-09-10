@@ -1,20 +1,24 @@
 import { URL } from 'url';
+import { Json } from 'fp-ts/Json';
 import { pipe } from 'fp-ts/function';
 import { ArticleId } from '../../../../types/article-id';
 import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
 
-type JsonRecord = {
+type StatusDataRecord = {
   readonly [key: string]: StatusData,
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type JsonArray = {} & ReadonlyArray<StatusData>;
+type StatusDataArray = {} & ReadonlyArray<StatusData>;
 
-export type StatusData = boolean | number | string | null | JsonArray | JsonRecord | ArticleId | URL;
+export type StatusData = boolean | number | string | null | StatusDataArray | StatusDataRecord | ArticleId | URL;
 
-const replacer = (_key: string, value: unknown): unknown => {
+const replacer = (_key: string, value: StatusData): Json | StatusDataRecord | StatusDataArray => {
   if (value instanceof ArticleId) {
     return value.value;
+  }
+  if (value instanceof URL) {
+    return value.href;
   }
   return value;
 };
