@@ -87,8 +87,11 @@ describe('get-papers-evaluated-by-group', () => {
         evaluationRecordedAgainstExpressionDoiA,
       ] satisfies ReadonlyArray<DomainEvent>;
 
+      const result = runQueryReturningASet(events, groupId);
+
       it('returns a single expression DOI of the evaluated paper', () => {
-        expect(runQuery(events, groupId)).toStrictEqual([expressionDoiA]);
+        expect(result.size).toBe(1);
+        expect(result).toContain(expressionDoiA);
       });
     });
 
@@ -144,17 +147,17 @@ describe('get-papers-evaluated-by-group', () => {
       ] satisfies ReadonlyArray<DomainEvent>;
 
       it('returns a single expression DOI of the evaluated paper for the first group', () => {
-        const result = runQuery(events, groupId);
+        const result = runQueryReturningASet(events, groupId);
 
-        expect(result).toHaveLength(1);
-        expect(result[0]).toStrictEqual(expressionDoiA);
+        expect(result.size).toBe(1);
+        expect(result).toContain(expressionDoiA);
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
-        const result = runQuery(events, anotherGroupId);
+        const result = runQueryReturningASet(events, anotherGroupId);
 
-        expect(result).toHaveLength(1);
-        expect(result[0]).toStrictEqual(expressionDoiA);
+        expect(result.size).toBe(1);
+        expect(result).toContain(expressionDoiA);
       });
     });
 
@@ -170,17 +173,17 @@ describe('get-papers-evaluated-by-group', () => {
       ];
 
       it('returns a single expression DOI of the evaluated paper for the first group', () => {
-        const result = runQuery(events, anotherGroupId);
+        const result = runQueryReturningASet(events, anotherGroupId);
 
-        expect(result).toHaveLength(1);
-        expect(result[0]).toStrictEqual(expressionDoiC);
+        expect(result.size).toBe(1);
+        expect(result).toContain(expressionDoiC);
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
-        const result = runQuery(events, groupId);
+        const result = runQueryReturningASet(events, groupId);
 
-        expect(result).toHaveLength(1);
-        expect(result[0]).toStrictEqual(expressionDoiA);
+        expect(result.size).toBe(1);
+        expect(result).toContain(expressionDoiA);
       });
     });
   });
