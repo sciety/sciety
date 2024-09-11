@@ -44,11 +44,12 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
       });
 
       it('records a snapshot that allows the paper to be regarded as evaluated by that group', () => {
-        const papersEvaluatedByGroup = Array.from(framework.queries.getPapersEvaluatedByGroup(
+        const papersEvaluatedByGroup = framework.queries.getPapersEvaluatedByGroup(
           recordEvaluationPublicationCommand.groupId,
-        ));
+        );
 
-        expect(papersEvaluatedByGroup[0]).toStrictEqual(recordEvaluationPublicationCommand.expressionDoi);
+        expect(papersEvaluatedByGroup.size).toBe(1);
+        expect(papersEvaluatedByGroup).toContain(recordEvaluationPublicationCommand.expressionDoi);
       });
 
       it('causes the queue to be empty', () => {
