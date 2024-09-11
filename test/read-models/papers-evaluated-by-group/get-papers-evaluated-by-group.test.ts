@@ -18,7 +18,7 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) =
     events,
     RA.reduce(initialState(), handleEvent(consideredGroupIds)),
   );
-  return getPapersEvaluatedByGroup(readModel)(queriedGroupId);
+  return Array.from(getPapersEvaluatedByGroup(readModel)(queriedGroupId));
 };
 
 describe('get-papers-evaluated-by-group', () => {

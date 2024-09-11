@@ -44,9 +44,9 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
       });
 
       it('records a snapshot that allows the paper to be regarded as evaluated by that group', () => {
-        const papersEvaluatedByGroup = framework.queries.getPapersEvaluatedByGroup(
+        const papersEvaluatedByGroup = Array.from(framework.queries.getPapersEvaluatedByGroup(
           recordEvaluationPublicationCommand.groupId,
-        );
+        ));
 
         expect(papersEvaluatedByGroup[0]).toStrictEqual(recordEvaluationPublicationCommand.expressionDoi);
       });
@@ -73,7 +73,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
         recordEvaluationPublicationCommand.groupId,
       );
 
-      expect(papersEvaluatedByGroup).toStrictEqual([]);
+      expect(papersEvaluatedByGroup.size).toBe(0);
     });
   });
 });
