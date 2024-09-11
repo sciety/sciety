@@ -1,4 +1,6 @@
+import * as D from 'fp-ts/Date';
 import * as O from 'fp-ts/Option';
+import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
@@ -10,6 +12,12 @@ export type EvaluatedPaper = {
   representative: ExpressionDoi,
   lastEvaluationByThisGroupPublishedAt: Date,
 };
+
+export const byLastEvaluationByThisGroupPublishedAt: Ord.Ord<EvaluatedPaper> = pipe(
+  D.Ord,
+  Ord.reverse,
+  Ord.contramap((entry) => entry.lastEvaluationByThisGroupPublishedAt),
+);
 
 const augmentWithSortProperty = (input: ReadonlySet<ExpressionDoi>): ReadonlySet<EvaluatedPaper> => pipe(
   Array.from(input),
