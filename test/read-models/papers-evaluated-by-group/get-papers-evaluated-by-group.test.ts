@@ -92,7 +92,7 @@ describe('get-papers-evaluated-by-group', () => {
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expect(runQuery(events, groupId)).toHaveLength(1);
-        expect([expressionDoiA, expressionDoiB]).toContain(runQuery(events, groupId)[0]);
+        expect(runQuery(events, groupId)[0]).toStrictEqual(expressionDoiA);
       });
     });
 
@@ -105,7 +105,7 @@ describe('get-papers-evaluated-by-group', () => {
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expect(runQuery(events, groupId)).toHaveLength(1);
-        expect([expressionDoiA, expressionDoiB]).toContain(runQuery(events, groupId)[0]);
+        expect(runQuery(events, groupId)[0]).toStrictEqual(expressionDoiA);
       });
     });
 
@@ -120,7 +120,7 @@ describe('get-papers-evaluated-by-group', () => {
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expect(runQuery(events, groupId)).toHaveLength(1);
-        expect([expressionDoiA, expressionDoiB, expressionDoiC]).toContain(runQuery(events, groupId)[0]);
+        expect(runQuery(events, groupId)[0]).toStrictEqual(expressionDoiA);
       });
     });
 
@@ -138,14 +138,14 @@ describe('get-papers-evaluated-by-group', () => {
         const result = runQuery(events, groupId);
 
         expect(result).toHaveLength(1);
-        expect([expressionDoiA, expressionDoiB]).toContain(result[0]);
+        expect(result[0]).toStrictEqual(expressionDoiA);
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
         const result = runQuery(events, anotherGroupId);
 
         expect(result).toHaveLength(1);
-        expect([expressionDoiA, expressionDoiB]).toContain(result[0]);
+        expect(result[0]).toStrictEqual(expressionDoiA);
       });
     });
 
@@ -164,14 +164,14 @@ describe('get-papers-evaluated-by-group', () => {
         const result = runQuery(events, anotherGroupId);
 
         expect(result).toHaveLength(1);
-        expect([expressionDoiA, expressionDoiB, expressionDoiC]).toContain(result[0]);
+        expect(result[0]).toStrictEqual(expressionDoiC);
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
         const result = runQuery(events, groupId);
 
         expect(result).toHaveLength(1);
-        expect([expressionDoiA, expressionDoiB, expressionDoiC]).toContain(result[0]);
+        expect(result[0]).toStrictEqual(expressionDoiA);
       });
     });
   });
