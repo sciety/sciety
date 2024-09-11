@@ -63,6 +63,10 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
     readmodel.paperSnapshotRepresentatives[event.groupId].add(event.articleId);
+    readmodel.evaluatedPapers[event.groupId].add({
+      representative: event.articleId,
+      lastEvaluationByThisGroupPublishedAt: new Date(),
+    });
   }
 };
 
