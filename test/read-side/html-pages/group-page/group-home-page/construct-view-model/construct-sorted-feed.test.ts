@@ -1,6 +1,9 @@
 import { constructSortedFeed } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-sorted-feed';
 import * as GID from '../../../../../../src/types/group-id';
-import { RecordEvaluationPublicationCommand } from '../../../../../../src/write-side/commands';
+import {
+  RecordEvaluationPublicationCommand,
+  RecordPaperSnapshotCommand,
+} from '../../../../../../src/write-side/commands';
 import { createTestFramework, TestFramework } from '../../../../../framework';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryRecordPaperSnapshotCommand } from '../../../../../write-side/commands/record-paper-snapshot-command.helper';
@@ -26,11 +29,11 @@ describe('construct-sorted-feed', () => {
   });
 
   describe('when the group has evaluated one paper', () => {
-    const recordEvaluationPublicationCommand = {
+    const recordEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: acmiGroupId,
     };
-    const recordPaperSnapshotCommand = {
+    const recordPaperSnapshotCommand: RecordPaperSnapshotCommand = {
       ...arbitraryRecordPaperSnapshotCommand(),
       expressionDois: new Set([recordEvaluationPublicationCommand.expressionDoi]),
     };
@@ -58,11 +61,11 @@ describe('construct-sorted-feed', () => {
       groupId: acmiGroupId,
       publishedAt: new Date('2007-01-01'),
     };
-    const recordPaperSnapshotForEarlierEvaluationCommand = {
+    const recordPaperSnapshotForEarlierEvaluationCommand: RecordPaperSnapshotCommand = {
       ...arbitraryRecordPaperSnapshotCommand(),
       expressionDois: new Set([recordEarlierEvaluationPublicationCommand.expressionDoi]),
     };
-    const recordPaperSnapshotForLaterEvaluationCommand = {
+    const recordPaperSnapshotForLaterEvaluationCommand: RecordPaperSnapshotCommand = {
       ...arbitraryRecordPaperSnapshotCommand(),
       expressionDois: new Set([recordLaterEvaluationPublicationCommand.expressionDoi]),
     };
