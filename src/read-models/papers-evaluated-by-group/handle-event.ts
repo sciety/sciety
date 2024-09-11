@@ -34,6 +34,9 @@ const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
   if (!(groupId in readmodel.paperSnapshotRepresentatives)) {
     readmodel.paperSnapshotRepresentatives[groupId] = new Set();
   }
+  if (!(groupId in readmodel.evaluatedPapers)) {
+    readmodel.evaluatedPapers[groupId] = new Set();
+  }
 };
 
 const hasIntersection = (
