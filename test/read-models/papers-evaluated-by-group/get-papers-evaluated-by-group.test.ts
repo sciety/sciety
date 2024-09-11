@@ -1,8 +1,10 @@
+/* eslint-disable jest/expect-expect */
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import { getPapersEvaluatedByGroup } from '../../../src/read-models/papers-evaluated-by-group/get-papers-evaluated-by-group';
 import { initialState, handleEvent } from '../../../src/read-models/papers-evaluated-by-group/handle-event';
+import { ExpressionDoi } from '../../../src/types/expression-doi';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryPaperSnapshotRecordedEvent } from '../../domain-events/arbitrary-paper-snapshot-event.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
@@ -19,6 +21,11 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) =
     RA.reduce(initialState(), handleEvent(consideredGroupIds)),
   );
   return getPapersEvaluatedByGroup(readModel)(queriedGroupId);
+};
+
+const expectSingleExpressionDoiIn = (result: ReadonlySet<ExpressionDoi>, expressionDoi: ExpressionDoi) => {
+  expect(result.size).toBe(1);
+  expect(result).toContain(expressionDoi);
 };
 
 describe('get-papers-evaluated-by-group', () => {
@@ -65,10 +72,10 @@ describe('get-papers-evaluated-by-group', () => {
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
       ] satisfies ReadonlyArray<DomainEvent>;
+      const result = runQuery(events, groupId);
 
       it('returns a single expression DOI of the evaluated paper', () => {
-        expect(runQuery(events, groupId).size).toBe(1);
-        expect(runQuery(events, groupId)).toContain(expressionDoiA);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
     });
 
