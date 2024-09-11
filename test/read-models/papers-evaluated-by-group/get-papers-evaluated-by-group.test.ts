@@ -2,7 +2,10 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
-import { getPapersEvaluatedByGroup } from '../../../src/read-models/papers-evaluated-by-group/get-papers-evaluated-by-group';
+import {
+  EvaluatedPaper,
+  getPapersEvaluatedByGroup,
+} from '../../../src/read-models/papers-evaluated-by-group/get-papers-evaluated-by-group';
 import { initialState, handleEvent } from '../../../src/read-models/papers-evaluated-by-group/handle-event';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
 import { GroupId } from '../../../src/types/group-id';
@@ -23,9 +26,9 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) =
   return getPapersEvaluatedByGroup(readModel)(queriedGroupId);
 };
 
-const expectSingleExpressionDoiIn = (result: ReadonlySet<ExpressionDoi>, expressionDoi: ExpressionDoi) => {
+const expectSingleExpressionDoiIn = (result: ReadonlySet<EvaluatedPaper>, representative: ExpressionDoi) => {
   expect(result.size).toBe(1);
-  expect(result).toContain(expressionDoi);
+  expect(result.values().next().value).toStrictEqual(expect.objectContaining({ representative }));
 };
 
 describe('get-papers-evaluated-by-group', () => {

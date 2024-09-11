@@ -11,15 +11,6 @@ type EvaluatedPaper = {
   lastEvaluationByThisGroupPublishedAt: Date,
 };
 
-const augmentWithSortProperty = (input: ReadonlySet<ExpressionDoi>): ReadonlySet<EvaluatedPaper> => pipe(
-  Array.from(input),
-  RA.map((expressionDoi) => ({
-    representative: expressionDoi,
-    lastEvaluationByThisGroupPublishedAt: new Date(),
-  })),
-  (arrayAugmentedWithSortProperty) => new Set(arrayAugmentedWithSortProperty),
-);
-
 const byLastEvaluationByThisGroupPublishedAt: Ord.Ord<EvaluatedPaper> = pipe(
   D.Ord,
   Ord.reverse,
@@ -31,7 +22,6 @@ export const constructSortedFeed = (
   groupId: GroupId,
 ): ReadonlyArray<ExpressionDoi> => pipe(
   dependencies.getPapersEvaluatedByGroup(groupId),
-  augmentWithSortProperty,
   (representatives) => Array.from(representatives),
   RA.sort(byLastEvaluationByThisGroupPublishedAt),
   RA.map((representativeAugmentedWithSortProperty) => representativeAugmentedWithSortProperty.representative),
