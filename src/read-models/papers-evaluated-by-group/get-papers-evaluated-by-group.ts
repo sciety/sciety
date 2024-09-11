@@ -4,14 +4,9 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
-import { ReadModel } from './handle-event';
+import { EvaluatedPaper, ReadModel } from './handle-event';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
-
-export type EvaluatedPaper = {
-  representative: ExpressionDoi,
-  lastEvaluationByThisGroupPublishedAt: Date,
-};
 
 export const byLastEvaluationByThisGroupPublishedAt: Ord.Ord<EvaluatedPaper> = pipe(
   D.Ord,

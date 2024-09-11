@@ -3,10 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
 import {
-  EvaluatedPaper,
   getPapersEvaluatedByGroup,
 } from '../../../src/read-models/papers-evaluated-by-group/get-papers-evaluated-by-group';
-import { initialState, handleEvent } from '../../../src/read-models/papers-evaluated-by-group/handle-event';
+import { initialState, handleEvent, EvaluatedPaper } from '../../../src/read-models/papers-evaluated-by-group/handle-event';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
 import { GroupId } from '../../../src/types/group-id';
 import { arbitraryPaperSnapshotRecordedEvent } from '../../domain-events/arbitrary-paper-snapshot-event.helper';

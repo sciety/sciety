@@ -8,13 +8,20 @@ type PaperSnapshotRepresentative = ExpressionDoi;
 
 type PaperSnapshot = EventOfType<'PaperSnapshotRecorded'>['expressionDois'];
 
+export type EvaluatedPaper = {
+  representative: ExpressionDoi,
+  lastEvaluationByThisGroupPublishedAt: Date,
+};
+
 export type ReadModel = {
+  evaluatedPapers: Record<GroupId, Set<EvaluatedPaper>>,
   paperSnapshotRepresentatives: Record<GroupId, Set<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
 };
 
 export const initialState = (): ReadModel => ({
+  evaluatedPapers: {},
   paperSnapshotRepresentatives: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
   paperSnapshotsByEveryMember: {},
