@@ -13,3 +13,5 @@ export const papersEvaluatedByGroup = {
   initialState,
   handleEvent: handleEvent([GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')]),
 };
+
+export { byLastEvaluationByThisGroupPublishedAt } from './get-papers-evaluated-by-group';
