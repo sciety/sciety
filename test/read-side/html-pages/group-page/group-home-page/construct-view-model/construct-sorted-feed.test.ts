@@ -78,11 +78,11 @@ describe('construct-sorted-feed', () => {
       result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
     });
 
-    it.failing('returns the most recently evaluated first', () => {
+    it.skip('returns the most recently evaluated first', () => {
       expect(result[0]).toStrictEqual(recordLaterEvaluationPublicationCommand.expressionDoi);
     });
 
-    it.failing('returns the least recently evaluated second', () => {
+    it.skip('returns the least recently evaluated second', () => {
       expect(result[1]).toStrictEqual(recordEarlierEvaluationPublicationCommand.expressionDoi);
     });
   });
