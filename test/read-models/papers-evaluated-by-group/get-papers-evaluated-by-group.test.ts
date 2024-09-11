@@ -89,8 +89,7 @@ describe('get-papers-evaluated-by-group', () => {
       const result = runQuery(events, groupId);
 
       it('returns a single expression DOI of the evaluated paper', () => {
-        expect(result.size).toBe(1);
-        expect(result).toContain(expressionDoiA);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
     });
 
@@ -103,8 +102,7 @@ describe('get-papers-evaluated-by-group', () => {
       const result = runQuery(events, groupId);
 
       it('returns a single expression DOI of the evaluated paper', () => {
-        expect(result.size).toBe(1);
-        expect(result).toContain(expressionDoiA);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
     });
 
@@ -117,8 +115,7 @@ describe('get-papers-evaluated-by-group', () => {
       const result = runQuery(events, groupId);
 
       it('returns a single expression DOI of the evaluated paper', () => {
-        expect(result.size).toBe(1);
-        expect(result).toContain(expressionDoiA);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
     });
 
@@ -133,8 +130,7 @@ describe('get-papers-evaluated-by-group', () => {
       const result = runQuery(events, groupId);
 
       it('returns a single expression DOI of the evaluated paper', () => {
-        expect(result.size).toBe(1);
-        expect(result).toContain(expressionDoiA);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
     });
 
@@ -151,15 +147,13 @@ describe('get-papers-evaluated-by-group', () => {
       it('returns a single expression DOI of the evaluated paper for the first group', () => {
         const result = runQuery(events, groupId);
 
-        expect(result.size).toBe(1);
-        expect(result).toContain(expressionDoiA);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
         const result = runQuery(events, anotherGroupId);
 
-        expect(result.size).toBe(1);
-        expect(result).toContain(expressionDoiA);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
     });
 
@@ -177,15 +171,13 @@ describe('get-papers-evaluated-by-group', () => {
       it('returns a single expression DOI of the evaluated paper for the first group', () => {
         const result = runQuery(events, anotherGroupId);
 
-        expect(result.size).toBe(1);
-        expect(result).toContain(expressionDoiC);
+        expectSingleExpressionDoiIn(result, expressionDoiC);
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
         const result = runQuery(events, groupId);
 
-        expect(result.size).toBe(1);
-        expect(result).toContain(expressionDoiA);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
     });
   });
