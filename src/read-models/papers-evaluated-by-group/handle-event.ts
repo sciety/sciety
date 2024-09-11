@@ -72,6 +72,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
 
 const updatePaperSnapshotRepresentatives = (
   paperSnapshotRepresentatives: ReadModel['paperSnapshotRepresentatives'][GroupId],
+  evaluatedPapers: ReadModel['evaluatedPapers'][GroupId],
   paperSnapshot: PaperSnapshot,
   queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
@@ -83,6 +84,10 @@ const updatePaperSnapshotRepresentatives = (
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
       paperSnapshotRepresentatives.add(expressionDoi);
+      evaluatedPapers.add({
+        representative: expressionDoi,
+        lastEvaluationByThisGroupPublishedAt: new Date(),
+      });
     }
   });
 };
@@ -97,8 +102,10 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
   ) {
     ensureGroupIdExists(readmodel, groupId as GroupId);
     const paperSnapshotRepresentativesForGroup = readmodel.paperSnapshotRepresentatives[groupId as GroupId];
+    const evaluatedPapersForGroup = readmodel.evaluatedPapers[groupId as GroupId];
     updatePaperSnapshotRepresentatives(
       paperSnapshotRepresentativesForGroup,
+      evaluatedPapersForGroup,
       event.expressionDois,
       expressionsWithoutPaperSnapshot,
     );
