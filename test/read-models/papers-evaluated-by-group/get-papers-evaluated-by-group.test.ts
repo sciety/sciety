@@ -78,6 +78,7 @@ describe('get-papers-evaluated-by-group', () => {
     ...arbitraryPaperSnapshotRecordedEvent(),
     expressionDois: new Set([expressionDoiA, expressionDoiB, expressionDoiC]),
   };
+  let result: ReadonlySet<EvaluatedPaper>;
 
   describe('given activity by considered groups', () => {
     describe('when an evaluation has been recorded against an expression, but no corresponding paper snapshot is available', () => {
@@ -85,8 +86,12 @@ describe('get-papers-evaluated-by-group', () => {
         evaluationRecordedAgainstExpressionDoiA,
       ] satisfies ReadonlyArray<DomainEvent>;
 
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
+
       it('does not return anything', () => {
-        expect(runQuery(events, groupId).size).toBe(0);
+        expect(result.size).toBe(0);
       });
     });
 
@@ -95,7 +100,10 @@ describe('get-papers-evaluated-by-group', () => {
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
       ] satisfies ReadonlyArray<DomainEvent>;
-      const result = runQuery(events, groupId);
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -111,7 +119,10 @@ describe('get-papers-evaluated-by-group', () => {
         paperSnapshotWithExpressionDoisAB,
         evaluationRecordedAgainstExpressionDoiA,
       ] satisfies ReadonlyArray<DomainEvent>;
-      const result = runQuery(events, groupId);
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -134,7 +145,9 @@ describe('get-papers-evaluated-by-group', () => {
         anotherEvaluationRecordedAgainstExpressionDoiA,
       ] satisfies ReadonlyArray<DomainEvent>;
 
-      const result = runQuery(events, groupId);
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -151,7 +164,10 @@ describe('get-papers-evaluated-by-group', () => {
         evaluationRecordedAgainstExpressionDoiB,
         paperSnapshotWithExpressionDoisAB,
       ] satisfies ReadonlyArray<DomainEvent>;
-      const result = runQuery(events, groupId);
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -164,7 +180,10 @@ describe('get-papers-evaluated-by-group', () => {
         paperSnapshotWithExpressionDoisAB,
         evaluationRecordedAgainstExpressionDoiB,
       ] satisfies ReadonlyArray<DomainEvent>;
-      const result = runQuery(events, groupId);
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -181,7 +200,10 @@ describe('get-papers-evaluated-by-group', () => {
         evaluationRecordedAgainstExpressionDoiA,
         evaluationRecordedAgainstExpressionDoiB,
       ] satisfies ReadonlyArray<DomainEvent>;
-      const result = runQuery(events, groupId);
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -200,7 +222,10 @@ describe('get-papers-evaluated-by-group', () => {
         evaluationRecordedAgainstExpressionDoiC,
         paperSnapshotWithExpressionDoisABC,
       ] satisfies ReadonlyArray<DomainEvent>;
-      const result = runQuery(events, groupId);
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -219,13 +244,13 @@ describe('get-papers-evaluated-by-group', () => {
       ] satisfies ReadonlyArray<DomainEvent>;
 
       it('returns a single expression DOI of the evaluated paper for the first group', () => {
-        const result = runQuery(events, groupId);
+        result = runQuery(events, groupId);
 
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
-        const result = runQuery(events, anotherGroupId);
+        result = runQuery(events, anotherGroupId);
 
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
@@ -243,13 +268,13 @@ describe('get-papers-evaluated-by-group', () => {
       ];
 
       it('returns a single expression DOI of the evaluated paper for the first group', () => {
-        const result = runQuery(events, anotherGroupId);
+        result = runQuery(events, anotherGroupId);
 
         expectSingleExpressionDoiIn(result, expressionDoiC);
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
-        const result = runQuery(events, groupId);
+        result = runQuery(events, groupId);
 
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
@@ -267,7 +292,10 @@ describe('get-papers-evaluated-by-group', () => {
         },
         paperSnapshotWithExpressionDoisAB,
       ] satisfies ReadonlyArray<DomainEvent>;
-      const result = runQuery(events, groupIdNotConsidered);
+
+      beforeEach(() => {
+        result = runQuery(events, groupIdNotConsidered);
+      });
 
       it('does not return anything', () => {
         expect(result.size).toBe(0);
