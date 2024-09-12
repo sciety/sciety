@@ -62,6 +62,8 @@ const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'Evalua
   }
 };
 
+const chooseRepresentative = (paperSnapshotRepresentativesForGroup: ReadModel['paperSnapshotRepresentatives'][GroupId], representative: ExpressionDoi) => paperSnapshotRepresentativesForGroup.add(representative);
+
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   ensureGroupIdExists(readmodel, event.groupId);
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
@@ -75,7 +77,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     readmodel.paperSnapshotRepresentatives[event.groupId],
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
-    readmodel.paperSnapshotRepresentatives[event.groupId].add(event.articleId);
+    chooseRepresentative(readmodel.paperSnapshotRepresentatives[event.groupId], event.articleId);
     readmodel.evaluatedPapers[event.groupId].push({
       representative: event.articleId,
       lastEvaluationPublishedAt: event.publishedAt,
@@ -98,7 +100,7 @@ const updatePaperSnapshotRepresentatives = (
       paperSnapshotRepresentativesForGroup,
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
-      paperSnapshotRepresentativesForGroup.add(expressionDoi);
+      chooseRepresentative(paperSnapshotRepresentativesForGroup, expressionDoi);
       evaluatedPapers.push({
         representative: expressionDoi,
         lastEvaluationPublishedAt: new Date(),
