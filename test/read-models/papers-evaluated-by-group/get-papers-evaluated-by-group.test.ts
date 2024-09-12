@@ -107,20 +107,25 @@ describe('get-papers-evaluated-by-group', () => {
     });
 
     describe('when an expression has been evaluated, a paper snapshot recorded and the expression is evaluated again by the same group', () => {
+      const anotherEvaluationRecordedAgainstExpressionDoiA = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoiA,
+      };
       const events = [
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
-        {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          groupId,
-          articleId: expressionDoiA,
-        },
+        anotherEvaluationRecordedAgainstExpressionDoiA,
       ] satisfies ReadonlyArray<DomainEvent>;
 
       const result = runQuery(events, groupId);
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
+      });
+
+      it.failing('returns a lastEvaluationPublishedAt', () => {
+        expectLastEvaluationPublishedAt(result, anotherEvaluationRecordedAgainstExpressionDoiA.publishedAt);
       });
     });
 
