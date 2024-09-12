@@ -10,7 +10,7 @@ type PaperSnapshot = EventOfType<'PaperSnapshotRecorded'>['expressionDois'];
 
 export type EvaluatedPaper = {
   representative: ExpressionDoi,
-  lastEvaluationByThisGroupPublishedAt: Date,
+  lastEvaluationPublishedAt: Date,
 };
 
 export type ReadModel = {
@@ -65,7 +65,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     readmodel.paperSnapshotRepresentatives[event.groupId].add(event.articleId);
     readmodel.evaluatedPapers[event.groupId].add({
       representative: event.articleId,
-      lastEvaluationByThisGroupPublishedAt: new Date(),
+      lastEvaluationPublishedAt: new Date(),
     });
   }
 };
@@ -86,7 +86,7 @@ const updatePaperSnapshotRepresentatives = (
       paperSnapshotRepresentatives.add(expressionDoi);
       evaluatedPapers.add({
         representative: expressionDoi,
-        lastEvaluationByThisGroupPublishedAt: new Date(),
+        lastEvaluationPublishedAt: new Date(),
       });
     }
   });

@@ -36,18 +36,18 @@ const expectSingleExpressionDoiIn = (
   expect(onlyElementInTheSet.representative).toStrictEqual(representative);
 };
 
-const expectLastEvaluationByThisGroupPublishedAt = (
+const expectLastEvaluationPublishedAt = (
   result: ReadonlySet<EvaluatedPaper>,
-  lastEvaluationByThisGroupPublishedAt: Date,
+  lastEvaluationPublishedAt: Date,
 ) => {
   expect(result.size).toBe(1);
 
   const onlyElementInTheSet: EvaluatedPaper = result.values().next().value;
 
   expect(
-    onlyElementInTheSet.lastEvaluationByThisGroupPublishedAt,
+    onlyElementInTheSet.lastEvaluationPublishedAt,
   ).toStrictEqual(
-    lastEvaluationByThisGroupPublishedAt,
+    lastEvaluationPublishedAt,
   );
 };
 
@@ -101,8 +101,8 @@ describe('get-papers-evaluated-by-group', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
-      it.failing('returns a lastEvaluationByThisGroupPublishedAt', () => {
-        expectLastEvaluationByThisGroupPublishedAt(result, evaluationRecordedAgainstExpressionDoiA.publishedAt);
+      it.failing('returns a lastEvaluationPublishedAt', () => {
+        expectLastEvaluationPublishedAt(result, evaluationRecordedAgainstExpressionDoiA.publishedAt);
       });
     });
 

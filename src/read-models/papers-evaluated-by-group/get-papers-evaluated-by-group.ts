@@ -6,10 +6,10 @@ import { pipe } from 'fp-ts/function';
 import { EvaluatedPaper, ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 
-export const byLastEvaluationByThisGroupPublishedAt: Ord.Ord<EvaluatedPaper> = pipe(
+export const byLastEvaluationPublishedAt: Ord.Ord<EvaluatedPaper> = pipe(
   D.Ord,
   Ord.reverse,
-  Ord.contramap((entry) => entry.lastEvaluationByThisGroupPublishedAt),
+  Ord.contramap((entry) => entry.lastEvaluationPublishedAt),
 );
 
 export const getPapersEvaluatedByGroup = (
