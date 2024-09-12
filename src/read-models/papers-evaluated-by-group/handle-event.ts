@@ -7,7 +7,7 @@ import { GroupId } from '../../types/group-id';
 
 type PaperSnapshotRepresentative = ExpressionDoi;
 
-type PaperSnapshot = EventOfType<'PaperSnapshotRecorded'>['expressionDois'];
+type PaperSnapshot = ReadonlyArray<ExpressionDoi>;
 
 export type EvaluatedPaper = {
   representative: ExpressionDoi,
@@ -44,7 +44,7 @@ const hasIntersection = (
   paperSnapshot: PaperSnapshot,
   paperSnapshotRepresentatives: ReadModel['paperSnapshotRepresentatives'][GroupId],
 ) => {
-  const intersection = Array.from(paperSnapshot).filter(
+  const intersection = paperSnapshot.filter(
     (expressionDoi) => paperSnapshotRepresentatives.has(expressionDoi),
   );
   return intersection.length > 0;
@@ -53,9 +53,7 @@ const hasIntersection = (
 const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
   const evaluatedExpressionDoi = event.articleId;
-  const paperRepresentative = Array.from(
-    readmodel.paperSnapshotsByEveryMember[evaluatedExpressionDoi],
-  )[0]; // This is wrong!
+  const paperRepresentative = readmodel.paperSnapshotsByEveryMember[evaluatedExpressionDoi][0];
   const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
     (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
   );
@@ -123,8 +121,9 @@ const updatePaperSnapshotRepresentatives = (
 };
 
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
+  const paperSnapshot = Array.from(event.expressionDois);
   event.expressionDois.forEach((member) => {
-    readmodel.paperSnapshotsByEveryMember[member] = event.expressionDois;
+    readmodel.paperSnapshotsByEveryMember[member] = paperSnapshot;
   });
   for (
     const [groupId, expressionsWithoutPaperSnapshot]
@@ -134,7 +133,7 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     updatePaperSnapshotRepresentatives(
       readmodel,
       groupId,
-      event.expressionDois,
+      paperSnapshot,
       expressionsWithoutPaperSnapshot,
     );
   }
