@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-loops/no-loops */
+import * as R from 'fp-ts/Record';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
@@ -98,11 +99,11 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
   });
   for (
     const [groupId, expressionsWithoutPaperSnapshot]
-    of Object.entries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
+    of R.toEntries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
   ) {
-    ensureGroupIdExists(readmodel, groupId as GroupId);
-    const paperSnapshotRepresentativesForGroup = readmodel.paperSnapshotRepresentatives[groupId as GroupId];
-    const evaluatedPapersForGroup = readmodel.evaluatedPapers[groupId as GroupId];
+    ensureGroupIdExists(readmodel, groupId);
+    const paperSnapshotRepresentativesForGroup = readmodel.paperSnapshotRepresentatives[groupId];
+    const evaluatedPapersForGroup = readmodel.evaluatedPapers[groupId];
     updatePaperSnapshotRepresentatives(
       paperSnapshotRepresentativesForGroup,
       evaluatedPapersForGroup,
