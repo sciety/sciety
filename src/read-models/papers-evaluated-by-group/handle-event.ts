@@ -73,6 +73,16 @@ const declareEvaluatedPaper = (
   lastEvaluationPublishedAt,
 });
 
+const chooseRepresentativeAndDeclareEvaluatedPaper = (
+  readmodel: ReadModel,
+  groupId: GroupId,
+  representative: ExpressionDoi,
+  lastEvaluationPublishedAt: Date,
+) => {
+  chooseRepresentative(readmodel.paperSnapshotRepresentatives[groupId], representative);
+  declareEvaluatedPaper(readmodel.evaluatedPapers[groupId], representative, lastEvaluationPublishedAt);
+};
+
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   ensureGroupIdExists(readmodel, event.groupId);
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
@@ -86,15 +96,14 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     readmodel.paperSnapshotRepresentatives[event.groupId],
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
-    chooseRepresentative(readmodel.paperSnapshotRepresentatives[event.groupId], event.articleId);
-    declareEvaluatedPaper(readmodel.evaluatedPapers[event.groupId], event.articleId, event.publishedAt);
+    chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, event.groupId, event.articleId, event.publishedAt);
   } else {
     updateLastEvaluationPublishedAtForKnownPaper(event, readmodel);
   }
 };
 
 const updatePaperSnapshotRepresentatives = (
-  readModel: ReadModel,
+  readmodel: ReadModel,
   groupId: GroupId,
   paperSnapshot: PaperSnapshot,
   queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
@@ -103,11 +112,10 @@ const updatePaperSnapshotRepresentatives = (
     const paperExpressionWasInQueue = queueOfExpressionsWithoutPaperSnapshot.delete(expressionDoi);
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
-      readModel.paperSnapshotRepresentatives[groupId],
+      readmodel.paperSnapshotRepresentatives[groupId],
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
-      chooseRepresentative(readModel.paperSnapshotRepresentatives[groupId], expressionDoi);
-      declareEvaluatedPaper(readModel.evaluatedPapers[groupId], expressionDoi, new Date());
+      chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, groupId, expressionDoi, new Date());
     }
   });
 };
