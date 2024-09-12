@@ -106,11 +106,15 @@ describe('get-papers-evaluated-by-group', () => {
       });
     });
 
-    describe('when an expression has been evaluated, a paper snapshot recorded and the expression is evaluated again', () => {
+    describe('when an expression has been evaluated, a paper snapshot recorded and the expression is evaluated again by the same group', () => {
       const events = [
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
-        evaluationRecordedAgainstExpressionDoiA,
+        {
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          groupId,
+          articleId: expressionDoiA,
+        },
       ] satisfies ReadonlyArray<DomainEvent>;
 
       const result = runQuery(events, groupId);
