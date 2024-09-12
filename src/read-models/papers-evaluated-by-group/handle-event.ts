@@ -50,10 +50,12 @@ const hasIntersection = (
   return intersection.length > 0;
 };
 
-const updateLastEvaluationPublishedAtForAKnownExpression = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
+const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
+  const evaluatedExpressionDoi = event.articleId;
+  const paperRepresentative = evaluatedExpressionDoi; // This is wrong!
   const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
-    (evaluatedPaper) => evaluatedPaper.representative === event.articleId,
+    (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
   );
   if (indexOfExistingEvaluatedPaper > -1) {
     evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = event.publishedAt;
@@ -79,7 +81,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
       lastEvaluationPublishedAt: event.publishedAt,
     });
   } else {
-    updateLastEvaluationPublishedAtForAKnownExpression(event, readmodel);
+    updateLastEvaluationPublishedAtForKnownPaper(event, readmodel);
   }
 };
 
