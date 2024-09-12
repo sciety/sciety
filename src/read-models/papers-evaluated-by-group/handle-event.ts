@@ -15,7 +15,7 @@ export type EvaluatedPaper = {
 };
 
 export type ReadModel = {
-  evaluatedPapers: Record<GroupId, Set<EvaluatedPaper>>,
+  evaluatedPapers: Record<GroupId, Array<EvaluatedPaper>>,
   paperSnapshotRepresentatives: Record<GroupId, Set<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
@@ -36,7 +36,7 @@ const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
     readmodel.paperSnapshotRepresentatives[groupId] = new Set();
   }
   if (!(groupId in readmodel.evaluatedPapers)) {
-    readmodel.evaluatedPapers[groupId] = new Set();
+    readmodel.evaluatedPapers[groupId] = [];
   }
 };
 
@@ -64,7 +64,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
     readmodel.paperSnapshotRepresentatives[event.groupId].add(event.articleId);
-    readmodel.evaluatedPapers[event.groupId].add({
+    readmodel.evaluatedPapers[event.groupId].push({
       representative: event.articleId,
       lastEvaluationPublishedAt: new Date(),
     });
@@ -85,7 +85,7 @@ const updatePaperSnapshotRepresentatives = (
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
       paperSnapshotRepresentatives.add(expressionDoi);
-      evaluatedPapers.add({
+      evaluatedPapers.push({
         representative: expressionDoi,
         lastEvaluationPublishedAt: new Date(),
       });

@@ -12,6 +12,8 @@ export const byLastEvaluationPublishedAt: Ord.Ord<EvaluatedPaper> = pipe(
   Ord.contramap((entry) => entry.lastEvaluationPublishedAt),
 );
 
+const convertArrayOfUniqueElementsToASet = (evaluatedPapers: ReadonlyArray<EvaluatedPaper>) => new Set(evaluatedPapers);
+
 export const getPapersEvaluatedByGroup = (
   readModel: ReadModel,
 ) => (
@@ -19,5 +21,6 @@ export const getPapersEvaluatedByGroup = (
 ): ReadonlySet<EvaluatedPaper> => pipe(
   readModel.evaluatedPapers,
   R.lookup(groupId),
+  O.map(convertArrayOfUniqueElementsToASet),
   O.getOrElseW(() => new Set<EvaluatedPaper>()),
 );
