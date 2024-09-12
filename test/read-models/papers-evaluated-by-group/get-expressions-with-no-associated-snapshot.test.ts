@@ -146,7 +146,8 @@ describe('get-expressions-with-no-associated-snapshot', () => {
       evaluationRecordedAgainstExpressionDoiA,
       paperSnapshotWithExpressionDoisAB,
       {
-        ...evaluationRecordedAgainstExpressionDoiA,
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        articleId: expressionDoiA,
         groupId: anotherGroupId,
       },
     ] satisfies ReadonlyArray<DomainEvent>;
