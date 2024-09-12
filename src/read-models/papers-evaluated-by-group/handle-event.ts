@@ -86,7 +86,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
 };
 
 const updatePaperSnapshotRepresentatives = (
-  paperSnapshotRepresentatives: ReadModel['paperSnapshotRepresentatives'][GroupId],
+  paperSnapshotRepresentativesForGroup: ReadModel['paperSnapshotRepresentatives'][GroupId],
   evaluatedPapers: ReadModel['evaluatedPapers'][GroupId],
   paperSnapshot: PaperSnapshot,
   queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
@@ -95,10 +95,10 @@ const updatePaperSnapshotRepresentatives = (
     const paperExpressionWasInQueue = queueOfExpressionsWithoutPaperSnapshot.delete(expressionDoi);
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
-      paperSnapshotRepresentatives,
+      paperSnapshotRepresentativesForGroup,
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
-      paperSnapshotRepresentatives.add(expressionDoi);
+      paperSnapshotRepresentativesForGroup.add(expressionDoi);
       evaluatedPapers.push({
         representative: expressionDoi,
         lastEvaluationPublishedAt: new Date(),
