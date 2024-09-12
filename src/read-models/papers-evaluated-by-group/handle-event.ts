@@ -50,28 +50,15 @@ const hasIntersection = (
   return intersection.length > 0;
 };
 
-const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
+const updateLastEvaluationPublishedAtForAKnownExpression = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
-  const evaluatedExpressionDoi = event.articleId;
-  const paperRepresentative = evaluatedExpressionDoi; // This is wrong!
   const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
-    (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
+    (evaluatedPaper) => evaluatedPaper.representative === event.articleId,
   );
   if (indexOfExistingEvaluatedPaper > -1) {
     evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = event.publishedAt;
   }
 };
-
-const chooseRepresentative = (paperSnapshotRepresentativesForGroup: ReadModel['paperSnapshotRepresentatives'][GroupId], representative: ExpressionDoi) => paperSnapshotRepresentativesForGroup.add(representative);
-
-const declareEvaluatedPaper = (
-  evaluatedPapersForGroup: ReadModel['evaluatedPapers'][GroupId],
-  representative: ExpressionDoi,
-  lastEvaluationPublishedAt: Date,
-) => evaluatedPapersForGroup.push({
-  representative,
-  lastEvaluationPublishedAt,
-});
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   ensureGroupIdExists(readmodel, event.groupId);
@@ -86,16 +73,19 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     readmodel.paperSnapshotRepresentatives[event.groupId],
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
-    chooseRepresentative(readmodel.paperSnapshotRepresentatives[event.groupId], event.articleId);
-    declareEvaluatedPaper(readmodel.evaluatedPapers[event.groupId], event.articleId, event.publishedAt);
+    readmodel.paperSnapshotRepresentatives[event.groupId].add(event.articleId);
+    readmodel.evaluatedPapers[event.groupId].push({
+      representative: event.articleId,
+      lastEvaluationPublishedAt: event.publishedAt,
+    });
   } else {
-    updateLastEvaluationPublishedAtForKnownPaper(event, readmodel);
+    updateLastEvaluationPublishedAtForAKnownExpression(event, readmodel);
   }
 };
 
 const updatePaperSnapshotRepresentatives = (
-  paperSnapshotRepresentativesForGroup: ReadModel['paperSnapshotRepresentatives'][GroupId],
-  evaluatedPapersForGroup: ReadModel['evaluatedPapers'][GroupId],
+  readmodel: ReadModel,
+  groupId: GroupId,
   paperSnapshot: PaperSnapshot,
   queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
@@ -103,11 +93,14 @@ const updatePaperSnapshotRepresentatives = (
     const paperExpressionWasInQueue = queueOfExpressionsWithoutPaperSnapshot.delete(expressionDoi);
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
-      paperSnapshotRepresentativesForGroup,
+      readmodel.paperSnapshotRepresentatives[groupId],
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
-      chooseRepresentative(paperSnapshotRepresentativesForGroup, expressionDoi);
-      declareEvaluatedPaper(evaluatedPapersForGroup, expressionDoi, new Date());
+      readmodel.paperSnapshotRepresentatives[groupId].add(expressionDoi);
+      readmodel.evaluatedPapers[groupId].push({
+        representative: expressionDoi,
+        lastEvaluationPublishedAt: new Date(),
+      });
     }
   });
 };
@@ -121,14 +114,7 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     of R.toEntries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
   ) {
     ensureGroupIdExists(readmodel, groupId);
-    const paperSnapshotRepresentativesForGroup = readmodel.paperSnapshotRepresentatives[groupId];
-    const evaluatedPapersForGroup = readmodel.evaluatedPapers[groupId];
-    updatePaperSnapshotRepresentatives(
-      paperSnapshotRepresentativesForGroup,
-      evaluatedPapersForGroup,
-      event.expressionDois,
-      expressionsWithoutPaperSnapshot,
-    );
+    updatePaperSnapshotRepresentatives(readmodel, groupId, event.expressionDois, expressionsWithoutPaperSnapshot);
   }
 };
 
