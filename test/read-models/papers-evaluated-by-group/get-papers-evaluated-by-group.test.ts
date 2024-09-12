@@ -28,21 +28,27 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) =
 const expectSingleExpressionDoiIn = (
   result: ReadonlySet<EvaluatedPaper>,
   representative: ExpressionDoi,
-  lastEvaluationByThisGroupPublishedAt?: Date,
 ) => {
   expect(result.size).toBe(1);
 
   const onlyElementInTheSet: EvaluatedPaper = result.values().next().value;
 
   expect(onlyElementInTheSet.representative).toStrictEqual(representative);
+};
 
-  if (lastEvaluationByThisGroupPublishedAt !== undefined) {
-    expect(
-      onlyElementInTheSet.lastEvaluationByThisGroupPublishedAt,
-    ).toStrictEqual(
-      lastEvaluationByThisGroupPublishedAt,
-    );
-  }
+const expectLastEvaluationByThisGroupPublishedAt = (
+  result: ReadonlySet<EvaluatedPaper>,
+  lastEvaluationByThisGroupPublishedAt: Date,
+) => {
+  expect(result.size).toBe(1);
+
+  const onlyElementInTheSet: EvaluatedPaper = result.values().next().value;
+
+  expect(
+    onlyElementInTheSet.lastEvaluationByThisGroupPublishedAt,
+  ).toStrictEqual(
+    lastEvaluationByThisGroupPublishedAt,
+  );
 };
 
 describe('get-papers-evaluated-by-group', () => {
@@ -91,8 +97,12 @@ describe('get-papers-evaluated-by-group', () => {
       ] satisfies ReadonlyArray<DomainEvent>;
       const result = runQuery(events, groupId);
 
-      it.failing('returns a single expression DOI of the evaluated paper', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA, evaluationRecordedAgainstExpressionDoiA.publishedAt);
+      it('returns a single expression DOI of the evaluated paper', () => {
+        expectSingleExpressionDoiIn(result, expressionDoiA);
+      });
+
+      it.failing('returns a lastEvaluationByThisGroupPublishedAt', () => {
+        expectLastEvaluationByThisGroupPublishedAt(result, evaluationRecordedAgainstExpressionDoiA.publishedAt);
       });
     });
 
