@@ -68,6 +68,14 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
       representative: event.articleId,
       lastEvaluationPublishedAt: event.publishedAt,
     });
+  } else {
+    const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
+    const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
+      (evaluatedPaper) => evaluatedPaper.representative === event.articleId,
+    );
+    if (indexOfExistingEvaluatedPaper > -1) {
+      evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = event.publishedAt;
+    }
   }
 };
 
