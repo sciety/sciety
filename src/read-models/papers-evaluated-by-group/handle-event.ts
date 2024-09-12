@@ -64,6 +64,15 @@ const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'Evalua
 
 const chooseRepresentative = (paperSnapshotRepresentativesForGroup: ReadModel['paperSnapshotRepresentatives'][GroupId], representative: ExpressionDoi) => paperSnapshotRepresentativesForGroup.add(representative);
 
+const declareEvaluatedPaper = (
+  evaluatedPapersForGroup: ReadModel['evaluatedPapers'][GroupId],
+  representative: ExpressionDoi,
+  lastEvaluationPublishedAt: Date,
+) => evaluatedPapersForGroup.push({
+  representative,
+  lastEvaluationPublishedAt,
+});
+
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   ensureGroupIdExists(readmodel, event.groupId);
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
@@ -78,10 +87,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
     chooseRepresentative(readmodel.paperSnapshotRepresentatives[event.groupId], event.articleId);
-    readmodel.evaluatedPapers[event.groupId].push({
-      representative: event.articleId,
-      lastEvaluationPublishedAt: event.publishedAt,
-    });
+    declareEvaluatedPaper(readmodel.evaluatedPapers[event.groupId], event.articleId, event.publishedAt);
   } else {
     updateLastEvaluationPublishedAtForKnownPaper(event, readmodel);
   }
@@ -89,7 +95,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
 
 const updatePaperSnapshotRepresentatives = (
   paperSnapshotRepresentativesForGroup: ReadModel['paperSnapshotRepresentatives'][GroupId],
-  evaluatedPapers: ReadModel['evaluatedPapers'][GroupId],
+  evaluatedPapersForGroup: ReadModel['evaluatedPapers'][GroupId],
   paperSnapshot: PaperSnapshot,
   queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
@@ -101,10 +107,7 @@ const updatePaperSnapshotRepresentatives = (
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
       chooseRepresentative(paperSnapshotRepresentativesForGroup, expressionDoi);
-      evaluatedPapers.push({
-        representative: expressionDoi,
-        lastEvaluationPublishedAt: new Date(),
-      });
+      declareEvaluatedPaper(evaluatedPapersForGroup, expressionDoi, new Date());
     }
   });
 };
