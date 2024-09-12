@@ -50,10 +50,15 @@ const hasIntersection = (
   return intersection.length > 0;
 };
 
+const findRepresentative = (
+  readmodel: ReadModel,
+  snapshotMember: ExpressionDoi,
+) => readmodel.paperSnapshotsByEveryMember[snapshotMember][0];
+
 const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
   const evaluatedExpressionDoi = event.articleId;
-  const paperRepresentative = readmodel.paperSnapshotsByEveryMember[evaluatedExpressionDoi][0];
+  const paperRepresentative = findRepresentative(readmodel, evaluatedExpressionDoi);
   const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
     (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
   );
