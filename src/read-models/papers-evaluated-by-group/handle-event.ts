@@ -50,6 +50,16 @@ const hasIntersection = (
   return intersection.length > 0;
 };
 
+const updateLastEvaluationPublishedAtForAKnownExpression = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
+  const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
+  const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
+    (evaluatedPaper) => evaluatedPaper.representative === event.articleId,
+  );
+  if (indexOfExistingEvaluatedPaper > -1) {
+    evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = event.publishedAt;
+  }
+};
+
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   ensureGroupIdExists(readmodel, event.groupId);
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
@@ -69,13 +79,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
       lastEvaluationPublishedAt: event.publishedAt,
     });
   } else {
-    const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
-    const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
-      (evaluatedPaper) => evaluatedPaper.representative === event.articleId,
-    );
-    if (indexOfExistingEvaluatedPaper > -1) {
-      evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = event.publishedAt;
-    }
+    updateLastEvaluationPublishedAtForAKnownExpression(event, readmodel);
   }
 };
 
