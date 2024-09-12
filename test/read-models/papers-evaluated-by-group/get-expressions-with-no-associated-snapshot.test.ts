@@ -72,11 +72,16 @@ describe('get-expressions-with-no-associated-snapshot', () => {
       });
     });
 
-    describe('then a corresponding paper snapshot recorded, and then the expression is evaluated again', () => {
+    describe('then a corresponding paper snapshot recorded, and then the expression is evaluated again by the same group', () => {
+      const anotherEvaluationRecordedAgainstExpressionDoiA = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoiA,
+      };
       const events = [
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
-        evaluationRecordedAgainstExpressionDoiA,
+        anotherEvaluationRecordedAgainstExpressionDoiA,
       ] satisfies ReadonlyArray<DomainEvent>;
 
       it('returns empty', () => {
