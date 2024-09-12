@@ -94,8 +94,8 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
 };
 
 const updatePaperSnapshotRepresentatives = (
-  paperSnapshotRepresentativesForGroup: ReadModel['paperSnapshotRepresentatives'][GroupId],
-  evaluatedPapersForGroup: ReadModel['evaluatedPapers'][GroupId],
+  readModel: ReadModel,
+  groupId: GroupId,
   paperSnapshot: PaperSnapshot,
   queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
@@ -103,11 +103,11 @@ const updatePaperSnapshotRepresentatives = (
     const paperExpressionWasInQueue = queueOfExpressionsWithoutPaperSnapshot.delete(expressionDoi);
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
-      paperSnapshotRepresentativesForGroup,
+      readModel.paperSnapshotRepresentatives[groupId],
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
-      chooseRepresentative(paperSnapshotRepresentativesForGroup, expressionDoi);
-      declareEvaluatedPaper(evaluatedPapersForGroup, expressionDoi, new Date());
+      chooseRepresentative(readModel.paperSnapshotRepresentatives[groupId], expressionDoi);
+      declareEvaluatedPaper(readModel.evaluatedPapers[groupId], expressionDoi, new Date());
     }
   });
 };
@@ -121,11 +121,9 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     of R.toEntries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
   ) {
     ensureGroupIdExists(readmodel, groupId);
-    const paperSnapshotRepresentativesForGroup = readmodel.paperSnapshotRepresentatives[groupId];
-    const evaluatedPapersForGroup = readmodel.evaluatedPapers[groupId];
     updatePaperSnapshotRepresentatives(
-      paperSnapshotRepresentativesForGroup,
-      evaluatedPapersForGroup,
+      readmodel,
+      groupId,
       event.expressionDois,
       expressionsWithoutPaperSnapshot,
     );
