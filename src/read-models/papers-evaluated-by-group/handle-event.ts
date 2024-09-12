@@ -53,7 +53,9 @@ const hasIntersection = (
 const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
   const evaluatedExpressionDoi = event.articleId;
-  const paperRepresentative = evaluatedExpressionDoi; // This is wrong!
+  const paperRepresentative = Array.from(
+    readmodel.paperSnapshotsByEveryMember[evaluatedExpressionDoi],
+  )[0]; // This is wrong!
   const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
     (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
   );

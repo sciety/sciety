@@ -189,7 +189,7 @@ describe('get-papers-evaluated-by-group', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
-      it.failing('returns a lastEvaluationPublishedAt', () => {
+      it('returns a lastEvaluationPublishedAt', () => {
         expectLastEvaluationPublishedAt(result, evaluationRecordedAgainstExpressionDoiB.publishedAt);
       });
     });
@@ -209,7 +209,7 @@ describe('get-papers-evaluated-by-group', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
-      it.failing('returns a lastEvaluationPublishedAt', () => {
+      it('returns a lastEvaluationPublishedAt', () => {
         expectLastEvaluationPublishedAt(result, evaluationRecordedAgainstExpressionDoiB.publishedAt);
       });
     });
