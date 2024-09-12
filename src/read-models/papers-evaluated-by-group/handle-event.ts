@@ -66,7 +66,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     readmodel.paperSnapshotRepresentatives[event.groupId].add(event.articleId);
     readmodel.evaluatedPapers[event.groupId].push({
       representative: event.articleId,
-      lastEvaluationPublishedAt: new Date(),
+      lastEvaluationPublishedAt: event.publishedAt,
     });
   }
 };
