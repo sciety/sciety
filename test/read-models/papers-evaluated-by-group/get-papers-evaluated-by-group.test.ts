@@ -169,6 +169,10 @@ describe('get-papers-evaluated-by-group', () => {
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
+
+      it.failing('returns a lastEvaluationPublishedAt', () => {
+        expectLastEvaluationPublishedAt(result, evaluationRecordedAgainstExpressionDoiB.publishedAt);
+      });
     });
 
     describe('when an expression is evaluated that was not in the first snapshot but in the second snapshot', () => {
