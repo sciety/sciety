@@ -175,7 +175,8 @@ describe('get-papers-evaluated-by-group', () => {
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
         {
-          ...evaluationRecordedAgainstExpressionDoiA,
+          ...arbitraryEvaluationPublicationRecordedEvent(),
+          articleId: expressionDoiA,
           groupId: anotherGroupId,
         },
       ] satisfies ReadonlyArray<DomainEvent>;
