@@ -303,7 +303,7 @@ describe('get-papers-evaluated-by-group', () => {
       };
       const newlyPublishedEvaluationRecordedAgainstExpressionDoiC = {
         ...evaluationRecordedAgainstExpressionDoiC,
-        publishedAt: someTimeAfter(evaluationRecordedAgainstExpressionDoiB.publishedAt),
+        publishedAt: someTimeAfter(newlyPublishedEvaluationRecordedAgainstExpressionDoiB.publishedAt),
       };
       const events = [
         evaluationRecordedAgainstExpressionDoiA,
