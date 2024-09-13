@@ -120,7 +120,7 @@ const updatePaperSnapshotRepresentatives = (
       readmodel.paperSnapshotRepresentatives[groupId],
     );
     if (paperExpressionWasInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
-      chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, groupId, expressionDoi, new Date());
+      chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, groupId, expressionDoi, new Date('1900-01-01'));
     }
   });
 };
