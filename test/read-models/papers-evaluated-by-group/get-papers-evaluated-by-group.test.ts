@@ -171,6 +171,32 @@ describe('get-papers-evaluated-by-group', () => {
       });
     });
 
+    describe('when a paper snapshot has been recorded, followed by an evaluation, and then an earlier published evaluation', () => {
+      const anotherEvaluationRecordedAgainstExpressionDoiA = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoiA,
+        publishedAt: someTimeBefore(evaluationRecordedAgainstExpressionDoiA.publishedAt),
+      };
+      const events = [
+        paperSnapshotWithExpressionDoisAB,
+        evaluationRecordedAgainstExpressionDoiA,
+        anotherEvaluationRecordedAgainstExpressionDoiA,
+      ] satisfies ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
+
+      it('returns a single expression DOI of the evaluated paper', () => {
+        expectSingleExpressionDoiIn(result, expressionDoiA);
+      });
+
+      it.failing('returns a lastEvaluationPublishedAt', () => {
+        expectLastEvaluationPublishedAt(result, evaluationRecordedAgainstExpressionDoiA.publishedAt);
+      });
+    });
+
     describe('when an evaluation has been recorded, a paper snapshot recorded and then an earlier published evaluation is recorded for the same group', () => {
       const anotherEvaluationRecordedAgainstExpressionDoiA = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
