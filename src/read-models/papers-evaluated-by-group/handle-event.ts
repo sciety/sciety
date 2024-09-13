@@ -19,6 +19,7 @@ export type ReadModel = {
   paperSnapshotRepresentatives: Record<GroupId, Set<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
+  lastEvaluationOfExpressionPublishedAt: Record<ExpressionDoi, Date>,
 };
 
 export const initialState = (): ReadModel => ({
@@ -26,6 +27,7 @@ export const initialState = (): ReadModel => ({
   paperSnapshotRepresentatives: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
   paperSnapshotsByEveryMember: {},
+  lastEvaluationOfExpressionPublishedAt: {},
 });
 
 const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
