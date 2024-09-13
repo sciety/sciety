@@ -23,6 +23,12 @@ const someTimeAfter = (date: Date) => {
   return later;
 };
 
+const someTimeBefore = (date: Date) => {
+  const later = new Date(date);
+  later.setFullYear(date.getFullYear() - 1);
+  return later;
+};
+
 const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) => {
   const readModel = pipe(
     events,
@@ -162,6 +168,32 @@ describe('get-papers-evaluated-by-group', () => {
 
       it('returns a lastEvaluationPublishedAt', () => {
         expectLastEvaluationPublishedAt(result, anotherEvaluationRecordedAgainstExpressionDoiA.publishedAt);
+      });
+    });
+
+    describe('when an evaluation has been recorded, a paper snapshot recorded and then an earlier published evaluation is recorded for the same group', () => {
+      const anotherEvaluationRecordedAgainstExpressionDoiA = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: expressionDoiA,
+        publishedAt: someTimeBefore(evaluationRecordedAgainstExpressionDoiA.publishedAt),
+      };
+      const events = [
+        evaluationRecordedAgainstExpressionDoiA,
+        paperSnapshotWithExpressionDoisAB,
+        anotherEvaluationRecordedAgainstExpressionDoiA,
+      ] satisfies ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
+
+      it('returns a single expression DOI of the evaluated paper', () => {
+        expectSingleExpressionDoiIn(result, expressionDoiA);
+      });
+
+      it.failing('returns a lastEvaluationPublishedAt', () => {
+        expectLastEvaluationPublishedAt(result, evaluationRecordedAgainstExpressionDoiA.publishedAt);
       });
     });
 
