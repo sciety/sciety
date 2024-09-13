@@ -271,11 +271,19 @@ describe('get-papers-evaluated-by-group', () => {
     });
 
     describe('when an expression is evaluated that was not in the first snapshot but in the second snapshot', () => {
+      const newlyPublishedEvaluationRecordedAgainstExpressionDoiB = {
+        ...evaluationRecordedAgainstExpressionDoiB,
+        publishedAt: someTimeAfter(evaluationRecordedAgainstExpressionDoiA.publishedAt),
+      };
+      const newlyPublishedEvaluationRecordedAgainstExpressionDoiC = {
+        ...evaluationRecordedAgainstExpressionDoiC,
+        publishedAt: someTimeAfter(evaluationRecordedAgainstExpressionDoiB.publishedAt),
+      };
       const events = [
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
-        evaluationRecordedAgainstExpressionDoiB,
-        evaluationRecordedAgainstExpressionDoiC,
+        newlyPublishedEvaluationRecordedAgainstExpressionDoiB,
+        newlyPublishedEvaluationRecordedAgainstExpressionDoiC,
         paperSnapshotWithExpressionDoisABC,
       ] satisfies ReadonlyArray<DomainEvent>;
 
@@ -285,6 +293,10 @@ describe('get-papers-evaluated-by-group', () => {
 
       it('returns a single expression DOI of the evaluated paper', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
+      });
+
+      it.failing('returns a lastEvaluationPublishedAt', () => {
+        expectLastEvaluationPublishedAt(result, newlyPublishedEvaluationRecordedAgainstExpressionDoiC.publishedAt);
       });
     });
 
