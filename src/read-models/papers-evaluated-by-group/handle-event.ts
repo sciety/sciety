@@ -92,7 +92,16 @@ const chooseRepresentativeAndDeclareEvaluatedPaper = (
   declareEvaluatedPaper(readmodel.evaluatedPapers[groupId], representative, lastEvaluationPublishedAt);
 };
 
+const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
+  if (!(readmodel.lastEvaluationOfExpressionPublishedAt[event.articleId])) {
+    readmodel.lastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
+  } else if (event.publishedAt > readmodel.lastEvaluationOfExpressionPublishedAt[event.articleId]) {
+    readmodel.lastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
+  }
+};
+
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
+  updateLastEvaluationDate(readmodel, event);
   ensureGroupIdExists(readmodel, event.groupId);
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
