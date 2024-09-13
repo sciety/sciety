@@ -127,6 +127,7 @@ const updatePaperSnapshotRepresentatives = (
   evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
   paperSnapshot.forEach((expressionDoi) => {
+    const lastEvaluationPublishedAt = readmodel.lastEvaluationOfExpressionPublishedAt[expressionDoi];
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
@@ -137,7 +138,7 @@ const updatePaperSnapshotRepresentatives = (
         readmodel,
         groupId,
         expressionDoi,
-        readmodel.lastEvaluationOfExpressionPublishedAt[expressionDoi],
+        lastEvaluationPublishedAt,
       );
     }
     evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
