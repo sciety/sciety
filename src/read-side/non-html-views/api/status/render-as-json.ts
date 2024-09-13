@@ -19,7 +19,8 @@ type OptionOfRecord = O.Option<StatusDataRecord>;
 
 type JsonFriendlyScalar = boolean | number | string | null;
 
-export type StatusData = JsonFriendlyScalar | StatusDataArray | StatusDataRecord | ArticleId | URL | OptionOfString | OptionOfRecord;
+export type StatusData = JsonFriendlyScalar | StatusDataArray | StatusDataRecord
+| ArticleId | URL | OptionOfString | OptionOfRecord;
 
 const replacer = (_key: string, value: StatusData): JsonFriendlyScalar | StatusDataRecord | StatusDataArray => {
   if (value instanceof ArticleId) {
@@ -29,6 +30,12 @@ const replacer = (_key: string, value: StatusData): JsonFriendlyScalar | StatusD
     return value.href;
   }
   if (tt.optionFromNullable(t.string).is(value)) {
+    if (O.isSome(value)) {
+      return value.value;
+    }
+    return null;
+  }
+  if (tt.optionFromNullable(t.unknown).is(value)) {
     if (O.isSome(value)) {
       return value.value;
     }
