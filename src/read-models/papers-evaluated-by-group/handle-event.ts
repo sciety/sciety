@@ -57,6 +57,20 @@ const findRepresentative = (
   snapshotMember: ExpressionDoi,
 ) => readmodel.paperSnapshotsByEveryMember[snapshotMember][0];
 
+const calculateLastEvaluationPublishedAtForSnapshot = (
+  lastEvaluationOfExpressionPublishedAt: ReadModel['lastEvaluationOfExpressionPublishedAt'],
+  paperSnapshot: PaperSnapshot,
+) => {
+  let lastDate: Date = lastEvaluationOfExpressionPublishedAt[paperSnapshot[0]];
+  paperSnapshot.forEach((expressionDoi) => {
+    const expressionEvaluatedAt = lastEvaluationOfExpressionPublishedAt[expressionDoi];
+    if (expressionEvaluatedAt > lastDate) {
+      lastDate = expressionEvaluatedAt;
+    }
+  });
+  return lastDate;
+};
+
 const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
   const evaluatedExpressionDoi = event.articleId;
@@ -65,9 +79,11 @@ const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'Evalua
     (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
   );
   if (indexOfExistingEvaluatedPaper > -1) {
-    if (event.publishedAt > evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt) {
-      evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = event.publishedAt;
-    }
+    const lastEvaluationPublishedAt = calculateLastEvaluationPublishedAtForSnapshot(
+      readmodel.lastEvaluationOfExpressionPublishedAt,
+      readmodel.paperSnapshotsByEveryMember[paperRepresentative],
+    );
+    evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = lastEvaluationPublishedAt;
   }
 };
 
@@ -118,20 +134,6 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   } else {
     updateLastEvaluationPublishedAtForKnownPaper(event, readmodel);
   }
-};
-
-const calculateLastEvaluationPublishedAtForSnapshot = (
-  lastEvaluationOfExpressionPublishedAt: ReadModel['lastEvaluationOfExpressionPublishedAt'],
-  paperSnapshot: PaperSnapshot,
-) => {
-  let lastDate: Date = lastEvaluationOfExpressionPublishedAt[paperSnapshot[0]];
-  paperSnapshot.forEach((expressionDoi) => {
-    const expressionEvaluatedAt = lastEvaluationOfExpressionPublishedAt[expressionDoi];
-    if (expressionEvaluatedAt > lastDate) {
-      lastDate = expressionEvaluatedAt;
-    }
-  });
-  return lastDate;
 };
 
 const updatePaperSnapshotRepresentatives = (
