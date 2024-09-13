@@ -17,6 +17,12 @@ const groupId = arbitraryGroupId();
 const anotherGroupId = arbitraryGroupId();
 const consideredGroupIds = [groupId, anotherGroupId];
 
+const someTimeAfter = (date: Date) => {
+  const later = new Date(date);
+  later.setFullYear(date.getFullYear() + 1);
+  return later;
+};
+
 const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) => {
   const readModel = pipe(
     events,
@@ -133,11 +139,12 @@ describe('get-papers-evaluated-by-group', () => {
       });
     });
 
-    describe('when an expression has been evaluated, a paper snapshot recorded and the expression is evaluated again by the same group', () => {
+    describe('when an evaluation has been recorded, a paper snapshot recorded and then a newly published evaluation is recorded for the same group', () => {
       const anotherEvaluationRecordedAgainstExpressionDoiA = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
         articleId: expressionDoiA,
+        publishedAt: someTimeAfter(evaluationRecordedAgainstExpressionDoiA.publishedAt),
       };
       const events = [
         evaluationRecordedAgainstExpressionDoiA,
