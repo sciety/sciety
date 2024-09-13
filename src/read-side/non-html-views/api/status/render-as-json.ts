@@ -1,6 +1,8 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { ArticleId } from '../../../../types/article-id';
 import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
 
@@ -25,6 +27,12 @@ const replacer = (_key: string, value: StatusData): JsonFriendlyScalar | StatusD
   }
   if (value instanceof URL) {
     return value.href;
+  }
+  if (tt.optionFromNullable(t.string).is(value)) {
+    if (O.isSome(value)) {
+      return value.value;
+    }
+    return null;
   }
   return value;
 };
