@@ -63,7 +63,9 @@ const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'Evalua
     (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
   );
   if (indexOfExistingEvaluatedPaper > -1) {
-    evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = event.publishedAt;
+    if (event.publishedAt > evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt) {
+      evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = event.publishedAt;
+    }
   }
 };
 
