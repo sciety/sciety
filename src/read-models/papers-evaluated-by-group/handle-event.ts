@@ -71,10 +71,12 @@ const calculateLastEvaluationPublishedAtForSnapshot = (
   return lastDate;
 };
 
-const updateLastEvaluationPublishedAtForKnownPaper = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
-  const evaluatedPapers = readmodel.evaluatedPapers[event.groupId];
-  const evaluatedExpressionDoi = event.articleId;
-  const paperRepresentative = findRepresentative(readmodel, evaluatedExpressionDoi);
+const updateLastEvaluationPublishedAtForKnownPaper = (
+  readmodel: ReadModel,
+  groupId: GroupId,
+  paperRepresentative: ExpressionDoi,
+) => {
+  const evaluatedPapers = readmodel.evaluatedPapers[groupId];
   const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
     (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
   );
@@ -132,7 +134,9 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
     chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, event.groupId, event.articleId, event.publishedAt);
   } else {
-    updateLastEvaluationPublishedAtForKnownPaper(event, readmodel);
+    const evaluatedExpressionDoi = event.articleId;
+    const paperRepresentative = findRepresentative(readmodel, evaluatedExpressionDoi);
+    updateLastEvaluationPublishedAtForKnownPaper(readmodel, event.groupId, paperRepresentative);
   }
 };
 
