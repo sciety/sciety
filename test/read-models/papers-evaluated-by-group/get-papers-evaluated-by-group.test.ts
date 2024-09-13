@@ -247,10 +247,14 @@ describe('get-papers-evaluated-by-group', () => {
     });
 
     describe('when two expressions have been evaluated for a known paper snapshot', () => {
+      const newlyPublishedEvaluationRecordedAgainstExpressionDoiB = {
+        ...evaluationRecordedAgainstExpressionDoiB,
+        publishedAt: someTimeAfter(evaluationRecordedAgainstExpressionDoiA.publishedAt),
+      };
       const events = [
         paperSnapshotWithExpressionDoisAB,
         evaluationRecordedAgainstExpressionDoiA,
-        evaluationRecordedAgainstExpressionDoiB,
+        newlyPublishedEvaluationRecordedAgainstExpressionDoiB,
       ] satisfies ReadonlyArray<DomainEvent>;
 
       beforeEach(() => {
@@ -262,7 +266,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns a lastEvaluationPublishedAt', () => {
-        expectLastEvaluationPublishedAt(result, evaluationRecordedAgainstExpressionDoiB.publishedAt);
+        expectLastEvaluationPublishedAt(result, newlyPublishedEvaluationRecordedAgainstExpressionDoiB.publishedAt);
       });
     });
 
