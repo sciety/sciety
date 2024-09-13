@@ -52,10 +52,12 @@ const hasIntersection = (
   return intersection.length > 0;
 };
 
-const findRepresentative = (
+const pickRepresentative = (paperSnapshot: PaperSnapshot) => paperSnapshot[0];
+
+const findRepresentativeByMember = (
   readmodel: ReadModel,
   snapshotMember: ExpressionDoi,
-) => readmodel.paperSnapshotsByEveryMember[snapshotMember][0];
+) => pickRepresentative(readmodel.paperSnapshotsByEveryMember[snapshotMember]);
 
 const calculateLastEvaluationPublishedAtForSnapshot = (
   lastEvaluationOfExpressionPublishedAt: ReadModel['lastEvaluationOfExpressionPublishedAt'],
@@ -135,7 +137,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, event.groupId, event.articleId, event.publishedAt);
   } else {
     const evaluatedExpressionDoi = event.articleId;
-    const paperRepresentative = findRepresentative(readmodel, evaluatedExpressionDoi);
+    const paperRepresentative = findRepresentativeByMember(readmodel, evaluatedExpressionDoi);
     updateLastEvaluationPublishedAtForKnownPaper(readmodel, event.groupId, paperRepresentative);
   }
 };
@@ -166,6 +168,8 @@ const updatePaperSnapshotRepresentatives = (
     }
     evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
   });
+  const paperRepresentative = pickRepresentative(paperSnapshot);
+  updateLastEvaluationPublishedAtForKnownPaper(readmodel, groupId, paperRepresentative);
 };
 
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
