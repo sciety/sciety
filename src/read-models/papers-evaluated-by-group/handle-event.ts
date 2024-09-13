@@ -133,7 +133,12 @@ const updatePaperSnapshotRepresentatives = (
       readmodel.paperSnapshotRepresentatives[groupId],
     );
     if (evaluatedPaperExpressionWasNotAlreadyInSnapshot && noExpressionOfTheSnapshotIsInRepresentatives) {
-      chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, groupId, expressionDoi, new Date('1900-01-01'));
+      chooseRepresentativeAndDeclareEvaluatedPaper(
+        readmodel,
+        groupId,
+        expressionDoi,
+        readmodel.lastEvaluationOfExpressionPublishedAt[expressionDoi],
+      );
     }
     evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
   });
