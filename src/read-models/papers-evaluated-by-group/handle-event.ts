@@ -120,14 +120,31 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   }
 };
 
+const calculateLastEvaluationPublishedAtForSnapshot = (
+  lastEvaluationOfExpressionPublishedAt: ReadModel['lastEvaluationOfExpressionPublishedAt'],
+  paperSnapshot: PaperSnapshot,
+) => {
+  let lastDate: Date = lastEvaluationOfExpressionPublishedAt[paperSnapshot[0]];
+  paperSnapshot.forEach((expressionDoi) => {
+    const expressionEvaluatedAt = lastEvaluationOfExpressionPublishedAt[expressionDoi];
+    if (expressionEvaluatedAt > lastDate) {
+      lastDate = expressionEvaluatedAt;
+    }
+  });
+  return lastDate;
+};
+
 const updatePaperSnapshotRepresentatives = (
   readmodel: ReadModel,
   groupId: GroupId,
   paperSnapshot: PaperSnapshot,
   evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
+  const lastEvaluationPublishedAt = calculateLastEvaluationPublishedAtForSnapshot(
+    readmodel.lastEvaluationOfExpressionPublishedAt,
+    paperSnapshot,
+  );
   paperSnapshot.forEach((expressionDoi) => {
-    const lastEvaluationPublishedAt = readmodel.lastEvaluationOfExpressionPublishedAt[expressionDoi];
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
