@@ -113,18 +113,18 @@ const updatePaperSnapshotRepresentatives = (
   readmodel: ReadModel,
   groupId: GroupId,
   paperSnapshot: PaperSnapshot,
-  queueOfExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
+  evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
   paperSnapshot.forEach((expressionDoi) => {
-    const paperExpressionIsInQueue = queueOfExpressionsWithoutPaperSnapshot.has(expressionDoi);
+    const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
       readmodel.paperSnapshotRepresentatives[groupId],
     );
-    if (paperExpressionIsInQueue && noExpressionOfTheSnapshotIsInRepresentatives) {
+    if (evaluatedPaperExpressionWasNotAlreadyInSnapshot && noExpressionOfTheSnapshotIsInRepresentatives) {
       chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, groupId, expressionDoi, new Date('1900-01-01'));
     }
-    queueOfExpressionsWithoutPaperSnapshot.delete(expressionDoi);
+    evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
   });
 };
 
