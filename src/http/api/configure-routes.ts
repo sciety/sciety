@@ -4,8 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { createConfigurePostMiddleware } from './create-configure-post-middleware';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { groups } from '../../read-side/non-html-views/api/groups';
+import { ownedBy } from '../../read-side/non-html-views/api/owned-by';
 import { applicationStatus } from '../../read-side/non-html-views/api/status';
-import { ownedBy } from '../../read-side/non-html-views/owned-by';
 import { DependenciesForCommands } from '../../write-side';
 import {
   addArticleToListCommandCodec,
