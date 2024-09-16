@@ -422,17 +422,25 @@ describe('get-papers-evaluated-by-group', () => {
   describe('failure from staging', () => {
     const groupIdNotConsidered = arbitraryGroupId();
     const biorxivExpressionDoi = arbitraryExpressionDoi();
+    const acmiExpressionDoi = arbitraryExpressionDoi();
+    const evaluationPublicationRecordedForNotConsideredGroup = {
+      ...arbitraryEvaluationPublicationRecordedEvent(),
+      groupId: groupIdNotConsidered,
+      articleId: biorxivExpressionDoi,
+    };
+    const evaluationPublicationRecordedForConsideredGroup = {
+      ...arbitraryEvaluationPublicationRecordedEvent(),
+      groupId,
+      articleId: acmiExpressionDoi,
+    };
     const events = [
-      {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId: groupIdNotConsidered,
-        articleId: biorxivExpressionDoi,
-      },
+      evaluationPublicationRecordedForNotConsideredGroup,
+      evaluationPublicationRecordedForConsideredGroup,
       {
         ...arbitraryPaperSnapshotRecordedEvent(),
         expressionDois: new Set([
           biorxivExpressionDoi,
-          arbitraryExpressionDoi(),
+          acmiExpressionDoi,
           arbitraryExpressionDoi(),
           arbitraryExpressionDoi(),
         ]),
@@ -445,6 +453,8 @@ describe('get-papers-evaluated-by-group', () => {
 
     it.todo('returns a single expression DOI of the evaluated paper');
 
-    it.todo('returns a lastEvaluationPublishedAt');
+    it.failing('returns a lastEvaluationPublishedAt', () => {
+      expectLastEvaluationPublishedAt(result, evaluationPublicationRecordedForConsideredGroup.publishedAt);
+    });
   });
 });
