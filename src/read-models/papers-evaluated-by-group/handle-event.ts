@@ -48,7 +48,7 @@ const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
 
 const hasIntersection = (
   paperSnapshot: PaperSnapshot,
-  paperSnapshotRepresentatives: ReadModel['paperSnapshotRepresentatives'][GroupId],
+  paperSnapshotRepresentatives: Set<PaperSnapshotRepresentative>,
 ) => {
   const intersection = paperSnapshot.filter(
     (expressionDoi) => paperSnapshotRepresentatives.has(expressionDoi),
