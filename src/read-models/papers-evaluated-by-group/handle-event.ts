@@ -61,7 +61,7 @@ const findRepresentativeByMember = (
   snapshotMember: ExpressionDoi,
 ) => pickRepresentative(readmodel.paperSnapshotsByEveryMember[snapshotMember]);
 
-const calculateLastEvaluationPublishedAtForSnapshot = (
+const deprecatedCalculateLastEvaluationPublishedAtForSnapshot = (
   lastEvaluationOfExpressionPublishedAt: ReadModel['deprecatedLastEvaluationOfExpressionPublishedAt'],
   paperSnapshot: PaperSnapshot,
 ) => {
@@ -85,7 +85,7 @@ const updateLastEvaluationPublishedAtForKnownPaper = (
     (evaluatedPaper) => evaluatedPaper.representative === paperRepresentative,
   );
   if (indexOfExistingEvaluatedPaper > -1) {
-    const lastEvaluationPublishedAt = calculateLastEvaluationPublishedAtForSnapshot(
+    const lastEvaluationPublishedAt = deprecatedCalculateLastEvaluationPublishedAtForSnapshot(
       readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
       readmodel.paperSnapshotsByEveryMember[paperRepresentative],
     );
@@ -157,7 +157,7 @@ const updatePaperSnapshotRepresentatives = (
   paperSnapshot: PaperSnapshot,
   evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
-  const lastEvaluationPublishedAt = calculateLastEvaluationPublishedAtForSnapshot(
+  const lastEvaluationPublishedAt = deprecatedCalculateLastEvaluationPublishedAtForSnapshot(
     readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
     paperSnapshot,
   );
