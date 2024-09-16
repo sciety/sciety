@@ -6,23 +6,23 @@ import * as tt from 'io-ts-types';
 import { ArticleId } from '../../../types/article-id';
 import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../non-html-view-representation';
 
-type StatusDataRecord = {
-  readonly [key: string]: StatusData,
+type ApiViewModelRecord = {
+  readonly [key: string]: ApiViewModel,
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type StatusDataArray = {} & ReadonlyArray<StatusData>;
+type ApiViewModelArray = {} & ReadonlyArray<ApiViewModel>;
 
 type OptionOfString = O.Option<string>;
 
-type OptionOfRecord = O.Option<StatusDataRecord>;
+type OptionOfRecord = O.Option<ApiViewModelRecord>;
 
 type JsonFriendlyScalar = boolean | number | string | null;
 
-export type StatusData = JsonFriendlyScalar | StatusDataArray | StatusDataRecord
+export type ApiViewModel = JsonFriendlyScalar | ApiViewModelArray | ApiViewModelRecord
 | ArticleId | URL | OptionOfString | OptionOfRecord;
 
-const replacer = (_key: string, value: StatusData): JsonFriendlyScalar | StatusDataRecord | StatusDataArray => {
+const replacer = (_key: string, value: ApiViewModel): JsonFriendlyScalar | ApiViewModelRecord | ApiViewModelArray => {
   if (value instanceof ArticleId) {
     return value.value;
   }
@@ -44,7 +44,7 @@ const replacer = (_key: string, value: StatusData): JsonFriendlyScalar | StatusD
   return value;
 };
 
-export const renderAsJson = (viewModel: StatusData): NonHtmlViewRepresentation => pipe(
+export const renderAsJson = (viewModel: ApiViewModel): NonHtmlViewRepresentation => pipe(
   viewModel,
   (object) => JSON.stringify(object, replacer),
   (state) => toNonHtmlViewRepresentation(state, 'application/json'),
