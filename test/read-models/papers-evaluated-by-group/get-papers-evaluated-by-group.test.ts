@@ -420,29 +420,20 @@ describe('get-papers-evaluated-by-group', () => {
   });
 
   describe('failure from staging', () => {
-    const groupIdNotConsidered = arbitraryGroupId();
     const biorxivExpressionDoi = arbitraryExpressionDoi();
     const acmiExpressionDoi = arbitraryExpressionDoi();
-    const evaluationPublicationRecordedForNotConsideredGroup = {
-      ...arbitraryEvaluationPublicationRecordedEvent(),
-      groupId: groupIdNotConsidered,
-      articleId: biorxivExpressionDoi,
-    };
     const evaluationPublicationRecordedForConsideredGroup = {
       ...arbitraryEvaluationPublicationRecordedEvent(),
       groupId,
       articleId: acmiExpressionDoi,
     };
     const events = [
-      evaluationPublicationRecordedForNotConsideredGroup,
       evaluationPublicationRecordedForConsideredGroup,
       {
         ...arbitraryPaperSnapshotRecordedEvent(),
         expressionDois: new Set([
           biorxivExpressionDoi,
           acmiExpressionDoi,
-          arbitraryExpressionDoi(),
-          arbitraryExpressionDoi(),
         ]),
       },
     ] satisfies ReadonlyArray<DomainEvent>;
