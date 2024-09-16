@@ -19,7 +19,8 @@ export type ReadModel = {
   paperSnapshotRepresentatives: Record<GroupId, Set<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
-  lastEvaluationOfExpressionPublishedAt: Record<ExpressionDoi, Date>,
+  deprecatedLastEvaluationOfExpressionPublishedAt: Record<ExpressionDoi, Date>,
+  lastEvaluationOfExpressionPublishedAt: Map<ExpressionDoi, Date>,
 };
 
 export const initialState = (): ReadModel => ({
@@ -27,7 +28,8 @@ export const initialState = (): ReadModel => ({
   paperSnapshotRepresentatives: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
   paperSnapshotsByEveryMember: {},
-  lastEvaluationOfExpressionPublishedAt: {},
+  deprecatedLastEvaluationOfExpressionPublishedAt: {},
+  lastEvaluationOfExpressionPublishedAt: new Map(),
 });
 
 const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
@@ -60,7 +62,7 @@ const findRepresentativeByMember = (
 ) => pickRepresentative(readmodel.paperSnapshotsByEveryMember[snapshotMember]);
 
 const calculateLastEvaluationPublishedAtForSnapshot = (
-  lastEvaluationOfExpressionPublishedAt: ReadModel['lastEvaluationOfExpressionPublishedAt'],
+  lastEvaluationOfExpressionPublishedAt: ReadModel['deprecatedLastEvaluationOfExpressionPublishedAt'],
   paperSnapshot: PaperSnapshot,
 ) => {
   let lastDate: Date = lastEvaluationOfExpressionPublishedAt[paperSnapshot[0]];
@@ -84,7 +86,7 @@ const updateLastEvaluationPublishedAtForKnownPaper = (
   );
   if (indexOfExistingEvaluatedPaper > -1) {
     const lastEvaluationPublishedAt = calculateLastEvaluationPublishedAtForSnapshot(
-      readmodel.lastEvaluationOfExpressionPublishedAt,
+      readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
       readmodel.paperSnapshotsByEveryMember[paperRepresentative],
     );
     evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = lastEvaluationPublishedAt;
@@ -113,10 +115,10 @@ const chooseRepresentativeAndDeclareEvaluatedPaper = (
 };
 
 const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
-  if (!(readmodel.lastEvaluationOfExpressionPublishedAt[event.articleId])) {
-    readmodel.lastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
-  } else if (event.publishedAt > readmodel.lastEvaluationOfExpressionPublishedAt[event.articleId]) {
-    readmodel.lastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
+  if (!(readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId])) {
+    readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
+  } else if (event.publishedAt > readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId]) {
+    readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
   }
 };
 
@@ -149,7 +151,7 @@ const updatePaperSnapshotRepresentatives = (
   evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
   const lastEvaluationPublishedAt = calculateLastEvaluationPublishedAtForSnapshot(
-    readmodel.lastEvaluationOfExpressionPublishedAt,
+    readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
     paperSnapshot,
   );
   paperSnapshot.forEach((expressionDoi) => {
