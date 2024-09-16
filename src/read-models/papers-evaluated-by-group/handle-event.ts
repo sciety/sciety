@@ -18,7 +18,6 @@ export type EvaluatedPaper = {
 
 export type ReadModel = {
   evaluatedPapers: Record<GroupId, Array<EvaluatedPaper>>,
-  paperSnapshotRepresentatives: Record<GroupId, Set<PaperSnapshotRepresentative>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
   deprecatedLastEvaluationOfExpressionPublishedAt: Record<ExpressionDoi, Date>,
@@ -27,7 +26,6 @@ export type ReadModel = {
 
 export const initialState = (): ReadModel => ({
   evaluatedPapers: {},
-  paperSnapshotRepresentatives: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
   paperSnapshotsByEveryMember: {},
   deprecatedLastEvaluationOfExpressionPublishedAt: {},
@@ -37,9 +35,6 @@ export const initialState = (): ReadModel => ({
 const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
   if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
-  }
-  if (!(groupId in readmodel.paperSnapshotRepresentatives)) {
-    readmodel.paperSnapshotRepresentatives[groupId] = new Set();
   }
   if (!(groupId in readmodel.evaluatedPapers)) {
     readmodel.evaluatedPapers[groupId] = [];
@@ -101,8 +96,6 @@ const updateLastEvaluationPublishedAtForKnownPaper = (
   }
 };
 
-const chooseRepresentative = (paperSnapshotRepresentativesForGroup: ReadModel['paperSnapshotRepresentatives'][GroupId], representative: ExpressionDoi) => paperSnapshotRepresentativesForGroup.add(representative);
-
 const declareEvaluatedPaper = (
   evaluatedPapersForGroup: ReadModel['evaluatedPapers'][GroupId],
   representative: ExpressionDoi,
@@ -118,7 +111,6 @@ const chooseRepresentativeAndDeclareEvaluatedPaper = (
   representative: ExpressionDoi,
   lastEvaluationPublishedAt: Date,
 ) => {
-  chooseRepresentative(readmodel.paperSnapshotRepresentatives[groupId], representative);
   declareEvaluatedPaper(readmodel.evaluatedPapers[groupId], representative, lastEvaluationPublishedAt);
 };
 
