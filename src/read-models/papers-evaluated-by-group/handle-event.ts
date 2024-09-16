@@ -97,10 +97,11 @@ const updateLastEvaluationPublishedAtForKnownPaper = (
 };
 
 const declareEvaluatedPaper = (
-  evaluatedPapersForGroup: ReadModel['evaluatedPapers'][GroupId],
+  readmodel: ReadModel,
+  groupId: GroupId,
   representative: ExpressionDoi,
   lastEvaluationPublishedAt: Date,
-) => evaluatedPapersForGroup.push({
+) => readmodel.evaluatedPapers[groupId].push({
   representative,
   lastEvaluationPublishedAt,
 });
@@ -134,7 +135,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     allKnownRepresentatives(readmodel.evaluatedPapers, event.groupId),
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
-    declareEvaluatedPaper(readmodel.evaluatedPapers[event.groupId], event.articleId, event.publishedAt);
+    declareEvaluatedPaper(readmodel, event.groupId, event.articleId, event.publishedAt);
   } else {
     const evaluatedExpressionDoi = event.articleId;
     const paperRepresentative = findRepresentativeByMember(readmodel, evaluatedExpressionDoi);
@@ -160,7 +161,8 @@ const updatePaperSnapshotRepresentatives = (
     );
     if (evaluatedPaperExpressionWasNotAlreadyInSnapshot && noExpressionOfTheSnapshotIsInRepresentatives) {
       declareEvaluatedPaper(
-        readmodel.evaluatedPapers[groupId],
+        readmodel,
+        groupId,
         expressionDoi,
         lastEvaluationPublishedAt,
       );
