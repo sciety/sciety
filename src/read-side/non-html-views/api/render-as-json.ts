@@ -3,8 +3,8 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { ArticleId } from '../../../../types/article-id';
-import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../../non-html-view-representation';
+import { ArticleId } from '../../../types/article-id';
+import { NonHtmlViewRepresentation, toNonHtmlViewRepresentation } from '../non-html-view-representation';
 
 type StatusDataRecord = {
   readonly [key: string]: StatusData,
