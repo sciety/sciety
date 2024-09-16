@@ -418,4 +418,33 @@ describe('get-papers-evaluated-by-group', () => {
       });
     });
   });
+
+  describe('failure from staging', () => {
+    const groupIdNotConsidered = arbitraryGroupId();
+    const biorxivExpressionDoi = arbitraryExpressionDoi();
+    const events = [
+      {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: groupIdNotConsidered,
+        articleId: biorxivExpressionDoi,
+      },
+      {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: new Set([
+          biorxivExpressionDoi,
+          arbitraryExpressionDoi(),
+          arbitraryExpressionDoi(),
+          arbitraryExpressionDoi(),
+        ]),
+      },
+    ] satisfies ReadonlyArray<DomainEvent>;
+
+    beforeEach(() => {
+      result = runQuery(events, groupId);
+    });
+
+    it.todo('returns a single expression DOI of the evaluated paper');
+
+    it.todo('returns a lastEvaluationPublishedAt');
+  });
 });
