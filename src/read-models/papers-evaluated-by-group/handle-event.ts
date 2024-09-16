@@ -120,6 +120,13 @@ const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'Eval
   } else if (event.publishedAt > readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId]) {
     readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
   }
+
+  const knownPublishedAt = readmodel.lastEvaluationOfExpressionPublishedAt.get(event.articleId);
+  if (!(knownPublishedAt)) {
+    readmodel.lastEvaluationOfExpressionPublishedAt.set(event.articleId, event.publishedAt);
+  } else if (event.publishedAt > knownPublishedAt) {
+    readmodel.lastEvaluationOfExpressionPublishedAt.set(event.articleId, event.publishedAt);
+  }
 };
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
