@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-loops/no-loops */
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
@@ -163,9 +165,14 @@ const updatePaperSnapshotRepresentatives = (
   );
   paperSnapshot.forEach((expressionDoi) => {
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
+    const allKnownRepresentatives = pipe(
+      readmodel.evaluatedPapers[groupId],
+      RA.map((evaluatedPaper) => evaluatedPaper.representative),
+      (representatives) => new Set(representatives),
+    );
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
-      readmodel.paperSnapshotRepresentatives[groupId],
+      allKnownRepresentatives,
     );
     if (evaluatedPaperExpressionWasNotAlreadyInSnapshot && noExpressionOfTheSnapshotIsInRepresentatives) {
       chooseRepresentativeAndDeclareEvaluatedPaper(
