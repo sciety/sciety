@@ -28,12 +28,6 @@ const replacer = (_key: string, value: ApiViewModel): JsonFriendlyScalar | ApiVi
   if (value instanceof URL) {
     return value.href;
   }
-  if (tt.optionFromNullable(t.string).is(value)) {
-    if (O.isSome(value)) {
-      return value.value;
-    }
-    return null;
-  }
   if (tt.optionFromNullable(t.unknown).is(value)) {
     if (O.isSome(value)) {
       return value.value;
