@@ -13,14 +13,12 @@ type ApiViewModelRecord = {
 // eslint-disable-next-line @typescript-eslint/ban-types
 type ApiViewModelArray = {} & ReadonlyArray<ApiViewModel>;
 
-type OptionOfString = O.Option<string>;
-
-type OptionOfRecord = O.Option<ApiViewModelRecord>;
+type ApiViewModelOption = O.Option<ApiViewModel>;
 
 type JsonFriendlyScalar = boolean | number | string | null;
 
-export type ApiViewModel = JsonFriendlyScalar | ApiViewModelArray | ApiViewModelRecord
-| ArticleId | URL | OptionOfString | OptionOfRecord;
+export type ApiViewModel = JsonFriendlyScalar | ApiViewModelArray | ApiViewModelRecord | ApiViewModelOption
+| ArticleId | URL;
 
 const replacer = (_key: string, value: ApiViewModel): JsonFriendlyScalar | ApiViewModelRecord | ApiViewModelArray => {
   if (value instanceof ArticleId) {
