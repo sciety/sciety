@@ -13,10 +13,10 @@ type ApiViewModelRecord = {
 // eslint-disable-next-line @typescript-eslint/ban-types
 type ApiViewModelArray = {} & ReadonlyArray<ApiViewModel>;
 
-// likely defining a new type, rather than an alias to O.Option, to avoid `Type alias circularly references itself`
-type ApiViewModelOption = O.None | O.Some<ApiViewModel>;
-
 type JsonFriendlyScalar = boolean | number | string | null;
+
+// likely defining a new type, rather than an alias to O.Option, to avoid `Type alias circularly references itself`
+type ApiViewModelOption = O.None | O.Some<JsonFriendlyScalar | ApiViewModelRecord | ApiViewModelArray>;
 
 export type ApiViewModel = JsonFriendlyScalar | ApiViewModelArray | ApiViewModelRecord | ApiViewModelOption
 | ArticleId | URL;
