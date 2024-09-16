@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod
+.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod exploratory-test-from-*
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -196,6 +196,18 @@ exploratory-test-from-prod: node_modules clean-db build
 	scripts/wait-for-database.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "CREATE TABLE IF NOT EXISTS events ( id uuid, type varchar, date timestamp, payload jsonb, PRIMARY KEY (id));" sciety user
 	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-prod.csv' WITH CSV" sciety user
+	${DOCKER_COMPOSE} up -d app
+	scripts/wait-for-healthy.sh
+	${DOCKER_COMPOSE} logs -f app
+
+exploratory-test-from-staging: node_modules clean-db build
+	@if ! [[ -f 'data/exploratory-test-from-staging.csv' ]]; then \
+    echo "Ensure you have run: make download-exploratory-test-from-staging"; exit 1; \
+	fi
+	${DOCKER_COMPOSE} up -d db
+	scripts/wait-for-database.sh
+	${DOCKER_COMPOSE} exec -T db psql -c "CREATE TABLE IF NOT EXISTS events ( id uuid, type varchar, date timestamp, payload jsonb, PRIMARY KEY (id));" sciety user
+	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-staging.csv' WITH CSV" sciety user
 	${DOCKER_COMPOSE} up -d app
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app

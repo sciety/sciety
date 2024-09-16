@@ -54,6 +54,7 @@ services:
     volumes:
       - './data/backstop.csv:/data/backstop.csv'
       - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
+      - './data/exploratory-test-from-staging.csv:/data/exploratory-test-from-staging.csv'
     healthcheck:
       test: 'pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1'
       interval: 5s
