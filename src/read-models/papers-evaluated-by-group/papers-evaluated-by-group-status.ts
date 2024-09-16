@@ -10,9 +10,9 @@ type Status = ReadonlyArray<{
 }>;
 
 export const papersEvaluatedByGroupStatus = (readmodel: ReadModel) => (): Status => pipe(
-  readmodel.paperSnapshotRepresentatives,
-  R.collect(S.Ord)((groupId, set) => ({
+  readmodel.evaluatedPapers,
+  R.collect(S.Ord)((groupId, papersOfThisGroup) => ({
     groupId,
-    total: set.size,
+    total: papersOfThisGroup.length,
   })),
 );
