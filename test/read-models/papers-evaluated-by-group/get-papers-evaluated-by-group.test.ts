@@ -378,6 +378,28 @@ describe('get-papers-evaluated-by-group', () => {
   describe('given activity by a group not considered', () => {
     const groupIdNotConsidered = arbitraryGroupId();
 
+    describe('when an evaluation has been recorded against an expression which is the only member of a subsequently recorded paper snapshot', () => {
+      const paperSnapshotWithExpressionDoiA: EventOfType<'PaperSnapshotRecorded'> = {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: new Set([expressionDoiA]),
+      };
+      const events = [
+        {
+          ...evaluationRecordedAgainstExpressionDoiA,
+          groupId: groupIdNotConsidered,
+        },
+        paperSnapshotWithExpressionDoiA,
+      ] satisfies ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        result = runQuery(events, groupIdNotConsidered);
+      });
+
+      it('does not return anything', () => {
+        expect(result.size).toBe(0);
+      });
+    });
+
     describe('when an evaluation has been recorded against an expression which is part of a subsequently recorded paper snapshot', () => {
       const events = [
         {
