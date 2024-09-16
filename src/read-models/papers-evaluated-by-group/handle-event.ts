@@ -148,7 +148,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
   const noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup = !hasIntersection(
     latestSnapshotForEvaluatedExpression,
-    readmodel.paperSnapshotRepresentatives[event.groupId],
+    allKnownRepresentatives(readmodel.evaluatedPapers, event.groupId),
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
     chooseRepresentativeAndDeclareEvaluatedPaper(readmodel, event.groupId, event.articleId, event.publishedAt);
