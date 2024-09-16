@@ -56,6 +56,12 @@ const hasIntersection = (
   return intersection.length > 0;
 };
 
+const allKnownRepresentatives = (evaluatedPapers: ReadModel['evaluatedPapers'], groupId: GroupId) => pipe(
+  evaluatedPapers[groupId],
+  RA.map((evaluatedPaper) => evaluatedPaper.representative),
+  (representatives) => new Set(representatives),
+);
+
 const pickRepresentative = (paperSnapshot: PaperSnapshot) => paperSnapshot[0];
 
 const findRepresentativeByMember = (
@@ -165,14 +171,9 @@ const updatePaperSnapshotRepresentatives = (
   );
   paperSnapshot.forEach((expressionDoi) => {
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
-    const allKnownRepresentatives = pipe(
-      readmodel.evaluatedPapers[groupId],
-      RA.map((evaluatedPaper) => evaluatedPaper.representative),
-      (representatives) => new Set(representatives),
-    );
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
-      allKnownRepresentatives,
+      allKnownRepresentatives(readmodel.evaluatedPapers, groupId),
     );
     if (evaluatedPaperExpressionWasNotAlreadyInSnapshot && noExpressionOfTheSnapshotIsInRepresentatives) {
       chooseRepresentativeAndDeclareEvaluatedPaper(
