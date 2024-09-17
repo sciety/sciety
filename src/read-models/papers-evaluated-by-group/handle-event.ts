@@ -124,18 +124,18 @@ const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'Eval
   }
 };
 
-const initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup = (readmodel: ReadModel, groupId: GroupId) => {
+const declareEvaluatedExpression = (readmodel: ReadModel, groupId: GroupId, expressionDoi: ExpressionDoi) => {
   if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
   }
+  readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId].add(expressionDoi);
 };
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   updateLastEvaluationDate(readmodel, event);
-  initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup(readmodel, event.groupId);
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
-    readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
+    declareEvaluatedExpression(readmodel, event.groupId, event.articleId);
     return;
   }
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
