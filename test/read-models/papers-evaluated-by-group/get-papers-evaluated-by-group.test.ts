@@ -373,13 +373,14 @@ describe('get-papers-evaluated-by-group', () => {
     });
 
     describe('when two groups evaluate different expressions that belong to the same paper', () => {
+      const evaluationRecordedAgainstExpressionDoiCByAnotherGroup = {
+        ...evaluationRecordedAgainstExpressionDoiC,
+        groupId: anotherGroupId,
+      };
       const events = [
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
-        {
-          ...evaluationRecordedAgainstExpressionDoiC,
-          groupId: anotherGroupId,
-        },
+        evaluationRecordedAgainstExpressionDoiCByAnotherGroup,
         paperSnapshotWithExpressionDoisABC,
       ];
 
@@ -392,7 +393,9 @@ describe('get-papers-evaluated-by-group', () => {
           expectSingleExpressionDoiIn(result, expressionDoiA);
         });
 
-        it.todo('returns a lastEvaluatedAt');
+        it.failing('returns a lastEvaluatedAt', () => {
+          expectLastEvaluatedAt(result, evaluationRecordedAgainstExpressionDoiA.publishedAt);
+        });
       });
 
       describe('when queried for the other group', () => {
@@ -404,7 +407,9 @@ describe('get-papers-evaluated-by-group', () => {
           expectSingleExpressionDoiIn(result, expressionDoiA);
         });
 
-        it.todo('returns a lastEvaluatedAt');
+        it('returns a lastEvaluatedAt', () => {
+          expectLastEvaluatedAt(result, evaluationRecordedAgainstExpressionDoiCByAnotherGroup.publishedAt);
+        });
       });
     });
   });
