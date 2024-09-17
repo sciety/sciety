@@ -13,7 +13,7 @@ type PaperSnapshot = ReadonlyArray<ExpressionDoi>;
 
 export type EvaluatedPaper = {
   representative: PaperSnapshotRepresentative,
-  lastEvaluationPublishedAt: Date,
+  lastEvaluatedAt: Date,
 };
 
 export type ReadModel = {
@@ -51,12 +51,12 @@ const declareEvaluatedPaper = (
   readmodel: ReadModel,
   groupId: GroupId,
   representative: PaperSnapshotRepresentative,
-  lastEvaluationPublishedAt: Date,
+  lastEvaluatedAt: Date,
 ) => {
   initialiseEvaluatedPapersForGroup(readmodel, groupId);
   return readmodel.evaluatedPapers[groupId].push({
     representative,
-    lastEvaluationPublishedAt,
+    lastEvaluatedAt,
   });
 };
 
@@ -67,7 +67,7 @@ const findRepresentativeByMember = (
   snapshotMember: ExpressionDoi,
 ): PaperSnapshotRepresentative => pickRepresentative(readmodel.paperSnapshotsByEveryMember[snapshotMember]);
 
-const deprecatedCalculateLastEvaluationPublishedAtForSnapshot = (
+const deprecatedCalculateLastEvaluatedAtForSnapshot = (
   lastEvaluationOfExpressionPublishedAt: ReadModel['deprecatedLastEvaluationOfExpressionPublishedAt'],
   paperSnapshot: PaperSnapshot,
 ) => {
@@ -81,7 +81,7 @@ const deprecatedCalculateLastEvaluationPublishedAtForSnapshot = (
   return lastDate;
 };
 
-const updateLastEvaluationPublishedAtForKnownPaper = (
+const updateLastEvaluatedAtForKnownPaper = (
   readmodel: ReadModel,
   groupId: GroupId,
   paperSnapshotRepresentative: PaperSnapshotRepresentative,
@@ -91,11 +91,11 @@ const updateLastEvaluationPublishedAtForKnownPaper = (
     (evaluatedPaper) => evaluatedPaper.representative === paperSnapshotRepresentative,
   );
   if (indexOfExistingEvaluatedPaper > -1) {
-    const lastEvaluationPublishedAt = deprecatedCalculateLastEvaluationPublishedAtForSnapshot(
+    const lastEvaluatedAt = deprecatedCalculateLastEvaluatedAtForSnapshot(
       readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
       readmodel.paperSnapshotsByEveryMember[paperSnapshotRepresentative],
     );
-    evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluationPublishedAt = lastEvaluationPublishedAt;
+    evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluatedAt = lastEvaluatedAt;
   }
 };
 
@@ -146,7 +146,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   } else {
     const evaluatedExpressionDoi = event.articleId;
     const paperSnapshotRepresentative = findRepresentativeByMember(readmodel, evaluatedExpressionDoi);
-    updateLastEvaluationPublishedAtForKnownPaper(readmodel, event.groupId, paperSnapshotRepresentative);
+    updateLastEvaluatedAtForKnownPaper(readmodel, event.groupId, paperSnapshotRepresentative);
   }
 };
 
@@ -156,7 +156,7 @@ const updatePaperSnapshotRepresentatives = (
   paperSnapshot: PaperSnapshot,
   evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
-  const lastEvaluationPublishedAt = deprecatedCalculateLastEvaluationPublishedAtForSnapshot(
+  const lastEvaluatedAt = deprecatedCalculateLastEvaluatedAtForSnapshot(
     readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
     paperSnapshot,
   );
@@ -170,12 +170,12 @@ const updatePaperSnapshotRepresentatives = (
         readmodel,
         groupId,
         paperSnapshotRepresentative,
-        lastEvaluationPublishedAt,
+        lastEvaluatedAt,
       );
     }
     evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
   });
-  updateLastEvaluationPublishedAtForKnownPaper(readmodel, groupId, paperSnapshotRepresentative);
+  updateLastEvaluatedAtForKnownPaper(readmodel, groupId, paperSnapshotRepresentative);
 };
 
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {

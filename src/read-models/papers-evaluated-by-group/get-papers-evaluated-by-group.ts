@@ -6,10 +6,10 @@ import { pipe } from 'fp-ts/function';
 import { EvaluatedPaper, ReadModel } from './handle-event';
 import { GroupId } from '../../types/group-id';
 
-export const byLastEvaluationPublishedAt: Ord.Ord<EvaluatedPaper> = pipe(
+export const byLastEvaluatedAt: Ord.Ord<EvaluatedPaper> = pipe(
   D.Ord,
   Ord.reverse,
-  Ord.contramap((entry) => entry.lastEvaluationPublishedAt),
+  Ord.contramap((entry) => entry.lastEvaluatedAt),
 );
 
 const convertArrayOfUniqueElementsToASet = (evaluatedPapers: ReadonlyArray<EvaluatedPaper>) => new Set(evaluatedPapers);
