@@ -69,11 +69,16 @@ const findRepresentativeByMember = (
 
 const calculateLastEvaluatedAtForSnapshot = (
   readmodel: ReadModel,
+  groupId: GroupId,
   paperSnapshot: PaperSnapshot,
 ): Date | undefined => {
   let calculatedDate: Date | undefined;
+  const expressionLastEvaluatedAtForGroup = readmodel.expressionLastEvaluatedAt.get(groupId);
+  if (expressionLastEvaluatedAtForGroup === undefined) {
+    return undefined;
+  }
   paperSnapshot.forEach((expressionDoi) => {
-    const expressionLastEvaluatedAt = readmodel.deprecatedExpressionLastEvaluatedAt.get(expressionDoi);
+    const expressionLastEvaluatedAt = expressionLastEvaluatedAtForGroup.get(expressionDoi);
     if (expressionLastEvaluatedAt === undefined) {
       return;
     }
@@ -100,6 +105,7 @@ const updateLastEvaluatedAtForKnownPaper = (
   if (indexOfExistingEvaluatedPaper > -1) {
     const lastEvaluatedAt = calculateLastEvaluatedAtForSnapshot(
       readmodel,
+      groupId,
       readmodel.paperSnapshotsByEveryMember[paperSnapshotRepresentative],
     );
     if (lastEvaluatedAt !== undefined) {
@@ -174,6 +180,7 @@ const updatePaperSnapshotRepresentatives = (
 ) => {
   const lastEvaluatedAt = calculateLastEvaluatedAtForSnapshot(
     readmodel,
+    groupId,
     paperSnapshot,
   );
   const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
