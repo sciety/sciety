@@ -67,18 +67,18 @@ const findRepresentativeByMember = (
   snapshotMember: ExpressionDoi,
 ): PaperSnapshotRepresentative => pickRepresentative(readmodel.paperSnapshotsByEveryMember[snapshotMember]);
 
-const deprecatedCalculateLastEvaluatedAtForSnapshot = (
-  expressionLastEvaluatedAt: ReadModel['deprecatedExpressionLastEvaluatedAt'],
+const calculateLastEvaluatedAtForSnapshot = (
+  readmodel: ReadModel,
   paperSnapshot: PaperSnapshot,
 ): Date | undefined => {
-  let lastDate: Date = expressionLastEvaluatedAt[paperSnapshot[0]];
+  let calculatedDate: Date = readmodel.deprecatedExpressionLastEvaluatedAt[paperSnapshot[0]];
   paperSnapshot.forEach((expressionDoi) => {
-    const expressionEvaluatedAt = expressionLastEvaluatedAt[expressionDoi];
-    if (expressionEvaluatedAt > lastDate) {
-      lastDate = expressionEvaluatedAt;
+    const expressionLastEvaluatedAt = readmodel.deprecatedExpressionLastEvaluatedAt[expressionDoi];
+    if (expressionLastEvaluatedAt > calculatedDate) {
+      calculatedDate = expressionLastEvaluatedAt;
     }
   });
-  return lastDate;
+  return calculatedDate;
 };
 
 const updateLastEvaluatedAtForKnownPaper = (
@@ -91,8 +91,8 @@ const updateLastEvaluatedAtForKnownPaper = (
     (evaluatedPaper) => evaluatedPaper.representative === paperSnapshotRepresentative,
   );
   if (indexOfExistingEvaluatedPaper > -1) {
-    const lastEvaluatedAt = deprecatedCalculateLastEvaluatedAtForSnapshot(
-      readmodel.deprecatedExpressionLastEvaluatedAt,
+    const lastEvaluatedAt = calculateLastEvaluatedAtForSnapshot(
+      readmodel,
       readmodel.paperSnapshotsByEveryMember[paperSnapshotRepresentative],
     );
     if (lastEvaluatedAt !== undefined) {
@@ -158,8 +158,8 @@ const updatePaperSnapshotRepresentatives = (
   paperSnapshot: PaperSnapshot,
   evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
-  const lastEvaluatedAt = deprecatedCalculateLastEvaluatedAtForSnapshot(
-    readmodel.deprecatedExpressionLastEvaluatedAt,
+  const lastEvaluatedAt = calculateLastEvaluatedAtForSnapshot(
+    readmodel,
     paperSnapshot,
   );
   const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
