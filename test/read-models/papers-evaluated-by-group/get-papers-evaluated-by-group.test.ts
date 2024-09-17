@@ -338,7 +338,9 @@ describe('get-papers-evaluated-by-group', () => {
       ] satisfies ReadonlyArray<DomainEvent>;
 
       describe('when queried for the first group', () => {
-        result = runQuery(events, groupId);
+        beforeEach(() => {
+          result = runQuery(events, groupId);
+        });
 
         it('returns the paper representative', () => {
           expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -376,7 +378,9 @@ describe('get-papers-evaluated-by-group', () => {
       ];
 
       describe('when queried for the first group', () => {
-        result = runQuery(events, groupId);
+        beforeEach(() => {
+          result = runQuery(events, groupId);
+        });
 
         it('returns the paper representative', () => {
           expectSingleExpressionDoiIn(result, expressionDoiA);
@@ -386,7 +390,9 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       describe('when queried for the other group', () => {
-        result = runQuery(events, anotherGroupId);
+        beforeEach(() => {
+          result = runQuery(events, anotherGroupId);
+        });
 
         it('returns the paper representative', () => {
           expectSingleExpressionDoiIn(result, expressionDoiA);
