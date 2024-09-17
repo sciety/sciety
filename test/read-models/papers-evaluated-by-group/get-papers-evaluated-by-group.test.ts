@@ -337,10 +337,24 @@ describe('get-papers-evaluated-by-group', () => {
         },
       ] satisfies ReadonlyArray<DomainEvent>;
 
-      it('returns a single expression DOI of the evaluated paper for the first group', () => {
+      describe('when queried for the first group', () => {
         result = runQuery(events, groupId);
 
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        it('returns the paper representative', () => {
+          expectSingleExpressionDoiIn(result, expressionDoiA);
+        });
+
+        it.todo('returns a lastEvaluationPublishedAt');
+      });
+
+      describe('when queried for the other group', () => {
+        it('returns the paper representative', () => {
+          result = runQuery(events, anotherGroupId);
+
+          expectSingleExpressionDoiIn(result, expressionDoiA);
+        });
+
+        it.todo('returns a lastEvaluationPublishedAt');
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
@@ -361,16 +375,24 @@ describe('get-papers-evaluated-by-group', () => {
         paperSnapshotWithExpressionDoisABC,
       ];
 
-      it('returns the paper representative when queried for the first group', () => {
+      describe('when queried for the first group', () => {
         result = runQuery(events, groupId);
 
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        it('returns the paper representative', () => {
+          expectSingleExpressionDoiIn(result, expressionDoiA);
+        });
+
+        it.todo('returns a lastEvaluationPublishedAt');
       });
 
-      it('returns the paper representative when queried for the other group', () => {
+      describe('when queried for the other group', () => {
         result = runQuery(events, anotherGroupId);
 
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        it('returns the paper representative', () => {
+          expectSingleExpressionDoiIn(result, expressionDoiA);
+        });
+
+        it.todo('returns a lastEvaluationPublishedAt');
       });
     });
   });
