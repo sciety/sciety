@@ -472,7 +472,7 @@ describe('get-papers-evaluated-by-group', () => {
 
     it.todo('returns the paper representative');
 
-    it.failing('returns a lastEvaluatedAt', () => {
+    it('returns a lastEvaluatedAt', () => {
       expectLastEvaluatedAt(result, evaluationPublicationRecordedForConsideredGroup.publishedAt);
     });
   });

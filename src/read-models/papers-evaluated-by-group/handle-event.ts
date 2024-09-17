@@ -71,9 +71,16 @@ const calculateLastEvaluatedAtForSnapshot = (
   readmodel: ReadModel,
   paperSnapshot: PaperSnapshot,
 ): Date | undefined => {
-  let calculatedDate: Date = readmodel.deprecatedExpressionLastEvaluatedAt[paperSnapshot[0]];
+  let calculatedDate: Date | undefined = readmodel.expressionLastEvaluatedAt.get(paperSnapshot[0]);
   paperSnapshot.forEach((expressionDoi) => {
-    const expressionLastEvaluatedAt = readmodel.deprecatedExpressionLastEvaluatedAt[expressionDoi];
+    const expressionLastEvaluatedAt = readmodel.expressionLastEvaluatedAt.get(expressionDoi);
+    if (expressionLastEvaluatedAt === undefined) {
+      return;
+    }
+    if (calculatedDate === undefined) {
+      calculatedDate = expressionLastEvaluatedAt;
+      return;
+    }
     if (expressionLastEvaluatedAt > calculatedDate) {
       calculatedDate = expressionLastEvaluatedAt;
     }
