@@ -69,7 +69,7 @@ const calculateLastEvaluatedAtForSnapshot = (
   readmodel: ReadModel,
   paperSnapshot: PaperSnapshot,
 ): Date | undefined => {
-  let calculatedDate: Date | undefined = readmodel.expressionLastEvaluatedAt.get(paperSnapshot[0]);
+  let calculatedDate: Date | undefined;
   paperSnapshot.forEach((expressionDoi) => {
     const expressionLastEvaluatedAt = readmodel.expressionLastEvaluatedAt.get(expressionDoi);
     if (expressionLastEvaluatedAt === undefined) {
