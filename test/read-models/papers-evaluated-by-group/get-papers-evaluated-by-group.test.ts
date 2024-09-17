@@ -327,14 +327,16 @@ describe('get-papers-evaluated-by-group', () => {
     });
 
     describe('when the paper snapshot has been recorded and then another group evaluates the paper', () => {
+      const evaluationRecordedAgainstExpressionDoiAByAnotherGroup = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        articleId: expressionDoiA,
+        groupId: anotherGroupId,
+      };
+
       const events = [
         evaluationRecordedAgainstExpressionDoiA,
         paperSnapshotWithExpressionDoisAB,
-        {
-          ...arbitraryEvaluationPublicationRecordedEvent(),
-          articleId: expressionDoiA,
-          groupId: anotherGroupId,
-        },
+        evaluationRecordedAgainstExpressionDoiAByAnotherGroup,
       ] satisfies ReadonlyArray<DomainEvent>;
 
       describe('when queried for the first group', () => {
@@ -358,7 +360,9 @@ describe('get-papers-evaluated-by-group', () => {
           expectSingleExpressionDoiIn(result, expressionDoiA);
         });
 
-        it.todo('returns a lastEvaluatedAt');
+        it('returns a lastEvaluatedAt', () => {
+          expectLastEvaluatedAt(result, evaluationRecordedAgainstExpressionDoiAByAnotherGroup.publishedAt);
+        });
       });
 
       it('returns a single expression DOI of the evaluated paper for the other group', () => {
