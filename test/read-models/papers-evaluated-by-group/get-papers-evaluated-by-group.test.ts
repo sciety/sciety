@@ -117,7 +117,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -136,7 +136,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -162,7 +162,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -188,7 +188,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -214,7 +214,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -239,7 +239,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -263,7 +263,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -287,7 +287,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -317,7 +317,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns a single expression DOI of the evaluated paper', () => {
+      it('returns the paper representative', () => {
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
@@ -464,7 +464,7 @@ describe('get-papers-evaluated-by-group', () => {
       result = runQuery(events, groupId);
     });
 
-    it.todo('returns a single expression DOI of the evaluated paper');
+    it.todo('returns the paper representative');
 
     it.failing('returns a lastEvaluationPublishedAt', () => {
       expectLastEvaluationPublishedAt(result, evaluationPublicationRecordedForConsideredGroup.publishedAt);
