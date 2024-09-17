@@ -70,7 +70,7 @@ const findRepresentativeByMember = (
 const deprecatedCalculateLastEvaluatedAtForSnapshot = (
   expressionLastEvaluatedAt: ReadModel['deprecatedExpressionLastEvaluatedAt'],
   paperSnapshot: PaperSnapshot,
-) => {
+): Date | undefined => {
   let lastDate: Date = expressionLastEvaluatedAt[paperSnapshot[0]];
   paperSnapshot.forEach((expressionDoi) => {
     const expressionEvaluatedAt = expressionLastEvaluatedAt[expressionDoi];
@@ -95,7 +95,9 @@ const updateLastEvaluatedAtForKnownPaper = (
       readmodel.deprecatedExpressionLastEvaluatedAt,
       readmodel.paperSnapshotsByEveryMember[paperSnapshotRepresentative],
     );
-    evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluatedAt = lastEvaluatedAt;
+    if (lastEvaluatedAt !== undefined) {
+      evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluatedAt = lastEvaluatedAt;
+    }
   }
 };
 
@@ -165,6 +167,7 @@ const updatePaperSnapshotRepresentatives = (
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
     if (evaluatedPaperExpressionWasNotAlreadyInSnapshot
       && !isSnapshotRepresented(readmodel, groupId, paperSnapshot)
+      && lastEvaluatedAt !== undefined
     ) {
       declareEvaluatedPaper(
         readmodel,
