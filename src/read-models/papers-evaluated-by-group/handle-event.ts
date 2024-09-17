@@ -66,10 +66,6 @@ const initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup = (readmodel: R
   }
 };
 
-const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
-  initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup(readmodel, groupId);
-};
-
 const hasIntersection = (
   paperSnapshot: PaperSnapshot,
   paperSnapshotRepresentatives: Set<PaperSnapshotRepresentative>,
@@ -136,7 +132,7 @@ const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'Eval
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   updateLastEvaluationDate(readmodel, event);
-  ensureGroupIdExists(readmodel, event.groupId);
+  initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup(readmodel, event.groupId);
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[event.groupId].add(event.articleId);
@@ -195,7 +191,7 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     const [groupId, expressionsWithoutPaperSnapshot]
     of R.toEntries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
   ) {
-    ensureGroupIdExists(readmodel, groupId);
+    initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup(readmodel, groupId);
     updatePaperSnapshotRepresentatives(
       readmodel,
       groupId,
