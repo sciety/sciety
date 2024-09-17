@@ -32,13 +32,21 @@ export const initialState = (): ReadModel => ({
   lastEvaluationOfExpressionPublishedAt: new Map(),
 });
 
-const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
-  if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
-    readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
-  }
+const initialiseEvaluatedPapersForGroup = (readmodel: ReadModel, groupId: GroupId) => {
   if (!(groupId in readmodel.evaluatedPapers)) {
     readmodel.evaluatedPapers[groupId] = [];
   }
+};
+
+const initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup = (readmodel: ReadModel, groupId: GroupId) => {
+  if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
+    readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
+  }
+};
+
+const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
+  initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup(readmodel, groupId);
+  initialiseEvaluatedPapersForGroup(readmodel, groupId);
 };
 
 const hasIntersection = (
