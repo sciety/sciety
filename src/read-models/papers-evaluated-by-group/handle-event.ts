@@ -60,17 +60,7 @@ const declareEvaluatedPaper = (
   });
 };
 
-const hasIntersection = (
-  paperSnapshot: PaperSnapshot,
-  paperSnapshotRepresentatives: Set<PaperSnapshotRepresentative>,
-) => {
-  const intersection = paperSnapshot.filter(
-    (expressionDoi) => paperSnapshotRepresentatives.has(expressionDoi),
-  );
-  return intersection.length > 0;
-};
-
-const pickRepresentative = (paperSnapshot: PaperSnapshot) => paperSnapshot[0];
+const pickRepresentative = (paperSnapshot: PaperSnapshot): PaperSnapshotRepresentative => paperSnapshot[0];
 
 const findRepresentativeByMember = (
   readmodel: ReadModel,
@@ -135,10 +125,7 @@ const isSnapshotRepresented = (
   readmodel: ReadModel,
   groupId: GroupId,
   paperSnapshot: PaperSnapshot,
-) => hasIntersection(
-  paperSnapshot,
-  allKnownRepresentatives(readmodel, groupId),
-);
+) => allKnownRepresentatives(readmodel, groupId).has(pickRepresentative(paperSnapshot));
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   updateLastEvaluationDate(readmodel, event);
