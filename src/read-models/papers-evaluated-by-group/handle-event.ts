@@ -20,7 +20,6 @@ export type ReadModel = {
   evaluatedPapers: Record<GroupId, Array<EvaluatedPaper>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
-  deprecatedExpressionLastEvaluatedAt: Record<ExpressionDoi, Date>,
   expressionLastEvaluatedAt: Map<ExpressionDoi, Date>,
 };
 
@@ -28,7 +27,6 @@ export const initialState = (): ReadModel => ({
   evaluatedPapers: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
   paperSnapshotsByEveryMember: {},
-  deprecatedExpressionLastEvaluatedAt: {},
   expressionLastEvaluatedAt: new Map(),
 });
 
@@ -109,12 +107,6 @@ const updateLastEvaluatedAtForKnownPaper = (
 };
 
 const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
-  if (!(readmodel.deprecatedExpressionLastEvaluatedAt[event.articleId])) {
-    readmodel.deprecatedExpressionLastEvaluatedAt[event.articleId] = event.publishedAt;
-  } else if (event.publishedAt > readmodel.deprecatedExpressionLastEvaluatedAt[event.articleId]) {
-    readmodel.deprecatedExpressionLastEvaluatedAt[event.articleId] = event.publishedAt;
-  }
-
   const knownPublishedAt = readmodel.expressionLastEvaluatedAt.get(event.articleId);
   if (!(knownPublishedAt)) {
     readmodel.expressionLastEvaluatedAt.set(event.articleId, event.publishedAt);
