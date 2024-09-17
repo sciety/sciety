@@ -136,7 +136,13 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   }
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
   if (!isSnapshotRepresented(readmodel, event.groupId, latestSnapshotForEvaluatedExpression)) {
-    declareEvaluatedPaper(readmodel, event.groupId, event.articleId, event.publishedAt);
+    const paperSnapshotRepresentative = pickRepresentative(latestSnapshotForEvaluatedExpression);
+    declareEvaluatedPaper(
+      readmodel,
+      event.groupId,
+      paperSnapshotRepresentative,
+      event.publishedAt,
+    );
   } else {
     const evaluatedExpressionDoi = event.articleId;
     const paperSnapshotRepresentative = findRepresentativeByMember(readmodel, evaluatedExpressionDoi);
