@@ -38,6 +38,28 @@ const initialiseEvaluatedPapersForGroup = (readmodel: ReadModel, groupId: GroupI
   }
 };
 
+const allKnownRepresentatives = (readmodel: ReadModel, groupId: GroupId) => {
+  initialiseEvaluatedPapersForGroup(readmodel, groupId);
+  return pipe(
+    readmodel.evaluatedPapers[groupId],
+    RA.map((evaluatedPaper) => evaluatedPaper.representative),
+    (representatives) => new Set(representatives),
+  );
+};
+
+const declareEvaluatedPaper = (
+  readmodel: ReadModel,
+  groupId: GroupId,
+  representative: ExpressionDoi,
+  lastEvaluationPublishedAt: Date,
+) => {
+  initialiseEvaluatedPapersForGroup(readmodel, groupId);
+  return readmodel.evaluatedPapers[groupId].push({
+    representative,
+    lastEvaluationPublishedAt,
+  });
+};
+
 const initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup = (readmodel: ReadModel, groupId: GroupId) => {
   if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
@@ -46,7 +68,6 @@ const initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup = (readmodel: R
 
 const ensureGroupIdExists = (readmodel: ReadModel, groupId: GroupId) => {
   initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup(readmodel, groupId);
-  initialiseEvaluatedPapersForGroup(readmodel, groupId);
 };
 
 const hasIntersection = (
@@ -58,12 +79,6 @@ const hasIntersection = (
   );
   return intersection.length > 0;
 };
-
-const allKnownRepresentatives = (evaluatedPapers: ReadModel['evaluatedPapers'], groupId: GroupId) => pipe(
-  evaluatedPapers[groupId],
-  RA.map((evaluatedPaper) => evaluatedPaper.representative),
-  (representatives) => new Set(representatives),
-);
 
 const pickRepresentative = (paperSnapshot: PaperSnapshot) => paperSnapshot[0];
 
@@ -104,16 +119,6 @@ const updateLastEvaluationPublishedAtForKnownPaper = (
   }
 };
 
-const declareEvaluatedPaper = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  representative: ExpressionDoi,
-  lastEvaluationPublishedAt: Date,
-) => readmodel.evaluatedPapers[groupId].push({
-  representative,
-  lastEvaluationPublishedAt,
-});
-
 const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
   if (!(readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId])) {
     readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
@@ -140,7 +145,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
   const noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup = !hasIntersection(
     latestSnapshotForEvaluatedExpression,
-    allKnownRepresentatives(readmodel.evaluatedPapers, event.groupId),
+    allKnownRepresentatives(readmodel, event.groupId),
   );
   if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
     declareEvaluatedPaper(readmodel, event.groupId, event.articleId, event.publishedAt);
@@ -165,7 +170,7 @@ const updatePaperSnapshotRepresentatives = (
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
     const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
       paperSnapshot,
-      allKnownRepresentatives(readmodel.evaluatedPapers, groupId),
+      allKnownRepresentatives(readmodel, groupId),
     );
     if (evaluatedPaperExpressionWasNotAlreadyInSnapshot && noExpressionOfTheSnapshotIsInRepresentatives) {
       declareEvaluatedPaper(
