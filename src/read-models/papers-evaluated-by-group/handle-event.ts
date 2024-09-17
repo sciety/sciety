@@ -109,14 +109,19 @@ const updateLastEvaluatedAtForKnownPaper = (
 };
 
 const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
+  let expressionLastEvaluatedAtForGroup = readmodel.expressionLastEvaluatedAt.get(event.groupId);
+  if (expressionLastEvaluatedAtForGroup === undefined) {
+    expressionLastEvaluatedAtForGroup = new Map();
+    readmodel.expressionLastEvaluatedAt.set(event.groupId, expressionLastEvaluatedAtForGroup);
+  }
+
   const knownPublishedAtFromDeprecatedField = readmodel.deprecatedExpressionLastEvaluatedAt.get(event.articleId);
   if (!(knownPublishedAtFromDeprecatedField)) {
     readmodel.deprecatedExpressionLastEvaluatedAt.set(event.articleId, event.publishedAt);
+    expressionLastEvaluatedAtForGroup.set(event.articleId, event.publishedAt);
   } else if (event.publishedAt > knownPublishedAtFromDeprecatedField) {
     readmodel.deprecatedExpressionLastEvaluatedAt.set(event.articleId, event.publishedAt);
-  }
-  if (!(readmodel.expressionLastEvaluatedAt.has(event.groupId))) {
-    readmodel.expressionLastEvaluatedAt.set(event.groupId, new Map());
+    expressionLastEvaluatedAtForGroup.set(event.articleId, event.publishedAt);
   }
 };
 
