@@ -118,9 +118,14 @@ const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'Eval
   const knownPublishedAtFromDeprecatedField = readmodel.deprecatedExpressionLastEvaluatedAt.get(event.articleId);
   if (!(knownPublishedAtFromDeprecatedField)) {
     readmodel.deprecatedExpressionLastEvaluatedAt.set(event.articleId, event.publishedAt);
-    expressionLastEvaluatedAtForGroup.set(event.articleId, event.publishedAt);
   } else if (event.publishedAt > knownPublishedAtFromDeprecatedField) {
     readmodel.deprecatedExpressionLastEvaluatedAt.set(event.articleId, event.publishedAt);
+  }
+
+  const knownPublishedAt = expressionLastEvaluatedAtForGroup.get(event.articleId);
+  if (!(knownPublishedAt)) {
+    expressionLastEvaluatedAtForGroup.set(event.articleId, event.publishedAt);
+  } else if (event.publishedAt > knownPublishedAt) {
     expressionLastEvaluatedAtForGroup.set(event.articleId, event.publishedAt);
   }
 };
