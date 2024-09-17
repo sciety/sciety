@@ -346,7 +346,9 @@ describe('get-papers-evaluated-by-group', () => {
           expectSingleExpressionDoiIn(result, expressionDoiA);
         });
 
-        it.todo('returns a lastEvaluatedAt');
+        it('returns a lastEvaluatedAt', () => {
+          expectLastEvaluatedAt(result, evaluationRecordedAgainstExpressionDoiA.publishedAt);
+        });
       });
 
       describe('when queried for the other group', () => {
