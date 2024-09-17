@@ -139,11 +139,11 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     return;
   }
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
-  const noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup = !hasIntersection(
+  const isSnapshotNotRepresented = !hasIntersection(
     latestSnapshotForEvaluatedExpression,
     allKnownRepresentatives(readmodel, event.groupId),
   );
-  if (noExpressionOfThePaperIsInThePaperSnapshotRepresentativesForThatGroup) {
+  if (isSnapshotNotRepresented) {
     declareEvaluatedPaper(readmodel, event.groupId, event.articleId, event.publishedAt);
   } else {
     const evaluatedExpressionDoi = event.articleId;
@@ -164,11 +164,11 @@ const updatePaperSnapshotRepresentatives = (
   );
   paperSnapshot.forEach((expressionDoi) => {
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
-    const noExpressionOfTheSnapshotIsInRepresentatives = !hasIntersection(
+    const isSnapshotNotRepresented = !hasIntersection(
       paperSnapshot,
       allKnownRepresentatives(readmodel, groupId),
     );
-    if (evaluatedPaperExpressionWasNotAlreadyInSnapshot && noExpressionOfTheSnapshotIsInRepresentatives) {
+    if (evaluatedPaperExpressionWasNotAlreadyInSnapshot && isSnapshotNotRepresented) {
       declareEvaluatedPaper(
         readmodel,
         groupId,
