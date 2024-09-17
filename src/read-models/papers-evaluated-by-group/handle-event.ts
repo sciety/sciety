@@ -160,6 +160,7 @@ const updatePaperSnapshotRepresentatives = (
     readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
     paperSnapshot,
   );
+  const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
   paperSnapshot.forEach((expressionDoi) => {
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
     if (evaluatedPaperExpressionWasNotAlreadyInSnapshot
@@ -168,13 +169,12 @@ const updatePaperSnapshotRepresentatives = (
       declareEvaluatedPaper(
         readmodel,
         groupId,
-        expressionDoi,
+        paperSnapshotRepresentative,
         lastEvaluationPublishedAt,
       );
     }
     evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
   });
-  const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
   updateLastEvaluationPublishedAtForKnownPaper(readmodel, groupId, paperSnapshotRepresentative);
 };
 

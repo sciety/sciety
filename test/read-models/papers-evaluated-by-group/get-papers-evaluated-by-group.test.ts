@@ -361,14 +361,14 @@ describe('get-papers-evaluated-by-group', () => {
         paperSnapshotWithExpressionDoisABC,
       ];
 
-      it('returns a single expression DOI of the evaluated paper for the first group', () => {
-        result = runQuery(events, anotherGroupId);
+      it('returns the paper representative when queried for the first group', () => {
+        result = runQuery(events, groupId);
 
-        expectSingleExpressionDoiIn(result, expressionDoiC);
+        expectSingleExpressionDoiIn(result, expressionDoiA);
       });
 
-      it('returns a single expression DOI of the evaluated paper for the other group', () => {
-        result = runQuery(events, groupId);
+      it('returns the paper representative when queried for the other group', () => {
+        result = runQuery(events, anotherGroupId);
 
         expectSingleExpressionDoiIn(result, expressionDoiA);
       });
