@@ -20,16 +20,16 @@ export type ReadModel = {
   evaluatedPapers: Record<GroupId, Array<EvaluatedPaper>>,
   evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
-  deprecatedLastEvaluationOfExpressionPublishedAt: Record<ExpressionDoi, Date>,
-  lastEvaluationOfExpressionPublishedAt: Map<ExpressionDoi, Date>,
+  deprecatedExpressionLastEvaluatedAt: Record<ExpressionDoi, Date>,
+  expressionLastEvaluatedAt: Map<ExpressionDoi, Date>,
 };
 
 export const initialState = (): ReadModel => ({
   evaluatedPapers: {},
   evaluatedExpressionsWithoutPaperSnapshot: {},
   paperSnapshotsByEveryMember: {},
-  deprecatedLastEvaluationOfExpressionPublishedAt: {},
-  lastEvaluationOfExpressionPublishedAt: new Map(),
+  deprecatedExpressionLastEvaluatedAt: {},
+  expressionLastEvaluatedAt: new Map(),
 });
 
 const initialiseEvaluatedPapersForGroup = (readmodel: ReadModel, groupId: GroupId) => {
@@ -68,12 +68,12 @@ const findRepresentativeByMember = (
 ): PaperSnapshotRepresentative => pickRepresentative(readmodel.paperSnapshotsByEveryMember[snapshotMember]);
 
 const deprecatedCalculateLastEvaluatedAtForSnapshot = (
-  lastEvaluationOfExpressionPublishedAt: ReadModel['deprecatedLastEvaluationOfExpressionPublishedAt'],
+  expressionLastEvaluatedAt: ReadModel['deprecatedExpressionLastEvaluatedAt'],
   paperSnapshot: PaperSnapshot,
 ) => {
-  let lastDate: Date = lastEvaluationOfExpressionPublishedAt[paperSnapshot[0]];
+  let lastDate: Date = expressionLastEvaluatedAt[paperSnapshot[0]];
   paperSnapshot.forEach((expressionDoi) => {
-    const expressionEvaluatedAt = lastEvaluationOfExpressionPublishedAt[expressionDoi];
+    const expressionEvaluatedAt = expressionLastEvaluatedAt[expressionDoi];
     if (expressionEvaluatedAt > lastDate) {
       lastDate = expressionEvaluatedAt;
     }
@@ -92,7 +92,7 @@ const updateLastEvaluatedAtForKnownPaper = (
   );
   if (indexOfExistingEvaluatedPaper > -1) {
     const lastEvaluatedAt = deprecatedCalculateLastEvaluatedAtForSnapshot(
-      readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
+      readmodel.deprecatedExpressionLastEvaluatedAt,
       readmodel.paperSnapshotsByEveryMember[paperSnapshotRepresentative],
     );
     evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluatedAt = lastEvaluatedAt;
@@ -100,17 +100,17 @@ const updateLastEvaluatedAtForKnownPaper = (
 };
 
 const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
-  if (!(readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId])) {
-    readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
-  } else if (event.publishedAt > readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId]) {
-    readmodel.deprecatedLastEvaluationOfExpressionPublishedAt[event.articleId] = event.publishedAt;
+  if (!(readmodel.deprecatedExpressionLastEvaluatedAt[event.articleId])) {
+    readmodel.deprecatedExpressionLastEvaluatedAt[event.articleId] = event.publishedAt;
+  } else if (event.publishedAt > readmodel.deprecatedExpressionLastEvaluatedAt[event.articleId]) {
+    readmodel.deprecatedExpressionLastEvaluatedAt[event.articleId] = event.publishedAt;
   }
 
-  const knownPublishedAt = readmodel.lastEvaluationOfExpressionPublishedAt.get(event.articleId);
+  const knownPublishedAt = readmodel.expressionLastEvaluatedAt.get(event.articleId);
   if (!(knownPublishedAt)) {
-    readmodel.lastEvaluationOfExpressionPublishedAt.set(event.articleId, event.publishedAt);
+    readmodel.expressionLastEvaluatedAt.set(event.articleId, event.publishedAt);
   } else if (event.publishedAt > knownPublishedAt) {
-    readmodel.lastEvaluationOfExpressionPublishedAt.set(event.articleId, event.publishedAt);
+    readmodel.expressionLastEvaluatedAt.set(event.articleId, event.publishedAt);
   }
 };
 
@@ -157,7 +157,7 @@ const updatePaperSnapshotRepresentatives = (
   evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
 ) => {
   const lastEvaluatedAt = deprecatedCalculateLastEvaluatedAtForSnapshot(
-    readmodel.deprecatedLastEvaluationOfExpressionPublishedAt,
+    readmodel.deprecatedExpressionLastEvaluatedAt,
     paperSnapshot,
   );
   const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
