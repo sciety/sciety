@@ -60,12 +60,6 @@ const declareEvaluatedPaper = (
   });
 };
 
-const initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup = (readmodel: ReadModel, groupId: GroupId) => {
-  if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
-    readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
-  }
-};
-
 const hasIntersection = (
   paperSnapshot: PaperSnapshot,
   paperSnapshotRepresentatives: Set<PaperSnapshotRepresentative>,
@@ -130,6 +124,12 @@ const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'Eval
   }
 };
 
+const initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup = (readmodel: ReadModel, groupId: GroupId) => {
+  if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
+    readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
+  }
+};
+
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   updateLastEvaluationDate(readmodel, event);
   initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup(readmodel, event.groupId);
@@ -191,7 +191,6 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     const [groupId, expressionsWithoutPaperSnapshot]
     of R.toEntries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
   ) {
-    initialiseEvaluatedExpressionsWithoutPaperSnapshotForGroup(readmodel, groupId);
     updatePaperSnapshotRepresentatives(
       readmodel,
       groupId,
