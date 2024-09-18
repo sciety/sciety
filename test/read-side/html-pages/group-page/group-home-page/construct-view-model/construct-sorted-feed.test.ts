@@ -51,39 +51,39 @@ describe('construct-sorted-feed', () => {
   });
 
   describe('when the group has evaluated two papers', () => {
-    const recordEarlierEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
+    const recordPublicationForEarlierEvaluationCommand: RecordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: acmiGroupId,
       publishedAt: new Date('1997-01-01'),
     };
-    const recordLaterEvaluationPublicationCommand: RecordEvaluationPublicationCommand = {
+    const recordPublicationForLaterEvaluationCommand: RecordEvaluationPublicationCommand = {
       ...arbitraryRecordEvaluationPublicationCommand(),
       groupId: acmiGroupId,
       publishedAt: new Date('2007-01-01'),
     };
     const recordPaperSnapshotForEarlierEvaluationCommand: RecordPaperSnapshotCommand = {
       ...arbitraryRecordPaperSnapshotCommand(),
-      expressionDois: new Set([recordEarlierEvaluationPublicationCommand.expressionDoi]),
+      expressionDois: new Set([recordPublicationForEarlierEvaluationCommand.expressionDoi]),
     };
     const recordPaperSnapshotForLaterEvaluationCommand: RecordPaperSnapshotCommand = {
       ...arbitraryRecordPaperSnapshotCommand(),
-      expressionDois: new Set([recordLaterEvaluationPublicationCommand.expressionDoi]),
+      expressionDois: new Set([recordPublicationForLaterEvaluationCommand.expressionDoi]),
     };
 
     beforeEach(async () => {
-      await framework.commandHelpers.recordEvaluationPublication(recordLaterEvaluationPublicationCommand);
-      await framework.commandHelpers.recordEvaluationPublication(recordEarlierEvaluationPublicationCommand);
+      await framework.commandHelpers.recordEvaluationPublication(recordPublicationForLaterEvaluationCommand);
+      await framework.commandHelpers.recordEvaluationPublication(recordPublicationForEarlierEvaluationCommand);
       await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForEarlierEvaluationCommand);
       await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForLaterEvaluationCommand);
       result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
     });
 
-    it.skip('returns the most recently evaluated first', () => {
-      expect(result[0]).toStrictEqual(recordLaterEvaluationPublicationCommand.expressionDoi);
+    it('returns the most recently evaluated first', () => {
+      expect(result[0]).toStrictEqual(recordPublicationForLaterEvaluationCommand.expressionDoi);
     });
 
-    it.skip('returns the least recently evaluated second', () => {
-      expect(result[1]).toStrictEqual(recordEarlierEvaluationPublicationCommand.expressionDoi);
+    it('returns the least recently evaluated second', () => {
+      expect(result[1]).toStrictEqual(recordPublicationForEarlierEvaluationCommand.expressionDoi);
     });
   });
 });
