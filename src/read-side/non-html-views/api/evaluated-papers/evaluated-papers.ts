@@ -1,14 +1,24 @@
-import * as TE from 'fp-ts/TaskEither';
+import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { constructViewModel } from './construct-view-model';
-import * as GID from '../../../../types/group-id';
+import { GroupIdFromStringCodec } from '../../../../types/group-id';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 import { NonHtmlView } from '../../non-html-view';
+import { toNonHtmlViewError } from '../../non-html-view-error';
 import { renderAsJson } from '../render-as-json';
 
-export const evaluatedPapers = (dependencies: DependenciesForViews): NonHtmlView => () => pipe(
-  GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709'),
-  constructViewModel(dependencies),
-  renderAsJson,
-  TE.right,
+const paramsCodec = t.strict({
+  groupId: GroupIdFromStringCodec,
+});
+
+export const evaluatedPapers = (dependencies: DependenciesForViews): NonHtmlView => (params) => pipe(
+  params,
+  paramsCodec.decode,
+  E.map(({ groupId }) => groupId),
+  E.map(constructViewModel(dependencies)),
+  E.map(renderAsJson),
+  E.mapLeft(() => toNonHtmlViewError('Cannot understand the params')),
+  T.of,
 );
