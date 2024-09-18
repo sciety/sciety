@@ -12,7 +12,7 @@ type ApiDataArray = {} & ReadonlyArray<ApiData>;
 
 type JsonFriendlyScalar = boolean | number | string | null;
 
-export type ApiData = JsonFriendlyScalar | ApiDataArray | ApiDataRecord | ArticleId | URL;
+export type ApiData = JsonFriendlyScalar | ApiDataArray | ApiDataRecord | ArticleId | URL | Date;
 
 const replacer = (_key: string, value: ApiData): JsonFriendlyScalar | ApiDataRecord | ApiDataArray => {
   if (value instanceof ArticleId) {
@@ -20,6 +20,9 @@ const replacer = (_key: string, value: ApiData): JsonFriendlyScalar | ApiDataRec
   }
   if (value instanceof URL) {
     return value.href;
+  }
+  if (value instanceof Date) {
+    return value.toISOString();
   }
   return value;
 };

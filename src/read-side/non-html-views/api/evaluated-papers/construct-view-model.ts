@@ -11,5 +11,4 @@ export const constructViewModel = (dependencies: DependenciesForViews) => (group
   dependencies.getPapersEvaluatedByGroup,
   (evaluatedPapers) => Array.from(evaluatedPapers),
   RA.sortBy([byLastEvaluatedAt, byRepresentative]),
-  RA.map((evaluatedPaper) => evaluatedPaper.representative),
 );
