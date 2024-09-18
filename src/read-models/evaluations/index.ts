@@ -16,3 +16,5 @@ export const evaluations = {
   initialState,
   handleEvent,
 };
+
+export { RecordedEvaluation, byMostRecentlyPublished } from './recorded-evaluation';

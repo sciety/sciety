@@ -4,7 +4,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
-import { RecordedEvaluation } from '../../../../read-models/evaluations/recorded-evaluation';
+import { RecordedEvaluation } from '../../../../read-models/evaluations';
 import { constructGroupPagePath } from '../../../../standards/paths';
 import { GroupId } from '../../../../types/group-id';
 import { sanitise } from '../../../../types/sanitised-html-fragment';

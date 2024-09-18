@@ -7,7 +7,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { CurationStatement } from './curation-statement';
-import { byMostRecentlyPublished, RecordedEvaluation } from '../../read-models/evaluations/recorded-evaluation';
+import { byMostRecentlyPublished, RecordedEvaluation } from '../../read-models/evaluations';
 import { constructGroupPagePath } from '../../standards/paths';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as GID from '../../types/group-id';
