@@ -50,6 +50,10 @@ export const configureRoutes = (
       endpoint: 'groups',
       handler: groups,
     },
+    {
+      endpoint: 'groups/:groupId/evaluated-papers',
+      handler: groups,
+    },
   ];
   pipe(
     getEndpointsConfig,
