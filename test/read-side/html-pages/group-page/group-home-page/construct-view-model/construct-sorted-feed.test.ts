@@ -118,7 +118,7 @@ describe('construct-sorted-feed', () => {
       result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
     });
 
-    it.failing('returns them in alphanumerical order by representative', () => {
+    it('returns them in alphanumerical order by representative', () => {
       expect(result).toHaveLength(2);
       expect(result[0]).toStrictEqual(recordEvaluationPublicationForFirstPaperCommand.expressionDoi);
       expect(result[1]).toStrictEqual(recordEvaluationPublicationForSecondPaperCommand.expressionDoi);
