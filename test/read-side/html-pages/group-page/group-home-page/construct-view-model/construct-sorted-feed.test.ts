@@ -1,10 +1,12 @@
 import { constructSortedFeed } from '../../../../../../src/read-side/html-pages/group-page/group-home-page/construct-view-model/construct-sorted-feed';
+import * as EDOI from '../../../../../../src/types/expression-doi';
 import * as GID from '../../../../../../src/types/group-id';
 import {
   RecordEvaluationPublicationCommand,
   RecordPaperSnapshotCommand,
 } from '../../../../../../src/write-side/commands';
 import { createTestFramework, TestFramework } from '../../../../../framework';
+import { arbitraryDate } from '../../../../../helpers';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../../../../write-side/commands/record-evaluation-publication-command.helper';
 import { arbitraryRecordPaperSnapshotCommand } from '../../../../../write-side/commands/record-paper-snapshot-command.helper';
 
@@ -86,6 +88,40 @@ describe('construct-sorted-feed', () => {
   });
 
   describe('when the group has evaluated two papers on the same day', () => {
-    it.todo('returns them in alphanumerical order by representative');
+    const evaluationsPublishedAt = arbitraryDate();
+    const recordEvaluationPublicationForFirstPaperCommand: RecordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: acmiGroupId,
+      publishedAt: evaluationsPublishedAt,
+      expressionDoi: EDOI.fromValidatedString('10.1234/1111'),
+    };
+    const recordEvaluationPublicationForSecondPaperCommand: RecordEvaluationPublicationCommand = {
+      ...arbitraryRecordEvaluationPublicationCommand(),
+      groupId: acmiGroupId,
+      publishedAt: evaluationsPublishedAt,
+      expressionDoi: EDOI.fromValidatedString('10.1234/9999'),
+    };
+    const recordPaperSnapshotForFirstPaperCommand: RecordPaperSnapshotCommand = {
+      ...arbitraryRecordPaperSnapshotCommand(),
+      expressionDois: new Set([recordEvaluationPublicationForFirstPaperCommand.expressionDoi]),
+    };
+    const recordPaperSnapshotForSecondPaperCommand: RecordPaperSnapshotCommand = {
+      ...arbitraryRecordPaperSnapshotCommand(),
+      expressionDois: new Set([recordEvaluationPublicationForSecondPaperCommand.expressionDoi]),
+    };
+
+    beforeEach(async () => {
+      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationForSecondPaperCommand);
+      await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForSecondPaperCommand);
+      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationForFirstPaperCommand);
+      await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForFirstPaperCommand);
+      result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
+    });
+
+    it.failing('returns them in alphanumerical order by representative', () => {
+      expect(result).toHaveLength(2);
+      expect(result[0]).toStrictEqual(recordEvaluationPublicationForFirstPaperCommand.expressionDoi);
+      expect(result[1]).toStrictEqual(recordEvaluationPublicationForSecondPaperCommand.expressionDoi);
+    });
   });
 });
