@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { createConfigurePostMiddleware } from './create-configure-post-middleware';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
+import { evaluatedPapers } from '../../read-side/non-html-views/api/evaluated-papers';
 import { groups } from '../../read-side/non-html-views/api/groups';
 import { applicationStatus } from '../../read-side/non-html-views/api/status';
 import { ownedBy } from '../../read-side/non-html-views/owned-by';
@@ -52,7 +53,7 @@ export const configureRoutes = (
     },
     {
       endpoint: 'groups/:groupId/evaluated-papers',
-      handler: groups,
+      handler: evaluatedPapers,
     },
   ];
   pipe(
