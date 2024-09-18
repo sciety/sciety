@@ -326,6 +326,15 @@ describe('get-papers-evaluated-by-group', () => {
       });
     });
 
+    describe('when an expression has been evaluated, a paper snapshot recorded, and then a wider paper snapshot is recorded', () => {
+      // evaluate an expression with doi 10.1234/5555
+      // record a paper snapshot with this expression
+      // record a paper snapshot, including an expression with the DOIs 10.1234/1111, 10.1234/5555,
+      // expect representative to be 10.1234/1111
+      // expect one evaluated paper
+      // expect lastEvaluatedAt date to be the date from the evaluation of 10.1234/5555
+    });
+
     describe('when the paper snapshot has been recorded and then another group evaluates the paper', () => {
       const evaluationRecordedAgainstExpressionDoiAByAnotherGroup = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
