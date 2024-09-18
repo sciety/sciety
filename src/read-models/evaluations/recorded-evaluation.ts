@@ -18,7 +18,7 @@ export type RecordedEvaluation = {
   type: O.Option<EvaluationType>,
 };
 
-export const byPublishedAt: Ord.Ord<RecordedEvaluation> = pipe(
+export const byMostRecentlyPublished: Ord.Ord<RecordedEvaluation> = pipe(
   D.Ord,
   Ord.reverse,
   Ord.contramap((entry) => entry.publishedAt),

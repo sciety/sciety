@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { Queries } from '../../read-models';
-import { byPublishedAt, RecordedEvaluation } from '../../read-models/evaluations/recorded-evaluation';
+import { byMostRecentlyPublished, RecordedEvaluation } from '../../read-models/evaluations/recorded-evaluation';
 import * as PH from '../../types/publishing-history';
 import {
   GroupLinkAsTextViewModel, GroupLinkWithLogoViewModel, constructGroupLink, ConstructGroupLinkDependencies,
@@ -26,7 +26,7 @@ export const constructReviewingGroups = (
   PH.getAllExpressionDois,
   dependencies.getEvaluationsOfMultipleExpressions,
   RA.filter(isNotCurationStatement),
-  RA.sort(byPublishedAt),
+  RA.sort(byMostRecentlyPublished),
   RA.map((evaluation) => evaluation.groupId),
   unique,
   RA.map(constructGroupLink(dependencies)),
