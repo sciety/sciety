@@ -110,18 +110,36 @@ describe('construct-sorted-feed', () => {
       expressionDois: new Set([recordEvaluationPublicationForSecondPaperCommand.expressionDoi]),
     };
 
-    beforeEach(async () => {
-      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationForSecondPaperCommand);
-      await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForSecondPaperCommand);
-      await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationForFirstPaperCommand);
-      await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForFirstPaperCommand);
-      result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
+    describe('and we record them in alphanumerical order by representative', () => {
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationForFirstPaperCommand);
+        await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForFirstPaperCommand);
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationForSecondPaperCommand);
+        await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForSecondPaperCommand);
+        result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
+      });
+
+      it('returns them in alphanumerical order by representative', () => {
+        expect(result).toHaveLength(2);
+        expect(result[0]).toStrictEqual(recordEvaluationPublicationForFirstPaperCommand.expressionDoi);
+        expect(result[1]).toStrictEqual(recordEvaluationPublicationForSecondPaperCommand.expressionDoi);
+      });
     });
 
-    it('returns them in alphanumerical order by representative', () => {
-      expect(result).toHaveLength(2);
-      expect(result[0]).toStrictEqual(recordEvaluationPublicationForFirstPaperCommand.expressionDoi);
-      expect(result[1]).toStrictEqual(recordEvaluationPublicationForSecondPaperCommand.expressionDoi);
+    describe('and we record them in reverse alphanumerical order by representative', () => {
+      beforeEach(async () => {
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationForSecondPaperCommand);
+        await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForSecondPaperCommand);
+        await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationForFirstPaperCommand);
+        await framework.commandHelpers.recordPaperSnapshot(recordPaperSnapshotForFirstPaperCommand);
+        result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
+      });
+
+      it('returns them in alphanumerical order by representative', () => {
+        expect(result).toHaveLength(2);
+        expect(result[0]).toStrictEqual(recordEvaluationPublicationForFirstPaperCommand.expressionDoi);
+        expect(result[1]).toStrictEqual(recordEvaluationPublicationForSecondPaperCommand.expressionDoi);
+      });
     });
   });
 });
