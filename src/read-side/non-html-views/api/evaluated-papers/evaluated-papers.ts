@@ -1,7 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import { constructViewModel } from './construct-view-model';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 import { NonHtmlView } from '../../non-html-view';
 import { renderAsJson } from '../render-as-json';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const evaluatedPapers = (dependencies: DependenciesForViews): NonHtmlView => () => TE.right(renderAsJson({ fakeField: 'fake value' }));
+export const evaluatedPapers = (dependencies: DependenciesForViews): NonHtmlView => () => pipe(
+  constructViewModel(dependencies),
+  renderAsJson,
+  TE.right,
+);
