@@ -78,18 +78,14 @@ describe('construct-sorted-feed', () => {
       result = constructSortedFeed(framework.dependenciesForViews, acmiGroupId);
     });
 
-    it('returns the most recently evaluated first', () => {
+    it('returns the most recently evaluated first and the least recently evaluated second', () => {
+      expect(result).toHaveLength(2);
       expect(result[0]).toStrictEqual(recordPublicationForLaterEvaluationCommand.expressionDoi);
-    });
-
-    it('returns the least recently evaluated second', () => {
       expect(result[1]).toStrictEqual(recordPublicationForEarlierEvaluationCommand.expressionDoi);
     });
   });
 
   describe('when the group has evaluated two papers on the same day', () => {
-    it.todo('returns first the expressionDoi that comes first in alphanumerical order');
-
-    it.todo('returns second the expressionDoi that comes second in alphanumerical order');
+    it.todo('returns them in alphanumerical order by representative');
   });
 });
