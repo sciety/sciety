@@ -86,4 +86,10 @@ describe('construct-sorted-feed', () => {
       expect(result[1]).toStrictEqual(recordPublicationForEarlierEvaluationCommand.expressionDoi);
     });
   });
+
+  describe('when the group has evaluated two papers on the same day', () => {
+    it.todo('returns first the expressionDoi that comes first in alphanumerical order');
+
+    it.todo('returns second the expressionDoi that comes second in alphanumerical order');
+  });
 });
