@@ -1,4 +1,7 @@
+import * as D from 'fp-ts/Date';
 import * as O from 'fp-ts/Option';
+import * as Ord from 'fp-ts/Ord';
+import { pipe } from 'fp-ts/function';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { EvaluationType } from '../../types/evaluation-type';
 import { ExpressionDoi } from '../../types/expression-doi';
@@ -14,3 +17,9 @@ export type RecordedEvaluation = {
   authors: ReadonlyArray<string>,
   type: O.Option<EvaluationType>,
 };
+
+export const byPublishedAt: Ord.Ord<RecordedEvaluation> = pipe(
+  D.Ord,
+  Ord.reverse,
+  Ord.contramap((entry) => entry.publishedAt),
+);

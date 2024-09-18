@@ -1,15 +1,13 @@
-import * as D from 'fp-ts/Date';
 import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
 import * as O from 'fp-ts/Option';
-import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { CurationStatement } from './curation-statement';
-import { RecordedEvaluation } from '../../read-models/evaluations/recorded-evaluation';
+import { byPublishedAt, RecordedEvaluation } from '../../read-models/evaluations/recorded-evaluation';
 import { constructGroupPagePath } from '../../standards/paths';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as GID from '../../types/group-id';
@@ -46,12 +44,6 @@ const addEvaluationText = (dependencies: DependenciesForViews) => (partial: Part
     statement: digest,
     statementLanguageCode: detectLanguage(digest),
   })),
-);
-
-const byPublishedAt: Ord.Ord<RecordedEvaluation> = pipe(
-  D.Ord,
-  Ord.reverse,
-  Ord.contramap((entry) => entry.publishedAt),
 );
 
 const hasSameGroupId: Eq.Eq<RecordedEvaluation> = Eq.struct({
