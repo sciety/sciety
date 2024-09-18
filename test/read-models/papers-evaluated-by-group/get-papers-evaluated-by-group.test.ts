@@ -475,7 +475,9 @@ describe('get-papers-evaluated-by-group', () => {
       result = runQuery(events, groupId);
     });
 
-    it.todo('returns the paper representative');
+    it('returns the paper representative', () => {
+      expectSingleExpressionDoiIn(result, biorxivExpressionDoi);
+    });
 
     it('returns a lastEvaluatedAt', () => {
       expectLastEvaluatedAt(result, evaluationPublicationRecordedForConsideredGroup.publishedAt);
