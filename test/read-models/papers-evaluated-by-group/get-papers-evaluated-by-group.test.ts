@@ -333,6 +333,25 @@ describe('get-papers-evaluated-by-group', () => {
       // expect representative to be 10.1234/1111
       // expect one evaluated paper
       // expect lastEvaluatedAt date to be the date from the evaluation of 10.1234/5555
+
+      const paperSnapshotWithExpressionDoiB = {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: new Set([expressionDoiB]),
+      };
+
+      const events = [
+        evaluationRecordedAgainstExpressionDoiB,
+        paperSnapshotWithExpressionDoiB,
+        paperSnapshotWithExpressionDoisAB,
+      ] satisfies ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
+
+      it('returns one evaluated paper', () => {
+        expect(result.size).toBe(1);
+      });
     });
 
     describe('when the paper snapshot has been recorded and then another group evaluates the paper', () => {
