@@ -1,4 +1,4 @@
-import { renderAsJson } from '../../../../../src/read-side/non-html-views/api/status/render-as-json';
+import { renderAsJson } from '../../../../../src/read-side/non-html-views/api/render-as-json';
 import { ArticleId } from '../../../../../src/types/article-id';
 import { arbitraryUrl } from '../../../../helpers';
 import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';

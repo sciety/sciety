@@ -1,7 +1,7 @@
-import { StatusData } from './render-as-json';
 import { DependenciesForViews } from '../../../dependencies-for-views';
+import { ApiData } from '../render-as-json';
 
-export const constructViewModel = (dependencies: DependenciesForViews): StatusData => ({
+export const constructViewModel = (dependencies: DependenciesForViews): ApiData => ({
   readModels: {
     annotations: dependencies.annotationsStatus(),
     evaluations: dependencies.evaluationsStatus(),
