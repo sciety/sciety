@@ -406,6 +406,38 @@ describe('get-papers-evaluated-by-group', () => {
         });
       });
     });
+
+    describe('when an evaluation has been recorded, and then a snapshot is recorded containing another expression and the evaluated one', () => {
+      const anotherExpressionDoi = arbitraryExpressionDoi();
+      const evaluatedExpressionDoi = arbitraryExpressionDoi();
+      const evaluationPublicationRecorded = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId,
+        articleId: evaluatedExpressionDoi,
+      };
+      const events = [
+        evaluationPublicationRecorded,
+        {
+          ...arbitraryPaperSnapshotRecordedEvent(),
+          expressionDois: new Set([
+            anotherExpressionDoi,
+            evaluatedExpressionDoi,
+          ]),
+        },
+      ] satisfies ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
+
+      it('returns the paper representative', () => {
+        expectSingleExpressionDoiIn(result, anotherExpressionDoi);
+      });
+
+      it('returns a lastEvaluatedAt', () => {
+        expectLastEvaluatedAt(result, evaluationPublicationRecorded.publishedAt);
+      });
+    });
   });
 
   describe('given activity by a group not considered', () => {
@@ -449,38 +481,6 @@ describe('get-papers-evaluated-by-group', () => {
       it('does not return anything', () => {
         expect(result.size).toBe(0);
       });
-    });
-  });
-
-  describe('failure from staging', () => {
-    const biorxivExpressionDoi = arbitraryExpressionDoi();
-    const acmiExpressionDoi = arbitraryExpressionDoi();
-    const evaluationPublicationRecordedForConsideredGroup = {
-      ...arbitraryEvaluationPublicationRecordedEvent(),
-      groupId,
-      articleId: acmiExpressionDoi,
-    };
-    const events = [
-      evaluationPublicationRecordedForConsideredGroup,
-      {
-        ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: new Set([
-          biorxivExpressionDoi,
-          acmiExpressionDoi,
-        ]),
-      },
-    ] satisfies ReadonlyArray<DomainEvent>;
-
-    beforeEach(() => {
-      result = runQuery(events, groupId);
-    });
-
-    it('returns the paper representative', () => {
-      expectSingleExpressionDoiIn(result, biorxivExpressionDoi);
-    });
-
-    it('returns a lastEvaluatedAt', () => {
-      expectLastEvaluatedAt(result, evaluationPublicationRecordedForConsideredGroup.publishedAt);
     });
   });
 });
