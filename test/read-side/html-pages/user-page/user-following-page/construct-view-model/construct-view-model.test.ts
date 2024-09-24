@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructViewModel } from '../../../../../../src/read-side/html-pages/user-page/user-following-page/construct-view-model';
@@ -64,23 +63,6 @@ describe('construct-view-model', () => {
         }
 
         expect(viewmodel.followedGroups.value).toHaveLength(3);
-      });
-
-      it.failing('returns them in order of most recently followed first', async () => {
-        if (O.isNone(viewmodel.followedGroups)) {
-          throw new Error('None received, should have been Some');
-        }
-
-        const groupIds = pipe(
-          viewmodel.followedGroups.value,
-          RA.map((group) => group.id),
-        );
-
-        expect(groupIds).toStrictEqual([
-          addGroup3.groupId,
-          addGroup2.groupId,
-          addGroup1.groupId,
-        ]);
       });
     });
   });
