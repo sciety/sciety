@@ -8,7 +8,7 @@ import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment
 
 const renderFollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="${pathToSubmitFollow()}">
-    <input type="hidden" name="${inputFieldNames.groupProperty}" value="${groupId}" />
+    <input type="hidden" name="${inputFieldNames.groupId}" value="${groupId}" />
     <button type="submit" class="follow-button" aria-label="Follow ${htmlEscape(groupName)}">
       Follow
     </button>

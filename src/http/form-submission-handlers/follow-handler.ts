@@ -26,7 +26,7 @@ const isValid = (dependencies: Dependencies, command: FollowCommand) => (
 );
 
 const formBodyCodec = t.type({
-  [inputFieldNames.groupProperty]: GroupIdFromStringCodec,
+  [inputFieldNames.groupId]: GroupIdFromStringCodec,
 });
 
 export const followHandler = (dependencies: Dependencies): Middleware => async (context) => {
@@ -47,7 +47,7 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
 
   const command = {
     userId: loggedInUserId.value,
-    groupId: formBody.right[inputFieldNames.groupProperty],
+    groupId: formBody.right[inputFieldNames.groupId],
   };
 
   if (!isValid(dependencies, command)) {
