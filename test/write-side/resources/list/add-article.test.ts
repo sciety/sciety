@@ -79,7 +79,7 @@ describe('add-article', () => {
             addArticle({
               listId,
               expressionDoi,
-              annotation,
+              annotationContent: annotation,
             }),
             E.getOrElseW(shouldNotBeCalled),
           );
@@ -111,7 +111,7 @@ describe('add-article', () => {
           addArticle({
             listId,
             expressionDoi,
-            annotation: annotationTooLong,
+            annotationContent: annotationTooLong,
           }),
         );
 
@@ -132,7 +132,7 @@ describe('add-article', () => {
           addArticle({
             listId,
             expressionDoi,
-            annotation: toUnsafeUserInput(''),
+            annotationContent: toUnsafeUserInput(''),
           }),
         );
 

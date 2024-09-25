@@ -13,7 +13,7 @@ import { AddArticleToListCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 
 const constructEvents = (command: AddArticleToListCommand) => (
-  command.annotation === undefined
+  command.annotationContent === undefined
     ? [
       constructEvent('ArticleAddedToList')({
         articleId: new ArticleId(command.expressionDoi),
@@ -28,7 +28,7 @@ const constructEvents = (command: AddArticleToListCommand) => (
       constructEvent('ArticleInListAnnotated')({
         articleId: new ArticleId(command.expressionDoi),
         listId: command.listId,
-        content: command.annotation,
+        content: command.annotationContent,
       }),
     ]
 );
@@ -43,8 +43,8 @@ const createAppropriateEvents = (command: AddArticleToListCommand) => (listResou
 );
 
 const isAnnotationValidIfPresent = (command: AddArticleToListCommand) => () => {
-  if (command.annotation !== undefined) {
-    return isAnnotationLengthValid(command.annotation);
+  if (command.annotationContent !== undefined) {
+    return isAnnotationLengthValid(command.annotationContent);
   }
   return true;
 };
