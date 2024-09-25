@@ -6,6 +6,7 @@ import * as t from 'io-ts';
 import { decodeFormSubmission } from './decode-form-submission';
 import { ensureUserIsLoggedIn, Dependencies as EnsureUserIsLoggedInDependencies } from './ensure-user-is-logged-in';
 import { Logger } from '../../logger';
+import { inputFieldNames } from '../../standards';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { DependenciesForCommands } from '../../write-side';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
@@ -16,7 +17,7 @@ type Dependencies = DependenciesForCommands & EnsureUserIsLoggedInDependencies &
 };
 
 const formBodyCodec = t.strict({
-  editorialcommunityid: GroupIdFromStringCodec,
+  [inputFieldNames.groupId]: GroupIdFromStringCodec,
 });
 
 export const unfollowHandler = (dependencies: Dependencies): Middleware => async (context) => {
@@ -36,7 +37,7 @@ export const unfollowHandler = (dependencies: Dependencies): Middleware => async
 
   const command = {
     userId: loggedInUserId.value,
-    groupId: formBody.right.editorialcommunityid,
+    groupId: formBody.right[inputFieldNames.groupId],
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

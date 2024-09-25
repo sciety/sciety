@@ -17,7 +17,7 @@ const renderFollowButton = (groupId: GroupId, groupName: string) => `
 
 const renderUnfollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="/unfollow">
-    <input type="hidden" name="editorialcommunityid" value="${groupId}" />
+    <input type="hidden" name="${inputFieldNames.groupId}" value="${groupId}" />
     <button type="submit" class="unfollow-button" aria-label="Unfollow ${htmlEscape(groupName)}">
       Unfollow
     </button>
