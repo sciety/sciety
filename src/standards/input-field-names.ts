@@ -1,6 +1,7 @@
 export const inputFieldNames = {
   annotationContent: 'annotationContent' as const,
   articleId: 'articleId' as const,
+  displayName: 'displayName' as const,
   expressionDoi: 'expressionDoi' as const,
   forGroup: 'forGroup' as const,
   listId: 'listId' as const,
