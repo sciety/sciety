@@ -4,7 +4,7 @@ import { GroupIdFromStringCodec } from '../../types/group-id';
 import { listIdCodec } from '../../types/list-id';
 
 export const promoteListCommandCodec = t.strict({
-  forGroup: GroupIdFromStringCodec,
+  [inputFieldNames.forGroup]: GroupIdFromStringCodec,
   [inputFieldNames.listId]: listIdCodec,
 }, 'promoteListCommandCodec');
 
