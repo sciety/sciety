@@ -43,7 +43,7 @@ const isAuthorised = (
 const saveArticleHandlerFormBodyCodec = t.strict({
   [inputFieldNames.expressionDoi]: canonicalExpressionDoiCodec,
   [inputFieldNames.listId]: listIdCodec,
-  annotation: unsafeUserInputCodec,
+  [inputFieldNames.annotationContent]: unsafeUserInputCodec,
 }, 'saveArticleHandlerFormBodyCodec');
 
 type FormBody = t.TypeOf<typeof saveArticleHandlerFormBodyCodec>;
@@ -54,7 +54,7 @@ const fromFormInputToOptionalProperty = (value: UnsafeUserInput) => (
 const toCommand = (formBody: FormBody) => ({
   expressionDoi: formBody[inputFieldNames.expressionDoi],
   listId: formBody[inputFieldNames.listId],
-  annotation: fromFormInputToOptionalProperty(formBody.annotation),
+  annotation: fromFormInputToOptionalProperty(formBody[inputFieldNames.annotationContent]),
 });
 
 export const saveArticleHandler = (dependencies: Dependencies): Middleware => async (context) => {

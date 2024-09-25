@@ -58,7 +58,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     <section>
       <label for="annotationContent" class="standard-form__sub_heading">Why are you saving this article? <span class="standard-form__sub_heading_secondary_text">(optional)</span></label>
       <p class="standard-form__helper_text">Add a public comment to share with others what's interesting or important about this article.</p>
-      <textarea id="annotationContent" name="annotation" rows="10"></textarea>
+      <textarea id="annotationContent" name="${inputFieldNames.annotationContent}" rows="10"></textarea>
     </section>
     <button type="submit">
       Confirm
