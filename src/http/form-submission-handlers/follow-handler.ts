@@ -7,6 +7,7 @@ import { Middleware } from 'koa';
 import { decodeFormSubmission } from './decode-form-submission';
 import { Logger } from '../../logger';
 import { Queries } from '../../read-models';
+import { inputFieldNames } from '../../standards/input-field-names';
 import { GroupIdFromStringCodec } from '../../types/group-id';
 import { DependenciesForCommands } from '../../write-side';
 import { FollowCommand } from '../../write-side/commands';
@@ -14,8 +15,6 @@ import { executeResourceAction } from '../../write-side/resources/execute-resour
 import { follow } from '../../write-side/resources/group-follow';
 import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { sendDefaultErrorHtmlResponse, Dependencies as SendErrorHtmlResponseDependencies } from '../send-default-error-html-response';
-
-export const groupProperty = 'groupid';
 
 type Dependencies = DependenciesForCommands & SendErrorHtmlResponseDependencies & {
   logger: Logger,
@@ -27,7 +26,7 @@ const isValid = (dependencies: Dependencies, command: FollowCommand) => (
 );
 
 const formBodyCodec = t.type({
-  [groupProperty]: GroupIdFromStringCodec,
+  [inputFieldNames.groupProperty]: GroupIdFromStringCodec,
 });
 
 export const followHandler = (dependencies: Dependencies): Middleware => async (context) => {
@@ -48,7 +47,7 @@ export const followHandler = (dependencies: Dependencies): Middleware => async (
 
   const command = {
     userId: loggedInUserId.value,
-    groupId: formBody.right[groupProperty],
+    groupId: formBody.right[inputFieldNames.groupProperty],
   };
 
   if (!isValid(dependencies, command)) {

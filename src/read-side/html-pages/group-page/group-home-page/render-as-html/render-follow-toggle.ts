@@ -1,14 +1,14 @@
 import { htmlEscape } from 'escape-goat';
 import * as B from 'fp-ts/boolean';
 import { flow } from 'fp-ts/function';
-import { groupProperty } from '../../../../../http/form-submission-handlers/follow-handler';
 import { pathToSubmitFollow } from '../../../../../http/form-submission-handlers/submit-paths';
+import { inputFieldNames } from '../../../../../standards/input-field-names';
 import { GroupId } from '../../../../../types/group-id';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
 
 const renderFollowButton = (groupId: GroupId, groupName: string) => `
   <form method="post" action="${pathToSubmitFollow()}">
-    <input type="hidden" name="${groupProperty}" value="${groupId}" />
+    <input type="hidden" name="${inputFieldNames.groupProperty}" value="${groupId}" />
     <button type="submit" class="follow-button" aria-label="Follow ${htmlEscape(groupName)}">
       Follow
     </button>
