@@ -166,7 +166,7 @@ KEYS *
 - [kubectl]
 - [aws-cli]
 - [aws credentials]
-- [kubeconfig setup]
+- [kubeconfig setup]: to run any makefile targets that interact with staging or production.
 
 #### Commands to get and run copy of production DB
 
