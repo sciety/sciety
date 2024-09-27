@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "@godaddy/terminus": "^4.12.1",
-    "@googleapis/sheets": "^9.3.0",
+    "@googleapis/sheets": "^9.3.1",
     "@koa/router": "^13.1.0",
     "@types/passport-local": "^1.0.38",
     "@xmldom/xmldom": "^0.8.10",
