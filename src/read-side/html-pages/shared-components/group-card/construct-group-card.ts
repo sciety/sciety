@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { GroupCardViewModel } from './view-model';
 import { Queries } from '../../../../read-models';
-import { RecordedEvaluation } from '../../../../read-models/evaluations';
+import { isCurationStatement } from '../../../../read-models/evaluations';
 import { constructGroupPagePath } from '../../../../standards/paths';
 import * as DE from '../../../../types/data-error';
 import { GroupId } from '../../../../types/group-id';
@@ -14,15 +14,6 @@ import * as LOID from '../../../../types/list-owner-id';
 import { sanitise } from '../../../../types/sanitised-html-fragment';
 
 type Dependencies = Queries;
-
-const isCurationStatement = (
-  recordedEvaluation: RecordedEvaluation,
-) => {
-  if (O.isNone(recordedEvaluation.type)) {
-    return false;
-  }
-  return recordedEvaluation.type.value === 'curation-statement';
-};
 
 const calculateCuratedArticlesCount = (groupId: GroupId, dependencies: Dependencies) => pipe(
   groupId,

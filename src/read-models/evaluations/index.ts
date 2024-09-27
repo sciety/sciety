@@ -17,4 +17,4 @@ export const evaluations = {
   handleEvent,
 };
 
-export { RecordedEvaluation, byMostRecentlyPublished } from './recorded-evaluation';
+export { RecordedEvaluation, byMostRecentlyPublished, isCurationStatement } from './recorded-evaluation';

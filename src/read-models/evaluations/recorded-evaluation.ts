@@ -23,3 +23,12 @@ export const byMostRecentlyPublished: Ord.Ord<RecordedEvaluation> = pipe(
   Ord.reverse,
   Ord.contramap((entry) => entry.publishedAt),
 );
+
+export const isCurationStatement = (
+  recordedEvaluation: RecordedEvaluation,
+): boolean => {
+  if (O.isNone(recordedEvaluation.type)) {
+    return false;
+  }
+  return recordedEvaluation.type.value === 'curation-statement';
+};
