@@ -13,9 +13,9 @@ const byDate: Ord.Ord<RecordedEvaluation> = pipe(
   Ord.contramap((evaluation) => evaluation.publishedAt),
 );
 
-type FindEvaluationsOfType = (soughtType: string, evaluationTypes: ReadonlyArray<RecordedEvaluation['type']>) => number;
+type CountOccurrencesOfEvaluationTypes = (soughtType: string, evaluationTypes: ReadonlyArray<RecordedEvaluation['type']>) => number;
 
-const findEvaluationsOfType: FindEvaluationsOfType = (soughtType, evaluationTypes) => pipe(
+const countOccurrencesOfEvaluationTypes: CountOccurrencesOfEvaluationTypes = (soughtType, evaluationTypes) => pipe(
   evaluationTypes,
   O.sequenceArray,
   O.match(
@@ -35,10 +35,10 @@ export const evaluationsStatus = (readmodel: ReadModel) => (): Json => pipe(
   RA.map((evaluation) => evaluation.type),
   RA.partition((t) => O.isSome(t)),
   (partitioned) => ({
-    'curation-statement': findEvaluationsOfType('curation-statement', partitioned.right),
-    review: findEvaluationsOfType('review', partitioned.right),
-    'author-response': findEvaluationsOfType('author-response', partitioned.right),
-    'not-provided': findEvaluationsOfType('not-provided', partitioned.right),
+    'curation-statement': countOccurrencesOfEvaluationTypes('curation-statement', partitioned.right),
+    review: countOccurrencesOfEvaluationTypes('review', partitioned.right),
+    'author-response': countOccurrencesOfEvaluationTypes('author-response', partitioned.right),
+    'not-provided': countOccurrencesOfEvaluationTypes('not-provided', partitioned.right),
     unknown: partitioned.left.length,
   }),
 );
