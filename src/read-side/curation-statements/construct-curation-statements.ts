@@ -1,13 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import { CurationStatement } from './curation-statement';
-import { byMostRecentlyPublished, RecordedEvaluation } from '../../read-models/evaluations';
+import { byMostRecentlyPublished, isCurationStatement, RecordedEvaluation } from '../../read-models/evaluations';
 import { constructGroupPagePath } from '../../standards/paths';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import * as GID from '../../types/group-id';
@@ -66,7 +65,7 @@ type ConstructCurationStatements = (
 export const constructCurationStatements: ConstructCurationStatements = (dependencies, history) => pipe(
   PH.getAllExpressionDois(history),
   dependencies.getEvaluationsOfMultipleExpressions,
-  RA.filter((evaluation) => O.getEq(S.Eq).equals(evaluation.type, O.some('curation-statement'))),
+  RA.filter(isCurationStatement),
   onlyIncludeLatestCurationPerGroup,
   RA.map(addGroupInformation(dependencies)),
   RA.rights,
