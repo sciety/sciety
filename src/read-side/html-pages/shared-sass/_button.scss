@@ -5,14 +5,14 @@
 @use 'typography';
 
 @mixin _link($text, $background, $background-hover) {
-  @include typography.button();
-
   display: inline-block;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
   border-radius: settings.$border-radius;
 
   color: $text;
   background-color: $background;
+
+  @include typography.button();
 
   @include link.normal-state() {
     color: $text;
@@ -77,5 +77,8 @@
     $background: settings.$colour-background-grey,
     $background-hover: color.adjust(settings.$colour-background-grey, $lightness: -12%),
     );
-  font-weight: normal;
+
+  & {
+    font-weight: normal;
+  }
 }
