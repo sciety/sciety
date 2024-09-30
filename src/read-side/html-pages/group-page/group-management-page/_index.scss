@@ -17,8 +17,8 @@
 }
 
 .list-names-with-actions {
-  @include list.basics();
   margin-bottom: 0;
+  @include list.basics();
 
   li {
     display: flex;
